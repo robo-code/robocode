@@ -20,6 +20,7 @@ import static robocode.io.Logger.logMessage;
 import robocode.manager.HostManager;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotStatics;
+import robocode.peer.RobotState;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
@@ -121,8 +122,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 		out.println(s);
 	}
 
-	public void print(Throwable ex) {
-		out.print(ex);
+	public void println(Throwable ex) {
+		out.println(ex);
 	}
 
 	public RobotStatics getStatics() {
@@ -177,12 +178,12 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 
 		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + statics.getName() + " : " + e);
-			print(e);
+			println(e);
 			drainEnergy();
 		}
 	}
 
-	public boolean unsafeLoadRound() {
+	private boolean loadRobotRound() {
 		robot = null;
 		Class<?> robotClass;
 
@@ -190,7 +191,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 			hostManager.getThreadManager().setLoadingRobot(this);
 			robotClass = robotClassManager.getRobotClass();
 			if (robotClass == null) {
-				peer.println("SYSTEM: Skipping robot: " + statics.getName());
+				println("SYSTEM: Skipping robot: " + statics.getName());
 				return false;
 			}
 			robot = (IBasicRobot) robotClass.newInstance();
@@ -198,16 +199,16 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 			robot.setPeer((IBasicRobotPeer) this);
 			eventManager.setRobot(robot);
 		} catch (IllegalAccessException e) {
-			peer.println("SYSTEM: Unable to instantiate this robot: " + e);
-			peer.println("SYSTEM: Is your constructor marked public?");
-			peer.print(e);
+			println("SYSTEM: Unable to instantiate this robot: " + e);
+			println("SYSTEM: Is your constructor marked public?");
+			println(e);
 			robot = null;
 			logMessage(e);
 			return false;
 		} catch (Throwable e) {
-			peer.println("SYSTEM: An error occurred during initialization of " + statics.getName());
-			peer.println("SYSTEM: " + e);
-			peer.print(e);
+			println("SYSTEM: An error occurred during initialization of " + statics.getName());
+			println("SYSTEM: " + e);
+			println(e);
 			robot = null;
 			logMessage(e);
 			return false;
@@ -223,6 +224,13 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy {
 	protected abstract void executeImpl();
 
 	public void run() {
+		if (!loadRobotRound()) {
+			peer.drainEnergy();
+			peer.setState(RobotState.DEAD);
+			waitForBattleEndImpl();
+			return;
+		}
+
 		peer.setRunning(true);
 		try {
 			if (robot != null) {

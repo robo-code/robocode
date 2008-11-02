@@ -25,7 +25,6 @@ public interface IHostingRobotProxy extends IHostedThread {
 	void startThread();
 	void forceStopThread();
 	boolean waitForStopThread();
-	boolean unsafeLoadRound();
 	void cleanup();
 
 }

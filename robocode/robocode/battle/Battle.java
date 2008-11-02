@@ -110,7 +110,6 @@ import robocode.peer.robot.RobotClassManager;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -149,11 +148,6 @@ public final class Battle extends BaseBattle {
 
 	// Flag specifying if debugging is enabled thru the debug command line option
 	private boolean isDebugging;
-
-	// Robot loading related items
-	private Thread unsafeLoadRobotsThread;
-	private final AtomicBoolean isUnsafeLoaderThreadRunning = new AtomicBoolean(false);
-	private final AtomicBoolean isRobotsLoaded = new AtomicBoolean(false);
 
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
@@ -351,27 +345,6 @@ public final class Battle extends BaseBattle {
 	protected void initializeBattle() {
 		super.initializeBattle();
 
-		// Starting loader thread
-		ThreadGroup unsafeThreadGroup = new ThreadGroup("Robot Loader Group");
-
-		unsafeThreadGroup.setDaemon(true);
-		unsafeThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
-		unsafeLoadRobotsThread = new UnsafeLoadRobotsThread(unsafeThreadGroup);
-		manager.getThreadManager().setRobotLoaderThread(unsafeLoadRobotsThread);
-		unsafeLoadRobotsThread.start();
-
-		// Wait for the unsafe loader thread to start running
-		synchronized (isUnsafeLoaderThreadRunning) {
-			while (!isUnsafeLoaderThreadRunning.get()) {
-				try {
-					isUnsafeLoaderThreadRunning.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
-
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
 		if (parallelOn) {
 			// how could robots share CPUs ?
@@ -385,17 +358,6 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeBattle() {
-		try {
-			synchronized (isUnsafeLoaderThreadRunning) {
-				isUnsafeLoaderThreadRunning.notify();
-				isUnsafeLoaderThreadRunning.wait(10);
-			}
-			unsafeLoadRobotsThread.interrupt();
-			unsafeLoadRobotsThread.join(5000);
-		} catch (InterruptedException e) {
-			Logger.logError(e);
-		}
-
 		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
 
 		if (!isAborted()) {
@@ -431,8 +393,6 @@ public final class Battle extends BaseBattle {
 				eventDispatcher.onBattlePaused(new BattlePausedEvent());
 			}
 		}
-
-		loadRoundRobots();
 
 		computeActiveRobots();
 
@@ -757,33 +717,6 @@ public final class Battle extends BaseBattle {
 		return count;
 	}
 
-	private void loadRoundRobots() {
-		// Flag that robots are not loaded
-		synchronized (isRobotsLoaded) {
-			isRobotsLoaded.set(false);
-			isRobotsLoaded.notifyAll();
-		}
-
-		// At this point the unsafe loader thread is still waiting for a signal.
-		// So, notify it to continue the loading.
-		synchronized (isUnsafeLoaderThreadRunning) {
-			// this is same as unsafeLoadRobots() 
-			isUnsafeLoaderThreadRunning.notifyAll();
-		}
-
-		// Wait for the robots to become loaded
-		synchronized (isRobotsLoaded) {
-			while (!isRobotsLoaded.get()) {
-				try {
-					isRobotsLoaded.wait();
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
-	}
-
 	private void computeInitialPositions(String initialPositions) {
 		initialRobotPositions = null;
 
@@ -874,53 +807,6 @@ public final class Battle extends BaseBattle {
 			}
 		}
 		return true;
-	}
-
-	private boolean unsafeLoadRobots() {
-		synchronized (isUnsafeLoaderThreadRunning) {
-			try {
-				// Notify that the unsafe loader thread is now running
-				isUnsafeLoaderThreadRunning.set(true);
-				isUnsafeLoaderThreadRunning.notifyAll();
-
-				// Wait for a notify in order to continue
-				isUnsafeLoaderThreadRunning.wait();
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-			}
-		}
-		// Loader awake
-		if (getRoundNum() >= getNumRounds() || isAborted()) {
-			// Robot loader thread terminating
-			return false;
-		}
-		// Loading robots
-		for (RobotPeer robotPeer : robots) {
-			robotPeer.unsafeLoadRound();
-		} // for
-
-		// Notify that the robots has been loaded
-		synchronized (isRobotsLoaded) {
-			isRobotsLoaded.set(true);
-			isRobotsLoaded.notifyAll();
-		}
-
-		return true;
-	}
-
-	private class UnsafeLoadRobotsThread extends Thread {
-
-		public UnsafeLoadRobotsThread(ThreadGroup tg) {
-			super(tg, "Robot Loader");
-			setDaemon(true);
-		}
-
-		@Override
-		public void run() {
-			// Load robots
-			while (unsafeLoadRobots()) {}
-		}
 	}
 
 	// --------------------------------------------------------------------------

@@ -610,12 +610,6 @@ public final class RobotPeer implements ContestantPeer {
 		return true;
 	}
 
-	public void unsafeLoadRound() {
-		if (!robotProxy.unsafeLoadRound()) {
-			drainEnergy();
-		}
-	}
-
 	public void startRound(long waitTime) {
 		synchronized (this) {
 			try {

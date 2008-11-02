@@ -34,8 +34,7 @@ public class TestIncludeNamespaceAttack extends RobotTestBed {
 		super.onTurnEnded(event);
 		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
-		if (out.contains(
-				"java.security.AccessControlException: Preventing Robot Loader from access to the internal Robocode pakage: robocode.manager")) {
+		if (out.contains("from access to the internal Robocode pakage: robocode.manager")) {
 			messaged = true;
 		}
 		if (out.contains("Hacked!!!")) {
