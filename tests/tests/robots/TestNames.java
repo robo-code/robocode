@@ -12,8 +12,8 @@
 package robots;
 
 
-import helpers.Assert;
 import helpers.RobotTestBed;
+import helpers.Assert;
 import org.junit.Test;
 import robocode.battle.events.TurnEndedEvent;
 
@@ -23,9 +23,10 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class TestFileAttack extends RobotTestBed {
-	boolean messagedWrite;
-	boolean messagedRead;
+public class TestNames extends RobotTestBed {
+	boolean messagedNamespace;
+	boolean messagedName;
+	boolean messagedRobocode;
 
 	@Test
 	public void run() {
@@ -33,29 +34,33 @@ public class TestFileAttack extends RobotTestBed {
 	}
 
 	@Override
-	public void onTurnEnded(TurnEndedEvent event) {
-		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
-
-		if (out.contains(
-				"java.security.AccessControlException: Preventing testing.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")) {
-			messagedRead = true;
-		}
-		if (out.contains(
-				"java.security.AccessControlException: Preventing testing.FileAttack from access: (java.io.FilePermission C:\\Robocode.attack write)")) {
-			messagedWrite = true;
-		}
+	public int getExpectedRobotCount(String list) {
+		return 3;
 	}
 
 	@Override
 	public String getRobotNames() {
-		return "sample.SittingDuck,testing.FileAttack";
+		return "sample.Fire,robocode.BadNamespace,testing.TooLongNameThisIsReallyTooLongName,tooLongNamespaceThisIsReallyTooLongNamespace.TooLongNamespace";
+	}
+
+	@Override
+	public void onTurnEnded(TurnEndedEvent event) {
+		final String out1 = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+
+		if (out1.contains("classname is too long")) {
+			messagedName = true;
+		}
+		final String out2 = event.getTurnSnapshot().getRobots().get(2).getOutputStreamSnapshot();
+
+		if (out2.contains("package name is too long")) {
+			messagedNamespace = true;
+		}
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue(messagedRead);
-		Assert.assertTrue(messagedWrite);
-		Assert.assertFalse(new File("C:\\Robocode.attack").exists());
+		Assert.assertTrue(messagedNamespace);
+		Assert.assertTrue(messagedName);
 	}
 
 }
