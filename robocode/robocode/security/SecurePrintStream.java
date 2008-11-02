@@ -27,11 +27,7 @@ public class SecurePrintStream extends PrintStream {
 	public static PrintStream realOut = System.out;
 	public static PrintStream realErr = System.err;
 
-	public SecurePrintStream(OutputStream out, String accessString) {
-		super(out);
-	}
-
-	public SecurePrintStream(OutputStream out, boolean autoFlush, String accessString) {
+	public SecurePrintStream(OutputStream out, boolean autoFlush) {
 		super(out, autoFlush);
 	}
 

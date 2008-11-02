@@ -25,11 +25,12 @@ public class SecureInputStream extends java.io.InputStream {
 
 	/**
 	 * SecureInputStream constructor comment.
+	 * @param in original
 	 */
-	public SecureInputStream(InputStream in, String accessString) {
+	public SecureInputStream(InputStream in) {
 		super();
 		this.in = in;
-		this.inputPermission = new RobocodePermission(accessString);
+		this.inputPermission = new RobocodePermission("System.in");
 	}
 
 	@Override

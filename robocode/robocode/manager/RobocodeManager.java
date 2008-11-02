@@ -261,9 +261,9 @@ public class RobocodeManager {
 	}
 
 	private static void initStreams() {
-		PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-		PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-		InputStream sysin = new SecureInputStream(System.in, "System.in");
+		PrintStream sysout = new SecurePrintStream(System.out, true);
+		PrintStream syserr = new SecurePrintStream(System.err, true);
+		InputStream sysin = new SecureInputStream(System.in);
 
 		System.setOut(sysout);
 		if (!System.getProperty("debug", "false").equals("true")) {

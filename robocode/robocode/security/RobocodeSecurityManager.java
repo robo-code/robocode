@@ -214,7 +214,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		// Check if the current running thread is a safe thread
-		if (isSafeThread(Thread.currentThread())) {
+		if (isSafeThread()) {
 			return;
 		}
 
@@ -230,9 +230,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// This allows doPrivileged blocks to work.
 		try {
 			super.checkPermission(perm);
-			return;
-		} catch (SecurityException e) {}
+		} catch (SecurityException e) {
+			// ok wa have a problem
+			handleSecurityProblem(perm);
+		}
+	}
 
+	private void handleSecurityProblem(Permission perm) {
 		// For development purposes, allow read any file if override is set.
 		if (perm instanceof FilePermission) {
 			FilePermission fp = (FilePermission) perm;
@@ -353,8 +357,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 				} // Not a writable directory.
 
 				robotProxy.drainEnergy();
-				// robotProxy.out.println("I would allow access to: " + fileSystemManager.getWritableDirectory());
-				threadOut(
+				// robotProxy.getOut().println("I would allow access to: " + fileSystemManager.getWritableDirectory());
+				robotProxy.getOut().println(
 						"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 						+ ": You may only write files in your own data directory. ");
 
@@ -452,27 +456,41 @@ public class RobocodeSecurityManager extends SecurityManager {
 		return outputStreamThreads.get(Thread.currentThread());
 	}
 
-	public boolean isSafeThread(Thread c) {
-		if (c == getBattleThread()) {
-			return true;
-		}
+	private boolean isSafeThread() {
+		return isSafeThread(Thread.currentThread());
+	}
 
-		if (safeThreads.contains(c)) {
-			return true;
-		}
-
-		for (ThreadGroup tg : safeThreadGroups) {
-			if (c.getThreadGroup() == tg) {
-				safeThreads.add(c);
+	private boolean isSafeThread(Thread c) {
+		try {
+			if (c == battleThread) {
 				return true;
 			}
-		}
 
-		return false;
+			if (safeThreads.contains(c)) {
+				return true;
+			}
+
+			for (ThreadGroup tg : safeThreadGroups) {
+				if (c.getThreadGroup() == tg) {
+					safeThreads.add(c);
+					return true;
+				}
+			}
+
+			return false;
+		} catch (Exception e) {
+			syserr.println("Exception checking safe thread: " + e);
+			return false;
+		}
 	}
 
 	private boolean isSafeContext() {
-		return getSecurityContext().equals(safeSecurityContext);
+		try {
+			return getSecurityContext().equals(safeSecurityContext);
+		} catch (Exception e) {
+			syserr.println("Exception checking safe thread: " + e);
+			return false;
+		}
 	}
 
 	private synchronized void removeRobocodeOutputStream() {
@@ -484,34 +502,29 @@ public class RobocodeSecurityManager extends SecurityManager {
 		safeThreads.remove(safeThread);
 	}
 
-	public synchronized Thread getBattleThread() {
-		return battleThread;
-	}
-
 	public synchronized void setBattleThread(Thread newBattleThread) {
 		checkPermission(new RobocodePermission("setBattleThread"));
 		battleThread = newBattleThread;
 	}
 
-	public void threadOut(String s) {
-		Thread c = Thread.currentThread();
-		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
+	public static void printlnToRobot(String s) {
+		SecurityManager m = System.getSecurityManager();
 
-		if (robotProxy == null) {
-			throw new AccessControlException("Cannot call threadOut from unknown thread.");
+		if (m instanceof RobocodeSecurityManager) {
+			RobocodeSecurityManager rsm = (RobocodeSecurityManager) m;
+
+			final PrintStream stream = rsm.getRobotOutputStream();
+
+			if (stream != null) {
+				stream.println(s);
+			}
 		}
-
-		robotProxy.println(s);
 	}
 
 	public PrintStream getRobotOutputStream() {
 		Thread c = Thread.currentThread();
 
-		try {
-			if (isSafeThread(c)) {
-				return null;
-			}
-		} catch (Exception e) {
+		if (isSafeThread(c)) {
 			return null;
 		}
 
@@ -520,24 +533,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return null;
 		}
 
-		try {
-			IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
+		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
-			return (robotProxy != null) ? robotProxy.getOut() : null;
-
-		} catch (Exception e) {
-			syserr.println("Unable to get output stream: " + e);
-			return syserr;
-		}
-	}
-
-	public boolean isSafeThread() {
-		try {
-			return isSafeThread(Thread.currentThread());
-		} catch (Exception e) {
-			syserr.println("Exception checking safe thread: " + e);
-			return false;
-		}
+		return (robotProxy != null) ? robotProxy.getOut() : null;
 	}
 
 	@Override
@@ -545,6 +543,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 		super.checkPackageAccess(pkg);
 
 		if (isSafeContext()) {
+			return;
+		}
+
+		if (isSafeThread()) {
 			return;
 		}
 
@@ -558,10 +560,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 					|| (experimental && subPkg.equals("robotinterfaces.peer")) || (subPkg.equals("robotpaint")))) {
 
 				Thread c = Thread.currentThread();
-
-				if (isSafeThread(c)) {
-					return;
-				}
 
 				IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
@@ -583,42 +581,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 	}
 
-	@Override
-	public void checkAwtEventQueueAccess() {
-		super.checkAwtEventQueueAccess();
-
-		// Prevent robots from accessing the AWT Event Queue, i.e. hacking Robocode
-
-		List<Class<?>> robotClasses = threadManager.getRobotClasses();
-
-		for (Class<?> contextClass : getClassContext()) {
-
-			// Check if a the context class is any of the robot classes
-			for (Class<?> robotClass : robotClasses) {
-				if (contextClass.getName().startsWith(robotClass.getName())) {
-
-					// We found a robot accessing the AWT Event Queue.
-					// Now, kill all robot instances of this robot class!
-
-					List<IHostedThread> robotProxies = threadManager.getRobotProxies(robotClass);
-
-					for (IHostedThread robotProxy : robotProxies) {
-						if (robotProxy != null) {
-							robotProxy.println("SYSTEM: Accessing the AWT Event Queue is not allowed!");
-
-							// Disable the robot
-							robotProxy.drainEnergy();
-						}
-					}
-
-					// Kill the thread created thru the AWT Event Queue
-					throw new ThreadDeath();
-				}
-			}
-		}
-	}
-
-	public void createNewAppContext() {
+	private void createNewAppContext() {
 		// same as SunToolkit.createNewAppContext();
 		// we can't assume that we are always on Suns JVM, so we can't reference it directly
 		// why we call that ? Because SunToolkit is caching AWTQueue instance form main thread group and use it on robots threads
