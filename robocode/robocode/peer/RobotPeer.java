@@ -519,6 +519,67 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 	// called on battle thread
 	// -----------
 
+	public void waitWakeup() {
+		synchronized (this) {
+			if (isSleeping) {
+				// Wake up the thread
+				notifyAll();
+				try {
+					wait(10000);
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+				}
+			}
+		}
+	}
+
+	public void waitSleeping(long waitTime, int millisWait) {
+		synchronized (this) {
+			// It's quite possible for simple robots to
+			// complete their processing before we get here,
+			// so we test if the robot is already asleep.
+
+			if (!isSleeping) {
+				try {
+					for (int i = millisWait; i > 0 && !isSleeping; i--) {
+						wait(0, 999999);
+					}
+					if (!isSleeping) {
+						wait(0, (int) (waitTime % 1000000));
+					}
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+
+					logMessage("Wait for " + getName() + " interrupted.");
+				}
+			}
+		}
+	}
+
+	public void setSkippedTurns() {
+
+		if (isSleeping() || !isRunning() || battle.isDebugging()) {
+			skippedTurns = 0;
+		} else {
+			println("SK");
+			skippedTurns++;
+			events.get().clear(false);
+			if (!isDead()) {
+				addEvent(new SkippedTurnEvent());
+			}
+
+			if ((!isIORobot && (skippedTurns > maxSkippedTurns))
+					|| (isIORobot && (skippedTurns > maxSkippedTurnsWithIO))) {
+				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
+				println("SYSTEM: No score will be generated.");
+				getRobotStatistics().setInactive();
+				robotProxy.forceStopThread();
+			}
+		}
+	}
+
 	public void initializeRound(List<RobotPeer> robots, double[][] initialRobotPositions) {
 		boolean valid = false;
 
@@ -558,9 +619,9 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		isWinner = false;
 		acceleration = velocity = 0;
 
-		if (isTeamLeader() && statics.isDroid()) {
+		if (statics.isTeamLeader() && statics.isDroid()) {
 			energy = 220;
-		} else if (isTeamLeader()) {
+		} else if (statics.isTeamLeader()) {
 			energy = 200;
 		} else if (statics.isDroid()) {
 			energy = 120;
@@ -731,7 +792,7 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead())
 					&& boundingBox.intersects(otherRobot.boundingBox)) {
 				// Bounce back
-				double angle = atan2(otherRobot.getX() - x, otherRobot.getY() - y);
+				double angle = atan2(otherRobot.x - x, otherRobot.y - y);
 
 				double movedx = velocity * sin(bodyHeading);
 				double movedy = velocity * cos(bodyHeading);
@@ -749,7 +810,7 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 					x -= movedx;
 					y -= movedy;
 
-					boolean teamFire = (getTeamPeer() != null && getTeamPeer() == otherRobot.getTeamPeer());
+					boolean teamFire = (teamPeer != null && teamPeer == otherRobot.teamPeer);
 
 					if (!teamFire) {
 						statistics.scoreRammingDamage(i);
@@ -758,7 +819,7 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 					this.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
 					otherRobot.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
 
-					if (otherRobot.getEnergy() == 0) {
+					if (otherRobot.energy == 0) {
 						if (otherRobot.isAlive()) {
 							otherRobot.kill();
 							if (!teamFire) {
@@ -774,7 +835,7 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 					}
 					addEvent(
 							new HitRobotEvent(otherRobot.getName(), normalRelativeAngle(angle - bodyHeading),
-							otherRobot.getEnergy(), atFault));
+							otherRobot.energy, atFault));
 					otherRobot.addEvent(
 							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - otherRobot.getBodyHeading()), energy,
 							false));
@@ -1179,20 +1240,20 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 
 		startAngle = normalAbsoluteAngle(startAngle);
 
-		scanArc.setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
+		scanArc.setArc(x - Rules.RADAR_SCAN_RADIUS, y - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
 				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
-		for (RobotPeer robotPeer : robots) {
-			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead())
-					&& intersects(scanArc, robotPeer.boundingBox)) {
-				double dx = robotPeer.getX() - getX();
-				double dy = robotPeer.getY() - getY();
+		for (RobotPeer otherRobot : robots) {
+			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead())
+					&& intersects(scanArc, otherRobot.boundingBox)) {
+				double dx = otherRobot.x - x;
+				double dy = otherRobot.y - y;
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 
-				final ScannedRobotEvent event = new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
-						normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
-						robotPeer.getVelocity());
+				final ScannedRobotEvent event = new ScannedRobotEvent(otherRobot.getName(), otherRobot.energy,
+						normalRelativeAngle(angle - getBodyHeading()), dist, otherRobot.getBodyHeading(),
+						otherRobot.getVelocity());
 
 				addEvent(event);
 			}
@@ -1253,17 +1314,17 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		battle.resetInactiveTurnCount(10.0);
 		if (isAlive()) {
 			addEvent(new DeathEvent());
-			if (isTeamLeader()) {
+			if (statics.isTeamLeader()) {
 				for (RobotPeer teammate : teamPeer) {
 					if (!(teammate.isDead() || teammate == this)) {
 						teammate.updateEnergy(-30);
 
-						Bullet robotBullet = new Bullet(0, teammate.getX(), teammate.getY(), 4, getName());
+						Bullet robotBullet = new Bullet(0, teammate.x, teammate.y, 4, getName());
 						BulletPeer sBullet = new BulletPeer(this, battle, robotBullet);
 
 						sBullet.setState(BulletState.HIT_VICTIM);
-						sBullet.setX(teammate.getX());
-						sBullet.setY(teammate.getY());
+						sBullet.setX(teammate.x);
+						sBullet.setY(teammate.y);
 						sBullet.setVictim(teammate);
 						sBullet.setPower(4);
 						robotBullet.setPeer(sBullet);
@@ -1274,7 +1335,7 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 			battle.registerDeathRobot(this);
 
 			// 'fake' bullet for explosion on self
-			Bullet robotBullet = new Bullet(0, getX(), getY(), 1, getName());
+			Bullet robotBullet = new Bullet(0, x, y, 1, getName());
 			final ExplosionPeer fake = new ExplosionPeer(this, battle, robotBullet);
 
 			battle.addBullet(fake);
@@ -1398,67 +1459,6 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		}
 	}
 
-	public void waitWakeup() {
-		synchronized (this) {
-			if (isSleeping) {
-				// Wake up the thread
-				notifyAll();
-				try {
-					wait(10000);
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
-	}
-
-	public void waitSleeping(long waitTime, int millisWait) {
-		synchronized (this) { 
-			// It's quite possible for simple robots to
-			// complete their processing before we get here,
-			// so we test if the robot is already asleep.
-
-			if (!isSleeping()) {
-				try {
-					for (int i = millisWait; i > 0 && !isSleeping(); i--) {
-						wait(0, 999999);
-					}
-					if (!isSleeping()) {
-						wait(0, (int) (waitTime % 1000000));
-					}
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-
-					logMessage("Wait for " + getName() + " interrupted.");
-				}
-			}
-		}
-	}
-
-	public void setSkippedTurns() {
-
-		if (isSleeping() || !isRunning() || battle.isDebugging()) {
-			skippedTurns = 0;
-		} else {
-			println("SK");
-			skippedTurns++;
-			events.get().clear(false);
-			if (!isDead()) {
-				addEvent(new SkippedTurnEvent());
-			}
-
-			if ((!isIORobot && (skippedTurns > maxSkippedTurns))
-					|| (isIORobot && (skippedTurns > maxSkippedTurnsWithIO))) {
-				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
-				println("SYSTEM: No score will be generated.");
-				getRobotStatistics().setInactive();
-				robotProxy.forceStopThread();
-			}
-		}
-	}
-
 	public int compareTo(ContestantPeer cp) {
 		double myScore = statistics.getTotalScore();
 		double hisScore = cp.getStatistics().getTotalScore();
@@ -1478,9 +1478,8 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 
 	@Override
 	public String toString() {
-		return statics.getShortName() + "(" + (int) getEnergy() + ") X" + (int) getX() + " Y" + (int) getY() + " "
-				+ state.toString() + (isSleeping ? " sleeping " : "") + (isRunning() ? " running" : "")
-				+ (halt ? " halted" : "");
+		return statics.getShortName() + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString()
+				+ (isSleeping() ? " sleeping " : "") + (isRunning() ? " running" : "") + (halt ? " halted" : "");
 	}
 }
 

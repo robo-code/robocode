@@ -319,7 +319,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 				delay = Math.max(1000000000 / desiredTPS - deltaTime, 0);
 			}
-			if (delay > 0) {
+			if (delay > 500000) { // sleep granularity is worse than 500000
 				try {
 					Thread.sleep(delay / 1000000, (int) (delay % 1000000));
 				} catch (InterruptedException e) {
