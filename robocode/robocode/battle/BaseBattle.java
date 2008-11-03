@@ -34,6 +34,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	// Maximum turns to display the battle when battle ended
 	private final static int TURNS_DISPLAYED_AFTER_ENDING = 30;
+	private final static int MAX_TPS = 10000;
 
 	// Objects we use
 	protected Thread battleThread;
@@ -315,9 +316,10 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 			if (!isAborted() && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
 				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS();
-				long deltaTime = System.nanoTime() - turnStartTime;
-
-				delay = Math.max(1000000000 / desiredTPS - deltaTime, 0);
+				if (desiredTPS < MAX_TPS){
+					long deltaTime = System.nanoTime() - turnStartTime;
+					delay = Math.max(1000000000 / desiredTPS - deltaTime, 0);
+				}
 			}
 			if (delay > 500000) { // sleep granularity is worse than 500000
 				try {
