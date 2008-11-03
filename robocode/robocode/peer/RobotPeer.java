@@ -247,10 +247,6 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		return controlRobotSpecification;
 	}
 
-	public boolean isBattleRunning() {
-		return battle.isRunning();
-	}
-
 	// -------------------
 	// statics 
 	// -------------------
@@ -639,8 +635,6 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		scanArc.setAngleStart(0);
 		scanArc.setAngleExtent(0);
 		scanArc.setFrame(-100, -100, 1, 1);
-
-		statistics.initialize();
 
 		skippedTurns = 0;
 	}
@@ -1463,7 +1457,7 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		double myScore = statistics.getTotalScore();
 		double hisScore = cp.getStatistics().getTotalScore();
 
-		if (battle.isRunning()) {
+		if (statistics.isInRound()) {
 			myScore += statistics.getCurrentScore();
 			hisScore += cp.getStatistics().getCurrentScore();
 		}

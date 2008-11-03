@@ -408,6 +408,7 @@ public final class Battle extends BaseBattle {
 		final long waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
 
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
+			robotPeer.getRobotStatistics().initialize();
 			robotPeer.startRound(waitTime);
 		}
 
@@ -418,18 +419,14 @@ public final class Battle extends BaseBattle {
 	protected void finalizeRound() {
 		super.finalizeRound();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime()));
-	}
-
-	@Override
-	protected void cleanupRound() {
-		super.cleanupRound();
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.waitForStop();
+			robotPeer.getRobotStatistics().generateTotals();
+		}
 
 		bullets.clear();
-		for (RobotPeer robotPeer : robots) {
-			robotPeer.getRobotStatistics().generateTotals();
-			robotPeer.waitForStop();
-		}
+
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime()));
 	}
 
 	@Override

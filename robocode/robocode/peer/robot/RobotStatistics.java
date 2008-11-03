@@ -54,6 +54,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	private RobotPeer robotPeer;
 	private int robots;
 	private boolean isActive;
+	private boolean isInRound;
 
 	private double survivalScore;
 	private double lastSurvivorBonus;
@@ -103,6 +104,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		robotDamage = null;
 
 		isActive = true;
+		isInRound = true;
 	}
 
 	public void resetScores() {
@@ -124,6 +126,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 		totalScore = totalBulletDamageScore + totalRammingDamageScore + totalSurvivalScore + totalRammingKillBonus
 				+ totalBulletKillBonus + totalLastSurvivorBonus;
+		isInRound = false;
 	}
 
 	public double getTotalScore() {
@@ -311,5 +314,9 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 	}
 
 	public void cleanup() {// Do nothing, for now
+	}
+
+	public boolean isInRound() {
+		return isInRound;
 	}
 }
