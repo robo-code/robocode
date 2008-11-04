@@ -15,7 +15,7 @@ package robocode.peer;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerRobot {
+public interface IRobotPeer {
 
 	void drainEnergy();
 	void setInactive();

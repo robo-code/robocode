@@ -49,7 +49,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected Condition waitCondition;
 	protected boolean testingCondition;
 
-	public BasicRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeerRobot peer, RobotStatics statics) {
+	public BasicRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(robotClassManager, hostManager, peer, statics);
 
 		eventManager = new EventManager(this);

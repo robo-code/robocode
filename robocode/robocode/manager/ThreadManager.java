@@ -21,7 +21,6 @@ package robocode.manager;
 
 
 import robocode.peer.proxies.IHostedThread;
-import robocode.peer.proxies.IHostingRobotProxy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,25 +36,25 @@ public class ThreadManager {
 
 	private List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private Thread robotLoaderThread;
-	private IHostingRobotProxy loadingRobot;
+	private IHostedThread loadingRobot;
 	private List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
 
 	public ThreadManager() {
 		super();
 	}
 
-	public void addThreadGroup(ThreadGroup g, IHostingRobotProxy robotProxy) {
+	public void addThreadGroup(ThreadGroup g, IHostedThread robotProxy) {
 		if (!groups.contains(g)) {
 			groups.add(g);
 			robots.add(robotProxy);
 		}
 	}
 
-	public synchronized IHostingRobotProxy getLoadingRobot() {
+	public synchronized IHostedThread getLoadingRobot() {
 		return loadingRobot;
 	}
 
-	public synchronized IHostingRobotProxy getLoadingRobotProxy(Thread t) {
+	public synchronized IHostedThread getLoadingRobotProxy(Thread t) {
 		if (t != null && robotLoaderThread != null
 				&& (t.equals(robotLoaderThread)
 				|| (t.getThreadGroup() != null && t.getThreadGroup().equals(robotLoaderThread.getThreadGroup())))) {
@@ -92,7 +91,7 @@ public class ThreadManager {
 		robots.clear();
 	}
 
-	public synchronized void setLoadingRobot(IHostingRobotProxy newLoadingRobotProxy) {
+	public synchronized void setLoadingRobot(IHostedThread newLoadingRobotProxy) {
 		if (robotLoaderThread != null && robotLoaderThread.equals(Thread.currentThread())) {
 			loadingRobot = newLoadingRobotProxy;
 		}

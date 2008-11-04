@@ -316,8 +316,10 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 			if (!isAborted() && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
 				int desiredTPS = manager.getProperties().getOptionsBattleDesiredTPS();
-				if (desiredTPS < MAX_TPS){
+
+				if (desiredTPS < MAX_TPS) {
 					long deltaTime = System.nanoTime() - turnStartTime;
+
 					delay = Math.max(1000000000 / desiredTPS - deltaTime, 0);
 				}
 			}

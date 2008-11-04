@@ -18,7 +18,7 @@ package robocode.peer.robot;
 
 
 import robocode.RobocodeFileOutputStream;
-import robocode.peer.proxies.IHostingRobotProxy;
+import robocode.peer.proxies.IHostedThread;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class RobotFileSystemManager {
-	private IHostingRobotProxy robotProxy;
+	private IHostedThread robotProxy;
 	private long quotaUsed = 0;
 	private boolean quotaMessagePrinted = false;
 	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
@@ -43,7 +43,7 @@ public class RobotFileSystemManager {
 	/**
 	 * RobotFileSystemHandler constructor comment.
 	 */
-	public RobotFileSystemManager(IHostingRobotProxy robotProxy, long maxQuota, String classDirectory, String rootPackageDirectory) {
+	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String classDirectory, String rootPackageDirectory) {
 		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;
 		this.classDirectory = classDirectory;

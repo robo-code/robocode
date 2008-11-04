@@ -587,12 +587,10 @@ public final class Battle extends BaseBattle {
 		// Move all bots
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 
-			final RobotCommands currentCommands = robotPeer.loadCommands(robots, bullets);
-
 			// update robots
 			final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
 
-			robotPeer.update(currentCommands, robots, zapEnergy);
+			robotPeer.update(robots, bullets, zapEnergy);
 
 			// publish deaths to live robots
 			if (!robotPeer.isDead()) {

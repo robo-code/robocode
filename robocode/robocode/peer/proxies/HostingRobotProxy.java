@@ -19,7 +19,7 @@ import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.HostManager;
 import robocode.peer.RobotStatics;
-import robocode.peer.IRobotPeerRobot;
+import robocode.peer.IRobotPeer;
 import robocode.peer.RobotCommands;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
@@ -35,21 +35,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * @author Pavel Savara (original)
  */
-public abstract class HostingRobotProxy implements IHostingRobotProxy {
+public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 	protected EventManager eventManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
 	protected RobotClassManager robotClassManager;
 	protected RobotStatics statics;
 	protected RobotOutputStream out;
-	protected IRobotPeerRobot peer;
+	protected IRobotPeer peer;
 	protected HostManager hostManager;
 	protected IBasicRobot robot;
 
 	// thread is running
 	private AtomicBoolean isRunning = new AtomicBoolean(false);
 
-	HostingRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeerRobot peer, RobotStatics statics) {
+	HostingRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;

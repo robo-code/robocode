@@ -19,7 +19,7 @@ import robocode.peer.RobotCommands;
 /**
  * @author Pavel Savara (original)
  */
-public interface IHostingRobotProxy extends IHostedThread {
+public interface IHostingRobotProxy {
 
 	void startRound(RobotCommands commands, RobotStatus status);
 

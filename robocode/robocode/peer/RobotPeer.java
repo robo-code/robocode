@@ -103,7 +103,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
+public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public static final int
 			WIDTH = 40,
@@ -677,7 +677,9 @@ public final class RobotPeer implements ContestantPeer, IRobotPeerRobot {
 		}
 	}
 
-	public final void update(RobotCommands currentCommands, List<RobotPeer> robots, double zapEnergy) {
+	public final void update(List<RobotPeer> robots, List<BulletPeer> bullets, double zapEnergy) {
+		final RobotCommands currentCommands = loadCommands(robots, bullets);
+
 		// Reset robot state to active if it is not dead
 		if (isDead()) {
 			return;

@@ -25,7 +25,7 @@ import robocode.exception.RobotException;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
-import robocode.peer.proxies.IHostingRobotProxy;
+import robocode.peer.proxies.IHostedThread;
 
 
 /**
@@ -33,11 +33,11 @@ import robocode.peer.proxies.IHostingRobotProxy;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobotThreadManager {
-	private IHostingRobotProxy robotProxy;
+	private IHostedThread robotProxy;
 	private Thread runThread;
 	private ThreadGroup runThreadGroup;
 
-	public RobotThreadManager(IHostingRobotProxy robotProxy) {
+	public RobotThreadManager(IHostedThread robotProxy) {
 		this.robotProxy = robotProxy;
 		runThreadGroup = new ThreadGroup(robotProxy.getStatics().getName());
 		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
