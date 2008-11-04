@@ -31,6 +31,7 @@ import robocode.battle.BattleProperties;
 import robocode.battle.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
+import robocode.recording.BattleRecordFormat;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -288,7 +289,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private void battleSaveRecordAsActionPerformed() {
 		IBattleManager battleManager = manager.getBattleManager();
 
-		if (manager.getBattleRecorder().hasRecord()) {
+		if (manager.getBattleRecorder().hasRecord() || manager.getBattleManager().getRecordFilename() != null) {
 			try {
 				battleManager.pauseBattle();
 
@@ -297,7 +298,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 				if (path != null) {
 					robocodeFrame.setBusyPointer(true);
-					manager.getBattleRecorder().saveRecord(path);
+					manager.getBattleRecorder().saveRecord(path, BattleRecordFormat.BINARY_ZIP);
 					robocodeFrame.setBusyPointer(false);
 				}
 			} finally {
@@ -454,10 +455,13 @@ public class RobocodeMenuBar extends JMenuBar {
 
 			RobocodeProperties props = manager.getProperties();
 
-			props.addPropertyListener(props.new PropertyListener() {
+			props.addPropertyListener(
+					props.new PropertyListener() {
 				@Override
 				public void enableReplayRecordingChanged(boolean enabled) {
-					final boolean enableSaveRecord = enabled & manager.getBattleRecorder().hasRecord();
+					final boolean canReplayRecord = (manager.getBattleRecorder().hasRecord()
+							| manager.getBattleManager().getRecordFilename() != null);
+					final boolean enableSaveRecord = enabled & canReplayRecord;
 
 					battleSaveRecordAsMenuItem.setEnabled(enableSaveRecord);
 				}

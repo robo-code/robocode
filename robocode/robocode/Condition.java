@@ -20,8 +20,6 @@ package robocode;
 
 import robocode.security.RobocodeSecurityManager;
 
-import java.io.PrintStream;
-
 
 /**
  * Condition is used to define custom  {@link AdvancedRobot#waitFor(Condition)

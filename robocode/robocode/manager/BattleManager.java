@@ -52,6 +52,7 @@ package robocode.manager;
 
 
 import robocode.Event;
+import robocode.recording.BattleRecordFormat;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattle;
@@ -296,8 +297,8 @@ public class BattleManager implements IBattleManager {
 
 				recordFilename = tmpFile.getAbsolutePath();
 
-				manager.getBattleRecorder().saveRecord(recordFilename);
-
+				// Save the temporary record as fast as possible using the binary format
+				manager.getBattleRecorder().saveRecord(recordFilename, BattleRecordFormat.BINARY);
 			} catch (IOException e) {
 				logError(e);
 				return;
@@ -333,6 +334,10 @@ public class BattleManager implements IBattleManager {
 
 	public void setBattleFilename(String newBattleFilename) {
 		battleFilename = newBattleFilename;
+	}
+	
+	public String getRecordFilename() {
+		return recordFilename;
 	}
 
 	public void setRecordFilename(String newRecordFilename) {

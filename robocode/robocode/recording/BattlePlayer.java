@@ -18,10 +18,8 @@ import robocode.battle.snapshot.TurnSnapshot;
 import static robocode.io.Logger.logError;
 import robocode.manager.RobocodeManager;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
+import java.util.zip.ZipInputStream;
 
 
 /**
@@ -32,6 +30,8 @@ public final class BattlePlayer extends BaseBattle {
 
 	private String recordFilename;
 	private FileInputStream fileStream;
+	private BufferedInputStream bufferedStream;
+	private ZipInputStream zipStream;
 	private ObjectInputStream objectStream;
 	private BattleRecordInfo recordInfo;
 
@@ -46,7 +46,10 @@ public final class BattlePlayer extends BaseBattle {
 
 		try {
 			fileStream = new FileInputStream(recordFilename);
-			objectStream = new ObjectInputStream(fileStream);
+			bufferedStream = new BufferedInputStream(fileStream);
+			zipStream = new ZipInputStream(bufferedStream);
+			zipStream.getNextEntry();
+			objectStream = new ObjectInputStream(zipStream);
 
 			recordInfo = (BattleRecordInfo) objectStream.readObject();
 
@@ -73,6 +76,22 @@ public final class BattlePlayer extends BaseBattle {
 			} catch (IOException e) {/* Ignore here */}
 
 			objectStream = null;
+		}
+
+		if (zipStream != null) {
+			try {
+				zipStream.close();
+			} catch (IOException e) {/* Ignore here */}
+
+			zipStream = null;
+		}
+
+		if (bufferedStream != null) {
+			try {
+				bufferedStream.close();
+			} catch (IOException e) {/* Ignore here */}
+
+			bufferedStream = null;
 		}
 
 		if (fileStream != null) {

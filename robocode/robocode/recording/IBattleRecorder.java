@@ -22,6 +22,6 @@ import robocode.battle.events.BattleEventDispatcher;
 public interface IBattleRecorder {
 
 	void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher);
-	void saveRecord(String fileName);
+	void saveRecord(String fileName, BattleRecordFormat format);
 	boolean hasRecord();
 }

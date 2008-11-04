@@ -18,6 +18,8 @@ import static robocode.io.Logger.logError;
 import robocode.manager.RobocodeManager;
 
 import java.io.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 /**
@@ -62,9 +64,10 @@ public class BattleRecorder implements IBattleRecorder {
 		return recordInfo != null;
 	}
 
-	public void saveRecord(String fileName) {
+	public void saveRecord(String fileName, BattleRecordFormat format) {
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
+		ZipOutputStream zos = null;
 		ObjectOutputStream oos = null;
 
 		FileInputStream fis = null;
@@ -74,7 +77,15 @@ public class BattleRecorder implements IBattleRecorder {
 		try {
 			fos = new FileOutputStream(fileName);
 			bos = new BufferedOutputStream(fos, 1024 * 1024);
-			oos = new ObjectOutputStream(bos);
+
+			if (format == BattleRecordFormat.BINARY) {
+				oos = new ObjectOutputStream(bos);
+			} else if (format == BattleRecordFormat.BINARY_ZIP) {
+				zos = new ZipOutputStream(bos);
+				zos.putNextEntry(new ZipEntry("robocode.battleRecord"));
+				oos = new ObjectOutputStream(zos);
+			}
+			// TODO: Add support for XML and XML_ZIP
 
 			oos.writeObject(recordInfo);
 
@@ -124,6 +135,13 @@ public class BattleRecorder implements IBattleRecorder {
 			if (oos != null) {
 				try {
 					oos.close();
+				} catch (IOException e) {
+					logError(e);
+				}
+			}
+			if (zos != null) {
+				try {
+					zos.close();
 				} catch (IOException e) {
 					logError(e);
 				}

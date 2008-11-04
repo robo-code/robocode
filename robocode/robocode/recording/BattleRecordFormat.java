@@ -6,25 +6,12 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.proxies;
+package robocode.recording;
 
 
-import robocode.peer.RobotStatics;
-import robocode.peer.robot.RobotFileSystemManager;
-import robocode.peer.robot.RobotOutputStream;
-
-
-/**
- * @author Pavel Savara (original)
- */
-public interface IHostedThread extends Runnable {
-	void println(String s);
-	void drainEnergy();
-	Class<?> getRobotClass();
-	RobotStatics getStatics();
-	RobotFileSystemManager getRobotFileSystemManager();
-	RobotOutputStream getOut();
+public enum BattleRecordFormat {
+	BINARY, BINARY_ZIP
 }
