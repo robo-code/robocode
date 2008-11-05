@@ -98,13 +98,13 @@ public class BattleRecorder implements IBattleRecorder {
 					for (int j = recordInfo.numberOfTurns[i] - 1; j >= 0; j--) {
 						try {
 							oos.writeObject(ois.readObject());
-							oos.flush();
-							bos.flush();
-							fos.flush();
 						} catch (ClassNotFoundException e) {
 							logError(e);
 						}
 					}
+					oos.flush();
+					bos.flush();
+					fos.flush();
 				}
 			}
 
