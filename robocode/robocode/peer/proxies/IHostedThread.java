@@ -25,8 +25,6 @@ public interface IHostedThread extends Runnable {
 
 	void drainEnergy();
 
-	Class<?> getRobotClass();
-
 	RobotStatics getStatics();
 
 	RobotFileSystemManager getRobotFileSystemManager();

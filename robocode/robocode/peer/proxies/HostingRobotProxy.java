@@ -135,10 +135,6 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		return statics;
 	}
 
-	public Class<?> getRobotClass() {
-		return robotClassManager.getRobotClass();
-	}
-
 	public RobotFileSystemManager getRobotFileSystemManager() {
 		return robotFileSystemManager;
 	}

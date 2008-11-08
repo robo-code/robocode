@@ -18,7 +18,10 @@ package robocode.peer;
 public interface IRobotPeer {
 
 	void drainEnergy();
+
 	void setInactive();
+
 	ExecResult waitForBattleEndImpl(RobotCommands newCommands);
+
 	ExecResult executeImpl(RobotCommands newCommands);
 }
