@@ -30,8 +30,7 @@ public class SkipTurns extends AdvancedRobot {
 		// noinspection InfiniteLoopStatement
 		for (;;) {
 			if (skipped > limit) {
-				// satisfied, end battle please
-				throw new Error();
+				throw new Error("satisfied, end battle please");
 			}
 			turnLeft(10);
 			if (skipped > limit) {

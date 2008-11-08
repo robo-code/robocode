@@ -111,4 +111,6 @@ public class RobotMessageManager {
 	public void clearMessageEvents() {
 		messageEvents.clear();
 	}
+
+	public static void loadThisClass() {}
 }

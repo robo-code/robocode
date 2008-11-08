@@ -31,6 +31,7 @@ import robocode.manager.ThreadManager;
 import robocode.peer.BulletState;
 import robocode.peer.RobotPeer;
 import robocode.peer.robot.RobotFileSystemManager;
+import robocode.peer.robot.RobotMessageManager;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -70,6 +71,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		safeSecurityContext = getSecurityContext();
 
 		BulletState s = BulletState.INACTIVE; // Fake class loading
+
+		RobotMessageManager.loadThisClass();
 
 		createNewAppContext();
 	}

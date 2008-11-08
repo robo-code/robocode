@@ -12,45 +12,54 @@
 package robots;
 
 
-import helpers.Assert;
 import helpers.RobotTestBed;
+import helpers.Assert;
 import org.junit.Test;
 import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.events.BattleErrorEvent;
+
+import java.io.File;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestIncludeNamespaceAttack extends RobotTestBed {
-	boolean messaged;
-	boolean messagedBreakthru;
+public class TestUndeadThread extends RobotTestBed {
+	boolean messagedDestroy;
+	boolean messagedForcing;
 
 	@Test
 	public void run() {
 		super.run();
 	}
 
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+	public void onBattleError(BattleErrorEvent event) {
+		super.onBattleError(event);
+		final String error = event.getError();
 
-		if (out.contains("from access to the internal Robocode pakage: robocode.manager")) {
-			messaged = true;
+		if (error.contains("is not stopping.  Forcing a stop.")) {
+			messagedForcing = true;
 		}
-		if (out.contains("Hacked!!!")) {
-			messagedBreakthru = true;
+		if (error.contains("Warning, could not destroy")) {
+			messagedDestroy = true;
 		}
+	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 4;
 	}
 
 	@Override
 	public String getRobotNames() {
-		return "sample.SittingDuck,testing.IncludeNamespaceAttack";
+		return "sample.SittingDuck,testing.UndeadThread";
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertFalse(messagedBreakthru);
-		Assert.assertTrue(messaged);
+		Assert.assertTrue(messagedForcing);
+		Assert.assertTrue(messagedDestroy);
+		Assert.assertFalse(new File("C:\\Robocode.attack").exists());
 	}
 
 }
