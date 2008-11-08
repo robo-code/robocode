@@ -46,6 +46,7 @@ public class TestJunior extends RobotTestBed {
 			test(out, "robocode.BulletHitEvent 24");
 			test(out, "robocode.StatusEvent 589");
 			test(out, "robocode.WinEvent 1");
+			test(out, "last bullet heading 6.0710656");
 		}
 	}
 

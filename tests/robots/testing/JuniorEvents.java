@@ -31,6 +31,7 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 	IBasicRobotPeer peer;
 	PrintStream out;
 	Hashtable<String, Integer> counts = new Hashtable<String, Integer>();
+	Bullet bullet;
 
 	public void run() {
 		// noinspection InfiniteLoopStatement
@@ -99,6 +100,7 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 		for (Map.Entry<String, Integer> s : counts.entrySet()) {
 			out.println(s.getKey() + " " + s.getValue());
 		}
+		out.println("last bullet heading " + bullet.getHeadingRadians());
 	}
 
 	public void onScannedRobot(ScannedRobotEvent event) {
@@ -108,7 +110,7 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 		peer.turnGun(Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians() - peer.getGunHeading())); //
 
 		// Fire!
-		peer.fire(
+		bullet = peer.fire(
 				1);
 	}
 
