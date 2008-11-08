@@ -22,4 +22,21 @@ public class Assert extends org.junit.Assert {
 	public static void assertNear(double v1, double v2) {
 		org.junit.Assert.assertEquals(v1, v2, Utils.NEAR_DELTA);
 	}
+
+	public static void allAssertNear(double v1, double v2) {
+		try {
+			assertNear(v1, v2);
+		} catch (Throwable ex) {
+			ex.printStackTrace(System.err);
+		}
+	}
+
+	public static <T> void allAssertThat(T t, org.hamcrest.Matcher<T> tMatcher) {
+		try {
+			org.junit.Assert.assertThat(t, tMatcher);
+		} catch (Throwable ex) {
+			ex.printStackTrace(System.err);
+		}
+	}
+
 }

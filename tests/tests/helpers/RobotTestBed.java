@@ -150,12 +150,4 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		Assert.assertEquals("Robot were not loaded", getExpectedRobotCount(list), robotSpecifications.length);
 		engine.runBattle(new BattleSpecification(numRounds, battleFieldSpec, robotSpecifications), true);
 	}
-
-	public <T> void allAssertThat(T t, org.hamcrest.Matcher<T> tMatcher) {
-		try {
-			Assert.assertThat(t, tMatcher);
-		} catch (Throwable ex) {
-			ex.printStackTrace(System.err);
-		}
-	}
 }
