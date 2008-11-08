@@ -82,4 +82,9 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		}
 		return super.add(r);
 	}
+
+	@Override
+	public String toString() {
+		return " [" + size() + "] " + getName();
+	}
 }

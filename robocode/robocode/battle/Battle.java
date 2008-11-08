@@ -582,10 +582,6 @@ public final class Battle extends BaseBattle {
 	private void updateRobots() {
 		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
 
-		// TODO ZAMO this is there to make sure that we keep same deterministic behavior between version 1.6.1 and 1.6.2.
-		// TODO ZAMO could be removed after we conclude that both version behave same
-		getRobotsAtRandom(); 
-
 		// Move all bots
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 
@@ -604,6 +600,10 @@ public final class Battle extends BaseBattle {
 				}
 			}
 		}
+
+		// TODO ZAMO this is there to make sure that we keep same deterministic behavior between version 1.6.1 and 1.6.2.
+		// TODO ZAMO could be removed after we conclude that both version behave same
+		getRobotsAtRandom();
 	}
 
 	private void handleDeathRobots() {

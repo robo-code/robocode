@@ -48,6 +48,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected Condition waitCondition;
 	protected boolean testingCondition;
+	protected double firedEnergy;
+	protected double firedHeat;
 
 	public BasicRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(robotClassManager, hostManager, peer, statics);
@@ -235,12 +237,12 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	public double getEnergy() {
 		getCall();
-		return status.getEnergy();
+		return getEnergyImpl();
 	}
 
 	public double getGunHeat() {
 		getCall();
-		return status.getGunHeat();
+		return getGunHeatImpl();
 	}
 
 	public double getX() {
@@ -321,6 +323,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		execResult = peer.executeImpl(commands);
 
 		updateStatus(execResult.commands, execResult.status);
+		firedEnergy = 0;
+		firedHeat = 0;
 
 		// add new events first
 		if (execResult.events != null) {
@@ -368,8 +372,16 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}
 
+	protected final double getEnergyImpl() {
+		return status.getEnergy() - firedEnergy;
+	}
+
+	protected final double getGunHeatImpl() {
+		return status.getGunHeat() - firedHeat;
+	}
+
 	protected final void setMoveImpl(double distance) {
-		if (status.getEnergy() == 0) {
+		if (getEnergyImpl() == 0) {
 			return;
 		}
 		commands.setDistanceRemaining(distance);
@@ -381,7 +393,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			println("SYSTEM: You cannot call fire(NaN)");
 			return null;
 		}
-		if (status.getGunHeat() > 0 || status.getEnergy() == 0) {
+		if (getGunHeatImpl() > 0 || getEnergyImpl() == 0) {
 			return null;
 		}
 
@@ -404,6 +416,10 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			wrapper = new BulletCommand(bullet, false, 0);
 		}
 
+		firedEnergy += power;
+		firedHeat += Rules.getGunHeat(power);
+
+
 		commands.getBullets().add(wrapper);
 
 		return bullet;
@@ -414,7 +430,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	}
 
 	protected final void setTurnBodyImpl(double radians) {
-		if (getEnergy() > 0) {
+		if (getEnergyImpl() > 0) {
 			commands.setBodyTurnRemaining(radians);
 		}
 	}

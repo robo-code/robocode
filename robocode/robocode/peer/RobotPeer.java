@@ -1442,7 +1442,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				continue;
 			}
 			if (gunHeat > 0 || energy == 0) {
-				continue;
+				return;
 			}
 
 			double firePower = min(energy, min(max(bullet.getPower(), Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
