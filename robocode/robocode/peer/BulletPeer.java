@@ -364,4 +364,10 @@ public class BulletPeer {
 	protected int getExplosionLength() {
 		return EXPLOSION_LENGTH;
 	}
+
+	@Override
+	public String toString() {
+		return getOwner().getName() + " V" + getVelocity() + " *" + (int) power + " X" + (int) x + " Y" + (int) y + " H"
+				+ heading + " " + state.toString();
+	}
 }

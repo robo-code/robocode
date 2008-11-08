@@ -133,6 +133,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private RobotStatics statics;
 	private BattleRules battleRules;
 
+	// for battle thread, during robots processing
+	private RobotCommands currentCommands;
+	private double lastHeading;
+	private double lastGunHeading;
+	private double lastRadarHeading;
+
 	private double energy;
 	private double velocity;
 	private double bodyHeading;
@@ -670,7 +676,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			try {
 				Logger.logMessage(".", false);
 
-				RobotCommands currentCommands = new RobotCommands();
+				currentCommands = new RobotCommands();
 				RobotStatus stat = new RobotStatus(this, currentCommands, battle);
 
 				status.set(stat);
@@ -692,8 +698,77 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public final void update(List<RobotPeer> robots, List<BulletPeer> bullets, double zapEnergy) {
-		final RobotCommands currentCommands = loadCommands(robots, bullets);
+	public void performLoadCommands() {
+		currentCommands = commands.get();
+
+		fireBullets(currentCommands.getBullets());
+
+		if (currentCommands.isScan()) {
+			scan = true;
+		}
+
+		if (currentCommands.isIORobot()) {
+			isIORobot = true;
+		}
+
+		if (currentCommands.isMoved()) {
+			acceleration = 0;
+			if (currentCommands.getDistanceRemaining() == 0) {
+				moveDirection = 0;
+			} else if (currentCommands.getDistanceRemaining() > 0) {
+				moveDirection = 1;
+			} else {
+				moveDirection = -1;
+			}
+			slowingDown = false;
+			currentCommands.setMoved(false);
+		}
+	}
+
+	private void fireBullets(List<BulletCommand> bulletCommands) {
+		BulletPeer newBullet = null;
+
+		for (BulletCommand bulletCmd : bulletCommands) {
+			Bullet bullet = bulletCmd.getBullet();
+
+			if (bullet == null) {
+				println("SYSTEM: Bad bullet command");
+				continue;
+			}
+			if (Double.isNaN(bullet.getPower())) {
+				println("SYSTEM: You cannot call fire(NaN)");
+				continue;
+			}
+			if (gunHeat > 0 || energy == 0) {
+				return;
+			}
+
+			double firePower = min(energy, min(max(bullet.getPower(), Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+
+			updateEnergy(-firePower);
+
+			gunHeat += Rules.getGunHeat(firePower);
+
+			newBullet = new BulletPeer(this, battle, bullet);
+
+			newBullet.setPower(firePower);
+			if (!turnedRadarWithGun || !bulletCmd.isFireAssistValid() || statics.isAdvancedRobot()) {
+				newBullet.setHeading(gunHeading);
+			} else {
+				newBullet.setHeading(bulletCmd.getFireAssistAngle());
+			}
+			newBullet.setX(x);
+			newBullet.setY(y);
+			bullet.setPeer(newBullet);
+		}
+		// there is only last bullet in one turn
+		if (newBullet != null) {
+			// newBullet.update(robots, bullets);
+			battle.addBullet(newBullet);
+		}
+	}
+
+	public final void performMove(List<RobotPeer> robots, double zapEnergy) {
 
 		// Reset robot state to active if it is not dead
 		if (isDead()) {
@@ -704,28 +779,28 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		updateGunHeat();
 
-		final double lastHeading = bodyHeading;
-		final double lastGunHeading = gunHeading;
-		final double lastRadarHeading = radarHeading;
+		lastHeading = bodyHeading;
+		lastGunHeading = gunHeading;
+		lastRadarHeading = radarHeading;
 		final double lastX = x;
 		final double lastY = y;
 
 		if (!inCollision) {
-			updateHeading(currentCommands);
+			updateHeading();
 		}
 
-		updateGunHeading(currentCommands);
-		updateRadarHeading(currentCommands);
-		updateMovement(currentCommands);
+		updateGunHeading();
+		updateRadarHeading();
+		updateMovement();
 
 		// At this point, robot has turned then moved.
 		// We could be touching a wall or another bot...
 
 		// First and foremost, we can never go through a wall:
-		checkWallCollision(currentCommands);
+		checkWallCollision();
 
 		// Now check for robot collision
-		checkRobotCollision(currentCommands, robots);
+		checkRobotCollision(robots);
 
 		// Scan false means robot did not call scan() manually.
 		// But if we're moving, scan
@@ -740,9 +815,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		// zap
 		if (zapEnergy != 0) {
-			zap(zapEnergy, currentCommands);
+			zap(zapEnergy);
 		}
+	}
 
+	public void performScan(List<RobotPeer> robots) {
 		if (isDead()) {
 			return;
 		}
@@ -765,6 +842,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				}
 			}
 		}
+		currentCommands = null;
+		lastHeading = -1;
+		lastGunHeading = -1;
+		lastRadarHeading = -1;
 	}
 
 	private void addTeamMessage(TeamMessage message) {
@@ -794,7 +875,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return false;
 	}
 
-	private void checkRobotCollision(RobotCommands currentCommands, List<RobotPeer> robots) {
+	private void checkRobotCollision(List<RobotPeer> robots) {
 		inCollision = false;
 
 		for (int i = 0; i < robots.size(); i++) {
@@ -858,7 +939,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	private void checkWallCollision(RobotCommands currentCommands) {
+	private void checkWallCollision() {
 		boolean hitWall = false;
 		double fixx = 0, fixy = 0;
 		double angle = 0;
@@ -963,7 +1044,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	private void updateGunHeading(RobotCommands currentCommands) {
+	private void updateGunHeading() {
 		if (currentCommands.getGunTurnRemaining() > 0) {
 			if (currentCommands.getGunTurnRemaining() < Rules.GUN_TURN_RATE_RADIANS) {
 				gunHeading += currentCommands.getGunTurnRemaining();
@@ -1004,7 +1085,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		gunHeading = normalAbsoluteAngle(gunHeading);
 	}
 
-	private void updateHeading(RobotCommands currentCommands) {
+	private void updateHeading() {
 		boolean normalizeHeading = true;
 
 		double turnRate = min(currentCommands.getMaxTurnRate(),
@@ -1078,7 +1159,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	private void updateRadarHeading(RobotCommands currentCommands) {
+	private void updateRadarHeading() {
 		if (currentCommands.getRadarTurnRemaining() > 0) {
 			if (currentCommands.getRadarTurnRemaining() < Rules.RADAR_TURN_RATE_RADIANS) {
 				radarHeading += currentCommands.getRadarTurnRemaining();
@@ -1102,7 +1183,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		radarHeading = normalAbsoluteAngle(radarHeading);
 	}
 
-	private void updateMovement(RobotCommands currentCommands) {
+	private void updateMovement() {
 		if (currentCommands.getDistanceRemaining() == 0 && velocity == 0) {
 			return;
 		}
@@ -1277,7 +1358,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				|| arc.intersects(rect);
 	}
 
-	private void zap(double zapAmount, RobotCommands currentCommands) {
+	private void zap(double zapAmount) {
 		if (energy == 0) {
 			kill();
 			return;
@@ -1310,10 +1391,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		energy = newEnergy;
 		if (energy < .01) {
 			energy = 0;
-			RobotCommands currentCommands = commands.get();
+			RobotCommands localCommands = commands.get();
 
-			currentCommands.setDistanceRemaining(0);
-			currentCommands.setBodyTurnRemaining(0);
+			localCommands.setDistanceRemaining(0);
+			localCommands.setBodyTurnRemaining(0);
 		}
 	}
 
@@ -1395,78 +1476,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			if (isPaintRobot() && isPaintEnabled() && currentTurn > 0) {
 				addEvent(new PaintEvent());
 			}
-		}
-	}
-
-	public RobotCommands loadCommands(List<RobotPeer> robots, List<BulletPeer> bullets) {
-		RobotCommands currentCommands = commands.get();
-
-		fireBullets(currentCommands.getBullets(), robots, bullets);
-
-		if (currentCommands.isScan()) {
-			scan = true;
-		}
-
-		if (currentCommands.isIORobot()) {
-			isIORobot = true;
-		}
-
-		if (currentCommands.isMoved()) {
-			acceleration = 0;
-			if (currentCommands.getDistanceRemaining() == 0) {
-				moveDirection = 0;
-			} else if (currentCommands.getDistanceRemaining() > 0) {
-				moveDirection = 1;
-			} else {
-				moveDirection = -1;
-			}
-			slowingDown = false;
-			currentCommands.setMoved(false);
-		}
-
-		return currentCommands;
-	}
-
-	private void fireBullets(List<BulletCommand> bulletCommands, List<RobotPeer> robots, List<BulletPeer> bullets) {
-		BulletPeer newBullet = null;
-
-		for (BulletCommand bulletCmd : bulletCommands) {
-			Bullet bullet = bulletCmd.getBullet();
-
-			if (bullet == null) {
-				println("SYSTEM: Bad bullet command");
-				continue;
-			}
-			if (Double.isNaN(bullet.getPower())) {
-				println("SYSTEM: You cannot call fire(NaN)");
-				continue;
-			}
-			if (gunHeat > 0 || energy == 0) {
-				return;
-			}
-
-			double firePower = min(energy, min(max(bullet.getPower(), Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
-
-			updateEnergy(-firePower);
-
-			gunHeat += Rules.getGunHeat(firePower);
-
-			newBullet = new BulletPeer(this, battle, bullet);
-
-			newBullet.setPower(firePower);
-			if (!turnedRadarWithGun || !bulletCmd.isFireAssistValid() || statics.isAdvancedRobot()) {
-				newBullet.setHeading(gunHeading);
-			} else {
-				newBullet.setHeading(bulletCmd.getFireAssistAngle());
-			}
-			newBullet.setX(x);
-			newBullet.setY(y);
-			bullet.setPeer(newBullet);
-		}
-		// there is only last bullet in one turn
-		if (newBullet != null) {
-			newBullet.update(robots, bullets);
-			battle.addBullet(newBullet);
 		}
 	}
 

@@ -419,7 +419,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		firedEnergy += power;
 		firedHeat += Rules.getGunHeat(power);
 
-
 		commands.getBullets().add(wrapper);
 
 		return bullet;

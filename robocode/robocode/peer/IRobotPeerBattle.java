@@ -66,7 +66,9 @@ public interface IRobotPeerBattle extends ContestantPeer {
 
 	void setSkippedTurns();
 
-	void update(List<RobotPeer> robots, List<BulletPeer> bullets, double zapEnergy);
+	void performLoadCommands();
 
-	RobotCommands loadCommands(List<RobotPeer> robots, List<BulletPeer> bullets);
+	void performMove(List<RobotPeer> robots, double zapEnergy);
+
+	void performScan(List<RobotPeer> robots);
 }

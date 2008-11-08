@@ -251,16 +251,16 @@ public final class Battle extends BaseBattle {
 			String teamFullName = rcm.getTeamName();
 
 			if (teamFullName != null) {
-				if (!namedTeams.containsKey(teamFullName)){
+				if (!namedTeams.containsKey(teamFullName)) {
 					final int teamIndex = teams.indexOf(teamFullName);
 					String newTeamName = teamDuplicates.get(teamIndex);
+
 					team = new TeamPeer(newTeamName, teamMembers.get(teamFullName));
 
 					namedTeams.put(teamFullName, team);
 					contestants.add(team);
 
-				}
-				else{
+				} else {
 					team = namedTeams.get(teamFullName);
 				}
 			}
@@ -443,6 +443,8 @@ public final class Battle extends BaseBattle {
 
 		super.runTurn();
 
+		loadCommands();
+
 		updateBullets();
 
 		updateRobots();
@@ -570,6 +572,13 @@ public final class Battle extends BaseBattle {
 		return shuffledList;
 	}
 
+	private void loadCommands() {
+		// this will load commands, including bullets from last turn 
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.performLoadCommands();
+		}
+	}
+
 	private void updateBullets() {
 		for (BulletPeer b : bullets) {
 			b.update(robots, bullets);
@@ -582,13 +591,12 @@ public final class Battle extends BaseBattle {
 	private void updateRobots() {
 		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
 
+		final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
+
 		// Move all bots
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 
-			// update robots
-			final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
-
-			robotPeer.update(robots, bullets, zapEnergy);
+			robotPeer.performMove(robots, zapEnergy);
 
 			// publish deaths to live robots
 			if (!robotPeer.isDead()) {
@@ -600,10 +608,11 @@ public final class Battle extends BaseBattle {
 				}
 			}
 		}
-
-		// TODO ZAMO this is there to make sure that we keep same deterministic behavior between version 1.6.1 and 1.6.2.
-		// TODO ZAMO could be removed after we conclude that both version behave same
-		getRobotsAtRandom();
+		
+		// Scan after moved all
+		for (RobotPeer robotPeer : getRobotsAtRandom()) {
+			robotPeer.performScan(robots);
+		}
 	}
 
 	private void handleDeathRobots() {
