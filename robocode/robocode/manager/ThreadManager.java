@@ -100,36 +100,4 @@ public class ThreadManager {
 	public synchronized void setRobotLoaderThread(Thread robotLoaderThread) {
 		this.robotLoaderThread = robotLoaderThread;
 	}
-
-	public List<Class<?>> getRobotClasses() {
-		List<Class<?>> classes = new ArrayList<Class<?>>();
-
-		IHostedThread robotProxy;
-
-		for (int i = robots.size() - 1; i >= 0; i--) {
-			robotProxy = robots.get(i);
-			if (robotProxy != null) {
-				classes.add(robotProxy.getRobotClass());
-			}
-		}
-		return classes;
-	}
-
-	public List<IHostedThread> getRobotProxies(Class<?> robotClass) {
-		List<IHostedThread> robotProxies = new ArrayList<IHostedThread>();
-
-		for (int i = robots.size() - 1; i >= 0; i--) {
-			IHostedThread robotProxy = robots.get(i);
-
-			if (robotProxy != null) {
-				// NOTE: The check is on name level, as the equals() method does not work between
-				// the two classes, and isAssignableFrom() does not work here either! -FNL
-				if (robotProxy.getRobotClass().getName().equals(robotClass.getName())) {
-					robotProxies.add(robotProxy);
-				}
-			}
-		}
-
-		return robotProxies;
-	}
 }
