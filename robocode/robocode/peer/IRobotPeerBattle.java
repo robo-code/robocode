@@ -23,27 +23,50 @@ import java.util.List;
  */
 public interface IRobotPeerBattle extends ContestantPeer {
 	void setSGPaintEnabled(boolean enabled);
+
 	RobotStatistics getRobotStatistics();
+
 	TeamPeer getTeamPeer();
+
 	void publishStatus(long currentTurn);
+
 	void addEvent(Event event);
+
 	void setPaintEnabled(boolean enabled);
+
 	void kill();
+
 	void cleanup();
+
 	boolean isDead();
+
 	boolean isAlive();
+
 	boolean isRunning();
+
 	boolean isWinner();
+
 	boolean isTeamLeader();
+
 	void setHalt(boolean value);
+
 	void println(String s);
+
 	void waitWakeup();
+
 	void waitSleeping(long waitTime, int millisWait);
+
 	void waitForStop();
+
 	void setWinner(boolean newWinner);
+
 	void initializeRound(List<RobotPeer> robots, double[][] initialRobotPositions);
+
 	void startRound(long waitTime);
+
 	void setSkippedTurns();
+
 	void update(List<RobotPeer> robots, List<BulletPeer> bullets, double zapEnergy);
+
 	RobotCommands loadCommands(List<RobotPeer> robots, List<BulletPeer> bullets);
 }

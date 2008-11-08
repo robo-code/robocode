@@ -22,9 +22,14 @@ import robocode.peer.robot.RobotOutputStream;
  */
 public interface IHostedThread extends Runnable {
 	void println(String s);
+
 	void drainEnergy();
+
 	Class<?> getRobotClass();
+
 	RobotStatics getStatics();
+
 	RobotFileSystemManager getRobotFileSystemManager();
+
 	RobotOutputStream getOut();
 }
