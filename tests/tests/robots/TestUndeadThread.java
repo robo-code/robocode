@@ -12,10 +12,11 @@
 package robots;
 
 
-import helpers.Assert;
 import helpers.RobotTestBed;
+import helpers.Assert;
 import org.junit.Test;
 import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.events.BattleErrorEvent;
 
 import java.io.File;
 
@@ -23,39 +24,41 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class TestFileAttack extends RobotTestBed {
-	boolean messagedWrite;
-	boolean messagedRead;
+public class TestUndeadThread extends RobotTestBed {
+	boolean messagedDestroy;
+	boolean messagedForcing;
 
 	@Test
 	public void run() {
 		super.run();
 	}
 
-	@Override
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+	public void onBattleError(BattleErrorEvent event) {
+		super.onBattleError(event);
+		final String error = event.getError();
 
-		if (out.contains(
-				"java.security.AccessControlException: Preventing testing.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")) {
-			messagedRead = true;
+		if (error.contains("is not stopping.  Forcing a stop.")) {
+			messagedForcing = true;
 		}
-		if (out.contains(
-				"java.security.AccessControlException: Preventing testing.FileAttack from access: (java.io.FilePermission C:\\Robocode.attack write)")) {
-			messagedWrite = true;
+		if (error.contains("Warning, could not destroy")) {
+			messagedDestroy = true;
 		}
+	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 4;
 	}
 
 	@Override
 	public String getRobotNames() {
-		return "sample.SittingDuck,testing.FileAttack";
+		return "sample.SittingDuck,testing.UndeadThread";
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue(messagedRead);
-		Assert.assertTrue(messagedWrite);
+		Assert.assertTrue(messagedForcing);
+		Assert.assertTrue(messagedDestroy);
 		Assert.assertFalse(new File("C:\\Robocode.attack").exists());
 	}
 

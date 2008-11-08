@@ -155,8 +155,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	// waiting for next tick
 	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
+	private final AtomicBoolean halt = new AtomicBoolean(false);
+	private boolean disableExec = false;
 	private boolean isWinner;
-	private boolean halt;
 	private boolean inCollision;
 	private RobotState state;
 	private Arc2D scanArc;
@@ -336,12 +337,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return isSleeping.get();
 	}
 
-	public synchronized boolean getHalt() {
-		return halt;
+	public boolean getHalt() {
+		return halt.get();
 	}
 
-	public synchronized void setHalt(boolean halt) {
-		this.halt = halt;
+	public void setHalt(boolean value) {
+		halt.set(value);
 	}
 
 	public BoundingRectangle getBoundingBox() {
@@ -431,18 +432,30 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public final ExecResult executeImpl(RobotCommands newCommands) {
 		newCommands.validate(this);
         
-		// from robot to battle
-		commands.set(new RobotCommands(newCommands, true));
-		printProxy(newCommands.getOutputText());
+		if (!disableExec) {
+			// from robot to battle
+			commands.set(new RobotCommands(newCommands, true));
+			printProxy(newCommands.getOutputText());
+		} else {
+			// slow down spammer
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (battle.isAborted()) {
+			disableExec = true;
 			throw new AbortedException();
 		}
 		if (isDead()) {
+			disableExec = true;
 			throw new DeathException();
 		}
 		if (getHalt()) {
+			disableExec = true;
 			if (isWinner) {
 				throw new WinException();
 			} else {
@@ -628,6 +641,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		gunHeat = 3;
 
 		setHalt(false);
+		disableExec = false;
 
 		scan = false;
 

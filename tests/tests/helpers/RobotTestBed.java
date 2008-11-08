@@ -133,7 +133,11 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		runSetup();
 		runBattle(getRobotNames(), getNumRounds());
 		runTeardown();
-		Assert.assertThat(errors, is(0));
+		Assert.assertThat(errors, is(getExpectedErrors()));
+	}
+
+	protected int getExpectedErrors() {
+		return 0;
 	}
 
 	protected void runSetup() {}

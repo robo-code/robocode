@@ -56,7 +56,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		this.robotClassManager = robotClassManager;
 
 		out = new RobotOutputStream();
-		robotThreadManager = new RobotThreadManager(this);
+		robotThreadManager = new RobotThreadManager(this); // TODO reuse thread manager for rounds ?
 
 		loadClassBattle();
 
@@ -147,8 +147,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	
 	public void startRound(RobotCommands commands, RobotStatus status) {
 		initializeRound(commands, status);
-		hostManager.getThreadManager().addThreadGroup(robotThreadManager.getThreadGroup(), this);
-		robotThreadManager.start();
+		robotThreadManager.start(hostManager.getThreadManager());
 	}
 
 	public void forceStopThread() {

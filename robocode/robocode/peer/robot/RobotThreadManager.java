@@ -26,6 +26,7 @@ import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.peer.proxies.IHostedThread;
+import robocode.manager.ThreadManager;
 
 
 /**
@@ -44,96 +45,82 @@ public class RobotThreadManager {
 	}
 
 	public boolean forceStop() {
-		boolean res = true;
-
-		if (runThread != null && runThread.isAlive()) {
-			try {
-				runThread.setPriority(Thread.MIN_PRIORITY);
-			} catch (NullPointerException e) {// Work-around: Sometimes this occurs in the Java core?!
-			}
-			runThread.interrupt();
-			try {
-				runThread.join(5000);
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-
-				e.printStackTrace();
-			}
-			res = false;
-			if (runThread.isAlive()) {
-				stopThread(runThread);
-			}
-			try {
-				runThread.join(5000);
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-
-				e.printStackTrace();
-			}
-			if (runThread.isAlive()) {
-				logError("Warning!  Unable to stop thread: " + runThread.getName());
-			} else {
-				robotProxy.println("SYSTEM: This robot has been stopped.  No score will be generated.");
-				logMessage(robotProxy.getStatics().getName() + " has been stopped.  No score will be generated.");
-			}
-		}
+		int res = stopSteps(runThread);
 
 		Thread[] threads = new Thread[10];
-		int numThreads = runThreadGroup.enumerate(threads);
 
-		if (numThreads == 1 && threads[0] == runThread) {
-			return res;
-		}
+		runThreadGroup.enumerate(threads);
 
-		if (numThreads != 0) {
-			res = false;
-			robotProxy.println(
-					"SYSTEM:  You still have " + numThreads + " running threads.  No score will be generated.");
-		}
 		for (Thread thread : threads) {
-			if (thread != null) {
-				thread.setPriority(Thread.MIN_PRIORITY);
-				stopThread(thread);
+			if (thread != runThread) {
+				res += stopSteps(thread);
 			}
 		}
-		for (Thread thread : threads) {
-			if (thread != null) {
-				try {
-					thread.join(1000);
-				} catch (InterruptedException e) {
-					// Immediately reasserts the exception by interrupting the caller thread itself
-					Thread.currentThread().interrupt();
-
-					robotProxy.println("SYSTEM:  Thread: " + thread.getName() + " join interrupted.");
-					logError("Thread: " + thread.getName() + " join interrupted.");
-				}
-				if (thread.isAlive()) {
-					logError("Warning! Unable to stop thread: " + thread.getName());
-				} else {
-					robotProxy.println("SYSTEM:  Thread: " + thread.getName() + " has been stopped.");
-					logError("Thread: " + thread.getName() + " has been stopped.");
-				}
-			}
+		if (res > 0) {
+			robotProxy.println("SYSTEM: This robot has been stopped.  No score will be generated.");
 		}
-		return res;
+		return res == 0;
 	}
 
-	public ThreadGroup getThreadGroup() {
-		return runThreadGroup;
+	private int stopSteps(Thread t) {
+		if (t != null && t.isAlive()) {
+			interrupt(t);
+			if (t.isAlive()) {
+				stop(t);
+			}
+			if (t.isAlive()) {
+				// noinspection deprecation
+				t.suspend();
+				logError("Warning!  Unable to stop thread: " + runThread.getName() + ", at least suspended the thread");
+			} else {
+				logMessage(robotProxy.getStatics().getName() + " has been stopped.");
+			}
+			return 1;
+		}
+		return 0;
+	}
+
+	private void stop(Thread t) {
+		// noinspection deprecation
+		t.stop();
+		try {
+			t.join(500);
+		} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	private void interrupt(Thread t) {
+		try {
+			t.setPriority(Thread.MIN_PRIORITY);
+		} catch (NullPointerException e) { 
+			logError("Sometimes this occurs in the Java core?!", e);
+		}
+		t.interrupt();
+		try {
+			t.join(500);
+		} catch (InterruptedException e) {
+			// Immediately reasserts the exception by interrupting the caller thread itself
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	public void cleanup() {
 		try {
-			runThreadGroup.destroy();
+			if (!runThread.isAlive()) {
+				runThreadGroup.destroy();
+			} else {
+				Logger.logError("Warning, could not destroy " + runThread.getName());
+			}
 		} catch (Exception e) {
 			Logger.logError("Warning, could not destroy " + runThreadGroup.getName(), e);
 		}
 	}
 
-	public void start() {
+	public void start(ThreadManager threadManager) {
 		try {
+			threadManager.addThreadGroup(runThreadGroup, robotProxy);
 			runThread = new Thread(runThreadGroup, robotProxy, robotProxy.getStatics().getName());
 			runThread.setDaemon(true);
 			runThread.setPriority(Thread.NORM_PRIORITY);
@@ -179,13 +166,6 @@ public class RobotThreadManager {
 	public void checkRunThread() {
 		if (Thread.currentThread() != runThread) {
 			throw new RobotException("You cannot take action in this thread!");
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	private void stopThread(Thread t) {
-		synchronized (runThread) {
-			t.stop();
 		}
 	}
 }
