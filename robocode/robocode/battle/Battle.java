@@ -243,15 +243,6 @@ public final class Battle extends BaseBattle {
 		// create teams
 		Hashtable<String, TeamPeer> namedTeams = new Hashtable<String, TeamPeer>();
 
-		for (int i = 0; i < teams.size(); i++) {
-			String newTeamName = teamDuplicates.get(i);
-			String teamFullName = teams.get(i);
-			TeamPeer team = new TeamPeer(newTeamName, teamMembers.get(teamFullName));
-
-			namedTeams.put(teamFullName, team);
-			contestants.add(team);
-		}
-
 		// create robots
 		for (int i = 0; i < battlingRobotsList.size(); i++) {
 			RobotClassManager rcm = battlingRobotsList.get(i);
@@ -260,7 +251,18 @@ public final class Battle extends BaseBattle {
 			String teamFullName = rcm.getTeamName();
 
 			if (teamFullName != null) {
-				team = namedTeams.get(teamFullName);
+				if (!namedTeams.containsKey(teamFullName)){
+					final int teamIndex = teams.indexOf(teamFullName);
+					String newTeamName = teamDuplicates.get(teamIndex);
+					team = new TeamPeer(newTeamName, teamMembers.get(teamFullName));
+
+					namedTeams.put(teamFullName, team);
+					contestants.add(team);
+
+				}
+				else{
+					team = namedTeams.get(teamFullName);
+				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
 			RobotPeer robotPeer = new RobotPeer(this, manager.getHostManager(), rcm, duplicate, team);
