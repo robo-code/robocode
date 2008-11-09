@@ -15,6 +15,12 @@ package robocode.battle.snapshot;
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;
 import robocode.peer.ExplosionPeer;
+import robocode.peer.RobotState;
+import robocode.util.XmlWriter;
+import robocode.util.XmlSerializable;
+import robocode.util.XmlReader;
+
+import java.io.IOException;
 
 
 /**
@@ -37,7 +43,7 @@ import robocode.peer.ExplosionPeer;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public final class BulletSnapshot implements java.io.Serializable {
+public final class BulletSnapshot implements java.io.Serializable, XmlSerializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,32 +51,32 @@ public final class BulletSnapshot implements java.io.Serializable {
 	// private final String ownerName;
 
 	// The bullet state
-	private final BulletState state;
+	private BulletState state;
 
 	// The bullet power
-	private final double power;
+	private double power;
 
 	// The x coordinate
-	private final double x;
+	private double x;
 	// The y coordinate
-	private final double y;
+	private double y;
 
 	// The x coordinate for painting (due to offset on robot when bullet hits a robot)
-	private final double paintX;
+	private double paintX;
 	// The y coordinate for painting (due to offset on robot when bullet hits a robot)
-	private final double paintY;
+	private double paintY;
 
 	// The color of the bullet
-	private final int color;
+	private int color;
 
 	// The current frame number to display
-	private final int frame;
+	private int frame;
 
 	// Flag specifying if this bullet has turned into an explosion
-	private final boolean isExplosion;
+	private boolean isExplosion;
 
 	// Index to which explosion image that must be rendered
-	private final int explosionImageIndex;
+	private int explosionImageIndex;
 
 	/**
 	 * Constructs a snapshot of the bullet.
@@ -196,5 +202,53 @@ public final class BulletSnapshot implements java.io.Serializable {
 	 */
 	public int getExplosionImageIndex() {
 		return explosionImageIndex;
+	}
+
+	public BulletSnapshot() {}
+
+	public void writeXml(XmlWriter writer) throws IOException {
+		writer.startElement("bullet"); {
+			writer.writeAttribute("ver", serialVersionUID);
+			writer.writeAttribute("state", state.toString());
+			writer.writeAttribute("power", Double.toString(power));
+			writer.writeAttribute("x", Double.toString(x));
+			writer.writeAttribute("y", Double.toString(y));
+		}
+		writer.endElement();
+	}
+
+	public XmlReader.Element readXml(XmlReader reader) {
+		return reader.expect("bullet", new XmlReader.Element() {
+			public XmlSerializable read(XmlReader reader) {
+				final BulletSnapshot snapshot = new BulletSnapshot();
+
+				reader.expect("state", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.state = BulletState.valueOf(value);
+					}
+				});
+
+				reader.expect("power", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.power = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("x", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.x = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("y", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.y = Double.parseDouble(value);
+					}
+				});
+
+				return snapshot;
+			}
+		});
+
 	}
 }

@@ -15,11 +15,15 @@ package robocode.battle.snapshot;
 import robocode.battle.Battle;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
+import robocode.util.XmlWriter;
+import robocode.util.XmlReader;
+import robocode.util.XmlSerializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import java.io.IOException;
 
 
 /**
@@ -42,7 +46,7 @@ import java.util.List;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public final class TurnSnapshot implements java.io.Serializable {
+public final class TurnSnapshot implements java.io.Serializable, XmlSerializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,19 +57,19 @@ public final class TurnSnapshot implements java.io.Serializable {
 	// private final int fieldHeight;
 
 	// List of all robots participating in the battle
-	private final List<RobotSnapshot> robots;
+	private List<RobotSnapshot> robots;
 
 	// List of all bullets currently the battlefield
-	private final List<BulletSnapshot> bullets;
+	private List<BulletSnapshot> bullets;
 
 	// Current TPS (turns per second)
-	private final int tps;
+	private int tps;
 
 	// Current turn
-	private final int turn;
+	private int turn;
 
 	// Current round
-	private final int round;
+	private int round;
 
 	/**
 	 * Constructs a snapshot of the battle.
@@ -190,4 +194,73 @@ public final class TurnSnapshot implements java.io.Serializable {
 		return this.round + "/" + turn + " (" + this.robots.size() + ")";
 	}
 
+	public void writeXml(XmlWriter writer) throws IOException {
+		writer.startElement("turn"); {
+			writer.writeAttribute("round", round);
+			writer.writeAttribute("turn", turn);
+			writer.writeAttribute("ver", serialVersionUID);
+
+			writer.startElement("robots"); {
+				for (RobotSnapshot r : robots) {
+					r.writeXml(writer);
+				}
+			}
+			writer.endElement();
+
+			writer.startElement("bullets"); {
+				for (BulletSnapshot b : bullets) {
+					b.writeXml(writer);
+				}
+			}
+			writer.endElement();
+		}
+		writer.endElement();
+	}
+
+	private TurnSnapshot() {}
+
+	public XmlReader.Element readXml(XmlReader reader) {
+		return reader.expect("turn", new XmlReader.Element() {
+			public XmlSerializable read(XmlReader reader) {
+				final TurnSnapshot snapshot = new TurnSnapshot();
+
+				reader.expect("turn", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.turn = Integer.parseInt(value);
+					}
+				});
+				reader.expect("round", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.round = Integer.parseInt(value);
+					}
+				});
+
+				reader.expect("robots", new XmlReader.ListElement() {
+					public XmlSerializable read(XmlReader reader) {
+						snapshot.robots = new ArrayList<RobotSnapshot>();
+						// prototype
+						return new RobotSnapshot();
+					}
+
+					public void add(XmlSerializable child) {
+						snapshot.robots.add((RobotSnapshot) child);
+					}
+				});
+
+				reader.expect("bullets", new XmlReader.ListElement() {
+					public XmlSerializable read(XmlReader reader) {
+						snapshot.bullets = new ArrayList<BulletSnapshot>();
+						// prototype
+						return new BulletSnapshot();
+					}
+
+					public void add(XmlSerializable child) {
+						snapshot.bullets.add((BulletSnapshot) child);
+					}
+				});
+
+				return snapshot;
+			}
+		});
+	}
 }

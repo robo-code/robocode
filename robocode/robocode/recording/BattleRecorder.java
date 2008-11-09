@@ -16,6 +16,8 @@ import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import static robocode.io.Logger.logError;
 import robocode.manager.RobocodeManager;
+import robocode.util.XmlWriter;
+import robocode.util.XmlReader;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
@@ -84,8 +86,18 @@ public class BattleRecorder implements IBattleRecorder {
 				zos = new ZipOutputStream(bos);
 				zos.putNextEntry(new ZipEntry("robocode.battleRecord"));
 				oos = new ObjectOutputStream(zos);
+			} else if (format == BattleRecordFormat.XML) {// TODO header in XML				
+				// ByteArrayOutputStream ms = new ByteArrayOutputStream();
+				// OutputStreamWriter sw = new OutputStreamWriter(ms);
+				//
+				// XmlWriter.serialize(sw, event.getTurnSnapshot());
+				// sw.close();
+				//
+				// ByteArrayInputStream in = new ByteArrayInputStream(ms.toByteArray());
+				// Object o = XmlReader.deserialize(in, event.getTurnSnapshot());
+				//
+				// in.close();
 			}
-			// TODO: Add support for XML and XML_ZIP
 
 			oos.writeObject(recordInfo);
 

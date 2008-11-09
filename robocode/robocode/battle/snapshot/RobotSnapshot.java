@@ -15,9 +15,13 @@ package robocode.battle.snapshot;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
 import robocode.robotpaint.Graphics2DProxy;
+import robocode.util.XmlWriter;
+import robocode.util.XmlSerializable;
+import robocode.util.XmlReader;
 
 import java.awt.geom.Arc2D;
 import java.io.Serializable;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -41,74 +45,74 @@ import java.util.List;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public final class RobotSnapshot implements Serializable {
+public final class RobotSnapshot implements Serializable, XmlSerializable {
 
 	private static final long serialVersionUID = 1L;
 
 	// The name of the robot
-	private final String name;
+	private String name;
 
 	// The short name of the robot
-	private final String shortName;
+	private String shortName;
 
 	// The very short name of the robot
-	private final String veryShortName;
+	private String veryShortName;
 
 	// The very short name of the team leader robot (might be null)
-	private final String teamName;
+	private String teamName;
 
 	// The robot state
-	private final RobotState state;
+	private RobotState state;
 
 	// The energy level
-	private final double energy;
+	private double energy;
 
 	// The energy level
-	private final double velocity;
+	private double velocity;
 
 	// The body heading in radians
-	private final double bodyHeading;
+	private double bodyHeading;
 	// The gun heading in radians
-	private final double gunHeading;
+	private double gunHeading;
 	// The radar heading in radians
-	private final double radarHeading;
+	private double radarHeading;
 
 	// The x coordinate
-	private final double x;
+	private double x;
 	// The y coordinate
-	private final double y;
+	private double y;
 
 	// The color of the body
-	private final int bodyColor;
+	private int bodyColor;
 	// The color of the gun
-	private final int gunColor;
+	private int gunColor;
 	// The color of the radar
-	private final int radarColor;
+	private int radarColor;
 	// The color of the scan arc
-	private final int scanColor;
+	private int scanColor;
 	// The color of the bullet
 	// private final Color bulletColor;
 
 	// Flag specifying if this robot is a Droid
-	private final boolean isDroid;
+	private boolean isDroid;
 	// Flag specifying if this robot is a IPaintRobot
-	private final boolean isPaintRobot;
+	private boolean isPaintRobot;
 	// Flag specifying if robot's (onPaint) painting is enabled for the robot
-	private final boolean isPaintEnabled;
+	private boolean isPaintEnabled;
 	// Flag specifying if RobocodeSG painting is enabled for the robot
-	private final boolean isSGPaintEnabled;
+	private boolean isSGPaintEnabled;
 
 	// The scan arc
-	private final SerializableArc scanArc;
+	private SerializableArc scanArc;
 
 	// The Graphics2D proxy
-	private final List<Graphics2DProxy.QueuedCall> graphicsCalls;
+	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
 
 	// The output print stream proxy
-	private final String outputStreamSnapshot;
+	private String outputStreamSnapshot;
 
 	// Snapshot of score for robot
-	private final ScoreSnapshot robotScoreSnapshot;
+	private ScoreSnapshot robotScoreSnapshot;
 
 	/**
 	 * Constructs a snapshot of the robot.
@@ -417,4 +421,129 @@ public final class RobotSnapshot implements Serializable {
 		}
 
 	}
+
+	public void writeXml(XmlWriter writer) throws IOException {
+		writer.startElement("robot"); {
+			writer.writeAttribute("ver", serialVersionUID);
+			writer.writeAttribute("name", name);
+			writer.writeAttribute("sName", shortName);
+			writer.writeAttribute("vsName", veryShortName);
+			writer.writeAttribute("teamName", teamName);
+			writer.writeAttribute("state", state.toString());
+
+			writer.writeAttribute("energy", Double.toString(energy));
+			writer.writeAttribute("velocity", Double.toString(velocity));
+			writer.writeAttribute("bodyHeading", Double.toString(bodyHeading));
+			writer.writeAttribute("gunHeading", Double.toString(gunHeading));
+			writer.writeAttribute("radarHeading", Double.toString(radarHeading));
+			writer.writeAttribute("x", Double.toString(x));
+			writer.writeAttribute("y", Double.toString(y));
+
+			writer.writeAttribute("out", outputStreamSnapshot);
+
+			robotScoreSnapshot.writeXml(writer);
+		}
+		writer.endElement();
+
+	}
+
+	public XmlReader.Element readXml(XmlReader reader) {
+		return reader.expect("robot", new XmlReader.Element() {
+			public XmlSerializable read(XmlReader reader) {
+				final RobotSnapshot snapshot = new RobotSnapshot();
+
+				reader.expect("name", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.name = value;
+					}
+				});
+
+				reader.expect("sName", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.shortName = value;
+					}
+				});
+
+				reader.expect("vsName", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.veryShortName = value;
+					}
+				});
+
+				reader.expect("teamName", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.teamName = value;
+					}
+				});
+
+				reader.expect("state", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.state = RobotState.valueOf(value);
+					}
+				});
+
+				reader.expect("energy", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.energy = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("velocity", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.velocity = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("bodyHeading", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.bodyHeading = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("gunHeading", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.gunHeading = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("radarHeading", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.radarHeading = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("x", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.x = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("y", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.y = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("out", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.outputStreamSnapshot = value;
+					}
+				});
+
+				final XmlReader.Element element = (new ScoreSnapshot()).readXml(reader);
+
+				reader.expect("score", new XmlReader.Element() {
+					public XmlSerializable read(XmlReader reader) {
+						snapshot.robotScoreSnapshot = (ScoreSnapshot) element.read(reader);
+						return snapshot.robotScoreSnapshot;
+					}
+				});
+
+				return snapshot;
+			}
+		});
+	}
+
+	public RobotSnapshot() {}
+
 }

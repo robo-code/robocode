@@ -6,12 +6,19 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Flemming N. Larsen
+ *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.recording;
+package robocode.util;
 
 
-public enum BattleRecordFormat {
-	BINARY, BINARY_ZIP, XML
+import java.io.IOException;
+
+
+/**
+ * @author Pavel Savara (original)
+ */
+public interface XmlSerializable {
+	void writeXml(XmlWriter writer) throws IOException;
+	XmlReader.Element readXml(XmlReader reader);
 }

@@ -13,34 +13,38 @@ package robocode.battle.snapshot;
 
 
 import robocode.peer.robot.RobotStatistics;
+import robocode.util.XmlSerializable;
+import robocode.util.XmlWriter;
+import robocode.util.XmlReader;
 
 import java.io.Serializable;
+import java.io.IOException;
 
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializable {
+public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializable, XmlSerializable {
 	private static final long serialVersionUID = 1L;
 
-	private final String name;
-	private final double totalScore;
-	private final double totalSurvivalScore;
-	private final double totalLastSurvivorBonus;
-	private final double totalBulletDamageScore;
-	private final double totalBulletKillBonus;
-	private final double totalRammingDamageScore;
-	private final double totalRammingKillBonus;
-	private final int totalFirsts;
-	private final int totalSeconds;
-	private final int totalThirds;
-	private final double currentScore;
-	private final double currentSurvivalScore;
-	private final double currentBulletDamageScore;
-	private final double currentBulletKillBonus;
-	private final double currentRammingDamageScore;
-	private final double currentRammingKillBonus;
+	private String name;
+	private double totalScore;
+	private double totalSurvivalScore;
+	private double totalLastSurvivorBonus;
+	private double totalBulletDamageScore;
+	private double totalBulletKillBonus;
+	private double totalRammingDamageScore;
+	private double totalRammingKillBonus;
+	private int totalFirsts;
+	private int totalSeconds;
+	private int totalThirds;
+	private double currentScore;
+	private double currentSurvivalScore;
+	private double currentBulletDamageScore;
+	private double currentBulletKillBonus;
+	private double currentRammingDamageScore;
+	private double currentRammingKillBonus;
 
 	public ScoreSnapshot(RobotStatistics statistics, String name) {
 		this.name = name;
@@ -164,5 +168,37 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 			return 1;
 		}
 		return 0;
+	}
+
+	public ScoreSnapshot() {}
+
+	public void writeXml(XmlWriter writer) throws IOException {
+		writer.startElement("score"); {
+			writer.writeAttribute("name", name);
+			writer.writeAttribute("totalScore", Double.toString(totalScore));
+			writer.writeAttribute("ver", serialVersionUID);
+		}
+		writer.endElement();
+	}
+
+	public XmlReader.Element readXml(XmlReader reader) {
+		return reader.expect("score", new XmlReader.Element() {
+			public XmlSerializable read(XmlReader reader) {
+				final ScoreSnapshot snapshot = new ScoreSnapshot();
+
+				reader.expect("name", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.name = value;
+					}
+				});
+				reader.expect("totalScore", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.totalScore = Double.parseDouble(value);
+					}
+				});
+
+				return snapshot;
+			}
+		});
 	}
 }
