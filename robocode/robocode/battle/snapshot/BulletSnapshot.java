@@ -15,7 +15,6 @@ package robocode.battle.snapshot;
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;
 import robocode.peer.ExplosionPeer;
-import robocode.peer.RobotState;
 import robocode.util.XmlWriter;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlReader;
@@ -210,9 +209,15 @@ public final class BulletSnapshot implements java.io.Serializable, XmlSerializab
 		writer.startElement("bullet"); {
 			writer.writeAttribute("ver", serialVersionUID);
 			writer.writeAttribute("state", state.toString());
-			writer.writeAttribute("power", Double.toString(power));
-			writer.writeAttribute("x", Double.toString(x));
-			writer.writeAttribute("y", Double.toString(y));
+			writer.writeAttribute("power", power);
+			writer.writeAttribute("color", color);
+			writer.writeAttribute("x", x);
+			writer.writeAttribute("y", y);
+			writer.writeAttribute("frame", frame);
+			writer.writeAttribute("isExplosion", isExplosion);
+			if (isExplosion) {
+				writer.writeAttribute("explosion", explosionImageIndex);
+			}
 		}
 		writer.endElement();
 	}
@@ -246,6 +251,29 @@ public final class BulletSnapshot implements java.io.Serializable, XmlSerializab
 					}
 				});
 
+				reader.expect("color", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.color = Integer.parseInt(value);
+					}
+				});
+
+				reader.expect("isExplosion", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.isExplosion = Boolean.parseBoolean(value);
+					}
+				});
+
+				reader.expect("explosion", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.explosionImageIndex = Integer.parseInt(value);
+					}
+				});
+
+				reader.expect("frame", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.frame = Integer.parseInt(value);
+					}
+				});
 				return snapshot;
 			}
 		});

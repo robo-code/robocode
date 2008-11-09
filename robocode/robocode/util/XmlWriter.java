@@ -12,10 +12,10 @@
 package robocode.util;
 
 
-import java.io.Writer;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.Stack;
+import java.text.StringCharacterIterator;
+import java.text.CharacterIterator;
 
 
 /**
@@ -26,10 +26,12 @@ public class XmlWriter {
 	Writer writer;
 	Stack<String> elements = new Stack<String>();
 	boolean headClosed = true;
+	boolean innerElement = false;
 	boolean indent = true;
 
-	public XmlWriter(Writer writer) {
+	public XmlWriter(Writer writer, boolean indent) {
 		this.writer = writer;
+		this.indent = indent;
 	}
 
 	public void startDocument() throws IOException {
@@ -43,6 +45,7 @@ public class XmlWriter {
 		writer.write('<');
 		writer.write(encode(name));
 		headClosed = false;
+		innerElement = false;
 	}
 
 	public void writeAttribute(String name, String value) throws IOException {
@@ -53,24 +56,45 @@ public class XmlWriter {
 		writer.write('"');
 	}
 
+	public void writeAttribute(String name, boolean value) throws IOException {
+		writeAttribute(name, Boolean.toString(value));
+	}
+
 	public void writeAttribute(String name, long value) throws IOException {
 		writeAttribute(name, Long.toString(value));
 	}
 
+	public void writeAttribute(String name, double value) throws IOException {
+		writeAttribute(name, Double.toString(value));
+	}
+
 	public void endElement() throws IOException {
-		closeHead();
 		String name = elements.pop();
 
-		indent(elements.size());
-		writer.write("</");
-		writer.write(encode(name));
-		writer.write(">\n");
+		if (innerElement || headClosed) {
+			closeHead();
+			indent(elements.size());
+			writer.write("</");
+			writer.write(encode(name));
+			writer.write(">");
+		} else {
+			writer.write("/>");
+			headClosed = true;
+		}
+		newline();
+		innerElement = true;
+	}
+
+	private void newline() throws IOException {
+		if (indent) {
+			writer.write("\n");
+		}
 	}
 
 	private void closeHead() throws IOException {
 		if (!headClosed) {
 			writer.write('>');
-			writer.write('\n');
+			newline();
 			headClosed = true;
 		}
 	}
@@ -83,16 +107,28 @@ public class XmlWriter {
 		}
 	}
 
-	private String encode(String text) {
-		// TODO encode special chracters
-		return text;
+	public static String encode(String text) {
+		final StringBuilder result = new StringBuilder();
+		final StringCharacterIterator iterator = new StringCharacterIterator(text);
+		char character = iterator.current();
+
+		while (character != CharacterIterator.DONE) {
+			if (character == '<') {
+				result.append("&lt;");
+			} else if (character == '>') {
+				result.append("&gt;");
+			} else if (character == '&') {
+				result.append("&amp;");
+			} else if (character == '\"') {
+				result.append("&quot;");
+			} else {
+				// the char is not a special one
+				// add it to the result as is
+				result.append(character);
+			}
+			character = iterator.next();
+		}
+		return result.toString();
 	}
 
-	public static void serialize(Writer writer, XmlSerializable tree) throws IOException {
-		XmlWriter xw = new XmlWriter(writer);
-
-		xw.startDocument();
-		tree.writeXml(xw);
-		writer.flush();
-	}
 }

@@ -15,22 +15,26 @@ package robocode;
 import robocode.battle.BattleProperties;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.util.XmlSerializable;
+import robocode.util.XmlWriter;
+import robocode.util.XmlReader;
 
 import java.io.Serializable;
+import java.io.IOException;
 
 
 /**
  * @author Pavel Savara (original)
  * Immutable rules
  */
-public final class BattleRules implements Serializable {
+public final class BattleRules implements Serializable, XmlSerializable {
 	private static final long serialVersionUID = 1L;
 
-	private final int battlefieldWidth;
-	private final int battlefieldHeight;
-	private final int numRounds;
-	private final double gunCoolingRate;
-	private final long inactivityTime;
+	private int battlefieldWidth;
+	private int battlefieldHeight;
+	private int numRounds;
+	private double gunCoolingRate;
+	private long inactivityTime;
 
 	public BattleRules(BattleProperties source) {
 		this.battlefieldWidth = source.getBattlefieldWidth();
@@ -89,4 +93,54 @@ public final class BattleRules implements Serializable {
 		return new DefaultBattleField(battlefieldWidth, battlefieldHeight);
 	}
 
+	public BattleRules() {}
+
+	public void writeXml(XmlWriter writer) throws IOException {
+		writer.startElement("rules"); {
+			writer.writeAttribute("battlefieldWidth", battlefieldWidth);
+			writer.writeAttribute("battlefieldHeight", battlefieldHeight);
+			writer.writeAttribute("numRounds", numRounds);
+			writer.writeAttribute("gunCoolingRate", gunCoolingRate);
+			writer.writeAttribute("inactivityTime", inactivityTime);
+			writer.writeAttribute("ver", serialVersionUID);
+		}
+		writer.endElement();
+	}
+
+	public XmlReader.Element readXml(XmlReader reader) {
+		return reader.expect("rules", new XmlReader.Element() {
+			public XmlSerializable read(XmlReader reader) {
+				final BattleRules rules = new BattleRules();
+
+				reader.expect("battlefieldWidth", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.battlefieldWidth = Integer.parseInt(value);
+					}
+				});
+				reader.expect("battlefieldHeight", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.battlefieldHeight = Integer.parseInt(value);
+					}
+				});
+
+				reader.expect("numRounds", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.numRounds = Integer.parseInt(value);
+					}
+				});
+				reader.expect("inactivityTime", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.inactivityTime = Integer.parseInt(value);
+					}
+				});
+				reader.expect("gunCoolingRate", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.gunCoolingRate = Double.parseDouble(value);
+					}
+				});
+
+				return rules;
+			}
+		});
+	}
 }

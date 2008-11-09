@@ -431,13 +431,13 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 			writer.writeAttribute("teamName", teamName);
 			writer.writeAttribute("state", state.toString());
 
-			writer.writeAttribute("energy", Double.toString(energy));
-			writer.writeAttribute("velocity", Double.toString(velocity));
-			writer.writeAttribute("bodyHeading", Double.toString(bodyHeading));
-			writer.writeAttribute("gunHeading", Double.toString(gunHeading));
-			writer.writeAttribute("radarHeading", Double.toString(radarHeading));
-			writer.writeAttribute("x", Double.toString(x));
-			writer.writeAttribute("y", Double.toString(y));
+			writer.writeAttribute("energy", energy);
+			writer.writeAttribute("velocity", velocity);
+			writer.writeAttribute("bodyHeading", bodyHeading);
+			writer.writeAttribute("gunHeading", gunHeading);
+			writer.writeAttribute("radarHeading", radarHeading);
+			writer.writeAttribute("x", x);
+			writer.writeAttribute("y", y);
 
 			writer.writeAttribute("out", outputStreamSnapshot);
 

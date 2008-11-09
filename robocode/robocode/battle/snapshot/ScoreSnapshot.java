@@ -175,8 +175,24 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 	public void writeXml(XmlWriter writer) throws IOException {
 		writer.startElement("score"); {
 			writer.writeAttribute("name", name);
-			writer.writeAttribute("totalScore", Double.toString(totalScore));
+			writer.writeAttribute("totalScore", totalScore);
+			writer.writeAttribute("totalSurvivalScore", totalSurvivalScore);
+			writer.writeAttribute("totalLastSurvivorBonus", totalLastSurvivorBonus);
+			writer.writeAttribute("totalBulletDamageScore", totalBulletDamageScore);
+			writer.writeAttribute("totalBulletKillBonus", totalBulletKillBonus);
+			writer.writeAttribute("totalRammingDamageScore", totalRammingDamageScore);
+			writer.writeAttribute("totalRammingKillBonus", totalRammingKillBonus);
+			writer.writeAttribute("totalFirsts", totalFirsts);
+			writer.writeAttribute("totalSeconds", totalSeconds);
+			writer.writeAttribute("totalThirds", totalThirds);
+			writer.writeAttribute("currentScore", currentScore);
+			writer.writeAttribute("currentSurvivalScore", currentSurvivalScore);
+			writer.writeAttribute("currentBulletDamageScore", currentBulletDamageScore);
+			writer.writeAttribute("currentBulletKillBonus", currentBulletKillBonus);
+			writer.writeAttribute("currentRammingDamageScore", currentRammingDamageScore);
+			writer.writeAttribute("currentRammingKillBonus", currentRammingKillBonus);
 			writer.writeAttribute("ver", serialVersionUID);
+
 		}
 		writer.endElement();
 	}
@@ -196,6 +212,8 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 						snapshot.totalScore = Double.parseDouble(value);
 					}
 				});
+
+				// TODO load rest of attributes
 
 				return snapshot;
 			}

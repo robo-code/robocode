@@ -14,6 +14,13 @@
 package robocode;
 
 
+import robocode.util.XmlSerializable;
+import robocode.util.XmlWriter;
+import robocode.util.XmlReader;
+
+import java.io.IOException;
+
+
 /**
  * Contains the battle results returned by {@link BattleEndedEvent#getResults()}
  * when a battle has ended.
@@ -23,25 +30,26 @@ package robocode;
  * @see Robot#onBattleEnded(BattleEndedEvent)
  * @since 1.6.1
  */
-public class BattleResults implements java.io.Serializable {
+public class BattleResults implements java.io.Serializable, XmlSerializable {
 	private static final long serialVersionUID = 1L;
 
-	private final String teamLeaderName;
-	private final int rank;
-	private final double score;
-	private final double survival;
-	private final double lastSurvivorBonus;
-	private final double bulletDamage;
-	private final double bulletDamageBonus;
-	private final double ramDamage;
-	private final double ramDamageBonus;
-	private final int firsts;
-	private final int seconds;
-	private final int thirds;
+	private String teamLeaderName;
+	private int rank;
+	private double score;
+	private double survival;
+	private double lastSurvivorBonus;
+	private double bulletDamage;
+	private double bulletDamageBonus;
+	private double ramDamage;
+	private double ramDamageBonus;
+	private int firsts;
+	private int seconds;
+	private int thirds;
 
 	/**
 	 * Constructs a new RobotResults.
 	 *
+	 * @param teamLeaderName    name of the team leader
 	 * @param rank              the rank of the robot in the battle
 	 * @param score             the total score for the robot in the battle
 	 * @param survival          the survival score for the robot in the battle
@@ -189,5 +197,92 @@ public class BattleResults implements java.io.Serializable {
 	 */
 	public int getThirds() {
 		return thirds;
+	}
+
+	public BattleResults() {}
+
+	public void writeXml(XmlWriter writer) throws IOException {
+		writer.startElement("result"); {
+			writer.writeAttribute("teamLeaderName", teamLeaderName);
+			writer.writeAttribute("rank", rank);
+			writer.writeAttribute("score", score);
+			writer.writeAttribute("survival", survival);
+			writer.writeAttribute("lastSurvivorBonus", lastSurvivorBonus);
+			writer.writeAttribute("bulletDamage", bulletDamage);
+			writer.writeAttribute("bulletDamageBonus", bulletDamageBonus);
+			writer.writeAttribute("ramDamage", ramDamage);
+			writer.writeAttribute("ramDamageBonus", ramDamageBonus);
+			writer.writeAttribute("firsts", firsts);
+			writer.writeAttribute("seconds", seconds);
+			writer.writeAttribute("thirds", thirds);
+			writer.writeAttribute("ver", serialVersionUID);
+		}
+		writer.endElement();
+	}
+
+	public XmlReader.Element readXml(XmlReader reader) {
+		return reader.expect("result", new XmlReader.Element() {
+			public XmlSerializable read(XmlReader reader) {
+				final BattleResults rules = new BattleResults();
+
+				reader.expect("rank", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.rank = Integer.parseInt(value);
+					}
+				});
+				reader.expect("score", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.score = Double.parseDouble(value);
+					}
+				});
+				reader.expect("survival", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.survival = Double.parseDouble(value);
+					}
+				});
+				reader.expect("lastSurvivorBonus", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.lastSurvivorBonus = Double.parseDouble(value);
+					}
+				});
+				reader.expect("bulletDamage", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.bulletDamage = Double.parseDouble(value);
+					}
+				});
+				reader.expect("bulletDamageBonus", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.bulletDamageBonus = Double.parseDouble(value);
+					}
+				});
+				reader.expect("ramDamage", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.ramDamage = Double.parseDouble(value);
+					}
+				});
+				reader.expect("ramDamageBonus", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.ramDamageBonus = Double.parseDouble(value);
+					}
+				});
+				reader.expect("firsts", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.firsts = Integer.parseInt(value);
+					}
+				});
+				reader.expect("seconds", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.seconds = Integer.parseInt(value);
+					}
+				});
+				reader.expect("thirds", new XmlReader.Attribute() {
+					public void read(String value) {
+						rules.thirds = Integer.parseInt(value);
+					}
+				});
+
+				return rules;
+			}
+		});
 	}
 }

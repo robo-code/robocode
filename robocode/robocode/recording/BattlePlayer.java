@@ -28,7 +28,6 @@ import java.util.zip.ZipInputStream;
  */
 public final class BattlePlayer extends BaseBattle {
 
-	private String recordFilename;
 	private FileInputStream fileStream;
 	private BufferedInputStream bufferedStream;
 	private ZipInputStream zipStream;
@@ -39,9 +38,7 @@ public final class BattlePlayer extends BaseBattle {
 		super(manager, eventDispatcher, false);
 	}
 
-	public void loadRecord(String filename) {
-		this.recordFilename = filename;
-
+	public void loadRecord(String recordFilename) {
 		cleanup();
 
 		try {
@@ -69,40 +66,25 @@ public final class BattlePlayer extends BaseBattle {
 	@Override
 	public synchronized void cleanup() {
 		super.cleanup();
-
-		if (objectStream != null) {
-			try {
-				objectStream.close();
-			} catch (IOException e) {/* Ignore here */}
-
-			objectStream = null;
-		}
-
-		if (zipStream != null) {
-			try {
-				zipStream.close();
-			} catch (IOException e) {/* Ignore here */}
-
-			zipStream = null;
-		}
-
-		if (bufferedStream != null) {
-			try {
-				bufferedStream.close();
-			} catch (IOException e) {/* Ignore here */}
-
-			bufferedStream = null;
-		}
-
-		if (fileStream != null) {
-			try {
-				fileStream.close();
-			} catch (IOException e) {/* Ignore here */}
-
-			fileStream = null;
-		}
-
+		cleanupStream(objectStream);
+		objectStream = null;
+		cleanupStream(zipStream);
+		zipStream = null;
+		cleanupStream(bufferedStream);
+		bufferedStream = null;
+		cleanupStream(fileStream);
+		fileStream = null;
 		recordInfo = null;
+	}
+
+	private void cleanupStream(Closeable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (IOException e) {
+				logError(e);
+			}
+		}
 	}
 
 	@Override
@@ -162,7 +144,7 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected boolean isRoundOver() {
-		return (isAborted() || getTime() > recordInfo.numberOfTurns[getRoundNum()]);
+		return (isAborted() || getTime() > recordInfo.turnsInRounds[getRoundNum()]);
 	}
 
 	private TurnSnapshot readSnapshot() {

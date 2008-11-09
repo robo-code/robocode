@@ -17,11 +17,11 @@ import robocode.battle.snapshot.TurnSnapshot;
 import static robocode.io.Logger.logError;
 import robocode.manager.RobocodeManager;
 import robocode.util.XmlWriter;
-import robocode.util.XmlReader;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import java.nio.charset.Charset;
 
 
 /**
@@ -50,6 +50,7 @@ public class BattleRecorder implements IBattleRecorder {
 
 	private void cleanup() {
 		if (tempFile != null && tempFile.exists()) {
+			// noinspection ResultOfMethodCallIgnored
 			tempFile.delete();
 			tempFile = null;
 		}
@@ -75,6 +76,8 @@ public class BattleRecorder implements IBattleRecorder {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		ObjectInputStream ois = null;
+		OutputStreamWriter osw = null;
+		XmlWriter xwr = null;
 
 		try {
 			fos = new FileOutputStream(fileName);
@@ -86,95 +89,80 @@ public class BattleRecorder implements IBattleRecorder {
 				zos = new ZipOutputStream(bos);
 				zos.putNextEntry(new ZipEntry("robocode.battleRecord"));
 				oos = new ObjectOutputStream(zos);
-			} else if (format == BattleRecordFormat.XML) {// TODO header in XML				
-				// ByteArrayOutputStream ms = new ByteArrayOutputStream();
-				// OutputStreamWriter sw = new OutputStreamWriter(ms);
-				//
-				// XmlWriter.serialize(sw, event.getTurnSnapshot());
-				// sw.close();
-				//
-				// ByteArrayInputStream in = new ByteArrayInputStream(ms.toByteArray());
-				// Object o = XmlReader.deserialize(in, event.getTurnSnapshot());
-				//
-				// in.close();
+			} else if (format == BattleRecordFormat.XML) {
+				final Charset utf8 = Charset.forName("UTF-8");
+
+				osw = new OutputStreamWriter(bos, utf8);
+				xwr = new XmlWriter(osw, true); 
 			}
 
-			oos.writeObject(recordInfo);
+			if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
+				oos.writeObject(recordInfo);
+			} else if (format == BattleRecordFormat.XML) {
+				xwr.startDocument();
+				xwr.startElement("record");
+				xwr.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+				xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecord.xsd");
+				recordInfo.writeXml(xwr);
+			}
 
-			if (recordInfo.numberOfTurns != null) {
+			if (recordInfo.turnsInRounds != null) {
 				fis = new FileInputStream(tempFile);
 				bis = new BufferedInputStream(fis, 1024 * 1024);
 				ois = new ObjectInputStream(bis);
 
-				for (int i = 0; i < recordInfo.numberOfTurns.length; i++) {
-					for (int j = recordInfo.numberOfTurns[i] - 1; j >= 0; j--) {
+				for (int i = 0; i < recordInfo.turnsInRounds.length; i++) {
+					for (int j = recordInfo.turnsInRounds[i] - 1; j >= 0; j--) {
 						try {
-							oos.writeObject(ois.readObject());
+							TurnSnapshot turn = (TurnSnapshot) ois.readObject();
+
+							if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
+								oos.writeObject(turn);
+							} else if (format == BattleRecordFormat.XML) {
+								turn.writeXml(xwr);
+							}
 						} catch (ClassNotFoundException e) {
 							logError(e);
 						}
 					}
-					oos.flush();
+					if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
+						oos.flush();
+					} else if (format == BattleRecordFormat.XML) {
+						osw.flush();
+					}
 					bos.flush();
 					fos.flush();
+				}
+				if (format == BattleRecordFormat.XML) {
+					xwr.endElement(); // record
+					osw.flush();
 				}
 			}
 
 		} catch (IOException e) {
 			logError(e);
 		} finally {
-			if (ois != null) {
-				try {
-					ois.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-			if (bis != null) {
-				try {
-					bis.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-			if (oos != null) {
-				try {
-					oos.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-			if (zos != null) {
-				try {
-					zos.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-			if (bos != null) {
-				try {
-					bos.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-			}
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					logError(e);
-				}
+			cleanupStream(ois);
+			cleanupStream(bis);
+			cleanupStream(fis);
+			cleanupStream(oos);
+			cleanupStream(zos);
+			cleanupStream(bos);
+			cleanupStream(fos);
+			cleanupStream(osw);
+		}
+	}
+
+	private void cleanupStream(Closeable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (IOException e) {
+				logError(e);
 			}
 		}
 	}
-	
+
 	private class BattleObserver extends BattleAdaptor {
 		private robocode.battle.events.BattleEventDispatcher dispatcher;
 
@@ -196,23 +184,10 @@ public class BattleRecorder implements IBattleRecorder {
 		}
 
 		private void cleanupStreams() {
-			if (objectStream != null) {
-				try {
-					objectStream.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-				objectStream = null;
-			}
-
-			if (fileStream != null) {
-				try {
-					fileStream.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-				fileStream = null;
-			}			
+			cleanupStream(objectStream);
+			objectStream = null;
+			cleanupStream(fileStream);
+			fileStream = null;
 		}
 		
 		@Override
@@ -230,7 +205,9 @@ public class BattleRecorder implements IBattleRecorder {
 					tempFile = File.createTempFile("robocode-battle-records", ".tmp");
 					tempFile.deleteOnExit();
 				} else {
+					// noinspection ResultOfMethodCallIgnored
 					tempFile.delete();
+					// noinspection ResultOfMethodCallIgnored
 					tempFile.createNewFile();
 				}
 
@@ -242,7 +219,7 @@ public class BattleRecorder implements IBattleRecorder {
 
 			recordInfo = new BattleRecordInfo();
 			recordInfo.robotCount = event.getTurnSnapshot().getRobots().size();
-			recordInfo.numberOfTurns = new int[event.getBattleRules().getNumRounds()];
+			recordInfo.turnsInRounds = new int[event.getBattleRules().getNumRounds()];
 			recordInfo.battleRules = event.getBattleRules();
 
 			currentRound = 0;
@@ -257,9 +234,9 @@ public class BattleRecorder implements IBattleRecorder {
 				return;
 			}
 			if (event.isAborted()) {
-				recordInfo.numberOfTurns[currentRound] = currentTurn;
+				recordInfo.turnsInRounds[currentRound] = currentTurn;
 			}
-			recordInfo.rounds = currentRound;
+			recordInfo.roundsCount = currentRound;
 
 			try {
 				if (objectStream != null) {
@@ -288,7 +265,7 @@ public class BattleRecorder implements IBattleRecorder {
 			if (!recordingEnabled) {
 				return;
 			}
-			recordInfo.numberOfTurns[currentRound] = currentTurn;
+			recordInfo.turnsInRounds[currentRound] = currentTurn;
 			currentTurn = 0;
 			currentRound++;
 		}
