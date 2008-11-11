@@ -80,7 +80,7 @@ public class RobocodeEngine {
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
-	 * @param listener     the listener that must receive the callbacks from this
+	 * @param listener	 the listener that must receive the callbacks from this
 	 *                     RobocodeEngine.
 	 * @see #RobocodeEngine(RobocodeListener)
 	 * @see #close()

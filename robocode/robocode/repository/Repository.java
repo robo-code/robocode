@@ -45,7 +45,7 @@ public class Repository {
 		fileSpecificationsDict.put(rootDir + name, fileSpecification);
 	}
 
-	public FileSpecification get(String fullClassNameWithVersion) { 
+	public FileSpecification get(String fullClassNameWithVersion) {
 		return fileSpecificationsDict.get(fullClassNameWithVersion);
 	}
 

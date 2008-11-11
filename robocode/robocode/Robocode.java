@@ -162,7 +162,7 @@ public class Robocode {
 					System.exit(8);
 				}
 			}
-			
+
 			return true;
 		} catch (Throwable e) {
 			Logger.logError(e);

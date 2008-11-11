@@ -37,7 +37,7 @@ public final class HitRobotEvent extends Event {
 	/**
 	 * Called by the game to create a new HitRobotEvent.
 	 *
-	 * @param name    the name of the robot you hit
+	 * @param name	the name of the robot you hit
 	 * @param bearing the bearing to the robot that your robot hit, in radians
 	 * @param energy  the amount of energy of the robot you hit
 	 * @param atFault {@code true} if your robot was moving toward the other

@@ -15,17 +15,17 @@ package robocode;
 import robocode.battle.BattleProperties;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
-import robocode.util.XmlReader;
 
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 
 
 /**
  * @author Pavel Savara (original)
- * Immutable rules
+ *         Immutable rules
  */
 public final class BattleRules implements Serializable, XmlSerializable {
 	private static final long serialVersionUID = 1L;

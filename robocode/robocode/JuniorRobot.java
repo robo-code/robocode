@@ -716,8 +716,8 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 * Sets the colors of the robot. The color values are RGB values.
 	 * You can use the colors that are already defined for this class.
 	 *
-	 * @param bodyColor    the RGB color value for the body
-	 * @param gunColor     the RGB color value for the gun
+	 * @param bodyColor	the RGB color value for the body
+	 * @param gunColor	 the RGB color value for the gun
 	 * @param radarColor   the RGB color value for the radar
 	 * @param bulletColor  the RGB color value for the bullets
 	 * @param scanArcColor the RGB color value for the scan arc

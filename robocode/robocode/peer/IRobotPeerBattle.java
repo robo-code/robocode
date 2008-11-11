@@ -12,8 +12,8 @@
 package robocode.peer;
 
 
-import robocode.peer.robot.RobotStatistics;
 import robocode.Event;
+import robocode.peer.robot.RobotStatistics;
 
 import java.util.List;
 

@@ -39,11 +39,11 @@ public class Bullet {
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
-	 * 
-	 * @param heading the heading of the bullet, in radians.
-	 * @param x the starting x position of the bullet.
-	 * @param y the starting y position of the bullet.
-	 * @param power the power of the bullet.
+	 *
+	 * @param heading   the heading of the bullet, in radians.
+	 * @param x		 the starting x position of the bullet.
+	 * @param y		 the starting y position of the bullet.
+	 * @param power	 the power of the bullet.
 	 * @param ownerName the name of the owner robot that owns the bullet.
 	 */
 	public Bullet(double heading, double x, double y, double power, String ownerName) {

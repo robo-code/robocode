@@ -43,7 +43,7 @@ public final class KeyReleasedEvent extends KeyEvent {
 	}
 
 	private static int classPriority = 98;
-    
+
 	@Override
 	protected final int getClassPriorityImpl() {
 		return classPriority;

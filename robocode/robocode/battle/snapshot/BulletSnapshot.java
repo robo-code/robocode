@@ -15,9 +15,9 @@ package robocode.battle.snapshot;
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;
 import robocode.peer.ExplosionPeer;
-import robocode.util.XmlWriter;
-import robocode.util.XmlSerializable;
 import robocode.util.XmlReader;
+import robocode.util.XmlSerializable;
+import robocode.util.XmlWriter;
 
 import java.io.IOException;
 

@@ -65,7 +65,7 @@ public class RobocodeFrame extends JFrame {
 	private final static int UPDATE_TITLE_INTERVAL = 500; // milliseconds
 
 	private static final Cursor BUSY_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR); 
+	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	private EventHandler eventHandler = new EventHandler();
 	private BattleObserver battleObserver;
@@ -120,7 +120,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	public void setBusyPointer(boolean enabled) {
-		setCursor(enabled ? BUSY_CURSOR : DEFAULT_CURSOR); 
+		setCursor(enabled ? BUSY_CURSOR : DEFAULT_CURSOR);
 	}
 
 	public void addRobotButton(JButton b) {
@@ -546,7 +546,7 @@ public class RobocodeFrame extends JFrame {
 
 	private int getTpsFromSlider() {
 		final int value = getTpsSlider().getValue();
-		
+
 		if (value <= 30) {
 			return value;
 		}
@@ -805,7 +805,7 @@ public class RobocodeFrame extends JFrame {
 					| manager.getBattleManager().getRecordFilename() != null);
 
 			final boolean enableSaveRecord = (manager.getProperties().getOptionsCommonEnableReplayRecording()
-					& manager.getBattleRecorder().hasRecord()); 
+					& manager.getBattleRecorder().hasRecord());
 
 			getStopButton().setEnabled(false);
 			getReplayButton().setEnabled(canReplayRecord);
@@ -851,7 +851,7 @@ public class RobocodeFrame extends JFrame {
 			if (turn == null) {
 				return;
 			}
-			
+
 			tps = event.getTurnSnapshot().getTPS();
 			currentRound = event.getTurnSnapshot().getRound();
 			currentTurn = event.getTurnSnapshot().getTurn();

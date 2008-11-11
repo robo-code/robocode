@@ -141,11 +141,12 @@ public abstract class Event implements Comparable<Event> {
 	/**
 	 * Do not call this method! Your robot will simply stop interacting with
 	 * the game.
-	 *
+	 * <p/>
 	 * This method is called by the game. A robot peer is the object that deals
 	 * with game mechanics and rules, and makes sure your robot abides by them.
-	 * @param robot robot
-	 * @param statics statics
+	 *
+	 * @param robot	robot
+	 * @param statics  statics
 	 * @param graphics graphics
 	 */
 	public abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
@@ -155,7 +156,7 @@ public abstract class Event implements Comparable<Event> {
 	protected abstract void setClassPriorityImpl(int priority);
 
 	/**
-	 * @return True when the event is delivered even after timeout. 
+	 * @return True when the event is delivered even after timeout.
 	 */
 	public boolean isCriricalEvent() {
 		return false;

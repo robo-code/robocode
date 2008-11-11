@@ -17,7 +17,7 @@ package robocode.manager;
  */
 public class HostManager {
 	private RobocodeManager manager;
-    
+
 	HostManager(RobocodeManager manager) {
 		this.manager = manager;
 	}
@@ -27,7 +27,7 @@ public class HostManager {
 	}
 
 	public ThreadManager getThreadManager() {
-		return manager.getThreadManager(); 
+		return manager.getThreadManager();
 	}
 
 	public void cleanup() {// TODO

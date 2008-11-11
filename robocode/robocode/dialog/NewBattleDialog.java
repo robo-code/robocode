@@ -64,7 +64,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	/**
 	 * NewBattleDialog constructor comment.
 	 *
-	 * @param manager          robocode main manager
+	 * @param manager		  robocode main manager
 	 * @param battleProperties properties for current game
 	 */
 	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {

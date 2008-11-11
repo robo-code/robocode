@@ -61,7 +61,7 @@ public final class StatusEvent extends Event {
 
 	@Override
 	protected void setClassPriorityImpl(int priority) {
-		classPriority = priority; 
+		classPriority = priority;
 	}
 
 	/**

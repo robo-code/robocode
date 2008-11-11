@@ -98,7 +98,7 @@ public class CustomEvent extends Event {
 	 */
 	@Override
 	public void setPriority(int newPriority) {
-		priority = newPriority; 
+		priority = newPriority;
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class CustomEvent extends Event {
 	// final to disable overrides
 	public final int compareTo(Event event) {
 		return super.compareTo(event);
-	}    
+	}
 
 	/**
 	 * {@inheritDoc}

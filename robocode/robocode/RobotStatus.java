@@ -48,8 +48,8 @@ public final class RobotStatus {
 	 * This constructor is called internally from the game.
 	 *
 	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
-	 * @param commands data from commands
-	 * @param battle data from battle
+	 * @param commands  data from commands
+	 * @param battle	data from battle
 	 */
 	public RobotStatus(RobotPeer robotPeer, RobotCommands commands, Battle battle) {
 		synchronized (robotPeer) {
@@ -344,7 +344,6 @@ public final class RobotStatus {
 	 * Returns the game time of the round, where the time is equal to the current turn in the round.
 	 *
 	 * @return the game time/turn of the current round.
-	 *
 	 * @since 1.6.2
 	 */
 	public long getTime() {

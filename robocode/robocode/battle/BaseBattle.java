@@ -295,13 +295,12 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	protected void runTurn() {
-		if (runBackward){
+		if (runBackward) {
 			currentTime--;
-			if (currentTime==0 && !isPaused){
+			if (currentTime == 0 && !isPaused) {
 				pauseImpl();
 			}
-		}
-		else{
+		} else {
 			currentTime++;
 		}
 	}

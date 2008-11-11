@@ -52,7 +52,6 @@ package robocode.manager;
 
 
 import robocode.Event;
-import robocode.recording.BattleRecordFormat;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattle;
@@ -67,6 +66,7 @@ import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.peer.robot.RobotClassManager;
 import robocode.recording.BattlePlayer;
+import robocode.recording.BattleRecordFormat;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
 import robocode.repository.RobotFileSpecification;
@@ -243,7 +243,7 @@ public class BattleManager implements IBattleManager {
 		if (!seed.equals("none")) {
 			// init soon as it reads random
 			manager.getCpuManager().getCpuConstant();
-            
+
 			RandomFactory.resetDeterministic(Long.valueOf(seed));
 		}
 
@@ -335,7 +335,7 @@ public class BattleManager implements IBattleManager {
 	public void setBattleFilename(String newBattleFilename) {
 		battleFilename = newBattleFilename;
 	}
-	
+
 	public String getRecordFilename() {
 		return recordFilename;
 	}
@@ -516,7 +516,7 @@ public class BattleManager implements IBattleManager {
 
 	public synchronized void prevTurn() {
 		if (battle != null && battle.isRunning() && battle instanceof BattlePlayer) {
-			((BattlePlayer)battle).stepBack();
+			((BattlePlayer) battle).stepBack();
 		}
 	}
 

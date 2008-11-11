@@ -19,9 +19,9 @@ import robocode.manager.RobocodeManager;
 import robocode.util.XmlWriter;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import java.nio.charset.Charset;
 
 
 /**
@@ -93,7 +93,7 @@ public class BattleRecorder implements IBattleRecorder {
 				final Charset utf8 = Charset.forName("UTF-8");
 
 				osw = new OutputStreamWriter(bos, utf8);
-				xwr = new XmlWriter(osw, true); 
+				xwr = new XmlWriter(osw, true);
 			}
 
 			if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
@@ -189,7 +189,7 @@ public class BattleRecorder implements IBattleRecorder {
 			cleanupStream(fileStream);
 			fileStream = null;
 		}
-		
+
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
 			recordingEnabled = !event.isReplay() && manager.getProperties().getOptionsCommonEnableReplayRecording();

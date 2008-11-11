@@ -415,7 +415,7 @@ public class EventManager implements IEventManager {
 
 		// Process event queue here
 		eventQueue.sort();
-        
+
 		Event currentEvent = null;
 
 		if (eventQueue.size() > 0) {
@@ -483,7 +483,7 @@ public class EventManager implements IEventManager {
 	public void resetCustomEvents() {
 		customEvents.clear();
 	}
-    
+
 	public synchronized void reset() {
 		currentTopEventPriority = Integer.MIN_VALUE;
 		clearAllEvents(true);
@@ -581,7 +581,7 @@ public class EventManager implements IEventManager {
 	}
 
 	private static Dictionary<String, Event> namedEvents;
-	private static ScannedRobotEvent dummyScannedRobotEvent; 
+	private static ScannedRobotEvent dummyScannedRobotEvent;
 
 	static {
 		namedEvents = new Hashtable<String, Event>();

@@ -34,7 +34,7 @@ public final class BulletHitBulletEvent extends Event {
 	/**
 	 * Called by the game to create a new {@code BulletHitEvent}.
 	 *
-	 * @param bullet    your bullet that hit another bullet
+	 * @param bullet	your bullet that hit another bullet
 	 * @param hitBullet the bullet that was hit by your bullet
 	 */
 	public BulletHitBulletEvent(Bullet bullet, Bullet hitBullet) {

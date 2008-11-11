@@ -12,10 +12,11 @@
 package robocode.util;
 
 
-import java.io.*;
-import java.util.Stack;
-import java.text.StringCharacterIterator;
+import java.io.IOException;
+import java.io.Writer;
 import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
+import java.util.Stack;
 
 
 /**

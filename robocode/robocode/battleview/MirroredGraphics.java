@@ -55,7 +55,7 @@ public class MirroredGraphics extends Graphics2D {
 	 * When painting using this wrapper has finished the
 	 * {@link #release() } method must be called.
 	 *
-	 * @param g      the Graphics2D object to wrap
+	 * @param g	  the Graphics2D object to wrap
 	 * @param height the height of the battlefield to mirror
 	 * @see #release()
 	 */

@@ -12,20 +12,20 @@
 package robocode.peer.proxies;
 
 
+import robocode.RobotStatus;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.HostManager;
-import robocode.peer.RobotStatics;
 import robocode.peer.IRobotPeer;
 import robocode.peer.RobotCommands;
+import robocode.peer.RobotStatics;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.security.RobocodeClassLoader;
-import robocode.RobotStatus;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -144,7 +144,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	// -----------
 
 	protected abstract void initializeRound(RobotCommands commands, RobotStatus status);
-	
+
 	public void startRound(RobotCommands commands, RobotStatus status) {
 		initializeRound(commands, status);
 		robotThreadManager.start(hostManager.getThreadManager());
@@ -166,7 +166,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			Class<?> c;
 
 			String className = robotClassManager.getFullClassName();
-			RobocodeClassLoader classLoader = robotClassManager.getRobotClassLoader(); 
+			RobocodeClassLoader classLoader = robotClassManager.getRobotClassLoader();
 
 			// Pre-load robot classes without security...
 			// loadClass WILL NOT LINK the class, so static "cheats" will not work.

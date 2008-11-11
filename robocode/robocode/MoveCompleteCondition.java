@@ -43,7 +43,7 @@ public class MoveCompleteCondition extends Condition {
 	 * A condition priority is a value from 0 - 99. The higher value, the
 	 * higher priority. The default priority is 80.
 	 *
-	 * @param robot    your robot, which must be a {@link AdvancedRobot}
+	 * @param robot	your robot, which must be a {@link AdvancedRobot}
 	 * @param priority the priority of this condition
 	 * @see Condition#setPriority(int)
 	 */

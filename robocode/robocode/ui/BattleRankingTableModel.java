@@ -32,7 +32,6 @@ import robocode.battle.snapshot.TurnSnapshot;
 import robocode.text.StringUtil;
 
 import javax.swing.table.AbstractTableModel;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,13 +49,13 @@ import java.util.List;
 public class BattleRankingTableModel extends AbstractTableModel {
 
 	List<ScoreSnapshot> scoreSnapshotList;
-	
+
 	// The sum of the scores gathered by the robots in the actual round
 	private double currentSum;
 
 	// The sum of the scores gathered by the robots in the previous rounds
 	private double totalSum;
-	
+
 	/**
 	 * Function for counting the sum of the scores gathered by the robots.
 	 */
@@ -64,7 +63,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		currentSum = 0;
 		totalSum = 0;
 		Iterator<ScoreSnapshot> it = scoreSnapshotList.iterator();
-		
+
 		while (it.hasNext()) {
 			ScoreSnapshot score = it.next();
 

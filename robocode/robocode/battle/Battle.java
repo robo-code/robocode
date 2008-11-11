@@ -156,7 +156,7 @@ public final class Battle extends BaseBattle {
 		super(manager, eventDispatcher, paused);
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		battleRules = new BattleRules(battleProperties);
-		robotsCount = battlingRobotsList.size(); 
+		robotsCount = battlingRobotsList.size();
 		computeInitialPositions(battleProperties.getInitialPositions());
 		createPeers(battlingRobotsList);
 	}
@@ -608,7 +608,7 @@ public final class Battle extends BaseBattle {
 				}
 			}
 		}
-		
+
 		// Scan after moved all
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 			robotPeer.performScan(robots);

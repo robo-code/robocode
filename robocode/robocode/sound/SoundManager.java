@@ -134,8 +134,8 @@ public class SoundManager {
 	/**
 	 * Plays a specific sound at a given volume, panning and loop count
 	 *
-	 * @param key    the sound name, as stored in the sound table
-	 * @param pan    panning to be used (-1=left, 0=middle, +1=right)
+	 * @param key	the sound name, as stored in the sound table
+	 * @param pan	panning to be used (-1=left, 0=middle, +1=right)
 	 * @param volume volume to be used, from 0 to 1
 	 * @param loop   the number of times to loop the sound
 	 */
@@ -287,7 +287,7 @@ public class SoundManager {
 	/**
 	 * Determines pan based on the relative position to the battlefield's width
 	 *
-	 * @param x     the bullet or robot position
+	 * @param x	 the bullet or robot position
 	 * @param width the battlefield's width
 	 * @return the panning value, ranging from -1 to +1
 	 */

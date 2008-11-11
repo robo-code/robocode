@@ -25,8 +25,8 @@ import robocode.exception.RobotException;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
-import robocode.peer.proxies.IHostedThread;
 import robocode.manager.ThreadManager;
+import robocode.peer.proxies.IHostedThread;
 
 
 /**
@@ -94,7 +94,7 @@ public class RobotThreadManager {
 	private void interrupt(Thread t) {
 		try {
 			t.setPriority(Thread.MIN_PRIORITY);
-		} catch (NullPointerException e) { 
+		} catch (NullPointerException e) {
 			logError("Sometimes this occurs in the Java core?!", e);
 		}
 		t.interrupt();

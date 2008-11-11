@@ -12,15 +12,18 @@
 package robocode.util;
 
 
-import org.xml.sax.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Stack;
 
 
 /**
@@ -128,6 +131,7 @@ public class XmlReader {
 	public interface ListElement extends Element {
 		void add(XmlSerializable child);
 	}
+
 
 	public interface Attribute {
 		void read(String value);

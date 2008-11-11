@@ -39,7 +39,7 @@ public final class RobotStatics {
 	private final String teamName;
 
 	public RobotStatics(RobotFileSpecification spec, int duplicate, boolean isLeader, BattleRules rules, TeamPeer team) {
-		NameManager cnm = spec.getNameManager(); 
+		NameManager cnm = spec.getNameManager();
 
 		if (duplicate >= 0) {
 			String countString = " (" + (duplicate + 1) + ')';

@@ -70,7 +70,7 @@ public class RobocodeEngine2 extends RobocodeEngine {
 	/**
 	 * Runs the specified battle.
 	 *
-	 * @param battle       the specification of the battle to run including the
+	 * @param battle	   the specification of the battle to run including the
 	 *                     participating robots.
 	 * @param waitTillOver will block caller till end of battle if set
 	 * @see robocode.battle.events.IBattleListener

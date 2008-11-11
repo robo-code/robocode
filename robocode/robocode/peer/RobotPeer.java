@@ -64,7 +64,6 @@ package robocode.peer;
 
 
 import robocode.*;
-import robocode.Event;
 import robocode.battle.Battle;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
@@ -76,7 +75,6 @@ import static robocode.io.Logger.logMessage;
 import robocode.manager.HostManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
-import robocode.peer.robot.EventQueue;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
@@ -88,8 +86,8 @@ import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -187,7 +185,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
 
-		controlRobotSpecification = robotClassManager.getControlRobotSpecification(); 
+		controlRobotSpecification = robotClassManager.getControlRobotSpecification();
 
 		if (statics.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(robotClassManager, hostManager, this, statics);
@@ -437,7 +435,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public final ExecResult executeImpl(RobotCommands newCommands) {
 		newCommands.validate(this);
-        
+
 		if (!disableExec) {
 			// from robot to battle
 			commands.set(new RobotCommands(newCommands, true));
@@ -629,7 +627,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				}
 			}
 		}
-        
+
 		setState(RobotState.ACTIVE);
 
 		isWinner = false;

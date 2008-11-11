@@ -79,7 +79,7 @@ public final class RobotCommands {
 			moved = origin.moved;
 			graphicsCalls = origin.graphicsCalls;
 			outputText = origin.outputText;
-			teamMessages = origin.teamMessages; 
+			teamMessages = origin.teamMessages;
 		}
 	}
 
@@ -89,7 +89,7 @@ public final class RobotCommands {
 			return;
 		}
 		maxTurnRate = min(abs(maxTurnRate), Rules.MAX_TURN_RATE_RADIANS);
-        
+
 		if (Double.isNaN(maxVelocity)) {
 			peer.println("You cannot setMaxVelocity to: " + maxVelocity);
 			return;

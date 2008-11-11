@@ -25,6 +25,7 @@ public class SecureInputStream extends java.io.InputStream {
 
 	/**
 	 * SecureInputStream constructor comment.
+	 *
 	 * @param in original
 	 */
 	public SecureInputStream(InputStream in) {

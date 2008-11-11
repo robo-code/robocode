@@ -15,15 +15,15 @@ package robocode.battle.snapshot;
 import robocode.battle.Battle;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
-import robocode.util.XmlWriter;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
+import robocode.util.XmlWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
-import java.io.IOException;
 
 
 /**
@@ -74,8 +74,8 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 	/**
 	 * Constructs a snapshot of the battle.
 	 *
-	 * @param battle the battle to make a snapshot of.
-	 * @param battleRobots 
+	 * @param battle		the battle to make a snapshot of.
+	 * @param battleRobots
 	 * @param battleBullets
 	 */
 	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets) {

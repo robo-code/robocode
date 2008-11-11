@@ -15,13 +15,13 @@ package robocode.battle.snapshot;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.util.XmlWriter;
-import robocode.util.XmlSerializable;
 import robocode.util.XmlReader;
+import robocode.util.XmlSerializable;
+import robocode.util.XmlWriter;
 
 import java.awt.geom.Arc2D;
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 

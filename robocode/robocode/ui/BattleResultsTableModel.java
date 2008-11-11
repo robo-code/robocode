@@ -61,19 +61,20 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		this.numRounds = numRounds;
 		totalScore = countTotalScore();
 	}
-	
+
 	/**
 	 * Function for counting the sum of the scores gathered by the robots.
+	 *
 	 * @return The sum.
 	 */
 	private double countTotalScore() {
-		
+
 		double totalScore = 0;
-		
+
 		for (int i = 0; i < results.length; i++) {
 			totalScore += results[i].getScore();
 		}
-		
+
 		return totalScore;
 	}
 
@@ -159,8 +160,8 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			return statistics.getTeamLeaderName();
 
 		case 2:
-			return "" + (int) (statistics.getScore() + 0.5) + " (" 
-					+ NumberFormat.getPercentInstance().format(statistics.getScore() / totalScore) + ")"; 
+			return "" + (int) (statistics.getScore() + 0.5) + " ("
+					+ NumberFormat.getPercentInstance().format(statistics.getScore() / totalScore) + ")";
 
 		case 3:
 			return "" + (int) (statistics.getSurvival() + 0.5);

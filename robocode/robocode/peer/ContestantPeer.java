@@ -22,5 +22,6 @@ public interface ContestantPeer extends Comparable<ContestantPeer> {
 	public ContestantStatistics getStatistics();
 
 	public String getName();
+
 	public String toString();
 }

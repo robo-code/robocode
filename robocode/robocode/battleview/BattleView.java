@@ -15,8 +15,8 @@ package robocode.battleview;
 
 
 import robocode.battle.IBattleManager;
-import robocode.battle.events.BattleStartedEvent;
 import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.events.BattleStartedEvent;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.TurnSnapshot;
@@ -37,7 +37,7 @@ import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.*;
-import java.util.*;
+import java.util.Random;
 
 
 /**
@@ -102,7 +102,7 @@ public class BattleView extends Canvas {
 	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
 	private GraphicsState graphicsState = new GraphicsState();
-	private Graphics2DProxy[] robotGraphics; 
+	private Graphics2DProxy[] robotGraphics;
 
 	public BattleView(RobocodeManager manager) {
 		super();
@@ -497,7 +497,7 @@ public class BattleView extends Canvas {
 
 	private Graphics2DProxy getRobotGraphics(int robotIndex) {
 		if (robotGraphics[robotIndex] == null) {
-			robotGraphics[robotIndex] = new Graphics2DProxy(); 
+			robotGraphics[robotIndex] = new Graphics2DProxy();
 		}
 		return robotGraphics[robotIndex];
 	}

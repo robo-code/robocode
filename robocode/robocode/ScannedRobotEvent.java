@@ -39,7 +39,7 @@ public final class ScannedRobotEvent extends Event {
 	/**
 	 * Called by the game to create a new ScannedRobotEvent.
 	 *
-	 * @param name     the name of the scanned robot
+	 * @param name	 the name of the scanned robot
 	 * @param energy   the energy of the scanned robot
 	 * @param bearing  the bearing of the scanned robot, in radians
 	 * @param distance the distance from your robot to the scanned robot
@@ -246,7 +246,7 @@ public final class ScannedRobotEvent extends Event {
 		}
 		// No difference found
 		return 0;
-	}    
+	}
 
 	private static int classPriority = 10;
 

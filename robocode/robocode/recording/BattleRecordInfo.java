@@ -14,12 +14,12 @@ package robocode.recording;
 
 import robocode.BattleResults;
 import robocode.BattleRules;
+import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
-import robocode.util.XmlReader;
 
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 
 
 /**
@@ -79,6 +79,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 
 				reader.expect("results", new XmlReader.ListElement() {
 					int pos = 0;
+
 					public XmlSerializable read(XmlReader reader) {
 						recordInfo.results = new BattleResults[recordInfo.roundsCount];
 						// prototype

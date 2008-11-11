@@ -14,9 +14,9 @@ package robocode.peer.proxies;
 
 import robocode.RobotStatus;
 import robocode.manager.HostManager;
+import robocode.peer.IRobotPeer;
 import robocode.peer.RobotCommands;
 import robocode.peer.RobotStatics;
-import robocode.peer.IRobotPeer;
 import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 

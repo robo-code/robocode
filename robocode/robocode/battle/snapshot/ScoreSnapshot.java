@@ -13,12 +13,12 @@ package robocode.battle.snapshot;
 
 
 import robocode.peer.robot.RobotStatistics;
+import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
-import robocode.util.XmlReader;
 
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 
 
 /**

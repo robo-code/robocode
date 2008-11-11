@@ -127,9 +127,9 @@ public class SoundCache {
 	 * If there is any error, the method returns silently, and clip instances will
 	 * not be found later for the provided key.
 	 *
-	 * @param key          the key to be used for later retrieval of the sound
+	 * @param key		  the key to be used for later retrieval of the sound
 	 * @param resourceName the resource holding the audio data
-	 * @param numClones    the number of copies of the clip to be created
+	 * @param numClones	the number of copies of the clip to be created
 	 */
 	public void addSound(Object key, String resourceName, int numClones) {
 		if (mixer == null || resourceName == null || (resourceName.trim().length() == 0)) {

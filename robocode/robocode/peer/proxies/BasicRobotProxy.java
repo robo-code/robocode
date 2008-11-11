@@ -77,7 +77,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	@Override
 	public void cleanup() {
 		super.cleanup();
-        
+
 		// Cleanup and remove current wait condition
 		if (waitCondition != null) {
 			waitCondition.cleanup();

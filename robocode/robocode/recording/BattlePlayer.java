@@ -21,6 +21,7 @@ import robocode.manager.RobocodeManager;
 import java.io.*;
 import java.util.zip.ZipInputStream;
 
+
 /**
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (original)
@@ -49,10 +50,9 @@ public final class BattlePlayer extends BaseBattle {
 				zipStream = new ZipInputStream(bufferedStream);
 				zipStream.getNextEntry();
 				objectStream = new ObjectInputStream(zipStream);
-			} else{
+			} else {
 				throw new Error("Not implemented");
 			}
-
 
 			recordInfo = (BattleRecordInfo) objectStream.readObject();
 
@@ -153,13 +153,13 @@ public final class BattlePlayer extends BaseBattle {
 			return null;
 		}
 		try {
-			//TODO implement seek to currentTime, warn you. turns don't have same size in bytes 
+			// TODO implement seek to currentTime, warn you. turns don't have same size in bytes 
 			return (TurnSnapshot) objectStream.readObject();
 		} catch (EOFException e) {
 			return null;
 		} catch (Exception e) {
 			logError(e);
 			return null;
-		} 
+		}
 	}
 }

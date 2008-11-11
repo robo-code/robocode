@@ -20,5 +20,6 @@ import java.io.IOException;
  */
 public interface XmlSerializable {
 	void writeXml(XmlWriter writer) throws IOException;
+
 	XmlReader.Element readXml(XmlReader reader);
 }
