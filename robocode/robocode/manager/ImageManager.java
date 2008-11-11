@@ -32,7 +32,7 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Titus Chen (contributor)
  */
-public class ImageManager {
+public class ImageManager implements IImageManager {
 
 	private RobocodeManager manager;
 

@@ -12,24 +12,20 @@
 package robocode.manager;
 
 
+import robocode.battle.snapshot.RobotSnapshot;
+import robocode.dialog.RobotButton;
+import robocode.dialog.RobotDialog;
+
+import java.util.List;
+
+
 /**
  * @author Pavel Savara (original)
  */
-public class HostManager implements IHostManager {
-	private RobocodeManager manager;
+public interface IRobotDialogManager {
+	void trim(List<RobotSnapshot> robots);
 
-	HostManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
+	void reset();
 
-	public long getRobotFilesystemQuota() {
-		return manager.getProperties().getRobotFilesystemQuota();
-	}
-
-	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
-	}
-
-	public void cleanup() {// TODO
-	}
+	RobotDialog getRobotDialog(RobotButton robotButton, String name, boolean create);
 }

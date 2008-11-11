@@ -18,8 +18,8 @@
 package robocode.dialog;
 
 
+import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
-import robocode.manager.RobotRepositoryManager;
 import robocode.repository.TeamSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
@@ -54,7 +54,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 	private int minRobots = 2;
 	private int maxRobots = 10;
 
-	private RobotRepositoryManager robotRepositoryManager;
+	private IRepositoryManager repositoryManager;
 	private RobocodeManager manager;
 
 	private EventHandler eventHandler = new EventHandler();
@@ -67,10 +67,10 @@ public class TeamCreator extends JDialog implements WizardListener {
 		}
 	}
 
-	public TeamCreator(RobotRepositoryManager robotRepositoryManager) {
-		super(robotRepositoryManager.getManager().getWindowManager().getRobocodeFrame());
-		this.robotRepositoryManager = robotRepositoryManager;
-		this.manager = robotRepositoryManager.getManager();
+	public TeamCreator(IRepositoryManager repositoryManager) {
+		super(repositoryManager.getManager().getWindowManager().getRobocodeFrame());
+		this.repositoryManager = repositoryManager;
+		this.manager = repositoryManager.getManager();
 		initialize();
 	}
 
@@ -104,7 +104,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 	 */
 	protected RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(robotRepositoryManager, minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(repositoryManager, minRobots, maxRobots, false,
 					"Select the robots for this team.", false, true, true, false, false, false, null);
 		}
 		return robotSelectionPanel;
@@ -159,7 +159,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 	}
 
 	public int createTeam() throws IOException {
-		File f = new File(robotRepositoryManager.getRobotsDirectory(),
+		File f = new File(repositoryManager.getRobotsDirectory(),
 				teamCreatorOptionsPanel.getTeamPackage().replace('.', File.separatorChar)
 				+ teamCreatorOptionsPanel.getTeamNameField().getText() + ".team");
 
@@ -206,7 +206,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			}
 		}
 
-		robotRepositoryManager.clearRobotList();
+		repositoryManager.clearRobotList();
 
 		return 0;
 	}

@@ -12,10 +12,10 @@
 package robocode.ui;
 
 
-import robocode.battle.IBattleManager;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.io.Logger;
+import robocode.manager.IBattleManager;
 
 import javax.swing.*;
 import java.awt.*;

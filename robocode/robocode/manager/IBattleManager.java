@@ -9,10 +9,11 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle;
+package robocode.manager;
 
 
 import robocode.Event;
+import robocode.battle.BattleProperties;
 import robocode.battle.events.IBattleListener;
 import robocode.control.BattleSpecification;
 
@@ -102,4 +103,6 @@ public interface IBattleManager {
 	BattleProperties getBattleProperties();
 
 	void setDefaultBattleProperties();
+
+	void cleanup();
 }

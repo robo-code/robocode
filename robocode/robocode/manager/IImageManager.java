@@ -12,24 +12,26 @@
 package robocode.manager;
 
 
+import robocode.gfx.RenderImage;
+
+import java.awt.*;
+
+
 /**
  * @author Pavel Savara (original)
  */
-public class HostManager implements IHostManager {
-	private RobocodeManager manager;
+public interface IImageManager {
+	void initialize();
 
-	HostManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
+	Image getGroundTileImage(int index);
 
-	public long getRobotFilesystemQuota() {
-		return manager.getProperties().getRobotFilesystemQuota();
-	}
+	RenderImage getExplosionRenderImage(int which, int frame);
 
-	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
-	}
+	RenderImage getExplosionDebriseRenderImage();
 
-	public void cleanup() {// TODO
-	}
+	RenderImage getColoredBodyRenderImage(Integer color);
+
+	RenderImage getColoredGunRenderImage(Integer color);
+
+	RenderImage getColoredRadarRenderImage(Integer color);
 }

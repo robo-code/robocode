@@ -43,7 +43,7 @@ import java.io.IOException;
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  */
-public class WindowManager {
+public class WindowManager implements IWindowManager {
 
 	private RobocodeEditor robocodeEditor;
 	private RobotPackager robotPackager;

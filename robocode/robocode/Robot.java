@@ -956,10 +956,10 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   }
 	 * </pre>
 	 *
-	 * @param bodyColor the new body color
-	 * @param gunColor the new gun color
-	 * @param radarColor the new radar color
-	 * @param bulletColor the new bullet color
+	 * @param bodyColor	the new body color
+	 * @param gunColor	 the new gun color
+	 * @param radarColor   the new radar color
+	 * @param bulletColor  the new bullet color
 	 * @param scanArcColor the new scan arc color
 	 * @see #setColors(Color, Color, Color)
 	 * @see #setAllColors(Color)

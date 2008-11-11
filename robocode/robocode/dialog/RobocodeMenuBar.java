@@ -28,7 +28,7 @@ package robocode.dialog;
 
 
 import robocode.battle.BattleProperties;
-import robocode.battle.IBattleManager;
+import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.recording.BattleRecordFormat;

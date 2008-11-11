@@ -20,6 +20,7 @@ import robocode.common.Command;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
+import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 
 import java.util.Queue;

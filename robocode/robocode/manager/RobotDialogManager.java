@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class RobotDialogManager {
+public class RobotDialogManager implements IRobotDialogManager {
 
 	public static final int MAX_PRE_ATTACHED = 10;
 

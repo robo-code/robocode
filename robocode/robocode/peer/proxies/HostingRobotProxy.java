@@ -18,7 +18,7 @@ import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
-import robocode.manager.HostManager;
+import robocode.manager.IHostManager;
 import robocode.peer.IRobotPeer;
 import robocode.peer.RobotCommands;
 import robocode.peer.RobotStatics;
@@ -43,13 +43,13 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected RobotStatics statics;
 	protected RobotOutputStream out;
 	protected IRobotPeer peer;
-	protected HostManager hostManager;
+	protected IHostManager hostManager;
 	protected IBasicRobot robot;
 
 	// thread is running
 	private AtomicBoolean isRunning = new AtomicBoolean(false);
 
-	HostingRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	HostingRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;

@@ -12,24 +12,24 @@
 package robocode.manager;
 
 
+import robocode.peer.proxies.IHostedThread;
+
+
 /**
  * @author Pavel Savara (original)
  */
-public class HostManager implements IHostManager {
-	private RobocodeManager manager;
+public interface IThreadManager {
+	void addThreadGroup(ThreadGroup g, IHostedThread robotProxy);
 
-	HostManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
+	IHostedThread getLoadingRobot();
 
-	public long getRobotFilesystemQuota() {
-		return manager.getProperties().getRobotFilesystemQuota();
-	}
+	IHostedThread getLoadingRobotProxy(Thread t);
 
-	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
-	}
+	IHostedThread getLoadedOrLoadingRobotProxy(Thread t);
 
-	public void cleanup() {// TODO
-	}
+	IHostedThread getRobotProxy(Thread t);
+
+	void reset();
+
+	void setLoadingRobot(IHostedThread newLoadingRobotProxy);
 }

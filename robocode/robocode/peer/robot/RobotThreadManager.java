@@ -25,7 +25,7 @@ import robocode.exception.RobotException;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
-import robocode.manager.ThreadManager;
+import robocode.manager.IThreadManager;
 import robocode.peer.proxies.IHostedThread;
 
 
@@ -118,7 +118,7 @@ public class RobotThreadManager {
 		}
 	}
 
-	public void start(ThreadManager threadManager) {
+	public void start(IThreadManager threadManager) {
 		try {
 			threadManager.addThreadGroup(runThreadGroup, robotProxy);
 			runThread = new Thread(runThreadGroup, robotProxy, robotProxy.getStatics().getName());

@@ -28,7 +28,7 @@ package robocode.security;
 
 import robocode.RobocodeFileOutputStream;
 import robocode.io.RobocodeObjectInputStream;
-import robocode.manager.ThreadManager;
+import robocode.manager.IThreadManager;
 import robocode.peer.BulletCommand;
 import robocode.peer.BulletState;
 import robocode.peer.ExecResult;
@@ -53,7 +53,7 @@ import java.util.*;
 public class RobocodeSecurityManager extends SecurityManager {
 	private final PrintStream syserr = System.err;
 
-	private final ThreadManager threadManager;
+	private final IThreadManager threadManager;
 	private final Object safeSecurityContext;
 	private final boolean enabled;
 	private final boolean experimental;
@@ -66,7 +66,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	private Thread battleThread;
 
 	@SuppressWarnings({ "UnusedDeclaration", "EmptyCatchBlock"})
-	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled, boolean experimental) {
+	public RobocodeSecurityManager(Thread safeThread, IThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
 		safeThreads.add(safeThread);
 		this.threadManager = threadManager;

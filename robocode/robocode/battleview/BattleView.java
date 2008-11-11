@@ -14,7 +14,6 @@
 package robocode.battleview;
 
 
-import robocode.battle.IBattleManager;
 import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.events.BattleStartedEvent;
 import robocode.battle.snapshot.BulletSnapshot;
@@ -25,7 +24,8 @@ import robocode.battlefield.DefaultBattleField;
 import robocode.gfx.GraphicsState;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
-import robocode.manager.ImageManager;
+import robocode.manager.IBattleManager;
+import robocode.manager.IImageManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletState;
@@ -88,7 +88,7 @@ public class BattleView extends Canvas {
 	private Font smallFont;
 	private FontMetrics smallFontMetrics;
 
-	private final ImageManager imageManager;
+	private final IImageManager imageManager;
 
 	private final RobocodeManager manager;
 

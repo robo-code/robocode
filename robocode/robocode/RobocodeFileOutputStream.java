@@ -20,7 +20,7 @@ package robocode;
 
 import robocode.exception.RobotException;
 import robocode.io.Logger;
-import robocode.manager.ThreadManager;
+import robocode.manager.IThreadManager;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.security.RobocodePermission;
@@ -46,7 +46,7 @@ import java.io.*;
  * @see java.io.FileOutputStream
  */
 public class RobocodeFileOutputStream extends OutputStream {
-	private static ThreadManager threadManager;
+	private static IThreadManager threadManager;
 	private FileOutputStream out;
 	private String fileName;
 	private RobotFileSystemManager fileSystemManager;
@@ -179,7 +179,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	/**
 	 * The system calls this method, you should not call it.
 	 */
-	public static void setThreadManager(ThreadManager threadManager) {
+	public static void setThreadManager(IThreadManager threadManager) {
 		System.getSecurityManager().checkPermission(new RobocodePermission("setThreadManager"));
 		RobocodeFileOutputStream.threadManager = threadManager;
 	}

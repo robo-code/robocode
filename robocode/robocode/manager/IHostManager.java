@@ -15,21 +15,10 @@ package robocode.manager;
 /**
  * @author Pavel Savara (original)
  */
-public class HostManager implements IHostManager {
-	private RobocodeManager manager;
+public interface IHostManager {
+	long getRobotFilesystemQuota();
 
-	HostManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
+	IThreadManager getThreadManager();
 
-	public long getRobotFilesystemQuota() {
-		return manager.getProperties().getRobotFilesystemQuota();
-	}
-
-	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
-	}
-
-	public void cleanup() {// TODO
-	}
+	void cleanup();
 }

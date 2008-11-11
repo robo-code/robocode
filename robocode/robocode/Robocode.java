@@ -29,11 +29,11 @@
 package robocode;
 
 
-import robocode.battle.IBattleManager;
 import robocode.battle.events.*;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
+import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.security.SecurePrintStream;
 import robocode.ui.BattleResultsTableModel;

@@ -55,7 +55,6 @@ import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattle;
-import robocode.battle.IBattleManager;
 import robocode.battle.events.*;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;

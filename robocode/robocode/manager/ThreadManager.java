@@ -32,7 +32,7 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class ThreadManager {
+public class ThreadManager implements IThreadManager {
 
 	private List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private Thread robotLoaderThread;
@@ -92,12 +92,12 @@ public class ThreadManager {
 	}
 
 	public synchronized void setLoadingRobot(IHostedThread newLoadingRobotProxy) {
-		if (robotLoaderThread != null && robotLoaderThread.equals(Thread.currentThread())) {
+		if (newLoadingRobotProxy == null) {
+			this.robotLoaderThread = null;
+			loadingRobot = null;
+		} else {
+			this.robotLoaderThread = Thread.currentThread();
 			loadingRobot = newLoadingRobotProxy;
 		}
-	}
-
-	public synchronized void setRobotLoaderThread(Thread robotLoaderThread) {
-		this.robotLoaderThread = robotLoaderThread;
 	}
 }

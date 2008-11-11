@@ -19,8 +19,8 @@
 package robocode.dialog;
 
 
-import robocode.battle.IBattleManager;
-import robocode.manager.RobotDialogManager;
+import robocode.manager.IBattleManager;
+import robocode.manager.IRobotDialogManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +35,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
 
-	private final RobotDialogManager robotDialogManager;
+	private final IRobotDialogManager robotDialogManager;
 	private RobotDialog robotDialog;
 	private final String name;
 	private final int index;
@@ -43,7 +43,7 @@ public class RobotButton extends JButton implements ActionListener {
 	/**
 	 * RobotButton constructor
 	 */
-	public RobotButton(RobotDialogManager robotDialogManager, IBattleManager battleControl, String name, int index, boolean attach) {
+	public RobotButton(IRobotDialogManager robotDialogManager, IBattleManager battleControl, String name, int index, boolean attach) {
 		this.robotDialogManager = robotDialogManager;
 		this.name = name;
 		this.index = index;

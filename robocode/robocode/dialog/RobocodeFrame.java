@@ -28,7 +28,6 @@
 package robocode.dialog;
 
 
-import robocode.battle.IBattleManager;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.TurnSnapshot;
@@ -36,10 +35,7 @@ import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
-import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
-import robocode.manager.RobotDialogManager;
-import robocode.manager.WindowManager;
+import robocode.manager.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -101,7 +97,7 @@ public class RobocodeFrame extends JFrame {
 
 	private RobocodeManager manager;
 
-	private WindowManager windowManager;
+	private IWindowManager windowManager;
 
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
@@ -775,7 +771,7 @@ public class RobocodeFrame extends JFrame {
 
 			getRobotButtonsPanel().removeAll();
 
-			final RobotDialogManager dialogManager = manager.getRobotDialogManager();
+			final IRobotDialogManager dialogManager = manager.getRobotDialogManager();
 			final java.util.List<RobotSnapshot> robots = event.getTurnSnapshot().getRobots();
 
 			dialogManager.trim(robots);

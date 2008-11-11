@@ -27,7 +27,6 @@ package robocode.manager;
 
 
 import robocode.RobocodeFileOutputStream;
-import robocode.battle.IBattleManager;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
@@ -37,6 +36,7 @@ import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
+import robocode.sound.ISoundManager;
 import robocode.sound.SoundManager;
 
 import java.io.*;
@@ -49,17 +49,17 @@ import java.security.Policy;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeManager {
-	private BattleManager battleManager;
-	private CpuManager cpuManager;
-	private ImageManager imageManager;
-	private RobotDialogManager robotDialogManager;
-	private RobotRepositoryManager robotRepositoryManager;
-	private ThreadManager threadManager;
-	private WindowManager windowManager;
-	private VersionManager versionManager;
-	private SoundManager soundManager;
+	private IBattleManager battleManager;
+	private ICpuManager cpuManager;
+	private IImageManager imageManager;
+	private IRobotDialogManager robotDialogManager;
+	private IRepositoryManager repositoryManager;
+	private IThreadManager threadManager;
+	private IWindowManager windowManager;
+	private IVersionManager versionManager;
+	private ISoundManager soundManager;
 	private IBattleRecorder battleRecorder;
-	private HostManager hostManager;
+	private IHostManager hostManager;
 
 	private boolean slave;
 
@@ -88,7 +88,7 @@ public class RobocodeManager {
 		return battleManager;
 	}
 
-	public HostManager getHostManager() {
+	public IHostManager getHostManager() {
 		if (hostManager == null) {
 			hostManager = new HostManager(this);
 		}
@@ -100,11 +100,11 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a RobotListManager
 	 */
-	public RobotRepositoryManager getRobotRepositoryManager() {
-		if (robotRepositoryManager == null) {
-			robotRepositoryManager = new RobotRepositoryManager(this);
+	public IRepositoryManager getRobotRepositoryManager() {
+		if (repositoryManager == null) {
+			repositoryManager = new RobotRepositoryManager(this);
 		}
-		return robotRepositoryManager;
+		return repositoryManager;
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a WindowManager
 	 */
-	public WindowManager getWindowManager() {
+	public IWindowManager getWindowManager() {
 		if (windowManager == null) {
 			windowManager = new WindowManager(this);
 		}
@@ -124,7 +124,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a ThreadManager
 	 */
-	public ThreadManager getThreadManager() {
+	public IThreadManager getThreadManager() {
 		if (threadManager == null) {
 			threadManager = new ThreadManager();
 		}
@@ -136,7 +136,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a RobotDialogManager
 	 */
-	public RobotDialogManager getRobotDialogManager() {
+	public IRobotDialogManager getRobotDialogManager() {
 		if (robotDialogManager == null) {
 			robotDialogManager = new RobotDialogManager(this);
 		}
@@ -196,7 +196,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a ImageManager
 	 */
-	public ImageManager getImageManager() {
+	public IImageManager getImageManager() {
 		if (imageManager == null) {
 			imageManager = new ImageManager(this);
 		}
@@ -208,7 +208,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a VersionManager
 	 */
-	public VersionManager getVersionManager() {
+	public IVersionManager getVersionManager() {
 		if (versionManager == null) {
 			versionManager = new VersionManager(this);
 		}
@@ -220,7 +220,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a CpuManager
 	 */
-	public CpuManager getCpuManager() {
+	public ICpuManager getCpuManager() {
 		if (cpuManager == null) {
 			cpuManager = new CpuManager(this);
 		}
@@ -232,7 +232,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a SoundManager
 	 */
-	public SoundManager getSoundManager() {
+	public ISoundManager getSoundManager() {
 		if (soundManager == null) {
 			soundManager = new SoundManager(this);
 		}

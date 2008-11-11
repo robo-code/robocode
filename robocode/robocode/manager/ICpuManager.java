@@ -15,21 +15,8 @@ package robocode.manager;
 /**
  * @author Pavel Savara (original)
  */
-public class HostManager implements IHostManager {
-	private RobocodeManager manager;
+public interface ICpuManager {
+	long getCpuConstant();
 
-	HostManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
-
-	public long getRobotFilesystemQuota() {
-		return manager.getProperties().getRobotFilesystemQuota();
-	}
-
-	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
-	}
-
-	public void cleanup() {// TODO
-	}
+	void calculateCpuConstant();
 }

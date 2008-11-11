@@ -15,21 +15,10 @@ package robocode.manager;
 /**
  * @author Pavel Savara (original)
  */
-public class HostManager implements IHostManager {
-	private RobocodeManager manager;
+public interface IVersionManager {
+	void checkUpdateCheck();
 
-	HostManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
+	boolean checkForNewVersion(boolean notifyNoUpdate);
 
-	public long getRobotFilesystemQuota() {
-		return manager.getProperties().getRobotFilesystemQuota();
-	}
-
-	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
-	}
-
-	public void cleanup() {// TODO
-	}
+	String getVersion();
 }

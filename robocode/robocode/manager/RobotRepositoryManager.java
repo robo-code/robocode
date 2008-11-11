@@ -59,7 +59,7 @@ import java.util.jar.JarInputStream;
  * @author Robert D. Maupin (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotRepositoryManager {
+public class RobotRepositoryManager implements IRepositoryManager {
 	private FileSpecificationDatabase robotDatabase;
 
 	private File robotsDirectory;

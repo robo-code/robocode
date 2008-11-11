@@ -43,7 +43,7 @@ import java.util.Date;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public final class VersionManager {
+public final class VersionManager implements IVersionManager {
 	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
 
 	private String version;

@@ -50,7 +50,7 @@ import javax.sound.sampled.Mixer;
  * @author Flemming N. Larsen (contributor)
  * @author Titus Chen (contributor)
  */
-public class SoundManager {
+public class SoundManager implements ISoundManager {
 
 	// Cache containing sound clips
 	private SoundCache sounds;

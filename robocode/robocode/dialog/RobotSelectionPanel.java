@@ -31,7 +31,7 @@ package robocode.dialog;
 
 
 import robocode.io.Logger;
-import robocode.manager.RobotRepositoryManager;
+import robocode.manager.IRepositoryManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.TeamSpecification;
 
@@ -89,7 +89,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private String preSelectedRobots;
 	private List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
 	private boolean showNumRoundsPanel;
-	private RobotRepositoryManager repositoryManager;
+	private IRepositoryManager repositoryManager;
 
 	private class EventHandler implements ActionListener, ListSelectionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -117,7 +117,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	/**
 	 * NewBattleRobotsTab constructor comment.
 	 */
-	public RobotSelectionPanel(RobotRepositoryManager robotManager, int minRobots, int maxRobots,
+	public RobotSelectionPanel(IRepositoryManager repositoryManager, int minRobots, int maxRobots,
 			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
 			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
 			String preSelectedRobots) {
@@ -133,7 +133,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		this.onlyShowPackaged = onlyShowPackaged;
 		this.ignoreTeamRobots = ignoreTeamRobots;
 		this.preSelectedRobots = preSelectedRobots;
-		this.repositoryManager = robotManager;
+		this.repositoryManager = repositoryManager;
 		initialize();
 	}
 

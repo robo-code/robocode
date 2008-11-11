@@ -9,27 +9,17 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package robocode.sound;
+
+
+import robocode.battle.events.BattleEventDispatcher;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class HostManager implements IHostManager {
-	private RobocodeManager manager;
+public interface ISoundManager {
+	void playThemeMusic();
 
-	HostManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
-
-	public long getRobotFilesystemQuota() {
-		return manager.getProperties().getRobotFilesystemQuota();
-	}
-
-	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
-	}
-
-	public void cleanup() {// TODO
-	}
+	void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher);
 }

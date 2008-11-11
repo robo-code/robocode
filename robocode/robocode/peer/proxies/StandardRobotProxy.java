@@ -13,7 +13,7 @@ package robocode.peer.proxies;
 
 
 import robocode.RobotStatus;
-import robocode.manager.HostManager;
+import robocode.manager.IHostManager;
 import robocode.peer.IRobotPeer;
 import robocode.peer.RobotCommands;
 import robocode.peer.RobotStatics;
@@ -32,7 +32,7 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 	private double saveGunAngleToTurn;
 	private double saveRadarAngleToTurn;
 
-	public StandardRobotProxy(RobotClassManager robotClassManager, HostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public StandardRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(robotClassManager, hostManager, peer, statics);
 	}
 

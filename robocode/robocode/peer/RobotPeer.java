@@ -72,7 +72,7 @@ import robocode.exception.DeathException;
 import robocode.exception.WinException;
 import robocode.io.Logger;
 import static robocode.io.Logger.logMessage;
-import robocode.manager.HostManager;
+import robocode.manager.IHostManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.robotpaint.Graphics2DProxy;
@@ -167,7 +167,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private Arc2D scanArc;
 	private BoundingRectangle boundingBox;
 
-	public RobotPeer(Battle battle, HostManager hostManager, RobotClassManager robotClassManager, int duplicate, TeamPeer team) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotClassManager robotClassManager, int duplicate, TeamPeer team) {
 		super();
 		if (team != null) {
 			team.add(this);
