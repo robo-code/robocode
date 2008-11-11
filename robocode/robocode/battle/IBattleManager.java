@@ -59,6 +59,8 @@ public interface IBattleManager {
 
 	void nextTurn();
 
+	void prevTurn();
+
 	void pauseBattle();
 
 	void resumeBattle();

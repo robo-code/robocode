@@ -47,7 +47,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	// Current round items
 	private int roundNum;
-	private int currentTime;
+	protected int currentTime;
 	private int endTimer;
 
 	// TPS (turns per second) calculation stuff
@@ -63,6 +63,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	// Battle control
 	private boolean isPaused;
 	private int stepCount;
+	private boolean runBackward;
 	private boolean roundOver;
 	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
@@ -294,7 +295,15 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	protected void runTurn() {
-		currentTime++;
+		if (runBackward){
+			currentTime--;
+			if (currentTime==0 && !isPaused){
+				pauseImpl();
+			}
+		}
+		else{
+			currentTime++;
+		}
 	}
 
 	protected void shutdownTurn() {
@@ -402,14 +411,22 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		sendCommand(new StepCommand());
 	}
 
-	private class PauseCommand extends Command {
-		public void execute() {
-			isPaused = true;
-			stepCount = 0;
-			eventDispatcher.onBattlePaused(new BattlePausedEvent());
-		}
+	public void stepBack() {
+		sendCommand(new StepBackCommand());
 	}
 
+	private class PauseCommand extends Command {
+		public void execute() {
+			pauseImpl();
+		}
+
+	}
+
+	private void pauseImpl() {
+		isPaused = true;
+		stepCount = 0;
+		eventDispatcher.onBattlePaused(new BattlePausedEvent());
+	}
 
 	private class ResumeCommand extends Command {
 		public void execute() {
@@ -422,6 +439,17 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	private class StepCommand extends Command {
 		public void execute() {
+			runBackward = false;
+			if (isPaused) {
+				stepCount++;
+			}
+		}
+	}
+
+
+	public class StepBackCommand extends Command {
+		public void execute() {
+			runBackward = true;
 			if (isPaused) {
 				stepCount++;
 			}

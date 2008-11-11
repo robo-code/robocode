@@ -428,7 +428,7 @@ public final class Battle extends BaseBattle {
 
 		bullets.clear();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime()));
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), currentTime));
 	}
 
 	@Override
@@ -641,7 +641,7 @@ public final class Battle extends BaseBattle {
 
 	private void publishStatuses() {
 		for (RobotPeer robotPeer : robots) {
-			robotPeer.publishStatus(getTime());
+			robotPeer.publishStatus(currentTime);
 		}
 	}
 

@@ -305,7 +305,7 @@ public class BattleManager implements IBattleManager {
 			}
 		}
 
-		battlePlayer.loadRecord(recordFilename);
+		battlePlayer.loadRecord(recordFilename, BattleRecordFormat.BINARY);
 
 		battle = battlePlayer;
 
@@ -511,6 +511,12 @@ public class BattleManager implements IBattleManager {
 	public synchronized void nextTurn() {
 		if (battle != null && battle.isRunning()) {
 			battle.step();
+		}
+	}
+
+	public synchronized void prevTurn() {
+		if (battle != null && battle.isRunning() && battle instanceof BattlePlayer) {
+			((BattlePlayer)battle).stepBack();
 		}
 	}
 

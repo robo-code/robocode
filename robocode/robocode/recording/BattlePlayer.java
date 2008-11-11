@@ -21,7 +21,6 @@ import robocode.manager.RobocodeManager;
 import java.io.*;
 import java.util.zip.ZipInputStream;
 
-
 /**
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (original)
@@ -38,24 +37,26 @@ public final class BattlePlayer extends BaseBattle {
 		super(manager, eventDispatcher, false);
 	}
 
-	public void loadRecord(String recordFilename) {
+	public void loadRecord(String recordFilename, BattleRecordFormat format) {
 		cleanup();
 
 		try {
 			fileStream = new FileInputStream(recordFilename);
 			bufferedStream = new BufferedInputStream(fileStream);
-			zipStream = new ZipInputStream(bufferedStream);
-			zipStream.getNextEntry();
-			objectStream = new ObjectInputStream(zipStream);
+			if (format == BattleRecordFormat.BINARY) {
+				objectStream = new ObjectInputStream(bufferedStream);
+			} else if (format == BattleRecordFormat.BINARY_ZIP) {
+				zipStream = new ZipInputStream(bufferedStream);
+				zipStream.getNextEntry();
+				objectStream = new ObjectInputStream(zipStream);
+			} else{
+				throw new Error("Not implemented");
+			}
+
 
 			recordInfo = (BattleRecordInfo) objectStream.readObject();
 
 			battleRules = recordInfo.battleRules;
-
-			eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), recordInfo.battleRules, true));
-			if (isPaused()) {
-				eventDispatcher.onBattlePaused(new BattlePausedEvent());
-			}
 		} catch (IOException e) {
 			logError(e);
 		} catch (ClassNotFoundException e) {
@@ -93,7 +94,7 @@ public final class BattlePlayer extends BaseBattle {
 
 		battleRules = recordInfo.battleRules;
 
-		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(), recordInfo.battleRules, true));
+		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(currentTime), recordInfo.battleRules, true));
 		if (isPaused()) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
@@ -137,7 +138,7 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnEndedEvent(readSnapshot()));
+		eventDispatcher.onTurnEnded(new TurnEndedEvent(readSnapshot(currentTime)));
 
 		super.finalizeTurn();
 	}
@@ -147,11 +148,12 @@ public final class BattlePlayer extends BaseBattle {
 		return (isAborted() || getTime() > recordInfo.turnsInRounds[getRoundNum()]);
 	}
 
-	private TurnSnapshot readSnapshot() {
+	private TurnSnapshot readSnapshot(int currentTime) {
 		if (objectStream == null) {
 			return null;
 		}
 		try {
+			//TODO implement seek to currentTime, warn you. turns don't have same size in bytes 
 			return (TurnSnapshot) objectStream.readObject();
 		} catch (EOFException e) {
 			return null;
