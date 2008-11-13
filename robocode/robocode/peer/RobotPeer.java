@@ -742,6 +742,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		setRunning(true);
 
 		try {
+			robotThreadManager.initAWT();
 			if (robot != null) {
 
 				// Process all events for the first turn.
@@ -803,7 +804,12 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 	public final void execute() {
 		// Entering tick
-		if (Thread.currentThread() != robotThreadManager.getRunThread()) {
+		if (robotThreadManager == null || Thread.currentThread() != robotThreadManager.getRunThread()) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				//just swallow here
+			}
 			throw new RobotException("You cannot take action in this thread!");
 		}
 		if (getTestingCondition()) {

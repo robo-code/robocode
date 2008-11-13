@@ -39,7 +39,7 @@ public class TestAwtAttack extends RobotTestBed {
 		if (out.contains("Hacked!!!")) {
 			messagedBreakthru = true;
 		}
-		if (out.contains("Preventing testing.AwtAttack from access to threadgroup")) {
+		if (out.contains("Preventing testing.AwtAttack from access: (java.awt.AWTPermission")) {
 			messagedAttack = true;
 		}
 	}

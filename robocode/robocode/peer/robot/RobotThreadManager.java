@@ -25,6 +25,7 @@ import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.peer.RobotPeer;
+import robocode.security.RobocodeSecurityManager;
 
 
 /**
@@ -35,11 +36,19 @@ public class RobotThreadManager {
 	private RobotPeer robotPeer;
 	private Thread runThread;
 	private ThreadGroup runThreadGroup;
+	private boolean awtForThreadGroup =false;
 
 	public RobotThreadManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;
 		runThreadGroup = new ThreadGroup(robotPeer.getName());
 		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
+	}
+
+	public void initAWT() {
+		if (!awtForThreadGroup) {
+			RobocodeSecurityManager.createNewAppContext();
+			awtForThreadGroup = true;
+		}
 	}
 
 	public void forceStop() {
