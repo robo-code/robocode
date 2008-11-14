@@ -67,10 +67,10 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	 * @param manager		  robocode main manager
 	 * @param battleProperties properties for current game
 	 */
-	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
+	public NewBattleDialog(RobocodeManager manager) {
 		super(manager.getWindowManager().getRobocodeFrame(), true);
 		this.manager = manager;
-		this.battleProperties = battleProperties;
+		this.battleProperties = manager.getBattleManager().getBattleProperties();
 
 		initialize();
 	}

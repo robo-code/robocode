@@ -27,7 +27,6 @@
 package robocode.dialog;
 
 
-import robocode.battle.BattleProperties;
 import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
@@ -203,7 +202,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	 * Handle battleNew menu item action
 	 */
 	private void battleNewActionPerformed() {
-		manager.getWindowManager().showNewBattleDialog(manager.getBattleManager().getBattleProperties());
+		manager.getWindowManager().showNewBattleDialog();
 	}
 
 	private void battleOpenActionPerformed() {
@@ -216,9 +215,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 			if (path != null) {
 				battleManager.setBattleFilename(path);
-				BattleProperties battleProperties = battleManager.loadBattleProperties();
-
-				manager.getWindowManager().showNewBattleDialog(battleProperties);
+				manager.getWindowManager().showNewBattleDialog();
 			}
 		} finally {
 			battleManager.resumeBattle();

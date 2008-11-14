@@ -12,7 +12,6 @@
 package robocode.manager;
 
 
-import robocode.battle.BattleProperties;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.dialog.RobocodeFrame;
 import robocode.ui.BattleResultsTableModel;
@@ -66,7 +65,7 @@ public interface IWindowManager {
 
 	void showSplashScreen();
 
-	void showNewBattleDialog(BattleProperties battleProperties);
+	void showNewBattleDialog();
 
 	boolean closeRobocodeEditor();
 

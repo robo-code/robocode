@@ -23,7 +23,6 @@
 package robocode.manager;
 
 
-import robocode.battle.BattleProperties;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.dialog.*;
 import robocode.editor.RobocodeEditor;
@@ -58,7 +57,6 @@ public class WindowManager implements IWindowManager {
 
 	public RobocodeFrame getRobocodeFrame() {
 		if (robocodeFrame == null) {
-			// Create the frame
 			robocodeFrame = new RobocodeFrame(manager);
 		}
 		return robocodeFrame;
@@ -205,11 +203,7 @@ public class WindowManager implements IWindowManager {
 		try {
 			manager.getBattleManager().pauseBattle();
 
-			// Create the preferencesDialog
-			PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
-
-			// Show it
-			WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
+			WindowUtil.packCenterShow(getRobocodeFrame(), new PreferencesDialog(manager));
 		} finally {
 			manager.getBattleManager().resumeIfPausedBattle(); // THIS is just dirty hack-fix of more complex problem with desiredTPS and pausing.  resumeBattle() belongs here.
 		}
@@ -233,7 +227,6 @@ public class WindowManager implements IWindowManager {
 	public void showRobocodeEditor() {
 		if (robocodeEditor == null) {
 			robocodeEditor = new robocode.editor.RobocodeEditor(manager);
-			// Pack, center, and show it
 			WindowUtil.packCenterShow(robocodeEditor);
 		} else {
 			robocodeEditor.setVisible(true);
@@ -247,7 +240,6 @@ public class WindowManager implements IWindowManager {
 		}
 
 		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager(), false);
-		// Pack, center, and show it
 		WindowUtil.packCenterShow(robotPackager);
 	}
 
@@ -258,16 +250,13 @@ public class WindowManager implements IWindowManager {
 		}
 
 		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
-		// Pack, center, and show it
 		WindowUtil.packCenterShow(robotExtractor);
 	}
 
 	public void showSplashScreen() {
-		// Create the splash screen
 		SplashScreen splashScreen = new SplashScreen(manager);
 
 		synchronized (splashScreen) {
-			// Pack, center, and show it
 			packCenterShow(splashScreen);
 
 			try {
@@ -292,14 +281,10 @@ public class WindowManager implements IWindowManager {
 		splashScreen.dispose();
 	}
 
-	public void showNewBattleDialog(BattleProperties battleProperties) {
+	public void showNewBattleDialog() {
 		try {
 			manager.getBattleManager().pauseBattle();
-
-			NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
-
-			// Pack, center, and show it
-			WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
+			WindowUtil.packCenterShow(getRobocodeFrame(), new NewBattleDialog(manager));
 		} finally {
 			manager.getBattleManager().resumeBattle();
 		}
