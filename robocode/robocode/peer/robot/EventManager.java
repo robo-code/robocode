@@ -1044,12 +1044,25 @@ public class EventManager implements IEventManager {
 
 	public boolean processBattleEndedEvent() {
 		synchronized (eventQueue) {
-			for (Event currentEvent : eventQueue) {
+			Event currentEvent = null;
+			if (eventQueue.size() > 0) {
+				currentEvent = eventQueue.get(0);
+			}
+			while (currentEvent != null) {
+				eventQueue.remove(currentEvent);
 				if (currentEvent instanceof BattleEndedEvent) {
-					eventQueue.remove(currentEvent);
-					dispatchEvent(currentEvent);
+					try {
+						dispatchEvent(currentEvent);
+					} catch (EventInterruptedException e) {
+						// no action
+					} catch (RuntimeException e) {
+						throw e;
+					} catch (Error e) {
+						throw e;
+					}
 					return true;
 				}
+				currentEvent = (eventQueue.size() > 0) ? eventQueue.get(0) : null;
 			}
 		}
 		return false;

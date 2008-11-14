@@ -16,10 +16,7 @@
 package robocode.peer.robot;
 
 
-import robocode.DeathEvent;
-import robocode.Event;
-import robocode.SkippedTurnEvent;
-import robocode.WinEvent;
+import robocode.*;
 
 import java.util.Collections;
 import java.util.Vector;
@@ -56,7 +53,7 @@ public class EventQueue extends Vector<Event> {
 			for (int i = 0; i < size(); i++) {
 				Event e = get(i);
 
-				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent || e instanceof BattleEndedEvent)) {
 					remove(i--);
 				}
 			}
@@ -69,7 +66,7 @@ public class EventQueue extends Vector<Event> {
 				Event e = get(i);
 
 				if ((e.getTime() <= clearTime)
-						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent)) {
+						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent || e instanceof BattleEndedEvent)) {
 					remove(i--);
 				}
 			}
