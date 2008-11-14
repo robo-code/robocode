@@ -38,7 +38,7 @@ public class RobotThreadManager {
 	private IHostedThread robotProxy;
 	private Thread runThread;
 	private ThreadGroup runThreadGroup;
-	private boolean awtForThreadGroup =false;
+	private boolean awtForThreadGroup = false;
 
 	public RobotThreadManager(IHostedThread robotProxy) {
 		this.robotProxy = robotProxy;

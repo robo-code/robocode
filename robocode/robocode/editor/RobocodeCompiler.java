@@ -70,11 +70,11 @@ public class RobocodeCompiler {
 
 			ProcessBuilder pb = new ProcessBuilder(command.toString().split(" "));
 
+			pb.redirectErrorStream(true);
 			pb.directory(FileUtil.getCwd());
 			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
-			console.processStream(p.getErrorStream());
 			console.processStream(p.getInputStream());
 			p.waitFor();
 

@@ -17,7 +17,6 @@ import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
 import robocode.BattleResults;
-import robocode.control.RandomFactory;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.events.BattleStartedEvent;

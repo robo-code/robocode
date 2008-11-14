@@ -78,11 +78,11 @@ public class ConsoleScrollPane extends JScrollPane {
 	}
 
 	public void processStream(InputStream input) {
-		BufferedReader in = new BufferedReader(new InputStreamReader(input));
+		BufferedReader br = new BufferedReader(new InputStreamReader(input));
 		String line;
 
 		try {
-			for (line = in.readLine(); line != null; line = in.readLine()) {
+			while ((line = br.readLine()) != null) {
 				int tabIndex = line.indexOf("\t");
 
 				while (tabIndex >= 0) {

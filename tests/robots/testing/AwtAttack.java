@@ -49,6 +49,7 @@ public class AwtAttack extends AdvancedRobot {
 					writeAttack();
 
 					JFrame frame;
+
 					frame = new JFrame();
 					frame.setName("Hack");
 					frame.setVisible(true);

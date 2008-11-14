@@ -405,11 +405,11 @@ public class RobocodeCompilerFactory {
 			ProcessBuilder pb = new ProcessBuilder(command);
 
 			pb.directory(FileUtil.getCwd());
+			pb.redirectErrorStream(true);
 			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
 			console.processStream(p.getInputStream());
-			console.processStream(p.getErrorStream());
 			p.waitFor();
 
 			if (p.exitValue() == 0) {
@@ -466,11 +466,11 @@ public class RobocodeCompilerFactory {
 			ProcessBuilder pb = new ProcessBuilder("javac", "compilers/CompilerTest.java");
 
 			pb.directory(FileUtil.getCwd());
+			pb.redirectErrorStream(true);
 			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
 			console.processStream(p.getInputStream());
-			console.processStream(p.getErrorStream());
 			p.waitFor();
 
 			javacOk = (p.exitValue() == 0);
@@ -502,11 +502,11 @@ public class RobocodeCompilerFactory {
 			ProcessBuilder pb = new ProcessBuilder(command.split(" "));
 
 			pb.directory(FileUtil.getCwd());
+			pb.redirectErrorStream(true);
 			Process p = pb.start();
 
 			// The waitFor() must done after reading the input and error stream of the process
 			console.processStream(p.getInputStream());
-			console.processStream(p.getErrorStream());
 			p.waitFor();
 
 			jikesOk = (p.exitValue() == 0);
