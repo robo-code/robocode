@@ -548,6 +548,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
+	public void waitWakeupNoWait() {
+		synchronized (isSleeping) {
+			if (isSleeping()) {
+				// Wake up the thread
+				isSleeping.notifyAll();
+			}
+		}
+	}
+
 	public void waitSleeping(long waitTime, int millisWait) {
 		synchronized (isSleeping) {
 			// It's quite possible for simple robots to
@@ -588,7 +597,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					|| (isIORobot && (skippedTurns > maxSkippedTurnsWithIO))) {
 				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
-				getRobotStatistics().setInactive();
+				setHalt(true);
+				waitWakeupNoWait();
+				setInactive();
 				robotProxy.forceStopThread();
 			}
 		}
