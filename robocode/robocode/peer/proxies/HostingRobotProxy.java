@@ -227,6 +227,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected abstract void executeImpl();
 
 	public void run() {
+		robotThreadManager.initAWT();
 		if (!loadRobotRound()) {
 			drainEnergy();
 			peer.setInactive();

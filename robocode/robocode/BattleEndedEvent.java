@@ -92,4 +92,11 @@ public final class BattleEndedEvent extends Event {
 	public BattleResults getResults() {
 		return results;
 	}
+
+	/**
+	 * @return True when the event is delivered even after timeout.
+	 */
+	public boolean isCriricalEvent() {
+		return false;
+	}
 }

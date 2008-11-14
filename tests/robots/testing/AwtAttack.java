@@ -15,6 +15,11 @@ package testing;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 
+import javax.swing.*;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 
 /**
  * @author Pavel Savara (original)
@@ -41,7 +46,13 @@ public class AwtAttack extends AdvancedRobot {
 		try {
 			Runnable doHack = new Runnable() {
 				public void run() {
-					out.println("Hacked!!!");
+					writeAttack();
+
+					JFrame frame;
+					frame = new JFrame();
+					frame.setName("Hack");
+					frame.setVisible(true);
+
 				}
 			};
 
@@ -51,4 +62,26 @@ public class AwtAttack extends AdvancedRobot {
 			e.printStackTrace(out);
 		}
 	}
+
+	private void writeAttack() {
+		FileOutputStream fs = null;
+
+		try {
+			fs = new FileOutputStream("C:\\Robocode.attack");
+			fs.write(0xBA);
+			fs.write(0xDF);
+			fs.write(0x00);
+			fs.write(0xD0);
+			fs.close();
+			out.println("Hacked!!!");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace(out);
+		} catch (IOException e) {
+			e.printStackTrace(out);
+		} catch (Throwable e) {
+			// swalow security exception
+			e.printStackTrace(out);
+		}
+	}
+
 }

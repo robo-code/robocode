@@ -42,6 +42,8 @@ import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.security.Permission;
 import java.util.*;
+import java.util.List;
+import java.awt.*;
 
 
 /**
@@ -84,7 +86,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			RobocodeObjectInputStream is = new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
 		} catch (IOException e) {}
 
-		createNewAppContext();
+		Toolkit.getDefaultToolkit(); 
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
@@ -581,7 +583,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 	}
 
-	private void createNewAppContext() {
+	public static void createNewAppContext() {
 		// same as SunToolkit.createNewAppContext();
 		// we can't assume that we are always on Suns JVM, so we can't reference it directly
 		// why we call that ? Because SunToolkit is caching AWTQueue instance form main thread group and use it on robots threads

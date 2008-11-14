@@ -299,6 +299,15 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	@Override
 	protected final void executeImpl() {
+		if (execResult==null){
+			// this is to slow down undead robot after cleanup, from fast exception-loop
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				//just swalow here
+			}
+		}
+
 		// Entering tick
 		robotThreadManager.checkRunThread();
 		if (testingCondition) {
