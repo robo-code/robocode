@@ -1045,6 +1045,7 @@ public class EventManager implements IEventManager {
 	public boolean processBattleEndedEvent() {
 		synchronized (eventQueue) {
 			Event currentEvent = null;
+
 			if (eventQueue.size() > 0) {
 				currentEvent = eventQueue.get(0);
 			}
@@ -1053,8 +1054,7 @@ public class EventManager implements IEventManager {
 				if (currentEvent instanceof BattleEndedEvent) {
 					try {
 						dispatchEvent(currentEvent);
-					} catch (EventInterruptedException e) {
-						// no action
+					} catch (EventInterruptedException e) {// no action
 					} catch (RuntimeException e) {
 						throw e;
 					} catch (Error e) {

@@ -807,8 +807,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		if (robotThreadManager == null || Thread.currentThread() != robotThreadManager.getRunThread()) {
 			try {
 				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				//just swallow here
+			} catch (InterruptedException e) {// just swallow here
 			}
 			throw new RobotException("You cannot take action in this thread!");
 		}

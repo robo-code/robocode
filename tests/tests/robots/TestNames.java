@@ -17,8 +17,6 @@ import helpers.Assert;
 import org.junit.Test;
 import robocode.battle.events.TurnEndedEvent;
 
-import java.io.File;
-
 
 /**
  * @author Pavel Savara (original)

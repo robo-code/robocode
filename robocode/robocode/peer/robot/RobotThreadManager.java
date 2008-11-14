@@ -36,7 +36,7 @@ public class RobotThreadManager {
 	private RobotPeer robotPeer;
 	private Thread runThread;
 	private ThreadGroup runThreadGroup;
-	private boolean awtForThreadGroup =false;
+	private boolean awtForThreadGroup = false;
 
 	public RobotThreadManager(RobotPeer robotPeer) {
 		this.robotPeer = robotPeer;

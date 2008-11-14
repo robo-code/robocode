@@ -15,7 +15,6 @@ package robots;
 import helpers.RobotTestBed;
 import helpers.Assert;
 import org.junit.Test;
-import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.events.BattleErrorEvent;
 
 import java.io.File;

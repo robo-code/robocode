@@ -53,7 +53,8 @@ public class EventQueue extends Vector<Event> {
 			for (int i = 0; i < size(); i++) {
 				Event e = get(i);
 
-				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent || e instanceof BattleEndedEvent)) {
+				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent
+						|| e instanceof BattleEndedEvent)) {
 					remove(i--);
 				}
 			}
@@ -66,7 +67,8 @@ public class EventQueue extends Vector<Event> {
 				Event e = get(i);
 
 				if ((e.getTime() <= clearTime)
-						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent || e instanceof BattleEndedEvent)) {
+						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent
+						|| e instanceof BattleEndedEvent)) {
 					remove(i--);
 				}
 			}
