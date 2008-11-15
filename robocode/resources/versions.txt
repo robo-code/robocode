@@ -1,3 +1,27 @@
+Version 1.6.2
+(11/14/2008)
+-------------
+o Bugfixes
+  -- [2214620] Robot was paying time for painting. Now we giving him unlimited time when painting 
+     is enabled on UI.
+
+o New feature
+  -- battle recording and replay. Saving to binary and xml file.
+  -- new command line option -replay for replaying a battle record
+
+o Changes
+  -- redesigned RobotPeer and Battle. Now we send messages between threads instead of synchronizing
+     indifidual properties. Code here is much more readable now.
+  -- most synchronization is now interlocked
+  -- event manager, priority and dispatch of events refactored
+  -- more unit tests added
+  -- painting robot must now override onPaint method (at least empty) to be able to paint from 
+     any other method using getGraphics(). GraphicsProxy optimized.
+  -- interactive robots are better detected to not waste time of non-interactive robots.
+  -- team messages are deserialized on receiver robot thread.
+  -- got rid of robot loader thread, now loading on robot's thread, got more security.
+  -- introduced new interfaces for code components
+
 Version 1.6.1.4
 (11/14/2008)
 -------------
