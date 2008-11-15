@@ -64,6 +64,7 @@ package robocode.peer;
 
 
 import robocode.*;
+import robocode.repository.RobotFileSpecification;
 import robocode.battle.Battle;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
@@ -172,6 +173,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (team != null) {
 			team.add(this);
 		}
+		RobotFileSpecification spec = robotClassManager.getRobotSpecification();
+
 		this.battle = battle;
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
@@ -181,19 +184,19 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-		statics = new RobotStatics(robotClassManager.getRobotSpecification(), duplicate, isLeader,
+		statics = new RobotStatics(spec, duplicate, isLeader,
 				battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
 
 		controlRobotSpecification = robotClassManager.getControlRobotSpecification();
 
-		if (statics.isTeamRobot()) {
+		if (spec.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (statics.isAdvancedRobot()) {
+		} else if (spec.isAdvancedRobot()) {
 			robotProxy = new AdvancedRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (statics.isInteractiveRobot()) {
+		} else if (spec.isStandardRobot()) {
 			robotProxy = new StandardRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (statics.isJuniorRobot()) {
+		} else if (spec.isJuniorRobot()) {
 			robotProxy = new JuniorRobotProxy(robotClassManager, hostManager, this, statics);
 		} else {
 			throw new AccessControlException("Unknown robot type");

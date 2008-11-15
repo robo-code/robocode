@@ -910,7 +910,9 @@ public final class Battle extends BaseBattle {
 
 		public void execute() {
 			for (RobotPeer robotPeer : robots) {
-				robotPeer.addEvent(event);
+				if (robotPeer.isInteractiveRobot()){
+					robotPeer.addEvent(event);
+				}
 			}
 		}
 	}

@@ -33,6 +33,7 @@ package robocode.manager;
 
 
 import robocode.Droid;
+import robocode.Robot;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
@@ -51,6 +52,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.lang.reflect.Method;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 
 /**
@@ -414,16 +419,31 @@ public class RobotRepositoryManager implements IRepositoryManager {
 						}
 
 						if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
-							robotFileSpecification.setInteractiveRobot(true);
+							// in this case we make sure that robot don't waste time
+							if (checkMethodOverride(robotClass, Robot.class, "getInteractiveEventListener")
+									|| checkMethodOverride(robotClass, Robot.class, "onKeyPressed", KeyEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onKeyReleased", KeyEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onKeyTyped", KeyEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseClicked", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseEntered", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseExited", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMousePressed", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseReleased", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseMoved", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseDragged", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseWheelMoved", MouseWheelEvent.class)
+									) {
+								robotFileSpecification.setInteractiveRobot(true);
+							}
 						}
 
 						if (IPaintRobot.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setPaintRobot(true);
 						}
 
-						/* if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
-						 robotFileSpecification.setClassicRobot(true);
-						 }*/
+						if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
+							robotFileSpecification.setStandardRobot(true);
+						}
 
 						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setJuniorRobot(true);
@@ -454,6 +474,21 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		} else {
 			System.out.println("Update robot database not possible for type " + fileSpecification.getFileType());
 		}
+	}
+
+	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class ... parameterTypes) {
+		if (knownBase.isAssignableFrom(robotClass)){
+			final Method getInteractiveEventListener;
+			try {
+				getInteractiveEventListener = robotClass.getMethod(name, parameterTypes);
+			} catch (NoSuchMethodException e) {
+				return false;
+			}
+			if (getInteractiveEventListener.getDeclaringClass().equals(knownBase)){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void updateNoDuplicates(FileSpecification spec) {
