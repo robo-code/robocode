@@ -58,8 +58,9 @@ public class CustomEvent extends Event {
 	 */
 	public CustomEvent(Condition condition, int priority) {
 		this.condition = condition;
+		setPriority(priority);
 		if (condition != null) {
-			condition.setPriority(priority);
+			condition.setPriority(getPriority());
 		}
 	}
 
@@ -128,7 +129,6 @@ public class CustomEvent extends Event {
 	@Override
 	// final to disable overrides
 	public final int getPriority() {
-		return super.getPriority();
+		return priority;
 	}
-
 }

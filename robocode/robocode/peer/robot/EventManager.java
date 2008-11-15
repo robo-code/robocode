@@ -88,6 +88,11 @@ public class EventManager implements IEventManager {
 	}
 
 	public boolean add(Event e) {
+		e.setPriority(getEventPriority(e.getClass().getName()));
+		return addImpl(e);
+	}
+
+	private boolean addImpl(Event e) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				System.out.println(
@@ -95,7 +100,6 @@ public class EventManager implements IEventManager {
 						+ " events in queue.");
 				return false;
 			}
-			e.setPriority(getEventPriority(e.getClass().getName()));
 			return eventQueue.add(e);
 		}
 		return false;
@@ -410,7 +414,7 @@ public class EventManager implements IEventManager {
 				CustomEvent event = new CustomEvent(customEvent);
 
 				event.setTime(getTime()); // TODO is that correct time ?
-				add(event);
+				addImpl(event);
 			}
 		}
 
