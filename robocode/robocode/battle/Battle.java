@@ -128,6 +128,8 @@ import java.util.regex.Pattern;
  */
 public final class Battle extends BaseBattle {
 
+	static int DEBUG_TURN_WAIT = 10 * 60 * 1000;
+
 	// Inactivity related items
 	private int inactiveTurnCount;
 	private double inactivityEnergy;
@@ -671,6 +673,7 @@ public final class Battle extends BaseBattle {
 	private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
 		final long waitTime = manager.getCpuManager().getCpuConstant();
 		int millisWait = (int) (waitTime / 1000000);
+		int microWait = (int) (waitTime % 1000000);
 
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning()) {
@@ -679,7 +682,14 @@ public final class Battle extends BaseBattle {
 				robotPeer.waitWakeup();
 
 				if (robotPeer.isAlive()) {
-					robotPeer.waitSleeping(waitTime, millisWait);
+					if (isDebugging || robotPeer.isPaintEnabled()){
+						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 0);
+					}
+					else{
+						robotPeer.waitSleeping(millisWait, microWait );
+					}
+				}
+				if (robotPeer.isRunning() && robotPeer.isAlive() && !robotPeer.isSleeping()) {
 					robotPeer.setSkippedTurns();
 				}
 			}
@@ -689,6 +699,7 @@ public final class Battle extends BaseBattle {
 	private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
 		final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
 		int millisWait = (int) (waitTime / 1000000);
+		int microWait = (int) (waitTime % 1000000);
 
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning()) {
@@ -697,11 +708,16 @@ public final class Battle extends BaseBattle {
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning() && robotPeer.isAlive()) {
-				robotPeer.waitSleeping(waitTime, millisWait);
+				if (isDebugging || robotPeer.isPaintEnabled()){
+					robotPeer.waitSleeping(DEBUG_TURN_WAIT, 0);
+				}
+				else{
+					robotPeer.waitSleeping(millisWait, microWait);
+				}
 			}
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
-			if (robotPeer.isRunning() && robotPeer.isAlive()) {
+			if (robotPeer.isRunning() && robotPeer.isAlive() && !robotPeer.isSleeping()) {
 				robotPeer.setSkippedTurns();
 			}
 		}

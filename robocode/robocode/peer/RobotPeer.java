@@ -557,7 +557,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void waitSleeping(long waitTime, int millisWait) {
+	public void waitSleeping(int millisWait, int microWait) {
 		synchronized (isSleeping) {
 			// It's quite possible for simple robots to
 			// complete their processing before we get here,
@@ -569,7 +569,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 						isSleeping.wait(0, 999999);
 					}
 					if (!isSleeping()) {
-						isSleeping.wait(0, (int) (waitTime % 1000000));
+						isSleeping.wait(0, microWait);
 					}
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
@@ -583,10 +583,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public void setSkippedTurns() {
 
-		if (isSleeping() || !isRunning() || battle.isDebugging()) {
+		if (battle.isDebugging() || isPaintEnabled()) {
 			skippedTurns = 0;
 		} else {
-			println("SK");
+			println("SYSTEM: you skipped turn");
 			skippedTurns++;
 			events.get().clear(false);
 			if (!isDead()) {
