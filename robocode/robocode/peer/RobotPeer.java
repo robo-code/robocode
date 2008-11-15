@@ -184,8 +184,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-		statics = new RobotStatics(spec, duplicate, isLeader,
-				battle.getBattleRules(), team);
+		statics = new RobotStatics(spec, duplicate, isLeader, battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
 
 		controlRobotSpecification = robotClassManager.getControlRobotSpecification();
@@ -478,7 +477,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
 
-		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), shouldWait, isPaintEnabled());
+		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), shouldWait,
+				isPaintEnabled());
 	}
 
 	public final ExecResult waitForBattleEndImpl(RobotCommands newCommands) {
@@ -495,9 +495,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && !isWinner());
 
-		readoutTeamMessages(); //throw away
+		readoutTeamMessages(); // throw away
 		
-		return new ExecResult(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), getHalt(), shouldWait, false);
+		return new ExecResult(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), getHalt(),
+				shouldWait, false);
 	}
 
 	private List<Event> readoutEvents() {

@@ -353,21 +353,23 @@ public final class Battle extends BaseBattle {
 		if (parallelOn) {
 			// how could robots share CPUs ?
 			double parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
+
 			// four CPUs can't run two single threaded robot faster than two CPUs
 			if (parallelConstant < 1) {
 				parallelConstant = 1;
 			}
 			final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
+
 			millisWait = (int) (waitTime / 1000000);
 			microWait = (int) (waitTime % 1000000);
-		}
-		else{
+		} else {
 			final long waitTime = manager.getCpuManager().getCpuConstant();
+
 			millisWait = (int) (waitTime / 1000000);
 			microWait = (int) (waitTime % 1000000);
 		}
-		if (microWait==0){
-			microWait=1;
+		if (microWait == 0) {
+			microWait = 1;
 		}
 	}
 
@@ -689,11 +691,10 @@ public final class Battle extends BaseBattle {
 				robotPeer.waitWakeup();
 
 				if (robotPeer.isAlive()) {
-					if (isDebugging || robotPeer.isPaintEnabled()){
+					if (isDebugging || robotPeer.isPaintEnabled()) {
 						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
-					}
-					else{
-						robotPeer.waitSleeping(millisWait, microWait );
+					} else {
+						robotPeer.waitSleeping(millisWait, microWait);
 					}
 				}
 				if (robotPeer.isRunning() && robotPeer.isAlive() && !robotPeer.isSleeping()) {
@@ -711,10 +712,9 @@ public final class Battle extends BaseBattle {
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning() && robotPeer.isAlive()) {
-				if (isDebugging || robotPeer.isPaintEnabled()){
+				if (isDebugging || robotPeer.isPaintEnabled()) {
 					robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
-				}
-				else{
+				} else {
 					robotPeer.waitSleeping(millisWait, microWait);
 				}
 			}
@@ -913,7 +913,7 @@ public final class Battle extends BaseBattle {
 
 		public void execute() {
 			for (RobotPeer robotPeer : robots) {
-				if (robotPeer.isInteractiveRobot()){
+				if (robotPeer.isInteractiveRobot()) {
 					robotPeer.addEvent(event);
 				}
 			}

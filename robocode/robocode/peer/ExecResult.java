@@ -30,7 +30,7 @@ public class ExecResult implements Serializable {
 		this.teamMessages = teamMessages;
 		this.halt = halt;
 		this.shouldWait = shouldWait;
-		this.paintEnabled=paintEnabled;
+		this.paintEnabled = paintEnabled;
 	}
 
 	public RobotCommands commands;

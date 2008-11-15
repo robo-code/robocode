@@ -481,15 +481,16 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		}
 	}
 
-	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class ... parameterTypes) {
-		if (knownBase.isAssignableFrom(robotClass)){
+	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class... parameterTypes) {
+		if (knownBase.isAssignableFrom(robotClass)) {
 			final Method getInteractiveEventListener;
+
 			try {
 				getInteractiveEventListener = robotClass.getMethod(name, parameterTypes);
 			} catch (NoSuchMethodException e) {
 				return false;
 			}
-			if (getInteractiveEventListener.getDeclaringClass().equals(knownBase)){
+			if (getInteractiveEventListener.getDeclaringClass().equals(knownBase)) {
 				return false;
 			}
 		}
