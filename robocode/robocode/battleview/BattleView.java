@@ -498,6 +498,7 @@ public class BattleView extends Canvas {
 	private Graphics2DProxy getRobotGraphics(int robotIndex) {
 		if (robotGraphics[robotIndex] == null) {
 			robotGraphics[robotIndex] = new Graphics2DProxy();
+			robotGraphics[robotIndex].setPaintingEnabled(true);
 		}
 		return robotGraphics[robotIndex];
 	}

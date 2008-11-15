@@ -56,6 +56,7 @@ import java.lang.reflect.Method;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.*;
 
 
 /**
@@ -438,7 +439,11 @@ public class RobotRepositoryManager implements IRepositoryManager {
 						}
 
 						if (IPaintRobot.class.isAssignableFrom(robotClass)) {
-							robotFileSpecification.setPaintRobot(true);
+							if (checkMethodOverride(robotClass, Robot.class, "getPaintEventListener")
+									|| checkMethodOverride(robotClass, Robot.class, "onPaint", Graphics2D.class)
+									) {
+								robotFileSpecification.setPaintRobot(true);
+							}
 						}
 
 						if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {

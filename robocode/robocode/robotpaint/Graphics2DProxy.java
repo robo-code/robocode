@@ -153,6 +153,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	// Flag indicating if this proxy has been initialized
 	private transient boolean isInitialized;
 
+	// Flag indicating if this proxy has been initialized
+	private transient boolean isPaintingEnabled;
+
 	// --------------------------------------------------------------------------
 	// Overriding all methods from the extended Graphics class
 	// --------------------------------------------------------------------------
@@ -188,6 +191,10 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		return gfxProxyCopy;
 	}
 
+	public void setPaintingEnabled(boolean value){
+		isPaintingEnabled=value;		
+	}
+
 	@Override
 	public Graphics create(int x, int y, int width, int height) {
 		Graphics g = create();
@@ -203,7 +210,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getTransform()
 		this.transform.translate(x, y);
 
-		queueCall(Method.TRANSLATE_INT, x, y);
+		if (isPaintingEnabled){
+			queueCall(Method.TRANSLATE_INT, x, y);
+		}
 	}
 
 	@Override
@@ -216,17 +225,23 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getColor()
 		this.color = c;
 
-		queueCall(Method.SET_COLOR, copyOf(c));
+		if (isPaintingEnabled){
+			queueCall(Method.SET_COLOR, copyOf(c));
+		}
 	}
 
 	@Override
 	public void setPaintMode() {
-		queueCall(Method.SET_PAINT_MODE);
+		if (isPaintingEnabled){
+			queueCall(Method.SET_PAINT_MODE);
+		}
 	}
 
 	@Override
 	public void setXORMode(Color c1) {
-		queueCall(Method.SET_XOR_MODE, copyOf(c1));
+		if (isPaintingEnabled){
+			queueCall(Method.SET_XOR_MODE, copyOf(c1));
+		}
 	}
 
 	@Override
@@ -263,7 +278,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 		this.clip = clipArea;
 
-		queueCall(Method.CLIP_RECT, x, y, width, height);
+		if (isPaintingEnabled){
+			queueCall(Method.CLIP_RECT, x, y, width, height);
+		}
 	}
 
 	@Override
@@ -271,7 +288,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getClip()
 		this.clip = new Rectangle(x, y, width, height);
 
-		queueCall(Method.SET_CLIP, x, y, width, height);
+		if (isPaintingEnabled){
+			queueCall(Method.SET_CLIP, x, y, width, height);
+		}
 	}
 
 	@Override
@@ -284,97 +303,135 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getClip()
 		this.clip = clip;
 
-		queueCall(Method.SET_CLIP_SHAPE, copyOf(clip));
+		if (isPaintingEnabled){
+			queueCall(Method.SET_CLIP_SHAPE, copyOf(clip));
+		}
 	}
 
 	@Override
 	public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-		queueCall(Method.COPY_AREA, x, y, width, height, dx, dy);
+		if (isPaintingEnabled){
+			queueCall(Method.COPY_AREA, x, y, width, height, dx, dy);
+		}
 	}
 
 	@Override
 	public void drawLine(int x1, int y1, int x2, int y2) {
-		queueCall(Method.DRAW_LINE, x1, y1, x2, y2);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_LINE, x1, y1, x2, y2);
+		}
 	}
 
 	@Override
 	public void fillRect(int x, int y, int width, int height) {
-		queueCall(Method.FILL_RECT, x, y, width, height);
+		if (isPaintingEnabled){
+			queueCall(Method.FILL_RECT, x, y, width, height);
+		}
 	}
 
 	@Override
 	public void drawRect(int x, int y, int width, int height) {
-		queueCall(Method.DRAW_RECT, x, y, width, height);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_RECT, x, y, width, height);
+		}
 	}
 
 	@Override
 	public void clearRect(int x, int y, int width, int height) {
-		queueCall(Method.CLEAR_RECT, x, y, width, height);
+		if (isPaintingEnabled){
+			queueCall(Method.CLEAR_RECT, x, y, width, height);
+		}
 	}
 
 	@Override
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
-		queueCall(Method.DRAW_ROUND_RECT, x, y, width, height, arcWidth, arcHeight);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_ROUND_RECT, x, y, width, height, arcWidth, arcHeight);
+		}
 	}
 
 	@Override
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
-		queueCall(Method.FILL_ROUND_RECT, x, y, width, height, arcWidth, arcHeight);
+		if (isPaintingEnabled){
+			queueCall(Method.FILL_ROUND_RECT, x, y, width, height, arcWidth, arcHeight);
+		}
 	}
 
 	@Override
 	public void draw3DRect(int x, int y, int width, int height, boolean raised) {
-		queueCall(Method.DRAW_3D_RECT, x, y, width, height, raised);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_3D_RECT, x, y, width, height, raised);
+		}
 	}
 
 	@Override
 	public void fill3DRect(int x, int y, int width, int height, boolean raised) {
-		queueCall(Method.FILL_3D_RECT, x, y, width, height, raised);
+		if (isPaintingEnabled){
+			queueCall(Method.FILL_3D_RECT, x, y, width, height, raised);
+		}
 	}
 
 	@Override
 	public void drawOval(int x, int y, int width, int height) {
-		queueCall(Method.DRAW_OVAL, x, y, width, height);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_OVAL, x, y, width, height);
+		}
 	}
 
 	@Override
 	public void fillOval(int x, int y, int width, int height) {
-		queueCall(Method.FILL_OVAL, x, y, width, height);
+		if (isPaintingEnabled){
+			queueCall(Method.FILL_OVAL, x, y, width, height);
+		}
 	}
 
 	@Override
 	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-		queueCall(Method.DRAW_ARC, x, y, width, height, startAngle, arcAngle);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_ARC, x, y, width, height, startAngle, arcAngle);
+		}
 	}
 
 	@Override
 	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-		queueCall(Method.FILL_ARC, x, y, width, height, startAngle, arcAngle);
+		if (isPaintingEnabled){
+			queueCall(Method.FILL_ARC, x, y, width, height, startAngle, arcAngle);
+		}
 	}
 
 	@Override
 	public void drawPolyline(int[] xPoints, int[] yPoints, int npoints) {
-		queueCall(Method.DRAW_POLYLINE, copyOf(xPoints), copyOf(yPoints), npoints);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_POLYLINE, copyOf(xPoints), copyOf(yPoints), npoints);
+		}
 	}
 
 	@Override
 	public void drawPolygon(int[] xPoints, int[] yPoints, int npoints) {
-		queueCall(Method.DRAW_POLYGON, copyOf(xPoints), copyOf(yPoints), npoints);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_POLYGON, copyOf(xPoints), copyOf(yPoints), npoints);
+		}
 	}
 
 	@Override
 	public void drawPolygon(Polygon p) {
-		drawPolygon(p.xpoints, p.ypoints, p.npoints); // Reuse sister method
+		if (isPaintingEnabled){
+			drawPolygon(p.xpoints, p.ypoints, p.npoints); // Reuse sister method
+		}
 	}
 
 	@Override
 	public void fillPolygon(int[] xPoints, int[] yPoints, int npoints) {
-		queueCall(Method.FILL_POLYGON, copyOf(xPoints), copyOf(yPoints), npoints);
+		if (isPaintingEnabled){
+			queueCall(Method.FILL_POLYGON, copyOf(xPoints), copyOf(yPoints), npoints);
+		}
 	}
 
 	@Override
 	public void fillPolygon(Polygon p) {
-		fillPolygon(p.xpoints, p.ypoints, p.npoints); // Reuse sister method
+		if (isPaintingEnabled){
+			fillPolygon(p.xpoints, p.ypoints, p.npoints); // Reuse sister method
+		}
 	}
 
 	@Override
@@ -382,48 +439,65 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		if (str == null) {
 			throw new NullPointerException("str is null"); // According to the specification!
 		}
-		queueCall(Method.DRAW_STRING_INT, str, x, y);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_STRING_INT, str, x, y);
+		}
 	}
 
 	@Override
 	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-		queueCall(Method.DRAW_STRING_ACI_INT, copyOf(iterator), x, y);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_STRING_ACI_INT, copyOf(iterator), x, y);
+
+		}
 	}
 
 	@Override
 	public void drawChars(char[] data, int offset, int length, int x, int y) {
-		queueCall(Method.DRAW_CHARS, copyOf(data), offset, length, x, y);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_CHARS, copyOf(data), offset, length, x, y);
+		}
 	}
 
 	@Override
 	public void drawBytes(byte[] data, int offset, int length, int x, int y) {
-		queueCall(Method.DRAW_BYTES, copyOf(data), offset, length, x, y);
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_BYTES, copyOf(data), offset, length, x, y);
+		}
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-		queueCall(Method.DRAW_IMAGE_1, copyOf(img), x, y, copyOf(observer));
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_IMAGE_1, copyOf(img), x, y, copyOf(observer));
+		}
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
-		queueCall(Method.DRAW_IMAGE_2, copyOf(img), x, y, width, height, copyOf(observer));
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_IMAGE_2, copyOf(img), x, y, width, height, copyOf(observer));
+		}
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
-		queueCall(Method.DRAW_IMAGE_3, copyOf(img), x, y, copyOf(bgcolor), copyOf(observer));
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_IMAGE_3, copyOf(img), x, y, copyOf(bgcolor), copyOf(observer));
+		}
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
-		queueCall(Method.DRAW_IMAGE_4, copyOf(img), x, y, width, height, copyOf(bgcolor), copyOf(observer));
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_IMAGE_4, copyOf(img), x, y, width, height, copyOf(bgcolor), copyOf(observer));
+		}
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
 	}
@@ -432,7 +506,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
 			ImageObserver observer) {
 
-		queueCall(Method.DRAW_IMAGE_5, copyOf(img), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, copyOf(observer));
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_IMAGE_5, copyOf(img), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, copyOf(observer));
+		}
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
 	}
@@ -441,8 +517,10 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
 			Color bgcolor, ImageObserver observer) {
 
-		queueCall(Method.DRAW_IMAGE_6, copyOf(img), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, copyOf(bgcolor),
-				copyOf(observer));
+		if (isPaintingEnabled){
+			queueCall(Method.DRAW_IMAGE_6, copyOf(img), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, copyOf(bgcolor),
+					copyOf(observer));
+		}
 
 		return false; // as if if the image pixels are still changing (as the call is queued)
 	}
@@ -599,8 +677,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	public void addRenderingHints(Map<?, ?> hints) {
 		// for getRenderingHint() and getRenderingHints()
 		this.renderingHints.putAll(hints);
-
-		queueCall(Method.ADD_RENDERING_HINTS, deepCopy(hints));
+		if (isPaintingEnabled){
+			queueCall(Method.ADD_RENDERING_HINTS, deepCopy(hints));
+		}
 	}
 
 	@Override
@@ -613,7 +692,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getTransform()
 		transform.translate(tx, ty);
 
-		queueCall(Method.TRANSLATE_DOUBLE, tx, ty);
+		if (isPaintingEnabled){
+			queueCall(Method.TRANSLATE_DOUBLE, tx, ty);
+		}
 	}
 
 	@Override
@@ -621,7 +702,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getTransform()
 		transform.rotate(theta);
 
-		queueCall(Method.ROTATE, theta);
+		if (isPaintingEnabled){
+			queueCall(Method.ROTATE, theta);
+		}
 	}
 
 	@Override
@@ -629,7 +712,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getTransform()
 		transform.rotate(theta, x, y);
 
-		queueCall(Method.ROTATE_XY, theta, x, y);
+		if (isPaintingEnabled){
+			queueCall(Method.ROTATE_XY, theta, x, y);
+		}
 	}
 
 	@Override
@@ -637,7 +722,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getTransform()
 		transform.scale(sx, sy);
 
-		queueCall(Method.SCALE, sx, sy);
+		if (isPaintingEnabled){
+			queueCall(Method.SCALE, sx, sy);
+		}
 	}
 
 	@Override
@@ -645,7 +732,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getTransform()
 		transform.shear(shx, shy);
 
-		queueCall(Method.SHEAR, shx, shy);
+		if (isPaintingEnabled){
+			queueCall(Method.SHEAR, shx, shy);
+		}
 	}
 
 	@Override
@@ -653,7 +742,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getTransform()
 		transform.concatenate(Tx);
 
-		queueCall(Method.TRANSFORM, copyOf(Tx));
+		if (isPaintingEnabled){
+			queueCall(Method.TRANSFORM, copyOf(Tx));
+		}
 	}
 
 	@Override
@@ -661,7 +752,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getTransform()
 		this.transform = Tx;
 
-		queueCall(Method.SET_TRANSFORM, copyOf(Tx));
+		if (isPaintingEnabled){
+			queueCall(Method.SET_TRANSFORM, copyOf(Tx));
+		}
 	}
 
 	@Override
@@ -712,7 +805,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 			this.clip = clipArea;
 		}
 
-		queueCall(Method.CLIP, copyOf(s));
+		if (isPaintingEnabled){
+			queueCall(Method.CLIP, copyOf(s));
+		}
 	}
 
 	@Override

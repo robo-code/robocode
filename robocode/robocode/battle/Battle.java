@@ -128,15 +128,15 @@ import java.util.regex.Pattern;
  */
 public final class Battle extends BaseBattle {
 
-	static int DEBUG_TURN_WAIT = 10 * 60 * 1000;
-
 	// Inactivity related items
 	private int inactiveTurnCount;
 	private double inactivityEnergy;
 
 	// Turn skip related items
 	private boolean parallelOn;
-	private double parallelConstant;
+	static int DEBUG_TURN_WAIT = 10 * 60 * 1000;
+	private int millisWait;
+	private int microWait;
 
 	// Objects in the battle
 	private final int robotsCount;
@@ -352,11 +352,22 @@ public final class Battle extends BaseBattle {
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
 		if (parallelOn) {
 			// how could robots share CPUs ?
-			parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
+			double parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
 			// four CPUs can't run two single threaded robot faster than two CPUs
 			if (parallelConstant < 1) {
 				parallelConstant = 1;
 			}
+			final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
+			millisWait = (int) (waitTime / 1000000);
+			microWait = (int) (waitTime % 1000000);
+		}
+		else{
+			final long waitTime = manager.getCpuManager().getCpuConstant();
+			millisWait = (int) (waitTime / 1000000);
+			microWait = (int) (waitTime % 1000000);
+		}
+		if (microWait==0){
+			microWait=1;
 		}
 	}
 
@@ -671,10 +682,6 @@ public final class Battle extends BaseBattle {
 	}
 
 	private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
-		final long waitTime = manager.getCpuManager().getCpuConstant();
-		int millisWait = (int) (waitTime / 1000000);
-		int microWait = (int) (waitTime % 1000000);
-
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning()) {
 				// This call blocks until the
@@ -683,7 +690,7 @@ public final class Battle extends BaseBattle {
 
 				if (robotPeer.isAlive()) {
 					if (isDebugging || robotPeer.isPaintEnabled()){
-						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 0);
+						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
 					}
 					else{
 						robotPeer.waitSleeping(millisWait, microWait );
@@ -697,10 +704,6 @@ public final class Battle extends BaseBattle {
 	}
 
 	private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
-		final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
-		int millisWait = (int) (waitTime / 1000000);
-		int microWait = (int) (waitTime % 1000000);
-
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning()) {
 				robotPeer.waitWakeup();
@@ -709,7 +712,7 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning() && robotPeer.isAlive()) {
 				if (isDebugging || robotPeer.isPaintEnabled()){
-					robotPeer.waitSleeping(DEBUG_TURN_WAIT, 0);
+					robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
 				}
 				else{
 					robotPeer.waitSleeping(millisWait, microWait);

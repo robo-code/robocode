@@ -59,7 +59,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy = new Graphics2DProxy();
 
 		// dummy
-		execResult = new ExecResult(null, null, null, null, false, false);
+		execResult = new ExecResult(null, null, null, null, false, false, false);
 
 		setSetCallCount(0);
 		setGetCallCount(0);
@@ -331,6 +331,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		execResult = peer.executeImpl(commands);
 
 		updateStatus(execResult.commands, execResult.status);
+		graphicsProxy.setPaintingEnabled(execResult.paintEnabled);
 		firedEnergy = 0;
 		firedHeat = 0;
 
@@ -350,6 +351,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	@Override
 	protected final void waitForBattleEndImpl() {
 		eventManager.clearAllEvents(false);
+		graphicsProxy.setPaintingEnabled(false);
 		do {
 			commands.setOutputText(out.readAndReset());
 			commands.setGraphicsCalls(graphicsProxy.getQueuedCalls());

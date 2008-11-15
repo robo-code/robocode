@@ -478,7 +478,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
 
-		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), shouldWait);
+		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), shouldWait, isPaintEnabled());
 	}
 
 	public final ExecResult waitForBattleEndImpl(RobotCommands newCommands) {
@@ -495,7 +495,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && !isWinner());
 
-		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), shouldWait);
+		readoutTeamMessages(); //throw away
+		
+		return new ExecResult(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), getHalt(), shouldWait, false);
 	}
 
 	private List<Event> readoutEvents() {
@@ -568,7 +570,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			if (!isSleeping()) {
 				try {
-					for (int i = millisWait; i > 0 && !isSleeping(); i--) {
+					for (int i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
 						isSleeping.wait(0, 999999);
 					}
 					if (!isSleeping()) {
