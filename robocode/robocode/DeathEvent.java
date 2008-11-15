@@ -38,15 +38,20 @@ public final class DeathEvent extends Event {
 
 	private static int classPriority = -1; // System event -> cannot be changed!;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected final int getClassPriorityImpl() {
+	public int getPriority() {
 		return classPriority;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected void setClassPriorityImpl(int priority) {
-		// System event -> cannot be changed!;
-		System.out.println("SYSTEM: You may not change the priority of DeathEvent.  setPriority ignored.");
+	public final int getDefaultPriority() {
+		return classPriority;
 	}
 
 	/**
@@ -68,5 +73,4 @@ public final class DeathEvent extends Event {
 	public final boolean isCriricalEvent() {
 		return true;
 	}
-
 }

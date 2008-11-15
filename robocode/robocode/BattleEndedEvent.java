@@ -39,15 +39,20 @@ public final class BattleEndedEvent extends Event {
 	private final BattleResults results;
 	private static int classPriority = 100; // System event -> cannot be changed!;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected final int getClassPriorityImpl() {
+	public final int getDefaultPriority() {
 		return classPriority;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected void setClassPriorityImpl(int priority) {
-		// System event -> cannot be changed!;
-		System.out.println("SYSTEM: You may not change the priority of BattleEndedEvent.  setPriority ignored.");
+	public int getPriority() {
+		return classPriority;
 	}
 
 	/**
@@ -97,6 +102,6 @@ public final class BattleEndedEvent extends Event {
 	 * @return True when the event is delivered even after timeout.
 	 */
 	public boolean isCriricalEvent() {
-		return false;
+		return true;
 	}
 }

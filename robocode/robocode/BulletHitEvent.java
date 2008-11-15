@@ -104,13 +104,8 @@ public final class BulletHitEvent extends Event {
 	private static int classPriority = 50;
 
 	@Override
-	protected final int getClassPriorityImpl() {
+	public final int getDefaultPriority() {
 		return classPriority;
-	}
-
-	@Override
-	protected void setClassPriorityImpl(int priority) {
-		classPriority = priority;
 	}
 
 	/**

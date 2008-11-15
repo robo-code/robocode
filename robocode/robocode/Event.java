@@ -36,6 +36,7 @@ import java.awt.*;
  */
 public abstract class Event implements Comparable<Event> {
 	private long time = 0;
+	private int priority;
 
 	/**
 	 * Called by the game to create a new Event.
@@ -94,7 +95,7 @@ public abstract class Event implements Comparable<Event> {
 	 * @return the priority of this event
 	 */
 	public int getPriority() {
-		return getClassPriorityImpl();
+		return priority;
 	}
 
 	/**
@@ -116,7 +117,7 @@ public abstract class Event implements Comparable<Event> {
 	 * @param newPriority the new priority of this event
 	 * @see AdvancedRobot#setEventPriority(String, int)
 	 */
-	public void setPriority(int newPriority) {
+	public final void setPriority(int newPriority) {
 		if (newPriority < 0) {
 			System.out.println("SYSTEM: Priority must be between 0 and 99.");
 			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 0.");
@@ -126,7 +127,7 @@ public abstract class Event implements Comparable<Event> {
 			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 99.");
 			newPriority = 99;
 		}
-		setClassPriorityImpl(newPriority);
+		priority = newPriority;
 	}
 
 	/**
@@ -151,9 +152,10 @@ public abstract class Event implements Comparable<Event> {
 	 */
 	public abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
 
-	protected abstract int getClassPriorityImpl();
-
-	protected abstract void setClassPriorityImpl(int priority);
+	/**
+	 * @return default event priority
+	 */
+	public abstract int getDefaultPriority();
 
 	/**
 	 * @return True when the event is delivered even after timeout.

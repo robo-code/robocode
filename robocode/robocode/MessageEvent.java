@@ -66,13 +66,8 @@ public final class MessageEvent extends Event {
 	private static int classPriority = 75;
 
 	@Override
-	protected final int getClassPriorityImpl() {
+	public final int getDefaultPriority() {
 		return classPriority;
-	}
-
-	@Override
-	protected void setClassPriorityImpl(int priority) {
-		classPriority = priority;
 	}
 
 	/**

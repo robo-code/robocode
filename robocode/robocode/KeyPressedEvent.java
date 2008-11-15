@@ -45,13 +45,8 @@ public final class KeyPressedEvent extends KeyEvent {
 	private static int classPriority = 98;
 
 	@Override
-	protected final int getClassPriorityImpl() {
+	public final int getDefaultPriority() {
 		return classPriority;
-	}
-
-	@Override
-	protected void setClassPriorityImpl(int priority) {
-		classPriority = priority;
 	}
 
 	/**

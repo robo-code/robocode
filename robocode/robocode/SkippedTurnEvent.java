@@ -65,15 +65,20 @@ public final class SkippedTurnEvent extends Event {
 
 	private static int classPriority = 100; // System event -> cannot be changed!;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected final int getClassPriorityImpl() {
+	public int getPriority() {
 		return classPriority;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected void setClassPriorityImpl(int priority) {
-		// System event -> cannot be changed!;
-		System.out.println("SYSTEM: You may not change the priority of SkippedTurnEvent.  setPriority ignored.");
+	public final int getDefaultPriority() {
+		return classPriority;
 	}
 
 	/**

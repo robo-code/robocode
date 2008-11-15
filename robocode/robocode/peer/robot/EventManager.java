@@ -95,6 +95,7 @@ public class EventManager implements IEventManager {
 						+ " events in queue.");
 				return false;
 			}
+			e.setPriority(getEventPriority(e.getClass().getName()));
 			return eventQueue.add(e);
 		}
 		return false;
@@ -577,6 +578,10 @@ public class EventManager implements IEventManager {
 			robotProxy.getOut().println("SYSTEM: Unknown event class: " + eventClass);
 			return;
 		}
+		if (event.isCriricalEvent()) {
+			System.out.println("SYSTEM: You may not change the priority of system event. setPriority ignored.");
+		}
+
 		event.setPriority(priority);
 	}
 
@@ -623,6 +628,9 @@ public class EventManager implements IEventManager {
 	private static void registerNamedEvent(Event e) {
 		final String name = e.getClass().getName();
 
+		if (!e.isCriricalEvent()) {
+			e.setPriority(e.getDefaultPriority());
+		}
 		namedEvents.put(name, e);
 		namedEvents.put(name.substring(9), e);
 	}

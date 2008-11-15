@@ -150,13 +150,8 @@ public final class HitRobotEvent extends Event {
 	private static int classPriority = 40;
 
 	@Override
-	protected final int getClassPriorityImpl() {
+	public final int getDefaultPriority() {
 		return classPriority;
-	}
-
-	@Override
-	protected void setClassPriorityImpl(int priority) {
-		classPriority = priority;
 	}
 
 	/**

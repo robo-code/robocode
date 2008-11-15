@@ -61,13 +61,8 @@ public final class RobotDeathEvent extends Event {
 	private static int classPriority = 70;
 
 	@Override
-	protected final int getClassPriorityImpl() {
+	public final int getDefaultPriority() {
 		return classPriority;
-	}
-
-	@Override
-	protected void setClassPriorityImpl(int priority) {
-		classPriority = priority;
 	}
 
 	/**

@@ -50,13 +50,8 @@ public final class MouseClickedEvent extends MouseEvent {
 	private static int classPriority = 98;
 
 	@Override
-	protected final int getClassPriorityImpl() {
+	public final int getDefaultPriority() {
 		return classPriority;
-	}
-
-	@Override
-	protected void setClassPriorityImpl(int priority) {
-		classPriority = priority;
 	}
 
 	/**
