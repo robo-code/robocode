@@ -68,7 +68,6 @@ import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.peer.robot.RobotClassManager;
 import robocode.recording.BattlePlayer;
-import robocode.recording.BattleRecordFormat;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
 import robocode.repository.RobotFileSpecification;
@@ -99,8 +98,6 @@ public class BattleManager implements IBattleManager {
 
 	private String battleFilename;
 	private String battlePath;
-
-	private String recordFilename;
 
 	private int pauseCount = 0;
 	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
@@ -237,7 +234,7 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		manager.getBattleRecorder().setBattleEventDispatcher(battleEventDispatcher);
+		manager.getRecordManager().attachRecorder(battleEventDispatcher);
 
 		// resets seed for deterministic behavior of Random
 		final String seed = System.getProperty("RANDOMSEED", "none");
@@ -277,7 +274,6 @@ public class BattleManager implements IBattleManager {
 	}
 
 	private void replayBattle() {
-
 		logMessage("Preparing replay...");
 		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battlePlayer is running ?
 			battle.stop(true);
@@ -289,29 +285,11 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		BattlePlayer battlePlayer = new BattlePlayer(manager, battleEventDispatcher);
+		// BattlePlayer battlePlayer
 
-		if (recordFilename == null) {
-			try {
-				File tmpFile = File.createTempFile("robocode-replay", ".tmp");
+		battle = manager.getRecordManager().createPlayer(battleEventDispatcher);
 
-				tmpFile.deleteOnExit();
-
-				recordFilename = tmpFile.getAbsolutePath();
-
-				// Save the temporary record as fast as possible using the binary format
-				manager.getBattleRecorder().saveRecord(recordFilename, BattleRecordFormat.BINARY);
-			} catch (IOException e) {
-				logError(e);
-				return;
-			}
-		}
-
-		battlePlayer.loadRecord(recordFilename, BattleRecordFormat.BINARY);
-
-		battle = battlePlayer;
-
-		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battlePlayer);
+		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
 
 		battleThread.setPriority(Thread.NORM_PRIORITY);
 		battleThread.setName("BattlePlayer Thread");
@@ -336,14 +314,6 @@ public class BattleManager implements IBattleManager {
 
 	public void setBattleFilename(String newBattleFilename) {
 		battleFilename = newBattleFilename;
-	}
-
-	public String getRecordFilename() {
-		return recordFilename;
-	}
-
-	public void setRecordFilename(String newRecordFilename) {
-		recordFilename = newRecordFilename;
 	}
 
 	public String getBattlePath() {

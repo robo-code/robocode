@@ -15,7 +15,7 @@ package robocode.battle;
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattle {
+public interface IBattle extends Runnable {
 	void cleanup();
 
 	boolean isRunning();

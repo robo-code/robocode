@@ -37,6 +37,7 @@ import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.security.SecurePrintStream;
 import robocode.ui.BattleResultsTableModel;
+import robocode.recording.BattleRecordFormat;
 
 import java.awt.*;
 import java.io.File;
@@ -151,11 +152,10 @@ public class Robocode {
 
 				setup.exitOnComplete = true;
 
-				IBattleManager battleManager = manager.getBattleManager();
+				manager.getRecordManager().loadRecord(setup.replayFilename, BattleRecordFormat.BINARY_ZIP);
 
-				battleManager.setRecordFilename(setup.replayFilename);
 				if (new File(setup.replayFilename).exists()) {
-					battleManager.replay();
+					manager.getBattleManager().replay();
 				} else {
 					System.err.println(
 							"The specified battle record file '" + setup.replayFilename + "' was not be found");

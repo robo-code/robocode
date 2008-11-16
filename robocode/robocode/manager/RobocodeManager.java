@@ -33,7 +33,8 @@ import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import robocode.recording.BattleRecorder;
-import robocode.recording.IBattleRecorder;
+import robocode.recording.IRecordManager;
+import robocode.recording.RecordManager;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
@@ -60,7 +61,7 @@ public class RobocodeManager {
 	private IWindowManager windowManager;
 	private IVersionManager versionManager;
 	private ISoundManager soundManager;
-	private IBattleRecorder battleRecorder;
+	private IRecordManager recordManager;
 	private IHostManager hostManager;
 
 	private boolean slave;
@@ -246,11 +247,11 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a BattleRecoder
 	 */
-	public IBattleRecorder getBattleRecorder() {
-		if (battleRecorder == null) {
-			battleRecorder = new BattleRecorder(this);
+	public IRecordManager getRecordManager() {
+		if (recordManager == null) {
+			recordManager = new RecordManager(this);
 		}
-		return battleRecorder;
+		return recordManager;
 	}
 
 	/**

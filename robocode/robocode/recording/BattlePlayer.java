@@ -28,73 +28,21 @@ import java.util.zip.ZipInputStream;
  */
 public final class BattlePlayer extends BaseBattle {
 
-	private FileInputStream fileStream;
-	private BufferedInputStream bufferedStream;
-	private ZipInputStream zipStream;
-	private ObjectInputStream objectStream;
-	private BattleRecordInfo recordInfo;
+	private RecordManager recordManager;
 
-	public BattlePlayer(RobocodeManager manager, BattleEventDispatcher eventDispatcher) {
+	public BattlePlayer(RobocodeManager manager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) {
 		super(manager, eventDispatcher, false);
-	}
-
-	public void loadRecord(String recordFilename, BattleRecordFormat format) {
-		cleanup();
-
-		try {
-			fileStream = new FileInputStream(recordFilename);
-			bufferedStream = new BufferedInputStream(fileStream);
-			if (format == BattleRecordFormat.BINARY) {
-				objectStream = new ObjectInputStream(bufferedStream);
-			} else if (format == BattleRecordFormat.BINARY_ZIP) {
-				zipStream = new ZipInputStream(bufferedStream);
-				zipStream.getNextEntry();
-				objectStream = new ObjectInputStream(zipStream);
-			} else {
-				throw new Error("Not implemented");
-			}
-
-			recordInfo = (BattleRecordInfo) objectStream.readObject();
-
-			battleRules = recordInfo.battleRules;
-		} catch (IOException e) {
-			logError(e);
-		} catch (ClassNotFoundException e) {
-			logError(e);
-		}
-	}
-
-	@Override
-	public synchronized void cleanup() {
-		super.cleanup();
-		cleanupStream(objectStream);
-		objectStream = null;
-		cleanupStream(zipStream);
-		zipStream = null;
-		cleanupStream(bufferedStream);
-		bufferedStream = null;
-		cleanupStream(fileStream);
-		fileStream = null;
-		recordInfo = null;
-	}
-
-	private void cleanupStream(Closeable closeable) {
-		if (closeable != null) {
-			try {
-				closeable.close();
-			} catch (IOException e) {
-				logError(e);
-			}
-		}
+		this.recordManager = recordManager;
 	}
 
 	@Override
 	protected void initializeBattle() {
 		super.initializeBattle();
 
-		battleRules = recordInfo.battleRules;
+		battleRules = recordManager.recordInfo.battleRules;
 
-		eventDispatcher.onBattleStarted(new BattleStartedEvent(readSnapshot(currentTime), recordInfo.battleRules, true));
+		eventDispatcher.onBattleStarted(
+				new BattleStartedEvent(recordManager.readSnapshot(currentTime), battleRules, true));
 		if (isPaused()) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
@@ -102,12 +50,12 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void finalizeBattle() {
-		boolean aborted = recordInfo.results == null || isAborted();
+		boolean aborted = recordManager.recordInfo.results == null || isAborted();
 
 		eventDispatcher.onBattleEnded(new BattleEndedEvent(aborted));
 
 		if (!aborted) {
-			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(recordInfo.battleRules, recordInfo.results));
+			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, recordManager.recordInfo.results));
 		}
 
 		super.finalizeBattle();
@@ -138,28 +86,14 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnEndedEvent(readSnapshot(currentTime)));
+		eventDispatcher.onTurnEnded(new TurnEndedEvent(recordManager.readSnapshot(currentTime)));
 
 		super.finalizeTurn();
 	}
 
 	@Override
 	protected boolean isRoundOver() {
-		return (isAborted() || getTime() > recordInfo.turnsInRounds[getRoundNum()]);
+		return (isAborted() || getTime() > recordManager.recordInfo.turnsInRounds[getRoundNum()]);
 	}
 
-	private TurnSnapshot readSnapshot(int currentTime) {
-		if (objectStream == null) {
-			return null;
-		}
-		try {
-			// TODO implement seek to currentTime, warn you. turns don't have same size in bytes 
-			return (TurnSnapshot) objectStream.readObject();
-		} catch (EOFException e) {
-			return null;
-		} catch (Exception e) {
-			logError(e);
-			return null;
-		}
-	}
 }

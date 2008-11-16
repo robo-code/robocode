@@ -92,10 +92,6 @@ public interface IBattleManager {
 
 	void setBattleFilename(String newBattleFilename);
 
-	String getRecordFilename();
-
-	void setRecordFilename(String newRecordFilename);
-
 	BattleProperties loadBattleProperties();
 
 	void saveBattleProperties();
