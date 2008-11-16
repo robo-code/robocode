@@ -72,6 +72,9 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	// The energy level
 	private double velocity;
 
+	// The heat level
+	private double gunHeat;
+
 	// The body heading in radians
 	private double bodyHeading;
 	// The gun heading in radians
@@ -131,6 +134,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 
 		energy = peer.getEnergy();
 		velocity = peer.getVelocity();
+		gunHeat = peer.getGunHeat(); 
 
 		bodyHeading = peer.getBodyHeading();
 		gunHeading = peer.getGunHeading();
@@ -247,6 +251,15 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 */
 	public double getRadarHeading() {
 		return radarHeading;
+	}
+
+	/**
+	 * Returns the gun heading in radians.
+	 *
+	 * @return the gun heat
+	 */
+	public double getGunHeat() {
+		return gunHeat;
 	}
 
 	/**
@@ -435,6 +448,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 
 			writer.writeAttribute("energy", energy);
 			writer.writeAttribute("velocity", velocity);
+			writer.writeAttribute("gunHeat", gunHeat);
 			writer.writeAttribute("bodyHeading", bodyHeading);
 			writer.writeAttribute("gunHeading", gunHeading);
 			writer.writeAttribute("radarHeading", radarHeading);
@@ -493,6 +507,12 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 				reader.expect("velocity", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.velocity = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("gunHeat", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.gunHeat = Double.parseDouble(value);
 					}
 				});
 

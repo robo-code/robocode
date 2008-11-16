@@ -9,6 +9,7 @@ o New feature
   -- battle recording and replay. Saving to binary and xml file.
   -- new command line option -replay for replaying a battle record
   -- new dialog for battle console and turn snapshot
+  -- robot dialog have new tab-page with robot properties
 
 o Changes
   -- redesigned RobotPeer and Battle. Now we send messages between threads instead of synchronizing

@@ -27,6 +27,8 @@ import robocode.battle.snapshot.TurnSnapshot;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,7 +42,9 @@ import java.awt.event.ActionListener;
 public class RobotDialog extends JFrame {
 	private RobocodeManager manager;
 	private RobotButton robotButton;
+	private JTabbedPane tabbedPane;
 	private ConsoleScrollPane scrollPane;
+	private ConsoleScrollPane propertiesPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
 	private JButton okButton;
@@ -51,11 +55,15 @@ public class RobotDialog extends JFrame {
 	private JToggleButton pauseButton;
 	private boolean isListening;
 	private int robotIndex;
+	private RobotSnapshot lastSnapshot;
+	private boolean paintSnapshot;
 
 	private BattleObserver battleObserver = new BattleObserver();
 
 	/**
 	 * RobotDialog constructor
+	 * @param manager game root
+	 * @param robotButton related button
 	 */
 	public RobotDialog(RobocodeManager manager, RobotButton robotButton) {
 		super();
@@ -104,6 +112,7 @@ public class RobotDialog extends JFrame {
 
 	public void reset() {
 		getConsoleScrollPane().setText(null);
+		lastSnapshot = null;
 	}
 
 	/**
@@ -165,10 +174,60 @@ public class RobotDialog extends JFrame {
 		if (robotDialogContentPane == null) {
 			robotDialogContentPane = new JPanel();
 			robotDialogContentPane.setLayout(new BorderLayout());
-			robotDialogContentPane.add(getConsoleScrollPane());
+			robotDialogContentPane.add(getTabbedPane());
 			robotDialogContentPane.add(getButtonPanel(), BorderLayout.SOUTH);
 		}
 		return robotDialogContentPane;
+	}
+
+	private JTabbedPane getTabbedPane() {
+		if (tabbedPane == null) {
+			tabbedPane = new JTabbedPane();
+			tabbedPane.setLayout(new BorderLayout());
+			tabbedPane.addTab("Console", getConsoleScrollPane());
+			tabbedPane.addTab("Properties", getTurnScrollPane());
+			// tabbedPane.setSelectedIndex(0);
+			tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+			tabbedPane.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					paintSnapshot = (tabbedPane.getSelectedIndex() == 1);
+					paintSnapshot();
+				}
+			});
+		}
+		return tabbedPane;
+	}
+
+	private void paintSnapshot() {
+		if (paintSnapshot) {
+			if (lastSnapshot != null) {
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("energy: ").append(lastSnapshot.getEnergy()).append("\n");
+				sb.append("x: ").append(lastSnapshot.getX()).append("\n");
+				sb.append("y: ").append(lastSnapshot.getY()).append("\n");
+				sb.append("velocity: ").append(lastSnapshot.getVelocity()).append("\n");
+				sb.append("heat: ").append(lastSnapshot.getGunHeat()).append("\n");
+				sb.append("bodyHeading: rad: ").append(lastSnapshot.getBodyHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getBodyHeading())).append(
+						"\n");
+				sb.append("gunHeading: rad: ").append(lastSnapshot.getGunHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getGunHeading())).append(
+						"\n");
+				sb.append("radarHeading: rad: ").append(lastSnapshot.getRadarHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getRadarHeading())).append(
+						"\n");
+				sb.append("state: ").append(lastSnapshot.getState()).append("\n");
+				getTurnScrollPane().setText(sb.toString());
+			} else {
+				getTurnScrollPane().setText(null);
+			}
+		}
+	}
+
+	private ConsoleScrollPane getTurnScrollPane() {
+		if (propertiesPane == null) {
+			propertiesPane = new ConsoleScrollPane();
+		}
+		return propertiesPane;
 	}
 
 	/**
@@ -346,6 +405,8 @@ public class RobotDialog extends JFrame {
 
 		@Override
 		public void onBattleEnded(BattleEndedEvent event) {
+			lastSnapshot = null;
+			paintSnapshot();
 			getPauseButton().setEnabled(false);
 			getKillButton().setEnabled(false);
 		}
@@ -380,13 +441,15 @@ public class RobotDialog extends JFrame {
 				return;
 			}
 
-			final RobotSnapshot robotSnapshot = robots.get(robotIndex);
-			final String text = robotSnapshot.getOutputStreamSnapshot();
+			lastSnapshot = robots.get(robotIndex);
+			final String text = lastSnapshot.getOutputStreamSnapshot();
 
 			if (text != null && text.length() > 0) {
 				getConsoleScrollPane().append(text);
 				getConsoleScrollPane().scrollToBottom();
 			}
+
+			paintSnapshot();
 		}
 
 	}
