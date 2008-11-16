@@ -70,6 +70,8 @@ public class EventManager implements IEventManager {
 	private final EventQueue eventQueue;
 
 	private boolean interruptible[] = new boolean[MAX_PRIORITY + 1];
+	private Dictionary<String, Event> namedEvents;
+	private ScannedRobotEvent dummyScannedRobotEvent;
 
 	public final static int MAX_QUEUE_SIZE = 256;
 
@@ -82,13 +84,16 @@ public class EventManager implements IEventManager {
 	 */
 	public EventManager(BasicRobotProxy robotProxy) {
 		super();
+		registerNamedEvents();
 		this.robotProxy = robotProxy;
 		eventQueue = new EventQueue();
 		reset();
 	}
 
 	public boolean add(Event e) {
-		e.setPriority(getEventPriority(e.getClass().getName()));
+		if (!e.isCriricalEvent()) {
+			e.setPriority(getEventPriority(e.getClass().getName()));
+		}
 		return addImpl(e);
 	}
 
@@ -589,10 +594,7 @@ public class EventManager implements IEventManager {
 		event.setPriority(priority);
 	}
 
-	private static Dictionary<String, Event> namedEvents;
-	private static ScannedRobotEvent dummyScannedRobotEvent;
-
-	static {
+	private void registerNamedEvents() {
 		namedEvents = new Hashtable<String, Event>();
 		dummyScannedRobotEvent = new ScannedRobotEvent(null, 0, 0, 0, 0, 0);
 		registerNamedEvent(new BattleEndedEvent(false, null));
@@ -629,7 +631,7 @@ public class EventManager implements IEventManager {
 		namedEvents.put("CustomEvent", custom);
 	}
 
-	private static void registerNamedEvent(Event e) {
+	private void registerNamedEvent(Event e) {
 		final String name = e.getClass().getName();
 
 		if (!e.isCriricalEvent()) {

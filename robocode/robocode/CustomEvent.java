@@ -129,6 +129,6 @@ public class CustomEvent extends Event {
 	@Override
 	// final to disable overrides
 	public final int getPriority() {
-		return priority;
+		return super.getPriority();
 	}
 }
