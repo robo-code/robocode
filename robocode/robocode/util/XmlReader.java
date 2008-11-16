@@ -59,7 +59,7 @@ public class XmlReader {
 			}
 		});
 		prototype.readXml(this);
-		parser.parse(input, new Ha(this));
+		parser.parse(input, new Handler(this));
 		elements.pop();
 		elementNames.pop();
 		attributeNames.pop();
@@ -67,10 +67,10 @@ public class XmlReader {
 		return result;
 	}
 
-	private class Ha extends DefaultHandler {
+	private class Handler extends DefaultHandler {
 		XmlReader parent;
 
-		public Ha(XmlReader parent) {
+		public Handler(XmlReader parent) {
 			this.parent = parent;
 		}
 

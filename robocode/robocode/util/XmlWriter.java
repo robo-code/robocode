@@ -50,11 +50,13 @@ public class XmlWriter {
 	}
 
 	public void writeAttribute(String name, String value) throws IOException {
-		writer.write(' ');
-		writer.write(encode(name));
-		writer.write("=\"");
-		writer.write(encode(value));
-		writer.write('"');
+		if (value != null) {
+			writer.write(' ');
+			writer.write(encode(name));
+			writer.write("=\"");
+			writer.write(encode(value));
+			writer.write('"');
+		}
 	}
 
 	public void writeAttribute(String name, boolean value) throws IOException {

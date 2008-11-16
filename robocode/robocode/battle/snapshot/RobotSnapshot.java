@@ -466,6 +466,15 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 			writer.writeAttribute("x", x);
 			writer.writeAttribute("y", y);
 
+			if (debugProperties != null) {
+				writer.startElement("debugProperties"); {
+					for (DebugProperty prop : debugProperties) {
+						prop.writeXml(writer);
+					}
+				}
+				writer.endElement();
+			}
+
 			writer.writeAttribute("out", outputStreamSnapshot);
 
 			robotScoreSnapshot.writeXml(writer);

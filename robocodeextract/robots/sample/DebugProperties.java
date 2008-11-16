@@ -27,7 +27,7 @@ public class DebugProperties extends Robot {
 	 */
 	public void run() {
 
-		//noinspection InfiniteLoopStatement
+		// noinspection InfiniteLoopStatement
 		while (true) {
 			ahead(100); // Move ahead 100
 			turnGunRight(360); // Spin gun around
@@ -40,13 +40,16 @@ public class DebugProperties extends Robot {
 	 * When we see a robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-		putDebugProperty("lastScannedRobot", e.getName() + " at " + e.getBearing() + " degrees");
+		putDebugProperty("lastScannedRobot", e.getName() + " at " + e.getBearing() + " degrees at time " + getTime());
 	}
 
 	/**
 	 * When we were hit
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
-		putDebugProperty("lastHitBy", e.getName() + " with power of bullet " + e.getPower());
+		putDebugProperty("lastHitBy", e.getName() + " with power of bullet " + e.getPower() + " at time " + getTime());
+
+		// show how to remove property
+		putDebugProperty("lastScannedRobot", null);
 	}
 }
