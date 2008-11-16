@@ -1,0 +1,90 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Pavel Savara
+ *     - Initial implementation
+ *******************************************************************************/
+package testing;
+
+
+import robocode.*;
+
+
+/**
+ * @author Pavel Savara (original)
+ */
+public class WatchBullets extends AdvancedRobot {
+	public void run() {
+		while (true) {
+			ahead(100);
+			turnGunRight(360);
+			back(100);
+			turnGunRight(360);
+		}
+	}
+
+	Bullet bullet;
+
+	public void onStatus(StatusEvent event) {
+		dump();
+	}
+
+	public void onScannedRobot(ScannedRobotEvent e) {
+		// Calculate exact location of the robot
+		double absoluteBearing = getHeading() + e.getBearing();
+		double bearingFromGun = normalRelativeAngle(absoluteBearing - getGunHeading());
+
+		// If it's close enough, fire!
+		if (Math.abs(bearingFromGun) <= 3) {
+			turnGunRight(bearingFromGun);
+			// We check gun heat here, because calling fire()
+			// uses a turn, which could cause us to lose track
+			// of the other robot.
+			if (getGunHeat() == 0) {
+				final Bullet lbullet = fireBullet(Math.min(3 - Math.abs(bearingFromGun), getEnergy() - .1));
+
+				if (bullet == null) {
+					bullet = lbullet;
+				}
+			}
+		} // otherwise just set the gun to turn.
+		// Note:  This will have no effect until we call scan()
+		else {
+			turnGunRight(bearingFromGun);
+		}
+		// Generates another scan event if we see a robot.
+		// We only need to call this if the gun (and therefore radar)
+		// are not turning.  Otherwise, scan is called automatically.
+		if (bearingFromGun == 0) {
+			scan();
+		}
+	}
+
+	private void dump() {
+		if (bullet != null) {
+			out.println(
+					getTime() + "Bullet " + bullet.getX() + " " + bullet.getY() + " " + bullet.getHeading() + " "
+					+ bullet.isActive());
+		}
+	}
+
+	public double normalRelativeAngle(double angle) {
+		if (angle > -180 && angle <= 180) {
+			return angle;
+		}
+		double fixedAngle = angle;
+
+		while (fixedAngle <= -180) {
+			fixedAngle += 360;
+		}
+		while (fixedAngle > 180) {
+			fixedAngle -= 360;
+		}
+		return fixedAngle;
+	}
+}
