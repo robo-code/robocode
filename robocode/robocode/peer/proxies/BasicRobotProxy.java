@@ -27,6 +27,8 @@ import robocode.util.Utils;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 
 /**
@@ -42,6 +44,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected RobotStatus status;
 	protected RobotCommands commands;
 	private ExecResult execResult;
+	private Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>(); 
+	private int bulletCounter; 
 
 	private AtomicInteger setCallCount = new AtomicInteger(0);
 	private AtomicInteger getCallCount = new AtomicInteger(0);
@@ -59,7 +63,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy = new Graphics2DProxy();
 
 		// dummy
-		execResult = new ExecResult(null, null, null, null, false, false, false);
+		execResult = new ExecResult(null, null, null, null, null, false, false, false);
 
 		setSetCallCount(0);
 		setGetCallCount(0);
@@ -99,6 +103,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	// asynchronous actions
 	public Bullet setFire(double power) {
+		setCall();
 		return setFireImpl(power);
 	}
 
@@ -342,6 +347,17 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			}
 		}
 
+		for (BulletStatus s : execResult.bulletUpdates) {
+			final Bullet bullet = bullets.get(s.bulletId);
+
+			if (bullet != null) {
+				bullet.update(s);
+				if (!s.isActive) {
+					bullets.remove(s.bulletId);
+				}
+			}
+		}
+
 		// add new team messages
 		loadTeamMessages(execResult.teamMessages);
 
@@ -411,6 +427,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		BulletCommand wrapper;
 		Event currentTopEvent = eventManager.getCurrentTopEvent();
 
+		bulletCounter++;
+
 		if (currentTopEvent != null && currentTopEvent.getTime() == status.getTime() && !statics.isAdvancedRobot()
 				&& status.getGunHeadingRadians() == status.getRadarHeadingRadians()
 				&& ScannedRobotEvent.class.isAssignableFrom(currentTopEvent.getClass())) {
@@ -418,18 +436,20 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent;
 			double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeadingRadians() + e.getBearingRadians());
 
-			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName());
-			wrapper = new BulletCommand(bullet, true, fireAssistAngle);
+			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true);
+			wrapper = new BulletCommand(bullet, true, fireAssistAngle, bulletCounter);
 		} else {
 			// this is normal bullet
-			bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName());
-			wrapper = new BulletCommand(bullet, false, 0);
+			bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName(), null, true);
+			wrapper = new BulletCommand(bullet, false, 0, bulletCounter);
 		}
 
 		firedEnergy += power;
 		firedHeat += Rules.getGunHeat(power);
 
 		commands.getBullets().add(wrapper);
+
+		bullets.put(bulletCounter, bullet);
 
 		return bullet;
 	}

@@ -19,15 +19,17 @@ import robocode.Bullet;
  * @author Pavel Savara (original)
  */
 public class BulletCommand {
-	public BulletCommand(Bullet bullet, boolean fireAssistValid, double fireAssistAngle) {
+	public BulletCommand(Bullet bullet, boolean fireAssistValid, double fireAssistAngle, int bulletId) {
 		this.bullet = bullet;
 		this.fireAssistValid = fireAssistValid;
 		this.fireAssistAngle = fireAssistAngle;
+		this.bulletId = bulletId;
 	}
 
 	private Bullet bullet;
 	private boolean fireAssistValid;
 	private double fireAssistAngle;
+	private int bulletId;
 
 	public boolean isFireAssistValid() {
 		return fireAssistValid;
@@ -35,6 +37,10 @@ public class BulletCommand {
 
 	public Bullet getBullet() {
 		return bullet;
+	}
+
+	public int getBulletId() {
+		return bulletId;
 	}
 
 	public double getFireAssistAngle() {

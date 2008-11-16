@@ -27,7 +27,6 @@
 package robocode.peer;
 
 
-import robocode.Bullet;
 import robocode.battle.Battle;
 
 import java.util.List;
@@ -43,8 +42,8 @@ public class ExplosionPeer extends BulletPeer {
 
 	private static final int EXPLOSION_LENGTH = 71;
 
-	public ExplosionPeer(RobotPeer owner, Battle battle, Bullet bullet) {
-		super(owner, battle, bullet);
+	public ExplosionPeer(RobotPeer owner, Battle battle) {
+		super(owner, battle, -1);
 
 		x = owner.getX();
 		y = owner.getY();
@@ -55,7 +54,7 @@ public class ExplosionPeer extends BulletPeer {
 	}
 
 	@Override
-	public synchronized final void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
+	public final void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		x = owner.getX();
 		y = owner.getY();
 

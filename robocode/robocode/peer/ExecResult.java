@@ -23,11 +23,12 @@ import java.util.List;
 public class ExecResult implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public ExecResult(RobotCommands commands, RobotStatus status, List<Event> events, List<TeamMessage> teamMessages, boolean halt, boolean shouldWait, boolean paintEnabled) {
+	public ExecResult(RobotCommands commands, RobotStatus status, List<Event> events, List<TeamMessage> teamMessages, List<BulletStatus> bulletUpdates, boolean halt, boolean shouldWait, boolean paintEnabled) {
 		this.commands = commands;
 		this.status = status;
 		this.events = events;
 		this.teamMessages = teamMessages;
+		this.bulletUpdates = bulletUpdates;
 		this.halt = halt;
 		this.shouldWait = shouldWait;
 		this.paintEnabled = paintEnabled;
@@ -37,6 +38,7 @@ public class ExecResult implements Serializable {
 	public RobotStatus status;
 	public List<Event> events;
 	public List<TeamMessage> teamMessages;
+	public List<BulletStatus> bulletUpdates;
 	public boolean halt;
 	public boolean shouldWait;
 	public boolean paintEnabled;

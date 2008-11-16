@@ -68,8 +68,8 @@ public class BulletPeer {
 	protected final RobotPeer owner;
 	protected final Battle battle;
 	private final BattleRules battleRules;
+	private final int bulletId;
 
-	private Bullet bullet;
 	protected RobotPeer victim;
 
 	protected BulletState state;
@@ -100,15 +100,15 @@ public class BulletPeer {
 	 *
 	 * @param owner  who fire the bullet
 	 * @param battle root battle
-	 * @param bullet bullet
+	 * @param bulletId bullet
 	 */
-	public BulletPeer(RobotPeer owner, Battle battle, Bullet bullet) {
+	public BulletPeer(RobotPeer owner, Battle battle, int bulletId) {
 		super();
 
 		this.owner = owner;
 		this.battle = battle;
 		battleRules = battle.getBattleRules();
-		this.bullet = bullet;
+		this.bulletId = bulletId;
 		state = BulletState.FIRED;
 		color = owner.getBulletColor(); // Store current bullet color set on robot
 	}
@@ -121,11 +121,20 @@ public class BulletPeer {
 				frame = 0;
 				x = lastX;
 				y = lastY;
-				owner.addEvent(new BulletHitBulletEvent(bullet, b.bullet));
-				b.owner.addEvent(new BulletHitBulletEvent(b.bullet, bullet));
+				owner.addEvent(new BulletHitBulletEvent(createBullet(), b.createBullet()));
+				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(), createBullet()));
 				break;
 			}
 		}
+	}
+
+	private Bullet createBullet() {
+		return new Bullet(heading, x, y, power, owner == null ? null : owner.getName(),
+				victim == null ? null : victim.getName(), isActive());
+	}
+
+	private BulletStatus createStatus() {
+		return new BulletStatus(bulletId, x, y, victim == null ? null : victim.getName(), isActive());
 	}
 
 	// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6457965
@@ -183,12 +192,13 @@ public class BulletPeer {
 				owner.updateEnergy(Rules.getBulletHitBonus(power));
 
 				HitByBulletEvent event = new HitByBulletEvent(
-						robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet());
+						robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()),
+						createBullet());
 
 				robotPeer.addEvent(event);
 
 				state = BulletState.HIT_VICTIM;
-				final BulletHitEvent bhe = new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet);
+				final BulletHitEvent bhe = new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), createBullet());
 
 				owner.addEvent(bhe);
 				frame = 0;
@@ -219,19 +229,19 @@ public class BulletPeer {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
-			owner.addEvent(new BulletMissedEvent(bullet));
+			owner.addEvent(new BulletMissedEvent(createBullet()));
 		}
 	}
 
-	public Bullet getBullet() {
-		return bullet;
+	public int getBulletId() {
+		return bulletId;
 	}
 
-	public synchronized int getFrame() {
+	public int getFrame() {
 		return frame;
 	}
 
-	public synchronized double getHeading() {
+	public double getHeading() {
 		return heading;
 	}
 
@@ -239,39 +249,39 @@ public class BulletPeer {
 		return owner;
 	}
 
-	public synchronized double getPower() {
+	public double getPower() {
 		return power;
 	}
 
-	public synchronized double getVelocity() {
+	public double getVelocity() {
 		return Rules.getBulletSpeed(power);
 	}
 
-	public synchronized RobotPeer getVictim() {
+	public RobotPeer getVictim() {
 		return victim;
 	}
 
-	public synchronized double getX() {
+	public double getX() {
 		return x;
 	}
 
-	public synchronized double getY() {
+	public double getY() {
 		return y;
 	}
 
-	public synchronized double getPaintX() {
+	public double getPaintX() {
 		return (state == BulletState.HIT_VICTIM && victim != null) ? victim.getX() + deltaX : x;
 	}
 
-	public synchronized double getPaintY() {
+	public double getPaintY() {
 		return (state == BulletState.HIT_VICTIM && victim != null) ? victim.getY() + deltaY : y;
 	}
 
-	public synchronized boolean isActive() {
+	public boolean isActive() {
 		return state.getValue() <= BulletState.MOVING.getValue();
 	}
 
-	public synchronized BulletState getState() {
+	public BulletState getState() {
 		return state;
 	}
 
@@ -279,31 +289,31 @@ public class BulletPeer {
 		return color;
 	}
 
-	public synchronized void setHeading(double newHeading) {
+	public void setHeading(double newHeading) {
 		heading = newHeading;
 	}
 
-	public synchronized void setPower(double newPower) {
+	public void setPower(double newPower) {
 		power = newPower;
 	}
 
-	public synchronized void setVictim(RobotPeer newVictim) {
+	public void setVictim(RobotPeer newVictim) {
 		victim = newVictim;
 	}
 
-	public synchronized void setX(double newX) {
+	public void setX(double newX) {
 		x = lastX = newX;
 	}
 
-	public synchronized void setY(double newY) {
+	public void setY(double newY) {
 		y = lastY = newY;
 	}
 
-	public synchronized void setState(BulletState newState) {
+	public void setState(BulletState newState) {
 		state = newState;
 	}
 
-	public synchronized void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
+	public void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		if (isActive()) {
 			updateMovement();
 			if (bullets != null) {
@@ -319,6 +329,7 @@ public class BulletPeer {
 			frame++;
 		}
 		updateBulletState();
+		owner.addBulletStatus(createStatus());
 	}
 
 	protected void updateBulletState() {
@@ -353,7 +364,7 @@ public class BulletPeer {
 		boundingLine.setLine(lastX, lastY, x, y);
 	}
 
-	public synchronized void nextFrame() {
+	public void nextFrame() {
 		frame++;
 	}
 

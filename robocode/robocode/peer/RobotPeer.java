@@ -127,8 +127,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private AtomicReference<EventQueue> events = new AtomicReference<EventQueue>(new EventQueue());
 	private AtomicReference<List<TeamMessage>> teamMessages = new AtomicReference<List<TeamMessage>>(
 			new ArrayList<TeamMessage>());
-	private final StringBuilder battleText = new StringBuilder(1024);
-	private final StringBuilder proxyText = new StringBuilder(1024);
+	private AtomicReference<List<BulletStatus>> bulletUpdates = new AtomicReference<List<BulletStatus>>(
+			new ArrayList<BulletStatus>());
+	private StringBuilder battleText = new StringBuilder(1024);
+	private StringBuilder proxyText = new StringBuilder(1024);
 	private RobotStatics statics;
 	private BattleRules battleRules;
 
@@ -200,9 +202,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		} else {
 			throw new AccessControlException("Unknown robot type");
 		}
-
-		commands.set(new RobotCommands());
-
 	}
 
 	public void println(String s) {
@@ -477,8 +476,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
 
-		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), getHalt(), shouldWait,
-				isPaintEnabled());
+		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(), 
+				getHalt(), shouldWait, isPaintEnabled());
 	}
 
 	public final ExecResult waitForBattleEndImpl(RobotCommands newCommands) {
@@ -497,8 +496,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		readoutTeamMessages(); // throw away
 		
-		return new ExecResult(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), getHalt(),
-				shouldWait, false);
+		return new ExecResult(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),
+				getHalt(), shouldWait, false);
 	}
 
 	private List<Event> readoutEvents() {
@@ -507,6 +506,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	private List<TeamMessage> readoutTeamMessages() {
 		return teamMessages.getAndSet(new ArrayList<TeamMessage>());
+	}
+
+	private List<BulletStatus> readoutBullets() {
+		return bulletUpdates.getAndSet(new ArrayList<BulletStatus>());
 	}
 
 	private void waitForNextRound() {
@@ -673,6 +676,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		scanArc.setFrame(-100, -100, 1, 1);
 
 		skippedTurns = 0;
+
+		status = new AtomicReference<RobotStatus>();
+		commands = new AtomicReference<RobotCommands>(new RobotCommands());
+		readoutEvents();
+		readoutTeamMessages();
+		readoutBullets();
+		battleText.setLength(0);
+		proxyText.setLength(0);
 	}
 
 	private boolean validSpot(List<RobotPeer> robots) {
@@ -764,7 +775,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			gunHeat += Rules.getGunHeat(firePower);
 
-			newBullet = new BulletPeer(this, battle, bullet);
+			newBullet = new BulletPeer(this, battle, bulletCmd.getBulletId());
 
 			newBullet.setPower(firePower);
 			if (!turnedRadarWithGun || !bulletCmd.isFireAssistValid() || statics.isAdvancedRobot()) {
@@ -774,7 +785,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 			newBullet.setX(x);
 			newBullet.setY(y);
-			bullet.setPeer(newBullet);
 		}
 		// there is only last bullet in one turn
 		if (newBullet != null) {
@@ -1426,15 +1436,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					if (!(teammate.isDead() || teammate == this)) {
 						teammate.updateEnergy(-30);
 
-						Bullet robotBullet = new Bullet(0, teammate.x, teammate.y, 4, getName());
-						BulletPeer sBullet = new BulletPeer(this, battle, robotBullet);
+						BulletPeer sBullet = new BulletPeer(this, battle, -1);
 
 						sBullet.setState(BulletState.HIT_VICTIM);
 						sBullet.setX(teammate.x);
 						sBullet.setY(teammate.y);
 						sBullet.setVictim(teammate);
 						sBullet.setPower(4);
-						robotBullet.setPeer(sBullet);
 						battle.addBullet(sBullet);
 					}
 				}
@@ -1442,11 +1450,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			battle.registerDeathRobot(this);
 
 			// 'fake' bullet for explosion on self
-			Bullet robotBullet = new Bullet(0, x, y, 1, getName());
-			final ExplosionPeer fake = new ExplosionPeer(this, battle, robotBullet);
+			final ExplosionPeer fake = new ExplosionPeer(this, battle);
 
 			battle.addBullet(fake);
-			robotBullet.setPeer(fake);
 		}
 		updateEnergy(-energy);
 
@@ -1474,6 +1480,16 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		// Cleanup robot proxy
 		robotProxy = null;
+
+		status = null;
+		commands = null;
+		events = null;
+		teamMessages = null;
+		bulletUpdates = null;
+		battleText = null;
+		proxyText = null;
+		statics = null;
+		battleRules = null;
 	}
 
 	public List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
@@ -1491,6 +1507,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			if (isPaintRobot() && isPaintEnabled() && currentTurn > 0) {
 				addEvent(new PaintEvent());
 			}
+		}
+	}
+
+	public void addBulletStatus(BulletStatus bulletStatus) {
+		if (isAlive()) {
+			bulletUpdates.get().add(bulletStatus);
 		}
 	}
 

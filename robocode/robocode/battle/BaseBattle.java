@@ -146,7 +146,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		return isAborted;
 	}
 
-	public synchronized void cleanup() {
+	public void cleanup() {
 		battleRules = null;
 		if (pendingCommands != null) {
 			pendingCommands.clear();

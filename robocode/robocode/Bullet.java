@@ -14,7 +14,9 @@
 package robocode;
 
 
-import robocode.peer.BulletPeer;
+import robocode.peer.BulletStatus;
+
+import java.io.Serializable;
 
 
 /**
@@ -29,13 +31,16 @@ import robocode.peer.BulletPeer;
  * @see BulletMissedEvent
  * @see BulletHitBulletEvent
  */
-public class Bullet {
-	private BulletPeer peer;
+public class Bullet implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private double headingRadians;
 	private double x;
 	private double y;
 	private double power;
 	private String ownerName;
+	private String victimName;
+	private boolean isActive;
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
@@ -45,25 +50,28 @@ public class Bullet {
 	 * @param y		 the starting y position of the bullet.
 	 * @param power	 the power of the bullet.
 	 * @param ownerName the name of the owner robot that owns the bullet.
+	 * @param victimName the name of the robot hit by bullet
+	 * @param isActive still moves
 	 */
-	public Bullet(double heading, double x, double y, double power, String ownerName) {
+	public Bullet(double heading, double x, double y, double power, String ownerName, String victimName, boolean isActive) {
 		this.headingRadians = heading;
 		this.x = x;
 		this.y = y;
 		this.power = power;
 		this.ownerName = ownerName;
+		this.victimName = victimName;
+		this.isActive = isActive; 
 	}
 
 	/**
-	 * This method is called by the game to set the bullet peer.
-	 *
-	 * @param peer the robot peer supplied by the game
+	 * This method is called by game to update bullet status
+	 * @param status contain changes of bullet state
 	 */
-	public final void setPeer(BulletPeer peer) {
-		this.peer = peer;
-		headingRadians = peer.getHeading();
-		ownerName = peer.getOwner().getName();
-		power = peer.getPower();
+	public void update(BulletStatus status) {
+		x = status.x;
+		y = status.y;
+		victimName = status.victimName;
+		isActive = status.isActive;
 	}
 
 	/**
@@ -128,7 +136,7 @@ public class Bullet {
 	 *         the bullet has not hit a robot.
 	 */
 	public String getVictim() {
-		return peer == null ? null : (peer.getVictim() == null) ? null : peer.getVictim().getName();
+		return victimName;
 	}
 
 	/**
@@ -137,7 +145,7 @@ public class Bullet {
 	 * @return the X position of the bullet
 	 */
 	public double getX() {
-		return peer == null ? x : peer.getX();
+		return x;
 	}
 
 	/**
@@ -146,7 +154,7 @@ public class Bullet {
 	 * @return the Y position of the bullet
 	 */
 	public double getY() {
-		return peer == null ? y : peer.getY();
+		return y;
 	}
 
 	/**
@@ -156,6 +164,6 @@ public class Bullet {
 	 *         {@code false} otherwise
 	 */
 	public boolean isActive() {
-		return peer != null && peer.isActive();
+		return isActive;
 	}
 }

@@ -20,12 +20,15 @@ import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public final class RobotCommands {
+public final class RobotCommands implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private double bodyTurnRemaining;
 	private double radarTurnRemaining;
 	private double gunTurnRemaining;
