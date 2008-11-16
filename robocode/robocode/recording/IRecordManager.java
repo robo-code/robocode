@@ -23,6 +23,7 @@ import robocode.battle.IBattle;
 public interface IRecordManager {
 
 	void attachRecorder(BattleEventDispatcher battleEventDispatcher);
+	void detachRecorder();
 	IBattle createPlayer(BattleEventDispatcher battleEventDispatcher);
 
 	void saveRecord(String fileName, BattleRecordFormat format);

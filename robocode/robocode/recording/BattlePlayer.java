@@ -86,7 +86,10 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnEndedEvent(recordManager.readSnapshot(currentTime)));
+		final TurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		if (snapshot!=null){
+			eventDispatcher.onTurnEnded(new TurnEndedEvent(snapshot));
+		}
 
 		super.finalizeTurn();
 	}

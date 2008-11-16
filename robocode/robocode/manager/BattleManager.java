@@ -234,7 +234,12 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		manager.getRecordManager().attachRecorder(battleEventDispatcher);
+		if (manager.getProperties().getOptionsCommonEnableReplayRecording()){
+			manager.getRecordManager().attachRecorder(battleEventDispatcher);
+		}
+		else{
+			manager.getRecordManager().detachRecorder();
+		}
 
 		// resets seed for deterministic behavior of Random
 		final String seed = System.getProperty("RANDOMSEED", "none");
@@ -285,6 +290,7 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
+		manager.getRecordManager().detachRecorder();
 		// BattlePlayer battlePlayer
 
 		battle = manager.getRecordManager().createPlayer(battleEventDispatcher);

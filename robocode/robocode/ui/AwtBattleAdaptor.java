@@ -230,11 +230,13 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 		@Override
 		public void onBattleResumed(final BattleResumedEvent event) {
 			isPaused.set(false);
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					battleEventDispatcher.onBattleResumed(event);
-				}
-			});
+			if (isRunning.get()){
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						battleEventDispatcher.onBattleResumed(event);
+					}
+				});
+			}
 		}
 
 		@Override

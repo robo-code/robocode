@@ -13,7 +13,6 @@ package robocode.recording;
 
 
 import robocode.battle.events.*;
-import robocode.manager.RobocodeManager;
 
 
 /**
@@ -22,21 +21,24 @@ import robocode.manager.RobocodeManager;
  */
 public class BattleRecorder {
 
-	private final RobocodeManager manager;
 	private final RecordManager recordmanager;
 	private BattleObserver battleObserver;
-	private boolean recordingEnabled;
 
-	public BattleRecorder(RobocodeManager manager, RecordManager recordmanager) {
-		this.manager = manager;
+	public BattleRecorder(RecordManager recordmanager) {
 		this.recordmanager = recordmanager;
 	}
 
-	public void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher) {
+	public void attachRecorder(BattleEventDispatcher battleEventDispatcher) {
 		if (battleObserver != null) {
 			battleObserver.dispose();
 		}
 		battleObserver = new BattleObserver(battleEventDispatcher);
+	}
+
+	public void detachRecorder() {
+		if (battleObserver != null) {
+			battleObserver.dispose();
+		}
 	}
 
 	private class BattleObserver extends BattleAdaptor {
@@ -57,10 +59,6 @@ public class BattleRecorder {
 
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			recordingEnabled = !event.isReplay() && manager.getProperties().getOptionsCommonEnableReplayRecording();
-			if (!recordingEnabled) {
-				return;
-			}
 			recordmanager.cleanupStreams();
 			recordmanager.createRecordInfo(event.getBattleRules(), event.getTurnSnapshot().getRobots().size());
 
@@ -72,26 +70,18 @@ public class BattleRecorder {
 
 		@Override
 		public void onBattleEnded(BattleEndedEvent event) {
-			if (!recordingEnabled) {
-				return;
-			}
 			recordmanager.updateRecordInfoRound(currentRound, currentTurn);
+			recordmanager.flushWriteStreams();
 			recordmanager.cleanupStreams();
 		}
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			if (!recordingEnabled) {
-				return;
-			}
 			recordmanager.updateRecordInfoResults(event.getResults());
 		}
 
 		@Override
 		public void onRoundEnded(RoundEndedEvent event) {
-			if (!recordingEnabled) {
-				return;
-			}
 			recordmanager.updateRecordInfoRound(currentRound, currentTurn);
 		}
 
@@ -102,9 +92,6 @@ public class BattleRecorder {
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			if (!recordingEnabled) {
-				return;
-			}
 			currentTurn = event.getTurnSnapshot().getTurn();
 
 			recordmanager.writeTurn(event.getTurnSnapshot());

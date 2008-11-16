@@ -47,7 +47,7 @@ public class RecordManager implements IRecordManager {
 
 	public RecordManager(RobocodeManager manager) {
 		this.manager = manager;
-		recorder = new BattleRecorder(manager, this);
+		recorder = new BattleRecorder(this);
 	}
 
 	protected void finalize() throws Throwable {
@@ -66,6 +66,16 @@ public class RecordManager implements IRecordManager {
 			tempFile = null;
 		}
 		recordInfo = null;
+	}
+
+	public void flushWriteStreams() {
+		try {
+			objectWriteStream.flush();
+			bufferedWriteStream.flush();
+			fileWriteStream.flush();
+		} catch (IOException e) {
+			logError(e);
+		}
 	}
 
 	public void cleanupStreams() {
@@ -102,7 +112,11 @@ public class RecordManager implements IRecordManager {
 	}
 
 	public void attachRecorder(BattleEventDispatcher battleEventDispatcher) {
-		recorder.setBattleEventDispatcher(battleEventDispatcher);
+		recorder.attachRecorder(battleEventDispatcher);
+	}
+
+	public void detachRecorder() {
+		recorder.detachRecorder();
 	}
 
 	public IBattle createPlayer(BattleEventDispatcher battleEventDispatcher) {
@@ -147,6 +161,7 @@ public class RecordManager implements IRecordManager {
 			// TODO implement seek to currentTime, warn you. turns don't have same size in bytes
 			return (TurnSnapshot) objectReadStream.readObject();
 		} catch (EOFException e) {
+			logError(e);
 			return null;
 		} catch (Exception e) {
 			logError(e);

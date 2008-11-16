@@ -19,8 +19,12 @@
 package robocode.dialog;
 
 
-import robocode.manager.IBattleManager;
-import robocode.manager.IRobotDialogManager;
+import robocode.manager.RobocodeManager;
+import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,25 +39,27 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
 
-	private final IRobotDialogManager robotDialogManager;
+	private final RobocodeManager manager;
+	private BattleObserver battleObserver = new BattleObserver();
 	private RobotDialog robotDialog;
 	private final String name;
-	private final int index;
+	private final int robotIndex;
+	private int maxEnergy;
+	private int lastEnergy;
 
-	/**
-	 * RobotButton constructor
-	 */
-	public RobotButton(IRobotDialogManager robotDialogManager, IBattleManager battleControl, String name, int index, boolean attach) {
-		this.robotDialogManager = robotDialogManager;
+	public RobotButton(RobocodeManager manager, String name, int maxEnergy, int robotIndex, boolean attach) {
+		this.manager = manager;
 		this.name = name;
-		this.index = index;
+		this.robotIndex = robotIndex;
+		lastEnergy = maxEnergy;
+		this.maxEnergy =maxEnergy; 
 
 		initialize();
 		if (attach) {
 			attach();
 			robotDialog.reset();
-			battleControl.setPaintEnabled(index, robotDialog.isPaintEnabled());
-			battleControl.setSGPaintEnabled(index, robotDialog.isSGPaintEnabled());
+			manager.getBattleManager().setPaintEnabled(robotIndex, robotDialog.isPaintEnabled());
+			manager.getBattleManager().setSGPaintEnabled(robotIndex, robotDialog.isSGPaintEnabled());
 		}
 	}
 
@@ -71,8 +77,21 @@ public class RobotButton extends JButton implements ActionListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.setColor(new Color(0x8000F000));
-		g.fillRect(0, getHeight() - 8, getWidth(), 8);
+		if (lastEnergy==0)
+		{
+			return;
+		}
+		int fraction = (lastEnergy* 100) / maxEnergy ;
+		if (fraction>50){
+			g.setColor(Color.GREEN);
+		} else if (fraction>25){
+			g.setColor(Color.YELLOW);
+		} else {
+			g.setColor(Color.RED);
+		}
+
+		final int width1 = ((getWidth()-5) * lastEnergy) / maxEnergy;
+		g.fillRect(2, getHeight() - 6, width1  + 1 , 4);
 	}
 
 	/**
@@ -90,20 +109,57 @@ public class RobotButton extends JButton implements ActionListener {
 
 	public void attach() {
 		if (robotDialog == null) {
-			robotDialog = robotDialogManager.getRobotDialog(this, name, true);
+			robotDialog = manager.getRobotDialogManager().getRobotDialog(this, name, true);
 		}
+		manager.getWindowManager().addBattleListener(battleObserver);
 		robotDialog.attach();
 	}
 
 	public void detach() {
 		robotDialog = null;
+		manager.getWindowManager().removeBattleListener(battleObserver);
 	}
 
 	public int getRobotIndex() {
-		return index;
+		return robotIndex;
 	}
 
 	public String getRobotName() {
 		return name;
+	}
+
+	private class BattleObserver extends BattleAdaptor {
+		@Override
+		public void onTurnEnded(TurnEndedEvent event) {
+			// TODO: Get rid of this check (bugfix) if possible:
+			// Make sanity check as a new battle could have been started since the dialog was initialized,
+			// and thus the robot index can be too high compared to the robot's array size causing an
+			// ArrayOutOfBoundsException. This is a bugfix
+			if (event == null) {
+				return;
+			}
+			final TurnSnapshot turn = event.getTurnSnapshot();
+
+			if (turn == null) {
+				return;
+			}
+			java.util.List<RobotSnapshot> robots = turn.getRobots();
+
+			if (robots == null || robotIndex >= robots.size()) {
+				return;
+			}
+
+			final int newEnergy = (int) robots.get(robotIndex).getEnergy();
+			boolean rep = (lastEnergy != newEnergy);
+			lastEnergy = newEnergy;
+			if (rep) {
+				repaint();
+			}
+		}
+
+		public void onBattleEnded(final BattleEndedEvent event) {
+			lastEnergy = 0;
+			repaint();
+		}
 	}
 }

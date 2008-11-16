@@ -785,10 +785,8 @@ public class RobocodeFrame extends JFrame {
 			dialogManager.trim(robots);
 			for (int index = 0; index < robots.size(); index++) {
 				final RobotSnapshot robot = robots.get(index);
-				final String name = robot.getName();
 				final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-				final RobotButton button = new RobotButton(dialogManager, manager.getBattleManager(), name, index,
-						attach);
+				final RobotButton button = new RobotButton(manager, robot.getName(), (int)robot.getEnergy(), index, attach);
 
 				button.setText(robot.getShortName());
 				addRobotButton(button);
