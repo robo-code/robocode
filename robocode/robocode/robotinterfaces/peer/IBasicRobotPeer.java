@@ -674,4 +674,14 @@ public interface IBasicRobotPeer {
 	 * @since 1.6.1
 	 */
 	Graphics2D getGraphics();
+
+	/**
+	 * Will display property on robot dialog in UI on tab-page of properties
+	 * <p/>
+	 * This method is very useful for debugging your robot.
+	 * <p/>
+	 * @param key name of property
+	 * @param value value of property, pass null or empty string to remove the entry
+	 */
+	void putDebugProperty(String key, String value);
 }

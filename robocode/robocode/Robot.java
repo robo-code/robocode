@@ -1448,6 +1448,22 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * Will display property on robot dialog in UI on tab-page of properties
+	 * <p/>
+	 * This method is very useful for debugging your robot.
+	 * <p/>
+	 * @param key name of property
+	 * @param value value of property, pass null or empty string to remove the entry
+	 */
+	public void putDebugProperty(String key, String value) {
+		if (peer != null) {
+			peer.putDebugProperty(key, value);
+			return;
+		}
+		uninitializedException();
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public void onPaint(Graphics2D g) {}

@@ -25,6 +25,7 @@ import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.manager.RobocodeManager;
+import robocode.peer.DebugProperty;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -32,6 +33,7 @@ import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 
 
 /**
@@ -57,6 +59,7 @@ public class RobotDialog extends JFrame {
 	private int robotIndex;
 	private RobotSnapshot lastSnapshot;
 	private boolean paintSnapshot;
+	private Hashtable<String, String> debugProperties = new Hashtable<String, String>();
 
 	private BattleObserver battleObserver = new BattleObserver();
 
@@ -113,6 +116,7 @@ public class RobotDialog extends JFrame {
 	public void reset() {
 		getConsoleScrollPane().setText(null);
 		lastSnapshot = null;
+		debugProperties.clear();
 	}
 
 	/**
@@ -204,18 +208,34 @@ public class RobotDialog extends JFrame {
 			if (lastSnapshot != null) {
 				StringBuilder sb = new StringBuilder();
 
-				sb.append("energy: ").append(lastSnapshot.getEnergy()).append("\n");
-				sb.append("x: ").append(lastSnapshot.getX()).append("\n");
-				sb.append("y: ").append(lastSnapshot.getY()).append("\n");
-				sb.append("velocity: ").append(lastSnapshot.getVelocity()).append("\n");
-				sb.append("heat: ").append(lastSnapshot.getGunHeat()).append("\n");
+				sb.append("energy: ").append(lastSnapshot.getEnergy()).append('\n');
+				sb.append("x: ").append(lastSnapshot.getX()).append('\n');
+				sb.append("y: ").append(lastSnapshot.getY()).append('\n');
+				sb.append("velocity: ").append(lastSnapshot.getVelocity()).append('\n');
+				sb.append("heat: ").append(lastSnapshot.getGunHeat()).append('\n');
 				sb.append("bodyHeading: rad: ").append(lastSnapshot.getBodyHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getBodyHeading())).append(
-						"\n");
+						'\n');
 				sb.append("gunHeading: rad: ").append(lastSnapshot.getGunHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getGunHeading())).append(
-						"\n");
+						'\n');
 				sb.append("radarHeading: rad: ").append(lastSnapshot.getRadarHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getRadarHeading())).append(
-						"\n");
-				sb.append("state: ").append(lastSnapshot.getState()).append("\n");
+						'\n');
+				sb.append("state: ").append(lastSnapshot.getState()).append('\n');
+				sb.append('\n');
+				java.util.List<DebugProperty> debugPropeties = lastSnapshot.getDebugPropeties();
+
+				if (debugPropeties != null) {
+					for (DebugProperty prop : debugPropeties) {
+						if (prop.value == null || prop.value.length() == 0) {
+							debugProperties.remove(prop.key);
+						} else {
+							debugProperties.put(prop.key, prop.value);
+						}
+					}
+				}
+				for (Map.Entry<String, String> prop : debugProperties.entrySet()) {
+					sb.append(prop.getKey()).append(": ").append(prop.getValue()).append('\n');
+				}
+
 				getTurnScrollPane().setText(sb.toString());
 			} else {
 				getTurnScrollPane().setText(null);

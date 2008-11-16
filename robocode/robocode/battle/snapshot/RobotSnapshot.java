@@ -16,6 +16,7 @@ package robocode.battle.snapshot;
 
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
+import robocode.peer.DebugProperty;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
@@ -113,6 +114,8 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	// The Graphics2D proxy
 	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
 
+	private List<DebugProperty> debugProperties;
+
 	// The output print stream proxy
 	private String outputStreamSnapshot;
 
@@ -147,7 +150,6 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 		gunColor = peer.getGunColor();
 		radarColor = peer.getRadarColor();
 		scanColor = peer.getScanColor();
-		// bulletColor = deepCopy(peer.getBulletColor());
 
 		isDroid = peer.isDroid();
 		isPaintRobot = peer.isPaintRobot();
@@ -157,6 +159,8 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 		scanArc = peer.getScanArc() != null ? new SerializableArc((Arc2D.Double) peer.getScanArc()) : null;
 
 		graphicsCalls = peer.getGraphicsCalls();
+
+		debugProperties = peer.getDebugProperties();
 
 		outputStreamSnapshot = peer.readOutText();
 
@@ -382,6 +386,13 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 */
 	public java.util.List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
 		return graphicsCalls;
+	}
+
+	/**
+	 * @return list of debug properties
+	 */
+	public java.util.List<DebugProperty> getDebugPropeties() {
+		return debugProperties;
 	}
 
 	/**

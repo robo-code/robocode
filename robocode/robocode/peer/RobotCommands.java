@@ -54,6 +54,7 @@ public final class RobotCommands implements Serializable {
 	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
 	private String outputText;
 	private List<TeamMessage> teamMessages = new ArrayList<TeamMessage>();
+	private List<DebugProperty> debugProperties;
 
 	public RobotCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
@@ -77,6 +78,7 @@ public final class RobotCommands implements Serializable {
 		maxTurnRate = origin.maxTurnRate;
 		maxVelocity = origin.maxVelocity;
 		if (fromRobot) {
+			debugProperties = origin.debugProperties; 
 			bullets = origin.bullets;
 			scan = origin.scan;
 			moved = origin.moved;
@@ -244,6 +246,10 @@ public final class RobotCommands implements Serializable {
 		return graphicsCalls;
 	}
 
+	public List<DebugProperty> getDebugProperties() {
+		return debugProperties;
+	}
+
 	public void setGraphicsCalls(List<Graphics2DProxy.QueuedCall> graphicsCalls) {
 		this.graphicsCalls = graphicsCalls;
 	}
@@ -266,6 +272,13 @@ public final class RobotCommands implements Serializable {
 
 	public void setIORobot() {
 		isIORobot = true;
+	}
+
+	public void putDebugProperty(String key, String value) {
+		if (debugProperties == null) {
+			debugProperties = new ArrayList<DebugProperty>();
+		}
+		debugProperties.add(new DebugProperty(key, value));
 	}
 }
 

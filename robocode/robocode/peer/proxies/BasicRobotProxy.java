@@ -30,7 +30,6 @@ import robocode.util.Utils;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.Dictionary;
 import java.util.Hashtable;
 
 
@@ -291,6 +290,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	public Graphics2D getGraphics() {
 		getCall();
 		return getGraphicsImpl();
+	}
+
+	public void putDebugProperty(String key, String value) {
+		setCall();
+		commands.putDebugProperty(key, value);
 	}
 
 	// -----------

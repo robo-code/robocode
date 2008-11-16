@@ -132,6 +132,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			new ArrayList<TeamMessage>());
 	private AtomicReference<List<BulletStatus>> bulletUpdates = new AtomicReference<List<BulletStatus>>(
 			new ArrayList<BulletStatus>());
+	private AtomicReference<List<DebugProperty>> debugProperties = new AtomicReference<List<DebugProperty>>();
+
 	private StringBuilder battleText = new StringBuilder(1024);
 	private StringBuilder proxyText = new StringBuilder(1024);
 	private RobotStatics statics;
@@ -1497,6 +1499,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
 		return commands.get().getGraphicsCalls();
+	}
+
+	public List<DebugProperty> getDebugProperties() {
+		return commands.get().getDebugProperties();
 	}
 
 	public void publishStatus(long currentTurn) {

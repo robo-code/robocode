@@ -33,6 +33,7 @@ import robocode.manager.IThreadManager;
 import robocode.peer.BulletCommand;
 import robocode.peer.BulletState;
 import robocode.peer.ExecResult;
+import robocode.peer.DebugProperty;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.TeamMessage;
@@ -82,6 +83,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		BulletCommand c = new BulletCommand(null, false, 0, -1);
 		ExecResult r = new ExecResult(null, null, null, null, null, false, false, false);
 		TeamMessage t = new TeamMessage(null, null, null);
+		DebugProperty p = new DebugProperty();
 
 		try {
 			RobocodeObjectInputStream is = new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
