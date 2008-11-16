@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     Pavel Savara
+ *     - number of rows limited
  *******************************************************************************/
 package robocode.dialog;
 

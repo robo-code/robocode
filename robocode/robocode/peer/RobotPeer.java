@@ -59,6 +59,9 @@
  *       to prevent circular references causing memory leaks
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - hosting related logic moved to robot proxy
+ *     - interlocked synchronization
+ *     - (almost) minimized surface between RobotPeer and RobotProxy to serializable messages.
  *******************************************************************************/
 package robocode.peer;
 

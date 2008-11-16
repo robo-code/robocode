@@ -8,6 +8,9 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     - hosting related logic moved here from robot peer
+ *     - interlocked synchronization
+ *     - (almost) minimized surface between RobotPeer and RobotProxy to serializable messages.
  *******************************************************************************/
 package robocode.peer.proxies;
 

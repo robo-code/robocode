@@ -47,6 +47,9 @@
  *     Nathaniel Troutman
  *     - Bugfix: Added cleanup() to prevent memory leaks by removing circular
  *       references
+ *     Pavel Savara
+ *     - now driven by BattleObserver and commands to battle
+ *     - initial code of battle recorder and player 
  *******************************************************************************/
 package robocode.manager;
 

@@ -8,6 +8,8 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Xml Serialization, refactoring
  *******************************************************************************/
 package robocode.battle.snapshot;
 

@@ -1,5 +1,5 @@
 Version 1.6.2
-(11/14/2008)
+(11/16/2008)
 -------------
 o Bugfixes
   -- [2214620] Robot was paying time for painting. Now we giving him unlimited time when painting 
@@ -12,7 +12,7 @@ o New feature
 
 o Changes
   -- redesigned RobotPeer and Battle. Now we send messages between threads instead of synchronizing
-     indifidual properties. Code here is much more readable now.
+     indifidual properties. Code here is much more readable now. This is big change.
   -- most synchronization is now interlocked
   -- event manager, priority and dispatch of events refactored
   -- more unit tests added

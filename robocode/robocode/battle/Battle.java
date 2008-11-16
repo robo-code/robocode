@@ -91,6 +91,7 @@
  *     Pavel Savara
  *     - Re-work of robot interfaces
  *     - Refactored large methods into several smaller methods
+ *     - decomposed RobotPeer from RobotProxy, now sending messages beteen them
  *******************************************************************************/
 package robocode.battle;
 

@@ -39,6 +39,8 @@
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
  *       as the battleField variable was not intialized
+ *     Pavel Savara
+ *     - disconnected from Bullet, now we rather send BulletStatus to proxy side
  *******************************************************************************/
 package robocode.peer;
 

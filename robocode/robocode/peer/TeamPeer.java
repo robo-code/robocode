@@ -15,6 +15,8 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Pavel Savara
+ *     - member names are known in constructor
  *******************************************************************************/
 package robocode.peer;
 

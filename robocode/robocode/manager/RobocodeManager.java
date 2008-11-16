@@ -22,6 +22,8 @@
  *     Nathaniel Troutman
  *     - Bugfix: Added cleanup() to prevent memory leaks by removing circular
  *       references
+ *     Pavel Savara
+ *     - uses interfaces of components
  *******************************************************************************/
 package robocode.manager;
 

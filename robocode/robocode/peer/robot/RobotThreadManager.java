@@ -17,6 +17,10 @@
  *     - Bugfix: The waitForStop() was using 'runThreadGroup.activeCount > 0'
  *       instead of runThread.isAlive() causing some robots to be forced to stop.
  *       In the same time this method was simplified up updated for faster CPU's   
+ *     Pavel Savara
+ *     - moved to RobotProxy side
+ *     - forceStop is faster and smarter
+ *     - start of thread is creating safe ATW queue
  *******************************************************************************/
 package robocode.peer.robot;
 

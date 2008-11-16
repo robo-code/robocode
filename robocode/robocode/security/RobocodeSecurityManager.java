@@ -22,6 +22,7 @@
  *       synchronized List and HashMap
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - we create safe AWT queue for robot's thread group
  *******************************************************************************/
 package robocode.security;
 

@@ -36,6 +36,7 @@
  *       to prevent circular references causing memory leaks
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - dispatch and priorities redesign
  *******************************************************************************/
 package robocode.peer.robot;
 

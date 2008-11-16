@@ -8,6 +8,8 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - calls are not queued if we don't have painting enabled
  *******************************************************************************/
 package robocode.robotpaint;
 

@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Xml Serialization, refactoring
  *******************************************************************************/
 package robocode.battle.snapshot;
 

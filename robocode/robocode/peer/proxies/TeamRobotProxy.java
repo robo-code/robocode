@@ -8,6 +8,7 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     - messages are now serialized and deserialized on sender and receiver threads
  *******************************************************************************/
 package robocode.peer.proxies;
 

@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Rewritten
+ *     Pavel Savara
+ *     - now driven by BattleObserver
  *******************************************************************************/
 package robocode.battleview;
 

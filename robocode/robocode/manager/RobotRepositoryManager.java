@@ -28,6 +28,7 @@
  *       of the robots folder and not from sub folders of the robots folder
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - detection of type of robot by overriden methods
  *******************************************************************************/
 package robocode.manager;
 

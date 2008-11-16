@@ -24,6 +24,8 @@
  *     Luis Crespo
  *     - Added debug step feature by adding a "Next Turn" button, and changing
  *       the "Pause" button into a "Pause/Debug" button
+ *     Pavel Savara
+ *     - now driven by BattleObserver
  *******************************************************************************/
 package robocode.dialog;
 
