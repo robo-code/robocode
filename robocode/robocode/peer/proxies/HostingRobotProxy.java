@@ -56,7 +56,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		this.robotClassManager = robotClassManager;
 
 		out = new RobotOutputStream();
-		robotThreadManager = new RobotThreadManager(this); // TODO reuse thread manager for rounds ?
+		robotThreadManager = new RobotThreadManager(this);
 
 		loadClassBattle();
 

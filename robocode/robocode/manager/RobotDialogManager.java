@@ -25,6 +25,8 @@ package robocode.manager;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.dialog.RobotButton;
 import robocode.dialog.RobotDialog;
+import robocode.dialog.BattleDialog;
+import robocode.dialog.BattleButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ public class RobotDialogManager implements IRobotDialogManager {
 	public static final int MAX_PRE_ATTACHED = 10;
 
 	private Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
+	private BattleDialog battleDialog = null;
 	private RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {
@@ -95,4 +98,13 @@ public class RobotDialogManager implements IRobotDialogManager {
 		}
 		return dialog;
 	}
+
+	public BattleDialog getBattleDialog(BattleButton battleButton, boolean create) {
+
+		if (create && battleDialog == null) {
+			battleDialog = new BattleDialog(manager, battleButton);
+		}
+		return battleDialog;
+	}
+
 }

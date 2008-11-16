@@ -516,6 +516,7 @@ public class RobocodeFrame extends JFrame {
 			getReplayButton().setEnabled(false);
 			exitOnClose = false;
 		}
+		addRobotButton(new BattleButton(manager.getRobotDialogManager(), true));
 	}
 
 	private void pauseResumeButtonActionPerformed() {
@@ -785,6 +786,7 @@ public class RobocodeFrame extends JFrame {
 				button.setText(robot.getShortName());
 				addRobotButton(button);
 			}
+			addRobotButton(new BattleButton(manager.getRobotDialogManager(), true));
 
 			getRobotButtonsPanel().repaint();
 

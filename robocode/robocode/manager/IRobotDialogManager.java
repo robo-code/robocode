@@ -15,6 +15,8 @@ package robocode.manager;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.dialog.RobotButton;
 import robocode.dialog.RobotDialog;
+import robocode.dialog.BattleDialog;
+import robocode.dialog.BattleButton;
 
 import java.util.List;
 
@@ -28,4 +30,5 @@ public interface IRobotDialogManager {
 	void reset();
 
 	RobotDialog getRobotDialog(RobotButton robotButton, String name, boolean create);
+	BattleDialog getBattleDialog(BattleButton battleButton, boolean create);
 }
