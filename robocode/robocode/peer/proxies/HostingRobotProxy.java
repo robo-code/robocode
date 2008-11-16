@@ -20,7 +20,7 @@ import robocode.exception.WinException;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.IHostManager;
 import robocode.peer.IRobotPeer;
-import robocode.peer.RobotCommands;
+import robocode.peer.ExecCommands;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;
@@ -143,9 +143,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	// battle driven methods
 	// -----------
 
-	protected abstract void initializeRound(RobotCommands commands, RobotStatus status);
+	protected abstract void initializeRound(ExecCommands commands, RobotStatus status);
 
-	public void startRound(RobotCommands commands, RobotStatus status) {
+	public void startRound(ExecCommands commands, RobotStatus status) {
 		initializeRound(commands, status);
 		robotThreadManager.start(hostManager.getThreadManager());
 	}

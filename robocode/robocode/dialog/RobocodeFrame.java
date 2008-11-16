@@ -111,7 +111,7 @@ public class RobocodeFrame extends JFrame {
 
 	protected void finalize() throws Throwable {
 		try {
-			manager.getBattleManager().removeListener(battleObserver);
+			manager.getWindowManager().removeBattleListener(battleObserver);
 		} finally {
 			super.finalize();
 		}
@@ -498,7 +498,7 @@ public class RobocodeFrame extends JFrame {
 		setContentPane(getRobocodeContentPane());
 		setJMenuBar(getRobocodeMenuBar());
 
-		battleObserver = new BattleObserver(manager.getBattleManager());
+		battleObserver = new BattleObserver(manager.getWindowManager());
 
 		addWindowListener(eventHandler);
 
@@ -691,7 +691,7 @@ public class RobocodeFrame extends JFrame {
 			}
 			if (windowManager.closeRobocodeEditor()) {
 				WindowUtil.saveWindowPositions();
-				battleObserver.dispose();
+				battleObserver = null;
 				dispose();
 			}
 			manager.saveProperties();
@@ -733,7 +733,7 @@ public class RobocodeFrame extends JFrame {
 
 
 	private class BattleObserver extends BattleAdaptor {
-		private IBattleManager battleManager;
+		private IWindowManager windowManager;
 		private int tps;
 		private int currentRound;
 		private int numberOfRounds;
@@ -743,13 +743,17 @@ public class RobocodeFrame extends JFrame {
 		private boolean isBattleReplay;
 		private long lastTitleUpdateTime;
 
-		public BattleObserver(IBattleManager battleManager) {
-			this.battleManager = battleManager;
-			battleManager.addListener(this);
+		public BattleObserver(IWindowManager windowManager) {
+			this.windowManager = windowManager;
+			windowManager.addBattleListener(this);
 		}
 
-		public void dispose() {
-			battleManager.removeListener(this);
+		protected void finalize() throws Throwable {
+			try {
+				windowManager.removeBattleListener(this);
+			} finally {
+				super.finalize();
+			}
 		}
 
 		@Override
@@ -895,7 +899,7 @@ public class RobocodeFrame extends JFrame {
 								title.append(", ");
 							}
 							if (dispFps) {
-								title.append(battleView.getFPS()).append(" FPS");
+								title.append(manager.getWindowManager().getFPS()).append(" FPS");
 							}
 						}
 					}

@@ -13,7 +13,7 @@ package robocode.peer.proxies;
 
 
 import robocode.RobotStatus;
-import robocode.peer.RobotCommands;
+import robocode.peer.ExecCommands;
 
 
 /**
@@ -21,7 +21,7 @@ import robocode.peer.RobotCommands;
  */
 public interface IHostingRobotProxy {
 
-	void startRound(RobotCommands commands, RobotStatus status);
+	void startRound(ExecCommands commands, RobotStatus status);
 
 	boolean isRunning();
 

@@ -100,7 +100,7 @@ public class RobotDialog extends JFrame {
 
 	public void detach() {
 		if (isListening) {
-			manager.getBattleManager().removeListener(battleObserver);
+			manager.getWindowManager().removeBattleListener(battleObserver);
 			isListening = false;
 		}
 		robotButton.detach();
@@ -109,7 +109,7 @@ public class RobotDialog extends JFrame {
 	public void attach() {
 		if (!isListening) {
 			isListening = true;
-			manager.getBattleManager().addListener(battleObserver);
+			manager.getWindowManager().addBattleListener(battleObserver);
 		}
 	}
 

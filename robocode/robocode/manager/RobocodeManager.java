@@ -32,7 +32,6 @@ import robocode.RobocodeFileOutputStream;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
-import robocode.recording.BattleRecorder;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
 import robocode.security.RobocodeSecurityManager;

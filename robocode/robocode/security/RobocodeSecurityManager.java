@@ -32,7 +32,7 @@ import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IThreadManager;
 import robocode.peer.BulletCommand;
 import robocode.peer.BulletState;
-import robocode.peer.ExecResult;
+import robocode.peer.ExecResults;
 import robocode.peer.DebugProperty;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
@@ -81,7 +81,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// Fake loading of classes
 		BulletState s = BulletState.INACTIVE;
 		BulletCommand c = new BulletCommand(null, false, 0, -1);
-		ExecResult r = new ExecResult(null, null, null, null, null, false, false, false);
+		ExecResults r = new ExecResults(null, null, null, null, null, false, false, false);
 		TeamMessage t = new TeamMessage(null, null, null);
 		DebugProperty p = new DebugProperty();
 

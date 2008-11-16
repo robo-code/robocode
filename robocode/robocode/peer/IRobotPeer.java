@@ -21,7 +21,7 @@ public interface IRobotPeer {
 
 	void setInactive();
 
-	ExecResult waitForBattleEndImpl(RobotCommands newCommands);
+	ExecResults waitForBattleEndImpl(ExecCommands newCommands);
 
-	ExecResult executeImpl(RobotCommands newCommands);
+	ExecResults executeImpl(ExecCommands newCommands);
 }

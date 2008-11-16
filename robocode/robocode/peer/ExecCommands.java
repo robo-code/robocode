@@ -26,7 +26,7 @@ import java.io.Serializable;
 /**
  * @author Pavel Savara (original)
  */
-public final class RobotCommands implements Serializable {
+public final class ExecCommands implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private double bodyTurnRemaining;
@@ -56,12 +56,12 @@ public final class RobotCommands implements Serializable {
 	private List<TeamMessage> teamMessages = new ArrayList<TeamMessage>();
 	private List<DebugProperty> debugProperties;
 
-	public RobotCommands() {
+	public ExecCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
 		setMaxTurnRate(Double.MAX_VALUE);
 	}
 
-	public RobotCommands(RobotCommands origin, boolean fromRobot) {
+	public ExecCommands(ExecCommands origin, boolean fromRobot) {
 		bodyTurnRemaining = origin.bodyTurnRemaining;
 		radarTurnRemaining = origin.radarTurnRemaining;
 		gunTurnRemaining = origin.gunTurnRemaining;

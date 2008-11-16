@@ -13,6 +13,8 @@ package robocode.manager;
 
 
 import robocode.battle.events.BattleCompletedEvent;
+import robocode.battle.events.IBattleListener;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.dialog.RobocodeFrame;
 import robocode.ui.BattleResultsTableModel;
 
@@ -74,4 +76,12 @@ public interface IWindowManager {
 	void showImportRobotDialog();
 
 	void showSaveResultsDialog(BattleResultsTableModel tableModel);
+
+	void addBattleListener(IBattleListener listener);
+
+	void removeBattleListener(IBattleListener listener);
+
+	int getFPS();
+
+	TurnSnapshot getLastSnapshot();
 }

@@ -15,7 +15,7 @@ package robocode.peer.proxies;
 import robocode.RobotStatus;
 import robocode.manager.IHostManager;
 import robocode.peer.IRobotPeer;
-import robocode.peer.RobotCommands;
+import robocode.peer.ExecCommands;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
@@ -37,7 +37,7 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 	}
 
 	@Override
-	protected void initializeRound(RobotCommands commands, RobotStatus status) {
+	protected void initializeRound(ExecCommands commands, RobotStatus status) {
 		super.initializeRound(commands, status);
 		isStopped = true;
 	}

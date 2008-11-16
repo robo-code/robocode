@@ -68,6 +68,13 @@ public class RobotButton extends JButton implements ActionListener {
 		}
 	}
 
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		g.setColor(new Color(0x8000F000));
+		g.fillRect(0, getHeight() - 8, getWidth(), 8);
+	}
+
 	/**
 	 * Initialize the class.
 	 */

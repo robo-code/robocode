@@ -44,8 +44,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	private Graphics2DProxy graphicsProxy;
 
 	protected RobotStatus status;
-	protected RobotCommands commands;
-	private ExecResult execResult;
+	protected ExecCommands commands;
+	private ExecResults execResults;
 	private Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>(); 
 	private int bulletCounter; 
 
@@ -65,13 +65,13 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy = new Graphics2DProxy();
 
 		// dummy
-		execResult = new ExecResult(null, null, null, null, null, false, false, false);
+		execResults = new ExecResults(null, null, null, null, null, false, false, false);
 
 		setSetCallCount(0);
 		setGetCallCount(0);
 	}
 
-	protected void initializeRound(RobotCommands commands, RobotStatus status) {
+	protected void initializeRound(ExecCommands commands, RobotStatus status) {
 		updateStatus(commands, status);
 		eventManager.reset();
 		final StatusEvent start = new StatusEvent(status);
@@ -98,7 +98,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		// Cleanup graphics proxy
 		graphicsProxy = null;
-		execResult = null;
+		execResults = null;
 		status = null;
 		commands = null;
 	}
@@ -311,7 +311,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	@Override
 	protected final void executeImpl() {
-		if (execResult == null) {
+		if (execResults == null) {
 			// this is to slow down undead robot after cleanup, from fast exception-loop
 			try {
 				Thread.sleep(1000);
@@ -340,21 +340,21 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy.clearQueue();
 
 		// call server
-		execResult = peer.executeImpl(commands);
+		execResults = peer.executeImpl(commands);
 
-		updateStatus(execResult.commands, execResult.status);
-		graphicsProxy.setPaintingEnabled(execResult.paintEnabled);
+		updateStatus(execResults.getCommands(), execResults.getStatus());
+		graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
 		firedEnergy = 0;
 		firedHeat = 0;
 
 		// add new events first
-		if (execResult.events != null) {
-			for (Event event : execResult.events) {
+		if (execResults.getEvents() != null) {
+			for (Event event : execResults.getEvents()) {
 				eventManager.add(event);
 			}
 		}
 
-		for (BulletStatus s : execResult.bulletUpdates) {
+		for (BulletStatus s : execResults.getBulletUpdates()) {
 			final Bullet bullet = bullets.get(s.bulletId);
 
 			if (bullet != null) {
@@ -366,7 +366,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		}
 
 		// add new team messages
-		loadTeamMessages(execResult.teamMessages);
+		loadTeamMessages(execResults.getTeamMessages());
 
 		eventManager.processEvents();
 	}
@@ -381,13 +381,13 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			graphicsProxy.clearQueue();
 
 			// call server
-			execResult = peer.waitForBattleEndImpl(commands);
+			execResults = peer.waitForBattleEndImpl(commands);
 
-			updateStatus(execResult.commands, execResult.status);
+			updateStatus(execResults.getCommands(), execResults.getStatus());
 
 			// add new events
-			if (execResult.events != null) {
-				for (Event event : execResult.events) {
+			if (execResults.getEvents() != null) {
+				for (Event event : execResults.getEvents()) {
 					if (event instanceof BattleEndedEvent) {
 						eventManager.add(event);
 					}
@@ -395,10 +395,10 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			}
 			eventManager.resetCustomEvents();
 			eventManager.processEvents();
-		} while (!execResult.halt && execResult.shouldWait);
+		} while (!execResults.isHalt() && execResults.isShouldWait());
 	}
 
-	private void updateStatus(RobotCommands commands, RobotStatus status) {
+	private void updateStatus(ExecCommands commands, RobotStatus status) {
 		this.status = status;
 		this.commands = commands;
 	}

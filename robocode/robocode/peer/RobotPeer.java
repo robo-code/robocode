@@ -126,21 +126,20 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	private IHostingRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
-	private AtomicReference<RobotCommands> commands = new AtomicReference<RobotCommands>();
+	private AtomicReference<ExecCommands> commands = new AtomicReference<ExecCommands>();
 	private AtomicReference<EventQueue> events = new AtomicReference<EventQueue>(new EventQueue());
 	private AtomicReference<List<TeamMessage>> teamMessages = new AtomicReference<List<TeamMessage>>(
 			new ArrayList<TeamMessage>());
 	private AtomicReference<List<BulletStatus>> bulletUpdates = new AtomicReference<List<BulletStatus>>(
 			new ArrayList<BulletStatus>());
-	private AtomicReference<List<DebugProperty>> debugProperties = new AtomicReference<List<DebugProperty>>();
 
-	private StringBuilder battleText = new StringBuilder(1024);
-	private StringBuilder proxyText = new StringBuilder(1024);
+	private final StringBuilder battleText = new StringBuilder(1024);
+	private final StringBuilder proxyText = new StringBuilder(1024);
 	private RobotStatics statics;
 	private BattleRules battleRules;
 
 	// for battle thread, during robots processing
-	private RobotCommands currentCommands;
+	private ExecCommands currentCommands;
 	private double lastHeading;
 	private double lastGunHeading;
 	private double lastRadarHeading;
@@ -439,12 +438,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// execute
 	// -----------
 
-	public final ExecResult executeImpl(RobotCommands newCommands) {
+	public final ExecResults executeImpl(ExecCommands newCommands) {
 		newCommands.validate(this);
 
 		if (!disableExec) {
 			// from robot to battle
-			commands.set(new RobotCommands(newCommands, true));
+			commands.set(new ExecCommands(newCommands, true));
 			printProxy(newCommands.getOutputText());
 		} else {
 			// slow down spammer
@@ -476,32 +475,32 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		waitForNextRound();
 
 		// from battle to robot
-		final RobotCommands resCommands = new RobotCommands(this.commands.get(), false);
+		final ExecCommands resCommands = new ExecCommands(this.commands.get(), false);
 		final RobotStatus resStatus = status.get();
 
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
 
-		return new ExecResult(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(), 
+		return new ExecResults(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(),
 				getHalt(), shouldWait, isPaintEnabled());
 	}
 
-	public final ExecResult waitForBattleEndImpl(RobotCommands newCommands) {
+	public final ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
 		if (!getHalt()) {
 			// from robot to battle
-			commands.set(new RobotCommands(newCommands, true));
+			commands.set(new ExecCommands(newCommands, true));
 			printProxy(newCommands.getOutputText());
 
 			waitForNextRound();
 		}
 		// from battle to robot
-		final RobotCommands resCommands = new RobotCommands(this.commands.get(), false);
+		final ExecCommands resCommands = new ExecCommands(this.commands.get(), false);
 		final RobotStatus resStatus = status.get();
 
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && !isWinner());
 
 		readoutTeamMessages(); // throw away
 		
-		return new ExecResult(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),
+		return new ExecResults(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),
 				getHalt(), shouldWait, false);
 	}
 
@@ -683,7 +682,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		skippedTurns = 0;
 
 		status = new AtomicReference<RobotStatus>();
-		commands = new AtomicReference<RobotCommands>(new RobotCommands());
+		commands = new AtomicReference<ExecCommands>(new ExecCommands());
 		readoutEvents();
 		readoutTeamMessages();
 		readoutBullets();
@@ -707,7 +706,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			try {
 				Logger.logMessage(".", false);
 
-				currentCommands = new RobotCommands();
+				currentCommands = new ExecCommands();
 				RobotStatus stat = new RobotStatus(this, currentCommands, battle);
 
 				status.set(stat);
@@ -1421,7 +1420,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		energy = newEnergy;
 		if (energy < .01) {
 			energy = 0;
-			RobotCommands localCommands = commands.get();
+			ExecCommands localCommands = commands.get();
 
 			localCommands.setDistanceRemaining(0);
 			localCommands.setBodyTurnRemaining(0);
@@ -1491,8 +1490,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		events = null;
 		teamMessages = null;
 		bulletUpdates = null;
-		battleText = null;
-		proxyText = null;
+		battleText.setLength(0);
+		proxyText.setLength(0);
 		statics = null;
 		battleRules = null;
 	}

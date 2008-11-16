@@ -91,7 +91,7 @@ public class RankingDialog extends BaseScoreDialog {
 	}
 
 	protected void onDialogShown() {
-		manager.getBattleManager().addListener(battleObserver);
+		manager.getWindowManager().addBattleListener(battleObserver);
 		timerTask.start();
 	}
 
@@ -99,7 +99,7 @@ public class RankingDialog extends BaseScoreDialog {
 		manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
 				false);
 		timerTask.stop();
-		manager.getBattleManager().removeListener(battleObserver);
+		manager.getWindowManager().removeBattleListener(battleObserver);
 		dispose();
 	}
 

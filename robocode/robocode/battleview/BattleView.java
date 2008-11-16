@@ -16,8 +16,7 @@
 package robocode.battleview;
 
 
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.BattleStartedEvent;
+import robocode.battle.events.*;
 import robocode.battle.snapshot.BulletSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.TurnSnapshot;
@@ -26,13 +25,9 @@ import robocode.battlefield.DefaultBattleField;
 import robocode.gfx.GraphicsState;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
-import robocode.manager.IBattleManager;
-import robocode.manager.IImageManager;
-import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
+import robocode.manager.*;
 import robocode.peer.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.ui.AwtBattleAdaptor;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -49,8 +44,6 @@ import java.util.Random;
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
-	private final static int TIMER_TICKS_PER_SECOND = 50;
-
 	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
@@ -113,17 +106,15 @@ public class BattleView extends Canvas {
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
-		observer = new BattleObserver(manager.getBattleManager());
-	}
-
-	public int getFPS() {
-		return observer.getFPS();
+		observer = new BattleObserver(manager.getWindowManager());
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		if (observer != null && observer.isRunning()) {
-			update(observer.getLastSnapshot());
+		final TurnSnapshot lastSnapshot = manager.getWindowManager().getLastSnapshot();
+
+		if (lastSnapshot != null) {
+			update(lastSnapshot);
 		} else {
 			paintRobocodeLogo((Graphics2D) g);
 		}
@@ -634,9 +625,9 @@ public class BattleView extends Canvas {
 		this.initialized = initialized;
 	}
 
-	private class BattleObserver extends AwtBattleAdaptor {
-		public BattleObserver(IBattleManager battleManager) {
-			super(battleManager, TIMER_TICKS_PER_SECOND, true);
+	private class BattleObserver extends BattleAdaptor {
+		public BattleObserver(IWindowManager windowManager) {
+			windowManager.addBattleListener(this);
 		}
 
 		@Override
@@ -655,11 +646,11 @@ public class BattleView extends Canvas {
 			robotGraphics = null;
 		}
 
-		protected void updateView(TurnSnapshot snapshot) {
-			if (snapshot == null) {
+		public void onTurnEnded(final TurnEndedEvent event) {
+			if (event.getTurnSnapshot() == null) {
 				repaint();
 			} else {
-				update(snapshot);
+				update(event.getTurnSnapshot());
 			}
 		}
 	}

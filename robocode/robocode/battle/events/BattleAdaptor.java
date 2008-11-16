@@ -18,25 +18,25 @@ package robocode.battle.events;
  */
 public class BattleAdaptor implements IBattleListener {
 
-	public void onBattleStarted(BattleStartedEvent event) {}
+	public void onBattleStarted(final BattleStartedEvent event) {}
 
-	public void onBattleEnded(BattleEndedEvent event) {}
+	public void onBattleEnded(final BattleEndedEvent event) {}
 
-	public void onBattleCompleted(BattleCompletedEvent event) {}
+	public void onBattleCompleted(final BattleCompletedEvent event) {}
 
-	public void onBattlePaused(BattlePausedEvent event) {}
+	public void onBattlePaused(final BattlePausedEvent event) {}
 
-	public void onBattleResumed(BattleResumedEvent event) {}
+	public void onBattleResumed(final BattleResumedEvent event) {}
 
-	public void onRoundStarted(RoundStartedEvent event) {}
+	public void onRoundStarted(final RoundStartedEvent event) {}
 
-	public void onRoundEnded(RoundEndedEvent event) {}
+	public void onRoundEnded(final RoundEndedEvent event) {}
 
-	public void onTurnStarted(TurnStartedEvent event) {}
+	public void onTurnStarted(final TurnStartedEvent event) {}
 
-	public void onTurnEnded(TurnEndedEvent event) {}
+	public void onTurnEnded(final TurnEndedEvent event) {}
 
-	public void onBattleMessage(BattleMessageEvent event) {}
+	public void onBattleMessage(final BattleMessageEvent event) {}
 
-	public void onBattleError(BattleErrorEvent event) {}
+	public void onBattleError(final BattleErrorEvent event) {}
 }

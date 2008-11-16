@@ -23,12 +23,14 @@
 package robocode.manager;
 
 
-import robocode.battle.events.BattleCompletedEvent;
+import robocode.battle.events.*;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.dialog.*;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
 import robocode.ui.BattleResultsTableModel;
+import robocode.ui.AwtBattleAdaptor;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -44,6 +46,8 @@ import java.io.IOException;
  */
 public class WindowManager implements IWindowManager {
 
+	private final static int TIMER_TICKS_PER_SECOND = 50;
+	private AwtBattleAdaptor awtAdaptor;
 	private RobocodeEditor robocodeEditor;
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
@@ -53,6 +57,23 @@ public class WindowManager implements IWindowManager {
 
 	public WindowManager(RobocodeManager manager) {
 		this.manager = manager;
+		awtAdaptor = new AwtBattleAdaptor(manager.getBattleManager(), TIMER_TICKS_PER_SECOND, true);
+	}
+
+	public synchronized void addBattleListener(IBattleListener listener) {
+		awtAdaptor.addListener(listener);
+	}
+
+	public synchronized void removeBattleListener(IBattleListener listener) {
+		awtAdaptor.removeListener(listener);
+	}
+
+	public TurnSnapshot getLastSnapshot() {
+		return awtAdaptor.getLastSnapshot();
+	}
+
+	public int getFPS() {
+		return awtAdaptor.getFPS();
 	}
 
 	public RobocodeFrame getRobocodeFrame() {

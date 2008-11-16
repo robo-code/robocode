@@ -13,7 +13,7 @@ package robocode;
 
 
 import robocode.battle.Battle;
-import robocode.peer.RobotCommands;
+import robocode.peer.ExecCommands;
 import robocode.peer.RobotPeer;
 
 
@@ -51,7 +51,7 @@ public final class RobotStatus {
 	 * @param commands  data from commands
 	 * @param battle	data from battle
 	 */
-	public RobotStatus(RobotPeer robotPeer, RobotCommands commands, Battle battle) {
+	public RobotStatus(RobotPeer robotPeer, ExecCommands commands, Battle battle) {
 		synchronized (robotPeer) {
 			energy = robotPeer.getEnergy();
 			x = robotPeer.getX();
