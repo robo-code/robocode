@@ -32,6 +32,7 @@ import static robocode.io.Logger.logMessage;
 import robocode.manager.IThreadManager;
 import robocode.peer.proxies.IHostedThread;
 import robocode.security.RobocodeSecurityManager;
+import robocode.security.LoggingThreadGroup;
 
 
 /**
@@ -41,12 +42,12 @@ import robocode.security.RobocodeSecurityManager;
 public class RobotThreadManager {
 	private IHostedThread robotProxy;
 	private Thread runThread;
-	private ThreadGroup runThreadGroup;
+	private LoggingThreadGroup runThreadGroup;
 	private boolean awtForThreadGroup = false;
 
 	public RobotThreadManager(IHostedThread robotProxy) {
 		this.robotProxy = robotProxy;
-		runThreadGroup = new ThreadGroup(robotProxy.getStatics().getName());
+		runThreadGroup = new LoggingThreadGroup(robotProxy.getStatics().getName());
 		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
 	}
 
@@ -57,15 +58,18 @@ public class RobotThreadManager {
 		}
 	}
 
+	/**
+	 * @return true as peacefull stop
+	 */
 	public boolean forceStop() {
 		int res = stopSteps(runThread);
 
-		Thread[] threads = new Thread[10];
+		Thread[] threads = new Thread[100];
 
 		runThreadGroup.enumerate(threads);
 
 		for (Thread thread : threads) {
-			if (thread != runThread) {
+			if (thread != null && thread != runThread && thread.isAlive()) {
 				res += stopSteps(thread);
 			}
 		}
@@ -75,6 +79,10 @@ public class RobotThreadManager {
 		return res == 0;
 	}
 
+	/**
+	 * @param t thread to stop
+	 * @return 0 as peacefull stop
+	 */
 	private int stopSteps(Thread t) {
 		if (t != null && t.isAlive()) {
 			interrupt(t);
@@ -83,8 +91,8 @@ public class RobotThreadManager {
 			}
 			if (t.isAlive()) {
 				// noinspection deprecation
-				t.suspend();
-				logError("Warning!  Unable to stop thread: " + runThread.getName() + ", at least suspended the thread");
+				// t.suspend();
+				logError("Warning!  Unable to stop thread: " + runThread.getName());
 			} else {
 				logMessage(robotProxy.getStatics().getName() + " has been stopped.");
 			}
@@ -97,7 +105,7 @@ public class RobotThreadManager {
 		// noinspection deprecation
 		t.stop();
 		try {
-			t.join(500);
+			t.join(1500);
 		} catch (InterruptedException e) {
 			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
@@ -139,31 +147,35 @@ public class RobotThreadManager {
 			runThread.setPriority(Thread.NORM_PRIORITY);
 			runThread.start();
 		} catch (Exception e) {
-			logError("Exception starting thread: " + e);
+			logError("Exception starting thread: ", e);
 		}
 	}
 
+	/**
+	 * @return true as peacefull stop
+	 */
 	public boolean waitForStop() {
-		if (runThread == null) {
-			return true;
+		boolean stop = false;
+
+		if (runThread != null && runThread.isAlive()) {
+			runThread.interrupt();
+			waitForStop(runThread);
+			stop = runThread.isAlive();
 		}
 
-		runThread.interrupt();
+		Thread[] threads = new Thread[100];
 
-		for (int j = 0; j < 100 && runThread.isAlive(); j++) {
-			if (j == 50) {
-				logError("Waiting for robot " + robotProxy.getStatics().getName() + " to stop");
-			}
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-				break; // We are in a loop
+		runThreadGroup.enumerate(threads);
+
+		for (Thread thread : threads) {
+			if (thread != null && thread != runThread && thread.isAlive()) {
+				thread.interrupt();
+				waitForStop(thread);
+				stop |= thread.isAlive();
 			}
 		}
 
-		if (runThread.isAlive()) {
+		if (stop) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
 				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
 				return forceStop();
@@ -173,7 +185,24 @@ public class RobotThreadManager {
 						+ " is still running.  Not stopping it because security is off.");
 			}
 		}
+
 		return true;
+	}
+
+	private void waitForStop(Thread thread) {
+		for (int j = 0; j < 100 && thread.isAlive(); j++) {
+			if (j == 50) {
+				logError(
+						"Waiting for robot " + robotProxy.getStatics().getName() + " to stop thread " + thread.getName());
+			}
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+				break; // We are in a loop
+			}
+		}
 	}
 
 	public void checkRunThread() {

@@ -36,6 +36,7 @@ import robocode.io.Logger;
 import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.security.SecurePrintStream;
+import robocode.security.LoggingThreadGroup;
 import robocode.ui.BattleResultsTableModel;
 import robocode.recording.BattleRecordFormat;
 
@@ -66,11 +67,15 @@ public class Robocode {
 	 *
 	 * @param args an array of command-line arguments
 	 */
-	public static void main(String[] args) {
-		Robocode robocode = new Robocode();
-
-		robocode.loadSetup(args);
-		robocode.run();
+	public static void main(final String[] args) {
+		ThreadGroup group = new LoggingThreadGroup("Robocode main");
+		new Thread(group, "myThread") {
+			public void run() {
+				Robocode robocode = new Robocode();
+				robocode.loadSetup(args);
+				robocode.run();
+			}
+		}.start();
 	}
 
 	private RobocodeManager manager;
