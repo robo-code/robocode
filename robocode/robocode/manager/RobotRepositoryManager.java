@@ -366,7 +366,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 						}
 					}
 				}
-				if (fileSpecification.getValid()) {
+				if (fileSpecification.isValid()) {
 					robotList.add(fileSpecification);
 				}
 			}
@@ -406,7 +406,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 
 				robotFileSpecification.setUid(robotClassManager.getUid());
 
-				if (robotFileSpecification.getValid()) {
+				if (robotFileSpecification.isValid()) {
 					if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 						if (Droid.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setDroid(true);
@@ -468,6 +468,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 				}
 				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
 			} catch (Throwable t) {
+				robotFileSpecification.setValid(false);
 				getRobotDatabase().put(key, robotFileSpecification);
 				logError(robotFileSpecification.getName() + ": Got an error with this class: ", t);
 			}

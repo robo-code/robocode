@@ -4,6 +4,9 @@ Version 1.6.2
 o Bugfixes
   -- [2214620] Robot was paying time for painting. Now we giving him unlimited time when painting 
      is enabled on UI.
+  -- we don't offer and load non-valid robots from repository
+  -- fixed RobotDialog robotIndex when re-attached, dialog palacement fixed
+  -- exception on robot's condition doesn't break further processing now
 
 o New feature
   -- battle recording and replay. Saving to binary and xml file.
@@ -24,6 +27,7 @@ o Changes
   -- team messages are deserialized on receiver robot thread.
   -- got rid of robot loader thread, now loading on robot's thread, got more security.
   -- introduced new interfaces for code components
+  -- robot threads have NORM_PRIORITY - 1, AWT UI have NORM_PRIORITY + 2
 
 Version 1.6.1.4
 (11/14/2008)

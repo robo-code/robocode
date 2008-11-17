@@ -55,6 +55,9 @@ public class Repository {
 		List<FileSpecification> v = Collections.synchronizedList(new ArrayList<FileSpecification>());
 
 		for (FileSpecification spec : fileSpecifications) {
+			if (!spec.isValid()) {
+				continue;
+			}
 			if (spec.isDuplicate()) {
 				continue;
 			}

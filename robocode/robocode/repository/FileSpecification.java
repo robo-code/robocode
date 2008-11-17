@@ -96,7 +96,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 			newSpec = new JarSpecification(f, rootDir, prefix, developmentVersion);
 		} else {
 			newSpec = new RobotFileSpecification(f, rootDir, prefix, developmentVersion);
-			if (!(developmentVersion || newSpec.getValid())) {
+			if (!(developmentVersion || newSpec.isValid())) {
 				newSpec = new ClassSpecification((RobotFileSpecification) newSpec);
 			}
 		}
@@ -447,8 +447,12 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		return getNameManager().getFullClassName();
 	}
 
-	public boolean getValid() {
+	public boolean isValid() {
 		return valid;
+	}
+
+	public void setValid(boolean value) {
+		valid = value;
 	}
 
 	public boolean isDuplicate() {
