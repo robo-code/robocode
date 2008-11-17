@@ -29,6 +29,8 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class HitByBulletEvent extends Event {
+	private static int classPriority = 20;
+
 	private final double bearing;
 	private final Bullet bullet;
 
@@ -147,8 +149,9 @@ public final class HitByBulletEvent extends Event {
 		return bullet.getVelocity();
 	}
 
-	private static int classPriority = 20;
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final int getDefaultPriority() {
 		return classPriority;

@@ -31,6 +31,7 @@ import java.awt.*;
  * @author Flemming N. Larsen (original)
  */
 public final class PaintEvent extends Event {
+	private static int classPriority = 5;
 
 	/**
 	 * Called by the game to create a new PaintEvent.
@@ -39,8 +40,9 @@ public final class PaintEvent extends Event {
 		super();
 	}
 
-	private static int classPriority = 5;
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final int getDefaultPriority() {
 		return classPriority;

@@ -28,6 +28,8 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class BulletHitBulletEvent extends Event {
+	private static int classPriority = 55;
+
 	private final Bullet bullet;
 	private final Bullet hitBullet;
 
@@ -61,8 +63,9 @@ public final class BulletHitBulletEvent extends Event {
 		return hitBullet;
 	}
 
-	private static int classPriority = 55;
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final int getDefaultPriority() {
 		return classPriority;

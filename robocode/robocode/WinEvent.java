@@ -28,6 +28,7 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class WinEvent extends Event {
+	private final static int classPriority = 100; // System event -> cannot be changed!;
 
 	/**
 	 * Called by the game to create a new WinEvent.
@@ -35,8 +36,6 @@ public final class WinEvent extends Event {
 	public WinEvent() {
 		super();
 	}
-
-	private static int classPriority = 100; // System event -> cannot be changed!;
 
 	/**
 	 * {@inheritDoc}

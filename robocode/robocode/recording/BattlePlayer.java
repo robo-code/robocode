@@ -16,7 +16,6 @@ import robocode.battle.BaseBattle;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.manager.RobocodeManager;
-import static robocode.io.Logger.logError;
 
 
 /**

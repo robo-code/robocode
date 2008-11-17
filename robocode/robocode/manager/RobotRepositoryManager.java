@@ -482,7 +482,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		}
 	}
 
-	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class... parameterTypes) {
+	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class<?>... parameterTypes) {
 		if (knownBase.isAssignableFrom(robotClass)) {
 			final Method getInteractiveEventListener;
 

@@ -34,10 +34,10 @@ import java.awt.*;
  * @since 1.6.1
  */
 public final class BattleEndedEvent extends Event {
+	private final static int classPriority = 100; // System event -> cannot be changed!;
 
 	private final boolean aborted;
 	private final BattleResults results;
-	private static int classPriority = 100; // System event -> cannot be changed!;
 
 	/**
 	 * {@inheritDoc}

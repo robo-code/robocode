@@ -35,7 +35,7 @@ import java.awt.*;
  * @author Flemming N. Larsen (contributor)
  */
 public abstract class Event implements Comparable<Event> {
-	private long time = 0;
+	private long time;
 	private int priority;
 
 	/**
@@ -153,7 +153,11 @@ public abstract class Event implements Comparable<Event> {
 	public abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
 
 	/**
-	 * @return default event priority
+	 * Returns the default priority for this specific event class.
+	 *
+	 * @return the default priority.
+	 *
+	 * @since 1.6.2
 	 */
 	public abstract int getDefaultPriority();
 
@@ -163,5 +167,4 @@ public abstract class Event implements Comparable<Event> {
 	public boolean isCriricalEvent() {
 		return false;
 	}
-
 }

@@ -32,6 +32,8 @@ import java.io.IOException;
  * @author Pavel Savara (original)
  */
 public class BattleDialog extends JFrame {
+	private static final long serialVersionUID = 1L;
+
 	private BattleObserver battleObserver = new BattleObserver();
 
 	private ConsoleScrollPane scrollPane;

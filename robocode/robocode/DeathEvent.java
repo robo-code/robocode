@@ -28,6 +28,7 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class DeathEvent extends Event {
+	private final static int classPriority = -1; // System event -> cannot be changed!;
 
 	/**
 	 * Called by the game to create a new DeathEvent.
@@ -35,8 +36,6 @@ public final class DeathEvent extends Event {
 	public DeathEvent() {
 		super();
 	}
-
-	private static int classPriority = -1; // System event -> cannot be changed!;
 
 	/**
 	 * {@inheritDoc}

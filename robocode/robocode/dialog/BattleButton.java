@@ -13,7 +13,6 @@ package robocode.dialog;
 
 
 import robocode.manager.IRobotDialogManager;
-import robocode.manager.IBattleManager;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -25,6 +24,7 @@ import java.awt.*;
  * @author Pavel Savara (original)
  */
 public class BattleButton extends JButton implements ActionListener {
+	private static final long serialVersionUID = 1L;
 
 	private final IRobotDialogManager robotDialogManager;
 	private BattleDialog battleDialog;

@@ -27,6 +27,7 @@ import java.awt.*;
  * @since 1.5
  */
 public final class StatusEvent extends Event {
+	private static int classPriority = 99;
 
 	private final RobotStatus status;
 
@@ -52,8 +53,9 @@ public final class StatusEvent extends Event {
 		return status;
 	}
 
-	private static int classPriority = 99;
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final int getDefaultPriority() {
 		return classPriority;

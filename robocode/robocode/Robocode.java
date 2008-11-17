@@ -68,9 +68,9 @@ public class Robocode {
 	 * @param args an array of command-line arguments
 	 */
 	public static void main(final String[] args) {
-		ThreadGroup group = new LoggingThreadGroup("Robocode main");
+		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
 
-		new Thread(group, "myThread") {
+		new Thread(group, "Robocode main thread") {
 			public void run() {
 				Robocode robocode = new Robocode();
 

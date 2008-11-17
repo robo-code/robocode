@@ -29,6 +29,8 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class ScannedRobotEvent extends Event {
+	private static int classPriority = 10;
+
 	private final String name;
 	private final double energy;
 	private final double heading;
@@ -247,8 +249,6 @@ public final class ScannedRobotEvent extends Event {
 		// No difference found
 		return 0;
 	}
-
-	private static int classPriority = 10;
 
 	/**
 	 * {@inheritDoc}

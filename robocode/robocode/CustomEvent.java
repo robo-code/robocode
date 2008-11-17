@@ -32,8 +32,9 @@ import java.awt.*;
  * @see #getCondition()
  */
 public class CustomEvent extends Event {
-	private final Condition condition;
 	private static final int classPriority = 80;
+
+	private final Condition condition;
 
 	/**
 	 * Called by the game to create a new CustomEvent when a condition is met.
