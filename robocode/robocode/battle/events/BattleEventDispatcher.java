@@ -47,7 +47,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattleStarted(event);
 			} catch (Throwable ex) {
-				logError("onBattleStarted" + listener.getClass(), ex);
+				logError("onBattleStarted " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -57,7 +57,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattleCompleted(event);
 			} catch (Throwable ex) {
-				logError("onBattleCompleted" + listener.getClass(), ex);
+				logError("onBattleCompleted " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -67,7 +67,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattleEnded(event);
 			} catch (Throwable ex) {
-				logError("onBattleEnded" + listener.getClass(), ex);
+				logError("onBattleEnded " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -77,7 +77,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattlePaused(event);
 			} catch (Throwable ex) {
-				logError("onBattlePaused" + listener.getClass(), ex);
+				logError("onBattlePaused " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -87,7 +87,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattleResumed(event);
 			} catch (Throwable ex) {
-				logError("onBattleResumed" + listener.getClass(), ex);
+				logError("onBattleResumed " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -97,7 +97,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onRoundStarted(event);
 			} catch (Throwable ex) {
-				logError("onRoundStarted" + listener.getClass(), ex);
+				logError("onRoundStarted " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -107,7 +107,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onRoundEnded(event);
 			} catch (Throwable ex) {
-				logError("onRoundEnded" + listener.getClass(), ex);
+				logError("onRoundEnded " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -117,7 +117,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onTurnStarted(event);
 			} catch (Throwable ex) {
-				logError("onTurnStarted" + listener.getClass(), ex);
+				logError("onTurnStarted " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -127,7 +127,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onTurnEnded(event);
 			} catch (Throwable ex) {
-				logError("onTurnEnded" + listener.getClass(), ex);
+				logError("onTurnEnded " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -137,7 +137,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattleMessage(event);
 			} catch (Throwable ex) {
-				logError("onBattleMessage" + listener.getClass(), ex);
+				logError("onBattleMessage " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -147,7 +147,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattleError(event);
 			} catch (Throwable ex) {
-				logError("onBattleError" + listener.getClass(), ex);
+				logError("onBattleError " + listener.getClass(), ex);
 			}
 		}
 	}

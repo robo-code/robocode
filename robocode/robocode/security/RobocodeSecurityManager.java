@@ -472,6 +472,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 		return outputStreamThreads.get(Thread.currentThread());
 	}
 
+	public static boolean isSafeThreadSt(){ 
+		RobocodeSecurityManager rsm = (RobocodeSecurityManager)System.getSecurityManager();
+		return rsm.isSafeThread();
+	}
+
 	private boolean isSafeThread() {
 		return isSafeThread(Thread.currentThread());
 	}

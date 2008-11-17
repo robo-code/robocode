@@ -19,6 +19,7 @@ import robocode.battle.events.BattleErrorEvent;
 import robocode.battle.events.BattleMessageEvent;
 import robocode.battle.events.IBattleListener;
 import robocode.security.SecurePrintStream;
+import robocode.security.RobocodeSecurityManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -32,31 +33,30 @@ import java.io.PrintStream;
  */
 public class Logger {
 	private static IBattleListener logListener;
-	private static StringBuffer logBuffer = new StringBuffer();
+	private final static StringBuffer logBuffer = new StringBuffer();
 
 	public static void setLogListener(IBattleListener logListener) {
 		Logger.logListener = logListener;
 	}
 
 	public static void logMessage(String s) {
-		if (logListener == null) {
-			SecurePrintStream.realOut.println(s);
-		} else {
-			logListener.onBattleMessage(new BattleMessageEvent(s));
-		}
+		logMessage(s, true);
 	}
 
 	public static void logMessage(Throwable e) {
-		if (logListener == null) {
-			SecurePrintStream.realErr.println(e);
-			e.printStackTrace(SecurePrintStream.realErr);
-		} else {
-			logListener.onBattleMessage(new BattleMessageEvent(e.toString()));
-		}
+		logMessage(toStackTraceString(e));
 	}
 
 	public static void logMessage(String message, Throwable t) {
 		logMessage(message + ":\n" + toStackTraceString(t));
+	}
+
+	public static void logError(String message, Throwable t) {
+		logError(message + ":\n" + toStackTraceString(t));
+	}
+
+	public static void logError(Throwable t) {
+		logError(toStackTraceString(t));
 	}
 
 	public static void logMessage(String s, boolean newline) {
@@ -68,11 +68,17 @@ public class Logger {
 				SecurePrintStream.realOut.flush();
 			}
 		} else {
-			if (newline) {
-				logListener.onBattleMessage(new BattleMessageEvent(logBuffer + s));
-				logBuffer.setLength(0);
-			} else {
-				logBuffer.append(s);
+			synchronized (logBuffer){
+				if (!RobocodeSecurityManager.isSafeThreadSt()){
+					// we just queue it, to not let unsafe thread travel thru system
+					logBuffer.append(s);
+					logBuffer.append("\n");
+				} else if (newline) {
+					logListener.onBattleMessage(new BattleMessageEvent(logBuffer + s));
+					logBuffer.setLength(0);
+				} else {
+					logBuffer.append(s);
+				}
 			}
 		}
 	}
@@ -83,14 +89,6 @@ public class Logger {
 		} else {
 			logListener.onBattleError(new BattleErrorEvent(s));
 		}
-	}
-
-	public static void logError(String message, Throwable t) {
-		logError(message + ":\n" + toStackTraceString(t));
-	}
-
-	public static void logError(Throwable t) {
-		logError(toStackTraceString(t));
 	}
 
 	private static String toStackTraceString(Throwable t) {
