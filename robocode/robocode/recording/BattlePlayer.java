@@ -15,11 +15,8 @@ package robocode.recording;
 import robocode.battle.BaseBattle;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
-import static robocode.io.Logger.logError;
 import robocode.manager.RobocodeManager;
-
-import java.io.*;
-import java.util.zip.ZipInputStream;
+import static robocode.io.Logger.logError;
 
 
 /**
@@ -41,8 +38,7 @@ public final class BattlePlayer extends BaseBattle {
 
 		battleRules = recordManager.recordInfo.battleRules;
 
-		eventDispatcher.onBattleStarted(
-				new BattleStartedEvent(recordManager.readSnapshot(currentTime), battleRules, true));
+		eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, recordManager.recordInfo.robotCount, true));
 		if (isPaused()) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
@@ -67,7 +63,11 @@ public final class BattlePlayer extends BaseBattle {
 	protected void initializeRound() {
 		super.initializeRound();
 
-		eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
+		final TurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+
+		if (snapshot != null) {
+			eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
+		}
 	}
 
 	@Override
@@ -87,7 +87,8 @@ public final class BattlePlayer extends BaseBattle {
 	@Override
 	protected void finalizeTurn() {
 		final TurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
-		if (snapshot!=null){
+
+		if (snapshot != null) {
 			eventDispatcher.onTurnEnded(new TurnEndedEvent(snapshot));
 		}
 
@@ -96,7 +97,7 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected boolean isRoundOver() {
-		return (isAborted() || getTime() > recordManager.recordInfo.turnsInRounds[getRoundNum()]);
+		return (isAborted() || getTime() >= recordManager.recordInfo.turnsInRounds[getRoundNum()] - 1);
 	}
 
 }

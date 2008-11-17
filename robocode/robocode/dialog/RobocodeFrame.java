@@ -777,27 +777,32 @@ public class RobocodeFrame extends JFrame {
 				manager.getWindowManager().showRankingDialog(!isBattleReplay);
 			}
 
-			getRobotButtonsPanel().removeAll();
-
-			final IRobotDialogManager dialogManager = manager.getRobotDialogManager();
-			final java.util.List<RobotSnapshot> robots = event.getTurnSnapshot().getRobots();
-
-			dialogManager.trim(robots);
-			for (int index = 0; index < robots.size(); index++) {
-				final RobotSnapshot robot = robots.get(index);
-				final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-				final RobotButton button = new RobotButton(manager, robot.getName(), (int)robot.getEnergy(), index, attach);
-
-				button.setText(robot.getShortName());
-				addRobotButton(button);
-			}
-			addRobotButton(new BattleButton(manager.getRobotDialogManager(), true));
-
-			getRobotButtonsPanel().repaint();
-
 			validate();
 
 			updateTitle();
+		}
+
+		public void onRoundStarted(final RoundStartedEvent event) {
+			if (event.getRound() == 0) {
+				getRobotButtonsPanel().removeAll();
+
+				final IRobotDialogManager dialogManager = manager.getRobotDialogManager();
+				final java.util.List<RobotSnapshot> robots = event.getTurnSnapshot().getRobots();
+
+				dialogManager.trim(robots);
+				for (int index = 0; index < robots.size(); index++) {
+					final RobotSnapshot robot = robots.get(index);
+					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
+					final RobotButton button = new RobotButton(manager, robot.getName(), (int) robot.getEnergy(), index,
+							attach);
+
+					button.setText(robot.getShortName());
+					addRobotButton(button);
+				}
+				addRobotButton(new BattleButton(manager.getRobotDialogManager(), true));
+
+				getRobotButtonsPanel().repaint();
+			}
 		}
 
 		@Override

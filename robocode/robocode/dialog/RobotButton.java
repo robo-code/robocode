@@ -52,7 +52,7 @@ public class RobotButton extends JButton implements ActionListener {
 		this.name = name;
 		this.robotIndex = robotIndex;
 		lastEnergy = maxEnergy;
-		this.maxEnergy =maxEnergy; 
+		this.maxEnergy = maxEnergy; 
 
 		initialize();
 		if (attach) {
@@ -77,21 +77,22 @@ public class RobotButton extends JButton implements ActionListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (lastEnergy==0)
-		{
+		if (lastEnergy == 0) {
 			return;
 		}
-		int fraction = (lastEnergy* 100) / maxEnergy ;
-		if (fraction>50){
+		int fraction = (lastEnergy * 100) / maxEnergy;
+
+		if (fraction > 50) {
 			g.setColor(Color.GREEN);
-		} else if (fraction>25){
+		} else if (fraction > 25) {
 			g.setColor(Color.YELLOW);
 		} else {
 			g.setColor(Color.RED);
 		}
 
-		final int width1 = ((getWidth()-5) * lastEnergy) / maxEnergy;
-		g.fillRect(2, getHeight() - 6, width1  + 1 , 4);
+		final int width1 = ((getWidth() - 5) * lastEnergy) / maxEnergy;
+
+		g.fillRect(2, getHeight() - 6, width1 + 1, 4);
 	}
 
 	/**
@@ -151,6 +152,7 @@ public class RobotButton extends JButton implements ActionListener {
 
 			final int newEnergy = (int) robots.get(robotIndex).getEnergy();
 			boolean rep = (lastEnergy != newEnergy);
+
 			lastEnergy = newEnergy;
 			if (rep) {
 				repaint();

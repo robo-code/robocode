@@ -17,10 +17,7 @@ import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
 import robocode.BattleResults;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.BattleStartedEvent;
-import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 
 import java.util.List;
@@ -50,27 +47,29 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 	}
 
 	@Override
-	public void onBattleStarted(BattleStartedEvent event) {
-		super.onBattleStarted(event);
-		robots = event.getTurnSnapshot().getRobots();
+	public void onRoundStarted(final RoundStartedEvent event) {
+		super.onRoundStarted(event);
+		if (event.getRound() == 0) {
+			robots = event.getTurnSnapshot().getRobots();
 
-		helpers.Assert.assertNear(566.2968069, robots.get(0).getX());
-		helpers.Assert.assertNear(436.3146436, robots.get(1).getX());
-		helpers.Assert.assertNear(317.3362130, robots.get(2).getX());
-		helpers.Assert.assertNear(717.6994092, robots.get(3).getX());
-		helpers.Assert.assertNear(145.5531935, robots.get(4).getX());
-		helpers.Assert.assertNear(734.4305396, robots.get(5).getX());
-		helpers.Assert.assertNear(335.7732607, robots.get(6).getX());
-		helpers.Assert.assertNear(390.8076498, robots.get(7).getX());
+			helpers.Assert.assertNear(566.2968069, robots.get(0).getX());
+			helpers.Assert.assertNear(436.3146436, robots.get(1).getX());
+			helpers.Assert.assertNear(317.3362130, robots.get(2).getX());
+			helpers.Assert.assertNear(717.6994092, robots.get(3).getX());
+			helpers.Assert.assertNear(145.5531935, robots.get(4).getX());
+			helpers.Assert.assertNear(734.4305396, robots.get(5).getX());
+			helpers.Assert.assertNear(335.7732607, robots.get(6).getX());
+			helpers.Assert.assertNear(390.8076498, robots.get(7).getX());
 
-		helpers.Assert.assertNear(100.000, robots.get(0).getEnergy());
-		helpers.Assert.assertNear(200.000, robots.get(1).getEnergy());
-		helpers.Assert.assertNear(120.000, robots.get(2).getEnergy());
-		helpers.Assert.assertNear(100.000, robots.get(3).getEnergy());
-		helpers.Assert.assertNear(200.000, robots.get(4).getEnergy());
-		helpers.Assert.assertNear(120.000, robots.get(5).getEnergy());
-		helpers.Assert.assertNear(100.000, robots.get(6).getEnergy());
-		helpers.Assert.assertNear(100.000, robots.get(7).getEnergy());
+			helpers.Assert.assertNear(100.000, robots.get(0).getEnergy());
+			helpers.Assert.assertNear(200.000, robots.get(1).getEnergy());
+			helpers.Assert.assertNear(120.000, robots.get(2).getEnergy());
+			helpers.Assert.assertNear(100.000, robots.get(3).getEnergy());
+			helpers.Assert.assertNear(200.000, robots.get(4).getEnergy());
+			helpers.Assert.assertNear(120.000, robots.get(5).getEnergy());
+			helpers.Assert.assertNear(100.000, robots.get(6).getEnergy());
+			helpers.Assert.assertNear(100.000, robots.get(7).getEnergy());
+		}
 	}
 
 	@Override

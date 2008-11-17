@@ -85,7 +85,9 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 	@Override
 	public void onBattleResumed(BattleResumedEvent event) {
-		timerTask.start();
+		if (isRunning.get()) {
+			timerTask.start();
+		}
 	}
 
 	@Override
@@ -185,6 +187,16 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 		}
 
 		@Override
+		public void onRoundStarted(final RoundStartedEvent event) {
+			snapshot.set(event.getTurnSnapshot());
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					battleEventDispatcher.onRoundStarted(event);
+				}
+			});
+		}
+
+		@Override
 		public void onBattleStarted(final BattleStartedEvent event) {
 			isRunning.set(true);
 			isPaused.set(false);
@@ -230,20 +242,9 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 		@Override
 		public void onBattleResumed(final BattleResumedEvent event) {
 			isPaused.set(false);
-			if (isRunning.get()){
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						battleEventDispatcher.onBattleResumed(event);
-					}
-				});
-			}
-		}
-
-		@Override
-		public void onRoundStarted(final RoundStartedEvent event) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					battleEventDispatcher.onRoundStarted(event);
+					battleEventDispatcher.onBattleResumed(event);
 				}
 			});
 		}

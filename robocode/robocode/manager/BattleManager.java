@@ -234,10 +234,9 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		if (manager.getProperties().getOptionsCommonEnableReplayRecording()){
+		if (manager.getProperties().getOptionsCommonEnableReplayRecording()) {
 			manager.getRecordManager().attachRecorder(battleEventDispatcher);
-		}
-		else{
+		} else {
 			manager.getRecordManager().detachRecorder();
 		}
 

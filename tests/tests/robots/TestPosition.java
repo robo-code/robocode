@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
 import robocode.battle.events.BattleStartedEvent;
 import robocode.battle.events.TurnEndedEvent;
+import robocode.battle.events.RoundStartedEvent;
 import robocode.battle.snapshot.RobotSnapshot;
 
 
@@ -40,16 +41,17 @@ public class TestPosition extends RobotTestBed {
 	}
 
 	@Override
-	public void onBattleStarted(BattleStartedEvent event) {
-		super.onBattleStarted(event);
-        
-		RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
-		RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
+	public void onRoundStarted(final RoundStartedEvent event) {
+		super.onRoundStarted(event);
+		if (event.getRound() == 0) {
+			RobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
+			RobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
 
-		Assert.assertNear(566.2968069, crazy.getX());
-		Assert.assertNear(165.0789361, crazy.getY());
-		Assert.assertNear(436.3146436, target.getX());
-		Assert.assertNear(350.7235444, target.getY());
+			Assert.assertNear(566.2968069, crazy.getX());
+			Assert.assertNear(165.0789361, crazy.getY());
+			Assert.assertNear(436.3146436, target.getX());
+			Assert.assertNear(350.7235444, target.getY());
+		}
 	}
 
 	@Override

@@ -60,18 +60,14 @@ public class BattleRecorder {
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
 			recordmanager.cleanupStreams();
-			recordmanager.createRecordInfo(event.getBattleRules(), event.getTurnSnapshot().getRobots().size());
+			recordmanager.createRecordInfo(event.getBattleRules(), event.getRobotsCount());
 
 			currentRound = 0;
 			currentTurn = 0;
-
-			recordmanager.writeTurn(event.getTurnSnapshot());
 		}
 
 		@Override
 		public void onBattleEnded(BattleEndedEvent event) {
-			recordmanager.updateRecordInfoRound(currentRound, currentTurn);
-			recordmanager.flushWriteStreams();
 			recordmanager.cleanupStreams();
 		}
 
@@ -81,20 +77,16 @@ public class BattleRecorder {
 		}
 
 		@Override
-		public void onRoundEnded(RoundEndedEvent event) {
-			recordmanager.updateRecordInfoRound(currentRound, currentTurn);
-		}
-
-		@Override
 		public void onRoundStarted(RoundStartedEvent event) {
 			currentRound = event.getRound();
+			currentTurn = 0;
+			recordmanager.writeTurn(event.getTurnSnapshot(), currentRound, currentTurn);
 		}
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
 			currentTurn = event.getTurnSnapshot().getTurn();
-
-			recordmanager.writeTurn(event.getTurnSnapshot());
+			recordmanager.writeTurn(event.getTurnSnapshot(), currentRound, currentTurn);
 		}
 	}
 }

@@ -12,15 +12,24 @@
 package robocode.battle.events;
 
 
+import robocode.battle.snapshot.TurnSnapshot;
+
+
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
 public class RoundStartedEvent extends BattleEvent {
+	private final TurnSnapshot start;
 	private final int round;
 
-	public RoundStartedEvent(int round) {
+	public RoundStartedEvent(TurnSnapshot start, int round) {
+		this.start = start;
 		this.round = round;
+	}
+
+	public TurnSnapshot getTurnSnapshot() {
+		return start;
 	}
 
 	public int getRound() {

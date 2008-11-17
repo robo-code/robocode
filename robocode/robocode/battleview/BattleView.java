@@ -637,7 +637,7 @@ public class BattleView extends Canvas {
 			setVisible(true);
 			setInitialized(false);
 			super.onBattleStarted(event);
-			robotGraphics = new Graphics2DProxy[event.getTurnSnapshot().getRobots().size()];
+			robotGraphics = new Graphics2DProxy[event.getRobotsCount()];
 		}
 
 		@Override

@@ -13,7 +13,6 @@ package robocode.battle.events;
 
 
 import robocode.BattleRules;
-import robocode.battle.snapshot.TurnSnapshot;
 
 
 /**
@@ -21,22 +20,22 @@ import robocode.battle.snapshot.TurnSnapshot;
  * @since 1.6.1
  */
 public class BattleStartedEvent extends BattleEvent {
-	private final TurnSnapshot start;
 	private final BattleRules battleRules;
 	private final boolean isReplay;
+	private final int robotsCount;
 
-	public BattleStartedEvent(TurnSnapshot start, BattleRules battleRules, boolean isReplay) {
-		this.start = start;
+	public BattleStartedEvent(BattleRules battleRules, int robotsCount, boolean isReplay) {
 		this.battleRules = battleRules;
 		this.isReplay = isReplay;
-	}
-
-	public TurnSnapshot getTurnSnapshot() {
-		return start;
+		this.robotsCount = robotsCount;
 	}
 
 	public BattleRules getBattleRules() {
 		return battleRules;
+	}
+
+	public int getRobotsCount() {
+		return robotsCount;
 	}
 
 	public boolean isReplay() {

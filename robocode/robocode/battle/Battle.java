@@ -404,9 +404,7 @@ public final class Battle extends BaseBattle {
 		}
 
 		if (getRoundNum() == 0) {
-			final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets);
-
-			eventDispatcher.onBattleStarted(new BattleStartedEvent(snapshot, battleRules, false));
+			eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, robots.size(), false));
 			if (isPaused()) {
 				eventDispatcher.onBattlePaused(new BattlePausedEvent());
 			}
@@ -430,7 +428,9 @@ public final class Battle extends BaseBattle {
 			robotPeer.startRound(waitTime);
 		}
 
-		eventDispatcher.onRoundStarted(new RoundStartedEvent(getRoundNum()));
+		final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets);
+
+		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
 	}
 
 	@Override

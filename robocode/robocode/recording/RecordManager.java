@@ -68,16 +68,6 @@ public class RecordManager implements IRecordManager {
 		recordInfo = null;
 	}
 
-	public void flushWriteStreams() {
-		try {
-			objectWriteStream.flush();
-			bufferedWriteStream.flush();
-			fileWriteStream.flush();
-		} catch (IOException e) {
-			logError(e);
-		}
-	}
-
 	public void cleanupStreams() {
 		cleanupStream(objectWriteStream);
 		objectWriteStream = null;
@@ -355,17 +345,14 @@ public class RecordManager implements IRecordManager {
 		recordInfo.turnsInRounds = new int[rules.getNumRounds()];
 	}
 
-	public void updateRecordInfoRound(int round, int turn) {
-		recordInfo.turnsInRounds[round] = turn;
-		recordInfo.roundsCount = round;
-	}
-
 	public void updateRecordInfoResults(BattleResults[] getResults) {
 		recordInfo.results = getResults;
 	}
 
-	public void writeTurn(TurnSnapshot turn) {
+	public void writeTurn(TurnSnapshot turn, int round, int time) {
 		try {
+			recordInfo.turnsInRounds[round]++;
+			recordInfo.roundsCount = round;
 			objectWriteStream.writeObject(turn);
 		} catch (IOException e) {
 			logError(e);
