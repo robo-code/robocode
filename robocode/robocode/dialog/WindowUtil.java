@@ -161,15 +161,15 @@ public class WindowUtil {
 			size.width = screenSize.width;
 		}
 
+		w.setLocation(origin);
+		origin.y += 150;
+		if (origin.y + size.height > screenSize.height) {
+			origin.y = 0;
+			origin.x += 40;
+		}
 		if (origin.x + size.width > screenSize.width) {
 			origin.x = 0;
 		}
-		if (origin.y + size.height > screenSize.height) {
-			origin.y = 0;
-		}
-		w.setLocation(origin);
-		origin.x += 10;
-		origin.y += 10;
 	}
 
 	public static void saveWindowPositions() {

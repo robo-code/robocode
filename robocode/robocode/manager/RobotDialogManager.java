@@ -23,10 +23,7 @@ package robocode.manager;
 
 
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.dialog.RobotButton;
-import robocode.dialog.RobotDialog;
-import robocode.dialog.BattleDialog;
-import robocode.dialog.BattleButton;
+import robocode.dialog.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,22 +84,26 @@ public class RobotDialogManager implements IRobotDialogManager {
 	}
 
 	public RobotDialog getRobotDialog(RobotButton robotButton, String name, boolean create) {
-		RobotDialog dialog = robotDialogMap.get(name);
+		RobotDialog robotDialog = robotDialogMap.get(name);
 
-		if (create && dialog == null) {
+		if (create && robotDialog == null) {
 			if (robotDialogMap.size() > MAX_PRE_ATTACHED) {
 				reset();
 			}
-			dialog = new RobotDialog(manager, robotButton);
-			robotDialogMap.put(name, dialog);
+			robotDialog = new RobotDialog(manager, robotButton);
+			robotDialog.pack();
+			WindowUtil.place(robotDialog);
+			robotDialogMap.put(name, robotDialog);
 		}
-		return dialog;
+		return robotDialog;
 	}
 
 	public BattleDialog getBattleDialog(BattleButton battleButton, boolean create) {
 
 		if (create && battleDialog == null) {
 			battleDialog = new BattleDialog(manager, battleButton);
+			battleDialog.pack();
+			WindowUtil.place(battleDialog);
 		}
 		return battleDialog;
 	}

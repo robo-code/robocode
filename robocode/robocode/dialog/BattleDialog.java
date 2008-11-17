@@ -88,8 +88,7 @@ public class BattleDialog extends JFrame {
 	 */
 	@Override
 	public void pack() {
-		// getConsoleScrollPane().setPreferredSize(new Dimension(450, 200));
-		getTabbedPane().setPreferredSize(new Dimension(500, 250));
+		getConsoleScrollPane().setPreferredSize(new Dimension(426, 200));
 		super.pack();
 		getTabbedPane().setPreferredSize(null);
 	}
