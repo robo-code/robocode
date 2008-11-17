@@ -222,7 +222,7 @@ public class RobotDialog extends JFrame {
 						'\n');
 				sb.append("state: ").append(lastSnapshot.getState()).append('\n');
 				sb.append('\n');
-				java.util.List<DebugProperty> debugPropeties = lastSnapshot.getDebugPropeties();
+				java.util.List<DebugProperty> debugPropeties = lastSnapshot.getDebugProperties();
 
 				if (debugPropeties != null) {
 					for (DebugProperty prop : debugPropeties) {

@@ -393,7 +393,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	/**
 	 * @return list of debug properties
 	 */
-	public java.util.List<DebugProperty> getDebugPropeties() {
+	public java.util.List<DebugProperty> getDebugProperties() {
 		return debugProperties;
 	}
 
