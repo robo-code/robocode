@@ -62,6 +62,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (count++ > MAX) {
 				if (!messaged) {
+					text.append("\n");
 					text.append(
 							"SYSTEM: This robot is printing too much between actions.  Output stopped until next action.");
 					text.append("\n");

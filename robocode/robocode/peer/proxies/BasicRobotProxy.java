@@ -78,6 +78,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		start.setTime(0);
 		eventManager.add(start);
+		setSetCallCount(0);
+		setGetCallCount(0);
 	}
 
 	@Override
