@@ -38,7 +38,6 @@ public class BattleButton extends JButton implements ActionListener {
 		initialize();
 		if (attach) {
 			attach();
-			battleDialog.reset();
 		}
 	}
 

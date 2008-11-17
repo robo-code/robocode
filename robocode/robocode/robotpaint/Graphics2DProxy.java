@@ -256,7 +256,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getFont()
 		this.font = font;
 
-		queueCall(Method.SET_FONT, copyOf(font));
+		if (isPaintingEnabled) {
+			queueCall(Method.SET_FONT, copyOf(font));
+		}
 	}
 
 	@Override
@@ -557,29 +559,38 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	@Override
 	public void draw(Shape s) {
-		queueCall(Method.DRAW, copyOf(s));
+		if (isPaintingEnabled) {
+			queueCall(Method.DRAW, copyOf(s));
+		}
 	}
 
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-		queueCall(Method.DRAW_IMAGE_7, copyOf(img), copyOf(xform), copyOf(obs));
-
+		if (isPaintingEnabled) {
+			queueCall(Method.DRAW_IMAGE_7, copyOf(img), copyOf(xform), copyOf(obs));
+		}
 		return false; // as if the image is still being rendered (as the call is queued)
 	}
 
 	@Override
 	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-		queueCall(Method.DRAW_IMAGE_8, copyOf(img), deepCopy(op), x, y);
+		if (isPaintingEnabled) {
+			queueCall(Method.DRAW_IMAGE_8, copyOf(img), deepCopy(op), x, y);
+		}
 	}
 
 	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
-		queueCall(Method.DRAW_RENDERED_IMAGE, deepCopy(img), copyOf(xform));
+		if (isPaintingEnabled) {
+			queueCall(Method.DRAW_RENDERED_IMAGE, deepCopy(img), copyOf(xform));
+		}
 	}
 
 	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-		queueCall(Method.DRAW_RENDERABLE_IMGAGE, deepCopy(img), copyOf(xform));
+		if (isPaintingEnabled) {
+			queueCall(Method.DRAW_RENDERABLE_IMGAGE, deepCopy(img), copyOf(xform));
+		}
 	}
 
 	@Override
@@ -587,22 +598,30 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		if (str == null) {
 			throw new NullPointerException("str is null"); // According to the specification!
 		}
-		queueCall(Method.DRAW_STRING_FLOAT, str, x, y);
+		if (isPaintingEnabled) {
+			queueCall(Method.DRAW_STRING_FLOAT, str, x, y);
+		}
 	}
 
 	@Override
 	public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-		queueCall(Method.DRAW_STRING_ACI_FLOAT, copyOf(iterator), x, y);
+		if (isPaintingEnabled) {
+			queueCall(Method.DRAW_STRING_ACI_FLOAT, copyOf(iterator), x, y);
+		}
 	}
 
 	@Override
 	public void drawGlyphVector(GlyphVector gv, float x, float y) {
-		queueCall(Method.DRAW_GLYPH_VECTOR, deepCopy(gv), x, y);
+		if (isPaintingEnabled) {
+			queueCall(Method.DRAW_GLYPH_VECTOR, deepCopy(gv), x, y);
+		}
 	}
 
 	@Override
 	public void fill(Shape s) {
-		queueCall(Method.FILL, copyOf(s));
+		if (isPaintingEnabled) {
+			queueCall(Method.FILL, copyOf(s));
+		}
 	}
 
 	@Override
@@ -634,7 +653,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getComposite()
 		this.composite = comp;
 
-		queueCall(Method.SET_COMPOSITE, copyOf(comp));
+		if (isPaintingEnabled) {
+			queueCall(Method.SET_COMPOSITE, copyOf(comp));
+		}
 	}
 
 	@Override
@@ -642,7 +663,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getPaint()
 		this.paint = paint;
 
-		queueCall(Method.SET_PAINT, copyOf(paint));
+		if (isPaintingEnabled) {
+			queueCall(Method.SET_PAINT, copyOf(paint));
+		}
 	}
 
 	@Override
@@ -650,7 +673,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getStroke()
 		this.stroke = s;
 
-		queueCall(Method.SET_STROKE, copyOf(s));
+		if (isPaintingEnabled) {
+			queueCall(Method.SET_STROKE, copyOf(s));
+		}
 	}
 
 	@Override
@@ -658,7 +683,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getRenderingHint() and getRenderingHints()
 		this.renderingHints.put(hintKey, hintValue);
 
-		queueCall(Method.SET_RENDERING_HINT, deepCopy(hintKey), deepCopy(hintValue));
+		if (isPaintingEnabled) {
+			queueCall(Method.SET_RENDERING_HINT, deepCopy(hintKey), deepCopy(hintValue));
+		}
 	}
 
 	@Override
@@ -672,7 +699,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		this.renderingHints.clear(); // Needs to clear first
 		this.renderingHints.putAll(hints); // Only overrides existing keys
 
-		queueCall(Method.SET_RENDERING_HINTS, deepCopy(hints));
+		if (isPaintingEnabled) {
+			queueCall(Method.SET_RENDERING_HINTS, deepCopy(hints));
+		}
 	}
 
 	@Override
@@ -779,7 +808,9 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// for getBackground()
 		background = color;
 
-		queueCall(Method.SET_BACKGROUND, copyOf(color));
+		if (isPaintingEnabled) {
+			queueCall(Method.SET_BACKGROUND, copyOf(color));
+		}
 	}
 
 	@Override

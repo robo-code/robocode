@@ -42,6 +42,7 @@ import java.util.*;
  */
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
+	private final Color grayGreen = new Color(0x0080C080);
 	private RobocodeManager manager;
 	private RobotButton robotButton;
 	private JTabbedPane tabbedPane;
@@ -468,6 +469,10 @@ public class RobotDialog extends JFrame {
 			if (text != null && text.length() > 0) {
 				getConsoleScrollPane().append(text);
 				getConsoleScrollPane().scrollToBottom();
+			}
+
+			if (lastSnapshot.isPaintRobot()) {
+				getPaintButton().setBackground(grayGreen);
 			}
 
 			paintSnapshot();

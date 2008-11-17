@@ -55,6 +55,7 @@ public final class ExecCommands implements Serializable {
 	private boolean moved;
 	private boolean scan;
 	private boolean isIORobot;
+	private boolean isTryingToPaint;
 	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
 	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
 	private String outputText;
@@ -287,6 +288,14 @@ public final class ExecCommands implements Serializable {
 			debugProperties = new ArrayList<DebugProperty>();
 		}
 		debugProperties.add(new DebugProperty(key, value));
+	}
+
+	public boolean isTryingToPaint() {
+		return isTryingToPaint;
+	}
+
+	public void setTryingToPaint(boolean tryingToPaint) {
+		isTryingToPaint = tryingToPaint;
 	}
 }
 

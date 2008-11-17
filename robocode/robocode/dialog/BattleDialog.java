@@ -240,6 +240,10 @@ public class BattleDialog extends JFrame {
 			paintSnapshot();
 		}
 
+		public void onBattleStarted(final BattleStartedEvent event) {
+			reset();
+		}
+
 		@Override
 		public void onBattleEnded(BattleEndedEvent event) {
 			lastSnapshot = null;

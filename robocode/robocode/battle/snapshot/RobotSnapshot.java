@@ -101,7 +101,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 
 	// Flag specifying if this robot is a Droid
 	private boolean isDroid;
-	// Flag specifying if this robot is a IPaintRobot
+	// Flag specifying if this robot is a IPaintRobot or is asking for getGraphics
 	private boolean isPaintRobot;
 	// Flag specifying if robot's (onPaint) painting is enabled for the robot
 	private boolean isPaintEnabled;
@@ -152,7 +152,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 		scanColor = peer.getScanColor();
 
 		isDroid = peer.isDroid();
-		isPaintRobot = peer.isPaintRobot();
+		isPaintRobot = peer.isPaintRobot() || peer.isTryingToPaint();
 		isPaintEnabled = peer.isPaintEnabled();
 		isSGPaintEnabled = peer.isSGPaintEnabled();
 
@@ -341,9 +341,9 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	}
 
 	/**
-	 * Returns a flag specifying if this robot is an IPaintRobot.
+	 * Returns a flag specifying if this robot is an IPaintRobot or is asking for getGraphics
 	 *
-	 * @return {@code true} if this robot is a an IPaintRobot; {@code false}
+	 * @return {@code true} if this robot is a an IPaintRobot or is asking for getGraphics; {@code false}
 	 *         otherwise.
 	 */
 	public boolean isPaintRobot() {

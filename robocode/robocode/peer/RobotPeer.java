@@ -1500,6 +1500,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return commands.get().getGraphicsCalls();
 	}
 
+	public boolean isTryingToPaint() {
+		return commands.get().isTryingToPaint();
+	}
+
 	public List<DebugProperty> getDebugProperties() {
 		return commands.get().getDebugProperties();
 	}

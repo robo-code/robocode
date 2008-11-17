@@ -448,16 +448,14 @@ public class BattleView extends Canvas {
 				centerString(g, robotSnapshot.getVeryShortName(), x,
 						y + ROBOT_TEXT_Y_OFFSET + smallFontMetrics.getHeight() / 2, smallFont, smallFontMetrics);
 			}
-			if (robotSnapshot.isPaintEnabled()) {
-				drawRobotPaint(g, robotSnapshot, i);
-			}
+			drawRobotPaint(g, robotSnapshot, i);
 		}
 
 		g.setClip(savedClip);
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot, int robotIndex) {
-		if (!robotSnapshot.isPaintRobot()) {
+		if (!robotSnapshot.isPaintRobot() || !robotSnapshot.isPaintEnabled()) {
 			return;
 		}
 
