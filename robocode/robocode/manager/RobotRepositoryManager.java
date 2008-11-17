@@ -382,7 +382,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		try {
 			robotDatabase.store(new File(getRobotsDirectory(), "robot.database"));
 		} catch (IOException e) {
-			logError("IO Exception writing robot database: " + e);
+			logError("IO Exception writing robot database: ", e);
 		}
 	}
 
@@ -469,7 +469,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
 			} catch (Throwable t) {
 				getRobotDatabase().put(key, robotFileSpecification);
-				logError(robotFileSpecification.getName() + ": Got an error with this class: " + t);
+				logError(robotFileSpecification.getName() + ": Got an error with this class: ", t);
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
@@ -711,7 +711,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 				jarIS.close();
 			}
 		} catch (IOException e) {
-			logError("IOException " + statusPrefix + ": " + e);
+			logError("IOException " + statusPrefix + ": ", e);
 		}
 		return rc;
 	}

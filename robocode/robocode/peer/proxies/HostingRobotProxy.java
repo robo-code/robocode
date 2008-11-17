@@ -128,7 +128,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 
 	public void println(Throwable ex) {
-		out.println(ex);
+		ex.printStackTrace(out);
 	}
 
 	public RobotStatics getStatics() {
@@ -180,7 +180,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			robotClassManager.setRobotClass(c);
 
 		} catch (Throwable e) {
-			println("SYSTEM: Could not load " + statics.getName() + " : " + e);
+			println("SYSTEM: Could not load " + statics.getName() + " : ");
 			println(e);
 			drainEnergy();
 		}
@@ -269,21 +269,18 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				msg = ": " + msg;
 			}
 			println("SYSTEM: Robot disabled" + msg);
+			logMessage(statics.getName() + "Robot disabled");
 		} catch (Exception e) {
 			drainEnergy();
-			final String message = statics.getName() + ": Exception: " + e;
-
 			println(e);
-			logMessage(message);
+			logMessage(statics.getName() + ": Exception: " + e); //without stack here
 		} catch (Throwable t) {
 			drainEnergy();
-			if (!(t instanceof ThreadDeath)) {
-				final String message = statics.getName() + ": Throwable: " + t;
-
-				println(t);
-				logMessage(message);
-			} else {
+			if (t instanceof ThreadDeath) {
 				logMessage(statics.getName() + " stopped successfully.");
+			} else {
+				println(t);
+				logMessage(statics.getName() + ": Throwable: " + t); //without stack here
 			}
 		} finally {
 			waitForBattleEndImpl();

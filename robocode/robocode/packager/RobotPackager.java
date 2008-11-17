@@ -336,7 +336,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 							robotFileSpecification.store(fos2, "Robot Properties");
 						} catch (IOException e) {
 							rv = 4;
-							out.println("Unable to save properties: " + e);
+							out.println("Unable to save properties: ");
+							e.printStackTrace(out);
 							out.println("Attempting to continue...");
 						} finally {
 							if (fos2 != null) {

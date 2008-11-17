@@ -78,7 +78,8 @@ public class MyFirstLeader extends TeamRobot {
 			// Send enemy position to teammates
 			broadcastMessage(new Point(enemyX, enemyY));
 		} catch (IOException ex) {
-			out.println("Unable to send order: " + ex);
+			out.println("Unable to send order: ");
+			ex.printStackTrace(out);
 		}
 	}
 

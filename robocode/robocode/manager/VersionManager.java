@@ -80,7 +80,7 @@ public final class VersionManager implements IVersionManager {
 		try {
 			url = new URL("http://robocode.sourceforge.net/version/version.html");
 		} catch (MalformedURLException e) {
-			logError("Unable to check for new version: " + e);
+			logError("Unable to check for new version: ", e);
 			if (notifyNoUpdate) {
 				WindowUtil.messageError("Unable to check for new version: " + e);
 			}

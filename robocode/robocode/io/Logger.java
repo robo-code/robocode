@@ -55,6 +55,10 @@ public class Logger {
 		}
 	}
 
+	public static void logMessage(String message, Throwable t) {
+		logMessage(message + ":\n" + toStackTraceString(t));
+	}
+
 	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
 			if (newline) {

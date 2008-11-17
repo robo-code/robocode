@@ -158,7 +158,7 @@ public class JavaDocument extends PlainDocument {
 		try {
 			elementText = getText(startOffset, endOffset - startOffset);
 		} catch (BadLocationException e) {
-			Logger.logError("Error processing updates: " + e);
+			Logger.logError("Error processing updates: ", e);
 			return;
 		}
 		boolean followingLineComment = false,
