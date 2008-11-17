@@ -427,6 +427,7 @@ public final class Battle extends BaseBattle {
 			robotPeer.getRobotStatistics().initialize();
 			robotPeer.startRound(waitTime);
 		}
+		Logger.logMessage("");
 
 		final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
 
