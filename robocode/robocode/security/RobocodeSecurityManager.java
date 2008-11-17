@@ -28,6 +28,7 @@ package robocode.security;
 
 
 import robocode.RobocodeFileOutputStream;
+import robocode.exception.RobotException;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IThreadManager;
 import robocode.peer.BulletCommand;
@@ -66,6 +67,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			new HashMap<Thread, RobocodeFileOutputStream>());
 	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
 	private final List<ThreadGroup> safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
+	private final Set<String> alowedPackages =new HashSet<String>();
 
 	private Thread battleThread;
 
@@ -84,12 +86,21 @@ public class RobocodeSecurityManager extends SecurityManager {
 		ExecResults r = new ExecResults(null, null, null, null, null, false, false, false);
 		TeamMessage t = new TeamMessage(null, null, null);
 		DebugProperty p = new DebugProperty();
+		RobotException re=new RobotException(); 
 
 		try {
 			RobocodeObjectInputStream is = new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
 		} catch (IOException e) {}
 
 		Toolkit.getDefaultToolkit(); 
+
+		alowedPackages.add("util");
+		alowedPackages.add("robotinterfaces");
+		alowedPackages.add("robotpaint");
+		//alowedPackages.add("robocodeGL");
+		if (experimental){
+			alowedPackages.add("robotinterfaces.peer");
+		}
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
@@ -484,7 +495,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			return false;
 		} catch (Exception e) {
-			syserr.println("Exception checking safe thread: " + e);
+			syserr.println("Exception checking safe thread: ");
+			e.printStackTrace(syserr);
 			return false;
 		}
 	}
@@ -493,7 +505,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		try {
 			return getSecurityContext().equals(safeSecurityContext);
 		} catch (Exception e) {
-			syserr.println("Exception checking safe thread: " + e);
+			syserr.println("Exception checking safe thread: ");
+			e.printStackTrace(syserr);
 			return false;
 		}
 	}
@@ -560,9 +573,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			String subPkg = pkg.substring(9);
 
-			// Only access to robocode.util or robocode.robotinterfaces is allowed
-			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
-					|| (experimental && subPkg.equals("robotinterfaces.peer")) || (subPkg.equals("robotpaint")))) {
+			if (!alowedPackages.contains(subPkg)) {
 
 				Thread c = Thread.currentThread();
 
