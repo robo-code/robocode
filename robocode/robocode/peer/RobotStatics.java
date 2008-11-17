@@ -34,6 +34,7 @@ public final class RobotStatics {
 	private final String shortName;
 	private final String veryShortName;
 	private final String nonVersionedName;
+	private final String shortClassName;
 	private final BattleRules battleRules;
 	private final String[] teammates;
 	private final String teamName;
@@ -54,6 +55,7 @@ public final class RobotStatics {
 			veryShortName = cnm.getUniqueVeryShortClassNameWithVersion();
 			nonVersionedName = cnm.getFullClassName();
 		}
+		shortClassName = spec.getNameManager().getShortClassName();
 		isJuniorRobot = spec.isJuniorRobot();
 		isInteractiveRobot = spec.isInteractiveRobot();
 		isPaintRobot = spec.isPaintRobot();
@@ -123,6 +125,10 @@ public final class RobotStatics {
 
 	public String getNonVersionedName() {
 		return nonVersionedName;
+	}
+
+	public String getShortClassName() {
+		return shortClassName;
 	}
 
 	public BattleRules getBattleRules() {

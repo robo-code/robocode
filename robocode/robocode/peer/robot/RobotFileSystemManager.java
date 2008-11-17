@@ -111,7 +111,7 @@ public class RobotFileSystemManager {
 
 			return (dir == null)
 					? null
-					: new File(classDirectory, robotProxy.getStatics().getShortName() + ".data").getCanonicalFile();
+					: new File(classDirectory, robotProxy.getStatics().getShortClassName() + ".data").getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}
