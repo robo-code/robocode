@@ -209,8 +209,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void println(String s) {
-		battleText.append(s);
-		battleText.append("\n");
+		synchronized (proxyText) {
+			battleText.append(s);
+			battleText.append("\n");
+		}
 	}
 
 	public void print(Throwable ex) {

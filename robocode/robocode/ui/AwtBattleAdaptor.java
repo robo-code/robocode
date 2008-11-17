@@ -131,10 +131,8 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 						for (int i = 0; i < robots.size(); i++) {
 							RobotSnapshot robot = robots.get(i);
 
-							if (robot.getOutputStreamSnapshot() != null && robot.getOutputStreamSnapshot().length() != 0) {
-								robot.updateOutputStreamSnapshot(outCache[i].toString());
-								outCache[i].setLength(0);
-							}
+							robot.updateOutputStreamSnapshot(outCache[i].toString());
+							outCache[i].setLength(0);
 						}
 					}
 
