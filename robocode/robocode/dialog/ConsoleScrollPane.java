@@ -47,7 +47,7 @@ public class ConsoleScrollPane extends JScrollPane {
 			lines = 0;
 			final String[] rows = getTextPane().getText().split("\n");
 			StringBuilder sb = new StringBuilder();
-			final int from = Math.min(rows.length, rows.length - (MAX_ROWS / 2));
+			final int from = Math.min(rows.length, Math.max((MAX_ROWS / 2), rows.length - (MAX_ROWS / 2)));
 
 			for (int i = from; i < rows.length; i++) {
 				sb.append(rows[i]);
