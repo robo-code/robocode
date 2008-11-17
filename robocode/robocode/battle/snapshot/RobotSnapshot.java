@@ -127,7 +127,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 *
 	 * @param peer the robot peer to make a snapshot of.
 	 */
-	public RobotSnapshot(RobotPeer peer) {
+	public RobotSnapshot(RobotPeer peer, boolean readoutText) {
 		name = peer.getName();
 		shortName = peer.getShortName();
 		veryShortName = peer.getVeryShortName();
@@ -162,7 +162,9 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 
 		debugProperties = peer.getDebugProperties();
 
-		outputStreamSnapshot = peer.readOutText();
+		if (readoutText) {
+			outputStreamSnapshot = peer.readOutText();
+		}
 
 		robotScoreSnapshot = new ScoreSnapshot(peer.getRobotStatistics(), peer.getName());
 	}
@@ -402,6 +404,15 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 */
 	public String getOutputStreamSnapshot() {
 		return outputStreamSnapshot;
+	}
+
+	/**
+	 * Sets new value of out text
+	 *
+	 * @param text new value
+	 */
+	public void updateOutputStreamSnapshot(String text) {
+		outputStreamSnapshot = text;
 	}
 
 	/**

@@ -17,6 +17,7 @@ import helpers.RobotTestBed;
 import org.junit.Test;
 import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.events.RoundStartedEvent;
+import robocode.battle.events.TurnStartedEvent;
 import robocode.battle.snapshot.RobotSnapshot;
 
 
@@ -31,8 +32,8 @@ public class TestPrivateConstructor extends RobotTestBed {
 		super.run();
 	}
 
-	public void onRoundStarted(final RoundStartedEvent event) {
-		super.onRoundStarted(event);
+	public void onTurnEnded(final TurnEndedEvent event) {
+		super.onTurnEnded(event);                          
 		final RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
 
 		if (robot.getOutputStreamSnapshot().contains("SYSTEM: Is your constructor marked public?")) {

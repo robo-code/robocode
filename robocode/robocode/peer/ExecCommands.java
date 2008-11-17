@@ -255,7 +255,10 @@ public final class ExecCommands implements Serializable {
 	}
 
 	public String getOutputText() {
-		return outputText;
+		final String out = outputText;
+
+		outputText = "";
+		return out;
 	}
 
 	public void setOutputText(String out) {

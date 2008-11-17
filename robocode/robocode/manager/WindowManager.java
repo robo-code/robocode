@@ -58,6 +58,16 @@ public class WindowManager implements IWindowManager {
 	public WindowManager(RobocodeManager manager) {
 		this.manager = manager;
 		awtAdaptor = new AwtBattleAdaptor(manager.getBattleManager(), TIMER_TICKS_PER_SECOND, true);
+
+		// we will set UI better priority than robots and battle have
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Thread.currentThread().setPriority(Thread.NORM_PRIORITY + 2);
+				} catch (SecurityException ex) {// that's a pity
+				}
+			}
+		});
 	}
 
 	public synchronized void addBattleListener(IBattleListener listener) {

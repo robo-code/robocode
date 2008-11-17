@@ -428,7 +428,7 @@ public final class Battle extends BaseBattle {
 			robotPeer.startRound(waitTime);
 		}
 
-		final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets);
+		final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
 	}
@@ -543,7 +543,7 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this, robots, bullets)));
+		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this, robots, bullets, true)));
 
 		super.finalizeTurn();
 	}

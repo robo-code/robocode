@@ -31,19 +31,13 @@ public class TestIncludeNamespaceAttack extends RobotTestBed {
 		super.run();
 	}
 
-	public void onRoundStarted(final RoundStartedEvent event) {
-		super.onRoundStarted(event);
+	public void onTurnEnded(TurnEndedEvent event) {
+		super.onTurnEnded(event);
 		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
 
 		if (out.contains("from access to the internal Robocode pakage: robocode.manager")) {
 			messaged = true;
 		}
-	}
-	
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
-
 		if (out.contains("Hacked!!!")) {
 			messagedBreakthru = true;
 		}

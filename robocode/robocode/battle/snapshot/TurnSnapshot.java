@@ -80,7 +80,7 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 	 * @param battleRobots
 	 * @param battleBullets
 	 */
-	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets) {
+	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets, boolean readoutText) {
 		// fieldWidth = battle.getBattleField().getWidth();
 		// fieldHeight = battle.getBattleField().getHeight();
 
@@ -88,7 +88,7 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 		bullets = new ArrayList<BulletSnapshot>();
 
 		for (RobotPeer robotPeer : battleRobots) {
-			robots.add(new RobotSnapshot(robotPeer));
+			robots.add(new RobotSnapshot(robotPeer, readoutText));
 		}
 
 		for (BulletPeer bulletPeer : battleBullets) {

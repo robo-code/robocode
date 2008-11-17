@@ -48,7 +48,9 @@ public class RobotThreadManager {
 	public RobotThreadManager(IHostedThread robotProxy) {
 		this.robotProxy = robotProxy;
 		runThreadGroup = new LoggingThreadGroup(robotProxy.getStatics().getName());
-		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY);
+
+		// bit lower than battle have
+		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY - 1);
 	}
 
 	public void initAWT() {
