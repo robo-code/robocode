@@ -69,9 +69,11 @@ public class Robocode {
 	 */
 	public static void main(final String[] args) {
 		ThreadGroup group = new LoggingThreadGroup("Robocode main");
+
 		new Thread(group, "myThread") {
 			public void run() {
 				Robocode robocode = new Robocode();
+
 				robocode.loadSetup(args);
 				robocode.run();
 			}

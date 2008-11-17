@@ -413,11 +413,11 @@ public class EventManager implements IEventManager {
 		// Process custom events
 		for (Condition customEvent : customEvents) {
 			boolean conditionSatisfied = false;
+
 			robotProxy.setTestingCondition(true);
 			try {
 				conditionSatisfied = customEvent.test();
-			}
-			finally {
+			} finally {
 				robotProxy.setTestingCondition(false);
 			}
 			if (conditionSatisfied) {

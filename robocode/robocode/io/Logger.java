@@ -68,8 +68,8 @@ public class Logger {
 				SecurePrintStream.realOut.flush();
 			}
 		} else {
-			synchronized (logBuffer){
-				if (!RobocodeSecurityManager.isSafeThreadSt()){
+			synchronized (logBuffer) {
+				if (!RobocodeSecurityManager.isSafeThreadSt()) {
 					// we just queue it, to not let unsafe thread travel thru system
 					logBuffer.append(s);
 					logBuffer.append("\n");

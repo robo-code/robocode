@@ -67,7 +67,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			new HashMap<Thread, RobocodeFileOutputStream>());
 	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
 	private final List<ThreadGroup> safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
-	private final Set<String> alowedPackages =new HashSet<String>();
+	private final Set<String> alowedPackages = new HashSet<String>();
 
 	private Thread battleThread;
 
@@ -86,7 +86,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		ExecResults r = new ExecResults(null, null, null, null, null, false, false, false);
 		TeamMessage t = new TeamMessage(null, null, null);
 		DebugProperty p = new DebugProperty();
-		RobotException re=new RobotException(); 
+		RobotException re = new RobotException(); 
 
 		try {
 			RobocodeObjectInputStream is = new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
@@ -97,8 +97,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		alowedPackages.add("util");
 		alowedPackages.add("robotinterfaces");
 		alowedPackages.add("robotpaint");
-		//alowedPackages.add("robocodeGL");
-		if (experimental){
+		// alowedPackages.add("robocodeGL");
+		if (experimental) {
 			alowedPackages.add("robotinterfaces.peer");
 		}
 	}
@@ -472,8 +472,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 		return outputStreamThreads.get(Thread.currentThread());
 	}
 
-	public static boolean isSafeThreadSt(){ 
-		RobocodeSecurityManager rsm = (RobocodeSecurityManager)System.getSecurityManager();
+	public static boolean isSafeThreadSt() { 
+		RobocodeSecurityManager rsm = (RobocodeSecurityManager) System.getSecurityManager();
+
 		return rsm.isSafeThread();
 	}
 

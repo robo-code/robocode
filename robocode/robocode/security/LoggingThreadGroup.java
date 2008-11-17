@@ -11,7 +11,9 @@
  *******************************************************************************/
 package robocode.security;
 
+
 import robocode.io.Logger;
+
 
 /**
  * @author Pavel Savara (original)
