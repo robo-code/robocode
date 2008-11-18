@@ -139,6 +139,7 @@ public abstract class Event implements Comparable<Event> {
 	}
 
 	// this method is invisible on RobotAPI
+	@SuppressWarnings({"UnusedDeclaration"})
 	private static IHiddenEventHelper createHiddenEventHelper() {
 		return new EventHiddenHelper();
 	}

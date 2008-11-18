@@ -228,62 +228,63 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	public void run() {
 		robotThreadManager.initAWT();
+
+		isRunning.set(true);
+
 		if (!loadRobotRound()) {
 			drainEnergy();
 			peer.setInactive();
 			waitForBattleEndImpl();
-			return;
-		}
+		} else {
+			try {
+				if (robot != null) {
 
-		isRunning.set(true);
-		try {
-			if (robot != null) {
+					// Process all events for the first turn.
+					// This is done as the first robot status event must occur before the robot
+					// has started running.
+					eventManager.processEvents();
 
-				// Process all events for the first turn.
-				// This is done as the first robot status event must occur before the robot
-				// has started running.
-				eventManager.processEvents();
+					Runnable runnable = robot.getRobotRunnable();
 
-				Runnable runnable = robot.getRobotRunnable();
-
-				if (runnable != null) {
-					runnable.run();
+					if (runnable != null) {
+						runnable.run();
+					}
 				}
-			}
 
-			// noinspection InfiniteLoopStatement
-			for (;;) {
-				executeImpl();
-			}
-		} catch (WinException e) {// Do nothing
-		} catch (AbortedException e) {// Do nothing
-		} catch (DeathException e) {
-			println("SYSTEM: " + statics.getName() + " has died");
-		} catch (DisabledException e) {
-			drainEnergy();
-			String msg = e.getMessage();
+				// noinspection InfiniteLoopStatement
+				for (;;) {
+					executeImpl();
+				}
+			} catch (WinException e) {// Do nothing
+			} catch (AbortedException e) {// Do nothing
+			} catch (DeathException e) {
+				println("SYSTEM: " + statics.getName() + " has died");
+			} catch (DisabledException e) {
+				drainEnergy();
+				String msg = e.getMessage();
 
-			if (msg == null) {
-				msg = "";
-			} else {
-				msg = ": " + msg;
+				if (msg == null) {
+					msg = "";
+				} else {
+					msg = ": " + msg;
+				}
+				println("SYSTEM: Robot disabled" + msg);
+				logMessage(statics.getName() + "Robot disabled");
+			} catch (Exception e) {
+				drainEnergy();
+				println(e);
+				logMessage(statics.getName() + ": Exception: " + e); // without stack here
+			} catch (Throwable t) {
+				drainEnergy();
+				if (t instanceof ThreadDeath) {
+					logMessage(statics.getName() + " stopped successfully.");
+				} else {
+					println(t);
+					logMessage(statics.getName() + ": Throwable: " + t); // without stack here
+				}
+			} finally {
+				waitForBattleEndImpl();
 			}
-			println("SYSTEM: Robot disabled" + msg);
-			logMessage(statics.getName() + "Robot disabled");
-		} catch (Exception e) {
-			drainEnergy();
-			println(e);
-			logMessage(statics.getName() + ": Exception: " + e); // without stack here
-		} catch (Throwable t) {
-			drainEnergy();
-			if (t instanceof ThreadDeath) {
-				logMessage(statics.getName() + " stopped successfully.");
-			} else {
-				println(t);
-				logMessage(statics.getName() + ": Throwable: " + t); // without stack here
-			}
-		} finally {
-			waitForBattleEndImpl();
 		}
 
 		// If battle is waiting for us, well, all done!
