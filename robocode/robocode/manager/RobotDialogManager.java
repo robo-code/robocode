@@ -38,7 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class RobotDialogManager implements IRobotDialogManager {
 
-	public static final int MAX_PRE_ATTACHED = 10;
+	public static final int MAX_PRE_ATTACHED = 25;
 
 	private Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
 	private BattleDialog battleDialog = null;
