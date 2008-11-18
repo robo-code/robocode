@@ -76,7 +76,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		eventManager.reset();
 		final StatusEvent start = new StatusEvent(status);
 
-		start.setTime(0);
+		EventManager.setTime(start, 0);
 		eventManager.add(start);
 		setSetCallCount(0);
 		setGetCallCount(0);

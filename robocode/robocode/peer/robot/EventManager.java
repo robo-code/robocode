@@ -42,12 +42,15 @@ package robocode.peer.robot;
 
 
 import robocode.*;
+import robocode.io.Logger;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.proxies.BasicRobotProxy;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -60,7 +63,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class EventManager implements IEventManager {
 	private BasicRobotProxy robotProxy;
-
 	private final static int MAX_PRIORITY = 100;
 	public final static int MAX_EVENT_STACK = 2;
 
@@ -88,12 +90,13 @@ public class EventManager implements IEventManager {
 		registerNamedEvents();
 		this.robotProxy = robotProxy;
 		eventQueue = new EventQueue();
+
 		reset();
 	}
 
 	public boolean add(Event e) {
-		if (!e.isCriricalEvent()) {
-			e.setPriority(getEventPriority(e.getClass().getName()));
+		if (!isCriticalEvent(e)) {
+			setPriority(e, getEventPriority(e.getClass().getName()));
 		}
 		return addImpl(e);
 	}
@@ -423,7 +426,7 @@ public class EventManager implements IEventManager {
 			if (conditionSatisfied) {
 				CustomEvent event = new CustomEvent(customEvent);
 
-				event.setTime(getTime()); // TODO is that correct time ?
+				setTime(event, getTime()); // TODO is that correct time ?
 				addImpl(event);
 			}
 		}
@@ -481,8 +484,8 @@ public class EventManager implements IEventManager {
 		if (robot != null && currentEvent != null) {
 			try {
 				// skip too old events
-				if ((currentEvent.getTime() > getTime() - MAX_EVENT_STACK) || currentEvent.isCriricalEvent()) {
-					currentEvent.dispatch(robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
+				if ((currentEvent.getTime() > getTime() - MAX_EVENT_STACK) || isCriticalEvent(currentEvent)) {
+					eventHelper.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
 				}
 			} catch (Exception ex) {
 				robotProxy.getOut().println("SYSTEM: Exception occurred on " + currentEvent.getClass().getName());
@@ -592,11 +595,11 @@ public class EventManager implements IEventManager {
 			robotProxy.getOut().println("SYSTEM: Unknown event class: " + eventClass);
 			return;
 		}
-		if (event.isCriricalEvent()) {
+		if (isCriticalEvent(event)) {
 			System.out.println("SYSTEM: You may not change the priority of system event. setPriority ignored.");
 		}
 
-		event.setPriority(priority);
+		setPriority(event, priority);
 	}
 
 	private void registerNamedEvents() {
@@ -639,8 +642,8 @@ public class EventManager implements IEventManager {
 	private void registerNamedEvent(Event e) {
 		final String name = e.getClass().getName();
 
-		if (!e.isCriricalEvent()) {
-			e.setPriority(e.getDefaultPriority());
+		if (!isCriticalEvent(e)) {
+			eventHelper.setDefaultPriority(e);
 		}
 		namedEvents.put(name, e);
 		namedEvents.put(name.substring(9), e);
@@ -650,5 +653,40 @@ public class EventManager implements IEventManager {
 		public DummyCustomEvent() {
 			super(null);
 		}
+	}
+
+	// -----------
+	// helpers for accessing hidden methods on events
+	// -----------
+
+	private static IHiddenEventHelper eventHelper;
+
+	static {
+		final Method method;
+
+		try {
+			method = Event.class.getDeclaredMethod("createHiddenEventHelper");
+			method.setAccessible(true);
+			eventHelper = (IHiddenEventHelper) method.invoke(null);
+			method.setAccessible(false);
+		} catch (NoSuchMethodException e) {
+			Logger.logError(e);
+		} catch (InvocationTargetException e) {
+			Logger.logError(e);
+		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		}
+	}
+
+	public static boolean isCriticalEvent(Event e) {
+		return eventHelper.isCriticalEvent(e);
+	}
+
+	public static void setTime(Event e, long newTime) {
+		eventHelper.setTime(e, newTime);
+	}
+
+	public static void setPriority(Event e, int newPriority) {
+		eventHelper.setPriority(e, newPriority);
 	}
 }

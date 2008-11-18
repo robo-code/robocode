@@ -38,6 +38,7 @@ import robocode.peer.DebugProperty;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.TeamMessage;
+import robocode.peer.robot.EventManager;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -86,7 +87,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		ExecResults r = new ExecResults(null, null, null, null, null, false, false, false);
 		TeamMessage t = new TeamMessage(null, null, null);
 		DebugProperty p = new DebugProperty();
-		RobotException re = new RobotException(); 
+		RobotException re = new RobotException();
+		EventManager em = new EventManager(null); 
 
 		try {
 			RobocodeObjectInputStream is = new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);

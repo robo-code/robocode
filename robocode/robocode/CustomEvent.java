@@ -88,7 +88,7 @@ public class CustomEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getDefaultPriority() {
+	final int getDefaultPriority() {
 		return classPriority;
 	}
 
@@ -96,7 +96,7 @@ public class CustomEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 		if (statics.isAdvancedRobot()) {
 			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
@@ -120,7 +120,7 @@ public class CustomEvent extends Event {
 	 */
 	@Override
 	// final to disable overrides
-	public final boolean isCriricalEvent() {
+	final boolean isCriticalEvent() {
 		return false;
 	}
 

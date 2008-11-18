@@ -43,7 +43,7 @@ public final class BattleEndedEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getDefaultPriority() {
+	final int getDefaultPriority() {
 		return classPriority;
 	}
 
@@ -59,7 +59,7 @@ public final class BattleEndedEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 		if (robot != null) {
 			IBasicEvents listener = robot.getBasicEventListener();
 
@@ -101,7 +101,7 @@ public final class BattleEndedEvent extends Event {
 	/**
 	 * @return True when the event is delivered even after timeout.
 	 */
-	public boolean isCriricalEvent() {
+	final boolean isCriticalEvent() {
 		return true;
 	}
 }

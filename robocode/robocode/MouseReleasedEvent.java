@@ -52,7 +52,7 @@ public final class MouseReleasedEvent extends MouseEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getDefaultPriority() {
+	final int getDefaultPriority() {
 		return classPriority;
 	}
 
@@ -60,7 +60,7 @@ public final class MouseReleasedEvent extends MouseEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 		if (statics.isInteractiveRobot()) {
 			IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 

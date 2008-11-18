@@ -23,6 +23,7 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.robot.IHiddenEventHelper;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
@@ -107,17 +108,8 @@ public abstract class Event implements Comparable<Event> {
 		return time;
 	}
 
-	/**
-	 * Called by the game to set the priority of an event to the priority your
-	 * robot specified for this type of event (or the default priority).
-	 * <p/>
-	 * An event priority is a value from 0 - 99. The higher value, the higher
-	 * priority. The default priority is 80.
-	 *
-	 * @param newPriority the new priority of this event
-	 * @see AdvancedRobot#setEventPriority(String, int)
-	 */
-	public final void setPriority(int newPriority) {
+	// this method is invisible on RobotAPI
+	final void setPriority(int newPriority) {
 		if (newPriority < 0) {
 			System.out.println("SYSTEM: Priority must be between 0 and 99.");
 			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 0.");
@@ -130,41 +122,49 @@ public abstract class Event implements Comparable<Event> {
 		priority = newPriority;
 	}
 
-	/**
-	 * Called by the game to set the time this event occurred.
-	 *
-	 * @param newTime the time this event occurred
-	 */
-	public void setTime(long newTime) {
+	// this method is invisible on RobotAPI
+	private void setTime(long newTime) {
 		time = newTime;
 	}
 
-	/**
-	 * Do not call this method! Your robot will simply stop interacting with
-	 * the game.
-	 * <p/>
-	 * This method is called by the game. A robot peer is the object that deals
-	 * with game mechanics and rules, and makes sure your robot abides by them.
-	 *
-	 * @param robot	robot
-	 * @param statics  statics
-	 * @param graphics graphics
-	 */
-	public abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
+	// this method is invisible on RobotAPI
+	abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
 
-	/**
-	 * Returns the default priority for this specific event class.
-	 *
-	 * @return the default priority.
-	 *
-	 * @since 1.6.2
-	 */
-	public abstract int getDefaultPriority();
+	// this method is invisible on RobotAPI
+	abstract int getDefaultPriority();
 
-	/**
-	 * @return True when the event is delivered even after timeout.
-	 */
-	public boolean isCriricalEvent() {
+	// this method is invisible on RobotAPI
+	boolean isCriticalEvent() {
 		return false;
 	}
+
+	// this method is invisible on RobotAPI
+	private static IHiddenEventHelper createHiddenEventHelper() {
+		return new EventHiddenHelper();
+	}
+
+	// this class is invisible on RobotAPI
+	private static class EventHiddenHelper implements IHiddenEventHelper {
+
+		public void setTime(Event event, long newTime) {
+			event.setTime(newTime);
+		}
+
+		public void setDefaultPriority(Event event) {
+			event.setPriority(event.getDefaultPriority());
+		}
+
+		public void setPriority(Event event, int newPriority) {
+			event.setPriority(newPriority);
+		}
+
+		public boolean isCriticalEvent(Event event) {
+			return event.isCriticalEvent();
+		}
+
+		public void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+			event.dispatch(robot, statics, graphics);
+		}
+	}
+
 }

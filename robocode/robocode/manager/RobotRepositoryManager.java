@@ -470,7 +470,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			} catch (Throwable t) {
 				robotFileSpecification.setValid(false);
 				getRobotDatabase().put(key, robotFileSpecification);
-				logError(robotFileSpecification.getName() + ": Got an error with this class: ", t);
+				logError(robotFileSpecification.getName() + ": Got an error with this class: " + t.toString()); // just message here
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);

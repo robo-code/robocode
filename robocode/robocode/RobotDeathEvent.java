@@ -64,7 +64,7 @@ public final class RobotDeathEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getDefaultPriority() {
+	final int getDefaultPriority() {
 		return classPriority;
 	}
 
@@ -72,7 +72,7 @@ public final class RobotDeathEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 		IBasicEvents listener = robot.getBasicEventListener();
 
 		if (listener != null) {
