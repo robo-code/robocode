@@ -38,7 +38,7 @@ public class EventQueue extends ArrayList<Event> {
 		for (int i = 0; i < size(); i++) {
 			Event e = get(i);
 
-			if (!EventManager.isCriticalEvent(e)) {
+			if (!RobotClassManager.isCriticalEvent(e)) {
 				remove(i--);
 			}
 		}
@@ -48,7 +48,7 @@ public class EventQueue extends ArrayList<Event> {
 		for (int i = 0; i < size(); i++) {
 			Event e = get(i);
 
-			if ((e.getTime() <= clearTime) && !EventManager.isCriticalEvent(e)) {
+			if ((e.getTime() <= clearTime) && !RobotClassManager.isCriticalEvent(e)) {
 				remove(i--);
 			}
 		}

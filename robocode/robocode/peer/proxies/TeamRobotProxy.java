@@ -20,7 +20,6 @@ import robocode.peer.IRobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.TeamMessage;
-import robocode.peer.robot.EventManager;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.*;
@@ -104,7 +103,7 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 				Serializable message = (Serializable) objectStreamReader.readObject();
 				final MessageEvent event = new MessageEvent(teamMessage.sender, message);
 
-				EventManager.setTime(event, getTime());
+				RobotClassManager.setTime(event, getTime());
 				eventManager.add(event);
 			} catch (IOException e) {
 				out.printStackTrace(e);

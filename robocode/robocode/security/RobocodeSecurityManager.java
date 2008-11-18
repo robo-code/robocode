@@ -38,7 +38,6 @@ import robocode.peer.DebugProperty;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.TeamMessage;
-import robocode.peer.robot.EventManager;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -87,8 +86,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 		ExecResults r = new ExecResults(null, null, null, null, null, false, false, false);
 		TeamMessage t = new TeamMessage(null, null, null);
 		DebugProperty p = new DebugProperty();
+		@SuppressWarnings({"ThrowableInstanceNeverThrown"})
 		RobotException re = new RobotException();
-		EventManager em = new EventManager(null); 
 
 		try {
 			RobocodeObjectInputStream is = new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
@@ -463,7 +462,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 			addRobocodeOutputStream(o); // it's gone already...
 			robotProxy.println("SYSTEM: Creating a data directory for you.");
-			dir.mkdir();
+
+			//noinspection ResultOfMethodCallIgnored
+			dir.mkdir();//result direcotry was already there ?
 			addRobocodeOutputStream(o); // one more time...
 			fos = new FileOutputStream(o.getName(), append);
 		}

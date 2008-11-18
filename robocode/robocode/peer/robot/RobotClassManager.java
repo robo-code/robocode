@@ -29,8 +29,17 @@ import robocode.io.Logger;
 import robocode.manager.NameManager;
 import robocode.repository.RobotFileSpecification;
 import robocode.security.RobocodeClassLoader;
+import robocode.Event;
+import robocode.Bullet;
+import robocode.peer.RobotStatics;
+import robocode.peer.BulletStatus;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.util.*;
+import java.util.List;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+import java.awt.*;
 
 
 /**
@@ -220,5 +229,58 @@ public class RobotClassManager {
 		}
 
 		robotFileSpecification = null;
+	}
+
+	// -----------
+	// helpers for accessing hidden methods on events
+	// -----------
+
+	private static IHiddenEventHelper eventHelper;
+	private static IHiddenBulletHelper bulletHelper;
+
+	static {
+		Method method;
+
+		try {
+			method = Event.class.getDeclaredMethod("createHiddenHelper");
+			method.setAccessible(true);
+			eventHelper = (IHiddenEventHelper) method.invoke(null);
+			method.setAccessible(false);
+
+			method = Bullet.class.getDeclaredMethod("createHiddenHelper");
+			method.setAccessible(true);
+			bulletHelper = (IHiddenBulletHelper) method.invoke(null);
+			method.setAccessible(false);
+		} catch (NoSuchMethodException e) {
+			Logger.logError(e);
+		} catch (InvocationTargetException e) {
+			Logger.logError(e);
+		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		}
+	}
+
+	public static boolean isCriticalEvent(Event e) {
+		return eventHelper.isCriticalEvent(e);
+	}
+
+	public static void setTime(Event e, long newTime) {
+		eventHelper.setTime(e, newTime);
+	}
+
+	public static void setEventPriority(Event e, int newPriority) {
+		eventHelper.setPriority(e, newPriority);
+	}
+
+	public static void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		eventHelper.dispatch(event, robot, statics, graphics);
+	}
+
+	public static void setDefaultPriority(Event e) {
+		eventHelper.setDefaultPriority(e);
+	}
+
+	public static void update(Bullet bullet, BulletStatus status) {
+		bulletHelper.update(bullet, status);
 	}
 }

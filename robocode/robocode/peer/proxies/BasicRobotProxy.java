@@ -76,7 +76,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		eventManager.reset();
 		final StatusEvent start = new StatusEvent(status);
 
-		EventManager.setTime(start, 0);
+		RobotClassManager.setTime(start, 0);
 		eventManager.add(start);
 		setSetCallCount(0);
 		setGetCallCount(0);
@@ -361,7 +361,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			final Bullet bullet = bullets.get(s.bulletId);
 
 			if (bullet != null) {
-				bullet.update(s);
+				RobotClassManager.update(bullet, s);
 				if (!s.isActive) {
 					bullets.remove(s.bulletId);
 				}

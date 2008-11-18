@@ -15,6 +15,7 @@ package robocode;
 
 
 import robocode.peer.BulletStatus;
+import robocode.peer.robot.IHiddenBulletHelper;
 
 import java.io.Serializable;
 
@@ -61,17 +62,6 @@ public class Bullet implements Serializable {
 		this.ownerName = ownerName;
 		this.victimName = victimName;
 		this.isActive = isActive; 
-	}
-
-	/**
-	 * This method is called by game to update bullet status
-	 * @param status contain changes of bullet state
-	 */
-	public void update(BulletStatus status) {
-		x = status.x;
-		y = status.y;
-		victimName = status.victimName;
-		isActive = status.isActive;
 	}
 
 	/**
@@ -166,4 +156,27 @@ public class Bullet implements Serializable {
 	public boolean isActive() {
 		return isActive;
 	}
+
+	// this method is invisible on RobotAPI
+	private void update(BulletStatus status) {
+		x = status.x;
+		y = status.y;
+		victimName = status.victimName;
+		isActive = status.isActive;
+	}
+
+	// this method is invisible on RobotAPI
+	@SuppressWarnings({ "UnusedDeclaration"})
+	private static IHiddenBulletHelper createHiddenHelper() {
+		return new HiddenBulletHelper();
+	}
+
+	// this class is invisible on RobotAPI
+	private static class HiddenBulletHelper implements IHiddenBulletHelper {
+
+		public void update(Bullet bullet, BulletStatus status) {
+			bullet.update(status);
+		}
+	}
+
 }
