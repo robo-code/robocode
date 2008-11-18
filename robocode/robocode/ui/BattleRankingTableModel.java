@@ -34,6 +34,8 @@ import robocode.text.StringUtil;
 import javax.swing.table.AbstractTableModel;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -74,7 +76,9 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 	public void updateSource(TurnSnapshot snapshot) {
 		if (snapshot != null) {
-			scoreSnapshotList = snapshot.getTeamScores();
+			scoreSnapshotList = new ArrayList<ScoreSnapshot>(snapshot.getTeamScores());
+			Collections.sort(scoreSnapshotList);
+			Collections.reverse(scoreSnapshotList);
 			countTotalScores();
 		} else {
 			scoreSnapshotList = null;

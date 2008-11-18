@@ -182,13 +182,7 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 				teams.put(name, sum);
 			}
 		}
-
-		List<ScoreSnapshot> res = new ArrayList<ScoreSnapshot>(teams.values());
-
-		Collections.sort(res);
-		Collections.reverse(res);
-
-		return res;
+		return new ArrayList<ScoreSnapshot>(teams.values());
 	}
 
 	@Override

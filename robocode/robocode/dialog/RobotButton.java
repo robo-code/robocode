@@ -23,8 +23,11 @@ import robocode.manager.RobocodeManager;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.snapshot.ScoreSnapshot;
+import robocode.BattleResults;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,13 +47,17 @@ public class RobotButton extends JButton implements ActionListener {
 	private RobotDialog robotDialog;
 	private final String name;
 	private final int robotIndex;
-	private int maxEnergy;
+	private final int teamIndex;
+	private int maxEnergy = 1;
+	private int maxScore = 1;
 	private int lastEnergy;
+	private int lastScore;
 
-	public RobotButton(RobocodeManager manager, String name, int maxEnergy, int robotIndex, boolean attach) {
+	public RobotButton(RobocodeManager manager, String name, int maxEnergy, int robotIndex, int teamIndex, boolean attach) {
 		this.manager = manager;
 		this.name = name;
 		this.robotIndex = robotIndex;
+		this.teamIndex = teamIndex;
 		lastEnergy = maxEnergy;
 		this.maxEnergy = maxEnergy; 
 
@@ -77,22 +84,27 @@ public class RobotButton extends JButton implements ActionListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (lastEnergy == 0) {
-			return;
+		if (lastEnergy != 0) {
+			int fraction = (lastEnergy * 100) / maxEnergy;
+
+			if (fraction > 50) {
+				g.setColor(Color.GREEN);
+			} else if (fraction > 25) {
+				g.setColor(Color.YELLOW);
+			} else {
+				g.setColor(Color.RED);
+			}
+
+			final int widthLife = ((getWidth() - 5) * lastEnergy) / maxEnergy;
+
+			g.fillRect(2, getHeight() - 8, widthLife + 1, 4);
 		}
-		int fraction = (lastEnergy * 100) / maxEnergy;
+		if (lastScore != 0) {
+			g.setColor(Color.BLUE);
+			final int whidthScore = ((getWidth() - 5) * lastScore) / maxScore;
 
-		if (fraction > 50) {
-			g.setColor(Color.GREEN);
-		} else if (fraction > 25) {
-			g.setColor(Color.YELLOW);
-		} else {
-			g.setColor(Color.RED);
+			g.fillRect(2, getHeight() - 4, whidthScore + 1, 2);
 		}
-
-		final int width1 = ((getWidth() - 5) * lastEnergy) / maxEnergy;
-
-		g.fillRect(2, getHeight() - 6, width1 + 1, 4);
 	}
 
 	/**
@@ -130,35 +142,46 @@ public class RobotButton extends JButton implements ActionListener {
 	}
 
 	private class BattleObserver extends BattleAdaptor {
+
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			// TODO: Get rid of this check (bugfix) if possible:
-			// Make sanity check as a new battle could have been started since the dialog was initialized,
-			// and thus the robot index can be too high compared to the robot's array size causing an
-			// ArrayOutOfBoundsException. This is a bugfix
-			if (event == null) {
-				return;
-			}
 			final TurnSnapshot turn = event.getTurnSnapshot();
 
 			if (turn == null) {
 				return;
 			}
-			java.util.List<RobotSnapshot> robots = turn.getRobots();
+			final int newEnergy = (int) turn.getRobots().get(robotIndex).getEnergy();
+			final java.util.List<ScoreSnapshot> scoreSnapshotList = event.getTurnSnapshot().getTeamScores();
 
-			if (robots == null || robotIndex >= robots.size()) {
-				return;
+			maxScore = 0;
+			for (ScoreSnapshot team : scoreSnapshotList) {
+				maxScore += team.getTotalScore();
 			}
-
-			final int newEnergy = (int) robots.get(robotIndex).getEnergy();
-			boolean rep = (lastEnergy != newEnergy);
+			if (maxScore == 0) {
+				maxScore = 1;
+			}
+			final int newScore = (int) scoreSnapshotList.get(teamIndex).getTotalScore();
+			boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
 
 			lastEnergy = newEnergy;
+			lastScore = newScore;
 			if (rep) {
 				repaint();
 			}
 		}
 
+		public void onBattleCompleted(final BattleCompletedEvent event) {
+			maxScore = 0;
+			for (BattleResults team : event.getResults()) {
+				maxScore += team.getScore();
+			}
+			if (maxScore == 0) {
+				maxScore = 1;
+			}
+			lastScore = event.getResults()[teamIndex].getScore();
+			repaint();
+		}
+		
 		public void onBattleEnded(final BattleEndedEvent event) {
 			lastEnergy = 0;
 			repaint();
