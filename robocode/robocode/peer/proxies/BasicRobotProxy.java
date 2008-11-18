@@ -147,47 +147,27 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	// fast setters
 	public void setBodyColor(Color color) {
 		setCall();
-		if (color != null) {
-			commands.setBodyColor(color.getRGB());
-		} else {
-			commands.setBulletColor(ExecCommands.defaultBodyColor);
-		}
+		commands.setBodyColor(color != null ? color.getRGB() : ExecCommands.defaultBodyColor);
 	}
 
 	public void setGunColor(Color color) {
 		setCall();
-		if (color != null) {
-			commands.setGunColor(color.getRGB());
-		} else {
-			commands.setBulletColor(ExecCommands.defaultGunColor);
-		}
+		commands.setGunColor(color != null ? color.getRGB() : ExecCommands.defaultGunColor);
 	}
 
 	public void setRadarColor(Color color) {
 		setCall();
-		if (color != null) {
-			commands.setRadarColor(color.getRGB());
-		} else {
-			commands.setBulletColor(ExecCommands.defaultRadarColor);
-		}
+		commands.setRadarColor(color != null ? color.getRGB() : ExecCommands.defaultRadarColor);
 	}
 
 	public void setBulletColor(Color color) {
 		setCall();
-		if (color != null) {
-			commands.setBulletColor(color.getRGB());
-		} else {
-			commands.setBulletColor(ExecCommands.defaultBulletColor);
-		}
+		commands.setBulletColor(color != null ? color.getRGB() : ExecCommands.defaultBulletColor);
 	}
 
 	public void setScanColor(Color color) {
 		setCall();
-		if (color != null) {
-			commands.setScanColor(color.getRGB());
-		} else {
-			commands.setBulletColor(ExecCommands.defaultScanColor);
-		}
+		commands.setScanColor(color != null ? color.getRGB() : ExecCommands.defaultScanColor);
 	}
 
 	// counters
