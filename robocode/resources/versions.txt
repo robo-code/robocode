@@ -14,7 +14,7 @@ o New feature
   -- new dialog for battle console and turn snapshot
   -- robot dialog have new tab-page with robot properties
   -- robot dialog have green hinted button for painting robots
-  -- robotAPI has new method putDebugProperty, see sample.DebugProperties robot for example of usage
+  -- robotAPI has new method putDebugProperty, see sample.PaintingRobot robot for example of usage
 
 o Changes
   -- redesigned RobotPeer and Battle. Now we send messages between threads instead of synchronizing

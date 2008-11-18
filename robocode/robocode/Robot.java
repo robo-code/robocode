@@ -1454,6 +1454,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <p/>
 	 * @param key name of property
 	 * @param value value of property, pass null or empty string to remove the entry
+	 * @since 1.6.2
 	 */
 	public void putDebugProperty(String key, String value) {
 		if (peer != null) {
