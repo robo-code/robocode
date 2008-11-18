@@ -29,6 +29,8 @@ o Changes
   -- got rid of robot loader thread, now loading on robot's thread, got more security.
   -- introduced new interfaces for code components
   -- robot threads have NORM_PRIORITY - 1, AWT UI have NORM_PRIORITY + 2
+  -- robots which are wrong behaving are removed from repository and are not given other chance to run.
+     This is for skippedTurns, for unstopable robots and for robots with class loading troubles.
 
 Version 1.6.1.4
 (11/14/2008)

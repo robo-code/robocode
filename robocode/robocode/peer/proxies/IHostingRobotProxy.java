@@ -27,7 +27,7 @@ public interface IHostingRobotProxy {
 
 	void forceStopThread();
 
-	boolean waitForStopThread();
+	void waitForStopThread();
 
 	void cleanup();
 

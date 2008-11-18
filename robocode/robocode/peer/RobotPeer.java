@@ -123,6 +123,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private RobotStatistics statistics;
 	private TeamPeer teamPeer;
 	private RobotSpecification controlRobotSpecification;
+	private RobotFileSpecification robotSpecification;
 
 	private IHostingRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
@@ -179,7 +180,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (team != null) {
 			team.add(this);
 		}
-		RobotFileSpecification spec = robotClassManager.getRobotSpecification();
+		robotSpecification = robotClassManager.getRobotSpecification();
 
 		this.battle = battle;
 		boundingBox = new BoundingRectangle();
@@ -190,18 +191,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-		statics = new RobotStatics(spec, duplicate, isLeader, battle.getBattleRules(), team);
+		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battle.getBattleRules(), team);
 		battleRules = battle.getBattleRules();
 
 		controlRobotSpecification = robotClassManager.getControlRobotSpecification();
 
-		if (spec.isTeamRobot()) {
+		if (robotSpecification.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (spec.isAdvancedRobot()) {
+		} else if (robotSpecification.isAdvancedRobot()) {
 			robotProxy = new AdvancedRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (spec.isStandardRobot()) {
+		} else if (robotSpecification.isStandardRobot()) {
 			robotProxy = new StandardRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (spec.isJuniorRobot()) {
+		} else if (robotSpecification.isJuniorRobot()) {
 			robotProxy = new JuniorRobotProxy(robotClassManager, hostManager, this, statics);
 		} else {
 			throw new AccessControlException("Unknown robot type");
@@ -612,7 +613,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
 				waitWakeupNoWait();
-				setInactive();
+				punishBadBehavior();
 				robotProxy.forceStopThread();
 			}
 		}
@@ -1404,9 +1405,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		setEnergy(0, true);
 	}
 
-	public void setInactive() {
+	public void punishBadBehavior() {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
+		//disable for next time
+		robotSpecification.setValid(false);
 	}
 
 	public void updateEnergy(double delta) {

@@ -19,7 +19,7 @@ public interface IRobotPeer {
 
 	void drainEnergy();
 
-	void setInactive();
+	void punishBadBehavior();
 
 	ExecResults waitForBattleEndImpl(ExecCommands newCommands);
 

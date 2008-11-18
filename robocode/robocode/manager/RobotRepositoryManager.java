@@ -461,6 +461,9 @@ public class RobotRepositoryManager implements IRepositoryManager {
 						}
 
 						if (IBasicRobot.class.isAssignableFrom(robotClass)) {
+							if (!robotFileSpecification.isAdvancedRobot() || !robotFileSpecification.isJuniorRobot()){
+								robotFileSpecification.setStandardRobot(true);
+							}
 							updateNoDuplicates(robotFileSpecification);
 							return;
 						}

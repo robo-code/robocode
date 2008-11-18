@@ -152,13 +152,16 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	public void forceStopThread() {
 		if (!robotThreadManager.forceStop()) {
-			peer.setInactive();
+			peer.punishBadBehavior();
 			isRunning.set(false);
 		}
 	}
 
-	public boolean waitForStopThread() {
-		return robotThreadManager.waitForStop();
+	public void waitForStopThread() {
+		if (!robotThreadManager.waitForStop()){
+			peer.punishBadBehavior();
+			isRunning.set(false);
+		}
 	}
 
 	private void loadClassBattle() {
@@ -231,9 +234,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		isRunning.set(true);
 
-		if (!loadRobotRound()) {
+		if (!robotClassManager.getRobotSpecification().isValid() || !loadRobotRound()) {
 			drainEnergy();
-			peer.setInactive();
+			peer.punishBadBehavior();
 			waitForBattleEndImpl();
 		} else {
 			try {
