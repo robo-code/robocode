@@ -60,6 +60,7 @@ public class RobotDialog extends JFrame {
 	private int robotIndex;
 	private RobotSnapshot lastSnapshot;
 	private boolean paintSnapshot;
+	private boolean grayGreenButton;
 	private Hashtable<String, String> debugProperties = new Hashtable<String, String>();
 
 	private BattleObserver battleObserver = new BattleObserver();
@@ -459,7 +460,8 @@ public class RobotDialog extends JFrame {
 				getConsoleScrollPane().scrollToBottom();
 			}
 
-			if (lastSnapshot.isPaintRobot()) {
+			if (lastSnapshot.isPaintRobot() && !grayGreenButton) {
+				grayGreenButton = true;
 				getPaintButton().setBackground(grayGreen);
 			}
 

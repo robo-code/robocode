@@ -13,6 +13,7 @@ o New feature
   -- new command line option -replay for replaying a battle record
   -- new dialog for battle console and turn snapshot
   -- robot dialog have new tab-page with robot properties
+  -- robot dialog have green hinted button for painting robots
   -- robotAPI has new method putDebugProperty, see sample.DebugProperties robot for example of usage
 
 o Changes
@@ -21,8 +22,7 @@ o Changes
   -- most synchronization is now interlocked
   -- event manager, priority and dispatch of events refactored
   -- more unit tests added
-  -- painting robot must now override onPaint method (at least empty) to be able to paint from 
-     any other method using getGraphics(). GraphicsProxy optimized.
+  -- Graphics2DProxy optimized.
   -- interactive robots are better detected to not waste time of non-interactive robots.
   -- team messages are deserialized on receiver robot thread.
   -- got rid of robot loader thread, now loading on robot's thread, got more security.

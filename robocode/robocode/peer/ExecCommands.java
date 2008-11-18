@@ -91,6 +91,7 @@ public final class ExecCommands implements Serializable {
 			graphicsCalls = origin.graphicsCalls;
 			outputText = origin.outputText;
 			teamMessages = origin.teamMessages;
+			isTryingToPaint = origin.isTryingToPaint; 
 		}
 	}
 

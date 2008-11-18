@@ -455,7 +455,9 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot, int robotIndex) {
-		if (!robotSnapshot.isPaintRobot() || !robotSnapshot.isPaintEnabled()) {
+		final java.util.List<Graphics2DProxy.QueuedCall> graphicsCalls = robotSnapshot.getGraphicsCalls();
+
+		if (graphicsCalls == null || !robotSnapshot.isPaintEnabled()) {
 			return;
 		}
 
@@ -466,20 +468,16 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		final java.util.List<Graphics2DProxy.QueuedCall> graphicsCalls = robotSnapshot.getGraphicsCalls();
+		Graphics2DProxy gfxProxy = getRobotGraphics(robotIndex);
 
-		if (graphicsCalls != null) {
-			Graphics2DProxy gfxProxy = getRobotGraphics(robotIndex);
-
-			gfxProxy.clearQueue();
-			gfxProxy.appendCalls(graphicsCalls);
-			if (robotSnapshot.isSGPaintEnabled()) {
-				gfxProxy.processTo(g);
-			} else {
-				mirroredGraphics.bind(g, battleField.getHeight());
-				gfxProxy.processTo(mirroredGraphics);
-				mirroredGraphics.release();
-			}
+		gfxProxy.clearQueue();
+		gfxProxy.appendCalls(graphicsCalls);
+		if (robotSnapshot.isSGPaintEnabled()) {
+			gfxProxy.processTo(g);
+		} else {
+			mirroredGraphics.bind(g, battleField.getHeight());
+			gfxProxy.processTo(mirroredGraphics);
+			mirroredGraphics.release();
 		}
 
 		// Restore the graphics state

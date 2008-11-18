@@ -13,6 +13,7 @@ package testing;
 
 
 import robocode.*;
+import robocode.Event;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IJuniorRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
@@ -21,6 +22,7 @@ import robocode.util.Utils;
 import java.io.PrintStream;
 import java.util.Hashtable;
 import java.util.Map;
+import java.awt.*;
 
 
 /**
@@ -61,6 +63,10 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 
 	public void onStatus(StatusEvent event) {
 		count(event);
+		final Graphics2D g = peer.getGraphics();
+
+		g.setColor(Color.orange);
+		g.drawOval((int) (peer.getX() - 55), (int) (peer.getY() - 55), 110, 110);
 	}
 
 	public void onBulletHit(BulletHitEvent event) {
