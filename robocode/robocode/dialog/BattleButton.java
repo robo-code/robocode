@@ -60,9 +60,7 @@ public class BattleButton extends JButton implements ActionListener {
 		setPreferredSize(new Dimension(110, 25));
 		setMinimumSize(new Dimension(110, 25));
 		setMaximumSize(new Dimension(110, 25));
-		setHorizontalAlignment(SwingConstants.LEFT);
-		setVerticalAlignment(SwingConstants.BOTTOM);
-		setBackground(new Color(0x00B0B0C0));
+		setHorizontalAlignment(SwingConstants.CENTER);
 		setMargin(new Insets(0, 0, 0, 0));
 		setText("Main battle log");
 		setToolTipText("Main battle log");
