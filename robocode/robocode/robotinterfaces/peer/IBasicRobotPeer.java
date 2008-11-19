@@ -683,5 +683,5 @@ public interface IBasicRobotPeer {
 	 * @param key name of property
 	 * @param value value of property, pass null or empty string to remove the entry
 	 */
-	void putDebugProperty(String key, String value);
+	void setDebugProperty(String key, String value);
 }

@@ -53,7 +53,7 @@ public class PaintingRobot extends Robot {
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// demonstrate feature of debugging properties on RobotDialog
-		putDebugProperty("lastScannedRobot", e.getName() + " at " + e.getBearing() + " degrees at time " + getTime());
+		setDebugProperty("lastScannedRobot", e.getName() + " at " + e.getBearing() + " degrees at time " + getTime());
 		
 		fire(1);
 	}
@@ -65,10 +65,10 @@ public class PaintingRobot extends Robot {
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
 		// demonstrate feature of debugging properties on RobotDialog
-		putDebugProperty("lastHitBy", e.getName() + " with power of bullet " + e.getPower() + " at time " + getTime());
+		setDebugProperty("lastHitBy", e.getName() + " with power of bullet " + e.getPower() + " at time " + getTime());
 
 		// show how to remove debugging property
-		putDebugProperty("lastScannedRobot", null);
+		setDebugProperty("lastScannedRobot", null);
 
 		// gebugging by painting to battle view
 		Graphics2D g = getGraphics();

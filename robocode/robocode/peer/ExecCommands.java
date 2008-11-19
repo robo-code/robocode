@@ -284,7 +284,7 @@ public final class ExecCommands implements Serializable {
 		isIORobot = true;
 	}
 
-	public void putDebugProperty(String key, String value) {
+	public void setDebugProperty(String key, String value) {
 		if (debugProperties == null) {
 			debugProperties = new ArrayList<DebugProperty>();
 		}

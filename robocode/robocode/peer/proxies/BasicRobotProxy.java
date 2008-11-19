@@ -294,9 +294,9 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		return getGraphicsImpl();
 	}
 
-	public void putDebugProperty(String key, String value) {
+	public void setDebugProperty(String key, String value) {
 		setCall();
-		commands.putDebugProperty(key, value);
+		commands.setDebugProperty(key, value);
 	}
 
 	// -----------
