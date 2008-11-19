@@ -38,8 +38,10 @@ public final class RobotStatics {
 	private final BattleRules battleRules;
 	private final String[] teammates;
 	private final String teamName;
+	private final int index;
+	private final int contestantIndex;
 
-	public RobotStatics(RobotFileSpecification spec, int duplicate, boolean isLeader, BattleRules rules, TeamPeer team) {
+	public RobotStatics(RobotFileSpecification spec, int duplicate, boolean isLeader, BattleRules rules, TeamPeer team, int index, int contestantIndex) {
 		NameManager cnm = spec.getNameManager();
 
 		if (duplicate >= 0) {
@@ -64,16 +66,18 @@ public final class RobotStatics {
 		isDroid = spec.isDroid();
 		isTeamLeader = isLeader;
 		battleRules = rules;
+		this.index = index;
+		this.contestantIndex = contestantIndex;
 
 		if (team != null) {
 			List<String> memberNames = team.getMemberNames();
 
 			teammates = new String[memberNames.size() - 1];
-			int index = 0;
+			int i = 0;
 
 			for (String mate : memberNames) {
 				if (!name.equals(mate)) {
-					teammates[index++] = mate;
+					teammates[i++] = mate;
 				}
 			}
 			teamName = team.getName();
@@ -141,5 +145,13 @@ public final class RobotStatics {
 
 	public String getTeamName() {
 		return teamName;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public int getContestIndex() {
+		return contestantIndex;
 	}
 }

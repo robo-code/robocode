@@ -64,6 +64,8 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	// The very short name of the team leader robot (might be null)
 	private String teamName;
 
+	private int contestIndex;
+
 	// The robot state
 	private RobotState state;
 
@@ -126,12 +128,14 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 * Constructs a snapshot of the robot.
 	 *
 	 * @param peer the robot peer to make a snapshot of.
+	 * @param readoutText true to send text from robot
 	 */
 	public RobotSnapshot(RobotPeer peer, boolean readoutText) {
 		name = peer.getName();
 		shortName = peer.getShortName();
 		veryShortName = peer.getVeryShortName();
 		teamName = peer.getTeamName();
+		contestIndex = peer.getContestIndex();
 
 		state = peer.getState();
 
@@ -176,6 +180,10 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	public int getContestIndex() {
+		return contestIndex;
 	}
 
 	/**

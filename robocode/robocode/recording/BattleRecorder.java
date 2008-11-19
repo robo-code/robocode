@@ -73,7 +73,7 @@ public class BattleRecorder {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			recordmanager.updateRecordInfoResults(event.getResults());
+			recordmanager.updateRecordInfoResults(event.getResultsStable());
 		}
 
 		@Override

@@ -24,4 +24,6 @@ public interface ContestantPeer extends Comparable<ContestantPeer> {
 	public String getName();
 
 	public String toString();
+
+	public int getContestIndex();
 }

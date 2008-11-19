@@ -46,17 +46,18 @@ public class RobotButton extends JButton implements ActionListener {
 	private RobotDialog robotDialog;
 	private final String name;
 	private final int robotIndex;
-	private final int teamIndex;
+	private final int contestIndex;
 	private int maxEnergy = 1;
 	private int maxScore = 1;
 	private int lastEnergy;
 	private int lastScore;
+	private boolean isListening;
 
-	public RobotButton(RobocodeManager manager, String name, int maxEnergy, int robotIndex, int teamIndex, boolean attach) {
+	public RobotButton(RobocodeManager manager, String name, int maxEnergy, int robotIndex, int contestIndex, boolean attach) {
 		this.manager = manager;
 		this.name = name;
 		this.robotIndex = robotIndex;
-		this.teamIndex = teamIndex;
+		this.contestIndex = contestIndex;
 		lastEnergy = maxEnergy;
 		this.maxEnergy = maxEnergy; 
 
@@ -120,16 +121,27 @@ public class RobotButton extends JButton implements ActionListener {
 	}
 
 	public void attach() {
+		if (!isListening) {
+			isListening = true;
+			manager.getWindowManager().addBattleListener(battleObserver);
+		}
 		if (robotDialog == null) {
 			robotDialog = manager.getRobotDialogManager().getRobotDialog(this, name, true);
 		}
-		manager.getWindowManager().addBattleListener(battleObserver);
-		robotDialog.attach();
+		robotDialog.attach(this);
 	}
 
 	public void detach() {
-		robotDialog = null;
-		manager.getWindowManager().removeBattleListener(battleObserver);
+		if (isListening) {
+			manager.getWindowManager().removeBattleListener(battleObserver);
+			isListening = false;
+		}
+		if (robotDialog != null) {
+			final RobotDialog dialog = robotDialog;
+
+			robotDialog = null;
+			dialog.detach();
+		}
 	}
 
 	public int getRobotIndex() {
@@ -150,16 +162,16 @@ public class RobotButton extends JButton implements ActionListener {
 				return;
 			}
 			final int newEnergy = (int) turn.getRobots().get(robotIndex).getEnergy();
-			final java.util.List<ScoreSnapshot> scoreSnapshotList = event.getTurnSnapshot().getTeamScores();
+			final java.util.List<ScoreSnapshot> scoreSnapshotList = event.getTurnSnapshot().getTeamScoresStable();
 
 			maxScore = 0;
 			for (ScoreSnapshot team : scoreSnapshotList) {
-				maxScore += team.getTotalScore();
+				maxScore += team.getCurrentScore();
 			}
 			if (maxScore == 0) {
 				maxScore = 1;
 			}
-			final int newScore = (int) scoreSnapshotList.get(teamIndex).getTotalScore();
+			final int newScore = (int) scoreSnapshotList.get(contestIndex).getCurrentScore();
 			boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
 
 			lastEnergy = newEnergy;
@@ -171,13 +183,13 @@ public class RobotButton extends JButton implements ActionListener {
 
 		public void onBattleCompleted(final BattleCompletedEvent event) {
 			maxScore = 0;
-			for (BattleResults team : event.getResults()) {
+			for (BattleResults team : event.getResultsStable()) {
 				maxScore += team.getScore();
 			}
 			if (maxScore == 0) {
 				maxScore = 1;
 			}
-			lastScore = event.getResults()[teamIndex].getScore();
+			lastScore = event.getResultsStable().get(contestIndex).getScore();
 			repaint();
 		}
 		

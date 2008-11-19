@@ -14,7 +14,6 @@ package robocode.recording;
 
 import robocode.BattleResults;
 import robocode.BattleRules;
-import robocode.battle.snapshot.ScoreSnapshot;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
@@ -22,6 +21,7 @@ import robocode.util.XmlWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -35,7 +35,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 	public int roundsCount;
 	public BattleRules battleRules;
 	public Integer[] turnsInRounds;
-	public BattleResults[] results;
+	public List<BattleResults> results;
 
 	public void writeXml(XmlWriter writer) throws IOException {
 		writer.startElement("recordInfo"); {
@@ -109,21 +109,18 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 				});
 
 				reader.expect("results", new XmlReader.ListElement() {
-					ArrayList<BattleResults> res = new ArrayList<BattleResults>();
 
 					public XmlSerializable read(XmlReader reader) {
+						recordInfo.results = new ArrayList<BattleResults>();
 						// prototype
 						return new BattleResults();
 					}
 
 					public void add(XmlSerializable child) {
-						res.add((BattleResults) child);
+						recordInfo.results.add((BattleResults) child);
 					}
 
-					public void close() {
-						recordInfo.results = new BattleResults[res.size()];
-						res.toArray(recordInfo.results);
-					}
+					public void close() {}
 				});
 				return recordInfo;
 			}

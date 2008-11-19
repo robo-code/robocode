@@ -15,6 +15,10 @@ package robocode.battle.events;
 import robocode.BattleResults;
 import robocode.BattleRules;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 /**
  * @author Pavel Savara (original)
@@ -22,9 +26,9 @@ import robocode.BattleRules;
  */
 public class BattleCompletedEvent extends BattleEvent {
 	private final BattleRules battleRules;
-	private final BattleResults[] results;
+	private final List<BattleResults> results;
 
-	public BattleCompletedEvent(BattleRules battleRules, BattleResults[] results) {
+	public BattleCompletedEvent(BattleRules battleRules, List<BattleResults> results) {
 		this.battleRules = battleRules;
 		this.results = results;
 	}
@@ -34,6 +38,16 @@ public class BattleCompletedEvent extends BattleEvent {
 	}
 
 	public BattleResults[] getResults() {
+		BattleResults[] res = new BattleResults[results.size()];
+		List<BattleResults> cpy = new ArrayList<BattleResults>(results);
+
+		Collections.sort(cpy);
+		Collections.reverse(cpy);
+		return cpy.toArray(res);
+	}
+
+	// stable order
+	public List<BattleResults> getResultsStable() {
 		return results;
 	}
 }

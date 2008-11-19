@@ -33,7 +33,6 @@ package robocode.dialog;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.ScoreSnapshot;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
@@ -46,6 +45,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -103,6 +104,8 @@ public class RobocodeFrame extends JFrame {
 
 	private IWindowManager windowManager;
 
+	List<RobotButton> robotButtons = new ArrayList<RobotButton>();
+
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
 		interactiveHandler = new InteractiveHandler(manager);
@@ -124,6 +127,9 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	public void addRobotButton(JButton b) {
+		if (b instanceof RobotButton) {
+			robotButtons.add((RobotButton) b);
+		}
 		getRobotButtonsPanel().add(b);
 		b.setVisible(true);
 		getRobotButtonsPanel().validate();
@@ -809,16 +815,8 @@ public class RobocodeFrame extends JFrame {
 				for (int index = 0; index < robots.size(); index++) {
 					final RobotSnapshot robot = robots.get(index);
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-					final java.util.List<ScoreSnapshot> teams = event.getTurnSnapshot().getTeamScores();
-					int jndex = 0;
-
-					for (; jndex < teams.size(); jndex++) {
-						if (teams.get(jndex).getName().equals(robot.getTeamName())) {
-							break;
-						}
-					}
 					final RobotButton button = new RobotButton(manager, robot.getName(), (int) robot.getEnergy(), index,
-							jndex, attach);
+							robot.getContestIndex(), attach);
 
 					button.setText(robot.getShortName());
 					addRobotButton(button);
@@ -830,6 +828,11 @@ public class RobocodeFrame extends JFrame {
 		@Override
 		public void onBattleEnded(BattleEndedEvent event) {
 			isBattleRunning = false;
+
+			for (RobotButton robotButton : robotButtons) {
+				robotButton.detach();
+			}
+			robotButtons.clear();
 
 			final boolean canReplayRecord = (manager.getRecordManager().hasRecord());
 

@@ -52,6 +52,7 @@ import robocode.peer.RobotPeer;
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
 	private RobotPeer robotPeer;
+	private int rank;
 	private int robots;
 	private boolean isActive;
 	private boolean isInRound;
@@ -96,6 +97,10 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		totalFirsts = results.getFirsts();
 		totalSeconds = results.getSeconds();
 		totalThirds = results.getThirds();
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
 	}
 
 	public void initialize() {
@@ -293,14 +298,7 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		isActive = false;
 	}
 
-	public BattleResults getCurrentResults(int rank) {
-		return new BattleResults(robotPeer.getTeamName(), rank, totalScore + getCurrentScore(),
-				totalSurvivalScore + survivalScore, totalLastSurvivorBonus, totalBulletDamageScore + bulletDamageScore,
-				totalBulletKillBonus + bulletKillBonus, totalRammingDamageScore + rammingDamageScore,
-				totalRammingKillBonus + rammingKillBonus, totalFirsts, totalSeconds, totalThirds);
-	}
-
-	public BattleResults getFinalResults(int rank) {
+	public BattleResults getFinalResults() {
 		return new BattleResults(robotPeer.getTeamName(), rank, totalScore, totalSurvivalScore, totalLastSurvivorBonus,
 				totalBulletDamageScore, totalBulletKillBonus, totalRammingDamageScore, totalRammingKillBonus, totalFirsts,
 				totalSeconds, totalThirds);

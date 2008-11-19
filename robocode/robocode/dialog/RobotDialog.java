@@ -108,8 +108,9 @@ public class RobotDialog extends JFrame {
 		robotButton.detach();
 	}
 
-	public void attach() {
-		robotIndex = robotButton.getRobotIndex();
+	public void attach(RobotButton robotButton) {
+		this.robotButton = robotButton;
+		robotIndex = this.robotButton.getRobotIndex();
 		if (!isListening) {
 			isListening = true;
 			manager.getWindowManager().addBattleListener(battleObserver);

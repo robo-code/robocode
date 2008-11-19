@@ -174,7 +174,6 @@ public class RecordManager implements IRecordManager {
 		BufferedInputStream bis = null;
 		ZipInputStream zis = null;
 		ObjectInputStream ois = null;
-		XmlReader xrd = null;
 
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
@@ -401,17 +400,20 @@ public class RecordManager implements IRecordManager {
 		recordInfo.battleRules = rules;
 		recordInfo.turnsInRounds = new Integer[rules.getNumRounds()];
 		for (int i = 0; i < rules.getNumRounds(); i++) {
-			recordInfo.turnsInRounds[i] = new Integer(0); 
+			recordInfo.turnsInRounds[i] = 0; 
 		}
 	}
 
-	public void updateRecordInfoResults(BattleResults[] getResults) {
-		recordInfo.results = getResults;
+	public void updateRecordInfoResults(List<BattleResults> results) {
+		recordInfo.results = results;
 	}
 
 	public void writeTurn(TurnSnapshot turn, int round, int time) {
 		try {
 			recordInfo.turnsInRounds[round]++;
+			if (time != recordInfo.turnsInRounds[round]) {
+				throw new Error("Something rotten");
+			}
 			recordInfo.roundsCount = round + 1;
 			objectWriteStream.writeObject(turn);
 		} catch (IOException e) {

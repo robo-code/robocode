@@ -175,7 +175,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private Arc2D scanArc;
 	private BoundingRectangle boundingBox;
 
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotClassManager robotClassManager, int duplicate, TeamPeer team) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotClassManager robotClassManager, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();
 		if (team != null) {
 			team.add(this);
@@ -191,7 +191,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battle.getBattleRules(), team);
+		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battle.getBattleRules(), team, index,
+				contestantIndex);
 		battleRules = battle.getBattleRules();
 
 		controlRobotSpecification = robotClassManager.getControlRobotSpecification();
@@ -297,6 +298,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public String getVeryShortName() {
 		return statics.getVeryShortName();
+	}
+
+	public int getIndex() {
+		return statics.getIndex();
+	}
+
+	public int getContestIndex() {
+		return statics.getContestIndex();
 	}
 
 	// -------------------
@@ -623,10 +632,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		boolean valid = false;
 
 		if (initialRobotPositions != null) {
-			int index = robots.indexOf(this);
 
-			if (index >= 0 && index < initialRobotPositions.length) {
-				double[] pos = initialRobotPositions[index];
+			if (statics.getIndex() >= 0 && statics.getIndex() < initialRobotPositions.length) {
+				double[] pos = initialRobotPositions[statics.getIndex()];
 
 				x = pos[0];
 				y = pos[1];

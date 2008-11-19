@@ -107,7 +107,7 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showAboutBox() {
-		packCenterShow(new AboutBox(getRobocodeFrame(), manager));
+		packCenterShow(new AboutBox(getRobocodeFrame(), manager), true);
 	}
 
 	public String showBattleOpenDialog(final String defExt, final String name) {
@@ -233,17 +233,23 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showResultsDialog(BattleCompletedEvent event) {
-		packCenterShow(new ResultsDialog(manager, event.getResults(), event.getBattleRules().getNumRounds()));
+		packCenterShow(new ResultsDialog(manager, event.getResults(), event.getBattleRules().getNumRounds()), true);
 	}
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(manager);
-		}
-		if (visible) {
-			packCenterShow(rankingDialog);
+			if (visible) {
+				packCenterShow(rankingDialog, true);
+			} else {
+				rankingDialog.dispose();
+			}
 		} else {
-			rankingDialog.dispose();
+			if (visible) {
+				packCenterShow(rankingDialog, false);
+			} else {
+				rankingDialog.dispose();
+			}
 		}
 	}
 
@@ -280,7 +286,7 @@ public class WindowManager implements IWindowManager {
 		SplashScreen splashScreen = new SplashScreen(manager);
 
 		synchronized (splashScreen) {
-			packCenterShow(splashScreen);
+			packCenterShow(splashScreen, true);
 
 			try {
 				splashScreen.wait(20000);
@@ -472,11 +478,13 @@ public class WindowManager implements IWindowManager {
 	/**
 	 * Packs, centers, and shows the specified window on the screen.
 	 */
-	private void packCenterShow(Window window) {
+	private void packCenterShow(Window window, boolean center) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		window.pack();
-		window.setLocation((screenSize.width - window.getWidth()) / 2, (screenSize.height - window.getHeight()) / 2);
+		if (center) {
+			window.setLocation((screenSize.width - window.getWidth()) / 2, (screenSize.height - window.getHeight()) / 2);
+		}
 		window.setVisible(true);
 	}
 }

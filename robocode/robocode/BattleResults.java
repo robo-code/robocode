@@ -30,7 +30,7 @@ import java.io.IOException;
  * @see Robot#onBattleEnded(BattleEndedEvent)
  * @since 1.6.1
  */
-public class BattleResults implements java.io.Serializable, XmlSerializable {
+public class BattleResults implements java.io.Serializable, XmlSerializable, Comparable<BattleResults> {
 	private static final long serialVersionUID = 1L;
 
 	private String teamLeaderName;
@@ -284,5 +284,9 @@ public class BattleResults implements java.io.Serializable, XmlSerializable {
 				return rules;
 			}
 		});
+	}
+
+	public int compareTo(BattleResults o) {
+		return ((Double) score).compareTo(o.score);
 	}
 }

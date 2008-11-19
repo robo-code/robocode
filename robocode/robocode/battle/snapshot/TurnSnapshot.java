@@ -17,6 +17,7 @@ package robocode.battle.snapshot;
 import robocode.battle.Battle;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
+import robocode.peer.ContestantPeer;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
@@ -78,8 +79,9 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 	 * Constructs a snapshot of the battle.
 	 *
 	 * @param battle		the battle to make a snapshot of.
-	 * @param battleRobots
-	 * @param battleBullets
+	 * @param battleRobots TODO
+	 * @param battleBullets TODO
+	 * @param readoutText TODO
 	 */
 	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets, boolean readoutText) {
 		// fieldWidth = battle.getBattleField().getWidth();
@@ -168,22 +170,46 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 	 * @return scores grouped by teams, ordered by position
 	 */
 	public List<ScoreSnapshot> getTeamScores() {
+		ArrayList<ScoreSnapshot> res = getTeamScoresStable();
+
+		Collections.sort(res);
+		Collections.reverse(res);
+		return res;
+	}
+
+	/**
+	 * @return scores grouped by teams, in stable order
+	 */
+	public ArrayList<ScoreSnapshot> getTeamScoresStable() {
 		// team scores are computed on demand from team scores to not duplicate data in the snapshot
 
-		Hashtable<String, ScoreSnapshot> teams = new Hashtable<String, ScoreSnapshot>();
+		int contexstantsCount;
+		ArrayList<ScoreSnapshot> results = new ArrayList<ScoreSnapshot>();
 
+		// noinspection UnusedDeclaration
+		for (RobotSnapshot c : robots) {
+			results.add(null);
+		}
 		for (RobotSnapshot robot : robots) {
-			final String name = robot.getTeamName();
+			final ScoreSnapshot snapshot = results.get(robot.getContestIndex());
 
-			if (!teams.containsKey(name)) {
-				teams.put(name, robot.getRobotScoreSnapshot());
+			if (snapshot == null) {
+				results.set(robot.getContestIndex(), robot.getRobotScoreSnapshot());
 			} else {
-				final ScoreSnapshot sum = new ScoreSnapshot(teams.get(name), robot.getRobotScoreSnapshot(), name);
+				final ScoreSnapshot sum = new ScoreSnapshot(snapshot, robot.getRobotScoreSnapshot(), robot.getTeamName());
 
-				teams.put(name, sum);
+				results.set(robot.getContestIndex(), sum);
 			}
 		}
-		return new ArrayList<ScoreSnapshot>(teams.values());
+		ArrayList<ScoreSnapshot> res = new ArrayList<ScoreSnapshot>();
+
+		for (ScoreSnapshot scoreSnapshot : results) {
+			if (scoreSnapshot != null) {
+				res.add(scoreSnapshot);
+			}
+		}
+
+		return res;
 	}
 
 	@Override

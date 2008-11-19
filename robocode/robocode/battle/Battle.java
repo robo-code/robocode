@@ -253,22 +253,28 @@ public final class Battle extends BaseBattle {
 
 			String teamFullName = rcm.getTeamName();
 
+			int cindex = contestants.size();
+
 			if (teamFullName != null) {
 				if (!namedTeams.containsKey(teamFullName)) {
 					final int teamIndex = teams.indexOf(teamFullName);
 					String newTeamName = teamDuplicates.get(teamIndex);
 
-					team = new TeamPeer(newTeamName, teamMembers.get(teamFullName));
+					team = new TeamPeer(newTeamName, teamMembers.get(teamFullName), contestants.size());
 
 					namedTeams.put(teamFullName, team);
 					contestants.add(team);
 
 				} else {
 					team = namedTeams.get(teamFullName);
+					if (team != null) {
+						cindex = team.getContestIndex();
+					}
 				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, manager.getHostManager(), rcm, duplicate, team);
+			RobotPeer robotPeer = new RobotPeer(this, manager.getHostManager(), rcm, duplicate, team, robots.size(),
+					cindex);
 
 			robots.add(robotPeer);
 			if (team == null) {
@@ -379,7 +385,7 @@ public final class Battle extends BaseBattle {
 		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
 
 		if (!isAborted()) {
-			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeResults()));
+			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeBattleResults()));
 		}
 
 		for (RobotPeer robotPeer : robots) {
@@ -527,9 +533,11 @@ public final class Battle extends BaseBattle {
 
 			for (int rank = 0; rank < robots.size(); rank++) {
 				RobotPeer robotPeer = orderedRobots.get(rank);
-				BattleResults resultsForRobots = robotPeer.getStatistics().getFinalResults(rank + 1);
 
-				robotPeer.addEvent(new BattleEndedEvent(isAborted(), resultsForRobots));
+				robotPeer.getStatistics().setRank(rank + 1);
+				BattleResults resultsForRobot = robotPeer.getStatistics().getFinalResults();
+
+				robotPeer.addEvent(new BattleEndedEvent(isAborted(), resultsForRobot));
 			}
 		}
 
@@ -549,27 +557,34 @@ public final class Battle extends BaseBattle {
 		super.finalizeTurn();
 	}
 
-	private RobotResults[] computeResults() {
-		List<ContestantPeer> orderedPeers = new ArrayList<ContestantPeer>(contestants);
+	private List<BattleResults> computeBattleResults() {
+		ArrayList<BattleResults> results = new ArrayList<BattleResults>();
 
-		Collections.sort(orderedPeers);
-		Collections.reverse(orderedPeers);
+		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(contestants);
 
-		RobotResults results[] = new RobotResults[orderedPeers.size()];
+		Collections.sort(orderedContestants);
+		Collections.reverse(orderedContestants);
 
-		for (int i = 0; i < results.length; i++) {
-			ContestantPeer cp = orderedPeers.get(i);
-			RobotSpecification robotSpec = null;
-
-			if (cp instanceof RobotPeer) {
-				robotSpec = ((RobotPeer) cp).getControlRobotSpecification();
-			} else if (cp instanceof TeamPeer) {
-				robotSpec = ((TeamPeer) cp).getTeamLeader().getControlRobotSpecification();
-			}
-			BattleResults battleResults = cp.getStatistics().getFinalResults(i + 1);
-
-			results[i] = new RobotResults(robotSpec, battleResults);
+		// noinspection UnusedDeclaration
+		for (ContestantPeer c : contestants) {
+			results.add(null);
 		}
+		for (int rank = 0; rank < contestants.size(); rank++) {
+			RobotSpecification robotSpec = null;
+			ContestantPeer contestant = orderedContestants.get(rank);
+
+			contestant.getStatistics().setRank(rank + 1);
+			BattleResults battleResults = contestant.getStatistics().getFinalResults();
+
+			if (contestant instanceof RobotPeer) {
+				robotSpec = ((RobotPeer) contestant).getControlRobotSpecification();
+			} else if (contestant instanceof TeamPeer) {
+				robotSpec = ((TeamPeer) contestant).getTeamLeader().getControlRobotSpecification();
+			}
+
+			results.set(contestant.getContestIndex(), new RobotResults(robotSpec, battleResults));
+		}
+
 		return results;
 	}
 
