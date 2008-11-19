@@ -58,7 +58,7 @@ public class RobotButton extends JButton implements ActionListener {
 		this.name = name;
 		this.robotIndex = robotIndex;
 		this.contestIndex = contestIndex;
-		lastEnergy = maxEnergy;
+		this.lastEnergy = maxEnergy;
 		this.maxEnergy = maxEnergy; 
 
 		initialize();

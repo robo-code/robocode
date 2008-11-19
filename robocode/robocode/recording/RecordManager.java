@@ -17,8 +17,6 @@ import robocode.util.XmlWriter;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.snapshot.ScoreSnapshot;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.IBattle;
 import static robocode.io.Logger.logError;
@@ -29,13 +27,8 @@ import java.io.*;
 import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.nio.charset.Charset;
-
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 
 /**

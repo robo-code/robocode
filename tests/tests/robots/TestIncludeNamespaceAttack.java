@@ -16,7 +16,6 @@ import helpers.Assert;
 import helpers.RobotTestBed;
 import org.junit.Test;
 import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.events.RoundStartedEvent;
 
 
 /**

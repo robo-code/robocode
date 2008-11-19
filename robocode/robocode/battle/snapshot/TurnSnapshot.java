@@ -17,16 +17,13 @@ package robocode.battle.snapshot;
 import robocode.battle.Battle;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
-import robocode.peer.ContestantPeer;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
-import robocode.BattleResults;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 
 
@@ -183,7 +180,6 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 	public ArrayList<ScoreSnapshot> getTeamScoresStable() {
 		// team scores are computed on demand from team scores to not duplicate data in the snapshot
 
-		int contexstantsCount;
 		ArrayList<ScoreSnapshot> results = new ArrayList<ScoreSnapshot>();
 
 		// noinspection UnusedDeclaration
