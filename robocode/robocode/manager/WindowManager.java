@@ -119,15 +119,7 @@ public class WindowManager implements IWindowManager {
 				if (pathname.isDirectory()) {
 					return true;
 				}
-				String filename = pathname.getName();
-				int idx = filename.lastIndexOf('.');
-
-				String extension = "";
-
-				if (idx >= 0) {
-					extension = filename.substring(idx);
-				}
-				return extension.equalsIgnoreCase(defExt);
+				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase()) > 0;
 			}
 
 			@Override

@@ -1408,7 +1408,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void punishBadBehavior() {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
-		//disable for next time
+		// disable for next time
 		robotSpecification.setValid(false);
 	}
 

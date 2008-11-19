@@ -14,12 +14,14 @@ package robocode.recording;
 
 import robocode.BattleResults;
 import robocode.BattleRules;
+import robocode.battle.snapshot.ScoreSnapshot;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 /**
@@ -32,7 +34,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 	public int robotCount;
 	public int roundsCount;
 	public BattleRules battleRules;
-	public int[] turnsInRounds;
+	public Integer[] turnsInRounds;
 	public BattleResults[] results;
 
 	public void writeXml(XmlWriter writer) throws IOException {
@@ -40,6 +42,8 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 			writer.writeAttribute("robotCount", robotCount);
 			writer.writeAttribute("roundsCount", roundsCount);
 			writer.writeAttribute("ver", serialVersionUID);
+
+			battleRules.writeXml(writer);
 
 			writer.startElement("rounds"); {
 				for (int n : turnsInRounds) {
@@ -77,21 +81,78 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 					}
 				});
 
-				reader.expect("results", new XmlReader.ListElement() {
-					int pos = 0;
+				final XmlReader.Element element = (new BattleRules()).readXml(reader);
+
+				reader.expect("rules", new XmlReader.Element() {
+					public XmlSerializable read(XmlReader reader) {
+						recordInfo.battleRules = (BattleRules) element.read(reader);
+						return recordInfo.battleRules;
+					}
+				});
+
+				reader.expect("rounds", new XmlReader.ListElement() {
+					ArrayList<Integer> ints = new ArrayList<Integer>();
 
 					public XmlSerializable read(XmlReader reader) {
-						recordInfo.results = new BattleResults[recordInfo.roundsCount];
+						// prototype
+						return new IntValue("turns");
+					}
+
+					public void add(XmlSerializable child) {
+						ints.add(((IntValue) child).intValue);
+					}
+
+					public void close() {
+						recordInfo.turnsInRounds = new Integer[ints.size()];
+						ints.toArray(recordInfo.turnsInRounds);
+					}
+				});
+
+				reader.expect("results", new XmlReader.ListElement() {
+					ArrayList<BattleResults> res = new ArrayList<BattleResults>();
+
+					public XmlSerializable read(XmlReader reader) {
 						// prototype
 						return new BattleResults();
 					}
 
 					public void add(XmlSerializable child) {
-						recordInfo.results[pos] = ((BattleResults) child);
+						res.add((BattleResults) child);
+					}
+
+					public void close() {
+						recordInfo.results = new BattleResults[res.size()];
+						res.toArray(recordInfo.results);
 					}
 				});
 				return recordInfo;
 			}
 		});
 	}
+
+	public class IntValue implements XmlSerializable {
+		IntValue(String name) {
+			this.name = name;
+		}
+		private String name;
+		public int intValue;
+
+		public void writeXml(XmlWriter writer) throws IOException {}
+
+		public XmlReader.Element readXml(XmlReader reader) {
+			return reader.expect(name, new XmlReader.Element() {
+				public XmlSerializable read(XmlReader reader) {
+					final IntValue recordInfo = new IntValue(name);
+
+					reader.expect("value", new XmlReader.Attribute() {
+						public void read(String value) {
+							recordInfo.intValue = Integer.parseInt(value);
+						}
+					});
+					return recordInfo;
+				}
+			});
+		}
+	}
+
 }

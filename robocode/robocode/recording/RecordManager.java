@@ -14,7 +14,11 @@ package robocode.recording;
 
 import robocode.manager.RobocodeManager;
 import robocode.util.XmlWriter;
+import robocode.util.XmlReader;
+import robocode.util.XmlSerializable;
 import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.snapshot.ScoreSnapshot;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.IBattle;
 import static robocode.io.Logger.logError;
@@ -25,7 +29,13 @@ import java.io.*;
 import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.nio.charset.Charset;
+
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 
 /**
@@ -164,7 +174,7 @@ public class RecordManager implements IRecordManager {
 		BufferedInputStream bis = null;
 		ZipInputStream zis = null;
 		ObjectInputStream ois = null;
-		// TODO load XML XmlReader xrd = null;
+		XmlReader xrd = null;
 
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
@@ -181,8 +191,6 @@ public class RecordManager implements IRecordManager {
 				zis = new ZipInputStream(bis);
 				zis.getNextEntry();
 				ois = new ObjectInputStream(zis);
-			} else if (format == BattleRecordFormat.XML) {// TODO load XML 
-				// xrd = new XmlReader(bis);
 			}
 			if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
 				recordInfo = (BattleRecordInfo) ois.readObject();
@@ -204,22 +212,21 @@ public class RecordManager implements IRecordManager {
 					}
 				}
 			} else {
-				throw new Error("Not yet implemented");
+				final RecordRoot root = new RecordRoot();
+
+				fos = new FileOutputStream(tempFile);
+				bos = new BufferedOutputStream(fos, 1024 * 1024);
+				root.oos = new ObjectOutputStream(bos);
+				XmlReader.deserialize(bis, root);
+				if (root.lastException != null) {
+					logError(root.lastException);
+				}
+				recordInfo = root.recordInfo;
 			}
 		} catch (IOException e) {
 			logError(e);
 			createTempFile();
 			recordInfo = null;
-
-			/* TODO load XML
-			 } catch (SAXException e) {
-			 logError(e);
-			 createTempFile();
-			 recordInfo=null;
-			 } catch (ParserConfigurationException e) {
-			 logError(e);
-			 createTempFile();
-			 recordInfo=null;*/
 		} catch (ClassNotFoundException e) {
 			logError(e);
 			createTempFile();
@@ -233,7 +240,55 @@ public class RecordManager implements IRecordManager {
 			cleanupStream(bis);
 			cleanupStream(fis);
 		}
+	}
 
+	private class RecordRoot implements XmlSerializable {
+
+		public RecordRoot() {
+			me = this;
+		}
+
+		public ObjectOutputStream oos;
+		public IOException lastException;
+		public RecordRoot me;
+		public BattleRecordInfo recordInfo;
+
+		public void writeXml(XmlWriter writer) throws IOException {}
+
+		public XmlReader.Element readXml(XmlReader reader) {
+			return reader.expect("record", new XmlReader.Element() {
+				public XmlSerializable read(XmlReader reader) {
+
+					final XmlReader.Element element = (new BattleRecordInfo()).readXml(reader);
+
+					reader.expect("recordInfo", new XmlReader.Element() {
+						public XmlSerializable read(XmlReader reader) {
+							recordInfo = (BattleRecordInfo) element.read(reader);
+							return recordInfo;
+						}
+					});
+
+					reader.expect("turns", new XmlReader.ListElement() {
+						public XmlSerializable read(XmlReader reader) {
+							// prototype
+							return new TurnSnapshot();
+						}
+
+						public void add(XmlSerializable child) {
+							try {
+								me.oos.writeObject(child);
+							} catch (IOException e) {
+								me.lastException = e;
+							}
+						}
+
+						public void close() {}
+					});
+
+					return me;
+				}
+			});
+		}
 	}
 
 	public void saveRecord(String recordFilename, BattleRecordFormat format) {
@@ -273,6 +328,7 @@ public class RecordManager implements IRecordManager {
 				xwr.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 				xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecord.xsd");
 				recordInfo.writeXml(xwr);
+				xwr.startElement("turns");
 			}
 
 			if (recordInfo.turnsInRounds != null) {
@@ -303,6 +359,7 @@ public class RecordManager implements IRecordManager {
 					fos.flush();
 				}
 				if (format == BattleRecordFormat.XML) {
+					xwr.endElement(); // turns
 					xwr.endElement(); // record
 					osw.flush();
 				}
@@ -342,7 +399,10 @@ public class RecordManager implements IRecordManager {
 		recordInfo = new BattleRecordInfo();
 		recordInfo.robotCount = numRobots;
 		recordInfo.battleRules = rules;
-		recordInfo.turnsInRounds = new int[rules.getNumRounds()];
+		recordInfo.turnsInRounds = new Integer[rules.getNumRounds()];
+		for (int i = 0; i < rules.getNumRounds(); i++) {
+			recordInfo.turnsInRounds[i] = new Integer(0); 
+		}
 	}
 
 	public void updateRecordInfoResults(BattleResults[] getResults) {
@@ -352,7 +412,7 @@ public class RecordManager implements IRecordManager {
 	public void writeTurn(TurnSnapshot turn, int round, int time) {
 		try {
 			recordInfo.turnsInRounds[round]++;
-			recordInfo.roundsCount = round;
+			recordInfo.roundsCount = round + 1;
 			objectWriteStream.writeObject(turn);
 		} catch (IOException e) {
 			logError(e);

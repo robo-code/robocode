@@ -35,6 +35,7 @@ public class XmlReader {
 
 	InputStream input;
 	Stack<Element> elements = new Stack<Element>();
+	Stack<XmlSerializable> items = new Stack<XmlSerializable>();
 	Stack<Dictionary<String, Element>> elementNames = new Stack<Dictionary<String, Element>>();
 	Stack<Dictionary<String, Attribute>> attributeNames = new Stack<Dictionary<String, Attribute>>();
 	XmlSerializable result;
@@ -49,6 +50,7 @@ public class XmlReader {
 	private Object deserialize(XmlSerializable prototype) throws IOException, SAXException {
 		elementNames.push(new Hashtable<String, Element>());
 		attributeNames.push(new Hashtable<String, Attribute>());
+		items.push(null);
 		elements.push(new ListElement() {
 			public XmlSerializable read(XmlReader reader) {
 				return null;
@@ -57,9 +59,12 @@ public class XmlReader {
 			public void add(XmlSerializable child) {
 				result = child;
 			}
+
+			public void close() {}
 		});
 		prototype.readXml(this);
 		parser.parse(input, new Handler(this));
+		items.pop();
 		elements.pop();
 		elementNames.pop();
 		attributeNames.pop();
@@ -75,9 +80,8 @@ public class XmlReader {
 		}
 
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-			final Dictionary<String, Element> elementNames = XmlReader.this.elementNames.peek();
-			final Element element = elementNames == null ? null : elementNames.get(qName);
-			final Element parentElement = elements.peek();
+			final Dictionary<String, Element> names = XmlReader.this.elementNames.peek();
+			final Element element = names == null ? null : names.get(qName);
 
 			if (element != null) {
 				elements.push(element);
@@ -85,11 +89,6 @@ public class XmlReader {
 				attributeNames.push(new Hashtable<String, Attribute>());
 				final XmlSerializable item = element.read(parent);
 
-				if (parentElement instanceof ListElement) {
-					ListElement le = (ListElement) parentElement;
-
-					le.add(item);
-				}
 				item.readXml(parent);
 				for (int i = 0; i < attributes.getLength(); i++) {
 					Attribute attribute = attributeNames.peek().get(attributes.getQName(i));
@@ -98,7 +97,9 @@ public class XmlReader {
 						attribute.read(attributes.getValue(i));
 					}
 				}
+				items.push(item);
 			} else {
+				items.push(null);
 				elements.push(null);
 				XmlReader.this.elementNames.push(null);
 				attributeNames.push(null);
@@ -107,8 +108,27 @@ public class XmlReader {
 
 		public void endElement(String uri, String localName, String qName) throws SAXException {
 			elements.pop();
+			final XmlSerializable item = items.peek();
+			final Element parentElement = elements.peek();
+
+			if (parentElement instanceof ListElement) {
+				ListElement le = (ListElement) parentElement;
+
+				le.add(item);
+			}
+			items.pop();
 			elementNames.pop();
 			attributeNames.pop();
+			final Dictionary<String, Element> names = XmlReader.this.elementNames.peek();
+			final Element element = names == null ? null : names.get(qName);
+
+			if (element != null) {
+				if (element instanceof ListElement) {
+					ListElement le = (ListElement) element;
+
+					le.close();
+				}
+			}
 		}
 
 	}
@@ -130,6 +150,7 @@ public class XmlReader {
 
 	public interface ListElement extends Element {
 		void add(XmlSerializable child);
+		void close();
 	}
 
 

@@ -116,7 +116,9 @@ public class RobotThreadManager {
 				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
 				return forceStop();
 			} else {
-				logError("Robot " + robotProxy.getStatics().getName() + " is still running.  Not stopping it because security is off.");
+				logError(
+						"Robot " + robotProxy.getStatics().getName()
+						+ " is still running.  Not stopping it because security is off.");
 			}
 		}
 
@@ -141,7 +143,7 @@ public class RobotThreadManager {
 		if (res > 0) {
 			robotProxy.println("SYSTEM: This robot has been stopped.  No score will be generated.");
 
-			//recycle thread group
+			// recycle thread group
 			createThreadGroup();
 		}
 		runThread = null;

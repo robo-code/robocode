@@ -63,6 +63,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem battleOpenRecordMenuItem;
 	private JMenuItem battleSaveRecordAsMenuItem;
 	private JMenuItem battleExportRecordMenuItem;
+	private JMenuItem battleImportRecordMenuItem;
 
 	// Robot menu
 	private JMenu robotMenu;
@@ -114,6 +115,8 @@ public class RobocodeMenuBar extends JMenuBar {
 				battleSaveAsActionPerformed();
 			} else if (source == mb.getBattleOpenRecordMenuItem()) {
 				battleOpenRecordActionPerformed();
+			} else if (source == mb.getBattleImportRecordMenuItem()) {
+				battleImportRecordActionPerformed();
 			} else if (source == mb.getBattleSaveRecordAsMenuItem()) {
 				battleSaveRecordAsActionPerformed();
 			} else if (source == mb.getBattleExportRecordMenuItem()) {
@@ -292,6 +295,36 @@ public class RobocodeMenuBar extends JMenuBar {
 		}
 	}
 
+	private void battleImportRecordActionPerformed() {
+		IBattleManager battleManager = manager.getBattleManager();
+
+		try {
+			battleManager.pauseBattle();
+
+			String path = manager.getWindowManager().showBattleOpenDialog(".br.xml", "XML Records");
+
+			if (path != null) {
+				manager.getBattleManager().stop(true);
+
+				robocodeFrame.getReplayButton().setVisible(true);
+				robocodeFrame.getReplayButton().setEnabled(true);
+
+				getBattleSaveRecordAsMenuItem().setEnabled(true);
+				getBattleExportRecordMenuItem().setEnabled(true);
+
+				try {
+					robocodeFrame.setBusyPointer(true);
+					manager.getRecordManager().loadRecord(path, BattleRecordFormat.XML);
+				} finally {
+					robocodeFrame.setBusyPointer(false);
+				}
+				battleManager.replay();
+			}
+		} finally {
+			battleManager.resumeBattle();
+		}
+	}
+
 	private void battleSaveRecordAsActionPerformed() {
 		IBattleManager battleManager = manager.getBattleManager();
 
@@ -374,6 +407,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleMenu.add(getBattleSaveAsMenuItem());
 			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleOpenRecordMenuItem());
+			battleMenu.add(getBattleImportRecordMenuItem());
 			battleMenu.add(getBattleSaveRecordAsMenuItem());
 			battleMenu.add(getBattleExportRecordMenuItem());
 			battleMenu.add(new JSeparator());
@@ -471,6 +505,18 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleOpenRecordMenuItem;
 	}
 
+	private JMenuItem getBattleImportRecordMenuItem() {
+		if (battleImportRecordMenuItem == null) {
+			battleImportRecordMenuItem = new JMenuItem();
+			battleImportRecordMenuItem.setText("Import XML Record");
+			battleImportRecordMenuItem.setMnemonic('i');
+			battleImportRecordMenuItem.setAccelerator(
+					KeyStroke.getKeyStroke(KeyEvent.VK_I, MENU_SHORTCUT_KEY_MASK, false));
+			battleImportRecordMenuItem.addActionListener(eventHandler);
+		}
+		return battleImportRecordMenuItem;
+	}
+
 	/**
 	 * Return the battleSaveRecordAsMenuItem.
 	 *
@@ -505,7 +551,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	public JMenuItem getBattleExportRecordMenuItem() {
 		if (battleExportRecordMenuItem == null) {
 			battleExportRecordMenuItem = new JMenuItem();
-			battleExportRecordMenuItem.setText("Export Record to XLM");
+			battleExportRecordMenuItem.setText("Export XLM Record");
 			battleExportRecordMenuItem.setMnemonic('X');
 			battleExportRecordMenuItem.setDisplayedMnemonicIndex(5);
 			battleExportRecordMenuItem.setAccelerator(

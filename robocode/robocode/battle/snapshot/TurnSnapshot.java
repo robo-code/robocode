@@ -20,6 +20,7 @@ import robocode.peer.RobotPeer;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
+import robocode.BattleResults;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -213,7 +214,7 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 		writer.endElement();
 	}
 
-	private TurnSnapshot() {}
+	public TurnSnapshot() {}
 
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("turn", new XmlReader.Element() {
@@ -241,6 +242,8 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 					public void add(XmlSerializable child) {
 						snapshot.robots.add((RobotSnapshot) child);
 					}
+
+					public void close() {}
 				});
 
 				reader.expect("bullets", new XmlReader.ListElement() {
@@ -253,6 +256,8 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 					public void add(XmlSerializable child) {
 						snapshot.bullets.add((BulletSnapshot) child);
 					}
+
+					public void close() {}
 				});
 
 				return snapshot;

@@ -158,7 +158,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 
 	public void waitForStopThread() {
-		if (!robotThreadManager.waitForStop()){
+		if (!robotThreadManager.waitForStop()) {
 			peer.punishBadBehavior();
 			isRunning.set(false);
 		}
