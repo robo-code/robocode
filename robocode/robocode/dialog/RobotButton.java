@@ -25,7 +25,6 @@ import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.ScoreSnapshot;
 import robocode.BattleResults;
 

@@ -46,7 +46,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.*;
 
 
 /**
@@ -83,6 +82,7 @@ public class RobocodeFrame extends JFrame {
 
 	private JPanel mainPanel;
 	private JPanel battleViewPanel;
+	private JPanel sidePanel;
 	private JPanel robotButtonsPanel;
 
 	private JToolBar toolBar;
@@ -189,7 +189,7 @@ public class RobocodeFrame extends JFrame {
 		if (mainPanel == null) {
 			mainPanel = new JPanel();
 			mainPanel.setLayout(new BorderLayout());
-			mainPanel.add(getRobotButtonsScrollPane(), BorderLayout.EAST);
+			mainPanel.add(getSidePanel(), BorderLayout.EAST);
 			mainPanel.add(getBattleViewPanel());
 		}
 		return mainPanel;
@@ -237,6 +237,21 @@ public class RobocodeFrame extends JFrame {
 			robocodeMenuBar = new RobocodeMenuBar(manager, this);
 		}
 		return robocodeMenuBar;
+	}
+
+	/**
+	 * Return the sidePanel.
+	 *
+	 * @return JPanel
+	 */
+	private JPanel getSidePanel() {
+		if (sidePanel == null) {
+			sidePanel = new JPanel();
+			sidePanel.setLayout(new BorderLayout());
+			sidePanel.add(getRobotButtonsScrollPane(), BorderLayout.CENTER);
+			sidePanel.add(new BattleButton(manager.getRobotDialogManager(), true), BorderLayout.SOUTH);
+		}
+		return sidePanel;
 	}
 
 	/**
@@ -520,7 +535,6 @@ public class RobocodeFrame extends JFrame {
 			getReplayButton().setEnabled(false);
 			exitOnClose = false;
 		}
-		addRobotButton(new BattleButton(manager.getRobotDialogManager(), true));
 	}
 
 	private void pauseResumeButtonActionPerformed() {
@@ -809,8 +823,6 @@ public class RobocodeFrame extends JFrame {
 					button.setText(robot.getShortName());
 					addRobotButton(button);
 				}
-				addRobotButton(new BattleButton(manager.getRobotDialogManager(), true));
-
 				getRobotButtonsPanel().repaint();
 			}
 		}
