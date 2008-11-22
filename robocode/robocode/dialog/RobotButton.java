@@ -41,6 +41,9 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
 
+	private static final int BAR_MARGIN = 2;
+	private static final int BAR_HEIGHT = 3;
+
 	private final RobocodeManager manager;
 	private BattleObserver battleObserver = new BattleObserver();
 	private RobotDialog robotDialog;
@@ -84,26 +87,37 @@ public class RobotButton extends JButton implements ActionListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (lastEnergy != 0) {
-			int fraction = (lastEnergy * 100) / maxEnergy;
+
+		Graphics2D g2 = (Graphics2D) g;
+
+		final int barMaxWidth = getWidth() - (2 * BAR_MARGIN);
+
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f));
+
+		if (lastEnergy > 0) {
+			int fraction = 100 * lastEnergy / maxEnergy;
+
+			Color color;
 
 			if (fraction > 50) {
-				g.setColor(Color.GREEN);
+				color = Color.GREEN;
 			} else if (fraction > 25) {
-				g.setColor(Color.YELLOW);
+				color = Color.YELLOW;
 			} else {
-				g.setColor(Color.RED);
+				color = Color.RED;
 			}
+			g.setColor(color);
 
-			final int widthLife = ((getWidth() - 5) * lastEnergy) / maxEnergy;
+			final int widthLife = Math.max(Math.min(barMaxWidth * lastEnergy / maxEnergy, barMaxWidth), 0);
 
-			g.fillRect(2, getHeight() - 8, widthLife + 1, 4);
+			g.fillRect(BAR_MARGIN, getHeight() - (2 * BAR_HEIGHT + BAR_MARGIN), widthLife, BAR_HEIGHT);
 		}
-		if (lastScore != 0) {
+		if (lastScore > 0) {
 			g.setColor(Color.BLUE);
-			final int whidthScore = ((getWidth() - 5) * lastScore) / maxScore;
 
-			g.fillRect(2, getHeight() - 4, whidthScore + 1, 2);
+			final int widthScore = Math.max(Math.min(barMaxWidth * lastScore / maxScore, barMaxWidth), 0);
+
+			g.fillRect(BAR_MARGIN, getHeight() - (BAR_HEIGHT + BAR_MARGIN), widthScore, BAR_HEIGHT);
 		}
 	}
 
