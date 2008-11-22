@@ -218,7 +218,7 @@ public final class BulletSnapshot implements java.io.Serializable, XmlSerializab
 			if (color != ExecCommands.defaultBulletColor) {
 				writer.writeAttribute("color", Integer.toHexString(color).toUpperCase());
 			}
-			if (frame!=0) {
+			if (frame != 0) {
 				writer.writeAttribute("frame", frame);
 			}
 			if (isExplosion) {

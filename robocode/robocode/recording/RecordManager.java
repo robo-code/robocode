@@ -332,9 +332,9 @@ public class RecordManager implements IRecordManager {
 				bis = new BufferedInputStream(fis, 1024 * 1024);
 				ois = new ObjectInputStream(bis);
 
-				/*if (format == BattleRecordFormat.XML) {
-					xmlOptions.put("skipDetails", true);
-				}*/
+				/* if (format == BattleRecordFormat.XML) {
+				 xmlOptions.put("skipDetails", true);
+				 }*/
 				for (int i = 0; i < recordInfo.turnsInRounds.length; i++) {
 					for (int j = recordInfo.turnsInRounds[i] - 1; j >= 0; j--) {
 						try {

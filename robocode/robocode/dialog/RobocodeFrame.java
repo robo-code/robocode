@@ -785,7 +785,7 @@ public class RobocodeFrame extends JFrame {
 			isBattleReplay = event.isReplay();
 
 			getStopButton().setEnabled(true);
-			getRestartButton().setEnabled(manager.getBattleManager().getBattleProperties().getSelectedRobots()!=null);
+			getRestartButton().setEnabled(manager.getBattleManager().getBattleProperties().getSelectedRobots() != null);
 			getReplayButton().setEnabled(event.isReplay());
 			getRobocodeMenuBar().getBattleSaveRecordAsMenuItem().setEnabled(false);
 			getRobocodeMenuBar().getBattleExportRecordMenuItem().setEnabled(false);

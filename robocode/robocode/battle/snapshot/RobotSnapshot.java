@@ -200,7 +200,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 * @return the very short name of this robot.
 	 */
 	public String getVeryShortName() {
-		//used for drawign text on battleview
+		// used for drawign text on battleview
 		return veryShortName;
 	}
 
@@ -510,7 +510,6 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 				}
 				writer.endElement();
 			}
-
 
 			robotScoreSnapshot.writeXml(writer, options);
 		}

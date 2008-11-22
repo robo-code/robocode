@@ -113,13 +113,15 @@ public class WindowManager implements IWindowManager {
 	public String showBattleOpenDialog(final String defExt, final String name) {
 		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 
-		chooser.setFileFilter(new FileFilter() {
+		chooser.setFileFilter(
+				new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
 					return true;
 				}
-				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase()) == pathname.getName().length() - defExt.length();
+				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
+						== pathname.getName().length() - defExt.length();
 			}
 
 			@Override
@@ -147,7 +149,8 @@ public class WindowManager implements IWindowManager {
 				if (pathname.isDirectory()) {
 					return true;
 				}
-				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase()) == pathname.getName().length() - defExt.length();
+				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
+						== pathname.getName().length() - defExt.length();
 			}
 
 			@Override
