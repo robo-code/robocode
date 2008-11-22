@@ -26,6 +26,7 @@ package robocode.manager;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.dialog.*;
+import robocode.dialog.RcSplashScreen;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
@@ -279,7 +280,7 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showSplashScreen() {
-		SplashScreen splashScreen = new SplashScreen(manager);
+		RcSplashScreen splashScreen = new RcSplashScreen(manager);
 
 		synchronized (splashScreen) {
 			packCenterShow(splashScreen, true);

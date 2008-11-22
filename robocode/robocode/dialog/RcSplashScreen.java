@@ -35,7 +35,7 @@ import java.awt.image.BufferedImage;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class SplashScreen extends JWindow {
+public class RcSplashScreen extends JWindow {
 
 	private final static Color LABEL_COLOR = Color.WHITE;
 
@@ -49,8 +49,8 @@ public class SplashScreen extends JWindow {
 
 		@Override
 		public void windowClosing(WindowEvent e) {
-			if (e.getSource() == SplashScreen.this) {
-				SplashScreen.this.dispose();
+			if (e.getSource() == RcSplashScreen.this) {
+				RcSplashScreen.this.dispose();
 			}
 		}
 	};
@@ -58,7 +58,7 @@ public class SplashScreen extends JWindow {
 	/**
 	 * SplashScreen constructor
 	 */
-	public SplashScreen(RobocodeManager manager) {
+	public RcSplashScreen(RobocodeManager manager) {
 		super();
 		this.version = manager.getVersionManager().getVersion();
 		initialize();
