@@ -39,7 +39,8 @@ public abstract class _Robot extends _RobotBase {
 	private String gunImageName;
 	private String radarImageName;
 
-	protected _Robot() {}
+	// internal for this package
+	_Robot() {}
 
 	/**
 	 * @return 5 - {@link robocode.Robot#getGunHeat() getGunHeat()}.
