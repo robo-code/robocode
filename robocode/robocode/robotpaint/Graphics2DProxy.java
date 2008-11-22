@@ -935,8 +935,8 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		return (Paint) deepCopy(p);
 	}
 
-	private Color copyOf(Color c) {
-		return deepCopy(c);
+	private Integer copyOf(Color c) {
+		return c.getRGB();
 	}
 
 	private Stroke copyOf(Stroke s) {
@@ -1265,7 +1265,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	private void processSetColor(QueuedCall call, Graphics2D g) {
 		// setColor(Color)
-		g.setColor((Color) call.args[0]);
+		g.setColor(new Color((Integer) call.args[0], true));
 	}
 
 	private void processSetPaintMode(Graphics2D g) {
@@ -1275,7 +1275,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	private void processSetXORMode(QueuedCall call, Graphics2D g) {
 		// setXORMode(Color)
-		g.setXORMode((Color) call.args[0]);
+		g.setXORMode(new Color((Integer) call.args[0], true));
 	}
 
 	private void processSetFont(QueuedCall call, Graphics2D g) {
@@ -1423,14 +1423,14 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	private void processDrawImage3(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, Color, ImageObserver)
-		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Color) call.args[3],
+		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], new Color((Integer) call.args[3], true),
 				(ImageObserver) call.args[4]);
 	}
 
 	private void processDrawImage4(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, int, int, Color, ImageObserver)
 		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (Color) call.args[5], (ImageObserver) call.args[6]);
+				(Integer) call.args[4], new Color((Integer) call.args[5], true), (ImageObserver) call.args[6]);
 	}
 
 	private void processDrawImage5(QueuedCall call, Graphics2D g) {
@@ -1444,7 +1444,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 		// drawImage(Image, int, int, int, int, int, int, int, int, Color, ImageObserver)
 		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
 				(Integer) call.args[4], (Integer) call.args[4], (Integer) call.args[5], (Integer) call.args[6],
-				(Integer) call.args[7], (Color) call.args[8], (ImageObserver) call.args[9]);
+				(Integer) call.args[7], new Color((Integer) call.args[8], true), (ImageObserver) call.args[9]);
 	}
 
 	private void processDraw(QueuedCall call, Graphics2D g) {
@@ -1560,7 +1560,7 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	private void processSetBackground(QueuedCall call, Graphics2D g) {
 		// setBackground(Color)
-		g.setBackground((Color) call.args[0]);
+		g.setBackground(new Color((Integer) call.args[0], true));
 	}
 
 	private void processClip(QueuedCall call, Graphics2D g) {
