@@ -17,6 +17,7 @@ package robocode.battle.snapshot;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
 import robocode.peer.DebugProperty;
+import robocode.peer.ExecCommands;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
@@ -26,6 +27,7 @@ import java.awt.geom.Arc2D;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Dictionary;
 
 
 /**
@@ -91,15 +93,14 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	private double y;
 
 	// The color of the body
-	private int bodyColor;
+	private int bodyColor = ExecCommands.defaultBodyColor;
 	// The color of the gun
-	private int gunColor;
+	private int gunColor = ExecCommands.defaultGunColor;
 	// The color of the radar
-	private int radarColor;
+	private int radarColor = ExecCommands.defaultRadarColor;
 	// The color of the scan arc
-	private int scanColor;
+	private int scanColor = ExecCommands.defaultScanColor;
 	// The color of the bullet
-	// private final Color bulletColor;
 
 	// Flag specifying if this robot is a Droid
 	private boolean isDroid;
@@ -179,11 +180,8 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 * @return the name of the robot.
 	 */
 	public String getName() {
+		// used to identify buttons
 		return name;
-	}
-
-	public int getContestIndex() {
-		return contestIndex;
 	}
 
 	/**
@@ -192,6 +190,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 * @return the very short name of this robot.
 	 */
 	public String getShortName() {
+		// used for text on buttons
 		return shortName;
 	}
 
@@ -201,6 +200,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 * @return the very short name of this robot.
 	 */
 	public String getVeryShortName() {
+		//used for drawign text on battleview
 		return veryShortName;
 	}
 
@@ -211,6 +211,13 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 */
 	public String getTeamName() {
 		return teamName;
+	}
+
+	/**
+	 * @return Returns the index of the robot in whole battle.
+	 */
+	public int getContestIndex() {
+		return contestIndex;
 	}
 
 	/**
@@ -329,15 +336,6 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	public int getScanColor() {
 		return scanColor;
 	}
-
-	/**
-	 * Returns the color of the bullet.
-	 *
-	 * @return the color of the bullet.
-	 */
-	// public Color getBulletColor() {
-	// return deepCopy(bulletColor);
-	// }
 
 	/**
 	 * Returns a flag specifying if this robot is a Droid.
@@ -467,36 +465,54 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 
 	}
 
-	public void writeXml(XmlWriter writer) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("robot"); {
-			writer.writeAttribute("ver", serialVersionUID);
-			writer.writeAttribute("name", name);
-			writer.writeAttribute("sName", shortName);
-			writer.writeAttribute("vsName", veryShortName);
-			writer.writeAttribute("teamName", teamName);
-			writer.writeAttribute("state", state.toString());
+			final Object details = options == null ? null : options.get("skipDetails");
 
+			writer.writeAttribute("vsName", veryShortName);
+			writer.writeAttribute("state", state.toString());
 			writer.writeAttribute("energy", energy);
-			writer.writeAttribute("velocity", velocity);
-			writer.writeAttribute("gunHeat", gunHeat);
+			writer.writeAttribute("x", x);
+			writer.writeAttribute("y", y);
 			writer.writeAttribute("bodyHeading", bodyHeading);
 			writer.writeAttribute("gunHeading", gunHeading);
 			writer.writeAttribute("radarHeading", radarHeading);
-			writer.writeAttribute("x", x);
-			writer.writeAttribute("y", y);
+			writer.writeAttribute("gunHeat", gunHeat);
+			writer.writeAttribute("velocity", velocity);
+			writer.writeAttribute("teamName", teamName);
+			if (details == null) {
+				writer.writeAttribute("name", name);
+				writer.writeAttribute("sName", shortName);
+				if (isDroid) {
+					writer.writeAttribute("isDroid", true);
+				}
+				if (bodyColor != ExecCommands.defaultBodyColor) {
+					writer.writeAttribute("bodyColor", Integer.toHexString(bodyColor).toUpperCase());
+				}
+				if (gunColor != ExecCommands.defaultGunColor) {
+					writer.writeAttribute("gunColor", Integer.toHexString(gunColor).toUpperCase());
+				}
+				if (radarColor != ExecCommands.defaultRadarColor) {
+					writer.writeAttribute("radarColor", Integer.toHexString(radarColor).toUpperCase());
+				}
+				if (scanColor != ExecCommands.defaultScanColor) {
+					writer.writeAttribute("scanColor", Integer.toHexString(scanColor).toUpperCase());
+				}
+			}
+			writer.writeAttribute("ver", serialVersionUID);
+			writer.writeAttribute("out", outputStreamSnapshot);
 
 			if (debugProperties != null) {
 				writer.startElement("debugProperties"); {
 					for (DebugProperty prop : debugProperties) {
-						prop.writeXml(writer);
+						prop.writeXml(writer, options);
 					}
 				}
 				writer.endElement();
 			}
 
-			writer.writeAttribute("out", outputStreamSnapshot);
 
-			robotScoreSnapshot.writeXml(writer);
+			robotScoreSnapshot.writeXml(writer, options);
 		}
 		writer.endElement();
 
@@ -534,6 +550,36 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 				reader.expect("state", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.state = RobotState.valueOf(value);
+					}
+				});
+
+				reader.expect("isDroid", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.isDroid = Boolean.valueOf(value);
+					}
+				});
+
+				reader.expect("bodyColor", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.bodyColor = (Long.valueOf(value.toUpperCase(), 16).intValue());
+					}
+				});
+
+				reader.expect("gunColor", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.gunColor = Long.valueOf(value.toUpperCase(), 16).intValue();
+					}
+				});
+
+				reader.expect("radarColor", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.radarColor = Long.valueOf(value.toUpperCase(), 16).intValue();
+					}
+				});
+
+				reader.expect("scanColor", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.scanColor = Long.valueOf(value.toUpperCase(), 16).intValue();
 					}
 				});
 

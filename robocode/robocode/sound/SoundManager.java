@@ -193,7 +193,7 @@ public class SoundManager implements ISoundManager {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
-			pan = calcPan((float) bp.getX(), battleFieldWidth);
+			pan = calcPan((float) bp.getPaintX(), battleFieldWidth);
 		}
 		switch (bp.getState()) {
 		case FIRED:

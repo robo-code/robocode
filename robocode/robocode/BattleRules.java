@@ -21,6 +21,7 @@ import robocode.util.XmlWriter;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Dictionary;
 
 
 /**
@@ -95,7 +96,7 @@ public final class BattleRules implements Serializable, XmlSerializable {
 
 	public BattleRules() {}
 
-	public void writeXml(XmlWriter writer) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("rules"); {
 			writer.writeAttribute("battlefieldWidth", battlefieldWidth);
 			writer.writeAttribute("battlefieldHeight", battlefieldHeight);

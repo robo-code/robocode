@@ -200,7 +200,7 @@ public class BattleDialog extends JFrame {
 				final XmlWriter xmlWriter = new XmlWriter(writer, true);
 
 				try {
-					lastSnapshot.writeXml(xmlWriter);
+					lastSnapshot.writeXml(xmlWriter, null);
 					writer.close();
 				} catch (IOException e) {
 					Logger.logError(e);

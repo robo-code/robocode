@@ -17,11 +17,13 @@ package robocode.battle.snapshot;
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;
 import robocode.peer.ExplosionPeer;
+import robocode.peer.ExecCommands;
 import robocode.util.XmlReader;
 import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
 
 import java.io.IOException;
+import java.util.Dictionary;
 
 
 /**
@@ -68,7 +70,7 @@ public final class BulletSnapshot implements java.io.Serializable, XmlSerializab
 	private double paintY;
 
 	// The color of the bullet
-	private int color;
+	private int color = ExecCommands.defaultBulletColor;
 
 	// The current frame number to display
 	private int frame;
@@ -207,19 +209,23 @@ public final class BulletSnapshot implements java.io.Serializable, XmlSerializab
 
 	public BulletSnapshot() {}
 
-	public void writeXml(XmlWriter writer) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("bullet"); {
-			writer.writeAttribute("ver", serialVersionUID);
 			writer.writeAttribute("state", state.toString());
 			writer.writeAttribute("power", power);
-			writer.writeAttribute("color", color);
-			writer.writeAttribute("x", x);
-			writer.writeAttribute("y", y);
-			writer.writeAttribute("frame", frame);
-			writer.writeAttribute("isExplosion", isExplosion);
+			writer.writeAttribute("x", paintX);
+			writer.writeAttribute("y", paintY);
+			if (color != ExecCommands.defaultBulletColor) {
+				writer.writeAttribute("color", Integer.toHexString(color).toUpperCase());
+			}
+			if (frame!=0) {
+				writer.writeAttribute("frame", frame);
+			}
 			if (isExplosion) {
+				writer.writeAttribute("isExplosion", true);
 				writer.writeAttribute("explosion", explosionImageIndex);
 			}
+			writer.writeAttribute("ver", serialVersionUID);
 		}
 		writer.endElement();
 	}
@@ -244,18 +250,20 @@ public final class BulletSnapshot implements java.io.Serializable, XmlSerializab
 				reader.expect("x", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.x = Double.parseDouble(value);
+						snapshot.paintX = snapshot.x;
 					}
 				});
 
 				reader.expect("y", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.y = Double.parseDouble(value);
+						snapshot.paintY = snapshot.y;
 					}
 				});
 
 				reader.expect("color", new XmlReader.Attribute() {
 					public void read(String value) {
-						snapshot.color = Integer.parseInt(value);
+						snapshot.color = Long.valueOf(value.toUpperCase(), 16).intValue();
 					}
 				});
 

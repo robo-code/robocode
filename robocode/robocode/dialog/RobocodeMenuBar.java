@@ -407,8 +407,8 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleMenu.add(getBattleSaveAsMenuItem());
 			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleOpenRecordMenuItem());
-			battleMenu.add(getBattleImportRecordMenuItem());
 			battleMenu.add(getBattleSaveRecordAsMenuItem());
+			battleMenu.add(getBattleImportRecordMenuItem());
 			battleMenu.add(getBattleExportRecordMenuItem());
 			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleExitMenuItem());

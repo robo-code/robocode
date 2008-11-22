@@ -119,7 +119,7 @@ public class WindowManager implements IWindowManager {
 				if (pathname.isDirectory()) {
 					return true;
 				}
-				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase()) > 0;
+				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase()) == pathname.getName().length() - defExt.length();
 			}
 
 			@Override
@@ -145,16 +145,9 @@ public class WindowManager implements IWindowManager {
 			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isDirectory()) {
-					return false;
+					return true;
 				}
-				String fn = pathname.getName();
-				int idx = fn.lastIndexOf('.');
-				String extension = "";
-
-				if (idx >= 0) {
-					extension = fn.substring(idx);
-				}
-				return extension.equalsIgnoreCase(defExt);
+				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase()) == pathname.getName().length() - defExt.length();
 			}
 
 			@Override

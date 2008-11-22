@@ -498,25 +498,25 @@ public class BattleManager implements IBattleManager {
 	}
 
 	public synchronized void killRobot(int robotIndex) {
-		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
+		if (battle != null && battle.isRunning() && battle instanceof Battle) {
 			((Battle) battle).killRobot(robotIndex);
 		}
 	}
 
 	public synchronized void setPaintEnabled(int robotIndex, boolean enable) {
-		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
+		if (battle != null && battle.isRunning() && battle instanceof Battle) {
 			((Battle) battle).setPaintEnabled(robotIndex, enable);
 		}
 	}
 
 	public synchronized void setSGPaintEnabled(int robotIndex, boolean enable) {
-		if (battle != null && battle.isRunning() && Battle.class.isAssignableFrom(battle.getClass())) {
+		if (battle != null && battle.isRunning() && battle instanceof Battle) {
 			((Battle) battle).setSGPaintEnabled(robotIndex, enable);
 		}
 	}
 
 	public synchronized void sendInteractiveEvent(Event event) {
-		if (battle != null && battle.isRunning() && !isPaused() && Battle.class.isAssignableFrom(battle.getClass())) {
+		if (battle != null && battle.isRunning() && !isPaused() && battle instanceof Battle) {
 			((Battle) battle).sendInteractiveEvent(event);
 		}
 	}

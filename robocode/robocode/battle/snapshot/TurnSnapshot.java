@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Dictionary;
 
 
 /**
@@ -213,7 +214,7 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 		return this.round + "/" + turn + " (" + this.robots.size() + ")";
 	}
 
-	public void writeXml(XmlWriter writer) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("turn"); {
 			writer.writeAttribute("round", round);
 			writer.writeAttribute("turn", turn);
@@ -221,14 +222,14 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 
 			writer.startElement("robots"); {
 				for (RobotSnapshot r : robots) {
-					r.writeXml(writer);
+					r.writeXml(writer, options);
 				}
 			}
 			writer.endElement();
 
 			writer.startElement("bullets"); {
 				for (BulletSnapshot b : bullets) {
-					b.writeXml(writer);
+					b.writeXml(writer, options);
 				}
 			}
 			writer.endElement();

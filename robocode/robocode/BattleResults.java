@@ -19,6 +19,7 @@ import robocode.util.XmlSerializable;
 import robocode.util.XmlWriter;
 
 import java.io.IOException;
+import java.util.Dictionary;
 
 
 /**
@@ -201,7 +202,7 @@ public class BattleResults implements java.io.Serializable, XmlSerializable, Com
 
 	public BattleResults() {}
 
-	public void writeXml(XmlWriter writer) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("result"); {
 			writer.writeAttribute("teamLeaderName", teamLeaderName);
 			writer.writeAttribute("rank", rank);

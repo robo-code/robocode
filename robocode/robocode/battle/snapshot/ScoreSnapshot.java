@@ -21,6 +21,7 @@ import robocode.util.XmlWriter;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Dictionary;
 
 
 /**
@@ -174,7 +175,7 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 
 	public ScoreSnapshot() {}
 
-	public void writeXml(XmlWriter writer) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("score"); {
 			writer.writeAttribute("name", name);
 			writer.writeAttribute("totalScore", totalScore);

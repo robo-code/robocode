@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Dictionary;
 
 
 /**
@@ -37,13 +38,13 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 	public Integer[] turnsInRounds;
 	public List<BattleResults> results;
 
-	public void writeXml(XmlWriter writer) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("recordInfo"); {
 			writer.writeAttribute("robotCount", robotCount);
 			writer.writeAttribute("roundsCount", roundsCount);
 			writer.writeAttribute("ver", serialVersionUID);
 
-			battleRules.writeXml(writer);
+			battleRules.writeXml(writer, options);
 
 			writer.startElement("rounds"); {
 				for (int n : turnsInRounds) {
@@ -57,7 +58,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 
 			writer.startElement("results"); {
 				for (BattleResults result : results) {
-					result.writeXml(writer);
+					result.writeXml(writer, options);
 				}
 			}
 			writer.endElement();
@@ -134,7 +135,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 		private String name;
 		public int intValue;
 
-		public void writeXml(XmlWriter writer) throws IOException {}
+		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect(name, new XmlReader.Element() {

@@ -18,6 +18,7 @@ import robocode.util.XmlReader;
 
 import java.io.Serializable;
 import java.io.IOException;
+import java.util.Dictionary;
 
 
 /**
@@ -36,9 +37,8 @@ public class DebugProperty implements Serializable, XmlSerializable {
 	public String key;
 	public String value;
 
-	public void writeXml(XmlWriter writer) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("debug"); {
-			writer.writeAttribute("ver", serialVersionUID);
 			writer.writeAttribute("key", key);
 			writer.writeAttribute("value", value);
 		}

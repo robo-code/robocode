@@ -28,6 +28,8 @@ import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.List;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.nio.charset.Charset;
 
 
@@ -245,7 +247,7 @@ public class RecordManager implements IRecordManager {
 		public RecordRoot me;
 		public BattleRecordInfo recordInfo;
 
-		public void writeXml(XmlWriter writer) throws IOException {}
+		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect("record", new XmlReader.Element() {
@@ -294,6 +296,7 @@ public class RecordManager implements IRecordManager {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		ObjectInputStream ois = null;
+		Hashtable<String, Object> xmlOptions = null;
 
 		try {
 			fos = new FileOutputStream(recordFilename);
@@ -315,11 +318,12 @@ public class RecordManager implements IRecordManager {
 			if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
 				oos.writeObject(recordInfo);
 			} else if (format == BattleRecordFormat.XML) {
+				xmlOptions = new Hashtable<String, Object>();
 				xwr.startDocument();
 				xwr.startElement("record");
 				xwr.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 				xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecord.xsd");
-				recordInfo.writeXml(xwr);
+				recordInfo.writeXml(xwr, xmlOptions);
 				xwr.startElement("turns");
 			}
 
@@ -328,6 +332,9 @@ public class RecordManager implements IRecordManager {
 				bis = new BufferedInputStream(fis, 1024 * 1024);
 				ois = new ObjectInputStream(bis);
 
+				/*if (format == BattleRecordFormat.XML) {
+					xmlOptions.put("skipDetails", true);
+				}*/
 				for (int i = 0; i < recordInfo.turnsInRounds.length; i++) {
 					for (int j = recordInfo.turnsInRounds[i] - 1; j >= 0; j--) {
 						try {
@@ -336,7 +343,7 @@ public class RecordManager implements IRecordManager {
 							if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
 								oos.writeObject(turn);
 							} else if (format == BattleRecordFormat.XML) {
-								turn.writeXml(xwr);
+								turn.writeXml(xwr, null);
 							}
 						} catch (ClassNotFoundException e) {
 							logError(e);
