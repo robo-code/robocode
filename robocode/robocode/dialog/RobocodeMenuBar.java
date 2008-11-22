@@ -509,7 +509,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		if (battleImportRecordMenuItem == null) {
 			battleImportRecordMenuItem = new JMenuItem();
 			battleImportRecordMenuItem.setText("Import XML Record");
-			battleImportRecordMenuItem.setMnemonic('i');
+			battleImportRecordMenuItem.setMnemonic('I');
 			battleImportRecordMenuItem.setAccelerator(
 					KeyStroke.getKeyStroke(KeyEvent.VK_I, MENU_SHORTCUT_KEY_MASK, false));
 			battleImportRecordMenuItem.addActionListener(eventHandler);
@@ -551,11 +551,10 @@ public class RobocodeMenuBar extends JMenuBar {
 	public JMenuItem getBattleExportRecordMenuItem() {
 		if (battleExportRecordMenuItem == null) {
 			battleExportRecordMenuItem = new JMenuItem();
-			battleExportRecordMenuItem.setText("Export XLM Record");
-			battleExportRecordMenuItem.setMnemonic('X');
-			battleExportRecordMenuItem.setDisplayedMnemonicIndex(5);
+			battleExportRecordMenuItem.setText("Export XML Record");
+			battleExportRecordMenuItem.setMnemonic('E');
 			battleExportRecordMenuItem.setAccelerator(
-					KeyStroke.getKeyStroke(KeyEvent.VK_X, MENU_SHORTCUT_KEY_MASK, false));
+					KeyStroke.getKeyStroke(KeyEvent.VK_E, MENU_SHORTCUT_KEY_MASK, false));
 			battleExportRecordMenuItem.setEnabled(false);
 			battleExportRecordMenuItem.addActionListener(eventHandler);
 
