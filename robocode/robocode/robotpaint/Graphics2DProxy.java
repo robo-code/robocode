@@ -1423,8 +1423,8 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 
 	private void processDrawImage3(QueuedCall call, Graphics2D g) {
 		// drawImage(Image, int, int, Color, ImageObserver)
-		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], new Color((Integer) call.args[3], true),
-				(ImageObserver) call.args[4]);
+		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
+				new Color((Integer) call.args[3], true), (ImageObserver) call.args[4]);
 	}
 
 	private void processDrawImage4(QueuedCall call, Graphics2D g) {

@@ -69,7 +69,6 @@ public class TestAwtAttack extends RobotTestBed {
 		javax.swing.SwingUtilities.invokeLater(doHack);
 
 		frame.setVisible(false);
-		frame.dispose();
 		Assert.assertFalse(messagedBreakthru);
 		Assert.assertTrue(messagedAttack);
 	}
