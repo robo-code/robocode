@@ -403,10 +403,10 @@ public class RecordManager implements IRecordManager {
 
 	public void writeTurn(TurnSnapshot turn, int round, int time) {
 		try {
-			recordInfo.turnsInRounds[round]++;
 			if (time != recordInfo.turnsInRounds[round]) {
 				throw new Error("Something rotten");
 			}
+			recordInfo.turnsInRounds[round]++;
 			recordInfo.roundsCount = round + 1;
 			objectWriteStream.writeObject(turn);
 		} catch (IOException e) {

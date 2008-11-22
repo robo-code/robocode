@@ -101,7 +101,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	 */
 	private JCheckBox getEnableReplayRecordingCheckBox() {
 		if (enableReplayRecordingCheckBox == null) {
-			enableReplayRecordingCheckBox = new JCheckBox("Enable replay recording (uses memory)");
+			enableReplayRecordingCheckBox = new JCheckBox("Enable replay recording (uses memory and disk space)");
 			enableReplayRecordingCheckBox.setMnemonic('E');
 			enableReplayRecordingCheckBox.setDisplayedMnemonicIndex(0);
 		}
