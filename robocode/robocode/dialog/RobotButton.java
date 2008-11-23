@@ -26,6 +26,7 @@ import robocode.battle.events.BattleEndedEvent;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.ScoreSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.BattleResults;
 
 import javax.swing.*;
@@ -95,13 +96,11 @@ public class RobotButton extends JButton implements ActionListener {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f));
 
 		if (lastEnergy > 0) {
-			int fraction = 100 * lastEnergy / maxEnergy;
-
 			Color color;
 
-			if (fraction > 50) {
+			if (lastEnergy > 50) {
 				color = Color.GREEN;
-			} else if (fraction > 25) {
+			} else if (lastEnergy > 25) {
 				color = Color.YELLOW;
 			} else {
 				color = Color.RED;
@@ -175,17 +174,31 @@ public class RobotButton extends JButton implements ActionListener {
 			if (turn == null) {
 				return;
 			}
-			final int newEnergy = (int) turn.getRobots().get(robotIndex).getEnergy();
+			final java.util.List<RobotSnapshot> robots = turn.getRobots();
 			final java.util.List<ScoreSnapshot> scoreSnapshotList = event.getTurnSnapshot().getTeamScoresStable();
+
+			maxEnergy = 0;
+			for (RobotSnapshot robot : robots) {
+				if (maxEnergy < robot.getEnergy()) {
+					maxEnergy = (int) robot.getEnergy();
+				}
+			}
+			if (maxEnergy == 0) {
+				maxEnergy = 1;
+			}
 
 			maxScore = 0;
 			for (ScoreSnapshot team : scoreSnapshotList) {
-				maxScore += team.getCurrentScore();
+				if (maxScore < team.getCurrentScore()) {
+					maxScore = (int) team.getCurrentScore();
+				}
 			}
 			if (maxScore == 0) {
 				maxScore = 1;
 			}
+
 			final int newScore = (int) scoreSnapshotList.get(contestIndex).getCurrentScore();
+			final int newEnergy = (int) robots.get(robotIndex).getEnergy();
 			boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
 
 			lastEnergy = newEnergy;
@@ -198,7 +211,9 @@ public class RobotButton extends JButton implements ActionListener {
 		public void onBattleCompleted(final BattleCompletedEvent event) {
 			maxScore = 0;
 			for (BattleResults team : event.getResultsStable()) {
-				maxScore += team.getScore();
+				if (maxScore < team.getScore()) {
+					maxScore = team.getScore();
+				}
 			}
 			if (maxScore == 0) {
 				maxScore = 1;

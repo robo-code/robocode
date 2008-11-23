@@ -33,6 +33,7 @@ package robocode.dialog;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.snapshot.ScoreSnapshot;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;
@@ -809,10 +810,21 @@ public class RobocodeFrame extends JFrame {
 				final java.util.List<RobotSnapshot> robots = event.getTurnSnapshot().getRobots();
 
 				dialogManager.trim(robots);
+
+				int maxEnergy = 0;
+
+				for (RobotSnapshot robot : robots) {
+					if (maxEnergy < robot.getEnergy()) {
+						maxEnergy = (int) robot.getEnergy();
+					}
+				}
+				if (maxEnergy == 0) {
+					maxEnergy = 1;
+				}
 				for (int index = 0; index < robots.size(); index++) {
 					final RobotSnapshot robot = robots.get(index);
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-					final RobotButton button = new RobotButton(manager, robot.getName(), (int) robot.getEnergy(), index,
+					final RobotButton button = new RobotButton(manager, robot.getName(), maxEnergy, index,
 							robot.getContestIndex(), attach);
 
 					button.setText(robot.getShortName());
