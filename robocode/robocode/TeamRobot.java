@@ -143,9 +143,6 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 * <<<<<<< .mine
 	 *
 	 * @param name	the name of the intended recipient of the message
-	 *                =======
-	 * @param name	the name of the intended recipient of the message
-	 *                >>>>>>> .r2269
 	 * @param message the message to send
 	 * @throws IOException if the message could not be sent
 	 * @see #isTeammate(String)
