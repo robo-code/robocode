@@ -124,6 +124,8 @@ public class XmlWriter {
 				result.append("&amp;");
 			} else if (character == '\"') {
 				result.append("&quot;");
+			} else if (character == '\n') {
+				result.append("&#xA;");
 			} else {
 				// the char is not a special one
 				// add it to the result as is

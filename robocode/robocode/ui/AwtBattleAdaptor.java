@@ -74,14 +74,14 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 	@Override
 	public void onBattleStarted(BattleStartedEvent event) {
-		repaintTask(true);
+		repaintTask(true, false);
 		timerTask.start();
 	}
 
 	@Override
 	public void onBattleEnded(BattleEndedEvent event) {
 		timerTask.stop();
-		repaintTask(true);
+		repaintTask(true, true);
 	}
 
 	@Override
@@ -98,12 +98,12 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 	@Override
 	public void onRoundStarted(RoundStartedEvent event) {
-		repaintTask(true);
+		repaintTask(true, false);
 	}
 
 	@Override
 	public void onRoundEnded(RoundEndedEvent event) {
-		repaintTask(true);
+		repaintTask(true, true);
 	}
 
 	public TurnSnapshot getLastSnapshot() {
@@ -112,7 +112,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 	private TurnSnapshot lastSnapshot;
 
-	private void repaintTask(boolean forceRepaint) {
+	private void repaintTask(boolean forceRepaint, boolean readoutText) {
 		try {
 
 			TurnSnapshot current = snapshot.get();
@@ -125,14 +125,16 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 				if (lastSnapshot != current || !skipSameFrames || forceRepaint) {
 					lastSnapshot = current;
 
-					java.util.List<RobotSnapshot> robots = lastSnapshot.getRobots();
+					if (readoutText) {
+						synchronized (snapshot) {
+							java.util.List<RobotSnapshot> robots = lastSnapshot.getRobots();
 
-					synchronized (snapshot) {
-						for (int i = 0; i < robots.size(); i++) {
-							RobotSnapshot robot = robots.get(i);
+							for (int i = 0; i < robots.size(); i++) {
+								RobotSnapshot robot = robots.get(i);
 
-							robot.updateOutputStreamSnapshot(outCache[i].toString());
-							outCache[i].setLength(0);
+								robot.updateOutputStreamSnapshot(outCache[i].toString());
+								outCache[i].setLength(0);
+							}
 						}
 					}
 
@@ -173,7 +175,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 	private class TimerTask implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			repaintTask(false);
+			repaintTask(false, true);
 		}
 	}
 

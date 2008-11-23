@@ -500,7 +500,9 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 				}
 			}
 			writer.writeAttribute("ver", serialVersionUID);
-			writer.writeAttribute("out", outputStreamSnapshot);
+			if (outputStreamSnapshot != null && outputStreamSnapshot.length() != 0) {
+				writer.writeAttribute("out", outputStreamSnapshot);
+			}
 
 			if (debugProperties != null) {
 				writer.startElement("debugProperties"); {
@@ -632,7 +634,9 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 
 				reader.expect("out", new XmlReader.Attribute() {
 					public void read(String value) {
-						snapshot.outputStreamSnapshot = value;
+						if (value != null && value.length() != 0) {
+							snapshot.outputStreamSnapshot = value;
+						}
 					}
 				});
 
