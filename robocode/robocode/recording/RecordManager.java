@@ -336,26 +336,34 @@ public class RecordManager implements IRecordManager {
 				 xmlOptions.put("skipDetails", true);
 				 }*/
 				for (int i = 0; i < recordInfo.turnsInRounds.length; i++) {
-					for (int j = recordInfo.turnsInRounds[i] - 1; j >= 0; j--) {
-						try {
-							TurnSnapshot turn = (TurnSnapshot) ois.readObject();
+					if (recordInfo.turnsInRounds[i] > 0) {
+						for (int j = 0; j <= recordInfo.turnsInRounds[i] - 1; j++) {
+							try {
+								TurnSnapshot turn = (TurnSnapshot) ois.readObject();
 
-							if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
-								oos.writeObject(turn);
-							} else if (format == BattleRecordFormat.XML) {
-								turn.writeXml(xwr, null);
+								if (j != turn.getTurn()) {
+									throw new Error("Something rotten");
+								}
+
+								if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
+									oos.writeObject(turn);
+								} else if (format == BattleRecordFormat.XML) {
+									turn.writeXml(xwr, null);
+								}
+							} catch (ClassNotFoundException e) {
+								logError(e);
 							}
-						} catch (ClassNotFoundException e) {
-							logError(e);
 						}
+						if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
+							oos.flush();
+						} else if (format == BattleRecordFormat.XML) {
+							osw.flush();
+						}
+						bos.flush();
+						fos.flush();
+					} else {
+						int l = 0;
 					}
-					if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
-						oos.flush();
-					} else if (format == BattleRecordFormat.XML) {
-						osw.flush();
-					}
-					bos.flush();
-					fos.flush();
 				}
 				if (format == BattleRecordFormat.XML) {
 					xwr.endElement(); // turns

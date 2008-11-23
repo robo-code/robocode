@@ -62,8 +62,8 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 						result.writeXml(writer, options);
 					}
 				}
+				writer.endElement();
 			}
-			writer.endElement();
 		}
 		writer.endElement();
 	}
