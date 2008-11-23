@@ -321,6 +321,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		isPaintRecorded = enabled;
 	}
 
+	public boolean isPaintRecorded() {
+		return isPaintRecorded;
+	}
+
 	public boolean isPaintEnabled() {
 		return isPaintEnabled;
 	}

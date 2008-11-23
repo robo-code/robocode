@@ -23,7 +23,8 @@ o Changes
      indifidual properties. Code here is much more readable now. This is big change.
   -- most synchronization is now interlocked
   -- event manager, priority and dispatch of events refactored
-  -- methods setPriority() and setTime() on Event classes are no longer part of RobotAPI
+  -- methods setPriority() and setTime() on Event classes are no longer part of RobotAPI.
+     Events are final classes now.
   -- more unit tests added
   -- Graphics2DProxy optimized.
   -- interactive robots are better detected to not waste time of non-interactive robots.

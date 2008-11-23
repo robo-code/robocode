@@ -708,7 +708,7 @@ public final class Battle extends BaseBattle {
 				robotPeer.waitWakeup();
 
 				if (robotPeer.isAlive()) {
-					if (isDebugging || robotPeer.isPaintEnabled()) {
+					if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
 						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
 					} else {
 						robotPeer.waitSleeping(millisWait, microWait);
@@ -729,7 +729,7 @@ public final class Battle extends BaseBattle {
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning() && robotPeer.isAlive()) {
-				if (isDebugging || robotPeer.isPaintEnabled()) {
+				if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
 					robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
 				} else {
 					robotPeer.waitSleeping(millisWait, microWait);
