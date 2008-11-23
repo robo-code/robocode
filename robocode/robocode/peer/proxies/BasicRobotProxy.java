@@ -291,6 +291,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	public Graphics2D getGraphics() {
 		getCall();
+		commands.setTryingToPaint(true);
 		return getGraphicsImpl();
 	}
 
@@ -308,7 +309,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	}
 
 	public Graphics2D getGraphicsImpl() {
-		commands.setTryingToPaint(true);
 		return graphicsProxy;
 	}
 
