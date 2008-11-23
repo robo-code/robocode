@@ -234,7 +234,9 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		if (manager.getProperties().getOptionsCommonEnableReplayRecording()) {
+		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording();
+
+		if (recording) {
 			manager.getRecordManager().attachRecorder(battleEventDispatcher);
 		} else {
 			manager.getRecordManager().detachRecorder();
@@ -251,6 +253,10 @@ public class BattleManager implements IBattleManager {
 		}
 
 		Battle realBattle = new Battle(battlingRobotsList, battleProperties, manager, battleEventDispatcher, isPaused());
+
+		if (recording) {
+			realBattle.setAllPaintRecorded(true);
+		}
 
 		battle = realBattle;
 
@@ -504,8 +510,8 @@ public class BattleManager implements IBattleManager {
 	}
 
 	public synchronized void setPaintEnabled(int robotIndex, boolean enable) {
-		if (battle != null && battle.isRunning() && battle instanceof Battle) {
-			((Battle) battle).setPaintEnabled(robotIndex, enable);
+		if (battle != null && battle.isRunning()) {
+			battle.setPaintEnabled(robotIndex, enable);
 		}
 	}
 

@@ -162,7 +162,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private boolean turnedRadarWithGun; // last round
 
 	private boolean isIORobot;
-	private boolean paintEnabled;
+	private boolean isPaintRecorded;
+	private boolean isPaintEnabled;
 	private boolean sgPaintEnabled;
 
 	// waiting for next tick
@@ -313,11 +314,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// -------------------
 
 	public void setPaintEnabled(boolean enabled) {
-		paintEnabled = enabled;
+		isPaintEnabled = enabled;
+	}
+
+	public void setPaintRecorded(boolean enabled) {
+		isPaintRecorded = enabled;
 	}
 
 	public boolean isPaintEnabled() {
-		return paintEnabled;
+		return isPaintEnabled;
 	}
 
 	public void setSGPaintEnabled(boolean enabled) {
@@ -491,7 +496,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
 
 		return new ExecResults(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(),
-				getHalt(), shouldWait, isPaintEnabled());
+				getHalt(), shouldWait, isPaintEnabled() || isPaintRecorded);
 	}
 
 	public final ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
@@ -1527,7 +1532,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (!isDead()) {
 			addEvent(new StatusEvent(stat));
 			// Add paint event, if robot is a paint robot and its painting is enabled
-			if (isPaintRobot() && isPaintEnabled() && currentTurn > 0) {
+			if (isPaintRobot() && (isPaintEnabled() || isPaintRecorded) && currentTurn > 0) {
 				addEvent(new PaintEvent());
 			}
 		}

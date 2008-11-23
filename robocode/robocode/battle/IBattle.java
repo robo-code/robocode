@@ -31,4 +31,6 @@ public interface IBattle extends Runnable {
 	void waitTillStarted();
 
 	void waitTillOver();
+
+	void setPaintEnabled(int robotIndex, boolean enable);
 }

@@ -9,7 +9,9 @@ o Bugfixes
   -- exception on robot's condition doesn't break further processing now
 
 o New feature
-  -- battle recording and replay. Saving to binary and xml file.
+  -- battle recording and replay. Saving to binary and xml file. Robot painting and debug properties 
+     are recorded, but robot painting is not exported to xml. Recording is slowing down the game 
+     and eats memory and disk space. You need to enable it in options.
   -- new command line option -replay for replaying a battle record
   -- new dialog for battle console and turn snapshot
   -- robot dialog have new tab-page with robot properties

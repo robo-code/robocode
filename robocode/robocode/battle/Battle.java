@@ -865,6 +865,10 @@ public final class Battle extends BaseBattle {
 		sendCommand(new EnableRobotPaintCommand(robotIndex, enable));
 	}
 
+	public void setAllPaintRecorded(boolean enable) {
+		sendCommand(new AllRobotsPaintRecordCommand(enable));
+	}
+
 	public void setSGPaintEnabled(int robotIndex, boolean enable) {
 		sendCommand(new EnableRobotSGPaintCommand(robotIndex, enable));
 	}
@@ -873,15 +877,6 @@ public final class Battle extends BaseBattle {
 		sendCommand(new SendInteractiveEventCommand(e));
 	}
 
-	private class RobotCommand extends Command {
-		final int robotIndex;
-
-		RobotCommand(int robotIndex) {
-			this.robotIndex = robotIndex;
-		}
-	}
-
-
 	private class KillRobotCommand extends RobotCommand {
 		KillRobotCommand(int robotIndex) {
 			super(robotIndex);
@@ -889,6 +884,21 @@ public final class Battle extends BaseBattle {
 
 		public void execute() {
 			robots.get(robotIndex).kill();
+		}
+	}
+
+
+	private class AllRobotsPaintRecordCommand extends Command {
+		final boolean enablePaintRecord;
+
+		AllRobotsPaintRecordCommand(boolean enablePaintRecord) {
+			this.enablePaintRecord = enablePaintRecord;
+		}
+
+		public void execute() {
+			for (RobotPeer robot : robots) {
+				robot.setPaintRecorded(enablePaintRecord);
+			}
 		}
 	}
 

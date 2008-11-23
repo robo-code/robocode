@@ -368,6 +368,15 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	}
 
 	/**
+	 * Updates a flag specifying if robot's (onPaint) painting is enabled for
+	 * the robot.
+	 * @param value new value
+	 */
+	public void overridePaintEnabled(boolean value) {
+		isPaintEnabled = value;
+	}
+
+	/**
 	 * Returns a flag specifying if RobocodeSG painting is enabled for the
 	 * robot.
 	 *

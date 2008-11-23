@@ -15,7 +15,10 @@ package robocode.recording;
 import robocode.battle.BaseBattle;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.snapshot.RobotSnapshot;
 import robocode.manager.RobocodeManager;
+
+import java.util.List;
 
 
 /**
@@ -25,6 +28,7 @@ import robocode.manager.RobocodeManager;
 public final class BattlePlayer extends BaseBattle {
 
 	private RecordManager recordManager;
+	private boolean[] paint;
 
 	public BattlePlayer(RobocodeManager manager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) {
 		super(manager, eventDispatcher, false);
@@ -36,7 +40,7 @@ public final class BattlePlayer extends BaseBattle {
 		super.initializeBattle();
 
 		battleRules = recordManager.recordInfo.battleRules;
-
+		paint = new boolean[recordManager.recordInfo.robotCount];
 		eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, recordManager.recordInfo.robotCount, true));
 		if (isPaused()) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
@@ -88,6 +92,13 @@ public final class BattlePlayer extends BaseBattle {
 		final TurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
 
 		if (snapshot != null) {
+			final List<RobotSnapshot> robots = snapshot.getRobots();
+
+			for (int i = 0; i < robots.size(); i++) {
+				RobotSnapshot robot = robots.get(i);
+
+				robot.overridePaintEnabled(paint[i]);
+			}
 			eventDispatcher.onTurnEnded(new TurnEndedEvent(snapshot));
 		}
 
@@ -107,4 +118,20 @@ public final class BattlePlayer extends BaseBattle {
 		return (isAborted() || end);
 	}
 
+	public void setPaintEnabled(int robotIndex, boolean enable) {
+		sendCommand(new EnableRobotPaintCommand(robotIndex, enable));
+	}
+
+	private class EnableRobotPaintCommand extends RobotCommand {
+		final boolean enablePaint;
+
+		EnableRobotPaintCommand(int robotIndex, boolean enablePaint) {
+			super(robotIndex);
+			this.enablePaint = enablePaint;
+		}
+
+		public void execute() {
+			paint[robotIndex] = enablePaint;
+		}
+	}
 }

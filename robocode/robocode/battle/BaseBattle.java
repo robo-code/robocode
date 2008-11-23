@@ -463,6 +463,15 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		}
 	}
 
+
+	protected class RobotCommand extends Command {
+		protected final int robotIndex;
+
+		protected RobotCommand(int robotIndex) {
+			this.robotIndex = robotIndex;
+		}
+	}
+
 	//
 	// Utility
 	//
