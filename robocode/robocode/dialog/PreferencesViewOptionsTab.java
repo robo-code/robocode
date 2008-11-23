@@ -440,7 +440,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		if (visibleRobotNameCheckBox == null) {
 			visibleRobotNameCheckBox = new JCheckBox("Visible Robot Name");
 			visibleRobotNameCheckBox.setMnemonic('V');
-			visibleRobotNameCheckBox.setDisplayedMnemonicIndex(0);
 		}
 		return visibleRobotNameCheckBox;
 	}

@@ -202,7 +202,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			addButton = new JButton();
 			addButton.setText("Add ->");
 			addButton.setMnemonic('A');
-			addButton.setDisplayedMnemonicIndex(0);
 			addButton.addActionListener(eventHandler);
 		}
 		return addButton;

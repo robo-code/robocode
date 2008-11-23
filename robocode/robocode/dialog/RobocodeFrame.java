@@ -317,7 +317,6 @@ public class RobocodeFrame extends JFrame {
 		if (pauseButton == null) {
 			pauseButton = new JToggleButton("Pause/Debug");
 			pauseButton.setMnemonic('P');
-			pauseButton.setDisplayedMnemonicIndex(0);
 			pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			pauseButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			pauseButton.addActionListener(eventHandler);
@@ -334,7 +333,6 @@ public class RobocodeFrame extends JFrame {
 		if (nextTurnButton == null) {
 			nextTurnButton = new JButton("Next Turn");
 			nextTurnButton.setMnemonic('N');
-			nextTurnButton.setDisplayedMnemonicIndex(0);
 			nextTurnButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			nextTurnButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			nextTurnButton.addActionListener(eventHandler);
@@ -353,7 +351,6 @@ public class RobocodeFrame extends JFrame {
 		if (stopButton == null) {
 			stopButton = new JButton("Stop");
 			stopButton.setMnemonic('S');
-			stopButton.setDisplayedMnemonicIndex(0);
 			stopButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			stopButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			stopButton.addActionListener(eventHandler);

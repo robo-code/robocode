@@ -70,7 +70,6 @@ public class MoreWindowsDialog extends JDialog implements ActionListener, MouseL
 			activateButton = new JButton();
 			activateButton.setText("Activate");
 			activateButton.setMnemonic('A');
-			activateButton.setDisplayedMnemonicIndex(0);
 			activateButton.setDefaultCapable(true);
 			activateButton.addActionListener(this);
 		}
@@ -82,7 +81,6 @@ public class MoreWindowsDialog extends JDialog implements ActionListener, MouseL
 			cancelButton = new JButton();
 			cancelButton.setText("Cancel");
 			cancelButton.setMnemonic('C');
-			cancelButton.setDisplayedMnemonicIndex(0);
 			cancelButton.addActionListener(this);
 		}
 		return cancelButton;

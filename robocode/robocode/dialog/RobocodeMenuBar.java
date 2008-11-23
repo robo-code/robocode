@@ -70,10 +70,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem robotEditorMenuItem;
 	private JMenuItem robotImportMenuItem;
 	private JMenuItem robotPackagerMenuItem;
-
-	// Team menu
-	private JMenu teamMenu;
-	private JMenuItem teamCreateTeamMenuItem;
+	private JMenuItem robotCreateTeamMenuItem;
 
 	// Options menu
 	private JMenu optionsMenu;
@@ -133,7 +130,7 @@ public class RobocodeMenuBar extends JMenuBar {
 				robotPackagerActionPerformed();
 
 				// Team / Create Team menu
-			} else if (source == mb.getTeamCreateTeamMenuItem()) {
+			} else if (source == mb.getRobotCreateTeamMenuItem()) {
 				teamCreateTeamActionPerformed();
 
 				// Options / Preferences menu
@@ -399,7 +396,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleMenu = new JMenu();
 			battleMenu.setText("Battle");
 			battleMenu.setMnemonic('B');
-			battleMenu.setDisplayedMnemonicIndex(0);
 			battleMenu.add(getBattleNewMenuItem());
 			battleMenu.add(getBattleOpenMenuItem());
 			battleMenu.add(new JSeparator());
@@ -427,7 +423,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleNewMenuItem = new JMenuItem();
 			battleNewMenuItem.setText("New");
 			battleNewMenuItem.setMnemonic('N');
-			battleNewMenuItem.setDisplayedMnemonicIndex(0);
 			battleNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, MENU_SHORTCUT_KEY_MASK, false));
 			battleNewMenuItem.addActionListener(eventHandler);
 		}
@@ -444,7 +439,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleOpenMenuItem = new JMenuItem();
 			battleOpenMenuItem.setText("Open");
 			battleOpenMenuItem.setMnemonic('O');
-			battleOpenMenuItem.setDisplayedMnemonicIndex(0);
 			battleOpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MENU_SHORTCUT_KEY_MASK, false));
 			battleOpenMenuItem.addActionListener(eventHandler);
 		}
@@ -480,7 +474,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleSaveMenuItem = new JMenuItem();
 			battleSaveMenuItem.setText("Save");
 			battleSaveMenuItem.setMnemonic('S');
-			battleSaveMenuItem.setDisplayedMnemonicIndex(0);
 			battleSaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MENU_SHORTCUT_KEY_MASK, false));
 			battleSaveMenuItem.setEnabled(false);
 			battleSaveMenuItem.addActionListener(eventHandler);
@@ -554,7 +547,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			battleExportRecordMenuItem.setText("Export XML Record");
 			battleExportRecordMenuItem.setMnemonic('E');
 			battleExportRecordMenuItem.setAccelerator(
-					KeyStroke.getKeyStroke(KeyEvent.VK_E, MENU_SHORTCUT_KEY_MASK, false));
+					KeyStroke.getKeyStroke(KeyEvent.VK_X, MENU_SHORTCUT_KEY_MASK, false));
 			battleExportRecordMenuItem.setEnabled(false);
 			battleExportRecordMenuItem.addActionListener(eventHandler);
 
@@ -583,7 +576,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpAboutMenuItem = new JMenuItem();
 			helpAboutMenuItem.setText("About");
 			helpAboutMenuItem.setMnemonic('A');
-			helpAboutMenuItem.setDisplayedMnemonicIndex(0);
 			helpAboutMenuItem.addActionListener(eventHandler);
 		}
 		return helpAboutMenuItem;
@@ -599,7 +591,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpCheckForNewVersionMenuItem = new JMenuItem();
 			helpCheckForNewVersionMenuItem.setText("Check for new version");
 			helpCheckForNewVersionMenuItem.setMnemonic('C');
-			helpCheckForNewVersionMenuItem.setDisplayedMnemonicIndex(0);
 			helpCheckForNewVersionMenuItem.addActionListener(eventHandler);
 		}
 		return helpCheckForNewVersionMenuItem;
@@ -616,7 +607,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpMenu = new JMenu();
 			helpMenu.setText("Help");
 			helpMenu.setMnemonic('H');
-			helpMenu.setDisplayedMnemonicIndex(0);
 			helpMenu.add(getHelpOnlineHelpMenuItem());
 			helpMenu.add(getHelpRobocodeApiMenuItem());
 			helpMenu.add(getHelpRoboWikiMenuItem());
@@ -663,7 +653,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpOnlineHelpMenuItem = new JMenuItem();
 			helpOnlineHelpMenuItem.setText("Online help");
 			helpOnlineHelpMenuItem.setMnemonic('O');
-			helpOnlineHelpMenuItem.setDisplayedMnemonicIndex(0);
 			helpOnlineHelpMenuItem.addActionListener(eventHandler);
 		}
 		return helpOnlineHelpMenuItem;
@@ -679,7 +668,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpVersionsTxtMenuItem = new JMenuItem();
 			helpVersionsTxtMenuItem.setText("Version info");
 			helpVersionsTxtMenuItem.setMnemonic('V');
-			helpVersionsTxtMenuItem.setDisplayedMnemonicIndex(0);
 			helpVersionsTxtMenuItem.addActionListener(eventHandler);
 		}
 		return helpVersionsTxtMenuItem;
@@ -727,7 +715,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpJavaDocumentationMenuItem = new JMenuItem();
 			helpJavaDocumentationMenuItem.setText("Java 5.0 documentation");
 			helpJavaDocumentationMenuItem.setMnemonic('J');
-			helpJavaDocumentationMenuItem.setDisplayedMnemonicIndex(0);
 			helpJavaDocumentationMenuItem.addActionListener(eventHandler);
 		}
 		return helpJavaDocumentationMenuItem;
@@ -759,7 +746,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			helpYahooGroupRobocodeMenuItem = new JMenuItem();
 			helpYahooGroupRobocodeMenuItem.setText("Yahoo Group for Robocode");
 			helpYahooGroupRobocodeMenuItem.setMnemonic('Y');
-			helpYahooGroupRobocodeMenuItem.setDisplayedMnemonicIndex(0);
 			helpYahooGroupRobocodeMenuItem.addActionListener(eventHandler);
 		}
 		return helpYahooGroupRobocodeMenuItem;
@@ -791,7 +777,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsFitWindowMenuItem = new JMenuItem();
 			optionsFitWindowMenuItem.setText("Default window size");
 			optionsFitWindowMenuItem.setMnemonic('D');
-			optionsFitWindowMenuItem.setDisplayedMnemonicIndex(0);
 			optionsFitWindowMenuItem.addActionListener(eventHandler);
 		}
 		return optionsFitWindowMenuItem;
@@ -840,7 +825,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsCleanRobotCacheMenuItem = new JMenuItem();
 			optionsCleanRobotCacheMenuItem.setText("Clean robot cache");
 			optionsCleanRobotCacheMenuItem.setMnemonic('C');
-			optionsCleanRobotCacheMenuItem.setDisplayedMnemonicIndex(0);
 			optionsCleanRobotCacheMenuItem.addActionListener(eventHandler);
 		}
 		return optionsCleanRobotCacheMenuItem;
@@ -856,7 +840,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsMenu = new JMenu();
 			optionsMenu.setText("Options");
 			optionsMenu.setMnemonic('O');
-			optionsMenu.setDisplayedMnemonicIndex(0);
 			optionsMenu.add(getOptionsPreferencesMenuItem());
 			optionsMenu.add(getOptionsFitWindowMenuItem());
 			optionsMenu.add(new JSeparator());
@@ -879,7 +862,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			optionsPreferencesMenuItem = new JMenuItem();
 			optionsPreferencesMenuItem.setText("Preferences");
 			optionsPreferencesMenuItem.setMnemonic('P');
-			optionsPreferencesMenuItem.setDisplayedMnemonicIndex(0);
 			optionsPreferencesMenuItem.addActionListener(eventHandler);
 		}
 		return optionsPreferencesMenuItem;
@@ -895,7 +877,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			robotEditorMenuItem = new JMenuItem();
 			robotEditorMenuItem.setText("Editor");
 			robotEditorMenuItem.setMnemonic('E');
-			robotEditorMenuItem.setDisplayedMnemonicIndex(0);
 			robotEditorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, MENU_SHORTCUT_KEY_MASK, false));
 			robotEditorMenuItem.addActionListener(eventHandler);
 		}
@@ -912,7 +893,6 @@ public class RobocodeMenuBar extends JMenuBar {
 			robotImportMenuItem = new JMenuItem();
 			robotImportMenuItem.setText("Import downloaded robot");
 			robotImportMenuItem.setMnemonic('I');
-			robotImportMenuItem.setDisplayedMnemonicIndex(0);
 			robotImportMenuItem.addActionListener(eventHandler);
 		}
 		return robotImportMenuItem;
@@ -928,13 +908,12 @@ public class RobocodeMenuBar extends JMenuBar {
 			robotMenu = new JMenu();
 			robotMenu.setText("Robot");
 			robotMenu.setMnemonic('R');
-			robotMenu.setDisplayedMnemonicIndex(0);
 			robotMenu.add(getRobotEditorMenuItem());
 			robotMenu.add(new JSeparator());
 			robotMenu.add(getRobotImportMenuItem());
 			robotMenu.add(getRobotPackagerMenuItem());
 			robotMenu.add(new JSeparator());
-			robotMenu.add(getTeamMenu());
+			robotMenu.add(getRobotCreateTeamMenuItem());
 			robotMenu.addMenuListener(eventHandler);
 		}
 		return robotMenu;
@@ -950,43 +929,24 @@ public class RobocodeMenuBar extends JMenuBar {
 			robotPackagerMenuItem = new JMenuItem();
 			robotPackagerMenuItem.setText("Package robot for upload");
 			robotPackagerMenuItem.setMnemonic('P');
-			robotPackagerMenuItem.setDisplayedMnemonicIndex(0);
 			robotPackagerMenuItem.addActionListener(eventHandler);
 		}
 		return robotPackagerMenuItem;
 	}
 
 	/**
-	 * Return the Team Menu.
-	 *
-	 * @return JMenu
-	 */
-	private JMenu getTeamMenu() {
-		if (teamMenu == null) {
-			teamMenu = new JMenu();
-			teamMenu.setText("Team");
-			teamMenu.setMnemonic('T');
-			teamMenu.setDisplayedMnemonicIndex(0);
-			teamMenu.add(getTeamCreateTeamMenuItem());
-			teamMenu.addMenuListener(eventHandler);
-		}
-		return teamMenu;
-	}
-
-	/**
-	 * Return the teamCreateTeamMenuItem.
+	 * Return the robotCreateTeamMenuItem.
 	 *
 	 * @return JMenuItem
 	 */
-	private JMenuItem getTeamCreateTeamMenuItem() {
-		if (teamCreateTeamMenuItem == null) {
-			teamCreateTeamMenuItem = new JMenuItem();
-			teamCreateTeamMenuItem.setText("Create a robot team");
-			teamCreateTeamMenuItem.setMnemonic('C');
-			teamCreateTeamMenuItem.setDisplayedMnemonicIndex(0);
-			teamCreateTeamMenuItem.addActionListener(eventHandler);
+	private JMenuItem getRobotCreateTeamMenuItem() {
+		if (robotCreateTeamMenuItem == null) {
+			robotCreateTeamMenuItem = new JMenuItem();
+			robotCreateTeamMenuItem.setText("Create a robot team");
+			robotCreateTeamMenuItem.setMnemonic('C');
+			robotCreateTeamMenuItem.addActionListener(eventHandler);
 		}
-		return teamCreateTeamMenuItem;
+		return robotCreateTeamMenuItem;
 	}
 
 	private void teamCreateTeamActionPerformed() {

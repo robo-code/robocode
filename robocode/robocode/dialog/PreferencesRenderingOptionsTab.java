@@ -221,7 +221,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		if (predefinedQualityButton == null) {
 			predefinedQualityButton = new JButton("Quality");
 			predefinedQualityButton.setMnemonic('Q');
-			predefinedQualityButton.setDisplayedMnemonicIndex(0);
 			predefinedQualityButton.addActionListener(eventHandler);
 		}
 		return predefinedQualityButton;
@@ -251,7 +250,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		if (optionsRendereringForceBulletColorCheckBox == null) {
 			optionsRendereringForceBulletColorCheckBox = new JCheckBox("Make all bullets white");
 			optionsRendereringForceBulletColorCheckBox.setMnemonic('M');
-			optionsRendereringForceBulletColorCheckBox.setDisplayedMnemonicIndex(0);
 			optionsRendereringForceBulletColorCheckBox.addActionListener(eventHandler);
 		}
 		return optionsRendereringForceBulletColorCheckBox;

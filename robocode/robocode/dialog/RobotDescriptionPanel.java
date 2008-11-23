@@ -106,7 +106,6 @@ public class RobotDescriptionPanel extends JPanel {
 		if (detailsButton == null) {
 			detailsButton = new JButton("Webpage");
 			detailsButton.setMnemonic('W');
-			detailsButton.setDisplayedMnemonicIndex(0);
 			detailsButton.setVisible(false);
 			detailsButton.setAlignmentY(Component.CENTER_ALIGNMENT);
 			detailsButton.addActionListener(eventManager);

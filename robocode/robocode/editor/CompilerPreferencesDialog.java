@@ -85,7 +85,6 @@ public class CompilerPreferencesDialog extends JDialog {
 		if (cancelButton == null) {
 			cancelButton = new JButton("Cancel");
 			cancelButton.setMnemonic('C');
-			cancelButton.setDisplayedMnemonicIndex(0);
 			cancelButton.addActionListener(eventHandler);
 		}
 		return cancelButton;
@@ -158,7 +157,6 @@ public class CompilerPreferencesDialog extends JDialog {
 		if (okButton == null) {
 			okButton = new JButton("OK");
 			okButton.setMnemonic('O');
-			okButton.setDisplayedMnemonicIndex(0);
 			okButton.addActionListener(eventHandler);
 		}
 		return okButton;

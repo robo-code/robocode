@@ -89,7 +89,6 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		if (appendWhenSavingResultsCheckBox == null) {
 			appendWhenSavingResultsCheckBox = new JCheckBox("Append when saving results");
 			appendWhenSavingResultsCheckBox.setMnemonic('A');
-			appendWhenSavingResultsCheckBox.setDisplayedMnemonicIndex(0);
 		}
 		return appendWhenSavingResultsCheckBox;
 	}
@@ -103,7 +102,6 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		if (enableReplayRecordingCheckBox == null) {
 			enableReplayRecordingCheckBox = new JCheckBox("Enable replay recording (uses memory and disk space)");
 			enableReplayRecordingCheckBox.setMnemonic('E');
-			enableReplayRecordingCheckBox.setDisplayedMnemonicIndex(0);
 		}
 		return enableReplayRecordingCheckBox;
 	}
