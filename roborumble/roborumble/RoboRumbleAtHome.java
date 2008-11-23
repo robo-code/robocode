@@ -127,10 +127,10 @@ public class RoboRumbleAtHome {
 
 					if (melee.equals("YES")) {
 						System.out.println("Executing melee battles ...");
-						engine.runMeleeBattles();
+						engine.runBattlesImpl(true);
 					} else {
 						System.out.println("Executing battles ...");
-						engine.runBattles();
+						engine.runBattlesImpl(false);
 					}
 					engine = null;
 				}

@@ -25,6 +25,10 @@ package roborumble.battlesengine;
 
 
 import robocode.control.*;
+import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.BattleCompletedEvent;
+import robocode.battle.events.BattleErrorEvent;
+import robocode.security.SecurePrintStream;
 import static roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
@@ -49,6 +53,8 @@ public class BattlesRunner {
 	private String user;
 	private String game;
 	private Map<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>(500);
+	private RobotResults[] lastResults;
+	private BattleObserver battleObserver;
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
@@ -71,18 +77,21 @@ public class BattlesRunner {
 	}
 
 	private void initialize() {
-		RobocodeEngine engine = new RobocodeEngine(null);
+		RobocodeEngine engine = new RobocodeEngine();
 		RobotSpecification[] repository = engine.getLocalRepository();
 
 		for (RobotSpecification spec : repository) {
 			robotSpecMap.put(spec.getNameAndVersion(), spec);
 		}
+
+		battleObserver = new BattleObserver();
 	}
 
-	public boolean runBattles() {
+	public boolean runBattlesImpl(boolean melee) {
 		// Initialize objects
-		AtHomeListener listener = new AtHomeListener();
-		RobocodeEngine engine = new RobocodeEngine(listener);
+		RobocodeEngine engine = new RobocodeEngine();
+
+		engine.addBattleListener(battleObserver);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
 		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
 
@@ -90,35 +99,14 @@ public class BattlesRunner {
 		ArrayList<String> robots = new ArrayList<String>();
 		BufferedReader br = null;
 
-		try {
-			FileReader fr = new FileReader(inputfile);
-
-			br = new BufferedReader(fr);
-			String record;
-
-			while ((record = br.readLine()) != null) {
-				robots.add(record);
-			}
-		} catch (IOException e) {
-			System.out.println("Battles input file not found ... Aborting");
-			System.out.println(e);
+		if (readRobots(robots, br)) {
 			return false;
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {}
-			}
 		}
 
 		// open output file
-		PrintStream outtxt;
+		PrintStream outtxt = getRedirectedOutput();
 
-		try {
-			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
-		} catch (IOException e) {
-			System.out.println("Not able to open output file ... Aborting");
-			System.out.println(e);
+		if (outtxt == null) {
 			return false;
 		}
 
@@ -128,30 +116,38 @@ public class BattlesRunner {
 		while (index < robots.size()) {
 			String[] param = (robots.get(index)).split(",");
 
-			String enemies = param[0] + "," + param[1];
+			String enemies = getEnemies(melee, param);
 
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
-			runBattle(engine, battle, enemies);
-			// get results
-			RobotResults[] results = listener.getResults();
-			String First = results[0].getRobot().getNameAndVersion();
 
-			int PointsFirst = results[0].getScore();
-			int BulletDFirst = results[0].getBulletDamage();
-			int SurvivalFirst = results[0].getFirsts();
-			String Second = results[1].getRobot().getNameAndVersion();
-			int PointsSecond = results[1].getScore();
-			int BulletDSecond = results[1].getBulletDamage();
-			int SurvivalSecond = results[1].getFirsts();
+			String[] selectedRobots = enemies.split(",");
+			List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
 
-			outtxt.println(
-					game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + "," + System.currentTimeMillis()
-					+ "," + param[2]);
-			outtxt.println(First + "," + PointsFirst + "," + BulletDFirst + "," + SurvivalFirst);
-			outtxt.println(Second + "," + PointsSecond + "," + BulletDSecond + "," + SurvivalSecond);
+			for (String robot : selectedRobots) {
+				RobotSpecification spec = robotSpecMap.get(robot);
+
+				if (spec != null) {
+					selectedRobotSpecs.add(spec);
+				}
+			}
+			final RobotSpecification[] robotsList = selectedRobotSpecs.toArray(new RobotSpecification[1]);
+
+			if (robotsList.length >= 2) {
+				final BattleSpecification specification = new BattleSpecification(battle.getNumRounds(),
+						battle.getBattlefield(), robotsList);
+
+				lastResults = null;
+				engine.runBattle(specification, true);
+				if (lastResults != null) {
+					dumpResults(outtxt, lastResults, param[param.length - 1], melee);
+				}
+			} else {
+				System.err.println("Skipping battle because can't load robots");
+			}
 			index++;
-			System.out.println("RESULT = " + First + " wins " + PointsFirst + " to " + PointsSecond);
 		}
+
+		engine.removeBattleListener(battleObserver);
 
 		// close
 		outtxt.close();
@@ -160,115 +156,106 @@ public class BattlesRunner {
 		return true;
 	}
 
-	public boolean runMeleeBattles() {
-		// Initialize objects
-		AtHomeListener listener = new AtHomeListener();
-		RobocodeEngine engine = new RobocodeEngine(listener);
-		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
-		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
+	private String getEnemies(boolean melee, String[] param) {
+		String enemies;
 
-		// Read input file
-		ArrayList<String> robots = new ArrayList<String>();
-		BufferedReader br = null;
-
-		try {
-			FileReader fr = new FileReader(inputfile);
-
-			br = new BufferedReader(fr);
-			String record;
-
-			while ((record = br.readLine()) != null) {
-				robots.add(record);
-			}
-		} catch (IOException e) {
-			System.out.println("Battles input file not found ... Aborting");
-			System.out.println(e);
-			return false;
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {}
-			}
-		}
-
-		// open output file
-		PrintStream outtxt;
-
-		try {
-			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
-		} catch (IOException e) {
-			System.out.println("Not able to open output file ... Aborting");
-			System.out.println(e);
-			return false;
-		}
-
-		// run battle
-		int index = 0;
-
-		while (index < robots.size()) {
-			String[] param = (robots.get(index)).split(",");
-
-			StringBuilder enemies = new StringBuilder();
+		if (melee) {
+			enemies = param[0] + "," + param[1];
+		} else {
+			StringBuilder eb = new StringBuilder();
 
 			for (int i = 0; i < param.length - 1; i++) {
 				if (i > 0) {
-					enemies.append(',');
+					eb.append(',');
 				}
-				enemies.append(param[i]);
+				eb.append(param[i]);
 			}
-			System.out.println("Fighting battle " + (index) + " ... " + enemies);
-			runBattle(engine, battle, enemies.toString());
-
-			// get results
-			RobotResults[] results = listener.getResults();
-			String[] Bot = new String[results.length];
-			int[] Points = new int[results.length];
-			int[] BulletD = new int[results.length];
-			int[] Survival = new int[results.length];
-
-			for (int i = 0; i < results.length; i++) {
-				Bot[i] = results[i].getRobot().getNameAndVersion();
-				Points[i] = results[i].getScore();
-				BulletD[i] = results[i].getBulletDamage();
-				Survival[i] = results[i].getFirsts();
-			}
-
-			for (int i = 0; i < param.length - 1; i++) {
-				for (int j = 0; j < param.length - 1; j++) {
-					if (i < j) {
-						outtxt.println(
-								game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + ","
-								+ System.currentTimeMillis() + "," + param[param.length - 1]);
-						outtxt.println(Bot[i] + "," + Points[i] + "," + BulletD[i] + "," + Survival[i]);
-						outtxt.println(Bot[j] + "," + Points[j] + "," + BulletD[j] + "," + Survival[j]);
-					}
-				}
-			}
-			index++;
-			System.out.println("RESULT = " + Bot[0] + " wins, " + Bot[1] + " is second.");
+			enemies = eb.toString();
 		}
-
-		// close
-		outtxt.close();
-		engine.close();
-
-		return true;
+		return enemies;
 	}
 
-	private void runBattle(RobocodeEngine engine, BattleSpecification battle, String selectedRobotList) {
-		String[] selectedRobots = selectedRobotList.split(",");
-		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
-		RobotSpecification spec;
+	private PrintStream getRedirectedOutput() {
+		try {
+			return new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
+		} catch (IOException e) {
+			System.out.println("Not able to open output file ... Aborting");
+			System.out.println(e);
+			return null;
+		}
+	}
 
-		for (String robot : selectedRobots) {
-			spec = robotSpecMap.get(robot);
-			if (spec != null) {
-				selectedRobotSpecs.add(spec);
+	private boolean readRobots(ArrayList<String> robots, BufferedReader br) {
+		try {
+			FileReader fr = new FileReader(inputfile);
+
+			br = new BufferedReader(fr);
+			String record;
+
+			while ((record = br.readLine()) != null) {
+				robots.add(record);
+			}
+		} catch (IOException e) {
+			System.out.println("Battles input file not found ... Aborting");
+			System.out.println(e);
+			return true;
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {// just ignore
+				}
 			}
 		}
-		engine.runBattle(
-				new BattleSpecification(battle.getNumRounds(), battle.getBattlefield(),
-				selectedRobotSpecs.toArray(new RobotSpecification[1])));
+		return false;
+	}
+
+	private void dumpResults(PrintStream outtxt, RobotResults[] results, String last, boolean melee) {
+		for (int i = 0; i < results.length; i++) {
+			for (int j = 0; j < results.length; j++) {
+				if (i < j) {
+					final String botOne = results[i].getRobot().getNameAndVersion();
+					final String botTwo = results[j].getRobot().getNameAndVersion();
+					final int pointsOne = results[i].getScore();
+					final int pointsTwo = results[j].getScore();
+					final int bulletsOne = results[i].getBulletDamage();
+					final int bulletsTwo = results[j].getBulletDamage();
+					final int survivalOne = results[i].getSurvival();
+					final int survivalTwo = results[j].getSurvival();
+
+					outtxt.println(
+							game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + ","
+							+ System.currentTimeMillis() + "," + last);
+					outtxt.println(botOne + "," + pointsOne + "," + bulletsOne + "," + survivalOne);
+					outtxt.println(botTwo + "," + pointsTwo + "," + bulletsTwo + "," + survivalTwo);
+				}
+			}
+		}
+		if (melee) {
+			System.out.println(
+					"RESULT = " + results[0].getRobot().getNameAndVersion() + " wins, "
+					+ results[1].getRobot().getNameAndVersion() + " is second.");
+		} else {
+			System.out.println(
+					"RESULT = " + results[0].getRobot().getNameAndVersion() + " wins " + results[0].getScore() + " to "
+					+ results[1].getScore());
+		}
+	}
+
+	class BattleObserver extends BattleAdaptor {
+		// @Override
+		// public void onBattleMessage(final BattleMessageEvent event) {
+		// SecurePrintStream.realOut.println(event.getMessage());
+		// }
+
+		@Override
+		public void onBattleError(final BattleErrorEvent event) {
+			SecurePrintStream.realErr.println(event.getError());
+		}
+
+		@Override
+		public void onBattleCompleted(final BattleCompletedEvent event) {
+			lastResults = RobocodeEngine.convertResult(event.getResults());
+		}
 	}
 }

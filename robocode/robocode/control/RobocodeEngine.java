@@ -37,10 +37,7 @@
 package robocode.control;
 
 
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.BattleMessageEvent;
+import robocode.battle.events.*;
 import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
@@ -50,6 +47,8 @@ import robocode.BattleResults;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 /**
@@ -81,6 +80,17 @@ public class RobocodeEngine {
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
+	 * @see #RobocodeEngine(RobocodeListener)
+	 * @see #close()
+	 */
+	public RobocodeEngine(File robocodeHome) {
+		init(robocodeHome, null);
+	}
+
+	/**
+	 * Creates a new RobocodeEngine for controlling Robocode.
+	 *
+	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
 	 * @param listener	 the listener that must receive the callbacks from this
 	 *                     RobocodeEngine.
 	 * @see #RobocodeEngine(RobocodeListener)
@@ -101,14 +111,19 @@ public class RobocodeEngine {
 	 * @see #close()
 	 */
 	public RobocodeEngine(RobocodeListener listener) {
-		File robotsDir = FileUtil.getRobotsDir();
-
-		if (robotsDir == null) {
-			throw new RuntimeException("No valid robot directory is specified");
-		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
-			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
-		}
 		init(FileUtil.getCwd(), listener);
+	}
+
+	/**
+	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
+	 * Robocode is used to determine the root directory of Robocode.
+	 * See {@link #RobocodeEngine(File, RobocodeListener)}.
+	 *
+	 * @see #RobocodeEngine(File, RobocodeListener)
+	 * @see #close()
+	 */
+	public RobocodeEngine() {
+		init(FileUtil.getCwd(), null);
 	}
 
 	/**
@@ -125,6 +140,14 @@ public class RobocodeEngine {
 	}
 
 	private void init(File robocodeHome, RobocodeListener listener) {
+		File robotsDir = FileUtil.getRobotsDir();
+
+		if (robotsDir == null) {
+			throw new RuntimeException("No valid robot directory is specified");
+		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
+			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
+		}
+
 		manager = new RobocodeManager(true);
 		manager.setEnableGUI(false);
 
@@ -141,6 +164,69 @@ public class RobocodeEngine {
 			battleObserver.listener = listener;
 			manager.getBattleManager().addListener(battleObserver);
 		}
+	}
+
+	/**
+	 * Adds a battle listener that must receive events occurring in battles.
+	 *
+	 * @param listener the battle listener that must retrieve the event from
+	 *                 the battles.
+	 * @see #addBattleListener(robocode.battle.events.IBattleListener)
+	 */
+	public void addBattleListener(IBattleListener listener) {
+		manager.getBattleManager().addListener(listener);
+	}
+
+	/**
+	 * Removes a battle listener that has previously been added to this object.
+	 *
+	 * @param listener the battle listener that must be removed.
+	 * @see #removeBattleListener(IBattleListener)
+	 */
+	public void removeBattleListener(IBattleListener listener) {
+		manager.getBattleManager().removeListener(listener);
+	}
+
+	/**
+	 * Returns a selection of robots available from the local robot repository
+	 * of Robocode. These robots must exists in the /robocode/robots directory,
+	 * and must be compiled in advance.
+	 * </p>
+	 * Notice: If a specified robot cannot be found in the repository, it will
+	 * not be returned in the array of robots returned by this method.
+	 *
+	 * @param selectedRobotList a comma or space separated list of robots to
+	 *                          return. The full class name must be used for
+	 *                          specifying the individual robot, e.g.
+	 *                          "sample.Corners, sample.Crazy"
+	 * @return an array containing the available robots from the local robot
+	 *         repository based on the selected robots specified with the
+	 *         {@code selectedRobotList} parameter.
+	 * @see RobotSpecification
+	 * @see RobocodeEngine#getLocalRepository()
+	 */
+	public RobotSpecification[] getLocalRepository(String selectedRobotList) {
+		RobotSpecification[] repository = getLocalRepository();
+
+		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
+
+		for (RobotSpecification spec : repository) {
+			robotSpecMap.put(spec.getNameAndVersion(), spec);
+		}
+
+		String[] selectedRobots = selectedRobotList.split("[\\s,;]+");
+
+		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
+
+		RobotSpecification spec;
+
+		for (String robot : selectedRobots) {
+			spec = robotSpecMap.get(robot);
+			if (spec != null) {
+				selectedRobotSpecs.add(spec);
+			}
+		}
+		return selectedRobotSpecs.toArray(new RobotSpecification[selectedRobotSpecs.size()]);
 	}
 
 	/**
@@ -206,7 +292,11 @@ public class RobocodeEngine {
 		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
-			robotSpecs[i] = new RobotSpecification(list.get(i));
+			final FileSpecification specification = list.get(i);
+
+			if (specification.isValid()) {
+				robotSpecs[i] = new RobotSpecification(specification);
+			}
 		}
 		return robotSpecs;
 	}
@@ -227,6 +317,23 @@ public class RobocodeEngine {
 	}
 
 	/**
+	 * Runs the specified battle.
+	 *
+	 * @param battleSpecification	   the specification of the battle to run including the
+	 *                     participating robots.
+	 * @param waitTillOver will block caller till end of battle if set
+	 * @see robocode.battle.events.IBattleListener
+	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
+	 * @see RobocodeListener#battleMessage(String)
+	 * @see BattleSpecification
+	 * @see #getLocalRepository()
+	 */
+	public void runBattle(BattleSpecification battleSpecification, boolean waitTillOver) {
+		this.battleSpecification = battleSpecification;
+		manager.getBattleManager().startNewBattle(battleSpecification, waitTillOver);
+	}
+
+	/**
 	 * Aborts the current battle if it is running.
 	 *
 	 * @see #runBattle(BattleSpecification)
@@ -234,6 +341,56 @@ public class RobocodeEngine {
 	 */
 	public void abortCurrentBattle() {
 		manager.getBattleManager().stop(true);
+	}
+
+	public static RobotResults[] convertResult(BattleResults[] results) {
+		RobotResults[] resultsConv = new RobotResults[results.length];
+
+		for (int i = 0; i < results.length; i++) {
+			resultsConv[i] = (RobotResults) results[i];
+		}
+		return resultsConv;
+	}
+
+	/**
+	 * Prints out all running threads to the standard system out (console).
+	 */
+	public static void printRunningThreads() {
+		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+
+		if (currentGroup == null) {
+			return;
+		}
+
+		while (currentGroup.getParent() != null) {
+			currentGroup = currentGroup.getParent();
+		}
+
+		ThreadGroup groups[] = new ThreadGroup[256];
+		Thread threads[] = new Thread[256];
+
+		int numGroups = currentGroup.enumerate(groups, true);
+
+		for (int i = 0; i < numGroups; i++) {
+			currentGroup = groups[i];
+			if (currentGroup.isDaemon()) {
+				System.out.print("  ");
+			} else {
+				System.out.print("* ");
+			}
+			System.out.println("In group: " + currentGroup.getName());
+			int numThreads = currentGroup.enumerate(threads);
+
+			for (int j = 0; j < numThreads; j++) {
+				if (threads[j].isDaemon()) {
+					System.out.print("  ");
+				} else {
+					System.out.print("* ");
+				}
+				System.out.println(threads[j].getName());
+			}
+			System.out.println("---------------");
+		}
 	}
 
 	/**
@@ -251,13 +408,7 @@ public class RobocodeEngine {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			final BattleResults[] results = event.getResults();
-			RobotResults[] resultsConv = new RobotResults[results.length];
-
-			for (int i = 0; i < results.length; i++) {
-				resultsConv[i] = (RobotResults) results[i];
-			}
-			listener.battleComplete(battleSpecification, resultsConv);
+			listener.battleComplete(battleSpecification, convertResult(event.getResults()));
 		}
 
 		@Override

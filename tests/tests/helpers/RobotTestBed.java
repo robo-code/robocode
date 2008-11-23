@@ -31,14 +31,14 @@ import java.util.Random;
  * @author Pavel Savara (original)
  */
 public abstract class RobotTestBed extends BattleAdaptor {
-	protected static RobocodeEngine2 engine;
+	protected static RobocodeEngine engine;
 	protected BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected int errors = 0;
 	protected int messages = 0;
 
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
-		engine = new RobocodeEngine2(FileUtil.getCwd());
+		engine = new RobocodeEngine(FileUtil.getCwd());
 	}
 
 	public RobotTestBed() {}

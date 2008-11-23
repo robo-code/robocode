@@ -38,12 +38,11 @@ public class BattleCompletedEvent extends BattleEvent {
 	}
 
 	public BattleResults[] getResults() {
-		BattleResults[] res = new BattleResults[results.size()];
 		List<BattleResults> cpy = new ArrayList<BattleResults>(results);
 
 		Collections.sort(cpy);
 		Collections.reverse(cpy);
-		return cpy.toArray(res);
+		return cpy.toArray(new BattleResults[1]);
 	}
 
 	// stable order
