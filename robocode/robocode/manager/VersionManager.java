@@ -46,7 +46,7 @@ import java.util.Date;
 public final class VersionManager implements IVersionManager {
 	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
 
-	private String version;
+	private static String version;
 	private RobocodeManager manager;
 
 	public VersionManager(RobocodeManager manager) {
@@ -171,19 +171,23 @@ public final class VersionManager implements IVersionManager {
 	}
 
 	public String getVersion() {
+		return getVersionStatic();
+	}
+
+	public static String getVersionStatic() {
 		if (version == null) {
 			version = getVersionFromJar();
 		}
 		return version;
 	}
 
-	private String getVersionFromJar() {
+	private static String getVersionFromJar() {
 		String versionString = null;
 
 		BufferedReader in = null;
 
 		try {
-			URL versionsUrl = getClass().getResource("/resources/versions.txt");
+			URL versionsUrl = VersionManager.class.getResource("/resources/versions.txt");
 
 			if (versionsUrl == null) {
 				logError("no url");
@@ -226,7 +230,7 @@ public final class VersionManager implements IVersionManager {
 		return version;
 	}
 
-	private String getVersionFromFile() {
+	private static String getVersionFromFile() {
 		String versionString = null;
 
 		FileReader fileReader = null;

@@ -30,6 +30,8 @@ import java.net.URLConnection;
 import java.util.Properties;
 import java.util.Vector;
 
+import robocode.manager.VersionManager;
+
 
 /**
  * Class used for uploading results to a server.
@@ -40,6 +42,7 @@ import java.util.Vector;
  */
 public class ResultsUpload {
 
+	private String client;
 	private String resultsfile;
 	private String resultsurl;
 	private String tempdir;
@@ -52,6 +55,8 @@ public class ResultsUpload {
 	private CompetitionsSelector size;
 	private String battlesnumfile;
 	private String priority;
+	private String teams;
+	private String melee;
 
 	public ResultsUpload(String propertiesfile) {
 		// Read parameters
@@ -74,6 +79,9 @@ public class ResultsUpload {
 		nanobots = parameters.getProperty("NANOBOTS", "");
 		battlesnumfile = parameters.getProperty("BATTLESNUMFILE", "");
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
+		client = VersionManager.getVersionStatic();
+		teams = parameters.getProperty("TEAMS", "");
+		melee = parameters.getProperty("MELEE", "");
 
 		// Open competitions selector
 		size = new CompetitionsSelector(sizesfile, botsrepository);
@@ -179,10 +187,11 @@ public class ResultsUpload {
 
 			// if the match mode was general, then send the results to all competitions (asuming codesize is used).
 			// if its not, then send results only to smaller size competitions
-			String data = "version=1" + "&" + "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2]
-					+ "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
-					+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0]
-					+ "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
+			String data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee + "&"
+					+ "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&"
+					+ "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore=" + first[1] + "&" + "fbulletd="
+					+ first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0] + "&" + "sscore=" + second[1]
+					+ "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
 
 			if (matchtype.equals("GENERAL") || matchtype.equals("SERVER")) {
 				errorsfound = errorsfound | senddata(game, data, outtxt, true, results, i, battlesnum, prioritybattles);
@@ -191,28 +200,30 @@ public class ResultsUpload {
 			if (sizesfile.length() != 0) { // upload also related competitions
 				if (minibots.length() != 0 && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 1500)) {
-					data = "version=1" + "&" + "game=" + minibots + "&" + "rounds=" + header[1] + "&" + "field="
-							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
-							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
-							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
-							+ "ssurvival=" + second[3];
+					data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee
+							+ "&" + "game=" + minibots + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&"
+							+ "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
+							+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname="
+							+ second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival="
+							+ second[3];
 					errorsfound = errorsfound | senddata(minibots, data, outtxt, false, results, i, battlesnum, null);
 				}
 				if (microbots.length() != 0 && !matchtype.equals("NANO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 750)) {
-					data = "version=1" + "&" + "game=" + microbots + "&" + "rounds=" + header[1] + "&" + "field="
-							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
-							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
-							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
-							+ "ssurvival=" + second[3];
+					data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee
+							+ "&" + "game=" + microbots + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&"
+							+ "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
+							+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname="
+							+ second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival="
+							+ second[3];
 					errorsfound = errorsfound | senddata(microbots, data, outtxt, false, results, i, battlesnum, null);
 				}
 				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
-					data = "version=1" + "&" + "game=" + nanobots + "&" + "rounds=" + header[1] + "&" + "field="
-							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
-							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
-							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
-							+ "ssurvival=" + second[3];
+					data = "version=1" + "&" + "client=" + client + "&" + "game=" + nanobots + "&" + "rounds="
+							+ header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&"
+							+ "fname=" + first[0] + "&" + "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&"
+							+ "fsurvival=" + first[3] + "&" + "sname=" + second[0] + "&" + "sscore=" + second[1] + "&"
+							+ "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
 					errorsfound = errorsfound | senddata(nanobots, data, outtxt, false, results, i, battlesnum, null);
 				}
 			}
