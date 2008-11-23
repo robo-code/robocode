@@ -271,7 +271,7 @@ public final class VersionManager implements IVersionManager {
 		return version;
 	}
 
-	public static int compare(String a, String b){
+	public static int compare(String a, String b) {
 		return new Version(a).compareTo(new Version(b));
 	}
 }

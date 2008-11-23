@@ -59,7 +59,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	// Battle state
 	private final AtomicBoolean isRunning = new AtomicBoolean(false);
-	private boolean isAborted;
+	protected boolean isAborted;
 
 	// Battle control
 	private boolean isPaused;
