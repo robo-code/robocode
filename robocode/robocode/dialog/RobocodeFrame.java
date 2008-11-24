@@ -33,7 +33,6 @@ package robocode.dialog;
 import robocode.battle.events.*;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.ScoreSnapshot;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.gfx.ImageUtil;

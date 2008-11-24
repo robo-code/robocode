@@ -97,4 +97,20 @@ public class RobotResults extends BattleResults {
 	public RobotSpecification getRobot() {
 		return robot;
 	}
+
+	/**
+	 * Converts an array of {@link BattleResults} into an array of {@link RobotResults}.
+	 *
+	 * @param results an array of BattleResults to convert.
+	 * @return an array of RobotResults converted from BattleResults.
+	 * @since 1.6.2
+	 */
+	public static RobotResults[] convertResults(BattleResults[] results) {
+		RobotResults[] resultsConv = new RobotResults[results.length];
+
+		for (int i = 0; i < results.length; i++) {
+			resultsConv[i] = (RobotResults) results[i];
+		}
+		return resultsConv;
+	}
 }

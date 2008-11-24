@@ -42,7 +42,6 @@ import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
-import robocode.BattleResults;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,11 +76,28 @@ public class RobocodeEngine {
 	private BattleSpecification battleSpecification;
 
 	/**
+	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
+	 * Robocode is used to determine the root directory of Robocode.
+	 *
+	 * @see #RobocodeEngine(RobocodeListener)
+	 * @see #RobocodeEngine(File)
+	 * @see #RobocodeEngine(File, RobocodeListener)
+	 * @see #close()
+	 * @since 1.6.2
+	 */
+	public RobocodeEngine() {
+		init(FileUtil.getCwd(), null);
+	}
+
+	/**
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
+	 * @see #RobocodeEngine()
 	 * @see #RobocodeEngine(RobocodeListener)
+	 * @see #RobocodeEngine(File, RobocodeListener)
 	 * @see #close()
+	 * @since 1.6.2
 	 */
 	public RobocodeEngine(File robocodeHome) {
 		init(robocodeHome, null);
@@ -93,7 +109,9 @@ public class RobocodeEngine {
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
 	 * @param listener	 the listener that must receive the callbacks from this
 	 *                     RobocodeEngine.
+	 * @see #RobocodeEngine()
 	 * @see #RobocodeEngine(RobocodeListener)
+	 * @see #RobocodeEngine(File)
 	 * @see #close()
 	 */
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
@@ -103,27 +121,16 @@ public class RobocodeEngine {
 	/**
 	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
 	 * Robocode is used to determine the root directory of Robocode.
-	 * See {@link #RobocodeEngine(File, RobocodeListener)}.
 	 *
 	 * @param listener the listener that must receive the callbacks from this
 	 *                 RobocodeEngine.
+	 * @see #RobocodeEngine()
+	 * @see #RobocodeEngine(File)
 	 * @see #RobocodeEngine(File, RobocodeListener)
 	 * @see #close()
 	 */
 	public RobocodeEngine(RobocodeListener listener) {
 		init(FileUtil.getCwd(), listener);
-	}
-
-	/**
-	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
-	 * Robocode is used to determine the root directory of Robocode.
-	 * See {@link #RobocodeEngine(File, RobocodeListener)}.
-	 *
-	 * @see #RobocodeEngine(File, RobocodeListener)
-	 * @see #close()
-	 */
-	public RobocodeEngine() {
-		init(FileUtil.getCwd(), null);
 	}
 
 	/**
@@ -171,7 +178,8 @@ public class RobocodeEngine {
 	 *
 	 * @param listener the battle listener that must retrieve the event from
 	 *                 the battles.
-	 * @see #addBattleListener(robocode.battle.events.IBattleListener)
+	 * @see #removeBattleListener(IBattleListener)
+	 * @since 1.6.2
 	 */
 	public void addBattleListener(IBattleListener listener) {
 		manager.getBattleManager().addListener(listener);
@@ -181,52 +189,11 @@ public class RobocodeEngine {
 	 * Removes a battle listener that has previously been added to this object.
 	 *
 	 * @param listener the battle listener that must be removed.
-	 * @see #removeBattleListener(IBattleListener)
+	 * @see #addBattleListener(IBattleListener)
+	 * @since 1.6.2
 	 */
 	public void removeBattleListener(IBattleListener listener) {
 		manager.getBattleManager().removeListener(listener);
-	}
-
-	/**
-	 * Returns a selection of robots available from the local robot repository
-	 * of Robocode. These robots must exists in the /robocode/robots directory,
-	 * and must be compiled in advance.
-	 * </p>
-	 * Notice: If a specified robot cannot be found in the repository, it will
-	 * not be returned in the array of robots returned by this method.
-	 *
-	 * @param selectedRobotList a comma or space separated list of robots to
-	 *                          return. The full class name must be used for
-	 *                          specifying the individual robot, e.g.
-	 *                          "sample.Corners, sample.Crazy"
-	 * @return an array containing the available robots from the local robot
-	 *         repository based on the selected robots specified with the
-	 *         {@code selectedRobotList} parameter.
-	 * @see RobotSpecification
-	 * @see RobocodeEngine#getLocalRepository()
-	 */
-	public RobotSpecification[] getLocalRepository(String selectedRobotList) {
-		RobotSpecification[] repository = getLocalRepository();
-
-		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
-
-		for (RobotSpecification spec : repository) {
-			robotSpecMap.put(spec.getNameAndVersion(), spec);
-		}
-
-		String[] selectedRobots = selectedRobotList.split("[\\s,;]+");
-
-		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
-
-		RobotSpecification spec;
-
-		for (String robot : selectedRobots) {
-			spec = robotSpecMap.get(robot);
-			if (spec != null) {
-				selectedRobotSpecs.add(spec);
-			}
-		}
-		return selectedRobotSpecs.toArray(new RobotSpecification[selectedRobotSpecs.size()]);
 	}
 
 	/**
@@ -284,6 +251,7 @@ public class RobocodeEngine {
 	 *
 	 * @return an array of all available robots from the local robot repository.
 	 * @see RobotSpecification
+	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
@@ -302,10 +270,54 @@ public class RobocodeEngine {
 	}
 
 	/**
+	 * Returns a selection of robots available from the local robot repository
+	 * of Robocode. These robots must exists in the /robocode/robots directory,
+	 * and must be compiled in advance.
+	 * </p>
+	 * Notice: If a specified robot cannot be found in the repository, it will
+	 * not be returned in the array of robots returned by this method.
+	 *
+	 * @param selectedRobotList a comma or space separated list of robots to
+	 *                          return. The full class name must be used for
+	 *                          specifying the individual robot, e.g.
+	 *                          "sample.Corners, sample.Crazy"
+	 * @return an array containing the available robots from the local robot
+	 *         repository based on the selected robots specified with the
+	 *         {@code selectedRobotList} parameter.
+	 * @see RobotSpecification
+	 * @see #getLocalRepository()
+	 * @since 1.6.2
+	 */
+	public RobotSpecification[] getLocalRepository(String selectedRobotList) {
+		RobotSpecification[] repository = getLocalRepository();
+
+		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
+
+		for (RobotSpecification spec : repository) {
+			robotSpecMap.put(spec.getNameAndVersion(), spec);
+		}
+
+		String[] selectedRobots = selectedRobotList.split("[\\s,;]+");
+
+		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
+
+		RobotSpecification spec;
+
+		for (String robot : selectedRobots) {
+			spec = robotSpecMap.get(robot);
+			if (spec != null) {
+				selectedRobotSpecs.add(spec);
+			}
+		}
+		return selectedRobotSpecs.toArray(new RobotSpecification[selectedRobotSpecs.size()]);
+	}
+
+	/**
 	 * Runs the specified battle.
 	 *
 	 * @param battleSpecification the specification of the battle to play including the
 	 *                            participation robots.
+	 * @see #runBattle(BattleSpecification, boolean)
 	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
 	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification
@@ -322,11 +334,12 @@ public class RobocodeEngine {
 	 * @param battleSpecification	   the specification of the battle to run including the
 	 *                     participating robots.
 	 * @param waitTillOver will block caller till end of battle if set
-	 * @see robocode.battle.events.IBattleListener
+	 * @see #runBattle(BattleSpecification)
 	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
 	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification
 	 * @see #getLocalRepository()
+	 * @since 1.6.2
 	 */
 	public void runBattle(BattleSpecification battleSpecification, boolean waitTillOver) {
 		this.battleSpecification = battleSpecification;
@@ -343,17 +356,10 @@ public class RobocodeEngine {
 		manager.getBattleManager().stop(true);
 	}
 
-	public static RobotResults[] convertResult(BattleResults[] results) {
-		RobotResults[] resultsConv = new RobotResults[results.length];
-
-		for (int i = 0; i < results.length; i++) {
-			resultsConv[i] = (RobotResults) results[i];
-		}
-		return resultsConv;
-	}
-
 	/**
-	 * Prints out all running threads to the standard system out (console).
+	 * Print out all running threads to standard system out.
+	 *
+	 * @since 1.6.2
 	 */
 	public static void printRunningThreads() {
 		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
@@ -394,7 +400,7 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Registede only if listener in not null
+	 * Registered only if listener in not null.
 	 */
 	private class BattleObserver extends BattleAdaptor {
 		private RobocodeListener listener;
@@ -408,7 +414,7 @@ public class RobocodeEngine {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			listener.battleComplete(battleSpecification, convertResult(event.getResults()));
+			listener.battleComplete(battleSpecification, RobotResults.convertResults(event.getResults()));
 		}
 
 		@Override

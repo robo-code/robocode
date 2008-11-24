@@ -102,50 +102,81 @@ public abstract class Event implements Comparable<Event> {
 	/**
 	 * Returns the time this event occurred.
 	 *
-	 * @return the time this event occurred
+	 * @return the time this event occurred.
 	 */
 	public final long getTime() {
 		return time;
 	}
 
+	/**
+	 * Sets the priority of this event, which must be between 0 and 99.
+	 *
+	 * @param newPriority the new priority of this event.
+	 */
 	// this method is invisible on RobotAPI
 	final void setPriority(int newPriority) {
 		if (newPriority < 0) {
-			System.out.println("SYSTEM: Priority must be between 0 and 99.");
-			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 0.");
+			System.out.println("SYSTEM: Priority must be between 0 and 99");
+			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 0");
 			newPriority = 0;
 		} else if (newPriority > 99) {
-			System.out.println("SYSTEM: Priority must be between 0 and 99.");
-			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 99.");
+			System.out.println("SYSTEM: Priority must be between 0 and 99");
+			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 99");
 			newPriority = 99;
 		}
 		priority = newPriority;
 	}
 
+	/**
+	 * Sets the time when this event occurred.
+	 *
+	 * @param time the time when this event occurred. 
+	 */
 	// this method is invisible on RobotAPI
-	private void setTime(long newTime) {
-		time = newTime;
+	private void setTime(long time) {
+		this.time = time;
 	}
 
+	/**
+	 * Dispatch this event for a robot, it's statistics, and graphics context.
+	 *
+	 * @param robot the robot to dispatch to.
+	 * @param statics the statistics to dispatch to.
+	 * @param graphics the graphics to dispatch to.
+	 */
 	// this method is invisible on RobotAPI
 	abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
 
+	/**
+	 * Returns the default priority of this event class.
+	 * 
+	 * @return the default priority of this event class.
+	 */
 	// this method is invisible on RobotAPI
 	abstract int getDefaultPriority();
 
+	/**
+	 * Checks if this event must be delivered event after timeout.
+	 *
+	 * @return {@code true} when this event must be delivered even after timeout; {@code false} otherwise.
+	 */
 	// this method is invisible on RobotAPI
 	boolean isCriticalEvent() {
 		return false;
 	}
 
+	/**
+	 * Creates a hidden event helper for accessing hidden methods on this object.
+	 * 
+	 * @return a hidden event helper.
+	 */
 	// this method is invisible on RobotAPI
-	@SuppressWarnings({ "UnusedDeclaration"})
-	private static IHiddenEventHelper createHiddenHelper() {
-		return new EventHiddenHelper();
+	static IHiddenEventHelper createHiddenHelper() {
+		return new HiddenEventHelper();
 	}
 
 	// this class is invisible on RobotAPI
-	private static class EventHiddenHelper implements IHiddenEventHelper {
+	private static class HiddenEventHelper implements IHiddenEventHelper {
 
 		public void setTime(Event event, long newTime) {
 			event.setTime(newTime);
@@ -167,5 +198,4 @@ public abstract class Event implements Comparable<Event> {
 			event.dispatch(robot, statics, graphics);
 		}
 	}
-
 }

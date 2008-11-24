@@ -157,6 +157,11 @@ public class Bullet implements Serializable {
 		return isActive;
 	}
 
+	/**
+	 * Updates this bullet based on the specified bullet status.
+	 *
+	 * @param status the new bullet status.
+	 */
 	// this method is invisible on RobotAPI
 	private void update(BulletStatus status) {
 		x = status.x;
@@ -165,9 +170,13 @@ public class Bullet implements Serializable {
 		isActive = status.isActive;
 	}
 
+	/**
+	 * Creates a hidden event helper for accessing hidden methods on this object.
+	 * 
+	 * @return a hidden event helper.
+	 */
 	// this method is invisible on RobotAPI
-	@SuppressWarnings({ "UnusedDeclaration"})
-	private static IHiddenBulletHelper createHiddenHelper() {
+	static IHiddenBulletHelper createHiddenHelper() {
 		return new HiddenBulletHelper();
 	}
 
@@ -178,5 +187,4 @@ public class Bullet implements Serializable {
 			bullet.update(status);
 		}
 	}
-
 }

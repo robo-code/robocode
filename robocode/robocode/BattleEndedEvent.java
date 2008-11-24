@@ -40,36 +40,6 @@ public final class BattleEndedEvent extends Event {
 	private final BattleResults results;
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	final int getDefaultPriority() {
-		return DEFAULT_PRIORITY;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getPriority() {
-		return DEFAULT_PRIORITY;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
-		if (robot != null) {
-			IBasicEvents listener = robot.getBasicEventListener();
-
-			if (listener != null && IBasicEvents2.class.isAssignableFrom(listener.getClass())) {
-				((IBasicEvents2) listener).onBattleEnded(this);
-			}
-		}
-	}
-
-	/**
 	 * Called by the game to create a new BattleEndedEvent.
 	 *
 	 * @param aborted {@code true} if the battle was aborted; {@code false} otherwise.
@@ -99,8 +69,39 @@ public final class BattleEndedEvent extends Event {
 	}
 
 	/**
-	 * @return True when the event is delivered even after timeout.
+	 * {@inheritDoc}
 	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final int getPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null && IBasicEvents2.class.isAssignableFrom(listener.getClass())) {
+				((IBasicEvents2) listener).onBattleEnded(this);
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	final boolean isCriticalEvent() {
 		return true;
 	}

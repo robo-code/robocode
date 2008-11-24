@@ -39,7 +39,7 @@ public abstract class _Robot extends _RobotBase {
 	private String gunImageName;
 	private String radarImageName;
 
-	// internal for this package
+	// Internal for this package
 	_Robot() {}
 
 	/**

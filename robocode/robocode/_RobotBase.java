@@ -38,7 +38,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  */
 public abstract class _RobotBase implements IBasicRobot, Runnable {
 
-	// internal for this package
+	// Internal for this package
 	_RobotBase() {}
 
 	IBasicRobotPeer peer;
