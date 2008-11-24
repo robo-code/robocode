@@ -55,7 +55,7 @@ public final class KeyPressedEvent extends KeyEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 		if (statics.isInteractiveRobot()) {
 			IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 

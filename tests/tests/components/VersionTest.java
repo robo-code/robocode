@@ -13,7 +13,6 @@ package components;
 
 
 import org.junit.Test;
-import static org.hamcrest.CoreMatchers.is;
 import robocode.manager.VersionManager;
 import helpers.Assert;
 

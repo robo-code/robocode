@@ -255,7 +255,7 @@ public class BattlesRunner {
 
 		@Override
 		public void onBattleCompleted(final BattleCompletedEvent event) {
-			lastResults = RobocodeEngine.convertResult(event.getResults());
+			lastResults = RobotResults.convertResults(event.getResults());
 		}
 	}
 }

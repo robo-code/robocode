@@ -1,5 +1,5 @@
-Version 1.6.2 Beta
-(11/16/2008)
+Version 1.6.2 Beta 2
+(11/25/2008)
 -------------
 o Bugfixes
   -- [2214620] Robot was paying time for painting. Now we giving him unlimited time when painting 
@@ -16,7 +16,10 @@ o New feature
   -- new dialog for battle console and turn snapshot
   -- robot dialog have new tab-page with robot properties
   -- robot dialog have green hinted button for painting robots
-  -- robotAPI has new method putDebugProperty, see sample.PaintingRobot robot for example of usage
+  -- robotAPI has new method setDebugProperty, see sample.PaintingRobot robot for example of usage
+  -- the robocode.control package has been improved, so that the RobocodeEngine is able to return
+     much more detailed information about was is going on inside the battle for each turn, round,
+     and battle thru a new IBattleListener interface
 
 o Changes
   -- redesigned RobotPeer and Battle. Now we send messages between threads instead of synchronizing

@@ -139,8 +139,6 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 *       sendMessage("sample.DroidBot", "I'm here!");
 	 *   }
 	 * </pre>
-	 * <p/>
-	 * <<<<<<< .mine
 	 *
 	 * @param name	the name of the intended recipient of the message
 	 * @param message the message to send

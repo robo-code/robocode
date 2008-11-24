@@ -63,7 +63,7 @@ public final class BulletMissedEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 		IBasicEvents listener = robot.getBasicEventListener();
 
 		if (listener != null) {

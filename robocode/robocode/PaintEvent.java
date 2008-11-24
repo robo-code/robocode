@@ -52,7 +52,7 @@ public final class PaintEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 		if (statics.isPaintRobot()) {
 			IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
 

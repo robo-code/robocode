@@ -235,7 +235,7 @@ public final class ScannedRobotEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int compareTo(Event event) {
+	public final int compareTo(Event event) {
 		final int res = super.compareTo(event);
 
 		if (res != 0) {
@@ -262,7 +262,7 @@ public final class ScannedRobotEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 		IBasicEvents listener = robot.getBasicEventListener();
 
 		if (listener != null) {

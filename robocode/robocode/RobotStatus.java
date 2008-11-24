@@ -314,6 +314,7 @@ public final class RobotStatus {
 	 * Returns how many opponents that are left in the current round.
 	 *
 	 * @return how many opponents that are left in the current round.
+	 * @since 1.6.2
 	 */
 	public int getOthers() {
 		return others;
@@ -324,6 +325,7 @@ public final class RobotStatus {
 	 *
 	 * @return the number of rounds in the current battle
 	 * @see #getRoundNum()
+	 * @since 1.6.2
 	 */
 	public int getNumRounds() {
 		return numRounds;
@@ -335,6 +337,7 @@ public final class RobotStatus {
 	 *
 	 * @return the current round number of the battle
 	 * @see #getNumRounds()
+	 * @since 1.6.2
 	 */
 	public int getRoundNum() {
 		return roundNum;
