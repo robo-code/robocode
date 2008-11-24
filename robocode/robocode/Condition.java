@@ -112,7 +112,7 @@ public abstract class Condition {
 	 *
 	 * @return the priority of this condition
 	 */
-	public int getPriority() {
+	public final int getPriority() {
 		return priority;
 	}
 

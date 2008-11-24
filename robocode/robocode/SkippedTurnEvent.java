@@ -68,7 +68,7 @@ public final class SkippedTurnEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getPriority() {
+	public final int getPriority() {
 		return DEFAULT_PRIORITY;
 	}
 
