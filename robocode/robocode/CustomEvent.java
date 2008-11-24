@@ -32,7 +32,7 @@ import java.awt.*;
  * @see #getCondition()
  */
 public class CustomEvent extends Event {
-	private static final int classPriority = 80;
+	private static final int DEFAULT_PRIORITY = 80;
 
 	private final Condition condition;
 
@@ -89,7 +89,7 @@ public class CustomEvent extends Event {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

@@ -34,7 +34,7 @@ import java.awt.*;
  * @since 1.6.1
  */
 public final class BattleEndedEvent extends Event {
-	private final static int classPriority = 100; // System event -> cannot be changed!;
+	private final static int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
 
 	private final boolean aborted;
 	private final BattleResults results;
@@ -44,7 +44,7 @@ public final class BattleEndedEvent extends Event {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public final class BattleEndedEvent extends Event {
 	 */
 	@Override
 	public int getPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

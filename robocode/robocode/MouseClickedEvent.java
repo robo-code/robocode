@@ -37,7 +37,7 @@ import java.awt.*;
  * @since 1.6.1
  */
 public final class MouseClickedEvent extends MouseEvent {
-	private final static int classPriority = 98;
+	private final static int DEFAULT_PRIORITY = 98;
 
 	/**
 	 * Called by the game to create a new MouseClickedEvent.
@@ -53,7 +53,7 @@ public final class MouseClickedEvent extends MouseEvent {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

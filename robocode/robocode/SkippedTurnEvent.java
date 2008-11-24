@@ -55,7 +55,7 @@ import java.awt.*;
  * @see SkippedTurnEvent
  */
 public final class SkippedTurnEvent extends Event {
-	private final static int classPriority = 100; // System event -> cannot be changed!;
+	private final static int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
 
 	/**
 	 * Called by the game to create a new SkippedTurnEvent.
@@ -69,7 +69,7 @@ public final class SkippedTurnEvent extends Event {
 	 */
 	@Override
 	public int getPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public final class SkippedTurnEvent extends Event {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

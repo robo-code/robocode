@@ -29,7 +29,7 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class HitRobotEvent extends Event {
-	private static int classPriority = 40;
+	private final static int DEFAULT_PRIORITY = 40;
 
 	private final String robotName;
 	private final double bearing;
@@ -154,7 +154,7 @@ public final class HitRobotEvent extends Event {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

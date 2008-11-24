@@ -28,7 +28,7 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class RobotDeathEvent extends Event {
-	private static int classPriority = 70;
+	private final static int DEFAULT_PRIORITY = 70;
 
 	private final String robotName;
 
@@ -65,7 +65,7 @@ public final class RobotDeathEvent extends Event {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

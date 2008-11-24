@@ -38,7 +38,7 @@ import java.awt.event.MouseWheelEvent;
  * @since 1.6.1
  */
 public final class MouseWheelMovedEvent extends MouseEvent {
-	private final static int classPriority = 98;
+	private final static int DEFAULT_PRIORITY = 98;
 
 	/**
 	 * Called by the game to create a new MouseWheelMovedEvent.
@@ -54,7 +54,7 @@ public final class MouseWheelMovedEvent extends MouseEvent {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

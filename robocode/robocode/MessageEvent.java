@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @author Mathew A. Nelson (original)
  */
 public final class MessageEvent extends Event {
-	private static int classPriority = 75;
+	private final static int DEFAULT_PRIORITY = 75;
 
 	private final String sender;
 	private final Serializable message;
@@ -70,7 +70,7 @@ public final class MessageEvent extends Event {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

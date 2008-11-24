@@ -29,7 +29,7 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class HitWallEvent extends Event {
-	private static int classPriority = 30;
+	private final static int DEFAULT_PRIORITY = 30;
 
 	private final double bearing;
 
@@ -76,7 +76,7 @@ public final class HitWallEvent extends Event {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**

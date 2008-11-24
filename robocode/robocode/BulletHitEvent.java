@@ -28,7 +28,7 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class BulletHitEvent extends Event {
-	private static int classPriority = 50;
+	private final static int DEFAULT_PRIORITY = 50;
 
 	private final String name;
 	private final double energy;
@@ -108,7 +108,7 @@ public final class BulletHitEvent extends Event {
 	 */
 	@Override
 	final int getDefaultPriority() {
-		return classPriority;
+		return DEFAULT_PRIORITY;
 	}
 
 	/**
