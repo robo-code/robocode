@@ -21,8 +21,8 @@ import robocode.util.XmlWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Dictionary;
+import java.util.List;
 
 
 /**
@@ -59,7 +59,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 			if (results != null) {
 				writer.startElement("results"); {
 					for (BattleResults result : results) {
-						result.writeXml(writer, options);
+						new BattleResultsWrapper(result).writeXml(writer, options);
 					}
 				}
 				writer.endElement();
@@ -116,7 +116,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 					public XmlSerializable read(XmlReader reader) {
 						recordInfo.results = new ArrayList<BattleResults>();
 						// prototype
-						return new BattleResults();
+						return new BattleResultsWrapper();
 					}
 
 					public void add(XmlSerializable child) {
