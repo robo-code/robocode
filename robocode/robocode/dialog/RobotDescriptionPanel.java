@@ -45,9 +45,9 @@ public class RobotDescriptionPanel extends JPanel {
 
 	private final static String BLANK_STRING = "                                                                        ";
 
-	private EventManager eventManager = new EventManager();
+	private EventHandler eventHandler = new EventHandler();
 
-	private class EventManager implements ActionListener {
+	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == getDetailsButton()) {
 				if (currentRobotSpecification != null) {
@@ -108,7 +108,7 @@ public class RobotDescriptionPanel extends JPanel {
 			detailsButton.setMnemonic('W');
 			detailsButton.setVisible(false);
 			detailsButton.setAlignmentY(Component.CENTER_ALIGNMENT);
-			detailsButton.addActionListener(eventManager);
+			detailsButton.addActionListener(eventHandler);
 		}
 		return detailsButton;
 	}
