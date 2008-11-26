@@ -153,17 +153,17 @@ public final class VersionManager implements IVersionManager {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (inputStreamReader != null) {
 				try {
 					inputStreamReader.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (reader != null) {
 				try {
 					reader.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -210,7 +210,7 @@ public final class VersionManager implements IVersionManager {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -254,12 +254,12 @@ public final class VersionManager implements IVersionManager {
 			if (fileReader != null) {
 				try {
 					fileReader.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 

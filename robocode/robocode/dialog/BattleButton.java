@@ -29,9 +29,6 @@ public class BattleButton extends JButton implements ActionListener {
 	private final IRobotDialogManager robotDialogManager;
 	private BattleDialog battleDialog;
 
-	/**
-	 * BattleButton constructor
-	 */
 	public BattleButton(IRobotDialogManager robotDialogManager, boolean attach) {
 		this.robotDialogManager = robotDialogManager;
 

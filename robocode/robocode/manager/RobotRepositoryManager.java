@@ -565,12 +565,12 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (writer != null) {
 				try {
 					writer.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}
@@ -593,7 +593,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 				out.println("then copy the files into your robots directory");
 				out.println("and make the changes there.");
 				out.close();
-			} catch (IOException e) {}
+			} catch (IOException ignored) {}
 		}
 		WindowUtil.setStatus("Extracting .jar: " + jarSpecification.getFileName());
 
@@ -631,7 +631,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		return 16;

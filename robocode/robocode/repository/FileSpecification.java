@@ -20,7 +20,6 @@ package robocode.repository;
 
 
 import robocode.io.FileUtil;
-import robocode.io.Logger;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.NameManager;
 
@@ -71,13 +70,8 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	private boolean duplicate;
 
 	@Override
-	public Object clone() {
-		try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			Logger.logError("Clone not supported!");
-			return null;
-		}
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 	protected FileSpecification() {}

@@ -200,12 +200,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (dis != null) {
 				try {
 					dis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -365,12 +365,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (dis != null) {
 				try {
 					dis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -501,7 +501,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				if (in != null) {
 					try {
 						in.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
@@ -647,10 +647,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				if (idx >= 0) {
 					extension = fn.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".java")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".java");
 			}
 
 			@Override
@@ -691,7 +688,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				if (fileReader != null) {
 					try {
 						fileReader.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
@@ -730,7 +727,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

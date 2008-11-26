@@ -112,7 +112,7 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		// Open battles file
@@ -204,7 +204,7 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -240,7 +240,7 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -385,7 +385,7 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 

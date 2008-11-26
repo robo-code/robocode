@@ -63,9 +63,6 @@ public class ConfirmPanel extends WizardPanel {
 		}
 	}
 
-	/**
-	 * PackagerOptionsPanel constructor comment.
-	 */
 	public ConfirmPanel(RobotPackager robotPackager) {
 		super();
 		this.robotPackager = robotPackager;

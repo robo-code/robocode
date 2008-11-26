@@ -51,7 +51,7 @@ public class MyFirstLeader extends TeamRobot {
 		try {
 			// Send RobotColors object to our entire team
 			broadcastMessage(c);
-		} catch (IOException e) {}
+		} catch (IOException ignored) {}
 		// Normal behavior
 		while (true) {
 			setTurnRadarRight(10000);

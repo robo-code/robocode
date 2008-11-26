@@ -39,9 +39,6 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 	private JEditorPane editorPane;
 	private int currentLines, lineWidth, anchor, lastIndex, offset, textWidth;
 
-	/**
-	 * Constructor for LineNumbers.
-	 */
 	public LineNumbers(JEditorPane editorPane) {
 		this.editorPane = editorPane;
 		editorPane.getDocument().addDocumentListener(this);
@@ -195,7 +192,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 			}
 			editorPane.setSelectionStart(firstindex);
 			editorPane.setSelectionEnd(lastindex);
-		} catch (BadLocationException ex) {}
+		} catch (BadLocationException ignored) {}
 	}
 
 	/**

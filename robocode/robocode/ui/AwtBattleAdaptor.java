@@ -156,7 +156,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 	private int fps;
 	private long measuredFrameCounter;
 	private long measuredFrameStartTime;
-	private boolean skipSameFrames;
+	private final boolean skipSameFrames;
 
 	private void calculateFPS() {
 		// Calculate the current frames per second (FPS)

@@ -48,20 +48,11 @@ public class ConsoleDialog extends JDialog {
 		}
 	}
 
-	/**
-	 * CompilerOutputDialog constructor comment.
-	 */
 	public ConsoleDialog() {
 		super();
 		initialize();
 	}
 
-	/**
-	 * CompilerOutputDialog constructor comment.
-	 *
-	 * @param owner Frame
-	 * @param modal boolean
-	 */
 	public ConsoleDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
 		initialize();
@@ -82,11 +73,6 @@ public class ConsoleDialog extends JDialog {
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
 	}
 
-	/**
-	 * Return the buttonsPanel
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getButtonsPanel() {
 		if (buttonsPanel == null) {
 			buttonsPanel = new JPanel();
@@ -106,11 +92,6 @@ public class ConsoleDialog extends JDialog {
 		return buttonsPanel;
 	}
 
-	/**
-	 * Return the compilerOutputDialogContentPane
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getConsoleDialogContentPane() {
 		if (consoleDialogContentPane == null) {
 			consoleDialogContentPane = new JPanel();
@@ -147,11 +128,6 @@ public class ConsoleDialog extends JDialog {
 		return editMenu;
 	}
 
-	/**
-	 * Return the okButton
-	 *
-	 * @return JButton
-	 */
 	public JButton getOkButton() {
 		if (okButton == null) {
 			okButton = new JButton();
@@ -161,11 +137,6 @@ public class ConsoleDialog extends JDialog {
 		return okButton;
 	}
 
-	/**
-	 * Return the scrollPane.
-	 *
-	 * @return JScrollPane
-	 */
 	private ConsoleScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new ConsoleScrollPane();
@@ -173,9 +144,6 @@ public class ConsoleDialog extends JDialog {
 		return scrollPane;
 	}
 
-	/**
-	 * Initialize the class.
-	 */
 	private void initialize() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setSize(426, 240);

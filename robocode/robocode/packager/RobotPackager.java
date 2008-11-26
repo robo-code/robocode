@@ -322,7 +322,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 								try {
 									u = new URL("http://" + w);
 									getPackagerOptionsPanel().getWebpageField().setText(u.toString());
-								} catch (MalformedURLException e2) {}
+								} catch (MalformedURLException ignored) {}
 							}
 						}
 						robotFileSpecification.setRobotWebpage(u);
@@ -343,11 +343,16 @@ public class RobotPackager extends JDialog implements WizardListener {
 							if (fos2 != null) {
 								try {
 									fos2.close();
-								} catch (IOException e) {}
+								} catch (IOException ignored) {}
 							}
 						}
 						// Create clone with version for jar
-						robotFileSpecification = (RobotFileSpecification) robotFileSpecification.clone();
+						try {
+							robotFileSpecification = (RobotFileSpecification) robotFileSpecification.clone();
+						} catch (CloneNotSupportedException e) {
+							out.println(e);
+							return 8;
+						}
 						robotFileSpecification.setRobotVersion(getPackagerOptionsPanel().getVersionField().getText());
 						addRobotSpecification(out, jarout, robotFileSpecification);
 					} else {
@@ -365,7 +370,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 							try {
 								u = new URL("http://" + w);
 								getPackagerOptionsPanel().getWebpageField().setText(u.toString());
-							} catch (MalformedURLException e2) {}
+							} catch (MalformedURLException ignored) {}
 						}
 					}
 					teamSpecification.setTeamWebpage(u);
@@ -386,11 +391,16 @@ public class RobotPackager extends JDialog implements WizardListener {
 						if (fos2 != null) {
 							try {
 								fos2.close();
-							} catch (IOException e) {}
+							} catch (IOException ignored) {}
 						}
 					}
 
-					teamSpecification = (TeamSpecification) teamSpecification.clone();
+					try {
+						teamSpecification = (TeamSpecification) teamSpecification.clone();
+					} catch (CloneNotSupportedException e) {
+						out.println(e);
+						return 8;
+					}
 					teamSpecification.setTeamVersion(getPackagerOptionsPanel().getVersionField().getText());
 
 					StringTokenizer teamTokenizer = new StringTokenizer(teamSpecification.getMembers(), ",");
@@ -418,7 +428,12 @@ public class RobotPackager extends JDialog implements WizardListener {
 								}
 								if (current.isDevelopmentVersion()
 										&& (current.getVersion() == null || current.getVersion().length() == 0)) {
-									current = (RobotFileSpecification) current.clone();
+									try {
+										current = (RobotFileSpecification) current.clone();
+									} catch (CloneNotSupportedException e) {
+										out.println(e);
+										return 8;
+									}
 									current.setRobotVersion(
 											"[" + getPackagerOptionsPanel().getVersionField().getText() + "]");
 								}
@@ -458,7 +473,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			if (fos != null) {
 				try {
 					fos.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		repositoryManager.clearRobotList();

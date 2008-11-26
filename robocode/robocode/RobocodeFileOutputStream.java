@@ -199,7 +199,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 		} catch (IOException e) {
 			try {
 				close();
-			} catch (IOException f) {}
+			} catch (IOException ignored) {}
 			throw e;
 		}
 	}
@@ -223,7 +223,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 			close();
 			try {
 				close();
-			} catch (IOException f) {}
+			} catch (IOException ignored) {}
 			throw e;
 		}
 	}
@@ -244,7 +244,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 			close();
 			try {
 				close();
-			} catch (IOException f) {}
+			} catch (IOException ignored) {}
 			throw e;
 		}
 	}

@@ -40,9 +40,6 @@ public class WindowPositionManager implements ComponentListener {
 
 	private Properties windowPositions;
 
-	/**
-	 * WindowPositionManager constructor comment.
-	 */
 	public WindowPositionManager() {
 		super();
 	}
@@ -64,7 +61,7 @@ public class WindowPositionManager implements ComponentListener {
 				if (in != null) {
 					try {
 						in.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
@@ -130,7 +127,7 @@ public class WindowPositionManager implements ComponentListener {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

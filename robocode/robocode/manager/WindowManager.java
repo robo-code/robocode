@@ -118,10 +118,7 @@ public class WindowManager implements IWindowManager {
 				new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
-				if (pathname.isDirectory()) {
-					return true;
-				}
-				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
+				return pathname.isDirectory() || pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
 						== pathname.getName().length() - defExt.length();
 			}
 
@@ -147,10 +144,7 @@ public class WindowManager implements IWindowManager {
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
-				if (pathname.isDirectory()) {
-					return true;
-				}
-				return pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
+				return pathname.isDirectory() || pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
 						== pathname.getName().length() - defExt.length();
 			}
 

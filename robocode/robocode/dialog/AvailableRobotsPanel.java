@@ -81,11 +81,6 @@ public class AvailableRobotsPanel extends JPanel {
 		initialize();
 	}
 
-	/**
-	 * Return the Page property value.
-	 *
-	 * @return JPanel
-	 */
 	private void initialize() {
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title));
 		setLayout(new BorderLayout());

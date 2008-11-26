@@ -70,11 +70,6 @@ public class ConsoleScrollPane extends JScrollPane {
 		return getTextPane().getText();
 	}
 
-	/**
-	 * Return the textPane
-	 *
-	 * @return JTextPane
-	 */
 	public JTextArea getTextPane() {
 		if (textPane == null) {
 			textPane = new JTextArea();
@@ -85,11 +80,6 @@ public class ConsoleScrollPane extends JScrollPane {
 		return textPane;
 	}
 
-	/**
-	 * Return the scrollPane.
-	 *
-	 * @return JScrollPane
-	 */
 	private void initialize() {
 		lines = 0;
 		setViewportView(getTextPane());

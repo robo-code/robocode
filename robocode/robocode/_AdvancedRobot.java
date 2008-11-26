@@ -38,7 +38,7 @@ import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
  */
 public class _AdvancedRobot extends Robot {
 
-	protected _AdvancedRobot() {}
+	_AdvancedRobot() {}
 
 	/**
 	 * @param degrees the amount of degrees to turn the robot's gun to the left.

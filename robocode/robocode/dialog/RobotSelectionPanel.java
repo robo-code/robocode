@@ -114,9 +114,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		}
 	}
 
-	/**
-	 * NewBattleRobotsTab constructor comment.
-	 */
 	public RobotSelectionPanel(IRepositoryManager repositoryManager, int minRobots, int maxRobots,
 			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
 			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
@@ -176,11 +173,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		availableRobotsPanel.getAvailableRobotsList().requestFocus();
 	}
 
-	/**
-	 * Return the addAllButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getAddAllButton() {
 		if (addAllButton == null) {
 			addAllButton = new JButton();
@@ -192,11 +184,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		return addAllButton;
 	}
 
-	/**
-	 * Return the addButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getAddButton() {
 		if (addButton == null) {
 			addButton = new JButton();
@@ -231,11 +218,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		return buttonsPanel;
 	}
 
-	/**
-	 * Return the removeAllButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getRemoveAllButton() {
 		if (removeAllButton == null) {
 			removeAllButton = new JButton();
@@ -247,11 +229,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		return removeAllButton;
 	}
 
-	/**
-	 * Return the removeButton property value.
-	 *
-	 * @return JButton
-	 */
 	private JButton getRemoveButton() {
 		if (removeButton == null) {
 			removeButton = new JButton();
@@ -289,11 +266,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		return selectedRobots;
 	}
 
-	/**
-	 * Return the selectedRobotsList.
-	 *
-	 * @return JList
-	 */
 	private JList getSelectedRobotsList() {
 		if (selectedRobotsList == null) {
 			selectedRobotsList = new JList();
@@ -333,11 +305,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		return selectedRobotsPanel;
 	}
 
-	/**
-	 * Return the selectedRobotsScrollPane property value.
-	 *
-	 * @return JScrollPane
-	 */
 	private JScrollPane getSelectedRobotsScrollPane() {
 		if (selectedRobotsScrollPane == null) {
 			selectedRobotsScrollPane = new JScrollPane();
@@ -346,11 +313,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		return selectedRobotsScrollPane;
 	}
 
-	/**
-	 * Return the Page property value.
-	 *
-	 * @return JPanel
-	 */
 	private void initialize() {
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setLayout(new BorderLayout());
@@ -551,11 +513,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		return numRoundsPanel;
 	}
 
-	/**
-	 * Return the numRoundsTextField
-	 *
-	 * @return JTextField
-	 */
 	private JTextField getNumRoundsTextField() {
 		final robocode.manager.RobocodeProperties props = repositoryManager.getManager().getProperties();
 
@@ -591,7 +548,7 @@ public class RobotSelectionPanel extends WizardPanel {
 							props.setNumberOfRounds(numRounds);
 
 						}
-					} catch (NumberFormatException nfe) {}
+					} catch (NumberFormatException ignored) {}
 				}
 			});
 		}

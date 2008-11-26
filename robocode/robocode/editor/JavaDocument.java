@@ -68,7 +68,7 @@ public class JavaDocument extends PlainDocument {
 			Element element = getDefaultRootElement().getElement(elementIndex);
 			int startOffset = element.getStartOffset();
 			int endOffset = element.getEndOffset();
-			String elementText = null;
+			String elementText;
 
 			elementText = getText(startOffset, endOffset - startOffset);
 			int tabCount = 0;
@@ -153,7 +153,7 @@ public class JavaDocument extends PlainDocument {
 
 		int startOffset = element.getStartOffset();
 		int endOffset = element.getEndOffset();
-		String elementText = null;
+		String elementText;
 
 		try {
 			elementText = getText(startOffset, endOffset - startOffset);
@@ -161,7 +161,7 @@ public class JavaDocument extends PlainDocument {
 			Logger.logError("Error processing updates: ", e);
 			return;
 		}
-		boolean followingLineComment = false,
+		boolean followingLineComment,
 				previousLineComment = false,
 				startsComment = false,
 				endsComment = false;

@@ -47,7 +47,7 @@ public class ObjectCloner {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -69,7 +69,7 @@ public class ObjectCloner {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 

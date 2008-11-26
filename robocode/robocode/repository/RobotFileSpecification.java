@@ -130,7 +130,7 @@ public class RobotFileSpecification extends FileSpecification {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 

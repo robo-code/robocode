@@ -67,18 +67,15 @@ public class CompilerPreferencesDialog extends JDialog {
 		}
 	}
 
-	private void initialize() {
-		setTitle("Compiler Preferences");
-		setContentPane(getCompilerPreferencesContentPane());
-	}
-
-	/**
-	 * PackagerOptionsPanel constructor comment.
-	 */
 	public CompilerPreferencesDialog(JFrame owner) {
 		super(owner, true);
 		this.compilerProperties = RobocodeCompilerFactory.getCompilerProperties();
 		initialize();
+	}
+
+	private void initialize() {
+		setTitle("Compiler Preferences");
+		setContentPane(getCompilerPreferencesContentPane());
 	}
 
 	public JButton getCancelButton() {
@@ -179,7 +176,7 @@ public class CompilerPreferencesDialog extends JDialog {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

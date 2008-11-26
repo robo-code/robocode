@@ -39,7 +39,7 @@ import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
  */
 public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
-	protected _AdvancedRadiansRobot() {}
+	_AdvancedRadiansRobot() {}
 
 	/**
 	 * Returns the direction that the robot's body is facing, in radians.

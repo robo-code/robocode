@@ -65,7 +65,7 @@ public class AwtAttack extends AdvancedRobot {
 	}
 
 	private void writeAttack() {
-		FileOutputStream fs = null;
+		FileOutputStream fs;
 
 		try {
 			fs = new FileOutputStream("C:\\Robocode.attack");

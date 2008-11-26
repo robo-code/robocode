@@ -189,12 +189,7 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		if (attemptedFile.equals(allowedDirectory)) {
-			return true; // recursive check
-		}
-
-		return attemptedFile.getParentFile().equals(allowedDirectory);
-
+		return attemptedFile.equals(allowedDirectory) || attemptedFile.getParentFile().equals(allowedDirectory);
 	}
 
 	public void removeStream(RobocodeFileOutputStream s) {

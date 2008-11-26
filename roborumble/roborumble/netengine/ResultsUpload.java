@@ -127,7 +127,7 @@ public class ResultsUpload {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -339,7 +339,7 @@ public class ResultsUpload {
 			if (rd != null) {
 				try {
 					rd.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		return errorsfound;

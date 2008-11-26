@@ -97,11 +97,6 @@ public class TeamCreator extends JDialog implements WizardListener {
 		return teamCreatorContentPane;
 	}
 
-	/**
-	 * Return the Page property value.
-	 *
-	 * @return JPanel
-	 */
 	protected RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
 			robotSelectionPanel = new RobotSelectionPanel(repositoryManager, minRobots, maxRobots, false,
@@ -110,11 +105,6 @@ public class TeamCreator extends JDialog implements WizardListener {
 		return robotSelectionPanel;
 	}
 
-	/**
-	 * Return the tabbedPane.
-	 *
-	 * @return JTabbedPane
-	 */
 	private WizardCardPanel getWizardPanel() {
 		if (wizardPanel == null) {
 			wizardPanel = new WizardCardPanel(this);
@@ -186,7 +176,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 				try {
 					u = new URL("http://" + w);
 					teamCreatorOptionsPanel.getWebpageField().setText(u.toString());
-				} catch (MalformedURLException e2) {}
+				} catch (MalformedURLException ignored) {}
 			}
 		}
 		teamSpec.setTeamWebpage(u);

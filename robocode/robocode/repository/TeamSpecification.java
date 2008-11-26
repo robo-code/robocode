@@ -101,7 +101,7 @@ public class TeamSpecification extends FileSpecification {
 	}
 
 	@Override
-	public Object clone() {
+	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
 

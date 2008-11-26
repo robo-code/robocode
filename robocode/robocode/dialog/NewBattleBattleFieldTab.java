@@ -46,13 +46,12 @@ public class NewBattleBattleFieldTab extends JPanel {
 
 	private JLabel battleFieldSizeLabel = createBattleFieldSizeLabel();
 
-	private JPanel sliderPanel = createSliderPanel();
-	private JPanel buttonsPanel = createButtonsPanel();
-
 	public NewBattleBattleFieldTab() {
 		super();
 
+		JPanel sliderPanel = createSliderPanel();
 		add(sliderPanel);
+		JPanel buttonsPanel = createButtonsPanel();
 		add(buttonsPanel);
 	}
 

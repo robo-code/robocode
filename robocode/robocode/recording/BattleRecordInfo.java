@@ -167,16 +167,10 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 
 		private static final long serialVersionUID = BattleResults.serialVersionUID;
 
-		/**
-		 * Constructs this object.
-		 */
 		public BattleResultsWrapper() {
 			super(null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		}
 
-		/**
-		 * Constructs this object.
-		 */
 		public BattleResultsWrapper(BattleResults results) {
 			super(results.getTeamLeaderName(), results.getRank(), results.getScore(), results.getSurvival(),
 					results.getLastSurvivorBonus(), results.getBulletDamage(), results.getBulletDamageBonus(),

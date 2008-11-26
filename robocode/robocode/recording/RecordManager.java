@@ -296,7 +296,7 @@ public class RecordManager implements IRecordManager {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		ObjectInputStream ois = null;
-		Hashtable<String, Object> xmlOptions = null;
+		Hashtable<String, Object> xmlOptions;
 
 		try {
 			fos = new FileOutputStream(recordFilename);
@@ -361,8 +361,6 @@ public class RecordManager implements IRecordManager {
 						}
 						bos.flush();
 						fos.flush();
-					} else {
-						int l = 0;
 					}
 				}
 				if (format == BattleRecordFormat.XML) {

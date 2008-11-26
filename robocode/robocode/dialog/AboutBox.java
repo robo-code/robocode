@@ -79,10 +79,10 @@ public final class AboutBox extends JDialog {
 			+ "</center></td></tr></table></body>";
 
 	// Robocode version
-	private String robocodeVersion;
+	private final String robocodeVersion;
 
 	// Robocode icon URL
-	private java.net.URL iconURL;
+	private final java.net.URL iconURL;
 
 	// Content pane
 	private JPanel aboutBoxContentPane;
@@ -96,7 +96,7 @@ public final class AboutBox extends JDialog {
 	private String htmlText;
 
 	// General event handler
-	private ActionListener eventHandler = new ActionListener() {
+	private final ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == AboutBox.this.getOkButton()) {
 				AboutBox.this.dispose();
@@ -105,7 +105,7 @@ public final class AboutBox extends JDialog {
 	};
 
 	// Hyperlink event handler
-	private HyperlinkListener hyperlinkHandler = new HyperlinkListener() {
+	private final HyperlinkListener hyperlinkHandler = new HyperlinkListener() {
 		public void hyperlinkUpdate(HyperlinkEvent event) {
 			if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 				try {
@@ -117,9 +117,6 @@ public final class AboutBox extends JDialog {
 		}
 	};
 
-	/**
-	 * AboutBox constructor
-	 */
 	public AboutBox(Frame owner, RobocodeManager manager) {
 		super(owner, true);
 
@@ -133,11 +130,6 @@ public final class AboutBox extends JDialog {
 		setResizable(false);
 	}
 
-	/**
-	 * Returns the content pane
-	 *
-	 * @return the content pane
-	 */
 	private JPanel getAboutBoxContentPane() {
 		if (aboutBoxContentPane == null) {
 			aboutBoxContentPane = new JPanel();
@@ -148,11 +140,6 @@ public final class AboutBox extends JDialog {
 		return aboutBoxContentPane;
 	}
 
-	/**
-	 * Returns the main panel
-	 *
-	 * @return the main panel
-	 */
 	private JEditorPane getMainPanel() {
 		if (mainPanel == null) {
 			mainPanel = new JEditorPane("text/html", getHtmlText());
@@ -163,11 +150,6 @@ public final class AboutBox extends JDialog {
 		return mainPanel;
 	}
 
-	/**
-	 * Returns the button panel
-	 *
-	 * @return the button panel
-	 */
 	private JPanel getButtonPanel() {
 		if (buttonPanel == null) {
 			buttonPanel = new JPanel();
@@ -178,11 +160,6 @@ public final class AboutBox extends JDialog {
 		return buttonPanel;
 	}
 
-	/**
-	 * Returns the OK button
-	 *
-	 * @return the OK button
-	 */
 	private JButton getOkButton() {
 		if (okButton == null) {
 			okButton = new JButton();
@@ -192,11 +169,6 @@ public final class AboutBox extends JDialog {
 		return okButton;
 	}
 
-	/**
-	 * Returns the HTML text
-	 *
-	 * @return the HTML text
-	 */
 	private String getHtmlText() {
 		if (htmlText == null) {
 			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION, System.getProperty("java.version")).replaceAll(

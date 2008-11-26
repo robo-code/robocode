@@ -60,7 +60,7 @@ public class RobocodeSecurityPolicy extends Policy {
 				if (!trustedCodeUrls.contains(u)) {
 					trustedCodeUrls.add(u);
 				}
-			} catch (MalformedURLException e) {}
+			} catch (MalformedURLException ignored) {}
 		}
 	}
 

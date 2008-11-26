@@ -56,16 +56,13 @@ public class RobotDescriptionPanel extends JPanel {
 					if (htmlFile != null && htmlFile.toString().length() > 0) {
 						try {
 							BrowserManager.openURL(htmlFile.toString());
-						} catch (IOException ex) {}
+						} catch (IOException ignored) {}
 					}
 				}
 			}
 		}
 	}
 
-	/**
-	 * NewBattleRobotsTabDescriptionPanel constructor.
-	 */
 	public RobotDescriptionPanel() {
 		super();
 		initialize();
@@ -129,11 +126,6 @@ public class RobotDescriptionPanel extends JPanel {
 		return robotNameLabel;
 	}
 
-	/**
-	 * Return the Page property value.
-	 *
-	 * @return JPanel
-	 */
 	private void initialize() {
 		setLayout(new BorderLayout());
 		JPanel p = new JPanel();

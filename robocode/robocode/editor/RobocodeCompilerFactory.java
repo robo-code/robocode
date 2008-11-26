@@ -52,9 +52,6 @@ public class RobocodeCompilerFactory {
 		'-', '\\', '|', '/'
 	};
 
-	/**
-	 * RobocodeCompiler constructor comment.
-	 */
 	public RobocodeCompilerFactory() {
 		super();
 	}
@@ -97,7 +94,7 @@ public class RobocodeCompilerFactory {
 		FileOutputStream fos = null;
 		JarInputStream jarIS = null;
 
-		String entryName = "";
+		String entryName;
 
 		byte buf[] = new byte[2048];
 
@@ -127,7 +124,7 @@ public class RobocodeCompilerFactory {
 					try {
 						fos = new FileOutputStream(out);
 
-						int num = 0;
+						int num;
 						int count = 0;
 
 						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
@@ -162,12 +159,12 @@ public class RobocodeCompilerFactory {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (jarIS != null) {
 				try {
 					jarIS.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}
@@ -195,7 +192,7 @@ public class RobocodeCompilerFactory {
 				if (in != null) {
 					try {
 						in.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
@@ -205,7 +202,7 @@ public class RobocodeCompilerFactory {
 	private static String getJavaLib() {
 		String javahome = System.getProperty("java.home");
 
-		String javalib = "";
+		String javalib;
 
 		if (System.getProperty("os.name").indexOf("Mac") == 0) {
 			javalib = new File(javahome).getParentFile().getPath() + "/Classes/classes.jar";
@@ -225,8 +222,8 @@ public class RobocodeCompilerFactory {
 		}
 		compilerInstalling = true;
 
-		String compilerBinary = null;
-		String compilerOptions = "";
+		String compilerBinary;
+		String compilerOptions;
 
 		String osName = System.getProperty("os.name");
 
@@ -244,8 +241,8 @@ public class RobocodeCompilerFactory {
 		boolean jikesOk = false;
 		boolean rv = true;
 		boolean mustBuildJikes = false;
-		String jikesJar = "";
-		String jikesBinary = "";
+		String jikesJar;
+		String jikesBinary;
 		boolean noExtract = false;
 
 		compilerProperties.setRobocodeVersion(editor.getManager().getVersionManager().getVersion());
@@ -452,7 +449,7 @@ public class RobocodeCompilerFactory {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

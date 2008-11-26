@@ -207,7 +207,7 @@ public class BotsDownload {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		return true;
@@ -246,7 +246,7 @@ public class BotsDownload {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -291,7 +291,7 @@ public class BotsDownload {
 				if (br != null) {
 					try {
 						br.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
@@ -428,7 +428,7 @@ public class BotsDownload {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (outtxt != null) {
 				outtxt.close();
@@ -466,7 +466,7 @@ public class BotsDownload {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -558,7 +558,7 @@ public class BotsDownload {
 			if (rd != null) {
 				try {
 					rd.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

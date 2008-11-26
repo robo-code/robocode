@@ -40,7 +40,7 @@ public class IncludeNamespaceAttack extends AdvancedRobot {
 
 	private void namespaceAttack() {
 		try {
-			BattleManager bm = (BattleManager) BattleManager.class.newInstance();
+			BattleManager bm = BattleManager.class.newInstance();
 
 			bm.stop(true);
 		} catch (Throwable e) {

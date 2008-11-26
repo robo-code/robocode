@@ -54,7 +54,6 @@ public class BattleView extends Canvas {
 
 	// The battle and battlefield,
 	private BattleField battleField;
-	private BattleObserver observer;
 
 	private boolean initialized;
 	private double scale = 1.0;
@@ -106,7 +105,7 @@ public class BattleView extends Canvas {
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
-		observer = new BattleObserver(manager.getWindowManager());
+		BattleObserver observer = new BattleObserver(manager.getWindowManager());
 	}
 
 	@Override

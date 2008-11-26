@@ -29,7 +29,7 @@ import java.io.OutputStream;
  */
 public class BufferedPipedOutputStream extends OutputStream {
 
-	private Object monitor = new Object();
+	private final Object monitor = new Object();
 	private byte buf[];
 	private volatile int readIndex;
 	private volatile int writeIndex;
