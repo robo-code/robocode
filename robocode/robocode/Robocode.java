@@ -100,7 +100,7 @@ public class Robocode {
 		setup = new Setup();
 	}
 
-	private boolean run() {
+	private void run() {
 		try {
 			manager.initSecurity(setup.securityOn, setup.experimentalOn);
 
@@ -169,11 +169,8 @@ public class Robocode {
 					System.exit(8);
 				}
 			}
-
-			return true;
 		} catch (Throwable e) {
 			Logger.logError(e);
-			return false;
 		}
 	}
 

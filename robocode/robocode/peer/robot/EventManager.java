@@ -91,11 +91,11 @@ public class EventManager implements IEventManager {
 		reset();
 	}
 
-	public boolean add(Event e) {
+	public void add(Event e) {
 		if (!RobotClassManager.isCriticalEvent(e)) {
 			RobotClassManager.setEventPriority(e, getEventPriority(e.getClass().getName()));
 		}
-		return addImpl(e);
+		addImpl(e);
 	}
 
 	private boolean addImpl(Event e) {

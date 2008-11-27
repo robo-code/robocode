@@ -116,7 +116,7 @@ public class BattleManager implements IBattleManager {
 	}
 
 	// Called when starting a new battle from GUI
-	public boolean startNewBattle(BattleProperties battleProperties, boolean waitTillOver) {
+	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver) {
 		this.battleProperties = battleProperties;
 
 		List<RobotClassManager> battlingRobotsList = new ArrayList<RobotClassManager>();
@@ -132,18 +132,17 @@ public class BattleManager implements IBattleManager {
 				boolean failed = loadRobot(battlingRobotsList, bot, null, String.format("%4d", num), false);
 
 				if (failed) {
-					return false;
+					return;
 				}
 				num++;
 			}
 		}
 
 		startNewBattleImpl(battlingRobotsList, waitTillOver);
-		return true;
 	}
 
 	// Called from the RobocodeEngine
-	public boolean startNewBattle(BattleSpecification spec, boolean waitTillOver) {
+	public void startNewBattle(BattleSpecification spec, boolean waitTillOver) {
 		battleProperties = new BattleProperties();
 		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
 		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -172,11 +171,10 @@ public class BattleManager implements IBattleManager {
 			num++;
 
 			if (failed) {
-				return false;
+				return;
 			}
 		}
 		startNewBattleImpl(battlingRobotsList, waitTillOver);
-		return true;
 	}
 
 	private boolean loadRobot(List<RobotClassManager> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {

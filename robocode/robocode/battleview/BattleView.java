@@ -105,7 +105,8 @@ public class BattleView extends Canvas {
 		imageManager = manager.getImageManager();
 
 		battleField = new DefaultBattleField(800, 600);
-		BattleObserver observer = new BattleObserver(manager.getWindowManager());
+
+		new BattleObserver(manager.getWindowManager());
 	}
 
 	@Override
@@ -571,11 +572,10 @@ public class BattleView extends Canvas {
 		g.drawString(s, (int) (left + 0.5), (int) (top + height - descent + 0.5));
 	}
 
-	private Rectangle drawScanArc(Graphics2D g, RobotSnapshot robotSnapshot) {
+	private void drawScanArc(Graphics2D g, RobotSnapshot robotSnapshot) {
 		Arc2D.Double scanArc = (Arc2D.Double) robotSnapshot.getScanArc();
-
 		if (scanArc == null) {
-			return null;
+			return;
 		}
 
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
@@ -593,8 +593,6 @@ public class BattleView extends Canvas {
 			g.draw(scanArc);
 		}
 		g.setComposite(AlphaComposite.SrcOver);
-
-		return scanArc.getBounds();
 	}
 
 	private void paintRobocodeLogo(Graphics2D g) {

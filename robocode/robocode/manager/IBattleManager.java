@@ -54,9 +54,9 @@ public interface IBattleManager {
 	 */
 	void sendInteractiveEvent(Event event);
 
-	boolean startNewBattle(BattleProperties battleProperties, boolean waitTillOver);
+	void startNewBattle(BattleProperties battleProperties, boolean waitTillOver);
 
-	boolean startNewBattle(BattleSpecification spec, boolean waitTillOver);
+	void startNewBattle(BattleSpecification spec, boolean waitTillOver);
 
 	void nextTurn();
 

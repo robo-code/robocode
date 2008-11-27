@@ -148,11 +148,8 @@ public class FileUtil {
 	 * @return {@code true} if the directory was deleted;
 	 *         {@code false} otherwise if e.g. the file is not a directory
 	 */
-	public static boolean deleteDir(File dir) {
-		if (!dir.isDirectory()) {
-			return false;
-		}
-
+	public static void deleteDir(File dir) {
+		if (dir.isDirectory()) {
 		for (File file : dir.listFiles()) {
 			if (file.isDirectory()) {
 				try {
@@ -172,8 +169,7 @@ public class FileUtil {
 			}
 		}
 		dir.delete();
-
-		return true;
+		}
 	}
 
 	/**
