@@ -8,6 +8,8 @@ o Bugfixes
   -- fixed RobotDialog robotIndex when re-attached, dialog palacement fixed
   -- exception on robot's condition doesn't break further processing now
   -- [2335165] roborumble output was spammy, outputting log after the first battle
+  -- java.lang.IllegalArgumentException: Line unsupported: interface Clip supporting format could
+     occur when starting robocode
 
 o New feature
   -- battle recording and replay. Saving to binary and xml file. Robot painting and debug properties 

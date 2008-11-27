@@ -87,7 +87,11 @@ public class SoundCache {
 		private ClipClones(Mixer mixer, SoundData soundData, int size) throws LineUnavailableException {
 			idx = 0;
 			clips = new Clip[size];
+
 			DataLine.Info info = new DataLine.Info(Clip.class, soundData.format);
+			if (!AudioSystem.isLineSupported(info)) {
+				throw new LineUnavailableException("Required data line is not supported by the audio system");
+			}
 
 			for (int i = 0; i < size; i++) {
 				clips[i] = (Clip) mixer.getLine(info);
