@@ -64,8 +64,8 @@ public class SkipTurns extends AdvancedRobot {
 		skipped++;
 	}
 
+	private final Object w = new Object();
 	private void slowResponse() {
-		Object w = new Object();
 
 		synchronized (w) {
 			try {

@@ -52,26 +52,24 @@ public final class RobotStatus {
 	 * @param battle	data from battle
 	 */
 	public RobotStatus(RobotPeer robotPeer, ExecCommands commands, Battle battle) {
-		synchronized (robotPeer) {
-			energy = robotPeer.getEnergy();
-			x = robotPeer.getX();
-			y = robotPeer.getY();
-			bodyHeading = robotPeer.getBodyHeading();
-			gunHeading = robotPeer.getGunHeading();
-			radarHeading = robotPeer.getRadarHeading();
-			velocity = robotPeer.getVelocity();
-			gunHeat = robotPeer.getGunHeat();
+		energy = robotPeer.getEnergy();
+		x = robotPeer.getX();
+		y = robotPeer.getY();
+		bodyHeading = robotPeer.getBodyHeading();
+		gunHeading = robotPeer.getGunHeading();
+		radarHeading = robotPeer.getRadarHeading();
+		velocity = robotPeer.getVelocity();
+		gunHeat = robotPeer.getGunHeat();
 
-			bodyTurnRemaining = commands.getBodyTurnRemaining();
-			radarTurnRemaining = commands.getRadarTurnRemaining();
-			gunTurnRemaining = commands.getGunTurnRemaining();
-			distanceRemaining = commands.getDistanceRemaining();
+		bodyTurnRemaining = commands.getBodyTurnRemaining();
+		radarTurnRemaining = commands.getRadarTurnRemaining();
+		gunTurnRemaining = commands.getGunTurnRemaining();
+		distanceRemaining = commands.getDistanceRemaining();
 
-			others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
-			roundNum = battle.getRoundNum();
-			numRounds = battle.getNumRounds();
-			time = battle.getTime();
-		}
+		others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
+		roundNum = battle.getRoundNum();
+		numRounds = battle.getNumRounds();
+		time = battle.getTime();
 	}
 
 	/**
