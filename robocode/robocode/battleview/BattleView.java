@@ -574,6 +574,7 @@ public class BattleView extends Canvas {
 
 	private void drawScanArc(Graphics2D g, RobotSnapshot robotSnapshot) {
 		Arc2D.Double scanArc = (Arc2D.Double) robotSnapshot.getScanArc();
+
 		if (scanArc == null) {
 			return;
 		}

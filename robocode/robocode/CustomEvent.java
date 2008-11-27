@@ -32,6 +32,7 @@ import java.awt.*;
  * @see #getCondition()
  */
 public class CustomEvent extends Event {
+	private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_PRIORITY = 80;
 
 	private final Condition condition;

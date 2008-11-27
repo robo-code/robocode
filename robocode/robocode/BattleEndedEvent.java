@@ -34,6 +34,7 @@ import java.awt.*;
  * @since 1.6.1
  */
 public final class BattleEndedEvent extends Event {
+	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
 
 	private final boolean aborted;

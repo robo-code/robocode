@@ -27,6 +27,7 @@ import robocode.peer.robot.IHiddenEventHelper;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.io.Serializable;
 
 
 /**
@@ -35,7 +36,9 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public abstract class Event implements Comparable<Event> {
+public abstract class Event implements Comparable<Event>, Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private long time;
 	private int priority;
 

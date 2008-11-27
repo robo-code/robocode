@@ -27,6 +27,7 @@ import java.awt.*;
  * @since 1.5
  */
 public final class StatusEvent extends Event {
+	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 99;
 
 	private final RobotStatus status;

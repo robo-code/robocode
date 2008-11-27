@@ -16,6 +16,8 @@ import robocode.battle.Battle;
 import robocode.peer.ExecCommands;
 import robocode.peer.RobotPeer;
 
+import java.io.Serializable;
+
 
 /**
  * Contains the status of a robot for a specific time/turn returned by
@@ -24,7 +26,8 @@ import robocode.peer.RobotPeer;
  * @author Flemming N. Larsen (original)
  * @since 1.5
  */
-public final class RobotStatus {
+public final class RobotStatus implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final double energy;
 	private final double x;

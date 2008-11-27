@@ -38,6 +38,7 @@ import java.awt.event.MouseWheelEvent;
  * @since 1.6.1
  */
 public final class MouseWheelMovedEvent extends MouseEvent {
+	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 98;
 
 	/**

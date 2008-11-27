@@ -31,6 +31,7 @@ import java.awt.*;
  * @author Flemming N. Larsen (original)
  */
 public final class PaintEvent extends Event {
+	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 5;
 
 	/**

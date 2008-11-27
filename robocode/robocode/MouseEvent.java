@@ -21,6 +21,7 @@ package robocode;
  * @since 1.6.1
  */
 public abstract class MouseEvent extends Event {
+	private static final long serialVersionUID = 1L;
 	private java.awt.event.MouseEvent source;
 
 	/**

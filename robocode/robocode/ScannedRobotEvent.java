@@ -29,6 +29,7 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class ScannedRobotEvent extends Event {
+	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 10;
 
 	private final String name;

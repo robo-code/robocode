@@ -14,11 +14,15 @@ package robocode.peer;
 
 import robocode.Bullet;
 
+import java.io.Serializable;
+
 
 /**
  * @author Pavel Savara (original)
  */
-public class BulletCommand {
+public class BulletCommand implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	public BulletCommand(Bullet bullet, boolean fireAssistValid, double fireAssistAngle, int bulletId) {
 		this.bullet = bullet;
 		this.fireAssistValid = fireAssistValid;

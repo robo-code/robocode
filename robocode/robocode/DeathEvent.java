@@ -28,6 +28,7 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public final class DeathEvent extends Event {
+	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = -1; // System event -> cannot be changed!;
 
 	/**
