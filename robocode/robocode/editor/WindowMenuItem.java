@@ -275,7 +275,8 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 */
 	@Override
 	public boolean isSelected() {
-		return (type != SPECIAL_MORE) && (window != null && window.getDesktopPane() != null) && window.getDesktopPane().getSelectedFrame() == window;
+		return (type != SPECIAL_MORE) && (window != null && window.getDesktopPane() != null)
+				&& window.getDesktopPane().getSelectedFrame() == window;
 	}
 
 	/**

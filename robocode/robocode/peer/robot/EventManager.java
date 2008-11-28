@@ -98,17 +98,16 @@ public class EventManager implements IEventManager {
 		addImpl(e);
 	}
 
-	private boolean addImpl(Event e) {
+	private void addImpl(Event e) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				System.out.println(
 						"Not adding to " + robotProxy.getStatics().getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE
 						+ " events in queue.");
-				return false;
+				return;
 			}
-			return eventQueue.add(e);
+			eventQueue.add(e);
 		}
-		return false;
 	}
 
 	public void addCustomEvent(Condition condition) {

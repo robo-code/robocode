@@ -165,7 +165,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		// This loop should not be changed to an for-each loop as the updated jar list
 		// gets updated (jars are added) by the methods called in this loop, which can
 		// cause a ConcurrentModificationException!
-		//noinspection ForLoopReplaceableByForEach
+		// noinspection ForLoopReplaceableByForEach
 		for (int i = 0; i < updatedJarList.size(); i++) {
 			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
 

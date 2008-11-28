@@ -1075,7 +1075,7 @@ public class RobocodeProperties {
 
 			Collections.sort(keyList);
 
-			//noinspection RedundantCast
+			// noinspection RedundantCast
 			return (Enumeration) keyList.elements();
 		}
 	}

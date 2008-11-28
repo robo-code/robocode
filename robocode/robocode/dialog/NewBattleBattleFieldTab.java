@@ -50,8 +50,10 @@ public class NewBattleBattleFieldTab extends JPanel {
 		super();
 
 		JPanel sliderPanel = createSliderPanel();
+
 		add(sliderPanel);
 		JPanel buttonsPanel = createButtonsPanel();
+
 		add(buttonsPanel);
 	}
 

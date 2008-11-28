@@ -118,8 +118,9 @@ public class WindowManager implements IWindowManager {
 				new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
-				return pathname.isDirectory() || pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
-						== pathname.getName().length() - defExt.length();
+				return pathname.isDirectory()
+						|| pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
+								== pathname.getName().length() - defExt.length();
 			}
 
 			@Override
@@ -144,8 +145,9 @@ public class WindowManager implements IWindowManager {
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
-				return pathname.isDirectory() || pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
-						== pathname.getName().length() - defExt.length();
+				return pathname.isDirectory()
+						|| pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
+								== pathname.getName().length() - defExt.length();
 			}
 
 			@Override
@@ -276,16 +278,7 @@ public class WindowManager implements IWindowManager {
 	public void showSplashScreen() {
 		RcSplashScreen splashScreen = new RcSplashScreen(manager);
 
-		synchronized (splashScreen) {
-			packCenterShow(splashScreen, true);
-
-			try {
-				splashScreen.wait(20000);
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-			}
-		}
+		packCenterShow(splashScreen, true);
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 

@@ -458,10 +458,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// -----------
 
 
-	//TODO this is there just to prove that now is possible play over the wire
-//	public final ExecResults executeImpl(ExecCommands newCommands) {
-//		return (ExecResults) ObjectCloner.deepCopy(executeImplIn((ExecCommands) ObjectCloner.deepCopy(newCommands)));
-//	}
+	// TODO this is there just to prove that now is possible play over the wire
+	// public final ExecResults executeImpl(ExecCommands newCommands) {
+	// return (ExecResults) ObjectCloner.deepCopy(executeImplIn((ExecCommands) ObjectCloner.deepCopy(newCommands)));
+	// }
 
 	public final ExecResults executeImpl(ExecCommands newCommands) {
 		newCommands.validate(this);

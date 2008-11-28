@@ -67,6 +67,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			editorPane = new JEditorPane();
 			editorPane.setFont(new Font("monospaced", 0, 12));
 			RobocodeEditorKit editorKit = new RobocodeEditorKit();
+
 			editorPane.setEditorKitForContentType("text/java", editorKit);
 			editorPane.setContentType("text/java");
 			editorKit.setEditWindow(this);

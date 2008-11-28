@@ -91,9 +91,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 		}
 	}
 
-	/**
-	 * Packager constructor comment.
-	 */
 	public RobotPackager(IRepositoryManager repositoryManager, boolean isTeamPackager) {
 		super(repositoryManager.getManager().getWindowManager().getRobocodeFrame());
 		this.repositoryManager = repositoryManager;
@@ -481,6 +478,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 		return rv;
 	}
 
+	private final Object threadMonitor = new Object();
+
 	public void outputSizeClass() {
 		// Codesize must be called within a safe thread to prevent security exception
 
@@ -513,8 +512,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 				out.append("Codesize: ").append(codesize).append(" bytes\n");
 				out.append("Robot weight class: ").append(weightClass).append('\n');
 
-				synchronized (this) {
-					notify();
+				synchronized (threadMonitor) {
+					threadMonitor.notify();
 				}
 			}
 		};
@@ -523,9 +522,9 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 		thread.start();
 
-		synchronized (thread) {
+		synchronized (threadMonitor) {
 			try {
-				thread.wait();
+				threadMonitor.wait();
 			} catch (InterruptedException e) {
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
@@ -580,8 +579,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		return name;
 	}
 
-	public int addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, RobotFileSpecification robotFileSpecification) {
-		int rv = 0;
+	public void addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, RobotFileSpecification robotFileSpecification) {
 		RobotClassManager classManager = new RobotClassManager(robotFileSpecification);
 
 		try {
@@ -715,9 +713,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 			}
 		} catch (Throwable e) {
-			rv = 8;
 			out.println(e);
 		}
-		return rv;
 	}
 }

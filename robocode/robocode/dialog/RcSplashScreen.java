@@ -139,9 +139,5 @@ public class RcSplashScreen extends JWindow {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-
-		synchronized (this) {
-			notifyAll();
-		}
 	}
 }

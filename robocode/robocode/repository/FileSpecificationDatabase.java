@@ -35,7 +35,7 @@ public class FileSpecificationDatabase implements Serializable {
 	private Map<String, FileSpecification> hash = new HashMap<String, FileSpecification>();
 
 	@SuppressWarnings("unchecked")
-	public void load(File f) throws IOException, FileNotFoundException, ClassNotFoundException {
+	public void load(File f) throws IOException, ClassNotFoundException {
 		FileInputStream fis = null;
 
 		try {
@@ -60,7 +60,7 @@ public class FileSpecificationDatabase implements Serializable {
 		}
 	}
 
-	public void store(File f) throws IOException, FileNotFoundException {
+	public void store(File f) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
 
 		out.writeObject(hash);
