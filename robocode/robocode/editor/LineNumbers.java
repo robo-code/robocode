@@ -99,6 +99,8 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 	/**
 	 * Called by the DocumentListener methods to check if the number of lines
 	 * has changed, and if it has, it updates the display.
+	 *
+	 * @param text the text to compare to the current text
 	 */
 	protected void checkLines(String text) {
 		int lines = 0;

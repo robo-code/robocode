@@ -32,10 +32,12 @@ public class MoveCompleteCondition extends Condition {
 	/**
 	 * Creates a new MoveCompleteCondition with default priority.
 	 * The default priority is 80.
+	 *
+	 * @param robot	your robot, which must be a {@link AdvancedRobot}
 	 */
-	public MoveCompleteCondition(AdvancedRobot r) {
+	public MoveCompleteCondition(AdvancedRobot robot) {
 		super();
-		this.robot = r;
+		this.robot = robot;
 	}
 
 	/**

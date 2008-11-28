@@ -40,9 +40,6 @@ public class RobotFileSystemManager {
 	private String classDirectory;
 	private String rootPackageDirectory;
 
-	/**
-	 * RobotFileSystemHandler constructor comment.
-	 */
 	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String classDirectory, String rootPackageDirectory) {
 		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;

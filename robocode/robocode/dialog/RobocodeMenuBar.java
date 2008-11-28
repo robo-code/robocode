@@ -184,9 +184,6 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	public RobocodeMenuBar.EventHandler eventHandler = new EventHandler();
 
-	/**
-	 * RoboCodeMenu constructor
-	 */
 	public RobocodeMenuBar(RobocodeManager manager, RobocodeFrame robocodeFrame) {
 		super();
 		this.manager = manager;
@@ -370,11 +367,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		}
 	}
 
-	/**
-	 * Return the battleExitMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getBattleExitMenuItem() {
 		if (battleExitMenuItem == null) {
 			battleExitMenuItem = new JMenuItem();
@@ -386,11 +378,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleExitMenuItem;
 	}
 
-	/**
-	 * Return the Battle Menu
-	 *
-	 * @return JMenu
-	 */
 	public JMenu getBattleMenu() {
 		if (battleMenu == null) {
 			battleMenu = new JMenu();
@@ -413,11 +400,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleMenu;
 	}
 
-	/**
-	 * Return the battleNewMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getBattleNewMenuItem() {
 		if (battleNewMenuItem == null) {
 			battleNewMenuItem = new JMenuItem();
@@ -429,11 +411,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleNewMenuItem;
 	}
 
-	/**
-	 * Return the battleOpenMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getBattleOpenMenuItem() {
 		if (battleOpenMenuItem == null) {
 			battleOpenMenuItem = new JMenuItem();
@@ -445,11 +422,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleOpenMenuItem;
 	}
 
-	/**
-	 * Return the battleSaveAsMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	public JMenuItem getBattleSaveAsMenuItem() {
 		if (battleSaveAsMenuItem == null) {
 			battleSaveAsMenuItem = new JMenuItem();
@@ -464,11 +436,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleSaveAsMenuItem;
 	}
 
-	/**
-	 * Return the battleSaveMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	public JMenuItem getBattleSaveMenuItem() {
 		if (battleSaveMenuItem == null) {
 			battleSaveMenuItem = new JMenuItem();
@@ -481,11 +448,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleSaveMenuItem;
 	}
 
-	/**
-	 * Return the battleOpenRecordMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getBattleOpenRecordMenuItem() {
 		if (battleOpenRecordMenuItem == null) {
 			battleOpenRecordMenuItem = new JMenuItem();
@@ -510,11 +472,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleImportRecordMenuItem;
 	}
 
-	/**
-	 * Return the battleSaveRecordAsMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	public JMenuItem getBattleSaveRecordAsMenuItem() {
 		if (battleSaveRecordAsMenuItem == null) {
 			battleSaveRecordAsMenuItem = new JMenuItem();
@@ -566,11 +523,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return battleExportRecordMenuItem;
 	}
 
-	/**
-	 * Return the helpAboutMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpAboutMenuItem() {
 		if (helpAboutMenuItem == null) {
 			helpAboutMenuItem = new JMenuItem();
@@ -581,11 +533,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpAboutMenuItem;
 	}
 
-	/**
-	 * Return the helpCheckForNewVersion menu item.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpCheckForNewVersionMenuItem() {
 		if (helpCheckForNewVersionMenuItem == null) {
 			helpCheckForNewVersionMenuItem = new JMenuItem();
@@ -596,11 +543,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpCheckForNewVersionMenuItem;
 	}
 
-	/**
-	 * Return the Help Menu.
-	 *
-	 * @return JMenu
-	 */
 	@Override
 	public JMenu getHelpMenu() {
 		if (helpMenu == null) {
@@ -627,11 +569,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpMenu;
 	}
 
-	/**
-	 * Return the helpOnlineHelpMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpFaqMenuItem() {
 		if (helpFaqMenuItem == null) {
 			helpFaqMenuItem = new JMenuItem();
@@ -643,11 +580,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpFaqMenuItem;
 	}
 
-	/**
-	 * Return the helpOnlineHelpMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpOnlineHelpMenuItem() {
 		if (helpOnlineHelpMenuItem == null) {
 			helpOnlineHelpMenuItem = new JMenuItem();
@@ -658,11 +590,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpOnlineHelpMenuItem;
 	}
 
-	/**
-	 * Return the helpVersionsTxtMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpVersionsTxtMenuItem() {
 		if (helpVersionsTxtMenuItem == null) {
 			helpVersionsTxtMenuItem = new JMenuItem();
@@ -673,11 +600,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpVersionsTxtMenuItem;
 	}
 
-	/**
-	 * Return the helpRobocodeApiMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpRobocodeApiMenuItem() {
 		if (helpRobocodeApiMenuItem == null) {
 			helpRobocodeApiMenuItem = new JMenuItem();
@@ -689,11 +611,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpRobocodeApiMenuItem;
 	}
 
-	/**
-	 * Return the helpRoboWikiMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpRobocodeMenuItem() {
 		if (helpRobocodeMenuItem == null) {
 			helpRobocodeMenuItem = new JMenuItem();
@@ -705,11 +622,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpRobocodeMenuItem;
 	}
 
-	/**
-	 * Return the helpJavaApiMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpJavaDocumentationMenuItem() {
 		if (helpJavaDocumentationMenuItem == null) {
 			helpJavaDocumentationMenuItem = new JMenuItem();
@@ -720,11 +632,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpJavaDocumentationMenuItem;
 	}
 
-	/**
-	 * Return the helpRoboWikiMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpRoboWikiMenuItem() {
 		if (helpRoboWikiMenuItem == null) {
 			helpRoboWikiMenuItem = new JMenuItem();
@@ -736,11 +643,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpRoboWikiMenuItem;
 	}
 
-	/**
-	 * Return the helpYahooGroupRobocodeMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpYahooGroupRobocodeMenuItem() {
 		if (helpYahooGroupRobocodeMenuItem == null) {
 			helpYahooGroupRobocodeMenuItem = new JMenuItem();
@@ -751,11 +653,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpYahooGroupRobocodeMenuItem;
 	}
 
-	/**
-	 * Return the helpRobocodeRepositoryMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpRobocodeRepositoryMenuItem() {
 		if (helpRobocodeRepositoryMenuItem == null) {
 			helpRobocodeRepositoryMenuItem = new JMenuItem();
@@ -767,11 +664,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return helpRobocodeRepositoryMenuItem;
 	}
 
-	/**
-	 * Return the optionsPreferencesMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getOptionsFitWindowMenuItem() {
 		if (optionsFitWindowMenuItem == null) {
 			optionsFitWindowMenuItem = new JMenuItem();
@@ -782,11 +674,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return optionsFitWindowMenuItem;
 	}
 
-	/**
-	 * Return the optionsShowRankingCheckBoxMenuItem.
-	 *
-	 * @return JCheckBoxMenuItem
-	 */
 	public JCheckBoxMenuItem getOptionsShowRankingCheckBoxMenuItem() {
 		if (optionsShowRankingCheckBoxMenuItem == null) {
 			optionsShowRankingCheckBoxMenuItem = new JCheckBoxMenuItem();
@@ -799,11 +686,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return optionsShowRankingCheckBoxMenuItem;
 	}
 
-	/**
-	 * Return the optionsRecalculateCpuConstantMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getOptionsRecalculateCpuConstantMenuItem() {
 		if (optionsRecalculateCpuConstantMenuItem == null) {
 			optionsRecalculateCpuConstantMenuItem = new JMenuItem();
@@ -815,11 +697,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return optionsRecalculateCpuConstantMenuItem;
 	}
 
-	/**
-	 * Return the optionsCleanRobotCacheMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getOptionsCleanRobotCacheMenuItem() {
 		if (optionsCleanRobotCacheMenuItem == null) {
 			optionsCleanRobotCacheMenuItem = new JMenuItem();
@@ -830,11 +707,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return optionsCleanRobotCacheMenuItem;
 	}
 
-	/**
-	 * Return the Options Menu.
-	 *
-	 * @return JMenu
-	 */
 	private JMenu getOptionsMenu() {
 		if (optionsMenu == null) {
 			optionsMenu = new JMenu();
@@ -852,11 +724,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return optionsMenu;
 	}
 
-	/**
-	 * Return the optionsPreferencesMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getOptionsPreferencesMenuItem() {
 		if (optionsPreferencesMenuItem == null) {
 			optionsPreferencesMenuItem = new JMenuItem();
@@ -867,11 +734,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return optionsPreferencesMenuItem;
 	}
 
-	/**
-	 * Return the robotEditorMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getRobotEditorMenuItem() {
 		if (robotEditorMenuItem == null) {
 			robotEditorMenuItem = new JMenuItem();
@@ -883,11 +745,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return robotEditorMenuItem;
 	}
 
-	/**
-	 * Return the robotImportMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getRobotImportMenuItem() {
 		if (robotImportMenuItem == null) {
 			robotImportMenuItem = new JMenuItem();
@@ -898,11 +755,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return robotImportMenuItem;
 	}
 
-	/**
-	 * Return the Robot Menu.
-	 *
-	 * @return JMenu
-	 */
 	public JMenu getRobotMenu() {
 		if (robotMenu == null) {
 			robotMenu = new JMenu();
@@ -919,11 +771,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return robotMenu;
 	}
 
-	/**
-	 * Return the robotPackagerMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getRobotPackagerMenuItem() {
 		if (robotPackagerMenuItem == null) {
 			robotPackagerMenuItem = new JMenuItem();
@@ -934,11 +781,6 @@ public class RobocodeMenuBar extends JMenuBar {
 		return robotPackagerMenuItem;
 	}
 
-	/**
-	 * Return the robotCreateTeamMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getRobotCreateTeamMenuItem() {
 		if (robotCreateTeamMenuItem == null) {
 			robotCreateTeamMenuItem = new JMenuItem();

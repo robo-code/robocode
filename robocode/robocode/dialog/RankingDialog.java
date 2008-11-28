@@ -52,9 +52,6 @@ public class RankingDialog extends BaseScoreDialog {
 	private TurnSnapshot lastSnapshot;
 	private int lastRows;
 
-	/**
-	 * RankingDialog constructor
-	 */
 	public RankingDialog(RobocodeManager manager) {
 		super(manager, false);
 		battleObserver = new BattleObserver();
@@ -122,4 +119,3 @@ public class RankingDialog extends BaseScoreDialog {
 		}
 	}
 }
-

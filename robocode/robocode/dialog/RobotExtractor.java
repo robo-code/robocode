@@ -73,9 +73,6 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		}
 	}
 
-	/**
-	 * Packager constructor comment.
-	 */
 	public RobotExtractor(JFrame owner, IRepositoryManager repositoryManager) {
 		super(owner);
 		this.repositoryManager = repositoryManager;
@@ -101,11 +98,6 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		}
 	}
 
-	/**
-	 * Return the buttonsPanel
-	 *
-	 * @return JButton
-	 */
 	private WizardController getButtonsPanel() {
 		if (buttonsPanel == null) {
 			buttonsPanel = getWizardPanel().getWizardController();
@@ -118,11 +110,6 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		return robotClassManager.getReferencedClasses();
 	}
 
-	/**
-	 * Return the newBattleDialogContentPane
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getRobotImporterContentPane() {
 		if (robotImporterContentPane == null) {
 			robotImporterContentPane = new JPanel();
@@ -139,11 +126,6 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		return robotImporterContentPane;
 	}
 
-	/**
-	 * Return the Page property value.
-	 *
-	 * @return JPanel
-	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
 			robotSelectionPanel = new RobotSelectionPanel(repositoryManager, minRobots, maxRobots, false,
@@ -153,11 +135,6 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		return robotSelectionPanel;
 	}
 
-	/**
-	 * Return the tabbedPane.
-	 *
-	 * @return JTabbedPane
-	 */
 	private WizardCardPanel getWizardPanel() {
 		if (wizardPanel == null) {
 			wizardPanel = new WizardCardPanel(this);

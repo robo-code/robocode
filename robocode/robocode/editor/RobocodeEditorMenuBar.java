@@ -162,9 +162,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem windowWindowsDialogMenuItem;
 	private MoreWindowsDialog moreWindowsDialog;
 
-	/**
-	 * RoboCodeEditorMenuBar constructor.
-	 */
 	public RobocodeEditorMenuBar(RobocodeEditor editor) {
 		super();
 		this.editor = editor;
@@ -324,11 +321,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		getMoreWindowsDialog().setVisible(true);
 	}
 
-	/**
-	 * Return the Compile property value.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getCompilerCompileMenuItem() {
 		if (compilerCompileMenuItem == null) {
 			compilerCompileMenuItem = new JMenuItem();
@@ -341,11 +333,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return compilerCompileMenuItem;
 	}
 
-	/**
-	 * Return the compileMenu
-	 *
-	 * @return JMenu
-	 */
 	private JMenu getCompilerMenu() {
 		if (compilerMenu == null) {
 			compilerMenu = new JMenu();
@@ -357,11 +344,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return compilerMenu;
 	}
 
-	/**
-	 * Return the compileMenu
-	 *
-	 * @return JMenu
-	 */
 	private JMenu getCompilerOptionsMenu() {
 		if (compilerOptionsMenu == null) {
 			compilerOptionsMenu = new JMenu();
@@ -373,11 +355,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return compilerOptionsMenu;
 	}
 
-	/**
-	 * Return the compilerOptionsPreferencesMenuItem
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getCompilerOptionsPreferencesMenuItem() {
 		if (compilerOptionsPreferencesMenuItem == null) {
 			compilerOptionsPreferencesMenuItem = new JMenuItem();
@@ -388,11 +365,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return compilerOptionsPreferencesMenuItem;
 	}
 
-	/**
-	 * Return the compilerOptionsResetCompilerMenuItem
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getCompilerOptionsResetCompilerMenuItem() {
 		if (compilerOptionsResetCompilerMenuItem == null) {
 			compilerOptionsResetCompilerMenuItem = new JMenuItem();
@@ -403,11 +375,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return compilerOptionsResetCompilerMenuItem;
 	}
 
-	/**
-	 * Return the fileExitMenuItem
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getFileExitMenuItem() {
 		if (fileExitMenuItem == null) {
 			fileExitMenuItem = new JMenuItem();
@@ -419,11 +386,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return fileExitMenuItem;
 	}
 
-	/**
-	 * Return the fileMenu
-	 *
-	 * @return JMenu
-	 */
 	private JMenu getFileMenu() {
 		if (fileMenu == null) {
 			fileMenu = new JMenu();
@@ -440,11 +402,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return fileMenu;
 	}
 
-	/**
-	 * Return the fileNewMenuItem
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getFileNewJavaFileMenuItem() {
 		if (fileNewJavaFileMenuItem == null) {
 			fileNewJavaFileMenuItem = new JMenuItem();
@@ -457,11 +414,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return fileNewJavaFileMenuItem;
 	}
 
-	/**
-	 * Return the fileNewMenu
-	 *
-	 * @return JMenu
-	 */
 	private JMenu getFileNewMenu() {
 		if (fileNewMenu == null) {
 			fileNewMenu = new JMenu();
@@ -473,11 +425,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return fileNewMenu;
 	}
 
-	/**
-	 * Return the fileNewMenuItem
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getFileNewRobotMenuItem() {
 		if (fileNewRobotMenuItem == null) {
 			fileNewRobotMenuItem = new JMenuItem();
@@ -489,11 +436,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return fileNewRobotMenuItem;
 	}
 
-	/**
-	 * Return the fileOpenMenuItem
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getFileOpenMenuItem() {
 		if (fileOpenMenuItem == null) {
 			fileOpenMenuItem = new JMenuItem();
@@ -516,11 +458,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return fileExtractMenuItem;
 	}
 
-	/**
-	 * Return the fileSaveAsMenuItem
-	 *
-	 * @return JMenuItem
-	 */
 	public JMenuItem getFileSaveAsMenuItem() {
 		if (fileSaveAsMenuItem == null) {
 			fileSaveAsMenuItem = new JMenuItem();
@@ -535,11 +472,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return fileSaveAsMenuItem;
 	}
 
-	/**
-	 * Return the fileSaveMenuItem
-	 *
-	 * @return JMenuItem
-	 */
 	public JMenuItem getFileSaveMenuItem() {
 		if (fileSaveMenuItem == null) {
 			fileSaveMenuItem = new JMenuItem();
@@ -552,11 +484,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return fileSaveMenuItem;
 	}
 
-	/**
-	 * Return the Help Menu.
-	 *
-	 * @return JMenu
-	 */
 	@Override
 	public JMenu getHelpMenu() {
 		if (helpMenu == null) {
@@ -568,11 +495,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return helpMenu;
 	}
 
-	/**
-	 * Return the helpRobocodeApiMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getHelpRobocodeApiMenuItem() {
 		if (helpRobocodeApiMenuItem == null) {
 			helpRobocodeApiMenuItem = new JMenuItem();
@@ -584,11 +506,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return helpRobocodeApiMenuItem;
 	}
 
-	/**
-	 * Return the Edit Menu.
-	 *
-	 * @return JMenu
-	 */
 	private JMenu getEditMenu() {
 		if (editMenu == null) {
 			editMenu = new JMenu();
@@ -611,11 +528,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editMenu;
 	}
 
-	/**
-	 * Return the editUndoMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditUndoMenuItem() {
 		if (editUndoMenuItem == null) {
 			editUndoMenuItem = new JMenuItem();
@@ -627,11 +539,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editUndoMenuItem;
 	}
 
-	/**
-	 * Return the editRedoMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditRedoMenuItem() {
 		if (editRedoMenuItem == null) {
 			editRedoMenuItem = new JMenuItem();
@@ -643,11 +550,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editRedoMenuItem;
 	}
 
-	/**
-	 * Return the editCutMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditCutMenuItem() {
 		if (editCutMenuItem == null) {
 			editCutMenuItem = new JMenuItem();
@@ -660,11 +562,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editCutMenuItem;
 	}
 
-	/**
-	 * Return the editCopyMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditCopyMenuItem() {
 		if (editCopyMenuItem == null) {
 			editCopyMenuItem = new JMenuItem();
@@ -676,11 +573,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editCopyMenuItem;
 	}
 
-	/**
-	 * Return the editPasteMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditPasteMenuItem() {
 		if (editPasteMenuItem == null) {
 			editPasteMenuItem = new JMenuItem();
@@ -692,11 +584,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editPasteMenuItem;
 	}
 
-	/**
-	 * Return the editDeleteMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditDeleteMenuItem() {
 		if (editDeleteMenuItem == null) {
 			editDeleteMenuItem = new JMenuItem();
@@ -709,11 +596,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editDeleteMenuItem;
 	}
 
-	/**
-	 * Return the editFindMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditFindMenuItem() {
 		if (editFindMenuItem == null) {
 			editFindMenuItem = new JMenuItem();
@@ -725,11 +607,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editFindMenuItem;
 	}
 
-	/**
-	 * Return the editFindNextMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditFindNextMenuItem() {
 		if (editFindNextMenuItem == null) {
 			editFindNextMenuItem = new JMenuItem();
@@ -742,11 +619,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editFindNextMenuItem;
 	}
 
-	/**
-	 * Return the editReplaceMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditReplaceMenuItem() {
 		if (editReplaceMenuItem == null) {
 			editReplaceMenuItem = new JMenuItem();
@@ -758,11 +630,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editReplaceMenuItem;
 	}
 
-	/**
-	 * Return the editSelectAllMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getEditSelectAllMenuItem() {
 		if (editSelectAllMenuItem == null) {
 			editSelectAllMenuItem = new JMenuItem();
@@ -775,11 +642,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return editSelectAllMenuItem;
 	}
 
-	/**
-	 * Return the Window Menu.
-	 *
-	 * @return JMenu
-	 */
 	public JMenu getWindowMenu() {
 		if (windowMenu == null) {
 			windowMenu = new JMenu();
@@ -797,11 +659,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return windowMenu;
 	}
 
-	/**
-	 * Return the windowCloseMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getWindowCloseMenuItem() {
 		if (windowCloseMenuItem == null) {
 			windowCloseMenuItem = new JMenuItem();
@@ -812,11 +669,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return windowCloseMenuItem;
 	}
 
-	/**
-	 * Return the windowCloseAllMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getWindowCloseAllMenuItem() {
 		if (windowCloseAllMenuItem == null) {
 			windowCloseAllMenuItem = new JMenuItem();
@@ -828,11 +680,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return windowCloseAllMenuItem;
 	}
 
-	/**
-	 * Return the windowWindowsMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	private JMenuItem getWindowWindowsDialogMenuItem() {
 		if (windowWindowsDialogMenuItem == null) {
 			windowWindowsDialogMenuItem = new WindowMenuItem();
@@ -841,11 +688,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		return windowWindowsDialogMenuItem;
 	}
 
-	/**
-	 * Return the windowWindowsMenuItem.
-	 *
-	 * @return JMenuItem
-	 */
 	public MoreWindowsDialog getMoreWindowsDialog() {
 		if (moreWindowsDialog == null) {
 			moreWindowsDialog = new MoreWindowsDialog(editor);
@@ -857,9 +699,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		editor.showHelpApi();
 	}
 
-	/**
-	 * Initialize the class.
-	 */
 	private void initialize() {
 		add(getFileMenu());
 		add(getEditMenu());

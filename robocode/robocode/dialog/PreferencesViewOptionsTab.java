@@ -110,9 +110,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		}
 	}
 
-	/**
-	 * PreferencesDialog constructor
-	 */
 	public PreferencesViewOptionsTab(RobocodeManager manager) {
 		super();
 		this.manager = manager;
@@ -175,11 +172,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getDesiredTpsTextField().setText("" + DEFAULT_TPS);
 	}
 
-	/**
-	 * Return the defaultViewOptionsButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getDefaultViewOptionsButton() {
 		if (defaultViewOptionsButton == null) {
 			defaultViewOptionsButton = new JButton("Defaults");
@@ -190,11 +182,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return defaultViewOptionsButton;
 	}
 
-	/**
-	 * Return the enableAllViewOptionsButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getEnableAllViewOptionsButton() {
 		if (enableAllViewOptionsButton == null) {
 			enableAllViewOptionsButton = new JButton("Enable all");
@@ -205,11 +192,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return enableAllViewOptionsButton;
 	}
 
-	/**
-	 * Return the disableAllViewOptionsButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getDisableAllViewOptionsButton() {
 		if (disableAllViewOptionsButton == null) {
 			disableAllViewOptionsButton = new JButton("Disable all");
@@ -220,11 +202,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return disableAllViewOptionsButton;
 	}
 
-	/**
-	 * Return the desiredTpsLabel property value.
-	 *
-	 * @return JLabel
-	 */
 	private JLabel getDesiredTpsLabel() {
 		if (desiredTpsLabel == null) {
 			desiredTpsLabel = new JLabel("Desired TPS: ");
@@ -232,11 +209,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return desiredTpsLabel;
 	}
 
-	/**
-	 * Return the desiredTpsTextField property value.
-	 *
-	 * @return JTextField
-	 */
 	private JTextField getDesiredTpsTextField() {
 		if (desiredTpsTextField == null) {
 			desiredTpsTextField = new JTextField();
@@ -246,11 +218,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return desiredTpsTextField;
 	}
 
-	/**
-	 * Return the displayFpsCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getDisplayFpsCheckBox() {
 		if (displayFpsCheckBox == null) {
 			displayFpsCheckBox = new JCheckBox("Display FPS in titlebar");
@@ -260,11 +227,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return displayFpsCheckBox;
 	}
 
-	/**
-	 * Return the displayTpsCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getDisplayTpsCheckBox() {
 		if (displayTpsCheckBox == null) {
 			displayTpsCheckBox = new JCheckBox("Display TPS in titlebar");
@@ -274,11 +236,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return displayTpsCheckBox;
 	}
 
-	/**
-	 * Return the defaultTpsButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getDefaultTpsButton() {
 		if (defaultTpsButton == null) {
 			defaultTpsButton = new JButton("Default");
@@ -287,11 +244,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return defaultTpsButton;
 	}
 
-	/**
-	 * Return the minTpsButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getMinTpsButton() {
 		if (minTpsButton == null) {
 			minTpsButton = new JButton("Minimum");
@@ -300,11 +252,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return minTpsButton;
 	}
 
-	/**
-	 * Return the maxTpsButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getMaxTpsButton() {
 		if (maxTpsButton == null) {
 			maxTpsButton = new JButton("Max");
@@ -313,11 +260,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return maxTpsButton;
 	}
 
-	/**
-	 * Return the fastTpsButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getFastTpsButton() {
 		if (fastTpsButton == null) {
 			fastTpsButton = new JButton("Fast");
@@ -326,11 +268,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return fastTpsButton;
 	}
 
-	/**
-	 * Return the tpsOptionsPanel
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getTpsOptionsPanel() {
 		if (tpsOptionsPanel == null) {
 			tpsOptionsPanel = new JPanel();
@@ -379,11 +316,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return tpsOptionsPanel;
 	}
 
-	/**
-	 * Return the displayOptionsPanel
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getVisibleOptionsPanel() {
 		if (visibleOptionsPanel == null) {
 			visibleOptionsPanel = new JPanel();
@@ -417,11 +349,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return visibleOptionsPanel;
 	}
 
-	/**
-	 * Return the visibleRobotEnergyCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getVisibleRobotEnergyCheckBox() {
 		if (visibleRobotEnergyCheckBox == null) {
 			visibleRobotEnergyCheckBox = new JCheckBox("Visible Robot Energy");
@@ -431,11 +358,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return visibleRobotEnergyCheckBox;
 	}
 
-	/**
-	 * Return the visibleRobotNameCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getVisibleRobotNameCheckBox() {
 		if (visibleRobotNameCheckBox == null) {
 			visibleRobotNameCheckBox = new JCheckBox("Visible Robot Name");
@@ -444,11 +366,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return visibleRobotNameCheckBox;
 	}
 
-	/**
-	 * Return the visibleScanArcsCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getVisibleScanArcsCheckBox() {
 		if (visibleScanArcsCheckBox == null) {
 			visibleScanArcsCheckBox = new JCheckBox("Visible Scan Arcs");
@@ -458,11 +375,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return visibleScanArcsCheckBox;
 	}
 
-	/**
-	 * Return the visibleExplosionsCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getVisibleExplosionsCheckBox() {
 		if (visibleExplosionsCheckBox == null) {
 			visibleExplosionsCheckBox = new JCheckBox("Visible Explosions");
@@ -472,11 +384,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return visibleExplosionsCheckBox;
 	}
 
-	/**
-	 * Return the visibleGroundCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getVisibleGroundCheckBox() {
 		if (visibleGroundCheckBox == null) {
 			visibleGroundCheckBox = new JCheckBox("Visible Ground");
@@ -486,11 +393,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return visibleGroundCheckBox;
 	}
 
-	/**
-	 * Return the visibleExplosionDebrisCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getVisibleExplosionDebrisCheckBox() {
 		if (visibleExplosionDebrisCheckBox == null) {
 			visibleExplosionDebrisCheckBox = new JCheckBox("Visible Explosion Debris");
@@ -500,9 +402,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return visibleExplosionDebrisCheckBox;
 	}
 
-	/**
-	 * Initialize the class.
-	 */
 	private void initialize() {
 		setLayout(new GridLayout(1, 2));
 		add(getVisibleOptionsPanel());

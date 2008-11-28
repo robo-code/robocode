@@ -55,20 +55,12 @@ public class RcSplashScreen extends JWindow {
 		}
 	};
 
-	/**
-	 * SplashScreen constructor
-	 */
 	public RcSplashScreen(RobocodeManager manager) {
 		super();
 		this.version = manager.getVersionManager().getVersion();
 		initialize();
 	}
 
-	/**
-	 * Returns the splash label
-	 *
-	 * @return the splash label
-	 */
 	public JLabel getSplashLabel() {
 		if (splashLabel == null) {
 			splashLabel = new JLabel();
@@ -79,11 +71,6 @@ public class RcSplashScreen extends JWindow {
 		return splashLabel;
 	}
 
-	/**
-	 * Return the splash panel
-	 *
-	 * @return the splash panel
-	 */
 	private JPanel getSplashPanel() {
 		if (splashPanel == null) {
 			splashPanel = new JPanel() {
@@ -110,11 +97,6 @@ public class RcSplashScreen extends JWindow {
 		return splashPanel;
 	}
 
-	/**
-	 * Return the splash screen's content pane
-	 *
-	 * @return the splash screen's content pane
-	 */
 	private JPanel getSplashScreenContentPane() {
 		if (splashScreenContentPane == null) {
 			splashScreenContentPane = new JPanel();
@@ -125,9 +107,6 @@ public class RcSplashScreen extends JWindow {
 		return splashScreenContentPane;
 	}
 
-	/**
-	 * Initialize the splash screen
-	 */
 	private void initialize() {
 		splashImage = new BufferedImage(RobocodeLogo.WIDTH, RobocodeLogo.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		new RobocodeLogo().paintLogoWithTanks(splashImage.getGraphics());

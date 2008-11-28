@@ -89,10 +89,8 @@ public class NameManager implements Serializable {
 		return shortClassNameWithVersion;
 	}
 
-	/**
-	 * Example: sample.Walls 1.0*
-	 * The * indicates a development version, or not from the cache.
-	 */
+	// Example: sample.Walls 1.0*
+	// The * indicates a development version, or not from the cache.
 	public String getUniqueFullClassNameWithVersion() {
 		if (uniqueFullClassNameWithVersion == null) {
 			if (getFullClassNameWithVersion().equals(getFullClassName())) {

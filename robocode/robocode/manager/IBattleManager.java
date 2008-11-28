@@ -28,12 +28,15 @@ public interface IBattleManager {
 
 	/**
 	 * Kills the robot.
+	 *
+	 * @param robotIndex the index of the robot to kill.
 	 */
 	void killRobot(int robotIndex);
 
 	/**
 	 * Enable or disable the robot paintings.
 	 *
+	 * @param robotIndex the index of the robot that must have its paintings enabled or disabled.
 	 * @param enable {@code true} if paint must be enabled; {@code false} otherwise.
 	 */
 	void setPaintEnabled(int robotIndex, boolean enable);
@@ -42,6 +45,7 @@ public interface IBattleManager {
 	 * Enable or disable the robot paintings using the RobocodeSG coordinate system
 	 * with the y-axis reversed compared to the coordinate system used in Robocode.
 	 *
+	 * @param robotIndex the index of the robot that must use RobocodeSG paintings.
 	 * @param enable {@code true} if RobocodeSG paint coordinate system must be
 	 *               enabled when painting the robot; {@code false} otherwise.
 	 */

@@ -188,6 +188,7 @@ public class SoundManager implements ISoundManager {
 	 * Plays a bullet sound depending on the bullet's state
 	 *
 	 * @param bp the bullet peer
+	 * @param battleFieldWidth the width of the battle field used for panning.
 	 */
 	public void playBulletSound(BulletSnapshot bp, int battleFieldWidth) {
 		float pan = 0;

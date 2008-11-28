@@ -318,6 +318,8 @@ public class JavaDocument extends PlainDocument {
 
 	/**
 	 * Returns the UndoHandler
+	 *
+	 * @return the UndoHandler
 	 */
 	private UndoHandler getUndoHandler() {
 		if (undoHandler == null) {

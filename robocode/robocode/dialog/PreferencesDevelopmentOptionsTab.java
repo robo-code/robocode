@@ -53,9 +53,6 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 		}
 	}
 
-	/**
-	 * PreferencesDialog constructor
-	 */
 	public PreferencesDevelopmentOptionsTab(RobocodeManager manager) {
 		super();
 		this.manager = manager;

@@ -46,18 +46,12 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	private RobocodeManager manager;
 
-	/**
-	 * PreferencesDialog constructor
-	 */
 	public PreferencesDialog(RobocodeManager manager) {
 		super(manager.getWindowManager().getRobocodeFrame(), true);
 		this.manager = manager;
 		initialize();
 	}
 
-	/**
-	 * Initialize the class.
-	 */
 	private void initialize() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Preferences");
@@ -68,11 +62,6 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		dispose();
 	}
 
-	/**
-	 * Return the buttonsPanel
-	 *
-	 * @return JPanel
-	 */
 	private WizardController getButtonsPanel() {
 		if (buttonsPanel == null) {
 			buttonsPanel = getTabbedPane().getWizardController();
@@ -80,11 +69,6 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		return buttonsPanel;
 	}
 
-	/**
-	 * Return the preferencesDialogContentPane
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getPreferencesDialogContentPane() {
 		getButtonsPanel();
 		if (preferencesDialogContentPane == null) {
@@ -96,11 +80,6 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		return preferencesDialogContentPane;
 	}
 
-	/**
-	 * Return the tabbedPane
-	 *
-	 * @return JTabbedPane
-	 */
 	private WizardTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
 			tabbedPane = new WizardTabbedPane(this);

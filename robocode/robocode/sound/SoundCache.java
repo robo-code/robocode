@@ -89,6 +89,7 @@ public class SoundCache {
 			clips = new Clip[size];
 
 			DataLine.Info info = new DataLine.Info(Clip.class, soundData.format);
+
 			if (!AudioSystem.isLineSupported(info)) {
 				throw new LineUnavailableException("Required data line is not supported by the audio system");
 			}

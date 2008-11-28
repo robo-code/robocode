@@ -37,9 +37,6 @@ public class RobocodeCompiler {
 	private String compilerOptions;
 	private String compilerClassPath;
 
-	/**
-	 * RobocodeCompiler constructor comment.
-	 */
 	protected RobocodeCompiler(RobocodeEditor editor, String binary, String options, String classPath) {
 		super();
 		this.compilerBinary = binary;
