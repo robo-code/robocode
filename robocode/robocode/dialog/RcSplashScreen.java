@@ -43,9 +43,9 @@ public class RcSplashScreen extends JWindow {
 	private JPanel splashPanel;
 	private JPanel splashScreenContentPane;
 	private Image splashImage;
-	private String version;
+	private final String version;
 
-	private WindowListener eventHandler = new WindowAdapter() {
+	private final WindowListener eventHandler = new WindowAdapter() {
 
 		@Override
 		public void windowClosing(WindowEvent e) {

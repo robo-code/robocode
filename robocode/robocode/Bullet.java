@@ -35,11 +35,11 @@ import java.io.Serializable;
 public class Bullet implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private double headingRadians;
+	private final double headingRadians;
 	private double x;
 	private double y;
-	private double power;
-	private String ownerName;
+	private final double power;
+	private final String ownerName;
 	private String victimName;
 	private boolean isActive;
 

@@ -30,7 +30,7 @@ import java.io.OutputStream;
 public class BufferedPipedOutputStream extends OutputStream {
 
 	private final Object monitor = new Object();
-	private byte buf[];
+	private final byte[] buf;
 	private volatile int readIndex;
 	private volatile int writeIndex;
 	private volatile boolean waiting;

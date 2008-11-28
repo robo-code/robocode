@@ -67,10 +67,10 @@ public class RobocodeFrame extends JFrame {
 	private static final Cursor BUSY_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 	private BattleObserver battleObserver;
 
-	private InteractiveHandler interactiveHandler;
+	private final InteractiveHandler interactiveHandler;
 
 	private RobocodeMenuBar robocodeMenuBar;
 
@@ -100,11 +100,11 @@ public class RobocodeFrame extends JFrame {
 	private boolean iconified;
 	private boolean exitOnClose = true;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
-	private IWindowManager windowManager;
+	private final IWindowManager windowManager;
 
-	List<RobotButton> robotButtons = new ArrayList<RobotButton>();
+	final List<RobotButton> robotButtons = new ArrayList<RobotButton>();
 
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
@@ -752,7 +752,7 @@ public class RobocodeFrame extends JFrame {
 
 
 	private class BattleObserver extends BattleAdaptor {
-		private IWindowManager windowManager;
+		private final IWindowManager windowManager;
 		private int tps;
 		private int currentRound;
 		private int numberOfRounds;
@@ -960,7 +960,7 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		private class ResultsTask implements Runnable {
-			BattleCompletedEvent event;
+			final BattleCompletedEvent event;
 
 			ResultsTask(BattleCompletedEvent event) {
 				this.event = event;

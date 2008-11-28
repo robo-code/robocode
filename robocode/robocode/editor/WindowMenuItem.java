@@ -47,7 +47,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	public static final int REGULAR_WINDOW = 0, SPECIAL_MORE = 2;
 	private EditWindow window;
 	private JMenu parentMenu;
-	private int type;
+	private final int type;
 
 	/**
 	 * WindowMenuItem Constructor

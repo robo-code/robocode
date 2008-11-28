@@ -50,8 +50,8 @@ import java.util.Set;
 public class RobotExtractor extends JDialog implements WizardListener {
 	String unusedrobotPath;
 
-	private int minRobots = 1;
-	private int maxRobots = 1; // 250;
+	private final int minRobots = 1;
+	private final int maxRobots = 1; // 250;
 
 	private JPanel robotImporterContentPane;
 
@@ -61,9 +61,9 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	public byte buf[] = new byte[4096];
 	private StringWriter output;
-	private IRepositoryManager repositoryManager;
+	private final IRepositoryManager repositoryManager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

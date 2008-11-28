@@ -61,8 +61,8 @@ public class BattleView extends Canvas {
 	// Ground
 	private int[][] groundTiles;
 
-	private int groundTileWidth = 64;
-	private int groundTileHeight = 64;
+	private final int groundTileWidth = 64;
+	private final int groundTileHeight = 64;
 
 	private Image groundImage;
 
@@ -91,11 +91,11 @@ public class BattleView extends Canvas {
 	private Image offscreenImage;
 	private Graphics2D offscreenGfx;
 
-	private GeneralPath robocodeTextPath = new RobocodeLogo().getRobocodeText();
+	private final GeneralPath robocodeTextPath = new RobocodeLogo().getRobocodeText();
 
-	private static MirroredGraphics mirroredGraphics = new MirroredGraphics();
+	private static final MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
-	private GraphicsState graphicsState = new GraphicsState();
+	private final GraphicsState graphicsState = new GraphicsState();
 	private Graphics2DProxy[] robotGraphics;
 
 	public BattleView(RobocodeManager manager) {

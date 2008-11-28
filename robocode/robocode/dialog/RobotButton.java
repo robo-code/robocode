@@ -46,7 +46,7 @@ public class RobotButton extends JButton implements ActionListener {
 	private static final int BAR_HEIGHT = 3;
 
 	private final RobocodeManager manager;
-	private BattleObserver battleObserver = new BattleObserver();
+	private final BattleObserver battleObserver = new BattleObserver();
 	private RobotDialog robotDialog;
 	private final String name;
 	private final int robotIndex;

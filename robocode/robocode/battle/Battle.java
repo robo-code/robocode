@@ -135,7 +135,7 @@ public final class Battle extends BaseBattle {
 
 	// Turn skip related items
 	private boolean parallelOn;
-	static int DEBUG_TURN_WAIT = 10 * 60 * 1000;
+	static final int DEBUG_TURN_WAIT = 10 * 60 * 1000;
 	private int millisWait;
 	private int microWait;
 
@@ -143,14 +143,14 @@ public final class Battle extends BaseBattle {
 	private final int robotsCount;
 	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
-	private List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
+	private final List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
 	private int activeRobots;
 
 	// Death events
-	private List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
+	private final List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
 
 	// Flag specifying if debugging is enabled thru the debug command line option
-	private boolean isDebugging;
+	private final boolean isDebugging;
 
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;

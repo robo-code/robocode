@@ -24,8 +24,8 @@ import java.util.Stack;
  */
 
 public class XmlWriter {
-	Writer writer;
-	Stack<String> elements = new Stack<String>();
+	final Writer writer;
+	final Stack<String> elements = new Stack<String>();
 	boolean headClosed = true;
 	boolean innerElement = false;
 	boolean indent = true;

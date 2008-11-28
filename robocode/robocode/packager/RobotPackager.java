@@ -66,8 +66,8 @@ import java.util.zip.ZipException;
 @SuppressWarnings("serial")
 public class RobotPackager extends JDialog implements WizardListener {
 
-	private int minRobots = 1;
-	private int maxRobots = 1; // 250;
+	private final int minRobots = 1;
+	private final int maxRobots = 1; // 250;
 
 	private JPanel robotPackagerContentPane;
 	private WizardCardPanel wizardPanel;
@@ -77,11 +77,11 @@ public class RobotPackager extends JDialog implements WizardListener {
 	private RobotSelectionPanel robotSelectionPanel;
 	private PackagerOptionsPanel packagerOptionsPanel;
 
-	public byte buf[] = new byte[4096];
+	public final byte[] buf = new byte[4096];
 	private StringWriter output;
-	private IRepositoryManager repositoryManager;
+	private final IRepositoryManager repositoryManager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

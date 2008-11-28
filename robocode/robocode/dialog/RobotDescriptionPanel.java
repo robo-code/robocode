@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 @SuppressWarnings("serial")
 public class RobotDescriptionPanel extends JPanel {
 	private JLabel robotNameLabel;
-	private JLabel descriptionLabel[] = new JLabel[3];
+	private final JLabel[] descriptionLabel = new JLabel[3];
 	private JPanel descriptionPanel;
 	private JButton detailsButton;
 	private JLabel robocodeVersionLabel;
@@ -45,7 +45,7 @@ public class RobotDescriptionPanel extends JPanel {
 
 	private final static String BLANK_STRING = "                                                                        ";
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

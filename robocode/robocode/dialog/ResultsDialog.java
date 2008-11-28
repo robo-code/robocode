@@ -41,8 +41,8 @@ public class ResultsDialog extends BaseScoreDialog {
 	private JPanel buttonPanel;
 	private JButton okButton;
 	private JButton saveButton;
-	private BattleResultsTableModel tableModel;
-	private ButtonEventHandler buttonEventHandler;
+	private final BattleResultsTableModel tableModel;
+	private final ButtonEventHandler buttonEventHandler;
 
 	public ResultsDialog(RobocodeManager manager, BattleResults[] results, int numRounds) {
 		super(manager, true);

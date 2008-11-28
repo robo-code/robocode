@@ -42,21 +42,21 @@ import robocode.manager.VersionManager;
  */
 public class ResultsUpload {
 
-	private String client;
-	private String resultsfile;
-	private String resultsurl;
-	private String tempdir;
+	private final String client;
+	private final String resultsfile;
+	private final String resultsurl;
+	private final String tempdir;
 	private String game;
-	private String user;
-	private String sizesfile;
-	private String minibots;
-	private String microbots;
-	private String nanobots;
-	private CompetitionsSelector size;
-	private String battlesnumfile;
-	private String priority;
-	private String teams;
-	private String melee;
+	private final String user;
+	private final String sizesfile;
+	private final String minibots;
+	private final String microbots;
+	private final String nanobots;
+	private final CompetitionsSelector size;
+	private final String battlesnumfile;
+	private final String priority;
+	private final String teams;
+	private final String melee;
 
 	public ResultsUpload(String propertiesfile) {
 		// Read parameters

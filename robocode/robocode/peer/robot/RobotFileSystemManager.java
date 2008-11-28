@@ -32,13 +32,13 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class RobotFileSystemManager {
-	private IHostedThread robotProxy;
+	private final IHostedThread robotProxy;
 	private long quotaUsed = 0;
 	private boolean quotaMessagePrinted = false;
-	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
+	private final List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
 	private long maxQuota = 0;
-	private String classDirectory;
-	private String rootPackageDirectory;
+	private final String classDirectory;
+	private final String rootPackageDirectory;
 
 	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String classDirectory, String rootPackageDirectory) {
 		this.robotProxy = robotProxy;

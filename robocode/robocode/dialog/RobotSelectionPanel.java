@@ -71,25 +71,25 @@ public class RobotSelectionPanel extends WizardPanel {
 	private JButton removeButton;
 	private JButton removeAllButton;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 	private RobotDescriptionPanel descriptionPanel;
-	private String instructions;
+	private final String instructions;
 	private JLabel instructionsLabel;
 	private JPanel mainPanel;
 	private int maxRobots = 1;
 	private int minRobots = 1;
 	private JPanel numRoundsPanel;
 	private JTextField numRoundsTextField;
-	private boolean onlyShowSource;
-	private boolean onlyShowWithPackage;
-	private boolean onlyShowRobots;
-	private boolean onlyShowDevelopment;
-	private boolean onlyShowPackaged;
-	private boolean ignoreTeamRobots;
+	private final boolean onlyShowSource;
+	private final boolean onlyShowWithPackage;
+	private final boolean onlyShowRobots;
+	private final boolean onlyShowDevelopment;
+	private final boolean onlyShowPackaged;
+	private final boolean ignoreTeamRobots;
 	private String preSelectedRobots;
-	private List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
-	private boolean showNumRoundsPanel;
-	private IRepositoryManager repositoryManager;
+	private final List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
+	private final boolean showNumRoundsPanel;
+	private final IRepositoryManager repositoryManager;
 
 	private class EventHandler implements ActionListener, ListSelectionListener {
 		public void actionPerformed(ActionEvent e) {

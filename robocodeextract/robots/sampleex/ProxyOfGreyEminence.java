@@ -27,7 +27,7 @@ import robocode.ScannedRobotEvent;
  * giving it more freedom to inherit from Monk rather than from Robot.
  */
 public class ProxyOfGreyEminence extends AdvancedRobot {
-	private GreyEminence monk;
+	private final GreyEminence monk;
 
 	public ProxyOfGreyEminence() {
 		monk = new GreyEminence(this);
@@ -58,7 +58,7 @@ abstract class RegullarMonk {}
  * The power behind the throne.
  */
 class GreyEminence extends RegullarMonk {
-	private ProxyOfGreyEminence proxy;
+	private final ProxyOfGreyEminence proxy;
 
 	public GreyEminence(ProxyOfGreyEminence proxy) {
 		this.proxy = proxy;

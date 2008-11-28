@@ -29,7 +29,7 @@ import robocode.BattleResults;
  */
 public class TeamStatistics implements ContestantStatistics {
 
-	private TeamPeer teamPeer;
+	private final TeamPeer teamPeer;
 	private int rank;
 
 	public TeamStatistics(TeamPeer teamPeer) {

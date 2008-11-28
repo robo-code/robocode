@@ -34,10 +34,10 @@ import java.util.List;
  */
 public class ThreadManager implements IThreadManager {
 
-	private List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
+	private final List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private Thread robotLoaderThread;
 	private IHostedThread loadingRobot;
-	private List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
+	private final List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
 
 	public ThreadManager() {
 		super();

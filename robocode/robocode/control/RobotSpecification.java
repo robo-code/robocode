@@ -35,7 +35,7 @@ public class RobotSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private FileSpecification fileSpecification;
+	private final FileSpecification fileSpecification;
 
 	/**
 	 * This constructor is called by the game in order to construct a new

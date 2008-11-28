@@ -24,7 +24,7 @@ import robocode.common.BoundingRectangle;
 public class DefaultBattleField implements BattleField {
 	private static final long serialVersionUID = 1L;
 
-	private BoundingRectangle boundingBox;
+	private final BoundingRectangle boundingBox;
 
 	public DefaultBattleField(int width, int height) {
 		super();

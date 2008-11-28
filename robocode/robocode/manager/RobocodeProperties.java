@@ -139,9 +139,9 @@ public class RobocodeProperties {
 	// Number of Rounds
 	private int numberOfRounds = 10;
 
-	private Properties props = new SortedProperties();
+	private final Properties props = new SortedProperties();
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
 
 	private final static String
 			OPTIONS_VIEW_ROBOTNAMES = "robocode.options.view.robotNames",
@@ -199,11 +199,11 @@ public class RobocodeProperties {
 
 			NUMBER_OF_ROUNDS = "robocode.numberOfBattles";
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
-	private RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
+	private final RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
 
-	private List<PropertyListener> listeners = new ArrayList<PropertyListener>();
+	private final List<PropertyListener> listeners = new ArrayList<PropertyListener>();
 
 	public RobocodeProperties(RobocodeManager manager) {
 		this.manager = manager;

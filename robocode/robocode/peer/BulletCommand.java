@@ -30,10 +30,10 @@ public class BulletCommand implements Serializable {
 		this.bulletId = bulletId;
 	}
 
-	private Bullet bullet;
-	private boolean fireAssistValid;
-	private double fireAssistAngle;
-	private int bulletId;
+	private final Bullet bullet;
+	private final boolean fireAssistValid;
+	private final double fireAssistAngle;
+	private final int bulletId;
 
 	public boolean isFireAssistValid() {
 		return fireAssistValid;

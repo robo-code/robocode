@@ -31,7 +31,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class WizardController extends JPanel implements ChangeListener {
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private JButton backButton;
 	private JButton nextButton;

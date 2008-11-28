@@ -31,7 +31,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	private int count = 0;
 	private boolean messaged = false;
-	private StringBuilder text;
+	private final StringBuilder text;
 	private final Object syncRoot = new Object();
 
 	public RobotOutputStream() {

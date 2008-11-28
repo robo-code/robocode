@@ -51,9 +51,9 @@ import robocode.peer.RobotPeer;
  */
 public class RobotStatistics implements robocode.peer.ContestantStatistics {
 
-	private RobotPeer robotPeer;
+	private final RobotPeer robotPeer;
 	private int rank;
-	private int robots;
+	private final int robots;
 	private boolean isActive;
 	private boolean isInRound;
 

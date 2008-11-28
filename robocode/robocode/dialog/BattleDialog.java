@@ -34,7 +34,7 @@ import java.io.IOException;
 public class BattleDialog extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private BattleObserver battleObserver = new BattleObserver();
+	private final BattleObserver battleObserver = new BattleObserver();
 
 	private ConsoleScrollPane scrollPane;
 	private ConsoleScrollPane xmlPane;
@@ -44,8 +44,8 @@ public class BattleDialog extends JFrame {
 	private JPanel battleDialogContentPane;
 	private JPanel buttonPanel;
 
-	private RobocodeManager manager;
-	private BattleButton battleButton;
+	private final RobocodeManager manager;
+	private final BattleButton battleButton;
 	private boolean isListening;
 	private TurnSnapshot lastSnapshot;
 	private boolean paintSnapshot;
@@ -136,7 +136,7 @@ public class BattleDialog extends JFrame {
 		return button;
 	}
 
-	private ActionListener eventHandler = new ActionListener() {
+	private final ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
 

@@ -35,8 +35,8 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class ConfirmPanel extends WizardPanel {
-	private RobotPackager robotPackager;
-	private EventHandler eventHandler = new EventHandler();
+	private final RobotPackager robotPackager;
+	private final EventHandler eventHandler = new EventHandler();
 	private boolean visible;
 	private JPanel robotListPanel;
 

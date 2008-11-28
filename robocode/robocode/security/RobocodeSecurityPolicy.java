@@ -33,9 +33,9 @@ import java.util.StringTokenizer;
  * @author Robert D. Maupin (contributor)
  */
 public class RobocodeSecurityPolicy extends Policy {
-	private Policy parentPolicy;
-	private PermissionCollection permissionCollection;
-	private List<URL> trustedCodeUrls;
+	private final Policy parentPolicy;
+	private final PermissionCollection permissionCollection;
+	private final List<URL> trustedCodeUrls;
 
 	public RobocodeSecurityPolicy(Policy parentPolicy) {
 		this.parentPolicy = parentPolicy;

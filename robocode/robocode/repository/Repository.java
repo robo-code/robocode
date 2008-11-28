@@ -33,8 +33,9 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class Repository {
-	private List<FileSpecification> fileSpecifications = Collections.synchronizedList(new ArrayList<FileSpecification>());
-	private Hashtable<String, FileSpecification> fileSpecificationsDict = new Hashtable<String, FileSpecification>();
+	private final List<FileSpecification> fileSpecifications = Collections.synchronizedList(
+			new ArrayList<FileSpecification>());
+	private final Hashtable<String, FileSpecification> fileSpecificationsDict = new Hashtable<String, FileSpecification>();
 
 	public void add(FileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);

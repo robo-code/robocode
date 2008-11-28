@@ -28,7 +28,7 @@ public class TeamMessage implements Serializable {
 
 	}
 
-	public String sender;
-	public String recipient;
-	public byte[] message;
+	public final String sender;
+	public final String recipient;
+	public final byte[] message;
 }

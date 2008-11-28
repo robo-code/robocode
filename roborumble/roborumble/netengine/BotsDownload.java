@@ -51,24 +51,24 @@ import java.util.zip.ZipEntry;
 public class BotsDownload {
 
 	// private String internetrepository;
-	private String botsrepository;
-	private String participantsfile;
-	private String participantsurl;
-	private String tempdir;
-	private String tag;
-	private String isteams;
-	private String sizesfile;
-	private CompetitionsSelector size;
-	private String ratingsurl;
+	private final String botsrepository;
+	private final String participantsfile;
+	private final String participantsurl;
+	private final String tempdir;
+	private final String tag;
+	private final String isteams;
+	private final String sizesfile;
+	private final CompetitionsSelector size;
+	private final String ratingsurl;
 	private String generalbots;
-	private String minibots;
-	private String microbots;
-	private String nanobots;
-	private String generalbotsfile;
-	private String minibotsfile;
-	private String microbotsfile;
-	private String nanobotsfile;
-	private String removeboturl;
+	private final String minibots;
+	private final String microbots;
+	private final String nanobots;
+	private final String generalbotsfile;
+	private final String minibotsfile;
+	private final String microbotsfile;
+	private final String nanobotsfile;
+	private final String removeboturl;
 	private String[] excludes;
 
 	public BotsDownload(String propertiesfile) {

@@ -48,12 +48,12 @@ import java.io.IOException;
 public class WindowManager implements IWindowManager {
 
 	private final static int TIMER_TICKS_PER_SECOND = 50;
-	private AwtBattleAdaptor awtAdaptor;
+	private final AwtBattleAdaptor awtAdaptor;
 	private RobocodeEditor robocodeEditor;
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
 	private RobocodeFrame robocodeFrame;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 	private RankingDialog rankingDialog;
 
 	public WindowManager(RobocodeManager manager) {

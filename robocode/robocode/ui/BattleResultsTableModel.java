@@ -54,7 +54,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	private final int numRounds;
 
 	// The sum of the scores gathered by the robots.
-	private double totalScore;
+	private final double totalScore;
 
 	public BattleResultsTableModel(BattleResults[] results, int numRounds) {
 		this.results = results;

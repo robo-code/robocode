@@ -36,7 +36,7 @@ import static java.lang.Math.min;
 public class LineNumbers extends JComponent implements DocumentListener, MouseListener, MouseMotionListener,
 		CaretListener {
 
-	private JEditorPane editorPane;
+	private final JEditorPane editorPane;
 	private int currentLines, lineWidth, anchor, lastIndex, offset, textWidth;
 
 	public LineNumbers(JEditorPane editorPane) {

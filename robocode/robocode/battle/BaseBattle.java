@@ -41,7 +41,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected Thread battleThread;
 	protected IBattleManager battleManager;
 	protected final BattleEventDispatcher eventDispatcher;
-	protected RobocodeManager manager;
+	protected final RobocodeManager manager;
 
 	// rules
 	protected BattleRules battleRules;
@@ -66,7 +66,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	private int stepCount;
 	private boolean runBackward;
 	private boolean roundOver;
-	private Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
+	private final Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
 	protected BaseBattle(RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		isPaused = paused;

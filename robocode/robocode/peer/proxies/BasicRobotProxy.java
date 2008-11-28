@@ -46,11 +46,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected RobotStatus status;
 	protected ExecCommands commands;
 	private ExecResults execResults;
-	private Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>(); 
+	private final Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>();
 	private int bulletCounter; 
 
-	private AtomicInteger setCallCount = new AtomicInteger(0);
-	private AtomicInteger getCallCount = new AtomicInteger(0);
+	private final AtomicInteger setCallCount = new AtomicInteger(0);
+	private final AtomicInteger getCallCount = new AtomicInteger(0);
 
 	protected Condition waitCondition;
 	protected boolean testingCondition;

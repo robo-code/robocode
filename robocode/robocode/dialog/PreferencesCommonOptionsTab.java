@@ -31,7 +31,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	private JCheckBox appendWhenSavingResultsCheckBox;
 	private JCheckBox enableReplayRecordingCheckBox;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	public PreferencesCommonOptionsTab(RobocodeManager manager) {
 		super();

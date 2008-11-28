@@ -16,7 +16,7 @@ package robocode.manager;
  * @author Pavel Savara (original)
  */
 public class HostManager implements IHostManager {
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	HostManager(RobocodeManager manager) {
 		this.manager = manager;

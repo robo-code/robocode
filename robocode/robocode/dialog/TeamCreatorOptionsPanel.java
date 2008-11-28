@@ -43,7 +43,7 @@ import java.util.List;
 public class TeamCreatorOptionsPanel extends WizardPanel {
 	TeamCreator teamCreator;
 	robocode.packager.RobotPackager teamPackager;
-	EventHandler eventHandler = new EventHandler();
+	final EventHandler eventHandler = new EventHandler();
 
 	JLabel authorLabel;
 	JTextField authorField;

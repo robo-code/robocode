@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer {
 	final int MAX_MESSAGE_SIZE = 32768;
-	private ByteArrayOutputStream byteStreamWriter;
+	private final ByteArrayOutputStream byteStreamWriter;
 
 	public TeamRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(robotClassManager, hostManager, peer, statics);

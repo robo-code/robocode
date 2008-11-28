@@ -44,7 +44,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
 	private PreferencesCommonOptionsTab commonOptionsTab;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	public PreferencesDialog(RobocodeManager manager) {
 		super(manager.getWindowManager().getRobocodeFrame(), true);

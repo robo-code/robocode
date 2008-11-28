@@ -94,7 +94,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 				});
 
 				reader.expect("rounds", new XmlReader.ListElement() {
-					ArrayList<Integer> ints = new ArrayList<Integer>();
+					final ArrayList<Integer> ints = new ArrayList<Integer>();
 
 					public XmlSerializable read(XmlReader reader) {
 						// prototype
@@ -134,7 +134,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 		IntValue(String name) {
 			this.name = name;
 		}
-		private String name;
+		private final String name;
 		public int intValue;
 
 		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}

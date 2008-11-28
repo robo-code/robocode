@@ -90,7 +90,7 @@ public class ImageUtil {
 	 * @author Flemming N. Larsen
 	 */
 	private static class ColorFilter extends RGBImageFilter {
-		private float[] hsl;
+		private final float[] hsl;
 
 		public ColorFilter(Color color) {
 			hsl = ColorUtil.fromRGBtoHSL(color.getRed(), color.getGreen(), color.getBlue());

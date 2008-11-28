@@ -51,14 +51,14 @@ import java.awt.*;
 public class RobotClassManager {
 	private RobotFileSpecification robotFileSpecification;
 	private Class<?> robotClass;
-	private Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
+	private final Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
 
 	private RobocodeClassLoader robotClassLoader = null;
 	// only used if we're being controlled by RobocodeEngine:
 	private robocode.control.RobotSpecification controlRobotSpecification;
 
-	private String fullClassName;
-	private String teamName;
+	private final String fullClassName;
+	private final String teamName;
 
 	private String uid = "";
 

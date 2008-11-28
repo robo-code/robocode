@@ -37,9 +37,9 @@ import java.util.Properties;
  * @author Flemming N. Larsen (contributor)
  */
 public class CompetitionsSelector {
-	private String repository;
-	private String sizesfile;
-	private Properties sizes;
+	private final String repository;
+	private final String sizesfile;
+	private final Properties sizes;
 
 	public CompetitionsSelector(String sizesfile, String repository) {
 		this.repository = repository;

@@ -43,7 +43,7 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 	private JLabel findLabel;
 	private JLabel replaceLabel;
 	private boolean initLoc;
-	private RobocodeEditor window;
+	private final RobocodeEditor window;
 
 	public FindReplaceDialog(RobocodeEditor parentFrame) {
 		super(parentFrame, false);

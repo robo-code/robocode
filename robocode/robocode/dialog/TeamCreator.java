@@ -51,13 +51,13 @@ public class TeamCreator extends JDialog implements WizardListener {
 	private RobotSelectionPanel robotSelectionPanel;
 	private TeamCreatorOptionsPanel teamCreatorOptionsPanel;
 
-	private int minRobots = 2;
-	private int maxRobots = 10;
+	private final int minRobots = 2;
+	private final int maxRobots = 10;
 
-	private IRepositoryManager repositoryManager;
-	private RobocodeManager manager;
+	private final IRepositoryManager repositoryManager;
+	private final RobocodeManager manager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

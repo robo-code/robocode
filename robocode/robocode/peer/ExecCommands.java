@@ -28,11 +28,11 @@ import java.io.Serializable;
  */
 public final class ExecCommands implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public static int defaultBodyColor = 0xFF29298C;
-	public static int defaultGunColor = 0xFF29298C;
-	public static int defaultRadarColor = 0xFF29298C;
-	public static int defaultScanColor = 0xFF0000FF;
-	public static int defaultBulletColor = 0xFFFFFFFF;
+	public static final int defaultBodyColor = 0xFF29298C;
+	public static final int defaultGunColor = 0xFF29298C;
+	public static final int defaultRadarColor = 0xFF29298C;
+	public static final int defaultScanColor = 0xFF0000FF;
+	public static final int defaultBulletColor = 0xFFFFFFFF;
 
 	private double bodyTurnRemaining;
 	private double radarTurnRemaining;

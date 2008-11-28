@@ -80,9 +80,9 @@ public class Robocode {
 		}.start();
 	}
 
-	private RobocodeManager manager;
-	private Setup setup;
-	private BattleObserver battleObserver = new BattleObserver();
+	private final RobocodeManager manager;
+	private final Setup setup;
+	private final BattleObserver battleObserver = new BattleObserver();
 
 	private class Setup {
 		boolean securityOn = true;

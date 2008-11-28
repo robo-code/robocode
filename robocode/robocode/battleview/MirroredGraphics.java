@@ -42,13 +42,13 @@ public class MirroredGraphics extends Graphics2D {
 	private Graphics2D g;
 
 	// Save/restore of Graphics object
-	private GraphicsState graphicsState = new GraphicsState();
+	private final GraphicsState graphicsState = new GraphicsState();
 
 	// The original transform mirrored
-	private AffineTransform origTxMirrored = new AffineTransform();
+	private final AffineTransform origTxMirrored = new AffineTransform();
 
 	// A transform used for temporary transform operations (is reused)
-	private AffineTransform tmpTx = new AffineTransform();
+	private final AffineTransform tmpTx = new AffineTransform();
 
 	/**
 	 * Binds a Graphics2D object to this wrapper object.

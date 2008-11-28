@@ -53,19 +53,19 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	private JDesktopPane desktopPane;
 	public boolean isApplication;
 
-	public Point origin = new Point();
-	public File robotsDirectory;
+	public final Point origin = new Point();
+	public final File robotsDirectory;
 	private JToolBar statusBar;
 	private JLabel lineLabel;
 
 	private RobocodeProperties robocodeProperties;
 	private File editorDirectory;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	private FindReplaceDialog findReplaceDialog;
 	private ReplaceAction replaceAction;
 
-	EventHandler eventHandler = new EventHandler();
+	final EventHandler eventHandler = new EventHandler();
 
 	class EventHandler implements ComponentListener {
 		public void componentMoved(ComponentEvent e) {}

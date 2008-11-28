@@ -47,10 +47,10 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 	private String fileName;
 	private String robotName;
 	public boolean modified;
-	private RobocodeEditor editor;
+	private final RobocodeEditor editor;
 	private JEditorPane editorPane;
 	private JPanel editWindowContentPane;
-	private File robotsDirectory;
+	private final File robotsDirectory;
 	private JScrollPane scrollPane;
 
 	private LineNumbers lineNumbers;

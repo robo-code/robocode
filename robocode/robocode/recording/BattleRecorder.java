@@ -42,7 +42,7 @@ public class BattleRecorder {
 	}
 
 	private class BattleObserver extends BattleAdaptor {
-		private robocode.battle.events.BattleEventDispatcher dispatcher;
+		private final robocode.battle.events.BattleEventDispatcher dispatcher;
 
 		private int currentTurn;
 		private int currentRound;

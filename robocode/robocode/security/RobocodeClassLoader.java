@@ -52,7 +52,7 @@ import java.util.Map;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeClassLoader extends ClassLoader {
-	private Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
+	private final Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
 
 	private RobotFileSpecification robotFileSpecification;
 	private RobotClassManager robotClassManager;

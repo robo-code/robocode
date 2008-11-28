@@ -45,10 +45,10 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @SuppressWarnings("serial")
 public class RankingDialog extends BaseScoreDialog {
-	private BattleRankingTableModel tableModel;
-	private Timer timerTask;
-	private BattleObserver battleObserver;
-	private AtomicReference<TurnSnapshot> snapshot;
+	private final BattleRankingTableModel tableModel;
+	private final Timer timerTask;
+	private final BattleObserver battleObserver;
+	private final AtomicReference<TurnSnapshot> snapshot;
 	private TurnSnapshot lastSnapshot;
 	private int lastRows;
 

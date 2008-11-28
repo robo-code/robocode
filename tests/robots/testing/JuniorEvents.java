@@ -32,7 +32,7 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 
 	IBasicRobotPeer peer;
 	PrintStream out;
-	Hashtable<String, Integer> counts = new Hashtable<String, Integer>();
+	final Hashtable<String, Integer> counts = new Hashtable<String, Integer>();
 	Bullet bullet;
 
 	public void run() {

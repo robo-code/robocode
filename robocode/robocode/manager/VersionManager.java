@@ -47,7 +47,7 @@ public final class VersionManager implements IVersionManager {
 	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
 
 	private static String version;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	public VersionManager(RobocodeManager manager) {
 		this.manager = manager;

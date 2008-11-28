@@ -66,10 +66,10 @@ public class EventManager implements IEventManager {
 	private int currentTopEventPriority;
 	private Event currentTopEvent;
 
-	private List<Condition> customEvents = new CopyOnWriteArrayList<Condition>();
+	private final List<Condition> customEvents = new CopyOnWriteArrayList<Condition>();
 	private final EventQueue eventQueue;
 
-	private boolean interruptible[] = new boolean[MAX_PRIORITY + 1];
+	private final boolean[] interruptible = new boolean[MAX_PRIORITY + 1];
 	private Dictionary<String, Event> namedEvents;
 	private ScannedRobotEvent dummyScannedRobotEvent;
 

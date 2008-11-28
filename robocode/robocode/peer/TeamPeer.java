@@ -33,11 +33,11 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
-	private List<String> memberNames;
-	private String name;
-	private int contestIndex;
+	private final List<String> memberNames;
+	private final String name;
+	private final int contestIndex;
 	private RobotPeer teamLeader;
-	private TeamStatistics teamStatistics;
+	private final TeamStatistics teamStatistics;
 
 	public TeamPeer(String name, List<String> memberNames, int contestIndex) {
 		this.name = name;

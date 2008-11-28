@@ -32,7 +32,7 @@ public class CompilerProperties {
 	private String compilerClasspath = null;
 	private String robocodeVersion = null;
 
-	private Properties props = new Properties();
+	private final Properties props = new Properties();
 
 	public CompilerProperties() {
 		super();

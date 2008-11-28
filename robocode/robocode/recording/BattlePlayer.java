@@ -27,7 +27,7 @@ import java.util.List;
  */
 public final class BattlePlayer extends BaseBattle {
 
-	private RecordManager recordManager;
+	private final RecordManager recordManager;
 	private boolean[] paint;
 
 	public BattlePlayer(RobocodeManager manager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) {

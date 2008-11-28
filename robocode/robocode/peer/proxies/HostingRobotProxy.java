@@ -40,14 +40,14 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
 	protected RobotClassManager robotClassManager;
-	protected RobotStatics statics;
+	protected final RobotStatics statics;
 	protected RobotOutputStream out;
-	protected IRobotPeer peer;
-	protected IHostManager hostManager;
+	protected final IRobotPeer peer;
+	protected final IHostManager hostManager;
 	protected IBasicRobot robot;
 
 	// thread is running
-	private AtomicBoolean isRunning = new AtomicBoolean(false);
+	private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
 	HostingRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;

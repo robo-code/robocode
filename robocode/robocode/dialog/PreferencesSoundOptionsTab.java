@@ -29,9 +29,9 @@ import java.util.Vector;
 @SuppressWarnings("serial")
 public class PreferencesSoundOptionsTab extends WizardPanel {
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private JPanel soundOptionsPanel;
 	private JPanel mixerOptionsPanel;

@@ -29,9 +29,9 @@ public class BulletStatus implements Serializable {
 		this.victimName = victimName;
 	}
 
-	public int bulletId;
-	public String victimName;
-	public boolean isActive;
-	public double x;
-	public double y;
+	public final int bulletId;
+	public final String victimName;
+	public final boolean isActive;
+	public final double x;
+	public final double y;
 }

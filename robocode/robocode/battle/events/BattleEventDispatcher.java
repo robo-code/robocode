@@ -27,7 +27,7 @@ public class BattleEventDispatcher implements IBattleListener {
 	// This list is guaranteed to be thread-safe, which is necessary as it will be accessed
 	// by both the battle thread and battle manager thread. If this list is not thread-safe
 	// then ConcurentModificationExceptions will occur from time to time.
-	private List<IBattleListener> listeners = new CopyOnWriteArrayList<IBattleListener>();
+	private final List<IBattleListener> listeners = new CopyOnWriteArrayList<IBattleListener>();
 
 	public BattleEventDispatcher() {}
 

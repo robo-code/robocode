@@ -24,8 +24,8 @@ import java.io.PrintStream;
  */
 public class SecurePrintStream extends PrintStream {
 
-	public static PrintStream realOut = System.out;
-	public static PrintStream realErr = System.err;
+	public static final PrintStream realOut = System.out;
+	public static final PrintStream realErr = System.err;
 
 	public SecurePrintStream(OutputStream out, boolean autoFlush) {
 		super(out, autoFlush);

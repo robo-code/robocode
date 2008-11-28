@@ -33,11 +33,11 @@ public class XmlReader {
 
 	SAXParser parser;
 
-	InputStream input;
-	Stack<Element> elements = new Stack<Element>();
-	Stack<XmlSerializable> items = new Stack<XmlSerializable>();
-	Stack<Dictionary<String, Element>> elementNames = new Stack<Dictionary<String, Element>>();
-	Stack<Dictionary<String, Attribute>> attributeNames = new Stack<Dictionary<String, Attribute>>();
+	final InputStream input;
+	final Stack<Element> elements = new Stack<Element>();
+	final Stack<XmlSerializable> items = new Stack<XmlSerializable>();
+	final Stack<Dictionary<String, Element>> elementNames = new Stack<Dictionary<String, Element>>();
+	final Stack<Dictionary<String, Attribute>> attributeNames = new Stack<Dictionary<String, Attribute>>();
 	XmlSerializable result;
 
 	public XmlReader(InputStream input) throws SAXException, ParserConfigurationException {
@@ -73,7 +73,7 @@ public class XmlReader {
 	}
 
 	private class Handler extends DefaultHandler {
-		XmlReader parent;
+		final XmlReader parent;
 
 		public Handler(XmlReader parent) {
 			this.parent = parent;

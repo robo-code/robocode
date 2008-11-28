@@ -49,9 +49,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class FilenamePanel extends WizardPanel {
-	private RobotPackager robotPackager;
+	private final RobotPackager robotPackager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 	private boolean robocodeErrorShown;
 
 	private JButton browseButton;
@@ -267,7 +267,7 @@ public class FilenamePanel extends WizardPanel {
 	}
 
 	static class ShowFrameWorker implements Runnable {
-		JFrame frame;
+		final JFrame frame;
 
 		public ShowFrameWorker(JFrame frame) {
 			this.frame = frame;

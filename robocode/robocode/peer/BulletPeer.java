@@ -89,11 +89,11 @@ public class BulletPeer {
 	private double deltaX;
 	private double deltaY;
 
-	private Line2D.Double boundingLine = new Line2D.Double();
+	private final Line2D.Double boundingLine = new Line2D.Double();
 
 	protected int frame;
 
-	private int color;
+	private final int color;
 
 	protected int explosionImageIndex;
 

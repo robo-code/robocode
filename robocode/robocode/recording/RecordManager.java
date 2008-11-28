@@ -244,7 +244,7 @@ public class RecordManager implements IRecordManager {
 
 		public ObjectOutputStream oos;
 		public IOException lastException;
-		public RecordRoot me;
+		public final RecordRoot me;
 		public BattleRecordInfo recordInfo;
 
 		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}

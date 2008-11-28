@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class ImageManager implements IImageManager {
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	private Image[] groundImages;
 

@@ -32,7 +32,7 @@ public class RenderObject {
 	/**
 	 * Current transform that is concatenated with the base transform
 	 */
-	protected AffineTransform transform;
+	protected final AffineTransform transform;
 
 	/**
 	 * Current frame that must be rendered

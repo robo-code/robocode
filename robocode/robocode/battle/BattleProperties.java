@@ -50,7 +50,7 @@ public class BattleProperties implements Serializable {
 	private String selectedRobots;
 	private String initialPositions;
 
-	private Properties props = new Properties();
+	private final Properties props = new Properties();
 
 	/**
 	 * Gets the battlefieldWidth.

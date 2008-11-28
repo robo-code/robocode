@@ -93,8 +93,8 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem helpRoboWikiMenuItem;
 	private JMenuItem helpYahooGroupRobocodeMenuItem;
 	private JMenuItem helpRobocodeRepositoryMenuItem;
-	private RobocodeFrame robocodeFrame;
-	private RobocodeManager manager;
+	private final RobocodeFrame robocodeFrame;
+	private final RobocodeManager manager;
 
 	private class EventHandler implements ActionListener, MenuListener {
 		public void actionPerformed(ActionEvent e) {
@@ -182,7 +182,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		public void menuCanceled(MenuEvent e) {}
 	}
 
-	public RobocodeMenuBar.EventHandler eventHandler = new EventHandler();
+	public final RobocodeMenuBar.EventHandler eventHandler = new EventHandler();
 
 	public RobocodeMenuBar(RobocodeManager manager, RobocodeFrame robocodeFrame) {
 		super();

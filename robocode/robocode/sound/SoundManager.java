@@ -56,9 +56,9 @@ public class SoundManager implements ISoundManager {
 	private SoundCache sounds;
 
 	// Access to properties
-	private RobocodeProperties properties;
+	private final RobocodeProperties properties;
 	private BattleObserver battleObserver = null;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	/**
 	 * Constructs a new sound manager.
@@ -318,7 +318,7 @@ public class SoundManager implements ISoundManager {
 
 	private class BattleObserver extends BattleAdaptor {
 
-		robocode.battle.events.BattleEventDispatcher dispatcher;
+		final robocode.battle.events.BattleEventDispatcher dispatcher;
 
 		public BattleObserver(BattleEventDispatcher dispatcher) {
 			this.dispatcher = dispatcher;

@@ -45,14 +45,14 @@ import java.util.*;
  * @author Joachim Hofer (contributor)
  */
 public class BattlesRunner {
-	private String inputfile;
-	private int numrounds;
-	private int fieldlen;
-	private int fieldhei;
-	private String outfile;
-	private String user;
+	private final String inputfile;
+	private final int numrounds;
+	private final int fieldlen;
+	private final int fieldhei;
+	private final String outfile;
+	private final String user;
 	private String game;
-	private Map<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>(500);
+	private final Map<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>(500);
 	private RobotResults[] lastResults;
 	private BattleObserver battleObserver;
 

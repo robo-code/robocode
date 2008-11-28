@@ -121,9 +121,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	private Battle battle;
 	private RobotStatistics statistics;
-	private TeamPeer teamPeer;
-	private RobotSpecification controlRobotSpecification;
-	private RobotFileSpecification robotSpecification;
+	private final TeamPeer teamPeer;
+	private final RobotSpecification controlRobotSpecification;
+	private final RobotFileSpecification robotSpecification;
 
 	private IHostingRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
@@ -173,8 +173,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private boolean isWinner;
 	private boolean inCollision;
 	private RobotState state;
-	private Arc2D scanArc;
-	private BoundingRectangle boundingBox;
+	private final Arc2D scanArc;
+	private final BoundingRectangle boundingBox;
 
 	public RobotPeer(Battle battle, IHostManager hostManager, RobotClassManager robotClassManager, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();

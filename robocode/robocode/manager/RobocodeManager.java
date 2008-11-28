@@ -63,7 +63,7 @@ public class RobocodeManager {
 	private IRecordManager recordManager;
 	private IHostManager hostManager;
 
-	private boolean slave;
+	private final boolean slave;
 
 	private RobocodeProperties properties;
 

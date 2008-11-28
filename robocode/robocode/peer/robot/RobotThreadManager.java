@@ -40,7 +40,7 @@ import robocode.security.LoggingThreadGroup;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobotThreadManager {
-	private IHostedThread robotProxy;
+	private final IHostedThread robotProxy;
 	private Thread runThread;
 	private LoggingThreadGroup runThreadGroup;
 	private boolean awtForThreadGroup;

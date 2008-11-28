@@ -27,9 +27,9 @@ import java.awt.event.ComponentListener;
  */
 @SuppressWarnings("serial")
 public abstract class BaseScoreDialog extends JDialog {
-	protected RobocodeManager manager;
+	protected final RobocodeManager manager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 	protected JPanel contentPane;
 	protected JScrollPane scrollPane;
 	protected JTable table;

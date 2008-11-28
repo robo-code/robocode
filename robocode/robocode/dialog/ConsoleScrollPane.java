@@ -30,10 +30,10 @@ import java.io.InputStreamReader;
  */
 @SuppressWarnings("serial")
 public class ConsoleScrollPane extends JScrollPane {
-	private int MAX_ROWS = 500;
+	private final int MAX_ROWS = 500;
 	private JTextArea textPane;
 	private int lines;
-	private Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);
+	private final Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);
 
 	public ConsoleScrollPane() {
 		super();
@@ -105,7 +105,7 @@ public class ConsoleScrollPane extends JScrollPane {
 		scrollToBottom();
 	}
 
-	private Runnable scroller = new Runnable() {
+	private final Runnable scroller = new Runnable() {
 		public void run() {
 			getViewport().scrollRectToVisible(bottomRect);
 			getViewport().repaint();

@@ -27,7 +27,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class PreferencesRenderingOptionsTab extends WizardPanel {
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	private JPanel specificSettingsPanel;
 	private JPanel predefinedSettingsPanel;

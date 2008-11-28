@@ -36,7 +36,7 @@ import static java.lang.Math.min;
  * @author Flemming N. Larsen (contributor)
  */
 public final class InteractiveHandler implements KeyEventDispatcher, MouseListener, MouseMotionListener, MouseWheelListener {
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	public InteractiveHandler(RobocodeManager manager) {
 		this.manager = manager;

@@ -38,19 +38,19 @@ import java.util.Vector;
  */
 public class PrepareBattles {
 
-	private String botsrepository;
-	private String participantsfile;
-	private String battlesfile;
-	private int numbattles;
-	private CompetitionsSelector size;
-	private String runonly;
-	private Properties generalratings;
-	private Properties miniratings;
-	private Properties microratings;
-	private Properties nanoratings;
-	private String priority;
-	private int prioritynum;
-	private int meleebots;
+	private final String botsrepository;
+	private final String participantsfile;
+	private final String battlesfile;
+	private final int numbattles;
+	private final CompetitionsSelector size;
+	private final String runonly;
+	private final Properties generalratings;
+	private final Properties miniratings;
+	private final Properties microratings;
+	private final Properties nanoratings;
+	private final String priority;
+	private final int prioritynum;
+	private final int meleebots;
 
 	public PrepareBattles(String propertiesfile) {
 		// Read parameters

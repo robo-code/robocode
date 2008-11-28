@@ -73,9 +73,10 @@ public class RobotRepositoryManager implements IRepositoryManager {
 	private File robotCache;
 
 	private Repository repository;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
-	private List<FileSpecification> updatedJarList = Collections.synchronizedList(new ArrayList<FileSpecification>());
+	private final List<FileSpecification> updatedJarList = Collections.synchronizedList(
+			new ArrayList<FileSpecification>());
 	private boolean write;
 
 	public RobotRepositoryManager(RobocodeManager manager) {

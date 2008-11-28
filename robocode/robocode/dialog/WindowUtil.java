@@ -28,8 +28,8 @@ import java.io.PrintWriter;
  */
 public class WindowUtil {
 
-	private static Point origin = new Point(0, 0);
-	private static WindowPositionManager windowPositionManager = new WindowPositionManager();
+	private static final Point origin = new Point(0, 0);
+	private static final WindowPositionManager windowPositionManager = new WindowPositionManager();
 	private static JLabel statusLabel;
 	private static PrintWriter statusWriter;
 	private static JLabel defaultStatusLabel;

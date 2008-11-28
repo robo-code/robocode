@@ -134,8 +134,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenu compilerOptionsMenu;
 	private JMenuItem compilerOptionsPreferencesMenuItem;
 	private JMenuItem compilerOptionsResetCompilerMenuItem;
-	private RobocodeEditor editor;
-	private EventHandler eventHandler = new EventHandler();
+	private final RobocodeEditor editor;
+	private final EventHandler eventHandler = new EventHandler();
 	private JMenuItem fileNewJavaFileMenuItem;
 	private JMenu fileNewMenu;
 	private JMenuItem fileNewRobotMenuItem;

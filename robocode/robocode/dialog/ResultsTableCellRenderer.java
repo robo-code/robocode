@@ -28,7 +28,7 @@ import java.awt.*;
 @SuppressWarnings("serial")
 public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 
-	private boolean isBordered;
+	private final boolean isBordered;
 
 	public ResultsTableCellRenderer(boolean isBordered) {
 		super();

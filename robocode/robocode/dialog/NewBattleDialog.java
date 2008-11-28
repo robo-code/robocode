@@ -47,19 +47,19 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private final static int MAX_ROBOTS = 256; // 64;
 	private final static int MIN_ROBOTS = 1;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 	private JPanel newBattleDialogContentPane;
 	private WizardTabbedPane tabbedPane;
 	private NewBattleBattleFieldTab battleFieldTab;
 
-	private BattleProperties battleProperties;
+	private final BattleProperties battleProperties;
 
 	private NewBattleRulesTab rulesTab;
 	private WizardController wizardController;
 
 	private RobotSelectionPanel robotSelectionPanel;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	/**
 	 * NewBattleDialog constructor comment.

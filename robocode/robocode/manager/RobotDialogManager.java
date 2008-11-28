@@ -40,9 +40,9 @@ public class RobotDialogManager implements IRobotDialogManager {
 
 	public static final int MAX_PRE_ATTACHED = 25;
 
-	private Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
+	private final Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
 	private BattleDialog battleDialog = null;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {
 		super();

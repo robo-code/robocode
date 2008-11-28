@@ -47,7 +47,7 @@ public class CompilerPreferencesDialog extends JDialog {
 	private CompilerProperties compilerProperties;
 	private JButton okButton;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

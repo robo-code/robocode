@@ -48,7 +48,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private static final int FAST_TPS = 45;
 	private static final int MAX_TPS = 10000;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private JCheckBox visibleRobotEnergyCheckBox;
 	private JCheckBox visibleRobotNameCheckBox;
@@ -74,7 +74,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton fastTpsButton;
 	private JButton maxTpsButton;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {

@@ -43,7 +43,7 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private final Color grayGreen = new Color(0x0080C080);
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 	private RobotButton robotButton;
 	private JTabbedPane tabbedPane;
 	private ConsoleScrollPane scrollPane;
@@ -61,9 +61,9 @@ public class RobotDialog extends JFrame {
 	private RobotSnapshot lastSnapshot;
 	private boolean paintSnapshot;
 	private boolean grayGreenButton;
-	private Hashtable<String, String> debugProperties = new Hashtable<String, String>();
+	private final Hashtable<String, String> debugProperties = new Hashtable<String, String>();
 
-	private BattleObserver battleObserver = new BattleObserver();
+	private final BattleObserver battleObserver = new BattleObserver();
 
 	/**
 	 * RobotDialog constructor
@@ -153,7 +153,7 @@ public class RobotDialog extends JFrame {
 		return getSGCheckBox().isSelected();
 	}
 
-	private ActionListener eventHandler = new ActionListener() {
+	private final ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
 

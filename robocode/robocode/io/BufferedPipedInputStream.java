@@ -21,7 +21,7 @@ import java.io.InputStream;
  */
 public class BufferedPipedInputStream extends InputStream {
 
-	private BufferedPipedOutputStream out;
+	private final BufferedPipedOutputStream out;
 
 	protected BufferedPipedInputStream(BufferedPipedOutputStream out) {
 		this.out = out;

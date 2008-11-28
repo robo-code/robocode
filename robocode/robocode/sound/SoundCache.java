@@ -39,21 +39,21 @@ public class SoundCache {
 	/**
 	 * Table containing all sound clips
 	 */
-	private Map<Object, ClipClones> soundTable;
+	private final Map<Object, ClipClones> soundTable;
 
 	/**
 	 * Mixer used for creating clip instances
 	 */
-	private Mixer mixer;
+	private final Mixer mixer;
 
 	/**
 	 * Holds data, length and format for a given sound effect, which can be used to create
 	 * multiple instances of the same clip.
 	 */
 	private static class SoundData {
-		private AudioFormat format;
-		private int length;
-		private byte[] byteData;
+		private final AudioFormat format;
+		private final int length;
+		private final byte[] byteData;
 
 		private SoundData(AudioInputStream ais) throws IOException {
 			int bytesRead, pos;
@@ -81,7 +81,7 @@ public class SoundCache {
 	 * recently used clip will be returned.
 	 */
 	private static class ClipClones {
-		private Clip[] clips;
+		private final Clip[] clips;
 		private int idx;
 
 		private ClipClones(Mixer mixer, SoundData soundData, int size) throws LineUnavailableException {

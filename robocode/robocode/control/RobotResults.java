@@ -33,7 +33,7 @@ public class RobotResults extends BattleResults {
 
 	private static final long serialVersionUID = 2L;
 
-	private RobotSpecification robot;
+	private final RobotSpecification robot;
 
 	/**
 	 * Constructs new RobotResults.

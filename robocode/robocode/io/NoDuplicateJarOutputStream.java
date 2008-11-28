@@ -37,7 +37,7 @@ import java.util.zip.ZipException;
  * @author Robert D. Maupin (contributor)
  */
 public class NoDuplicateJarOutputStream extends JarOutputStream {
-	private Map<String, String> entries = new HashMap<String, String>();
+	private final Map<String, String> entries = new HashMap<String, String>();
 
 	public NoDuplicateJarOutputStream(OutputStream out) throws IOException {
 		super(out);

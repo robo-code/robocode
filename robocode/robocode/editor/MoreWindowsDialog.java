@@ -34,7 +34,7 @@ public class MoreWindowsDialog extends JDialog implements ActionListener, MouseL
 	private JButton cancelButton;
 	private JButton closeButton;
 	private JList windowList;
-	private Vector<WindowMenuItem> windowListItems;
+	private final Vector<WindowMenuItem> windowListItems;
 
 	public MoreWindowsDialog(RobocodeEditor window) {
 		super(window, "More Windows...", false);

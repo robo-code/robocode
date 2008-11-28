@@ -35,7 +35,7 @@ public class ConsoleDialog extends JDialog {
 	private JMenu editMenu;
 	private JMenuItem editCopyMenuItem;
 	private JMenuBar consoleDialogMenuBar;
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

@@ -37,7 +37,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	private static final long serialVersionUID = 1L;
 
-	protected Properties props = new Properties();
+	protected final Properties props = new Properties();
 
 	private final static String ROBOCODE_VERSION = "robocode.version";
 	private final static String LIBRARY_DESCRIPTION = "library.description";
