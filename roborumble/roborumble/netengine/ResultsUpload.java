@@ -87,7 +87,7 @@ public class ResultsUpload {
 		size = new CompetitionsSelector(sizesfile, botsrepository);
 	}
 
-	public boolean uploadResults() {
+	public void uploadResults() {
 
 		boolean errorsfound = false;
 
@@ -122,7 +122,7 @@ public class ResultsUpload {
 			}
 		} catch (IOException e) {
 			System.out.println("Can't open result file for upload");
-			return false;
+			return;
 		} finally {
 			if (br != null) {
 				try {
@@ -139,7 +139,7 @@ public class ResultsUpload {
 		} catch (IOException e) {
 			System.out.println("Not able to open output file ... Aborting");
 			System.out.println(e);
-			return false;
+			return;
 		}
 
 		// Open the file to put the battles number for each participant
@@ -152,7 +152,7 @@ public class ResultsUpload {
 			System.out.println(e);
 
 			outtxt.close();
-			return false;
+			return;
 		}
 
 		// Open the file to put the battles which have priority
@@ -166,7 +166,7 @@ public class ResultsUpload {
 
 			outtxt.close();
 			battlesnum.close();
-			return false;
+			return;
 		}
 
 		// Post the results
@@ -248,8 +248,6 @@ public class ResultsUpload {
 				System.out.println("Error when copying results errors file.");
 			}
 		}
-
-		return true;
 	}
 
 	private void saverror(PrintStream outtxt, String match, String bot1, String bot2, boolean saveonerror) {

@@ -213,7 +213,7 @@ public class BotsDownload {
 		return true;
 	}
 
-	public boolean downloadMissingBots() {
+	public void downloadMissingBots() {
 		Vector<String> jars = new Vector<String>();
 		Vector<String> ids = new Vector<String>();
 		Vector<String> names = new Vector<String>();
@@ -241,7 +241,7 @@ public class BotsDownload {
 		} catch (IOException e) {
 			System.out.println("Participants file not found ... Aborting");
 			System.out.println(e);
-			return false;
+			return;
 		} finally {
 			if (br != null) {
 				try {
@@ -266,7 +266,6 @@ public class BotsDownload {
 				}
 			}
 		}
-		return true;
 	}
 
 	public void updateCodeSize() {
@@ -441,7 +440,7 @@ public class BotsDownload {
 	// download ratings file
 	// ----------------------------------------------------------------------------------
 
-	public boolean notifyServerForOldParticipants() {
+	public void notifyServerForOldParticipants() {
 		// Load participants names
 		Hashtable<String, String> namesall = new Hashtable<String, String>();
 		BufferedReader br = null;
@@ -461,7 +460,7 @@ public class BotsDownload {
 		} catch (IOException e) {
 			System.out.println("Participants file not found when removing old participants ... Aborting");
 			System.out.println(e);
-			return false;
+			return;
 		} finally {
 			if (br != null) {
 				try {
@@ -518,8 +517,6 @@ public class BotsDownload {
 				removebot(nanobots, bot);
 			}
 		}
-
-		return true;
 	}
 
 	private void removebot(String game, String bot) {

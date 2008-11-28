@@ -21,7 +21,7 @@ import robocode.StatusEvent;
  * @author Pavel Savara (original)
  */
 public class SkipTurns extends AdvancedRobot {
-	private int skipped = 0;
+	private volatile int skipped = 0;
 
 	final int limit = 5;
 

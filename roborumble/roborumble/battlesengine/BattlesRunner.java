@@ -87,7 +87,7 @@ public class BattlesRunner {
 		battleObserver = new BattleObserver();
 	}
 
-	public boolean runBattlesImpl(boolean melee) {
+	public void runBattlesImpl(boolean melee) {
 		// Initialize objects
 		RobocodeEngine engine = new RobocodeEngine();
 
@@ -100,14 +100,14 @@ public class BattlesRunner {
 		BufferedReader br = null;
 
 		if (readRobots(robots, br)) {
-			return false;
+			return;
 		}
 
 		// open output file
 		PrintStream outtxt = getRedirectedOutput();
 
 		if (outtxt == null) {
-			return false;
+			return;
 		}
 
 		// run battle
@@ -152,8 +152,6 @@ public class BattlesRunner {
 		// close
 		outtxt.close();
 		engine.close();
-
-		return true;
 	}
 
 	private String getEnemies(boolean melee, String[] param) {

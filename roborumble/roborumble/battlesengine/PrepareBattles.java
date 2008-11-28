@@ -74,7 +74,6 @@ public class PrepareBattles {
 	}
 
 	public boolean createBattlesList() {
-		Vector<String> jars = new Vector<String>();
 		Vector<String> names = new Vector<String>();
 
 		// Read participants
@@ -98,7 +97,6 @@ public class PrepareBattles {
 								|| (runonly.equals("MICRO") && size.checkCompetitorsForSize(name, name, 750))
 								|| (runonly.equals("NANO") && size.checkCompetitorsForSize(name, name, 250))
 								|| (!runonly.equals("MINI") && !runonly.equals("MICRO") && !runonly.equals("NANO"))) {
-							jars.add(jar);
 							names.add(name);
 						}
 					}
