@@ -14,6 +14,7 @@
 package sample;
 
 
+import static robocode.util.Utils.normalRelativeAngle;
 import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
 import robocode.Robot;
@@ -82,23 +83,5 @@ public class Fire extends Robot {
 
 		turnGunRight(turnGunAmt);
 		fire(3);
-	}
-
-	/**
-	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */
-	public double normalRelativeAngle(double angle) {
-		if (angle > -180 && angle <= 180) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle <= -180) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle > 180) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
 	}
 }

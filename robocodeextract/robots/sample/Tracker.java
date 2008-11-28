@@ -14,6 +14,7 @@
 package sample;
 
 
+import static robocode.util.Utils.normalRelativeAngle;
 import robocode.HitRobotEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
@@ -142,43 +143,5 @@ public class Tracker extends Robot {
 			turnRight(30);
 			turnLeft(30);
 		}
-	}
-
-	// normalAbsoluteAngle is not used in this robot,
-	// but is here for reference.
-	/**
-	 * normalAbsoluteAngle:  Returns angle such that 0 <= angle < 360
-	 */
-	public double normalAbsoluteAngle(double angle) {
-		if (angle >= 0 && angle < 360) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle < 0) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle >= 360) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
-	}
-
-	/**
-	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */
-	public double normalRelativeAngle(double angle) {
-		if (angle > -180 && angle <= 180) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle <= -180) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle > 180) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
 	}
 }

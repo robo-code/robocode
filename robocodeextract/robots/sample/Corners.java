@@ -14,6 +14,7 @@
 package sample;
 
 
+import static robocode.util.Utils.normalRelativeAngle;
 import robocode.DeathEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
@@ -106,6 +107,8 @@ public class Corners extends Robot {
 
 	/**
 	 * smartFire:  Custom fire method that determines firepower based on distance.
+	 *
+	 * @param robotDistance the distance to the robot to fire at
 	 */
 	public void smartFire(double robotDistance) {
 		if (robotDistance > 200 || getEnergy() < 15) {
@@ -136,23 +139,5 @@ public class Corners extends Robot {
 		} else {
 			out.println("I died but did well.  I will still use corner " + corner);
 		}
-	}
-
-	/**
-	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */
-	public double normalRelativeAngle(double angle) {
-		if (angle > -180 && angle <= 180) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle <= -180) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle > 180) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
 	}
 }
