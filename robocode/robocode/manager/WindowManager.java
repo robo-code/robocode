@@ -261,7 +261,7 @@ public class WindowManager implements IWindowManager {
 			robotPackager = null;
 		}
 
-		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager(), false);
+		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager());
 		WindowUtil.packCenterShow(robotPackager);
 	}
 
@@ -461,6 +461,8 @@ public class WindowManager implements IWindowManager {
 
 	/**
 	 * Packs, centers, and shows the specified window on the screen.
+	 * @param window the window to pack, center, and show
+	 * @param center {@code true} if the window must be centered; {@code false} otherwise
 	 */
 	private void packCenterShow(Window window, boolean center) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

@@ -318,7 +318,7 @@ public class RobocodeCompilerFactory {
 							"Robocode is now going to build Jikes for you.\nThis will take a while... got get a cup of coffee!\n",
 							"Java time", JOptionPane.OK_CANCEL_OPTION)
 							== JOptionPane.OK_OPTION) {
-						if (makeJikes(editor, console, jikesBinary + " -classpath " + getJavaLib())) {
+						if (makeJikes(console, jikesBinary + " -classpath " + getJavaLib())) {
 							compilerBinary = jikesBinary;
 							compilerOptions = "-deprecation -g -Xstdout +T4";
 							getCompilerProperties().setCompilerBinary(compilerBinary);
@@ -389,7 +389,7 @@ public class RobocodeCompilerFactory {
 		return rv;
 	}
 
-	private static boolean makeJikes(RobocodeEditor editor, ConsoleDialog console, String jikesBinary) {
+	private static boolean makeJikes(ConsoleDialog console, String jikesBinary) {
 		boolean result = false;
 
 		console.append("\nRobocode building Jikes...\n");

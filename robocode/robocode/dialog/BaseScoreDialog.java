@@ -113,7 +113,7 @@ public abstract class BaseScoreDialog extends JDialog {
 
 		public void componentResized(ComponentEvent e) {
 			if (e.getSource() == BaseScoreDialog.this.getScrollPane()) {
-				scrollPaneComponentResized(e);
+				scrollPaneComponentResized();
 			}
 		}
 
@@ -128,7 +128,7 @@ public abstract class BaseScoreDialog extends JDialog {
 		dispose();
 	}
 
-	protected void scrollPaneComponentResized(ComponentEvent componentEvent) {
+	protected void scrollPaneComponentResized() {
 		// This code is not working...
 		Dimension scrollPaneExtent = getScrollPane().getViewport().getExtentSize();
 

@@ -14,8 +14,8 @@ package robocode.dialog;
 
 import robocode.battle.events.*;
 import robocode.battle.snapshot.TurnSnapshot;
+import robocode.common.XmlWriter;
 import robocode.manager.RobocodeManager;
-import robocode.util.XmlWriter;
 import robocode.io.Logger;
 
 import javax.swing.*;

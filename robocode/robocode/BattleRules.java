@@ -15,9 +15,9 @@ package robocode;
 import robocode.battle.BattleProperties;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
-import robocode.util.XmlReader;
-import robocode.util.XmlSerializable;
-import robocode.util.XmlWriter;
+import robocode.common.XmlReader;
+import robocode.common.XmlSerializable;
+import robocode.common.XmlWriter;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -12,9 +12,9 @@
 package robocode.peer;
 
 
-import robocode.util.XmlSerializable;
-import robocode.util.XmlWriter;
-import robocode.util.XmlReader;
+import robocode.common.XmlReader;
+import robocode.common.XmlSerializable;
+import robocode.common.XmlWriter;
 
 import java.io.Serializable;
 import java.io.IOException;

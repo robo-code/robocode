@@ -14,9 +14,9 @@ package robocode.recording;
 
 import robocode.BattleResults;
 import robocode.BattleRules;
-import robocode.util.XmlReader;
-import robocode.util.XmlSerializable;
-import robocode.util.XmlWriter;
+import robocode.common.XmlReader;
+import robocode.common.XmlSerializable;
+import robocode.common.XmlWriter;
 
 import java.io.IOException;
 import java.io.Serializable;

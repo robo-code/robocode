@@ -14,7 +14,7 @@
 package robocode.robotpaint;
 
 
-import static robocode.util.ObjectCloner.deepCopy;
+import static robocode.common.ObjectCloner.deepCopy;
 
 import java.awt.*;
 import java.awt.RenderingHints.Key;
@@ -533,7 +533,6 @@ public class Graphics2DProxy extends Graphics2D implements java.io.Serializable 
 	public void dispose() {// Ignored here
 	}
 
-	@SuppressWarnings({ "deprecation"})
 	@Override
 	@Deprecated
 	public Rectangle getClipRect() {

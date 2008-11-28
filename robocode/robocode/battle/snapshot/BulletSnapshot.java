@@ -14,13 +14,13 @@
 package robocode.battle.snapshot;
 
 
+import robocode.common.XmlReader;
+import robocode.common.XmlSerializable;
+import robocode.common.XmlWriter;
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;
 import robocode.peer.ExplosionPeer;
 import robocode.peer.ExecCommands;
-import robocode.util.XmlReader;
-import robocode.util.XmlSerializable;
-import robocode.util.XmlWriter;
 
 import java.io.IOException;
 import java.util.Dictionary;

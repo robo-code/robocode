@@ -91,7 +91,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		}
 	}
 
-	public RobotPackager(IRepositoryManager repositoryManager, boolean isTeamPackager) {
+	public RobotPackager(IRepositoryManager repositoryManager) {
 		super(repositoryManager.getManager().getWindowManager().getRobocodeFrame());
 		this.repositoryManager = repositoryManager;
 		initialize();

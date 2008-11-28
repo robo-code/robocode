@@ -648,6 +648,8 @@ public class EventManager implements IEventManager {
 	}
 
 	private static final class DummyCustomEvent extends CustomEvent {
+		private static final long serialVersionUID = 1L;
+
 		public DummyCustomEvent() {
 			super(null);
 		}

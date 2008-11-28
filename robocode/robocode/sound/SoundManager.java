@@ -231,6 +231,7 @@ public class SoundManager implements ISoundManager {
 	 * Plays a robot sound depending on the robot's state
 	 *
 	 * @param robotPeer the robot peer
+	 * @param battleFieldWidth the battle field width used for panning
 	 */
 	public void playRobotSound(RobotSnapshot robotPeer, int battleFieldWidth) {
 		float pan = 0;

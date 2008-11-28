@@ -71,7 +71,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private Thread battleThread;
 
-	@SuppressWarnings({ "UnusedDeclaration", "EmptyCatchBlock"})
 	public RobocodeSecurityManager(Thread safeThread, IThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
 		safeThreads.add(safeThread);
@@ -80,20 +79,23 @@ public class RobocodeSecurityManager extends SecurityManager {
 		this.experimental = experimental;
 		safeSecurityContext = getSecurityContext();
 
-		// Fake loading of classes
-		BulletState s = BulletState.INACTIVE;
-		BulletCommand c = new BulletCommand(null, false, 0, -1);
-		ExecResults r = new ExecResults(null, null, null, null, null, false, false, false);
-		TeamMessage t = new TeamMessage(null, null, null);
-		DebugProperty p = new DebugProperty();
-		@SuppressWarnings({"ThrowableInstanceNeverThrown"})
-		RobotException re = new RobotException();
+		// Fake loading of classes - block start
+		@SuppressWarnings({"unused"})
+		BulletState bs = BulletState.INACTIVE;
+
+		new BulletCommand(null, false, 0, -1);
+		new ExecResults(null, null, null, null, null, false, false, false);
+		new TeamMessage(null, null, null);
+		new DebugProperty();
+		//noinspection ThrowableInstanceNeverThrown
+		new RobotException();
 
 		try {
-			RobocodeObjectInputStream is = new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
-		} catch (IOException e) {}
+			new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
+		} catch (IOException ignored) {}
 
-		Toolkit.getDefaultToolkit(); 
+		Toolkit.getDefaultToolkit();
+		// Fake loading of classes - block end
 
 		alowedPackages.add("util");
 		alowedPackages.add("robotinterfaces");
@@ -463,8 +465,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 			addRobocodeOutputStream(o); // it's gone already...
 			robotProxy.println("SYSTEM: Creating a data directory for you.");
 
-			//noinspection ResultOfMethodCallIgnored
-			dir.mkdir();//result direcotry was already there ?
+			// noinspection ResultOfMethodCallIgnored
+			dir.mkdir(); // result direcotry was already there ?
 			addRobocodeOutputStream(o); // one more time...
 			fos = new FileOutputStream(o.getName(), append);
 		}

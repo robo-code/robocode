@@ -14,14 +14,14 @@
 package robocode.battle.snapshot;
 
 
+import robocode.common.XmlReader;
+import robocode.common.XmlSerializable;
+import robocode.common.XmlWriter;
 import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
 import robocode.peer.DebugProperty;
 import robocode.peer.ExecCommands;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.util.XmlReader;
-import robocode.util.XmlSerializable;
-import robocode.util.XmlWriter;
 
 import java.awt.geom.Arc2D;
 import java.io.IOException;

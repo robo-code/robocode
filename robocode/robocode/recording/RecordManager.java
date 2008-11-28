@@ -13,12 +13,12 @@ package robocode.recording;
 
 
 import robocode.manager.RobocodeManager;
-import robocode.util.XmlWriter;
-import robocode.util.XmlReader;
-import robocode.util.XmlSerializable;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.IBattle;
+import robocode.common.XmlReader;
+import robocode.common.XmlSerializable;
+import robocode.common.XmlWriter;
 import static robocode.io.Logger.logError;
 import robocode.BattleResults;
 import robocode.BattleRules;

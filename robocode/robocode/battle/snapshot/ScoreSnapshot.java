@@ -14,10 +14,10 @@
 package robocode.battle.snapshot;
 
 
+import robocode.common.XmlReader;
+import robocode.common.XmlSerializable;
+import robocode.common.XmlWriter;
 import robocode.peer.robot.RobotStatistics;
-import robocode.util.XmlReader;
-import robocode.util.XmlSerializable;
-import robocode.util.XmlWriter;
 
 import java.io.IOException;
 import java.io.Serializable;

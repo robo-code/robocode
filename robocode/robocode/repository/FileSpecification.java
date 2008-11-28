@@ -87,7 +87,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		if (fileType.equals(".team")) {
 			newSpec = new TeamSpecification(f, rootDir, prefix, developmentVersion);
 		} else if (fileType.equals(".jar") || fileType.equals(".zip")) {
-			newSpec = new JarSpecification(f, rootDir, prefix, developmentVersion);
+			newSpec = new JarSpecification(f, rootDir, developmentVersion);
 		} else {
 			newSpec = new RobotFileSpecification(f, rootDir, prefix, developmentVersion);
 			if (!(developmentVersion || newSpec.isValid())) {

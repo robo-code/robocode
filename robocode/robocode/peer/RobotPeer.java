@@ -69,6 +69,7 @@ package robocode.peer;
 import robocode.*;
 import robocode.repository.RobotFileSpecification;
 import robocode.battle.Battle;
+import robocode.common.BoundingRectangle;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
 import robocode.exception.AbortedException;
@@ -80,7 +81,6 @@ import robocode.manager.IHostManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
