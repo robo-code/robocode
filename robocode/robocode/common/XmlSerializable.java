@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.util;
+package robocode.common;
 
 
 import java.io.IOException;

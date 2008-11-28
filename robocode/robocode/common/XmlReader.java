@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.util;
+package robocode.common;
 
 
 import org.xml.sax.Attributes;

@@ -9,7 +9,7 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *******************************************************************************/
-package robocode.util;
+package robocode.common;
 
 
 /*
