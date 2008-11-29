@@ -14,7 +14,7 @@
 package sample;
 
 
-import static robocode.util.Utils.normalRelativeAngle;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 import robocode.DeathEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
@@ -70,7 +70,7 @@ public class Corners extends Robot {
 		// We don't want to stop when we're just turning...
 		stopWhenSeeRobot = false;
 		// turn to face the wall to the "right" of our desired corner.
-		turnRight(normalRelativeAngle(corner - getHeading()));
+		turnRight(normalRelativeAngleDegrees(corner - getHeading()));
 		// Ok, now we don't want to crash into any robot in our way...
 		stopWhenSeeRobot = true;
 		// Move to that wall

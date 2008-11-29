@@ -56,6 +56,18 @@ public class Utils {
 	}
 
 	/**
+	 * Normalizes an angle to an absolute angle.
+	 * The normalized angle will be in the range from 0 to 360, where 360
+	 * itself is not included.
+	 *
+	 * @param angle the angle to normalize
+	 * @return the normalized angle that will be in the range of [0,360[
+	 */
+	public static double normalAbsoluteAngleDegrees(double angle) {
+		return (angle %= 360) >= 0 ? angle : (angle + 360);
+	}
+
+	/**
 	 * Normalizes an angle to a relative angle.
 	 * The normalized angle will be in the range from -PI to PI, where PI
 	 * itself is not included.
@@ -65,6 +77,53 @@ public class Utils {
 	 */
 	public static double normalRelativeAngle(double angle) {
 		return (angle %= TWO_PI) >= 0 ? (angle < PI) ? angle : angle - TWO_PI : (angle >= -PI) ? angle : angle + TWO_PI;
+	}
+
+	/**
+	 * Normalizes an angle to a relative angle.
+	 * The normalized angle will be in the range from -180 to 180, where 180
+	 * itself is not included.
+	 *
+	 * @param angle the angle to normalize
+	 * @return the normalized angle that will be in the range of [-180,180[
+	 */
+	public static double normalRelativeAngleDegrees(double angle) {
+		return (angle %= 360) >= 0 ? (angle < 180) ? angle : angle - 360 : (angle >= -180) ? angle : angle + 360;
+	}
+
+	/**
+	 * Normalizes an angle to be near an absolute angle.
+	 * The normalized angle will be in the range from 0 to 360, where 360
+	 * itself is not included.
+	 * If the normalized angle is near to 0, 90, 180, 270 or 360, that
+	 * angle will be returned. The {@link #isNear(double, double) isNear}
+	 * method is used for defining when the angle is near one of angles listed
+	 * above.
+	 *
+	 * @param angle the angle to normalize
+	 * @return the normalized angle that will be in the range of [0,360[
+	 * @see #normalAbsoluteAngle(double)
+	 * @see #isNear(double, double)
+	 */
+	public static double normalNearAbsoluteAngleDegrees(double angle) {
+		angle = (angle %= 360) >= 0 ? angle : (angle + 360);
+
+		if (isNear(angle, 180)) {
+			return 180;
+		} else if (angle < 180) {
+			if (isNear(angle, 0)) {
+				return 0;
+			} else if (isNear(angle, 90)) {
+				return 90;
+			}
+		} else {
+			if (isNear(angle, 270)) {
+				return 270;
+			} else if (isNear(angle, 360)) {
+				return 0;
+			}
+		}
+		return angle;
 	}
 
 	/**

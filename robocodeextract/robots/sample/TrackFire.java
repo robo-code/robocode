@@ -14,7 +14,7 @@
 package sample;
 
 
-import static robocode.util.Utils.normalRelativeAngle;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
@@ -52,7 +52,7 @@ public class TrackFire extends Robot {
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// Calculate exact location of the robot
 		double absoluteBearing = getHeading() + e.getBearing();
-		double bearingFromGun = normalRelativeAngle(absoluteBearing - getGunHeading());
+		double bearingFromGun = normalRelativeAngleDegrees(absoluteBearing - getGunHeading());
 
 		// If it's close enough, fire!
 		if (Math.abs(bearingFromGun) <= 3) {

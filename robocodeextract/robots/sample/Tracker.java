@@ -14,7 +14,7 @@
 package sample;
 
 
-import static robocode.util.Utils.normalRelativeAngle;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 import robocode.HitRobotEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
@@ -91,7 +91,7 @@ public class Tracker extends Robot {
 		count = 0;
 		// If our target is too far away, turn and move torward it.
 		if (e.getDistance() > 150) {
-			gunTurnAmt = normalRelativeAngle(e.getBearing() + (getHeading() - getRadarHeading()));
+			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 
 			turnGunRight(gunTurnAmt); // Try changing these to setTurnGunRight,
 			turnRight(e.getBearing()); // and see how much Tracker improves...
@@ -101,7 +101,7 @@ public class Tracker extends Robot {
 		}
 
 		// Our target is close.
-		gunTurnAmt = normalRelativeAngle(e.getBearing() + (getHeading() - getRadarHeading()));
+		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		turnGunRight(gunTurnAmt);
 		fire(3);
 
@@ -129,7 +129,7 @@ public class Tracker extends Robot {
 		// Back up a bit.
 		// Note:  We won't get scan events while we're doing this!
 		// An AdvancedRobot might use setBack(); execute();
-		gunTurnAmt = normalRelativeAngle(e.getBearing() + (getHeading() - getRadarHeading()));
+		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		turnGunRight(gunTurnAmt);
 		fire(3);
 		back(50);

@@ -14,7 +14,7 @@
 package sampleteam;
 
 
-import static robocode.util.Utils.normalRelativeAngle;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 import robocode.Droid;
 import robocode.MessageEvent;
 import robocode.TeamRobot;
@@ -48,7 +48,7 @@ public class MyFirstDroid extends TeamRobot implements Droid {
 			double theta = Math.toDegrees(Math.atan2(dx, dy));
 
 			// Turn gun to target
-			turnGunRight(normalRelativeAngle(theta - getGunHeading()));
+			turnGunRight(normalRelativeAngleDegrees(theta - getGunHeading()));
 			// Fire hard!
 			fire(3);
 		} // Set our colors
