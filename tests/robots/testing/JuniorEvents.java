@@ -21,6 +21,7 @@ import robocode.util.Utils;
 
 import java.io.PrintStream;
 import java.util.Hashtable;
+import java.util.Map;
 import java.awt.*;
 
 
@@ -102,6 +103,12 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 
 	public void onWin(WinEvent event) {
 		count(event);
+
+		// this is tested output
+		for (Map.Entry<String, Integer> s : counts.entrySet()) {
+			out.println(s.getKey() + " " + s.getValue());
+		}
+		out.println("last bullet heading " + bullet.getHeadingRadians());
 	}
 
 	public void onScannedRobot(ScannedRobotEvent event) {
@@ -111,7 +118,9 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 		peer.turnGun(Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians() - peer.getGunHeading())); //
 
 		// Fire!
-		bullet = peer.fire(1);
+		doble power = 1;
+
+		bullet = peer.fire(power);
 	}
 
 	private void count(Event event) {
