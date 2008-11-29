@@ -14,6 +14,8 @@ package robocode.peer;
 
 import robocode.Rules;
 import robocode.peer.robot.TeamMessage;
+import robocode.peer.serialize.ISerializableHelper;
+import robocode.peer.serialize.RbSerializer;
 import robocode.robotpaint.Graphics2DProxy;
 
 import static java.lang.Math.abs;
@@ -21,6 +23,7 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -56,11 +59,11 @@ public final class ExecCommands implements Serializable {
 	private boolean scan;
 	private boolean isIORobot;
 	private boolean isTryingToPaint;
-	private List<BulletCommand> bullets = new ArrayList<BulletCommand>(2);
-	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
 	private String outputText;
+	private List<BulletCommand> bullets = new ArrayList<BulletCommand>();
 	private List<TeamMessage> teamMessages = new ArrayList<TeamMessage>();
-	private List<DebugProperty> debugProperties;
+	private List<DebugProperty> debugProperties = new ArrayList<DebugProperty>();
+	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
 
 	public ExecCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
@@ -285,9 +288,6 @@ public final class ExecCommands implements Serializable {
 	}
 
 	public void setDebugProperty(String key, String value) {
-		if (debugProperties == null) {
-			debugProperties = new ArrayList<DebugProperty>();
-		}
 		debugProperties.add(new DebugProperty(key, value));
 	}
 
@@ -297,6 +297,138 @@ public final class ExecCommands implements Serializable {
 
 	public void setTryingToPaint(boolean tryingToPaint) {
 		isTryingToPaint = tryingToPaint;
+	}
+
+	static ISerializableHelper createHiddenHelper() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int size(RbSerializer serializer, Object object) {
+			ExecCommands obj = (ExecCommands) object;
+			int size = RbSerializer.SIZEOF_TYPEINFO + 4 * RbSerializer.SIZEOF_DOUBLE;
+
+			size += 4 * RbSerializer.SIZEOF_BOOL; 
+			size += 5 * RbSerializer.SIZEOF_INT;
+			size += 2 * RbSerializer.SIZEOF_DOUBLE;
+			size += 4 * RbSerializer.SIZEOF_BOOL;
+			size += serializer.sizeOf(obj.outputText);
+
+			// bullets
+			size += obj.bullets.size() * serializer.sizeOf(RbSerializer.BulletCommand_TYPE, null);
+			size += 1;
+
+			// messages
+			for (TeamMessage m : obj.teamMessages) {
+				size += serializer.sizeOf(RbSerializer.TeamMessage_TYPE, m);
+			}
+			size += 1;
+
+			// properties
+			for (DebugProperty d : obj.debugProperties) {
+				size += serializer.sizeOf(RbSerializer.DebugProperty_TYPE, d);
+			}
+			size += 1;
+			
+			return size;
+		}
+	
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			ExecCommands obj = (ExecCommands) object;
+
+			buffer.putDouble(obj.bodyTurnRemaining);
+			buffer.putDouble(obj.radarTurnRemaining);
+			buffer.putDouble(obj.gunTurnRemaining);
+			buffer.putDouble(obj.distanceRemaining);
+
+			serializer.serialize(buffer, obj.isAdjustGunForBodyTurn);
+			serializer.serialize(buffer, obj.isAdjustRadarForGunTurn);
+			serializer.serialize(buffer, obj.isAdjustRadarForBodyTurn);
+			serializer.serialize(buffer, obj.isAdjustRadarForBodyTurnSet);
+
+			buffer.putInt(obj.bodyColor);
+			buffer.putInt(obj.gunColor);
+			buffer.putInt(obj.radarColor);
+			buffer.putInt(obj.scanColor);
+			buffer.putInt(obj.bulletColor);
+
+			buffer.putDouble(obj.maxTurnRate);
+			buffer.putDouble(obj.maxVelocity);
+
+			serializer.serialize(buffer, obj.moved);
+			serializer.serialize(buffer, obj.scan);
+			serializer.serialize(buffer, obj.isIORobot);
+			serializer.serialize(buffer, obj.isTryingToPaint);
+
+			serializer.serialize(buffer, obj.outputText);
+
+			for (BulletCommand bullet : obj.bullets) {
+				serializer.serialize(buffer, RbSerializer.BulletCommand_TYPE, bullet);
+			}
+			buffer.put(RbSerializer.LIST_TERMINATOR_TYPE);
+			for (TeamMessage message : obj.teamMessages) {
+				serializer.serialize(buffer, RbSerializer.TeamMessage_TYPE, message);
+			}
+			buffer.put(RbSerializer.LIST_TERMINATOR_TYPE);
+			for (DebugProperty prop : obj.debugProperties) {
+				serializer.serialize(buffer, RbSerializer.DebugProperty_TYPE, prop);
+			}
+			buffer.put(RbSerializer.LIST_TERMINATOR_TYPE);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			ExecCommands res = new ExecCommands();
+
+			res.bodyTurnRemaining = buffer.getDouble();
+			res.radarTurnRemaining = buffer.getDouble();
+			res.gunTurnRemaining = buffer.getDouble();
+			res.distanceRemaining = buffer.getDouble();
+
+			res.isAdjustGunForBodyTurn = serializer.deserializeBoolean(buffer);
+			res.isAdjustRadarForGunTurn = serializer.deserializeBoolean(buffer);
+			res.isAdjustRadarForBodyTurn = serializer.deserializeBoolean(buffer);
+			res.isAdjustRadarForBodyTurnSet = serializer.deserializeBoolean(buffer);
+
+			res.bodyColor = buffer.getInt();
+			res.gunColor = buffer.getInt();
+			res.radarColor = buffer.getInt();
+			res.scanColor = buffer.getInt();
+			res.bulletColor = buffer.getInt();
+			
+			res.maxTurnRate = buffer.getDouble();
+			res.maxVelocity = buffer.getDouble();
+
+			res.moved = serializer.deserializeBoolean(buffer);
+			res.scan = serializer.deserializeBoolean(buffer);
+			res.isIORobot = serializer.deserializeBoolean(buffer);
+			res.isTryingToPaint = serializer.deserializeBoolean(buffer);
+			
+			res.outputText = serializer.deserializeString(buffer);
+
+			Object item = serializer.deserialize(buffer);
+
+			while (item != null) {
+				if (item instanceof BulletCommand) {
+					res.bullets.add((BulletCommand) item);
+				}
+				item = serializer.deserialize(buffer);
+			}
+			item = serializer.deserialize(buffer);
+			while (item != null) {
+				if (item instanceof TeamMessage) {
+					res.teamMessages.add((TeamMessage) item);
+				}
+				item = serializer.deserialize(buffer);
+			}
+			item = serializer.deserialize(buffer);
+			while (item != null) {
+				if (item instanceof DebugProperty) {
+					res.debugProperties.add((DebugProperty) item);
+				}
+				item = serializer.deserialize(buffer);
+			}
+			return res;
+		}
 	}
 }
 

@@ -181,6 +181,18 @@ public final class VersionManager implements IVersionManager {
 		return version;
 	}
 
+	public static int getVersionInt() {
+		if (version == null) {
+			version = getVersionFromJar();
+		}
+		if (version == "unknown") {
+			return 0;
+		}
+		final Version v = new Version(version);
+
+		return v.getEra() * 0x010000 + v.getMajor() * 0x000100 + v.getMinor() * 0x000001;
+	}
+
 	private static String getVersionFromJar() {
 		String versionString = null;
 
@@ -295,6 +307,48 @@ class Version implements Comparable<Object> {
 
 	public boolean isBeta() {
 		return (version.matches(".*(B|b).*"));
+	}
+
+	public int getEra() {
+		final String[] blocks = version.split(" ");
+
+		if (blocks.length < 3) {
+			throw new Error("Unexpected format");
+		}
+		final String[] numbers = blocks[1].split(".");
+
+		if (numbers.length < 3) {
+			throw new Error("Unexpected format");
+		}
+		return Integer.parseInt(numbers[0]);
+	}
+
+	public int getMajor() {
+		final String[] blocks = version.split(" ");
+
+		if (blocks.length < 3) {
+			throw new Error("Unexpected format");
+		}
+		final String[] numbers = blocks[1].split(".");
+
+		if (numbers.length < 3) {
+			throw new Error("Unexpected format");
+		}
+		return Integer.parseInt(numbers[1]);
+	}
+
+	public int getMinor() {
+		final String[] blocks = version.split(" ");
+
+		if (blocks.length < 3) {
+			throw new Error("Unexpected format");
+		}
+		final String[] numbers = blocks[1].split(".");
+
+		if (numbers.length < 3) {
+			throw new Error("Unexpected format");
+		}
+		return Integer.parseInt(numbers[2]);
 	}
 
 	public boolean isFinal() {

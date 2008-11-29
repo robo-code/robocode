@@ -12,7 +12,11 @@
 package robocode.peer.robot;
 
 
+import robocode.peer.serialize.ISerializableHelper;
+import robocode.peer.serialize.RbSerializer;
+
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -31,4 +35,36 @@ public class TeamMessage implements Serializable {
 	public final String sender;
 	public final String recipient;
 	public final byte[] message;
+
+	static ISerializableHelper createHiddenHelper() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int size(RbSerializer serializer, Object object) {
+			TeamMessage obj = (TeamMessage) object;
+			final int s = serializer.sizeOf(obj.sender);
+			final int r = serializer.sizeOf(obj.recipient);
+			final int m = serializer.sizeOf(obj.message);
+
+			return RbSerializer.SIZEOF_TYPEINFO + s + r + m;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			TeamMessage obj = (TeamMessage) object;
+
+			serializer.serialize(buffer, obj.sender);
+			serializer.serialize(buffer, obj.recipient);
+			serializer.serialize(buffer, obj.message);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			String sender = serializer.deserializeString(buffer);
+			String recipient = serializer.deserializeString(buffer);
+			byte[] message = serializer.deserializeBytes(buffer);
+
+			return new TeamMessage(sender, recipient, message);
+		}
+	}
+
 }

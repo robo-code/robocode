@@ -12,7 +12,11 @@
 package robocode.peer;
 
 
+import robocode.peer.serialize.ISerializableHelper;
+import robocode.peer.serialize.RbSerializer;
+
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -47,5 +51,34 @@ public class BulletCommand implements Serializable {
 
 	public double getFireAssistAngle() {
 		return fireAssistAngle;
+	}
+
+	static ISerializableHelper createHiddenHelper() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int size(RbSerializer serializer, Object object) {
+			return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_BOOL
+					+ RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_INT;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			BulletCommand obj = (BulletCommand) object;
+
+			buffer.putDouble(obj.power);
+			serializer.serialize(buffer, obj.fireAssistValid);
+			buffer.putDouble(obj.fireAssistAngle);
+			buffer.putInt(obj.bulletId);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			double power = buffer.getDouble();
+			boolean fireAssistValid = serializer.deserializeBoolean(buffer);
+			double fireAssistAngle = buffer.getDouble();
+			int bulletId = buffer.getInt();
+
+			return new BulletCommand(power, fireAssistValid, fireAssistAngle, bulletId);
+		}
 	}
 }

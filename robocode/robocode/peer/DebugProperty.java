@@ -15,10 +15,13 @@ package robocode.peer;
 import robocode.common.XmlReader;
 import robocode.common.XmlSerializable;
 import robocode.common.XmlWriter;
+import robocode.peer.serialize.ISerializableHelper;
+import robocode.peer.serialize.RbSerializer;
 
 import java.io.Serializable;
 import java.io.IOException;
 import java.util.Dictionary;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -65,5 +68,31 @@ public class DebugProperty implements Serializable, XmlSerializable {
 				return snapshot;
 			}
 		});
+	}
+
+	static ISerializableHelper createHiddenHelper() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int size(RbSerializer serializer, Object object) {
+			DebugProperty obj = (DebugProperty) object;
+
+			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.key) + serializer.sizeOf(obj.value);
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			DebugProperty obj = (DebugProperty) object;
+
+			serializer.serialize(buffer, obj.key);
+			serializer.serialize(buffer, obj.value);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			String key = serializer.deserializeString(buffer);
+			String value = serializer.deserializeString(buffer);
+
+			return new DebugProperty(key, value);
+		}
 	}
 }
