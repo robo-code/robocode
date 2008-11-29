@@ -118,7 +118,7 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 		peer.turnGun(Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians() - peer.getGunHeading())); //
 
 		// Fire!
-		doble power = 1;
+		double power = 1;
 
 		bullet = peer.fire(power);
 	}
