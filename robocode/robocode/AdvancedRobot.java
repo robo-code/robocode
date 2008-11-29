@@ -52,405 +52,7 @@ import java.util.Vector;
  * @see TeamRobot
  * @see Droid
  */
-public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRobot, IAdvancedEvents {
-
-	/**
-	 * Returns the distance remaining in the robot's current move measured in
-	 * pixels.
-	 * <p/>
-	 * This call returns both positive and negative values. Positive values
-	 * means that the robot is currently moving forwards. Negative values means
-	 * that the robot is currently moving backwards. If the returned value is 0,
-	 * the robot currently stands still.
-	 *
-	 * @return the distance remaining in the robot's current move measured in
-	 *         pixels.
-	 * @see #getTurnRemaining() getTurnRemaining()
-	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
-	 * @see #getGunTurnRemaining() getGunTurnRemaining()
-	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
-	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
-	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
-	 */
-	public double getDistanceRemaining() {
-		if (peer != null) {
-			return peer.getDistanceRemaining();
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * Returns the angle remaining in the robots's turn, in degrees.
-	 * <p/>
-	 * This call returns both positive and negative values. Positive values
-	 * means that the robot is currently turning to the right. Negative values
-	 * means that the robot is currently turning to the left. If the returned
-	 * value is 0, the robot is currently not turning.
-	 *
-	 * @return the angle remaining in the robots's turn, in degrees
-	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
-	 * @see #getDistanceRemaining() getDistanceRemaining()
-	 * @see #getGunTurnRemaining() getGunTurnRemaining()
-	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
-	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
-	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
-	 */
-	public double getTurnRemaining() {
-		if (peer != null) {
-			return Math.toDegrees(peer.getBodyTurnRemaining());
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * Returns the angle remaining in the gun's turn, in degrees.
-	 * <p/>
-	 * This call returns both positive and negative values. Positive values
-	 * means that the gun is currently turning to the right. Negative values
-	 * means that the gun is currently turning to the left. If the returned
-	 * value is 0, the gun is currently not turning.
-	 *
-	 * @return the angle remaining in the gun's turn, in degrees
-	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
-	 * @see #getDistanceRemaining() getDistanceRemaining()
-	 * @see #getTurnRemaining() getTurnRemaining()
-	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
-	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
-	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
-	 */
-	public double getGunTurnRemaining() {
-		if (peer != null) {
-			return Math.toDegrees(peer.getGunTurnRemaining());
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * Returns the angle remaining in the radar's turn, in degrees.
-	 * <p/>
-	 * This call returns both positive and negative values. Positive values
-	 * means that the radar is currently turning to the right. Negative values
-	 * means that the radar is currently turning to the left. If the returned
-	 * value is 0, the radar is currently not turning.
-	 *
-	 * @return the angle remaining in the radar's turn, in degrees
-	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
-	 * @see #getDistanceRemaining() getDistanceRemaining()
-	 * @see #getGunTurnRemaining() getGunTurnRemaining()
-	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
-	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
-	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
-	 */
-	public double getRadarTurnRemaining() {
-		if (peer != null) {
-			return Math.toDegrees(peer.getRadarTurnRemaining());
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * Sets the robot to move ahead (forward) by distance measured in pixels
-	 * when the next execution takes place.
-	 * <p/>
-	 * This call returns immediately, and will not execute until you call
-	 * {@link #execute()} or take an action that executes.
-	 * <p/>
-	 * Note that both positive and negative values can be given as input, where
-	 * positive values means that the robot is set to move ahead, and negative
-	 * values means that the robot is set to move back. If 0 is given as input,
-	 * the robot will stop its movement, but will have to decelerate
-	 * till it stands still, and will thus not be able to stop its movement
-	 * immediately, but eventually.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // Set the robot to move 50 pixels ahead
-	 *   setAhead(50);
-	 * <p/>
-	 *   // Set the robot to move 100 pixels back
-	 *   // (overrides the previous order)
-	 *   setAhead(-100);
-	 * <p/>
-	 *   ...
-	 *   // Executes the last setAhead()
-	 *   execute();
-	 * </pre>
-	 *
-	 * @param distance the distance to move measured in pixels.
-	 *                 If {@code distance} > 0 the robot is set to move ahead.
-	 *                 If {@code distance} < 0 the robot is set to move back.
-	 *                 If {@code distance} = 0 the robot is set to stop its movement.
-	 * @see #ahead(double) ahead(double)
-	 * @see #back(double) back(double)
-	 * @see #setBack(double)
-	 */
-	public void setAhead(double distance) {
-		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setMove(distance);
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Sets the robot to move back by distance measured in pixels when the next
-	 * execution takes place.
-	 * <p/>
-	 * This call returns immediately, and will not execute until you call
-	 * {@link #execute()} or take an action that executes.
-	 * <p/>
-	 * Note that both positive and negative values can be given as input, where
-	 * positive values means that the robot is set to move back, and negative
-	 * values means that the robot is set to move ahead. If 0 is given as input,
-	 * the robot will stop its movement, but will have to decelerate
-	 * till it stands still, and will thus not be able to stop its movement
-	 * immediately, but eventually.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // Set the robot to move 50 pixels back
-	 *   setBack(50);
-	 * <p/>
-	 *   // Set the robot to move 100 pixels ahead
-	 *   // (overrides the previous order)
-	 *   setBack(-100);
-	 * <p/>
-	 *   ...
-	 *   // Executes the last setBack()
-	 *   execute();
-	 * </pre>
-	 *
-	 * @param distance the distance to move measured in pixels.
-	 *                 If {@code distance} > 0 the robot is set to move back.
-	 *                 If {@code distance} < 0 the robot is set to move ahead.
-	 *                 If {@code distance} = 0 the robot is set to stop its movement.
-	 * @see #back(double) back(double)
-	 * @see #ahead(double) ahead(double)
-	 * @see #setAhead(double)
-	 */
-	public void setBack(double distance) {
-		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setMove(-distance);
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Sets the robot's body to turn left by degrees when the next execution
-	 * takes place.
-	 * <p/>
-	 * This call returns immediately, and will not execute until you call
-	 * execute() or take an action that executes.
-	 * <p/>
-	 * Note that both positive and negative values can be given as input,
-	 * where negative values means that the robot's body is set to turn right
-	 * instead of left.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // Set the robot to turn 180 degrees to the left
-	 *   setTurnLeft(180);
-	 * <p/>
-	 *   // Set the robot to turn 90 degrees to the right instead of left
-	 *   // (overrides the previous order)
-	 *   setTurnLeft(-90);
-	 * <p/>
-	 *   ...
-	 *   // Executes the last setTurnLeft()
-	 *   execute();
-	 * </pre>
-	 *
-	 * @param degrees the amount of degrees to turn the robot's body to the left.
-	 *                If {@code degrees} > 0 the robot is set to turn left.
-	 *                If {@code degrees} < 0 the robot is set to turn right.
-	 *                If {@code degrees} = 0 the robot is set to stop turning.
-	 * @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
-	 * @see #turnLeft(double) turnLeft(double)
-	 * @see #turnLeftRadians(double) turnLeftRadians(double)
-	 * @see #turnRight(double) turnRight(double)
-	 * @see #turnRightRadians(double) turnRightRadians(double)
-	 * @see #setTurnRight(double) setTurnRight(double)
-	 * @see #setTurnRightRadians(double) setTurnRightRadians(double)
-	 */
-	public void setTurnLeft(double degrees) {
-		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnBody(-Math.toRadians(degrees));
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Sets the robot's body to turn right by degrees when the next execution
-	 * takes place.
-	 * <p/>
-	 * This call returns immediately, and will not execute until you call
-	 * execute() or take an action that executes.
-	 * <p/>
-	 * Note that both positive and negative values can be given as input,
-	 * where negative values means that the robot's body is set to turn left
-	 * instead of right.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // Set the robot to turn 180 degrees to the right
-	 *   setTurnRight(180);
-	 * <p/>
-	 *   // Set the robot to turn 90 degrees to the left instead of right
-	 *   // (overrides the previous order)
-	 *   setTurnRight(-90);
-	 * <p/>
-	 *   ...
-	 *   // Executes the last setTurnRight()
-	 *   execute();
-	 * </pre>
-	 *
-	 * @param degrees the amount of degrees to turn the robot's body to the right.
-	 *                If {@code degrees} > 0 the robot is set to turn right.
-	 *                If {@code degrees} < 0 the robot is set to turn left.
-	 *                If {@code degrees} = 0 the robot is set to stop turning.
-	 * @see #setTurnRightRadians(double) setTurnRightRadians(double)
-	 * @see #turnRight(double) turnRight(double)
-	 * @see #turnRightRadians(double) turnRightRadians(double)
-	 * @see #turnLeft(double) turnLeft(double)
-	 * @see #turnLeftRadians(double) turnLeftRadians(double)
-	 * @see #setTurnLeft(double) setTurnLeft(double)
-	 * @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
-	 */
-	public void setTurnRight(double degrees) {
-		if (peer != null) {
-			((IAdvancedRobotPeer) peer).setTurnBody(Math.toRadians(degrees));
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Sets the gun to fire a bullet when the next execution takes place.
-	 * The bullet will travel in the direction the gun is pointing.
-	 * <p/>
-	 * This call returns immediately, and will not execute until you call
-	 * execute() or take an action that executes.
-	 * <p/>
-	 * The specified bullet power is an amount of energy that will be taken from
-	 * the robot's energy. Hence, the more power you want to spend on the
-	 * bullet, the more energy is taken from your robot.
-	 * <p/>
-	 * The bullet will do (4 * power) damage if it hits another robot. If power
-	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
-	 * You will get (3 * power) back if you hit the other robot. You can call
-	 * Rules#getBulletDamage(double)} for getting the damage that a
-	 * bullet with a specific bullet power will do.
-	 * <p/>
-	 * The specified bullet power should be between
-	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
-	 * <p/>
-	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link #getGunHeat()} returns a value > 0.
-	 * <p/>
-	 * An event is generated when the bullet hits a robot, wall, or another
-	 * bullet.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // Fire a bullet with maximum power if the gun is ready
-	 *   if (getGunHeat() == 0) {
-	 *       setFire(Rules.MAX_BULLET_POWER);
-	 *   }
-	 *   ...
-	 *   execute();
-	 * </pre>
-	 *
-	 * @param power the amount of energy given to the bullet, and subtracted
-	 *              from the robot's energy.
-	 * @see #setFireBullet(double)
-	 * @see #fire(double) fire(double)
-	 * @see #fireBullet(double) fireBullet(double)
-	 * @see #getGunHeat() getGunHeat()
-	 * @see #getGunCoolingRate() getGunCoolingRate()
-	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
-	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
-	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
-	 */
-	public void setFire(double power) {
-		if (peer != null) {
-			peer.setFire(power);
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Sets the gun to fire a bullet when the next execution takes place.
-	 * The bullet will travel in the direction the gun is pointing.
-	 * <p/>
-	 * This call returns immediately, and will not execute until you call
-	 * execute() or take an action that executes.
-	 * <p/>
-	 * The specified bullet power is an amount of energy that will be taken from
-	 * the robot's energy. Hence, the more power you want to spend on the
-	 * bullet, the more energy is taken from your robot.
-	 * <p/>
-	 * The bullet will do (4 * power) damage if it hits another robot. If power
-	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
-	 * You will get (3 * power) back if you hit the other robot. You can call
-	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
-	 * bullet with a specific bullet power will do.
-	 * <p/>
-	 * The specified bullet power should be between
-	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
-	 * <p/>
-	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link #getGunHeat()} returns a value > 0.
-	 * <p/>
-	 * A event is generated when the bullet hits a robot
-	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
-	 * bullet ({@link BulletHitBulletEvent}).
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   Bullet bullet = null;
-	 * <p/>
-	 *   // Fire a bullet with maximum power if the gun is ready
-	 *   if (getGunHeat() == 0) {
-	 *       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
-	 *   }
-	 *   ...
-	 *   execute();
-	 *   ...
-	 *   // Get the velocity of the bullet
-	 *   if (bullet != null) {
-	 *       double bulletVelocity = bullet.getVelocity();
-	 *   }
-	 * </pre>
-	 *
-	 * @param power the amount of energy given to the bullet, and subtracted
-	 *              from the robot's energy.
-	 * @return a {@link Bullet} that contains information about the bullet if it
-	 *         was actually fired, which can be used for tracking the bullet after it
-	 *         has been fired. If the bullet was not fired, {@code null} is returned.
-	 * @see #setFire(double)
-	 * @see Bullet
-	 * @see #fire(double) fire(double)
-	 * @see #fireBullet(double) fireBullet(double)
-	 * @see #getGunHeat() getGunHeat()
-	 * @see #getGunCoolingRate() getGunCoolingRate()
-	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
-	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
-	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
-	 */
-	public Bullet setFireBullet(double power) {
-		if (peer != null) {
-			return peer.setFire(power);
-		}
-		uninitializedException();
-		return null;
-	}
+public class AdvancedRobot extends Robot implements IAdvancedRobot, IAdvancedEvents {
 
 	/**
 	 * Registers a custom event to be called when a condition is met.
@@ -488,46 +90,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
-	 * Removes a custom event that was previously added by calling
-	 * {@link #addCustomEvent(Condition)}.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // Create the condition for our custom event
-	 *   Condition triggerHitCondition = new Condition("triggerhit") {
-	 *       public boolean test() {
-	 *           return (getEnergy() <= trigger);
-	 *       };
-	 *   }
-	 * <p/>
-	 *   // Add our custom event based on our condition
-	 *   addCustomEvent(triggerHitCondition);
-	 *   ...
-	 *   <i>do something with your robot</i>
-	 *   ...
-	 *   // Remove the custom event based on our condition
-	 *   <b>removeCustomEvent(triggerHitCondition);</b>
-	 * </pre>
-	 *
-	 * @param condition the condition that was previous added and that must be
-	 *                  removed now.
-	 * @throws NullPointerException if the condition parameter has been set to
-	 *                              {@code null}.
-	 * @see Condition
-	 * @see #addCustomEvent(Condition)
-	 */
-	public void removeCustomEvent(Condition condition) {
-		if (condition == null) {
-			throw new NullPointerException("the condition cannot be null");
-		}
-		if (peer != null) {
-			((IAdvancedRobotPeer) peer).removeCustomEvent(condition);
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
 	 * Clears out any pending events in the robot's event queue immediately.
 	 *
 	 * @see #getAllEvents()
@@ -535,6 +97,18 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void clearAllEvents() {
 		if (peer != null) {
 			((IAdvancedRobotPeer) peer).clearAllEvents();
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @deprecated Use {@link AdvancedRobot#execute() execute} instead.
+	 */
+	@Deprecated
+	public void endTurn() {
+		if (peer != null) {
+			peer.execute();
 		} else {
 			uninitializedException();
 		}
@@ -566,6 +140,15 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 		} else {
 			uninitializedException();
 		}
+	}
+
+	/**
+	 * Do not call this method!
+	 * <p/>
+	 * {@inheritDoc}
+	 */
+	public final IAdvancedEvents getAdvancedEventListener() {
+		return this; // this robot is listening
 	}
 
 	/**
@@ -743,6 +326,32 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * Returns the distance remaining in the robot's current move measured in
+	 * pixels.
+	 * <p/>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the robot is currently moving forwards. Negative values means
+	 * that the robot is currently moving backwards. If the returned value is 0,
+	 * the robot currently stands still.
+	 *
+	 * @return the distance remaining in the robot's current move measured in
+	 *         pixels.
+	 * @see #getTurnRemaining() getTurnRemaining()
+	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
+	 * @see #getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
+	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+	 */
+	public double getDistanceRemaining() {
+		if (peer != null) {
+			return peer.getDistanceRemaining();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
 	 * Returns the current priority of a class of events.
 	 * An event priority is a value from 0 - 99. The higher value, the higher
 	 * priority.
@@ -780,6 +389,110 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public int getEventPriority(String eventClass) {
 		if (peer != null) {
 			return ((IAdvancedRobotPeer) peer).getEventPriority(eventClass);
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * @return the direction that the robot's gun is facing, in degrees.
+	 * @deprecated Use {@link Robot#getGunHeading() getGunHeading()} instead.
+	 */
+	@Deprecated
+	public double getGunHeadingDegrees() {
+		return getGunHeading();
+	}
+
+	/**
+	 * Returns the direction that the robot's gun is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * <p/>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 *
+	 * @return the direction that the robot's gun is facing, in radians.
+	 * @see #getGunHeadingDegrees()
+	 * @see #getHeadingRadians()
+	 * @see #getRadarHeadingRadians()
+	 */
+	public double getGunHeadingRadians() {
+		if (peer != null) {
+			return peer.getGunHeading();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the angle remaining in the gun's turn, in degrees.
+	 * <p/>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the gun is currently turning to the right. Negative values
+	 * means that the gun is currently turning to the left. If the returned
+	 * value is 0, the gun is currently not turning.
+	 *
+	 * @return the angle remaining in the gun's turn, in degrees
+	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
+	 * @see #getDistanceRemaining() getDistanceRemaining()
+	 * @see #getTurnRemaining() getTurnRemaining()
+	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
+	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+	 */
+	public double getGunTurnRemaining() {
+		if (peer != null) {
+			return Math.toDegrees(peer.getGunTurnRemaining());
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the angle remaining in the gun's turn, in radians.
+	 * <p/>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the gun is currently turning to the right. Negative values
+	 * means that the gun is currently turning to the left.
+	 *
+	 * @return the angle remaining in the gun's turn, in radians
+	 * @see AdvancedRobot#getGunTurnRemaining()
+	 * @see AdvancedRobot#getTurnRemaining() getTurnRemaining()
+	 * @see #getTurnRemainingRadians()
+	 * @see AdvancedRobot#getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians()
+	 */
+	public double getGunTurnRemainingRadians() {
+		if (peer != null) {
+			return peer.getGunTurnRemaining();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * @return the direction that the robot's body is facing, in degrees.
+	 * @deprecated Use {@link Robot#getHeading() getHeading()} instead.
+	 */
+	@Deprecated
+	public double getHeadingDegrees() {
+		return getHeading();
+	}
+
+	/**
+	 * Returns the direction that the robot's body is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * <p/>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 *
+	 * @return the direction that the robot's body is facing, in radians.
+	 * @see #getHeadingDegrees()
+	 * @see #getGunHeadingRadians()
+	 * @see #getRadarHeadingRadians()
+	 */
+	public double getHeadingRadians() {
+		if (peer != null) {
+			return peer.getBodyHeading();
 		}
 		uninitializedException();
 		return 0; // never called
@@ -862,6 +575,94 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * @return allways {@code 0} as this method is no longer functional.
+	 * @deprecated This method is no longer functional.
+	 *             Use {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)} instead.
+	 */
+	@Deprecated
+	public int getMaxWaitCount() {
+		if (peer != null) {
+			peer.getCall();
+		}
+		return 0;
+	}
+
+	/**
+	 * @return the direction that the robot's radar is facing, in degrees.
+	 * @deprecated Use {@link Robot#getRadarHeading() getRadarHeading()} instead.
+	 */
+	@Deprecated
+	public double getRadarHeadingDegrees() {
+		return getRadarHeading();
+	}
+
+	/**
+	 * Returns the direction that the robot's radar is facing, in radians.
+	 * The value returned will be between 0 and 2 * PI (is excluded).
+	 * <p/>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 *
+	 * @return the direction that the robot's radar is facing, in radians.
+	 * @see #getRadarHeadingDegrees()
+	 * @see #getHeadingRadians()
+	 * @see #getGunHeadingRadians()
+	 */
+	public double getRadarHeadingRadians() {
+		if (peer != null) {
+			return peer.getRadarHeading();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the angle remaining in the radar's turn, in degrees.
+	 * <p/>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the radar is currently turning to the right. Negative values
+	 * means that the radar is currently turning to the left. If the returned
+	 * value is 0, the radar is currently not turning.
+	 *
+	 * @return the angle remaining in the radar's turn, in degrees
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+	 * @see #getDistanceRemaining() getDistanceRemaining()
+	 * @see #getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
+	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+	 */
+	public double getRadarTurnRemaining() {
+		if (peer != null) {
+			return Math.toDegrees(peer.getRadarTurnRemaining());
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the angle remaining in the radar's turn, in radians.
+	 * <p/>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the radar is currently turning to the right. Negative values
+	 * means that the radar is currently turning to the left.
+	 *
+	 * @return the angle remaining in the radar's turn, in radians
+	 * @see AdvancedRobot#getRadarTurnRemaining()
+	 * @see AdvancedRobot#getTurnRemaining() getTurnRemaining()
+	 * @see #getTurnRemainingRadians()
+	 * @see AdvancedRobot#getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians()
+	 */
+	public double getRadarTurnRemainingRadians() {
+		if (peer != null) {
+			return peer.getRadarTurnRemaining();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
 	 * Returns a vector containing all RobotDeathEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
 	 * <p/>
@@ -938,6 +739,65 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * Returns the angle remaining in the robots's turn, in degrees.
+	 * <p/>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the robot is currently turning to the right. Negative values
+	 * means that the robot is currently turning to the left. If the returned
+	 * value is 0, the robot is currently not turning.
+	 *
+	 * @return the angle remaining in the robots's turn, in degrees
+	 * @see #getTurnRemainingRadians() getTurnRemainingRadians()
+	 * @see #getDistanceRemaining() getDistanceRemaining()
+	 * @see #getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
+	 * @see #getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+	 */
+	public double getTurnRemaining() {
+		if (peer != null) {
+			return Math.toDegrees(peer.getBodyTurnRemaining());
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the angle remaining in the robot's turn, in radians.
+	 * <p/>
+	 * This call returns both positive and negative values. Positive values
+	 * means that the robot is currently turning to the right. Negative values
+	 * means that the robot is currently turning to the left.
+	 *
+	 * @return the angle remaining in the robot's turn, in radians
+	 * @see AdvancedRobot#getTurnRemaining()
+	 * @see AdvancedRobot#getGunTurnRemaining() getGunTurnRemaining()
+	 * @see #getGunTurnRemainingRadians()
+	 * @see AdvancedRobot#getRadarTurnRemaining() getRadarTurnRemaining()
+	 * @see #getRadarTurnRemainingRadians()
+	 */
+	public double getTurnRemainingRadians() {
+		if (peer != null) {
+			return peer.getBodyTurnRemaining();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * @return allways {@code 0} as this method is no longer functional.
+	 * @deprecated This method is no longer functional.
+	 *             Use {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)} instead.
+	 */
+	@Deprecated
+	public int getWaitCount() {
+		if (peer != null) {
+			peer.getCall();
+		}
+		return 0;
+	}
+
+	/**
 	 * Checks if the gun is set to adjust for the robot turning, i.e. to turn
 	 * independent from the robot's body turn.
 	 * <p/>
@@ -955,29 +815,6 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public boolean isAdjustGunForRobotTurn() {
 		if (peer != null) {
 			return ((IAdvancedRobotPeer) peer).isAdjustGunForBodyTurn();
-		}
-		uninitializedException();
-		return false; // never called
-	}
-
-	/**
-	 * Checks if the radar is set to adjust for the robot turning, i.e. to turn
-	 * independent from the robot's body turn.
-	 * <p/>
-	 * This call returns {@code true} if the radar is set to turn independent of
-	 * the turn of the robot. Otherwise, {@code false} is returned, meaning that
-	 * the radar is set to turn with the robot's turn.
-	 *
-	 * @return {@code true} if the radar is set to turn independent of the robot
-	 *         turning; {@code false} if the radar is set to turn with the robot
-	 *         turning
-	 * @see #setAdjustRadarForRobotTurn(boolean) setAdjustRadarForRobotTurn(boolean)
-	 * @see #isAdjustGunForRobotTurn()
-	 * @see #isAdjustRadarForGunTurn()
-	 */
-	public boolean isAdjustRadarForRobotTurn() {
-		if (peer != null) {
-			return ((IAdvancedRobotPeer) peer).isAdjustRadarForBodyTurn();
 		}
 		uninitializedException();
 		return false; // never called
@@ -1007,9 +844,180 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * Checks if the radar is set to adjust for the robot turning, i.e. to turn
+	 * independent from the robot's body turn.
+	 * <p/>
+	 * This call returns {@code true} if the radar is set to turn independent of
+	 * the turn of the robot. Otherwise, {@code false} is returned, meaning that
+	 * the radar is set to turn with the robot's turn.
+	 *
+	 * @return {@code true} if the radar is set to turn independent of the robot
+	 *         turning; {@code false} if the radar is set to turn with the robot
+	 *         turning
+	 * @see #setAdjustRadarForRobotTurn(boolean) setAdjustRadarForRobotTurn(boolean)
+	 * @see #isAdjustGunForRobotTurn()
+	 * @see #isAdjustRadarForGunTurn()
+	 */
+	public boolean isAdjustRadarForRobotTurn() {
+		if (peer != null) {
+			return ((IAdvancedRobotPeer) peer).isAdjustRadarForBodyTurn();
+		}
+		uninitializedException();
+		return false; // never called
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public void onCustomEvent(CustomEvent event) {}
+
+	/**
+	 * This method is called if your robot dies.
+	 * <p/>
+	 * You should override it in your robot if you want to be informed of this
+	 * event. Actions will have no effect if called from this section. The
+	 * intent is to allow you to perform calculations or print something out
+	 * when the robot is killed.
+	 *
+	 * @param event the death event set by the game
+	 * @see DeathEvent
+	 * @see Event
+	 */
+	@Override
+	public void onDeath(DeathEvent event) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onSkippedTurn(SkippedTurnEvent event) {}
+
+	/**
+	 * Removes a custom event that was previously added by calling
+	 * {@link #addCustomEvent(Condition)}.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Create the condition for our custom event
+	 *   Condition triggerHitCondition = new Condition("triggerhit") {
+	 *       public boolean test() {
+	 *           return (getEnergy() <= trigger);
+	 *       };
+	 *   }
+	 * <p/>
+	 *   // Add our custom event based on our condition
+	 *   addCustomEvent(triggerHitCondition);
+	 *   ...
+	 *   <i>do something with your robot</i>
+	 *   ...
+	 *   // Remove the custom event based on our condition
+	 *   <b>removeCustomEvent(triggerHitCondition);</b>
+	 * </pre>
+	 *
+	 * @param condition the condition that was previous added and that must be
+	 *                  removed now.
+	 * @throws NullPointerException if the condition parameter has been set to
+	 *                              {@code null}.
+	 * @see Condition
+	 * @see #addCustomEvent(Condition)
+	 */
+	public void removeCustomEvent(Condition condition) {
+		if (condition == null) {
+			throw new NullPointerException("the condition cannot be null");
+		}
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).removeCustomEvent(condition);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot to move ahead (forward) by distance measured in pixels
+	 * when the next execution takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * {@link #execute()} or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input, where
+	 * positive values means that the robot is set to move ahead, and negative
+	 * values means that the robot is set to move back. If 0 is given as input,
+	 * the robot will stop its movement, but will have to decelerate
+	 * till it stands still, and will thus not be able to stop its movement
+	 * immediately, but eventually.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the robot to move 50 pixels ahead
+	 *   setAhead(50);
+	 * <p/>
+	 *   // Set the robot to move 100 pixels back
+	 *   // (overrides the previous order)
+	 *   setAhead(-100);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setAhead()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param distance the distance to move measured in pixels.
+	 *                 If {@code distance} > 0 the robot is set to move ahead.
+	 *                 If {@code distance} < 0 the robot is set to move back.
+	 *                 If {@code distance} = 0 the robot is set to stop its movement.
+	 * @see #ahead(double) ahead(double)
+	 * @see #back(double) back(double)
+	 * @see #setBack(double)
+	 */
+	public void setAhead(double distance) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setMove(distance);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot to move back by distance measured in pixels when the next
+	 * execution takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * {@link #execute()} or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input, where
+	 * positive values means that the robot is set to move back, and negative
+	 * values means that the robot is set to move ahead. If 0 is given as input,
+	 * the robot will stop its movement, but will have to decelerate
+	 * till it stands still, and will thus not be able to stop its movement
+	 * immediately, but eventually.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the robot to move 50 pixels back
+	 *   setBack(50);
+	 * <p/>
+	 *   // Set the robot to move 100 pixels ahead
+	 *   // (overrides the previous order)
+	 *   setBack(-100);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setBack()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param distance the distance to move measured in pixels.
+	 *                 If {@code distance} > 0 the robot is set to move back.
+	 *                 If {@code distance} < 0 the robot is set to move ahead.
+	 *                 If {@code distance} = 0 the robot is set to stop its movement.
+	 * @see #back(double) back(double)
+	 * @see #ahead(double) ahead(double)
+	 * @see #setAhead(double)
+	 */
+	public void setBack(double distance) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setMove(-distance);
+		} else {
+			uninitializedException();
+		}
+	}
 
 	/**
 	 * Sets the priority of a class of events.
@@ -1065,6 +1073,128 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 		} else {
 			uninitializedException();
 		}
+	}
+
+	/**
+	 * Sets the gun to fire a bullet when the next execution takes place.
+	 * The bullet will travel in the direction the gun is pointing.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * The specified bullet power is an amount of energy that will be taken from
+	 * the robot's energy. Hence, the more power you want to spend on the
+	 * bullet, the more energy is taken from your robot.
+	 * <p/>
+	 * The bullet will do (4 * power) damage if it hits another robot. If power
+	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
+	 * You will get (3 * power) back if you hit the other robot. You can call
+	 * Rules#getBulletDamage(double)} for getting the damage that a
+	 * bullet with a specific bullet power will do.
+	 * <p/>
+	 * The specified bullet power should be between
+	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+	 * <p/>
+	 * Note that the gun cannot fire if the gun is overheated, meaning that
+	 * {@link #getGunHeat()} returns a value > 0.
+	 * <p/>
+	 * An event is generated when the bullet hits a robot, wall, or another
+	 * bullet.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Fire a bullet with maximum power if the gun is ready
+	 *   if (getGunHeat() == 0) {
+	 *       setFire(Rules.MAX_BULLET_POWER);
+	 *   }
+	 *   ...
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param power the amount of energy given to the bullet, and subtracted
+	 *              from the robot's energy.
+	 * @see #setFireBullet(double)
+	 * @see #fire(double) fire(double)
+	 * @see #fireBullet(double) fireBullet(double)
+	 * @see #getGunHeat() getGunHeat()
+	 * @see #getGunCoolingRate() getGunCoolingRate()
+	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
+	 */
+	public void setFire(double power) {
+		if (peer != null) {
+			peer.setFire(power);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the gun to fire a bullet when the next execution takes place.
+	 * The bullet will travel in the direction the gun is pointing.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * The specified bullet power is an amount of energy that will be taken from
+	 * the robot's energy. Hence, the more power you want to spend on the
+	 * bullet, the more energy is taken from your robot.
+	 * <p/>
+	 * The bullet will do (4 * power) damage if it hits another robot. If power
+	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
+	 * You will get (3 * power) back if you hit the other robot. You can call
+	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
+	 * bullet with a specific bullet power will do.
+	 * <p/>
+	 * The specified bullet power should be between
+	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+	 * <p/>
+	 * Note that the gun cannot fire if the gun is overheated, meaning that
+	 * {@link #getGunHeat()} returns a value > 0.
+	 * <p/>
+	 * A event is generated when the bullet hits a robot
+	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
+	 * bullet ({@link BulletHitBulletEvent}).
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   Bullet bullet = null;
+	 * <p/>
+	 *   // Fire a bullet with maximum power if the gun is ready
+	 *   if (getGunHeat() == 0) {
+	 *       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
+	 *   }
+	 *   ...
+	 *   execute();
+	 *   ...
+	 *   // Get the velocity of the bullet
+	 *   if (bullet != null) {
+	 *       double bulletVelocity = bullet.getVelocity();
+	 *   }
+	 * </pre>
+	 *
+	 * @param power the amount of energy given to the bullet, and subtracted
+	 *              from the robot's energy.
+	 * @return a {@link Bullet} that contains information about the bullet if it
+	 *         was actually fired, which can be used for tracking the bullet after it
+	 *         has been fired. If the bullet was not fired, {@code null} is returned.
+	 * @see #setFire(double)
+	 * @see Bullet
+	 * @see #fire(double) fire(double)
+	 * @see #fireBullet(double) fireBullet(double)
+	 * @see #getGunHeat() getGunHeat()
+	 * @see #getGunCoolingRate() getGunCoolingRate()
+	 * @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
+	 * @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
+	 * @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
+	 */
+	public Bullet setFireBullet(double power) {
+		if (peer != null) {
+			return peer.setFire(power);
+		}
+		uninitializedException();
+		return null;
 	}
 
 	/**
@@ -1255,6 +1385,69 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * @param degrees the amount of degrees to turn the robot's gun to the left.
+	 *                If {@code degrees} > 0 the robot's gun is set to turn left.
+	 *                If {@code degrees} < 0 the robot's gun is set to turn right.
+	 *                If {@code degrees} = 0 the robot's gun is set to stop turning.
+	 * @deprecated Use {@link AdvancedRobot#setTurnGunLeft(double)
+	 *             setTurnGunLeft} instead.
+	 */
+	@Deprecated
+	public void setTurnGunLeftDegrees(double degrees) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnGun(-Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot's gun to turn left by radians when the next execution
+	 * takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn right
+	 * instead of left.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the gun to turn 180 degrees to the left
+	 *   setTurnGunLeftRadians(Math.PI);
+	 * <p/>
+	 *   // Set the gun to turn 90 degrees to the right instead of left
+	 *   // (overrides the previous order)
+	 *   setTurnGunLeftRadians(-Math.PI / 2);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setTurnGunLeftRadians()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's gun to the left.
+	 *                If {@code radians} > 0 the robot's gun is set to turn left.
+	 *                If {@code radians} < 0 the robot's gun is set to turn right.
+	 *                If {@code radians} = 0 the robot's gun is set to stop turning.
+	 * @see AdvancedRobot#setTurnGunLeft(double) setTurnGunLeft(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see AdvancedRobot#setTurnGunRight(double) setTurnGunRight(double)
+	 * @see AdvancedRobot#setTurnGunRightRadians(double) setTurnGunRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 */
+	public void setTurnGunLeftRadians(double radians) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnGun(-radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
 	 * Sets the robot's gun to turn right by degrees when the next execution
 	 * takes place.
 	 * <p/>
@@ -1295,6 +1488,176 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	public void setTurnGunRight(double degrees) {
 		if (peer != null) {
 			((IAdvancedRobotPeer) peer).setTurnGun(Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's gun to the right.
+	 *                If {@code degrees} > 0 the robot's gun is set to turn right.
+	 *                If {@code degrees} < 0 the robot's gun is set to turn left.
+	 *                If {@code degrees} = 0 the robot's gun is set to stop turning.
+	 * @deprecated Use {@link AdvancedRobot#setTurnGunRight(double)
+	 *             setTurnGunRight} instead.
+	 */
+	@Deprecated
+	public void setTurnGunRightDegrees(double degrees) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnGun(Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot's gun to turn right by radians when the next execution
+	 * takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn left
+	 * instead of right.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the gun to turn 180 degrees to the right
+	 *   setTurnGunRightRadians(Math.PI);
+	 * <p/>
+	 *   // Set the gun to turn 90 degrees to the left instead of right
+	 *   // (overrides the previous order)
+	 *   setTurnGunRightRadians(-Math.PI / 2);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setTurnGunRightRadians()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's gun to the right.
+	 *                If {@code radians} > 0 the robot's gun is set to turn left.
+	 *                If {@code radians} < 0 the robot's gun is set to turn right.
+	 *                If {@code radians} = 0 the robot's gun is set to stop turning.
+	 * @see AdvancedRobot#setTurnGunRight(double) setTurnGunRight(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see AdvancedRobot#setTurnGunLeft(double) setTurnGunLeft(double)
+	 * @see AdvancedRobot#setTurnGunLeftRadians(double) setTurnGunLeftRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 */
+	public void setTurnGunRightRadians(double radians) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnGun(radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot's body to turn left by degrees when the next execution
+	 * takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn right
+	 * instead of left.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the robot to turn 180 degrees to the left
+	 *   setTurnLeft(180);
+	 * <p/>
+	 *   // Set the robot to turn 90 degrees to the right instead of left
+	 *   // (overrides the previous order)
+	 *   setTurnLeft(-90);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setTurnLeft()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the left.
+	 *                If {@code degrees} > 0 the robot is set to turn left.
+	 *                If {@code degrees} < 0 the robot is set to turn right.
+	 *                If {@code degrees} = 0 the robot is set to stop turning.
+	 * @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
+	 * @see #turnLeft(double) turnLeft(double)
+	 * @see #turnLeftRadians(double) turnLeftRadians(double)
+	 * @see #turnRight(double) turnRight(double)
+	 * @see #turnRightRadians(double) turnRightRadians(double)
+	 * @see #setTurnRight(double) setTurnRight(double)
+	 * @see #setTurnRightRadians(double) setTurnRightRadians(double)
+	 */
+	public void setTurnLeft(double degrees) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnBody(-Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's body to the left.
+	 *                If {@code degrees} > 0 the robot is set to turn left.
+	 *                If {@code degrees} < 0 the robot is set to turn right.
+	 *                If {@code degrees} = 0 the robot is set to stop turning.
+	 * @deprecated Use {@link AdvancedRobot#setTurnLeft(double)
+	 *             setTurnLeft(double)} instead.
+	 */
+	@Deprecated
+	public void setTurnLeftDegrees(double degrees) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnBody(-Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot's body to turn left by radians when the next execution
+	 * takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn right
+	 * instead of left.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the robot to turn 180 degrees to the left
+	 *   setTurnLeftRadians(Math.PI);
+	 * <p/>
+	 *   // Set the robot to turn 90 degrees to the right instead of left
+	 *   // (overrides the previous order)
+	 *   setTurnLeftRadians(-Math.PI / 2);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setTurnLeftRadians()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's body to the left.
+	 *                If {@code radians} > 0 the robot is set to turn left.
+	 *                If {@code radians} < 0 the robot is set to turn right.
+	 *                If {@code radians} = 0 the robot is set to stop turning.
+	 * @see AdvancedRobot#setTurnLeft(double) setTurnLeft(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see AdvancedRobot#setTurnRight(double) setTurnRight(double)
+	 * @see AdvancedRobot#setTurnRightRadians(double) setTurnRightRadians(double)
+	 */
+	public void setTurnLeftRadians(double radians) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnBody(-radians);
 		} else {
 			uninitializedException();
 		}
@@ -1348,6 +1711,70 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * @param degrees the amount of degrees to turn the robot's radar to the left.
+	 *                If {@code degrees} > 0 the robot's radar is set to turn left.
+	 *                If {@code degrees} < 0 the robot's radar is set to turn right.
+	 *                If {@code degrees} = 0 the robot's radar is set to stop turning.
+	 * @deprecated Use {@link AdvancedRobot#setTurnRadarLeft(double)
+	 *             setTurnRadarLeft(double)} instead.
+	 */
+	@Deprecated
+	public void setTurnRadarLeftDegrees(double degrees) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnRadar(-Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot's radar to turn left by radians when the next execution
+	 * takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn right
+	 * instead of left.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the radar to turn 180 degrees to the left
+	 *   setTurnRadarLeftRadians(Math.PI);
+	 * <p/>
+	 *   // Set the radar to turn 90 degrees to the right instead of left
+	 *   // (overrides the previous order)
+	 *   setTurnRadarLeftRadians(-Math.PI / 2);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setTurnRadarLeftRadians()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's radar to the left.
+	 *                If {@code radians} > 0 the robot's radar is set to turn left.
+	 *                If {@code radians} < 0 the robot's radar is set to turn right.
+	 *                If {@code radians} = 0 the robot's radar is set to stop turning.
+	 * @see AdvancedRobot#setTurnRadarLeft(double) setTurnRadarLeft(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see AdvancedRobot#setTurnRadarRight(double) setTurnRadarRight(double)
+	 * @see AdvancedRobot#setTurnRadarRightRadians(double) setTurnRadarRightRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
+	 */
+	public void setTurnRadarLeftRadians(double radians) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnRadar(-radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
 	 * Sets the robot's radar to turn right by degrees when the next execution
 	 * takes place.
 	 * <p/>
@@ -1395,6 +1822,513 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	}
 
 	/**
+	 * @param degrees the amount of degrees to turn the robot's radar to the right.
+	 *                If {@code degrees} > 0 the robot's radar is set to turn right.
+	 *                If {@code degrees} < 0 the robot's radar is set to turn left.
+	 *                If {@code degrees} = 0 the robot's radar is set to stop turning.
+	 * @deprecated Use {@link AdvancedRobot#setTurnRadarRight(double)
+	 *             setTurnRadarRight} instead.
+	 */
+	@Deprecated
+	public void setTurnRadarRightDegrees(double degrees) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnRadar(Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot's radar to turn right by radians when the next execution
+	 * takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn left
+	 * instead of right.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the radar to turn 180 degrees to the right
+	 *   setTurnRadarRightRadians(Math.PI);
+	 * <p/>
+	 *   // Set the radar to turn 90 degrees to the right instead of right
+	 *   // (overrides the previous order)
+	 *   setTurnRadarRightRadians(-Math.PI / 2);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setTurnRadarRightRadians()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's radar to the right.
+	 *                If {@code radians} > 0 the robot's radar is set to turn left.
+	 *                If {@code radians} < 0 the robot's radar is set to turn right.
+	 *                If {@code radians} = 0 the robot's radar is set to stop turning.
+	 * @see AdvancedRobot#setTurnRadarRight(double) setTurnRadarRight(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see AdvancedRobot#setTurnRadarLeft(double) setTurnRadarLeft(double)
+	 * @see AdvancedRobot#setTurnRadarLeftRadians(double) setTurnRadarLeftRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
+	 */
+	public void setTurnRadarRightRadians(double radians) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnRadar(radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot's body to turn right by degrees when the next execution
+	 * takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn left
+	 * instead of right.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the robot to turn 180 degrees to the right
+	 *   setTurnRight(180);
+	 * <p/>
+	 *   // Set the robot to turn 90 degrees to the left instead of right
+	 *   // (overrides the previous order)
+	 *   setTurnRight(-90);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setTurnRight()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the right.
+	 *                If {@code degrees} > 0 the robot is set to turn right.
+	 *                If {@code degrees} < 0 the robot is set to turn left.
+	 *                If {@code degrees} = 0 the robot is set to stop turning.
+	 * @see #setTurnRightRadians(double) setTurnRightRadians(double)
+	 * @see #turnRight(double) turnRight(double)
+	 * @see #turnRightRadians(double) turnRightRadians(double)
+	 * @see #turnLeft(double) turnLeft(double)
+	 * @see #turnLeftRadians(double) turnLeftRadians(double)
+	 * @see #setTurnLeft(double) setTurnLeft(double)
+	 * @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
+	 */
+	public void setTurnRight(double degrees) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnBody(Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's body to the right.
+	 *                If {@code degrees} > 0 the robot is set to turn right.
+	 *                If {@code degrees} < 0 the robot is set to turn left.
+	 *                If {@code degrees} = 0 the robot is set to stop turning.
+	 * @deprecated Use {@link AdvancedRobot#setTurnRight(double)
+	 *             setTurnRight(double)} instead.
+	 */
+	@Deprecated
+	public void setTurnRightDegrees(double degrees) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnBody(Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the robot's body to turn right by radians when the next execution
+	 * takes place.
+	 * <p/>
+	 * This call returns immediately, and will not execute until you call
+	 * execute() or take an action that executes.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn left
+	 * instead of right.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Set the robot to turn 180 degrees to the right
+	 *   setTurnRightRadians(Math.PI);
+	 * <p/>
+	 *   // Set the robot to turn 90 degrees to the left instead of right
+	 *   // (overrides the previous order)
+	 *   setTurnRightRadians(-Math.PI / 2);
+	 * <p/>
+	 *   ...
+	 *   // Executes the last setTurnRightRadians()
+	 *   execute();
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's body to the right.
+	 *                If {@code radians} > 0 the robot is set to turn right.
+	 *                If {@code radians} < 0 the robot is set to turn left.
+	 *                If {@code radians} = 0 the robot is set to stop turning.
+	 * @see AdvancedRobot#setTurnRight(double) setTurnRight(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see AdvancedRobot#setTurnLeft(double) setTurnLeft(double)
+	 * @see AdvancedRobot#setTurnLeftRadians(double) setTurnLeftRadians(double)
+	 */
+	public void setTurnRightRadians(double radians) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).setTurnBody(radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's gun to the left.
+	 *                If {@code degrees} > 0 the robot's gun will turn left.
+	 *                If {@code degrees} < 0 the robot's gun will turn right.
+	 *                If {@code degrees} = 0 the robot's gun will not turn, but execute.
+	 * @deprecated Use {@link Robot#turnGunLeft(double) turnGunLeft} instead.
+	 */
+	@Deprecated
+	public void turnGunLeftDegrees(double degrees) {
+		turnGunLeft(degrees);
+	}
+
+	/**
+	 * Immediately turns the robot's gun to the left by radians.
+	 * <p/>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the gun's turn is 0.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn right
+	 * instead of left.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's gun 180 degrees to the left
+	 *   turnGunLeftRadians(Math.PI);
+	 * <p/>
+	 *   // Afterwards, turn the robot's gun 90 degrees to the right
+	 *   turnGunLeftRadians(-Math.PI / 2);
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's gun to the left.
+	 *                If {@code radians} > 0 the robot's gun will turn left.
+	 *                If {@code radians} < 0 the robot's gun will turn right.
+	 *                If {@code radians} = 0 the robot's gun will not turn, but execute.
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 */
+	public void turnGunLeftRadians(double radians) {
+		if (peer != null) {
+			peer.turnGun(-radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's gun to the right.
+	 *                If {@code degrees} > 0 the robot's gun will turn right.
+	 *                If {@code degrees} < 0 the robot's gun will turn left.
+	 *                If {@code degrees} = 0 the robot's gun will not turn, but execute.
+	 * @deprecated Use {@link Robot#turnGunRight(double) turnGunRight} instead.
+	 */
+	@Deprecated
+	public void turnGunRightDegrees(double degrees) {
+		turnGunRight(degrees);
+	}
+
+	/**
+	 * Immediately turns the robot's gun to the right by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the gun's turn is 0.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's gun is set to turn left
+	 * instead of right.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's gun 180 degrees to the right
+	 *   turnGunRightRadians(Math.PI);
+	 * <p/>
+	 *   // Afterwards, turn the robot's gun 90 degrees to the left
+	 *   turnGunRightRadians(-Math.PI / 2);
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's gun to the right.
+	 *                If {@code radians} > 0 the robot's gun will turn right.
+	 *                If {@code radians} < 0 the robot's gun will turn left.
+	 *                If {@code radians} = 0 the robot's gun will not turn, but execute.
+	 * @see #turnGunRight(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 */
+	public void turnGunRightRadians(double radians) {
+		if (peer != null) {
+			peer.turnGun(radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's body to the left.
+	 *                If {@code degrees} > 0 the robot will turn left.
+	 *                If {@code degrees} < 0 the robot will turn right.
+	 *                If {@code degrees} = 0 the robot will not turn, but execute.
+	 * @deprecated Use {@link Robot#turnLeft(double) turnLeft(double)} instead.
+	 */
+	@Deprecated
+	public void turnLeftDegrees(double degrees) {
+		turnLeft(degrees);
+	}
+
+	/**
+	 * Immediately turns the robot's body to the left by radians.
+	 * <p/>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the robot's turn is 0.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn right
+	 * instead of left.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot 180 degrees to the left
+	 *   turnLeftRadians(Math.PI);
+	 * <p/>
+	 *   // Afterwards, turn the robot 90 degrees to the right
+	 *   turnLeftRadians(-Math.PI / 2);
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's body to the left.
+	 *                If {@code radians} > 0 the robot will turn right.
+	 *                If {@code radians} < 0 the robot will turn left.
+	 *                If {@code radians} = 0 the robot will not turn, but execute.
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 */
+	public void turnLeftRadians(double radians) {
+		if (peer != null) {
+			peer.turnBody(-radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's radar to the left.
+	 *                If {@code degrees} > 0 the robot's radar will turn left.
+	 *                If {@code degrees} < 0 the robot's radar will turn right.
+	 *                If {@code degrees} = 0 the robot's radar will not turn, but execute.
+	 * @deprecated Use {@link Robot#turnRadarLeft(double) turnRadarLeft} instead.
+	 */
+	@Deprecated
+	public void turnRadarLeftDegrees(double degrees) {
+		turnRadarLeft(degrees);
+	}
+
+	/**
+	 * Immediately turns the robot's radar to the left by radians.
+	 * <p/>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the radar's turn is 0.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn right
+	 * instead of left.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's radar 180 degrees to the left
+	 *   turnRadarLeftRadians(Math.PI);
+	 * <p/>
+	 *   // Afterwards, turn the robot's radar 90 degrees to the right
+	 *   turnRadarLeftRadians(-Math.PI / 2);
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's radar to the left.
+	 *                If {@code radians} > 0 the robot's radar will turn left.
+	 *                If {@code radians} < 0 the robot's radar will turn right.
+	 *                If {@code radians} = 0 the robot's radar will not turn, but execute.
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
+	 */
+	public void turnRadarLeftRadians(double radians) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).turnRadar(-radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's radar to the right.
+	 *                If {@code degrees} > 0 the robot's radar will turn right.
+	 *                If {@code degrees} < 0 the robot's radar will turn left.
+	 *                If {@code degrees} = 0 the robot's radar will not turn, but execute.
+	 * @deprecated Use {@link Robot#turnRadarRight(double) turnRadarRight}
+	 *             instead.
+	 */
+	@Deprecated
+	public void turnRadarRightDegrees(double degrees) {
+		turnRadarRight(degrees);
+	}
+
+	/**
+	 * Immediately turns the robot's radar to the right by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the radar's turn is 0.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's radar is set to turn left
+	 * instead of right.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot's radar 180 degrees to the right
+	 *   turnRadarRightRadians(Math.PI);
+	 * <p/>
+	 *   // Afterwards, turn the robot's radar 90 degrees to the left
+	 *   turnRadarRightRadians(-Math.PI / 2);
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's radar to the right.
+	 *                If {@code radians} > 0 the robot's radar will turn right.
+	 *                If {@code radians} < 0 the robot's radar will turn left.
+	 *                If {@code radians} = 0 the robot's radar will not turn, but execute.
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnRight(double)
+	 * @see #turnRightRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustRadarForGunTurn(boolean)
+	 */
+	public void turnRadarRightRadians(double radians) {
+		if (peer != null) {
+			((IAdvancedRobotPeer) peer).turnRadar(radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * @param degrees the amount of degrees to turn the robot's body to the right.
+	 *                If {@code degrees} > 0 the robot will turn right.
+	 *                If {@code degrees} < 0 the robot will turn left.
+	 *                If {@code degrees} = 0 the robot will not turn, but execute.
+	 * @deprecated Use {@link Robot#turnRight(double) turnRight(double)} instead.
+	 */
+	@Deprecated
+	public void turnRightDegrees(double degrees) {
+		turnRight(degrees);
+	}
+
+	/**
+	 * Immediately turns the robot's body to the right by radians.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the robot's turn is 0.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn left
+	 * instead of right.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot 180 degrees to the right
+	 *   turnRightRadians(Math.PI);
+	 * <p/>
+	 *   // Afterwards, turn the robot 90 degrees to the left
+	 *   turnRightRadians(-Math.PI / 2);
+	 * </pre>
+	 *
+	 * @param radians the amount of radians to turn the robot's body to the right.
+	 *                If {@code radians} > 0 the robot will turn right.
+	 *                If {@code radians} < 0 the robot will turn left.
+	 *                If {@code radians} = 0 the robot will not turn, but execute.
+	 * @see #turnRight(double)
+	 * @see #turnLeft(double)
+	 * @see #turnLeftRadians(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunLeftRadians(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnGunRightRadians(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarLeftRadians(double)
+	 * @see #turnRadarRight(double)
+	 * @see #turnRadarRightRadians(double)
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 */
+	public void turnRightRadians(double radians) {
+		if (peer != null) {
+			peer.turnBody(radians);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
 	 * Does not return until a condition is met, i.e. when a
 	 * {@link Condition#test()} returns {@code true}.
 	 * <p/>
@@ -1412,34 +2346,5 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 		} else {
 			uninitializedException();
 		}
-	}
-
-	/**
-	 * This method is called if your robot dies.
-	 * <p/>
-	 * You should override it in your robot if you want to be informed of this
-	 * event. Actions will have no effect if called from this section. The
-	 * intent is to allow you to perform calculations or print something out
-	 * when the robot is killed.
-	 *
-	 * @param event the death event set by the game
-	 * @see DeathEvent
-	 * @see Event
-	 */
-	@Override
-	public void onDeath(DeathEvent event) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onSkippedTurn(SkippedTurnEvent event) {}
-
-	/**
-	 * Do not call this method!
-	 * <p/>
-	 * {@inheritDoc}
-	 */
-	public final IAdvancedEvents getAdvancedEventListener() {
-		return this; // this robot is listening
 	}
 }

@@ -17,8 +17,6 @@ package robocode;
 import robocode.peer.BulletStatus;
 import robocode.peer.robot.IHiddenBulletHelper;
 
-import java.io.Serializable;
-
 
 /**
  * Represents a bullet. This is returned from {@link Robot#fireBullet(double)}

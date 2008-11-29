@@ -69,40 +69,16 @@ import java.awt.event.MouseWheelEvent;
  * @see TeamRobot
  * @see Droid
  */
-public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents, IPaintEvents {
+public class Robot extends _RobotBase implements IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents, IPaintEvents {
+
+	private String gunImageName;
+	private String radarImageName;
+	private String robotImageName;
 
 	/**
 	 * Constructs a new robot.
 	 */
 	public Robot() {}
-
-	/**
-	 * {@inheritDoc}}
-	 */
-	public final Runnable getRobotRunnable() {
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}}
-	 */
-	public final IBasicEvents getBasicEventListener() {
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}}
-	 */
-	public final IInteractiveEvents getInteractiveEventListener() {
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}}
-	 */
-	public final IPaintEvents getPaintEventListener() {
-		return this;
-	}
 
 	/**
 	 * Immediately moves your robot ahead (forward) by distance measured in
@@ -180,218 +156,6 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
-	 * Returns the width of the current battlefield measured in pixels.
-	 *
-	 * @return the width of the current battlefield measured in pixels.
-	 */
-	public double getBattleFieldWidth() {
-		if (peer != null) {
-			return peer.getBattleFieldWidth();
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * Returns the height of the current battlefield measured in pixels.
-	 *
-	 * @return the height of the current battlefield measured in pixels.
-	 */
-	public double getBattleFieldHeight() {
-		if (peer != null) {
-			return peer.getBattleFieldHeight();
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * Returns the direction that the robot's body is facing, in degrees.
-	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p/>
-	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * 90 means East, 180 means South, and 270 means West.
-	 *
-	 * @return the direction that the robot's body is facing, in degrees.
-	 * @see #getGunHeading()
-	 * @see #getRadarHeading()
-	 */
-	public double getHeading() {
-		if (peer != null) {
-			double rv = 180.0 * peer.getBodyHeading() / Math.PI;
-
-			while (rv < 0) {
-				rv += 360;
-			}
-			while (rv >= 360) {
-				rv -= 360;
-			}
-			return rv;
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * Returns the height of the robot measured in pixels.
-	 *
-	 * @return the height of the robot measured in pixels.
-	 * @see #getWidth()
-	 */
-	public double getHeight() {
-		if (peer == null) {
-			uninitializedException();
-		}
-		return robocode.peer.RobotPeer.HEIGHT;
-	}
-
-	/**
-	 * Returns the width of the robot measured in pixels.
-	 *
-	 * @return the width of the robot measured in pixels.
-	 * @see #getHeight()
-	 */
-	public double getWidth() {
-		if (peer == null) {
-			uninitializedException();
-		}
-		return robocode.peer.RobotPeer.WIDTH;
-	}
-
-	/**
-	 * Returns the robot's name.
-	 *
-	 * @return the robot's name.
-	 */
-	public String getName() {
-		if (peer != null) {
-			return peer.getName();
-		}
-		uninitializedException();
-		return null; // never called
-	}
-
-	/**
-	 * Returns the X position of the robot. (0,0) is at the bottom left of the
-	 * battlefield.
-	 *
-	 * @return the X position of the robot.
-	 * @see #getY()
-	 */
-	public double getX() {
-		if (peer != null) {
-			return peer.getX();
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * Returns the Y position of the robot. (0,0) is at the bottom left of the
-	 * battlefield.
-	 *
-	 * @return the Y position of the robot.
-	 * @see #getX()
-	 */
-	public double getY() {
-		if (peer != null) {
-			return peer.getY();
-		}
-		uninitializedException();
-		return 0; // never called
-	}
-
-	/**
-	 * The main method in every robot. You must override this to set up your
-	 * robot's basic behavior.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // A basic robot that moves around in a square
-	 *   public void run() {
-	 *       while (true) {
-	 *           ahead(100);
-	 *           turnRight(90);
-	 *       }
-	 *   }
-	 * </pre>
-	 */
-	public void run() {}
-
-	/**
-	 * Immediately turns the robot's body to the left by degrees.
-	 * <p/>
-	 * This call executes immediately, and does not return until it is complete,
-	 * i.e. when the angle remaining in the robot's turn is 0.
-	 * <p/>
-	 * Note that both positive and negative values can be given as input,
-	 * where negative values means that the robot's body is set to turn right
-	 * instead of left.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // Turn the robot 180 degrees to the left
-	 *   turnLeft(180);
-	 * <p/>
-	 *   // Afterwards, turn the robot 90 degrees to the right
-	 *   turnLeft(-90);
-	 * </pre>
-	 *
-	 * @param degrees the amount of degrees to turn the robot's body to the left.
-	 *                If {@code degrees} > 0 the robot will turn left.
-	 *                If {@code degrees} < 0 the robot will turn right.
-	 *                If {@code degrees} = 0 the robot will not turn, but execute.
-	 * @see #turnRight(double)
-	 * @see #turnGunLeft(double)
-	 * @see #turnGunRight(double)
-	 * @see #turnRadarLeft(double)
-	 * @see #turnRadarRight(double)
-	 */
-	public void turnLeft(double degrees) {
-		if (peer != null) {
-			peer.turnBody(-Math.toRadians(degrees));
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Immediately turns the robot's body to the right by degrees.
-	 * This call executes immediately, and does not return until it is complete,
-	 * i.e. when the angle remaining in the robot's turn is 0.
-	 * <p/>
-	 * Note that both positive and negative values can be given as input,
-	 * where negative values means that the robot's body is set to turn left
-	 * instead of right.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // Turn the robot 180 degrees to the right
-	 *   turnRight(180);
-	 * <p/>
-	 *   // Afterwards, turn the robot 90 degrees to the left
-	 *   turnRight(-90);
-	 * </pre>
-	 *
-	 * @param degrees the amount of degrees to turn the robot's body to the right.
-	 *                If {@code degrees} > 0 the robot will turn right.
-	 *                If {@code degrees} < 0 the robot will turn left.
-	 *                If {@code degrees} = 0 the robot will not turn, but execute.
-	 * @see #turnLeft(double)
-	 * @see #turnGunLeft(double)
-	 * @see #turnGunRight(double)
-	 * @see #turnRadarLeft(double)
-	 * @see #turnRadarRight(double)
-	 */
-	public void turnRight(double degrees) {
-		if (peer != null) {
-			peer.turnBody(Math.toRadians(degrees));
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
 	 * Do nothing this turn, meaning that the robot will skip it's turn.
 	 * <p/>
 	 * This call executes immediately, and does not return until the turn is
@@ -403,15 +167,6 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		} else {
 			uninitializedException();
 		}
-	}
-
-	/**
-	 * Called by the system to 'clean up' after your robot.
-	 * You may not override this method.
-	 */
-	@Override
-	protected final void finalize() throws Throwable { // This method must be final!
-		super.finalize();
 	}
 
 	/**
@@ -523,6 +278,106 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * {@inheritDoc}}
+	 */
+	public final IBasicEvents getBasicEventListener() {
+		return this;
+	}
+
+	/**
+	 * Returns the height of the current battlefield measured in pixels.
+	 *
+	 * @return the height of the current battlefield measured in pixels.
+	 */
+	public double getBattleFieldHeight() {
+		if (peer != null) {
+			return peer.getBattleFieldHeight();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the width of the current battlefield measured in pixels.
+	 *
+	 * @return the width of the current battlefield measured in pixels.
+	 */
+	public double getBattleFieldWidth() {
+		if (peer != null) {
+			return peer.getBattleFieldWidth();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * @return the current round number of the battle
+	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum()} instead.
+	 */
+	@Deprecated
+	public int getBattleNum() {
+		if (peer != null) {
+			return peer.getRoundNum();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the robot's current energy.
+	 *
+	 * @return the robot's current energy.
+	 */
+	public double getEnergy() {
+		if (peer != null) {
+			return peer.getEnergy();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns a graphics context used for painting graphical items for the robot.
+	 * <p/>
+	 * This method is very useful for debugging your robot.
+	 * <p/>
+	 * Note that the robot will only be painted if the "Paint" is enabled on the
+	 * robot's console window; otherwise the robot will never get painted (the
+	 * reason being that all robots might have graphical items that must be
+	 * painted, and then you might not be able to tell what graphical items that
+	 * have been painted for your robot).
+	 * <p/>
+	 * Also note that the coordinate system for the graphical context where you
+	 * paint items fits for the Robocode coordinate system where (0, 0) is at
+	 * the bottom left corner of the battlefield, where X is towards right and Y
+	 * is upwards.
+	 *
+	 * @return a graphics context used for painting graphical items for the robot.
+	 * @see #onPaint(Graphics2D)
+	 * @since 1.6.1
+	 */
+	public Graphics2D getGraphics() {
+		if (peer != null) {
+			return peer.getGraphics();
+		}
+		uninitializedException();
+		return null; // never called
+	}
+
+	/**
+	 * @return 5 - {@link robocode.Robot#getGunHeat() getGunHeat()}.
+	 * @deprecated Use {@link Robot#getGunHeat() getGunHeat()} instead.
+	 */
+	@Deprecated
+	public double getGunCharge() {
+		if (peer != null) {
+			return 5 - peer.getGunHeat();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
 	 * Returns the rate at which the gun will cool down, i.e. the amount of heat
 	 * the gun heat will drop per turn.
 	 * <p/>
@@ -587,6 +442,101 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * @return the name of the gun image
+	 * @deprecated This call is not used.
+	 */
+	@Deprecated
+	public String getGunImageName() {
+		return gunImageName;
+	}
+
+	/**
+	 * Returns the direction that the robot's body is facing, in degrees.
+	 * The value returned will be between 0 and 360 (is excluded).
+	 * <p/>
+	 * Note that the heading in Robocode is like a compass, where 0 means North,
+	 * 90 means East, 180 means South, and 270 means West.
+	 *
+	 * @return the direction that the robot's body is facing, in degrees.
+	 * @see #getGunHeading()
+	 * @see #getRadarHeading()
+	 */
+	public double getHeading() {
+		if (peer != null) {
+			double rv = 180.0 * peer.getBodyHeading() / Math.PI;
+
+			while (rv < 0) {
+				rv += 360;
+			}
+			while (rv >= 360) {
+				rv -= 360;
+			}
+			return rv;
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the height of the robot measured in pixels.
+	 *
+	 * @return the height of the robot measured in pixels.
+	 * @see #getWidth()
+	 */
+	public double getHeight() {
+		if (peer == null) {
+			uninitializedException();
+		}
+		return robocode.peer.RobotPeer.HEIGHT;
+	}
+
+	/**
+	 * {@inheritDoc}}
+	 */
+	public final IInteractiveEvents getInteractiveEventListener() {
+		return this;
+	}
+
+	/**
+	 * @return the robot's current life/energy.
+	 * @deprecated Use {@link Robot#getEnergy() getEnergy()} instead.
+	 */
+	@Deprecated
+	public double getLife() {
+		if (peer != null) {
+			return peer.getEnergy();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the robot's name.
+	 *
+	 * @return the robot's name.
+	 */
+	public String getName() {
+		if (peer != null) {
+			return peer.getName();
+		}
+		uninitializedException();
+		return null; // never called
+	}
+
+	/**
+	 * @return the number of rounds in the current battle
+	 * @deprecated Use {@link Robot#getNumRounds() getNumRounds()} instead.
+	 */
+	@Deprecated
+	public int getNumBattles() {
+		if (peer != null) {
+			return peer.getNumRounds();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
 	 * Returns the number of rounds in the current battle.
 	 *
 	 * @return the number of rounds in the current battle
@@ -614,6 +564,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * {@inheritDoc}}
+	 */
+	public final IPaintEvents getPaintEventListener() {
+		return this;
+	}
+
+	/**
 	 * Returns the direction that the robot's radar is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
 	 * <p/>
@@ -630,6 +587,31 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		}
 		uninitializedException();
 		return 0; // never called
+	}
+
+	/**
+	 * @return the name of the radar image
+	 * @deprecated This call is not used.
+	 */
+	@Deprecated
+	public String getRadarImageName() {
+		return radarImageName;
+	}
+
+	/**
+	 * @return the name of the robot image
+	 * @deprecated This call is not used.
+	 */
+	@Deprecated
+	public String getRobotImageName() {
+		return robotImageName;
+	}
+
+	/**
+	 * {@inheritDoc}}
+	 */
+	public final Runnable getRobotRunnable() {
+		return this;
 	}
 
 	/**
@@ -683,6 +665,54 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * Returns the width of the robot measured in pixels.
+	 *
+	 * @return the width of the robot measured in pixels.
+	 * @see #getHeight()
+	 */
+	public double getWidth() {
+		if (peer == null) {
+			uninitializedException();
+		}
+		return robocode.peer.RobotPeer.WIDTH;
+	}
+
+	/**
+	 * Returns the X position of the robot. (0,0) is at the bottom left of the
+	 * battlefield.
+	 *
+	 * @return the X position of the robot.
+	 * @see #getY()
+	 */
+	public double getX() {
+		if (peer != null) {
+			return peer.getX();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * Returns the Y position of the robot. (0,0) is at the bottom left of the
+	 * battlefield.
+	 *
+	 * @return the Y position of the robot.
+	 * @see #getX()
+	 */
+	public double getY() {
+		if (peer != null) {
+			return peer.getY();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onBattleEnded(BattleEndedEvent event) {}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public void onBulletHit(BulletHitEvent event) {}
@@ -720,6 +750,66 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	/**
 	 * {@inheritDoc}
 	 */
+	public void onKeyPressed(KeyEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onKeyReleased(KeyEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onKeyTyped(KeyEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMouseClicked(MouseEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMouseDragged(MouseEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMouseEntered(MouseEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMouseExited(MouseEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMouseMoved(MouseEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMousePressed(MouseEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMouseReleased(MouseEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMouseWheelMoved(MouseWheelEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onPaint(Graphics2D g) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public void onRobotDeath(RobotDeathEvent event) {}
 
 	/**
@@ -730,12 +820,45 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onWin(WinEvent event) {}
+	public void onStatus(StatusEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onBattleEnded(BattleEndedEvent event) {}
+	public void onWin(WinEvent event) {}
+
+	/**
+	 * Immediately resumes the movement you stopped by {@link #stop()}, if any.
+	 * <p/>
+	 * This call executes immediately, and does not return until it is complete.
+	 *
+	 * @see #stop()
+	 * @see #stop(boolean)
+	 */
+	public void resume() {
+		if (peer != null) {
+			((IStandardRobotPeer) peer).resume();
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * The main method in every robot. You must override this to set up your
+	 * robot's basic behavior.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // A basic robot that moves around in a square
+	 *   public void run() {
+	 *       while (true) {
+	 *           ahead(100);
+	 *           turnRight(90);
+	 *       }
+	 *   }
+	 * </pre>
+	 */
+	public void run() {}
 
 	/**
 	 * Scans for other robots. This method is called automatically by the game,
@@ -812,6 +935,49 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * Sets the radar to turn independent from the gun's turn.
+	 * <p/>
+	 * Ok, so this needs some explanation: The radar is mounted on the robot's
+	 * gun. So, normally, if the gun turns 90 degrees to the right, then the
+	 * radar will turn with it as it is mounted on top of the gun. To compensate
+	 * for this, you can call {@code setAdjustRadarForGunTurn(true)}. When this
+	 * is set, the radar will turn independent from the robot's turn, i.e. the
+	 * radar will compensate for the gun's turn.
+	 * <p/>
+	 * Example, assuming both the gun and radar start out facing up (0 degrees):
+	 * <pre>
+	 *   // Set radar to turn with the gun's turn
+	 *   setAdjustRadarForGunTurn(false); // This is the default
+	 *   turnGunRight(90);
+	 *   // At this point, both the radar and gun are facing right (90 degrees);
+	 * <p/>
+	 *   -- or --
+	 * <p/>
+	 *   // Set radar to turn independent from the gun's turn
+	 *   setAdjustRadarForGunTurn(true);
+	 *   turnGunRight(90);
+	 *   // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
+	 * </pre>
+	 * Note: Calling {@code setAdjustRadarForGunTurn(boolean)} will
+	 * automatically call {@link #setAdjustRadarForRobotTurn(boolean)} with the
+	 * same value, unless you have already called it earlier. This behavior is
+	 * primarily for backward compatibility with older Robocode robots.
+	 *
+	 * @param independent {@code true} if the radar must turn independent from
+	 *                    the gun's turn; {@code false} if the radar must turn with the gun's
+	 *                    turn.
+	 * @see #setAdjustRadarForRobotTurn(boolean)
+	 * @see #setAdjustGunForRobotTurn(boolean)
+	 */
+	public void setAdjustRadarForGunTurn(boolean independent) {
+		if (peer != null) {
+			((IStandardRobotPeer) peer).setAdjustRadarForGunTurn(independent);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
 	 * Sets the radar to turn independent from the robot's turn.
 	 * <p/>
 	 * Ok, so this needs some explanation: The radar is mounted on the gun, and
@@ -854,43 +1020,115 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
-	 * Sets the radar to turn independent from the gun's turn.
+	 * Sets all the robot's color to the same color in the same time, i.e. the
+	 * color of the body, gun, radar, bullet, and scan arc.
 	 * <p/>
-	 * Ok, so this needs some explanation: The radar is mounted on the robot's
-	 * gun. So, normally, if the gun turns 90 degrees to the right, then the
-	 * radar will turn with it as it is mounted on top of the gun. To compensate
-	 * for this, you can call {@code setAdjustRadarForGunTurn(true)}. When this
-	 * is set, the radar will turn independent from the robot's turn, i.e. the
-	 * radar will compensate for the gun's turn.
+	 * You may only call this method one time per battle. A {@code null}
+	 * indicates the default (blue) color for the body, gun, radar, and scan
+	 * arc, but white for the bullet color.
 	 * <p/>
-	 * Example, assuming both the gun and radar start out facing up (0 degrees):
 	 * <pre>
-	 *   // Set radar to turn with the gun's turn
-	 *   setAdjustRadarForGunTurn(false); // This is the default
-	 *   turnGunRight(90);
-	 *   // At this point, both the radar and gun are facing right (90 degrees);
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 *   ...
 	 * <p/>
-	 *   -- or --
-	 * <p/>
-	 *   // Set radar to turn independent from the gun's turn
-	 *   setAdjustRadarForGunTurn(true);
-	 *   turnGunRight(90);
-	 *   // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
+	 *   public void run() {
+	 *       setAllColors(Color.RED);
+	 *       ...
+	 *   }
 	 * </pre>
-	 * Note: Calling {@code setAdjustRadarForGunTurn(boolean)} will
-	 * automatically call {@link #setAdjustRadarForRobotTurn(boolean)} with the
-	 * same value, unless you have already called it earlier. This behavior is
-	 * primarily for backward compatibility with older Robocode robots.
 	 *
-	 * @param independent {@code true} if the radar must turn independent from
-	 *                    the gun's turn; {@code false} if the radar must turn with the gun's
-	 *                    turn.
-	 * @see #setAdjustRadarForRobotTurn(boolean)
-	 * @see #setAdjustGunForRobotTurn(boolean)
+	 * @param color the new color for all the colors of the robot
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
+	 * @since 1.1.3
 	 */
-	public void setAdjustRadarForGunTurn(boolean independent) {
+	public void setAllColors(Color color) {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).setAdjustRadarForGunTurn(independent);
+			peer.setBodyColor(color);
+			peer.setGunColor(color);
+			peer.setRadarColor(color);
+			peer.setBulletColor(color);
+			peer.setScanColor(color);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the color of the robot's body.
+	 * <p/>
+	 * A {@code null} indicates the default (blue) color.
+	 * <p/>
+	 * <pre>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 *   ...
+	 * <p/>
+	 *   public void run() {
+	 *       setBodyColor(Color.BLACK);
+	 *       ...
+	 *   }
+	 * </pre>
+	 *
+	 * @param color the new body color
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setAllColors(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setBulletColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
+	 * @since 1.1.2
+	 */
+	public void setBodyColor(Color color) {
+		if (peer != null) {
+			peer.setBodyColor(color);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the color of the robot's bullets.
+	 * <p/>
+	 * A {@code null} indicates the default white color.
+	 * <p/>
+	 * <pre>
+	 * Example:
+	 *   // Don't forget to import java.awt.Color at the top...
+	 *   import java.awt.Color;
+	 *   ...
+	 * <p/>
+	 *   public void run() {
+	 *       setBulletColor(Color.GREEN);
+	 *       ...
+	 *   }
+	 * </pre>
+	 *
+	 * @param color the new bullet color
+	 * @see #setColors(Color, Color, Color)
+	 * @see #setColors(Color, Color, Color, Color, Color)
+	 * @see #setAllColors(Color)
+	 * @see #setBodyColor(Color)
+	 * @see #setGunColor(Color)
+	 * @see #setRadarColor(Color)
+	 * @see #setScanColor(Color)
+	 * @see Color
+	 * @since 1.1.2
+	 */
+	public void setBulletColor(Color color) {
+		if (peer != null) {
+			peer.setBulletColor(color);
 		} else {
 			uninitializedException();
 		}
@@ -984,82 +1222,23 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
-	 * Sets all the robot's color to the same color in the same time, i.e. the
-	 * color of the body, gun, radar, bullet, and scan arc.
+	 * Sets the debug property with the specified key to the specified value.
 	 * <p/>
-	 * You may only call this method one time per battle. A {@code null}
-	 * indicates the default (blue) color for the body, gun, radar, and scan
-	 * arc, but white for the bullet color.
-	 * <p/>
-	 * <pre>
-	 * Example:
-	 *   // Don't forget to import java.awt.Color at the top...
-	 *   import java.awt.Color;
-	 *   ...
-	 * <p/>
-	 *   public void run() {
-	 *       setAllColors(Color.RED);
-	 *       ...
-	 *   }
-	 * </pre>
+	 * This method is very useful when debugging or reviewing your robot as you
+	 * will be able to see this property displayed in the robot console for your
+	 * robots under the Debug Properties tab page.
 	 *
-	 * @param color the new color for all the colors of the robot
-	 * @see #setColors(Color, Color, Color)
-	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setBodyColor(Color)
-	 * @see #setGunColor(Color)
-	 * @see #setRadarColor(Color)
-	 * @see #setBulletColor(Color)
-	 * @see #setScanColor(Color)
-	 * @see Color
-	 * @since 1.1.3
+	 * @param key the name/key of the debug property.
+	 * @param value the new value of the debug property, where {@code null} or
+	 *              the empty string is used for removing this debug property. 
+	 * @since 1.6.2
 	 */
-	public void setAllColors(Color color) {
+	public void setDebugProperty(String key, String value) {
 		if (peer != null) {
-			peer.setBodyColor(color);
-			peer.setGunColor(color);
-			peer.setRadarColor(color);
-			peer.setBulletColor(color);
-			peer.setScanColor(color);
-		} else {
-			uninitializedException();
+			peer.setDebugProperty(key, value);
+			return;
 		}
-	}
-
-	/**
-	 * Sets the color of the robot's body.
-	 * <p/>
-	 * A {@code null} indicates the default (blue) color.
-	 * <p/>
-	 * <pre>
-	 * Example:
-	 *   // Don't forget to import java.awt.Color at the top...
-	 *   import java.awt.Color;
-	 *   ...
-	 * <p/>
-	 *   public void run() {
-	 *       setBodyColor(Color.BLACK);
-	 *       ...
-	 *   }
-	 * </pre>
-	 *
-	 * @param color the new body color
-	 * @see #setColors(Color, Color, Color)
-	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setAllColors(Color)
-	 * @see #setGunColor(Color)
-	 * @see #setRadarColor(Color)
-	 * @see #setBulletColor(Color)
-	 * @see #setScanColor(Color)
-	 * @see Color
-	 * @since 1.1.2
-	 */
-	public void setBodyColor(Color color) {
-		if (peer != null) {
-			peer.setBodyColor(color);
-		} else {
-			uninitializedException();
-		}
+		uninitializedException();
 	}
 
 	/**
@@ -1099,6 +1278,25 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * @param newGunImageName the name of the new gun image
+	 * @deprecated This call is not used.
+	 */
+	@Deprecated
+	public void setGunImageName(String newGunImageName) {
+		gunImageName = newGunImageName;
+	}
+
+	/**
+	 * This call has moved to {@link AdvancedRobot}, and will no longer function in
+	 * the {@link Robot} class.
+	 *
+	 * @param interruptible {@code true} if the event handler should be
+	 *                      interrupted if new events of the same priority occurs; {@code false}
+	 *                      otherwise
+	 */
+	public void setInterruptible(boolean interruptible) {}
+
+	/**
 	 * Sets the color of the robot's radar.
 	 * <p/>
 	 * A {@code null} indicates the default (blue) color.
@@ -1135,39 +1333,21 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
-	 * Sets the color of the robot's bullets.
-	 * <p/>
-	 * A {@code null} indicates the default white color.
-	 * <p/>
-	 * <pre>
-	 * Example:
-	 *   // Don't forget to import java.awt.Color at the top...
-	 *   import java.awt.Color;
-	 *   ...
-	 * <p/>
-	 *   public void run() {
-	 *       setBulletColor(Color.GREEN);
-	 *       ...
-	 *   }
-	 * </pre>
-	 *
-	 * @param color the new bullet color
-	 * @see #setColors(Color, Color, Color)
-	 * @see #setColors(Color, Color, Color, Color, Color)
-	 * @see #setAllColors(Color)
-	 * @see #setBodyColor(Color)
-	 * @see #setGunColor(Color)
-	 * @see #setRadarColor(Color)
-	 * @see #setScanColor(Color)
-	 * @see Color
-	 * @since 1.1.2
+	 * @param newRadarImageName the name of the new radar image
+	 * @deprecated This call is not used.
 	 */
-	public void setBulletColor(Color color) {
-		if (peer != null) {
-			peer.setBulletColor(color);
-		} else {
-			uninitializedException();
-		}
+	@Deprecated
+	public void setRadarImageName(String newRadarImageName) {
+		radarImageName = newRadarImageName;
+	}
+
+	/**
+	 * @param newRobotImageName the name of the new robot body image
+	 * @deprecated This call is not used.
+	 */
+	@Deprecated
+	public void setRobotImageName(String newRobotImageName) {
+		robotImageName = newRobotImageName;
 	}
 
 	/**
@@ -1233,22 +1413,6 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	public void stop(boolean overwrite) {
 		if (peer != null) {
 			((IStandardRobotPeer) peer).stop(overwrite);
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Immediately resumes the movement you stopped by {@link #stop()}, if any.
-	 * <p/>
-	 * This call executes immediately, and does not return until it is complete.
-	 *
-	 * @see #stop()
-	 * @see #stop(boolean)
-	 */
-	public void resume() {
-		if (peer != null) {
-			((IStandardRobotPeer) peer).resume();
 		} else {
 			uninitializedException();
 		}
@@ -1324,6 +1488,43 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	public void turnGunRight(double degrees) {
 		if (peer != null) {
 			peer.turnGun(Math.toRadians(degrees));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Immediately turns the robot's body to the left by degrees.
+	 * <p/>
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the robot's turn is 0.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn right
+	 * instead of left.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot 180 degrees to the left
+	 *   turnLeft(180);
+	 * <p/>
+	 *   // Afterwards, turn the robot 90 degrees to the right
+	 *   turnLeft(-90);
+	 * </pre>
+	 *
+	 * @param degrees the amount of degrees to turn the robot's body to the left.
+	 *                If {@code degrees} > 0 the robot will turn left.
+	 *                If {@code degrees} < 0 the robot will turn right.
+	 *                If {@code degrees} = 0 the robot will not turn, but execute.
+	 * @see #turnRight(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarRight(double)
+	 */
+	public void turnLeft(double degrees) {
+		if (peer != null) {
+			peer.turnBody(-Math.toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
@@ -1407,128 +1608,47 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
-	 * Returns the robot's current energy.
+	 * Immediately turns the robot's body to the right by degrees.
+	 * This call executes immediately, and does not return until it is complete,
+	 * i.e. when the angle remaining in the robot's turn is 0.
+	 * <p/>
+	 * Note that both positive and negative values can be given as input,
+	 * where negative values means that the robot's body is set to turn left
+	 * instead of right.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // Turn the robot 180 degrees to the right
+	 *   turnRight(180);
+	 * <p/>
+	 *   // Afterwards, turn the robot 90 degrees to the left
+	 *   turnRight(-90);
+	 * </pre>
 	 *
-	 * @return the robot's current energy.
+	 * @param degrees the amount of degrees to turn the robot's body to the right.
+	 *                If {@code degrees} > 0 the robot will turn right.
+	 *                If {@code degrees} < 0 the robot will turn left.
+	 *                If {@code degrees} = 0 the robot will not turn, but execute.
+	 * @see #turnLeft(double)
+	 * @see #turnGunLeft(double)
+	 * @see #turnGunRight(double)
+	 * @see #turnRadarLeft(double)
+	 * @see #turnRadarRight(double)
 	 */
-	public double getEnergy() {
+	public void turnRight(double degrees) {
 		if (peer != null) {
-			return peer.getEnergy();
+			peer.turnBody(Math.toRadians(degrees));
+		} else {
+			uninitializedException();
 		}
-		uninitializedException();
-		return 0; // never called
 	}
 
 	/**
-	 * Returns a graphics context used for painting graphical items for the robot.
-	 * <p/>
-	 * This method is very useful for debugging your robot.
-	 * <p/>
-	 * Note that the robot will only be painted if the "Paint" is enabled on the
-	 * robot's console window; otherwise the robot will never get painted (the
-	 * reason being that all robots might have graphical items that must be
-	 * painted, and then you might not be able to tell what graphical items that
-	 * have been painted for your robot).
-	 * <p/>
-	 * Also note that the coordinate system for the graphical context where you
-	 * paint items fits for the Robocode coordinate system where (0, 0) is at
-	 * the bottom left corner of the battlefield, where X is towards right and Y
-	 * is upwards.
-	 *
-	 * @return a graphics context used for painting graphical items for the robot.
-	 * @see #onPaint(Graphics2D)
-	 * @since 1.6.1
+	 * Called by the system to 'clean up' after your robot.
+	 * You may not override this method.
 	 */
-	public Graphics2D getGraphics() {
-		if (peer != null) {
-			return peer.getGraphics();
-		}
-		uninitializedException();
-		return null; // never called
+	@Override
+	protected final void finalize() throws Throwable { // This method must be final!
+		super.finalize();
 	}
-
-	/**
-	 * Sets the debug property with the specified key to the specified value.
-	 * <p/>
-	 * This method is very useful when debugging or reviewing your robot as you
-	 * will be able to see this property displayed in the robot console for your
-	 * robots under the Debug Properties tab page.
-	 *
-	 * @param key the name/key of the debug property.
-	 * @param value the new value of the debug property, where {@code null} or
-	 *              the empty string is used for removing this debug property. 
-	 * @since 1.6.2
-	 */
-	public void setDebugProperty(String key, String value) {
-		if (peer != null) {
-			peer.setDebugProperty(key, value);
-			return;
-		}
-		uninitializedException();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onPaint(Graphics2D g) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onKeyPressed(KeyEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onKeyReleased(KeyEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onKeyTyped(KeyEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMouseClicked(MouseEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMouseEntered(MouseEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMouseExited(MouseEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMousePressed(MouseEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMouseReleased(MouseEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMouseMoved(MouseEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMouseDragged(MouseEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMouseWheelMoved(MouseWheelEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onStatus(StatusEvent e) {}
 }
