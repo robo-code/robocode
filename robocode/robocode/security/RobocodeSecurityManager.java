@@ -79,23 +79,21 @@ public class RobocodeSecurityManager extends SecurityManager {
 		this.experimental = experimental;
 		safeSecurityContext = getSecurityContext();
 
-		// Fake loading of classes - block start
-		@SuppressWarnings({"unused"})
-		BulletState bs = BulletState.INACTIVE;
-
-		new BulletCommand(null, false, 0, -1);
-		new ExecResults(null, null, null, null, null, false, false, false);
-		new TeamMessage(null, null, null);
-		new DebugProperty();
-		//noinspection ThrowableInstanceNeverThrown
-		new RobotException();
-
+		// Loading of classes to prevent security issues on untrusted threads 
 		try {
-			new RobocodeObjectInputStream(new ByteArrayInputStream(new byte[0]), null);
-		} catch (IOException ignored) {}
+			final ClassLoader scl = ClassLoader.getSystemClassLoader();
 
-		Toolkit.getDefaultToolkit();
-		// Fake loading of classes - block end
+			scl.loadClass(BulletState.class.getName());
+			scl.loadClass(BulletCommand.class.getName());
+			scl.loadClass(ExecResults.class.getName());
+			scl.loadClass(TeamMessage.class.getName());
+			scl.loadClass(DebugProperty.class.getName());
+			scl.loadClass(RobotException.class.getName());
+			scl.loadClass(RobocodeObjectInputStream.class.getName());
+			Toolkit.getDefaultToolkit();
+		} catch (ClassNotFoundException e) {
+			throw new Error("We can't load important classes", e);
+		}
 
 		alowedPackages.add("util");
 		alowedPackages.add("robotinterfaces");

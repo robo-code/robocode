@@ -183,8 +183,8 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 
 		ArrayList<ScoreSnapshot> results = new ArrayList<ScoreSnapshot>();
 
-		// noinspection UnusedDeclaration
-		for (@SuppressWarnings("unused") RobotSnapshot c : robots) {
+		// noinspection ForLoopReplaceableByForEach
+		for (int i = 0; i < robots.size(); i++) {
 			results.add(null);
 		}
 		for (RobotSnapshot robot : robots) {

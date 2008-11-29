@@ -565,8 +565,8 @@ public final class Battle extends BaseBattle {
 		Collections.sort(orderedContestants);
 		Collections.reverse(orderedContestants);
 
-		// noinspection UnusedDeclaration
-		for (@SuppressWarnings("unused") ContestantPeer c : contestants) {
+		// noinspection ForLoopReplaceableByForEach
+		for (int i = 0; i < contestants.size(); i++) {
 			results.add(null);
 		}
 		for (int rank = 0; rank < contestants.size(); rank++) {
