@@ -12,8 +12,6 @@
 package robocode.peer;
 
 
-import robocode.Bullet;
-
 import java.io.Serializable;
 
 
@@ -23,14 +21,14 @@ import java.io.Serializable;
 public class BulletCommand implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public BulletCommand(Bullet bullet, boolean fireAssistValid, double fireAssistAngle, int bulletId) {
-		this.bullet = bullet;
+	public BulletCommand(double power, boolean fireAssistValid, double fireAssistAngle, int bulletId) {
 		this.fireAssistValid = fireAssistValid;
 		this.fireAssistAngle = fireAssistAngle;
 		this.bulletId = bulletId;
+		this.power = power;
 	}
 
-	private final Bullet bullet;
+	private final double power;
 	private final boolean fireAssistValid;
 	private final double fireAssistAngle;
 	private final int bulletId;
@@ -39,12 +37,12 @@ public class BulletCommand implements Serializable {
 		return fireAssistValid;
 	}
 
-	public Bullet getBullet() {
-		return bullet;
-	}
-
 	public int getBulletId() {
 		return bulletId;
+	}
+
+	public double getPower() {
+		return power;
 	}
 
 	public double getFireAssistAngle() {

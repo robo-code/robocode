@@ -32,8 +32,7 @@ import java.io.Serializable;
  * @see BulletMissedEvent
  * @see BulletHitBulletEvent
  */
-public class Bullet implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Bullet {
 
 	private final double headingRadians;
 	private double x;

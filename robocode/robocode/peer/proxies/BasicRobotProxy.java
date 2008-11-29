@@ -447,11 +447,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeadingRadians() + e.getBearingRadians());
 
 			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true);
-			wrapper = new BulletCommand(bullet, true, fireAssistAngle, bulletCounter);
+			wrapper = new BulletCommand(power, true, fireAssistAngle, bulletCounter);
 		} else {
 			// this is normal bullet
 			bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName(), null, true);
-			wrapper = new BulletCommand(bullet, false, 0, bulletCounter);
+			wrapper = new BulletCommand(power, false, 0, bulletCounter);
 		}
 
 		firedEnergy += power;

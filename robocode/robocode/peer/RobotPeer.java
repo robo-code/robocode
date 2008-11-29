@@ -783,13 +783,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		BulletPeer newBullet = null;
 
 		for (BulletCommand bulletCmd : bulletCommands) {
-			Bullet bullet = bulletCmd.getBullet();
-
-			if (bullet == null) {
-				println("SYSTEM: Bad bullet command");
-				continue;
-			}
-			if (Double.isNaN(bullet.getPower())) {
+			if (Double.isNaN(bulletCmd.getPower())) {
 				println("SYSTEM: You cannot call fire(NaN)");
 				continue;
 			}
@@ -797,7 +791,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				return;
 			}
 
-			double firePower = min(energy, min(max(bullet.getPower(), Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+			double firePower = min(energy,
+					min(max(bulletCmd.getPower(), Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
 
 			updateEnergy(-firePower);
 
