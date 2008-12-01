@@ -280,6 +280,10 @@ public class RobotClassManager {
 		eventHelper.setDefaultPriority(e);
 	}
 
+	public static void updateBullets(Event e, Hashtable<Integer, Bullet> bullets) {
+		eventHelper.updateBullets(e, bullets);
+	}
+
 	public static void update(Bullet bullet, BulletStatus status) {
 		bulletHelper.update(bullet, status);
 	}

@@ -15,8 +15,10 @@ package robocode.peer.robot;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.peer.RobotStatics;
 import robocode.Event;
+import robocode.Bullet;
 
 import java.awt.*;
+import java.util.Hashtable;
 
 
 /**
@@ -28,4 +30,5 @@ public interface IHiddenEventHelper {
 	void setTime(Event event, long newTime);
 	boolean isCriticalEvent(Event event);
 	void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
+	void updateBullets(Event event, Hashtable<Integer, Bullet> bullets);
 }

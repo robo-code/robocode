@@ -19,6 +19,7 @@ import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.util.Hashtable;
 
 
 /**
@@ -33,7 +34,7 @@ public final class BulletHitEvent extends Event {
 
 	private final String name;
 	private final double energy;
-	private final Bullet bullet;
+	private Bullet bullet;
 
 	/**
 	 * Called by the game to create a new {@code BulletHitEvent}.
@@ -122,5 +123,14 @@ public final class BulletHitEvent extends Event {
 		if (listener != null) {
 			listener.onBulletHit(this);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void updateBullets(Hashtable<Integer, Bullet> bullets) {
+		// we need to pass same instance
+		bullet = bullets.get(bullet.getBulletId());
 	}
 }

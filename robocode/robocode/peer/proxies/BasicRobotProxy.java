@@ -354,6 +354,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		if (execResults.getEvents() != null) {
 			for (Event event : execResults.getEvents()) {
 				eventManager.add(event);
+				RobotClassManager.updateBullets(event, bullets);
 			}
 		}
 
@@ -446,11 +447,12 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent;
 			double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeadingRadians() + e.getBearingRadians());
 
-			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true);
+			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true, bulletCounter);
 			wrapper = new BulletCommand(power, true, fireAssistAngle, bulletCounter);
 		} else {
 			// this is normal bullet
-			bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName(), null, true);
+			bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName(), null, true,
+					bulletCounter);
 			wrapper = new BulletCommand(power, false, 0, bulletCounter);
 		}
 

@@ -32,7 +32,8 @@ import java.io.Serializable;
  * @see BulletMissedEvent
  * @see BulletHitBulletEvent
  */
-public class Bullet {
+public class Bullet implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final double headingRadians;
 	private double x;
@@ -41,6 +42,7 @@ public class Bullet {
 	private final String ownerName;
 	private String victimName;
 	private boolean isActive;
+	private int bulletId;
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
@@ -52,9 +54,11 @@ public class Bullet {
 	 * @param ownerName the name of the owner robot that owns the bullet.
 	 * @param victimName the name of the robot hit by bullet
 	 * @param isActive still moves
+	 * @param bulletId unique id of bullet for owner robot
 	 */
-	public Bullet(double heading, double x, double y, double power, String ownerName, String victimName, boolean isActive) {
+	public Bullet(double heading, double x, double y, double power, String ownerName, String victimName, boolean isActive, int bulletId) {
 		this.headingRadians = heading;
+		this.bulletId = bulletId;
 		this.x = x;
 		this.y = y;
 		this.power = power;
@@ -167,6 +171,14 @@ public class Bullet {
 		y = status.y;
 		victimName = status.victimName;
 		isActive = status.isActive;
+	}
+
+	// this method is invisible on RobotAPI
+	/**
+	 * @return unique id of bullet for owner robot
+	 */
+	int getBulletId() {
+		return bulletId;
 	}
 
 	/**
