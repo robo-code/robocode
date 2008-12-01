@@ -19,6 +19,7 @@ import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.util.Hashtable;
 
 
 /**
@@ -31,7 +32,7 @@ public final class BulletHitBulletEvent extends Event {
 	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 55;
 
-	private final Bullet bullet;
+	private Bullet bullet;
 	private final Bullet hitBullet;
 
 	/**
@@ -82,5 +83,14 @@ public final class BulletHitBulletEvent extends Event {
 		if (listener != null) {
 			listener.onBulletHitBullet(this);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void updateBullets(Hashtable<Integer, Bullet> bullets) {
+		// we need to pass same instance
+		bullet = bullets.get(bullet.getBulletId());
 	}
 }

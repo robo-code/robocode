@@ -131,8 +131,10 @@ public class BulletPeer {
 	}
 
 	private Bullet createBullet() {
-		return new Bullet(heading, x, y, power, owner == null ? null : owner.getName(),
-				victim == null ? null : victim.getName(), isActive());
+		final Bullet bullet = new Bullet(heading, x, y, power, owner == null ? null : owner.getName(),
+				victim == null ? null : victim.getName(), isActive(), bulletId);
+
+		return bullet;
 	}
 
 	private BulletStatus createStatus() {
