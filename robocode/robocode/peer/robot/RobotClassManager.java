@@ -264,7 +264,7 @@ public class RobotClassManager {
 		return eventHelper.isCriticalEvent(e);
 	}
 
-	public static void setTime(Event e, long newTime) {
+	public static void setEventTime(Event e, long newTime) {
 		eventHelper.setTime(e, newTime);
 	}
 
@@ -278,6 +278,10 @@ public class RobotClassManager {
 
 	public static void setDefaultPriority(Event e) {
 		eventHelper.setDefaultPriority(e);
+	}
+
+	public static byte getSerializationType(Event e) {
+		return eventHelper.getSerializationType(e);
 	}
 
 	public static void updateBullets(Event e, Hashtable<Integer, Bullet> bullets) {

@@ -15,9 +15,14 @@ package robocode.peer;
 import robocode.Event;
 import robocode.RobotStatus;
 import robocode.peer.robot.TeamMessage;
+import robocode.peer.robot.RobotClassManager;
+import robocode.peer.serialize.ISerializableHelper;
+import robocode.peer.serialize.RbSerializer;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.ArrayList;
+import java.nio.ByteBuffer;
 
 
 public class ExecResults implements Serializable {
@@ -110,4 +115,103 @@ public class ExecResults implements Serializable {
 	public void setPaintEnabled(boolean paintEnabled) {
 		this.paintEnabled = paintEnabled;
 	}
+
+	private ExecResults() {}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			ExecResults obj = (ExecResults) object;
+			int size = RbSerializer.SIZEOF_TYPEINFO + 3 * RbSerializer.SIZEOF_BOOL;
+
+			size += serializer.sizeOf(RbSerializer.ExecCommands_TYPE, obj.commands);
+			size += serializer.sizeOf(RbSerializer.RobotStatus_TYPE, obj.status);
+
+			// events
+			for (Event event : obj.events) {
+				size += serializer.sizeOf(event);
+			}
+			size += 1;
+
+			// messages
+			for (TeamMessage m : obj.teamMessages) {
+				size += serializer.sizeOf(RbSerializer.TeamMessage_TYPE, m);
+			}
+			size += 1;
+
+			// bullets
+			for (BulletStatus b : obj.bulletUpdates) {
+				size += serializer.sizeOf(RbSerializer.BulletStatus_TYPE, b);
+			}
+			size += 1;
+
+			return size;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			ExecResults obj = (ExecResults) object;
+
+			serializer.serialize(buffer, obj.halt);
+			serializer.serialize(buffer, obj.shouldWait);
+			serializer.serialize(buffer, obj.paintEnabled);
+
+			serializer.serialize(buffer, RbSerializer.ExecCommands_TYPE, obj.commands);
+			serializer.serialize(buffer, RbSerializer.RobotStatus_TYPE, obj.status);
+
+			for (Event event : obj.events) {
+				serializer.serialize(buffer, event);
+			}
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
+			for (TeamMessage message : obj.teamMessages) {
+				serializer.serialize(buffer, RbSerializer.TeamMessage_TYPE, message);
+			}
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
+			for (BulletStatus bulletStatus : obj.bulletUpdates) {
+				serializer.serialize(buffer, RbSerializer.BulletStatus_TYPE, bulletStatus);
+			}
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			ExecResults res = new ExecResults();
+
+			res.halt = serializer.deserializeBoolean(buffer);
+			res.shouldWait = serializer.deserializeBoolean(buffer);
+			res.paintEnabled = serializer.deserializeBoolean(buffer);
+
+			res.commands = (ExecCommands) serializer.deserialize(buffer);
+			res.status = (RobotStatus) serializer.deserialize(buffer);
+
+			Object item = serializer.deserialize(buffer);
+
+			res.events = new ArrayList<Event>();
+			res.teamMessages = new ArrayList<TeamMessage>();
+			res.bulletUpdates = new ArrayList<BulletStatus>();
+			while (item != null) {
+				if (item instanceof Event) {
+					res.events.add((Event) item);
+				}
+				item = serializer.deserialize(buffer);
+			}
+			item = serializer.deserialize(buffer);
+			while (item != null) {
+				if (item instanceof TeamMessage) {
+					res.teamMessages.add((TeamMessage) item);
+				}
+				item = serializer.deserialize(buffer);
+			}
+			item = serializer.deserialize(buffer);
+			while (item != null) {
+				if (item instanceof BulletStatus) {
+					res.bulletUpdates.add((BulletStatus) item);
+				}
+				item = serializer.deserialize(buffer);
+			}
+			return res;
+		}
+	}
+
 }

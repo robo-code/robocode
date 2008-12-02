@@ -94,6 +94,7 @@ public class EventManager implements IEventManager {
 	public void add(Event e) {
 		if (!RobotClassManager.isCriticalEvent(e)) {
 			RobotClassManager.setEventPriority(e, getEventPriority(e.getClass().getName()));
+			RobotClassManager.setEventTime(e, getTime());
 		}
 		addImpl(e);
 	}
@@ -422,7 +423,7 @@ public class EventManager implements IEventManager {
 			if (conditionSatisfied) {
 				CustomEvent event = new CustomEvent(customEvent);
 
-				RobotClassManager.setTime(event, getTime()); // TODO is that correct time ?
+				RobotClassManager.setEventTime(event, getTime());
 				addImpl(event);
 			}
 		}

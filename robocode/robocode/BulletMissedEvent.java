@@ -15,11 +15,14 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 import java.util.Hashtable;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -80,5 +83,35 @@ public final class BulletMissedEvent extends Event {
 	final void updateBullets(Hashtable<Integer, Bullet> bullets) {
 		// we need to pass same instance
 		bullet = bullets.get(bullet.getBulletId());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.BulletMissedEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_INT;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			BulletMissedEvent obj = (BulletMissedEvent) object;
+
+			serializer.serialize(buffer, obj.bullet.getBulletId());
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			Bullet bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
+
+			return new BulletMissedEvent(bullet);
+		}
 	}
 }

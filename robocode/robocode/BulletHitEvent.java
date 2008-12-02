@@ -15,11 +15,14 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 import java.util.Hashtable;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -132,5 +135,42 @@ public final class BulletHitEvent extends Event {
 	final void updateBullets(Hashtable<Integer, Bullet> bullets) {
 		// we need to pass same instance
 		bullet = bullets.get(bullet.getBulletId());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.BulletHitEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			BulletHitEvent obj = (BulletHitEvent) object;
+
+			return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_INT + serializer.sizeOf(obj.name)
+					+ RbSerializer.SIZEOF_DOUBLE;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			BulletHitEvent obj = (BulletHitEvent) object;
+
+			serializer.serialize(buffer, obj.bullet.getBulletId());
+			serializer.serialize(buffer, obj.name);
+			serializer.serialize(buffer, obj.energy);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			Bullet bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
+			String name = serializer.deserializeString(buffer);
+			double energy = buffer.getDouble();
+
+			return new BulletHitEvent(name, energy, bullet);
+		}
 	}
 }

@@ -15,8 +15,11 @@ package robocode;
 import robocode.battle.Battle;
 import robocode.peer.ExecCommands;
 import robocode.peer.RobotPeer;
+import robocode.peer.serialize.ISerializableHelper;
+import robocode.peer.serialize.RbSerializer;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -353,4 +356,80 @@ public final class RobotStatus implements Serializable {
 	public long getTime() {
 		return time;
 	}
+
+	private RobotStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading,
+			double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining,
+			double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time) {
+		this.energy = energy;
+		this.x = x;
+		this.y = y;
+		this.bodyHeading = bodyHeading;
+		this.gunHeading = gunHeading;
+		this.radarHeading = radarHeading;
+		this.bodyTurnRemaining = bodyTurnRemaining;
+		this.velocity = velocity;
+		this.radarTurnRemaining = radarTurnRemaining;
+		this.gunTurnRemaining = gunTurnRemaining;
+		this.distanceRemaining = distanceRemaining;
+		this.gunHeat = gunHeat;
+		this.others = others;
+		this.roundNum = roundNum;
+		this.numRounds = numRounds;
+		this.time = time;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			return RbSerializer.SIZEOF_TYPEINFO + 12 * RbSerializer.SIZEOF_DOUBLE + 3 * RbSerializer.SIZEOF_INT
+					+ RbSerializer.SIZEOF_LONG;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			RobotStatus obj = (RobotStatus) object;
+
+			serializer.serialize(buffer, obj.energy);
+			serializer.serialize(buffer, obj.x);
+			serializer.serialize(buffer, obj.y);
+			serializer.serialize(buffer, obj.bodyHeading);
+			serializer.serialize(buffer, obj.gunHeading);
+			serializer.serialize(buffer, obj.radarHeading);
+			serializer.serialize(buffer, obj.velocity);
+			serializer.serialize(buffer, obj.bodyTurnRemaining);
+			serializer.serialize(buffer, obj.radarTurnRemaining);
+			serializer.serialize(buffer, obj.gunTurnRemaining);
+			serializer.serialize(buffer, obj.distanceRemaining);
+			serializer.serialize(buffer, obj.gunHeat);
+			serializer.serialize(buffer, obj.others);
+			serializer.serialize(buffer, obj.roundNum);
+			serializer.serialize(buffer, obj.numRounds);
+			serializer.serialize(buffer, obj.time);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			double energy = buffer.getDouble();
+			double x = buffer.getDouble();
+			double y = buffer.getDouble();
+			double bodyHeading = buffer.getDouble();
+			double gunHeading = buffer.getDouble();
+			double radarHeading = buffer.getDouble();
+			double velocity = buffer.getDouble();
+			double bodyTurnRemaining = buffer.getDouble();
+			double radarTurnRemaining = buffer.getDouble();
+			double gunTurnRemaining = buffer.getDouble();
+			double distanceRemaining = buffer.getDouble();
+			double gunHeat = buffer.getDouble();
+			int others = buffer.getInt();
+			int roundNum = buffer.getInt();
+			int numRounds = buffer.getInt();
+			long time = buffer.getLong();
+
+			return new RobotStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity, bodyTurnRemaining,
+					radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, roundNum, numRounds, time);
+		}
+	}
+
 }

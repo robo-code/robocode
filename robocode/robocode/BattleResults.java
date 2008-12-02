@@ -14,6 +14,12 @@
 package robocode;
 
 
+import robocode.peer.serialize.ISerializableHelper;
+import robocode.peer.serialize.RbSerializer;
+
+import java.nio.ByteBuffer;
+
+
 /**
  * Contains the battle results returned by {@link BattleEndedEvent#getResults()}
  * when a battle has ended.
@@ -197,5 +203,53 @@ public class BattleResults implements java.io.Serializable, Comparable<BattleRes
 	 */
 	public int compareTo(BattleResults o) {
 		return ((Double) score).compareTo(o.score);
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			BattleResults obj = (BattleResults) object;
+
+			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.teamLeaderName) + 4 * RbSerializer.SIZEOF_INT
+					+ 7 * RbSerializer.SIZEOF_DOUBLE;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			BattleResults obj = (BattleResults) object;
+
+			serializer.serialize(buffer, obj.teamLeaderName);
+			serializer.serialize(buffer, obj.rank);
+			serializer.serialize(buffer, obj.score);
+			serializer.serialize(buffer, obj.survival);
+			serializer.serialize(buffer, obj.lastSurvivorBonus);
+			serializer.serialize(buffer, obj.bulletDamage);
+			serializer.serialize(buffer, obj.bulletDamageBonus);
+			serializer.serialize(buffer, obj.ramDamage);
+			serializer.serialize(buffer, obj.ramDamageBonus);
+			serializer.serialize(buffer, obj.firsts);
+			serializer.serialize(buffer, obj.seconds);
+			serializer.serialize(buffer, obj.thirds);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			String teamLeaderName = serializer.deserializeString(buffer);
+			int rank = buffer.getInt();
+			double score = buffer.getDouble();
+			double survival = buffer.getDouble();
+			double lastSurvivorBonus = buffer.getDouble();
+			double bulletDamage = buffer.getDouble();
+			double bulletDamageBonus = buffer.getDouble();
+			double ramDamage = buffer.getDouble();
+			double ramDamageBonus = buffer.getDouble();
+			int firsts = buffer.getInt();
+			int seconds = buffer.getInt();
+			int thirds = buffer.getInt();
+
+			return new BattleResults(teamLeaderName, rank, score, survival, lastSurvivorBonus, bulletDamage,
+					bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, thirds);
+		}
 	}
 }

@@ -15,10 +15,13 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -78,6 +81,38 @@ public final class RobotDeathEvent extends Event {
 
 		if (listener != null) {
 			listener.onRobotDeath(this);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.RobotDeathEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			RobotDeathEvent obj = (RobotDeathEvent) object;
+
+			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.robotName);
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			RobotDeathEvent obj = (RobotDeathEvent) object;
+
+			serializer.serialize(buffer, obj.robotName);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			String name = serializer.deserializeString(buffer);
+
+			return new RobotDeathEvent(name);
 		}
 	}
 }

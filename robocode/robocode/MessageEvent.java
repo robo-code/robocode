@@ -87,4 +87,12 @@ public final class MessageEvent extends Event {
 			}
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		throw new Error("Serialization of event type not supported");
+	}
 }

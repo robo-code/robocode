@@ -15,12 +15,15 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
+import robocode.battleview.SafeComponent;
 
 import java.awt.*;
-import java.awt.event.MouseWheelEvent;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -69,6 +72,56 @@ public final class MouseWheelMovedEvent extends MouseEvent {
 			if (listener != null) {
 				listener.onMouseWheelMoved((java.awt.event.MouseWheelEvent) getSourceEvent());
 			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.MouseWheelMovedEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+
+		public int sizeOf(RbSerializer serializer, Object object) {
+			return RbSerializer.SIZEOF_TYPEINFO + 6 * RbSerializer.SIZEOF_INT + RbSerializer.SIZEOF_LONG;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			MouseWheelMovedEvent obj = (MouseWheelMovedEvent) object;
+			java.awt.event.MouseWheelEvent src = (java.awt.event.MouseWheelEvent) obj.getSourceEvent();
+
+			serializer.serialize(buffer, src.getClickCount());
+			serializer.serialize(buffer, src.getX());
+			serializer.serialize(buffer, src.getY());
+			serializer.serialize(buffer, src.getScrollType());
+			serializer.serialize(buffer, src.getScrollAmount());
+			serializer.serialize(buffer, src.getWheelRotation());
+			serializer.serialize(buffer, src.getID());
+			serializer.serialize(buffer, src.getModifiersEx());
+			serializer.serialize(buffer, src.getWhen());
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			int clickCount = buffer.getInt();
+			int y = buffer.getInt();
+			int x = buffer.getInt();
+			int scrollType = buffer.getInt();
+			int scrollAmount = buffer.getInt();
+			int wheelRotation = buffer.getInt();
+			int id = buffer.getInt();
+			int modifiersEx = buffer.getInt();
+			long when = buffer.getLong();
+
+			return new MouseWheelMovedEvent(
+					new java.awt.event.MouseWheelEvent(SafeComponent.getSafeEventComponent(), id, when, modifiersEx, x, y,
+					clickCount, false, scrollType, scrollAmount, wheelRotation));
 		}
 	}
 }

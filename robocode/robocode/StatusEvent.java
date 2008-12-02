@@ -73,4 +73,12 @@ public final class StatusEvent extends Event {
 			listener.onStatus(this);
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		throw new Error("Serialization of this type is not supported");
+	}
 }

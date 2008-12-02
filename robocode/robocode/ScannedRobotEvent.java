@@ -15,10 +15,13 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -268,6 +271,48 @@ public final class ScannedRobotEvent extends Event {
 
 		if (listener != null) {
 			listener.onScannedRobot(this);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.ScannedRobotEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			ScannedRobotEvent obj = (ScannedRobotEvent) object;
+
+			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5 * RbSerializer.SIZEOF_DOUBLE;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			ScannedRobotEvent obj = (ScannedRobotEvent) object;
+
+			serializer.serialize(buffer, obj.name);
+			serializer.serialize(buffer, obj.energy);
+			serializer.serialize(buffer, obj.heading);
+			serializer.serialize(buffer, obj.bearing);
+			serializer.serialize(buffer, obj.distance);
+			serializer.serialize(buffer, obj.velocity);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			String name = serializer.deserializeString(buffer);
+			double energy = buffer.getDouble();
+			double heading = buffer.getDouble();
+			double bearing = buffer.getDouble();
+			double distance = buffer.getDouble();
+			double velocity = buffer.getDouble();
+
+			return new ScannedRobotEvent(name, energy, bearing, distance, heading, velocity);
 		}
 	}
 }

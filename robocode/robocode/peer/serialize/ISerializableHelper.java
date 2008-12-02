@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
  * @author Pavel Savara (original)
  */
 public interface ISerializableHelper {
-	public int size(RbSerializer serializer, Object object);
+	public int sizeOf(RbSerializer serializer, Object object);
 	public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object);
 	public Object deserialize(RbSerializer serializer, ByteBuffer buffer);
 }

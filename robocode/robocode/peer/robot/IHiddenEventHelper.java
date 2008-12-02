@@ -31,4 +31,5 @@ public interface IHiddenEventHelper {
 	boolean isCriticalEvent(Event event);
 	void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
 	void updateBullets(Event event, Hashtable<Integer, Bullet> bullets);
+	byte getSerializationType(Event event);
 }

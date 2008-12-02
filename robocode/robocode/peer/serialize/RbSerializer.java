@@ -12,12 +12,12 @@
 package robocode.peer.serialize;
 
 
-import robocode.peer.ExecCommands;
-import robocode.peer.BulletCommand;
-import robocode.peer.DebugProperty;
+import robocode.peer.*;
 import robocode.peer.robot.TeamMessage;
+import robocode.peer.robot.RobotClassManager;
 import robocode.io.Logger;
 import robocode.manager.VersionManager;
+import robocode.*;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -30,33 +30,96 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author Pavel Savara (original)
  */
-public class RbSerializer {
-	public static int SIZEOF_TYPEINFO = 1;
-	public static int SIZEOF_BYTE = 1;
-	public static int SIZEOF_BOOL = 1;
-	public static int SIZEOF_INT = 4;
-	public static int SIZEOF_DOUBLE = 8;
+public final class RbSerializer {
+	public final static int SIZEOF_TYPEINFO = 1;
+	public final static int SIZEOF_BYTE = 1;
+	public final static int SIZEOF_BOOL = 1;
+	public final static int SIZEOF_CHAR = 2;
+	public final static int SIZEOF_INT = 4;
+	public final static int SIZEOF_LONG = 8;
+	public final static int SIZEOF_DOUBLE = 8;
 
-	public static byte LIST_TERMINATOR_TYPE = -128;
-	public static byte ExecCommands_TYPE = 1;
-	public static byte BulletCommand_TYPE = 2;
-	public static byte TeamMessage_TYPE = 3;
-	public static byte DebugProperty_TYPE = 4;
+	public final static byte TERMINATOR_TYPE = -128;
+	public final static byte ExecCommands_TYPE = 1;
+	public final static byte BulletCommand_TYPE = 2;
+	public final static byte TeamMessage_TYPE = 3;
+	public final static byte DebugProperty_TYPE = 4;
+	public final static byte ExecResults_TYPE = 5;
+	public final static byte RobotStatus_TYPE = 6;
+	public final static byte BulletStatus_TYPE = 7;
+	public final static byte BattleResults_TYPE = 8;
+	public final static byte Bullet_TYPE = 9;
+	
+	public final static byte BattleEndedEvent_TYPE = 32;
+	public final static byte BulletHitBulletEvent_TYPE = 33;
+	public final static byte BulletHitEvent_TYPE = 34;
+	public final static byte BulletMissedEvent_TYPE = 35;
+	public final static byte DeathEvent_TYPE = 36;
+	public final static byte WinEvent_TYPE = 37;
+	public final static byte HitWallEvent_TYPE = 38;
+	public final static byte RobotDeathEvent_TYPE = 39;
+	public final static byte SkippedTurnEvent_TYPE = 40;
+	public final static byte ScannedRobotEvent_TYPE = 41;
+	public final static byte HitByBulletEvent_TYPE = 42;
+	public final static byte HitRobotEvent_TYPE = 43;
+	public final static byte KeyPressedEvent_TYPE = 44;
+	public final static byte KeyReleasedEvent_TYPE = 45;
+	public final static byte KeyTypedEvent_TYPE = 46;
+	public final static byte MouseClickedEvent_TYPE = 47;
+	public final static byte MouseDraggedEvent_TYPE = 48;
+	public final static byte MouseEnteredEvent_TYPE = 49;
+	public final static byte MouseExitedEvent_TYPE = 50;
+	public final static byte MouseMovedEvent_TYPE = 51;
+	public final static byte MousePressedEvent_TYPE = 52;
+	public final static byte MouseReleasedEvent_TYPE = 53;
+	public final static byte MouseWheelMovedEvent_TYPE = 54;
 
-	private static final Charset charset;
+	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
+	private final static Charset charset;
 	private final CharsetEncoder encoder;
 	private final CharsetDecoder decoder;
-	private static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
 
 	private int currentVersion;
 
 	static {
 		charset = Charset.forName("UTF8"); // we will use it as UCS-2
-		register(null, LIST_TERMINATOR_TYPE); // reserved for end of (list) element
+		register(null, TERMINATOR_TYPE); // reserved for end of (list) element
 		register(ExecCommands.class, ExecCommands_TYPE);
 		register(BulletCommand.class, BulletCommand_TYPE);
 		register(TeamMessage.class, TeamMessage_TYPE);
 		register(DebugProperty.class, DebugProperty_TYPE);
+		register(ExecResults.class, ExecResults_TYPE);
+		register(RobotStatus.class, RobotStatus_TYPE);
+		register(BulletStatus.class, BulletStatus_TYPE);
+		register(BattleResults.class, BattleResults_TYPE);
+		register(Bullet.class, Bullet_TYPE);
+
+		// events
+		register(BattleEndedEvent.class, BattleEndedEvent_TYPE);
+		register(BulletHitBulletEvent.class, BulletHitBulletEvent_TYPE);
+		register(BulletHitEvent.class, BulletHitEvent_TYPE);
+		register(BulletMissedEvent.class, BulletMissedEvent_TYPE);
+		register(DeathEvent.class, DeathEvent_TYPE);
+
+		register(WinEvent.class, WinEvent_TYPE);
+		register(HitWallEvent.class, HitWallEvent_TYPE);
+		register(RobotDeathEvent.class, RobotDeathEvent_TYPE);
+		register(SkippedTurnEvent.class, SkippedTurnEvent_TYPE);
+		register(ScannedRobotEvent.class, ScannedRobotEvent_TYPE);
+		register(HitByBulletEvent.class, HitByBulletEvent_TYPE);
+		register(HitRobotEvent.class, HitRobotEvent_TYPE);
+		register(KeyPressedEvent.class, KeyPressedEvent_TYPE);
+		register(KeyReleasedEvent.class, KeyReleasedEvent_TYPE);
+		register(KeyTypedEvent.class, KeyTypedEvent_TYPE);
+		register(MouseClickedEvent.class, MouseClickedEvent_TYPE);
+		register(MouseDraggedEvent.class, MouseDraggedEvent_TYPE);
+		register(MouseEnteredEvent.class, MouseEnteredEvent_TYPE);
+		register(MouseExitedEvent.class, MouseExitedEvent_TYPE);
+		register(MouseMovedEvent.class, MouseMovedEvent_TYPE);
+		register(MousePressedEvent.class, MousePressedEvent_TYPE);
+		register(MouseReleasedEvent.class, MouseReleasedEvent_TYPE);
+		register(MouseWheelMovedEvent.class, MouseWheelMovedEvent_TYPE);
+
 	}
 
 	public RbSerializer() {
@@ -88,7 +151,7 @@ public class RbSerializer {
 		buffer = ByteBuffer.allocate(length);
 		serialize(buffer, type, object);
 		if (buffer.remaining() != 0) {
-			throw new IOException("Serialization failed"); 
+			throw new IOException("Serialization failed: bad size"); 
 		}
 		target.write(buffer.array());
 	}
@@ -121,8 +184,17 @@ public class RbSerializer {
 	public void serialize(ByteBuffer buffer, byte type, Object object) {
 		ISerializableHelper helper = getHelper(type);
 
-		buffer.put(type);
-		helper.serialize(this, buffer, object);
+		int expect = sizeOf(type, object) + buffer.position(); // TODO remove
+
+		if (object != null) {
+			buffer.put(type);
+			helper.serialize(this, buffer, object);
+		} else {
+			buffer.put(TERMINATOR_TYPE);
+		}
+		if (expect != buffer.position()) {
+			throw new Error("Bad size");
+		}
 	}
 
 	public void serialize(ByteBuffer buffer, String data) {
@@ -149,10 +221,28 @@ public class RbSerializer {
 		buffer.put((byte) (value ? 1 : 0));
 	}
 
+	public void serialize(ByteBuffer buffer, double value) {
+		buffer.putDouble(value);
+	}
+
+	public void serialize(ByteBuffer buffer, char value) {
+		buffer.putChar(value);
+	}
+
+	public void serialize(ByteBuffer buffer, int value) {
+		buffer.putInt(value);
+	}
+
+	public void serialize(ByteBuffer buffer, Event event) {
+		final byte type = RobotClassManager.getSerializationType(event);
+
+		serialize(buffer, type, event);
+	}
+
 	public Object deserialize(ByteBuffer buffer) {
 		final byte type = buffer.get();
 
-		if (type == LIST_TERMINATOR_TYPE) {
+		if (type == TERMINATOR_TYPE) {
 			return null;
 		}
 		return getHelper(type).deserialize(this, buffer);
@@ -194,6 +284,18 @@ public class RbSerializer {
 		return buffer.get() != 0;
 	}
 
+	public char deserializeChar(ByteBuffer buffer) {
+		return buffer.getChar();
+	}
+
+	public int deserializeInt(ByteBuffer buffer) {
+		return buffer.getInt();
+	}
+
+	public double deserializeDouble(ByteBuffer buffer) {
+		return buffer.getDouble();
+	}
+
 	public int sizeOf(String data) {
 		return (data == null) ? SIZEOF_INT : SIZEOF_INT + encode(data).limit();
 	}
@@ -203,11 +305,20 @@ public class RbSerializer {
 	}
 
 	public int sizeOf(byte type, Object object) {
-		return getHelper(type).size(this, object);
+		return getHelper(type).sizeOf(this, object);
+	}
+
+	public int sizeOf(Event event) {
+		return sizeOf(RobotClassManager.getSerializationType(event), event);
 	}
 
 	private ISerializableHelper getHelper(byte type) {
-		return typeToHelper[type];
+		final ISerializableHelper helper = typeToHelper[type];
+
+		if (helper == null) {
+			throw new Error("Unknownd or unsupported data type");
+		}
+		return helper;
 	}
 
 	private ByteBuffer encode(String data) {
@@ -233,7 +344,7 @@ public class RbSerializer {
 	private static void register(Class<?> realClass, byte type) {
 		try {
 			if (realClass != null) {
-				Method method = realClass.getDeclaredMethod("createHiddenHelper");
+				Method method = realClass.getDeclaredMethod("createHiddenSerializer");
 
 				method.setAccessible(true);
 				ISerializableHelper helper = (ISerializableHelper) method.invoke(null);
@@ -247,6 +358,21 @@ public class RbSerializer {
 			Logger.logError(e);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
+		}
+	}
+
+	public static Object deepCopy(byte type, Object src) {
+		ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+		RbSerializer rbs = new RbSerializer();
+
+		try {
+			rbs.serialize(out, type, src);
+			ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+
+			return rbs.deserialize(in);
+		} catch (IOException e) {
+			Logger.logError(e);
+			return null;
 		}
 	}
 }

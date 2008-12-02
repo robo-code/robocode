@@ -13,11 +13,14 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IPaintEvents;
 import robocode.robotinterfaces.IPaintRobot;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -61,5 +64,13 @@ public final class PaintEvent extends Event {
 				listener.onPaint(graphics);
 			}
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		throw new Error("Serialization of this type is not supported");
 	}
 }

@@ -70,12 +70,12 @@ public class DebugProperty implements Serializable, XmlSerializable {
 		});
 	}
 
-	static ISerializableHelper createHiddenHelper() {
+	static ISerializableHelper createHiddenSerializer() {
 		return new SerializableHelper();
 	}
 
 	private static class SerializableHelper implements ISerializableHelper {
-		public int size(RbSerializer serializer, Object object) {
+		public int sizeOf(RbSerializer serializer, Object object) {
 			DebugProperty obj = (DebugProperty) object;
 
 			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.key) + serializer.sizeOf(obj.value);

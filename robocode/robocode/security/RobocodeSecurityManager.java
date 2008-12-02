@@ -35,6 +35,7 @@ import robocode.peer.BulletCommand;
 import robocode.peer.BulletState;
 import robocode.peer.ExecResults;
 import robocode.peer.DebugProperty;
+import robocode.peer.serialize.RbSerializer;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.TeamMessage;
@@ -90,8 +91,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 			scl.loadClass(DebugProperty.class.getName());
 			scl.loadClass(RobotException.class.getName());
 			scl.loadClass(RobocodeObjectInputStream.class.getName());
+			scl.loadClass(RbSerializer.class.getName()).newInstance();
 			Toolkit.getDefaultToolkit();
 		} catch (ClassNotFoundException e) {
+			throw new Error("We can't load important classes", e);
+		} catch (IllegalAccessException e) {
+			throw new Error("We can't load important classes", e);
+		} catch (InstantiationException e) {
 			throw new Error("We can't load important classes", e);
 		}
 

@@ -30,7 +30,7 @@ import robocode.util.Utils;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.Hashtable;
+import java.util.*;
 
 
 /**
@@ -76,7 +76,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		eventManager.reset();
 		final StatusEvent start = new StatusEvent(status);
 
-		RobotClassManager.setTime(start, 0);
 		eventManager.add(start);
 		setSetCallCount(0);
 		setGetCallCount(0);
@@ -350,7 +349,14 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		firedEnergy = 0;
 		firedHeat = 0;
 
-		// add new events first
+		// add new events
+		eventManager.add(new StatusEvent(execResults.getStatus()));
+		if (statics.isPaintRobot() && (execResults.isPaintEnabled())) {
+			// Add paint event, if robot is a paint robot and its painting is enabled
+			eventManager.add(new PaintEvent());
+		}
+
+		// add other events
 		if (execResults.getEvents() != null) {
 			for (Event event : execResults.getEvents()) {
 				eventManager.add(event);
@@ -358,13 +364,15 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			}
 		}
 
-		for (BulletStatus s : execResults.getBulletUpdates()) {
-			final Bullet bullet = bullets.get(s.bulletId);
+		if (execResults.getBulletUpdates() != null) {
+			for (BulletStatus s : execResults.getBulletUpdates()) {
+				final Bullet bullet = bullets.get(s.bulletId);
 
-			if (bullet != null) {
-				RobotClassManager.update(bullet, s);
-				if (!s.isActive) {
-					bullets.remove(s.bulletId);
+				if (bullet != null) {
+					RobotClassManager.update(bullet, s);
+					if (!s.isActive) {
+						bullets.remove(s.bulletId);
+					}
 				}
 			}
 		}

@@ -40,6 +40,7 @@ import java.util.Hashtable;
 public abstract class Event implements Comparable<Event>, Serializable {
 	private static final long serialVersionUID = 1L;
 
+	// time is valid only after adding to event manager on proxy side, we do not update it on Battle side
 	private long time;
 	private int priority;
 
@@ -169,6 +170,9 @@ public abstract class Event implements Comparable<Event>, Serializable {
 		return false;
 	}
 
+	// this method is invisible on RobotAPI
+	abstract byte getSerializationType();
+
 	/**
 	 * This method is replacing bullet on event with bullet instance which was passed to robot as result of fire command
 	 * @param bullets collection containing all moving bullets known to robot
@@ -207,6 +211,10 @@ public abstract class Event implements Comparable<Event>, Serializable {
 
 		public void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
 			event.dispatch(robot, statics, graphics);
+		}
+
+		public byte getSerializationType(Event event) {
+			return event.getSerializationType();
 		}
 
 		public void updateBullets(Event event, Hashtable<Integer, Bullet> bullets) {

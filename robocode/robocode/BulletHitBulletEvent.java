@@ -15,10 +15,13 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.ISerializableHelper;
+import robocode.peer.serialize.RbSerializer;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 import java.util.Hashtable;
 
 
@@ -92,5 +95,41 @@ public final class BulletHitBulletEvent extends Event {
 	final void updateBullets(Hashtable<Integer, Bullet> bullets) {
 		// we need to pass same instance
 		bullet = bullets.get(bullet.getBulletId());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.BulletHitBulletEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			BulletHitBulletEvent obj = (BulletHitBulletEvent) object;
+
+			return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_INT
+					+ serializer.sizeOf(RbSerializer.Bullet_TYPE, obj.hitBullet);
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			BulletHitBulletEvent obj = (BulletHitBulletEvent) object;
+
+			// no need to transmit whole bullet, rest of it is already known to proxy side
+			serializer.serialize(buffer, obj.bullet.getBulletId());
+			serializer.serialize(buffer, RbSerializer.Bullet_TYPE, obj.hitBullet);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			Bullet bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
+			Bullet hitBullet = (Bullet) serializer.deserialize(buffer);
+
+			return new BulletHitBulletEvent(bullet, hitBullet);
+		}
 	}
 }

@@ -53,12 +53,12 @@ public class BulletCommand implements Serializable {
 		return fireAssistAngle;
 	}
 
-	static ISerializableHelper createHiddenHelper() {
+	static ISerializableHelper createHiddenSerializer() {
 		return new SerializableHelper();
 	}
 
 	private static class SerializableHelper implements ISerializableHelper {
-		public int size(RbSerializer serializer, Object object) {
+		public int sizeOf(RbSerializer serializer, Object object) {
 			return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_BOOL
 					+ RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_INT;
 		}
@@ -66,10 +66,10 @@ public class BulletCommand implements Serializable {
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
 			BulletCommand obj = (BulletCommand) object;
 
-			buffer.putDouble(obj.power);
+			serializer.serialize(buffer, obj.power);
 			serializer.serialize(buffer, obj.fireAssistValid);
-			buffer.putDouble(obj.fireAssistAngle);
-			buffer.putInt(obj.bulletId);
+			serializer.serialize(buffer, obj.fireAssistAngle);
+			serializer.serialize(buffer, obj.bulletId);
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {

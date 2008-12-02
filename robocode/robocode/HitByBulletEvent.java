@@ -15,10 +15,13 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -167,6 +170,41 @@ public final class HitByBulletEvent extends Event {
 
 		if (listener != null) {
 			listener.onHitByBullet(this);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.HitByBulletEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			HitByBulletEvent obj = (HitByBulletEvent) object;
+
+			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(RbSerializer.Bullet_TYPE, obj.bullet)
+					+ RbSerializer.SIZEOF_DOUBLE;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			HitByBulletEvent obj = (HitByBulletEvent) object;
+
+			serializer.serialize(buffer, RbSerializer.Bullet_TYPE, obj.bullet);
+			serializer.serialize(buffer, obj.bearing);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			Bullet bullet = (Bullet) serializer.deserialize(buffer);
+			double bearing = buffer.getDouble();
+
+			return new HitByBulletEvent(bearing, bullet);
 		}
 	}
 }

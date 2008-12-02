@@ -15,11 +15,14 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IAdvancedEvents;
 import robocode.robotinterfaces.IAdvancedRobot;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -132,5 +135,13 @@ public class CustomEvent extends Event {
 	// final to disable overrides
 	public final int getPriority() {
 		return super.getPriority();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		throw new Error("Serialization not supported on this event type");
 	}
 }

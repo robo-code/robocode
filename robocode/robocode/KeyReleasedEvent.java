@@ -15,11 +15,15 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
+import robocode.battleview.SafeComponent;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -63,6 +67,51 @@ public final class KeyReleasedEvent extends KeyEvent {
 			if (listener != null) {
 				listener.onKeyReleased(getSourceEvent());
 			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.KeyReleasedEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+
+		public int sizeOf(RbSerializer serializer, Object object) {
+			return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_CHAR + RbSerializer.SIZEOF_INT
+					+ RbSerializer.SIZEOF_INT + RbSerializer.SIZEOF_LONG + RbSerializer.SIZEOF_INT + RbSerializer.SIZEOF_INT;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			KeyReleasedEvent obj = (KeyReleasedEvent) object;
+			java.awt.event.KeyEvent src = obj.getSourceEvent();
+
+			serializer.serialize(buffer, src.getKeyChar());
+			serializer.serialize(buffer, src.getKeyCode());
+			serializer.serialize(buffer, src.getKeyLocation());
+			serializer.serialize(buffer, src.getID());
+			serializer.serialize(buffer, src.getModifiersEx());
+			serializer.serialize(buffer, src.getWhen());
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			char keyChar = buffer.getChar();
+			int keyCode = buffer.getInt();
+			int keyLocation = buffer.getInt();
+			int id = buffer.getInt();
+			int modifiersEx = buffer.getInt();
+			long when = buffer.getLong();
+
+			return new KeyReleasedEvent(
+					new java.awt.event.KeyEvent(SafeComponent.getSafeEventComponent(), id, when, modifiersEx, keyCode, keyChar,
+					keyLocation));
 		}
 	}
 }

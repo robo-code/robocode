@@ -299,12 +299,12 @@ public final class ExecCommands implements Serializable {
 		isTryingToPaint = tryingToPaint;
 	}
 
-	static ISerializableHelper createHiddenHelper() {
+	static ISerializableHelper createHiddenSerializer() {
 		return new SerializableHelper();
 	}
 
 	private static class SerializableHelper implements ISerializableHelper {
-		public int size(RbSerializer serializer, Object object) {
+		public int sizeOf(RbSerializer serializer, Object object) {
 			ExecCommands obj = (ExecCommands) object;
 			int size = RbSerializer.SIZEOF_TYPEINFO + 4 * RbSerializer.SIZEOF_DOUBLE;
 
@@ -336,24 +336,24 @@ public final class ExecCommands implements Serializable {
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
 			ExecCommands obj = (ExecCommands) object;
 
-			buffer.putDouble(obj.bodyTurnRemaining);
-			buffer.putDouble(obj.radarTurnRemaining);
-			buffer.putDouble(obj.gunTurnRemaining);
-			buffer.putDouble(obj.distanceRemaining);
+			serializer.serialize(buffer, obj.bodyTurnRemaining);
+			serializer.serialize(buffer, obj.radarTurnRemaining);
+			serializer.serialize(buffer, obj.gunTurnRemaining);
+			serializer.serialize(buffer, obj.distanceRemaining);
 
 			serializer.serialize(buffer, obj.isAdjustGunForBodyTurn);
 			serializer.serialize(buffer, obj.isAdjustRadarForGunTurn);
 			serializer.serialize(buffer, obj.isAdjustRadarForBodyTurn);
 			serializer.serialize(buffer, obj.isAdjustRadarForBodyTurnSet);
 
-			buffer.putInt(obj.bodyColor);
-			buffer.putInt(obj.gunColor);
-			buffer.putInt(obj.radarColor);
-			buffer.putInt(obj.scanColor);
-			buffer.putInt(obj.bulletColor);
+			serializer.serialize(buffer, obj.bodyColor);
+			serializer.serialize(buffer, obj.gunColor);
+			serializer.serialize(buffer, obj.radarColor);
+			serializer.serialize(buffer, obj.scanColor);
+			serializer.serialize(buffer, obj.bulletColor);
 
-			buffer.putDouble(obj.maxTurnRate);
-			buffer.putDouble(obj.maxVelocity);
+			serializer.serialize(buffer, obj.maxTurnRate);
+			serializer.serialize(buffer, obj.maxVelocity);
 
 			serializer.serialize(buffer, obj.moved);
 			serializer.serialize(buffer, obj.scan);
@@ -365,15 +365,15 @@ public final class ExecCommands implements Serializable {
 			for (BulletCommand bullet : obj.bullets) {
 				serializer.serialize(buffer, RbSerializer.BulletCommand_TYPE, bullet);
 			}
-			buffer.put(RbSerializer.LIST_TERMINATOR_TYPE);
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
 			for (TeamMessage message : obj.teamMessages) {
 				serializer.serialize(buffer, RbSerializer.TeamMessage_TYPE, message);
 			}
-			buffer.put(RbSerializer.LIST_TERMINATOR_TYPE);
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
 			for (DebugProperty prop : obj.debugProperties) {
 				serializer.serialize(buffer, RbSerializer.DebugProperty_TYPE, prop);
 			}
-			buffer.put(RbSerializer.LIST_TERMINATOR_TYPE);
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {

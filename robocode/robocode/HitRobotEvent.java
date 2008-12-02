@@ -15,10 +15,13 @@ package robocode;
 
 
 import robocode.peer.RobotStatics;
+import robocode.peer.serialize.RbSerializer;
+import robocode.peer.serialize.ISerializableHelper;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -167,6 +170,45 @@ public final class HitRobotEvent extends Event {
 
 		if (listener != null) {
 			listener.onHitRobot(this);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	byte getSerializationType() {
+		return RbSerializer.HitRobotEvent_TYPE;
+	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			HitRobotEvent obj = (HitRobotEvent) object;
+
+			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.robotName) + 2 * RbSerializer.SIZEOF_DOUBLE
+					+ RbSerializer.SIZEOF_BOOL;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			HitRobotEvent obj = (HitRobotEvent) object;
+
+			serializer.serialize(buffer, obj.robotName);
+			serializer.serialize(buffer, obj.bearing);
+			serializer.serialize(buffer, obj.energy);
+			serializer.serialize(buffer, obj.atFault);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			String robotName = serializer.deserializeString(buffer);
+			double bearing = buffer.getDouble();
+			double energy = buffer.getDouble();
+			boolean atFault = serializer.deserializeBoolean(buffer);
+
+			return new HitRobotEvent(robotName, bearing, energy, atFault);
 		}
 	}
 }

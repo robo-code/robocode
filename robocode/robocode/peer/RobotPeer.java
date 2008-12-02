@@ -80,6 +80,7 @@ import static robocode.io.Logger.logMessage;
 import robocode.manager.IHostManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
+import robocode.peer.serialize.RbSerializer;
 import robocode.robotpaint.Graphics2DProxy;
 import static robocode.util.Utils.*;
 
@@ -463,7 +464,16 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// return (ExecResults) ObjectCloner.deepCopy(executeImplIn((ExecCommands) ObjectCloner.deepCopy(newCommands)));
 	// }
 
+
+
 	public final ExecResults executeImpl(ExecCommands newCommands) {
+		final ExecCommands commands = (ExecCommands) RbSerializer.deepCopy(RbSerializer.ExecCommands_TYPE, newCommands);
+		final ExecResults results = executeImplIn(commands);
+
+		return (ExecResults) RbSerializer.deepCopy(RbSerializer.ExecResults_TYPE, results);
+	}
+
+	public final ExecResults executeImplIn(ExecCommands newCommands) {
 		newCommands.validate(this);
 
 		if (!disableExec) {
@@ -1087,7 +1097,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				queue.clear(battle.getTime() - EventManager.MAX_EVENT_STACK);
 				return;
 			}
-			RobotClassManager.setTime(event, battle.getTime());
 			queue.add(event);
 		}
 	}
@@ -1533,14 +1542,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		RobotStatus stat = new RobotStatus(this, commands.get(), battle);
 
 		status.set(stat);
-
-		if (!isDead()) {
-			addEvent(new StatusEvent(stat));
-			// Add paint event, if robot is a paint robot and its painting is enabled
-			if (isPaintRobot() && (isPaintEnabled() || isPaintRecorded) && currentTurn > 0) {
-				addEvent(new PaintEvent());
-			}
-		}
 	}
 
 	public void addBulletStatus(BulletStatus bulletStatus) {

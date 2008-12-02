@@ -103,7 +103,6 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 				Serializable message = (Serializable) objectStreamReader.readObject();
 				final MessageEvent event = new MessageEvent(teamMessage.sender, message);
 
-				RobotClassManager.setTime(event, getTime());
 				eventManager.add(event);
 			} catch (IOException e) {
 				out.printStackTrace(e);

@@ -36,12 +36,12 @@ public class TeamMessage implements Serializable {
 	public final String recipient;
 	public final byte[] message;
 
-	static ISerializableHelper createHiddenHelper() {
+	static ISerializableHelper createHiddenSerializer() {
 		return new SerializableHelper();
 	}
 
 	private static class SerializableHelper implements ISerializableHelper {
-		public int size(RbSerializer serializer, Object object) {
+		public int sizeOf(RbSerializer serializer, Object object) {
 			TeamMessage obj = (TeamMessage) object;
 			final int s = serializer.sizeOf(obj.sender);
 			final int r = serializer.sizeOf(obj.recipient);
