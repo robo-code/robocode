@@ -108,6 +108,7 @@ public class BattleManager implements IBattleManager {
 
 	public synchronized void cleanup() {
 		if (battle != null) {
+			battle.waitTillOver();
 			battle.cleanup();
 			battle = null;
 		}
@@ -160,12 +161,7 @@ public class BattleManager implements IBattleManager {
 				break;
 			}
 
-			String bot = battleRobotSpec.getClassName();
-
-			if (!(battleRobotSpec.getVersion() == null || battleRobotSpec.getVersion().length() == 0)) {
-				bot += ' ' + battleRobotSpec.getVersion();
-			}
-
+			String bot = battleRobotSpec.getNameAndVersion();
 			boolean failed = loadRobot(battlingRobotsList, bot, battleRobotSpec, String.format("%4d", num), false);
 
 			num++;

@@ -820,7 +820,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			}
 		}
 		if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-			final String message = "Robot " + robotName + " have package name too long.  "
+			final String message = "Robot " + robotName + " has package name too long.  "
 					+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
 
 			logError(message);
@@ -834,7 +834,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			shortClassName = robotName.substring(rIndex + 1);
 		}
 		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-			final String message = "Robot " + robotName + " have classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
 					+ " characters maximum please.";
 
 			logError(message);

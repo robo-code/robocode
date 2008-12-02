@@ -422,7 +422,7 @@ public class EventManager implements IEventManager {
 			if (conditionSatisfied) {
 				CustomEvent event = new CustomEvent(customEvent);
 
-				RobotClassManager.setTime(event, getTime()); // TODO is that correct time ?
+				RobotClassManager.setTime(event, getTime());
 				addImpl(event);
 			}
 		}

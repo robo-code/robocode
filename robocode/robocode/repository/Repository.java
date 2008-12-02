@@ -40,10 +40,15 @@ public class Repository {
 	public void add(FileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);
 		final String name = fileSpecification.getNameManager().getFullClassNameWithVersion();
+		final String unname = fileSpecification.getNameManager().getUniqueFullClassNameWithVersion();
 		final String rootDir = fileSpecification.getRootDir().toString();
 
 		fileSpecificationsDict.put(name, fileSpecification);
 		fileSpecificationsDict.put(rootDir + name, fileSpecification);
+		if (!name.equals(unname)){
+			fileSpecificationsDict.put(unname, fileSpecification);
+			fileSpecificationsDict.put(rootDir + unname, fileSpecification);
+		}
 	}
 
 	public FileSpecification get(String fullClassNameWithVersion) {

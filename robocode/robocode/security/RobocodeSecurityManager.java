@@ -28,6 +28,7 @@ package robocode.security;
 
 
 import robocode.RobocodeFileOutputStream;
+import robocode.common.ObjectCloner;
 import robocode.exception.RobotException;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IThreadManager;
@@ -90,6 +91,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			scl.loadClass(DebugProperty.class.getName());
 			scl.loadClass(RobotException.class.getName());
 			scl.loadClass(RobocodeObjectInputStream.class.getName());
+			scl.loadClass(ObjectCloner.class.getName());
 			Toolkit.getDefaultToolkit();
 		} catch (ClassNotFoundException e) {
 			throw new Error("We can't load important classes", e);
