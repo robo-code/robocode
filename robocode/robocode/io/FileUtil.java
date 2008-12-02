@@ -146,7 +146,7 @@ public class FileUtil {
 	 *
 	 * @param dir the file for the directory to delete
 	 */
-	public static void deleteDir(File dir) {
+	public static boolean deleteDir(File dir) {
 		if (dir.isDirectory()) {
 			for (File file : dir.listFiles()) {
 				if (file.isDirectory()) {
@@ -166,8 +166,9 @@ public class FileUtil {
 					file.delete();
 				}
 			}
-			dir.delete();
+			return dir.delete();
 		}
+		return false;
 	}
 
 	/**
