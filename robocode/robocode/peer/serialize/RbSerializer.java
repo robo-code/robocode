@@ -229,6 +229,11 @@ public final class RbSerializer {
 		buffer.putChar(value);
 	}
 
+	public void serialize(ByteBuffer buffer, long value) {
+		buffer.putLong(value);
+	}
+
+
 	public void serialize(ByteBuffer buffer, int value) {
 		buffer.putInt(value);
 	}
