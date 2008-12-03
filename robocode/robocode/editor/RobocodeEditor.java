@@ -328,7 +328,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			}
 
 			if (done && manager != null) {
-				done = manager.getRobotRepositoryManager().verifyRootPackage(packageName + "." + name);
+				done = manager.getRobotRepositoryManager().verifyRobotName(packageName + "." + name, name);
 				if (!done) {
 					message = "This package is reserved.  Please select a different package.";
 				}
