@@ -45,7 +45,7 @@ public class Repository {
 
 		fileSpecificationsDict.put(name, fileSpecification);
 		fileSpecificationsDict.put(rootDir + name, fileSpecification);
-		if (!name.equals(unname)){
+		if (!name.equals(unname)) {
 			fileSpecificationsDict.put(unname, fileSpecification);
 			fileSpecificationsDict.put(rootDir + unname, fileSpecification);
 		}

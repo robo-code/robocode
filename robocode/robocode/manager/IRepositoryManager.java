@@ -38,7 +38,7 @@ public interface IRepositoryManager {
 
 	boolean cleanupOldSampleRobots(boolean delete); // TODO: Needs to be updated?
 
-	boolean verifyRootPackage(String robotName);
+	boolean verifyRobotName(String robotName, String shortName);
 
 	RobocodeManager getManager();
 }

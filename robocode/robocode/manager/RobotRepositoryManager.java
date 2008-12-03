@@ -195,7 +195,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			if (fs instanceof TeamSpecification) {
 				repository.add(fs);
 			} else if (fs instanceof RobotFileSpecification) {
-				if (verifyRootPackage(fs.getName())) {
+				if (verifyRobotName(fs.getName(), fs.getShortClassName())) {
 					repository.add(fs);
 				}
 			}
@@ -771,7 +771,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
 
 	// TODO: Needs to be updated?
-	public boolean verifyRootPackage(String robotName) {
+	public boolean verifyRobotName(String robotName, String shortClassName) {
 		int lIndex = robotName.indexOf(".");
 		String rootPackage = robotName;
 
@@ -820,19 +820,13 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			}
 		}
 		if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-			final String message = "Robot " + robotName + " has package name too long.  "
-					+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
+			final String message = "Robot " + robotName + " has package name too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+					+ " characters maximum please.";
 
 			logError(message);
 			return false;
 		}
 
-		int rIndex = robotName.lastIndexOf(".");
-		String shortClassName = robotName;
-
-		if (rIndex > 0) {
-			shortClassName = robotName.substring(rIndex + 1);
-		}
 		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
 			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
 					+ " characters maximum please.";
