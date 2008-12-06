@@ -217,6 +217,42 @@ public final class RbSerializer {
 		}
 	}
 
+	public void serialize(ByteBuffer buffer, int[] data) {
+		if (data == null) {
+			buffer.putInt(-1);
+		} else {
+			buffer.putInt(data.length);
+			buffer.asIntBuffer().put(data);
+		}
+	}
+
+	public void serialize(ByteBuffer buffer, char[] data) {
+		if (data == null) {
+			buffer.putInt(-1);
+		} else {
+			buffer.putInt(data.length);
+			buffer.asCharBuffer().put(data);
+		}
+	}
+
+	public void serialize(ByteBuffer buffer, double[] data) {
+		if (data == null) {
+			buffer.putInt(-1);
+		} else {
+			buffer.putInt(data.length);
+			buffer.asDoubleBuffer().put(data);
+		}
+	}
+
+	public void serialize(ByteBuffer buffer, float[] data) {
+		if (data == null) {
+			buffer.putInt(-1);
+		} else {
+			buffer.putInt(data.length);
+			buffer.asFloatBuffer().put(data);
+		}
+	}
+
 	public void serialize(ByteBuffer buffer, boolean value) {
 		buffer.put((byte) (value ? 1 : 0));
 	}
