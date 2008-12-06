@@ -55,4 +55,10 @@ public class VersionTest {
 	public void smallerThanAlpha() {
 		Assert.assertTrue(VersionManager.compare("1.1.3 Alpha", "1.1.3 Beta") < 0);
 	}
+
+	@Test
+	public void compareBetas() {
+		// we can't name versions Beta 2
+		Assert.assertTrue(VersionManager.compare("1.1.3 Beta", "1.1.3 Beta 2") > 0);
+	}
 }
