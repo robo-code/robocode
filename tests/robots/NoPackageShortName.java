@@ -9,29 +9,20 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robots;
 
-
-import helpers.RobotTestBed;
-import org.junit.Test;
-
+import robocode.Robot;
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestNames extends RobotTestBed {
-	@Test
+public class NoPackageShortName extends Robot {
+	@Override
 	public void run() {
-		super.run();
-	}
-
-	@Override
-	public int getExpectedRobotCount(String list) {
-		return 2;
-	}
-
-	@Override
-	public String getRobotNames() {
-		return "sample.Fire,robocode.BadNamespace,testing.TooLongNameThisIsReallyTooLongName,tooLongNamespaceThisIsReallyTooLongNamespace.TooLongNamespace,NoPackageButReallyLongNameIWouldSayTooLongMaybeEventLonger,NoPackageShortName";
+		while (true) {
+			ahead(1); // Move ahead 100
+			turnGunRight(360); // Spin gun around
+			back(1); // Move back 100
+			turnGunRight(360); // Spin gun around
+		}
 	}
 }
