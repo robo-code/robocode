@@ -26,7 +26,7 @@ import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.TeamMessage;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotpaint.IGraphicsProxy;
-import robocode.robotpaint.Graphics2DProxy;
+import robocode.robotpaint.Graphics2DSerialized;
 import robocode.util.Utils;
 
 import java.awt.*;
@@ -63,7 +63,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		eventManager = new EventManager(this);
 
-		graphicsProxy = new Graphics2DProxy();
+		graphicsProxy = new Graphics2DSerialized();
 
 		// dummy
 		execResults = new ExecResults(null, null, null, null, null, false, false, false);
@@ -339,8 +339,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		}
 
 		commands.setOutputText(out.readAndReset());
-		commands.setGraphicsCalls(graphicsProxy.getQueuedCalls());
-		graphicsProxy.clearQueue();
+		commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
 		// call server
 		execResults = peer.executeImpl(commands);
@@ -390,8 +389,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy.setPaintingEnabled(false);
 		do {
 			commands.setOutputText(out.readAndReset());
-			commands.setGraphicsCalls(graphicsProxy.getQueuedCalls());
-			graphicsProxy.clearQueue();
+			commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
 			// call server
 			execResults = peer.waitForBattleEndImpl(commands);

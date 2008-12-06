@@ -314,6 +314,8 @@ public final class ExecCommands implements Serializable {
 			size += 4 * RbSerializer.SIZEOF_BOOL;
 			size += serializer.sizeOf(obj.outputText);
 
+			size += serializer.sizeOf((byte[])obj.graphicsCalls);
+
 			// bullets
 			size += obj.bullets.size() * serializer.sizeOf(RbSerializer.BulletCommand_TYPE, null);
 			size += 1;
@@ -362,6 +364,8 @@ public final class ExecCommands implements Serializable {
 
 			serializer.serialize(buffer, obj.outputText);
 
+			serializer.serialize(buffer, (byte[]) obj.graphicsCalls);
+
 			for (BulletCommand bullet : obj.bullets) {
 				serializer.serialize(buffer, RbSerializer.BulletCommand_TYPE, bullet);
 			}
@@ -404,6 +408,8 @@ public final class ExecCommands implements Serializable {
 			res.isTryingToPaint = serializer.deserializeBoolean(buffer);
 			
 			res.outputText = serializer.deserializeString(buffer);
+			
+			res.graphicsCalls = serializer.deserializeBytes(buffer);
 
 			Object item = serializer.deserialize(buffer);
 

@@ -28,7 +28,7 @@ import robocode.gfx.RobocodeLogo;
 import robocode.manager.*;
 import robocode.peer.BulletState;
 import robocode.robotpaint.IGraphicsProxy;
-import robocode.robotpaint.Graphics2DProxy;
+import robocode.robotpaint.Graphics2DSerialized;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -470,14 +470,11 @@ public class BattleView extends Canvas {
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
 		IGraphicsProxy gfxProxy = getRobotGraphics(robotIndex);
-
-		gfxProxy.clearQueue();
-		gfxProxy.appendCalls(graphicsCalls);
 		if (robotSnapshot.isSGPaintEnabled()) {
-			gfxProxy.processTo(g);
+			gfxProxy.processTo(g, graphicsCalls);
 		} else {
 			mirroredGraphics.bind(g, battleField.getHeight());
-			gfxProxy.processTo(mirroredGraphics);
+			gfxProxy.processTo(mirroredGraphics, graphicsCalls);
 			mirroredGraphics.release();
 		}
 
@@ -487,7 +484,7 @@ public class BattleView extends Canvas {
 
 	private IGraphicsProxy getRobotGraphics(int robotIndex) {
 		if (robotGraphics[robotIndex] == null) {
-			robotGraphics[robotIndex] = new Graphics2DProxy();
+			robotGraphics[robotIndex] = new Graphics2DSerialized();
 			robotGraphics[robotIndex].setPaintingEnabled(true);
 		}
 		return robotGraphics[robotIndex];

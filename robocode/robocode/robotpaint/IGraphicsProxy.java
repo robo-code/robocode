@@ -20,11 +20,9 @@ import java.awt.*;
 public interface IGraphicsProxy {
 	void setPaintingEnabled(boolean value);
 
-	void appendCalls(Object graphicsCalls);
+	void processTo(Graphics2D g, Object graphicsCalls);
 
 	void processTo(Graphics2D g);
 
-	void clearQueue();
-
-	Object getQueuedCalls();
+	Object readoutQueuedCalls();
 }

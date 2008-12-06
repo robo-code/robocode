@@ -310,14 +310,62 @@ public final class RbSerializer {
 	}
 
 	public byte[] deserializeBytes(ByteBuffer buffer) {
-		final int bytes = buffer.getInt();
+		final int len = buffer.getInt();
 
-		if (bytes == -1) {
+		if (len == -1) {
 			return null;
 		}
-		byte[] res = new byte[bytes];
+		byte[] res = new byte[len];
 
 		buffer.get(res);
+		return res;
+	}
+
+	public int[] deserializeIntegers(ByteBuffer buffer) {
+		final int len = buffer.getInt();
+
+		if (len == -1) {
+			return null;
+		}
+		int[] res = new int[len];
+
+		buffer.asIntBuffer().get(res);
+		return res;
+	}
+
+	public float[] deserializeFloats(ByteBuffer buffer) {
+		final int len = buffer.getInt();
+
+		if (len == -1) {
+			return null;
+		}
+		float[] res = new float[len];
+
+		buffer.asFloatBuffer().get(res);
+		return res;
+	}
+
+	public char[] deserializeChars(ByteBuffer buffer) {
+		final int len = buffer.getInt();
+
+		if (len == -1) {
+			return null;
+		}
+		char[] res = new char[len];
+
+		buffer.asCharBuffer().get(res);
+		return res;
+	}
+
+	public double[] deserializeDoubles(ByteBuffer buffer) {
+		final int len = buffer.getInt();
+
+		if (len == -1) {
+			return null;
+		}
+		double[] res = new double[len];
+
+		buffer.asDoubleBuffer().get(res);
 		return res;
 	}
 
@@ -331,6 +379,10 @@ public final class RbSerializer {
 
 	public int deserializeInt(ByteBuffer buffer) {
 		return buffer.getInt();
+	}
+
+	public Float deserializeFloat(ByteBuffer buffer) {
+		return buffer.getFloat();
 	}
 
 	public double deserializeDouble(ByteBuffer buffer) {

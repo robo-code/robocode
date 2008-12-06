@@ -965,7 +965,7 @@ public final class Graphics2DProxy extends Graphics2D implements java.io.Seriali
 	}
 
 	@SuppressWarnings({"unchecked"})
-	public void appendCalls(Object graphicsCalls) {
+	public void processTo(Graphics2D g, Object graphicsCalls){
 		List<Graphics2DProxy.QueuedCall> gc = (List<Graphics2DProxy.QueuedCall>) graphicsCalls;
 		for (QueuedCall call : gc) {
 			try {
@@ -974,6 +974,7 @@ public final class Graphics2DProxy extends Graphics2D implements java.io.Seriali
 				e.printStackTrace();
 			}
 		}
+		processTo(g);
 	}
 
 	public void processTo(Graphics2D g) {
@@ -994,7 +995,7 @@ public final class Graphics2DProxy extends Graphics2D implements java.io.Seriali
 		queuedCalls.clear();
 	}
 
-	public Object getQueuedCalls() {
+	public Object readoutQueuedCalls() {
 		final List<QueuedCall> now = queuedCalls;
 
 		return now.size() == 0 ? null : new ArrayList<QueuedCall>(now);

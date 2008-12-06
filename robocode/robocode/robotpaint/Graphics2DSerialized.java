@@ -33,6 +33,8 @@ import java.nio.ByteBuffer;
  */
 @SuppressWarnings({"deprecation"})
 public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
+	final Method[] methods = Method.class.getEnumConstants();
+
 	private enum Method {
 		TRANSLATE_INT, // translate(int, int)
 		SET_COLOR, // setColor(Color)
@@ -68,7 +70,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		DRAW_IMAGE_4, // drawImage(Image, int, int, int, int, Color, ImageObserver)
 		DRAW_IMAGE_5, // drawImage(Image, int, int, int, int, int, int, int, int, ImageObserver)
 		DRAW_IMAGE_6, // drawImage(Image, int, int, int, int, int, int, int, int, Color, ImageObserver)
-		DRAW, // draw(Shape)
+		DRAW_SHAPE, // draw(Shape)
 		DRAW_IMAGE_7, // drawImage(Image, AffineTransform, ImageObserver)
 		DRAW_IMAGE_8, // drawImage(BufferedImage, BufferedImageOp, int, int)
 		DRAW_RENDERED_IMAGE, // drawRenderedImage(RenderedImage, AffineTransform)
@@ -76,7 +78,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		DRAW_STRING_FLOAT, // drawString(String, float, float)
 		DRAW_STRING_ACI_FLOAT, // drawString(AttributedCharacterIterator, float, float)
 		DRAW_GLYPH_VECTOR, // drawGlyphVector(GlyphVector gv, float x, float y)
-		FILL, // fill(Shape)
+		FILL_SHAPE, // fill(Shape)
 		SET_COMPOSITE, // setComposite(Composite)
 		SET_PAINT, // setPaint(Paint)
 		SET_STROKE, // setStroke(Stroke)
@@ -91,7 +93,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		TRANSFORM, // transform(AffineTransform)
 		SET_TRANSFORM, // setTransform(AffineTransform Tx)
 		SET_BACKGROUND, // setBackground(Color)
-		CLIP, // clip(Shape)
+		CLIP,   // clip(Shape)
 	}
 
 	// Needed for getTransform()
@@ -127,7 +129,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Flag indicating if this proxy has been initialized
 	private transient boolean isPaintingEnabled;
 
-	private ByteBuffer calls;
+	private ByteBuffer calls = ByteBuffer.allocate(2048);
 
 	private RbSerializer serializer = new RbSerializer();
 
@@ -141,24 +143,22 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public Graphics create() {
-		//TODO
-		return null;
-	}
-
-	public static Graphics createFromCalls(ByteBuffer queuedCalls) {
 		Graphics2DSerialized gfxProxyCopy = new Graphics2DSerialized();
 
-		//TODO gfxProxyCopy.queuedCalls = Collections.synchronizedList(new LinkedList<QueuedCall>(queuedCalls));
+		gfxProxyCopy.calls = ByteBuffer.allocate(2048);
+		calls.put(calls);
+		gfxProxyCopy.transform = transform;
+		gfxProxyCopy.composite = copyOf(composite);
+		gfxProxyCopy.paint = paint;
+		gfxProxyCopy.stroke = copyOf(stroke);
+		gfxProxyCopy.renderingHints = renderingHints;
+		gfxProxyCopy.background = copyOf(background);
+		gfxProxyCopy.clip = copyOf(clip);
+		gfxProxyCopy.color = copyOf(color);
+		gfxProxyCopy.font = font;
+		gfxProxyCopy.isInitialized = isInitialized;
 
 		return gfxProxyCopy;
-	}
-
-	public void setPaintingEnabled(boolean value) {
-		isPaintingEnabled = value;
-	}
-
-	public void appendCalls(Object graphicsCalls) {
-		//TODO ZAMO
 	}
 
 	@Override
@@ -625,7 +625,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	@Override
 	public void draw(Shape s) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW);
+			put(Method.DRAW_SHAPE);
 			put(s);
 		}
 	}
@@ -946,6 +946,10 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Processing of queued method calls to a Graphics2D object
 	// --------------------------------------------------------------------------
 
+	public void setPaintingEnabled(boolean value) {
+		isPaintingEnabled = value;
+	}
+
 	public void processTo(Graphics2D g) {
 		if (!isInitialized) {
 			// Make sure the transform is not null
@@ -970,28 +974,45 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 			isInitialized = true;
 		}
-		//TODO
+		calls.flip();
+		while (calls.remaining()>0){
+			processQueuedCall(g);
+		}
 	}
 
 	public void clearQueue() {
-		//TODO
+		calls.clear();
 	}
 
-	public byte[] getQueuedCalls() {
-		//TODO
-		return null;
+	public void processTo(Graphics2D g, Object graphicsCalls) {
+		calls.clear();
+		calls.put((byte[]) graphicsCalls);
+		calls.flip();
+		while (calls.remaining()>0){
+			processQueuedCall(g);
+		}
 	}
 
-	private void processQueuedCall(Object call, Graphics2D g) {
-		/*
-		Method m;
+	public Object readoutQueuedCalls() {
+		if (calls.position() == 0){
+			return null;
+		}
+		byte[] res=new byte[calls.position()];
+		calls.flip();
+		calls.get(res);
+		calls.clear();
+		return res; 
+	}
+
+	private void processQueuedCall(Graphics2D g) {
+		Method m = methods[calls.get()];
 		switch (m) {
 		case TRANSLATE_INT:
-			processTranslate_int(call, g);
+			processTranslate_int(g);
 			break;
 
 		case SET_COLOR:
-			processSetColor(call, g);
+			processSetColor(g);
 			break;
 
 		case SET_PAINT_MODE:
@@ -999,229 +1020,195 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			break;
 
 		case SET_XOR_MODE:
-			processSetXORMode(call, g);
+			processSetXORMode(g);
 			break;
 
 		case SET_FONT:
-			processSetFont(call, g);
+			processSetFont(g);
 			break;
 
 		case CLIP_RECT:
-			processClipRect(call, g);
+			processClipRect(g);
 			break;
 
 		case SET_CLIP:
-			processSetClip(call, g);
+			processSetClip(g);
 			break;
 
 		case SET_CLIP_SHAPE:
-			processSetClip_Shape(call, g);
+			processSetClip_Shape(g);
 			break;
 
 		case COPY_AREA:
-			processCopyArea(call, g);
+			processCopyArea(g);
 			break;
 
 		case DRAW_LINE:
-			processDrawLine(call, g);
+			processDrawLine(g);
 			break;
 
 		case FILL_RECT:
-			processFillRect(call, g);
+			processFillRect(g);
 			break;
 
 		case DRAW_RECT:
-			processDrawRect(call, g);
+			processDrawRect(g);
 			break;
 
 		case CLEAR_RECT:
-			processClearRect(call, g);
+			processClearRect(g);
 			break;
 
 		case DRAW_ROUND_RECT:
-			processDrawRoundRect(call, g);
+			processDrawRoundRect(g);
 			break;
 
 		case FILL_ROUND_RECT:
-			processFillRoundRect(call, g);
+			processFillRoundRect(g);
 			break;
 
 		case DRAW_3D_RECT:
-			processDraw3DRect(call, g);
+			processDraw3DRect(g);
 			break;
 
 		case FILL_3D_RECT:
-			processFill3DRect(call, g);
+			processFill3DRect(g);
 			break;
 
 		case DRAW_OVAL:
-			processDrawOval(call, g);
+			processDrawOval(g);
 			break;
 
 		case FILL_OVAL:
-			processFillOval(call, g);
+			processFillOval(g);
 			break;
 
 		case DRAW_ARC:
-			processDrawArc(call, g);
+			processDrawArc(g);
 			break;
 
 		case FILL_ARC:
-			processFillArc(call, g);
+			processFillArc(g);
 			break;
 
 		case DRAW_POLYLINE:
-			processDrawPolyline(call, g);
+			processDrawPolyline(g);
 			break;
 
 		case DRAW_POLYGON:
-			processDrawPolygon(call, g);
+			processDrawPolygon(g);
 			break;
 
 		case FILL_POLYGON:
-			processFillPolygon(call, g);
+			processFillPolygon(g);
 			break;
 
 		case DRAW_STRING_INT:
-			processDrawString_int(call, g);
+			processDrawString_int(g);
 			break;
 
 		case DRAW_STRING_ACI_INT:
-			processDrawString_ACIterator_int(call, g);
+			processDrawString_ACIterator_int(g);
 			break;
 
 		case DRAW_CHARS:
-			processDrawChars(call, g);
+			processDrawChars(g);
 			break;
 
 		case DRAW_BYTES:
-			processDrawBytes(call, g);
+			processDrawBytes(g);
 			break;
 
-		case DRAW_IMAGE_1:
-			processDrawImage1(call, g);
-			break;
-
-		case DRAW_IMAGE_2:
-			processDrawImage2(call, g);
-			break;
-
-		case DRAW_IMAGE_3:
-			processDrawImage3(call, g);
-			break;
-
-		case DRAW_IMAGE_4:
-			processDrawImage4(call, g);
-			break;
-
-		case DRAW_IMAGE_5:
-			processDrawImage5(call, g);
-			break;
-
-		case DRAW_IMAGE_6:
-			processDrawImage6(call, g);
-			break;
-
-		case DRAW:
-			processDraw(call, g);
-			break;
-
-		case DRAW_IMAGE_7:
-			processDrawImage7(call, g);
-			break;
-
-		case DRAW_IMAGE_8:
-			processDrawImage8(call, g);
-			break;
-
-		case DRAW_RENDERED_IMAGE:
-			processDrawRenderedImage(call, g);
-			break;
-
-		case DRAW_RENDERABLE_IMGAGE:
-			processDrawRenderableImage(call, g);
+		case DRAW_SHAPE:
+			processDrawShape(g);
 			break;
 
 		case DRAW_STRING_FLOAT:
-			processDrawString_float(call, g);
+			processDrawString_float(g);
 			break;
 
 		case DRAW_STRING_ACI_FLOAT:
-			processDrawString_ACIterator_float(call, g);
+			processDrawString_ACIterator_float(g);
 			break;
 
-		case DRAW_GLYPH_VECTOR:
-			processDrawGlyphVector(call, g);
-			break;
-
-		case FILL:
-			processFill(call, g);
+		case FILL_SHAPE:
+			processFillShape(g);
 			break;
 
 		case SET_COMPOSITE:
-			processSetComposite(call, g);
+			processSetComposite(g);
 			break;
 
 		case SET_PAINT:
-			processSetPaint(call, g);
+			processSetPaint(g);
 			break;
 
 		case SET_STROKE:
-			processSetStroke(call, g);
+			processSetStroke(g);
 			break;
 
 		case TRANSLATE_DOUBLE:
-			processTranslate_double(call, g);
+			processTranslate_double(g);
 			break;
 
 		case ROTATE:
-			processRotate(call, g);
+			processRotate(g);
 			break;
 
 		case ROTATE_XY:
-			processRotate_xy(call, g);
+			processRotate_xy(g);
 			break;
 
 		case SCALE:
-			processScale(call, g);
+			processScale(g);
 			break;
 
 		case SHEAR:
-			processShear(call, g);
+			processShear(g);
 			break;
 
 		case TRANSFORM:
-			processTransform(call, g);
+			processTransform(g);
 			break;
 
 		case SET_TRANSFORM:
-			processSetTransform(call, g);
+			processSetTransform(g);
 			break;
 
 		case SET_BACKGROUND:
-			processSetBackground(call, g);
+			processSetBackground(g);
 			break;
 
 		case CLIP:
-			processClip(call, g);
+			processClip(g);
 			break;
+		case DRAW_GLYPH_VECTOR:
+		case DRAW_IMAGE_1:
+		case DRAW_IMAGE_2:
+		case DRAW_IMAGE_3:
+		case DRAW_IMAGE_4:
+		case DRAW_IMAGE_5:
+		case DRAW_IMAGE_6:
+		case DRAW_IMAGE_7:
+		case DRAW_IMAGE_8:
+		case DRAW_RENDERED_IMAGE:
+		case DRAW_RENDERABLE_IMGAGE:
 		case SET_RENDERING_HINT:
 		case SET_RENDERING_HINTS:
 		case ADD_RENDERING_HINTS:
+		default:
 			notSupported();
 			break;
 		}
-		*/
 	}
-	/*
-	private void processTranslate_int(QueuedCall call, Graphics2D g) {
+	private void processTranslate_int(Graphics2D g) {
 		// translate(int, int)
-		g.translate(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue());
+		g.translate(calls.getInt(), calls.getInt());
 	}
 
-	private void processSetColor(QueuedCall call, Graphics2D g) {
+	private void processSetColor(Graphics2D g) {
 		// setColor(Color)
-		g.setColor(new Color((Integer) call.args[0], true));
+		g.setColor(new Color(calls.getInt(), true));
 	}
 
 	private void processSetPaintMode(Graphics2D g) {
@@ -1229,292 +1216,321 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		g.setPaintMode();
 	}
 
-	private void processSetXORMode(QueuedCall call, Graphics2D g) {
+	private void processSetXORMode(Graphics2D g) {
 		// setXORMode(Color)
-		g.setXORMode(new Color((Integer) call.args[0], true));
+		g.setXORMode(new Color(calls.getInt(), true));
 	}
 
-	private void processSetFont(QueuedCall call, Graphics2D g) {
+	private void processSetFont(Graphics2D g) {
 		// setFont(Font)
-		g.setFont((Font) call.args[0]);
+		g.setFont(Font.getFont(serializer.deserializeString(calls)));
 	}
 
-	private void processClipRect(QueuedCall call, Graphics2D g) {
+	private void processClipRect(Graphics2D g) {
 		// clipRect(int, int, int, int)
-		g.clipRect((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3]);
+		g.clipRect(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt());
 	}
 
-	private void processSetClip(QueuedCall call, Graphics2D g) {
+	private void processSetClip(Graphics2D g) {
 		// setClip(int, int, int, int)
-		g.setClip((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3]);
+		g.setClip(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt());
 	}
 
-	private void processSetClip_Shape(QueuedCall call, Graphics2D g) {
+	private void processSetClip_Shape(Graphics2D g) {
 		// setClip(Shape)
-		g.setClip((Shape) call.args[0]);
+		g.setClip(readShape());
 	}
 
-	private void processCopyArea(QueuedCall call, Graphics2D g) {
+	private void processCopyArea(Graphics2D g) {
 		// copyArea(int, int, int, int, int, int)
-		g.copyArea((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (Integer) call.args[5]);
+		g.copyArea(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt(),
+				calls.getInt(), calls.getInt());
 	}
 
-	private void processDrawLine(QueuedCall call, Graphics2D g) {
+	private void processDrawLine(Graphics2D g) {
 		// drawLine(int, int, int, int)
-		g.drawLine((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3]);
+		g.drawLine(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt());
 	}
 
-	private void processFillRect(QueuedCall call, Graphics2D g) {
+	private void processFillRect(Graphics2D g) {
 		// fillRect(int, int, int, int)
-		g.fillRect((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3]);
+		g.fillRect(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt());
 	}
 
-	private void processDrawRect(QueuedCall call, Graphics2D g) {
+	private void processDrawRect(Graphics2D g) {
 		// drawRect(int, int, int, int)
-		g.drawRect((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3]);
+		g.drawRect(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt());
 	}
 
-	private void processClearRect(QueuedCall call, Graphics2D g) {
+	private void processClearRect(Graphics2D g) {
 		// clearRect(int, int, int, int)
-		g.clearRect((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3]);
+		g.clearRect(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt());
 	}
 
-	private void processDrawRoundRect(QueuedCall call, Graphics2D g) {
+	private void processDrawRoundRect(Graphics2D g) {
 		// drawRoundRect(int, int, int, int, int, int)
-		g.drawRoundRect((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (Integer) call.args[5]);
+		g.drawRoundRect(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt(),
+				calls.getInt(), calls.getInt());
 	}
 
-	private void processFillRoundRect(QueuedCall call, Graphics2D g) {
+	private void processFillRoundRect(Graphics2D g) {
 		// fillRoundRect(int, int, int, int, int, int)
-		g.fillRoundRect((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (Integer) call.args[5]);
+		g.fillRoundRect(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt(),
+				calls.getInt(), calls.getInt());
 	}
 
-	private void processDraw3DRect(QueuedCall call, Graphics2D g) {
+	private void processDraw3DRect(Graphics2D g) {
 		// draw3DRect(int, int, int, int, boolean)
-		g.draw3DRect(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue(),
-				((Boolean) call.args[4]).booleanValue());
+		g.draw3DRect(calls.getInt(), calls.getInt(),
+				calls.getInt(), calls.getInt(),
+				serializer.deserializeBoolean(calls));
 	}
 
-	private void processFill3DRect(QueuedCall call, Graphics2D g) {
+	private void processFill3DRect(Graphics2D g) {
 		// fill3DRect(int, int, int, int, boolean)
-		g.fill3DRect(((Integer) call.args[0]).intValue(), ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue(), ((Integer) call.args[3]).intValue(),
-				((Boolean) call.args[4]).booleanValue());
+		g.fill3DRect(calls.getInt(), calls.getInt(),
+				calls.getInt(), calls.getInt(),
+				serializer.deserializeBoolean(calls));
 	}
 
-	private void processDrawOval(QueuedCall call, Graphics2D g) {
+	private void processDrawOval(Graphics2D g) {
 		// drawOval(int, int, int, int)
-		g.drawOval((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3]);
+		g.drawOval(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt());
 	}
 
-	private void processFillOval(QueuedCall call, Graphics2D g) {
+	private void processFillOval(Graphics2D g) {
 		// fillOval(int, int, int, int)
-		g.fillOval((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3]);
+		g.fillOval(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt());
 	}
 
-	private void processDrawArc(QueuedCall call, Graphics2D g) {
+	private void processDrawArc(Graphics2D g) {
 		// drawArc(int, int, int, int, int, int)
-		g.drawArc((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (Integer) call.args[5]);
+		g.drawArc(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt(),
+				calls.getInt(), calls.getInt());
 	}
 
-	private void processFillArc(QueuedCall call, Graphics2D g) {
+	private void processFillArc(Graphics2D g) {
 		// fillArc(int, int, int, int, int, int)
-		g.fillArc((Integer) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (Integer) call.args[5]);
+		g.fillArc(calls.getInt(), calls.getInt(), calls.getInt(), calls.getInt(),
+				calls.getInt(), calls.getInt());
 	}
 
-	private void processDrawPolyline(QueuedCall call, Graphics2D g) {
+	private void processDrawPolyline(Graphics2D g) {
 		// drawPolyline(int[], int[], int)
-		g.drawPolyline((int[]) call.args[0], (int[]) call.args[1], (Integer) call.args[2]);
+		g.drawPolyline(serializer.deserializeIntegers(calls), serializer.deserializeIntegers(calls), calls.getInt());
 	}
 
-	private void processDrawPolygon(QueuedCall call, Graphics2D g) {
+	private void processDrawPolygon(Graphics2D g) {
 		// drawPolygon(int[], int[], int)
-		g.drawPolygon((int[]) call.args[0], (int[]) call.args[1], (Integer) call.args[2]);
+		g.drawPolygon(serializer.deserializeIntegers(calls), serializer.deserializeIntegers(calls), calls.getInt());
 	}
 
-	private void processFillPolygon(QueuedCall call, Graphics2D g) {
+	private void processFillPolygon(Graphics2D g) {
 		// fillPolygon(int[], int[], int)
-		g.fillPolygon((int[]) call.args[0], (int[]) call.args[1], (Integer) call.args[2]);
+		g.fillPolygon(serializer.deserializeIntegers(calls), serializer.deserializeIntegers(calls), calls.getInt());
 	}
 
-	private void processDrawString_int(QueuedCall call, Graphics2D g) {
+	private void processDrawString_int(Graphics2D g) {
 		// drawString(String, int, int)
-		g.drawString((String) call.args[0], ((Integer) call.args[1]).intValue(), ((Integer) call.args[2]).intValue());
+		g.drawString(serializer.deserializeString(calls), calls.getInt(), calls.getInt());
 	}
 
-	private void processDrawString_ACIterator_int(QueuedCall call, Graphics2D g) {
-		// drawString(AttributedCharacterIterator, int, int)
-		g.drawString((AttributedCharacterIterator) call.args[0], ((Integer) call.args[1]).intValue(),
-				((Integer) call.args[2]).intValue());
+	private void processDrawString_ACIterator_int(Graphics2D g) {
+		// drawString(String, int, int)
+		g.drawString(serializer.deserializeString(calls), calls.getInt(),
+				calls.getInt());
 	}
 
-	private void processDrawChars(QueuedCall call, Graphics2D g) {
+	private void processDrawChars(Graphics2D g) {
 		// drawBytes(char[], int, int, int, int)
-		g.drawChars((char[]) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4]);
+		g.drawChars(serializer.deserializeChars(calls), calls.getInt(), calls.getInt(), calls.getInt(),
+				calls.getInt());
 	}
 
-	private void processDrawBytes(QueuedCall call, Graphics2D g) {
+	private void processDrawBytes(Graphics2D g) {
 		// drawBytes(byte[], int, int, int, int)
-		g.drawBytes((byte[]) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4]);
+		g.drawBytes(serializer.deserializeBytes(calls), calls.getInt(), calls.getInt(), calls.getInt(),
+				calls.getInt());
 	}
 
-	private void processDrawImage1(QueuedCall call, Graphics2D g) {
-		// drawImage(Image, int, int, ImageObserver)
-		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (ImageObserver) call.args[3]);
-	}
-
-	private void processDrawImage2(QueuedCall call, Graphics2D g) {
-		// drawImage(Image, int, int, int, int, ImageObserver)
-		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (ImageObserver) call.args[5]);
-	}
-
-	private void processDrawImage3(QueuedCall call, Graphics2D g) {
-		// drawImage(Image, int, int, Color, ImageObserver)
-		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2],
-				new Color((Integer) call.args[3], true), (ImageObserver) call.args[4]);
-	}
-
-	private void processDrawImage4(QueuedCall call, Graphics2D g) {
-		// drawImage(Image, int, int, int, int, Color, ImageObserver)
-		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], new Color((Integer) call.args[5], true), (ImageObserver) call.args[6]);
-	}
-
-	private void processDrawImage5(QueuedCall call, Graphics2D g) {
-		// drawImage(Image, int, int, int, int, int, int, int, int, ImageObserver)
-		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (Integer) call.args[4], (Integer) call.args[5], (Integer) call.args[6],
-				(Integer) call.args[7], (ImageObserver) call.args[8]);
-	}
-
-	private void processDrawImage6(QueuedCall call, Graphics2D g) {
-		// drawImage(Image, int, int, int, int, int, int, int, int, Color, ImageObserver)
-		g.drawImage((Image) call.args[0], (Integer) call.args[1], (Integer) call.args[2], (Integer) call.args[3],
-				(Integer) call.args[4], (Integer) call.args[4], (Integer) call.args[5], (Integer) call.args[6],
-				(Integer) call.args[7], new Color((Integer) call.args[8], true), (ImageObserver) call.args[9]);
-	}
-
-	private void processDraw(QueuedCall call, Graphics2D g) {
+	private void processDrawShape(Graphics2D g) {
 		// draw(Shape)
-		g.draw((Shape) call.args[0]);
+		g.draw(readShape());
 	}
 
-	private void processDrawImage7(QueuedCall call, Graphics2D g) {
-		// drawImage(Image, AffineTransform, ImageObserver)
-		g.drawImage((Image) call.args[0], (AffineTransform) call.args[1], (ImageObserver) call.args[2]);
-	}
-
-	private void processDrawImage8(QueuedCall call, Graphics2D g) {
-		// drawImage(BufferedImage, BufferedImageOp, int, int)
-		g.drawImage((BufferedImage) call.args[0], (BufferedImageOp) call.args[1], (Integer) call.args[2],
-				(Integer) call.args[3]);
-	}
-
-	private void processDrawRenderedImage(QueuedCall call, Graphics2D g) {
-		// drawRenderedImage(RenderedImage, AffineTransform)
-		g.drawRenderedImage((RenderedImage) call.args[0], (AffineTransform) call.args[1]);
-	}
-
-	private void processDrawRenderableImage(QueuedCall call, Graphics2D g) {
-		// drawRenderableImage(RenderableImage, AffineTransform)
-		g.drawRenderableImage((RenderableImage) call.args[0], (AffineTransform) call.args[1]);
-	}
-
-	private void processDrawString_float(QueuedCall call, Graphics2D g) {
+	private void processDrawString_float(Graphics2D g) {
 		// drawString(String, float, float)
-		g.drawString((String) call.args[0], (Float) call.args[1], (Float) call.args[2]);
+		g.drawString(serializer.deserializeString(calls), calls.getFloat(), calls.getFloat());
 	}
 
-	private void processDrawString_ACIterator_float(QueuedCall call, Graphics2D g) {
-		// drawString(AttributedCharacterIterator, float, float)
-		g.drawString((AttributedCharacterIterator) call.args[0], (Float) call.args[1], (Float) call.args[2]);
+	private void processDrawString_ACIterator_float(Graphics2D g) {
+		// drawString(String, float, float)
+		g.drawString(serializer.deserializeString(calls), calls.getFloat(), calls.getFloat());
 	}
 
-	private void processDrawGlyphVector(QueuedCall call, Graphics2D g) {
-		// drawGlyphVector(GlyphVector gv, float x, float y)
-		g.drawGlyphVector((GlyphVector) call.args[0], (Float) call.args[1], (Float) call.args[2]);
-	}
-
-	private void processFill(QueuedCall call, Graphics2D g) {
+	private void processFillShape(Graphics2D g) {
 		// fill(Shape)
-		g.fill((Shape) call.args[0]);
+		g.fill(readShape());
 	}
 
-	private void processSetComposite(QueuedCall call, Graphics2D g) {
+	private void processSetComposite(Graphics2D g) {
 		// setComposite(Composite)
-		g.setComposite((Composite) call.args[0]);
+		g.setComposite(readComposite());
 	}
 
-	private void processSetPaint(QueuedCall call, Graphics2D g) {
+	private void processSetPaint(Graphics2D g) {
 		// setPaint(Paint)
-		g.setPaint((Paint) call.args[0]);
+		g.setPaint(readPaint());
 	}
 
-	private void processSetStroke(QueuedCall call, Graphics2D g) {
+	private void processSetStroke(Graphics2D g) {
 		// setStroke(Stroke)
-		g.setStroke((Stroke) call.args[0]);
+		g.setStroke(readStroke());
 	}
 
-	private void processTranslate_double(QueuedCall call, Graphics2D g) {
+	private void processTranslate_double(Graphics2D g) {
 		// translate(double, double)
-		g.translate((Double) call.args[0], (Double) call.args[1]);
+		g.translate(calls.getDouble(), calls.getDouble());
 	}
 
-	private void processRotate(QueuedCall call, Graphics2D g) {
+	private void processRotate(Graphics2D g) {
 		// rotate(double)
-		g.rotate((Double) call.args[0]);
+		g.rotate(calls.getDouble());
 	}
 
-	private void processRotate_xy(QueuedCall call, Graphics2D g) {
+	private void processRotate_xy(Graphics2D g) {
 		// rotate(double)
-		g.rotate((Double) call.args[0], (Double) call.args[1], (Double) call.args[2]);
+		g.rotate(calls.getDouble(), calls.getDouble(), calls.getDouble());
 	}
 
-	private void processScale(QueuedCall call, Graphics2D g) {
+	private void processScale(Graphics2D g) {
 		// scale(double, double)
-		g.scale((Double) call.args[0], (Double) call.args[1]);
+		g.scale(calls.getDouble(), calls.getDouble());
 	}
 
-	private void processShear(QueuedCall call, Graphics2D g) {
+	private void processShear(Graphics2D g) {
 		// shear(double, double)
-		g.shear((Double) call.args[0], (Double) call.args[1]);
+		g.shear(calls.getDouble(), calls.getDouble());
 	}
 
-	private void processTransform(QueuedCall call, Graphics2D g) {
+	private void processTransform(Graphics2D g) {
 		// transform(AffineTransform)
-		g.transform((AffineTransform) call.args[0]);
+		final AffineTransform transform = getAffineTransform();
+		g.transform(transform);
 	}
 
-	private void processSetTransform(QueuedCall call, Graphics2D g) {
+	private void processSetTransform(Graphics2D g) {
 		// setTransform(AffineTransform)
-		g.setTransform((AffineTransform) call.args[0]);
+		g.setTransform(getAffineTransform());
 	}
 
-	private void processSetBackground(QueuedCall call, Graphics2D g) {
+	private void processSetBackground(Graphics2D g) {
 		// setBackground(Color)
-		g.setBackground(new Color((Integer) call.args[0], true));
+		g.setBackground(new Color(calls.getInt(), true));
 	}
 
-	private void processClip(QueuedCall call, Graphics2D g) {
+	private void processClip(Graphics2D g) {
 		// clip(Shape)
-		g.clip((Shape) call.args[0]);
+		g.clip(readShape());
 	}
-	*/
+
+	private Shape readShape() {
+		switch (calls.get()){
+			case 1:
+				return new Arc2D.Double(
+						calls.getDouble(),//x
+						calls.getDouble(),//y
+						calls.getDouble(),//w
+						calls.getDouble(),//h
+						calls.getDouble(),//start
+						calls.getDouble(),//extended
+						calls.getInt());
+			case 2:
+				return new Line2D.Double(
+						calls.getDouble(),//x1
+						calls.getDouble(),//y2
+						calls.getDouble(),//x2
+						calls.getDouble());//y2
+			case 3:
+				return new Rectangle2D.Double(
+						calls.getDouble(),//x
+						calls.getDouble(),//y
+						calls.getDouble(),//w
+						calls.getDouble());//h
+			case 4:
+				return new Ellipse2D.Double(
+						calls.getDouble(),//x
+						calls.getDouble(),//y
+						calls.getDouble(),//w
+						calls.getDouble());//h
+			case 0:
+				DeserializePathIterator pai=new DeserializePathIterator();
+				GeneralPath path=new GeneralPath();
+				path.append(pai, true);
+				return path;
+
+			default:
+				break;
+		}
+		notSupported();
+		return null;
+	}
+
+	private class DeserializePathIterator implements PathIterator{
+		int count;
+		int pos;
+		int windingRule;
+		int type;
+		double[] coords;
+
+		public DeserializePathIterator(){
+			count=calls.getInt();
+			pos=0;
+			windingRule =calls.getInt();
+			if (count>0){
+				type = calls.getInt();
+				coords = serializer.deserializeDoubles(calls);
+			}
+		}
+
+		public int getWindingRule() {
+			return windingRule;
+		}
+
+		public boolean isDone() {
+			return pos==count;
+		}
+
+		public void next() {
+			pos++;
+			if (!isDone()){
+				type = calls.getInt();
+				coords = serializer.deserializeDoubles(calls);
+			}
+		}
+
+		public int currentSegment(float[] coords) {
+			for (int i = 0; i<coords.length;i++){
+				coords[i] = (float) this.coords[i];
+			}
+			return type; 
+		}
+
+		public int currentSegment(double[] coords) {
+			System.arraycopy(this.coords, 0, coords, 0, coords.length);
+			return type;
+		}
+	}
 
 	private void put(Shape clip) {
 		if (clip instanceof Arc2D){
 			Arc2D arc = (Arc2D) clip;
+			final Rectangle bounds = arc.getBounds();
 			put((byte)1);
-			put(arc.getBounds());
+			put(bounds.getMinX());
+			put(bounds.getMinY());
+			put(bounds.getWidth());
+			put(bounds.getHeight());
 			put(arc.getAngleStart());
 			put(arc.getAngleExtent());
 			put(arc.getArcType());
@@ -1551,6 +1567,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 			//count them first
 			PathIterator pi = clip.getPathIterator(null);
+			put(pi.getWindingRule());
 			while (!pi.isDone()) {
 				count++;
 				pi.next();
@@ -1560,11 +1577,23 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			//write them
 			pi = clip.getPathIterator(null);
 			while (!pi.isDone()) {
-				pi.currentSegment(coords);
+				int type = pi.currentSegment(coords);
+				put(type);
 				put(coords);
 				pi.next();
 			}
 		}
+	}
+
+	private Composite readComposite() {
+		switch (calls.get()){
+			case 1:
+				return AlphaComposite.getInstance(calls.getInt());
+			default:
+				break;
+		}
+		notSupported();
+		return null;
 	}
 
 	private void put(Composite comp) {
@@ -1572,11 +1601,21 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			AlphaComposite composite = (AlphaComposite) comp;
 			put((byte)1);
 			put(composite.getRule());
-			put(composite.getAlpha());
 		}
 		else {
 			notSupported();
 		}
+	}
+
+	private Paint readPaint() {
+		switch (calls.get()){
+			case 1:
+				return new Color(calls.getInt(), true);
+			default:
+				break;
+		}
+		notSupported();
+		return null;
 	}
 
 	private void put(Paint paint) {
@@ -1588,6 +1627,24 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		else {
 			notSupported();
 		}
+	}
+
+	private Stroke readStroke() {
+		switch (calls.get()){
+			case 1:
+				return new BasicStroke(
+						calls.getFloat(),
+						calls.getInt(),
+						calls.getInt(),
+						calls.getFloat(),
+						serializer.deserializeFloats(calls),
+						calls.getFloat()
+				);
+			default:
+				break;
+		}
+		notSupported();
+		return null;
 	}
 
 	private void put(Stroke stroke) {
@@ -1604,6 +1661,10 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		else {
 			notSupported();
 		}
+	}
+
+	private AffineTransform getAffineTransform() {
+		return new AffineTransform(serializer.deserializeDoubles(calls));
 	}
 
 	private void put(AffineTransform tx) {
@@ -1712,7 +1773,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private void notSupportedWarn() {
-		//TODO out to robot console
+		System.out.println("We are sorry. Operation is not supported in Robocode.");
 	}
 
 	// --------------------------------------------------------------------------
