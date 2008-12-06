@@ -27,7 +27,7 @@ import java.nio.ByteBuffer;
 
 
 /**
- * A MouseWheelMovedEvent is sent to {@link Robot#onMouseWheelMoved(MouseWheelEvent)
+ * A MouseWheelMovedEvent is sent to {@link Robot#onMouseWheelMoved(java.awt.event.MouseWheelEvent e)
  * onMouseWheelMoved()} when the mouse wheel is rotated inside the battle view.
  *
  * @author Pavel Savara (original)
@@ -90,7 +90,7 @@ public final class MouseWheelMovedEvent extends MouseEvent {
 	private static class SerializableHelper implements ISerializableHelper {
 
 		public int sizeOf(RbSerializer serializer, Object object) {
-			return RbSerializer.SIZEOF_TYPEINFO + 6 * RbSerializer.SIZEOF_INT + RbSerializer.SIZEOF_LONG;
+			return RbSerializer.SIZEOF_TYPEINFO + 8 * RbSerializer.SIZEOF_INT + RbSerializer.SIZEOF_LONG;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
@@ -110,8 +110,8 @@ public final class MouseWheelMovedEvent extends MouseEvent {
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
 			int clickCount = buffer.getInt();
-			int y = buffer.getInt();
 			int x = buffer.getInt();
+			int y = buffer.getInt();
 			int scrollType = buffer.getInt();
 			int scrollAmount = buffer.getInt();
 			int wheelRotation = buffer.getInt();

@@ -87,6 +87,8 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import static java.lang.Math.*;
 import java.security.AccessControlException;
+import java.security.PrivilegedAction;
+import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -457,24 +459,27 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// execute
 	// -----------
 
-
-	// TODO this is there just to prove that now is possible play over the wire
-	// public final ExecResults executeImpl(ExecCommands newCommands) {
-	// return (ExecResults) ObjectCloner.deepCopy(executeImplIn((ExecCommands) ObjectCloner.deepCopy(newCommands)));
-	// }
-
-
 	public final ExecResults executeImpl(final ExecCommands newCommands) {
-		/*return AccessController.doPrivileged(new PrivilegedAction<ExecResults>() {
-			public ExecResults run() {
+		ExecutePrivilegedAction rpa=new ExecutePrivilegedAction();
+		rpa.newCommands = newCommands;
+		return AccessController.doPrivileged(rpa);
+	}
+
+	public class ExecutePrivilegedAction implements PrivilegedAction<ExecResults> {
+		public ExecCommands newCommands;
+
+		public ExecResults run() {
+			//serializer tets
+			//noinspection ConstantIfStatement
+			if (true){
+				final ExecCommands commands = (ExecCommands) RbSerializer.deepCopy(RbSerializer.ExecCommands_TYPE, newCommands);
+				final ExecResults results = executeImplIn(commands);
+				return (ExecResults) RbSerializer.deepCopy(RbSerializer.ExecResults_TYPE, results);
 			}
-		});*/
-
-		final ExecCommands commands = (ExecCommands) RbSerializer.deepCopy(RbSerializer.ExecCommands_TYPE, newCommands);
-		final ExecResults results = executeImplIn(commands);
-
-		return (ExecResults) RbSerializer.deepCopy(RbSerializer.ExecResults_TYPE, results);
-
+			else{
+				return executeImplIn(newCommands);
+			}
+		}
 	}
 
 	public final ExecResults executeImplIn(ExecCommands newCommands) {

@@ -31,10 +31,7 @@ import robocode.RobocodeFileOutputStream;
 import robocode.exception.RobotException;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IThreadManager;
-import robocode.peer.BulletCommand;
-import robocode.peer.BulletState;
-import robocode.peer.ExecResults;
-import robocode.peer.DebugProperty;
+import robocode.peer.*;
 import robocode.peer.serialize.RbSerializer;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
@@ -87,6 +84,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			scl.loadClass(RobotException.class.getName());
 			scl.loadClass(RobocodeObjectInputStream.class.getName());
 			scl.loadClass(RbSerializer.class.getName()).newInstance();
+			scl.loadClass(RobotPeer.ExecutePrivilegedAction.class.getName());
 			Toolkit.getDefaultToolkit();
 		} catch (ClassNotFoundException e) {
 			throw new Error("We can't load important classes", e);
@@ -114,7 +112,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		super.checkAccess(t);
 		Thread c = Thread.currentThread();
 
-		if (isSafeThread(c) && isSafeContext()) {
+		if (isSafeThread(c) || isSafeContext()) {
 			return;
 		}
 
@@ -160,7 +158,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		Thread c = Thread.currentThread();
 
-		if (isSafeThread(c) && isSafeContext()) {
+		if (isSafeThread(c) || isSafeContext()) {
 			return;
 		}
 		ThreadGroup cg = c.getThreadGroup();
@@ -227,7 +225,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		// First, if we're running in Robocode's security context,
-		// AND the thread is a safe thread, permission granted.
+		// OR the thread is a safe thread, permission granted.
 		// Essentially this optimizes the security manager for Robocode.
 		if (isSafeContext()) {
 			return;
@@ -430,6 +428,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 			}
 		}
 
+		isSafeContext();
+
 		throw new AccessControlException("Preventing " + Thread.currentThread().getName() + " from access: " + perm);
 	}
 
@@ -482,7 +482,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private boolean isSafeContext() {
 		try {
-			return getSecurityContext().equals(safeSecurityContext);
+			final Object currentContext = getSecurityContext();
+			return currentContext.equals(safeSecurityContext);
 		} catch (Exception e) {
 			syserr.println("Exception checking safe thread: ");
 			e.printStackTrace(syserr);

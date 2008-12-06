@@ -109,8 +109,8 @@ public final class MouseMovedEvent extends MouseEvent {
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
 			int button = buffer.getInt();
 			int clickCount = buffer.getInt();
-			int y = buffer.getInt();
 			int x = buffer.getInt();
+			int y = buffer.getInt();
 			int id = buffer.getInt();
 			int modifiersEx = buffer.getInt();
 			long when = buffer.getLong();
