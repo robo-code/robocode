@@ -14,6 +14,8 @@
 package robocode.security;
 
 
+import robocode.manager.RobocodeManager;
+
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -295,9 +297,7 @@ public class SecurePrintStream extends PrintStream {
 		SecurityManager securityManager = System.getSecurityManager();
 
 		if (securityManager != null && securityManager instanceof RobocodeSecurityManager) {
-			RobocodeSecurityManager rsm = (RobocodeSecurityManager) securityManager;
-			PrintStream out = rsm.getRobotOutputStream();
-
+			PrintStream out = RobocodeManager.getThreadManager().getRobotOutputStream();
 			return (out == null) ? this : out;
 		}
 		return this;

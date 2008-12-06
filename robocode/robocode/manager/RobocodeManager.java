@@ -34,10 +34,10 @@ import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
-import robocode.security.RobocodeSecurityManager;
-import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
+import robocode.security.RobocodeSecurityPolicy;
+import robocode.security.RobocodeSecurityManager;
 import robocode.sound.ISoundManager;
 import robocode.sound.SoundManager;
 
@@ -56,7 +56,7 @@ public class RobocodeManager {
 	private IImageManager imageManager;
 	private IRobotDialogManager robotDialogManager;
 	private IRepositoryManager repositoryManager;
-	private IThreadManager threadManager;
+	private static IThreadManager threadManager;
 	private IWindowManager windowManager;
 	private IVersionManager versionManager;
 	private ISoundManager soundManager;
@@ -126,7 +126,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a ThreadManager
 	 */
-	public IThreadManager getThreadManager() {
+	public static IThreadManager getThreadManager() {
 		if (threadManager == null) {
 			threadManager = new ThreadManager();
 		}
@@ -281,18 +281,16 @@ public class RobocodeManager {
 
 		Policy.setPolicy(securityPolicy);
 
-		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(Thread.currentThread(), getThreadManager(),
-				securityOn, experimentalOn);
+		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(getThreadManager(), securityOn, experimentalOn);
 
 		System.setSecurityManager(securityManager);
-
 		RobocodeFileOutputStream.setThreadManager(getThreadManager());
 
 		if (securityOn) {
 			ThreadGroup tg = Thread.currentThread().getThreadGroup();
 
 			while (tg != null) {
-				securityManager.addSafeThreadGroup(tg);
+				getThreadManager().addSafeThreadGroup(tg);
 				tg = tg.getParent();
 			}
 		}

@@ -261,7 +261,7 @@ public class WindowManager implements IWindowManager {
 			robotPackager = null;
 		}
 
-		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager());
+		robotPackager = new robocode.packager.RobotPackager(manager);
 		WindowUtil.packCenterShow(robotPackager);
 	}
 

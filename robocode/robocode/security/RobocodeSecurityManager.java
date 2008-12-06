@@ -46,7 +46,6 @@ import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.security.Permission;
 import java.util.*;
-import java.util.List;
 import java.awt.*;
 
 
@@ -66,15 +65,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private final Map<Thread, RobocodeFileOutputStream> outputStreamThreads = Collections.synchronizedMap(
 			new HashMap<Thread, RobocodeFileOutputStream>());
-	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
-	private final List<ThreadGroup> safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private final Set<String> alowedPackages = new HashSet<String>();
 
-	private Thread battleThread;
-
-	public RobocodeSecurityManager(Thread safeThread, IThreadManager threadManager, boolean enabled, boolean experimental) {
+	public RobocodeSecurityManager(IThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
-		safeThreads.add(safeThread);
+		threadManager.addSafeThread(Thread.currentThread());
 		this.threadManager = threadManager;
 		this.enabled = enabled;
 		this.experimental = experimental;
@@ -112,16 +107,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
 		outputStreamThreads.put(Thread.currentThread(), o);
-	}
-
-	public void addSafeThread(Thread safeThread) {
-		checkPermission(new RobocodePermission("addSafeThread"));
-		safeThreads.add(safeThread);
-	}
-
-	public void addSafeThreadGroup(ThreadGroup safeThreadGroup) {
-		checkPermission(new RobocodePermission("addSafeThreadGroup"));
-		safeThreadGroups.add(safeThreadGroup);
 	}
 
 	@Override
@@ -492,28 +477,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	}
 
 	private boolean isSafeThread(Thread c) {
-		try {
-			if (c == battleThread) {
-				return true;
-			}
-
-			if (safeThreads.contains(c)) {
-				return true;
-			}
-
-			for (ThreadGroup tg : safeThreadGroups) {
-				if (c.getThreadGroup() == tg) {
-					safeThreads.add(c);
-					return true;
-				}
-			}
-
-			return false;
-		} catch (Exception e) {
-			syserr.println("Exception checking safe thread: ");
-			e.printStackTrace(syserr);
-			return false;
-		}
+		return threadManager.isSafeThread(c);
 	}
 
 	private boolean isSafeContext() {
@@ -528,47 +492,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	private synchronized void removeRobocodeOutputStream() {
 		outputStreamThreads.remove(Thread.currentThread());
-	}
-
-	public void removeSafeThread(Thread safeThread) {
-		checkPermission(new RobocodePermission("removeSafeThread"));
-		safeThreads.remove(safeThread);
-	}
-
-	public synchronized void setBattleThread(Thread newBattleThread) {
-		checkPermission(new RobocodePermission("setBattleThread"));
-		battleThread = newBattleThread;
-	}
-
-	public static void printlnToRobot(String s) {
-		SecurityManager m = System.getSecurityManager();
-
-		if (m instanceof RobocodeSecurityManager) {
-			RobocodeSecurityManager rsm = (RobocodeSecurityManager) m;
-
-			final PrintStream stream = rsm.getRobotOutputStream();
-
-			if (stream != null) {
-				stream.println(s);
-			}
-		}
-	}
-
-	public PrintStream getRobotOutputStream() {
-		Thread c = Thread.currentThread();
-
-		if (isSafeThread(c)) {
-			return null;
-		}
-
-		if (threadManager == null) {
-			syserr.println("Null thread manager.");
-			return null;
-		}
-
-		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
-
-		return (robotProxy != null) ? robotProxy.getOut() : null;
 	}
 
 	@Override

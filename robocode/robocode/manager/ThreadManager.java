@@ -25,6 +25,7 @@ import robocode.peer.proxies.IHostedThread;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.io.PrintStream;
 
 
 /**
@@ -34,6 +35,9 @@ import java.util.List;
  */
 public class ThreadManager implements IThreadManager {
 
+	private final PrintStream syserr = System.err;
+	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
+	private final List<ThreadGroup> safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private final List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private Thread robotLoaderThread;
 	private IHostedThread loadingRobot;
@@ -41,6 +45,18 @@ public class ThreadManager implements IThreadManager {
 
 	public ThreadManager() {
 		super();
+	}
+
+	public void addSafeThread(Thread safeThread) {
+		safeThreads.add(safeThread);
+	}
+
+	public void removeSafeThread(Thread safeThread) {
+		safeThreads.remove(safeThread);
+	}
+
+	public void addSafeThreadGroup(ThreadGroup safeThreadGroup) {
+		safeThreadGroups.add(safeThreadGroup);
 	}
 
 	public void addThreadGroup(ThreadGroup g, IHostedThread robotProxy) {
@@ -100,4 +116,50 @@ public class ThreadManager implements IThreadManager {
 			loadingRobot = newLoadingRobotProxy;
 		}
 	}
+
+	public boolean isSafeThread() {
+		return isSafeThread(Thread.currentThread());
+	}
+
+	public boolean isSafeThread(Thread c) {
+		try {
+			if (safeThreads.contains(c)) {
+				return true;
+			}
+
+			for (ThreadGroup tg : safeThreadGroups) {
+				if (c.getThreadGroup() == tg) {
+					safeThreads.add(c);
+					return true;
+				}
+			}
+
+			return false;
+		} catch (Exception e) {
+			syserr.println("Exception checking safe thread: ");
+			e.printStackTrace(syserr);
+			return false;
+		}
+	}
+
+
+	public PrintStream getRobotOutputStream() {
+		Thread c = Thread.currentThread();
+
+		if (isSafeThread(c)) {
+			return null;
+		}
+
+		IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(c);
+
+		return (robotProxy != null) ? robotProxy.getOut() : null;
+	}
+
+	public void printlnToRobot(String s) {
+		final PrintStream stream = getRobotOutputStream();
+		if (stream != null) {
+			stream.println(s);
+		}
+	}
+
 }

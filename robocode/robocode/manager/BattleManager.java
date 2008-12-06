@@ -72,7 +72,6 @@ import robocode.repository.FileSpecification;
 import robocode.repository.Repository;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
-import robocode.security.RobocodeSecurityManager;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -261,8 +260,7 @@ public class BattleManager implements IBattleManager {
 		realBattle.setBattleThread(battleThread);
 
 		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
-			((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
+			manager.getThreadManager().addSafeThread(battleThread);
 		}
 
 		// Start the realBattle thread

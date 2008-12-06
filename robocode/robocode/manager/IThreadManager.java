@@ -14,6 +14,8 @@ package robocode.manager;
 
 import robocode.peer.proxies.IHostedThread;
 
+import java.io.PrintStream;
+
 
 /**
  * @author Pavel Savara (original)
@@ -32,4 +34,16 @@ public interface IThreadManager {
 	void reset();
 
 	void setLoadingRobot(IHostedThread newLoadingRobotProxy);
+
+	void addSafeThread(Thread safeThread);
+	
+	void addSafeThreadGroup(ThreadGroup safeThreadGroup);
+
+	void removeSafeThread(Thread safeThread);
+
+	boolean isSafeThread(Thread c);
+
+	boolean isSafeThread();
+
+	PrintStream getRobotOutputStream();
 }

@@ -32,6 +32,8 @@ import robocode.dialog.*;
 import robocode.io.Logger;
 import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.IRepositoryManager;
+import robocode.manager.RobocodeManager;
+import robocode.manager.IThreadManager;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
@@ -80,6 +82,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public final byte[] buf = new byte[4096];
 	private StringWriter output;
 	private final IRepositoryManager repositoryManager;
+	private final RobocodeManager manager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -91,9 +94,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 		}
 	}
 
-	public RobotPackager(IRepositoryManager repositoryManager) {
-		super(repositoryManager.getManager().getWindowManager().getRobocodeFrame());
-		this.repositoryManager = repositoryManager;
+	public RobotPackager(RobocodeManager manager) {
+		super(manager.getWindowManager().getRobocodeFrame());
+		this.manager=manager;
+		this.repositoryManager = manager.getRobotRepositoryManager();
 		initialize();
 	}
 
@@ -483,8 +487,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public void outputSizeClass() {
 		// Codesize must be called within a safe thread to prevent security exception
 
-		final RobocodeSecurityManager securityManager = (RobocodeSecurityManager) System.getSecurityManager();
-
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
@@ -518,7 +520,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		};
 
-		securityManager.addSafeThread(thread);
+		manager.getThreadManager().addSafeThread(thread);
 
 		thread.start();
 
@@ -531,7 +533,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		}
 
-		securityManager.removeSafeThread(thread);
+		manager.getThreadManager().removeSafeThread(thread);
 	}
 
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,
