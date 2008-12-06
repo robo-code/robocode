@@ -217,12 +217,12 @@ public class BattleManager implements IBattleManager {
 
 	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean waitTillOver) {
 
-		logMessage("Preparing battle...");
 		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when realBattle is running ?
 			battle.stop(true);
 		}
 
 		Logger.setLogListener(battleEventDispatcher);
+		logMessage("Preparing battle...");
 
 		if (manager.isSoundEnabled()) {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);

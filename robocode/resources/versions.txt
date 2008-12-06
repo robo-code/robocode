@@ -1,4 +1,4 @@
-Version 1.6.2 Beta 2
+Version 1.6.2 Beta
 (25-Nov-2008)
 ---------------
 = Bugfixes =

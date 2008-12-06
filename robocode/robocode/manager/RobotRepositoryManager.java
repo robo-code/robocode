@@ -770,7 +770,6 @@ public class RobotRepositoryManager implements IRepositoryManager {
 	// Allowed maximum length for a robot's short class name
 	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
 
-	// TODO: Needs to be updated?
 	public boolean verifyRobotName(String robotName, String shortClassName) {
 		int lIndex = robotName.indexOf(".");
 		String rootPackage = robotName;
@@ -783,48 +782,16 @@ public class RobotRepositoryManager implements IRepositoryManager {
 				return false;
 			}
 
-			if (rootPackage.equalsIgnoreCase("sample")) {
-				if (robotName.equals("sample.Corners")) {
-					return true;
-				}
-				if (robotName.equals("sample.Crazy")) {
-					return true;
-				}
-				if (robotName.equals("sample.Fire")) {
-					return true;
-				}
-				if (robotName.equals("sample.MyFirstRobot")) {
-					return true;
-				}
-				if (robotName.equals("sample.RamFire")) {
-					return true;
-				}
-				if (robotName.equals("sample.SittingDuck")) {
-					return true;
-				}
-				if (robotName.equals("sample.SpinBot")) {
-					return true;
-				}
-				if (robotName.equals("sample.Target")) {
-					return true;
-				}
-				if (robotName.equals("sample.TrackFire")) {
-					return true;
-				}
-				if (robotName.equals("sample.Tracker")) {
-					return true;
-				}
-				if (robotName.equals("sample.Walls")) {
-					return true;
-				}
+			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+				final String message = "Robot " + robotName + " has package name too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+						+ " characters maximum please.";
+
+				logError(message);
+				return false;
 			}
 		}
-		if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-			final String message = "Robot " + robotName + " has package name too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
-					+ " characters maximum please.";
-
-			logError(message);
-			return false;
+		else{
+			//TODO every robot should be in package, right. Kick thim out.
 		}
 
 		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
