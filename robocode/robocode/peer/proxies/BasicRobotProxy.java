@@ -25,6 +25,7 @@ import robocode.peer.robot.EventManager;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.TeamMessage;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotpaint.IGraphicsProxy;
 import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.Utils;
 
@@ -41,7 +42,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			MAX_SET_CALL_COUNT = 10000,
 			MAX_GET_CALL_COUNT = 10000;
 
-	private Graphics2DProxy graphicsProxy;
+	private IGraphicsProxy graphicsProxy;
 
 	protected RobotStatus status;
 	protected ExecCommands commands;
@@ -308,7 +309,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	}
 
 	public Graphics2D getGraphicsImpl() {
-		return graphicsProxy;
+		return (Graphics2D) graphicsProxy;
 	}
 
 	@Override

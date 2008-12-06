@@ -16,7 +16,6 @@ import robocode.Rules;
 import robocode.peer.robot.TeamMessage;
 import robocode.peer.serialize.ISerializableHelper;
 import robocode.peer.serialize.RbSerializer;
-import robocode.robotpaint.Graphics2DProxy;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
@@ -63,7 +62,7 @@ public final class ExecCommands implements Serializable {
 	private List<BulletCommand> bullets = new ArrayList<BulletCommand>();
 	private List<TeamMessage> teamMessages = new ArrayList<TeamMessage>();
 	private List<DebugProperty> debugProperties = new ArrayList<DebugProperty>();
-	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
+	private Object graphicsCalls;
 
 	public ExecCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
@@ -252,7 +251,7 @@ public final class ExecCommands implements Serializable {
 		return bullets;
 	}
 
-	public List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
+	public Object getGraphicsCalls() {
 		return graphicsCalls;
 	}
 
@@ -260,7 +259,7 @@ public final class ExecCommands implements Serializable {
 		return debugProperties;
 	}
 
-	public void setGraphicsCalls(List<Graphics2DProxy.QueuedCall> graphicsCalls) {
+	public void setGraphicsCalls(Object graphicsCalls) {
 		this.graphicsCalls = graphicsCalls;
 	}
 
@@ -304,6 +303,7 @@ public final class ExecCommands implements Serializable {
 	}
 
 	private static class SerializableHelper implements ISerializableHelper {
+		@SuppressWarnings({"PointlessArithmeticExpression"})
 		public int sizeOf(RbSerializer serializer, Object object) {
 			ExecCommands obj = (ExecCommands) object;
 			int size = RbSerializer.SIZEOF_TYPEINFO + 4 * RbSerializer.SIZEOF_DOUBLE;

@@ -27,6 +27,7 @@ import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
 import robocode.manager.*;
 import robocode.peer.BulletState;
+import robocode.robotpaint.IGraphicsProxy;
 import robocode.robotpaint.Graphics2DProxy;
 
 import java.awt.*;
@@ -96,7 +97,7 @@ public class BattleView extends Canvas {
 	private static final MirroredGraphics mirroredGraphics = new MirroredGraphics();
 
 	private final GraphicsState graphicsState = new GraphicsState();
-	private Graphics2DProxy[] robotGraphics;
+	private IGraphicsProxy[] robotGraphics;
 
 	public BattleView(RobocodeManager manager) {
 		super();
@@ -455,7 +456,7 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot, int robotIndex) {
-		final java.util.List<Graphics2DProxy.QueuedCall> graphicsCalls = robotSnapshot.getGraphicsCalls();
+		final Object graphicsCalls = robotSnapshot.getGraphicsCalls();
 
 		if (graphicsCalls == null || !robotSnapshot.isPaintEnabled()) {
 			return;
@@ -468,7 +469,7 @@ public class BattleView extends Canvas {
 
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
-		Graphics2DProxy gfxProxy = getRobotGraphics(robotIndex);
+		IGraphicsProxy gfxProxy = getRobotGraphics(robotIndex);
 
 		gfxProxy.clearQueue();
 		gfxProxy.appendCalls(graphicsCalls);
@@ -484,7 +485,7 @@ public class BattleView extends Canvas {
 		gfxState.restore(g);
 	}
 
-	private Graphics2DProxy getRobotGraphics(int robotIndex) {
+	private IGraphicsProxy getRobotGraphics(int robotIndex) {
 		if (robotGraphics[robotIndex] == null) {
 			robotGraphics[robotIndex] = new Graphics2DProxy();
 			robotGraphics[robotIndex].setPaintingEnabled(true);
@@ -631,7 +632,7 @@ public class BattleView extends Canvas {
 			setVisible(true);
 			setInitialized(false);
 			super.onBattleStarted(event);
-			robotGraphics = new Graphics2DProxy[event.getRobotsCount()];
+			robotGraphics = new IGraphicsProxy[event.getRobotsCount()];
 		}
 
 		@Override

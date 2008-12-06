@@ -32,6 +32,9 @@ public class ObjectCloner {
 	 *         {@code null} if the object was not copied for some reason.
 	 */
 	public static Object deepCopy(Object orig) {
+		if (!(orig instanceof Serializable)){
+			return null;
+		}
 
 		// Write the object out to a byte array
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

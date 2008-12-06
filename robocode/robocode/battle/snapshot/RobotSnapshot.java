@@ -21,7 +21,6 @@ import robocode.peer.RobotPeer;
 import robocode.peer.RobotState;
 import robocode.peer.DebugProperty;
 import robocode.peer.ExecCommands;
-import robocode.robotpaint.Graphics2DProxy;
 
 import java.awt.geom.Arc2D;
 import java.io.IOException;
@@ -115,7 +114,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	private SerializableArc scanArc;
 
 	// The Graphics2D proxy
-	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
+	private Object graphicsCalls;
 
 	private List<DebugProperty> debugProperties;
 
@@ -401,7 +400,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	 *
 	 * @return the Graphics2D queued calls for this robot.
 	 */
-	public java.util.List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
+	public Object getGraphicsCalls() {
 		return graphicsCalls;
 	}
 
@@ -467,11 +466,11 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 			super(arc.getBounds(), arc.start, arc.extent, arc.getArcType());
 		}
 
-		@Override
-		public String toString() {
-			return shortName + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
-		}
+	}
 
+	@Override
+	public String toString() {
+		return shortName + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
 	}
 
 	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {

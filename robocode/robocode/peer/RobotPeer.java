@@ -81,7 +81,6 @@ import robocode.manager.IHostManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
 import robocode.peer.serialize.RbSerializer;
-import robocode.robotpaint.Graphics2DProxy;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
@@ -465,12 +464,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// }
 
 
+	public final ExecResults executeImpl(final ExecCommands newCommands) {
+		/*return AccessController.doPrivileged(new PrivilegedAction<ExecResults>() {
+			public ExecResults run() {
+			}
+		});*/
 
-	public final ExecResults executeImpl(ExecCommands newCommands) {
 		final ExecCommands commands = (ExecCommands) RbSerializer.deepCopy(RbSerializer.ExecCommands_TYPE, newCommands);
 		final ExecResults results = executeImplIn(commands);
 
 		return (ExecResults) RbSerializer.deepCopy(RbSerializer.ExecResults_TYPE, results);
+
 	}
 
 	public final ExecResults executeImplIn(ExecCommands newCommands) {
@@ -1526,7 +1530,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		battleRules = null;
 	}
 
-	public List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
+	public Object getGraphicsCalls() {
 		return commands.get().getGraphicsCalls();
 	}
 
