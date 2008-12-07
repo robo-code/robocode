@@ -492,6 +492,9 @@
         <include name="robocode/robotinterfaces/peer/*.java"/>
       	<exclude name="robocode/control/RobocodeEngine2.java"/>
       	<exclude name="robocode/control/RandomFactory.java"/>
+      	<exclude name="robocode/_Robot.java"/>
+      	<exclude name="robocode/_AdvancedRobot.java"/>
+      	<exclude name="robocode/_AdvancedRadiansRobot.java"/>
       </fileset>
       <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
     </javadoc>

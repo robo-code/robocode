@@ -2,17 +2,17 @@ Version 1.6.2 Beta 2
 (07-Dec-2008)
 ---------------
 = Bugfixes =
-* fixed problem with Bullet identity
-* battle cleanup concurrency issue
-* fixed problem with robots without package
-* AWT AppContext cleanup
-* fixed versions comparison problem
+* Fixed problem with Bullet identity.
+* Battle cleanup concurrency issue.
+* Fixed problem with robots without package.
+* AWT AppContext cleanup.
+* Fixed versions comparison problem.
 
 = Changes =
-* mostly cleanup of code and doc
-* removed _AdvancedRadiansRobot,_AdvancedRobot, and _Robot
-* improved compatibility with RobocodeJGAP
-* devel robot version names into repository
+* Mostly cleanup of code and documentation.
+* The classes _AdvancedRadiansRobot,_AdvancedRobot, and _Robot are now just dummy classes kept for preserving backwards compatibility. You should never inherit from these classes!
+* Improved compatibility with RobocodeJGAP.
+* Development robot version names were visible in the robot repository.
 
 Version 1.6.2 Beta
 (25-Nov-2008)
