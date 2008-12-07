@@ -286,7 +286,8 @@ class Version implements Comparable<Object> {
 	private final String version;
 
 	public Version(String version) {
-		this.version = version.replaceAll("\\.\\s++", ".").replaceAll("\\s++|lpha|eta", "");
+		this.version = version.replaceAll("Alpha", ".A.").replaceAll("Beta", ".B.").replaceAll("\\s++", ".").replaceAll(
+				"\\.++", "\\.");
 	}
 
 	public boolean isAlpha() {
@@ -313,83 +314,38 @@ class Version implements Comparable<Object> {
 			if (version.equalsIgnoreCase(v.version)) {
 				return 0;
 			}
+			String[] left = version.split("[. \t]");
+			String[] right = v.version.split("[. \t]");
 
-			String[] split1 = version.split(" ", 2);
-			String[] split2 = v.version.split(" ", 2);
-
-			if (split1[0].equalsIgnoreCase(split2[0])) {
-				if (split1.length == 1) {
-					return 1;
-				}
-				if (split2.length == 1) {
-					return -1;
-				}
-
-				split1 = split1[1].split(" ", 2);
-				split2 = split2[1].split(" ", 2);
-
-				int compare = split1[0].compareToIgnoreCase(split2[0]);
-
-				if (compare == 0) {
-					if (split1.length == 1) {
-						return -1;
-					}
-					if (split2.length == 1) {
-						return 1;
-					}
-					return split1[1].compareToIgnoreCase(split2[1]);
-				}
-				return compare;
-			}
-
-			split1 = split1[0].split("\\.", 3);
-			split2 = split2[0].split("\\.", 3);
-
-			split1[0] = split1[0].trim();
-			split2[0] = split2[0].trim();
-			int compare = split1[0].compareToIgnoreCase(split2[0]);
-
-			if (compare == 0) {
-				if (split1.length == 1) {
-					return -1;
-				}
-				if (split2.length == 1) {
-					return 1;
-				}
-
-				split1[1] = (split1[1] + '\uffff').trim();
-				split2[1] = (split2[1] + '\uffff').trim();
-				compare = split1[1].compareToIgnoreCase(split2[1]);
-
-				if (compare == 0) {
-					if (split1.length == 2) {
-						return -1;
-					}
-					if (split2.length == 2) {
-						return 1;
-					}
-
-					split1[2] = (split1[2] + '\uffff').trim();
-					split2[2] = (split2[2] + '\uffff').trim();
-					compare = split1[2].compareToIgnoreCase(split2[2]);
-
-					if (compare == 0) {
-						if (split1.length == 3) {
-							return -1;
-						}
-						if (split2.length == 3) {
-							return 1;
-						}
-					}
-					return compare;
-				}
-				return compare;
-			}
-			return compare;
-
+			return compare(left, right);
 		} else {
 			throw new IllegalArgumentException("The input object must be a String or Version object");
 		}
+	}
+
+	private int compare(String[] left, String[] right) {
+		int i = 0;
+
+		for (i = 0; i < left.length && i < right.length; i++) {
+			int res = left[i].compareToIgnoreCase(right[i]);
+
+			if (res != 0) {
+				return res;
+			}
+		}
+		if (left.length > right.length) {
+			if (left[i].equals("B") || left[i].equals("A")) {
+				return -1; 
+			}
+			return 1;
+		}
+		if (left.length < right.length) {
+			if (right[i].equals("B") || right[i].equals("A")) {
+				return 1; 
+			}
+			return -1;
+		}
+		return 0;
 	}
 
 	@Override
