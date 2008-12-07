@@ -11,8 +11,10 @@
  *******************************************************************************/
 package robocode.robotpaint;
 
+
 import java.util.List;
 import java.awt.*;
+
 
 /**
  * @author Pavel Savara (original)

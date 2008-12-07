@@ -460,26 +460,36 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// -----------
 
 	public final ExecResults executeImpl(final ExecCommands newCommands) {
-		ExecutePrivilegedAction rpa=new ExecutePrivilegedAction();
-		rpa.newCommands = newCommands;
-		return AccessController.doPrivileged(rpa);
+		if (isInteractiveRobot()) {
+			// we need to elevate just for interactive robot, because of MouseEvent constructors calling security check
+			ExecutePrivilegedAction rpa = new ExecutePrivilegedAction();
+
+			rpa.newCommands = newCommands;
+			return AccessController.doPrivileged(rpa);
+		} else {
+			return executeImplSerial(newCommands);
+		}
 	}
 
 	public class ExecutePrivilegedAction implements PrivilegedAction<ExecResults> {
 		public ExecCommands newCommands;
 
 		public ExecResults run() {
-			//serializer tets
-			//noinspection ConstantIfStatement
-			if (true){
-				final ExecCommands commands = (ExecCommands) RbSerializer.deepCopy(RbSerializer.ExecCommands_TYPE, newCommands);
-				final ExecResults results = executeImplIn(commands);
-				return (ExecResults) RbSerializer.deepCopy(RbSerializer.ExecResults_TYPE, results);
-			}
-			else{
+			// serializer tets
+			// noinspection ConstantIfStatement
+			if (true) {
+				return executeImplSerial(newCommands);
+			} else {
 				return executeImplIn(newCommands);
 			}
 		}
+	}
+
+	public final ExecResults executeImplSerial(ExecCommands newCommands) {
+		final ExecCommands commands = (ExecCommands) RbSerializer.deepCopy(RbSerializer.ExecCommands_TYPE, newCommands);
+		final ExecResults results = executeImplIn(commands);
+
+		return (ExecResults) RbSerializer.deepCopy(RbSerializer.ExecResults_TYPE, results);
 	}
 
 	public final ExecResults executeImplIn(ExecCommands newCommands) {

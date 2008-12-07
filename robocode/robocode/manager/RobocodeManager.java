@@ -281,7 +281,8 @@ public class RobocodeManager {
 
 		Policy.setPolicy(securityPolicy);
 
-		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(getThreadManager(), securityOn, experimentalOn);
+		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(getThreadManager(), securityOn,
+				experimentalOn);
 
 		System.setSecurityManager(securityManager);
 		RobocodeFileOutputStream.setThreadManager(getThreadManager());

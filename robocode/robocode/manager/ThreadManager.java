@@ -142,7 +142,6 @@ public class ThreadManager implements IThreadManager {
 		}
 	}
 
-
 	public PrintStream getRobotOutputStream() {
 		Thread c = Thread.currentThread();
 
@@ -157,6 +156,7 @@ public class ThreadManager implements IThreadManager {
 
 	public void printlnToRobot(String s) {
 		final PrintStream stream = getRobotOutputStream();
+
 		if (stream != null) {
 			stream.println(s);
 		}

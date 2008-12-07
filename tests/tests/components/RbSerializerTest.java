@@ -175,37 +175,38 @@ public class RbSerializerTest {
 
 	@Test
 	public void graphics() throws InterruptedException {
-		final Graphics2DSerialized sg=new Graphics2DSerialized();
+		final Graphics2DSerialized sg = new Graphics2DSerialized();
+
 		sg.setPaintingEnabled(true);
 		sg.setBackground(Color.GREEN);
 		sg.setColor(Color.RED);
 		Arc2D a = new Arc2D.Double(Arc2D.PIE);
+
 		a.setAngleExtent(10);
 		a.setAngleStart(-30);
-		a.setFrame(0,0,80,80);
+		a.setFrame(0, 0, 80, 80);
 		sg.draw(a);
 
 		sg.setColor(Color.BLUE);
-		sg.draw(new Line2D.Double(99,98,78,3));
+		sg.draw(new Line2D.Double(99, 98, 78, 3));
 
 		sg.setColor(Color.YELLOW);
 		sg.draw(new Rectangle2D.Double(20, 20, 30, 50));
 
 		sg.setColor(Color.BLACK);
-		sg.drawLine(99,3,78,3);
+		sg.drawLine(99, 3, 78, 3);
 		sg.drawRect(90, 20, 30, 50);
 
 		sg.setColor(Color.CYAN);
 
-		sg.setStroke(new BasicStroke(1,2,BasicStroke.JOIN_ROUND,4,null, 0));
+		sg.setStroke(new BasicStroke(1, 2, BasicStroke.JOIN_ROUND, 4, null, 0));
 		sg.fill(new Rectangle2D.Double(20, 70, 30, 50));
 		sg.fill(new Ellipse2D.Double(70, 70, 30, 50));
 
 		sg.setColor(Color.MAGENTA);
 		sg.fill(new RoundRectangle2D.Double(110, 70, 30, 50, 13.5, 16.1));
 
-
-		Canvas d=new Canvas(){
+		Canvas d = new Canvas() {
 			@Override
 			public void paint(Graphics g) {
 				synchronized (this) {
@@ -213,12 +214,10 @@ public class RbSerializerTest {
 				}
 			}
 		};
-		d.setSize(200,200);
 
+		d.setSize(200, 200);
 
-		JFrame f=new JFrame(){
-
-		};
+		JFrame f = new JFrame() {};
 
 		f.add(d);
 		f.pack();
@@ -227,6 +226,5 @@ public class RbSerializerTest {
 		Thread.sleep(100);
 		f.setVisible(false);
 	}
-
 
 }

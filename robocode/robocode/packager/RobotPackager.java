@@ -96,7 +96,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	public RobotPackager(RobocodeManager manager) {
 		super(manager.getWindowManager().getRobocodeFrame());
-		this.manager=manager;
+		this.manager = manager;
 		this.repositoryManager = manager.getRobotRepositoryManager();
 		initialize();
 	}

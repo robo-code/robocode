@@ -278,7 +278,6 @@ public final class RbSerializer {
 		buffer.putLong(value);
 	}
 
-
 	public void serialize(ByteBuffer buffer, int value) {
 		buffer.putInt(value);
 	}
@@ -379,6 +378,7 @@ public final class RbSerializer {
 			return null;
 		}
 		double[] res = new double[len];
+
 		for (int i = 0; i < len; i++) {
 			res[i] = buffer.getDouble();
 		}

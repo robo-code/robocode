@@ -298,6 +298,7 @@ public class SecurePrintStream extends PrintStream {
 
 		if (securityManager != null && securityManager instanceof RobocodeSecurityManager) {
 			PrintStream out = RobocodeManager.getThreadManager().getRobotOutputStream();
+
 			return (out == null) ? this : out;
 		}
 		return this;

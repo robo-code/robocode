@@ -57,7 +57,7 @@ import java.util.List;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-@SuppressWarnings({"deprecation"})
+@SuppressWarnings({ "deprecation"})
 public final class Graphics2DProxy extends Graphics2D implements java.io.Serializable, IGraphicsProxy {
 
 	private static final long serialVersionUID = 1L;
@@ -964,9 +964,10 @@ public final class Graphics2DProxy extends Graphics2D implements java.io.Seriali
 		queuedCalls.add(new QueuedCall(method, args));
 	}
 
-	@SuppressWarnings({"unchecked"})
-	public void processTo(Graphics2D g, Object graphicsCalls){
+	@SuppressWarnings({ "unchecked"})
+	public void processTo(Graphics2D g, Object graphicsCalls) {
 		List<Graphics2DProxy.QueuedCall> gc = (List<Graphics2DProxy.QueuedCall>) graphicsCalls;
+
 		for (QueuedCall call : gc) {
 			try {
 				processQueuedCall(call, this);

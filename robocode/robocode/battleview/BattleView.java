@@ -470,6 +470,7 @@ public class BattleView extends Canvas {
 		g.setClip(0, 0, battleField.getWidth(), battleField.getHeight());
 
 		IGraphicsProxy gfxProxy = getRobotGraphics(robotIndex);
+
 		if (robotSnapshot.isSGPaintEnabled()) {
 			gfxProxy.processTo(g, graphicsCalls);
 		} else {

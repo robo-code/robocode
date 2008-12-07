@@ -483,6 +483,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 	private boolean isSafeContext() {
 		try {
 			final Object currentContext = getSecurityContext();
+
 			return currentContext.equals(safeSecurityContext);
 		} catch (Exception e) {
 			syserr.println("Exception checking safe thread: ");

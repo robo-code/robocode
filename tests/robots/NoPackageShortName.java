@@ -12,6 +12,7 @@
 
 import robocode.Robot;
 
+
 /**
  * @author Pavel Savara (original)
  */

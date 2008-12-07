@@ -303,7 +303,7 @@ public final class ExecCommands implements Serializable {
 	}
 
 	private static class SerializableHelper implements ISerializableHelper {
-		@SuppressWarnings({"PointlessArithmeticExpression"})
+		@SuppressWarnings({ "PointlessArithmeticExpression"})
 		public int sizeOf(RbSerializer serializer, Object object) {
 			ExecCommands obj = (ExecCommands) object;
 			int size = RbSerializer.SIZEOF_TYPEINFO + 4 * RbSerializer.SIZEOF_DOUBLE;
@@ -314,7 +314,7 @@ public final class ExecCommands implements Serializable {
 			size += 4 * RbSerializer.SIZEOF_BOOL;
 			size += serializer.sizeOf(obj.outputText);
 
-			size += serializer.sizeOf((byte[])obj.graphicsCalls);
+			size += serializer.sizeOf((byte[]) obj.graphicsCalls);
 
 			// bullets
 			size += obj.bullets.size() * serializer.sizeOf(RbSerializer.BulletCommand_TYPE, null);
