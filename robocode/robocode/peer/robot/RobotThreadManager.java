@@ -53,8 +53,9 @@ public class RobotThreadManager {
 	public void cleanup() {
 		try {
 			if (runThread == null || !runThread.isAlive()) {
-				discardAWT();
-				runThreadGroup.destroy();
+				if (!discardAWT()) {
+					runThreadGroup.destroy();
+				}
 			} else {
 				Logger.logError("Warning, could not destroy " + runThread.getName());
 			}
@@ -69,11 +70,14 @@ public class RobotThreadManager {
 		}
 	}
 
-	public void discardAWT() {
+	public boolean discardAWT() {
+		boolean res = false;
+
 		if (awtForThreadGroup != null && !(awtForThreadGroup instanceof Integer)) {
-			RobocodeSecurityManager.disposeAppContext(awtForThreadGroup);
+			res = RobocodeSecurityManager.disposeAppContext(awtForThreadGroup);
 			awtForThreadGroup = null;
 		}
+		return res;
 	}
 
 	public void checkRunThread() {

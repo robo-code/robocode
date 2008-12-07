@@ -631,18 +631,16 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// end: same as SunToolkit.createNewAppContext();
 	}
 
-	public static void disposeAppContext(Object appContext) {
+	public static boolean disposeAppContext(Object appContext) {
 		// same as AppContext.dispose();
 		try {
 			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.AppContext");
 			final Method dispose = sunToolkit.getDeclaredMethod("dispose");
 
 			dispose.invoke(appContext);
-		} catch (ClassNotFoundException ignore) {
-		} catch (NoSuchMethodException ignore) {
-		} catch (InvocationTargetException ignore) {
-		} catch (IllegalAccessException ignore) {
-		}
+			return true;
+		} catch (ClassNotFoundException ignore) {} catch (NoSuchMethodException ignore) {} catch (InvocationTargetException ignore) {} catch (IllegalAccessException ignore) {}
+		return false;
 		// end: same as AppContext.dispose();
 	}
 
