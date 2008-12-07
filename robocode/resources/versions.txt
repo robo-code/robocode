@@ -10,7 +10,6 @@ Version 1.6.2 Beta 2
 
 = Changes =
 * Mostly cleanup of code and documentation.
-* The classes _AdvancedRadiansRobot,_AdvancedRobot, and _Robot are now just dummy classes kept for preserving backwards compatibility. You should never inherit from these classes!
 * Improved compatibility with RobocodeJGAP.
 * Development robot version names were visible in the robot repository.
 
