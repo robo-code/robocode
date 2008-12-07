@@ -608,7 +608,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 	}
 
-	public static void createNewAppContext() {
+	public static Object createNewAppContext() {
 		// same as SunToolkit.createNewAppContext();
 		// we can't assume that we are always on Suns JVM, so we can't reference it directly
 		// why we call that ? Because SunToolkit is caching AWTQueue instance form main thread group and use it on robots threads
@@ -617,8 +617,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.SunToolkit");
 			final Method createNewAppContext = sunToolkit.getDeclaredMethod("createNewAppContext");
 
-			createNewAppContext.invoke(null);
-		} catch (ClassNotFoundException e) {// we are not on sun JVM
+			return createNewAppContext.invoke(null);
+		} catch (ClassNotFoundException e) {
+			// we are not on sun JVM
+			return -1;
 		} catch (NoSuchMethodException e) {
 			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
 		} catch (InvocationTargetException e) {
@@ -628,4 +630,20 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 		// end: same as SunToolkit.createNewAppContext();
 	}
+
+	public static void disposeAppContext(Object appContext) {
+		// same as AppContext.dispose();
+		try {
+			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.AppContext");
+			final Method dispose = sunToolkit.getDeclaredMethod("dispose");
+
+			dispose.invoke(appContext);
+		} catch (ClassNotFoundException ignore) {
+		} catch (NoSuchMethodException ignore) {
+		} catch (InvocationTargetException ignore) {
+		} catch (IllegalAccessException ignore) {
+		}
+		// end: same as AppContext.dispose();
+	}
+
 }
