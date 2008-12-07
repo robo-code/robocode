@@ -43,7 +43,7 @@ public class RobotThreadManager {
 	private final IHostedThread robotProxy;
 	private Thread runThread;
 	private LoggingThreadGroup runThreadGroup;
-	private boolean awtForThreadGroup;
+	private Object awtForThreadGroup;
 
 	public RobotThreadManager(IHostedThread robotProxy) {
 		this.robotProxy = robotProxy;
@@ -53,7 +53,9 @@ public class RobotThreadManager {
 	public void cleanup() {
 		try {
 			if (runThread == null || !runThread.isAlive()) {
-				runThreadGroup.destroy();
+				if (!discardAWT()) {
+					runThreadGroup.destroy();
+				}
 			} else {
 				Logger.logError("Warning, could not destroy " + runThread.getName());
 			}
@@ -63,10 +65,19 @@ public class RobotThreadManager {
 	}
 
 	public void initAWT() {
-		if (!awtForThreadGroup) {
-			RobocodeSecurityManager.createNewAppContext();
-			awtForThreadGroup = true;
+		if (awtForThreadGroup == null) {
+			awtForThreadGroup = RobocodeSecurityManager.createNewAppContext();
 		}
+	}
+
+	public boolean discardAWT() {
+		boolean res = false;
+
+		if (awtForThreadGroup != null && !(awtForThreadGroup instanceof Integer)) {
+			res = RobocodeSecurityManager.disposeAppContext(awtForThreadGroup);
+			awtForThreadGroup = null;
+		}
+		return res;
 	}
 
 	public void checkRunThread() {
