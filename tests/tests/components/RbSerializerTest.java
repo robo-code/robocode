@@ -20,10 +20,14 @@ import robocode.peer.DebugProperty;
 import robocode.peer.robot.TeamMessage;
 import robocode.peer.serialize.RbSerializer;
 import robocode.common.ObjectCloner;
+import robocode.robotpaint.Graphics2DSerialized;
 
+import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
+import java.awt.*;
+import java.awt.geom.*;
 
 
 /**
@@ -118,7 +122,7 @@ public class RbSerializerTest {
 		Assert.assertEquals(ec2.getDebugProperties().get(0).value, "P¯Ìliö ûluùouËk˝ k˘Ú ˙pÏl Ô·belskÈ Ûdy");
 	}
 
-	@Test
+	// @Test
 	// 14 seconds for 1000 000,
 	// 15x faster
 	public void speed() throws IOException {
@@ -168,5 +172,61 @@ public class RbSerializerTest {
 			Assert.assertEquals(ec2.getGunColor(), i);
 		}
 	}
+
+	@Test
+	public void graphics() throws InterruptedException {
+		final Graphics2DSerialized sg=new Graphics2DSerialized();
+		sg.setPaintingEnabled(true);
+		sg.setBackground(Color.GREEN);
+		sg.setColor(Color.RED);
+		Arc2D a = new Arc2D.Double(Arc2D.PIE);
+		a.setAngleExtent(10);
+		a.setAngleStart(-30);
+		a.setFrame(0,0,80,80);
+		sg.draw(a);
+
+		sg.setColor(Color.BLUE);
+		sg.draw(new Line2D.Double(99,98,78,3));
+
+		sg.setColor(Color.YELLOW);
+		sg.draw(new Rectangle2D.Double(20, 20, 30, 50));
+
+		sg.setColor(Color.BLACK);
+		sg.drawLine(99,3,78,3);
+		sg.drawRect(90, 20, 30, 50);
+
+		sg.setColor(Color.CYAN);
+
+		sg.setStroke(new BasicStroke(1,2,BasicStroke.JOIN_ROUND,4,null, 0));
+		sg.fill(new Rectangle2D.Double(20, 70, 30, 50));
+		sg.fill(new Ellipse2D.Double(70, 70, 30, 50));
+
+		sg.setColor(Color.MAGENTA);
+		sg.fill(new RoundRectangle2D.Double(110, 70, 30, 50, 13.5, 16.1));
+
+
+		Canvas d=new Canvas(){
+			@Override
+			public void paint(Graphics g) {
+				synchronized (this) {
+					sg.processTo((Graphics2D) g);
+				}
+			}
+		};
+		d.setSize(200,200);
+
+
+		JFrame f=new JFrame(){
+
+		};
+
+		f.add(d);
+		f.pack();
+		f.setVisible(true);
+		f.setFocusable(true);
+		Thread.sleep(100);
+		f.setVisible(false);
+	}
+
 
 }

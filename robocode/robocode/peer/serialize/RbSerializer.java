@@ -22,6 +22,7 @@ import robocode.*;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
 import java.nio.charset.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
@@ -222,7 +223,9 @@ public final class RbSerializer {
 			buffer.putInt(-1);
 		} else {
 			buffer.putInt(data.length);
-			buffer.asIntBuffer().put(data);
+			for (int aData : data) {
+				buffer.putInt(aData);
+			}
 		}
 	}
 
@@ -231,7 +234,9 @@ public final class RbSerializer {
 			buffer.putInt(-1);
 		} else {
 			buffer.putInt(data.length);
-			buffer.asCharBuffer().put(data);
+			for (char aData : data) {
+				buffer.putChar(aData);
+			}
 		}
 	}
 
@@ -240,7 +245,9 @@ public final class RbSerializer {
 			buffer.putInt(-1);
 		} else {
 			buffer.putInt(data.length);
-			buffer.asDoubleBuffer().put(data);
+			for (double aData : data) {
+				buffer.putDouble(aData);
+			}
 		}
 	}
 
@@ -249,7 +256,9 @@ public final class RbSerializer {
 			buffer.putInt(-1);
 		} else {
 			buffer.putInt(data.length);
-			buffer.asFloatBuffer().put(data);
+			for (float aData : data) {
+				buffer.putFloat(aData);
+			}
 		}
 	}
 
@@ -329,7 +338,9 @@ public final class RbSerializer {
 		}
 		int[] res = new int[len];
 
-		buffer.asIntBuffer().get(res);
+		for (int i = 0; i < len; i++) {
+			res[i] = buffer.getInt();
+		}
 		return res;
 	}
 
@@ -341,7 +352,9 @@ public final class RbSerializer {
 		}
 		float[] res = new float[len];
 
-		buffer.asFloatBuffer().get(res);
+		for (int i = 0; i < len; i++) {
+			res[i] = buffer.getFloat();
+		}
 		return res;
 	}
 
@@ -353,7 +366,9 @@ public final class RbSerializer {
 		}
 		char[] res = new char[len];
 
-		buffer.asCharBuffer().get(res);
+		for (int i = 0; i < len; i++) {
+			res[i] = buffer.getChar();
+		}
 		return res;
 	}
 
@@ -364,8 +379,9 @@ public final class RbSerializer {
 			return null;
 		}
 		double[] res = new double[len];
-
-		buffer.asDoubleBuffer().get(res);
+		for (int i = 0; i < len; i++) {
+			res[i] = buffer.getDouble();
+		}
 		return res;
 	}
 

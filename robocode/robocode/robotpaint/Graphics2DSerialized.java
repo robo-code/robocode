@@ -129,9 +129,12 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Flag indicating if this proxy has been initialized
 	private transient boolean isPaintingEnabled;
 
-	private ByteBuffer calls = ByteBuffer.allocate(2048);
+	private ByteBuffer calls;
 
 	private RbSerializer serializer = new RbSerializer();
+
+	private Method lastRead; //TODO remove debug
+	private int lastPos;
 
 	// --------------------------------------------------------------------------
 	// Overriding all methods from the extended Graphics class
@@ -690,6 +693,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	@Override
 	public void fill(Shape s) {
 		if (isPaintingEnabled) {
+			put(Method.FILL_SHAPE);
 			put(s);
 		}
 	}
@@ -947,6 +951,9 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// --------------------------------------------------------------------------
 
 	public void setPaintingEnabled(boolean value) {
+		if (value && !isPaintingEnabled){
+			calls = ByteBuffer.allocate(24 * 1024);
+		}
 		isPaintingEnabled = value;
 	}
 
@@ -989,12 +996,17 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		calls.put((byte[]) graphicsCalls);
 		calls.flip();
 		while (calls.remaining()>0){
-			processQueuedCall(g);
+			try{
+				processQueuedCall(g);
+			}
+			catch (Throwable t){
+				calls.position(lastPos-4);
+			}
 		}
 	}
 
 	public Object readoutQueuedCalls() {
-		if (calls.position() == 0){
+		if (calls==null || calls.position() == 0){
 			return null;
 		}
 		byte[] res=new byte[calls.position()];
@@ -1005,7 +1017,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private void processQueuedCall(Graphics2D g) {
-		Method m = methods[calls.get()];
+		Method m = readMethod();
 		switch (m) {
 		case TRANSLATE_INT:
 			processTranslate_int(g);
@@ -1201,6 +1213,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			break;
 		}
 	}
+
 	private void processTranslate_int(Graphics2D g) {
 		// translate(int, int)
 		g.translate(calls.getInt(), calls.getInt());
@@ -1466,7 +1479,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			case 0:
 				DeserializePathIterator pai=new DeserializePathIterator();
 				GeneralPath path=new GeneralPath();
-				path.append(pai, true);
+				path.append(pai, false);
 				return path;
 
 			default:
@@ -1480,16 +1493,20 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		int count;
 		int pos;
 		int windingRule;
-		int type;
-		double[] coords;
+		int[] type;
+		double[][] coords;
 
 		public DeserializePathIterator(){
 			count=calls.getInt();
 			pos=0;
 			windingRule =calls.getInt();
 			if (count>0){
-				type = calls.getInt();
-				coords = serializer.deserializeDoubles(calls);
+				type = new int[count];
+				coords =new double[count][];
+				for(int i=0;i<count;i++){
+					type[i]=calls.getInt();
+					coords[i] = serializer.deserializeDoubles(calls);
+				}
 			}
 		}
 
@@ -1503,22 +1520,18 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 		public void next() {
 			pos++;
-			if (!isDone()){
-				type = calls.getInt();
-				coords = serializer.deserializeDoubles(calls);
-			}
 		}
 
 		public int currentSegment(float[] coords) {
 			for (int i = 0; i<coords.length;i++){
-				coords[i] = (float) this.coords[i];
+				coords[i] = (float) this.coords[pos][i];
 			}
-			return type; 
+			return type[pos];
 		}
 
 		public int currentSegment(double[] coords) {
-			System.arraycopy(this.coords, 0, coords, 0, coords.length);
-			return type;
+			System.arraycopy(this.coords[pos], 0, coords, 0, coords.length);
+			return type[pos];
 		}
 	}
 
@@ -1567,7 +1580,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 			//count them first
 			PathIterator pi = clip.getPathIterator(null);
-			put(pi.getWindingRule());
 			while (!pi.isDone()) {
 				count++;
 				pi.next();
@@ -1576,6 +1588,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 			//write them
 			pi = clip.getPathIterator(null);
+			put(pi.getWindingRule());
 			while (!pi.isDone()) {
 				int type = pi.currentSegment(coords);
 				put(type);
@@ -1675,8 +1688,30 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 
+	private Method readMethod() {
+        //TODO remove debug
+		if (calls.getInt()!=0xBADF00D){
+			calls.position(lastPos);
+			//throw new Error();
+		}
+        //TODO remove debug
+		lastPos=calls.position();
+		Method m = methods[calls.get()];
+        //TODO remove debug
+		if (calls.getInt()!=0xBADF00D){
+			throw new Error();
+		}
+        //TODO remove debug
+		lastRead=m;
+		return m;
+	}
+
 	private void put(Method m) {
+        //TODO remove debug
+		calls.putInt(0xBADF00D);
 		calls.put((byte) m.ordinal());
+        //TODO remove debug
+		calls.putInt(0xBADF00D);
 	}
 
 	private void put(AttributedCharacterIterator iterator) {
@@ -1693,6 +1728,10 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private void put(boolean value) {
 		serializer.serialize(calls, value);
+	}
+
+	private void put(byte value) {
+		calls.put(value);
 	}
 
 	private void put(int value) {
@@ -1721,6 +1760,10 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private void put(double value) {
 		calls.putDouble(value);
+	}
+
+	private void put(float value) {
+		calls.putFloat(value);
 	}
 
 	private void put(Color value) {
