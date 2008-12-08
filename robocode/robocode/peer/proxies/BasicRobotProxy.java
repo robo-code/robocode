@@ -414,7 +414,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	}
 
 	protected final double getGunHeatImpl() {
-		return status.getGunHeat() - firedHeat;
+		return status.getGunHeat() + firedHeat;
 	}
 
 	protected final void setMoveImpl(double distance) {

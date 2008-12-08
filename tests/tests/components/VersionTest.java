@@ -38,8 +38,18 @@ public class VersionTest {
 	}
 
 	@Test
+	public void greaterShort2() {
+		Assert.assertTrue(VersionManager.compare("1.4", "1.1") > 0);
+	}
+
+	@Test
 	public void greaterShortBeta() {
 		Assert.assertTrue(VersionManager.compare("1.4 Beta", "1.1.3") > 0);
+	}
+
+	@Test
+	public void greaterShortBeta3() {
+		Assert.assertTrue(VersionManager.compare("1.4 Beta", "1.1") > 0);
 	}
 
 	@Test
