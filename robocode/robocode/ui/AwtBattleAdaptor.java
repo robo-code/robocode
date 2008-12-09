@@ -83,7 +83,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 	}
 
 	@Override
-	public void onBattleEnded(BattleFinishedEvent event) {
+	public void onBattleFinished(BattleFinishedEvent event) {
 		timerTask.stop();
 		repaintTask(true, true);
 	}
@@ -239,13 +239,13 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 		}
 
 		@Override
-		public void onBattleEnded(final BattleFinishedEvent event) {
+		public void onBattleFinished(final BattleFinishedEvent event) {
 			isRunning.set(false);
 			isPaused.set(false);
 			snapshot.set(null);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					battleEventDispatcher.onBattleEnded(event);
+					battleEventDispatcher.onBattleFinished(event);
 				}
 			});
 		}

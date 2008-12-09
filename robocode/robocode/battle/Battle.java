@@ -383,7 +383,7 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeBattle() {
-		eventDispatcher.onBattleEnded(new BattleFinishedEvent(isAborted()));
+		eventDispatcher.onBattleFinished(new BattleFinishedEvent(isAborted()));
 
 		if (!isAborted()) {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeBattleResults()));

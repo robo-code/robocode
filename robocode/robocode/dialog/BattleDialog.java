@@ -247,7 +247,7 @@ public class BattleDialog extends JFrame {
 		}
 
 		@Override
-		public void onBattleEnded(BattleFinishedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			lastSnapshot = null;
 			paintSnapshot();
 		}

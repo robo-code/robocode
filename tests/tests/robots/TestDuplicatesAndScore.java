@@ -105,7 +105,7 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 	}
 
 	@Override
-	public void onBattleEnded(BattleFinishedEvent event) {
+	public void onBattleFinished(BattleFinishedEvent event) {
 		if (event.isAborted()) {
 			results = null;
 		}

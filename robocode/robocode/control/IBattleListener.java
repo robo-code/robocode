@@ -23,7 +23,7 @@ public interface IBattleListener {
 
 	public void onBattleStarted(final BattleStartedEvent event);
 
-	public void onBattleEnded(final BattleFinishedEvent event);
+	public void onBattleFinished(final BattleFinishedEvent event);
 
 	public void onBattleCompleted(final BattleCompletedEvent event);
 

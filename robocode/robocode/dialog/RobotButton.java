@@ -222,7 +222,7 @@ public class RobotButton extends JButton implements ActionListener {
 			repaint();
 		}
 		
-		public void onBattleEnded(final BattleFinishedEvent event) {
+		public void onBattleFinished(final BattleFinishedEvent event) {
 			lastEnergy = 0;
 			repaint();
 		}

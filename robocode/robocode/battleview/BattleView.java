@@ -642,8 +642,8 @@ public class BattleView extends Canvas {
 		}
 
 		@Override
-		public void onBattleEnded(BattleFinishedEvent event) {
-			super.onBattleEnded(event);
+		public void onBattleFinished(BattleFinishedEvent event) {
+			super.onBattleFinished(event);
 			robotGraphics = null;
 		}
 

@@ -19,10 +19,10 @@ import java.util.List;
 
 import org.junit.Assert;
 
-import robocode.battle.events.BattleFinishedEvent;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.ScoreSnapshot;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 
 
 /**
@@ -36,7 +36,7 @@ import robocode.battle.snapshot.TurnSnapshot;
  */
 public class TestRankingsWithTargetRobots extends RobotTestBed {
 
-	TurnSnapshot lastTurnSnapshot;
+	ITurnSnapshot lastTurnSnapshot;
 
 	@Override
 	public String getRobotNames() {
@@ -56,10 +56,10 @@ public class TestRankingsWithTargetRobots extends RobotTestBed {
 	}
 
 	@Override
-	public void onBattleEnded(BattleFinishedEvent event) {
-		final List<ScoreSnapshot> scores = lastTurnSnapshot.getTeamScores();
-		final ScoreSnapshot score1 = scores.get(0);
-		final ScoreSnapshot score2 = scores.get(1);
+	public void onBattleFinished(BattleFinishedEvent event) {
+		final List<IScoreSnapshot> scores = lastTurnSnapshot.getTeamScores();
+		final IScoreSnapshot score1 = scores.get(0);
+		final IScoreSnapshot score2 = scores.get(1);
 
 		// 1sts + 2nds = number of rounds, e.g. 4 + 6 = 10 (where 4 is 1st places, and 6 is 2nd places)
 		Assert.assertThat("1st ranked robot's total 1st and 2nd places must be equal to the number of rounds",

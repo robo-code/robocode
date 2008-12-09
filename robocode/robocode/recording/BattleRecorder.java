@@ -69,7 +69,7 @@ public class BattleRecorder {
 		}
 
 		@Override
-		public void onBattleEnded(BattleFinishedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			recordmanager.cleanupStreams();
 		}
 

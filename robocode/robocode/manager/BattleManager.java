@@ -213,7 +213,7 @@ public class BattleManager implements IBattleManager {
 
 		if (!found) {
 			logError("Aborting battle, could not find robot: " + bot);
-			this.battleEventDispatcher.onBattleEnded(new BattleFinishedEvent(true));
+			this.battleEventDispatcher.onBattleFinished(new BattleFinishedEvent(true));
 			return true;
 		}
 		return false;

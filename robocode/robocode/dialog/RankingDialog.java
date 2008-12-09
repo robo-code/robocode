@@ -102,7 +102,7 @@ public class RankingDialog extends BaseScoreDialog {
 
 	private class BattleObserver extends BattleAdaptor {
 		@Override
-		public void onBattleEnded(BattleFinishedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			snapshot.set(null);
 		}
 
