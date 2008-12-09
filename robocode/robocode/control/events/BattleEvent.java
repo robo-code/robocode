@@ -9,21 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
 
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class BattleFinishedEvent extends BattleEvent {
-	private final boolean isAborted;
-
-	public BattleFinishedEvent(boolean isAborted) {
-		this.isAborted = isAborted;
-	}
-
-	public boolean isAborted() {
-		return isAborted;
-	}
-}
+public abstract class BattleEvent {}

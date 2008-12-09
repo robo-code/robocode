@@ -12,9 +12,9 @@
 package components;
 
 
+import helpers.Assert;
 import org.junit.Test;
 import robocode.manager.VersionManager;
-import helpers.Assert;
 
 
 /**

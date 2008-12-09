@@ -19,15 +19,15 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.events.BattleFinishedEvent;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.ScoreSnapshot;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.BattleResults;
+import robocode.battle.events.BattleAdaptor;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
+import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -169,16 +169,16 @@ public class RobotButton extends JButton implements ActionListener {
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			final TurnSnapshot turn = event.getTurnSnapshot();
+			final ITurnSnapshot turn = event.getTurnSnapshot();
 
 			if (turn == null) {
 				return;
 			}
-			final java.util.List<RobotSnapshot> robots = turn.getRobots();
-			final java.util.List<ScoreSnapshot> scoreSnapshotList = event.getTurnSnapshot().getTeamScoresStable();
+			final java.util.List<IRobotSnapshot> robots = turn.getRobots();
+			final java.util.List<IScoreSnapshot> scoreSnapshotList = event.getTurnSnapshot().getTeamScoresStable();
 
 			maxEnergy = 0;
-			for (RobotSnapshot robot : robots) {
+			for (IRobotSnapshot robot : robots) {
 				if (maxEnergy < robot.getEnergy()) {
 					maxEnergy = (int) robot.getEnergy();
 				}
@@ -188,7 +188,7 @@ public class RobotButton extends JButton implements ActionListener {
 			}
 
 			maxScore = 0;
-			for (ScoreSnapshot team : scoreSnapshotList) {
+			for (IScoreSnapshot team : scoreSnapshotList) {
 				if (maxScore < team.getCurrentScore()) {
 					maxScore = (int) team.getCurrentScore();
 				}

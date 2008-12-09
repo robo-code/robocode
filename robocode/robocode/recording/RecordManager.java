@@ -12,25 +12,26 @@
 package robocode.recording;
 
 
-import robocode.manager.RobocodeManager;
-import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.IBattle;
-import robocode.common.XmlReader;
-import robocode.common.XmlSerializable;
-import robocode.common.XmlWriter;
-import static robocode.io.Logger.logError;
 import robocode.BattleResults;
 import robocode.BattleRules;
+import robocode.battle.IBattle;
+import robocode.battle.events.BattleEventDispatcher;
+import robocode.battle.snapshot.TurnSnapshot;
+import robocode.common.IXmlSerializable;
+import robocode.common.XmlReader;
+import robocode.common.XmlWriter;
+import robocode.control.snapshot.ITurnSnapshot;
+import static robocode.io.Logger.logError;
+import robocode.manager.RobocodeManager;
 
 import java.io.*;
-import java.util.zip.ZipOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.List;
+import java.nio.charset.Charset;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.nio.charset.Charset;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 
 /**
@@ -148,13 +149,13 @@ public class RecordManager implements IRecordManager {
 		}
 	}
 
-	public TurnSnapshot readSnapshot(int currentTime) {
+	public ITurnSnapshot readSnapshot(int currentTime) {
 		if (objectReadStream == null) {
 			return null;
 		}
 		try {
 			// TODO implement seek to currentTime, warn you. turns don't have same size in bytes
-			return (TurnSnapshot) objectReadStream.readObject();
+			return (ITurnSnapshot) objectReadStream.readObject();
 		} catch (EOFException e) {
 			logError(e);
 			return null;
@@ -196,7 +197,7 @@ public class RecordManager implements IRecordManager {
 					for (int i = 0; i < recordInfo.turnsInRounds.length; i++) {
 						for (int j = recordInfo.turnsInRounds[i] - 1; j >= 0; j--) {
 							try {
-								TurnSnapshot turn = (TurnSnapshot) ois.readObject();
+								ITurnSnapshot turn = (ITurnSnapshot) ois.readObject();
 
 								oos.writeObject(turn);
 							} catch (ClassNotFoundException e) {
@@ -236,7 +237,7 @@ public class RecordManager implements IRecordManager {
 		}
 	}
 
-	private class RecordRoot implements XmlSerializable {
+	private class RecordRoot implements IXmlSerializable {
 
 		public RecordRoot() {
 			me = this;
@@ -251,24 +252,24 @@ public class RecordManager implements IRecordManager {
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect("record", new XmlReader.Element() {
-				public XmlSerializable read(XmlReader reader) {
+				public IXmlSerializable read(XmlReader reader) {
 
 					final XmlReader.Element element = (new BattleRecordInfo()).readXml(reader);
 
 					reader.expect("recordInfo", new XmlReader.Element() {
-						public XmlSerializable read(XmlReader reader) {
+						public IXmlSerializable read(XmlReader reader) {
 							recordInfo = (BattleRecordInfo) element.read(reader);
 							return recordInfo;
 						}
 					});
 
 					reader.expect("turns", new XmlReader.ListElement() {
-						public XmlSerializable read(XmlReader reader) {
+						public IXmlSerializable read(XmlReader reader) {
 							// prototype
 							return new TurnSnapshot();
 						}
 
-						public void add(XmlSerializable child) {
+						public void add(IXmlSerializable child) {
 							try {
 								me.oos.writeObject(child);
 							} catch (IOException e) {
@@ -414,7 +415,7 @@ public class RecordManager implements IRecordManager {
 		recordInfo.results = results;
 	}
 
-	public void writeTurn(TurnSnapshot turn, int round, int time) {
+	public void writeTurn(ITurnSnapshot turn, int round, int time) {
 		try {
 			if (time != recordInfo.turnsInRounds[round]) {
 				throw new Error("Something rotten");

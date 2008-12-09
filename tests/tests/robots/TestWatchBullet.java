@@ -13,10 +13,10 @@ package robots;
 
 
 import helpers.RobotTestBed;
-import org.junit.Test;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
 import junit.framework.Assert;
+import org.junit.Test;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 
 
 /**
@@ -36,7 +36,7 @@ public class TestWatchBullet extends RobotTestBed {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(0);
+		final IRobotSnapshot robot = event.getTurnSnapshot().getRobots().get(0);
 
 		final String out = robot.getOutputStreamSnapshot();
 		final int time = event.getTurnSnapshot().getTurn();

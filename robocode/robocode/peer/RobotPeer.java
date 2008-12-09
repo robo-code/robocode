@@ -67,7 +67,6 @@ package robocode.peer;
 
 
 import robocode.*;
-import robocode.repository.RobotFileSpecification;
 import robocode.battle.Battle;
 import robocode.common.BoundingRectangle;
 import robocode.control.RandomFactory;
@@ -80,6 +79,7 @@ import static robocode.io.Logger.logMessage;
 import robocode.manager.IHostManager;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
+import robocode.repository.RobotFileSpecification;
 import robocode.robotpaint.Graphics2DProxy;
 import static robocode.util.Utils.*;
 

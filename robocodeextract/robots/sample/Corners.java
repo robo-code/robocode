@@ -14,10 +14,10 @@
 package sample;
 
 
-import static robocode.util.Utils.normalRelativeAngleDegrees;
 import robocode.DeathEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 import java.awt.*;
 

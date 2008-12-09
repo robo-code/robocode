@@ -14,20 +14,22 @@
 package robocode.battle.snapshot;
 
 
+import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
-import robocode.common.XmlSerializable;
 import robocode.common.XmlWriter;
-import robocode.peer.RobotPeer;
-import robocode.peer.RobotState;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.IScoreSnapshot;
 import robocode.peer.DebugProperty;
 import robocode.peer.ExecCommands;
+import robocode.peer.RobotPeer;
+import robocode.peer.RobotState;
 import robocode.robotpaint.Graphics2DProxy;
 
 import java.awt.geom.Arc2D;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Dictionary;
+import java.util.List;
 
 
 /**
@@ -50,7 +52,7 @@ import java.util.Dictionary;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public final class RobotSnapshot implements Serializable, XmlSerializable {
+public final class RobotSnapshot implements Serializable, IXmlSerializable, IRobotSnapshot {
 
 	private static final long serialVersionUID = 1L;
 
@@ -123,7 +125,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 	private String outputStreamSnapshot;
 
 	// Snapshot of score for robot
-	private ScoreSnapshot robotScoreSnapshot;
+	private IScoreSnapshot robotScoreSnapshot;
 
 	/**
 	 * Constructs a snapshot of the robot.
@@ -174,195 +176,89 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 		robotScoreSnapshot = new ScoreSnapshot(peer.getRobotStatistics(), peer.getName());
 	}
 
-	/**
-	 * Returns the name of the robot.
-	 *
-	 * @return the name of the robot.
-	 */
 	public String getName() {
 		// used to identify buttons
 		return name;
 	}
 
-	/**
-	 * Returns the very short name of this robot.
-	 *
-	 * @return the very short name of this robot.
-	 */
 	public String getShortName() {
 		// used for text on buttons
 		return shortName;
 	}
 
-	/**
-	 * Returns the very short name of this robot.
-	 *
-	 * @return the very short name of this robot.
-	 */
 	public String getVeryShortName() {
 		// used for drawign text on battleview
 		return veryShortName;
 	}
 
-	/**
-	 * Returns the name of the team or name of the robot if the robot is not a part of a team.
-	 *
-	 * @return the name of the team or name of the robot if the robot is not a part of a team.
-	 */
 	public String getTeamName() {
 		return teamName;
 	}
 
-	/**
-	 * @return Returns the index of the robot in whole battle.
-	 */
 	public int getContestIndex() {
 		return contestIndex;
 	}
 
-	/**
-	 * Returns the robot status.
-	 *
-	 * @return the robot status.
-	 */
 	public RobotState getState() {
 		return state;
 	}
 
-	/**
-	 * Returns the energy level.
-	 *
-	 * @return the energy level.
-	 */
 	public double getEnergy() {
 		return energy;
 	}
 
-	/**
-	 * Returns the velocity.
-	 *
-	 * @return the velocity.
-	 */
 	public double getVelocity() {
 		return velocity;
 	}
 
-	/**
-	 * Returns the body heading in radians.
-	 *
-	 * @return the body heading in radians.
-	 */
 	public double getBodyHeading() {
 		return bodyHeading;
 	}
 
-	/**
-	 * Returns the gun heading in radians.
-	 *
-	 * @return the gun heading in radians.
-	 */
 	public double getGunHeading() {
 		return gunHeading;
 	}
 
-	/**
-	 * Returns the radar heading in radians.
-	 *
-	 * @return the radar heading in radians.
-	 */
 	public double getRadarHeading() {
 		return radarHeading;
 	}
 
-	/**
-	 * Returns the gun heading in radians.
-	 *
-	 * @return the gun heat
-	 */
 	public double getGunHeat() {
 		return gunHeat;
 	}
 
-	/**
-	 * Returns the x coordinate of the robot.
-	 *
-	 * @return the x coordinate of the robot.
-	 */
 	public double getX() {
 		return x;
 	}
 
-	/**
-	 * Returns the y coordinate of the robot.
-	 *
-	 * @return the y coordinate of the robot.
-	 */
 	public double getY() {
 		return y;
 	}
 
-	/**
-	 * Returns the color of the body.
-	 *
-	 * @return the color of the body.
-	 */
 	public int getBodyColor() {
 		return bodyColor;
 	}
 
-	/**
-	 * Returns the color of the gun.
-	 *
-	 * @return the color of the gun.
-	 */
 	public int getGunColor() {
 		return gunColor;
 	}
 
-	/**
-	 * Returns the color of the radar.
-	 *
-	 * @return the color of the radar.
-	 */
 	public int getRadarColor() {
 		return radarColor;
 	}
 
-	/**
-	 * Returns the color of the scan arc.
-	 *
-	 * @return the color of the scan arc.
-	 */
 	public int getScanColor() {
 		return scanColor;
 	}
 
-	/**
-	 * Returns a flag specifying if this robot is a Droid.
-	 *
-	 * @return {@code true} if this robot is a Droid; {@code false} otherwise.
-	 */
 	public boolean isDroid() {
 		return isDroid;
 	}
 
-	/**
-	 * Returns a flag specifying if this robot is an IPaintRobot or is asking for getGraphics
-	 *
-	 * @return {@code true} if this robot is a an IPaintRobot or is asking for getGraphics; {@code false}
-	 *         otherwise.
-	 */
 	public boolean isPaintRobot() {
 		return isPaintRobot;
 	}
 
-	/**
-	 * Returns a flag specifying if robot's (onPaint) painting is enabled for
-	 * the robot.
-	 *
-	 * @return {@code true} if the paintings for this robot is enabled;
-	 *         {@code false} otherwise.
-	 */
 	public boolean isPaintEnabled() {
 		return isPaintEnabled;
 	}
@@ -376,13 +272,6 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 		isPaintEnabled = value;
 	}
 
-	/**
-	 * Returns a flag specifying if RobocodeSG painting is enabled for the
-	 * robot.
-	 *
-	 * @return {@code true} if RobocodeSG painting is enabled for this robot;
-	 *         {@code false} otherwise.
-	 */
 	public boolean isSGPaintEnabled() {
 		return isSGPaintEnabled;
 	}
@@ -405,18 +294,10 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 		return graphicsCalls;
 	}
 
-	/**
-	 * @return list of debug properties
-	 */
 	public java.util.List<DebugProperty> getDebugProperties() {
 		return debugProperties;
 	}
 
-	/**
-	 * Returns the output print stream snapshot for this robot.
-	 *
-	 * @return the output print stream snapshot for this robot.
-	 */
 	public String getOutputStreamSnapshot() {
 		return outputStreamSnapshot;
 	}
@@ -430,12 +311,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 		outputStreamSnapshot = text;
 	}
 
-	/**
-	 * Returns snapshot of score for robot
-	 *
-	 * @return snapshot of score for robot
-	 */
-	public ScoreSnapshot getRobotScoreSnapshot() {
+	public IScoreSnapshot getRobotScoreSnapshot() {
 		return robotScoreSnapshot;
 	}
 
@@ -522,7 +398,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 				writer.endElement();
 			}
 
-			robotScoreSnapshot.writeXml(writer, options);
+			((ScoreSnapshot) robotScoreSnapshot).writeXml(writer, options);
 		}
 		writer.endElement();
 
@@ -530,7 +406,7 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("robot", new XmlReader.Element() {
-			public XmlSerializable read(XmlReader reader) {
+			public IXmlSerializable read(XmlReader reader) {
 				final RobotSnapshot snapshot = new RobotSnapshot();
 
 				reader.expect("name", new XmlReader.Attribute() {
@@ -652,9 +528,9 @@ public final class RobotSnapshot implements Serializable, XmlSerializable {
 				final XmlReader.Element element = (new ScoreSnapshot()).readXml(reader);
 
 				reader.expect("score", new XmlReader.Element() {
-					public XmlSerializable read(XmlReader reader) {
-						snapshot.robotScoreSnapshot = (ScoreSnapshot) element.read(reader);
-						return snapshot.robotScoreSnapshot;
+					public IXmlSerializable read(XmlReader reader) {
+						snapshot.robotScoreSnapshot = (IScoreSnapshot) element.read(reader);
+						return (ScoreSnapshot) snapshot.robotScoreSnapshot;
 					}
 				});
 

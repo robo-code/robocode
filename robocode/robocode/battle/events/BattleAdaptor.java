@@ -12,6 +12,10 @@
 package robocode.battle.events;
 
 
+import robocode.control.IBattleListener;
+import robocode.control.events.*;
+
+
 /**
  * @author Flemming N. Larsen (original)
  * @since 1.6.1

@@ -12,8 +12,8 @@
 package testing;
 
 
-import robocode.Bullet;
 import robocode.AdvancedRobot;
+import robocode.Bullet;
 
 
 /**

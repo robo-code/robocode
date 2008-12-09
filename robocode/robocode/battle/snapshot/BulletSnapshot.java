@@ -14,13 +14,14 @@
 package robocode.battle.snapshot;
 
 
+import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
-import robocode.common.XmlSerializable;
 import robocode.common.XmlWriter;
+import robocode.control.snapshot.IBulletSnapshot;
 import robocode.peer.BulletPeer;
 import robocode.peer.BulletState;
-import robocode.peer.ExplosionPeer;
 import robocode.peer.ExecCommands;
+import robocode.peer.ExplosionPeer;
 
 import java.io.IOException;
 import java.util.Dictionary;
@@ -46,7 +47,7 @@ import java.util.Dictionary;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-public final class BulletSnapshot implements java.io.Serializable, XmlSerializable {
+public final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, IBulletSnapshot {
 
 	private static final long serialVersionUID = 1L;
 
@@ -116,93 +117,42 @@ public final class BulletSnapshot implements java.io.Serializable, XmlSerializab
 	// return ownerName;
 	// }
 
-	/**
-	 * Returns the bullet state.
-	 *
-	 * @return the bullet state.
-	 */
 	public BulletState getState() {
 		return state;
 	}
 
-	/**
-	 * Returns the bullet power.
-	 *
-	 * @return the bullet power.
-	 */
 	public double getPower() {
 		return power;
 	}
 
-	/**
-	 * Returns the x coordinate of the bullet.
-	 *
-	 * @return the x coordinate of the bullet.
-	 */
 	public double getX() {
 		return x;
 	}
 
-	/**
-	 * Returns the y coordinate of the bullet.
-	 *
-	 * @return the y coordinate of the bullet.
-	 */
 	public double getY() {
 		return y;
 	}
 
-	/**
-	 * Returns the x coordinate where to paint the bullet.
-	 *
-	 * @return the x coordinate where to paint the bullet.
-	 */
 	public double getPaintX() {
 		return paintX;
 	}
 
-	/**
-	 * Returns the y coordinate where to paint the bullet.
-	 *
-	 * @return the y coordinate where to paint the bullet.
-	 */
 	public double getPaintY() {
 		return paintY;
 	}
 
-	/**
-	 * Returns the color of the bullet.
-	 *
-	 * @return the color of the bullet.
-	 */
 	public int getColor() {
 		return color;
 	}
 
-	/**
-	 * Returns the frame number to display.
-	 *
-	 * @return the frame number to display.
-	 */
 	public int getFrame() {
 		return frame;
 	}
 
-	/**
-	 * Returns the flag specifying if this bullet has turned into an explosion.
-	 *
-	 * @return {@code true} if this bullet is now an explosion; {@code false}
-	 *         otherwise
-	 */
 	public boolean isExplosion() {
 		return isExplosion;
 	}
 
-	/**
-	 * Returns the index to which explosion image that must be rendered.
-	 *
-	 * @return the index to which explosion image that must be rendered.
-	 */
 	public int getExplosionImageIndex() {
 		return explosionImageIndex;
 	}
@@ -232,7 +182,7 @@ public final class BulletSnapshot implements java.io.Serializable, XmlSerializab
 
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("bullet", new XmlReader.Element() {
-			public XmlSerializable read(XmlReader reader) {
+			public IXmlSerializable read(XmlReader reader) {
 				final BulletSnapshot snapshot = new BulletSnapshot();
 
 				reader.expect("state", new XmlReader.Attribute() {

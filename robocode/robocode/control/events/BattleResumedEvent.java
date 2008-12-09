@@ -9,21 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
 
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class BattleMessageEvent extends BattleEvent {
-	private final String message;
-
-	public BattleMessageEvent(String message) {
-		this.message = message;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-}
+public class BattleResumedEvent extends BattleEvent {}

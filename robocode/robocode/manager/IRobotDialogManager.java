@@ -12,11 +12,11 @@
 package robocode.manager;
 
 
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.dialog.BattleButton;
+import robocode.dialog.BattleDialog;
 import robocode.dialog.RobotButton;
 import robocode.dialog.RobotDialog;
-import robocode.dialog.BattleDialog;
-import robocode.dialog.BattleButton;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public interface IRobotDialogManager {
-	void trim(List<RobotSnapshot> robots);
+	void trim(List<IRobotSnapshot> robots);
 
 	void reset();
 

@@ -96,14 +96,15 @@
 package robocode.battle;
 
 
-import robocode.BattleEndedEvent;
 import robocode.*;
-import robocode.battle.events.*;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.common.Command;
 import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
+import robocode.control.events.*;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
@@ -435,7 +436,7 @@ public final class Battle extends BaseBattle {
 		}
 		Logger.logMessage("");
 
-		final TurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
+		final ITurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
 	}

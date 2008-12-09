@@ -21,19 +21,21 @@
 package robocode.dialog;
 
 
-import robocode.battle.events.*;
-import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.events.BattleAdaptor;
+import robocode.control.events.*;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.manager.RobocodeManager;
 import robocode.peer.DebugProperty;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Map;
 
 
 /**
@@ -58,7 +60,7 @@ public class RobotDialog extends JFrame {
 	private JToggleButton pauseButton;
 	private boolean isListening;
 	private int robotIndex;
-	private RobotSnapshot lastSnapshot;
+	private IRobotSnapshot lastSnapshot;
 	private boolean paintSnapshot;
 	private boolean grayGreenButton;
 	private final Hashtable<String, String> debugProperties = new Hashtable<String, String>();
@@ -447,7 +449,7 @@ public class RobotDialog extends JFrame {
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			final TurnSnapshot turn = event.getTurnSnapshot();
+			final ITurnSnapshot turn = event.getTurnSnapshot();
 
 			if (turn == null) {
 				return;

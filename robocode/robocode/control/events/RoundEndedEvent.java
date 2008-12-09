@@ -9,11 +9,27 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
 
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class BattlePausedEvent extends BattleEvent {}
+public class RoundEndedEvent extends BattleEvent {
+	private final int round;
+	private final int turns;
+
+	public RoundEndedEvent(int round, int turns) {
+		this.round = round;
+		this.turns = turns;
+	}
+
+	public int getRound() {
+		return round;
+	}
+
+	public int getTurns() {
+		return turns;
+	}
+}

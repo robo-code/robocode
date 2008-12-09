@@ -9,11 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
 
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class BattleResumedEvent extends BattleEvent {}
+public class TurnStartedEvent extends BattleEvent {}

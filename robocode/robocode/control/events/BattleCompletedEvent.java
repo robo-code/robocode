@@ -9,15 +9,15 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
 
 
 import robocode.BattleResults;
 import robocode.BattleRules;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 /**

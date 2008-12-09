@@ -12,10 +12,10 @@
 package robocode.peer.robot;
 
 
-import robocode.robotinterfaces.IBasicRobot;
-import robocode.peer.RobotStatics;
-import robocode.Event;
 import robocode.Bullet;
+import robocode.Event;
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 import java.util.Hashtable;

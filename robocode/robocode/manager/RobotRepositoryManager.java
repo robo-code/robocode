@@ -45,7 +45,12 @@ import robocode.repository.*;
 import robocode.robotinterfaces.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,11 +58,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import java.lang.reflect.Method;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.*;
 
 
 /**

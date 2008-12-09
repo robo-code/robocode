@@ -14,8 +14,8 @@ package robocode.manager;
 
 import robocode.Event;
 import robocode.battle.BattleProperties;
-import robocode.battle.events.IBattleListener;
 import robocode.control.BattleSpecification;
+import robocode.control.IBattleListener;
 
 
 /**

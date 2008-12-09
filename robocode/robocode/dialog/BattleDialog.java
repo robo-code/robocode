@@ -12,20 +12,22 @@
 package robocode.dialog;
 
 
-import robocode.battle.events.*;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.events.BattleAdaptor;
+import robocode.common.IXmlSerializable;
 import robocode.common.XmlWriter;
-import robocode.manager.RobocodeManager;
+import robocode.control.events.*;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.io.Logger;
+import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.StringWriter;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.StringWriter;
 
 
 /**
@@ -47,7 +49,7 @@ public class BattleDialog extends JFrame {
 	private final RobocodeManager manager;
 	private final BattleButton battleButton;
 	private boolean isListening;
-	private TurnSnapshot lastSnapshot;
+	private ITurnSnapshot lastSnapshot;
 	private boolean paintSnapshot;
 
 	public BattleDialog(RobocodeManager manager, BattleButton battleButton) {
@@ -200,7 +202,7 @@ public class BattleDialog extends JFrame {
 				final XmlWriter xmlWriter = new XmlWriter(writer, true);
 
 				try {
-					lastSnapshot.writeXml(xmlWriter, null);
+					((IXmlSerializable) lastSnapshot).writeXml(xmlWriter, null);
 					writer.close();
 				} catch (IOException e) {
 					Logger.logError(e);

@@ -15,7 +15,7 @@ package robots;
 import helpers.Assert;
 import helpers.RobotTestBed;
 import org.junit.Test;
-import robocode.battle.events.TurnEndedEvent;
+import robocode.control.events.TurnEndedEvent;
 
 import javax.swing.*;
 

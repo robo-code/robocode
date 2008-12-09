@@ -12,7 +12,9 @@
 package robocode.recording;
 
 
-import robocode.battle.events.*;
+import robocode.battle.events.BattleAdaptor;
+import robocode.battle.events.BattleEventDispatcher;
+import robocode.control.events.*;
 
 
 /**

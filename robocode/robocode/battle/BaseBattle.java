@@ -14,9 +14,9 @@ package robocode.battle;
 
 import robocode.BattleRules;
 import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.events.BattlePausedEvent;
-import robocode.battle.events.BattleResumedEvent;
 import robocode.common.Command;
+import robocode.control.events.BattlePausedEvent;
+import robocode.control.events.BattleResumedEvent;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;

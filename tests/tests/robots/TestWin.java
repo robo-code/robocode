@@ -17,9 +17,9 @@ import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
 import robocode.BattleResults;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 
 
 /**
@@ -48,7 +48,7 @@ public class TestWin extends RobotTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		RobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
+		IRobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
 		final String streamSnapshot = robot.getOutputStreamSnapshot();
 
 		if (streamSnapshot.contains("Win!")) {

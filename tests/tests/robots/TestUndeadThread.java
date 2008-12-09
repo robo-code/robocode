@@ -12,10 +12,10 @@
 package robots;
 
 
-import helpers.RobotTestBed;
 import helpers.Assert;
+import helpers.RobotTestBed;
 import org.junit.Test;
-import robocode.battle.events.BattleErrorEvent;
+import robocode.control.events.BattleErrorEvent;
 
 import java.io.File;
 

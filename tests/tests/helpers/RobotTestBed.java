@@ -18,9 +18,13 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import robocode.battle.events.*;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.battle.events.BattleAdaptor;
 import robocode.control.*;
+import robocode.control.events.BattleErrorEvent;
+import robocode.control.events.BattleMessageEvent;
+import robocode.control.events.BattleStartedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 import robocode.io.FileUtil;
 import robocode.security.SecurePrintStream;
 
@@ -67,7 +71,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		if (isDumpingTurns) {
 			SecurePrintStream.realOut.println("turn " + event.getTurnSnapshot().getTurn());
 		}
-		for (RobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
+		for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
 			if (isDumpingPositions) {
 				SecurePrintStream.realOut.print(robot.getVeryShortName());
 				SecurePrintStream.realOut.print(" X:");

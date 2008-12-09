@@ -9,27 +9,36 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
+
+
+import robocode.BattleRules;
 
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class RoundEndedEvent extends BattleEvent {
-	private final int round;
-	private final int turns;
+public class BattleStartedEvent extends BattleEvent {
+	private final BattleRules battleRules;
+	private final boolean isReplay;
+	private final int robotsCount;
 
-	public RoundEndedEvent(int round, int turns) {
-		this.round = round;
-		this.turns = turns;
+	public BattleStartedEvent(BattleRules battleRules, int robotsCount, boolean isReplay) {
+		this.battleRules = battleRules;
+		this.isReplay = isReplay;
+		this.robotsCount = robotsCount;
 	}
 
-	public int getRound() {
-		return round;
+	public BattleRules getBattleRules() {
+		return battleRules;
 	}
 
-	public int getTurns() {
-		return turns;
+	public int getRobotsCount() {
+		return robotsCount;
+	}
+
+	public boolean isReplay() {
+		return isReplay;
 	}
 }

@@ -9,21 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
 
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class BattleErrorEvent extends BattleEvent {
-	private final String error;
-
-	public BattleErrorEvent(String error) {
-		this.error = error;
-	}
-
-	public String getError() {
-		return error;
-	}
-}
+public class BattlePausedEvent extends BattleEvent {}

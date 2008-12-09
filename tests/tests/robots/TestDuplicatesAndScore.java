@@ -17,8 +17,11 @@ import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
 import robocode.BattleResults;
-import robocode.battle.events.*;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.RoundStartedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 
 import java.util.List;
 
@@ -27,7 +30,7 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public class TestDuplicatesAndScore extends RobotTestBed {
-	private List<RobotSnapshot> robots;
+	private List<IRobotSnapshot> robots;
 	private BattleResults[] results;
 	private int lastTurn;
 

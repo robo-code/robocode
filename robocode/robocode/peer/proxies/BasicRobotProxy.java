@@ -29,10 +29,10 @@ import robocode.robotpaint.Graphics2DProxy;
 import robocode.util.Utils;
 
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.Hashtable;
-import static java.lang.Math.min;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
+import java.util.Hashtable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**

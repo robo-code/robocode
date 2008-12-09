@@ -35,10 +35,10 @@ public class XmlReader {
 
 	final InputStream input;
 	final Stack<Element> elements = new Stack<Element>();
-	final Stack<XmlSerializable> items = new Stack<XmlSerializable>();
+	final Stack<IXmlSerializable> items = new Stack<IXmlSerializable>();
 	final Stack<Dictionary<String, Element>> elementNames = new Stack<Dictionary<String, Element>>();
 	final Stack<Dictionary<String, Attribute>> attributeNames = new Stack<Dictionary<String, Attribute>>();
-	XmlSerializable result;
+	IXmlSerializable result;
 
 	public XmlReader(InputStream input) throws SAXException, ParserConfigurationException {
 		this.input = input;
@@ -47,16 +47,16 @@ public class XmlReader {
 		parser = factory.newSAXParser();
 	}
 
-	private Object deserialize(XmlSerializable prototype) throws IOException, SAXException {
+	private Object deserialize(IXmlSerializable prototype) throws IOException, SAXException {
 		elementNames.push(new Hashtable<String, Element>());
 		attributeNames.push(new Hashtable<String, Attribute>());
 		items.push(null);
 		elements.push(new ListElement() {
-			public XmlSerializable read(XmlReader reader) {
+			public IXmlSerializable read(XmlReader reader) {
 				return null;
 			}
 
-			public void add(XmlSerializable child) {
+			public void add(IXmlSerializable child) {
 				result = child;
 			}
 
@@ -87,7 +87,7 @@ public class XmlReader {
 				elements.push(element);
 				XmlReader.this.elementNames.push(new Hashtable<String, Element>());
 				attributeNames.push(new Hashtable<String, Attribute>());
-				final XmlSerializable item = element.read(parent);
+				final IXmlSerializable item = element.read(parent);
 
 				item.readXml(parent);
 				for (int i = 0; i < attributes.getLength(); i++) {
@@ -108,7 +108,7 @@ public class XmlReader {
 
 		public void endElement(String uri, String localName, String qName) throws SAXException {
 			elements.pop();
-			final XmlSerializable item = items.peek();
+			final IXmlSerializable item = items.peek();
 			final Element parentElement = elements.peek();
 
 			if (parentElement instanceof ListElement) {
@@ -144,12 +144,12 @@ public class XmlReader {
 	}
 
 	public interface Element {
-		XmlSerializable read(XmlReader reader);
+		IXmlSerializable read(XmlReader reader);
 	}
 
 
 	public interface ListElement extends Element {
-		void add(XmlSerializable child);
+		void add(IXmlSerializable child);
 		void close();
 	}
 
@@ -158,7 +158,7 @@ public class XmlReader {
 		void read(String value);
 	}
 
-	public static Object deserialize(InputStream input, XmlSerializable prototype) throws IOException {
+	public static Object deserialize(InputStream input, IXmlSerializable prototype) throws IOException {
 		try {
 			XmlReader xr = new XmlReader(input);
 

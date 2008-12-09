@@ -12,19 +12,19 @@
 package robocode.peer;
 
 
+import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
-import robocode.common.XmlSerializable;
 import robocode.common.XmlWriter;
 
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Dictionary;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class DebugProperty implements Serializable, XmlSerializable {
+public class DebugProperty implements Serializable, IXmlSerializable {
 	private static final long serialVersionUID = 1L;
 
 	public DebugProperty() {}
@@ -47,7 +47,7 @@ public class DebugProperty implements Serializable, XmlSerializable {
 
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("debug", new XmlReader.Element() {
-			public XmlSerializable read(XmlReader reader) {
+			public IXmlSerializable read(XmlReader reader) {
 				final DebugProperty snapshot = new DebugProperty();
 
 				reader.expect("key", new XmlReader.Attribute() {

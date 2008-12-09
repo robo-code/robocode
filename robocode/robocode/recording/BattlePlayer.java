@@ -13,9 +13,11 @@ package robocode.recording;
 
 
 import robocode.battle.BaseBattle;
-import robocode.battle.events.*;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.*;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.manager.RobocodeManager;
 
 import java.util.List;
@@ -66,7 +68,7 @@ public final class BattlePlayer extends BaseBattle {
 	protected void initializeRound() {
 		super.initializeRound();
 
-		final TurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
 
 		if (snapshot != null) {
 			eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
@@ -89,13 +91,13 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		final TurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
 
 		if (snapshot != null) {
-			final List<RobotSnapshot> robots = snapshot.getRobots();
+			final List<IRobotSnapshot> robots = snapshot.getRobots();
 
 			for (int i = 0; i < robots.size(); i++) {
-				RobotSnapshot robot = robots.get(i);
+				RobotSnapshot robot = (RobotSnapshot) robots.get(i);
 
 				robot.overridePaintEnabled(paint[i]);
 			}

@@ -9,10 +9,10 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control;
 
 
-import robocode.control.BattleSpecification;
+import robocode.control.events.*;
 
 
 /**

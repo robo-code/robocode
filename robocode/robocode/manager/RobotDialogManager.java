@@ -22,7 +22,7 @@
 package robocode.manager;
 
 
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.snapshot.IRobotSnapshot;
 import robocode.dialog.*;
 
 import java.util.ArrayList;
@@ -49,13 +49,13 @@ public class RobotDialogManager implements IRobotDialogManager {
 		this.manager = manager;
 	}
 
-	public void trim(List<RobotSnapshot> robots) {
+	public void trim(List<IRobotSnapshot> robots) {
 
 		// new ArrayList in order to prevent ConcurrentModificationException
 		for (String name : new ArrayList<String>(robotDialogMap.keySet())) {
 			boolean found = false;
 
-			for (RobotSnapshot robot : robots) {
+			for (IRobotSnapshot robot : robots) {
 				if (robot.getName().equals(name)) {
 					found = true;
 					break;

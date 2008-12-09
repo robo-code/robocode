@@ -9,36 +9,21 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
-
-
-import robocode.BattleRules;
+package robocode.control.events;
 
 
 /**
  * @author Pavel Savara (original)
  * @since 1.6.1
  */
-public class BattleStartedEvent extends BattleEvent {
-	private final BattleRules battleRules;
-	private final boolean isReplay;
-	private final int robotsCount;
+public class BattleErrorEvent extends BattleEvent {
+	private final String error;
 
-	public BattleStartedEvent(BattleRules battleRules, int robotsCount, boolean isReplay) {
-		this.battleRules = battleRules;
-		this.isReplay = isReplay;
-		this.robotsCount = robotsCount;
+	public BattleErrorEvent(String error) {
+		this.error = error;
 	}
 
-	public BattleRules getBattleRules() {
-		return battleRules;
-	}
-
-	public int getRobotsCount() {
-		return robotsCount;
-	}
-
-	public boolean isReplay() {
-		return isReplay;
+	public String getError() {
+		return error;
 	}
 }

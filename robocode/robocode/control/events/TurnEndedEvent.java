@@ -9,10 +9,10 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
 
 
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 
 
 /**
@@ -20,13 +20,13 @@ import robocode.battle.snapshot.TurnSnapshot;
  * @since 1.6.1
  */
 public class TurnEndedEvent extends BattleEvent {
-	private final TurnSnapshot turnSnapshot;
+	private final ITurnSnapshot turnSnapshot;
 
-	public TurnEndedEvent(TurnSnapshot turnSnapshot) {
+	public TurnEndedEvent(ITurnSnapshot turnSnapshot) {
 		this.turnSnapshot = turnSnapshot;
 	}
 
-	public TurnSnapshot getTurnSnapshot() {
+	public ITurnSnapshot getTurnSnapshot() {
 		return turnSnapshot;
 	}
 }

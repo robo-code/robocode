@@ -15,8 +15,8 @@ package robocode;
 import robocode.battle.BattleProperties;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
-import robocode.common.XmlSerializable;
 import robocode.common.XmlWriter;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ import java.util.Dictionary;
  * @author Pavel Savara (original)
  *         Immutable rules
  */
-public final class BattleRules implements Serializable, XmlSerializable {
+public final class BattleRules implements Serializable, IXmlSerializable {
 	private static final long serialVersionUID = 1L;
 
 	private int battlefieldWidth;
@@ -110,7 +110,7 @@ public final class BattleRules implements Serializable, XmlSerializable {
 
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("rules", new XmlReader.Element() {
-			public XmlSerializable read(XmlReader reader) {
+			public IXmlSerializable read(XmlReader reader) {
 				final BattleRules rules = new BattleRules();
 
 				reader.expect("battlefieldWidth", new XmlReader.Attribute() {

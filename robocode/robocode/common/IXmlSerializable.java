@@ -19,7 +19,7 @@ import java.util.Dictionary;
 /**
  * @author Pavel Savara (original)
  */
-public interface XmlSerializable {
+public interface IXmlSerializable {
 	void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException;
 
 	XmlReader.Element readXml(XmlReader reader);
