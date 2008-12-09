@@ -22,73 +22,42 @@ import robocode.battle.snapshot.RobotSnapshot;
 /**
  * @author Pavel Savara (original)
  */
-public class TestGunHeat extends RobotTestBed {
+public class TestBulletPower extends RobotTestBed {
 	@Test
 	public void run() {
 		super.run();
 	}
 
 	public String getRobotNames() {
-		return "sample.Target,testing.GunHeat";
+		return "sample.Target,testing.BadFirePower";
 	}
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		RobotSnapshot gh = event.getTurnSnapshot().getRobots().get(1);
+		RobotSnapshot bp = event.getTurnSnapshot().getRobots().get(1);
 
-		switch (event.getTurnSnapshot().getTurn()) {
-		case 1:
-			test(gh, "3.0");
-			break;
+		final int time = event.getTurnSnapshot().getTurn();
 
-		case 2:
-			test(gh, "2.8");
-			break;
-
-		case 3:
-			test(gh, "2.699999");
-			break;
-
-		case 4:
-			test(gh, "2.599999");
-			break;
-
-		case 9:
-			test(gh, "2.09999999");
-			break;
-
-		case 20:
-			test(gh, "0.9999999");
-			break;
-
-		case 28:
-			test(gh, "0.19999999");
-			break;
-
-		case 29:
-			test(gh, "0.09999999");
-			break;
-
+		switch (time) {
 		case 30:
-			test(gh, "1.6");
-			break;
-
-		case 570:
-			test(gh, "2.77555");
-			break;
-
-		case 571:
-			test(gh, "0.0");
+		case 46:
+		case 62:
+		case 78:
+		case 94:
+		case 110:
+			test(bp, "Bullet power: 3.0");
 			break;
 
 		default:
+			if (time > 1 && time < 115) {
+				test(bp, "No bullet");
+			}
 			break;
 		}
 	}
 
 	private void test(RobotSnapshot gh, String s) {
-		Assert.assertTrue(gh.getOutputStreamSnapshot() + " expected " + s,
-				gh.getOutputStreamSnapshot().contains("after fire: " + s));
+		Assert.assertTrue(gh.getOutputStreamSnapshot() + " expected " + s, gh.getOutputStreamSnapshot().contains(s));
 	}
 }

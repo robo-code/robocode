@@ -31,6 +31,8 @@ import robocode.util.Utils;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Hashtable;
+import static java.lang.Math.min;
+import static java.lang.Math.max;
 
 
 /**
@@ -433,6 +435,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		if (getGunHeatImpl() > 0 || getEnergyImpl() == 0) {
 			return null;
 		}
+
+		power = min(getEnergyImpl(), min(max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
 
 		Bullet bullet;
 		BulletCommand wrapper;

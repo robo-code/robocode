@@ -12,20 +12,25 @@
 package testing;
 
 
-import robocode.AdvancedRobot;
 import robocode.Bullet;
+import robocode.AdvancedRobot;
 
 
 /**
  * @author Pavel Savara (original)
- * From bug 2405844
+ *         From Bug 2410856
  */
-public class GunHeat extends AdvancedRobot {
+public class BadFirePower extends AdvancedRobot {
 
 	public void run() {
 		while (true) {
-			setFireBullet(3.0);
-			out.println(getTime() + " gunHeat after fire: " + getGunHeat());
+			Bullet bullet = setFireBullet(getTime() - 12.0);
+
+			if (bullet != null) {
+				out.println(getTime() + " Bullet power: " + bullet.getPower());
+			} else {
+				out.println(getTime() + " No bullet");
+			}
 			execute();
 		}
 	}
