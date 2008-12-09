@@ -79,7 +79,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 	}
 
 	@Override
-	public void onBattleEnded(BattleEndedEvent event) {
+	public void onBattleEnded(BattleFinishedEvent event) {
 		timerTask.stop();
 		repaintTask(true, true);
 	}
@@ -235,7 +235,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 		}
 
 		@Override
-		public void onBattleEnded(final BattleEndedEvent event) {
+		public void onBattleEnded(final BattleFinishedEvent event) {
 			isRunning.set(false);
 			isPaused.set(false);
 			snapshot.set(null);

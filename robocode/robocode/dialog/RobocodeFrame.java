@@ -834,7 +834,7 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleEnded(BattleFinishedEvent event) {
 			isBattleRunning = false;
 
 			for (RobotButton robotButton : robotButtons) {

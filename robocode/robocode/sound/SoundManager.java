@@ -335,7 +335,7 @@ public class SoundManager implements ISoundManager {
 		}
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleEnded(BattleFinishedEvent event) {
 			stopBackgroundMusic();
 			playEndOfBattleMusic();
 		}

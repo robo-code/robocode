@@ -20,7 +20,7 @@ public class BattleAdaptor implements IBattleListener {
 
 	public void onBattleStarted(final BattleStartedEvent event) {}
 
-	public void onBattleEnded(final BattleEndedEvent event) {}
+	public void onBattleEnded(final BattleFinishedEvent event) {}
 
 	public void onBattleCompleted(final BattleCompletedEvent event) {}
 

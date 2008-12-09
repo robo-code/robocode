@@ -21,7 +21,7 @@ package robocode.dialog;
 
 
 import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.events.BattleFinishedEvent;
 import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.manager.RobocodeManager;
@@ -102,7 +102,7 @@ public class RankingDialog extends BaseScoreDialog {
 
 	private class BattleObserver extends BattleAdaptor {
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleEnded(BattleFinishedEvent event) {
 			snapshot.set(null);
 		}
 

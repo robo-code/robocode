@@ -428,7 +428,7 @@ public class RobotDialog extends JFrame {
 		}
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleEnded(BattleFinishedEvent event) {
 			lastSnapshot = null;
 			paintSnapshot();
 			getPauseButton().setEnabled(false);

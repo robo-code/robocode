@@ -22,7 +22,7 @@ package robocode.dialog;
 import robocode.manager.RobocodeManager;
 import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.events.BattleEndedEvent;
+import robocode.battle.events.BattleFinishedEvent;
 import robocode.battle.events.BattleCompletedEvent;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battle.snapshot.ScoreSnapshot;
@@ -222,7 +222,7 @@ public class RobotButton extends JButton implements ActionListener {
 			repaint();
 		}
 		
-		public void onBattleEnded(final BattleEndedEvent event) {
+		public void onBattleEnded(final BattleFinishedEvent event) {
 			lastEnergy = 0;
 			repaint();
 		}

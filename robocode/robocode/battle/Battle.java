@@ -382,7 +382,7 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeBattle() {
-		eventDispatcher.onBattleEnded(new robocode.battle.events.BattleEndedEvent(isAborted()));
+		eventDispatcher.onBattleEnded(new BattleFinishedEvent(isAborted()));
 
 		if (!isAborted()) {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeBattleResults()));

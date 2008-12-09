@@ -62,7 +62,7 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-	public void onBattleEnded(BattleEndedEvent event) {
+	public void onBattleEnded(BattleFinishedEvent event) {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onBattleEnded(event);

@@ -51,7 +51,7 @@ public final class BattlePlayer extends BaseBattle {
 	protected void finalizeBattle() {
 		boolean aborted = recordManager.recordInfo.results == null || isAborted();
 
-		eventDispatcher.onBattleEnded(new BattleEndedEvent(aborted));
+		eventDispatcher.onBattleEnded(new BattleFinishedEvent(aborted));
 
 		if (!aborted) {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, recordManager.recordInfo.results));

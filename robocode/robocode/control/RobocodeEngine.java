@@ -406,7 +406,7 @@ public class RobocodeEngine {
 		private RobocodeListener listener;
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleEnded(BattleFinishedEvent event) {
 			if (event.isAborted()) {
 				listener.battleAborted(battleSpecification);
 			}
