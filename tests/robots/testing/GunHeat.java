@@ -13,7 +13,6 @@ package testing;
 
 
 import robocode.AdvancedRobot;
-import robocode.Bullet;
 
 
 /**
@@ -29,5 +28,4 @@ public class GunHeat extends AdvancedRobot {
 			execute();
 		}
 	}
-
 }

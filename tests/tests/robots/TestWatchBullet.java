@@ -18,8 +18,6 @@ import robocode.battle.events.TurnEndedEvent;
 import robocode.battle.snapshot.RobotSnapshot;
 import junit.framework.Assert;
 
-import java.io.File;
-
 
 /**
  * @author Pavel Savara (original)
