@@ -26,8 +26,11 @@ import robocode.control.IBattleListener;
 
 /**
  * A BattleCompletedEvent is sent to {@link IBattleListener#onBattleCompleted(BattleCompletedEvent)
- * onBattleCompleted()} when the battle is completed normally and results are available. This event
+ * onBattleCompleted()} when the battle is completed successfully and results are available. This event
  * will not occur if the battle is terminated or aborted by the user before the battle is completed.
+ *
+ * @see BattleStartedEvent
+ * @see BattleFinishedEvent
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -51,6 +54,7 @@ public class BattleCompletedEvent extends BattleEvent {
 
 	/**
 	 * Returns the rules that was used in the battle.
+	 *
 	 * @return the rules of the battle.
 	 */
 	public BattleRules getBattleRules() {
@@ -58,7 +62,7 @@ public class BattleCompletedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the battle result sorted on score.
+	 * Returns the battle results sorted on score, meaning that robot indexes cannot be used.
 	 *
 	 * @return a sorted array of BattleResults, where the results with the biggest score are placed first in the list.
 	 */
@@ -71,7 +75,7 @@ public class BattleCompletedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the battle result sorted on score.
+	 * Returns the unsorted battle results so that robot indexes can be used.
 	 *
 	 * @return an unsorted array of BattleResults, where each index matches an index of a specific robot.
 	 */

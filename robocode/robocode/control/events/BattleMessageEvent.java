@@ -8,21 +8,43 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.events;
 
 
+import robocode.control.IBattleListener;
+
+
 /**
+ * A BattleMessageEvent is sent to {@link IBattleListener#onBattleMessage(BattleMessageEvent)
+ * onBattleMessage()} when an information message is sent from the game in the during the battle. 
+ *
+ * @see BattleErrorEvent
+ * 
  * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
 public class BattleMessageEvent extends BattleEvent {
 	private final String message;
 
+	/**
+	 * Creates a new BattleMessageEvent.
+	 *
+	 * @param message the information message.
+	 */
 	public BattleMessageEvent(String message) {
 		this.message = message;
 	}
 
+	/**
+	 * Returns the information message.
+	 *
+	 * @return the information message.
+	 */
 	public String getMessage() {
 		return message;
 	}
