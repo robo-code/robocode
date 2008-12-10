@@ -558,7 +558,7 @@ public final class Battle extends BaseBattle {
 		super.finalizeTurn();
 	}
 
-	private List<BattleResults> computeBattleResults() {
+	private BattleResults[] computeBattleResults() {
 		ArrayList<BattleResults> results = new ArrayList<BattleResults>();
 
 		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(contestants);
@@ -586,7 +586,7 @@ public final class Battle extends BaseBattle {
 			results.set(contestant.getContestIndex(), new RobotResults(robotSpec, battleResults));
 		}
 
-		return results;
+		return results.toArray(new BattleResults[] {});
 	}
 
 	/**

@@ -16,6 +16,8 @@ import robocode.battle.events.BattleAdaptor;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.control.events.*;
 
+import java.util.Arrays;
+
 
 /**
  * @author Pavel Savara (original)
@@ -75,7 +77,7 @@ public class BattleRecorder {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			recordmanager.updateRecordInfoResults(event.getResultsStable());
+			recordmanager.updateRecordInfoResults(Arrays.asList(event.getIndexedResults()));
 		}
 
 		@Override

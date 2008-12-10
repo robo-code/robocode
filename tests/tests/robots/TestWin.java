@@ -61,7 +61,7 @@ public class TestWin extends RobotTestBed {
 	}
 
 	public void onBattleCompleted(BattleCompletedEvent event) {
-		results = event.getResults();
+		results = event.getSortedResults();
 	}
 
 	@Override

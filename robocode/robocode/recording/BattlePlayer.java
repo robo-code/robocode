@@ -12,6 +12,7 @@
 package robocode.recording;
 
 
+import robocode.BattleResults;
 import robocode.battle.BaseBattle;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.RobotSnapshot;
@@ -56,7 +57,8 @@ public final class BattlePlayer extends BaseBattle {
 		eventDispatcher.onBattleFinished(new BattleFinishedEvent(aborted));
 
 		if (!aborted) {
-			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, recordManager.recordInfo.results));
+			eventDispatcher.onBattleCompleted(
+					new BattleCompletedEvent(battleRules, recordManager.recordInfo.results.toArray(new BattleResults[] {})));
 		}
 
 		super.finalizeBattle();

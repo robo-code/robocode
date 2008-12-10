@@ -417,7 +417,7 @@ public class RobocodeEngine {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			listener.battleComplete(battleSpecification, RobotResults.convertResults(event.getResults()));
+			listener.battleComplete(battleSpecification, RobotResults.convertResults(event.getSortedResults()));
 		}
 
 		@Override

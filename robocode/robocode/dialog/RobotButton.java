@@ -210,7 +210,7 @@ public class RobotButton extends JButton implements ActionListener {
 
 		public void onBattleCompleted(final BattleCompletedEvent event) {
 			maxScore = 0;
-			for (BattleResults team : event.getResultsStable()) {
+			for (BattleResults team : event.getIndexedResults()) {
 				if (maxScore < team.getScore()) {
 					maxScore = team.getScore();
 				}
@@ -218,7 +218,7 @@ public class RobotButton extends JButton implements ActionListener {
 			if (maxScore == 0) {
 				maxScore = 1;
 			}
-			lastScore = event.getResultsStable().get(contestIndex).getScore();
+			lastScore = event.getIndexedResults()[contestIndex].getScore();
 			repaint();
 		}
 		

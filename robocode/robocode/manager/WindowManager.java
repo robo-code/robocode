@@ -226,7 +226,7 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showResultsDialog(BattleCompletedEvent event) {
-		packCenterShow(new ResultsDialog(manager, event.getResults(), event.getBattleRules().getNumRounds()), true);
+		packCenterShow(new ResultsDialog(manager, event.getSortedResults(), event.getBattleRules().getNumRounds()), true);
 	}
 
 	public void showRankingDialog(boolean visible) {

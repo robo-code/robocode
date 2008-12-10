@@ -253,7 +253,7 @@ public class BattlesRunner {
 
 		@Override
 		public void onBattleCompleted(final BattleCompletedEvent event) {
-			lastResults = RobotResults.convertResults(event.getResults());
+			lastResults = RobotResults.convertResults(event.getSortedResults());
 		}
 	}
 }

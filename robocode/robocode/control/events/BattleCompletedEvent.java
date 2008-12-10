@@ -8,45 +8,77 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.events;
 
 
-import robocode.BattleResults;
-import robocode.BattleRules;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import robocode.BattleResults;
+import robocode.BattleRules;
+import robocode.control.IBattleListener;
+
 
 /**
+ * A BattleCompletedEvent is sent to {@link IBattleListener#onBattleCompleted(BattleCompletedEvent)
+ * onBattleCompleted()} when the battle is completed normally and results are available. This event
+ * will not occur if the battle is terminated or aborted by the user before the battle is completed.
+ * 
  * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
 public class BattleCompletedEvent extends BattleEvent {
 	private final BattleRules battleRules;
-	private final List<BattleResults> results;
+	private final BattleResults[] results;
 
-	public BattleCompletedEvent(BattleRules battleRules, List<BattleResults> results) {
+	/**
+	 * Creates a new BattleCompletedEvent.
+	 *
+	 * @param battleRules the rules that was used in the battle.
+	 * @param results the indexed results of the battle. These are unsorted, but using robot indexes.
+	 */
+	public BattleCompletedEvent(BattleRules battleRules, BattleResults[] results) {
 		this.battleRules = battleRules;
 		this.results = results;
 	}
 
+	/**
+	 * Returns the rules that was used in the battle.
+	 * @return the rules of the battle.
+	 */
 	public BattleRules getBattleRules() {
 		return battleRules;
 	}
 
-	public BattleResults[] getResults() {
-		List<BattleResults> cpy = new ArrayList<BattleResults>(results);
+	/**
+	 * Returns the battle result sorted on score.
+	 *
+	 * @return a sorted array of BattleResults, where the results with the biggest score are placed first in the list.
+	 */
+	public BattleResults[] getSortedResults() {
+		List<BattleResults> copy = new ArrayList<BattleResults>(Arrays.asList(results));
 
-		Collections.sort(cpy);
-		Collections.reverse(cpy);
-		return cpy.toArray(new BattleResults[1]);
+		Collections.sort(copy);
+		Collections.reverse(copy);
+		return copy.toArray(new BattleResults[] {});
 	}
 
-	// stable order
-	public List<BattleResults> getResultsStable() {
-		return results;
+	/**
+	 * Returns the battle result sorted on score.
+	 *
+	 * @return an unsorted array of BattleResults, where each index matches an index of a specific robot.
+	 */
+	public BattleResults[] getIndexedResults() {
+		BattleResults[] copy = new BattleResults[results.length];
+
+		System.arraycopy(results, 0, copy, 0, results.length);	
+		return copy;
 	}
 }

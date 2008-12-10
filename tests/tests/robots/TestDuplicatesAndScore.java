@@ -113,7 +113,7 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 
 	@Override
 	public void onBattleCompleted(BattleCompletedEvent event) {
-		results = event.getResults();
+		results = event.getSortedResults();
 	}
 
 	@Override
