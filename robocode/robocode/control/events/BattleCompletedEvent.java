@@ -71,7 +71,7 @@ public class BattleCompletedEvent extends BattleEvent {
 
 		Collections.sort(copy);
 		Collections.reverse(copy);
-		return copy.toArray(new BattleResults[] {});
+		return copy.toArray(new BattleResults[copy.size()]);
 	}
 
 	/**

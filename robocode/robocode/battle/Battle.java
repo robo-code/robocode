@@ -586,7 +586,7 @@ public final class Battle extends BaseBattle {
 			results.set(contestant.getContestIndex(), new RobotResults(robotSpec, battleResults));
 		}
 
-		return results.toArray(new BattleResults[] {});
+		return results.toArray(new BattleResults[results.size()]);
 	}
 
 	/**
