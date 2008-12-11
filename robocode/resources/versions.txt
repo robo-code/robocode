@@ -2,12 +2,14 @@ Version 1.6.2 Beta 3
 (10-Dec-2008)
 
 = Changes =
-* Published battle events and snapshots to Control API
+* Published new battle events and battle snapshots in the Control API.
 
 = Bugfixes =
-* Bug [2410856] with Bullet power 
-* Bug [2405844] with gun heat
-
+* The current scoring (but not the total scoring) was calculated wrong.
+** The current Ramming Kill Bonus was set to current bullet kill bonus.
+** This bug gave wrong ranking in the Ranking Panel.
+* Bug [2410856] with Bullet power.
+* Bug [2405844] with gun heat.
 
 Version 1.6.2 Beta 2
 (07-Dec-2008)
