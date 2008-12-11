@@ -57,6 +57,7 @@ public class TestScoring extends RobotTestBed {
 			int currentScore = (int) (0.5 + score.getCurrentSurvivalScore() + score.getCurrentBulletDamageScore()
 					+ score.getCurrentBulletKillBonus() + score.getCurrentRammingDamageScore()
 					+ score.getCurrentRammingKillBonus() + score.getCurrentSurvivalBonus());
+
 			Assert.assertThat(score.getName(), currentScore, is((int) (0.5 + score.getCurrentScore())));
 		}
 	}

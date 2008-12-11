@@ -8,12 +8,32 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.events;
 
 
+import robocode.control.IBattleListener;
+
+
 /**
+ * A TurnStartedEvent is sent to {@link IBattleListener#onTurnStarted(TurnStartedEvent)
+ * onTurnStarted()} when a new turn in a battle round is started. 
+ *
+ * @see TurnEndedEvent
+ *
  * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
-public class TurnStartedEvent extends BattleEvent {}
+public class TurnStartedEvent extends BattleEvent {
+
+	/**
+	 * Creates a new TurnStartedEvent.
+	 */
+	public TurnStartedEvent() {
+		super();		
+	}	
+}

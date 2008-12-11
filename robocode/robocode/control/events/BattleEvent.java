@@ -22,4 +22,12 @@ package robocode.control.events;
  *
  * @since 1.6.2
  */
-public abstract class BattleEvent {}
+public abstract class BattleEvent {
+
+	/**
+	 * Creates a new BattleEvent.
+	 */
+	public BattleEvent() {
+		super();		
+	}
+}

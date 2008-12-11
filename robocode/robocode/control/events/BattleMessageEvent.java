@@ -37,6 +37,7 @@ public class BattleMessageEvent extends BattleEvent {
 	 * @param message the information message.
 	 */
 	public BattleMessageEvent(String message) {
+		super();
 		this.message = message;
 	}
 

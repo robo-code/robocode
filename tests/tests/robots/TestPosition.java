@@ -43,8 +43,8 @@ public class TestPosition extends RobotTestBed {
 	public void onRoundStarted(final RoundStartedEvent event) {
 		super.onRoundStarted(event);
 		if (event.getRound() == 0) {
-			IRobotSnapshot crazy = event.getTurnSnapshot().getRobots().get(0);
-			IRobotSnapshot target = event.getTurnSnapshot().getRobots().get(1);
+			IRobotSnapshot crazy = event.getStartSnapshot().getRobots().get(0);
+			IRobotSnapshot target = event.getStartSnapshot().getRobots().get(1);
 
 			Assert.assertNear(566.2968069, crazy.getX());
 			Assert.assertNear(165.0789361, crazy.getY());

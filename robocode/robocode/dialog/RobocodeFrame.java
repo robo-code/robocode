@@ -807,7 +807,7 @@ public class RobocodeFrame extends JFrame {
 				getRobotButtonsPanel().removeAll();
 
 				final IRobotDialogManager dialogManager = manager.getRobotDialogManager();
-				final java.util.List<IRobotSnapshot> robots = event.getTurnSnapshot().getRobots();
+				final java.util.List<IRobotSnapshot> robots = event.getStartSnapshot().getRobots();
 
 				dialogManager.trim(robots);
 

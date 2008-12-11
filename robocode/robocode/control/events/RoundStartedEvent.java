@@ -8,30 +8,57 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.events;
 
 
+import robocode.control.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 
 
 /**
+ * A RoundStartedEvent is sent to {@link IBattleListener#onRoundStarted(RoundStartedEvent)
+ * onRoundStarted()} when a new round in a battle is started. 
+ *
+ * @see RoundEndedEvent
+ *
  * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
 public class RoundStartedEvent extends BattleEvent {
-	private final ITurnSnapshot start;
+	private final ITurnSnapshot startSnapshot;
 	private final int round;
 
-	public RoundStartedEvent(ITurnSnapshot start, int round) {
-		this.start = start;
+	/**
+	 * Creates a new RoundStartedEvent.
+	 *
+	 * @param startSnapshot the start snapshot of the participating robots, initial starting positions etc.
+	 * @param round the round number.
+	 */
+	public RoundStartedEvent(ITurnSnapshot startSnapshot, int round) {
+		super();
+		this.startSnapshot = startSnapshot;
 		this.round = round;
 	}
 
-	public ITurnSnapshot getTurnSnapshot() {
-		return start;
+	/**
+	 * Returns the start snapshot of the participating robots, initial starting positions etc.
+	 *
+	 * @return a ITurnSnapshot instance that serves as the start snapshot of the round.
+	 */
+	public ITurnSnapshot getStartSnapshot() {
+		return startSnapshot;
 	}
 
+	/**
+	 * Returns the round number.
+	 *
+	 * @return the round number.
+	 */
 	public int getRound() {
 		return round;
 	}

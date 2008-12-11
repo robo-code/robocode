@@ -8,24 +8,45 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.events;
 
 
+import robocode.control.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 
 
 /**
+ * A TurnEndedEvent is sent to {@link IBattleListener#onTurnEnded(TurnEndedEvent)
+ * onTurnEnded()} when the current turn in a battle round is ended. 
+ *
+ * @see TurnStartedEvent
+ *
  * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
 public class TurnEndedEvent extends BattleEvent {
 	private final ITurnSnapshot turnSnapshot;
 
+	/**
+	 * Creates a new TurnEndedEvent.
+	 *
+	 * @param turnSnapshot a snapshot of the turn that has ended.
+	 */
 	public TurnEndedEvent(ITurnSnapshot turnSnapshot) {
+		super();
 		this.turnSnapshot = turnSnapshot;
 	}
 
+	/**
+	 * Returns a snapshot of the turn that has ended.
+	 *
+	 * @return a snapshot of the turn that has ended.
+	 */
 	public ITurnSnapshot getTurnSnapshot() {
 		return turnSnapshot;
 	}

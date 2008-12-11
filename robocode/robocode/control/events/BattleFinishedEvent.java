@@ -41,6 +41,7 @@ public class BattleFinishedEvent extends BattleEvent {
 	 *                  {@code true} if the battle was aborted; {@code false} otherwise.
 	 */
 	public BattleFinishedEvent(boolean isAborted) {
+		super();
 		this.isAborted = isAborted;
 	}
 

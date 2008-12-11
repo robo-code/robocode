@@ -212,7 +212,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 		@Override
 		public void onRoundStarted(final RoundStartedEvent event) {
-			snapshot.set(event.getTurnSnapshot());
+			snapshot.set(event.getStartSnapshot());
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					battleEventDispatcher.onRoundStarted(event);

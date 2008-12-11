@@ -39,6 +39,7 @@ public class RoundEndedEvent extends BattleEvent {
 	 * @param turns the number of turns that this round reached.
 	 */
 	public RoundEndedEvent(int round, int turns) {
+		super();
 		this.round = round;
 		this.turns = turns;
 	}

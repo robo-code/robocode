@@ -37,6 +37,7 @@ public class BattleErrorEvent extends BattleEvent {
 	 * @param error the error message.
 	 */
 	public BattleErrorEvent(String error) {
+		super();
 		this.error = error;
 	}
 

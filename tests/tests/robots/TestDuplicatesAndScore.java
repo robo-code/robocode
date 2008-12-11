@@ -53,7 +53,7 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 	public void onRoundStarted(final RoundStartedEvent event) {
 		super.onRoundStarted(event);
 		if (event.getRound() == 0) {
-			robots = event.getTurnSnapshot().getRobots();
+			robots = event.getStartSnapshot().getRobots();
 
 			helpers.Assert.assertNear(566.2968069, robots.get(0).getX());
 			helpers.Assert.assertNear(436.3146436, robots.get(1).getX());

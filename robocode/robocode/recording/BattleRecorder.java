@@ -84,7 +84,7 @@ public class BattleRecorder {
 		public void onRoundStarted(RoundStartedEvent event) {
 			currentRound = event.getRound();
 			currentTurn = 0;
-			recordmanager.writeTurn(event.getTurnSnapshot(), currentRound, currentTurn);
+			recordmanager.writeTurn(event.getStartSnapshot(), currentRound, currentTurn);
 		}
 
 		@Override

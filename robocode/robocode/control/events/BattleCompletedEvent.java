@@ -48,6 +48,7 @@ public class BattleCompletedEvent extends BattleEvent {
 	 * @param results the indexed results of the battle. These are unsorted, but using robot indexes.
 	 */
 	public BattleCompletedEvent(BattleRules battleRules, BattleResults[] results) {
+		super();
 		this.battleRules = battleRules;
 		this.results = results;
 	}

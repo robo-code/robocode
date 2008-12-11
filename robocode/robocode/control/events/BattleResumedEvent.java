@@ -28,4 +28,12 @@ import robocode.control.IBattleListener;
  *
  * @since 1.6.2
  */
-public class BattleResumedEvent extends BattleEvent {}
+public class BattleResumedEvent extends BattleEvent {
+
+	/**
+	 * Creates a new BattlePausedEvent.
+	 */
+	public BattleResumedEvent() {
+		super();		
+	}
+}

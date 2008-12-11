@@ -486,11 +486,9 @@
       <fileset dir="${src.robocode}" defaultexcludes="yes">
         <include name="robocode/*.java"/>
       	<include name="robocode/util/Utils.java"/>
-      	<include name="robocode/control/*.java"/>
-        <include name="robocode/robotinterfaces/*.java"/>
-        <include name="robocode/robotinterfaces/peer/*.java"/>
-      	<exclude name="robocode/control/RobocodeEngine2.java"/>
+      	<include name="robocode/control/**/*.java"/>
       	<exclude name="robocode/control/RandomFactory.java"/>
+        <include name="robocode/robotinterfaces/**/*.java"/>
       </fileset>
       <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
     </javadoc>

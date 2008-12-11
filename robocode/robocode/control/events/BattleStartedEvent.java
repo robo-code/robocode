@@ -44,6 +44,7 @@ public class BattleStartedEvent extends BattleEvent {
 	 *                 {@code true} if the battle is a replay; {@code false} otherwise.
 	 */
 	public BattleStartedEvent(BattleRules battleRules, int robotsCount, boolean isReplay) {
+		super();
 		this.battleRules = battleRules;
 		this.isReplay = isReplay;
 		this.robotsCount = robotsCount;
