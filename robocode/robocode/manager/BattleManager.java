@@ -232,7 +232,8 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording();
+		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording()
+				&& System.getProperty("TESTING", "none").equals("none");
 
 		if (recording) {
 			manager.getRecordManager().attachRecorder(battleEventDispatcher);

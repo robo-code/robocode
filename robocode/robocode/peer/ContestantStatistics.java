@@ -50,6 +50,8 @@ public interface ContestantStatistics {
 
 	public double getCurrentSurvivalScore();
 
+	public double getCurrentSurvivalBonus();
+
 	public double getCurrentBulletDamageScore();
 
 	public double getCurrentBulletKillBonus();

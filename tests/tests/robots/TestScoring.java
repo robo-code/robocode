@@ -56,9 +56,8 @@ public class TestScoring extends RobotTestBed {
 			// survivor bonus'
 			int currentScore = (int) (0.5 + score.getCurrentSurvivalScore() + score.getCurrentBulletDamageScore()
 					+ score.getCurrentBulletKillBonus() + score.getCurrentRammingDamageScore()
-					+ score.getCurrentRammingKillBonus());
-
-			Assert.assertThat(currentScore, is((int) (0.5 + score.getCurrentScore())));
+					+ score.getCurrentRammingKillBonus() + score.getCurrentSurvivalBonus());
+			Assert.assertThat(score.getName(), currentScore, is((int) (0.5 + score.getCurrentScore())));
 		}
 	}
 
@@ -72,7 +71,7 @@ public class TestScoring extends RobotTestBed {
 					+ score.getTotalBulletDamageScore() + score.getTotalBulletKillBonus() + score.getTotalRammingDamageScore()
 					+ score.getTotalRammingKillBonus());
 
-			Assert.assertThat(totalScore, is((int) (0.5 + score.getTotalScore())));
+			Assert.assertThat(score.getName(), totalScore, is((int) (0.5 + score.getTotalScore())));
 		}
 	}
 

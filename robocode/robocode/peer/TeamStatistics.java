@@ -148,6 +148,15 @@ public class TeamStatistics implements ContestantStatistics {
 		return d;
 	}
 
+	public double getCurrentSurvivalBonus() {
+		double d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getCurrentSurvivalBonus();
+		}
+		return d;
+	}
+
 	public double getCurrentBulletDamageScore() {
 		double d = 0;
 

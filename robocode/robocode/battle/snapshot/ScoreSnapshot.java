@@ -45,6 +45,7 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	private int totalThirds;
 	private double currentScore;
 	private double currentSurvivalScore;
+	private double currentSurvivalBonus;
 	private double currentBulletDamageScore;
 	private double currentBulletKillBonus;
 	private double currentRammingDamageScore;
@@ -63,11 +64,12 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 		totalSeconds = statistics.getTotalSeconds();
 		totalThirds = statistics.getTotalThirds();
 		currentScore = statistics.getCurrentScore();
-		currentSurvivalScore = statistics.getCurrentSurvivalScore();
 		currentBulletDamageScore = statistics.getCurrentBulletDamageScore();
+		currentSurvivalScore = statistics.getCurrentSurvivalScore();
+		currentSurvivalBonus = statistics.getCurrentSurvivalBonus();
 		currentBulletKillBonus = statistics.getCurrentBulletKillBonus();
 		currentRammingDamageScore = statistics.getCurrentRammingDamageScore();
-		currentRammingKillBonus = statistics.getCurrentBulletKillBonus();
+		currentRammingKillBonus = statistics.getCurrentRammingKillBonus();
 	}
 
 	public ScoreSnapshot(IScoreSnapshot left, IScoreSnapshot right, String name) {
@@ -140,6 +142,10 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 
 	public double getCurrentSurvivalScore() {
 		return currentSurvivalScore;
+	}
+
+	public double getCurrentSurvivalBonus() {
+		return currentSurvivalBonus;
 	}
 
 	public double getCurrentBulletDamageScore() {

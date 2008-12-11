@@ -42,6 +42,8 @@ public interface IScoreSnapshot extends Comparable<IScoreSnapshot> {
 
 	double getCurrentSurvivalScore();
 
+	double getCurrentSurvivalBonus();
+
 	double getCurrentBulletDamageScore();
 
 	double getCurrentBulletKillBonus();
