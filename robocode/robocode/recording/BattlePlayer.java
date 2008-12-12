@@ -21,8 +21,6 @@ import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.manager.RobocodeManager;
 
-import java.util.List;
-
 
 /**
  * @author Pavel Savara (original)
@@ -96,10 +94,10 @@ public final class BattlePlayer extends BaseBattle {
 		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
 
 		if (snapshot != null) {
-			final List<IRobotSnapshot> robots = snapshot.getRobots();
+			final IRobotSnapshot[] robots = snapshot.getRobots();
 
-			for (int i = 0; i < robots.size(); i++) {
-				RobotSnapshot robot = (RobotSnapshot) robots.get(i);
+			for (int i = 0; i < robots.length; i++) {
+				RobotSnapshot robot = (RobotSnapshot) robots[i];
 
 				robot.overridePaintEnabled(paint[i]);
 			}

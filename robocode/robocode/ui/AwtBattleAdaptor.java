@@ -131,10 +131,10 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 					if (readoutText) {
 						synchronized (snapshot) {
-							java.util.List<IRobotSnapshot> robots = lastSnapshot.getRobots();
+							IRobotSnapshot[] robots = lastSnapshot.getRobots();
 
-							for (int i = 0; i < robots.size(); i++) {
-								RobotSnapshot robot = (RobotSnapshot) robots.get(i);
+							for (int i = 0; i < robots.length; i++) {
+								RobotSnapshot robot = (RobotSnapshot) robots[i];
 
 								robot.updateOutputStreamSnapshot(outCache[i].toString());
 								outCache[i].setLength(0);
@@ -190,11 +190,11 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 		public void onTurnEnded(final TurnEndedEvent event) {
 			snapshot.set(event.getTurnSnapshot());
 
-			final java.util.List<IRobotSnapshot> robots = event.getTurnSnapshot().getRobots();
+			final IRobotSnapshot[] robots = event.getTurnSnapshot().getRobots();
 
 			synchronized (snapshot) {
-				for (int i = 0; i < robots.size(); i++) {
-					IRobotSnapshot robot = robots.get(i);
+				for (int i = 0; i < robots.length; i++) {
+					IRobotSnapshot robot = robots[i];
 
 					if (robot.getOutputStreamSnapshot() != null && robot.getOutputStreamSnapshot().length() != 0) {
 						outCache[i].append(robot.getOutputStreamSnapshot());

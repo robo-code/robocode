@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.snapshot;
 
@@ -17,7 +19,12 @@ import robocode.peer.RobotState;
 
 
 /**
+ * Interface of a robot snapshot.
+ * 
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
 public interface IRobotSnapshot {
 
@@ -29,30 +36,32 @@ public interface IRobotSnapshot {
 	String getName();
 
 	/**
-	 * Returns the very short name of this robot.
+	 * Returns the very short name of the robot.
 	 *
-	 * @return the very short name of this robot.
+	 * @return the very short name of the robot.
 	 */
 	String getShortName();
 
 	/**
-	 * Returns the very short name of this robot.
+	 * Returns the very short name of the robot.
 	 *
-	 * @return the very short name of this robot.
+	 * @return the very short name of the robot.
 	 */
 	String getVeryShortName();
 
 	/**
-	 * Returns the name of the team or name of the robot if the robot is not a part of a team.
+	 * Returns the name of the team, or name of the robot if the contestant is not a team.
 	 *
-	 * @return the name of the team or name of the robot if the robot is not a part of a team.
+	 * @return the name of the team, or name of the robot if the contestant is not a team.
 	 */
 	String getTeamName();
 
 	/**
-	 * @return Returns the index of the robot in whole battle.
+	 * Returns the index of the contestant that will not be changed during a battle.
+	 *
+	 * @return the index of the contestant that will not be changed during a battle.
 	 */
-	int getContestIndex();
+	int getContestantIndex();
 
 	/**
 	 * Returns the robot status.
@@ -97,9 +106,9 @@ public interface IRobotSnapshot {
 	double getRadarHeading();
 
 	/**
-	 * Returns the gun heading in radians.
+	 * Returns the gun heat.
 	 *
-	 * @return the gun heat
+	 * @return the gun heat.
 	 */
 	double getGunHeat();
 
@@ -120,49 +129,57 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the color of the body.
 	 *
-	 * @return the color of the body.
+	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * 
+	 * @see java.awt.Color#getRGB()
 	 */
 	int getBodyColor();
 
 	/**
 	 * Returns the color of the gun.
 	 *
-	 * @return the color of the gun.
+	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * 
+	 * @see java.awt.Color#getRGB()
 	 */
 	int getGunColor();
 
 	/**
 	 * Returns the color of the radar.
 	 *
-	 * @return the color of the radar.
+	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * 
+	 * @see java.awt.Color#getRGB()
 	 */
 	int getRadarColor();
 
 	/**
 	 * Returns the color of the scan arc.
 	 *
-	 * @return the color of the scan arc.
+	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * 
+	 * @see java.awt.Color#getRGB()
 	 */
 	int getScanColor();
 
 	/**
-	 * Returns a flag specifying if this robot is a Droid.
+	 * Returns a flag specifying if this robot is a {@link robocode.Droid Droid}.
 	 *
 	 * @return {@code true} if this robot is a Droid; {@code false} otherwise.
 	 */
 	boolean isDroid();
 
 	/**
-	 * Returns a flag specifying if this robot is an IPaintRobot or is asking for getGraphics
+	 * Returns a flag specifying if this robot is an {@link robocode.robotinterfaces.IPaintRobot IPaintRobot}
+	 * or is asking for getGraphics().
 	 *
-	 * @return {@code true} if this robot is a an IPaintRobot or is asking for getGraphics; {@code false}
-	 *         otherwise.
+	 * @return {@code true} if this robot is a an IPaintRobot or is asking for getGraphics();
+	 *         {@code false} otherwise.
 	 */
 	boolean isPaintRobot();
 
 	/**
-	 * Returns a flag specifying if robot's (onPaint) painting is enabled for
-	 * the robot.
+	 * Returns a flag specifying if robot's (onPaint) painting is enabled for the robot.
 	 *
 	 * @return {@code true} if the paintings for this robot is enabled;
 	 *         {@code false} otherwise.
@@ -170,8 +187,7 @@ public interface IRobotSnapshot {
 	boolean isPaintEnabled();
 
 	/**
-	 * Returns a flag specifying if RobocodeSG painting is enabled for the
-	 * robot.
+	 * Returns a flag specifying if RobocodeSG painting is enabled for the robot.
 	 *
 	 * @return {@code true} if RobocodeSG painting is enabled for this robot;
 	 *         {@code false} otherwise.
@@ -179,21 +195,23 @@ public interface IRobotSnapshot {
 	boolean isSGPaintEnabled();
 
 	/**
-	 * @return list of debug properties
+	 * Returns a list of all debug properties.
+	 * 
+	 * @return a list of all debug properties.
 	 */
-	java.util.List<DebugProperty> getDebugProperties();
+	DebugProperty[] getDebugProperties();
 
 	/**
-	 * Returns the output print stream snapshot for this robot.
+	 * Returns a snapshot of the output print stream for this robot.
 	 *
-	 * @return the output print stream snapshot for this robot.
+	 * @return a string containing the snapshot of the output print stream.
 	 */
 	String getOutputStreamSnapshot();
 
 	/**
-	 * Returns snapshot of score for robot
+	 * Returns snapshot current score.
 	 *
-	 * @return snapshot of score for robot
+	 * @return snapshot current score.
 	 */
-	IScoreSnapshot getRobotScoreSnapshot();
+	IScoreSnapshot getScoreSnapshot();
 }

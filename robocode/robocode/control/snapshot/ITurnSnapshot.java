@@ -8,16 +8,19 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.snapshot;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 /**
+ * Interface of a turn snapshot.
+ * 
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
 public interface ITurnSnapshot {
 
@@ -26,14 +29,14 @@ public interface ITurnSnapshot {
 	 *
 	 * @return a list containing all robots participating in the battle.
 	 */
-	List<IRobotSnapshot> getRobots();
+	IRobotSnapshot[] getRobots();
 
 	/**
 	 * Returns all bullets currently the battlefield.
 	 *
 	 * @return a list containing all bullets currently the battlefield.
 	 */
-	List<IBulletSnapshot> getBullets();
+	IBulletSnapshot[] getBullets();
 
 	/**
 	 * Returns the current TPS (turns per second).
@@ -59,10 +62,10 @@ public interface ITurnSnapshot {
 	/**
 	 * @return scores grouped by teams, ordered by position
 	 */
-	List<IScoreSnapshot> getTeamScores();
+	IScoreSnapshot[] getSortedTeamScores();
 
 	/**
 	 * @return scores grouped by teams, in stable order
 	 */
-	ArrayList<IScoreSnapshot> getTeamScoresStable();
+	IScoreSnapshot[] getIndexedTeamScores();
 }

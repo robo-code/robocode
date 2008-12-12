@@ -15,8 +15,6 @@ package robots;
 import static org.hamcrest.CoreMatchers.is;
 import helpers.RobotTestBed;
 
-import java.util.List;
-
 import org.junit.Assert;
 
 import robocode.control.events.BattleFinishedEvent;
@@ -57,9 +55,9 @@ public class TestRankingsWithTargetRobots extends RobotTestBed {
 
 	@Override
 	public void onBattleFinished(BattleFinishedEvent event) {
-		final List<IScoreSnapshot> scores = lastTurnSnapshot.getTeamScores();
-		final IScoreSnapshot score1 = scores.get(0);
-		final IScoreSnapshot score2 = scores.get(1);
+		final IScoreSnapshot[] scores = lastTurnSnapshot.getSortedTeamScores();
+		final IScoreSnapshot score1 = scores[0];
+		final IScoreSnapshot score2 = scores[1];
 
 		// 1sts + 2nds = number of rounds, e.g. 4 + 6 = 10 (where 4 is 1st places, and 6 is 2nd places)
 		Assert.assertThat("1st ranked robot's total 1st and 2nd places must be equal to the number of rounds",

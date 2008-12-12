@@ -174,8 +174,8 @@ public class RobotButton extends JButton implements ActionListener {
 			if (turn == null) {
 				return;
 			}
-			final java.util.List<IRobotSnapshot> robots = turn.getRobots();
-			final java.util.List<IScoreSnapshot> scoreSnapshotList = event.getTurnSnapshot().getTeamScoresStable();
+			final IRobotSnapshot[] robots = turn.getRobots();
+			final IScoreSnapshot[] scoreSnapshotList = event.getTurnSnapshot().getIndexedTeamScores();
 
 			maxEnergy = 0;
 			for (IRobotSnapshot robot : robots) {
@@ -197,8 +197,8 @@ public class RobotButton extends JButton implements ActionListener {
 				maxScore = 1;
 			}
 
-			final int newScore = (int) scoreSnapshotList.get(contestIndex).getCurrentScore();
-			final int newEnergy = (int) robots.get(robotIndex).getEnergy();
+			final int newScore = (int) scoreSnapshotList[contestIndex].getCurrentScore();
+			final int newEnergy = (int) robots[robotIndex].getEnergy();
 			boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
 
 			lastEnergy = newEnergy;

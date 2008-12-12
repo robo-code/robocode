@@ -35,7 +35,7 @@ public class TestBulletPower extends RobotTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		IRobotSnapshot bp = event.getTurnSnapshot().getRobots().get(1);
+		IRobotSnapshot bp = event.getTurnSnapshot().getRobots()[1];
 
 		final int time = event.getTurnSnapshot().getTurn();
 

@@ -51,7 +51,7 @@ public class TestScoring extends RobotTestBed {
 
 		lastTurnSnapshot = event.getTurnSnapshot();
 
-		for (IScoreSnapshot score : lastTurnSnapshot.getTeamScores()) {
+		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 			// Notice that the is no such thing as a 'current total last
 			// survivor bonus'
 			int currentScore = (int) (0.5 + score.getCurrentSurvivalScore() + score.getCurrentBulletDamageScore()
@@ -66,7 +66,7 @@ public class TestScoring extends RobotTestBed {
 	public void onRoundEnded(RoundEndedEvent event) {
 		super.onRoundEnded(event);
 
-		for (IScoreSnapshot score : lastTurnSnapshot.getTeamScores()) {
+		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 
 			int totalScore = (int) (0.5 + score.getTotalSurvivalScore() + score.getTotalLastSurvivorBonus()
 					+ score.getTotalBulletDamageScore() + score.getTotalBulletKillBonus() + score.getTotalRammingDamageScore()
@@ -78,7 +78,7 @@ public class TestScoring extends RobotTestBed {
 
 	@Override
 	public void onBattleFinished(BattleFinishedEvent event) {
-		for (IScoreSnapshot score : lastTurnSnapshot.getTeamScores()) {
+		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 
 			int totalScore = (int) (0.5 + score.getTotalSurvivalScore() + score.getTotalLastSurvivorBonus()
 					+ score.getTotalBulletDamageScore() + score.getTotalBulletKillBonus() + score.getTotalRammingDamageScore()

@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.snapshot;
 
@@ -16,7 +18,12 @@ import robocode.peer.BulletState;
 
 
 /**
+ * Interface of a bullet snapshot.
+ * 
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
 public interface IBulletSnapshot {
 
@@ -65,7 +72,9 @@ public interface IBulletSnapshot {
 	/**
 	 * Returns the color of the bullet.
 	 *
-	 * @return the color of the bullet.
+	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * 
+	 * @see java.awt.Color#getRGB()
 	 */
 	int getColor();
 
@@ -79,8 +88,8 @@ public interface IBulletSnapshot {
 	/**
 	 * Returns the flag specifying if this bullet has turned into an explosion.
 	 *
-	 * @return {@code true} if this bullet is now an explosion; {@code false}
-	 *         otherwise
+	 * @return {@code true} if this bullet has turned into an explosion;
+	 *         {@code false} otherwise
 	 */
 	boolean isExplosion();
 

@@ -119,7 +119,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	// The Graphics2D proxy
 	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
 
-	private List<DebugProperty> debugProperties;
+	private DebugProperty[] debugProperties;
 
 	// The output print stream proxy
 	private String outputStreamSnapshot;
@@ -195,7 +195,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		return teamName;
 	}
 
-	public int getContestIndex() {
+	public int getContestantIndex() {
 		return contestIndex;
 	}
 
@@ -294,7 +294,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		return graphicsCalls;
 	}
 
-	public java.util.List<DebugProperty> getDebugProperties() {
+	public DebugProperty[] getDebugProperties() {
 		return debugProperties;
 	}
 
@@ -311,7 +311,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		outputStreamSnapshot = text;
 	}
 
-	public IScoreSnapshot getRobotScoreSnapshot() {
+	public IScoreSnapshot getScoreSnapshot() {
 		return robotScoreSnapshot;
 	}
 

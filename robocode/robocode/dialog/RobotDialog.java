@@ -227,7 +227,7 @@ public class RobotDialog extends JFrame {
 						'\n');
 				sb.append("state: ").append(lastSnapshot.getState()).append('\n');
 				sb.append('\n');
-				java.util.List<DebugProperty> debugPropeties = lastSnapshot.getDebugProperties();
+				DebugProperty[] debugPropeties = lastSnapshot.getDebugProperties();
 
 				if (debugPropeties != null) {
 					for (DebugProperty prop : debugPropeties) {
@@ -455,7 +455,7 @@ public class RobotDialog extends JFrame {
 				return;
 			}
 
-			lastSnapshot = turn.getRobots().get(robotIndex);
+			lastSnapshot = turn.getRobots()[robotIndex];
 			final String text = lastSnapshot.getOutputStreamSnapshot();
 
 			if (text != null && text.length() > 0) {

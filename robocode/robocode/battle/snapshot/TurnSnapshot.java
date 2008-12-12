@@ -26,10 +26,7 @@ import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Dictionary;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -105,30 +102,12 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		round = battle.getRoundNum();
 	}
 
-	/**
-	 * Returns the width of the battlefield.
-	 *
-	 * @return the width of the battlefield.
-	 */
-	// public int getFieldWidth() {
-	// return fieldWidth;
-	// }
-
-	/**
-	 * Returns the height of the battlefield.
-	 *
-	 * @return the height of the battlefield.
-	 */
-	// public int getFieldHeight() {
-	// return fieldHeight;
-	// }
-
-	public List<IRobotSnapshot> getRobots() {
-		return Collections.unmodifiableList(robots);
+	public IRobotSnapshot[] getRobots() {
+		return robots.toArray(new IRobotSnapshot[robots.size()]);
 	}
 
-	public List<IBulletSnapshot> getBullets() {
-		return Collections.unmodifiableList(bullets);
+	public IBulletSnapshot[] getBullets() {
+		return bullets.toArray(new IBulletSnapshot[bullets.size()]);
 	}
 
 	public int getTPS() {
@@ -143,43 +122,43 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		return turn;
 	}
 
-	public List<IScoreSnapshot> getTeamScores() {
-		ArrayList<IScoreSnapshot> res = getTeamScoresStable();
+	public IScoreSnapshot[] getSortedTeamScores() {
+		List<IScoreSnapshot> copy = new ArrayList<IScoreSnapshot>(Arrays.asList(getIndexedTeamScores()));
 
-		Collections.sort(res);
-		Collections.reverse(res);
-		return res;
+		Collections.sort(copy);
+		Collections.reverse(copy);
+		return copy.toArray(new IScoreSnapshot[copy.size()]);
 	}
 
-	public ArrayList<IScoreSnapshot> getTeamScoresStable() {
+	public IScoreSnapshot[] getIndexedTeamScores() {
 		// team scores are computed on demand from team scores to not duplicate data in the snapshot
 
-		ArrayList<IScoreSnapshot> results = new ArrayList<IScoreSnapshot>();
+		List<IScoreSnapshot> results = new ArrayList<IScoreSnapshot>();
 
 		// noinspection ForLoopReplaceableByForEach
 		for (int i = 0; i < robots.size(); i++) {
 			results.add(null);
 		}
 		for (IRobotSnapshot robot : robots) {
-			final IScoreSnapshot snapshot = results.get(robot.getContestIndex());
+			final IScoreSnapshot snapshot = results.get(robot.getContestantIndex());
 
 			if (snapshot == null) {
-				results.set(robot.getContestIndex(), robot.getRobotScoreSnapshot());
+				results.set(robot.getContestantIndex(), robot.getScoreSnapshot());
 			} else {
-				final ScoreSnapshot sum = new ScoreSnapshot(snapshot, robot.getRobotScoreSnapshot(), robot.getTeamName());
+				final ScoreSnapshot sum = new ScoreSnapshot(snapshot, robot.getScoreSnapshot(), robot.getTeamName());
 
-				results.set(robot.getContestIndex(), sum);
+				results.set(robot.getContestantIndex(), sum);
 			}
 		}
-		ArrayList<IScoreSnapshot> res = new ArrayList<IScoreSnapshot>();
+		List<IScoreSnapshot> scores = new ArrayList<IScoreSnapshot>();
 
 		for (IScoreSnapshot scoreSnapshot : results) {
 			if (scoreSnapshot != null) {
-				res.add(scoreSnapshot);
+				scores.add(scoreSnapshot);
 			}
 		}
 
-		return res;
+		return scores.toArray(new IScoreSnapshot[scores.size()]);
 	}
 
 	@Override

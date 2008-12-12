@@ -31,7 +31,7 @@ public class TestEventPriorityFilter extends RobotTestBed {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
 
 		if (out.contains("Scanned!!!")) {
 			messagedScanned = true;

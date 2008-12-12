@@ -47,6 +47,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -807,7 +808,7 @@ public class RobocodeFrame extends JFrame {
 				getRobotButtonsPanel().removeAll();
 
 				final IRobotDialogManager dialogManager = manager.getRobotDialogManager();
-				final java.util.List<IRobotSnapshot> robots = event.getStartSnapshot().getRobots();
+				final List<IRobotSnapshot> robots = Arrays.asList(event.getStartSnapshot().getRobots());
 
 				dialogManager.trim(robots);
 
@@ -825,7 +826,7 @@ public class RobocodeFrame extends JFrame {
 					final IRobotSnapshot robot = robots.get(index);
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
 					final RobotButton button = new RobotButton(manager, robot.getName(), maxEnergy, index,
-							robot.getContestIndex(), attach);
+							robot.getContestantIndex(), attach);
 
 					button.setText(robot.getShortName());
 					addRobotButton(button);

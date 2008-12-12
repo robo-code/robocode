@@ -34,7 +34,7 @@ public class TestJunior extends RobotTestBed {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final IRobotSnapshot robot = event.getTurnSnapshot().getRobots().get(0);
+		final IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[0];
 
 		final String out = robot.getOutputStreamSnapshot();
 

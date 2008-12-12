@@ -35,7 +35,7 @@ public class TestFileAttack extends RobotTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
 
 		if (out.contains(
 				"java.security.AccessControlException: Preventing testing.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")) {

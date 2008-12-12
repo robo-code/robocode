@@ -32,9 +32,6 @@ import robocode.control.snapshot.ITurnSnapshot;
 import robocode.text.StringUtil;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
 /**
@@ -49,7 +46,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
-	List<IScoreSnapshot> scoreSnapshotList;
+	IScoreSnapshot[] scoreSnapshotList;
 
 	// The sum of the scores gathered by the robots in the actual round
 	private double currentSum;
@@ -72,9 +69,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 	public void updateSource(ITurnSnapshot snapshot) {
 		if (snapshot != null) {
-			scoreSnapshotList = new ArrayList<IScoreSnapshot>(snapshot.getTeamScores());
-			Collections.sort(scoreSnapshotList);
-			Collections.reverse(scoreSnapshotList);
+			scoreSnapshotList = snapshot.getSortedTeamScores();
 			countTotalScores();
 		} else {
 			scoreSnapshotList = null;
@@ -86,7 +81,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		return scoreSnapshotList == null ? 0 : scoreSnapshotList.size();
+		return scoreSnapshotList == null ? 0 : scoreSnapshotList.length;
 	}
 
 	@Override
@@ -135,7 +130,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 	public Object getValueAt(int row, int col) {
 
-		final IScoreSnapshot statistics = scoreSnapshotList.get(row);
+		final IScoreSnapshot statistics = scoreSnapshotList[row];
 
 		switch (col) {
 		case 0:

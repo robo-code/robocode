@@ -45,7 +45,7 @@ public class TestLost extends RobotTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		IRobotSnapshot robot = event.getTurnSnapshot().getRobots().get(1);
+		IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[1];
 		final String streamSnapshot = robot.getOutputStreamSnapshot();
 
 		if (streamSnapshot.contains("Death!")) {

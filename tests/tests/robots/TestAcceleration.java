@@ -35,7 +35,7 @@ public class TestAcceleration extends RobotTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		IRobotSnapshot ahead = event.getTurnSnapshot().getRobots().get(1);
+		IRobotSnapshot ahead = event.getTurnSnapshot().getRobots()[1];
 
 		switch (event.getTurnSnapshot().getTurn()) {
 		case 1:
