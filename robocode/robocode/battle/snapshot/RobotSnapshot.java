@@ -169,6 +169,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		graphicsCalls = peer.getGraphicsCalls();
 
 		final List<DebugProperty> dp = peer.getDebugProperties();
+
 		debugProperties = dp != null ? dp.toArray(new DebugProperty[dp.size()]) : null;
 
 		if (readoutText) {
