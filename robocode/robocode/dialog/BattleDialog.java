@@ -12,7 +12,7 @@
 package robocode.dialog;
 
 
-import robocode.battle.events.BattleAdaptor;
+import robocode.control.events.BattleAdaptor;
 import robocode.common.IXmlSerializable;
 import robocode.common.XmlWriter;
 import robocode.control.events.*;

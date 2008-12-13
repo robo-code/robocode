@@ -21,7 +21,7 @@
 package robocode.dialog;
 
 
-import robocode.battle.events.BattleAdaptor;
+import robocode.control.events.BattleAdaptor;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;

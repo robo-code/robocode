@@ -47,6 +47,7 @@ import java.util.*;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * @since 1.6.1
  */
 public final class TurnSnapshot implements java.io.Serializable, IXmlSerializable, ITurnSnapshot {

@@ -45,6 +45,7 @@ import java.util.Dictionary;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * @since 1.6.1
  */
 public final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, IBulletSnapshot {

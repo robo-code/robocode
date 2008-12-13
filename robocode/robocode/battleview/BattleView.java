@@ -16,7 +16,7 @@
 package robocode.battleview;
 
 
-import robocode.battle.events.BattleAdaptor;
+import robocode.control.events.BattleAdaptor;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;

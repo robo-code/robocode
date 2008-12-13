@@ -24,7 +24,7 @@
 package roborumble.battlesengine;
 
 
-import robocode.battle.events.BattleAdaptor;
+import robocode.control.events.BattleAdaptor;
 import robocode.control.*;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;

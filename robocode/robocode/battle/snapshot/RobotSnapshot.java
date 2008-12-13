@@ -50,6 +50,7 @@ import java.util.List;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * @since 1.6.1
  */
 public final class RobotSnapshot implements Serializable, IXmlSerializable, IRobotSnapshot {

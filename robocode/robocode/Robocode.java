@@ -29,7 +29,7 @@
 package robocode;
 
 
-import robocode.battle.events.BattleAdaptor;
+import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;

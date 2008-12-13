@@ -30,7 +30,7 @@
 package robocode.dialog;
 
 
-import robocode.battle.events.BattleAdaptor;
+import robocode.control.events.BattleAdaptor;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.control.events.*;
