@@ -62,6 +62,8 @@ public interface IBattleManager {
 
 	void startNewBattle(BattleSpecification spec, boolean waitTillOver);
 
+	void waitTillOver(); 
+
 	void nextTurn();
 
 	void prevTurn();

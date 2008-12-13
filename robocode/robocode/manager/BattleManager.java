@@ -91,11 +91,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class BattleManager implements IBattleManager {
 	private RobocodeManager manager;
 
-	private IBattle battle;
+	private volatile IBattle battle;
 	private BattleProperties battleProperties = new BattleProperties();
 
 	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
@@ -279,6 +280,12 @@ public class BattleManager implements IBattleManager {
 		realBattle.waitTillStarted();
 		if (waitTillOver) {
 			realBattle.waitTillOver();
+		}
+	}
+
+	public void waitTillOver() {
+		if (battle != null) {
+			battle.waitTillOver();
 		}
 	}
 

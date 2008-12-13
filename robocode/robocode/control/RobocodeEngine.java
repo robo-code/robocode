@@ -71,6 +71,7 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  * @author Joachim Hofer (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobocodeEngine {
 
@@ -347,6 +348,16 @@ public class RobocodeEngine {
 	public void runBattle(BattleSpecification battleSpecification, boolean waitTillOver) {
 		this.battleSpecification = battleSpecification;
 		manager.getBattleManager().startNewBattle(battleSpecification, waitTillOver);
+	}
+
+	/**
+	 * Will block caller until current battle is over 
+	 * @see #runBattle(BattleSpecification)
+	 * @see #runBattle(BattleSpecification, boolean)
+	 * @since 1.6.2
+	 */
+	public void waitTillBattleOver() {
+		manager.getBattleManager().waitTillOver();
 	}
 
 	/**
