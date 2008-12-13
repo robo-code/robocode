@@ -525,8 +525,7 @@ public class BattleView extends Canvas {
 				if (manager.getProperties().getOptionsRenderingForceBulletColor()) {
 					bulletColor = Color.WHITE;
 				} else {
-					// TODO alpha invisible bullets ?
-					bulletColor = new Color(IBulletSnapshot.getColor(), true);
+					bulletColor = new Color(IBulletSnapshot.getColor());
 				}
 				g.setColor(bulletColor);
 				g.fill(bulletArea);

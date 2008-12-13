@@ -722,8 +722,8 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		return rc;
 	}
 
-	// TODO: Needs to be updated?
 	public boolean cleanupOldSampleRobots(boolean delete) {
+		// TODO: Needs to be updated?
 		String oldSampleList[] = {
 			"Corners.java", "Crazy.java", "Fire.java", "MyFirstRobot.java", "RamFire.java", "SittingDuck.java",
 			"SpinBot.java", "Target.java", "Tracker.java", "TrackFire.java", "Walls.java", "Corners.class",

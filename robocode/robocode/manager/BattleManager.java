@@ -221,7 +221,7 @@ public class BattleManager implements IBattleManager {
 
 	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean waitTillOver) {
 
-		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when realBattle is running ?
+		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
 		}
 
@@ -284,7 +284,7 @@ public class BattleManager implements IBattleManager {
 
 	private void replayBattle() {
 		logMessage("Preparing replay...");
-		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battlePlayer is running ?
+		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
 		}
 
