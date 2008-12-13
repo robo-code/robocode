@@ -113,11 +113,11 @@ public final class BattlePlayer extends BaseBattle {
 
 		if (end) {
 			if (recordManager.recordInfo.turnsInRounds.length > getRoundNum()
-					&& recordManager.recordInfo.turnsInRounds[getRoundNum() + 1] == 0) {
+					&& recordManager.recordInfo.turnsInRounds[getRoundNum()] == 0) {
 				isAborted = true;
 			}
 		}
-		return (isAborted() || end);
+		return (isAborted || end);
 	}
 
 	public void setPaintEnabled(int robotIndex, boolean enable) {

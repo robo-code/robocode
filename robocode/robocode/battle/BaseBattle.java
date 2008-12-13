@@ -213,7 +213,6 @@ public abstract class BaseBattle implements IBattle, Runnable {
 					cleanupRound();
 
 				} catch (Exception e) {
-					e.printStackTrace();
 					logError("Exception running a battle round: ", e);
 					isAborted = true;
 				}
