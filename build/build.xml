@@ -485,6 +485,7 @@
     	link="http://java.sun.com/j2se/1.5.0/docs/api">
       <fileset dir="${src.robocode}" defaultexcludes="yes">
         <include name="robocode/*.java"/>
+        <exclude name="robocode/_*.java"/>
       	<include name="robocode/util/Utils.java"/>
       	<include name="robocode/control/**/*.java"/>
       	<exclude name="robocode/control/RandomFactory.java"/>
