@@ -1525,7 +1525,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return commands.get().isTryingToPaint();
 	}
 
-	public DebugProperty[] getDebugProperties() {
+	public List<DebugProperty> getDebugProperties() {
 		return commands.get().getDebugProperties();
 	}
 

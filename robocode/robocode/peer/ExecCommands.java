@@ -253,8 +253,8 @@ public final class ExecCommands implements Serializable {
 		return graphicsCalls;
 	}
 
-	public DebugProperty[] getDebugProperties() {
-		return debugProperties != null ? debugProperties.toArray(new DebugProperty[debugProperties.size()]) : null;
+	public List<DebugProperty> getDebugProperties() {
+		return debugProperties;
 	}
 
 	public void setGraphicsCalls(List<Graphics2DProxy.QueuedCall> graphicsCalls) {
