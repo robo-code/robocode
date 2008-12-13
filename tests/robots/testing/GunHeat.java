@@ -9,11 +9,23 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package testing;
+
+
+import robocode.AdvancedRobot;
 
 
 /**
  * @author Pavel Savara (original)
- * @since 1.6.1
+ * From bug 2405844
  */
-public class BattleResumedEvent extends BattleEvent {}
+public class GunHeat extends AdvancedRobot {
+
+	public void run() {
+		while (true) {
+			setFireBullet(3.0);
+			out.println(getTime() + " gunHeat after fire: " + getGunHeat());
+			execute();
+		}
+	}
+}

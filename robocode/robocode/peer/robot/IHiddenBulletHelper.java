@@ -12,8 +12,8 @@
 package robocode.peer.robot;
 
 
-import robocode.peer.BulletStatus;
 import robocode.Bullet;
+import robocode.peer.BulletStatus;
 
 
 /**

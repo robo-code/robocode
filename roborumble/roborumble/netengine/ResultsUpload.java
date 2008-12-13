@@ -21,6 +21,7 @@
 package roborumble.netengine;
 
 
+import robocode.manager.VersionManager;
 import roborumble.battlesengine.CompetitionsSelector;
 import static roborumble.util.PropertiesUtil.getProperties;
 
@@ -29,8 +30,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
 import java.util.Vector;
-
-import robocode.manager.VersionManager;
 
 
 /**

@@ -24,10 +24,10 @@
 package roborumble.battlesengine;
 
 
+import robocode.control.events.BattleAdaptor;
 import robocode.control.*;
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.BattleErrorEvent;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleErrorEvent;
 import robocode.security.SecurePrintStream;
 import static roborumble.util.PropertiesUtil.getProperties;
 
@@ -253,7 +253,7 @@ public class BattlesRunner {
 
 		@Override
 		public void onBattleCompleted(final BattleCompletedEvent event) {
-			lastResults = RobotResults.convertResults(event.getResults());
+			lastResults = RobotResults.convertResults(event.getSortedResults());
 		}
 	}
 }

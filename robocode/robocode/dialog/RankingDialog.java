@@ -20,10 +20,10 @@
 package robocode.dialog;
 
 
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.control.events.BattleAdaptor;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.manager.RobocodeManager;
 import robocode.ui.BattleRankingTableModel;
 
@@ -48,15 +48,15 @@ public class RankingDialog extends BaseScoreDialog {
 	private final BattleRankingTableModel tableModel;
 	private final Timer timerTask;
 	private final BattleObserver battleObserver;
-	private final AtomicReference<TurnSnapshot> snapshot;
-	private TurnSnapshot lastSnapshot;
+	private final AtomicReference<ITurnSnapshot> snapshot;
+	private ITurnSnapshot lastSnapshot;
 	private int lastRows;
 
 	public RankingDialog(RobocodeManager manager) {
 		super(manager, false);
 		battleObserver = new BattleObserver();
 		timerTask = new Timer(1000 / 2, new TimerTask());
-		snapshot = new AtomicReference<TurnSnapshot>();
+		snapshot = new AtomicReference<ITurnSnapshot>();
 		lastRows = 0;
 		tableModel = new BattleRankingTableModel();
 		initialize();
@@ -69,7 +69,7 @@ public class RankingDialog extends BaseScoreDialog {
 	}
 
 	private void update() {
-		final TurnSnapshot current = snapshot.get();
+		final ITurnSnapshot current = snapshot.get();
 
 		if (lastSnapshot != current) {
 			lastSnapshot = current;
@@ -102,7 +102,7 @@ public class RankingDialog extends BaseScoreDialog {
 
 	private class BattleObserver extends BattleAdaptor {
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			snapshot.set(null);
 		}
 

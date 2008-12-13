@@ -14,8 +14,8 @@ package robocode.recording;
 
 import robocode.BattleResults;
 import robocode.BattleRules;
+import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
-import robocode.common.XmlSerializable;
 import robocode.common.XmlWriter;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.util.List;
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (original)
  */
-public class BattleRecordInfo implements Serializable, XmlSerializable {
+public class BattleRecordInfo implements Serializable, IXmlSerializable {
 	private static final long serialVersionUID = 1L;
 
 	public int robotCount;
@@ -70,7 +70,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("recordInfo", new XmlReader.Element() {
-			public XmlSerializable read(XmlReader reader) {
+			public IXmlSerializable read(XmlReader reader) {
 				final BattleRecordInfo recordInfo = new BattleRecordInfo();
 
 				reader.expect("robotCount", new XmlReader.Attribute() {
@@ -87,7 +87,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 				final XmlReader.Element element = (new BattleRules()).readXml(reader);
 
 				reader.expect("rules", new XmlReader.Element() {
-					public XmlSerializable read(XmlReader reader) {
+					public IXmlSerializable read(XmlReader reader) {
 						recordInfo.battleRules = (BattleRules) element.read(reader);
 						return recordInfo.battleRules;
 					}
@@ -96,12 +96,12 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 				reader.expect("rounds", new XmlReader.ListElement() {
 					final ArrayList<Integer> ints = new ArrayList<Integer>();
 
-					public XmlSerializable read(XmlReader reader) {
+					public IXmlSerializable read(XmlReader reader) {
 						// prototype
 						return new IntValue("turns");
 					}
 
-					public void add(XmlSerializable child) {
+					public void add(IXmlSerializable child) {
 						ints.add(((IntValue) child).intValue);
 					}
 
@@ -113,13 +113,13 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 
 				reader.expect("results", new XmlReader.ListElement() {
 
-					public XmlSerializable read(XmlReader reader) {
+					public IXmlSerializable read(XmlReader reader) {
 						recordInfo.results = new ArrayList<BattleResults>();
 						// prototype
 						return new BattleResultsWrapper();
 					}
 
-					public void add(XmlSerializable child) {
+					public void add(IXmlSerializable child) {
 						recordInfo.results.add((BattleResults) child);
 					}
 
@@ -130,7 +130,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 		});
 	}
 
-	public class IntValue implements XmlSerializable {
+	public class IntValue implements IXmlSerializable {
 		IntValue(String name) {
 			this.name = name;
 		}
@@ -141,7 +141,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect(name, new XmlReader.Element() {
-				public XmlSerializable read(XmlReader reader) {
+				public IXmlSerializable read(XmlReader reader) {
 					final IntValue recordInfo = new IntValue(name);
 
 					reader.expect("value", new XmlReader.Attribute() {
@@ -163,7 +163,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 	 *
 	 * @author Flemming N. Larsen (original)
 	 */
-	class BattleResultsWrapper extends BattleResults implements XmlSerializable {
+	class BattleResultsWrapper extends BattleResults implements IXmlSerializable {
 
 		private static final long serialVersionUID = BattleResults.serialVersionUID;
 
@@ -199,7 +199,7 @@ public class BattleRecordInfo implements Serializable, XmlSerializable {
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect("result", new XmlReader.Element() {
-				public XmlSerializable read(XmlReader reader) {
+				public IXmlSerializable read(XmlReader reader) {
 					final BattleResultsWrapper rules = new BattleResultsWrapper();
 
 					reader.expect("rank", new XmlReader.Attribute() {

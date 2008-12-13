@@ -16,16 +16,23 @@
 package robocode.battleview;
 
 
-import robocode.battle.events.*;
-import robocode.battle.snapshot.BulletSnapshot;
+import robocode.control.events.BattleAdaptor;
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.BattleStartedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IBulletSnapshot;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.gfx.GraphicsState;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
-import robocode.manager.*;
+import robocode.manager.IImageManager;
+import robocode.manager.IWindowManager;
+import robocode.manager.RobocodeManager;
+import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletState;
 import robocode.robotpaint.IGraphicsProxy;
 import robocode.robotpaint.Graphics2DSerialized;
@@ -112,7 +119,7 @@ public class BattleView extends Canvas {
 
 	@Override
 	public void paint(Graphics g) {
-		final TurnSnapshot lastSnapshot = manager.getWindowManager().getLastSnapshot();
+		final ITurnSnapshot lastSnapshot = manager.getWindowManager().getLastSnapshot();
 
 		if (lastSnapshot != null) {
 			update(lastSnapshot);
@@ -121,7 +128,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void update(TurnSnapshot snapshot) {
+	private void update(ITurnSnapshot snapshot) {
 		if (!initialized) {
 			initialize();
 		}
@@ -254,7 +261,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawBattle(Graphics2D g, TurnSnapshot snapShot) {
+	private void drawBattle(Graphics2D g, ITurnSnapshot snapShot) {
 		// Save the graphics state
 		graphicsState.save(g);
 
@@ -348,9 +355,9 @@ public class BattleView extends Canvas {
 		g.setClip(savedClip);
 	}
 
-	private void drawScanArcs(Graphics2D g, TurnSnapshot snapShot) {
+	private void drawScanArcs(Graphics2D g, ITurnSnapshot snapShot) {
 		if (drawScanArcs) {
-			for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+			for (IRobotSnapshot robotSnapshot : snapShot.getRobots()) {
 				if (robotSnapshot.getState().isAlive()) {
 					drawScanArc(g, robotSnapshot);
 				}
@@ -358,7 +365,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawRobots(Graphics2D g, TurnSnapshot snapShot) {
+	private void drawRobots(Graphics2D g, ITurnSnapshot snapShot) {
 		double x, y;
 		AffineTransform at;
 		int battleFieldHeight = battleField.getHeight();
@@ -366,7 +373,7 @@ public class BattleView extends Canvas {
 		if (drawGround && drawExplosionDebris) {
 			RenderImage explodeDebrise = imageManager.getExplosionDebriseRenderImage();
 
-			for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+			for (IRobotSnapshot robotSnapshot : snapShot.getRobots()) {
 				if (robotSnapshot.getState().isDead()) {
 					x = robotSnapshot.getX();
 					y = battleFieldHeight - robotSnapshot.getY();
@@ -379,7 +386,7 @@ public class BattleView extends Canvas {
 			}
 		}
 
-		for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+		for (IRobotSnapshot robotSnapshot : snapShot.getRobots()) {
 			if (robotSnapshot.getState().isAlive()) {
 				x = robotSnapshot.getX();
 				y = battleFieldHeight - robotSnapshot.getY();
@@ -413,14 +420,14 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawText(Graphics2D g, TurnSnapshot snapShot) {
+	private void drawText(Graphics2D g, ITurnSnapshot snapShot) {
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
 
 		int i = -1;
 
-		for (RobotSnapshot robotSnapshot : snapShot.getRobots()) {
+		for (IRobotSnapshot robotSnapshot : snapShot.getRobots()) {
 			i++;
 			if (robotSnapshot.getState().isDead()) {
 				continue;
@@ -455,8 +462,8 @@ public class BattleView extends Canvas {
 		g.setClip(savedClip);
 	}
 
-	private void drawRobotPaint(Graphics2D g, RobotSnapshot robotSnapshot, int robotIndex) {
-		final Object graphicsCalls = robotSnapshot.getGraphicsCalls();
+	private void drawRobotPaint(Graphics2D g, IRobotSnapshot robotSnapshot, int robotIndex) {
+		final Object graphicsCalls = ((RobotSnapshot) robotSnapshot).getGraphicsCalls();
 
 		if (graphicsCalls == null || !robotSnapshot.isPaintEnabled()) {
 			return;
@@ -491,23 +498,23 @@ public class BattleView extends Canvas {
 		return robotGraphics[robotIndex];
 	}
 
-	private void drawBullets(Graphics2D g, TurnSnapshot snapShot) {
+	private void drawBullets(Graphics2D g, ITurnSnapshot snapShot) {
 		Shape savedClip = g.getClip();
 
 		g.setClip(null);
 
 		double x, y;
 
-		for (BulletSnapshot bulletSnapshot : snapShot.getBullets()) {
-			x = bulletSnapshot.getPaintX();
-			y = battleField.getHeight() - bulletSnapshot.getPaintY();
+		for (IBulletSnapshot IBulletSnapshot : snapShot.getBullets()) {
+			x = IBulletSnapshot.getPaintX();
+			y = battleField.getHeight() - IBulletSnapshot.getPaintY();
 
 			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
-			if (bulletSnapshot.getState().getValue() <= BulletState.MOVING.getValue()) {
+			if (IBulletSnapshot.getState().getValue() <= BulletState.MOVING.getValue()) {
 
 				// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
-				double scale = max(2 * sqrt(2.5 * bulletSnapshot.getPower()), 2 / this.scale);
+				double scale = max(2 * sqrt(2.5 * IBulletSnapshot.getPower()), 2 / this.scale);
 
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
@@ -517,21 +524,20 @@ public class BattleView extends Canvas {
 				if (manager.getProperties().getOptionsRenderingForceBulletColor()) {
 					bulletColor = Color.WHITE;
 				} else {
-					// TODO alpha invisible bullets ?
-					bulletColor = new Color(bulletSnapshot.getColor(), true);
+					bulletColor = new Color(IBulletSnapshot.getColor());
 				}
 				g.setColor(bulletColor);
 				g.fill(bulletArea);
 
 			} else if (drawExplosions) {
-				if (!bulletSnapshot.isExplosion()) {
-					double scale = sqrt(1000 * bulletSnapshot.getPower()) / 128;
+				if (!IBulletSnapshot.isExplosion()) {
+					double scale = sqrt(1000 * IBulletSnapshot.getPower()) / 128;
 
 					at.scale(scale, scale);
 				}
 
 				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(
-						bulletSnapshot.getExplosionImageIndex(), bulletSnapshot.getFrame());
+						IBulletSnapshot.getExplosionImageIndex(), IBulletSnapshot.getFrame());
 
 				explosionRenderImage.setTransform(at);
 				explosionRenderImage.paint(g);
@@ -571,8 +577,8 @@ public class BattleView extends Canvas {
 		g.drawString(s, (int) (left + 0.5), (int) (top + height - descent + 0.5));
 	}
 
-	private void drawScanArc(Graphics2D g, RobotSnapshot robotSnapshot) {
-		Arc2D.Double scanArc = (Arc2D.Double) robotSnapshot.getScanArc();
+	private void drawScanArc(Graphics2D g, IRobotSnapshot robotSnapshot) {
+		Arc2D.Double scanArc = (Arc2D.Double) ((RobotSnapshot) robotSnapshot).getScanArc();
 
 		if (scanArc == null) {
 			return;
@@ -634,8 +640,8 @@ public class BattleView extends Canvas {
 		}
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
-			super.onBattleEnded(event);
+		public void onBattleFinished(BattleFinishedEvent event) {
+			super.onBattleFinished(event);
 			robotGraphics = null;
 		}
 

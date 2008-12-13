@@ -15,11 +15,11 @@
 package robocode.io;
 
 
-import robocode.battle.events.BattleErrorEvent;
-import robocode.battle.events.BattleMessageEvent;
-import robocode.battle.events.IBattleListener;
-import robocode.security.SecurePrintStream;
+import robocode.control.IBattleListener;
+import robocode.control.events.BattleErrorEvent;
+import robocode.control.events.BattleMessageEvent;
 import robocode.security.RobocodeSecurityManager;
+import robocode.security.SecurePrintStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

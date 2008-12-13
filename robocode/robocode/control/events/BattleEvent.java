@@ -8,25 +8,26 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
-package robocode.battle.events;
-
-
-import robocode.battle.snapshot.TurnSnapshot;
+package robocode.control.events;
 
 
 /**
+ * This is the base class of all battle events.
+ *
  * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
-public class TurnEndedEvent extends BattleEvent {
-	private final TurnSnapshot turnSnapshot;
+public abstract class BattleEvent {
 
-	public TurnEndedEvent(TurnSnapshot turnSnapshot) {
-		this.turnSnapshot = turnSnapshot;
-	}
-
-	public TurnSnapshot getTurnSnapshot() {
-		return turnSnapshot;
+	/**
+	 * Creates a new BattleEvent.
+	 */
+	public BattleEvent() {
+		super();		
 	}
 }

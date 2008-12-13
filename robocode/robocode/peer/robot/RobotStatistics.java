@@ -183,6 +183,10 @@ public class RobotStatistics implements robocode.peer.ContestantStatistics {
 		return survivalScore;
 	}
 
+	public double getCurrentSurvivalBonus() {
+		return lastSurvivorBonus;
+	}
+
 	public double getCurrentBulletDamageScore() {
 		return bulletDamageScore;
 	}

@@ -37,7 +37,10 @@
 package robocode.control;
 
 
-import robocode.battle.events.*;
+import robocode.control.events.BattleAdaptor;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.BattleMessageEvent;
 import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
@@ -45,9 +48,9 @@ import robocode.repository.Repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -68,6 +71,7 @@ import java.util.ArrayList;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  * @author Joachim Hofer (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobocodeEngine {
 
@@ -347,6 +351,16 @@ public class RobocodeEngine {
 	}
 
 	/**
+	 * Will block caller until current battle is over 
+	 * @see #runBattle(BattleSpecification)
+	 * @see #runBattle(BattleSpecification, boolean)
+	 * @since 1.6.2
+	 */
+	public void waitTillBattleOver() {
+		manager.getBattleManager().waitTillOver();
+	}
+
+	/**
 	 * Aborts the current battle if it is running.
 	 *
 	 * @see #runBattle(BattleSpecification)
@@ -406,7 +420,7 @@ public class RobocodeEngine {
 		private RobocodeListener listener;
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			if (event.isAborted()) {
 				listener.battleAborted(battleSpecification);
 			}
@@ -414,7 +428,7 @@ public class RobocodeEngine {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			listener.battleComplete(battleSpecification, RobotResults.convertResults(event.getResults()));
+			listener.battleComplete(battleSpecification, RobotResults.convertResults(event.getSortedResults()));
 		}
 
 		@Override

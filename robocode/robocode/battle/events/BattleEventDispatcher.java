@@ -12,6 +12,8 @@
 package robocode.battle.events;
 
 
+import robocode.control.IBattleListener;
+import robocode.control.events.*;
 import static robocode.io.Logger.logError;
 
 import java.util.List;
@@ -62,12 +64,12 @@ public class BattleEventDispatcher implements IBattleListener {
 		}
 	}
 
-	public void onBattleEnded(BattleEndedEvent event) {
+	public void onBattleFinished(BattleFinishedEvent event) {
 		for (IBattleListener listener : listeners) {
 			try {
-				listener.onBattleEnded(event);
+				listener.onBattleFinished(event);
 			} catch (Throwable ex) {
-				logError("onBattleEnded " + listener.getClass(), ex);
+				logError("onBattleFinished " + listener.getClass(), ex);
 			}
 		}
 	}

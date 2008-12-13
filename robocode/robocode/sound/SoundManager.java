@@ -28,9 +28,13 @@
 package robocode.sound;
 
 
-import robocode.battle.events.*;
-import robocode.battle.snapshot.BulletSnapshot;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.BattleAdaptor;
+import robocode.battle.events.BattleEventDispatcher;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.BattleStartedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IBulletSnapshot;
+import robocode.control.snapshot.IRobotSnapshot;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.RobotState;
@@ -190,7 +194,7 @@ public class SoundManager implements ISoundManager {
 	 * @param bp the bullet peer
 	 * @param battleFieldWidth the width of the battle field used for panning.
 	 */
-	public void playBulletSound(BulletSnapshot bp, int battleFieldWidth) {
+	public void playBulletSound(IBulletSnapshot bp, int battleFieldWidth) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
@@ -233,7 +237,7 @@ public class SoundManager implements ISoundManager {
 	 * @param robotPeer the robot peer
 	 * @param battleFieldWidth the battle field width used for panning
 	 */
-	public void playRobotSound(RobotSnapshot robotPeer, int battleFieldWidth) {
+	public void playRobotSound(IRobotSnapshot robotPeer, int battleFieldWidth) {
 		float pan = 0;
 
 		if (properties.getOptionsSoundEnableMixerPan()) {
@@ -305,7 +309,7 @@ public class SoundManager implements ISoundManager {
 	 * @param bp the bullet peer
 	 * @return the volume value, ranging from 0 to 1
 	 */
-	private float calcBulletVolume(BulletSnapshot bp) {
+	private float calcBulletVolume(IBulletSnapshot bp) {
 		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
 	}
 
@@ -335,7 +339,7 @@ public class SoundManager implements ISoundManager {
 		}
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			stopBackgroundMusic();
 			playEndOfBattleMusic();
 		}
@@ -344,7 +348,7 @@ public class SoundManager implements ISoundManager {
 		public void onTurnEnded(TurnEndedEvent event) {
 			int battleFieldWidth = manager.getBattleManager().getBattleProperties().getBattlefieldWidth();
 
-			for (BulletSnapshot bp : event.getTurnSnapshot().getBullets()) {
+			for (IBulletSnapshot bp : event.getTurnSnapshot().getBullets()) {
 				if (bp.getFrame() == 0) {
 					playBulletSound(bp, battleFieldWidth);
 				}
@@ -352,7 +356,7 @@ public class SoundManager implements ISoundManager {
 
 			boolean playedRobotHitRobot = false;
 
-			for (RobotSnapshot rp : event.getTurnSnapshot().getRobots()) {
+			for (IRobotSnapshot rp : event.getTurnSnapshot().getRobots()) {
 				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
 				if (rp.getState() == RobotState.HIT_ROBOT) {
 					if (playedRobotHitRobot) {

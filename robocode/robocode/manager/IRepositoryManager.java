@@ -34,7 +34,7 @@ public interface IRepositoryManager {
 			boolean alwaysReplace);
 
 	int extractJar(JarInputStream jarIS, File dest, String statusPrefix, boolean extractJars, boolean close,
-			boolean alwaysReplace); // TODO: Needs to be updated?
+			boolean alwaysReplace);
 
 	boolean cleanupOldSampleRobots(boolean delete); // TODO: Needs to be updated?
 

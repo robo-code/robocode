@@ -19,15 +19,15 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.snapshot.TurnSnapshot;
-import robocode.battle.snapshot.ScoreSnapshot;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.BattleResults;
+import robocode.control.events.BattleAdaptor;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
+import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -169,16 +169,16 @@ public class RobotButton extends JButton implements ActionListener {
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			final TurnSnapshot turn = event.getTurnSnapshot();
+			final ITurnSnapshot turn = event.getTurnSnapshot();
 
 			if (turn == null) {
 				return;
 			}
-			final java.util.List<RobotSnapshot> robots = turn.getRobots();
-			final java.util.List<ScoreSnapshot> scoreSnapshotList = event.getTurnSnapshot().getTeamScoresStable();
+			final IRobotSnapshot[] robots = turn.getRobots();
+			final IScoreSnapshot[] scoreSnapshotList = event.getTurnSnapshot().getIndexedTeamScores();
 
 			maxEnergy = 0;
-			for (RobotSnapshot robot : robots) {
+			for (IRobotSnapshot robot : robots) {
 				if (maxEnergy < robot.getEnergy()) {
 					maxEnergy = (int) robot.getEnergy();
 				}
@@ -188,7 +188,7 @@ public class RobotButton extends JButton implements ActionListener {
 			}
 
 			maxScore = 0;
-			for (ScoreSnapshot team : scoreSnapshotList) {
+			for (IScoreSnapshot team : scoreSnapshotList) {
 				if (maxScore < team.getCurrentScore()) {
 					maxScore = (int) team.getCurrentScore();
 				}
@@ -197,8 +197,8 @@ public class RobotButton extends JButton implements ActionListener {
 				maxScore = 1;
 			}
 
-			final int newScore = (int) scoreSnapshotList.get(contestIndex).getCurrentScore();
-			final int newEnergy = (int) robots.get(robotIndex).getEnergy();
+			final int newScore = (int) scoreSnapshotList[contestIndex].getCurrentScore();
+			final int newEnergy = (int) robots[robotIndex].getEnergy();
 			boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
 
 			lastEnergy = newEnergy;
@@ -210,7 +210,7 @@ public class RobotButton extends JButton implements ActionListener {
 
 		public void onBattleCompleted(final BattleCompletedEvent event) {
 			maxScore = 0;
-			for (BattleResults team : event.getResultsStable()) {
+			for (BattleResults team : event.getIndexedResults()) {
 				if (maxScore < team.getScore()) {
 					maxScore = team.getScore();
 				}
@@ -218,11 +218,11 @@ public class RobotButton extends JButton implements ActionListener {
 			if (maxScore == 0) {
 				maxScore = 1;
 			}
-			lastScore = event.getResultsStable().get(contestIndex).getScore();
+			lastScore = event.getIndexedResults()[contestIndex].getScore();
 			repaint();
 		}
 		
-		public void onBattleEnded(final BattleEndedEvent event) {
+		public void onBattleFinished(final BattleFinishedEvent event) {
 			lastEnergy = 0;
 			repaint();
 		}

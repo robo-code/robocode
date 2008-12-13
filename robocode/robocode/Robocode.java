@@ -29,16 +29,20 @@
 package robocode;
 
 
-import robocode.battle.events.*;
+import robocode.control.events.BattleAdaptor;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleErrorEvent;
+import robocode.control.events.BattleMessageEvent;
+import robocode.control.events.BattleStartedEvent;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
-import robocode.security.SecurePrintStream;
-import robocode.security.LoggingThreadGroup;
-import robocode.ui.BattleResultsTableModel;
 import robocode.recording.BattleRecordFormat;
+import robocode.security.LoggingThreadGroup;
+import robocode.security.SecurePrintStream;
+import robocode.ui.BattleResultsTableModel;
 
 import java.awt.*;
 import java.io.File;
@@ -297,7 +301,7 @@ public class Robocode {
 			}
 		}
 
-		BattleResultsTableModel resultsTable = new BattleResultsTableModel(event.getResults(),
+		BattleResultsTableModel resultsTable = new BattleResultsTableModel(event.getSortedResults(),
 				event.getBattleRules().getNumRounds());
 
 		if (out != null) {

@@ -12,8 +12,8 @@
 package testing;
 
 
-import static robocode.util.Utils.normalRelativeAngle;
 import robocode.*;
+import static robocode.util.Utils.normalRelativeAngle;
 
 
 /**

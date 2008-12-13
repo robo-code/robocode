@@ -58,10 +58,14 @@ import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattle;
-import robocode.battle.events.*;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.control.BattleSpecification;
+import robocode.control.IBattleListener;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.BattlePausedEvent;
+import robocode.control.events.BattleResumedEvent;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
@@ -86,11 +90,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class BattleManager implements IBattleManager {
 	private RobocodeManager manager;
 
-	private IBattle battle;
+	private volatile IBattle battle;
 	private BattleProperties battleProperties = new BattleProperties();
 
 	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
@@ -208,7 +213,7 @@ public class BattleManager implements IBattleManager {
 
 		if (!found) {
 			logError("Aborting battle, could not find robot: " + bot);
-			this.battleEventDispatcher.onBattleEnded(new BattleEndedEvent(true));
+			this.battleEventDispatcher.onBattleFinished(new BattleFinishedEvent(true));
 			return true;
 		}
 		return false;
@@ -216,7 +221,7 @@ public class BattleManager implements IBattleManager {
 
 	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean waitTillOver) {
 
-		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when realBattle is running ?
+		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
 		}
 
@@ -227,7 +232,8 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording();
+		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording()
+				&& System.getProperty("TESTING", "none").equals("none");
 
 		if (recording) {
 			manager.getRecordManager().attachRecorder(battleEventDispatcher);
@@ -275,9 +281,15 @@ public class BattleManager implements IBattleManager {
 		}
 	}
 
+	public void waitTillOver() {
+		if (battle != null) {
+			battle.waitTillOver();
+		}
+	}
+
 	private void replayBattle() {
 		logMessage("Preparing replay...");
-		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battlePlayer is running ?
+		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
 		}
 

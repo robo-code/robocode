@@ -30,11 +30,12 @@
 package robocode.dialog;
 
 
-import robocode.battle.events.*;
-import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.control.events.BattleAdaptor;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
+import robocode.control.events.*;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
 import robocode.manager.*;
@@ -45,8 +46,9 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -806,13 +808,13 @@ public class RobocodeFrame extends JFrame {
 				getRobotButtonsPanel().removeAll();
 
 				final IRobotDialogManager dialogManager = manager.getRobotDialogManager();
-				final java.util.List<RobotSnapshot> robots = event.getTurnSnapshot().getRobots();
+				final List<IRobotSnapshot> robots = Arrays.asList(event.getStartSnapshot().getRobots());
 
 				dialogManager.trim(robots);
 
 				int maxEnergy = 0;
 
-				for (RobotSnapshot robot : robots) {
+				for (IRobotSnapshot robot : robots) {
 					if (maxEnergy < robot.getEnergy()) {
 						maxEnergy = (int) robot.getEnergy();
 					}
@@ -821,10 +823,10 @@ public class RobocodeFrame extends JFrame {
 					maxEnergy = 1;
 				}
 				for (int index = 0; index < robots.size(); index++) {
-					final RobotSnapshot robot = robots.get(index);
+					final IRobotSnapshot robot = robots.get(index);
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
 					final RobotButton button = new RobotButton(manager, robot.getName(), maxEnergy, index,
-							robot.getContestIndex(), attach);
+							robot.getContestantIndex(), attach);
 
 					button.setText(robot.getShortName());
 					addRobotButton(button);
@@ -834,7 +836,7 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			isBattleRunning = false;
 
 			for (RobotButton robotButton : robotButtons) {
@@ -887,7 +889,7 @@ public class RobocodeFrame extends JFrame {
 			if (event == null) {
 				return;
 			}
-			final TurnSnapshot turn = event.getTurnSnapshot();
+			final ITurnSnapshot turn = event.getTurnSnapshot();
 
 			if (turn == null) {
 				return;

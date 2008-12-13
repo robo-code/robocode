@@ -31,8 +31,8 @@ import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
 import robocode.manager.IThreadManager;
 import robocode.peer.proxies.IHostedThread;
-import robocode.security.RobocodeSecurityManager;
 import robocode.security.LoggingThreadGroup;
+import robocode.security.RobocodeSecurityManager;
 
 
 /**

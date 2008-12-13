@@ -12,7 +12,11 @@
 package robocode.recording;
 
 
-import robocode.battle.events.*;
+import robocode.control.events.BattleAdaptor;
+import robocode.battle.events.BattleEventDispatcher;
+import robocode.control.events.*;
+
+import java.util.Arrays;
 
 
 /**
@@ -67,20 +71,20 @@ public class BattleRecorder {
 		}
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			recordmanager.cleanupStreams();
 		}
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			recordmanager.updateRecordInfoResults(event.getResultsStable());
+			recordmanager.updateRecordInfoResults(Arrays.asList(event.getIndexedResults()));
 		}
 
 		@Override
 		public void onRoundStarted(RoundStartedEvent event) {
 			currentRound = event.getRound();
 			currentTurn = 0;
-			recordmanager.writeTurn(event.getTurnSnapshot(), currentRound, currentTurn);
+			recordmanager.writeTurn(event.getStartSnapshot(), currentRound, currentTurn);
 		}
 
 		@Override

@@ -9,11 +9,18 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.common;
+
+
+import java.io.IOException;
+import java.util.Dictionary;
 
 
 /**
  * @author Pavel Savara (original)
- * @since 1.6.1
  */
-public class TurnStartedEvent extends BattleEvent {}
+public interface IXmlSerializable {
+	void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException;
+
+	XmlReader.Element readXml(XmlReader reader);
+}

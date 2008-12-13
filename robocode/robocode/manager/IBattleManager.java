@@ -14,8 +14,8 @@ package robocode.manager;
 
 import robocode.Event;
 import robocode.battle.BattleProperties;
-import robocode.battle.events.IBattleListener;
 import robocode.control.BattleSpecification;
+import robocode.control.IBattleListener;
 
 
 /**
@@ -61,6 +61,8 @@ public interface IBattleManager {
 	void startNewBattle(BattleProperties battleProperties, boolean waitTillOver);
 
 	void startNewBattle(BattleSpecification spec, boolean waitTillOver);
+
+	void waitTillOver(); 
 
 	void nextTurn();
 

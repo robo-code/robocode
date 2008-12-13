@@ -12,13 +12,14 @@
 package robocode.recording;
 
 
+import robocode.BattleResults;
 import robocode.battle.BaseBattle;
-import robocode.battle.events.*;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.*;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.manager.RobocodeManager;
-
-import java.util.List;
 
 
 /**
@@ -51,10 +52,11 @@ public final class BattlePlayer extends BaseBattle {
 	protected void finalizeBattle() {
 		boolean aborted = recordManager.recordInfo.results == null || isAborted();
 
-		eventDispatcher.onBattleEnded(new BattleEndedEvent(aborted));
+		eventDispatcher.onBattleFinished(new BattleFinishedEvent(aborted));
 
 		if (!aborted) {
-			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, recordManager.recordInfo.results));
+			eventDispatcher.onBattleCompleted(
+					new BattleCompletedEvent(battleRules, recordManager.recordInfo.results.toArray(new BattleResults[] {})));
 		}
 
 		super.finalizeBattle();
@@ -66,7 +68,7 @@ public final class BattlePlayer extends BaseBattle {
 	protected void initializeRound() {
 		super.initializeRound();
 
-		final TurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
 
 		if (snapshot != null) {
 			eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
@@ -89,13 +91,13 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		final TurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
 
 		if (snapshot != null) {
-			final List<RobotSnapshot> robots = snapshot.getRobots();
+			final IRobotSnapshot[] robots = snapshot.getRobots();
 
-			for (int i = 0; i < robots.size(); i++) {
-				RobotSnapshot robot = robots.get(i);
+			for (int i = 0; i < robots.length; i++) {
+				RobotSnapshot robot = (RobotSnapshot) robots[i];
 
 				robot.overridePaintEnabled(paint[i]);
 			}
@@ -111,11 +113,11 @@ public final class BattlePlayer extends BaseBattle {
 
 		if (end) {
 			if (recordManager.recordInfo.turnsInRounds.length > getRoundNum()
-					&& recordManager.recordInfo.turnsInRounds[getRoundNum() + 1] == 0) {
+					&& recordManager.recordInfo.turnsInRounds[getRoundNum()] == 0) {
 				isAborted = true;
 			}
 		}
-		return (isAborted() || end);
+		return (isAborted || end);
 	}
 
 	public void setPaintEnabled(int robotIndex, boolean enable) {

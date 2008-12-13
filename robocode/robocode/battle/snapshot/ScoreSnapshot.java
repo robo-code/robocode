@@ -14,9 +14,10 @@
 package robocode.battle.snapshot;
 
 
+import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
-import robocode.common.XmlSerializable;
 import robocode.common.XmlWriter;
+import robocode.control.snapshot.IScoreSnapshot;
 import robocode.peer.robot.RobotStatistics;
 
 import java.io.IOException;
@@ -26,9 +27,10 @@ import java.util.Dictionary;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  * @since 1.6.1
  */
-public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializable, XmlSerializable {
+public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializable, IXmlSerializable, IScoreSnapshot {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
@@ -44,6 +46,7 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 	private int totalThirds;
 	private double currentScore;
 	private double currentSurvivalScore;
+	private double currentSurvivalBonus;
 	private double currentBulletDamageScore;
 	private double currentBulletKillBonus;
 	private double currentRammingDamageScore;
@@ -62,14 +65,15 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 		totalSeconds = statistics.getTotalSeconds();
 		totalThirds = statistics.getTotalThirds();
 		currentScore = statistics.getCurrentScore();
-		currentSurvivalScore = statistics.getCurrentSurvivalScore();
 		currentBulletDamageScore = statistics.getCurrentBulletDamageScore();
+		currentSurvivalScore = statistics.getCurrentSurvivalScore();
+		currentSurvivalBonus = statistics.getCurrentSurvivalBonus();
 		currentBulletKillBonus = statistics.getCurrentBulletKillBonus();
 		currentRammingDamageScore = statistics.getCurrentRammingDamageScore();
-		currentRammingKillBonus = statistics.getCurrentBulletKillBonus();
+		currentRammingKillBonus = statistics.getCurrentRammingKillBonus();
 	}
 
-	public ScoreSnapshot(ScoreSnapshot left, ScoreSnapshot right, String name) {
+	public ScoreSnapshot(IScoreSnapshot left, IScoreSnapshot right, String name) {
 		this.name = name;
 		totalScore = left.getTotalScore() + right.getTotalScore();
 		totalSurvivalScore = left.getTotalSurvivalScore() + right.getTotalSurvivalScore();
@@ -141,6 +145,10 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 		return currentSurvivalScore;
 	}
 
+	public double getCurrentSurvivalBonus() {
+		return currentSurvivalBonus;
+	}
+
 	public double getCurrentBulletDamageScore() {
 		return currentBulletDamageScore;
 	}
@@ -157,7 +165,7 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 		return currentRammingKillBonus;
 	}
 
-	public int compareTo(ScoreSnapshot o) {
+	public int compareTo(IScoreSnapshot o) {
 		double myScore = getTotalScore();
 		double hisScore = o.getTotalScore();
 
@@ -202,7 +210,7 @@ public final class ScoreSnapshot implements Comparable<ScoreSnapshot>, Serializa
 
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("score", new XmlReader.Element() {
-			public XmlSerializable read(XmlReader reader) {
+			public IXmlSerializable read(XmlReader reader) {
 				final ScoreSnapshot snapshot = new ScoreSnapshot();
 
 				reader.expect("name", new XmlReader.Attribute() {

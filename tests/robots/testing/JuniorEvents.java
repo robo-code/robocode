@@ -19,10 +19,10 @@ import robocode.robotinterfaces.IJuniorRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.util.Utils;
 
+import java.awt.*;
 import java.io.PrintStream;
 import java.util.Hashtable;
 import java.util.Map;
-import java.awt.*;
 
 
 /**

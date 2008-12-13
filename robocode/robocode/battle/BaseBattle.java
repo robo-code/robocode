@@ -14,9 +14,9 @@ package robocode.battle;
 
 import robocode.BattleRules;
 import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.events.BattlePausedEvent;
-import robocode.battle.events.BattleResumedEvent;
 import robocode.common.Command;
+import robocode.control.events.BattlePausedEvent;
+import robocode.control.events.BattleResumedEvent;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
@@ -213,7 +213,6 @@ public abstract class BaseBattle implements IBattle, Runnable {
 					cleanupRound();
 
 				} catch (Exception e) {
-					e.printStackTrace();
 					logError("Exception running a battle round: ", e);
 					isAborted = true;
 				}

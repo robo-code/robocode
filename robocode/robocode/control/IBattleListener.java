@@ -9,10 +9,10 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control;
 
 
-import robocode.control.BattleSpecification;
+import robocode.control.events.*;
 
 
 /**
@@ -23,7 +23,7 @@ public interface IBattleListener {
 
 	public void onBattleStarted(final BattleStartedEvent event);
 
-	public void onBattleEnded(final BattleEndedEvent event);
+	public void onBattleFinished(final BattleFinishedEvent event);
 
 	public void onBattleCompleted(final BattleCompletedEvent event);
 

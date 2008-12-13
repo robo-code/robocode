@@ -8,12 +8,32 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
-package robocode.battle.events;
+package robocode.control.events;
+
+
+import robocode.control.IBattleListener;
 
 
 /**
+ * A BattleResumedEvent is sent to {@link IBattleListener#onBattleResumed(BattleResumedEvent)
+ * onBattleResumed()} when the battle has been resumed (after having been paused). 
+ *
+ * @see BattlePausedEvent
+ * 
  * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Flemming N. Larsen (contributor)
+ *
+ * @since 1.6.2
  */
-public class BattlePausedEvent extends BattleEvent {}
+public class BattleResumedEvent extends BattleEvent {
+
+	/**
+	 * Creates a new BattlePausedEvent.
+	 */
+	public BattleResumedEvent() {
+		super();		
+	}
+}

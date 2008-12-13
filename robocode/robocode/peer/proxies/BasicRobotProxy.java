@@ -30,6 +30,9 @@ import robocode.robotpaint.Graphics2DSerialized;
 import robocode.util.Utils;
 
 import java.awt.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import java.util.Hashtable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.*;
 
@@ -421,7 +424,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	}
 
 	protected final double getGunHeatImpl() {
-		return status.getGunHeat() - firedHeat;
+		return status.getGunHeat() + firedHeat;
 	}
 
 	protected final void setMoveImpl(double distance) {
@@ -440,6 +443,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		if (getGunHeatImpl() > 0 || getEnergyImpl() == 0) {
 			return null;
 		}
+
+		power = min(getEnergyImpl(), min(max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
 
 		Bullet bullet;
 		BulletCommand wrapper;

@@ -9,18 +9,30 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.common;
+package testing;
 
 
-import java.io.IOException;
-import java.util.Dictionary;
+import robocode.AdvancedRobot;
+import robocode.Bullet;
 
 
 /**
  * @author Pavel Savara (original)
+ *         From Bug 2410856
  */
-public interface XmlSerializable {
-	void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException;
+public class BadFirePower extends AdvancedRobot {
 
-	XmlReader.Element readXml(XmlReader reader);
+	public void run() {
+		while (true) {
+			Bullet bullet = setFireBullet(getTime() - 12.0);
+
+			if (bullet != null) {
+				out.println(getTime() + " Bullet power: " + bullet.getPower());
+			} else {
+				out.println(getTime() + " No bullet");
+			}
+			execute();
+		}
+	}
+
 }

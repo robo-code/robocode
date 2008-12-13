@@ -23,15 +23,15 @@
 package robocode.manager;
 
 
-import robocode.battle.events.*;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.control.IBattleListener;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.dialog.*;
-import robocode.dialog.RcSplashScreen;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
-import robocode.ui.BattleResultsTableModel;
 import robocode.ui.AwtBattleAdaptor;
+import robocode.ui.BattleResultsTableModel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -79,7 +79,7 @@ public class WindowManager implements IWindowManager {
 		awtAdaptor.removeListener(listener);
 	}
 
-	public TurnSnapshot getLastSnapshot() {
+	public ITurnSnapshot getLastSnapshot() {
 		return awtAdaptor.getLastSnapshot();
 	}
 
@@ -226,7 +226,7 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showResultsDialog(BattleCompletedEvent event) {
-		packCenterShow(new ResultsDialog(manager, event.getResults(), event.getBattleRules().getNumRounds()), true);
+		packCenterShow(new ResultsDialog(manager, event.getSortedResults(), event.getBattleRules().getNumRounds()), true);
 	}
 
 	public void showRankingDialog(boolean visible) {

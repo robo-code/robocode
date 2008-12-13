@@ -33,17 +33,21 @@ import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IThreadManager;
 import robocode.peer.*;
 import robocode.peer.serialize.RbSerializer;
+import robocode.peer.BulletCommand;
+import robocode.peer.BulletState;
+import robocode.peer.DebugProperty;
+import robocode.peer.ExecResults;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.TeamMessage;
 
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.security.Permission;
 import java.util.*;
-import java.awt.*;
 
 
 /**

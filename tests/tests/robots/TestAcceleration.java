@@ -15,8 +15,8 @@ package robots;
 import helpers.Assert;
 import helpers.RobotTestBed;
 import org.junit.Test;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 
 
 /**
@@ -35,7 +35,7 @@ public class TestAcceleration extends RobotTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		RobotSnapshot ahead = event.getTurnSnapshot().getRobots().get(1);
+		IRobotSnapshot ahead = event.getTurnSnapshot().getRobots()[1];
 
 		switch (event.getTurnSnapshot().getTurn()) {
 		case 1:

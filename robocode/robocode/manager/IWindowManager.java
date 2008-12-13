@@ -12,9 +12,9 @@
 package robocode.manager;
 
 
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.IBattleListener;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.control.IBattleListener;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.dialog.RobocodeFrame;
 import robocode.ui.BattleResultsTableModel;
 
@@ -83,5 +83,5 @@ public interface IWindowManager {
 
 	int getFPS();
 
-	TurnSnapshot getLastSnapshot();
+	ITurnSnapshot getLastSnapshot();
 }

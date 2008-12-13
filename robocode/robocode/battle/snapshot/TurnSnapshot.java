@@ -15,17 +15,18 @@ package robocode.battle.snapshot;
 
 
 import robocode.battle.Battle;
+import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
-import robocode.common.XmlSerializable;
 import robocode.common.XmlWriter;
+import robocode.control.snapshot.IBulletSnapshot;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.peer.BulletPeer;
 import robocode.peer.RobotPeer;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Dictionary;
+import java.util.*;
 
 
 /**
@@ -46,9 +47,10 @@ import java.util.Dictionary;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * @since 1.6.1
  */
-public final class TurnSnapshot implements java.io.Serializable, XmlSerializable {
+public final class TurnSnapshot implements java.io.Serializable, IXmlSerializable, ITurnSnapshot {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,10 +61,10 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 	// private final int fieldHeight;
 
 	// List of all robots participating in the battle
-	private List<RobotSnapshot> robots;
+	private List<IRobotSnapshot> robots;
 
 	// List of all bullets currently the battlefield
-	private List<BulletSnapshot> bullets;
+	private List<IBulletSnapshot> bullets;
 
 	// Current TPS (turns per second)
 	private int tps;
@@ -85,8 +87,8 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 		// fieldWidth = battle.getBattleField().getWidth();
 		// fieldHeight = battle.getBattleField().getHeight();
 
-		robots = new ArrayList<RobotSnapshot>();
-		bullets = new ArrayList<BulletSnapshot>();
+		robots = new ArrayList<IRobotSnapshot>();
+		bullets = new ArrayList<IBulletSnapshot>();
 
 		for (RobotPeer robotPeer : battleRobots) {
 			robots.add(new RobotSnapshot(robotPeer, readoutText));
@@ -101,112 +103,63 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 		round = battle.getRoundNum();
 	}
 
-	/**
-	 * Returns the width of the battlefield.
-	 *
-	 * @return the width of the battlefield.
-	 */
-	// public int getFieldWidth() {
-	// return fieldWidth;
-	// }
-
-	/**
-	 * Returns the height of the battlefield.
-	 *
-	 * @return the height of the battlefield.
-	 */
-	// public int getFieldHeight() {
-	// return fieldHeight;
-	// }
-
-	/**
-	 * Returns all robots participating in the battle.
-	 *
-	 * @return a list containing all robots participating in the battle.
-	 */
-	public List<RobotSnapshot> getRobots() {
-		return Collections.unmodifiableList(robots);
+	public IRobotSnapshot[] getRobots() {
+		return robots.toArray(new IRobotSnapshot[robots.size()]);
 	}
 
-	/**
-	 * Returns all bullets currently the battlefield.
-	 *
-	 * @return a list containing all bullets currently the battlefield.
-	 */
-	public List<BulletSnapshot> getBullets() {
-		return Collections.unmodifiableList(bullets);
+	public IBulletSnapshot[] getBullets() {
+		return bullets.toArray(new IBulletSnapshot[bullets.size()]);
 	}
 
-	/**
-	 * Returns the current TPS (turns per second).
-	 *
-	 * @return the current TPS (turns per second).
-	 */
 	public int getTPS() {
 		return tps;
 	}
 
-	/**
-	 * Returns the current turn.
-	 *
-	 * @return the current turn.
-	 */
 	public int getRound() {
 		return round;
 	}
 
-	/**
-	 * Returns the current turn.
-	 *
-	 * @return the current turn.
-	 */
 	public int getTurn() {
 		return turn;
 	}
 
-	/**
-	 * @return scores grouped by teams, ordered by position
-	 */
-	public List<ScoreSnapshot> getTeamScores() {
-		ArrayList<ScoreSnapshot> res = getTeamScoresStable();
+	public IScoreSnapshot[] getSortedTeamScores() {
+		List<IScoreSnapshot> copy = new ArrayList<IScoreSnapshot>(Arrays.asList(getIndexedTeamScores()));
 
-		Collections.sort(res);
-		Collections.reverse(res);
-		return res;
+		Collections.sort(copy);
+		Collections.reverse(copy);
+		return copy.toArray(new IScoreSnapshot[copy.size()]);
 	}
 
-	/**
-	 * @return scores grouped by teams, in stable order
-	 */
-	public ArrayList<ScoreSnapshot> getTeamScoresStable() {
+	public IScoreSnapshot[] getIndexedTeamScores() {
 		// team scores are computed on demand from team scores to not duplicate data in the snapshot
 
-		ArrayList<ScoreSnapshot> results = new ArrayList<ScoreSnapshot>();
+		List<IScoreSnapshot> results = new ArrayList<IScoreSnapshot>();
 
 		// noinspection ForLoopReplaceableByForEach
 		for (int i = 0; i < robots.size(); i++) {
 			results.add(null);
 		}
-		for (RobotSnapshot robot : robots) {
-			final ScoreSnapshot snapshot = results.get(robot.getContestIndex());
+		for (IRobotSnapshot robot : robots) {
+			final IScoreSnapshot snapshot = results.get(robot.getContestantIndex());
 
 			if (snapshot == null) {
-				results.set(robot.getContestIndex(), robot.getRobotScoreSnapshot());
+				results.set(robot.getContestantIndex(), robot.getScoreSnapshot());
 			} else {
-				final ScoreSnapshot sum = new ScoreSnapshot(snapshot, robot.getRobotScoreSnapshot(), robot.getTeamName());
+				final ScoreSnapshot sum = new ScoreSnapshot(snapshot, robot.getScoreSnapshot(), robot.getTeamName());
 
-				results.set(robot.getContestIndex(), sum);
+				results.set(robot.getContestantIndex(), sum);
 			}
 		}
-		ArrayList<ScoreSnapshot> res = new ArrayList<ScoreSnapshot>();
+		List<IScoreSnapshot> scores = new ArrayList<IScoreSnapshot>();
 
-		for (ScoreSnapshot scoreSnapshot : results) {
+		for (IScoreSnapshot scoreSnapshot : results) {
 			if (scoreSnapshot != null) {
-				res.add(scoreSnapshot);
+				scores.add(scoreSnapshot);
 			}
 		}
 
-		return res;
+		return scores.toArray(new IScoreSnapshot[scores.size()]);
 	}
 
 	@Override
@@ -221,15 +174,15 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 			writer.writeAttribute("ver", serialVersionUID);
 
 			writer.startElement("robots"); {
-				for (RobotSnapshot r : robots) {
-					r.writeXml(writer, options);
+				for (IRobotSnapshot r : robots) {
+					((RobotSnapshot) r).writeXml(writer, options);
 				}
 			}
 			writer.endElement();
 
 			writer.startElement("bullets"); {
-				for (BulletSnapshot b : bullets) {
-					b.writeXml(writer, options);
+				for (IBulletSnapshot b : bullets) {
+					((BulletSnapshot) b).writeXml(writer, options);
 				}
 			}
 			writer.endElement();
@@ -241,7 +194,7 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("turn", new XmlReader.Element() {
-			public XmlSerializable read(XmlReader reader) {
+			public IXmlSerializable read(XmlReader reader) {
 				final TurnSnapshot snapshot = new TurnSnapshot();
 
 				reader.expect("turn", new XmlReader.Attribute() {
@@ -256,13 +209,13 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 				});
 
 				reader.expect("robots", new XmlReader.ListElement() {
-					public XmlSerializable read(XmlReader reader) {
-						snapshot.robots = new ArrayList<RobotSnapshot>();
+					public IXmlSerializable read(XmlReader reader) {
+						snapshot.robots = new ArrayList<IRobotSnapshot>();
 						// prototype
 						return new RobotSnapshot();
 					}
 
-					public void add(XmlSerializable child) {
+					public void add(IXmlSerializable child) {
 						snapshot.robots.add((RobotSnapshot) child);
 					}
 
@@ -270,13 +223,13 @@ public final class TurnSnapshot implements java.io.Serializable, XmlSerializable
 				});
 
 				reader.expect("bullets", new XmlReader.ListElement() {
-					public XmlSerializable read(XmlReader reader) {
-						snapshot.bullets = new ArrayList<BulletSnapshot>();
+					public IXmlSerializable read(XmlReader reader) {
+						snapshot.bullets = new ArrayList<IBulletSnapshot>();
 						// prototype
 						return new BulletSnapshot();
 					}
 
-					public void add(XmlSerializable child) {
+					public void add(IXmlSerializable child) {
 						snapshot.bullets.add((BulletSnapshot) child);
 					}
 
