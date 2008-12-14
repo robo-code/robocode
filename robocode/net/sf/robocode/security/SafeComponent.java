@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battleview;
+package net.sf.robocode.security;
 
 
 import java.awt.*;

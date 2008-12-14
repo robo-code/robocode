@@ -20,7 +20,7 @@ import net.sf.robocode.serialization.ISerializableHelper;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
-import robocode.battleview.SafeComponent;
+import net.sf.robocode.security.SafeComponent;
 
 import java.awt.*;
 import java.nio.ByteBuffer;

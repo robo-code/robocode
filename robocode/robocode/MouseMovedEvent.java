@@ -17,10 +17,10 @@ package robocode;
 import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.serialization.RbSerializer;
 import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.security.SafeComponent;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
-import robocode.battleview.SafeComponent;
 
 import java.awt.*;
 import java.nio.ByteBuffer;

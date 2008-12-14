@@ -25,6 +25,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.*;
 import static java.lang.Math.min;
 
+import net.sf.robocode.security.SafeComponent;
+
 
 /**
  * This handler is used for observing keyboard and mouse events from the battle view,
