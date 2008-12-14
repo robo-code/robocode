@@ -18,6 +18,10 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="robocode.api" />
+    <orderEntry type="module" module-name="robocode.core" />
+    <orderEntry type="module" module-name="robocode.battle" />
+    <orderEntry type="module" module-name="robocode.ui" />
   </component>
 </module>
 

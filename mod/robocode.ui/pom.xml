@@ -10,11 +10,4 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.ui</artifactId>
     <version>1.7</version>
-    <dependencies>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode</artifactId>
-            <version>1.7</version>
-        </dependency>
-    </dependencies>
 </project>
