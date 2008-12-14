@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.sf.robocode.peer;
 
+
 /**
  * @author Pavel Savara (original)
  */

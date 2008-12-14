@@ -97,7 +97,7 @@ package robocode.battle;
 
 
 import robocode.*;
-import robocode.security.HiddenAccess;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.common.Command;
@@ -159,7 +159,9 @@ public final class Battle extends BaseBattle {
 	public Battle(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		super(manager, eventDispatcher, paused);
 		isDebugging = System.getProperty("debug", "false").equals("true");
-		battleRules = new BattleRules(battleProperties);
+		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
+				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
+				battleProperties.getInactivityTime());
 		robotsCount = battlingRobotsList.size();
 		computeInitialPositions(battleProperties.getInitialPositions());
 		createPeers(battlingRobotsList);

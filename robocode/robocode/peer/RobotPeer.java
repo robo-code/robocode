@@ -67,7 +67,7 @@ package robocode.peer;
 
 
 import robocode.*;
-import robocode.security.HiddenAccess;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.battle.Battle;
 import robocode.common.BoundingRectangle;
 import robocode.control.RandomFactory;
@@ -752,9 +752,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 				currentCommands = new ExecCommands();
 				int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
-				RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
-						currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(), currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(),
-						gunHeat, others, battle.getRoundNum(), battle.getNumRounds(), battle.getTime());
+				RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading,
+						velocity, currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
+						currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
+						battle.getRoundNum(), battle.getNumRounds(), battle.getTime());
 
 				status.set(stat);
 				robotProxy.startRound(currentCommands, stat);
@@ -1560,8 +1561,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final ExecCommands currentCommands = commands.get();
 		int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
 		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
-				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(), currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(),
-				gunHeat, others, battle.getRoundNum(), battle.getNumRounds(), battle.getTime());
+				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
+				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
+				battle.getRoundNum(), battle.getNumRounds(), battle.getTime());
 
 		status.set(stat);
 	}

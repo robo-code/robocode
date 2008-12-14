@@ -63,7 +63,6 @@ public class JarSpecification extends FileSpecification {
 		return getFilePath();
 	}
 
-
 	public void processJar(File robotCache, File  robotsDirectory) {
 		WindowUtil.setStatus("Extracting .jar: " + getFileName());
 
@@ -77,7 +76,7 @@ public class JarSpecification extends FileSpecification {
 		if (dest.exists()) {
 			FileUtil.deleteDir(dest);
 		}
-		if (dest.mkdirs()){
+		if (dest.mkdirs()) {
 			Logger.logError("Can't create" + dest.toString());
 		}
 
@@ -174,12 +173,12 @@ public class JarSpecification extends FileSpecification {
 					}
 
 					/* TODO ZAMO
-					if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
-						FileSpecification fileSpecification = FileSpecification.createSpecification(this, out,
-								parentDirectory, "", false);
+					 if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
+					 FileSpecification fileSpecification = FileSpecification.createSpecification(this, out,
+					 parentDirectory, "", false);
 
-						updatedJarList.add(fileSpecification);
-					}*/
+					 updatedJarList.add(fileSpecification);
+					 }*/
 				}
 				entry = jarIS.getNextJarEntry();
 			}
@@ -191,6 +190,5 @@ public class JarSpecification extends FileSpecification {
 		}
 		return rc;
 	}
-
 
 }

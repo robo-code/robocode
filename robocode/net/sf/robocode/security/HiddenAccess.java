@@ -9,20 +9,21 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.security;
+package net.sf.robocode.security;
 
 
-import net.sf.robocode.peer.IHiddenStatusHelper;
+import net.sf.robocode.security.IHiddenStatusHelper;
 import robocode.peer.BulletStatus;
-import net.sf.robocode.peer.IHiddenBulletHelper;
-import net.sf.robocode.peer.IHiddenEventHelper;
+import net.sf.robocode.security.IHiddenBulletHelper;
+import net.sf.robocode.security.IHiddenEventHelper;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.io.Logger;
-import robocode.repository.IHiddenSpecificationHelper;
+import net.sf.robocode.security.IHiddenSpecificationHelper;
 import robocode.repository.FileSpecification;
 import robocode.Event;
 import robocode.Bullet;
 import robocode.RobotStatus;
+import robocode.BattleRules;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.control.RobotSpecification;
 
@@ -41,6 +42,7 @@ public class HiddenAccess {
 	private static IHiddenBulletHelper bulletHelper;
 	private static IHiddenSpecificationHelper specificationHelper;
 	private static IHiddenStatusHelper statusHelper;
+	private static IHiddenRulesHelper rulesHelper;
 
 	static {
 		Method method;
@@ -64,6 +66,11 @@ public class HiddenAccess {
 			method = RobotStatus.class.getDeclaredMethod("createHiddenSerializer");
 			method.setAccessible(true);
 			statusHelper = (IHiddenStatusHelper) method.invoke(null);
+			method.setAccessible(false);
+
+			method = BattleRules.class.getDeclaredMethod("createHiddenSerializer");
+			method.setAccessible(true);
+			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
 
 		} catch (NoSuchMethodException e) {
@@ -111,7 +118,7 @@ public class HiddenAccess {
 		return specificationHelper.createSpecification(fileSpecification);
 	}
 
-	public static FileSpecification getFileSpecification(RobotSpecification specification) {
+	public static Object getFileSpecification(RobotSpecification specification) {
 		return specificationHelper.getFileSpecification(specification);
 	}
 
@@ -128,7 +135,13 @@ public class HiddenAccess {
 	}
 
 	public static RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading, double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining, double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time) {
-		return statusHelper.createStatus(energy, x, y,bodyHeading,gunHeading,radarHeading,velocity,bodyTurnRemaining,radarTurnRemaining,gunTurnRemaining,distanceRemaining,gunHeat,others,roundNum,numRounds,time);
+		return statusHelper.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
+				bodyTurnRemaining, radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, roundNum,
+				numRounds, time);
+	}
+
+	public static BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime) {
+		return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
 	}
 
 }

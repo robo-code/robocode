@@ -213,8 +213,8 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			if (battleProperties != null) {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
-			robotSelectionPanel = new RobotSelectionPanel(manager, MIN_ROBOTS, MAX_ROBOTS,
-					true, "Select robots for the battle", false, false, false, false, false,
+			robotSelectionPanel = new RobotSelectionPanel(manager, MIN_ROBOTS, MAX_ROBOTS, true,
+					"Select robots for the battle", false, false, false, false, false,
 					!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}
 		return robotSelectionPanel;

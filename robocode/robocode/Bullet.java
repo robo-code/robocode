@@ -17,7 +17,7 @@ package robocode;
 import robocode.peer.BulletStatus;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.peer.IHiddenBulletHelper;
+import net.sf.robocode.security.IHiddenBulletHelper;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;

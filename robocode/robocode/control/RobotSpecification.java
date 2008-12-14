@@ -21,7 +21,7 @@ package robocode.control;
 
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
-import robocode.repository.IHiddenSpecificationHelper;
+import net.sf.robocode.security.IHiddenSpecificationHelper;
 
 import java.io.File;
 
@@ -209,11 +209,11 @@ public class RobotSpecification implements java.io.Serializable {
 
 	private static class HiddenHelper implements IHiddenSpecificationHelper {
 
-		public RobotSpecification createSpecification(FileSpecification fileSpecification) {
-			return new RobotSpecification(fileSpecification);
+		public RobotSpecification createSpecification(Object fileSpecification) {
+			return new RobotSpecification((FileSpecification) fileSpecification);
 		}
 
-		public FileSpecification getFileSpecification(RobotSpecification specification) {
+		public Object getFileSpecification(RobotSpecification specification) {
 			return specification.fileSpecification;
 		}
 

@@ -9,10 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.security;
 
 
 import robocode.control.RobotSpecification;
+import robocode.repository.FileSpecification;
 
 
 /**
@@ -20,8 +21,8 @@ import robocode.control.RobotSpecification;
  */
 public interface IHiddenSpecificationHelper {
 
-	RobotSpecification createSpecification(FileSpecification fileSpecification);
-	FileSpecification getFileSpecification(RobotSpecification specification);
+	RobotSpecification createSpecification(Object fileSpecification);
+	Object getFileSpecification(RobotSpecification specification);
 	void setValid(RobotSpecification specification, boolean value);
 	void setTeamName(RobotSpecification specification, String teamName);
 	String getTeamName(RobotSpecification specification);

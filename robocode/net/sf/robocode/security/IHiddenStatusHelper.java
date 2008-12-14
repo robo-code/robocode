@@ -9,9 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.peer;
+package net.sf.robocode.security;
+
 
 import robocode.RobotStatus;
+
 
 /**
  * @author Pavel Savara (original)

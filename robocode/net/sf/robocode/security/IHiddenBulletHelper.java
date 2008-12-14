@@ -9,27 +9,16 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.peer;
+package net.sf.robocode.security;
 
 
 import robocode.Bullet;
-import robocode.Event;
-import net.sf.robocode.peer.IRobotStatics;
-import robocode.robotinterfaces.IBasicRobot;
-
-import java.awt.*;
-import java.util.Hashtable;
+import robocode.peer.BulletStatus;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IHiddenEventHelper {
-	void setDefaultPriority(Event event);
-	void setPriority(Event event, int newPriority);
-	void setTime(Event event, long newTime);
-	boolean isCriticalEvent(Event event);
-	void dispatch(Event event, IBasicRobot robot, IRobotStatics statics, Graphics2D graphics);
-	void updateBullets(Event event, Hashtable<Integer, Bullet> bullets);
-	byte getSerializationType(Event event);
+public interface IHiddenBulletHelper {
+	void update(Bullet bullet, BulletStatus status);
 }

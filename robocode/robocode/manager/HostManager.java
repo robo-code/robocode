@@ -18,7 +18,7 @@ import robocode.peer.RobotStatics;
 import robocode.peer.robot.RobotClassManager;
 import robocode.control.RobotSpecification;
 import robocode.repository.RobotFileSpecification;
-import robocode.security.HiddenAccess;
+import net.sf.robocode.security.HiddenAccess;
 
 import java.security.AccessControlException;
 

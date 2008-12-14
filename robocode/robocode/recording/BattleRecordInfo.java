@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
 
+import net.sf.robocode.security.HiddenAccess;
+
 
 /**
  * @author Pavel Savara (original)
@@ -278,7 +280,8 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
-			return reader.expect("rules", new XmlReader.ElementClose() {
+			return reader.expect("rules",
+					new XmlReader.ElementClose() {
 				public IXmlSerializable read(XmlReader reader) {
 
 					reader.expect("battlefieldWidth", new XmlReader.Attribute() {
@@ -312,7 +315,9 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 				}
 
 				public void close() {
-					recinfo.battleRules = new BattleRules(props);
+					recinfo.battleRules = HiddenAccess.createRules(props.getBattlefieldWidth(),
+							props.getBattlefieldHeight(), props.getNumRounds(), props.getGunCoolingRate(),
+							props.getInactivityTime());
 				}
 			});
 		}

@@ -9,16 +9,15 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.peer;
+package net.sf.robocode.security;
 
 
-import robocode.Bullet;
-import robocode.peer.BulletStatus;
+import robocode.BattleRules;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IHiddenBulletHelper {
-	void update(Bullet bullet, BulletStatus status);
+public interface IHiddenRulesHelper {
+	BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime);
 }

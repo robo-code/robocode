@@ -78,7 +78,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			File newRobotCache = new File(getRobotsDirectory(), ".robotcache");
 
 			if (oldRobotCache.exists()) {
-				if (!oldRobotCache.renameTo(newRobotCache)){
+				if (!oldRobotCache.renameTo(newRobotCache)) {
 					Logger.logError("Can't move " + newRobotCache.toString());
 				}
 			}
@@ -86,7 +86,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			robotCache = newRobotCache;
 
 			if (!robotCache.exists()) {
-				if (!robotCache.mkdirs()){
+				if (!robotCache.mkdirs()) {
 					Logger.logError("Can't create " + robotCache.toString());
 				}
 				File readme = new File(robotCache, "README");
@@ -435,7 +435,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 						long t2 = newSource.lastModified();
 
 						if (t1 > t2) {
-							if (!existingSource.renameTo(new File(existingSource.getPath() + ".invalid"))){
+							if (!existingSource.renameTo(new File(existingSource.getPath() + ".invalid"))) {
 								Logger.logError("Can't move " + existingSource.toString());
 							}
 							getRobotDatabase().remove(existingSpec.getFilePath());
@@ -444,7 +444,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 									"Renaming " + existingSource + " to invalid, as it contains a robot " + spec.getName()
 									+ " which conflicts with the same robot in " + newSource);
 						} else {
-							if (!newSource.renameTo(new File(newSource.getPath() + ".invalid"))){
+							if (!newSource.renameTo(new File(newSource.getPath() + ".invalid"))) {
 								Logger.logError("Can't move " + newSource.toString());
 							}
 							conflictLog(
@@ -507,7 +507,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 						if (sampleBot.getName().equals(oldSampleBot)) {
 							logMessage("Deleting old sample file: " + sampleBot.getName());
 							if (delete) {
-								if (!sampleBot.delete()){
+								if (!sampleBot.delete()) {
 									Logger.logError("Can't detele " + sampleBot.toString());
 								}
 							} else {
@@ -530,7 +530,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			File oldFile = new File(dir, name);
 
 			logError("Renaming " + oldFile.getName() + " to " + newFile.getName());
-			if (!oldFile.renameTo(newFile)){
+			if (!oldFile.renameTo(newFile)) {
 				Logger.logError("Can't move " + oldFile.toString());
 			}
 		}
@@ -552,7 +552,8 @@ public class RobotRepositoryManager implements IRepositoryManager {
 
 	public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
 		loadRobotRepository();
-		return repository.getRobotSpecificationsList(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment, ignoreTeamRobots);
+		return repository.getRobotSpecificationsList(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment,
+				onlyNotDevelopment, ignoreTeamRobots);
 	}
 
 	public FileSpecification getRobot(String fullClassNameWithVersion) {

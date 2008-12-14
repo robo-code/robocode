@@ -55,7 +55,7 @@ package robocode.manager;
 
 
 import robocode.Event;
-import robocode.security.HiddenAccess;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattle;

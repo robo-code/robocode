@@ -88,8 +88,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		int rc = extractRobot();
 		ConsoleDialog d;
 
-		d = new ConsoleDialog(manager.getWindowManager().getRobocodeFrame(), "Extract results",
-				false);
+		d = new ConsoleDialog(manager.getWindowManager().getRobocodeFrame(), "Extract results", false);
 		d.setText(output.toString());
 		d.pack();
 		d.pack();

@@ -15,9 +15,9 @@ package net.sf.robocode.serialization;
 import robocode.peer.*;
 import robocode.peer.robot.TeamMessage;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.manager.VersionManager;
 import robocode.*;
-import robocode.security.HiddenAccess;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -456,6 +456,7 @@ public final class RbSerializer {
 
 				method.setAccessible(true);
 				ISerializableHelper helper = (ISerializableHelper) method.invoke(null);
+
 				method.setAccessible(false);
 				typeToHelper[type] = helper;
 			}

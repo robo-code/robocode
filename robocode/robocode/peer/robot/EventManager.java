@@ -42,7 +42,7 @@ package robocode.peer.robot;
 
 
 import robocode.*;
-import robocode.security.HiddenAccess;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.proxies.BasicRobotProxy;
 import robocode.robotinterfaces.IBasicRobot;

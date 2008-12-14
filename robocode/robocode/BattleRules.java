@@ -18,6 +18,9 @@ import robocode.battlefield.DefaultBattleField;
 
 import java.io.Serializable;
 
+import net.sf.robocode.security.IHiddenSpecificationHelper;
+import net.sf.robocode.security.IHiddenRulesHelper;
+
 
 /**
  * @author Pavel Savara (original)
@@ -31,14 +34,6 @@ public final class BattleRules implements Serializable {
 	private int numRounds;
 	private double gunCoolingRate;
 	private long inactivityTime;
-
-	public BattleRules(BattleProperties source) {
-		this.battlefieldWidth = source.getBattlefieldWidth();
-		this.battlefieldHeight = source.getBattlefieldHeight();
-		this.numRounds = source.getNumRounds();
-		this.gunCoolingRate = source.getGunCoolingRate();
-		this.inactivityTime = source.getInactivityTime();
-	}
 
 	/**
 	 * Gets the battlefieldWidth.
@@ -85,7 +80,27 @@ public final class BattleRules implements Serializable {
 		return inactivityTime;
 	}
 
-	public BattleField getBattleField() {
-		return new DefaultBattleField(battlefieldWidth, battlefieldHeight);
+	/* public BattleField getBattleField() {
+	 return new DefaultBattleField(battlefieldWidth, battlefieldHeight);
+	 }*/
+
+	private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime) {
+		this.battlefieldWidth = battlefieldWidth;
+		this.battlefieldHeight = battlefieldHeight;
+		this.numRounds = numRounds;
+		this.gunCoolingRate = gunCoolingRate;
+		this.inactivityTime = inactivityTime;
 	}
+
+	static IHiddenRulesHelper createHiddenHelper() {
+		return new HiddenHelper();
+	}
+
+	private static class HiddenHelper implements IHiddenRulesHelper {
+
+		public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime) {
+			return new BattleRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
+		}
+	}
+
 }

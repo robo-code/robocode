@@ -319,7 +319,7 @@
     <option name="myVersion" value="124" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
+    <mapping directory="" vcs="svn" />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />

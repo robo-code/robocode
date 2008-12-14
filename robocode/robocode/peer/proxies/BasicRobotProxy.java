@@ -17,7 +17,7 @@ package robocode.peer.proxies;
 
 import robocode.*;
 import robocode.Event;
-import robocode.security.HiddenAccess;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.manager.IHostManager;
@@ -35,7 +35,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import java.util.Hashtable;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.*;
 
 
 /**

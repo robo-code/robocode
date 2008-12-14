@@ -18,7 +18,7 @@ import net.sf.robocode.serialization.RbSerializer;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 
-import net.sf.robocode.peer.IHiddenStatusHelper;
+import net.sf.robocode.security.IHiddenStatusHelper;
 
 
 /**
@@ -402,7 +402,8 @@ public final class RobotStatus implements Serializable {
 		}
 
 		public RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading, double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining, double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time) {
-			return new RobotStatus(energy, x, y,bodyHeading,gunHeading,radarHeading,velocity,bodyTurnRemaining,radarTurnRemaining,gunTurnRemaining,distanceRemaining,gunHeat,others,roundNum,numRounds,time);
+			return new RobotStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity, bodyTurnRemaining,
+					radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, roundNum, numRounds, time);
 		}
 	}
 
