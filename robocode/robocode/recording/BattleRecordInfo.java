@@ -14,6 +14,7 @@ package robocode.recording;
 
 import robocode.BattleResults;
 import robocode.BattleRules;
+import robocode.battle.BattleProperties;
 import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
 import robocode.common.XmlWriter;
@@ -44,7 +45,15 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 			writer.writeAttribute("roundsCount", roundsCount);
 			writer.writeAttribute("ver", serialVersionUID);
 
-			battleRules.writeXml(writer, options);
+			writer.startElement("rules"); {
+				writer.writeAttribute("battlefieldWidth", battleRules.getBattlefieldWidth());
+				writer.writeAttribute("battlefieldHeight", battleRules.getBattlefieldHeight());
+				writer.writeAttribute("numRounds", battleRules.getNumRounds());
+				writer.writeAttribute("gunCoolingRate", battleRules.getGunCoolingRate());
+				writer.writeAttribute("inactivityTime", battleRules.getInactivityTime());
+				writer.writeAttribute("ver", serialVersionUID);
+			}
+			writer.endElement();
 
 			writer.startElement("rounds"); {
 				for (int n : turnsInRounds) {
@@ -84,14 +93,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 					}
 				});
 
-				final XmlReader.Element element = (new BattleRules()).readXml(reader);
-
-				reader.expect("rules", new XmlReader.Element() {
-					public IXmlSerializable read(XmlReader reader) {
-						recordInfo.battleRules = (BattleRules) element.read(reader);
-						return recordInfo.battleRules;
-					}
-				});
+				new BattleRulesWrapper(recordInfo).readXml(reader);
 
 				reader.expect("rounds", new XmlReader.ListElement() {
 					final ArrayList<Integer> ints = new ArrayList<Integer>();
@@ -263,4 +265,57 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 			});
 		}
 	}
+
+
+	class BattleRulesWrapper implements IXmlSerializable {
+		BattleRulesWrapper(BattleRecordInfo recinfo) {
+			this.recinfo = recinfo;
+		}
+
+		final BattleProperties props = new BattleProperties();
+		BattleRecordInfo recinfo;
+
+		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}
+
+		public XmlReader.Element readXml(XmlReader reader) {
+			return reader.expect("rules", new XmlReader.ElementClose() {
+				public IXmlSerializable read(XmlReader reader) {
+
+					reader.expect("battlefieldWidth", new XmlReader.Attribute() {
+						public void read(String value) {
+							props.setBattlefieldWidth(Integer.parseInt(value));
+						}
+					});
+					reader.expect("battlefieldHeight", new XmlReader.Attribute() {
+						public void read(String value) {
+							props.setBattlefieldHeight(Integer.parseInt(value));
+						}
+					});
+
+					reader.expect("numRounds", new XmlReader.Attribute() {
+						public void read(String value) {
+							props.setNumRounds(Integer.parseInt(value));
+						}
+					});
+					reader.expect("inactivityTime", new XmlReader.Attribute() {
+						public void read(String value) {
+							props.setInactivityTime(Integer.parseInt(value));
+						}
+					});
+					reader.expect("gunCoolingRate", new XmlReader.Attribute() {
+						public void read(String value) {
+							props.setGunCoolingRate(Double.parseDouble(value));
+						}
+					});
+
+					return BattleRulesWrapper.this;
+				}
+
+				public void close() {
+					recinfo.battleRules = new BattleRules(props);
+				}
+			});
+		}
+	}
+
 }
