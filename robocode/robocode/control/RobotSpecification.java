@@ -152,7 +152,7 @@ public class RobotSpecification implements java.io.Serializable {
 		return fileSpecification.getAuthorName();
 	}
 
-	//TODO minimize public methods
+	// TODO minimize public methods
 	public boolean isDroid() {
 		return fileSpecification instanceof RobotFileSpecification
 				&& ((RobotFileSpecification) fileSpecification).isDroid();

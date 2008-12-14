@@ -14,15 +14,14 @@ package robocode.peer.serialize;
 
 import robocode.peer.*;
 import robocode.peer.robot.TeamMessage;
-import robocode.peer.robot.RobotClassManager;
 import robocode.io.Logger;
 import robocode.manager.VersionManager;
 import robocode.*;
+import robocode.security.HiddenAccess;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.DoubleBuffer;
 import java.nio.charset.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
@@ -283,7 +282,7 @@ public final class RbSerializer {
 	}
 
 	public void serialize(ByteBuffer buffer, Event event) {
-		final byte type = RobotClassManager.getSerializationType(event);
+		final byte type = HiddenAccess.getSerializationType(event);
 
 		serialize(buffer, type, event);
 	}
@@ -418,7 +417,7 @@ public final class RbSerializer {
 	}
 
 	public int sizeOf(Event event) {
-		return sizeOf(RobotClassManager.getSerializationType(event), event);
+		return sizeOf(HiddenAccess.getSerializationType(event), event);
 	}
 
 	private ISerializableHelper getHelper(byte type) {

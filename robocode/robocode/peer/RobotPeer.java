@@ -67,6 +67,7 @@ package robocode.peer;
 
 
 import robocode.*;
+import robocode.security.HiddenAccess;
 import robocode.battle.Battle;
 import robocode.common.BoundingRectangle;
 import robocode.control.RandomFactory;
@@ -1448,7 +1449,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
 		// disable for next time
-		RobotClassManager.setRobotValid(robotSpecification, false);
+		HiddenAccess.setRobotValid(robotSpecification, false);
 	}
 
 	public void updateEnergy(double delta) {

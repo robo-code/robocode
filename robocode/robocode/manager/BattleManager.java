@@ -55,6 +55,7 @@ package robocode.manager;
 
 
 import robocode.Event;
+import robocode.security.HiddenAccess;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattle;
@@ -190,9 +191,9 @@ public class BattleManager implements IBattleManager {
 				if (!inTeam && battleRobotSpec != null) {
 					specification = battleRobotSpec;
 				} else {
-					specification = RobotClassManager.createSpecification(fileSpec);
+					specification = HiddenAccess.createSpecification(fileSpec);
 				}
-				RobotClassManager.setTeamName(specification, inTeam ? teamName : null);
+				HiddenAccess.setTeamName(specification, inTeam ? teamName : null);
 				battlingRobotsList.add(specification);
 				found = true;
 			} else if (fileSpec instanceof TeamSpecification) {

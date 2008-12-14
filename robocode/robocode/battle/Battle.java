@@ -97,6 +97,7 @@ package robocode.battle;
 
 
 import robocode.*;
+import robocode.security.HiddenAccess;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.common.Command;
@@ -184,7 +185,7 @@ public final class Battle extends BaseBattle {
 				countedNames.put(name, 1);
 			}
 
-			String teamFullName = RobotClassManager.getRobotTeamName(specification);
+			String teamFullName = HiddenAccess.getRobotTeamName(specification);
 
 			if (teamFullName != null) {
 				if (!teams.contains(teamFullName)) {
@@ -235,7 +236,7 @@ public final class Battle extends BaseBattle {
 			countedNames.put(name, (order - 1));
 			robotDuplicates.add(0, duplicate);
 
-			String teamFullName = RobotClassManager.getRobotTeamName(specification);
+			String teamFullName = HiddenAccess.getRobotTeamName(specification);
 
 			if (teamFullName != null) {
 				List<String> members = teamMembers.get(teamFullName);
@@ -252,7 +253,7 @@ public final class Battle extends BaseBattle {
 			RobotSpecification specification = battlingRobotsList.get(i);
 			TeamPeer team = null;
 
-			String teamFullName = RobotClassManager.getRobotTeamName(specification);
+			String teamFullName = HiddenAccess.getRobotTeamName(specification);
 
 			int cindex = contestants.size();
 

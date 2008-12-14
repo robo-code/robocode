@@ -17,6 +17,7 @@ package robocode.peer.robot;
 
 
 import robocode.Event;
+import robocode.security.HiddenAccess;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,7 @@ public class EventQueue extends ArrayList<Event> {
 		for (int i = 0; i < size(); i++) {
 			Event e = get(i);
 
-			if (!RobotClassManager.isCriticalEvent(e)) {
+			if (!HiddenAccess.isCriticalEvent(e)) {
 				remove(i--);
 			}
 		}
@@ -48,7 +49,7 @@ public class EventQueue extends ArrayList<Event> {
 		for (int i = 0; i < size(); i++) {
 			Event e = get(i);
 
-			if ((e.getTime() <= clearTime) && !RobotClassManager.isCriticalEvent(e)) {
+			if ((e.getTime() <= clearTime) && !HiddenAccess.isCriticalEvent(e)) {
 				remove(i--);
 			}
 		}

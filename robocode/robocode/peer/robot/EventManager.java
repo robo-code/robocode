@@ -42,6 +42,7 @@ package robocode.peer.robot;
 
 
 import robocode.*;
+import robocode.security.HiddenAccess;
 import robocode.exception.EventInterruptedException;
 import robocode.peer.proxies.BasicRobotProxy;
 import robocode.robotinterfaces.IBasicRobot;
@@ -92,9 +93,9 @@ public class EventManager implements IEventManager {
 	}
 
 	public void add(Event e) {
-		if (!RobotClassManager.isCriticalEvent(e)) {
-			RobotClassManager.setEventPriority(e, getEventPriority(e.getClass().getName()));
-			RobotClassManager.setEventTime(e, getTime());
+		if (!HiddenAccess.isCriticalEvent(e)) {
+			HiddenAccess.setEventPriority(e, getEventPriority(e.getClass().getName()));
+			HiddenAccess.setEventTime(e, getTime());
 		}
 		addImpl(e);
 	}
@@ -423,7 +424,7 @@ public class EventManager implements IEventManager {
 			if (conditionSatisfied) {
 				CustomEvent event = new CustomEvent(customEvent);
 
-				RobotClassManager.setEventTime(event, getTime());
+				HiddenAccess.setEventTime(event, getTime());
 				addImpl(event);
 			}
 		}
@@ -481,10 +482,8 @@ public class EventManager implements IEventManager {
 		if (robot != null && currentEvent != null) {
 			try {
 				// skip too old events
-				if ((currentEvent.getTime() > getTime() - MAX_EVENT_STACK)
-						|| RobotClassManager.isCriticalEvent(currentEvent)) {
-					RobotClassManager.dispatch(currentEvent, robot, robotProxy.getStatics(),
-							robotProxy.getGraphicsImpl());
+				if ((currentEvent.getTime() > getTime() - MAX_EVENT_STACK) || HiddenAccess.isCriticalEvent(currentEvent)) {
+					HiddenAccess.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
 				}
 			} catch (Exception ex) {
 				robotProxy.getOut().println("SYSTEM: Exception occurred on " + currentEvent.getClass().getName());
@@ -594,11 +593,11 @@ public class EventManager implements IEventManager {
 			robotProxy.getOut().println("SYSTEM: Unknown event class: " + eventClass);
 			return;
 		}
-		if (RobotClassManager.isCriticalEvent(event)) {
+		if (HiddenAccess.isCriticalEvent(event)) {
 			System.out.println("SYSTEM: You may not change the priority of system event. setPriority ignored.");
 		}
 
-		RobotClassManager.setEventPriority(event, priority);
+		HiddenAccess.setEventPriority(event, priority);
 	}
 
 	private void registerNamedEvents() {
@@ -641,8 +640,8 @@ public class EventManager implements IEventManager {
 	private void registerNamedEvent(Event e) {
 		final String name = e.getClass().getName();
 
-		if (!RobotClassManager.isCriticalEvent(e)) {
-			RobotClassManager.setDefaultPriority(e);
+		if (!HiddenAccess.isCriticalEvent(e)) {
+			HiddenAccess.setDefaultPriority(e);
 		}
 		namedEvents.put(name, e);
 		namedEvents.put(name.substring(9), e);
