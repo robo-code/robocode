@@ -123,10 +123,10 @@ public class XmlReader {
 			final Element element = names == null ? null : names.get(qName);
 
 			if (element != null) {
-				if (element instanceof ListElement) {
-					ListElement le = (ListElement) element;
+				if (element instanceof ElementClose) {
+					ElementClose ec = (ElementClose) element;
 
-					le.close();
+					ec.close();
 				}
 			}
 		}
@@ -148,9 +148,13 @@ public class XmlReader {
 	}
 
 
-	public interface ListElement extends Element {
-		void add(IXmlSerializable child);
+	public interface ElementClose extends Element {
 		void close();
+	}
+
+
+	public interface ListElement extends ElementClose {
+		void add(IXmlSerializable child);
 	}
 
 

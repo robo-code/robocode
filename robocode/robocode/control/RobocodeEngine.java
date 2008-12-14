@@ -82,9 +82,7 @@ public class RobocodeEngine {
 	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
 	 * Robocode is used to determine the root directory of Robocode.
 	 *
-	 * @see #RobocodeEngine(RobocodeListener)
 	 * @see #RobocodeEngine(File)
-	 * @see #RobocodeEngine(File, RobocodeListener)
 	 * @see #close()
 	 * @since 1.6.2
 	 */
@@ -97,8 +95,6 @@ public class RobocodeEngine {
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
 	 * @see #RobocodeEngine()
-	 * @see #RobocodeEngine(RobocodeListener)
-	 * @see #RobocodeEngine(File, RobocodeListener)
 	 * @see #close()
 	 * @since 1.6.2
 	 */
@@ -107,13 +103,15 @@ public class RobocodeEngine {
 	}
 
 	/**
+	 * @deprecated Since 1.6.2. Use {@link #RobocodeEngine(File)} and
+	 * {@link #addBattleListener(IBattleListener) addBattleListener()} instead.
+	 * <p/>
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
 	 * @param listener	 the listener that must receive the callbacks from this
 	 *                     RobocodeEngine.
 	 * @see #RobocodeEngine()
-	 * @see #RobocodeEngine(RobocodeListener)
 	 * @see #RobocodeEngine(File)
 	 * @see #close()
 	 */
@@ -122,6 +120,9 @@ public class RobocodeEngine {
 	}
 
 	/**
+	 * @deprecated Since 1.6.2. Use {@link #RobocodeEngine()} and
+	 * {@link #addBattleListener(IBattleListener) addBattleListener()} instead.
+	 * <p/>
 	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
 	 * Robocode is used to determine the root directory of Robocode.
 	 *
@@ -129,7 +130,6 @@ public class RobocodeEngine {
 	 *                 RobocodeEngine.
 	 * @see #RobocodeEngine()
 	 * @see #RobocodeEngine(File)
-	 * @see #RobocodeEngine(File, RobocodeListener)
 	 * @see #close()
 	 */
 	public RobocodeEngine(RobocodeListener listener) {
@@ -149,6 +149,7 @@ public class RobocodeEngine {
 		}
 	}
 
+	@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 	private void init(File robocodeHome, RobocodeListener listener) {
 		File robotsDir = FileUtil.getRobotsDir();
 
@@ -414,8 +415,10 @@ public class RobocodeEngine {
 	 * Registered only if listener in not null.
 	 */
 	private class BattleObserver extends BattleAdaptor {
+		@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 		private RobocodeListener listener;
 
+		@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 		@Override
 		public void onBattleFinished(BattleFinishedEvent event) {
 			if (event.isAborted()) {
@@ -423,11 +426,13 @@ public class RobocodeEngine {
 			}
 		}
 
+		@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
 			listener.battleComplete(battleSpecification, RobotResults.convertResults(event.getSortedResults()));
 		}
 
+		@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 		@Override
 		public void onBattleMessage(BattleMessageEvent event) {
 			listener.battleMessage(event.getMessage());
