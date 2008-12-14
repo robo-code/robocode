@@ -37,7 +37,7 @@ import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.peer.RobotState;
+import robocode.control.snapshot.RobotState;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;

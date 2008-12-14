@@ -19,10 +19,10 @@ import robocode.common.XmlReader;
 import robocode.common.XmlWriter;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.RobotState;
 import robocode.peer.DebugProperty;
 import robocode.peer.ExecCommands;
 import robocode.peer.RobotPeer;
-import robocode.peer.RobotState;
 import robocode.robotpaint.Graphics2DProxy;
 
 import java.awt.geom.Arc2D;

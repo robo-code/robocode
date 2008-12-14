@@ -25,8 +25,8 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
+import robocode.control.snapshot.IDebugProperty;
 import robocode.manager.RobocodeManager;
-import robocode.peer.DebugProperty;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -227,14 +227,14 @@ public class RobotDialog extends JFrame {
 						'\n');
 				sb.append("state: ").append(lastSnapshot.getState()).append('\n');
 				sb.append('\n');
-				DebugProperty[] debugPropeties = lastSnapshot.getDebugProperties();
+				IDebugProperty[] debugPropeties = lastSnapshot.getDebugProperties();
 
 				if (debugPropeties != null) {
-					for (DebugProperty prop : debugPropeties) {
-						if (prop.value == null || prop.value.length() == 0) {
-							debugProperties.remove(prop.key);
+					for (IDebugProperty prop : debugPropeties) {
+						if (prop.getValue() == null || prop.getValue().length() == 0) {
+							debugProperties.remove(prop.getKey());
 						} else {
-							debugProperties.put(prop.key, prop.value);
+							debugProperties.put(prop.getKey(), prop.getValue());
 						}
 					}
 				}

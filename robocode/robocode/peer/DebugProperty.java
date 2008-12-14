@@ -17,6 +17,7 @@ import robocode.common.XmlReader;
 import robocode.common.XmlWriter;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
+import robocode.control.snapshot.IDebugProperty;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,23 +28,23 @@ import java.nio.ByteBuffer;
 /**
  * @author Pavel Savara (original)
  */
-public class DebugProperty implements Serializable, IXmlSerializable {
+public class DebugProperty implements Serializable, IXmlSerializable, IDebugProperty {
 	private static final long serialVersionUID = 1L;
 
 	public DebugProperty() {}
 
 	public DebugProperty(String key, String value) {
-		this.key = key;
-		this.value = value;
+		this.setKey(key);
+		this.setValue(value);
 	}
 
-	public String key;
-	public String value;
+	private String key;
+	private String value;
 
 	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("debug"); {
-			writer.writeAttribute("key", key);
-			writer.writeAttribute("value", value);
+			writer.writeAttribute("key", getKey());
+			writer.writeAttribute("value", getValue());
 		}
 		writer.endElement();
 	}
@@ -55,19 +56,35 @@ public class DebugProperty implements Serializable, IXmlSerializable {
 
 				reader.expect("key", new XmlReader.Attribute() {
 					public void read(String value) {
-						snapshot.key = value;
+						snapshot.setKey(value);
 					}
 				});
 
 				reader.expect("value", new XmlReader.Attribute() {
 					public void read(String value) {
-						snapshot.value = value;
+						snapshot.setValue(value);
 					}
 				});
 
 				return snapshot;
 			}
 		});
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	static ISerializableHelper createHiddenSerializer() {
