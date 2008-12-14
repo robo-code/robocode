@@ -71,7 +71,6 @@ import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
-import robocode.peer.robot.RobotClassManager;
 import robocode.recording.BattlePlayer;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
@@ -180,7 +179,7 @@ public class BattleManager implements IBattleManager {
 	private boolean loadRobot(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
 		boolean found = false;
 
-		final FileSpecification fileSpec = manager.getRobotRepositoryManager().getRobot(bot);
+		final FileSpecification fileSpec = manager.getRepositoryManager().getRobot(bot);
 
 		if (fileSpec != null) {
 			if (fileSpec instanceof RobotFileSpecification) {

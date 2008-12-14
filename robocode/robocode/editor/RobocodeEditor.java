@@ -99,7 +99,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		super();
 		this.manager = manager;
 		if (manager != null) {
-			robotsDirectory = manager.getRobotRepositoryManager().getRobotsDirectory();
+			robotsDirectory = manager.getRepositoryManager().getRobotsDirectory();
 		} else {
 			robotsDirectory = FileUtil.getRobotsDir();
 		}
@@ -396,7 +396,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 		addPlaceShowFocus(editWindow);
 		if (manager != null) {
-			manager.getRobotRepositoryManager().clearRobotList();
+			manager.getRepositoryManager().clearRobotList();
 		}
 	}
 

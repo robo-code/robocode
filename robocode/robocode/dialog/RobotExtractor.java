@@ -24,7 +24,6 @@
 package robocode.dialog;
 
 
-import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
@@ -130,7 +129,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(manager.getRobotRepositoryManager(), minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(manager, minRobots, maxRobots, false,
 					"Select the robot you would like to extract to the robots directory.  Robots not shown do not include source.",
 					true, true, true, false, true, true, null);
 		}
@@ -152,7 +151,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	}
 
 	private int extractRobot() {
-		manager.getRobotRepositoryManager().clearRobotList();
+		manager.getRepositoryManager().clearRobotList();
 		int rv;
 
 		output = new StringWriter();
@@ -164,8 +163,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 		try {
 			WindowUtil.setStatusWriter(out);
-			rv = JarSpecification.extractJar(spec.getJarFile(), manager.getRobotRepositoryManager().getRobotsDirectory(),
-					"Extracting to " + manager.getRobotRepositoryManager().getRobotsDirectory(), false, true, false);
+			rv = JarSpecification.extractJar(spec.getJarFile(), manager.getRepositoryManager().getRobotsDirectory(),
+					"Extracting to " + manager.getRepositoryManager().getRobotsDirectory(), false, true, false);
 			WindowUtil.setStatusWriter(null);
 			WindowUtil.setStatus("");
 			if (rv == 0) {

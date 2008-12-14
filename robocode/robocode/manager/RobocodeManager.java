@@ -103,7 +103,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a RobotListManager
 	 */
-	public IRepositoryManager getRobotRepositoryManager() {
+	public IRepositoryManager getRepositoryManager() {
 		if (repositoryManager == null) {
 			repositoryManager = new RobotRepositoryManager(this);
 		}

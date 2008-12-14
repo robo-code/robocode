@@ -868,7 +868,7 @@ public class RobocodeProperties {
 	 */
 	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
 		if (!optionsDevelopmentPath.equals(this.optionsDevelopmentPath)) {
-			manager.getRobotRepositoryManager().clearRobotList();
+			manager.getRepositoryManager().clearRobotList();
 		}
 		this.optionsDevelopmentPath = optionsDevelopmentPath;
 		props.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);

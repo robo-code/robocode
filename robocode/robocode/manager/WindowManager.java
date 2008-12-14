@@ -282,7 +282,7 @@ public class WindowManager implements IWindowManager {
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
-		manager.getRobotRepositoryManager().loadRobotRepository();
+		manager.getRepositoryManager().loadRobotRepository();
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 		manager.getImageManager();
@@ -317,7 +317,7 @@ public class WindowManager implements IWindowManager {
 	}
 
 	public void showCreateTeamDialog() {
-		TeamCreator teamCreator = new TeamCreator(manager.getRobotRepositoryManager());
+		TeamCreator teamCreator = new TeamCreator(manager);
 
 		WindowUtil.packCenterShow(teamCreator);
 	}
@@ -356,7 +356,7 @@ public class WindowManager implements IWindowManager {
 		});
 
 		chooser.setDialogTitle(
-				"Select the robot .jar file to copy to " + manager.getRobotRepositoryManager().getRobotsDirectory());
+				"Select the robot .jar file to copy to " + manager.getRepositoryManager().getRobotsDirectory());
 
 		if (chooser.showDialog(getRobocodeFrame(), "Import") == JFileChooser.APPROVE_OPTION) {
 			File inputFile = chooser.getSelectedFile();
@@ -370,7 +370,7 @@ public class WindowManager implements IWindowManager {
 			if (!extension.equalsIgnoreCase(".jar")) {
 				fileName += ".jar";
 			}
-			File outputFile = new File(manager.getRobotRepositoryManager().getRobotsDirectory(), fileName);
+			File outputFile = new File(manager.getRepositoryManager().getRobotsDirectory(), fileName);
 
 			if (inputFile.equals(outputFile)) {
 				JOptionPane.showMessageDialog(getRobocodeFrame(),
@@ -390,7 +390,7 @@ public class WindowManager implements IWindowManager {
 					== JOptionPane.OK_OPTION) {
 				try {
 					FileUtil.copy(inputFile, outputFile);
-					manager.getRobotRepositoryManager().clearRobotList();
+					manager.getRepositoryManager().clearRobotList();
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Robot imported successfully.");
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Import failed: " + e);

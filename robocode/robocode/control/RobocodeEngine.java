@@ -257,7 +257,7 @@ public class RobocodeEngine {
 	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		List<FileSpecification> list = manager.getRobotRepositoryManager().getRobotSpecificationsList();
+		List<FileSpecification> list = manager.getRepositoryManager().getRobotSpecificationsList();
 		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {

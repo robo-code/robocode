@@ -241,7 +241,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 					}
 					if (ok == JOptionPane.YES_OPTION) {
 						if (editor.getManager() != null) {
-							editor.getManager().getRobotRepositoryManager().clearRobotList();
+							editor.getManager().getRepositoryManager().clearRobotList();
 						}
 						return fileSaveAs();
 					}

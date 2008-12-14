@@ -32,6 +32,7 @@ package robocode.dialog;
 
 import robocode.io.Logger;
 import robocode.manager.IRepositoryManager;
+import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.TeamSpecification;
 
@@ -89,7 +90,27 @@ public class RobotSelectionPanel extends WizardPanel {
 	private String preSelectedRobots;
 	private final List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
 	private final boolean showNumRoundsPanel;
-	private final IRepositoryManager repositoryManager;
+	private final RobocodeManager manager;
+
+	public RobotSelectionPanel(RobocodeManager manager, int minRobots, int maxRobots,
+			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
+			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
+			String preSelectedRobots) {
+		super();
+		this.showNumRoundsPanel = showNumRoundsPanel;
+		this.minRobots = minRobots;
+		this.maxRobots = maxRobots;
+		this.instructions = instructions;
+		this.onlyShowSource = onlyShowSource;
+		this.onlyShowWithPackage = onlyShowWithPackage;
+		this.onlyShowRobots = onlyShowRobots;
+		this.onlyShowDevelopment = onlyShowDevelopment;
+		this.onlyShowPackaged = onlyShowPackaged;
+		this.ignoreTeamRobots = ignoreTeamRobots;
+		this.preSelectedRobots = preSelectedRobots;
+		this.manager = manager;
+		initialize();
+	}
 
 	private class EventHandler implements ActionListener, ListSelectionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -112,26 +133,6 @@ public class RobotSelectionPanel extends WizardPanel {
 				selectedRobotsListSelectionChanged();
 			}
 		}
-	}
-
-	public RobotSelectionPanel(IRepositoryManager repositoryManager, int minRobots, int maxRobots,
-			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
-			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
-			String preSelectedRobots) {
-		super();
-		this.showNumRoundsPanel = showNumRoundsPanel;
-		this.minRobots = minRobots;
-		this.maxRobots = maxRobots;
-		this.instructions = instructions;
-		this.onlyShowSource = onlyShowSource;
-		this.onlyShowWithPackage = onlyShowWithPackage;
-		this.onlyShowRobots = onlyShowRobots;
-		this.onlyShowDevelopment = onlyShowDevelopment;
-		this.onlyShowPackaged = onlyShowPackaged;
-		this.ignoreTeamRobots = ignoreTeamRobots;
-		this.preSelectedRobots = preSelectedRobots;
-		this.repositoryManager = repositoryManager;
-		initialize();
 	}
 
 	private void addAllButtonActionPerformed() {
@@ -483,7 +484,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		try {
 			return Integer.parseInt(getNumRoundsTextField().getText());
 		} catch (NumberFormatException e) {
-			int numRounds = repositoryManager.getManager().getProperties().getNumberOfRounds();
+			int numRounds = manager.getProperties().getNumberOfRounds();
 
 			getNumRoundsTextField().setText("" + numRounds);
 			return numRounds;
@@ -514,7 +515,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	private JTextField getNumRoundsTextField() {
-		final robocode.manager.RobocodeProperties props = repositoryManager.getManager().getProperties();
+		final robocode.manager.RobocodeProperties props = manager.getProperties();
 
 		if (numRoundsTextField == null) {
 			numRoundsTextField = new JTextField();
@@ -542,7 +543,7 @@ public class RobotSelectionPanel extends WizardPanel {
 					try {
 						int numRounds = Integer.parseInt(numRoundsTextField.getText());
 
-						repositoryManager.getManager().getBattleManager().getBattleProperties().setNumRounds(numRounds);
+						manager.getBattleManager().getBattleProperties().setNumRounds(numRounds);
 
 						if (numRounds != props.getNumberOfRounds()) {
 							props.setNumberOfRounds(numRounds);
@@ -569,6 +570,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		SwingUtilities.invokeLater(
 				new Runnable() {
 			public void run() {
+				IRepositoryManager repositoryManager = manager.getRepositoryManager();
 				repositoryManager.clearRobotList();
 
 				List<FileSpecification> robotList = repositoryManager.getRobotSpecificationsList(

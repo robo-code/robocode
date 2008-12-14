@@ -33,12 +33,10 @@ import robocode.io.Logger;
 import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
-import robocode.manager.IThreadManager;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
-import robocode.security.RobocodeSecurityManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -97,7 +95,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public RobotPackager(RobocodeManager manager) {
 		super(manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
-		this.repositoryManager = manager.getRobotRepositoryManager();
+		this.repositoryManager = manager.getRepositoryManager();
 		initialize();
 	}
 
@@ -224,7 +222,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(repositoryManager, minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(manager, minRobots, maxRobots, false,
 					"Select the robot or team you would like to package.", /* true */false, false, false/* true */, true,
 					false, true, null);
 		}
