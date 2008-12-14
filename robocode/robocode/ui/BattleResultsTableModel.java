@@ -28,8 +28,8 @@
 package robocode.ui;
 
 
-import robocode.BattleResults;
 import net.sf.robocode.io.Logger;
+import robocode.BattleResults;
 import robocode.text.StringUtil;
 
 import java.io.FileOutputStream;

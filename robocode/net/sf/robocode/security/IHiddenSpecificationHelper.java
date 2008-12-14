@@ -13,7 +13,6 @@ package net.sf.robocode.security;
 
 
 import robocode.control.RobotSpecification;
-import robocode.repository.FileSpecification;
 
 
 /**

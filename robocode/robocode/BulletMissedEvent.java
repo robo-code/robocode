@@ -21,8 +21,8 @@ import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
-import java.util.Hashtable;
 import java.nio.ByteBuffer;
+import java.util.Hashtable;
 
 
 /**

@@ -22,10 +22,10 @@ package robocode.manager;
 
 import robocode.peer.proxies.IHostedThread;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.io.PrintStream;
 
 
 /**

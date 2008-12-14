@@ -21,11 +21,10 @@
 package robocode.dialog;
 
 
-import robocode.control.events.BattleAdaptor;
 import robocode.control.events.*;
+import robocode.control.snapshot.IDebugProperty;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.control.snapshot.IDebugProperty;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;

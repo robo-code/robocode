@@ -18,10 +18,10 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.repository.TeamSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
-import net.sf.robocode.io.Logger;
 
 import javax.swing.*;
 import java.awt.*;

@@ -16,8 +16,8 @@
 package robocode.peer.robot;
 
 
-import robocode.Event;
 import net.sf.robocode.security.HiddenAccess;
+import robocode.Event;
 
 import java.util.ArrayList;
 import java.util.Collections;

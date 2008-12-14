@@ -13,12 +13,11 @@ package net.sf.robocode.security;
 
 
 import robocode.Bullet;
-import robocode.peer.BulletStatus;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IHiddenBulletHelper {
-	void update(Bullet bullet, BulletStatus status);
+	void update(Bullet bullet, double x, double y, String victimName, boolean isActive);
 }

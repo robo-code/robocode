@@ -12,14 +12,14 @@
 package robocode.battle;
 
 
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
 import robocode.BattleRules;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.common.Command;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
 import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 

@@ -12,6 +12,7 @@
 package robocode.recording;
 
 
+import net.sf.robocode.security.HiddenAccess;
 import robocode.BattleResults;
 import robocode.BattleRules;
 import robocode.battle.BattleProperties;
@@ -24,8 +25,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
-
-import net.sf.robocode.security.HiddenAccess;
 
 
 /**

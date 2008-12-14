@@ -15,7 +15,6 @@ package robocode.manager;
 import robocode.repository.FileSpecification;
 
 import java.io.File;
-import java.util.jar.JarInputStream;
 import java.util.List;
 
 

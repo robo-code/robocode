@@ -19,9 +19,9 @@
 package robocode.control;
 
 
+import net.sf.robocode.security.IHiddenSpecificationHelper;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
-import net.sf.robocode.security.IHiddenSpecificationHelper;
 
 import java.io.File;
 

@@ -12,14 +12,9 @@
 package robocode;
 
 
-import robocode.battle.BattleProperties;
-import robocode.battlefield.BattleField;
-import robocode.battlefield.DefaultBattleField;
+import net.sf.robocode.security.IHiddenRulesHelper;
 
 import java.io.Serializable;
-
-import net.sf.robocode.security.IHiddenSpecificationHelper;
-import net.sf.robocode.security.IHiddenRulesHelper;
 
 
 /**

@@ -12,16 +12,16 @@
 package robocode.peer;
 
 
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.Event;
 import robocode.RobotStatus;
 import robocode.peer.robot.TeamMessage;
-import net.sf.robocode.serialization.ISerializableHelper;
-import net.sf.robocode.serialization.RbSerializer;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.ArrayList;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ExecResults implements Serializable {

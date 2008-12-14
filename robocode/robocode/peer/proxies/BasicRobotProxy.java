@@ -15,9 +15,9 @@
 package robocode.peer.proxies;
 
 
+import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.Event;
-import net.sf.robocode.security.HiddenAccess;
 import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.manager.IHostManager;
@@ -26,8 +26,8 @@ import robocode.peer.robot.EventManager;
 import robocode.peer.robot.RobotClassManager;
 import robocode.peer.robot.TeamMessage;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotpaint.IGraphicsProxy;
 import robocode.robotpaint.Graphics2DSerialized;
+import robocode.robotpaint.IGraphicsProxy;
 import robocode.util.Utils;
 
 import java.awt.*;
@@ -372,7 +372,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 				final Bullet bullet = bullets.get(s.bulletId);
 
 				if (bullet != null) {
-					HiddenAccess.update(bullet, s);
+					HiddenAccess.update(bullet, s.x, s.y, s.victimName, s.isActive);
 					if (!s.isActive) {
 						bullets.remove(s.bulletId);
 					}

@@ -14,9 +14,6 @@
 package robocode.control.snapshot;
 
 
-import robocode.control.snapshot.RobotState;
-
-
 /**
  * Interface of a robot snapshot.
  * 

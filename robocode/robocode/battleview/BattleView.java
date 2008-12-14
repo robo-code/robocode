@@ -16,10 +16,10 @@
 package robocode.battleview;
 
 
-import robocode.control.events.BattleAdaptor;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.battlefield.BattleField;
 import robocode.battlefield.DefaultBattleField;
+import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
 import robocode.control.events.TurnEndedEvent;
@@ -34,8 +34,8 @@ import robocode.manager.IWindowManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.peer.BulletState;
-import robocode.robotpaint.IGraphicsProxy;
 import robocode.robotpaint.Graphics2DSerialized;
+import robocode.robotpaint.IGraphicsProxy;
 
 import java.awt.*;
 import java.awt.geom.*;

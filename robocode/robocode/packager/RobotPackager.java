@@ -28,8 +28,8 @@
 package robocode.packager;
 
 
-import robocode.dialog.*;
 import net.sf.robocode.io.Logger;
+import robocode.dialog.*;
 import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;

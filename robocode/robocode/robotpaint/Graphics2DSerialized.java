@@ -15,18 +15,18 @@ package robocode.robotpaint;
 import net.sf.robocode.serialization.RbSerializer;
 
 import java.awt.*;
-import java.awt.font.GlyphVector;
 import java.awt.font.FontRenderContext;
-import java.awt.image.ImageObserver;
+import java.awt.font.GlyphVector;
+import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
-import java.awt.geom.*;
-import java.util.*;
+import java.nio.ByteBuffer;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
-import java.nio.ByteBuffer;
+import java.util.Map;
 
 
 /**

@@ -12,17 +12,17 @@
 package robocode.peer;
 
 
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
 import robocode.common.XmlWriter;
-import net.sf.robocode.serialization.ISerializableHelper;
-import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.snapshot.IDebugProperty;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Dictionary;
 import java.nio.ByteBuffer;
+import java.util.Dictionary;
 
 
 /**

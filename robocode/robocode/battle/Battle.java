@@ -96,8 +96,9 @@
 package robocode.battle;
 
 
-import robocode.*;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
+import robocode.*;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.common.Command;
@@ -106,7 +107,6 @@ import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
-import net.sf.robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
 

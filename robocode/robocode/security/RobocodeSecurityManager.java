@@ -27,16 +27,12 @@
 package robocode.security;
 
 
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.RobocodeFileOutputStream;
 import robocode.exception.RobotException;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IThreadManager;
 import robocode.peer.*;
-import net.sf.robocode.serialization.RbSerializer;
-import robocode.peer.BulletCommand;
-import robocode.peer.BulletState;
-import robocode.peer.DebugProperty;
-import robocode.peer.ExecResults;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.TeamMessage;

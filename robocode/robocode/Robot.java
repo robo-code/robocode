@@ -71,6 +71,10 @@ import java.awt.event.MouseWheelEvent;
  */
 public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents, IPaintEvents {
 
+	private static final int
+			WIDTH = 40,
+			HEIGHT = 40;
+
 	/**
 	 * Constructs a new robot.
 	 */
@@ -242,7 +246,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		if (peer == null) {
 			uninitializedException();
 		}
-		return robocode.peer.RobotPeer.HEIGHT;
+		return HEIGHT;
 	}
 
 	/**
@@ -255,7 +259,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		if (peer == null) {
 			uninitializedException();
 		}
-		return robocode.peer.RobotPeer.WIDTH;
+		return WIDTH;
 	}
 
 	/**

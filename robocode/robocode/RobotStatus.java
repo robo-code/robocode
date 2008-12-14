@@ -12,13 +12,12 @@
 package robocode;
 
 
+import net.sf.robocode.security.IHiddenStatusHelper;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-
-import net.sf.robocode.security.IHiddenStatusHelper;
 
 
 /**

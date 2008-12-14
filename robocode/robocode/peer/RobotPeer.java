@@ -66,8 +66,11 @@
 package robocode.peer;
 
 
-import robocode.*;
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.serialization.RbSerializer;
+import robocode.*;
 import robocode.battle.Battle;
 import robocode.common.BoundingRectangle;
 import robocode.control.RandomFactory;
@@ -76,19 +79,19 @@ import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logMessage;
 import robocode.manager.IHostManager;
-import robocode.peer.proxies.*;
-import robocode.peer.robot.*;
-import net.sf.robocode.serialization.RbSerializer;
+import robocode.peer.proxies.IHostingRobotProxy;
+import robocode.peer.robot.EventManager;
+import robocode.peer.robot.EventQueue;
+import robocode.peer.robot.RobotStatistics;
+import robocode.peer.robot.TeamMessage;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import static java.lang.Math.*;
-import java.security.PrivilegedAction;
 import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

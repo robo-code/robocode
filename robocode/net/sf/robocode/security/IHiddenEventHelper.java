@@ -12,9 +12,9 @@
 package net.sf.robocode.security;
 
 
+import net.sf.robocode.peer.IRobotStatics;
 import robocode.Bullet;
 import robocode.Event;
-import net.sf.robocode.peer.IRobotStatics;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;

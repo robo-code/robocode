@@ -18,8 +18,8 @@
 package robocode;
 
 
-import robocode.exception.RobotException;
 import net.sf.robocode.io.Logger;
+import robocode.exception.RobotException;
 import robocode.manager.IThreadManager;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;

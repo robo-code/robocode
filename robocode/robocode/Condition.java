@@ -18,9 +18,6 @@
 package robocode;
 
 
-import robocode.security.RobocodeSecurityManager;
-
-
 /**
  * Condition is used to define custom  {@link AdvancedRobot#waitFor(Condition)
  * waitFor(Condition)} and custom events for an {@link AdvancedRobot}. The code

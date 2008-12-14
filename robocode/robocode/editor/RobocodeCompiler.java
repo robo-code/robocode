@@ -18,10 +18,10 @@
 package robocode.editor;
 
 
+import net.sf.robocode.io.Logger;
 import robocode.dialog.ConsoleDialog;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 
 import java.io.IOException;
 

@@ -12,19 +12,19 @@
 package net.sf.robocode.serialization;
 
 
-import robocode.peer.*;
-import robocode.peer.robot.TeamMessage;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
-import robocode.manager.VersionManager;
 import robocode.*;
+import robocode.manager.VersionManager;
+import robocode.peer.*;
+import robocode.peer.robot.TeamMessage;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.*;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 
 
 /**

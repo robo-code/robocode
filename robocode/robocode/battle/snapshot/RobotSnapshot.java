@@ -23,7 +23,6 @@ import robocode.control.snapshot.RobotState;
 import robocode.peer.DebugProperty;
 import robocode.peer.ExecCommands;
 import robocode.peer.RobotPeer;
-import robocode.robotpaint.Graphics2DProxy;
 
 import java.awt.geom.Arc2D;
 import java.io.IOException;

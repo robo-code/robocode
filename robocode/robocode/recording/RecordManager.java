@@ -12,6 +12,7 @@
 package robocode.recording;
 
 
+import static net.sf.robocode.io.Logger.logError;
 import robocode.BattleResults;
 import robocode.BattleRules;
 import robocode.battle.IBattle;
@@ -21,7 +22,6 @@ import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
 import robocode.common.XmlWriter;
 import robocode.control.snapshot.ITurnSnapshot;
-import static net.sf.robocode.io.Logger.logError;
 import robocode.manager.RobocodeManager;
 
 import java.io.*;

@@ -24,10 +24,10 @@
 package robocode.editor;
 
 
-import robocode.gfx.ImageUtil;
-import robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
+import robocode.gfx.ImageUtil;
+import robocode.io.FileUtil;
 import robocode.manager.BrowserManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;

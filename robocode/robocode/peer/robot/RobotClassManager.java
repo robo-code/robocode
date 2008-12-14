@@ -31,7 +31,6 @@ import robocode.repository.RobotFileSpecification;
 import robocode.security.RobocodeClassLoader;
 
 import java.util.*;
-import java.util.List;
 
 
 /**

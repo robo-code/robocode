@@ -12,11 +12,10 @@
 package robocode.manager;
 
 
-import robocode.peer.proxies.IHostingRobotProxy;
-import robocode.peer.robot.RobotClassManager;
-import robocode.peer.RobotStatics;
-import robocode.peer.IRobotPeer;
 import robocode.control.RobotSpecification;
+import robocode.peer.IRobotPeer;
+import robocode.peer.RobotStatics;
+import robocode.peer.proxies.IHostingRobotProxy;
 
 
 /**

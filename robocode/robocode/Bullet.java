@@ -14,10 +14,9 @@
 package robocode;
 
 
-import robocode.peer.BulletStatus;
+import net.sf.robocode.security.IHiddenBulletHelper;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.security.IHiddenBulletHelper;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
@@ -165,15 +164,17 @@ public class Bullet implements Serializable {
 
 	/**
 	 * Updates this bullet based on the specified bullet status.
-	 *
-	 * @param status the new bullet status.
+	 * @param x TODO
+	 * @param y TODO
+	 * @param victimName TODO
+	 * @param isActive TODO
 	 */
 	// this method is invisible on RobotAPI
-	private void update(BulletStatus status) {
-		x = status.x;
-		y = status.y;
-		victimName = status.victimName;
-		isActive = status.isActive;
+	private void update(double x, double y, String victimName, boolean isActive) {
+		this.x = x;
+		this.y = y;
+		this.victimName = victimName;
+		this.isActive = isActive;
 	}
 
 	// this method is invisible on RobotAPI
@@ -207,8 +208,8 @@ public class Bullet implements Serializable {
 	// this class is invisible on RobotAPI
 	private static class HiddenBulletHelper implements IHiddenBulletHelper, ISerializableHelper {
 
-		public void update(Bullet bullet, BulletStatus status) {
-			bullet.update(status);
+		public void update(Bullet bullet, double x, double y, String victimName, boolean isActive) {
+			bullet.update(x, y, victimName, isActive);
 		}
 
 		public int sizeOf(RbSerializer serializer, Object object) {

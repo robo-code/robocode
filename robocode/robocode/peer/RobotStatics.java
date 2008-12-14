@@ -12,12 +12,11 @@
 package robocode.peer;
 
 
+import net.sf.robocode.peer.IRobotStatics;
 import robocode.BattleRules;
 import robocode.control.RobotSpecification;
 
 import java.util.List;
-
-import net.sf.robocode.peer.IRobotStatics;
 
 
 /**

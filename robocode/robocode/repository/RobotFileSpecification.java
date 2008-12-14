@@ -18,26 +18,26 @@
 package robocode.repository;
 
 
-import robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
-import robocode.manager.NameManager;
-import robocode.peer.robot.RobotClassManager;
 import robocode.Droid;
 import robocode.Robot;
+import robocode.io.FileUtil;
+import robocode.manager.NameManager;
+import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.*;
-import java.security.AccessControlException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.AccessControlException;
 
 
 /**

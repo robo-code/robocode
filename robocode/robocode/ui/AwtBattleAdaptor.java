@@ -12,14 +12,13 @@
 package robocode.ui;
 
 
-import robocode.control.events.BattleAdaptor;
+import net.sf.robocode.io.Logger;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.IBattleListener;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import net.sf.robocode.io.Logger;
 import robocode.manager.IBattleManager;
 
 import javax.swing.*;

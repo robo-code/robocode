@@ -19,7 +19,6 @@ import robocode.control.IBattleListener;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;
 import robocode.security.RobocodeSecurityManager;
-import robocode.security.SecurePrintStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -32,6 +31,9 @@ import java.io.PrintStream;
  * @author Mathew A. Nelson (original)
  */
 public class Logger {
+	public static final PrintStream realOut = System.out;
+	public static final PrintStream realErr = System.err;
+
 	private static IBattleListener logListener;
 	private final static StringBuffer logBuffer = new StringBuffer();
 
@@ -62,10 +64,10 @@ public class Logger {
 	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
 			if (newline) {
-				SecurePrintStream.realOut.println(s);
+				realOut.println(s);
 			} else {
-				SecurePrintStream.realOut.print(s);
-				SecurePrintStream.realOut.flush();
+				realOut.print(s);
+				realOut.flush();
 			}
 		} else {
 			synchronized (logBuffer) {
@@ -85,7 +87,7 @@ public class Logger {
 
 	public static void logError(String s) {
 		if (logListener == null) {
-			SecurePrintStream.realErr.println(s);
+			realErr.println(s);
 		} else {
 			logListener.onBattleError(new BattleErrorEvent(s));
 		}

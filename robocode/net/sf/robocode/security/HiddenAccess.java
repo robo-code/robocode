@@ -12,24 +12,19 @@
 package net.sf.robocode.security;
 
 
-import net.sf.robocode.security.IHiddenStatusHelper;
-import robocode.peer.BulletStatus;
-import net.sf.robocode.security.IHiddenBulletHelper;
-import net.sf.robocode.security.IHiddenEventHelper;
-import net.sf.robocode.peer.*;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.security.IHiddenSpecificationHelper;
-import robocode.repository.FileSpecification;
-import robocode.Event;
-import robocode.Bullet;
-import robocode.RobotStatus;
+import net.sf.robocode.peer.IRobotStatics;
 import robocode.BattleRules;
-import robocode.robotinterfaces.IBasicRobot;
+import robocode.Bullet;
+import robocode.Event;
+import robocode.RobotStatus;
 import robocode.control.RobotSpecification;
+import robocode.repository.FileSpecification;
+import robocode.robotinterfaces.IBasicRobot;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Hashtable;
 
 
@@ -110,8 +105,8 @@ public class HiddenAccess {
 		eventHelper.updateBullets(e, bullets);
 	}
 
-	public static void update(Bullet bullet, BulletStatus status) {
-		bulletHelper.update(bullet, status);
+	public static void update(Bullet bullet, double x, double y, String victimName, boolean isActive) {
+		bulletHelper.update(bullet, x, y, victimName, isActive);
 	}
 
 	public static RobotSpecification createSpecification(FileSpecification fileSpecification) {

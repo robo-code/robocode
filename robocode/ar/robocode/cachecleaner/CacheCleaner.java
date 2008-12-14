@@ -15,8 +15,8 @@
 package ar.robocode.cachecleaner;
 
 
-import robocode.manager.RobocodeManager;
 import robocode.manager.IRepositoryManager;
+import robocode.manager.RobocodeManager;
 
 import java.io.File;
 import java.io.IOException;

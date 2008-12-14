@@ -12,12 +12,11 @@
 package robocode.dialog;
 
 
-import robocode.control.events.BattleAdaptor;
+import net.sf.robocode.io.Logger;
 import robocode.common.IXmlSerializable;
 import robocode.common.XmlWriter;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
-import net.sf.robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;

@@ -28,16 +28,16 @@
 package robocode.sound;
 
 
-import robocode.control.events.BattleAdaptor;
 import robocode.battle.events.BattleEventDispatcher;
+import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.RobotState;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.control.snapshot.RobotState;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;

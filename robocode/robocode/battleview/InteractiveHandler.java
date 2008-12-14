@@ -15,6 +15,7 @@
 package robocode.battleview;
 
 
+import net.sf.robocode.security.SafeComponent;
 import robocode.*;
 import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
@@ -24,8 +25,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.*;
 import static java.lang.Math.min;
-
-import net.sf.robocode.security.SafeComponent;
 
 
 /**

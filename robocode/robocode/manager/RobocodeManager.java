@@ -28,17 +28,17 @@
 package robocode.manager;
 
 
-import robocode.RobocodeFileOutputStream;
-import robocode.repository.RobotRepositoryManager;
-import robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
+import robocode.RobocodeFileOutputStream;
+import robocode.io.FileUtil;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
+import robocode.repository.RobotRepositoryManager;
+import robocode.security.RobocodeSecurityManager;
+import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
-import robocode.security.RobocodeSecurityPolicy;
-import robocode.security.RobocodeSecurityManager;
 import robocode.sound.ISoundManager;
 import robocode.sound.SoundManager;
 

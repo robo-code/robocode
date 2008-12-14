@@ -12,17 +12,17 @@
 package robocode.peer;
 
 
-import robocode.Rules;
-import robocode.peer.robot.TeamMessage;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
+import robocode.Rules;
+import robocode.peer.robot.TeamMessage;
 
 import java.io.Serializable;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.nio.ByteBuffer;
 
 
 /**

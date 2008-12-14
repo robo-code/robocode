@@ -15,8 +15,8 @@ package robocode;
 
 
 import net.sf.robocode.peer.IRobotStatics;
-import net.sf.robocode.serialization.RbSerializer;
 import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 

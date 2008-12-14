@@ -25,10 +25,10 @@
 package robocode.peer.robot;
 
 
-import robocode.exception.RobotException;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
+import robocode.exception.RobotException;
 import robocode.manager.IThreadManager;
 import robocode.peer.proxies.IHostedThread;
 import robocode.security.LoggingThreadGroup;

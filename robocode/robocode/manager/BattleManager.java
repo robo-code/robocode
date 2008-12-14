@@ -54,8 +54,11 @@
 package robocode.manager;
 
 
-import robocode.Event;
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
+import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
 import robocode.battle.IBattle;
@@ -68,9 +71,6 @@ import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
 import robocode.recording.BattlePlayer;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;

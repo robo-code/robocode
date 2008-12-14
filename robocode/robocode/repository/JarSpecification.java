@@ -16,15 +16,15 @@
 package robocode.repository;
 
 
-import robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.dialog.WindowUtil;
+import robocode.io.FileUtil;
 
 import javax.swing.*;
 import java.io.*;
-import java.util.jar.JarInputStream;
 import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 
 /**

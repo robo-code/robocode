@@ -20,8 +20,8 @@
 package robocode.editor;
 
 
-import robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import robocode.io.FileUtil;
 
 import javax.swing.*;
 import java.awt.*;

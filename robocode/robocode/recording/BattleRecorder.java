@@ -12,7 +12,6 @@
 package robocode.recording;
 
 
-import robocode.control.events.BattleAdaptor;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.control.events.*;
 
