@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.sf.robocode.io.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -44,7 +46,7 @@ public class ThreadManager implements IThreadManager {
 	private final List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
 
 	public ThreadManager() {
-		super();
+		Logger.threadManager = this;
 	}
 
 	public void addSafeThread(Thread safeThread) {

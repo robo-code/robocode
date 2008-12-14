@@ -23,9 +23,10 @@ import robocode.control.*;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.io.FileUtil;
-import robocode.security.SecurePrintStream;
 
 import java.util.Random;
+
+import net.sf.robocode.io.Logger;
 
 
 /**
@@ -47,14 +48,14 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	public void onBattleMessage(BattleMessageEvent event) {
 		if (isDumpingMessages) {
-			SecurePrintStream.realOut.println(event.getMessage());
+			Logger.realOut.println(event.getMessage());
 		}
 		messages++;
 	}
 
 	public void onBattleError(BattleErrorEvent event) {
 		if (isDumpingErrors) {
-			SecurePrintStream.realErr.println(event.getError());
+			Logger.realErr.println(event.getError());
 		}
 		errors++;
 	}
@@ -67,21 +68,21 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {
-			SecurePrintStream.realOut.println("turn " + event.getTurnSnapshot().getTurn());
+			Logger.realOut.println("turn " + event.getTurnSnapshot().getTurn());
 		}
 		for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
 			if (isDumpingPositions) {
-				SecurePrintStream.realOut.print(robot.getVeryShortName());
-				SecurePrintStream.realOut.print(" X:");
-				SecurePrintStream.realOut.print(robot.getX());
-				SecurePrintStream.realOut.print(" Y:");
-				SecurePrintStream.realOut.print(robot.getY());
-				SecurePrintStream.realOut.print(" V:");
-				SecurePrintStream.realOut.print(robot.getVelocity());
-				SecurePrintStream.realOut.println();
+				Logger.realOut.print(robot.getVeryShortName());
+				Logger.realOut.print(" X:");
+				Logger.realOut.print(robot.getX());
+				Logger.realOut.print(" Y:");
+				Logger.realOut.print(robot.getY());
+				Logger.realOut.print(" V:");
+				Logger.realOut.print(robot.getVelocity());
+				Logger.realOut.println();
 			}
 			if (isDumpingOutput) {
-				SecurePrintStream.realOut.print(robot.getOutputStreamSnapshot());
+				Logger.realOut.print(robot.getOutputStreamSnapshot());
 			}
 		}
 	}

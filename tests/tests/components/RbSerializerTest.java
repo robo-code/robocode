@@ -118,8 +118,8 @@ public class RbSerializerTest {
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
-		Assert.assertEquals(ec2.getDebugProperties().get(0).key, "UTF8 Native characters");
-		Assert.assertEquals(ec2.getDebugProperties().get(0).value, "Pøíliš luouèkı kùò úpìl ïábelské ódy");
+		Assert.assertEquals(ec2.getDebugProperties().get(0).getKey(), "UTF8 Native characters");
+		Assert.assertEquals(ec2.getDebugProperties().get(0).getValue(), "Pøíliš luouèkı kùò úpìl ïábelské ódy");
 	}
 
 	// @Test

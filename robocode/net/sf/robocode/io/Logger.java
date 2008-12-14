@@ -18,10 +18,11 @@ package net.sf.robocode.io;
 import robocode.control.IBattleListener;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;
-import robocode.security.RobocodeSecurityManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+import net.sf.robocode.security.IThreadManagerBase;
 
 
 /**
@@ -33,6 +34,7 @@ import java.io.PrintStream;
 public class Logger {
 	public static final PrintStream realOut = System.out;
 	public static final PrintStream realErr = System.err;
+	public static IThreadManagerBase threadManager;
 
 	private static IBattleListener logListener;
 	private final static StringBuffer logBuffer = new StringBuffer();
@@ -71,7 +73,7 @@ public class Logger {
 			}
 		} else {
 			synchronized (logBuffer) {
-				if (!RobocodeSecurityManager.isSafeThreadSt()) {
+				if (threadManager == null || !threadManager.isSafeThread()) {
 					// we just queue it, to not let unsafe thread travel thru system
 					logBuffer.append(s);
 					logBuffer.append("\n");
