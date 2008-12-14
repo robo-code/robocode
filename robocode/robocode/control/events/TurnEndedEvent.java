@@ -14,7 +14,6 @@
 package robocode.control.events;
 
 
-import robocode.control.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 
 
@@ -22,6 +21,7 @@ import robocode.control.snapshot.ITurnSnapshot;
  * A TurnEndedEvent is sent to {@link IBattleListener#onTurnEnded(TurnEndedEvent)
  * onTurnEnded()} when the current turn in a battle round is ended. 
  *
+ * @see IBattleListener
  * @see TurnStartedEvent
  *
  * @author Pavel Savara (original)

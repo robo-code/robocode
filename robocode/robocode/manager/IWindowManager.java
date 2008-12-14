@@ -12,8 +12,8 @@
 package robocode.manager;
 
 
-import robocode.control.IBattleListener;
 import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.dialog.RobocodeFrame;
 import robocode.ui.BattleResultsTableModel;

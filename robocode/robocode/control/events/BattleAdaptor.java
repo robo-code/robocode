@@ -12,16 +12,17 @@
 package robocode.control.events;
 
 
-import robocode.control.IBattleListener;
-
-
 /**
- * This is handy base class for anyone implementing robocode.control.IBattleListener
- * It saves you from implementing empty handlers for events you are not
- * interested to receive.
- *  
+ * An abstract adapter class for receiving battle events. The methods in this class are empty.
+ * This class exists as convenience for creating listener objects.
+ * <p/>
+ * This is handy class to use when implementing the {@link IBattleListener}.
+ * It saves you from implementing empty handlers for battle events you are not interested in handling.
+ *
+ * @see IBattleListener 
+ *
  * @author Flemming N. Larsen (original)
- * @since 1.6.1
+ * @since 1.6.2
  */
 public abstract class BattleAdaptor implements IBattleListener {
 

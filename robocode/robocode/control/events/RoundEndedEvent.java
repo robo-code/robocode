@@ -14,13 +14,11 @@
 package robocode.control.events;
 
 
-import robocode.control.IBattleListener;
-
-
 /**
  * A RoundEndedEvent is sent to {@link IBattleListener#onRoundEnded(RoundEndedEvent)
  * onRoundEnded()} when the current round of a battle has ended. 
  *
+ * @see IBattleListener
  * @see RoundStartedEvent
  * 
  * @author Pavel Savara (original)

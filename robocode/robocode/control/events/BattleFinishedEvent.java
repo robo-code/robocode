@@ -14,15 +14,13 @@
 package robocode.control.events;
 
 
-import robocode.control.IBattleListener;
-
-
 /**
  * A BattleFinishedEvent is sent to {@link IBattleListener#onBattleFinished(BattleFinishedEvent)
  * onBattleFinished()} when the battle is finished. This event is always sent as the last battle event,
  * both when the battle is completed successfully, terminated due to an error, or aborted by the user.
  * Hence, this events is well-suited for cleanup after the battle. 
  *
+ * @see IBattleListener
  * @see BattleStartedEvent
  * @see BattleCompletedEvent
  * 

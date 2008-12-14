@@ -14,13 +14,11 @@
 package robocode.control.events;
 
 
-import robocode.control.IBattleListener;
-
-
 /**
  * A BattleMessageEvent is sent to {@link IBattleListener#onBattleMessage(BattleMessageEvent)
  * onBattleMessage()} when an information message is sent from the game in the during the battle. 
  *
+ * @see IBattleListener
  * @see BattleErrorEvent
  * 
  * @author Pavel Savara (original)

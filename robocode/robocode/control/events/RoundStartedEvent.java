@@ -14,7 +14,6 @@
 package robocode.control.events;
 
 
-import robocode.control.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 
 
@@ -22,6 +21,7 @@ import robocode.control.snapshot.ITurnSnapshot;
  * A RoundStartedEvent is sent to {@link IBattleListener#onRoundStarted(RoundStartedEvent)
  * onRoundStarted()} when a new round in a battle is started. 
  *
+ * @see IBattleListener
  * @see RoundEndedEvent
  *
  * @author Pavel Savara (original)

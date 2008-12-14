@@ -12,7 +12,6 @@
 package robocode.battle.events;
 
 
-import robocode.control.IBattleListener;
 import robocode.control.events.*;
 import static robocode.io.Logger.logError;
 

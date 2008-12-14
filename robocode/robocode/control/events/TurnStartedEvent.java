@@ -14,13 +14,11 @@
 package robocode.control.events;
 
 
-import robocode.control.IBattleListener;
-
-
 /**
  * A TurnStartedEvent is sent to {@link IBattleListener#onTurnStarted(TurnStartedEvent)
  * onTurnStarted()} when a new turn in a battle round is started. 
  *
+ * @see IBattleListener
  * @see TurnEndedEvent
  *
  * @author Pavel Savara (original)
