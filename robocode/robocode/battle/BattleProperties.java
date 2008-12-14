@@ -16,6 +16,8 @@
 package robocode.battle;
 
 
+import robocode.AdvancedRobot;
+import robocode.Robot;
 import robocode.control.RobotSpecification;
 
 import java.io.FileInputStream;
@@ -110,18 +112,31 @@ public class BattleProperties implements Serializable {
 	}
 
 	/**
-	 * Gets the gunCoolingRate.
+	 * Returns the rate at which the gun will cool down, i.e. the amount of heat the gun heat will drop per turn.
+	 * <p/>
+	 * The gun cooling rate is default 0.1 per turn, but can be changed by the battle setup.
+	 * So don't count on the cooling rate being 0.1!
 	 *
-	 * @return Returns a double
+	 * @return the gun cooling rate
+	 * @see #setGunCoolingRate(double)
+	 * @see Robot#getGunHeat()
+	 * @see Robot#fire(double)
+	 * @see Robot#fireBullet(double)
+	 * @see robocode.BattleRules#getGunCoolingRate()
 	 */
 	public double getGunCoolingRate() {
 		return gunCoolingRate;
 	}
 
 	/**
-	 * Sets the gunCoolingRate.
+	 * Sets the rate at which the gun will cool down, i.e. the amount of heat the gun heat will drop per turn.
 	 *
-	 * @param gunCoolingRate The gunCoolingRate to set
+	 * @param gunCoolingRate the new gun cooling rate
+	 * @see #getGunCoolingRate
+	 * @see Robot#getGunHeat()
+	 * @see Robot#fire(double)
+	 * @see Robot#fireBullet(double)
+	 * @see robocode.BattleRules#getGunCoolingRate()
 	 */
 	public void setGunCoolingRate(double gunCoolingRate) {
 		this.gunCoolingRate = gunCoolingRate;
@@ -129,18 +144,33 @@ public class BattleProperties implements Serializable {
 	}
 
 	/**
-	 * Gets the inactivityTime.
+	 * Returns the allowed inactivity time, where the robot is not taking any action, before will begin to be zapped.
+	 * The inactivity time is measured in turns, and is the allowed time that a robot is allowed to omit taking
+	 * action before being punished by the game by zapping.
+	 * <p/>
+	 * When a robot is zapped by the game, it will loose 0.1 energy points per turn. Eventually the robot will be
+	 * killed by zapping until the robot takes action. When the robot takes action, the inactivity time counter is
+	 * reset. 
+	 * <p/>
+	 * The allowed inactivity time is per default 450 turns, but can be changed by the battle setup.
+	 * So don't count on the inactivity time being 450 turns!
 	 *
-	 * @return Returns a int
+	 * @return the allowed inactivity time.
+	 * @see robocode.BattleRules#getInactivityTime()
+	 * @see Robot#doNothing()
+	 * @see AdvancedRobot#execute()
 	 */
 	public long getInactivityTime() {
 		return inactivityTime;
 	}
 
 	/**
-	 * Sets the inactivityTime.
+	 * Sets the allowed inactivity time, where the robot is not taking any action, before will begin to be zapped.
 	 *
-	 * @param inactivityTime The inactivityTime to set
+	 * @param inactivityTime the new allowed inactivity time.
+	 * @see robocode.BattleRules#getInactivityTime()
+	 * @see Robot#doNothing()
+	 * @see AdvancedRobot#execute()
 	 */
 	public void setInactivityTime(long inactivityTime) {
 		this.inactivityTime = inactivityTime;
