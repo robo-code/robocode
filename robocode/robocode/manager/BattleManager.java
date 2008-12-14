@@ -124,7 +124,7 @@ public class BattleManager implements IBattleManager {
 	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver) {
 		this.battleProperties = battleProperties;
 
-		List<RobotClassManager> battlingRobotsList = new ArrayList<RobotClassManager>();
+		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 
 		if (battleProperties.getSelectedRobots() != null) {
 			StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
@@ -156,7 +156,7 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setNumRounds(spec.getNumRounds());
 		battleProperties.setSelectedRobots(spec.getRobots());
 
-		List<RobotClassManager> battlingRobotsList = new ArrayList<RobotClassManager>();
+		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 
 		int num = 0;
 
@@ -177,7 +177,7 @@ public class BattleManager implements IBattleManager {
 		startNewBattleImpl(battlingRobotsList, waitTillOver);
 	}
 
-	private boolean loadRobot(List<RobotClassManager> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
+	private boolean loadRobot(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
 		boolean found = false;
 
 		final Repository repository = manager.getRobotRepositoryManager().getRobotRepository();
@@ -185,13 +185,15 @@ public class BattleManager implements IBattleManager {
 
 		if (fileSpec != null) {
 			if (fileSpec instanceof RobotFileSpecification) {
-				final String tn = inTeam ? teamName : null;
-				RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec, tn);
+				RobotSpecification specification;
 
-				if (battleRobotSpec != null) {
-					rcm.setControlRobotSpecification(battleRobotSpec);
+				if (!inTeam && battleRobotSpec != null) {
+					specification = battleRobotSpec;
+				} else {
+					specification = RobotClassManager.createSpecification(fileSpec);
 				}
-				battlingRobotsList.add(rcm);
+				RobotClassManager.setTeamName(specification, inTeam ? teamName : null);
+				battlingRobotsList.add(specification);
 				found = true;
 			} else if (fileSpec instanceof TeamSpecification) {
 				TeamSpecification currentTeam = (TeamSpecification) fileSpec;
@@ -219,7 +221,7 @@ public class BattleManager implements IBattleManager {
 		return false;
 	}
 
-	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean waitTillOver) {
+	private void startNewBattleImpl(List<RobotSpecification> battlingRobotsList, boolean waitTillOver) {
 
 		if (battle != null && battle.isRunning()) {
 			battle.stop(true);

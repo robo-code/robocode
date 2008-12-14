@@ -16,6 +16,7 @@ import robocode.peer.proxies.*;
 import robocode.peer.IRobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.RobotClassManager;
+import robocode.control.RobotSpecification;
 import robocode.repository.RobotFileSpecification;
 
 import java.security.AccessControlException;
@@ -39,9 +40,10 @@ public class HostManager implements IHostManager {
 		return RobocodeManager.getThreadManager();
 	}
 
-	public IHostingRobotProxy createRobotProxy(RobotClassManager robotClassManager, RobotStatics statics, IRobotPeer peer) {
+	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
 		IHostingRobotProxy robotProxy;
-		RobotFileSpecification robotSpecification = robotClassManager.getRobotSpecification();
+		RobotClassManager robotClassManager = new RobotClassManager(
+				(RobotFileSpecification) RobotClassManager.getFileSpecification(robotSpecification));
 
 		if (robotSpecification.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(robotClassManager, this, peer, statics);

@@ -9,25 +9,20 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package robocode.repository;
 
 
-import robocode.peer.proxies.IHostingRobotProxy;
-import robocode.peer.robot.RobotClassManager;
-import robocode.peer.RobotStatics;
-import robocode.peer.IRobotPeer;
 import robocode.control.RobotSpecification;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IHostManager {
-	long getRobotFilesystemQuota();
+public interface IHiddenSpecificationHelper {
 
-	IThreadManager getThreadManager();
-
-	IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer);
-
-	void cleanup();
+	RobotSpecification createSpecification(FileSpecification fileSpecification);
+	FileSpecification getFileSpecification(RobotSpecification specification);
+	void setValid(RobotSpecification specification, boolean value);
+	void setTeamName(RobotSpecification specification, String teamName);
+	String getTeamName(RobotSpecification specification);
 }

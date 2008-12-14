@@ -156,7 +156,7 @@ public final class Battle extends BaseBattle {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	public Battle(List<RobotClassManager> battlingRobotsList, BattleProperties battleProperties, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
+	public Battle(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		super(manager, eventDispatcher, paused);
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		battleRules = new BattleRules(battleProperties);
@@ -165,7 +165,7 @@ public final class Battle extends BaseBattle {
 		createPeers(battlingRobotsList);
 	}
 
-	private void createPeers(List<RobotClassManager> battlingRobotsList) {
+	private void createPeers(List<RobotSpecification> battlingRobotsList) {
 		// create teams
 		Hashtable<String, Integer> countedNames = new Hashtable<String, Integer>();
 		List<String> teams = new ArrayList<String>();
@@ -173,8 +173,8 @@ public final class Battle extends BaseBattle {
 		List<Integer> robotDuplicates = new ArrayList<Integer>();
 
 		// count duplicate robots, enumerate teams, enumerate team members
-		for (RobotClassManager rcm : battlingRobotsList) {
-			final String name = rcm.getClassNameManager().getFullClassNameWithVersion();
+		for (RobotSpecification specification : battlingRobotsList) {
+			final String name = specification.getFullClassNameWithVersion();
 
 			if (countedNames.containsKey(name)) {
 				int value = countedNames.get(name);
@@ -184,7 +184,7 @@ public final class Battle extends BaseBattle {
 				countedNames.put(name, 1);
 			}
 
-			String teamFullName = rcm.getTeamName();
+			String teamFullName = RobotClassManager.getRobotTeamName(specification);
 
 			if (teamFullName != null) {
 				if (!teams.contains(teamFullName)) {
@@ -221,8 +221,8 @@ public final class Battle extends BaseBattle {
 
 		// name robots
 		for (int i = battlingRobotsList.size() - 1; i >= 0; i--) {
-			RobotClassManager rcm = battlingRobotsList.get(i);
-			String name = rcm.getClassNameManager().getFullClassNameWithVersion();
+			RobotSpecification specification = battlingRobotsList.get(i);
+			String name = specification.getFullClassNameWithVersion();
 			Integer order = countedNames.get(name);
 			int duplicate = -1;
 
@@ -235,7 +235,7 @@ public final class Battle extends BaseBattle {
 			countedNames.put(name, (order - 1));
 			robotDuplicates.add(0, duplicate);
 
-			String teamFullName = rcm.getTeamName();
+			String teamFullName = RobotClassManager.getRobotTeamName(specification);
 
 			if (teamFullName != null) {
 				List<String> members = teamMembers.get(teamFullName);
@@ -249,10 +249,10 @@ public final class Battle extends BaseBattle {
 
 		// create robots
 		for (int i = 0; i < battlingRobotsList.size(); i++) {
-			RobotClassManager rcm = battlingRobotsList.get(i);
+			RobotSpecification specification = battlingRobotsList.get(i);
 			TeamPeer team = null;
 
-			String teamFullName = rcm.getTeamName();
+			String teamFullName = RobotClassManager.getRobotTeamName(specification);
 
 			int cindex = contestants.size();
 
@@ -274,8 +274,8 @@ public final class Battle extends BaseBattle {
 				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, manager.getHostManager(), rcm, duplicate, team, robots.size(),
-					cindex);
+			RobotPeer robotPeer = new RobotPeer(this, manager.getHostManager(), specification, duplicate, team,
+					robots.size(), cindex);
 
 			robots.add(robotPeer);
 			if (team == null) {
@@ -578,9 +578,9 @@ public final class Battle extends BaseBattle {
 			BattleResults battleResults = contestant.getStatistics().getFinalResults();
 
 			if (contestant instanceof RobotPeer) {
-				robotSpec = ((RobotPeer) contestant).getControlRobotSpecification();
+				robotSpec = ((RobotPeer) contestant).getRobotSpecification();
 			} else if (contestant instanceof TeamPeer) {
-				robotSpec = ((TeamPeer) contestant).getTeamLeader().getControlRobotSpecification();
+				robotSpec = ((TeamPeer) contestant).getTeamLeader().getRobotSpecification();
 			}
 
 			results.set(contestant.getContestIndex(), new RobotResults(robotSpec, battleResults));

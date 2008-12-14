@@ -20,6 +20,9 @@ package robocode.control;
 
 
 import robocode.repository.FileSpecification;
+import robocode.repository.RobotFileSpecification;
+import robocode.repository.IHiddenSpecificationHelper;
+import robocode.peer.serialize.ISerializableHelper;
 
 import java.io.File;
 
@@ -36,6 +39,7 @@ public class RobotSpecification implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final FileSpecification fileSpecification;
+	private String teamName;
 
 	/**
 	 * This constructor is called by the game in order to construct a new
@@ -147,4 +151,84 @@ public class RobotSpecification implements java.io.Serializable {
 	public String getAuthorName() {
 		return fileSpecification.getAuthorName();
 	}
+
+	//TODO minimize public methods
+	public boolean isDroid() {
+		return fileSpecification instanceof RobotFileSpecification
+				&& ((RobotFileSpecification) fileSpecification).isDroid();
+	}
+
+	public boolean isTeamRobot() {
+		return fileSpecification instanceof RobotFileSpecification
+				&& ((RobotFileSpecification) fileSpecification).isTeamRobot();
+	}
+
+	public boolean isAdvancedRobot() {
+		return fileSpecification instanceof RobotFileSpecification
+				&& ((RobotFileSpecification) fileSpecification).isAdvancedRobot();
+	}
+
+	public boolean isStandardRobot() {
+		return fileSpecification instanceof RobotFileSpecification
+				&& ((RobotFileSpecification) fileSpecification).isStandardRobot();
+	}
+
+	public boolean isInteractiveRobot() {
+		return fileSpecification instanceof RobotFileSpecification
+				&& ((RobotFileSpecification) fileSpecification).isInteractiveRobot();
+	}
+
+	public boolean isPaintRobot() {
+		return fileSpecification instanceof RobotFileSpecification
+				&& ((RobotFileSpecification) fileSpecification).isPaintRobot();
+	}
+
+	public boolean isJuniorRobot() {
+		return fileSpecification instanceof RobotFileSpecification
+				&& ((RobotFileSpecification) fileSpecification).isJuniorRobot();
+	}
+
+	public String getShortClassName() {
+		return fileSpecification.getShortClassName();
+	}
+
+	public String getFullClassNameWithVersion() {
+		return fileSpecification.getFullClassNameWithVersion();
+	}
+
+	public String getUniqueShortClassNameWithVersion() {
+		return fileSpecification.getUniqueShortClassNameWithVersion();
+	}
+
+	public String getUniqueVeryShortClassNameWithVersion() {
+		return fileSpecification.getUniqueVeryShortClassNameWithVersion();
+	}
+
+	static IHiddenSpecificationHelper createHiddenHelper() {
+		return new HiddenHelper();
+	}
+
+	private static class HiddenHelper implements IHiddenSpecificationHelper {
+
+		public RobotSpecification createSpecification(FileSpecification fileSpecification) {
+			return new RobotSpecification(fileSpecification);
+		}
+
+		public FileSpecification getFileSpecification(RobotSpecification specification) {
+			return specification.fileSpecification;
+		}
+
+		public void setValid(RobotSpecification specification, boolean value) {
+			specification.fileSpecification.setValid(value);
+		}
+
+		public void setTeamName(RobotSpecification specification, String teamName) {
+			specification.teamName = teamName;
+		}
+
+		public String getTeamName(RobotSpecification specification) {
+			return specification.teamName;
+		}
+	}
+
 }

@@ -13,6 +13,7 @@ package robocode.peer;
 
 
 import robocode.BattleRules;
+import robocode.control.RobotSpecification;
 import robocode.manager.NameManager;
 import robocode.repository.RobotFileSpecification;
 
@@ -41,29 +42,27 @@ public final class RobotStatics {
 	private final int index;
 	private final int contestantIndex;
 
-	public RobotStatics(RobotFileSpecification spec, int duplicate, boolean isLeader, BattleRules rules, TeamPeer team, int index, int contestantIndex) {
-		NameManager cnm = spec.getNameManager();
-
+	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, TeamPeer team, int index, int contestantIndex) {
 		if (duplicate >= 0) {
 			String countString = " (" + (duplicate + 1) + ')';
 
-			name = cnm.getFullClassNameWithVersion() + countString;
-			shortName = cnm.getUniqueShortClassNameWithVersion() + countString;
-			veryShortName = cnm.getUniqueVeryShortClassNameWithVersion() + countString;
-			nonVersionedName = cnm.getFullClassName() + countString;
+			name = robotSpecification.getFullClassNameWithVersion() + countString;
+			shortName = robotSpecification.getUniqueShortClassNameWithVersion() + countString;
+			veryShortName = robotSpecification.getUniqueVeryShortClassNameWithVersion() + countString;
+			nonVersionedName = robotSpecification.getClassName() + countString;
 		} else {
-			name = cnm.getFullClassNameWithVersion();
-			shortName = cnm.getUniqueShortClassNameWithVersion();
-			veryShortName = cnm.getUniqueVeryShortClassNameWithVersion();
-			nonVersionedName = cnm.getFullClassName();
+			name = robotSpecification.getFullClassNameWithVersion();
+			shortName = robotSpecification.getUniqueShortClassNameWithVersion();
+			veryShortName = robotSpecification.getUniqueVeryShortClassNameWithVersion();
+			nonVersionedName = robotSpecification.getClassName();
 		}
-		shortClassName = spec.getNameManager().getShortClassName();
-		isJuniorRobot = spec.isJuniorRobot();
-		isInteractiveRobot = spec.isInteractiveRobot();
-		isPaintRobot = spec.isPaintRobot();
-		isAdvancedRobot = spec.isAdvancedRobot();
-		isTeamRobot = spec.isTeamRobot();
-		isDroid = spec.isDroid();
+		shortClassName = robotSpecification.getShortClassName();
+		isJuniorRobot = robotSpecification.isJuniorRobot();
+		isInteractiveRobot = robotSpecification.isInteractiveRobot();
+		isPaintRobot = robotSpecification.isPaintRobot();
+		isAdvancedRobot = robotSpecification.isAdvancedRobot();
+		isTeamRobot = robotSpecification.isTeamRobot();
+		isDroid = robotSpecification.isDroid();
 		isTeamLeader = isLeader;
 		battleRules = rules;
 		this.index = index;

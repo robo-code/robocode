@@ -67,7 +67,6 @@ package robocode.peer;
 
 
 import robocode.*;
-import robocode.repository.RobotFileSpecification;
 import robocode.battle.Battle;
 import robocode.common.BoundingRectangle;
 import robocode.control.RandomFactory;
@@ -123,8 +122,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private Battle battle;
 	private RobotStatistics statistics;
 	private final TeamPeer teamPeer;
-	private final RobotSpecification controlRobotSpecification;
-	private final RobotFileSpecification robotSpecification;
+	private final RobotSpecification robotSpecification;
 
 	private IHostingRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
@@ -180,7 +178,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final Arc2D scanArc;
 	private final BoundingRectangle boundingBox;
 
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotClassManager robotClassManager, int duplicate, TeamPeer team, int index, int contestantIndex) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();
 		if (team != null) {
 			team.add(this);
@@ -193,15 +191,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		state = RobotState.ACTIVE;
 		battleRules = battle.getBattleRules();
 
-		robotSpecification = robotClassManager.getRobotSpecification();
-		controlRobotSpecification = robotClassManager.getControlRobotSpecification();
+		this.robotSpecification = robotSpecification;
 
 		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
 
 		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battleRules, team, index, contestantIndex);
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-		robotProxy = hostManager.createRobotProxy(robotClassManager, statics, this);
+		robotProxy = hostManager.createRobotProxy(robotSpecification, statics, this);
 
 	}
 
@@ -251,8 +248,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return statistics;
 	}
 
-	public RobotSpecification getControlRobotSpecification() {
-		return controlRobotSpecification;
+	public RobotSpecification getRobotSpecification() {
+		return robotSpecification;
 	}
 
 	// -------------------
@@ -1451,7 +1448,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
 		// disable for next time
-		robotSpecification.setValid(false);
+		RobotClassManager.setRobotValid(robotSpecification, false);
 	}
 
 	public void updateEnergy(double delta) {

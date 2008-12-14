@@ -27,11 +27,14 @@ package robocode.peer.robot;
 
 import robocode.Bullet;
 import robocode.Event;
+import robocode.control.RobotSpecification;
 import robocode.io.Logger;
 import robocode.manager.NameManager;
 import robocode.peer.BulletStatus;
 import robocode.peer.RobotStatics;
 import robocode.repository.RobotFileSpecification;
+import robocode.repository.IHiddenSpecificationHelper;
+import robocode.repository.FileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.security.RobocodeClassLoader;
 
@@ -58,7 +61,6 @@ public class RobotClassManager {
 	private robocode.control.RobotSpecification controlRobotSpecification;
 
 	private final String fullClassName;
-	private final String teamName;
 
 	private String uid = "";
 
@@ -68,13 +70,8 @@ public class RobotClassManager {
 	 * @param robotFileSpecification specification
 	 */
 	public RobotClassManager(RobotFileSpecification robotFileSpecification) {
-		this(robotFileSpecification, null);
-	}
-
-	public RobotClassManager(RobotFileSpecification robotFileSpecification, String teamName) {
 		this.robotFileSpecification = robotFileSpecification;
 		this.fullClassName = robotFileSpecification.getName();
-		this.teamName = teamName;
 	}
 
 	public String getRootPackage() {
@@ -183,15 +180,6 @@ public class RobotClassManager {
 	}
 
 	/**
-	 * Gets the teamManager.
-	 *
-	 * @return Returns a name of team
-	 */
-	public String getTeamName() {
-		return teamName;
-	}
-
-	/**
 	 * Gets the uid.
 	 *
 	 * @return Returns a long
@@ -237,6 +225,7 @@ public class RobotClassManager {
 
 	private static IHiddenEventHelper eventHelper;
 	private static IHiddenBulletHelper bulletHelper;
+	private static IHiddenSpecificationHelper specificationHelper;
 
 	static {
 		Method method;
@@ -250,6 +239,11 @@ public class RobotClassManager {
 			method = Bullet.class.getDeclaredMethod("createHiddenHelper");
 			method.setAccessible(true);
 			bulletHelper = (IHiddenBulletHelper) method.invoke(null);
+			method.setAccessible(false);
+
+			method = RobotSpecification.class.getDeclaredMethod("createHiddenHelper");
+			method.setAccessible(true);
+			specificationHelper = (IHiddenSpecificationHelper) method.invoke(null);
 			method.setAccessible(false);
 		} catch (NoSuchMethodException e) {
 			Logger.logError(e);
@@ -290,5 +284,25 @@ public class RobotClassManager {
 
 	public static void update(Bullet bullet, BulletStatus status) {
 		bulletHelper.update(bullet, status);
+	}
+
+	public static RobotSpecification createSpecification(FileSpecification fileSpecification) {
+		return specificationHelper.createSpecification(fileSpecification);
+	}
+
+	public static FileSpecification getFileSpecification(RobotSpecification specification) {
+		return specificationHelper.getFileSpecification(specification);
+	}
+
+	public static String getRobotTeamName(RobotSpecification specification) {
+		return specificationHelper.getTeamName(specification);
+	}
+
+	public static void setTeamName(RobotSpecification specification, String teamName) {
+		specificationHelper.setTeamName(specification, teamName);
+	}
+
+	public static void setRobotValid(RobotSpecification specification, boolean value) {
+		specificationHelper.setValid(specification, value);
 	}
 }

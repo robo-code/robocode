@@ -437,6 +437,14 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		return getNameManager().getFullClassNameWithVersion();
 	}
 
+	public String getUniqueShortClassNameWithVersion() {
+		return getNameManager().getUniqueShortClassNameWithVersion();
+	}
+
+	public String getUniqueVeryShortClassNameWithVersion() {
+		return getNameManager().getUniqueVeryShortClassNameWithVersion();
+	}
+
 	public String getFullClassName() {
 		return getNameManager().getFullClassName();
 	}
