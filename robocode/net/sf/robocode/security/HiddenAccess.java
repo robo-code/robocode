@@ -63,7 +63,7 @@ public class HiddenAccess {
 			statusHelper = (IHiddenStatusHelper) method.invoke(null);
 			method.setAccessible(false);
 
-			method = BattleRules.class.getDeclaredMethod("createHiddenSerializer");
+			method = BattleRules.class.getDeclaredMethod("createHiddenHelper");
 			method.setAccessible(true);
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
