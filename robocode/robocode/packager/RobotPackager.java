@@ -261,8 +261,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Packager");
-		List<FileSpecification> robotSpecificationsList = repositoryManager.getRobotRepository().getRobotSpecificationsList(
-				false, false, false, false, false, false);
+		List<FileSpecification> robotSpecificationsList = repositoryManager.getRobotSpecificationsList();
 		String jarFilename = getFilenamePanel().getFilenameField().getText();
 		File f = new File(jarFilename);
 

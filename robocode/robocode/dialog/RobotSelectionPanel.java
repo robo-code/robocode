@@ -571,7 +571,7 @@ public class RobotSelectionPanel extends WizardPanel {
 			public void run() {
 				repositoryManager.clearRobotList();
 
-				List<FileSpecification> robotList = repositoryManager.getRobotRepository().getRobotSpecificationsList(
+				List<FileSpecification> robotList = repositoryManager.getRobotSpecificationsList(
 						onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged,
 						ignoreTeamRobots);
 

@@ -29,6 +29,7 @@ package robocode.manager;
 
 
 import robocode.RobocodeFileOutputStream;
+import robocode.repository.RobotRepositoryManager;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;

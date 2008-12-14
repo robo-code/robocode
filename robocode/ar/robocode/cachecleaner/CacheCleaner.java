@@ -16,6 +16,7 @@ package ar.robocode.cachecleaner;
 
 
 import robocode.manager.RobocodeManager;
+import robocode.manager.IRepositoryManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +50,9 @@ public final class CacheCleaner {
 
 		System.out.print("Rebuilding robot database... ");
 
-		new RobocodeManager(false).getRobotRepositoryManager().getRobotRepository(); // Force rebuild
+		final IRepositoryManager repositoryManager = new RobocodeManager(false).getRobotRepositoryManager();
+		repositoryManager.clearRobotList();
+		repositoryManager.loadRobotRepository();
 
 		System.out.println("done.");
 	}

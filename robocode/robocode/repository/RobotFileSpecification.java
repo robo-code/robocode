@@ -434,13 +434,11 @@ public class RobotFileSpecification extends FileSpecification {
 			}
 			if (!isJuniorRobot && !isStandardRobot && !isAdvancedRobot) {
 				// this class is not robot
-				setValid(false);
 				return false;
 			}
 			setUid(robotClassManager.getUid());
 			return true;
 		} catch (Throwable t) {
-			setValid(false);
 			logError(getName() + ": Got an error with this class: " + t.toString()); // just message here
 			return false;
 		}

@@ -271,7 +271,7 @@ public class WindowManager implements IWindowManager {
 			robotExtractor = null;
 		}
 
-		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
+		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager);
 		WindowUtil.packCenterShow(robotExtractor);
 	}
 
@@ -282,7 +282,7 @@ public class WindowManager implements IWindowManager {
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
-		manager.getRobotRepositoryManager().getRobotRepository();
+		manager.getRobotRepositoryManager().loadRobotRepository();
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 		manager.getImageManager();

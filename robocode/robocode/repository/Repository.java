@@ -32,7 +32,7 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class Repository {
+class Repository {
 	private final List<FileSpecification> fileSpecifications = Collections.synchronizedList(
 			new ArrayList<FileSpecification>());
 	private final Hashtable<String, FileSpecification> fileSpecificationsDict = new Hashtable<String, FileSpecification>();

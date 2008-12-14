@@ -44,7 +44,6 @@ import robocode.control.events.BattleMessageEvent;
 import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
-import robocode.repository.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -258,9 +257,7 @@ public class RobocodeEngine {
 	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
-		List<FileSpecification> list = robotRepository.getRobotSpecificationsList(false, false, false, false, false,
-				false);
+		List<FileSpecification> list = manager.getRobotRepositoryManager().getRobotSpecificationsList();
 		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {

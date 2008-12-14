@@ -12,10 +12,11 @@
 package robocode.manager;
 
 
-import robocode.repository.Repository;
+import robocode.repository.FileSpecification;
 
 import java.io.File;
 import java.util.jar.JarInputStream;
+import java.util.List;
 
 
 /**
@@ -24,19 +25,19 @@ import java.util.jar.JarInputStream;
 public interface IRepositoryManager {
 	File getRobotCache();
 
-	Repository getRobotRepository();
-
 	File getRobotsDirectory();
 
 	void clearRobotList();
 
-	int extractJar(File f, File dest, String statusPrefix, boolean extractJars, boolean close,
-			boolean alwaysReplace);
+	void loadRobotRepository();
 
-	int extractJar(JarInputStream jarIS, File dest, String statusPrefix, boolean extractJars, boolean close,
-			boolean alwaysReplace);
-
-	boolean cleanupOldSampleRobots(boolean delete); // TODO: Needs to be updated?
+	boolean cleanupOldSampleRobots(boolean delete);
 
 	RobocodeManager getManager();
+
+	List<FileSpecification> getRobotSpecificationsList();
+	List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
+			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots);
+
+	FileSpecification getRobot(String fullClassNameWithVersion);
 }

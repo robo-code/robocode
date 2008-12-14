@@ -30,24 +30,23 @@
  *     - Re-work of robot interfaces
  *     - detection of type of robot by overriden methods
  *******************************************************************************/
-package robocode.manager;
+package robocode.repository;
 
 
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
+import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
-import robocode.repository.*;
+import robocode.manager.IRepositoryManager;
+import robocode.manager.RobocodeManager;
 
-import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
 
 
 /**
@@ -79,10 +78,32 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			File newRobotCache = new File(getRobotsDirectory(), ".robotcache");
 
 			if (oldRobotCache.exists()) {
-				oldRobotCache.renameTo(newRobotCache);
+				if (!oldRobotCache.renameTo(newRobotCache)){
+					Logger.logError("Can't move " + newRobotCache.toString());
+				}
 			}
 
 			robotCache = newRobotCache;
+
+			if (!robotCache.exists()) {
+				if (!robotCache.mkdirs()){
+					Logger.logError("Can't create " + robotCache.toString());
+				}
+				File readme = new File(robotCache, "README");
+
+				try {
+					PrintStream out = new PrintStream(new FileOutputStream(readme));
+
+					out.println("WARNING!");
+					out.println("Do not edit files in this directory.");
+					out.println("Any changes you make here may be lost.");
+					out.println("If you want to make changes to these robots,");
+					out.println("then copy the files into your robots directory");
+					out.println("and make the changes there.");
+					out.close();
+				} catch (IOException ignored) {}
+			}
+
 		}
 		return robotCache;
 	}
@@ -104,11 +125,11 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		return robotDatabase;
 	}
 
-	public Repository getRobotRepository() {
+	public void loadRobotRepository() {
 		// Don't reload the repository
 		// If we want to do that, set repository to null by calling clearRobotList().
 		if (repository != null) {
-			return repository;
+			return;
 		}
 
 		WindowUtil.setStatus("Refreshing robot database");
@@ -155,7 +176,8 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		for (int i = 0; i < updatedJarList.size(); i++) {
 			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
 
-			processJar(updatedJar);
+			updatedJar.processJar(getRobotCache(), getRobotsDirectory());
+			getRobotDatabase().put(updatedJar.getFilePath(), updatedJar);
 			updateRobotDatabase(updatedJar);
 			write = true;
 		}
@@ -185,8 +207,6 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		WindowUtil.setStatus("Sorting repository");
 		repository.sortRobotSpecifications();
 		WindowUtil.setStatus("");
-
-		return repository;
 	}
 
 	private void cleanupCache() {
@@ -377,6 +397,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 					&& robotFileSpecification.update()) {
 				updateNoDuplicates(robotFileSpecification);
 			} else {
+				robotFileSpecification.setValid(false);
 				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
 				getRobotDatabase().put(key, robotFileSpecification);
 			}
@@ -414,14 +435,18 @@ public class RobotRepositoryManager implements IRepositoryManager {
 						long t2 = newSource.lastModified();
 
 						if (t1 > t2) {
-							existingSource.renameTo(new File(existingSource.getPath() + ".invalid"));
+							if (!existingSource.renameTo(new File(existingSource.getPath() + ".invalid"))){
+								Logger.logError("Can't move " + existingSource.toString());
+							}
 							getRobotDatabase().remove(existingSpec.getFilePath());
 							getRobotDatabase().put(key, spec);
 							conflictLog(
 									"Renaming " + existingSource + " to invalid, as it contains a robot " + spec.getName()
 									+ " which conflicts with the same robot in " + newSource);
 						} else {
-							newSource.renameTo(new File(newSource.getPath() + ".invalid"));
+							if (!newSource.renameTo(new File(newSource.getPath() + ".invalid"))){
+								Logger.logError("Can't move " + newSource.toString());
+							}
 							conflictLog(
 									"Renaming " + newSource + " to invalid, as it contains a robot " + spec.getName()
 									+ " which conflicts with the same robot in " + existingSource);
@@ -464,151 +489,6 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		}
 	}
 
-	private void processJar(JarSpecification jarSpecification) {
-		String key = jarSpecification.getFilePath();
-		File cache = getRobotCache();
-
-		if (!cache.exists()) {
-			cache.mkdirs();
-			File readme = new File(cache, "README");
-
-			try {
-				PrintStream out = new PrintStream(new FileOutputStream(readme));
-
-				out.println("WARNING!");
-				out.println("Do not edit files in this directory.");
-				out.println("Any changes you make here may be lost.");
-				out.println("If you want to make changes to these robots,");
-				out.println("then copy the files into your robots directory");
-				out.println("and make the changes there.");
-				out.close();
-			} catch (IOException ignored) {}
-		}
-		WindowUtil.setStatus("Extracting .jar: " + jarSpecification.getFileName());
-
-		File dest;
-
-		if (jarSpecification.getRootDir().equals(getRobotsDirectory())) {
-			dest = new File(getRobotCache(), jarSpecification.getFileName() + "_");
-		} else {
-			dest = new File(jarSpecification.getRootDir(), jarSpecification.getFileName() + "_");
-		}
-		if (dest.exists()) {
-			FileUtil.deleteDir(dest);
-		}
-		dest.mkdirs();
-
-		File f = new File(jarSpecification.getFilePath());
-
-		extractJar(f, dest, "Extracting .jar: " + jarSpecification.getFileName(), true, true, true);
-		getRobotDatabase().put(key, jarSpecification);
-	}
-
-	public int extractJar(File f, File dest, String statusPrefix, boolean extractJars, boolean close,
-			boolean alwaysReplace) {
-
-		FileInputStream fis = null;
-
-		try {
-			fis = new FileInputStream(f);
-			JarInputStream jarIS = new JarInputStream(fis);
-
-			return extractJar(jarIS, dest, statusPrefix, extractJars, close, alwaysReplace);
-		} catch (IOException e) {
-			logError("Exception reading " + f + ": " + e);
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException ignored) {}
-			}
-		}
-		return 16;
-	}
-
-	public int extractJar(JarInputStream jarIS, File dest, String statusPrefix, boolean extractJars, boolean close,
-			boolean alwaysReplace) {
-		int rc = 0;
-		boolean always = alwaysReplace;
-		byte buf[] = new byte[2048];
-
-		try {
-			JarEntry entry = jarIS.getNextJarEntry();
-
-			while (entry != null) {
-				WindowUtil.setStatus(statusPrefix + " (" + entry.getName() + ")");
-				if (entry.isDirectory()) {
-					File dir = new File(dest, entry.getName());
-
-					dir.mkdirs();
-				} else {
-					File out = new File(dest, entry.getName());
-
-					if (out.exists() && !always) {
-						Object[] options = {
-							"Yes to All", "Yes", "No", "Cancel"
-						};
-						int r = JOptionPane.showOptionDialog(null, entry.getName() + " exists.  Replace?", "Warning",
-								JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-
-						if (r == 0) {
-							always = true;
-						} else if (r == 2) {
-							WindowUtil.setStatus(entry.getName() + " skipped.");
-							entry = jarIS.getNextJarEntry();
-							continue;
-						} else if (r == 3) {
-							entry = null;
-							rc = -1;
-							continue;
-						}
-					}
-					File parentDirectory = new File(out.getParent()).getCanonicalFile();
-
-					parentDirectory.mkdirs();
-
-					FileOutputStream fos = null;
-
-					try {
-						fos = new FileOutputStream(out);
-
-						int num;
-
-						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-							fos.write(buf, 0, num);
-						}
-
-						FileDescriptor fd = fos.getFD();
-
-						fd.sync();
-					} finally {
-						if (fos != null) {
-							fos.close();
-						}
-					}
-
-					if (entry.getTime() >= 0) {
-						out.setLastModified(entry.getTime());
-					}
-
-					if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
-						FileSpecification fileSpecification = FileSpecification.createSpecification(this, out,
-								parentDirectory, "", false);
-
-						updatedJarList.add(fileSpecification);
-					}
-				}
-				entry = jarIS.getNextJarEntry();
-			}
-			if (close) {
-				jarIS.close();
-			}
-		} catch (IOException e) {
-			logError("IOException " + statusPrefix + ": ", e);
-		}
-		return rc;
-	}
-
 	public boolean cleanupOldSampleRobots(boolean delete) {
 		// TODO: Needs to be updated?
 		String oldSampleList[] = {
@@ -627,7 +507,9 @@ public class RobotRepositoryManager implements IRepositoryManager {
 						if (sampleBot.getName().equals(oldSampleBot)) {
 							logMessage("Deleting old sample file: " + sampleBot.getName());
 							if (delete) {
-								sampleBot.delete();
+								if (!sampleBot.delete()){
+									Logger.logError("Can't detele " + sampleBot.toString());
+								}
 							} else {
 								return true;
 							}
@@ -648,7 +530,9 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			File oldFile = new File(dir, name);
 
 			logError("Renaming " + oldFile.getName() + " to " + newFile.getName());
-			oldFile.renameTo(newFile);
+			if (!oldFile.renameTo(newFile)){
+				Logger.logError("Can't move " + oldFile.toString());
+			}
 		}
 	}
 
@@ -659,5 +543,20 @@ public class RobotRepositoryManager implements IRepositoryManager {
 	 */
 	public RobocodeManager getManager() {
 		return manager;
+	}
+
+	public List<FileSpecification> getRobotSpecificationsList() {
+		loadRobotRepository();
+		return repository.getRobotSpecificationsList(false, false, false, false, false, false);
+	}
+
+	public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
+		loadRobotRepository();
+		return repository.getRobotSpecificationsList(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment, ignoreTeamRobots);
+	}
+
+	public FileSpecification getRobot(String fullClassNameWithVersion) {
+		loadRobotRepository();
+		return repository.get(fullClassNameWithVersion);
 	}
 }
