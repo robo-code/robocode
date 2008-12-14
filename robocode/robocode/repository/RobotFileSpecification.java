@@ -20,13 +20,24 @@ package robocode.repository;
 
 import robocode.io.FileUtil;
 import robocode.io.Logger;
+import static robocode.io.Logger.logError;
 import robocode.manager.NameManager;
+import robocode.peer.robot.RobotClassManager;
+import robocode.Droid;
+import robocode.Robot;
+import robocode.robotinterfaces.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.*;
+import java.security.AccessControlException;
+import java.lang.reflect.Method;
 
 
 /**
@@ -36,6 +47,11 @@ import java.net.URL;
  */
 @SuppressWarnings("serial")
 public class RobotFileSpecification extends FileSpecification {
+	// Allowed maximum length for a robot's full package name
+	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+	// Allowed maximum length for a robot's short class name
+	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
+
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
 	private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
@@ -328,56 +344,157 @@ public class RobotFileSpecification extends FileSpecification {
 		return isDroid;
 	}
 
-	public void setDroid(boolean value) {
-		this.isDroid = value;
-	}
-
 	public boolean isTeamRobot() {
 		return isTeamRobot;
-	}
-
-	public void setTeamRobot(boolean value) {
-		this.isTeamRobot = value;
 	}
 
 	public boolean isAdvancedRobot() {
 		return isAdvancedRobot;
 	}
 
-	public void setAdvancedRobot(boolean value) {
-		this.isAdvancedRobot = value;
-	}
-
 	public boolean isStandardRobot() {
 		return isStandardRobot;
-	}
-
-	public void setStandardRobot(boolean value) {
-		this.isStandardRobot = value;
 	}
 
 	public boolean isInteractiveRobot() {
 		return isInteractiveRobot;
 	}
 
-	public void setInteractiveRobot(boolean value) {
-		this.isInteractiveRobot = value;
-	}
-
 	public boolean isPaintRobot() {
 		return isPaintRobot;
-	}
-
-	public void setPaintRobot(boolean value) {
-		this.isPaintRobot = value;
 	}
 
 	public boolean isJuniorRobot() {
 		return isJuniorRobot;
 	}
 
-	public void setJuniorRobot(boolean value) {
-		this.isJuniorRobot = value;
+	public boolean update() {
+
+		try {
+			RobotClassManager robotClassManager = new RobotClassManager(this);
+			Class<?> robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(getName(), true);
+
+			if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
+				if (Droid.class.isAssignableFrom(robotClass)) {
+					isDroid = true;
+				}
+
+				if (ITeamRobot.class.isAssignableFrom(robotClass)) {
+					isTeamRobot = true;
+				}
+
+				if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
+					isAdvancedRobot = true;
+				}
+
+				if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
+					// in this case we make sure that robot don't waste time
+					if (checkMethodOverride(robotClass, Robot.class, "getInteractiveEventListener")
+							|| checkMethodOverride(robotClass, Robot.class, "onKeyPressed", KeyEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onKeyReleased", KeyEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onKeyTyped", KeyEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onMouseClicked", MouseEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onMouseEntered", MouseEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onMouseExited", MouseEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onMousePressed", MouseEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onMouseReleased", MouseEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onMouseMoved", MouseEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onMouseDragged", MouseEvent.class)
+							|| checkMethodOverride(robotClass, Robot.class, "onMouseWheelMoved", MouseWheelEvent.class)
+							) {
+						isInteractiveRobot = true;
+					}
+				}
+
+				if (IPaintRobot.class.isAssignableFrom(robotClass)) {
+					if (checkMethodOverride(robotClass, Robot.class, "getPaintEventListener")
+							|| checkMethodOverride(robotClass, Robot.class, "onPaint", Graphics2D.class)
+							) {
+						isPaintRobot = true;
+					}
+				}
+
+				if (Robot.class.isAssignableFrom(robotClass) && !isAdvancedRobot) {
+					isStandardRobot = true;
+				}
+
+				if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
+					isJuniorRobot = true;
+					if (isAdvancedRobot) {
+						throw new AccessControlException(
+								getName() + ": Junior robot should not implement IAdvancedRobot interface.");
+					}
+				}
+
+				if (IBasicRobot.class.isAssignableFrom(robotClass)) {
+					if (!isAdvancedRobot || !isJuniorRobot) {
+						isStandardRobot = true;
+					}
+				}
+			}
+			if (!isJuniorRobot && !isStandardRobot && !isAdvancedRobot) {
+				// this class is not robot
+				setValid(false);
+				return false;
+			}
+			setUid(robotClassManager.getUid());
+			return true;
+		} catch (Throwable t) {
+			setValid(false);
+			logError(getName() + ": Got an error with this class: " + t.toString()); // just message here
+			return false;
+		}
+	}
+
+	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class<?>... parameterTypes) {
+		if (knownBase.isAssignableFrom(robotClass)) {
+			final Method getInteractiveEventListener;
+
+			try {
+				getInteractiveEventListener = robotClass.getMethod(name, parameterTypes);
+			} catch (NoSuchMethodException e) {
+				return false;
+			}
+			if (getInteractiveEventListener.getDeclaringClass().equals(knownBase)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean verifyRobotName() {
+		return verifyRobotName(getName(), getShortClassName());
+	}
+
+	public static boolean verifyRobotName(String robotName, String shortClassName) {
+		int lIndex = robotName.indexOf(".");
+
+		if (lIndex > 0) {
+			String rootPackage = robotName.substring(0, lIndex);
+
+			if (rootPackage.equalsIgnoreCase("robocode")) {
+				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
+				return false;
+			}
+
+			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+				final String message = "Robot " + robotName + " has package name too long.  "
+						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
+
+				logError(message);
+				return false;
+			}
+		}
+
+		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
+			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+					+ " characters maximum please.";
+
+			logError(message);
+			return false;
+		}
+
+		return true;
 	}
 
 }

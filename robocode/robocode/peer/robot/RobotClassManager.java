@@ -25,22 +25,11 @@
 package robocode.peer.robot;
 
 
-import robocode.Bullet;
-import robocode.Event;
-import robocode.control.RobotSpecification;
 import robocode.io.Logger;
 import robocode.manager.NameManager;
-import robocode.peer.BulletStatus;
-import robocode.peer.RobotStatics;
 import robocode.repository.RobotFileSpecification;
-import robocode.repository.IHiddenSpecificationHelper;
-import robocode.repository.FileSpecification;
-import robocode.robotinterfaces.IBasicRobot;
 import robocode.security.RobocodeClassLoader;
 
-import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
 

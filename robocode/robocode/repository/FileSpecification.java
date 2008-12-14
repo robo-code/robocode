@@ -437,6 +437,10 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		return getNameManager().getFullClassNameWithVersion();
 	}
 
+	public String getUniqueFullClassNameWithVersion() {
+		return getNameManager().getUniqueFullClassNameWithVersion();
+	}
+
 	public String getUniqueShortClassNameWithVersion() {
 		return getNameManager().getUniqueShortClassNameWithVersion();
 	}
@@ -470,7 +474,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public NameManager getNameManager() {
-		throw new RuntimeException("Cannot get a nameManager for file type " + getFileType());
+		throw new RuntimeException("Cannot get a nameManager for file type " + getName() + getFileType());
 	}
 
 	public boolean exists() {

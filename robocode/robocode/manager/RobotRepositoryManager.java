@@ -33,25 +33,15 @@
 package robocode.manager;
 
 
-import robocode.Droid;
-import robocode.Robot;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
-import robocode.peer.robot.RobotClassManager;
 import robocode.repository.*;
-import robocode.robotinterfaces.*;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.io.*;
-import java.lang.reflect.Method;
-import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -124,11 +114,6 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		WindowUtil.setStatus("Refreshing robot database");
 
 		updatedJarList.clear();
-
-		// jarUpdated = false;
-		boolean cacheWarning = false;
-
-		// boolean changed = false;
 		this.write = false;
 
 		// Future...
@@ -192,24 +177,11 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		WindowUtil.setStatus("Adding robots to repository");
 
 		for (FileSpecification fs : fileSpecificationList) {
-			if (fs instanceof TeamSpecification) {
+			if (fs instanceof RobotFileSpecification || fs instanceof TeamSpecification) {
 				repository.add(fs);
-			} else if (fs instanceof RobotFileSpecification) {
-				if (verifyRobotName(fs.getName(), fs.getShortClassName())) {
-					repository.add(fs);
-				}
 			}
 		}
 
-		if (cacheWarning) {
-			JOptionPane.showMessageDialog(null,
-					"Warning:  Robocode has detected that the robotcache directory has been updated.\n"
-					+ "Robocode may delete or overwrite these files with no warning.\n"
-					+ "If you wish to update a robot in the robotcache directory,\n"
-					+ "You should copy it to your robots directory first.",
-					"Unexpected robotcache update",
-					JOptionPane.OK_OPTION);
-		}
 		WindowUtil.setStatus("Sorting repository");
 		repository.sortRobotSpecifications();
 		WindowUtil.setStatus("");
@@ -401,81 +373,12 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		if (fileSpecification instanceof RobotFileSpecification) {
 			RobotFileSpecification robotFileSpecification = (RobotFileSpecification) fileSpecification;
 
-			try {
-				RobotClassManager robotClassManager = new RobotClassManager(robotFileSpecification);
-				Class<?> robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(
-						robotClassManager.getFullClassName(), true);
-
-				robotFileSpecification.setUid(robotClassManager.getUid());
-
-				if (robotFileSpecification.isValid()) {
-					if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
-						if (Droid.class.isAssignableFrom(robotClass)) {
-							robotFileSpecification.setDroid(true);
-						}
-
-						if (ITeamRobot.class.isAssignableFrom(robotClass)) {
-							robotFileSpecification.setTeamRobot(true);
-						}
-
-						if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
-							robotFileSpecification.setAdvancedRobot(true);
-						}
-
-						if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
-							// in this case we make sure that robot don't waste time
-							if (checkMethodOverride(robotClass, Robot.class, "getInteractiveEventListener")
-									|| checkMethodOverride(robotClass, Robot.class, "onKeyPressed", KeyEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onKeyReleased", KeyEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onKeyTyped", KeyEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onMouseClicked", MouseEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onMouseEntered", MouseEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onMouseExited", MouseEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onMousePressed", MouseEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onMouseReleased", MouseEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onMouseMoved", MouseEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onMouseDragged", MouseEvent.class)
-									|| checkMethodOverride(robotClass, Robot.class, "onMouseWheelMoved", MouseWheelEvent.class)
-									) {
-								robotFileSpecification.setInteractiveRobot(true);
-							}
-						}
-
-						if (IPaintRobot.class.isAssignableFrom(robotClass)) {
-							if (checkMethodOverride(robotClass, Robot.class, "getPaintEventListener")
-									|| checkMethodOverride(robotClass, Robot.class, "onPaint", Graphics2D.class)
-									) {
-								robotFileSpecification.setPaintRobot(true);
-							}
-						}
-
-						if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
-							robotFileSpecification.setStandardRobot(true);
-						}
-
-						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
-							robotFileSpecification.setJuniorRobot(true);
-							if (robotFileSpecification.isAdvancedRobot()) {
-								throw new AccessControlException(
-										robotFileSpecification.getName()
-												+ ": Junior robot should not implement IAdvancedRobot interface.");
-							}
-						}
-
-						if (IBasicRobot.class.isAssignableFrom(robotClass)) {
-							if (!robotFileSpecification.isAdvancedRobot() || !robotFileSpecification.isJuniorRobot()) {
-								robotFileSpecification.setStandardRobot(true);
-							}
-							updateNoDuplicates(robotFileSpecification);
-							return;
-						}
-					}
-				}
+			if (robotFileSpecification.isValid() && robotFileSpecification.verifyRobotName()
+					&& robotFileSpecification.update()) {
+				updateNoDuplicates(robotFileSpecification);
+			} else {
 				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
-			} catch (Throwable t) {
-				robotFileSpecification.setValid(false);
 				getRobotDatabase().put(key, robotFileSpecification);
-				logError(robotFileSpecification.getName() + ": Got an error with this class: " + t.toString()); // just message here
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
@@ -486,22 +389,6 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		} else {
 			System.out.println("Update robot database not possible for type " + fileSpecification.getFileType());
 		}
-	}
-
-	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class<?>... parameterTypes) {
-		if (knownBase.isAssignableFrom(robotClass)) {
-			final Method getInteractiveEventListener;
-
-			try {
-				getInteractiveEventListener = robotClass.getMethod(name, parameterTypes);
-			} catch (NoSuchMethodException e) {
-				return false;
-			}
-			if (getInteractiveEventListener.getDeclaringClass().equals(knownBase)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	private void updateNoDuplicates(FileSpecification spec) {
@@ -763,44 +650,6 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			logError("Renaming " + oldFile.getName() + " to " + newFile.getName());
 			oldFile.renameTo(newFile);
 		}
-	}
-
-	// Allowed maximum length for a robot's full package name
-	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
-	// Allowed maximum length for a robot's short class name
-	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
-
-	public boolean verifyRobotName(String robotName, String shortClassName) {
-		int lIndex = robotName.indexOf(".");
-		String rootPackage = robotName;
-
-		if (lIndex > 0) {
-			rootPackage = robotName.substring(0, lIndex);
-
-			if (rootPackage.equalsIgnoreCase("robocode")) {
-				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
-				return false;
-			}
-
-			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				final String message = "Robot " + robotName + " has package name too long.  "
-						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
-
-				logError(message);
-				return false;
-			}
-		} else {// TODO every robot should be in package, right. Kick thim out.
-		}
-
-		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
-					+ " characters maximum please.";
-
-			logError(message);
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
