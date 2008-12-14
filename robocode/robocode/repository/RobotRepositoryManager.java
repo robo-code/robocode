@@ -36,9 +36,9 @@ package robocode.repository;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
-import robocode.io.Logger;
-import static robocode.io.Logger.logError;
-import static robocode.io.Logger.logMessage;
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
 

@@ -14,15 +14,12 @@
 package robocode;
 
 
-import robocode.peer.RobotStatics;
-import robocode.peer.serialize.RbSerializer;
-import robocode.peer.serialize.ISerializableHelper;
+import net.sf.robocode.peer.IRobotStatics;
 import robocode.robotinterfaces.IAdvancedEvents;
 import robocode.robotinterfaces.IAdvancedRobot;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
-import java.nio.ByteBuffer;
 
 
 /**
@@ -100,7 +97,7 @@ public class CustomEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		if (statics.isAdvancedRobot()) {
 			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 

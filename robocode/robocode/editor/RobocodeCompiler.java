@@ -21,7 +21,7 @@ package robocode.editor;
 import robocode.dialog.ConsoleDialog;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 
 import java.io.IOException;
 

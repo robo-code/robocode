@@ -27,8 +27,8 @@
 package robocode.security;
 
 
-import static robocode.io.Logger.logError;
-import static robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
 import robocode.packager.ClassAnalyzer;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.RobotFileSpecification;

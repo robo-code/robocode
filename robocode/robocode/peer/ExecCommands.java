@@ -14,8 +14,8 @@ package robocode.peer;
 
 import robocode.Rules;
 import robocode.peer.robot.TeamMessage;
-import robocode.peer.serialize.ISerializableHelper;
-import robocode.peer.serialize.RbSerializer;
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 
 import java.io.Serializable;
 import static java.lang.Math.abs;

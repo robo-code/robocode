@@ -14,7 +14,7 @@ package robocode.battle.events;
 
 import robocode.control.IBattleListener;
 import robocode.control.events.*;
-import static robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logError;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

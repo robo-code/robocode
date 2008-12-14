@@ -9,21 +9,16 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.security;
+package net.sf.robocode.peer;
 
 
-import net.sf.robocode.io.Logger;
+import robocode.Bullet;
+import robocode.peer.BulletStatus;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class LoggingThreadGroup extends ThreadGroup {
-	public LoggingThreadGroup(String name) {
-		super(name);
-	}
-
-	public void uncaughtException(Thread t, Throwable e) {
-		Logger.logError("UncaughtException on thread " + t.getClass(), e);
-	}
+public interface IHiddenBulletHelper {
+	void update(Bullet bullet, BulletStatus status);
 }

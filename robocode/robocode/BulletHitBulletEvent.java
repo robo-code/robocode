@@ -14,9 +14,9 @@
 package robocode;
 
 
-import robocode.peer.RobotStatics;
-import robocode.peer.serialize.ISerializableHelper;
-import robocode.peer.serialize.RbSerializer;
+import net.sf.robocode.peer.IRobotStatics;
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IBasicRobot;
 
@@ -80,7 +80,7 @@ public final class BulletHitBulletEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		IBasicEvents listener = robot.getBasicEventListener();
 
 		if (listener != null) {

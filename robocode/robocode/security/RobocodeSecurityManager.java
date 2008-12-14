@@ -32,7 +32,7 @@ import robocode.exception.RobotException;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IThreadManager;
 import robocode.peer.*;
-import robocode.peer.serialize.RbSerializer;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.peer.BulletCommand;
 import robocode.peer.BulletState;
 import robocode.peer.DebugProperty;

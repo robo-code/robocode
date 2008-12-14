@@ -9,12 +9,12 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.robot;
+package net.sf.robocode.peer;
 
 
 import robocode.Bullet;
 import robocode.Event;
-import robocode.peer.RobotStatics;
+import net.sf.robocode.peer.IRobotStatics;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
@@ -29,7 +29,7 @@ public interface IHiddenEventHelper {
 	void setPriority(Event event, int newPriority);
 	void setTime(Event event, long newTime);
 	boolean isCriticalEvent(Event event);
-	void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
+	void dispatch(Event event, IBasicRobot robot, IRobotStatics statics, Graphics2D graphics);
 	void updateBullets(Event event, Hashtable<Integer, Bullet> bullets);
 	byte getSerializationType(Event event);
 }

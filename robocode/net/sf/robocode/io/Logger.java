@@ -12,7 +12,7 @@
  *     - Initial implementation based on methods from robocode.util.Utils, which
  *       has been moved to this class
  *******************************************************************************/
-package robocode.io;
+package net.sf.robocode.io;
 
 
 import robocode.control.IBattleListener;

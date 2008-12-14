@@ -35,7 +35,7 @@
 package robocode.manager;
 
 
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 
 import java.awt.*;
 import java.io.FileInputStream;

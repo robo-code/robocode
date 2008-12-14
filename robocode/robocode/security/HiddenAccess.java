@@ -12,16 +12,18 @@
 package robocode.security;
 
 
-import robocode.peer.robot.IHiddenEventHelper;
-import robocode.peer.robot.IHiddenBulletHelper;
-import robocode.peer.RobotStatics;
+import net.sf.robocode.peer.IHiddenStatusHelper;
 import robocode.peer.BulletStatus;
+import net.sf.robocode.peer.IHiddenBulletHelper;
+import net.sf.robocode.peer.IHiddenEventHelper;
+import net.sf.robocode.peer.*;
+import net.sf.robocode.io.Logger;
 import robocode.repository.IHiddenSpecificationHelper;
 import robocode.repository.FileSpecification;
 import robocode.Event;
 import robocode.Bullet;
+import robocode.RobotStatus;
 import robocode.robotinterfaces.IBasicRobot;
-import robocode.io.Logger;
 import robocode.control.RobotSpecification;
 
 import java.lang.reflect.Method;
@@ -38,6 +40,7 @@ public class HiddenAccess {
 	private static IHiddenEventHelper eventHelper;
 	private static IHiddenBulletHelper bulletHelper;
 	private static IHiddenSpecificationHelper specificationHelper;
+	private static IHiddenStatusHelper statusHelper;
 
 	static {
 		Method method;
@@ -57,6 +60,12 @@ public class HiddenAccess {
 			method.setAccessible(true);
 			specificationHelper = (IHiddenSpecificationHelper) method.invoke(null);
 			method.setAccessible(false);
+
+			method = RobotStatus.class.getDeclaredMethod("createHiddenSerializer");
+			method.setAccessible(true);
+			statusHelper = (IHiddenStatusHelper) method.invoke(null);
+			method.setAccessible(false);
+
 		} catch (NoSuchMethodException e) {
 			Logger.logError(e);
 		} catch (InvocationTargetException e) {
@@ -78,7 +87,7 @@ public class HiddenAccess {
 		eventHelper.setPriority(e, newPriority);
 	}
 
-	public static void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	public static void dispatch(Event event, IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		eventHelper.dispatch(event, robot, statics, graphics);
 	}
 
@@ -117,4 +126,9 @@ public class HiddenAccess {
 	public static void setRobotValid(RobotSpecification specification, boolean value) {
 		specificationHelper.setValid(specification, value);
 	}
+
+	public static RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading, double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining, double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time) {
+		return statusHelper.createStatus(energy, x, y,bodyHeading,gunHeading,radarHeading,velocity,bodyTurnRemaining,radarTurnRemaining,gunTurnRemaining,distanceRemaining,gunHeat,others,roundNum,numRounds,time);
+	}
+
 }

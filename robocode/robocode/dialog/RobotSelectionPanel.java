@@ -30,7 +30,7 @@
 package robocode.dialog;
 
 
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;

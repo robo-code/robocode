@@ -17,7 +17,7 @@ import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
-import static robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logMessage;
 import robocode.manager.IHostManager;
 import robocode.peer.ExecCommands;
 import robocode.peer.IRobotPeer;

@@ -36,7 +36,7 @@ import robocode.control.events.BattleMessageEvent;
 import robocode.control.events.BattleStartedEvent;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.recording.BattleRecordFormat;

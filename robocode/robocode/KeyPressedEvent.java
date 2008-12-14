@@ -14,16 +14,15 @@
 package robocode;
 
 
-import robocode.peer.RobotStatics;
-import robocode.peer.serialize.RbSerializer;
-import robocode.peer.serialize.ISerializableHelper;
+import net.sf.robocode.peer.IRobotStatics;
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
 import robocode.battleview.SafeComponent;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.nio.ByteBuffer;
 
 
@@ -61,7 +60,7 @@ public final class KeyPressedEvent extends KeyEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		if (statics.isInteractiveRobot()) {
 			IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 

@@ -22,8 +22,8 @@
 package robocode;
 
 
-import robocode.peer.RobotStatics;
-import robocode.peer.robot.IHiddenEventHelper;
+import net.sf.robocode.peer.IRobotStatics;
+import net.sf.robocode.peer.IHiddenEventHelper;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
@@ -150,7 +150,7 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 * @param graphics the graphics to dispatch to.
 	 */
 	// this method is invisible on RobotAPI
-	abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
+	abstract void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics);
 
 	/**
 	 * Returns the default priority of this event class.
@@ -209,7 +209,7 @@ public abstract class Event implements Comparable<Event>, Serializable {
 			return event.isCriticalEvent();
 		}
 
-		public void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		public void dispatch(Event event, IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 			event.dispatch(robot, statics, graphics);
 		}
 

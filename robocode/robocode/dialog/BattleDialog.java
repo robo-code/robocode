@@ -17,7 +17,7 @@ import robocode.common.IXmlSerializable;
 import robocode.common.XmlWriter;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;

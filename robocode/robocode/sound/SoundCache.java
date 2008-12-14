@@ -17,7 +17,7 @@
 package robocode.sound;
 
 
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 
 import javax.sound.sampled.*;
 import java.io.IOException;

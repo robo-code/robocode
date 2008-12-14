@@ -12,9 +12,8 @@
 package robocode.peer;
 
 
-import robocode.peer.serialize.ISerializableHelper;
-import robocode.peer.serialize.RbSerializer;
-import robocode.peer.robot.TeamMessage;
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;

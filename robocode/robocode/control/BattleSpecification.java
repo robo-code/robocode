@@ -125,16 +125,4 @@ public class BattleSpecification implements java.io.Serializable {
 
 		return robotsCopy;
 	}
-
-	/**
-	 * Do not call this method!
-	 *
-	 * @return the properties of this battle.
-	 * @deprecated This methods is called by the game and is very likely to be
-	 *             removed in a future version of Robocode.
-	 */
-	@Deprecated
-	public BattleProperties getBattleProperties() {
-		return battleProperties;
-	}
 }

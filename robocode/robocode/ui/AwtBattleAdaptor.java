@@ -19,7 +19,7 @@ import robocode.control.IBattleListener;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.manager.IBattleManager;
 
 import javax.swing.*;

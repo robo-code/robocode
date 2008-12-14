@@ -14,8 +14,8 @@
 package robocode;
 
 
-import robocode.peer.serialize.ISerializableHelper;
-import robocode.peer.serialize.RbSerializer;
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 
 import java.nio.ByteBuffer;
 

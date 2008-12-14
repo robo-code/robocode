@@ -19,7 +19,7 @@
 package robocode.packager;
 
 
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

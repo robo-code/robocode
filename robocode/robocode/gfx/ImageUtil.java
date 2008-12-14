@@ -12,7 +12,7 @@
 package robocode.gfx;
 
 
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

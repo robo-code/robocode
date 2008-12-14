@@ -15,8 +15,8 @@ package robocode.peer;
 import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
 import robocode.common.XmlWriter;
-import robocode.peer.serialize.ISerializableHelper;
-import robocode.peer.serialize.RbSerializer;
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 
 import java.io.IOException;
 import java.io.Serializable;

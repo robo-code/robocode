@@ -14,9 +14,9 @@
 package robocode;
 
 
-import robocode.peer.RobotStatics;
-import robocode.peer.serialize.RbSerializer;
-import robocode.peer.serialize.ISerializableHelper;
+import net.sf.robocode.peer.IRobotStatics;
+import net.sf.robocode.serialization.RbSerializer;
+import net.sf.robocode.serialization.ISerializableHelper;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IInteractiveRobot;
@@ -65,7 +65,7 @@ public final class MouseMovedEvent extends MouseEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		if (statics.isInteractiveRobot()) {
 			IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 

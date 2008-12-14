@@ -12,14 +12,13 @@
 package robocode;
 
 
-import robocode.battle.Battle;
-import robocode.peer.ExecCommands;
-import robocode.peer.RobotPeer;
-import robocode.peer.serialize.ISerializableHelper;
-import robocode.peer.serialize.RbSerializer;
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+
+import net.sf.robocode.peer.IHiddenStatusHelper;
 
 
 /**
@@ -48,35 +47,6 @@ public final class RobotStatus implements Serializable {
 	private final int roundNum;
 	private final int numRounds;
 	private final long time;
-
-	/**
-	 * Creates a new RobotStatus based a a RobotPeer.
-	 * This constructor is called internally from the game.
-	 *
-	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
-	 * @param commands  data from commands
-	 * @param battle	data from battle
-	 */
-	public RobotStatus(RobotPeer robotPeer, ExecCommands commands, Battle battle) {
-		energy = robotPeer.getEnergy();
-		x = robotPeer.getX();
-		y = robotPeer.getY();
-		bodyHeading = robotPeer.getBodyHeading();
-		gunHeading = robotPeer.getGunHeading();
-		radarHeading = robotPeer.getRadarHeading();
-		velocity = robotPeer.getVelocity();
-		gunHeat = robotPeer.getGunHeat();
-
-		bodyTurnRemaining = commands.getBodyTurnRemaining();
-		radarTurnRemaining = commands.getRadarTurnRemaining();
-		gunTurnRemaining = commands.getGunTurnRemaining();
-		distanceRemaining = commands.getDistanceRemaining();
-
-		others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
-		roundNum = battle.getRoundNum();
-		numRounds = battle.getNumRounds();
-		time = battle.getTime();
-	}
 
 	/**
 	 * Returns the robot's current energy.
@@ -382,7 +352,7 @@ public final class RobotStatus implements Serializable {
 		return new SerializableHelper();
 	}
 
-	private static class SerializableHelper implements ISerializableHelper {
+	private static class SerializableHelper implements ISerializableHelper, IHiddenStatusHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
 			return RbSerializer.SIZEOF_TYPEINFO + 12 * RbSerializer.SIZEOF_DOUBLE + 3 * RbSerializer.SIZEOF_INT
 					+ RbSerializer.SIZEOF_LONG;
@@ -429,6 +399,10 @@ public final class RobotStatus implements Serializable {
 
 			return new RobotStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity, bodyTurnRemaining,
 					radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, roundNum, numRounds, time);
+		}
+
+		public RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading, double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining, double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time) {
+			return new RobotStatus(energy, x, y,bodyHeading,gunHeading,radarHeading,velocity,bodyTurnRemaining,radarTurnRemaining,gunTurnRemaining,distanceRemaining,gunHeat,others,roundNum,numRounds,time);
 		}
 	}
 

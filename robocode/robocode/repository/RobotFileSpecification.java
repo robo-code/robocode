@@ -19,8 +19,8 @@ package robocode.repository;
 
 
 import robocode.io.FileUtil;
-import robocode.io.Logger;
-import static robocode.io.Logger.logError;
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
 import robocode.manager.NameManager;
 import robocode.peer.robot.RobotClassManager;
 import robocode.Droid;

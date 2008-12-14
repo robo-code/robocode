@@ -18,7 +18,7 @@ import robocode.peer.ExecCommands;
 import robocode.peer.BulletCommand;
 import robocode.peer.DebugProperty;
 import robocode.peer.robot.TeamMessage;
-import robocode.peer.serialize.RbSerializer;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.common.ObjectCloner;
 import robocode.robotpaint.Graphics2DSerialized;
 

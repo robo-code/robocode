@@ -9,12 +9,12 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.serialize;
+package net.sf.robocode.serialization;
 
 
 import robocode.peer.*;
 import robocode.peer.robot.TeamMessage;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.manager.VersionManager;
 import robocode.*;
 import robocode.security.HiddenAccess;
@@ -456,7 +456,6 @@ public final class RbSerializer {
 
 				method.setAccessible(true);
 				ISerializableHelper helper = (ISerializableHelper) method.invoke(null);
-
 				method.setAccessible(false);
 				typeToHelper[type] = helper;
 			}

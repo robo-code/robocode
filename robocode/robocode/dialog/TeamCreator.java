@@ -21,7 +21,7 @@ package robocode.dialog;
 import robocode.manager.RobocodeManager;
 import robocode.repository.TeamSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 
 import javax.swing.*;
 import java.awt.*;

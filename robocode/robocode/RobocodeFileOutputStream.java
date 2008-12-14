@@ -19,7 +19,7 @@ package robocode;
 
 
 import robocode.exception.RobotException;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.manager.IThreadManager;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;

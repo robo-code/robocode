@@ -29,7 +29,7 @@ package robocode.ui;
 
 
 import robocode.BattleResults;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.text.StringUtil;
 
 import java.io.FileOutputStream;

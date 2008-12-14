@@ -9,16 +9,17 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.robot;
+package net.sf.robocode.serialization;
 
 
-import robocode.Bullet;
-import robocode.peer.BulletStatus;
+import java.nio.ByteBuffer;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IHiddenBulletHelper {
-	void update(Bullet bullet, BulletStatus status);
+public interface ISerializableHelper {
+	public int sizeOf(RbSerializer serializer, Object object);
+	public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object);
+	public Object deserialize(RbSerializer serializer, ByteBuffer buffer);
 }

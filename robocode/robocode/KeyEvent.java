@@ -14,12 +14,6 @@
 package robocode;
 
 
-import robocode.peer.serialize.RbSerializer;
-import robocode.peer.serialize.ISerializableHelper;
-
-import java.nio.ByteBuffer;
-
-
 /**
  * Super class of all events that originates from the keyboard.
  *

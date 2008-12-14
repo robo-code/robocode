@@ -21,7 +21,7 @@
 package robocode.editor;
 
 
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;

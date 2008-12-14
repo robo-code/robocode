@@ -14,7 +14,7 @@
 package robocode;
 
 
-import robocode.peer.RobotStatics;
+import net.sf.robocode.peer.IRobotStatics;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.ITeamEvents;
 import robocode.robotinterfaces.ITeamRobot;
@@ -78,7 +78,7 @@ public final class MessageEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		if (statics.isTeamRobot()) {
 			ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
 

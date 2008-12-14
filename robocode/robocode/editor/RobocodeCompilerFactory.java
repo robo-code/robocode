@@ -25,9 +25,9 @@ package robocode.editor;
 import robocode.dialog.ConsoleDialog;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
-import robocode.io.Logger;
-import static robocode.io.Logger.logError;
-import static robocode.io.Logger.logMessage;
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
 
 import javax.swing.*;
 import java.awt.*;

@@ -12,7 +12,7 @@
 package robocode.robotpaint;
 
 
-import robocode.peer.serialize.RbSerializer;
+import net.sf.robocode.serialization.RbSerializer;
 
 import java.awt.*;
 import java.awt.font.GlyphVector;

@@ -22,7 +22,6 @@ package robocode.control;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.IHiddenSpecificationHelper;
-import robocode.peer.serialize.ISerializableHelper;
 
 import java.io.File;
 

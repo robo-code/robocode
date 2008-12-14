@@ -25,7 +25,7 @@
 package robocode.peer.robot;
 
 
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.manager.NameManager;
 import robocode.repository.RobotFileSpecification;
 import robocode.security.RobocodeClassLoader;

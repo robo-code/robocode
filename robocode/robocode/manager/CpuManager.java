@@ -27,7 +27,7 @@ package robocode.manager;
 
 
 import robocode.dialog.WindowUtil;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 
 
 /**

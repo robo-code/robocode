@@ -9,17 +9,17 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer.serialize;
-
-
-import java.nio.ByteBuffer;
-
+package net.sf.robocode.peer;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface ISerializableHelper {
-	public int sizeOf(RbSerializer serializer, Object object);
-	public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object);
-	public Object deserialize(RbSerializer serializer, ByteBuffer buffer);
+public interface IRobotStatics {
+	boolean isInteractiveRobot();
+
+	boolean isPaintRobot();
+
+	boolean isAdvancedRobot();
+
+	boolean isTeamRobot();
 }

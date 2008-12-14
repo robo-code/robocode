@@ -12,15 +12,12 @@
 package robocode;
 
 
-import robocode.peer.RobotStatics;
-import robocode.peer.serialize.RbSerializer;
-import robocode.peer.serialize.ISerializableHelper;
+import net.sf.robocode.peer.IRobotStatics;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IPaintEvents;
 import robocode.robotinterfaces.IPaintRobot;
 
 import java.awt.*;
-import java.nio.ByteBuffer;
 
 
 /**
@@ -56,7 +53,7 @@ public final class PaintEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		if (statics.isPaintRobot()) {
 			IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
 

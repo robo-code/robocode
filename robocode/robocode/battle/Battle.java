@@ -106,10 +106,9 @@ import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.io.Logger;
+import net.sf.robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;
-import robocode.peer.robot.RobotClassManager;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;

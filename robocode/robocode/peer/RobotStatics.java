@@ -14,16 +14,16 @@ package robocode.peer;
 
 import robocode.BattleRules;
 import robocode.control.RobotSpecification;
-import robocode.manager.NameManager;
-import robocode.repository.RobotFileSpecification;
 
 import java.util.List;
+
+import net.sf.robocode.peer.IRobotStatics;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public final class RobotStatics {
+public final class RobotStatics implements IRobotStatics {
 	private final boolean isJuniorRobot;
 	private final boolean isInteractiveRobot;
 	private final boolean isPaintRobot;
