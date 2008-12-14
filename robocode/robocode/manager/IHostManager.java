@@ -12,6 +12,12 @@
 package robocode.manager;
 
 
+import robocode.peer.proxies.IHostingRobotProxy;
+import robocode.peer.robot.RobotClassManager;
+import robocode.peer.RobotStatics;
+import robocode.peer.IRobotPeer;
+
+
 /**
  * @author Pavel Savara (original)
  */
@@ -19,6 +25,8 @@ public interface IHostManager {
 	long getRobotFilesystemQuota();
 
 	IThreadManager getThreadManager();
+
+	IHostingRobotProxy createRobotProxy(RobotClassManager robotClassManager, RobotStatics statics, IRobotPeer peer);
 
 	void cleanup();
 }

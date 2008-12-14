@@ -12,6 +12,15 @@
 package robocode.manager;
 
 
+import robocode.peer.proxies.*;
+import robocode.peer.IRobotPeer;
+import robocode.peer.RobotStatics;
+import robocode.peer.robot.RobotClassManager;
+import robocode.repository.RobotFileSpecification;
+
+import java.security.AccessControlException;
+
+
 /**
  * @author Pavel Savara (original)
  */
@@ -27,7 +36,25 @@ public class HostManager implements IHostManager {
 	}
 
 	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
+		return RobocodeManager.getThreadManager();
+	}
+
+	public IHostingRobotProxy createRobotProxy(RobotClassManager robotClassManager, RobotStatics statics, IRobotPeer peer) {
+		IHostingRobotProxy robotProxy;
+		RobotFileSpecification robotSpecification = robotClassManager.getRobotSpecification();
+
+		if (robotSpecification.isTeamRobot()) {
+			robotProxy = new TeamRobotProxy(robotClassManager, this, peer, statics);
+		} else if (robotSpecification.isAdvancedRobot()) {
+			robotProxy = new AdvancedRobotProxy(robotClassManager, this, peer, statics);
+		} else if (robotSpecification.isStandardRobot()) {
+			robotProxy = new StandardRobotProxy(robotClassManager, this, peer, statics);
+		} else if (robotSpecification.isJuniorRobot()) {
+			robotProxy = new JuniorRobotProxy(robotClassManager, this, peer, statics);
+		} else {
+			throw new AccessControlException("Unknown robot type");
+		}
+		return robotProxy;
 	}
 
 	public void cleanup() {// TODO

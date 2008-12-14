@@ -86,7 +86,6 @@ import static robocode.util.Utils.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import static java.lang.Math.*;
-import java.security.AccessControlException;
 import java.security.PrivilegedAction;
 import java.security.AccessController;
 import java.util.ArrayList;
@@ -186,34 +185,24 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (team != null) {
 			team.add(this);
 		}
-		robotSpecification = robotClassManager.getRobotSpecification();
 
 		this.battle = battle;
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
 		teamPeer = team;
 		state = RobotState.ACTIVE;
-		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
-
-		statistics = new RobotStatistics(this, battle.getRobotsCount());
-
-		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battle.getBattleRules(), team, index,
-				contestantIndex);
 		battleRules = battle.getBattleRules();
 
+		robotSpecification = robotClassManager.getRobotSpecification();
 		controlRobotSpecification = robotClassManager.getControlRobotSpecification();
 
-		if (robotSpecification.isTeamRobot()) {
-			robotProxy = new TeamRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (robotSpecification.isAdvancedRobot()) {
-			robotProxy = new AdvancedRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (robotSpecification.isStandardRobot()) {
-			robotProxy = new StandardRobotProxy(robotClassManager, hostManager, this, statics);
-		} else if (robotSpecification.isJuniorRobot()) {
-			robotProxy = new JuniorRobotProxy(robotClassManager, hostManager, this, statics);
-		} else {
-			throw new AccessControlException("Unknown robot type");
-		}
+		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
+
+		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battleRules, team, index, contestantIndex);
+		statistics = new RobotStatistics(this, battle.getRobotsCount());
+
+		robotProxy = hostManager.createRobotProxy(robotClassManager, statics, this);
+
 	}
 
 	public void println(String s) {
