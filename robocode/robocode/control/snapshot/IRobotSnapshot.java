@@ -14,8 +14,7 @@
 package robocode.control.snapshot;
 
 
-import robocode.peer.DebugProperty;
-import robocode.peer.RobotState;
+import robocode.control.snapshot.RobotState;
 
 
 /**
@@ -199,7 +198,7 @@ public interface IRobotSnapshot {
 	 * 
 	 * @return a list of all debug properties.
 	 */
-	DebugProperty[] getDebugProperties();
+	IDebugProperty[] getDebugProperties();
 
 	/**
 	 * Returns a snapshot of the output print stream for this robot.

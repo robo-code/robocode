@@ -1,4 +1,4 @@
-package robocode.peer;
+package robocode.control.snapshot;
 
 
 // Robot States: all states last one turn, except ACTIVE and DEAD
