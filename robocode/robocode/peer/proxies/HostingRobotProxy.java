@@ -29,7 +29,6 @@ import robocode.security.RobocodeClassLoader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -45,9 +44,6 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected final IRobotPeer peer;
 	protected final IHostManager hostManager;
 	protected IBasicRobot robot;
-
-	// thread is running
-	private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
 	HostingRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
@@ -153,14 +149,14 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	public void forceStopThread() {
 		if (!robotThreadManager.forceStop()) {
 			peer.punishBadBehavior();
-			isRunning.set(false);
+			peer.setRunning(false);
 		}
 	}
 
 	public void waitForStopThread() {
 		if (!robotThreadManager.waitForStop()) {
 			peer.punishBadBehavior();
-			isRunning.set(false);
+			peer.setRunning(false);
 		}
 	}
 
@@ -232,7 +228,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	public void run() {
 		robotThreadManager.initAWT();
 
-		isRunning.set(true);
+		peer.setRunning(true);
 
 		if (!robotClassManager.getRobotSpecification().isValid() || !loadRobotRound()) {
 			drainEnergy();
@@ -292,21 +288,14 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		// If battle is waiting for us, well, all done!
 		synchronized (this) {
-			isRunning.set(false);
+			peer.setRunning(false);
 			notifyAll();
 		}
 	}
 
 	protected abstract void waitForBattleEndImpl();
 
-	// TODO minimize border crossing between battle and proxy spaces
 	public void drainEnergy() {
 		peer.drainEnergy();
 	}
-
-	// TODO minimize border crossing between battle and proxy spaces
-	public boolean isRunning() {
-		return isRunning.get();
-	}
-
 }

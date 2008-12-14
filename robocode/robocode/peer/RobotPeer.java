@@ -136,6 +136,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private AtomicReference<List<BulletStatus>> bulletUpdates = new AtomicReference<List<BulletStatus>>(
 			new ArrayList<BulletStatus>());
 
+	// thread is running
+	private final AtomicBoolean isRunning = new AtomicBoolean(false);
+
 	private final StringBuilder battleText = new StringBuilder(1024);
 	private final StringBuilder proxyText = new StringBuilder(1024);
 	private RobotStatics statics;
@@ -360,7 +363,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public boolean isRunning() {
-		return robotProxy.isRunning();
+		return isRunning.get();
 	}
 
 	public boolean isSleeping() {
@@ -1445,6 +1448,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			currentCommands.setDistanceRemaining(0);
 			currentCommands.setBodyTurnRemaining(0);
 		}
+	}
+
+	public void setRunning(boolean value) {
+		isRunning.set(value);
 	}
 
 	public void drainEnergy() {
