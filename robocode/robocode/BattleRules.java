@@ -13,6 +13,7 @@
  *******************************************************************************/
 package robocode;
 
+
 import net.sf.robocode.security.IHiddenRulesHelper;
 
 

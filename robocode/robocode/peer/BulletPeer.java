@@ -46,6 +46,7 @@ package robocode.peer;
 
 
 import robocode.*;
+import robocode.control.snapshot.BulletState;
 import robocode.battle.Battle;
 
 import java.awt.geom.Line2D;

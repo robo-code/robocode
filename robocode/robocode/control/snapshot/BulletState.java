@@ -1,4 +1,4 @@
-package robocode.peer;
+package robocode.control.snapshot;
 
 
 // Bullet states: all states last one turn, except MOVING and DONE

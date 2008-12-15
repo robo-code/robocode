@@ -14,7 +14,7 @@
 package robocode.control.snapshot;
 
 
-import robocode.peer.BulletState;
+import robocode.control.snapshot.BulletState;
 
 
 /**

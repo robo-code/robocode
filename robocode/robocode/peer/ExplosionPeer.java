@@ -28,6 +28,7 @@ package robocode.peer;
 
 
 import robocode.battle.Battle;
+import robocode.control.snapshot.BulletState;
 
 import java.util.List;
 
