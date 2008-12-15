@@ -28,7 +28,6 @@ package robocode.security;
 
 
 import net.sf.robocode.serialization.RbSerializer;
-import robocode.RobocodeFileOutputStream;
 import robocode.exception.RobotException;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IThreadManager;
@@ -36,6 +35,7 @@ import robocode.peer.*;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.TeamMessage;
+import robocode.peer.robot.RobotOutputStream;
 
 import java.awt.*;
 import java.io.*;
@@ -60,8 +60,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 	private final boolean enabled;
 	private final boolean experimental;
 
-	private final Map<Thread, RobocodeFileOutputStream> outputStreamThreads = Collections.synchronizedMap(
-			new HashMap<Thread, RobocodeFileOutputStream>());
 	private final Set<String> alowedPackages = new HashSet<String>();
 
 	public RobocodeSecurityManager(IThreadManager threadManager, boolean enabled, boolean experimental) {
@@ -85,6 +83,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 			scl.loadClass(RobocodeObjectInputStream.class.getName());
 			scl.loadClass(RbSerializer.class.getName()).newInstance();
 			scl.loadClass(RobotPeer.ExecutePrivilegedAction.class.getName());
+			scl.loadClass(RobotFileSystemManager.class.getName());
+			scl.loadClass(IHostedThread.class.getName());
+			scl.loadClass(RobotOutputStream.class.getName());
+
 			Toolkit.getDefaultToolkit();
 		} catch (ClassNotFoundException e) {
 			throw new Error("We can't load important classes", e);
@@ -101,10 +103,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (experimental) {
 			alowedPackages.add("robotinterfaces.peer");
 		}
-	}
-
-	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
-		outputStreamThreads.put(Thread.currentThread(), o);
 	}
 
 	@Override
@@ -328,18 +326,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 						+ ": You may only read files in your own root package directory. ");
 			} // Robot wants access to write something
 			else if (fp.getActions().equals("write")) {
-				// Get the RobocodeOutputStream the robot is trying to use.
-				RobocodeFileOutputStream o = getRobocodeOutputStream();
-
 				// There isn't one.  Deny access.
-				if (o == null) {
+				if (!threadManager.checkRobotFileStream()) {
 					robotProxy.drainEnergy();
 					throw new AccessControlException(
 							"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 							+ ": You must use a RobocodeOutputStream.");
 				}
-				// Remove the RobocodeOutputStream so future access checks will fail.
-				removeRobocodeOutputStream();
 
 				// Get the fileSystemManager
 				RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
@@ -433,39 +426,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 		throw new AccessControlException("Preventing " + Thread.currentThread().getName() + " from access: " + perm);
 	}
 
-	public void getFileOutputStream(RobocodeFileOutputStream o, boolean append) throws FileNotFoundException {
-		if (o == null) {
-			throw new NullPointerException("Null RobocodeFileOutputStream");
-		}
-		addRobocodeOutputStream(o);
-		FileOutputStream fos;
-
-		try {
-			fos = new FileOutputStream(o.getName(), append);
-		} catch (FileNotFoundException e) {
-			IHostedThread robotProxy = threadManager.getRobotProxy(Thread.currentThread());
-
-			if (robotProxy == null) {
-				syserr.println("RobotProxy is null");
-				return;
-			}
-			File dir = robotProxy.getRobotFileSystemManager().getWritableDirectory();
-
-			addRobocodeOutputStream(o); // it's gone already...
-			robotProxy.println("SYSTEM: Creating a data directory for you.");
-
-			// noinspection ResultOfMethodCallIgnored
-			dir.mkdir(); // result direcotry was already there ?
-			addRobocodeOutputStream(o); // one more time...
-			fos = new FileOutputStream(o.getName(), append);
-		}
-		o.setFileOutputStream(fos);
-	}
-
-	private synchronized RobocodeFileOutputStream getRobocodeOutputStream() {
-		return outputStreamThreads.get(Thread.currentThread());
-	}
-
 	public static boolean isSafeThreadSt() { 
 		RobocodeSecurityManager rsm = (RobocodeSecurityManager) System.getSecurityManager();
 
@@ -490,10 +450,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 			e.printStackTrace(syserr);
 			return false;
 		}
-	}
-
-	private synchronized void removeRobocodeOutputStream() {
-		outputStreamThreads.remove(Thread.currentThread());
 	}
 
 	@Override

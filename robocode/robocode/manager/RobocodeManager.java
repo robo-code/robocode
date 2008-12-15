@@ -286,7 +286,6 @@ public class RobocodeManager {
 				experimentalOn);
 
 		System.setSecurityManager(securityManager);
-		RobocodeFileOutputStream.setThreadManager(getThreadManager());
 
 		if (securityOn) {
 			ThreadGroup tg = Thread.currentThread().getThreadGroup();

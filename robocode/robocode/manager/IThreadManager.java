@@ -46,4 +46,6 @@ public interface IThreadManager extends IThreadManagerBase {
 	boolean isSafeThread(Thread c);
 
 	PrintStream getRobotOutputStream();
+
+	boolean checkRobotFileStream();
 }

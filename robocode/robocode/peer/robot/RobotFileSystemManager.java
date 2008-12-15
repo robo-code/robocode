@@ -17,7 +17,6 @@
 package robocode.peer.robot;
 
 
-import robocode.RobocodeFileOutputStream;
 import robocode.peer.proxies.IHostedThread;
 
 import java.io.File;
@@ -35,7 +34,7 @@ public class RobotFileSystemManager {
 	private final IHostedThread robotProxy;
 	private long quotaUsed = 0;
 	private boolean quotaMessagePrinted = false;
-	private final List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
+	private final List<RobotFileOutputStream> streams = new ArrayList<RobotFileOutputStream>();
 	private long maxQuota = 0;
 	private final String classDirectory;
 	private final String rootPackageDirectory;
@@ -47,7 +46,7 @@ public class RobotFileSystemManager {
 		this.rootPackageDirectory = rootPackageDirectory;
 	}
 
-	public void addStream(RobocodeFileOutputStream s) throws IOException {
+	public void addStream(RobotFileOutputStream s) throws IOException {
 		if (s == null) {
 			throw new SecurityException("You may not add a null stream.");
 		}
@@ -189,7 +188,7 @@ public class RobotFileSystemManager {
 		return attemptedFile.equals(allowedDirectory) || attemptedFile.getParentFile().equals(allowedDirectory);
 	}
 
-	public void removeStream(RobocodeFileOutputStream s) {
+	public void removeStream(RobotFileOutputStream s) {
 		if (s == null) {
 			throw new SecurityException("You may not remove a null stream.");
 		}

@@ -21,13 +21,16 @@ package robocode.manager;
 
 
 import robocode.peer.proxies.IHostedThread;
+import robocode.peer.robot.RobotFileOutputStream;
+import robocode.peer.robot.RobotFileSystemManager;
+import robocode.exception.RobotException;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.io.*;
+import java.util.*;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
-import net.sf.robocode.io.Logger;
+import net.sf.robocode.security.HiddenAccess;
 
 
 /**
@@ -41,12 +44,13 @@ public class ThreadManager implements IThreadManager {
 	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
 	private final List<ThreadGroup> safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private final List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
+	private final List<Thread> outputStreamThreads = Collections.synchronizedList(new ArrayList<Thread>());
 	private Thread robotLoaderThread;
 	private IHostedThread loadingRobot;
 	private final List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
 
 	public ThreadManager() {
-		Logger.threadManager = this;
+		HiddenAccess.threadManager = this;
 	}
 
 	public void addSafeThread(Thread safeThread) {
@@ -121,6 +125,61 @@ public class ThreadManager implements IThreadManager {
 
 	public boolean isSafeThread() {
 		return isSafeThread(Thread.currentThread());
+	}
+
+	public FileOutputStream createRobotFileStream(String fileName, boolean append) throws IOException {
+		final Thread c = Thread.currentThread();
+
+		final IHostedThread robotProxy = getRobotProxy(c);
+
+		if (robotProxy == null) {
+			syserr.println("RobotProxy is null");
+			return null;
+		}
+		if (!robotProxy.getStatics().isAdvancedRobot()) {
+			throw new RobotException("Only advanced robots could create files");
+		}
+		
+		final File dir = robotProxy.getRobotFileSystemManager().getWritableDirectory();
+
+		if (!dir.exists()) {
+			robotProxy.println("SYSTEM: Creating a data directory for you.");
+			outputStreamThreads.add(c);
+			if (!dir.mkdir()) {
+				syserr.println("Can't create dir " + dir.toString());
+			}
+		}
+
+		final RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
+
+		File f = new File(fileName);
+		long len;
+
+		if (f.exists()) {
+			len = f.length();
+		} else {
+			fileSystemManager.checkQuota();
+			len = 0;
+		}
+
+		if (!append) {
+			fileSystemManager.adjustQuota(-len);
+		}
+
+		outputStreamThreads.add(c);
+		return new RobotFileOutputStream(fileName, append, fileSystemManager);
+	}
+
+	public boolean checkRobotFileStream() {
+		final Thread c = Thread.currentThread();
+
+		synchronized (outputStreamThreads) {
+			if (outputStreamThreads.contains(c)) {
+				outputStreamThreads.remove(c);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isSafeThread(Thread c) {

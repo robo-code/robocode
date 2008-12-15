@@ -14,10 +14,8 @@ package net.sf.robocode.security;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotStatics;
-import robocode.BattleRules;
-import robocode.Bullet;
+import robocode.*;
 import robocode.Event;
-import robocode.RobotStatus;
 import robocode.control.RobotSpecification;
 import robocode.repository.FileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
@@ -26,6 +24,7 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
+import java.io.FileOutputStream;
 
 
 /**
@@ -33,6 +32,8 @@ import java.util.Hashtable;
  * @author Pavel Savara (original)
  */
 public class HiddenAccess {
+	public static IThreadManagerBase threadManager;
+
 	private static IHiddenEventHelper eventHelper;
 	private static IHiddenBulletHelper bulletHelper;
 	private static IHiddenSpecificationHelper specificationHelper;
@@ -138,5 +139,4 @@ public class HiddenAccess {
 	public static BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime) {
 		return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
 	}
-
 }

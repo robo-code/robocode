@@ -18,13 +18,8 @@
 package robocode;
 
 
-import net.sf.robocode.io.Logger;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.exception.RobotException;
-import robocode.manager.IThreadManager;
-import robocode.peer.proxies.IHostedThread;
-import robocode.peer.robot.RobotFileSystemManager;
-import robocode.security.RobocodePermission;
-import robocode.security.RobocodeSecurityManager;
 
 import java.io.*;
 
@@ -46,10 +41,8 @@ import java.io.*;
  * @see java.io.FileOutputStream
  */
 public class RobocodeFileOutputStream extends OutputStream {
-	private static IThreadManager threadManager;
 	private FileOutputStream out;
 	private String fileName;
-	private RobotFileSystemManager fileSystemManager;
 
 	/**
 	 * Constructs a new RobocodeFileOutputStream.
@@ -92,49 +85,11 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream#FileOutputStream(String, boolean)
 	 */
 	public RobocodeFileOutputStream(String fileName, boolean append) throws IOException {
-		if (threadManager == null) {
-			Logger.logError("RobocodeFileOutputStream.threadManager cannot be null!");
-			return;
-		}
-		Thread c = Thread.currentThread();
-
-		this.fileName = fileName;
-		IHostedThread robotProxy = threadManager.getRobotProxy(c);
-
-		if (robotProxy == null) {
-			Logger.logError("RobotProxy is null");
-			return;
+		if (HiddenAccess.threadManager == null) {
+			throw new RobotException("ThreadManager cannot be null!");
 		}
 
-		if (!robotProxy.getStatics().isAdvancedRobot()) {
-			throw new RobotException("Only advanced robots may write to the filesystem");
-		}
-
-		this.fileSystemManager = robotProxy.getRobotFileSystemManager();
-
-		// First, we see if the file exists:
-		File f = new File(fileName);
-		long len;
-
-		if (f.exists()) {
-			len = f.length();
-		} else {
-			fileSystemManager.checkQuota();
-			len = 0;
-		}
-
-		RobocodeSecurityManager securityManager;
-
-		if (System.getSecurityManager() instanceof RobocodeSecurityManager) {
-			securityManager = (RobocodeSecurityManager) System.getSecurityManager();
-			securityManager.getFileOutputStream(this, append);
-			if (!append) {
-				fileSystemManager.adjustQuota(-len);
-			}
-			fileSystemManager.addStream(this);
-		} else {
-			throw new RobotException("Non robocode security manager?");
-		}
+		out = HiddenAccess.threadManager.createRobotFileStream(fileName, append);
 	}
 
 	/**
@@ -145,7 +100,6 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 */
 	@Override
 	public final void close() throws IOException {
-		fileSystemManager.removeStream(this);
 		out.close();
 	}
 
@@ -170,21 +124,6 @@ public class RobocodeFileOutputStream extends OutputStream {
 	}
 
 	/**
-	 * The system calls this method, you should not call it.
-	 */
-	public final void setFileOutputStream(FileOutputStream out) {
-		this.out = out;
-	}
-
-	/**
-	 * The system calls this method, you should not call it.
-	 */
-	public static void setThreadManager(IThreadManager threadManager) {
-		System.getSecurityManager().checkPermission(new RobocodePermission("setThreadManager"));
-		RobocodeFileOutputStream.threadManager = threadManager;
-	}
-
-	/**
 	 * Writes a byte array to this output stream.
 	 * See {@link java.io.FileOutputStream#write(byte[])} for documentation
 	 * about this method.
@@ -193,15 +132,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 */
 	@Override
 	public final void write(byte[] b) throws IOException {
-		try {
-			fileSystemManager.checkQuota(b.length);
-			out.write(b);
-		} catch (IOException e) {
-			try {
-				close();
-			} catch (IOException ignored) {}
-			throw e;
-		}
+		out.write(b);
 	}
 
 	/**
@@ -213,19 +144,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 */
 	@Override
 	public final void write(byte[] b, int off, int len) throws IOException {
-		if (len < 0) {
-			throw new IndexOutOfBoundsException();
-		}
-		try {
-			fileSystemManager.checkQuota(len);
-			out.write(b, off, len);
-		} catch (IOException e) {
-			close();
-			try {
-				close();
-			} catch (IOException ignored) {}
-			throw e;
-		}
+		out.write(b, off, len);
 	}
 
 	/**
@@ -237,15 +156,6 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 */
 	@Override
 	public final void write(int b) throws IOException {
-		try {
-			fileSystemManager.checkQuota(1);
-			out.write(b);
-		} catch (IOException e) {
-			close();
-			try {
-				close();
-			} catch (IOException ignored) {}
-			throw e;
-		}
+		out.write(b);
 	}
 }
