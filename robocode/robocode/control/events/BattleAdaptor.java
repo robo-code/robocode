@@ -13,11 +13,27 @@ package robocode.control.events;
 
 
 /**
- * An abstract adapter class for receiving battle events. The methods in this class are empty.
- * This class exists as convenience for creating listener objects.
+ * An abstract adapter class for receiving battle events by implementing the {@link IBattleListener}.
+ * The methods in this class are empty. This class exists as convenience for creating listener objects.
  * <p/>
- * This is handy class to use when implementing the {@link IBattleListener}.
+ * This is handy class to use when implementing the IBattleListener.
  * It saves you from implementing empty handlers for battle events you are not interested in handling.
+ * <p/>
+ * <b>Example:</b>
+ * <pre>
+ *   private class BattleObserver extends BattleAdaptor {
+ *       boolean isReplay;
+ *
+ *       public void onBattleStarted(BattleStartedEvent event) {
+ *           isReplay = event.isReplay();
+ *       }
+ *
+ *       public void onBattleCompleted(BattleCompletedEvent event) {
+ *       if (!isReplay) {
+ *           printResultsData(event);
+ *       }
+ *   }
+ * </pre>
  *
  * @see IBattleListener 
  *
@@ -25,6 +41,10 @@ package robocode.control.events;
  * @since 1.6.2
  */
 public abstract class BattleAdaptor implements IBattleListener {
+	/**
+	 * Creates a BattleAdaptor.
+	 */
+	public BattleAdaptor() {}
 
 	/**
 	 * {@inheritDoc}
