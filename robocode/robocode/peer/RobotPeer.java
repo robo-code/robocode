@@ -71,6 +71,7 @@ import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
+import robocode.repository.FileSpecification;
 import robocode.battle.Battle;
 import robocode.common.BoundingRectangle;
 import robocode.control.RandomFactory;
@@ -1458,7 +1459,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
 		// disable for next time
-		HiddenAccess.setRobotValid(robotSpecification, false);
+		((FileSpecification) HiddenAccess.getFileSpecification(robotSpecification)).setValid(false);
 	}
 
 	public void updateEnergy(double delta) {

@@ -188,7 +188,7 @@ public class BattleManager implements IBattleManager {
 				if (!inTeam && battleRobotSpec != null) {
 					specification = battleRobotSpec;
 				} else {
-					specification = HiddenAccess.createSpecification(fileSpec);
+					specification = fileSpec.createRobotSpecification();
 				}
 				HiddenAccess.setTeamName(specification, inTeam ? teamName : null);
 				battlingRobotsList.add(specification);

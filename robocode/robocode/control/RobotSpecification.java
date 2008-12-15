@@ -20,8 +20,6 @@ package robocode.control;
 
 
 import net.sf.robocode.security.IHiddenSpecificationHelper;
-import robocode.repository.FileSpecification;
-import robocode.repository.RobotFileSpecification;
 
 import java.io.File;
 
@@ -37,17 +35,27 @@ public class RobotSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final FileSpecification fileSpecification;
+	private final Object fileSpecification;
 	private String teamName;
+	private String name;
+	private String author;
+	private String webpage;
+	private String version;
+	private String robocodeVersion;
+	private String jarFile;
+	private String fullClassName;
+	private String description;
 
-	/**
-	 * This constructor is called by the game in order to construct a new
-	 * RobotSpecification.
-	 *
-	 * @param fileSpecification the file specification of the robot
-	 */
-	RobotSpecification(FileSpecification fileSpecification) {
+	private RobotSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
 		this.fileSpecification = fileSpecification;
+		this.name = name;
+		this.author = author;
+		this.webpage = webpage;
+		this.version = version;
+		this.robocodeVersion = robocodeVersion;
+		this.jarFile = jarFile;
+		this.fullClassName = fullClassName;
+		this.description = description;
 	}
 
 	/**
@@ -58,7 +66,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 * @see #getNameAndVersion()
 	 */
 	public String getName() {
-		return fileSpecification.getName();
+		return name;
 	}
 
 	/**
@@ -69,12 +77,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 * @see #getNameAndVersion()
 	 */
 	public String getVersion() {
-		if (fileSpecification.getVersion() != null) {
-			if (fileSpecification.isDevelopmentVersion()) {
-				return fileSpecification.getVersion() + "*";
-			}
-		}
-		return fileSpecification.getVersion();
+		return version;
 	}
 
 	/**
@@ -101,7 +104,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 * @return the full class name of this robot or team.
 	 */
 	public String getClassName() {
-		return fileSpecification.getFullClassName();
+		return fullClassName;
 	}
 
 	/**
@@ -112,7 +115,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 *         does not come from a JAR file (could be class files instead).
 	 */
 	public File getJarFile() {
-		return fileSpecification.getJarFile();
+		return new File(jarFile);
 	}
 
 	/**
@@ -121,7 +124,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 * @return the description provided by the author of this robot.
 	 */
 	public String getDescription() {
-		return fileSpecification.getDescription();
+		return description;
 	}
 
 	/**
@@ -130,7 +133,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 * @return the version of Robocode this robot was based on.
 	 */
 	public String getRobocodeVersion() {
-		return fileSpecification.getRobocodeVersion();
+		return robocodeVersion;
 	}
 
 	/**
@@ -139,7 +142,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 * @return the web page for this robot.
 	 */
 	public String getWebpage() {
-		return (fileSpecification.getWebpage() != null) ? fileSpecification.getWebpage().toString() : null;
+		return webpage;
 	}
 
 	/**
@@ -148,59 +151,7 @@ public class RobotSpecification implements java.io.Serializable {
 	 * @return the name of this robot's author.
 	 */
 	public String getAuthorName() {
-		return fileSpecification.getAuthorName();
-	}
-
-	// TODO minimize public methods
-	public boolean isDroid() {
-		return fileSpecification instanceof RobotFileSpecification
-				&& ((RobotFileSpecification) fileSpecification).isDroid();
-	}
-
-	public boolean isTeamRobot() {
-		return fileSpecification instanceof RobotFileSpecification
-				&& ((RobotFileSpecification) fileSpecification).isTeamRobot();
-	}
-
-	public boolean isAdvancedRobot() {
-		return fileSpecification instanceof RobotFileSpecification
-				&& ((RobotFileSpecification) fileSpecification).isAdvancedRobot();
-	}
-
-	public boolean isStandardRobot() {
-		return fileSpecification instanceof RobotFileSpecification
-				&& ((RobotFileSpecification) fileSpecification).isStandardRobot();
-	}
-
-	public boolean isInteractiveRobot() {
-		return fileSpecification instanceof RobotFileSpecification
-				&& ((RobotFileSpecification) fileSpecification).isInteractiveRobot();
-	}
-
-	public boolean isPaintRobot() {
-		return fileSpecification instanceof RobotFileSpecification
-				&& ((RobotFileSpecification) fileSpecification).isPaintRobot();
-	}
-
-	public boolean isJuniorRobot() {
-		return fileSpecification instanceof RobotFileSpecification
-				&& ((RobotFileSpecification) fileSpecification).isJuniorRobot();
-	}
-
-	public String getShortClassName() {
-		return fileSpecification.getShortClassName();
-	}
-
-	public String getFullClassNameWithVersion() {
-		return fileSpecification.getFullClassNameWithVersion();
-	}
-
-	public String getUniqueShortClassNameWithVersion() {
-		return fileSpecification.getUniqueShortClassNameWithVersion();
-	}
-
-	public String getUniqueVeryShortClassNameWithVersion() {
-		return fileSpecification.getUniqueVeryShortClassNameWithVersion();
+		return author;
 	}
 
 	static IHiddenSpecificationHelper createHiddenHelper() {
@@ -209,16 +160,13 @@ public class RobotSpecification implements java.io.Serializable {
 
 	private static class HiddenHelper implements IHiddenSpecificationHelper {
 
-		public RobotSpecification createSpecification(Object fileSpecification) {
-			return new RobotSpecification((FileSpecification) fileSpecification);
+		public RobotSpecification createSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
+			return new RobotSpecification(fileSpecification, name, author, webpage, version, robocodeVersion, jarFile,
+					fullClassName, description);
 		}
 
 		public Object getFileSpecification(RobotSpecification specification) {
 			return specification.fileSpecification;
-		}
-
-		public void setValid(RobotSpecification specification, boolean value) {
-			specification.fileSpecification.setValid(value);
 		}
 
 		public void setTeamName(RobotSpecification specification, String teamName) {

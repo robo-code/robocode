@@ -99,6 +99,7 @@ package robocode.battle;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
+import robocode.repository.RobotFileSpecification;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.common.Command;
@@ -177,7 +178,7 @@ public final class Battle extends BaseBattle {
 
 		// count duplicate robots, enumerate teams, enumerate team members
 		for (RobotSpecification specification : battlingRobotsList) {
-			final String name = specification.getFullClassNameWithVersion();
+			final String name = ((RobotFileSpecification) HiddenAccess.getFileSpecification(specification)).getFullClassNameWithVersion(); 
 
 			if (countedNames.containsKey(name)) {
 				int value = countedNames.get(name);
@@ -225,7 +226,7 @@ public final class Battle extends BaseBattle {
 		// name robots
 		for (int i = battlingRobotsList.size() - 1; i >= 0; i--) {
 			RobotSpecification specification = battlingRobotsList.get(i);
-			String name = specification.getFullClassNameWithVersion();
+			String name = ((RobotFileSpecification) HiddenAccess.getFileSpecification(specification)).getFullClassNameWithVersion();
 			Integer order = countedNames.get(name);
 			int duplicate = -1;
 

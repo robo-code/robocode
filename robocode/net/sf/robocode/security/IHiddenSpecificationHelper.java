@@ -20,9 +20,8 @@ import robocode.control.RobotSpecification;
  */
 public interface IHiddenSpecificationHelper {
 
-	RobotSpecification createSpecification(Object fileSpecification);
+	RobotSpecification createSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description);
 	Object getFileSpecification(RobotSpecification specification);
-	void setValid(RobotSpecification specification, boolean value);
 	void setTeamName(RobotSpecification specification, String teamName);
 	String getTeamName(RobotSpecification specification);
 }

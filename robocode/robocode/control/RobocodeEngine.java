@@ -262,7 +262,7 @@ public class RobocodeEngine {
 			final FileSpecification specification = list.get(i);
 
 			if (specification.isValid()) {
-				robotSpecs[i] = new RobotSpecification(specification);
+				robotSpecs[i] = specification.createRobotSpecification();
 			}
 		}
 		return robotSpecs;

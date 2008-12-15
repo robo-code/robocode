@@ -22,11 +22,14 @@ package robocode.repository;
 import robocode.io.FileUtil;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.NameManager;
+import robocode.control.RobotSpecification;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
+
+import net.sf.robocode.security.HiddenAccess;
 
 
 /**
@@ -565,5 +568,11 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 			return -1;
 		}
 		return 0;
+	}
+
+	public RobotSpecification createRobotSpecification() {
+		return HiddenAccess.createSpecification(this, getName(), getAuthorName(),
+				(getWebpage() != null) ? getWebpage().toString() : null, getVersion(), getRobocodeVersion(),
+				(getJarFile() != null) ? getJarFile().toString() : null, getFullClassName(), getDescription());
 	}
 }

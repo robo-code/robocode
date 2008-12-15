@@ -17,6 +17,7 @@
  *******************************************************************************/
 package robocode.control;
 
+
 /**
  * A BattleSpecification defines battle configuration used by the
  * {@link RobocodeEngine}.

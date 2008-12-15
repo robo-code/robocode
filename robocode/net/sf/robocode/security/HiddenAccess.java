@@ -17,14 +17,12 @@ import net.sf.robocode.peer.IRobotStatics;
 import robocode.*;
 import robocode.Event;
 import robocode.control.RobotSpecification;
-import robocode.repository.FileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
-import java.io.FileOutputStream;
 
 
 /**
@@ -110,8 +108,9 @@ public class HiddenAccess {
 		bulletHelper.update(bullet, x, y, victimName, isActive);
 	}
 
-	public static RobotSpecification createSpecification(FileSpecification fileSpecification) {
-		return specificationHelper.createSpecification(fileSpecification);
+	public static RobotSpecification createSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
+		return specificationHelper.createSpecification(fileSpecification, name, author, webpage, version,
+				robocodeVersion, jarFile, fullClassName, description);
 	}
 
 	public static Object getFileSpecification(RobotSpecification specification) {
@@ -124,10 +123,6 @@ public class HiddenAccess {
 
 	public static void setTeamName(RobotSpecification specification, String teamName) {
 		specificationHelper.setTeamName(specification, teamName);
-	}
-
-	public static void setRobotValid(RobotSpecification specification, boolean value) {
-		specificationHelper.setValid(specification, value);
 	}
 
 	public static RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading, double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining, double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time) {

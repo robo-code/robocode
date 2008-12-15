@@ -43,16 +43,17 @@ public class HostManager implements IHostManager {
 
 	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
 		IHostingRobotProxy robotProxy;
-		RobotClassManager robotClassManager = new RobotClassManager(
-				(RobotFileSpecification) HiddenAccess.getFileSpecification(robotSpecification));
+		final RobotFileSpecification specification = (RobotFileSpecification) HiddenAccess.getFileSpecification(
+				robotSpecification);
+		RobotClassManager robotClassManager = new RobotClassManager(specification);
 
-		if (robotSpecification.isTeamRobot()) {
+		if (specification.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(robotClassManager, this, peer, statics);
-		} else if (robotSpecification.isAdvancedRobot()) {
+		} else if (specification.isAdvancedRobot()) {
 			robotProxy = new AdvancedRobotProxy(robotClassManager, this, peer, statics);
-		} else if (robotSpecification.isStandardRobot()) {
+		} else if (specification.isStandardRobot()) {
 			robotProxy = new StandardRobotProxy(robotClassManager, this, peer, statics);
-		} else if (robotSpecification.isJuniorRobot()) {
+		} else if (specification.isJuniorRobot()) {
 			robotProxy = new JuniorRobotProxy(robotClassManager, this, peer, statics);
 		} else {
 			throw new AccessControlException("Unknown robot type");
