@@ -18,8 +18,8 @@ import robocode.common.IXmlSerializable;
 import robocode.common.XmlReader;
 import robocode.common.XmlWriter;
 import robocode.control.snapshot.IBulletSnapshot;
+import robocode.control.snapshot.BulletState;
 import robocode.peer.BulletPeer;
-import robocode.peer.BulletState;
 import robocode.peer.ExecCommands;
 import robocode.peer.ExplosionPeer;
 

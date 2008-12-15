@@ -105,6 +105,7 @@ import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
+import robocode.control.snapshot.BulletState;
 import robocode.io.Logger;
 import robocode.manager.RobocodeManager;
 import robocode.peer.*;

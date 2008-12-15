@@ -33,7 +33,7 @@ import robocode.manager.IImageManager;
 import robocode.manager.IWindowManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.peer.BulletState;
+import robocode.control.snapshot.BulletState;
 import robocode.robotpaint.Graphics2DProxy;
 
 import java.awt.*;
