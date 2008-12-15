@@ -41,6 +41,7 @@ package robocode.control.events;
  * @since 1.6.2
  */
 public abstract class BattleAdaptor implements IBattleListener {
+
 	/**
 	 * Creates a BattleAdaptor.
 	 */

@@ -8,15 +8,32 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode.control.snapshot;
 
 
 /**
+ * Interface of a debug property, which is a key-value pair.
+ *
  * @author Pavel Savara (original)
+ *
+ * @since 1.6.2
  */
 public interface IDebugProperty {
+
+	/**
+	 * Returns the key of the property.
+	 *
+	 * @return the key of the property.
+	 */
 	String getKey();
 
+	/**
+	 * Returns the value of the property.
+	 *
+	 * @return the value of the property.
+	 */
 	String getValue();
 }
