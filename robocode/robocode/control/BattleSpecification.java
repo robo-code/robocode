@@ -17,10 +17,6 @@
  *******************************************************************************/
 package robocode.control;
 
-
-import robocode.battle.BattleProperties;
-
-
 /**
  * A BattleSpecification defines battle configuration used by the
  * {@link RobocodeEngine}.
@@ -32,8 +28,12 @@ public class BattleSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private int battlefieldWidth = 800;
+	private int battlefieldHeight = 600;
+	private int numRounds = 10;
+	private double gunCoolingRate = 0.1;
+	private long inactivityTime = 450;
 	private final RobotSpecification[] robots;
-	private final BattleProperties battleProperties;
 
 	/**
 	 * Creates a new BattleSpecification with the given number of rounds,
@@ -59,15 +59,11 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @param robots		  the robots participating in this battle
 	 */
 	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots) {
-		battleProperties = new BattleProperties();
-		battleProperties.setNumRounds(numRounds);
-		battleProperties.setInactivityTime(inactivityTime);
-		battleProperties.setGunCoolingRate(gunCoolingRate);
-		battleProperties.setBattlefieldWidth(battlefieldSize.getWidth());
-		battleProperties.setBattlefieldHeight(battlefieldSize.getHeight());
-		if (robots != null) {
-			battleProperties.setSelectedRobots(robots);
-		}
+		this.numRounds = numRounds;
+		this.inactivityTime = inactivityTime;
+		this.gunCoolingRate = gunCoolingRate;
+		this.battlefieldWidth = battlefieldSize.getWidth();
+		this.battlefieldHeight = battlefieldSize.getHeight();
 
 		this.robots = robots;
 	}
@@ -78,7 +74,7 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @return the allowed inactivity time for the robots in this battle.
 	 */
 	public long getInactivityTime() {
-		return battleProperties.getInactivityTime();
+		return inactivityTime;
 	}
 
 	/**
@@ -87,7 +83,7 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @return the gun cooling rate of the robots in this battle.
 	 */
 	public double getGunCoolingRate() {
-		return battleProperties.getGunCoolingRate();
+		return gunCoolingRate;
 	}
 
 	/**
@@ -96,8 +92,7 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @return the battlefield size for this battle.
 	 */
 	public BattlefieldSpecification getBattlefield() {
-		return new BattlefieldSpecification(battleProperties.getBattlefieldWidth(),
-				battleProperties.getBattlefieldHeight());
+		return new BattlefieldSpecification(battlefieldWidth, battlefieldHeight);
 	}
 
 	/**
@@ -106,7 +101,7 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @return the number of rounds in this battle.
 	 */
 	public int getNumRounds() {
-		return battleProperties.getNumRounds();
+		return numRounds;
 	}
 
 	/**
