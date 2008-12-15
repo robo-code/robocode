@@ -37,10 +37,7 @@
 package robocode.control;
 
 
-import robocode.control.events.BattleAdaptor;
-import robocode.control.events.BattleCompletedEvent;
-import robocode.control.events.BattleFinishedEvent;
-import robocode.control.events.BattleMessageEvent;
+import robocode.control.events.*;
 import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;

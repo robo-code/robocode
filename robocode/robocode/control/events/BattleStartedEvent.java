@@ -15,13 +15,13 @@ package robocode.control.events;
 
 
 import robocode.BattleRules;
-import robocode.control.IBattleListener;
 
 
 /**
  * A BattleStartedEvent is sent to {@link IBattleListener#onBattleStarted(BattleStartedEvent)
  * onBattleStarted()} when a new battle is started. 
  *
+ * @see IBattleListener
  * @see BattleCompletedEvent
  * @see BattleFinishedEvent
  *

@@ -28,11 +28,12 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.*;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
-import robocode.security.SecurePrintStream;
 import static roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.util.*;
+
+import net.sf.robocode.io.Logger;
 
 
 /**
@@ -248,7 +249,7 @@ public class BattlesRunner {
 
 		@Override
 		public void onBattleError(final BattleErrorEvent event) {
-			SecurePrintStream.realErr.println(event.getError());
+			Logger.realErr.println(event.getError());
 		}
 
 		@Override

@@ -8,68 +8,92 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Javadocs
  *******************************************************************************/
 package robocode;
 
-
 import net.sf.robocode.security.IHiddenRulesHelper;
-
-import java.io.Serializable;
 
 
 /**
+ * Contains the battle rules returned by {@link robocode.control.events.BattleStartedEvent#getBattleRules()
+ * BattleStartedEvent.getBattleRules()} when a battle is started and
+ * {@link robocode.control.events.BattleCompletedEvent#getBattleRules() BattleCompletedEvent.getBattleRules()}
+ * when a battle is completed.
+ *
+ * @see robocode.control.events.BattleStartedEvent BattleStartedEvent
+ * @see robocode.control.events.BattleCompletedEvent BattleCompletedEvent
+ *
  * @author Pavel Savara (original)
- *         Immutable rules
+ * @since 1.6.2
  */
-public final class BattleRules implements Serializable {
+public final class BattleRules implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int battlefieldWidth;
-	private int battlefieldHeight;
-	private int numRounds;
-	private double gunCoolingRate;
-	private long inactivityTime;
+	private final int battlefieldWidth;
+	private final int battlefieldHeight;
+	private final int numRounds;
+	private final double gunCoolingRate;
+	private final long inactivityTime;
 
 	/**
-	 * Gets the battlefieldWidth.
+	 * Returns the battlefield width.
 	 *
-	 * @return Returns a int
+	 * @return the battlefield width.
 	 */
 	public int getBattlefieldWidth() {
 		return battlefieldWidth;
 	}
 
 	/**
-	 * Gets the battlefieldHeight.
+	 * Returns the battlefield height.
 	 *
-	 * @return Returns a int
+	 * @return the battlefield height.
 	 */
 	public int getBattlefieldHeight() {
 		return battlefieldHeight;
 	}
 
 	/**
-	 * Gets the numRounds.
+	 * Returns the number of rounds.
 	 *
-	 * @return Returns a int
+	 * @return the number of rounds.
 	 */
 	public int getNumRounds() {
 		return numRounds;
 	}
 
 	/**
-	 * Gets the gunCoolingRate.
+	 * Returns the rate at which the gun will cool down, i.e. the amount of heat the gun heat will drop per turn.
+	 * <p/>
+	 * The gun cooling rate is default 0.1 per turn, but can be changed by the battle setup.
+	 * So don't count on the cooling rate being 0.1!
 	 *
-	 * @return Returns a double
+	 * @return the gun cooling rate.
+	 * @see Robot#getGunHeat()
+	 * @see Robot#fire(double)
+	 * @see Robot#fireBullet(double)
 	 */
 	public double getGunCoolingRate() {
 		return gunCoolingRate;
 	}
 
 	/**
-	 * Gets the inactivityTime.
+	 * Returns the allowed inactivity time, where the robot is not taking any action, before will begin to be zapped.
+	 * The inactivity time is measured in turns, and is the allowed time that a robot is allowed to omit taking
+	 * action before being punished by the game by zapping.
+	 * <p/>
+	 * When a robot is zapped by the game, it will loose 0.1 energy points per turn. Eventually the robot will be
+	 * killed by zapping until the robot takes action. When the robot takes action, the inactivity time counter is
+	 * reset. 
+	 * <p/>
+	 * The allowed inactivity time is per default 450 turns, but can be changed by the battle setup.
+	 * So don't count on the inactivity time being 450 turns!
 	 *
-	 * @return Returns a int
+	 * @return the allowed inactivity time.
+	 * @see Robot#doNothing()
+	 * @see AdvancedRobot#execute()
 	 */
 	public long getInactivityTime() {
 		return inactivityTime;

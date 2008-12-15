@@ -14,6 +14,9 @@
 package robocode.control;
 
 
+import robocode.control.events.IBattleListener;
+
+
 /**
  * @deprecated Since 1.6.2. Use the {@link IBattleListener} instead.
  * <p/>

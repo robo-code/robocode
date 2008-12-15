@@ -15,9 +15,9 @@
 package net.sf.robocode.io;
 
 
-import robocode.control.IBattleListener;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;
+import robocode.control.events.IBattleListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

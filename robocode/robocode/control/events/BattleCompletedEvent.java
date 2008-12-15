@@ -16,7 +16,6 @@ package robocode.control.events;
 
 import robocode.BattleResults;
 import robocode.BattleRules;
-import robocode.control.IBattleListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +28,7 @@ import java.util.List;
  * onBattleCompleted()} when the battle is completed successfully and results are available. This event
  * will not occur if the battle is terminated or aborted by the user before the battle is completed.
  *
+ * @see IBattleListener
  * @see BattleStartedEvent
  * @see BattleFinishedEvent
  * 
