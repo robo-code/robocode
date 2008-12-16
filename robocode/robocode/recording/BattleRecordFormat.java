@@ -13,5 +13,7 @@ package robocode.recording;
 
 
 public enum BattleRecordFormat {
-	BINARY, BINARY_ZIP, XML
+	BINARY,
+	BINARY_ZIP,
+	XML
 }
