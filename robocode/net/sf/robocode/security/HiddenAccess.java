@@ -33,6 +33,7 @@ import java.io.File;
  */
 public class HiddenAccess {
 	public static IThreadManagerBase threadManager;
+	public static IRobocodeManagerBase manager;
 
 	private static IHiddenEventHelper eventHelper;
 	private static IHiddenBulletHelper bulletHelper;

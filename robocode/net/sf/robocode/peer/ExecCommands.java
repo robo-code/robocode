@@ -9,13 +9,14 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.peer;
 
 
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.Rules;
-import robocode.peer.robot.TeamMessage;
+import net.sf.robocode.peer.TeamMessage;
+import robocode.peer.RobotPeer;
 
 import java.io.Serializable;
 import static java.lang.Math.abs;

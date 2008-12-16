@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.peer;
 
 
 import net.sf.robocode.serialization.ISerializableHelper;
@@ -22,22 +22,19 @@ import java.nio.ByteBuffer;
 /**
  * @author Pavel Savara (original)
  */
-public class BulletStatus implements Serializable {
+public class TeamMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public BulletStatus(int bulletId, double x, double y, String victimName, boolean isActive) {
-		this.bulletId = bulletId;
-		this.x = x;
-		this.y = y;
-		this.isActive = isActive;
-		this.victimName = victimName;
+	public TeamMessage(String sender, String recipient, byte[] message) {
+		this.sender = sender;
+		this.recipient = recipient;
+		this.message = message;
+
 	}
 
-	public final int bulletId;
-	public final String victimName;
-	public final boolean isActive;
-	public final double x;
-	public final double y;
+	public final String sender;
+	public final String recipient;
+	public final byte[] message;
 
 	static ISerializableHelper createHiddenSerializer() {
 		return new SerializableHelper();
@@ -45,30 +42,28 @@ public class BulletStatus implements Serializable {
 
 	private static class SerializableHelper implements ISerializableHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
-			BulletStatus obj = (BulletStatus) object;
+			TeamMessage obj = (TeamMessage) object;
+			final int s = serializer.sizeOf(obj.sender);
+			final int r = serializer.sizeOf(obj.recipient);
+			final int m = serializer.sizeOf(obj.message);
 
-			return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_INT + serializer.sizeOf(obj.victimName)
-					+ RbSerializer.SIZEOF_BOOL + 2 * RbSerializer.SIZEOF_DOUBLE;
+			return RbSerializer.SIZEOF_TYPEINFO + s + r + m;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
-			BulletStatus obj = (BulletStatus) object;
+			TeamMessage obj = (TeamMessage) object;
 
-			serializer.serialize(buffer, obj.bulletId);
-			serializer.serialize(buffer, obj.victimName);
-			serializer.serialize(buffer, obj.isActive);
-			serializer.serialize(buffer, obj.x);
-			serializer.serialize(buffer, obj.y);
+			serializer.serialize(buffer, obj.sender);
+			serializer.serialize(buffer, obj.recipient);
+			serializer.serialize(buffer, obj.message);
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
-			int bulletId = buffer.getInt();
-			String victimName = serializer.deserializeString(buffer);
-			boolean isActive = serializer.deserializeBoolean(buffer);
-			double x = buffer.getDouble();
-			double y = buffer.getDouble();
+			String sender = serializer.deserializeString(buffer);
+			String recipient = serializer.deserializeString(buffer);
+			byte[] message = serializer.deserializeBytes(buffer);
 
-			return new BulletStatus(bulletId, x, y, victimName, isActive);
+			return new TeamMessage(sender, recipient, message);
 		}
 	}
 

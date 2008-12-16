@@ -181,7 +181,7 @@ public final class VersionManager implements IVersionManager {
 		return version;
 	}
 
-	public static int getVersionInt() {
+	public int getVersionInt() {
 		if (version == null) {
 			version = getVersionFromJar();
 		}

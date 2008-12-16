@@ -19,7 +19,7 @@ import robocode.manager.IHostManager;
 import robocode.peer.IRobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.RobotClassManager;
-import robocode.peer.robot.TeamMessage;
+import net.sf.robocode.peer.TeamMessage;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.*;

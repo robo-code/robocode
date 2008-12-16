@@ -12,6 +12,10 @@
 package robocode.peer;
 
 
+import net.sf.robocode.peer.ExecCommands;
+import net.sf.robocode.peer.ExecResults;
+
+
 /**
  * @author Pavel Savara (original)
  */

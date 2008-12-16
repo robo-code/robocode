@@ -14,11 +14,11 @@ package components;
 
 import org.junit.Test;
 import helpers.Assert;
-import robocode.peer.ExecCommands;
-import robocode.peer.BulletCommand;
-import robocode.peer.DebugProperty;
-import robocode.peer.robot.TeamMessage;
+import net.sf.robocode.peer.BulletCommand;
+import net.sf.robocode.peer.TeamMessage;
 import net.sf.robocode.serialization.RbSerializer;
+import net.sf.robocode.peer.DebugProperty;
+import net.sf.robocode.peer.ExecCommands;
 import robocode.common.ObjectCloner;
 import robocode.robotpaint.Graphics2DSerialized;
 

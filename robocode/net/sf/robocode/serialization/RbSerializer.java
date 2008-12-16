@@ -14,10 +14,7 @@ package net.sf.robocode.serialization;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
-import robocode.*;
-import robocode.manager.VersionManager;
-import robocode.peer.*;
-import robocode.peer.robot.TeamMessage;
+import net.sf.robocode.peer.*;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -25,6 +22,8 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.*;
+
+import robocode.*;
 
 
 /**
@@ -89,8 +88,8 @@ public final class RbSerializer {
 		register(TeamMessage.class, TeamMessage_TYPE);
 		register(DebugProperty.class, DebugProperty_TYPE);
 		register(ExecResults.class, ExecResults_TYPE);
-		register(RobotStatus.class, RobotStatus_TYPE);
 		register(BulletStatus.class, BulletStatus_TYPE);
+		register(RobotStatus.class, RobotStatus_TYPE);
 		register(BattleResults.class, BattleResults_TYPE);
 		register(Bullet.class, Bullet_TYPE);
 
@@ -123,7 +122,7 @@ public final class RbSerializer {
 	}
 
 	public RbSerializer() {
-		this.currentVersion = VersionManager.getVersionInt();
+		this.currentVersion = HiddenAccess.manager.getVersionManager().getVersionInt();
 		encoder = charset.newEncoder();
 		encoder.onMalformedInput(CodingErrorAction.REPORT);
 		encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);

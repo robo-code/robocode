@@ -54,6 +54,8 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import java.util.List;
 
+import net.sf.robocode.peer.BulletStatus;
+
 
 /**
  * @author Mathew A. Nelson (original)
