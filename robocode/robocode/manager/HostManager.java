@@ -13,9 +13,9 @@ package robocode.manager;
 
 
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.RobotSpecification;
-import robocode.peer.IRobotPeer;
-import robocode.peer.RobotStatics;
+import robocode.peer.*;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.RobotFileSpecification;
@@ -59,6 +59,15 @@ public class HostManager implements IHostManager {
 			throw new AccessControlException("Unknown robot type");
 		}
 		return robotProxy;
+	}
+
+	static {
+		RbSerializer.register(ExecCommands.class, RbSerializer.ExecCommands_TYPE);
+		RbSerializer.register(BulletCommand.class, RbSerializer.BulletCommand_TYPE);
+		RbSerializer.register(TeamMessage.class, RbSerializer.TeamMessage_TYPE);
+		RbSerializer.register(DebugProperty.class, RbSerializer.DebugProperty_TYPE);
+		RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
+		RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
 	}
 
 	public void cleanup() {// TODO

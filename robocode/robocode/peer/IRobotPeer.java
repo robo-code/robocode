@@ -12,8 +12,8 @@
 package robocode.peer;
 
 
-import net.sf.robocode.peer.ExecCommands;
-import net.sf.robocode.peer.ExecResults;
+import robocode.peer.ExecCommands;
+import robocode.peer.ExecResults;
 
 
 /**

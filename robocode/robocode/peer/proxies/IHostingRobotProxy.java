@@ -13,7 +13,7 @@ package robocode.peer.proxies;
 
 
 import robocode.RobotStatus;
-import net.sf.robocode.peer.ExecCommands;
+import robocode.peer.ExecCommands;
 
 
 /**

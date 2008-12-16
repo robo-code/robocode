@@ -70,7 +70,6 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.peer.*;
 import robocode.*;
 import robocode.repository.FileSpecification;
 import robocode.battle.Battle;
@@ -87,7 +86,7 @@ import robocode.peer.proxies.IHostingRobotProxy;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.EventQueue;
 import robocode.peer.robot.RobotStatistics;
-import net.sf.robocode.peer.TeamMessage;
+import robocode.peer.TeamMessage;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;

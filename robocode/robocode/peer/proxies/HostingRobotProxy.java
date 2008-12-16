@@ -19,7 +19,7 @@ import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import robocode.manager.IHostManager;
-import net.sf.robocode.peer.ExecCommands;
+import robocode.peer.ExecCommands;
 import robocode.peer.IRobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.*;

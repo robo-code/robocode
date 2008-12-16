@@ -14,7 +14,6 @@ package net.sf.robocode.serialization;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.peer.*;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -83,12 +82,6 @@ public final class RbSerializer {
 	static {
 		charset = Charset.forName("UTF8"); // we will use it as UCS-2
 		register(null, TERMINATOR_TYPE); // reserved for end of (list) element
-		register(ExecCommands.class, ExecCommands_TYPE);
-		register(BulletCommand.class, BulletCommand_TYPE);
-		register(TeamMessage.class, TeamMessage_TYPE);
-		register(DebugProperty.class, DebugProperty_TYPE);
-		register(ExecResults.class, ExecResults_TYPE);
-		register(BulletStatus.class, BulletStatus_TYPE);
 		register(RobotStatus.class, RobotStatus_TYPE);
 		register(BattleResults.class, BattleResults_TYPE);
 		register(Bullet.class, Bullet_TYPE);
@@ -448,7 +441,7 @@ public final class RbSerializer {
 		} while (buffer.remaining() != 0);
 	}
 
-	private static void register(Class<?> realClass, byte type) {
+	public static void register(Class<?> realClass, byte type) {
 		try {
 			if (realClass != null) {
 				Method method = realClass.getDeclaredMethod("createHiddenSerializer");

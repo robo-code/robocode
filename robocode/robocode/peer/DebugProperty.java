@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.peer;
+package robocode.peer;
 
 
 import net.sf.robocode.serialization.ISerializableHelper;

@@ -31,6 +31,7 @@ package robocode.manager;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.manager.IRobocodeManagerBase;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.io.FileUtil;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
@@ -77,6 +78,7 @@ public class RobocodeManager implements IRobocodeManagerBase {
 
 	public RobocodeManager(boolean slave) {
 		this.slave = slave;
+		HiddenAccess.manager = this;
 	}
 
 	/**
@@ -340,28 +342,28 @@ public class RobocodeManager implements IRobocodeManagerBase {
 	}
 
 	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
-		if (robocodeHome == null) {
-			robocodeHome = FileUtil.getCwd();
-		}
-		File robotsDir = FileUtil.getRobotsDir();
-
-		if (robotsDir == null) {
-			throw new RuntimeException("No valid robot directory is specified");
-		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
-			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
-		}
-
-		RobocodeManager manager = new RobocodeManager(true);
-
-		manager.setEnableGUI(false);
-
 		try {
+			if (robocodeHome == null) {
+				robocodeHome = FileUtil.getCwd();
+			}
 			FileUtil.setCwd(robocodeHome);
+
+			File robotsDir = FileUtil.getRobotsDir();
+
+			if (robotsDir == null) {
+				throw new RuntimeException("No valid robot directory is specified");
+			} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
+				throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
+			}
+
 		} catch (IOException e) {
 			System.err.println(e);
 			return null;
 		}
 
+		RobocodeManager manager = new RobocodeManager(true);
+
+		manager.setEnableGUI(false);
 		manager.initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
 
 		return manager;
