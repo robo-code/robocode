@@ -38,7 +38,6 @@ package robocode.control;
 
 
 import robocode.control.events.*;
-import robocode.io.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public class RobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public RobocodeEngine() {
-		init(FileUtil.getCwd(), null);
+		init(null, null);
 	}
 
 	/**
@@ -134,7 +133,7 @@ public class RobocodeEngine {
 	@Deprecated
 	@SuppressWarnings({ "deprecation"})
 	public RobocodeEngine(RobocodeListener listener) {
-		init(FileUtil.getCwd(), listener);
+		init(null, listener);
 	}
 
 	/**
@@ -152,14 +151,6 @@ public class RobocodeEngine {
 
 	@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 	private void init(File robocodeHome, RobocodeListener listener) {
-		File robotsDir = FileUtil.getRobotsDir();
-
-		if (robotsDir == null) {
-			throw new RuntimeException("No valid robot directory is specified");
-		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
-			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
-		}
-
 		manager = HiddenAccess.createRobocodeManagerForRobotEngine(robocodeHome);
 		if (listener != null) {
 			battleObserver = new BattleObserver();

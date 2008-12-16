@@ -340,6 +340,17 @@ public class RobocodeManager implements IRobocodeManagerBase {
 	}
 
 	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
+		if (robocodeHome == null) {
+			robocodeHome = FileUtil.getCwd();
+		}
+		File robotsDir = FileUtil.getRobotsDir();
+
+		if (robotsDir == null) {
+			throw new RuntimeException("No valid robot directory is specified");
+		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
+			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
+		}
+
 		RobocodeManager manager = new RobocodeManager(true);
 
 		manager.setEnableGUI(false);
