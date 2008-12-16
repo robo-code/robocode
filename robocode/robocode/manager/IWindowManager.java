@@ -20,11 +20,13 @@ import robocode.ui.BattleResultsTableModel;
 
 import javax.swing.*;
 
+import net.sf.robocode.gui.IWindowManagerBase;
+
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IWindowManager {
+public interface IWindowManager extends IWindowManagerBase {
 	RobocodeFrame getRobocodeFrame();
 
 	void showRobocodeFrame(boolean visible);

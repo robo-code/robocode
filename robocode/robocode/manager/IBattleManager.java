@@ -16,6 +16,7 @@ import robocode.Event;
 import robocode.battle.BattleProperties;
 import robocode.control.BattleSpecification;
 import robocode.control.events.IBattleListener;
+import net.sf.robocode.battle.IBattleManagerBase;
 
 
 /**
@@ -24,7 +25,7 @@ import robocode.control.events.IBattleListener;
  * @author Flemming N. Larsen
  * @since 1.6.1
  */
-public interface IBattleManager {
+public interface IBattleManager extends IBattleManagerBase {
 
 	/**
 	 * Kills the robot.
@@ -60,10 +61,6 @@ public interface IBattleManager {
 
 	void startNewBattle(BattleProperties battleProperties, boolean waitTillOver);
 
-	void startNewBattle(BattleSpecification spec, boolean waitTillOver);
-
-	void waitTillOver(); 
-
 	void nextTurn();
 
 	void prevTurn();
@@ -81,12 +78,6 @@ public interface IBattleManager {
 	void restart();
 
 	void replay();
-
-	void stop(boolean waitTillEnd);
-
-	void addListener(IBattleListener listener);
-
-	void removeListener(IBattleListener listener);
 
 	boolean isManagedTPS();
 

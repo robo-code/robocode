@@ -13,15 +13,18 @@ package robocode.manager;
 
 
 import robocode.repository.FileSpecification;
+import robocode.control.RobotSpecification;
 
 import java.io.File;
 import java.util.List;
+
+import net.sf.robocode.repository.IRepositoryManagerBase;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRepositoryManager {
+public interface IRepositoryManager extends IRepositoryManagerBase {
 	File getRobotCache();
 
 	File getRobotsDirectory();

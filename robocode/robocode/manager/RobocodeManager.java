@@ -30,7 +30,7 @@ package robocode.manager;
 
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
-import robocode.RobocodeFileOutputStream;
+import net.sf.robocode.manager.IRobocodeManagerBase;
 import robocode.io.FileUtil;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
@@ -51,7 +51,7 @@ import java.security.Policy;
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobocodeManager {
+public class RobocodeManager implements IRobocodeManagerBase {
 	private IBattleManager battleManager;
 	private ICpuManager cpuManager;
 	private IImageManager imageManager;
@@ -322,5 +322,37 @@ public class RobocodeManager {
 			hostManager.cleanup();
 			hostManager = null;
 		}
+	}
+
+	public void setVisibleForRobotEngine(boolean visible) {
+		if (visible && !isGUIEnabled()) {
+			// The GUI must be enabled in order to show the window
+			setEnableGUI(true);
+
+			// Set the Look and Feel (LAF)
+			robocode.manager.LookAndFeelManager.setLookAndFeel();
+		}
+
+		if (isGUIEnabled()) {
+			getWindowManager().showRobocodeFrame(visible);
+			getProperties().setOptionsCommonShowResults(visible);
+		}
+	}
+
+	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
+		RobocodeManager manager = new RobocodeManager(true);
+
+		manager.setEnableGUI(false);
+
+		try {
+			FileUtil.setCwd(robocodeHome);
+		} catch (IOException e) {
+			System.err.println(e);
+			return null;
+		}
+
+		manager.initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
+
+		return manager;
 	}
 }

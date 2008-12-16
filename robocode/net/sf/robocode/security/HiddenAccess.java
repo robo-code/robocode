@@ -14,6 +14,7 @@ package net.sf.robocode.security;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotStatics;
+import net.sf.robocode.manager.IRobocodeManagerBase;
 import robocode.*;
 import robocode.Event;
 import robocode.control.RobotSpecification;
@@ -23,6 +24,7 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
+import java.io.File;
 
 
 /**
@@ -37,6 +39,7 @@ public class HiddenAccess {
 	private static IHiddenSpecificationHelper specificationHelper;
 	private static IHiddenStatusHelper statusHelper;
 	private static IHiddenRulesHelper rulesHelper;
+	private static Method robocodeManagerFactory;
 
 	static {
 		Method method;
@@ -67,11 +70,18 @@ public class HiddenAccess {
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
 
+			Class<?> robocodeManager = ClassLoader.getSystemClassLoader().loadClass("robocode.manager.RobocodeManager");
+
+			robocodeManagerFactory = robocodeManager.getDeclaredMethod("createRobocodeManagerForRobotEngine", File.class);
+			robocodeManagerFactory.setAccessible(true);
+
 		} catch (NoSuchMethodException e) {
 			Logger.logError(e);
 		} catch (InvocationTargetException e) {
 			Logger.logError(e);
 		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		} catch (ClassNotFoundException e) {
 			Logger.logError(e);
 		}
 	}
@@ -133,5 +143,16 @@ public class HiddenAccess {
 
 	public static BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime) {
 		return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
+	}
+
+	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
+		try {
+			return (IRobocodeManagerBase) robocodeManagerFactory.invoke(null, robocodeHome);
+		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		} catch (InvocationTargetException e) {
+			Logger.logError(e);
+		}
+		return null;
 	}
 }

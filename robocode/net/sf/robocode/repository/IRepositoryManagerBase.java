@@ -9,17 +9,15 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.repository;
 
 
-import net.sf.robocode.manager.IVersionManagerBase;
+import robocode.control.RobotSpecification;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IVersionManager extends IVersionManagerBase {
-	void checkUpdateCheck();
-
-	boolean checkForNewVersion(boolean notifyNoUpdate);
+public interface IRepositoryManagerBase {
+	RobotSpecification[] getRobotSpecifications();
 }

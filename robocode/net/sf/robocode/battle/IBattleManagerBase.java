@@ -9,17 +9,25 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.battle;
 
 
-import net.sf.robocode.manager.IVersionManagerBase;
+import robocode.control.BattleSpecification;
+import robocode.control.events.IBattleListener;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IVersionManager extends IVersionManagerBase {
-	void checkUpdateCheck();
+public interface IBattleManagerBase {
+	void addListener(IBattleListener listener);
 
-	boolean checkForNewVersion(boolean notifyNoUpdate);
+	void removeListener(IBattleListener listener);
+
+	void waitTillOver();
+
+	void stop(boolean waitTillEnd);
+
+	void startNewBattle(BattleSpecification spec, boolean waitTillOver);
+
 }

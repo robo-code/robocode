@@ -41,6 +41,7 @@ import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
+import robocode.control.RobotSpecification;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -556,8 +557,23 @@ public class RobotRepositoryManager implements IRepositoryManager {
 				onlyNotDevelopment, ignoreTeamRobots);
 	}
 
+	public RobotSpecification[] getRobotSpecifications() {
+		List<FileSpecification> list = getRobotSpecificationsList();
+		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
+
+		for (int i = 0; i < robotSpecs.length; i++) {
+			final FileSpecification specification = list.get(i);
+
+			if (specification.isValid()) {
+				robotSpecs[i] = specification.createRobotSpecification();
+			}
+		}
+		return robotSpecs;
+	}
+
 	public FileSpecification getRobot(String fullClassNameWithVersion) {
 		loadRobotRepository();
 		return repository.get(fullClassNameWithVersion);
 	}
+
 }

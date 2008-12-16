@@ -473,4 +473,10 @@ public class WindowManager implements IWindowManager {
 		}
 		window.setVisible(true);
 	}
+
+	public void cleanup() {
+		if (manager.isGUIEnabled()) {
+			getRobocodeFrame().dispose();
+		}
+	}
 }

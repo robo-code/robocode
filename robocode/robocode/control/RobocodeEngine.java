@@ -39,14 +39,14 @@ package robocode.control;
 
 import robocode.control.events.*;
 import robocode.io.FileUtil;
-import robocode.manager.RobocodeManager;
-import robocode.repository.FileSpecification;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import net.sf.robocode.manager.IRobocodeManagerBase;
+import net.sf.robocode.security.HiddenAccess;
 
 
 /**
@@ -71,7 +71,7 @@ import java.util.List;
  */
 public class RobocodeEngine {
 
-	RobocodeManager manager;
+	private IRobocodeManagerBase manager;
 	private BattleObserver battleObserver;
 	private BattleSpecification battleSpecification;
 
@@ -112,6 +112,8 @@ public class RobocodeEngine {
 	 * @see #RobocodeEngine(File)
 	 * @see #close()
 	 */
+	@SuppressWarnings({ "deprecation"})
+	@Deprecated
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
 		init(robocodeHome, listener);
 	}
@@ -129,6 +131,8 @@ public class RobocodeEngine {
 	 * @see #RobocodeEngine(File)
 	 * @see #close()
 	 */
+	@Deprecated
+	@SuppressWarnings({ "deprecation"})
 	public RobocodeEngine(RobocodeListener listener) {
 		init(FileUtil.getCwd(), listener);
 	}
@@ -156,17 +160,7 @@ public class RobocodeEngine {
 			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
 		}
 
-		manager = new RobocodeManager(true);
-		manager.setEnableGUI(false);
-
-		try {
-			FileUtil.setCwd(robocodeHome);
-		} catch (IOException e) {
-			System.err.println(e);
-			return;
-		}
-
-		manager.initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
+		manager = HiddenAccess.createRobocodeManagerForRobotEngine(robocodeHome);
 		if (listener != null) {
 			battleObserver = new BattleObserver();
 			battleObserver.listener = listener;
@@ -203,16 +197,12 @@ public class RobocodeEngine {
 	 * This method automatically disposes the Robocode window if it open.
 	 */
 	public void close() {
-		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().getRobocodeFrame().dispose();
-		}
+		manager.getWindowManager().cleanup();
 		if (battleObserver != null) {
 			manager.getBattleManager().removeListener(battleObserver);
 		}
-		if (manager != null) {
-			manager.cleanup();
-			manager = null;
-		}
+		manager.cleanup();
+		manager = null;
 	}
 
 	/**
@@ -231,18 +221,7 @@ public class RobocodeEngine {
 	 *                {@code false} otherwise.
 	 */
 	public void setVisible(boolean visible) {
-		if (visible && !manager.isGUIEnabled()) {
-			// The GUI must be enabled in order to show the window
-			manager.setEnableGUI(true);
-
-			// Set the Look and Feel (LAF)
-			robocode.manager.LookAndFeelManager.setLookAndFeel();
-		}
-
-		if (manager.isGUIEnabled()) {
-			manager.getWindowManager().showRobocodeFrame(visible);
-			manager.getProperties().setOptionsCommonShowResults(visible);
-		}
+		manager.setVisibleForRobotEngine(visible);
 	}
 
 	/**
@@ -255,17 +234,7 @@ public class RobocodeEngine {
 	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		List<FileSpecification> list = manager.getRepositoryManager().getRobotSpecificationsList();
-		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
-
-		for (int i = 0; i < robotSpecs.length; i++) {
-			final FileSpecification specification = list.get(i);
-
-			if (specification.isValid()) {
-				robotSpecs[i] = specification.createRobotSpecification();
-			}
-		}
-		return robotSpecs;
+		return manager.getRepositoryManager().getRobotSpecifications();
 	}
 
 	/**
@@ -317,8 +286,6 @@ public class RobocodeEngine {
 	 * @param battleSpecification the specification of the battle to play including the
 	 *                            participation robots.
 	 * @see #runBattle(BattleSpecification, boolean)
-	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
-	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification
 	 * @see #getLocalRepository()
 	 */
@@ -334,8 +301,6 @@ public class RobocodeEngine {
 	 *                     participating robots.
 	 * @param waitTillOver will block caller till end of battle if set
 	 * @see #runBattle(BattleSpecification)
-	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
-	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification
 	 * @see #getLocalRepository()
 	 * @since 1.6.2
@@ -359,7 +324,6 @@ public class RobocodeEngine {
 	 * Aborts the current battle if it is running.
 	 *
 	 * @see #runBattle(BattleSpecification)
-	 * @see RobocodeListener#battleAborted(BattleSpecification)
 	 */
 	public void abortCurrentBattle() {
 		manager.getBattleManager().stop(true);

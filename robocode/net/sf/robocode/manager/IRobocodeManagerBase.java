@@ -9,17 +9,22 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.manager;
 
 
-import net.sf.robocode.manager.IVersionManagerBase;
+import net.sf.robocode.battle.IBattleManagerBase;
+import net.sf.robocode.gui.IWindowManagerBase;
+import net.sf.robocode.repository.IRepositoryManagerBase;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IVersionManager extends IVersionManagerBase {
-	void checkUpdateCheck();
-
-	boolean checkForNewVersion(boolean notifyNoUpdate);
+public interface IRobocodeManagerBase {
+	IBattleManagerBase getBattleManager();
+	IWindowManagerBase getWindowManager();
+	IVersionManagerBase getVersionManager();
+	IRepositoryManagerBase getRepositoryManager();
+	void setVisibleForRobotEngine(boolean visible);
+	void cleanup();
 }
