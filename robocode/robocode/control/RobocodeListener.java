@@ -27,6 +27,7 @@ import robocode.control.events.IBattleListener;
  *
  * @see IBattleListener
  */
+@Deprecated
 public interface RobocodeListener {
 
 	/**
@@ -39,6 +40,7 @@ public interface RobocodeListener {
 	 * @param battle  information about the battle that completed
 	 * @param results an array containing the results for the individual robot
 	 */
+	@Deprecated
 	void battleComplete(BattleSpecification battle, RobotResults[] results);
 
 	/**
@@ -50,6 +52,7 @@ public interface RobocodeListener {
 	 *
 	 * @param battle information about the battle that was aborted
 	 */
+	@Deprecated
 	void battleAborted(BattleSpecification battle);
 
 	/**
@@ -62,5 +65,6 @@ public interface RobocodeListener {
 	 *
 	 * @param message the message logged by the game
 	 */
+	@Deprecated
 	void battleMessage(String message);
 }

@@ -113,6 +113,7 @@ public class RobocodeEngine {
 	 * @see #RobocodeEngine(File)
 	 * @see #close()
 	 */
+	@Deprecated
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
 		init(robocodeHome, listener);
 	}
@@ -130,6 +131,7 @@ public class RobocodeEngine {
 	 * @see #RobocodeEngine(File)
 	 * @see #close()
 	 */
+	@Deprecated
 	public RobocodeEngine(RobocodeListener listener) {
 		init(FileUtil.getCwd(), listener);
 	}
