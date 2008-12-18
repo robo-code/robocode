@@ -9,11 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
-
-
-import robocode.peer.ExecCommands;
-import robocode.peer.ExecResults;
+package net.sf.robocode.peer;
 
 
 /**

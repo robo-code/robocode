@@ -10,6 +10,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="robocode.api" exported="" />
+    <orderEntry type="module" module-name="robocode.core" exported="" />
   </component>
 </module>
 

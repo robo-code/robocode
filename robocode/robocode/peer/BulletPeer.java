@@ -54,7 +54,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import java.util.List;
 
-import robocode.peer.BulletStatus;
+import net.sf.robocode.peer.BulletStatus;
 
 
 /**

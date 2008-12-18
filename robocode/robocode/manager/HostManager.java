@@ -14,6 +14,7 @@ package robocode.manager;
 
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
+import net.sf.robocode.peer.*;
 import robocode.control.RobotSpecification;
 import robocode.peer.*;
 import robocode.peer.proxies.*;

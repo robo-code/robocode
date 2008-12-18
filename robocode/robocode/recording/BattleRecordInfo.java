@@ -16,9 +16,9 @@ import net.sf.robocode.security.HiddenAccess;
 import robocode.BattleResults;
 import robocode.BattleRules;
 import robocode.battle.BattleProperties;
-import robocode.common.IXmlSerializable;
-import robocode.common.XmlReader;
-import robocode.common.XmlWriter;
+import net.sf.robocode.serialization.IXmlSerializable;
+import net.sf.robocode.serialization.XmlReader;
+import net.sf.robocode.serialization.XmlWriter;
 
 import java.io.IOException;
 import java.io.Serializable;

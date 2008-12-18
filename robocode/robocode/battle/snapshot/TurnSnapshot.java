@@ -15,15 +15,15 @@ package robocode.battle.snapshot;
 
 
 import robocode.battle.Battle;
-import robocode.common.IXmlSerializable;
-import robocode.common.XmlReader;
-import robocode.common.XmlWriter;
+import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.peer.BulletPeer;
+import net.sf.robocode.serialization.IXmlSerializable;
+import net.sf.robocode.serialization.XmlReader;
 import robocode.peer.RobotPeer;
+import robocode.peer.BulletPeer;
 
 import java.io.IOException;
 import java.util.*;

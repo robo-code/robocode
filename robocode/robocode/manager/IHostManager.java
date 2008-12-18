@@ -13,7 +13,7 @@ package robocode.manager;
 
 
 import robocode.control.RobotSpecification;
-import robocode.peer.IRobotPeer;
+import net.sf.robocode.peer.IRobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.peer.proxies.IHostingRobotProxy;
 

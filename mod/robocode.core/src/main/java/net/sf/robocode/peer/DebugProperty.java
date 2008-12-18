@@ -9,14 +9,10 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.peer;
 
 
-import net.sf.robocode.serialization.ISerializableHelper;
-import net.sf.robocode.serialization.RbSerializer;
-import robocode.common.IXmlSerializable;
-import robocode.common.XmlReader;
-import robocode.common.XmlWriter;
+import net.sf.robocode.serialization.*;
 import robocode.control.snapshot.IDebugProperty;
 
 import java.io.IOException;

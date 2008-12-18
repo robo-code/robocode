@@ -70,6 +70,7 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
+import net.sf.robocode.peer.*;
 import robocode.*;
 import robocode.repository.FileSpecification;
 import robocode.battle.Battle;
@@ -86,12 +87,13 @@ import robocode.peer.proxies.IHostingRobotProxy;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.EventQueue;
 import robocode.peer.robot.RobotStatistics;
-import robocode.peer.TeamMessage;
+import net.sf.robocode.peer.TeamMessage;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import static java.lang.Math.*;
+import static java.lang.Math.abs;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -489,7 +491,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public final ExecResults executeImplIn(ExecCommands newCommands) {
-		newCommands.validate(this);
+		validateCommands(newCommands);
 
 		if (!disableExec) {
 			// from robot to battle
@@ -552,6 +554,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		
 		return new ExecResults(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),
 				getHalt(), shouldWait, false);
+	}
+
+	private void validateCommands(ExecCommands newCommands) {
+		if (Double.isNaN(newCommands.getMaxTurnRate())) {
+			println("You cannot setMaxTurnRate to: " + newCommands.getMaxTurnRate());
+		}
+		newCommands.setMaxTurnRate(Math.min(abs(newCommands.getMaxTurnRate()), Rules.MAX_TURN_RATE_RADIANS));
+
+		if (Double.isNaN(newCommands.getMaxVelocity())) {
+			println("You cannot setMaxVelocity to: " + newCommands.getMaxVelocity());
+		}
+		newCommands.setMaxVelocity(Math.min(abs(newCommands.getMaxVelocity()), Rules.MAX_VELOCITY));
 	}
 
 	private List<Event> readoutEvents() {

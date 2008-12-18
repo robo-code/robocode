@@ -14,7 +14,7 @@
 package robocode.robotpaint;
 
 
-import static robocode.common.ObjectCloner.deepCopy;
+import static net.sf.robocode.serialization.ObjectCloner.deepCopy;
 
 import java.awt.*;
 import java.awt.RenderingHints.Key;

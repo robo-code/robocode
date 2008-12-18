@@ -13,8 +13,8 @@ package robocode.dialog;
 
 
 import net.sf.robocode.io.Logger;
-import robocode.common.IXmlSerializable;
-import robocode.common.XmlWriter;
+import net.sf.robocode.serialization.IXmlSerializable;
+import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.manager.RobocodeManager;

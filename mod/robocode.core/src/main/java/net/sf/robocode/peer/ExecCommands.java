@@ -9,18 +9,15 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.peer;
 
 
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.Rules;
-import robocode.peer.TeamMessage;
-import robocode.peer.RobotPeer;
 
 import java.io.Serializable;
 import static java.lang.Math.abs;
-import static java.lang.Math.min;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,20 +93,6 @@ public final class ExecCommands implements Serializable {
 			teamMessages = origin.teamMessages;
 			isTryingToPaint = origin.isTryingToPaint; 
 		}
-	}
-
-	public void validate(RobotPeer peer) {
-		if (Double.isNaN(maxTurnRate)) {
-			peer.println("You cannot setMaxTurnRate to: " + maxTurnRate);
-			return;
-		}
-		maxTurnRate = min(abs(maxTurnRate), Rules.MAX_TURN_RATE_RADIANS);
-
-		if (Double.isNaN(maxVelocity)) {
-			peer.println("You cannot setMaxVelocity to: " + maxVelocity);
-			return;
-		}
-		maxVelocity = min(abs(maxVelocity), Rules.MAX_VELOCITY);
 	}
 
 	public int getBodyColor() {
@@ -221,7 +204,7 @@ public final class ExecCommands implements Serializable {
 	}
 
 	public void setMaxTurnRate(double maxTurnRate) {
-		this.maxTurnRate = min(abs(maxTurnRate), Rules.MAX_TURN_RATE_RADIANS);
+		this.maxTurnRate = Math.min(abs(maxTurnRate), Rules.MAX_TURN_RATE_RADIANS);
 	}
 
 	public double getMaxVelocity() {
@@ -229,7 +212,7 @@ public final class ExecCommands implements Serializable {
 	}
 
 	public void setMaxVelocity(double maxVelocity) {
-		this.maxVelocity = min(abs(maxVelocity), Rules.MAX_VELOCITY);
+		this.maxVelocity = Math.min(abs(maxVelocity), Rules.MAX_VELOCITY);
 	}
 
 	public boolean isMoved() {

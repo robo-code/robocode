@@ -10,6 +10,7 @@
         <module>robocode.api</module>
         <module>robocode.core</module>
         <module>robocode.battle</module>
+        <module>robocode.host</module>
         <module>robocode.ui</module>
     </modules>
     <build>

@@ -14,13 +14,13 @@ package components;
 
 import org.junit.Test;
 import helpers.Assert;
-import robocode.peer.BulletCommand;
 import net.sf.robocode.serialization.RbSerializer;
-import robocode.peer.DebugProperty;
-import robocode.common.ObjectCloner;
+import net.sf.robocode.serialization.ObjectCloner;
 import robocode.robotpaint.Graphics2DSerialized;
-import robocode.peer.TeamMessage;
-import robocode.peer.ExecCommands;
+import net.sf.robocode.peer.TeamMessage;
+import net.sf.robocode.peer.ExecCommands;
+import net.sf.robocode.peer.DebugProperty;
+import net.sf.robocode.peer.BulletCommand;
 
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;

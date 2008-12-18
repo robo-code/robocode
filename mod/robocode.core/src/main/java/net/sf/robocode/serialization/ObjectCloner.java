@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.common;
+package net.sf.robocode.serialization;
 
 
 import java.awt.*;

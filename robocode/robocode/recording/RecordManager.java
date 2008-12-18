@@ -18,9 +18,9 @@ import robocode.BattleRules;
 import robocode.battle.IBattle;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.common.IXmlSerializable;
-import robocode.common.XmlReader;
-import robocode.common.XmlWriter;
+import net.sf.robocode.serialization.IXmlSerializable;
+import net.sf.robocode.serialization.XmlReader;
+import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.manager.RobocodeManager;
 
