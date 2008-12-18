@@ -10,11 +10,17 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.api</artifactId>
     <version>1.7</version>
-    <dependencies>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.core</artifactId>
-            <version>1.7</version>
-        </dependency>
-    </dependencies>
+    <build>
+      <pluginManagement>
+          <plugins>
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-jar-plugin</artifactId>
+                  <configuration>
+                      <finalName>robocode</finalName>
+                  </configuration>
+              </plugin>
+          </plugins>
+      </pluginManagement>
+    </build>
 </project>
