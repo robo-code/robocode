@@ -111,7 +111,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		ThreadGroup tg = Thread.currentThread().getThreadGroup();
 
 		while (tg != null) {
-			addSafeThreadGroup(tg);
+			threadManager.addSafeThreadGroup(tg);
 			tg = tg.getParent();
 		}
 		// we need to excersize it, to load all used classes on this thread.
