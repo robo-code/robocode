@@ -120,7 +120,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			robotY = (int) (s.getY() + 0.5);
 			heading = (int) (toDegrees(s.getHeading()) + 0.5);
 			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
-			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
+			gunBearing = (int) (toDegrees(Utils.normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
 			gunReady = (s.getGunHeat() <= 0);
 
 			// Auto fire
@@ -474,7 +474,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void bearGunTo(int angle) {
 		if (peer != null) {
-			peer.turnGun(normalRelativeAngle(peer.getBodyHeading() + toRadians(angle) - peer.getGunHeading()));
+			peer.turnGun(Utils.normalRelativeAngle(peer.getBodyHeading() + toRadians(angle) - peer.getGunHeading()));
 		} else {
 			uninitializedException();
 		}
@@ -811,7 +811,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnGunTo(int angle) {
 		if (peer != null) {
-			peer.turnGun(normalRelativeAngle(toRadians(angle) - peer.getGunHeading()));
+			peer.turnGun(Utils.normalRelativeAngle(toRadians(angle) - peer.getGunHeading()));
 		} else {
 			uninitializedException();
 		}
@@ -869,7 +869,7 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	 */
 	public void turnTo(int angle) {
 		if (peer != null) {
-			peer.turnBody(normalRelativeAngle(toRadians(angle) - peer.getBodyHeading()));
+			peer.turnBody(Utils.normalRelativeAngle(toRadians(angle) - peer.getBodyHeading()));
 		} else {
 			uninitializedException();
 		}
