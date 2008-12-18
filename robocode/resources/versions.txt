@@ -1,16 +1,16 @@
 Version 1.6.2 Beta 3
-(13-Dec-2008)
+(18-Dec-2008)
 
 = Changes =
-* Published new battle events and battle snapshots in the Control API.
+* Published new battle events and battle snapshots in the Control API, i.e. in the robocode.control package.
+* Added missing javadocs (HTML documentation) to public Robocode API classes.
 
 = Bugfixes =
-* The current scoring (but not the total scoring) was calculated wrong from 1.6.1.
-** The current Ramming Kill Bonus was set to current bullet kill bonus.
-** This bug gave wrong ranking in the Ranking Panel.
-* Bug [2410856] with Bullet power.
-* Bug [2405844] with gun heat.
-* Bug [2412707]
+* The current scoring (not the total scoring) was calculated wrong from version 1.6.1. The current Ramming Kill Bonus was set to current bullet kill bonus, which gave wrong ranking in the Ranking Panel.
+* Bug [2410856]: wrong bullet power could be reported back from Bullet.getPower(), which could be > Rules.MAX_BULLET_POWER or < Rules.MIN_BULLET_POWER.
+* Bug [2405844]: gunHeat could be negative, which should never occur.
+* Bug [2412707]: Replay exception, where an ArrayIndexOutOfBoundsException occurred in some situations.
+* Fixed problem with RobocodeEngine.setVisible(true), where the RobocodeEngine would hang forever.
 
 Version 1.6.2 Beta 2
 (07-Dec-2008)
