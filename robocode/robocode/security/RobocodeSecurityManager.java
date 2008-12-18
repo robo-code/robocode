@@ -74,7 +74,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	public RobocodeSecurityManager(Thread safeThread, IThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
-		safeThreads.add(safeThread);
 		this.threadManager = threadManager;
 		this.enabled = enabled;
 		this.experimental = experimental;
@@ -104,6 +103,15 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (experimental) {
 			alowedPackages.add("robotinterfaces.peer");
 		}
+
+		ThreadGroup tg = Thread.currentThread().getThreadGroup();
+		while (tg != null) {
+			addSafeThreadGroup(tg);
+			tg = tg.getParent();
+		}
+		//we need to excersize it, to load all used classes on this thread.
+		isSafeThread();
+		isSafeContext();
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
@@ -122,12 +130,18 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(Thread t) {
-		super.checkAccess(t);
-		Thread c = Thread.currentThread();
-
-		if (isSafeThread(c) && isSafeContext()) {
+		if (!enabled) {
 			return;
 		}
+		Thread c = Thread.currentThread();
+		if (isSafeThread(c)) {
+			return;
+		}
+		if (isSafeContext()){
+			return;
+		}
+		super.checkAccess(t);
+
 
 		IHostedThread robotProxy = threadManager.getRobotProxy(c);
 
@@ -167,13 +181,18 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(ThreadGroup g) {
-		super.checkAccess(g);
-
-		Thread c = Thread.currentThread();
-
-		if (isSafeThread(c) && isSafeContext()) {
+		if (!enabled) {
 			return;
 		}
+		Thread c = Thread.currentThread();
+		if (isSafeThread(c)) {
+			return;
+		}
+		if (isSafeContext()){
+			return;
+		}
+		super.checkAccess(g);
+
 		ThreadGroup cg = c.getThreadGroup();
 
 		if (cg == null) {
@@ -221,6 +240,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 	 */
 	@Override
 	public void checkPermission(Permission perm, Object context) {
+		if (!enabled) {
+			return;
+		}
 		syserr.println("Checking permission " + perm + " for context " + context);
 		checkPermission(perm);
 	}
@@ -569,15 +591,19 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPackageAccess(String pkg) {
-		super.checkPackageAccess(pkg);
-
-		if (isSafeContext()) {
+		if (!enabled) {
 			return;
 		}
-
+		if (pkg.equals("java.lang")) {
+			return;
+		}
 		if (isSafeThread()) {
 			return;
 		}
+		if (isSafeContext()) {
+			return;
+		}
+		super.checkPackageAccess(pkg);
 
 		// Access to robocode sub package?
 		if (pkg.startsWith("robocode.")) {

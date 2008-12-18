@@ -287,15 +287,6 @@ public class RobocodeManager {
 		System.setSecurityManager(securityManager);
 
 		RobocodeFileOutputStream.setThreadManager(getThreadManager());
-
-		if (securityOn) {
-			ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-			while (tg != null) {
-				securityManager.addSafeThreadGroup(tg);
-				tg = tg.getParent();
-			}
-		}
 	}
 
 	public boolean isGUIEnabled() {
