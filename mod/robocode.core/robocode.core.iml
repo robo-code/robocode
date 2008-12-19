@@ -11,6 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="robocode.api" exported="" />
+    <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
   </component>
 </module>
 

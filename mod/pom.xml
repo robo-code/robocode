@@ -6,6 +6,11 @@
     <artifactId>_root</artifactId>
     <version>1.7</version>
     <packaging>pom</packaging>
+    <name>Robocode</name>
+    <organization>
+        <name>Robocode</name>
+        <url>http://robocode.sf.net</url>
+    </organization>
     <modules>
         <module>robocode.api</module>
         <module>robocode.core</module>
@@ -13,6 +18,20 @@
         <module>robocode.host</module>
         <module>robocode.ui</module>
     </modules>
+    <repositories>
+        <repository>
+            <id>net.sf.robocode</id>
+            <url>http://robocode.sourceforge.net/maven2</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <downloadUrl>http://robocode.sourceforge.net/maven2-snapshot</downloadUrl>
+        <repository>
+            <id>net.sf.robocode</id>
+            <name>Robocode release repository</name>
+            <url>scp://web.sourceforge.net:22/home/groups/r/ro/robocode/htdocs/maven2</url>
+        </repository>
+    </distributionManagement>
     <build>
       <plugins>
           <plugin>

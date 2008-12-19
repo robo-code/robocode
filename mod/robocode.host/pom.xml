@@ -10,6 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.host</artifactId>
     <version>1.7</version>
+    <name>Robocode Host</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
