@@ -68,7 +68,7 @@ import net.sf.robocode.security.HiddenAccess;
  * @author Joachim Hofer (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobocodeEngine {
+public class RobocodeEngine implements IRobocodeEngine {
 
 	private IRobocodeManagerBase manager;
 	private BattleObserver battleObserver;
