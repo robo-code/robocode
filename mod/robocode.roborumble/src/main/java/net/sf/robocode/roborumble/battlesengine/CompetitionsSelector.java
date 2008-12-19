@@ -14,13 +14,13 @@
  *     - Properties are now stored using PropertiesUtil.storeProperties()
  *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
  *******************************************************************************/
-package roborumble.battlesengine;
+package net.sf.robocode.roborumble.battlesengine;
 
 
 import codesize.Codesize;
 import codesize.Codesize.Item;
-import static roborumble.util.PropertiesUtil.getProperties;
-import static roborumble.util.PropertiesUtil.storeProperties;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.storeProperties;
 
 import java.io.File;
 import java.util.Properties;

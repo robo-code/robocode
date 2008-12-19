@@ -21,12 +21,12 @@
  *     - Added new EXCLUDE property, which is used for excluding participants
  *     - Added the isExcluded() method
  *******************************************************************************/
-package roborumble.netengine;
+package net.sf.robocode.roborumble.netengine;
 
 
-import roborumble.battlesengine.CompetitionsSelector;
-import static roborumble.netengine.FileTransfer.DownloadStatus;
-import static roborumble.util.PropertiesUtil.getProperties;
+import net.sf.robocode.roborumble.battlesengine.CompetitionsSelector;
+import static net.sf.robocode.roborumble.netengine.FileTransfer.DownloadStatus;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.net.HttpURLConnection;

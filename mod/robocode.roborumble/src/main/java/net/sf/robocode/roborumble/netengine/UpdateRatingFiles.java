@@ -18,11 +18,11 @@
  *       only this exception is ever thrown
  *     - Added missing close() to streams
  *******************************************************************************/
-package roborumble.netengine;
+package net.sf.robocode.roborumble.netengine;
 
 
-import static roborumble.util.PropertiesUtil.getProperties;
-import static roborumble.util.PropertiesUtil.storeProperties;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.storeProperties;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

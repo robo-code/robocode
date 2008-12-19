@@ -13,7 +13,7 @@
  *       blocked if a connection is hanging. In addition, this version of
  *       FileTransfer support sessions
  *******************************************************************************/
-package roborumble.netengine;
+package net.sf.robocode.roborumble.netengine;
 
 
 import java.io.*;

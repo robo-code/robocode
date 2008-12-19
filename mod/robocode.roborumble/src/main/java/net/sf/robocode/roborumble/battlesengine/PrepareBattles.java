@@ -18,10 +18,10 @@
  *       only this exception is ever thrown
  *     - Added missing close() to buffered readers
  *******************************************************************************/
-package roborumble.battlesengine;
+package net.sf.robocode.roborumble.battlesengine;
 
 
-import static roborumble.util.PropertiesUtil.getProperties;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.util.Properties;

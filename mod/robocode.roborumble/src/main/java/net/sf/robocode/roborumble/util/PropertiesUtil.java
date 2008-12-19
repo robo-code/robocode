@@ -9,7 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial API and implementation
  *******************************************************************************/
-package roborumble.util;
+package net.sf.robocode.roborumble.util;
 
 
 import java.io.FileInputStream;

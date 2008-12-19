@@ -18,12 +18,11 @@
  *       only this exception is ever thrown
  *     - Added missing close() to streams
  *******************************************************************************/
-package roborumble.netengine;
+package net.sf.robocode.roborumble.netengine;
 
 
-import robocode.manager.VersionManager;
-import roborumble.battlesengine.CompetitionsSelector;
-import static roborumble.util.PropertiesUtil.getProperties;
+import net.sf.robocode.roborumble.battlesengine.CompetitionsSelector;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.net.URL;
@@ -57,7 +56,7 @@ public class ResultsUpload {
 	private final String teams;
 	private final String melee;
 
-	public ResultsUpload(String propertiesfile) {
+	public ResultsUpload(String propertiesfile, String clientVersion) {
 		// Read parameters
 		Properties parameters = getProperties(propertiesfile);
 
@@ -78,7 +77,7 @@ public class ResultsUpload {
 		nanobots = parameters.getProperty("NANOBOTS", "");
 		battlesnumfile = parameters.getProperty("BATTLESNUMFILE", "");
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
-		client = VersionManager.getVersionStatic();
+		client = clientVersion;
 		teams = parameters.getProperty("TEAMS", "");
 		melee = parameters.getProperty("MELEE", "");
 

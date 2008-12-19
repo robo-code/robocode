@@ -21,14 +21,14 @@
  *     Joachim Hofer
  *     - Fixing problem with wrong results in RoboRumble due to wrong ordering
  *******************************************************************************/
-package roborumble.battlesengine;
+package net.sf.robocode.roborumble.battlesengine;
 
 
 import robocode.control.events.BattleAdaptor;
 import robocode.control.*;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
-import static roborumble.util.PropertiesUtil.getProperties;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.util.*;
@@ -56,6 +56,7 @@ public class BattlesRunner {
 	private final Map<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>(500);
 	private RobotResults[] lastResults;
 	private BattleObserver battleObserver;
+	public static String version; 
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
@@ -149,6 +150,7 @@ public class BattlesRunner {
 		}
 
 		engine.removeBattleListener(battleObserver);
+		version=engine.getVersion();
 
 		// close
 		outtxt.close();

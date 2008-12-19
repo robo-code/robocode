@@ -15,15 +15,15 @@
  *       ITERATE=YES, DOWNLOAD=YES, and RUNONLY=SERVER, the ratings were only
  *       read once, not per iteration
  *******************************************************************************/
-package roborumble;
+package net.sf.robocode.roborumble;
 
 
-import roborumble.battlesengine.BattlesRunner;
-import roborumble.battlesengine.PrepareBattles;
-import roborumble.netengine.BotsDownload;
-import roborumble.netengine.ResultsUpload;
-import roborumble.netengine.UpdateRatingFiles;
-import static roborumble.util.PropertiesUtil.getProperties;
+import net.sf.robocode.roborumble.battlesengine.BattlesRunner;
+import net.sf.robocode.roborumble.battlesengine.PrepareBattles;
+import net.sf.robocode.roborumble.netengine.BotsDownload;
+import net.sf.robocode.roborumble.netengine.ResultsUpload;
+import net.sf.robocode.roborumble.netengine.UpdateRatingFiles;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.util.Properties;
 
@@ -135,7 +135,7 @@ public class RoboRumbleAtHome {
 			// Upload results
 			if (uploads.equals("YES")) {
 				System.out.println("Uploading results ...");
-				ResultsUpload upload = new ResultsUpload(parameters);
+				ResultsUpload upload = new ResultsUpload(parameters, BattlesRunner.version);
 
 				// Uploads the results to the server
 				upload.uploadResults();
