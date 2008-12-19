@@ -5,22 +5,15 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
- * This sample is showing how to free your robot from class inheritance from Robot.
- * Proxy is just dummy forwarding code, which is only visible part for Robocode.
- * RegullarMonk is for infrastructure, helpers etc.
- * GreyEminence is the real brain behind.
- *
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
 package sampleex;
 
-
 import robocode.AdvancedRobot;
 import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
-
 
 /**
  * This is just dummy proxy, it's hiding the Eminence and
@@ -45,14 +38,6 @@ public class ProxyOfGreyEminence extends AdvancedRobot {
 		monk.run();
 	}
 }
-
-
-/**
- * Monk of a order. Implements anything too boring for Eminence.
- * The infractructure base class.
- */
-abstract class RegullarMonk {}
-
 
 /**
  * The power behind the throne.

@@ -11,18 +11,16 @@
  *******************************************************************************/
 package sampleex;
 
-
-import robocode.AdvancedRobot;
-import robocode.HitByBulletEvent;
-import robocode.ScannedRobotEvent;
-import robocode.robotinterfaces.IAdvancedEvents;
 import robocode.robotinterfaces.IAdvancedRobot;
-import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IInteractiveEvents;
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.ScannedRobotEvent;
+import robocode.HitByBulletEvent;
+import robocode.AdvancedRobot;
 
 import java.io.PrintStream;
-
 
 /**
  * @author Pavel Savara (original)
@@ -54,32 +52,6 @@ public class MasterAndSlave extends MasterBase implements IAdvancedRobot {
 		return null;
 	}
 }
-
-
-/**
- * This is robot derived from AdvancedRobot.
- * Only reason to use this inheritance and this class is that external robots are unable to call RobotPeer directly
- */
-class Slave extends AdvancedRobot {
-	final MasterBase parent;
-
-	public Slave(MasterBase parent) {
-		this.parent = parent;
-	}
-
-	public void run() {
-		parent.run();
-	}
-
-	public void onScannedRobot(ScannedRobotEvent e) {
-		parent.onScannedRobot(e);
-	}
-
-	public void onHitByBullet(HitByBulletEvent e) {
-		parent.onHitByBullet(e);
-	}
-}
-
 
 /**
  * Infrastructure base class, for helpers and boring implementation details
