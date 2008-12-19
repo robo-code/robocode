@@ -2,10 +2,7 @@
 import java.io.File;
 
 import robocode.BattleResults;
-import robocode.control.BattleSpecification;
-import robocode.control.BattlefieldSpecification;
-import robocode.control.RobocodeEngine;
-import robocode.control.RobotSpecification;
+import robocode.control.*;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
@@ -28,7 +25,7 @@ public class RobocodeRunner {
 
 		// Create the RobocodeEngine
 		// RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
-		RobocodeEngine engine = new RobocodeEngine(new File("C:/Robocode")); // Run from C:/Robocode
+		IRobocodeEngine engine = new RobocodeEngine(new File("C:/Robocode")); // Run from C:/Robocode
 
 		// Add battle listener to our RobocodeEngine
 		engine.addBattleListener(battleListener);

@@ -78,7 +78,7 @@ public class BattlesRunner {
 	}
 
 	private void initialize() {
-		RobocodeEngine engine = new RobocodeEngine();
+		IRobocodeEngine engine = new RobocodeEngine();
 		RobotSpecification[] repository = engine.getLocalRepository();
 
 		for (RobotSpecification spec : repository) {
@@ -90,7 +90,7 @@ public class BattlesRunner {
 
 	public void runBattlesImpl(boolean melee) {
 		// Initialize objects
-		RobocodeEngine engine = new RobocodeEngine();
+		IRobocodeEngine engine = new RobocodeEngine();
 
 		engine.addBattleListener(battleObserver);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);

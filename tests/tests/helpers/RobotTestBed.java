@@ -33,7 +33,7 @@ import net.sf.robocode.io.Logger;
  * @author Pavel Savara (original)
  */
 public abstract class RobotTestBed extends BattleAdaptor {
-	protected static RobocodeEngine engine;
+	protected static IRobocodeEngine engine;
 	protected BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected int errors = 0;
 	protected int messages = 0;
