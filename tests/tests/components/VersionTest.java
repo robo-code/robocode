@@ -12,7 +12,7 @@
 package components;
 
 
-import helpers.Assert;
+import net.sf.robocode.test.helpers.Assert;
 import org.junit.Test;
 import robocode.manager.VersionManager;
 

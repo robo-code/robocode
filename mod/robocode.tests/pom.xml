@@ -22,5 +22,15 @@
             <artifactId>robocode.core</artifactId>
             <version>1.7</version>
         </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.samples</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.5</version>
+        </dependency>
     </dependencies>
 </project>

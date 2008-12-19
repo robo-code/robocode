@@ -24,6 +24,7 @@
     </orderEntry>
     <orderEntry type="module" module-name="robocode.api" />
     <orderEntry type="module" module-name="robocode.core" />
+    <orderEntry type="module" module-name="robocode.tests" />
   </component>
 </module>
 

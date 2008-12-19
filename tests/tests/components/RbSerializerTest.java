@@ -13,7 +13,7 @@ package components;
 
 
 import org.junit.Test;
-import helpers.Assert;
+import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.serialization.RbSerializer;
 import net.sf.robocode.serialization.ObjectCloner;
 import robocode.robotpaint.Graphics2DSerialized;

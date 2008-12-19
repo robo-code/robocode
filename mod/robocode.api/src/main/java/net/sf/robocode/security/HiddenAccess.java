@@ -41,8 +41,16 @@ public class HiddenAccess {
 	private static IHiddenStatusHelper statusHelper;
 	private static IHiddenRulesHelper rulesHelper;
 	private static Method robocodeManagerFactory;
+	private static boolean initialized;
 
 	static {
+		init();
+	}
+
+	private static void init() {
+		if (initialized) {
+			return;
+		}
 		Method method;
 
 		try {
@@ -76,6 +84,7 @@ public class HiddenAccess {
 			robocodeManagerFactory = robocodeManager.getDeclaredMethod("createRobocodeManagerForRobotEngine", File.class);
 			robocodeManagerFactory.setAccessible(true);
 
+			initialized  = true;
 		} catch (NoSuchMethodException e) {
 			Logger.logError(e);
 		} catch (InvocationTargetException e) {
@@ -147,6 +156,7 @@ public class HiddenAccess {
 	}
 
 	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
+		init();
 		try {
 			return (IRobocodeManagerBase) robocodeManagerFactory.invoke(null, robocodeHome);
 		} catch (IllegalAccessException e) {
