@@ -282,12 +282,11 @@
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/mod/robocode.battle/robocode.battle.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/mod/robocode.core/robocode.core.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/mod/robocode.host/robocode.host.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/mod/robocode.installer/robocode.installer.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/mod/robocode.roborumble/robocode.roborumble.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/mod/robocode.samples/robocode.samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/mod/robocode.tests/robocode.tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.ui/robocode.ui.iml" filepath="$PROJECT_DIR$/mod/robocode.ui/robocode.ui.iml" />
-      <module fileurl="file://$PROJECT_DIR$/robocodeextract/robocodeextract.iml" filepath="$PROJECT_DIR$/robocodeextract/robocodeextract.iml" />
-      <module fileurl="file://$PROJECT_DIR$/roborumble/roborumble.iml" filepath="$PROJECT_DIR$/roborumble/roborumble.iml" />
       <module fileurl="file://$PROJECT_DIR$/tests/tests.iml" filepath="$PROJECT_DIR$/tests/tests.iml" />
     </modules>
   </component>

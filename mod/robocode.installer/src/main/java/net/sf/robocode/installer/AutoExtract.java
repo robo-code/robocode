@@ -17,7 +17,7 @@
  *       user does not have to change the directory before calling robocode.sh
  *     - Code cleanup
  *******************************************************************************/
-package robocode;
+package net.sf.robocode.installer;
 
 
 import javax.swing.*;
