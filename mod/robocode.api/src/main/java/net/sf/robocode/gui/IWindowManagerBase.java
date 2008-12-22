@@ -16,5 +16,7 @@ package net.sf.robocode.gui;
  * @author Pavel Savara (original)
  */
 public interface IWindowManagerBase {
+	void showRobocodeFrame(boolean visible, boolean iconified);
+	void showSplashScreen();
 	void cleanup();
 }

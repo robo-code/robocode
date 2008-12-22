@@ -336,7 +336,7 @@ public class RobocodeManager implements IRobocodeManagerBase {
 		}
 
 		if (isGUIEnabled()) {
-			getWindowManager().showRobocodeFrame(visible);
+			getWindowManager().showRobocodeFrame(visible, false);
 			getProperties().setOptionsCommonShowResults(visible);
 		}
 	}

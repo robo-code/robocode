@@ -30,8 +30,6 @@ import net.sf.robocode.gui.IWindowManagerBase;
 public interface IWindowManager extends IWindowManagerBase {
 	RobocodeFrame getRobocodeFrame();
 
-	void showRobocodeFrame(boolean visible);
-
 	void showAboutBox();
 
 	String showBattleOpenDialog(String defExt, String name);
@@ -67,8 +65,6 @@ public interface IWindowManager extends IWindowManagerBase {
 	void showRobotPackager();
 
 	void showRobotExtractor(JFrame owner);
-
-	void showSplashScreen();
 
 	void showNewBattleDialog(BattleProperties battleProperties);
 

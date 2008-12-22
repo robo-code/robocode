@@ -95,9 +95,13 @@ public class WindowManager implements IWindowManager {
 		return robocodeFrame;
 	}
 
-	public void showRobocodeFrame(boolean visible) {
+	public void showRobocodeFrame(boolean visible, boolean iconified) {
 		RobocodeFrame frame = getRobocodeFrame();
 
+		if (iconified) {
+			frame.setState(Frame.ICONIFIED);
+		}
+		
 		if (visible) {
 			// Pack frame to size all components
 			WindowUtil.packCenterShow(frame);

@@ -137,26 +137,6 @@ public class RobocodeFrame extends JFrame {
 		getRobotButtonsPanel().validate();
 	}
 
-	public void runIntroBattle() {
-		IBattleManager battleManager = manager.getBattleManager();
-		final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
-
-		if (intro.exists()) {
-			battleManager.setBattleFilename(intro.getPath());
-			battleManager.loadBattleProperties();
-
-			boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
-
-			manager.getProperties().setOptionsCommonShowResults(false);
-			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
-			battleManager.setDefaultBattleProperties();
-			manager.getProperties().setOptionsCommonShowResults(origShowResults);
-			restartButton.setEnabled(false);
-			getRobotButtonsPanel().removeAll();
-			getRobotButtonsPanel().repaint();
-		}
-	}
-
 	public void checkUpdateOnStart() {
 		if (!isIconified()) {
 			Date lastCheckedDate = manager.getProperties().getVersionChecked();

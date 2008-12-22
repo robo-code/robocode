@@ -119,17 +119,14 @@ public class Robocode {
 					}
 					manager.getWindowManager().showSplashScreen();
 				}
-				if (setup.minimize) {
-					manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
-				}
-				manager.getWindowManager().showRobocodeFrame(true);
+				manager.getWindowManager().showRobocodeFrame(true, setup.minimize);
 
 				// Play the intro battle if a battle file is not specified and this is the first time Robocode is being run
 				if (setup.battleFilename == null
 						&& !manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
 					manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
 					manager.saveProperties();
-					manager.getWindowManager().getRobocodeFrame().runIntroBattle();
+					runIntroBattle();
 				}
 			}
 
@@ -167,6 +164,27 @@ public class Robocode {
 			}
 		} catch (Throwable e) {
 			Logger.logError(e);
+		}
+	}
+
+	public void runIntroBattle() {
+		IBattleManager battleManager = manager.getBattleManager();
+		final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
+
+		if (intro.exists()) {
+			battleManager.setBattleFilename(intro.getPath());
+			battleManager.loadBattleProperties();
+
+			boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
+
+			manager.getProperties().setOptionsCommonShowResults(false);
+			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
+			battleManager.setDefaultBattleProperties();
+			manager.getProperties().setOptionsCommonShowResults(origShowResults);
+			/*TODO restartButton.setEnabled(false);
+			getRobotButtonsPanel().removeAll();
+			getRobotButtonsPanel().repaint();
+			*/
 		}
 	}
 
