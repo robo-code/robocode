@@ -1,5 +1,14 @@
 Version 1.6.2 Beta 3
 (18-Dec-2008)
+---------------
+
+= Bugfixes =
+* Fixed open battle dialog, which was not loading.
+* Fixed recorder NPE
+
+Version 1.6.2 Beta 3
+(18-Dec-2008)
+---------------
 
 = Changes =
 * Published new battle events and battle snapshots in the Control API, i.e. in the robocode.control package.

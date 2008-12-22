@@ -373,7 +373,7 @@ public class RecordManager implements IRecordManager {
 
 		} catch (IOException e) {
 			logError(e);
-			recorder = null;
+			recorder = new BattleRecorder(this);
 			createTempFile();
 		} finally {
 			cleanupStream(ois);
