@@ -122,7 +122,7 @@ public final class VersionManager implements IVersionManager {
 		BufferedReader in = null;
 
 		try {
-			URL versionsUrl = VersionManager.class.getResource("/resources/versions.txt");
+			URL versionsUrl = VersionManager.class.getResource("/versions.txt");
 
 			if (versionsUrl == null) {
 				logError("no url");

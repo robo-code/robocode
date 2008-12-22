@@ -555,7 +555,7 @@ public class RobocodeFrame extends JFrame {
 	private void initialize() {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setTitle("Robocode");
-		setIconImage(ImageUtil.getImage("/resources/icons/robocode-icon.png"));
+		setIconImage(ImageUtil.getImage("/icons/robocode-icon.png"));
 		setResizable(true);
 		setVisible(false);
 

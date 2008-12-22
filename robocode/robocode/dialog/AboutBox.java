@@ -122,7 +122,7 @@ public final class AboutBox extends JDialog {
 
 		robocodeVersion = manager.getVersionManager().getVersion();
 
-		iconURL = ClassLoader.class.getResource("/resources/icons/robocode-icon.png");
+		iconURL = ClassLoader.class.getResource("/icons/robocode-icon.png");
 
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("About Robocode");

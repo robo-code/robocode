@@ -79,7 +79,7 @@ public class ImageManager implements IImageManager {
 
 	public Image getGroundTileImage(int index) {
 		if (groundImages[index] == null) {
-			groundImages[index] = getImage("/resources/images/ground/blue_metal/blue_metal_" + index + ".png");
+			groundImages[index] = getImage("/images/ground/blue_metal/blue_metal_" + index + ".png");
 		}
 		return groundImages[index];
 	}
@@ -97,7 +97,7 @@ public class ImageManager implements IImageManager {
 				List<RenderImage> frames = new ArrayList<RenderImage>();
 
 				for (numFrame = 1;; numFrame++) {
-					filename = "/resources/images/explosion/explosion" + numExplosion + '-' + numFrame + ".png";
+					filename = "/images/explosion/explosion" + numExplosion + '-' + numFrame + ".png";
 
 					if (ClassLoader.class.getResource(filename) == null) {
 						if (numFrame == 1) {
@@ -124,7 +124,7 @@ public class ImageManager implements IImageManager {
 
 	public RenderImage getExplosionDebriseRenderImage() {
 		if (debriseRenderImage == null) {
-			debriseRenderImage = new RenderImage(getImage("/resources/images/ground/explode_debris.png"));
+			debriseRenderImage = new RenderImage(getImage("/images/ground/explode_debris.png"));
 		}
 		return debriseRenderImage;
 	}
@@ -146,7 +146,7 @@ public class ImageManager implements IImageManager {
 	 */
 	private Image getBodyImage() {
 		if (bodyImage == null) {
-			bodyImage = getImage("/resources/images/body.png");
+			bodyImage = getImage("/images/body.png");
 		}
 		return bodyImage;
 	}
@@ -159,7 +159,7 @@ public class ImageManager implements IImageManager {
 	 */
 	private Image getGunImage() {
 		if (gunImage == null) {
-			gunImage = getImage("/resources/images/turret.png");
+			gunImage = getImage("/images/turret.png");
 		}
 		return gunImage;
 	}
@@ -172,7 +172,7 @@ public class ImageManager implements IImageManager {
 	 */
 	private Image getRadarImage() {
 		if (radarImage == null) {
-			radarImage = getImage("/resources/images/radar.png");
+			radarImage = getImage("/images/radar.png");
 		}
 		return radarImage;
 	}
