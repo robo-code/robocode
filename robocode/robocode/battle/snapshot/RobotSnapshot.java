@@ -284,7 +284,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 * @return the scan arc for the robot.
 	 */
 	public Arc2D getScanArc() {
-		return scanArc != null ? (Arc2D) scanArc.clone() : null;
+		return scanArc != null ? scanArc.create() : null;
 	}
 
 	/**
@@ -317,34 +317,35 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		return robotScoreSnapshot;
 	}
 
-	/**
-	 * The purpose of this class it to serialize the Arc2D.Double class,
-	 * which does not support the Serializable interface itself.
-	 *
-	 * @author Flemming N. Larsen
-	 * @since 1.6.1
-	 */
-	private class SerializableArc extends Arc2D.Double implements Serializable {
-
+	// to overcome various serialization problems with Arc2D
+	// to cope with bug in Java 6
+	// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6522514
+	private class SerializableArc implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		/**
-		 * Public constructor needed for Serialization.
-		 */
-		public SerializableArc() {
-			super();
-		}
+		public double x;
+		public double y;
+		public double w;
+		public double h;
+		public double start;
+		public double extent;
+		public int type;
 
-		/**
-		 * Copy constructor used for construction a SerializableArc based
-		 * on a Arc2D.Double.
-		 *
-		 * @param arc the Arc2D.Double object to copy
-		 */
+		public SerializableArc() {}
+
 		public SerializableArc(Arc2D.Double arc) {
-			super(arc.getBounds(), arc.start, arc.extent, arc.getArcType());
+			x = arc.getX();
+			y = arc.getY();
+			w = arc.getWidth();
+			h = arc.getHeight();
+			start = arc.getAngleStart();
+			extent = arc.getAngleExtent();
+			type = arc.getArcType();
 		}
 
+		public Arc2D create() {
+			return new Arc2D.Double(x, y, w, h, start, extent, type);
+		}
 	}
 
 	@Override

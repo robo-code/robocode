@@ -322,7 +322,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		add(getDescriptionPanel(), BorderLayout.SOUTH);
 		setVisible(true);
 		showInstructions();
-		refreshRobotList();
+		refreshRobotList(false);
 	}
 
 	private void removeAllButtonActionPerformed() {
@@ -566,24 +566,41 @@ public class RobotSelectionPanel extends WizardPanel {
 		return (getSelectedRobotsCount() >= minRobots && getSelectedRobotsCount() <= maxRobots);
 	}
 
-	public void refreshRobotList() {
-		SwingUtilities.invokeLater(
-				new Runnable() {
+	public void refreshRobotList(final boolean withClear) {
+
+		final Runnable runnable = new Runnable() {
 			public void run() {
-				IRepositoryManager repositoryManager = manager.getRepositoryManager();
+				try {
+					setBusyPointer(true);
 
-				repositoryManager.clearRobotList();
+					final IRepositoryManager repositoryManager = manager.getRepositoryManager();
 
-				List<FileSpecification> robotList = repositoryManager.getRobotSpecificationsList(onlyShowSource,
-						onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
+					if (withClear) {
+						repositoryManager.clearRobotList();
+					}
 
-				getAvailableRobotsPanel().setRobotList(robotList);
-				if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
-					setSelectedRobots(robotList, preSelectedRobots);
-					preSelectedRobots = null;
+					List<FileSpecification> robotList = repositoryManager.getRobotSpecificationsList(onlyShowSource,
+							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
+
+					getAvailableRobotsPanel().setRobotList(robotList);
+					if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
+						setSelectedRobots(robotList, preSelectedRobots);
+						preSelectedRobots = null;
+					}
+				} finally {
+					setBusyPointer(false);
 				}
 			}
-		});
+		};
+
+		SwingUtilities.invokeLater(runnable);
+	}
+
+	private static final Cursor BUSY_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+
+	private void setBusyPointer(boolean enabled) {
+		setCursor(enabled ? BUSY_CURSOR : DEFAULT_CURSOR);
 	}
 
 	private void selectedRobotsListSelectionChanged() {

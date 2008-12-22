@@ -61,15 +61,10 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	private final RobocodeManager manager;
 
-	/**
-	 * NewBattleDialog constructor comment.
-	 *
-	 * @param manager		  robocode main manager
-	 */
-	public NewBattleDialog(RobocodeManager manager) {
+	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
 		super(manager.getWindowManager().getRobocodeFrame(), true);
 		this.manager = manager;
-		this.battleProperties = manager.getBattleManager().getBattleProperties();
+		this.battleProperties = battleProperties;
 
 		initialize();
 	}
@@ -256,7 +251,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private class EventHandler extends WindowAdapter implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
+				getRobotSelectionPanel().refreshRobotList(true);
 			}
 		}
 	}

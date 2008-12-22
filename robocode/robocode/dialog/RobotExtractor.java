@@ -69,7 +69,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
+				getRobotSelectionPanel().refreshRobotList(false);
 			}
 		}
 	}
