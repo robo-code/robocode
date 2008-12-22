@@ -44,54 +44,19 @@ import java.util.Date;
  * @author Flemming N. Larsen (contributor)
  */
 public final class VersionManager implements IVersionManager {
-	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
-
 	private static String version;
-	private final RobocodeManager manager;
 
-	public VersionManager(RobocodeManager manager) {
-		this.manager = manager;
-	}
+	public VersionManager() {}
 
-	public void checkUpdateCheck() {
-		Date lastCheckedDate = manager.getProperties().getVersionChecked();
-
-		Date today = new Date();
-
-		if (lastCheckedDate == null) {
-			lastCheckedDate = today;
-			manager.getProperties().setVersionChecked(lastCheckedDate);
-			manager.saveProperties();
-		}
-		Calendar checkDate = Calendar.getInstance();
-
-		checkDate.setTime(lastCheckedDate);
-		checkDate.add(Calendar.DATE, 5);
-
-		if (checkDate.getTime().before(today) && checkForNewVersion(false)) {
-			manager.getProperties().setVersionChecked(today);
-			manager.saveProperties();
-		}
-	}
-
-	public boolean checkForNewVersion(boolean notifyNoUpdate) {
-		URL url;
-
-		try {
-			url = new URL("http://robocode.sourceforge.net/version/version.html");
-		} catch (MalformedURLException e) {
-			logError("Unable to check for new version: ", e);
-			if (notifyNoUpdate) {
-				WindowUtil.messageError("Unable to check for new version: " + e);
-			}
-			return false;
-		}
-
+	public String checkForNewVersion() {
+		String newVersLine = null;
 		InputStream inputStream = null;
 		InputStreamReader inputStreamReader = null;
 		BufferedReader reader = null;
 
 		try {
+			URL url = new URL("http://robocode.sourceforge.net/version/version.html");
+
 			URLConnection urlConnection = url.openConnection();
 
 			urlConnection.setConnectTimeout(5000);
@@ -108,66 +73,24 @@ public final class VersionManager implements IVersionManager {
 			inputStreamReader = new InputStreamReader(inputStream);
 			reader = new BufferedReader(inputStreamReader);
 
-			String newVersLine = reader.readLine();
-			String curVersLine = getVersion();
+			newVersLine = reader.readLine();
 
-			boolean newVersionAvailable = false;
-
-			if (newVersLine != null && curVersLine != null) {
-				Version newVersion = new Version(newVersLine);
-
-				if (newVersion.compareTo(curVersLine) > 0) {
-					newVersionAvailable = true;
-
-					if (JOptionPane.showConfirmDialog(manager.getWindowManager().getRobocodeFrame(),
-							"Version " + newVersion + " of Robocode is now available.  Would you like to download it?",
-							"Version " + newVersion + " available", JOptionPane.YES_NO_OPTION)
-							== JOptionPane.YES_OPTION) {
-						try {
-							BrowserManager.openURL(INSTALL_URL);
-						} catch (IOException e) {
-							JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(), e.getMessage(),
-									"Unable to open browser!", JOptionPane.INFORMATION_MESSAGE);
-						}
-					} else if (newVersion.isFinal()) {
-						JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
-								"It is highly recommended that you always download the latest version.  You may get it at "
-								+ INSTALL_URL,
-								"Update when you can!",
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-			}
-			if (!newVersionAvailable && notifyNoUpdate) {
-				JOptionPane.showMessageDialog(manager.getWindowManager().getRobocodeFrame(),
-						"You have version " + version + ".  This is the latest version of Robocode.", "No update available",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
+		} catch (MalformedURLException e) {
+			logError("Unable to check for new version: ", e);
+			newVersLine = null;
 		} catch (IOException e) {
 			logError("Unable to check for new version: " + e);
-			if (notifyNoUpdate) {
-				WindowUtil.messageError("Unable to check for new version: " + e);
-			}
-			return false;
+			newVersLine = null;
 		} finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException ignored) {}
-			}
-			if (inputStreamReader != null) {
-				try {
-					inputStreamReader.close();
-				} catch (IOException ignored) {}
-			}
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException ignored) {}
-			}
+			FileUtil.cleanupStream(inputStream);
+			FileUtil.cleanupStream(inputStreamReader);
+			FileUtil.cleanupStream(reader);
 		}
+		return newVersLine;
+	}
 
-		return true;
+	public boolean isFinal(String version) {
+		return new Version(version).isFinal();
 	}
 
 	public String getVersion() {
@@ -287,7 +210,7 @@ public final class VersionManager implements IVersionManager {
 		return version;
 	}
 
-	public static int compare(String a, String b) {
+	public int compare(String a, String b) {
 		return new Version(a).compareTo(new Version(b));
 	}
 }

@@ -11,6 +11,7 @@
  *******************************************************************************/
 package sampleex;
 
+
 /**
  * Monk of a order. Implements anything too boring for Eminence.
  * The infractructure base class.

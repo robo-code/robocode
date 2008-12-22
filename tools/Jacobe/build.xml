@@ -13,10 +13,8 @@
   <taskdef name="jacobe" classname="com.tiobe.jacobe.JacobeTask" classpath="jacobe.jar"/>
   
   <target name="jacobe">
-  	<beautify dir="../../autoextract"/>
+  	<beautify dir="../../mod"/>
   	<beautify dir="../../robocode"/>
-  	<beautify dir="../../robocodeextract"/>
-  	<beautify dir="../../roborumble"/>
   	<beautify dir="../../tests"/>
   </target>
 

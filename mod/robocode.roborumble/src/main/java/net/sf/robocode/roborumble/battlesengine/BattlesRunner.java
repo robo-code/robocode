@@ -150,7 +150,7 @@ public class BattlesRunner {
 		}
 
 		engine.removeBattleListener(battleObserver);
-		version=engine.getVersion();
+		version = engine.getVersion();
 
 		// close
 		outtxt.close();

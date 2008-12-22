@@ -19,7 +19,7 @@ import net.sf.robocode.manager.IVersionManagerBase;
  * @author Pavel Savara (original)
  */
 public interface IVersionManager extends IVersionManagerBase {
-	void checkUpdateCheck();
-
-	boolean checkForNewVersion(boolean notifyNoUpdate);
+	int compare(String a, String b);
+	boolean isFinal(String version);
+	String checkForNewVersion();
 }

@@ -119,13 +119,10 @@ public class Robocode {
 					}
 					manager.getWindowManager().showSplashScreen();
 				}
-				manager.getWindowManager().showRobocodeFrame(true);
-				if (!setup.minimize) {
-					manager.getVersionManager().checkUpdateCheck();
-				}
 				if (setup.minimize) {
 					manager.getWindowManager().getRobocodeFrame().setState(Frame.ICONIFIED);
 				}
+				manager.getWindowManager().showRobocodeFrame(true);
 
 				// Play the intro battle if a battle file is not specified and this is the first time Robocode is being run
 				if (setup.battleFilename == null

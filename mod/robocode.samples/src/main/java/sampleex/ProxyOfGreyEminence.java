@@ -11,9 +11,11 @@
  *******************************************************************************/
 package sampleex;
 
+
 import robocode.AdvancedRobot;
 import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
+
 
 /**
  * This is just dummy proxy, it's hiding the Eminence and
@@ -38,6 +40,7 @@ public class ProxyOfGreyEminence extends AdvancedRobot {
 		monk.run();
 	}
 }
+
 
 /**
  * The power behind the throne.

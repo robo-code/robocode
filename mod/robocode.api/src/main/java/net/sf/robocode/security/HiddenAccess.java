@@ -84,7 +84,7 @@ public class HiddenAccess {
 			robocodeManagerFactory = robocodeManager.getDeclaredMethod("createRobocodeManagerForRobotEngine", File.class);
 			robocodeManagerFactory.setAccessible(true);
 
-			initialized  = true;
+			initialized = true;
 		} catch (NoSuchMethodException e) {
 			Logger.logError(e);
 		} catch (InvocationTargetException e) {

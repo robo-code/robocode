@@ -15,6 +15,7 @@ package robocode.recording;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.BattleResults;
 import robocode.BattleRules;
+import robocode.io.FileUtil;
 import robocode.battle.IBattle;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
@@ -75,36 +76,19 @@ public class RecordManager implements IRecordManager {
 	}
 
 	public void cleanupStreams() {
-		cleanupStream(objectWriteStream);
+		FileUtil.cleanupStream(objectWriteStream);
 		objectWriteStream = null;
-		cleanupStream(bufferedWriteStream);
+		FileUtil.cleanupStream(bufferedWriteStream);
 		bufferedWriteStream = null;
-		cleanupStream(fileWriteStream);
+		FileUtil.cleanupStream(fileWriteStream);
 		fileWriteStream = null;
 
-		cleanupStream(objectReadStream);
+		FileUtil.cleanupStream(objectReadStream);
 		objectReadStream = null;
-		cleanupStream(bufferedReadStream);
+		FileUtil.cleanupStream(bufferedReadStream);
 		bufferedReadStream = null;
-		cleanupStream(fileReadStream);
+		FileUtil.cleanupStream(fileReadStream);
 		fileReadStream = null;
-	}
-
-	private void cleanupStream(Object stream) {
-		if (stream instanceof Flushable) {
-			try {
-				((Flushable) stream).flush();
-			} catch (IOException e) {
-				logError(e);
-			}
-		}
-		if (stream instanceof Closeable) {
-			try {
-				((Closeable) stream).close();
-			} catch (IOException e) {
-				logError(e);
-			}
-		}
 	}
 
 	public void attachRecorder(BattleEventDispatcher battleEventDispatcher) {
@@ -227,13 +211,13 @@ public class RecordManager implements IRecordManager {
 			createTempFile();
 			recordInfo = null;
 		} finally {
-			cleanupStream(oos);
-			cleanupStream(bos);
-			cleanupStream(fos);
-			cleanupStream(ois);
-			cleanupStream(zis);
-			cleanupStream(bis);
-			cleanupStream(fis);
+			FileUtil.cleanupStream(oos);
+			FileUtil.cleanupStream(bos);
+			FileUtil.cleanupStream(fos);
+			FileUtil.cleanupStream(ois);
+			FileUtil.cleanupStream(zis);
+			FileUtil.cleanupStream(bis);
+			FileUtil.cleanupStream(fis);
 		}
 	}
 
@@ -376,14 +360,14 @@ public class RecordManager implements IRecordManager {
 			recorder = new BattleRecorder(this);
 			createTempFile();
 		} finally {
-			cleanupStream(ois);
-			cleanupStream(bis);
-			cleanupStream(fis);
-			cleanupStream(oos);
-			cleanupStream(zos);
-			cleanupStream(bos);
-			cleanupStream(fos);
-			cleanupStream(osw);
+			FileUtil.cleanupStream(ois);
+			FileUtil.cleanupStream(bis);
+			FileUtil.cleanupStream(fis);
+			FileUtil.cleanupStream(oos);
+			FileUtil.cleanupStream(zos);
+			FileUtil.cleanupStream(bos);
+			FileUtil.cleanupStream(fos);
+			FileUtil.cleanupStream(osw);
 		}
 	}
 

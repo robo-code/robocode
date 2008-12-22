@@ -45,8 +45,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.*;
 import java.util.List;
 
 
@@ -64,6 +64,7 @@ public class RobocodeFrame extends JFrame {
 	private final static int MAX_TPS_SLIDER_VALUE = 61;
 
 	private final static int UPDATE_TITLE_INTERVAL = 500; // milliseconds
+	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
 
 	private static final Cursor BUSY_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
@@ -153,6 +154,73 @@ public class RobocodeFrame extends JFrame {
 			restartButton.setEnabled(false);
 			getRobotButtonsPanel().removeAll();
 			getRobotButtonsPanel().repaint();
+		}
+	}
+
+	public void checkUpdateOnStart() {
+		if (!isIconified()) {
+			Date lastCheckedDate = manager.getProperties().getVersionChecked();
+
+			Date today = new Date();
+
+			if (lastCheckedDate == null) {
+				lastCheckedDate = today;
+				manager.getProperties().setVersionChecked(lastCheckedDate);
+				manager.saveProperties();
+			}
+			Calendar checkDate = Calendar.getInstance();
+
+			checkDate.setTime(lastCheckedDate);
+			checkDate.add(Calendar.DATE, 5);
+
+			if (checkDate.getTime().before(today) && checkForNewVersion(false)) {
+				manager.getProperties().setVersionChecked(today);
+				manager.saveProperties();
+			}
+		}
+	}
+
+	public boolean checkForNewVersion(boolean notifyNoUpdate) {
+		final IVersionManager versionManager = manager.getVersionManager();
+		String newVersion = versionManager.checkForNewVersion();
+
+		String currentVersion = versionManager.getVersion();
+		boolean newVersionAvailable = false;
+
+		if (newVersion != null && currentVersion != null) {
+
+			if (versionManager.compare(currentVersion, newVersion) > 0) {
+				newVersionAvailable = true;
+
+				showNewVersion(newVersion);
+			}
+		}
+		if (!newVersionAvailable && notifyNoUpdate) {
+			showLatestVersion(currentVersion);
+		}
+		return true;
+	}
+
+	private void showLatestVersion(String version) {
+		JOptionPane.showMessageDialog(this, "You have version " + version + ".  This is the latest version of Robocode.",
+				"No update available", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private void showNewVersion(String newVersion) {
+		if (JOptionPane.showConfirmDialog(this,
+				"Version " + newVersion + " of Robocode is now available.  Would you like to download it?",
+				"Version " + newVersion + " available", JOptionPane.YES_NO_OPTION)
+				== JOptionPane.YES_OPTION) {
+			try {
+				BrowserManager.openURL(INSTALL_URL);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open browser!",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		} else if (manager.getVersionManager().isFinal(newVersion)) {
+			JOptionPane.showMessageDialog(this,
+					"It is highly recommended that you always download the latest version.  You may get it at " + INSTALL_URL,
+					"Update when you can!", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

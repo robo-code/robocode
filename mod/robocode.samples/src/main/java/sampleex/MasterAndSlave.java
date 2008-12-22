@@ -11,6 +11,7 @@
  *******************************************************************************/
 package sampleex;
 
+
 import robocode.robotinterfaces.IAdvancedRobot;
 import robocode.robotinterfaces.IInteractiveEvents;
 import robocode.robotinterfaces.IAdvancedEvents;
@@ -21,6 +22,7 @@ import robocode.HitByBulletEvent;
 import robocode.AdvancedRobot;
 
 import java.io.PrintStream;
+
 
 /**
  * @author Pavel Savara (original)
@@ -52,6 +54,7 @@ public class MasterAndSlave extends MasterBase implements IAdvancedRobot {
 		return null;
 	}
 }
+
 
 /**
  * Infrastructure base class, for helpers and boring implementation details

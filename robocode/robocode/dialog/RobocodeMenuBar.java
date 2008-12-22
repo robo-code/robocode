@@ -801,7 +801,9 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void helpCheckForNewVersionActionPerformed() {
-		manager.getVersionManager().checkForNewVersion(true);
+		if (!robocodeFrame.checkForNewVersion(true)) {
+			WindowUtil.messageError("Unable to check for new version ");
+		}
 	}
 
 	private void helpFaqActionPerformed() {

@@ -11,12 +11,15 @@
  *******************************************************************************/
 package robocode.control;
 
+
 import robocode.control.events.IBattleListener;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobocodeEngine {
+
 	/**
 	 * Adds a battle listener that must receive events occurring in battles.
 	 *

@@ -15,6 +15,7 @@ package components;
 import net.sf.robocode.test.helpers.Assert;
 import org.junit.Test;
 import robocode.manager.VersionManager;
+import robocode.manager.IVersionManager;
 
 
 /**
@@ -22,93 +23,95 @@ import robocode.manager.VersionManager;
  */
 public class VersionTest {
 
+	IVersionManager versionManager = new VersionManager();
+
 	@Test
 	public void same() {
-		Assert.assertTrue(VersionManager.compare("1.1.3", "1.1.3") == 0);
+		Assert.assertTrue(versionManager.compare("1.1.3", "1.1.3") == 0);
 	}
 
 	@Test
 	public void greater() {
-		Assert.assertTrue(VersionManager.compare("1.1.4", "1.1.3") > 0);
+		Assert.assertTrue(versionManager.compare("1.1.4", "1.1.3") > 0);
 	}
 
 	@Test
 	public void greaterShort() {
-		Assert.assertTrue(VersionManager.compare("1.4", "1.1.3") > 0);
+		Assert.assertTrue(versionManager.compare("1.4", "1.1.3") > 0);
 	}
 
 	@Test
 	public void greaterShort2() {
-		Assert.assertTrue(VersionManager.compare("1.4", "1.1") > 0);
+		Assert.assertTrue(versionManager.compare("1.4", "1.1") > 0);
 	}
 
 	@Test
 	public void greaterShortBeta() {
-		Assert.assertTrue(VersionManager.compare("1.4 Beta", "1.1.3") > 0);
+		Assert.assertTrue(versionManager.compare("1.4 Beta", "1.1.3") > 0);
 	}
 
 	@Test
 	public void greaterShortBeta3() {
-		Assert.assertTrue(VersionManager.compare("1.4 Beta", "1.1") > 0);
+		Assert.assertTrue(versionManager.compare("1.4 Beta", "1.1") > 0);
 	}
 
 	@Test
 	public void greaterShortBeta2() {
-		Assert.assertTrue(VersionManager.compare("1.4", "1.1.3") > 0);
+		Assert.assertTrue(versionManager.compare("1.4", "1.1.3") > 0);
 	}
 
 	@Test
 	public void greaterLong() {
-		Assert.assertTrue(VersionManager.compare("1.4.1", "1.1") > 0);
+		Assert.assertTrue(versionManager.compare("1.4.1", "1.1") > 0);
 	}
 
 	@Test
 	public void smaller() {
-		Assert.assertTrue(VersionManager.compare("1.1.2", "1.1.3") < 0);
+		Assert.assertTrue(versionManager.compare("1.1.2", "1.1.3") < 0);
 	}
 
 	@Test
 	public void greaterToo() {
-		Assert.assertTrue(VersionManager.compare("4.1.2", "1.1.3") > 0);
+		Assert.assertTrue(versionManager.compare("4.1.2", "1.1.3") > 0);
 	}
 
 	@Test
 	public void greaterThanBeta() {
-		Assert.assertTrue(VersionManager.compare("1.1.3", "1.1.3 Beta") > 0);
+		Assert.assertTrue(versionManager.compare("1.1.3", "1.1.3 Beta") > 0);
 	}
 
 	@Test
 	public void smallerThanBeta() {
-		Assert.assertTrue(VersionManager.compare("1.1.2", "1.1.3 Beta") < 0);
+		Assert.assertTrue(versionManager.compare("1.1.2", "1.1.3 Beta") < 0);
 	}
 
 	@Test
 	public void smallerThanAlpha() {
-		Assert.assertTrue(VersionManager.compare("1.1.3 Alpha", "1.1.3 Beta") < 0);
+		Assert.assertTrue(versionManager.compare("1.1.3 Alpha", "1.1.3 Beta") < 0);
 	}
 
 	@Test
 	public void compareBetas() {
 		// we can't name versions Beta 2
-		Assert.assertTrue(VersionManager.compare("1.1.3 Beta", "1.1.3 Beta 2") < 0);
+		Assert.assertTrue(versionManager.compare("1.1.3 Beta", "1.1.3 Beta 2") < 0);
 	}
 
 	@Test
 	public void compareBetas2() {
 		// we can't name versions Beta 2
-		Assert.assertTrue(VersionManager.compare("1.1.3 Beta 2 ", "1.1.3 Beta 3") < 0);
+		Assert.assertTrue(versionManager.compare("1.1.3 Beta 2 ", "1.1.3 Beta 3") < 0);
 	}
 
 	@Test
 	public void compareBetas3() {
 		// we can't name versions Beta 2
-		Assert.assertTrue(VersionManager.compare("1.1.3 Beta2 ", "1.1.3 Beta 3") < 0);
+		Assert.assertTrue(versionManager.compare("1.1.3 Beta2 ", "1.1.3 Beta 3") < 0);
 	}
 
 	@Test
 	public void compareBetas4() {
 		// we can't name versions Beta 2
-		Assert.assertTrue(VersionManager.compare("1.1.3Beta2", "1.1.3 Beta 3") < 0);
+		Assert.assertTrue(versionManager.compare("1.1.3Beta2", "1.1.3 Beta 3") < 0);
 	}
 
 }

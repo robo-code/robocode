@@ -11,9 +11,11 @@
  *******************************************************************************/
 package sampleex;
 
+
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 import robocode.HitByBulletEvent;
+
 
 /**
  * This is robot derived from AdvancedRobot.

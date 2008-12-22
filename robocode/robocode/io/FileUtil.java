@@ -18,10 +18,8 @@
 package robocode.io;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import static net.sf.robocode.io.Logger.logError;
+import java.io.*;
 
 
 /**
@@ -264,4 +262,22 @@ public class FileUtil {
 	public static File getCompilerConfigFile() {
 		return new File(getConfigDir(), "compiler.properties");
 	}
+
+	public static void cleanupStream(Object stream) {
+		if (stream instanceof Flushable) {
+			try {
+				((Flushable) stream).flush();
+			} catch (IOException e) {
+				logError(e);
+			}
+		}
+		if (stream instanceof Closeable) {
+			try {
+				((Closeable) stream).close();
+			} catch (IOException e) {
+				logError(e);
+			}
+		}
+	}
+
 }

@@ -103,6 +103,9 @@ public class WindowManager implements IWindowManager {
 			WindowUtil.packCenterShow(frame);
 
 			WindowUtil.setStatusLabel(frame.getStatusLabel());
+
+			frame.checkUpdateOnStart();
+
 		} else {
 			frame.setVisible(false);
 		}

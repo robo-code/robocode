@@ -215,7 +215,7 @@ public class RobocodeManager implements IRobocodeManagerBase {
 	 */
 	public IVersionManager getVersionManager() {
 		if (versionManager == null) {
-			versionManager = new VersionManager(this);
+			versionManager = new VersionManager();
 		}
 		return versionManager;
 	}
