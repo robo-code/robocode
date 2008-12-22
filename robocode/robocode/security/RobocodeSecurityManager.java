@@ -105,11 +105,12 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
 		while (tg != null) {
 			addSafeThreadGroup(tg);
 			tg = tg.getParent();
 		}
-		//we need to excersize it, to load all used classes on this thread.
+		// we need to excersize it, to load all used classes on this thread.
 		isSafeThread();
 		isSafeContext();
 	}
@@ -134,14 +135,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 		Thread c = Thread.currentThread();
+
 		if (isSafeThread(c)) {
 			return;
 		}
-		if (isSafeContext()){
+		if (isSafeContext()) {
 			return;
 		}
 		super.checkAccess(t);
-
 
 		IHostedThread robotProxy = threadManager.getRobotProxy(c);
 
@@ -185,10 +186,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 		Thread c = Thread.currentThread();
+
 		if (isSafeThread(c)) {
 			return;
 		}
-		if (isSafeContext()){
+		if (isSafeContext()) {
 			return;
 		}
 		super.checkAccess(g);
