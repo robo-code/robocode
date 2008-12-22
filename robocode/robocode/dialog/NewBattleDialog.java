@@ -208,8 +208,8 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			if (battleProperties != null) {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
-			robotSelectionPanel = new RobotSelectionPanel(manager.getRobotRepositoryManager(), MIN_ROBOTS, MAX_ROBOTS,
-					true, "Select robots for the battle", false, false, false, false, false,
+			robotSelectionPanel = new RobotSelectionPanel(manager, MIN_ROBOTS, MAX_ROBOTS, true,
+					"Select robots for the battle", false, false, false, false, false,
 					!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}
 		return robotSelectionPanel;
@@ -251,7 +251,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private class EventHandler extends WindowAdapter implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
+				getRobotSelectionPanel().refreshRobotList(true);
 			}
 		}
 	}

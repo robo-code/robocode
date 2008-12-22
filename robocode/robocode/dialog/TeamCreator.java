@@ -62,7 +62,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
+				getRobotSelectionPanel().refreshRobotList(true);
 			}
 		}
 	}
@@ -99,7 +99,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 
 	protected RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(repositoryManager, minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(manager, minRobots, maxRobots, false,
 					"Select the robots for this team.", false, true, true, false, false, false, null);
 		}
 		return robotSelectionPanel;

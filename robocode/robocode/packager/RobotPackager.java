@@ -86,7 +86,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
+				getRobotSelectionPanel().refreshRobotList(true);
 			}
 		}
 	}
@@ -220,7 +220,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(repositoryManager, minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(repositoryManager.getManager(), minRobots, maxRobots, false,
 					"Select the robot or team you would like to package.", /* true */false, false, false/* true */, true,
 					false, true, null);
 		}

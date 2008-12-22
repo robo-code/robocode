@@ -68,7 +68,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
+				getRobotSelectionPanel().refreshRobotList(false);
 			}
 		}
 	}
@@ -128,7 +128,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(repositoryManager, minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(repositoryManager.getManager(), minRobots, maxRobots, false,
 					"Select the robot you would like to extract to the robots directory.  Robots not shown do not include source.",
 					true, true, true, false, true, true, null);
 		}

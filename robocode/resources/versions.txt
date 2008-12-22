@@ -6,6 +6,7 @@ Version 1.6.2 Beta 4
 * Fixed open battle dialog, which was not loading.
 * Fixed recorder NPE
 * Fixed serialization problems of scan arc (Arc2D)
+* Fixed problem with reloading robot repository on each next battle dialog
 
 Version 1.6.2 Beta 3
 (18-Dec-2008)
