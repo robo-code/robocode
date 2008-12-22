@@ -5,6 +5,7 @@ Version 1.6.2 Beta 3
 = Bugfixes =
 * Fixed open battle dialog, which was not loading.
 * Fixed recorder NPE
+* Fixed serialization problems of scan arc (Arc2D)
 
 Version 1.6.2 Beta 3
 (18-Dec-2008)
