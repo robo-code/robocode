@@ -32,6 +32,7 @@ import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.recording.BattleRecordFormat;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import robocode.battle.BattleProperties;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -202,7 +203,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	 * Handle battleNew menu item action
 	 */
 	private void battleNewActionPerformed() {
-		manager.getWindowManager().showNewBattleDialog();
+		manager.getWindowManager().showNewBattleDialog(manager.getBattleManager().getBattleProperties());
 	}
 
 	private void battleOpenActionPerformed() {
@@ -215,7 +216,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 			if (path != null) {
 				battleManager.setBattleFilename(path);
-				manager.getWindowManager().showNewBattleDialog();
+				manager.getWindowManager().showNewBattleDialog(battleManager.loadBattleProperties());
 			}
 		} finally {
 			battleManager.resumeBattle();

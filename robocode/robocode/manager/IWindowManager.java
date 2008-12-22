@@ -17,6 +17,7 @@ import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.dialog.RobocodeFrame;
 import robocode.ui.BattleResultsTableModel;
+import robocode.battle.BattleProperties;
 
 import javax.swing.*;
 
@@ -67,7 +68,7 @@ public interface IWindowManager {
 
 	void showSplashScreen();
 
-	void showNewBattleDialog();
+	void showNewBattleDialog(BattleProperties battleProperties);
 
 	boolean closeRobocodeEditor();
 

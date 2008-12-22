@@ -32,6 +32,7 @@ import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
 import robocode.ui.AwtBattleAdaptor;
 import robocode.ui.BattleResultsTableModel;
+import robocode.battle.BattleProperties;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -294,10 +295,10 @@ public class WindowManager implements IWindowManager {
 		splashScreen.dispose();
 	}
 
-	public void showNewBattleDialog() {
+	public void showNewBattleDialog(BattleProperties battleProperties) {
 		try {
 			manager.getBattleManager().pauseBattle();
-			WindowUtil.packCenterShow(getRobocodeFrame(), new NewBattleDialog(manager));
+			WindowUtil.packCenterShow(getRobocodeFrame(), new NewBattleDialog(manager, battleProperties));
 		} finally {
 			manager.getBattleManager().resumeBattle();
 		}
