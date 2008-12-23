@@ -18,7 +18,7 @@ package robocode.repository;
 
 import net.sf.robocode.io.Logger;
 import robocode.io.FileUtil;
-import robocode.manager.NameManager;
+import robocode.repository.NameManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,13 +46,6 @@ public class TeamSpecification extends FileSpecification {
 
 	private String members = "";
 	private String uid = "";
-
-	public final NameManager getNameManager() {
-		if (nameManager == null) {
-			nameManager = new NameManager(name, version, developmentVersion, true);
-		}
-		return nameManager;
-	}
 
 	// Used in FileSpecification
 	protected TeamSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
@@ -98,6 +91,7 @@ public class TeamSpecification extends FileSpecification {
 		long uid2 = mb.length;
 
 		uid = uid1 + "" + uid2;
+		nameManager = new NameManager(name, version, developmentVersion);
 	}
 
 	@Override

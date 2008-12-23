@@ -23,7 +23,7 @@ import static net.sf.robocode.io.Logger.logError;
 import robocode.Droid;
 import robocode.Robot;
 import robocode.io.FileUtil;
-import robocode.manager.NameManager;
+import robocode.repository.NameManager;
 import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.*;
 
@@ -74,13 +74,6 @@ public class RobotFileSpecification extends FileSpecification {
 	private boolean isTeamRobot;
 	private boolean isDroid;
 
-	public final NameManager getNameManager() {
-		if (nameManager == null) {
-			nameManager = new NameManager(name, version, developmentVersion, false);
-		}
-		return nameManager;
-	}
-
 	// Used in RepositoryManager
 	protected RobotFileSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
 		valid = true;
@@ -114,6 +107,7 @@ public class RobotFileSpecification extends FileSpecification {
 			setName(prefix + FileUtil.getClassName(filename));
 			setRobotClassPath(rootDir.getPath());
 		}
+		nameManager = new NameManager(name, version, developmentVersion);
 	}
 
 	private void loadProperties(String filepath) {

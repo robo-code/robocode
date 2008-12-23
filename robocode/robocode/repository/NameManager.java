@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Code cleanup
  *******************************************************************************/
-package robocode.manager;
+package robocode.repository;
 
 
 import java.io.Serializable;
@@ -22,7 +22,7 @@ import java.io.Serializable;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class NameManager implements Serializable {
+class NameManager implements Serializable {
 
 	private String fullClassName;
 	private String version;
@@ -39,7 +39,7 @@ public class NameManager implements Serializable {
 	private String uniqueVeryShortClassNameWithVersion;
 	private String uniqueShortClassNameWithVersion;
 
-	public NameManager(String className, String version, boolean developmentVersion, boolean isTeam) {
+	public NameManager(String className, String version, boolean developmentVersion) {
 		if (className == null) {
 			throw new NullPointerException("className cannot be null.");
 		}

@@ -176,7 +176,7 @@ public class RobotDescriptionPanel extends JPanel {
 			getRobocodeVersionLabel().setText(" ");
 			getFilePathLabel().setText(" ");
 		} else {
-			String name = robotSpecification.getNameManager().getUniqueFullClassNameWithVersion();
+			String name = robotSpecification.getUniqueFullClassNameWithVersion();
 
 			if (name.charAt(name.length() - 1) == '*') {
 				name = name.substring(0, name.length() - 1) + " (development version)";

@@ -202,7 +202,7 @@ public class RobocodeClassLoader extends ClassLoader {
 					classDirectory = null;
 				} else {
 					rootPackageDirectory = new File(classPath + File.separator + robotClassManager.getRootPackage() + File.separator).getCanonicalPath();
-					classDirectory = new File(classPath + File.separator + robotClassManager.getClassNameManager().getFullPackage().replace('.', File.separatorChar) + File.separator).getCanonicalPath();
+					classDirectory = new File(classPath + File.separator + robotClassManager.getFullPackage().replace('.', File.separatorChar) + File.separator).getCanonicalPath();
 				}
 				rootDirectory = new File(classPath).getCanonicalPath();
 			}

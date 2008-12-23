@@ -89,9 +89,9 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 				FileSpecification robotSpecification = selectedRobots.get(0);
 
 				getTeamNameLabel().setText("Please choose a name for your team: (Must be a valid Java classname)");
-				getTeamNameField().setText(robotSpecification.getNameManager().getShortClassName() + "Team");
-				getTeamPackageLabel().setText(robotSpecification.getNameManager().getFullPackage() + ".");
-				teamPackage = robotSpecification.getNameManager().getFullPackage();
+				getTeamNameField().setText(robotSpecification.getShortClassName() + "Team");
+				getTeamPackageLabel().setText(robotSpecification.getFullPackage() + ".");
+				teamPackage = robotSpecification.getFullPackage();
 				if (teamPackage != null) {
 					teamPackage += ".";
 				}

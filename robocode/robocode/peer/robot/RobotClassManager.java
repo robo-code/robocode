@@ -26,7 +26,6 @@ package robocode.peer.robot;
 
 
 import net.sf.robocode.io.Logger;
-import robocode.manager.NameManager;
 import robocode.repository.RobotFileSpecification;
 import robocode.security.RobocodeClassLoader;
 
@@ -62,12 +61,12 @@ public class RobotClassManager {
 		this.fullClassName = robotFileSpecification.getName();
 	}
 
-	public String getRootPackage() {
-		return getClassNameManager().getRootPackage();
+	public String getFullPackage() {
+		return robotFileSpecification.getFullPackage();
 	}
 
-	public NameManager getClassNameManager() {
-		return robotFileSpecification.getNameManager();
+	public String getRootPackage() {
+		return robotFileSpecification.getRootPackage();
 	}
 
 	public void addReferencedClasses(List<String> refClasses) {
@@ -142,11 +141,6 @@ public class RobotClassManager {
 
 	public void setRobotClass(Class<?> newRobotClass) {
 		robotClass = newRobotClass;
-	}
-
-	@Override
-	public String toString() {
-		return getRobotSpecification().getNameManager().getUniqueFullClassNameWithVersion();
 	}
 
 	/**

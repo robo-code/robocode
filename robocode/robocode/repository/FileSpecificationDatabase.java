@@ -30,7 +30,7 @@ import java.util.*;
  * @author Robert D. Maupin (contributor)
  */
 @SuppressWarnings("serial")
-public class FileSpecificationDatabase implements Serializable {
+class FileSpecificationDatabase implements Serializable {
 
 	private Map<String, FileSpecification> hash = new HashMap<String, FileSpecification>();
 

@@ -23,7 +23,7 @@ import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
 import robocode.io.FileUtil;
 import robocode.manager.IRepositoryManager;
-import robocode.manager.NameManager;
+import robocode.repository.NameManager;
 
 import java.io.*;
 import java.net.URL;
@@ -134,9 +134,9 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public int compareTo(FileSpecification other) {
-		return FileSpecification.compare(getNameManager().getFullPackage(), getNameManager().getFullClassName(),
-				getNameManager().getVersion(), other.getNameManager().getFullPackage(),
-				other.getNameManager().getFullClassName(), other.getNameManager().getVersion());
+		return FileSpecification.compare(nameManager.getFullPackage(), nameManager.getFullClassName(),
+				nameManager.getVersion(), other.nameManager.getFullPackage(), other.nameManager.getFullClassName(),
+				other.nameManager.getVersion());
 	}
 
 	public boolean isSameFile(String filePath, long fileLength, long fileLastModified) {
@@ -432,31 +432,35 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public String getFullPackage() {
-		return getNameManager().getFullPackage();
+		return nameManager.getFullPackage();
+	}
+
+	public String getRootPackage() {
+		return nameManager.getRootPackage();
 	}
 
 	public String getFullClassNameWithVersion() {
-		return getNameManager().getFullClassNameWithVersion();
+		return nameManager.getFullClassNameWithVersion();
 	}
 
 	public String getUniqueFullClassNameWithVersion() {
-		return getNameManager().getUniqueFullClassNameWithVersion();
+		return nameManager.getUniqueFullClassNameWithVersion();
 	}
 
 	public String getUniqueShortClassNameWithVersion() {
-		return getNameManager().getUniqueShortClassNameWithVersion();
+		return nameManager.getUniqueShortClassNameWithVersion();
 	}
 
 	public String getUniqueVeryShortClassNameWithVersion() {
-		return getNameManager().getUniqueVeryShortClassNameWithVersion();
+		return nameManager.getUniqueVeryShortClassNameWithVersion();
 	}
 
 	public String getFullClassName() {
-		return getNameManager().getFullClassName();
+		return nameManager.getFullClassName();
 	}
 
 	public String getShortClassName() {
-		return getNameManager().getShortClassName();
+		return nameManager.getShortClassName();
 	}
 
 	public boolean isValid() {
@@ -473,10 +477,6 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	public void setDuplicate(boolean isDuplicate) {
 		this.duplicate = isDuplicate;
-	}
-
-	public NameManager getNameManager() {
-		throw new RuntimeException("Cannot get a nameManager for file type " + getName() + getFileType());
 	}
 
 	public boolean exists() {

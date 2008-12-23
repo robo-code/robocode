@@ -413,7 +413,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 							if (currentFileSpecification instanceof TeamSpecification) {
 								continue;
 							}
-							if (currentFileSpecification.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+							if (currentFileSpecification.getUniqueFullClassNameWithVersion().equals(bot)) {
 								// Found team member
 								RobotFileSpecification current = (RobotFileSpecification) currentFileSpecification;
 

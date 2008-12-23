@@ -375,17 +375,17 @@ public class AvailableRobotsPanel extends JPanel {
 				FileSpecification fileSpecification = (FileSpecification) value;
 
 				if (fileSpecification instanceof TeamSpecification) {
-					setText("Team: " + fileSpecification.getNameManager().getUniqueShortClassNameWithVersion());
+					setText("Team: " + fileSpecification.getUniqueShortClassNameWithVersion());
 				} else {
-					setText(fileSpecification.getNameManager().getUniqueShortClassNameWithVersion());
+					setText(fileSpecification.getUniqueShortClassNameWithVersion());
 				}
 			} else if (value instanceof FileSpecification) {
 				FileSpecification fileSpecification = (FileSpecification) value;
 
 				if (fileSpecification instanceof TeamSpecification) {
-					setText("Team: " + fileSpecification.getNameManager().getUniqueFullClassNameWithVersion());
+					setText("Team: " + fileSpecification.getUniqueFullClassNameWithVersion());
 				} else {
-					setText(fileSpecification.getNameManager().getUniqueFullClassNameWithVersion());
+					setText(fileSpecification.getUniqueFullClassNameWithVersion());
 				}
 			} else {
 				setText(value.toString());

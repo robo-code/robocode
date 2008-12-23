@@ -258,7 +258,7 @@ public class RobotSelectionPanel extends WizardPanel {
 			if (i != 0) {
 				sb.append(',');
 			}
-			sb.append(selectedRobots.get(i).getNameManager().getUniqueFullClassNameWithVersion());
+			sb.append(selectedRobots.get(i).getUniqueFullClassNameWithVersion());
 		}
 		return sb.toString();
 	}
@@ -383,17 +383,17 @@ public class RobotSelectionPanel extends WizardPanel {
 				FileSpecification robotSpecification = (FileSpecification) value;
 
 				if (value instanceof TeamSpecification) {
-					setText("Team: " + robotSpecification.getNameManager().getUniqueShortClassNameWithVersion());
+					setText("Team: " + robotSpecification.getUniqueShortClassNameWithVersion());
 				} else {
-					setText(robotSpecification.getNameManager().getUniqueShortClassNameWithVersion());
+					setText(robotSpecification.getUniqueShortClassNameWithVersion());
 				}
 			} else if (value instanceof FileSpecification) {
 				FileSpecification robotSpecification = (FileSpecification) value;
 
 				if (value instanceof TeamSpecification) {
-					setText("Team: " + robotSpecification.getNameManager().getUniqueFullClassNameWithVersion());
+					setText("Team: " + robotSpecification.getUniqueFullClassNameWithVersion());
 				} else {
-					setText(robotSpecification.getNameManager().getUniqueFullClassNameWithVersion());
+					setText(robotSpecification.getUniqueFullClassNameWithVersion());
 				}
 			} else {
 				setText("??" + value.toString());
@@ -635,7 +635,7 @@ public class RobotSelectionPanel extends WizardPanel {
 				String bot = tokenizer.nextToken();
 
 				for (FileSpecification selected : robotList) {
-					if (selected.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
+					if (selected.getUniqueFullClassNameWithVersion().equals(bot)) {
 						this.selectedRobots.add(selected);
 						break;
 					}
