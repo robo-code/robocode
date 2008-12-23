@@ -25,7 +25,6 @@ package robocode.dialog;
 
 
 import robocode.manager.RobocodeManager;
-import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.JarSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
@@ -38,7 +37,6 @@ import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -103,11 +101,6 @@ public class RobotExtractor extends JDialog implements WizardListener {
 			buttonsPanel = getWizardPanel().getWizardController();
 		}
 		return buttonsPanel;
-	}
-
-	public Set<?> getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
-		robotClassManager.getRobotClassLoader().loadRobotClass(robotClassManager.getFullClassName(), true);
-		return robotClassManager.getReferencedClasses();
 	}
 
 	private JPanel getRobotImporterContentPane() {

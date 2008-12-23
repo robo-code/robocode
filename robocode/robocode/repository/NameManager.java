@@ -39,12 +39,12 @@ class NameManager implements Serializable {
 	private String uniqueVeryShortClassNameWithVersion;
 	private String uniqueShortClassNameWithVersion;
 
-	public NameManager(String className, String version, boolean developmentVersion) {
-		if (className == null) {
+	public NameManager(String fullClassName, String version, boolean developmentVersion) {
+		if (fullClassName == null) {
 			throw new NullPointerException("className cannot be null.");
 		}
 
-		this.fullClassName = className;
+		this.fullClassName = fullClassName;
 		if (version != null) {
 			if (version.length() > 10) {
 				version = version.substring(0, 10);

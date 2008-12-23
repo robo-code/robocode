@@ -24,7 +24,7 @@ import robocode.exception.RobotException;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.EventManager;
-import robocode.peer.robot.RobotClassManager;
+import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotpaint.Graphics2DSerialized;
 import robocode.robotpaint.IGraphicsProxy;
@@ -61,8 +61,8 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected double firedEnergy;
 	protected double firedHeat;
 
-	public BasicRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
-		super(robotClassManager, hostManager, peer, statics);
+	public BasicRobotProxy(RobotFileSpecification specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+		super(specification, hostManager, peer, statics);
 
 		eventManager = new EventManager(this);
 

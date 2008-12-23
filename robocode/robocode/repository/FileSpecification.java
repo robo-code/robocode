@@ -23,7 +23,6 @@ import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
 import robocode.io.FileUtil;
 import robocode.manager.IRepositoryManager;
-import robocode.repository.NameManager;
 
 import java.io.*;
 import java.net.URL;
@@ -456,7 +455,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public String getFullClassName() {
-		return nameManager.getFullClassName();
+		return name;
 	}
 
 	public String getShortClassName() {

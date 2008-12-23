@@ -19,7 +19,7 @@ import robocode.MessageEvent;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
-import robocode.peer.robot.RobotClassManager;
+import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.*;
@@ -33,8 +33,8 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 	final int MAX_MESSAGE_SIZE = 32768;
 	private final ByteArrayOutputStream byteStreamWriter;
 
-	public TeamRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
-		super(robotClassManager, hostManager, peer, statics);
+	public TeamRobotProxy(RobotFileSpecification specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+		super(specification, hostManager, peer, statics);
 		byteStreamWriter = new ByteArrayOutputStream(MAX_MESSAGE_SIZE);
 	}
 
@@ -98,8 +98,7 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 				ByteArrayInputStream byteStreamReader = new ByteArrayInputStream(teamMessage.message);
 
 				byteStreamReader.reset();
-				RobocodeObjectInputStream objectStreamReader = new RobocodeObjectInputStream(byteStreamReader,
-						robotClassManager.getRobotClassLoader());
+				RobocodeObjectInputStream objectStreamReader = new RobocodeObjectInputStream(byteStreamReader, robotClassLoader);
 				Serializable message = (Serializable) objectStreamReader.readObject();
 				final MessageEvent event = new MessageEvent(teamMessage.sender, message);
 

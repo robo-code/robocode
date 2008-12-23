@@ -23,9 +23,8 @@ import static net.sf.robocode.io.Logger.logError;
 import robocode.Droid;
 import robocode.Robot;
 import robocode.io.FileUtil;
-import robocode.repository.NameManager;
-import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.*;
+import robocode.security.RobotClassLoader;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -64,7 +63,6 @@ public class RobotFileSpecification extends FileSpecification {
 	private String uid = "";
 
 	protected boolean robotJavaSourceIncluded;
-	protected String robotClassPath;
 
 	private boolean isJuniorRobot;
 	private boolean isStandardRobot;
@@ -80,6 +78,7 @@ public class RobotFileSpecification extends FileSpecification {
 		String filename = f.getName();
 		String filepath = f.getPath();
 		String fileType = FileUtil.getFileType(filename);
+		this.rootDir = rootDir; 
 
 		this.developmentVersion = developmentVersion;
 		if (prefix.length() == 0 && fileType.equals(".jar")) {
@@ -89,11 +88,9 @@ public class RobotFileSpecification extends FileSpecification {
 		} else if (fileType.equals(".java")) {
 			loadProperties(filepath);
 			setName(prefix + FileUtil.getClassName(filename));
-			setRobotClassPath(rootDir.getPath());
 		} else if (fileType.equals(".class")) {
 			loadProperties(filepath);
 			setName(prefix + FileUtil.getClassName(filename));
-			setRobotClassPath(rootDir.getPath());
 			if (isDevelopmentVersion()) {
 				String jfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".java";
 				File jf = new File(jfn);
@@ -105,7 +102,6 @@ public class RobotFileSpecification extends FileSpecification {
 		} else if (fileType.equals(".properties")) {
 			loadProperties(filepath);
 			setName(prefix + FileUtil.getClassName(filename));
-			setRobotClassPath(rootDir.getPath());
 		}
 		nameManager = new NameManager(name, version, developmentVersion);
 	}
@@ -289,16 +285,7 @@ public class RobotFileSpecification extends FileSpecification {
 	 * @return Returns a String
 	 */
 	public String getRobotClassPath() {
-		return robotClassPath;
-	}
-
-	/**
-	 * Sets the robotClasspath.
-	 *
-	 * @param robotClassPath The robotClasspath to set
-	 */
-	public void setRobotClassPath(String robotClassPath) {
-		this.robotClassPath = robotClassPath;
+		return rootDir.getPath();
 	}
 
 	/**
@@ -365,8 +352,9 @@ public class RobotFileSpecification extends FileSpecification {
 	public boolean update() {
 
 		try {
-			RobotClassManager robotClassManager = new RobotClassManager(this);
-			Class<?> robotClass = robotClassManager.getRobotClassLoader().loadRobotClass(getName(), true);
+			RobotClassLoader classLoader = new RobotClassLoader(this);
+			classLoader.loadRobotClass();
+			Class<?> robotClass = classLoader.loadRobotClass();
 
 			if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 				if (Droid.class.isAssignableFrom(robotClass)) {
@@ -430,7 +418,7 @@ public class RobotFileSpecification extends FileSpecification {
 				// this class is not robot
 				return false;
 			}
-			setUid(robotClassManager.getUid());
+			setUid(classLoader.getUid());
 			return true;
 		} catch (Throwable t) {
 			logError(getName() + ": Got an error with this class: " + t.toString()); // just message here

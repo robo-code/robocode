@@ -22,10 +22,14 @@ import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
-import robocode.peer.robot.*;
+import robocode.peer.robot.EventManager;
+import robocode.peer.robot.RobotFileSystemManager;
+import robocode.peer.robot.RobotOutputStream;
+import robocode.peer.robot.RobotThreadManager;
+import robocode.repository.RobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.security.RobocodeClassLoader;
+import robocode.security.RobotClassLoader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -38,18 +42,20 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected EventManager eventManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
-	protected RobotClassManager robotClassManager;
+	private RobotFileSpecification robotSpecification;
+	protected RobotClassLoader robotClassLoader;
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;
 	protected final IRobotPeer peer;
 	protected final IHostManager hostManager;
 	protected IBasicRobot robot;
 
-	HostingRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	HostingRobotProxy(RobotFileSpecification robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;
-		this.robotClassManager = robotClassManager;
+		this.robotSpecification=robotSpecification;
+		this.robotClassLoader =new RobotClassLoader(robotSpecification);
 
 		out = new RobotOutputStream();
 		robotThreadManager = new RobotThreadManager(this);
@@ -57,8 +63,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		loadClassBattle();
 
 		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
-				robotClassManager.getRobotClassLoader().getClassDirectory(),
-				robotClassManager.getRobotClassLoader().getRootPackageDirectory());
+				robotClassLoader.getClassDirectory(),
+				robotClassLoader.getRootPackageDirectory());
 		robotFileSystemManager.initializeQuota();
 	}
 
@@ -81,9 +87,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		robotThreadManager = null;
 
 		// Cleanup and remove class manager
-		if (robotClassManager != null) {
-			robotClassManager.cleanup();
-			robotClassManager = null;
+		if (robotClassLoader != null) {
+			robotClassLoader.cleanup();
+			robotClassLoader = null;
 		}
 	}
 
@@ -162,21 +168,6 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	private void loadClassBattle() {
 		try {
-			Class<?> c;
-
-			String className = robotClassManager.getFullClassName();
-			RobocodeClassLoader classLoader = robotClassManager.getRobotClassLoader();
-
-			// Pre-load robot classes without security...
-			// loadClass WILL NOT LINK the class, so static "cheats" will not work.
-			// in the safe robot loader the class is linked.
-			if (RobotClassManager.isSecutityOn()) {
-				c = classLoader.loadRobotClass(className, true);
-			} else {
-				c = classLoader.loadClass(className);
-			}
-
-			robotClassManager.setRobotClass(c);
 
 		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + statics.getName() + " : ");
@@ -191,7 +182,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		try {
 			hostManager.getThreadManager().setLoadingRobot(this);
-			robotClass = robotClassManager.getRobotClass();
+			robotClass = robotClassLoader.loadRobotClass();
 			if (robotClass == null) {
 				println("SYSTEM: Skipping robot: " + statics.getName());
 				return false;
@@ -230,7 +221,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		peer.setRunning(true);
 
-		if (!robotClassManager.getRobotSpecification().isValid() || !loadRobotRound()) {
+		if (!robotSpecification.isValid() || !loadRobotRound()) {
 			drainEnergy();
 			peer.punishBadBehavior();
 			waitForBattleEndImpl();

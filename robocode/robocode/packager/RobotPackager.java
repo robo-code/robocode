@@ -33,10 +33,10 @@ import robocode.dialog.*;
 import robocode.io.NoDuplicateJarOutputStream;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
-import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
+import robocode.security.RobotClassLoader;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -49,7 +49,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
@@ -150,11 +149,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 			buttonsPanel = getWizardPanel().getWizardController();
 		}
 		return buttonsPanel;
-	}
-
-	public Set<String> getClasses(RobotClassManager robotClassManager) throws ClassNotFoundException {
-		robotClassManager.getRobotClassLoader().loadRobotClass(robotClassManager.getFullClassName(), true);
-		return robotClassManager.getReferencedClasses();
 	}
 
 	/**
@@ -577,15 +571,17 @@ public class RobotPackager extends JDialog implements WizardListener {
 	}
 
 	public void addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, RobotFileSpecification robotFileSpecification) {
-		RobotClassManager classManager = new RobotClassManager(robotFileSpecification);
+		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification);
+
 
 		try {
-			Iterator<String> classes = getClasses(classManager).iterator();
-			String rootDirectory = classManager.getRobotClassLoader().getRootDirectory();
+			classLoader.loadRobotClass();
+			Iterator<String> classes = classLoader.getReferencedClasses().iterator();
+			String rootDirectory = robotFileSpecification.getRootDir().toString();
 
 			// Save props:
 			try {
-				JarEntry entry = new JarEntry(classManager.getFullClassName().replace('.', '/') + ".properties");
+				JarEntry entry = new JarEntry(robotFileSpecification.getFullClassName().replace('.', '/') + ".properties");
 
 				jarout.putNextEntry(entry);
 				robotFileSpecification.store(jarout, "Robot Properties");
@@ -598,13 +594,13 @@ public class RobotPackager extends JDialog implements WizardListener {
 				// ignore duplicate entry, fine, it's already there.
 			}
 
-			File html = new File(rootDirectory, classManager.getFullClassName().replace('.', '/') + ".html");
+			File html = new File(rootDirectory, robotFileSpecification.getFullClassName().replace('.', '/') + ".html");
 
 			if (html.exists()) {
 				FileInputStream input = null;
 
 				try {
-					JarEntry entry = new JarEntry(classManager.getFullClassName().replace('.', '/') + ".html");
+					JarEntry entry = new JarEntry(robotFileSpecification.getFullClassName().replace('.', '/') + ".html");
 
 					jarout.putNextEntry(entry);
 					input = new FileInputStream(html);
@@ -678,7 +674,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 			}
 
-			File dataDirectory = new File(rootDirectory, classManager.getFullClassName().replace('.', '/') + ".data");
+			File dataDirectory = new File(rootDirectory, robotFileSpecification.getFullClassName().replace('.', '/') + ".data");
 
 			if (dataDirectory.exists()) {
 				File files[] = dataDirectory.listFiles();
@@ -688,7 +684,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 					try {
 						JarEntry entry = new JarEntry(
-								classManager.getFullClassName().replace('.', '/') + ".data/" + file.getName());
+								robotFileSpecification.getFullClassName().replace('.', '/') + ".data/" + file.getName());
 
 						jarout.putNextEntry(entry);
 

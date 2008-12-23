@@ -27,10 +27,10 @@
 package robocode.security;
 
 
+import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import robocode.packager.ClassAnalyzer;
-import robocode.peer.robot.RobotClassManager;
 import robocode.repository.RobotFileSpecification;
 
 import java.io.*;
@@ -39,9 +39,7 @@ import java.net.MalformedURLException;
 import java.security.CodeSource;
 import java.security.Permissions;
 import java.security.ProtectionDomain;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -51,26 +49,31 @@ import java.util.Map;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobocodeClassLoader extends ClassLoader {
+public class RobotClassLoader extends ClassLoader {
 	private final Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
+	private Class<?> robotClass;
 
 	private RobotFileSpecification robotFileSpecification;
-	private RobotClassManager robotClassManager;
+	private final Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
 	private String rootPackageDirectory;
 	private String rootDirectory;
 	private String classDirectory;
 	private ProtectionDomain protectionDomain;
 
+	private String uid = "";
 	private long uid1;
 	private long uid2;
 
 	// The hidden ClassLoader.class.classes field
 	private Field classesField = null;
 
-	public RobocodeClassLoader(ClassLoader parent, RobotClassManager robotClassManager) {
+	public RobotClassLoader(RobotFileSpecification robotFileSpecification) {
+		this(RobotClassLoader.class.getClassLoader(), robotFileSpecification);
+	}
+
+	public RobotClassLoader(ClassLoader parent, RobotFileSpecification robotFileSpecification) {
 		super(parent);
-		this.robotClassManager = robotClassManager;
-		this.robotFileSpecification = robotClassManager.getRobotSpecification();
+		this.robotFileSpecification = robotFileSpecification;
 
 		// Deep within the class loader is a vector of classes, and is VM
 		// implementation specific, so its not in every VM. However, if a VM
@@ -85,17 +88,25 @@ public class RobocodeClassLoader extends ClassLoader {
 		}
 
 		if (classesField == null) {
-			logError("RobocodeClassLoader: Failed to find classes field in: " + this);
+			logError("RobotClassLoader: Failed to find classes field in: " + this);
 		}
+	}
+
+	public String getUid() {
+		return uid;
 	}
 
 	public synchronized String getClassDirectory() {
 		return classDirectory;
 	}
 
+	public Set<String> getReferencedClasses() {
+		return referencedClasses.keySet();
+	}
+
 	@Override
 	public InputStream getResourceAsStream(String resource) {
-		logMessage("RobocodeClassLoader: getResourceAsStream: " + resource);
+		logMessage("RobotClassLoader: getResourceAsStream: " + resource);
 		return super.getResourceAsStream(resource);
 	}
 
@@ -109,7 +120,7 @@ public class RobocodeClassLoader extends ClassLoader {
 
 	@Override
 	public synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
-		if (className.indexOf(getRobotClassManager().getRootPackage() + ".") == 0) {
+		if (className.indexOf(robotFileSpecification.getRootPackage() + ".") == 0) {
 			return loadRobotClass(className, false);
 		}
 		try {
@@ -117,6 +128,22 @@ public class RobocodeClassLoader extends ClassLoader {
 		} catch (ClassNotFoundException e) {
 			return loadRobotClass(className, false);
 		}
+	}
+
+	public Class<?> loadRobotClass() throws ClassNotFoundException {
+		if (robotClass==null){
+			String className = robotFileSpecification.getFullClassName();
+
+			// Pre-load robot classes without security...
+			// loadClass WILL NOT LINK the class, so static "cheats" will not work.
+			// in the safe robot loader the class is linked.
+			if (isSecutityOn()) {
+				robotClass = loadRobotClass(className, true);
+			} else {
+				robotClass = loadClass(className);
+			}
+		}
+		return robotClass;
 	}
 
 	public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
@@ -132,14 +159,14 @@ public class RobocodeClassLoader extends ClassLoader {
 			uid2 = 0;
 		}
 
-		if (!name.equals(robotClassManager.getFullClassName())) {
-			if (robotClassManager.getRootPackage() == null) {
+		if (!name.equals(robotFileSpecification.getFullClassName())) {
+			if (robotFileSpecification.getRootPackage() == null) {
 				logError(
-						robotClassManager.getFullClassName() + " is not in a package, but is trying to reference class "
+						robotFileSpecification.getFullClassName() + " is not in a package, but is trying to reference class "
 						+ name);
 				logError("To do this in Robocode, you must put your robot into a package.");
 				throw new ClassNotFoundException(
-						robotClassManager.getFullClassName() + "is not in a package, but is trying to reference class " + name);
+						robotFileSpecification.getFullClassName() + "is not in a package, but is trying to reference class " + name);
 			}
 		}
 
@@ -188,27 +215,27 @@ public class RobocodeClassLoader extends ClassLoader {
 			dis.close();
 			List<String> v = ClassAnalyzer.getReferencedClasses(buff);
 
-			robotClassManager.addReferencedClasses(v);
+			addReferencedClasses(v);
 			uid1 += v.size();
 			for (byte element : buff) {
 				uid2 += element;
 			}
 			c = defineClass(name, buff, 0, buff.length, protectionDomain);
 
-			robotClassManager.addResolvedClass(name);
-			if (name.equals(robotClassManager.getFullClassName())) {
-				if (robotClassManager.getRootPackage() == null) {
+			addResolvedClass(name);
+			if (name.equals(robotFileSpecification.getFullClassName())) {
+				if (robotFileSpecification.getRootPackage() == null) {
 					rootPackageDirectory = null;
 					classDirectory = null;
 				} else {
-					rootPackageDirectory = new File(classPath + File.separator + robotClassManager.getRootPackage() + File.separator).getCanonicalPath();
-					classDirectory = new File(classPath + File.separator + robotClassManager.getFullPackage().replace('.', File.separatorChar) + File.separator).getCanonicalPath();
+					rootPackageDirectory = new File(classPath + File.separator + robotFileSpecification.getRootPackage() + File.separator).getCanonicalPath();
+					classDirectory = new File(classPath + File.separator + robotFileSpecification.getFullPackage().replace('.', File.separatorChar) + File.separator).getCanonicalPath();
 				}
 				rootDirectory = new File(classPath).getCanonicalPath();
 			}
 			if (toplevel) {
-				robotClassManager.loadUnresolvedClasses();
-				robotClassManager.setUid(uid1 + "" + uid2);
+				loadUnresolvedClasses();
+				uid = uid1 + "" + uid2;
 			}
 
 			cachedClasses.put(name, c);
@@ -229,8 +256,23 @@ public class RobocodeClassLoader extends ClassLoader {
 		}
 	}
 
-	private synchronized RobotClassManager getRobotClassManager() {
-		return robotClassManager;
+	private void loadUnresolvedClasses() throws ClassNotFoundException {
+		Iterator<String> keys = referencedClasses.keySet().iterator();
+
+		while (keys.hasNext()) {
+			String s = keys.next();
+
+			if (referencedClasses.get(s).equals("false")) {
+				// resolve, then rebuild keys...
+				if (isSecutityOn()) {
+					loadRobotClass(s, false);
+				} else {
+					loadClass(s, true);
+					addResolvedClass(s);
+				}
+				keys = referencedClasses.keySet().iterator();
+			}
+		}
 	}
 
 	public void cleanup() {
@@ -249,7 +291,37 @@ public class RobocodeClassLoader extends ClassLoader {
 			}
 		}
 
-		robotClassManager = null;
 		robotFileSpecification = null;
 	}
+
+	private void addReferencedClasses(List<String> refClasses) {
+		if (refClasses == null) {
+			return;
+		}
+		for (String refClass : refClasses) {
+			String className = refClass.replace('/', '.');
+
+			if (robotFileSpecification.getRootPackage() == null || !(className.startsWith("java") || className.startsWith("robocode"))) { // TODO ZAMO || className.startsWith("scala")
+				if (robotFileSpecification.getRootPackage() == null && !className.equals(robotFileSpecification.getFullClassName())) {
+					continue;
+				}
+				if (!referencedClasses.containsKey(className)) {
+					referencedClasses.put(className, "false");
+				}
+			}
+		}
+	}
+
+	private void addResolvedClass(String className) {
+		if (!referencedClasses.containsKey(className)) {
+			Logger.logError(robotFileSpecification.getFullClassName() + ": Cannot set " + className + " to resolved, did not know it was referenced.");
+			return;
+		}
+		referencedClasses.put(className, "true");
+	}
+
+	private static boolean isSecutityOn() {
+		return !System.getProperty("NOSECURITY", "false").equals("true");
+	}
+
 }

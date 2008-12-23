@@ -18,7 +18,6 @@ import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.RobotSpecification;
 import robocode.peer.RobotStatics;
 import robocode.peer.proxies.*;
-import robocode.peer.robot.RobotClassManager;
 import robocode.repository.RobotFileSpecification;
 
 import java.security.AccessControlException;
@@ -46,16 +45,15 @@ public class HostManager implements IHostManager {
 		IHostingRobotProxy robotProxy;
 		final RobotFileSpecification specification = (RobotFileSpecification) HiddenAccess.getFileSpecification(
 				robotSpecification);
-		RobotClassManager robotClassManager = new RobotClassManager(specification);
 
 		if (specification.isTeamRobot()) {
-			robotProxy = new TeamRobotProxy(robotClassManager, this, peer, statics);
+			robotProxy = new TeamRobotProxy(specification, this, peer, statics);
 		} else if (specification.isAdvancedRobot()) {
-			robotProxy = new AdvancedRobotProxy(robotClassManager, this, peer, statics);
+			robotProxy = new AdvancedRobotProxy(specification, this, peer, statics);
 		} else if (specification.isStandardRobot()) {
-			robotProxy = new StandardRobotProxy(robotClassManager, this, peer, statics);
+			robotProxy = new StandardRobotProxy(specification, this, peer, statics);
 		} else if (specification.isJuniorRobot()) {
-			robotProxy = new JuniorRobotProxy(robotClassManager, this, peer, statics);
+			robotProxy = new JuniorRobotProxy(specification, this, peer, statics);
 		} else {
 			throw new AccessControlException("Unknown robot type");
 		}
