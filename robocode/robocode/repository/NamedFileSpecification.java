@@ -16,34 +16,133 @@ package robocode.repository;
  * @author Pavel Savara (original)
  */
 abstract class NamedFileSpecification extends FileSpecification implements Comparable<INamedFileSpecification>, INamedFileSpecification {
-	protected NameManager nameManager;
+	private String fullPackage;
 
-	public String getFullPackage() {
-		return nameManager.getFullPackage();
-	}
+	private String fullClassNameWithVersion;
+	private String uniqueFullClassNameWithVersion;
 
-	public String getFullClassNameWithVersion() {
-		return nameManager.getFullClassNameWithVersion();
-	}
+	private String shortClassName;
+	private String shortClassNameWithVersion;
+	private String uniqueShortClassNameWithVersion;
 
-	public String getUniqueFullClassNameWithVersion() {
-		return nameManager.getUniqueFullClassNameWithVersion();
-	}
-
-	public String getUniqueShortClassNameWithVersion() {
-		return nameManager.getUniqueShortClassNameWithVersion();
-	}
-
-	public String getUniqueVeryShortClassNameWithVersion() {
-		return nameManager.getUniqueVeryShortClassNameWithVersion();
-	}
+	private String veryShortClassName;
+	private String veryShortClassNameWithVersion;
+	private String uniqueVeryShortClassNameWithVersion;
 
 	public String getFullClassName() {
-		return nameManager.getFullClassName();
+		return name;
 	}
 
 	public String getShortClassName() {
-		return nameManager.getShortClassName();
+		if (shortClassName == null) {
+			if (getFullClassName().lastIndexOf(".") > 0) {
+				shortClassName = getFullClassName().substring(getFullClassName().lastIndexOf(".") + 1);
+			} else {
+				shortClassName = getFullClassName();
+			}
+		}
+		return shortClassName;
+	}
+
+	public String getShortClassNameWithVersion() {
+		if (shortClassNameWithVersion == null) {
+			if (version == null) {
+				shortClassNameWithVersion = getShortClassName();
+			} else {
+				shortClassNameWithVersion = getShortClassName() + " " + version;
+			}
+		}
+		return shortClassNameWithVersion;
+	}
+
+	// Example: sample.Walls 1.0*
+	// The * indicates a development version, or not from the cache.
+	public String getUniqueFullClassNameWithVersion() {
+		if (uniqueFullClassNameWithVersion == null) {
+			if (getFullClassNameWithVersion().equals(getFullClassName())) {
+				uniqueFullClassNameWithVersion = getFullClassName();
+			} else {
+				if (!developmentVersion) {
+					uniqueFullClassNameWithVersion = getFullClassNameWithVersion();
+				} else {
+					uniqueFullClassNameWithVersion = getFullClassNameWithVersion() + "*";
+				}
+			}
+		}
+		return uniqueFullClassNameWithVersion;
+	}
+
+	public String getUniqueShortClassNameWithVersion() {
+		if (uniqueShortClassNameWithVersion == null) {
+			if (getShortClassName().equals(getShortClassNameWithVersion())) {
+				uniqueShortClassNameWithVersion = getShortClassName();
+			} else {
+				if (!developmentVersion) {
+					uniqueShortClassNameWithVersion = getShortClassNameWithVersion();
+				} else {
+					uniqueShortClassNameWithVersion = getShortClassNameWithVersion() + "*";
+				}
+			}
+		}
+		return uniqueShortClassNameWithVersion;
+	}
+
+	public String getUniqueVeryShortClassNameWithVersion() {
+		if (uniqueVeryShortClassNameWithVersion == null) {
+			if (getVeryShortClassName().equals(getVeryShortClassNameWithVersion())) {
+				uniqueVeryShortClassNameWithVersion = getVeryShortClassName();
+			} else {
+				if (!developmentVersion) {
+					uniqueVeryShortClassNameWithVersion = getVeryShortClassNameWithVersion();
+				} else {
+					uniqueVeryShortClassNameWithVersion = getVeryShortClassNameWithVersion() + "*";
+				}
+			}
+		}
+		return uniqueVeryShortClassNameWithVersion;
+	}
+
+	public String getVeryShortClassName() {
+		if (veryShortClassName == null) {
+			veryShortClassName = getShortClassName();
+			if (veryShortClassName.length() > 12) {
+				veryShortClassName = veryShortClassName.substring(0, 12) + "...";
+			}
+		}
+		return veryShortClassName;
+	}
+
+	public String getVeryShortClassNameWithVersion() {
+		if (veryShortClassNameWithVersion == null) {
+			if (version == null) {
+				veryShortClassNameWithVersion = getVeryShortClassName();
+			} else {
+				veryShortClassNameWithVersion = getVeryShortClassName() + " " + version;
+			}
+		}
+		return veryShortClassNameWithVersion;
+	}
+
+	public String getFullClassNameWithVersion() {
+		if (fullClassNameWithVersion == null) {
+			if (version == null) {
+				fullClassNameWithVersion = getFullClassName();
+			} else {
+				fullClassNameWithVersion = getFullClassName() + " " + version;
+			}
+		}
+		return fullClassNameWithVersion;
+	}
+
+	public String getFullPackage() {
+		if (fullPackage == null) {
+			if (name.lastIndexOf(".") > 0) {
+				fullPackage = name.substring(0, name.lastIndexOf("."));
+			} else {
+				fullPackage = null;
+			}
+		}
+		return fullPackage;
 	}
 
 	public int compareTo(INamedFileSpecification other) {

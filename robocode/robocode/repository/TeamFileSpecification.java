@@ -90,7 +90,6 @@ class TeamFileSpecification extends NamedFileSpecification implements ITeamFileS
 		long uid2 = mb.length;
 
 		uid = uid1 + "" + uid2;
-		nameManager = new NameManager(name, version, developmentVersion);
 	}
 
 	@Override
@@ -113,6 +112,9 @@ class TeamFileSpecification extends NamedFileSpecification implements ITeamFileS
 		authorWebsite = props.getProperty(TEAM_AUTHOR_WEBSITE);
 		description = props.getProperty(TEAM_DESCRIPTION);
 		version = props.getProperty(TEAM_VERSION);
+		if (version != null && version.length() == 0) {
+			version = null;
+		}
 		members = props.getProperty(TEAM_MEMBERS);
 		try {
 			String team_webpage = props.getProperty(TEAM_WEBPAGE);
@@ -152,7 +154,14 @@ class TeamFileSpecification extends NamedFileSpecification implements ITeamFileS
 
 	public void setTeamVersion(String teamVersion) {
 		this.version = teamVersion;
-		props.setProperty(TEAM_VERSION, teamVersion);
+		if (version != null && version.length() == 0) {
+			version = null;
+		}
+		if (version != null) {
+			props.setProperty(TEAM_VERSION, version);
+		} else {
+			props.remove(TEAM_VERSION);
+		}
 	}
 
 	public void setTeamWebpage(URL teamWebpage) {

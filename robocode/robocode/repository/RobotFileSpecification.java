@@ -99,7 +99,6 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 			loadProperties(filepath);
 			setName(prefix + FileUtil.getClassName(filename));
 		}
-		nameManager = new NameManager(name, version, developmentVersion);
 	}
 
 	private void loadProperties(String filepath) {
@@ -171,6 +170,9 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 		authorWebsite = props.getProperty(ROBOT_AUTHOR_WEBSITE);
 		description = props.getProperty(ROBOT_DESCRIPTION);
 		version = props.getProperty(ROBOT_VERSION);
+		if (version != null && version.length() == 0) {
+			version = null;
+		}
 		name = props.getProperty(ROBOT_CLASSNAME);
 		String w = props.getProperty(ROBOT_WEBPAGE);
 
@@ -227,9 +229,12 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 	}
 
 	public void setRobotVersion(String robotVersion) {
-		this.version = robotVersion;
-		if (robotVersion != null) {
-			props.setProperty(ROBOT_VERSION, robotVersion);
+		version = robotVersion;
+		if (version != null && version.length() == 0) {
+			version = null;
+		}
+		if (version != null) {
+			props.setProperty(ROBOT_VERSION, version);
 		} else {
 			props.remove(ROBOT_VERSION);
 		}
