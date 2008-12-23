@@ -23,9 +23,9 @@ import robocode.io.FileUtil;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import java.util.List;
 
 
 /**
@@ -33,10 +33,10 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class JarSpecification extends FileSpecification {
+class JarFileSpecification extends FileSpecification {
 
 	// Used in FileSpecification
-	protected JarSpecification(File f, File rootDir, boolean developmentVersion) {
+	protected JarFileSpecification(File f, File rootDir, boolean developmentVersion) {
 		this.rootDir = rootDir;
 		this.developmentVersion = developmentVersion;
 		valid = true;
@@ -55,7 +55,7 @@ public class JarSpecification extends FileSpecification {
 			}
 			setFileName(f.getName());
 		} else {
-			throw new RuntimeException("JarSpecification can only be constructed from a .jar file");
+			throw new RuntimeException("JarFileSpecification can only be constructed from a .jar file");
 		}
 	}
 

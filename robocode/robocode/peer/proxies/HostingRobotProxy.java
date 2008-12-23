@@ -26,7 +26,7 @@ import robocode.peer.robot.EventManager;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.RobotOutputStream;
 import robocode.peer.robot.RobotThreadManager;
-import robocode.repository.RobotFileSpecification;
+import robocode.repository.IRobotFileSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.security.RobotClassLoader;
@@ -42,7 +42,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected EventManager eventManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
-	private RobotFileSpecification robotSpecification;
+	private IRobotFileSpecification robotSpecification;
 	protected RobotClassLoader robotClassLoader;
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;
@@ -50,7 +50,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected final IHostManager hostManager;
 	protected IBasicRobot robot;
 
-	HostingRobotProxy(RobotFileSpecification robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	HostingRobotProxy(IRobotFileSpecification robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;

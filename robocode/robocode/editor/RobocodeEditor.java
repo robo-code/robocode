@@ -31,7 +31,6 @@ import robocode.io.FileUtil;
 import robocode.manager.BrowserManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.repository.RobotFileSpecification;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -329,7 +328,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			}
 
 			if (done && manager != null) {
-				done = RobotFileSpecification.verifyRobotName(packageName + "." + name, name);
+				done = manager.getRepositoryManager().verifyRobotName(packageName + "." + name, name);
 				if (!done) {
 					message = "This package is reserved.  Please select a different package.";
 				}

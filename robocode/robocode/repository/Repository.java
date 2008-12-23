@@ -33,11 +33,11 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 class Repository {
-	private final List<FileSpecification> fileSpecifications = Collections.synchronizedList(
-			new ArrayList<FileSpecification>());
-	private final Hashtable<String, FileSpecification> fileSpecificationsDict = new Hashtable<String, FileSpecification>();
+	private final List<NamedFileSpecification> fileSpecifications = Collections.synchronizedList(
+			new ArrayList<NamedFileSpecification>());
+	private final Hashtable<String, NamedFileSpecification> fileSpecificationsDict = new Hashtable<String, NamedFileSpecification>();
 
-	public void add(FileSpecification fileSpecification) {
+	public void add(NamedFileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);
 		final String name = fileSpecification.getFullClassNameWithVersion();
 		final String unname = fileSpecification.getUniqueFullClassNameWithVersion();
@@ -55,12 +55,12 @@ class Repository {
 		return fileSpecificationsDict.get(fullClassNameWithVersion);
 	}
 
-	public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
+	public List<INamedFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
 
-		List<FileSpecification> v = Collections.synchronizedList(new ArrayList<FileSpecification>());
+		List<INamedFileSpecification> result = Collections.synchronizedList(new ArrayList<INamedFileSpecification>());
 
-		for (FileSpecification spec : fileSpecifications) {
+		for (NamedFileSpecification spec : fileSpecifications) {
 			if (!spec.isValid()) {
 				continue;
 			}
@@ -87,8 +87,8 @@ class Repository {
 					if (ignoreTeamRobots && robotSpec.isTeamRobot()) {
 						continue;
 					}
-				} else if (spec instanceof TeamSpecification) {
-					TeamSpecification teamSpec = (TeamSpecification) spec;
+				} else if (spec instanceof TeamFileSpecification) {
+					TeamFileSpecification teamSpec = (TeamFileSpecification) spec;
 
 					if (onlyWithSource && !teamSpec.getTeamJavaSourceIncluded()) {
 						continue;
@@ -117,9 +117,9 @@ class Repository {
 					continue;
 				}
 			}
-			v.add(spec);
+			result.add(spec);
 		}
-		return v;
+		return result;
 	}
 
 	public void sortRobotSpecifications() {

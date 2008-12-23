@@ -17,7 +17,7 @@ package robocode.dialog;
 
 
 import robocode.manager.BrowserManager;
-import robocode.repository.FileSpecification;
+import robocode.repository.INamedFileSpecification;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +41,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JButton detailsButton;
 	private JLabel robocodeVersionLabel;
 	private JLabel filePathLabel;
-	private FileSpecification currentRobotSpecification;
+	private INamedFileSpecification currentRobotSpecification;
 
 	private final static String BLANK_STRING = "                                                                        ";
 
@@ -165,7 +165,7 @@ public class RobotDescriptionPanel extends JPanel {
 		add(p, BorderLayout.EAST);
 	}
 
-	public void showDescription(FileSpecification robotSpecification) {
+	public void showDescription(INamedFileSpecification robotSpecification) {
 		this.currentRobotSpecification = robotSpecification;
 		if (robotSpecification == null) {
 			getRobotNameLabel().setText(" ");

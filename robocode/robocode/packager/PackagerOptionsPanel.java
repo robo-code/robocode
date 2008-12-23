@@ -21,7 +21,7 @@ package robocode.packager;
 
 
 import robocode.dialog.WizardPanel;
-import robocode.repository.FileSpecification;
+import robocode.repository.INamedFileSpecification;
 import robocode.text.LimitedDocument;
 
 import javax.swing.*;
@@ -74,11 +74,11 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			List<INamedFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null) {
 				if (selectedRobots.size() == 1) {
-					FileSpecification fileSpecification = selectedRobots.get(0);
+					INamedFileSpecification fileSpecification = selectedRobots.get(0);
 					String v = fileSpecification.getVersion();
 
 					if (v == null || v.length() == 0) {
@@ -112,12 +112,12 @@ public class PackagerOptionsPanel extends WizardPanel {
 						getWebpageField().setText(u.toString());
 					}
 
-					String filepath = fileSpecification.getFilePath();
+					String fullPackage = fileSpecification.getFullPackage();
 
 					String text = "";
 
-					if (filepath != null && filepath.indexOf(".") != -1) {
-						String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
+					if (fullPackage != null && fullPackage.indexOf(".") != -1) {
+						String htmlfn = fullPackage.substring(0, fullPackage.lastIndexOf(".")) + ".html";
 
 						text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
 					}

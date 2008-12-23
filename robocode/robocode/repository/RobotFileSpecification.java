@@ -45,12 +45,7 @@ import java.security.AccessControlException;
  * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
-public class RobotFileSpecification extends FileSpecification {
-	// Allowed maximum length for a robot's full package name
-	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
-	// Allowed maximum length for a robot's short class name
-	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
-
+class RobotFileSpecification extends NamedFileSpecification implements IRobotFileSpecificationExt {
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
 	private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
@@ -141,7 +136,7 @@ public class RobotFileSpecification extends FileSpecification {
 			}
 		}
 
-		setThisFileName(propertiesFileName);
+		setPropertiesFileName(propertiesFileName);
 		String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
 		File htmlFile = new File(htmlfn);
 
@@ -391,38 +386,7 @@ public class RobotFileSpecification extends FileSpecification {
 	}
 
 	public boolean verifyRobotName() {
-		return verifyRobotName(getName(), getShortClassName());
-	}
-
-	public static boolean verifyRobotName(String robotName, String shortClassName) {
-		int lIndex = robotName.indexOf(".");
-
-		if (lIndex > 0) {
-			String rootPackage = robotName.substring(0, lIndex);
-
-			if (rootPackage.equalsIgnoreCase("robocode")) {
-				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
-				return false;
-			}
-
-			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				final String message = "Robot " + robotName + " has package name too long.  "
-						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
-
-				logError(message);
-				return false;
-			}
-		}
-
-		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
-					+ " characters maximum please.";
-
-			logError(message);
-			return false;
-		}
-
-		return true;
+		return RepositoryManager.verifyRobotNameStatic(getName(), getShortClassName());
 	}
 
 }

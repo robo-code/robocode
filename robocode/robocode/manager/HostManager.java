@@ -18,7 +18,7 @@ import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.RobotSpecification;
 import robocode.peer.RobotStatics;
 import robocode.peer.proxies.*;
-import robocode.repository.RobotFileSpecification;
+import robocode.repository.IRobotFileSpecification;
 
 import java.security.AccessControlException;
 
@@ -43,7 +43,7 @@ public class HostManager implements IHostManager {
 
 	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
 		IHostingRobotProxy robotProxy;
-		final RobotFileSpecification specification = (RobotFileSpecification) HiddenAccess.getFileSpecification(
+		final IRobotFileSpecification specification = (IRobotFileSpecification) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
 		if (specification.isTeamRobot()) {

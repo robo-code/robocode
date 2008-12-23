@@ -57,7 +57,12 @@ import java.util.StringTokenizer;
  * @author Robert D. Maupin (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RepositoryManager implements IRepositoryManager {
+public final class RepositoryManager implements IRepositoryManager {
+	// Allowed maximum length for a robot's full package name
+	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+	// Allowed maximum length for a robot's short class name
+	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
+
 	private FileSpecificationDatabase robotDatabase;
 
 	private File robotsDirectory;
@@ -176,7 +181,7 @@ public class RepositoryManager implements IRepositoryManager {
 		// cause a ConcurrentModificationException!
 		// noinspection ForLoopReplaceableByForEach
 		for (int i = 0; i < updatedJarList.size(); i++) {
-			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
+			JarFileSpecification updatedJar = (JarFileSpecification) updatedJarList.get(i);
 
 			updatedJar.processJar(getRobotCache(), getRobotsDirectory(), updatedJarList);
 			getRobotDatabase().put(updatedJar.getFilePath(), updatedJar);
@@ -201,8 +206,8 @@ public class RepositoryManager implements IRepositoryManager {
 		WindowUtil.setStatus("Adding robots to repository");
 
 		for (FileSpecification fs : fileSpecificationList) {
-			if (fs instanceof RobotFileSpecification || fs instanceof TeamSpecification) {
-				repository.add(fs);
+			if (fs instanceof INamedFileSpecification) {
+				repository.add((NamedFileSpecification) fs);
 			}
 		}
 
@@ -350,7 +355,7 @@ public class RepositoryManager implements IRepositoryManager {
 							isDevelopmentDirectory);
 					updateRobotDatabase(fileSpecification);
 					write = true;
-					if (fileSpecification instanceof JarSpecification) {
+					if (fileSpecification instanceof JarFileSpecification) {
 						String path = fileSpecification.getFilePath();
 
 						path = path.substring(0, path.lastIndexOf(File.separatorChar));
@@ -403,10 +408,10 @@ public class RepositoryManager implements IRepositoryManager {
 				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
 				getRobotDatabase().put(key, robotFileSpecification);
 			}
-		} else if (fileSpecification instanceof JarSpecification) {
+		} else if (fileSpecification instanceof JarFileSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
-		} else if (fileSpecification instanceof TeamSpecification) {
-			updateNoDuplicates(fileSpecification);
+		} else if (fileSpecification instanceof TeamFileSpecification) {
+			updateNoDuplicates((TeamFileSpecification) fileSpecification);
 		} else if (fileSpecification instanceof ClassSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
 		} else {
@@ -414,7 +419,7 @@ public class RepositoryManager implements IRepositoryManager {
 		}
 	}
 
-	private void updateNoDuplicates(FileSpecification spec) {
+	private void updateNoDuplicates(NamedFileSpecification spec) {
 		String key = spec.getFilePath();
 
 		WindowUtil.setStatus("Updating database: " + spec.getName());
@@ -515,23 +520,23 @@ public class RepositoryManager implements IRepositoryManager {
 		return manager;
 	}
 
-	public List<FileSpecification> getRobotSpecificationsList() {
+	public List<INamedFileSpecification> getRobotSpecificationsList() {
 		loadRobotRepository();
 		return repository.getRobotSpecificationsList(false, false, false, false, false, false);
 	}
 
-	public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
+	public List<INamedFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
 		loadRobotRepository();
 		return repository.getRobotSpecificationsList(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment,
 				onlyNotDevelopment, ignoreTeamRobots);
 	}
 
 	public RobotSpecification[] getRobotSpecifications() {
-		List<FileSpecification> list = getRobotSpecificationsList();
+		List<INamedFileSpecification> list = getRobotSpecificationsList();
 		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
-			final FileSpecification specification = list.get(i);
+			final INamedFileSpecification specification = list.get(i);
 
 			if (specification.isValid()) {
 				robotSpecs[i] = specification.createRobotSpecification();
@@ -564,8 +569,8 @@ public class RepositoryManager implements IRepositoryManager {
 				HiddenAccess.setTeamName(specification, inTeam ? teamName : null);
 				battlingRobotsList.add(specification);
 				return true;
-			} else if (fileSpec instanceof TeamSpecification) {
-				TeamSpecification currentTeam = (TeamSpecification) fileSpec;
+			} else if (fileSpec instanceof TeamFileSpecification) {
+				TeamFileSpecification currentTeam = (TeamFileSpecification) fileSpec;
 				String version = currentTeam.getVersion();
 
 				if (version == null) {
@@ -584,4 +589,47 @@ public class RepositoryManager implements IRepositoryManager {
 		return false;
 	}
 
+	public boolean verifyRobotName(String robotName, String shortClassName) {
+		return verifyRobotNameStatic(robotName, shortClassName);
+	}
+
+	public int extractJar(File f) {
+		return JarFileSpecification.extractJar(f, getRobotsDirectory(), "Extracting to " + getRobotsDirectory(), null,
+				true, false);
+	}
+
+	public static boolean verifyRobotNameStatic(String robotName, String shortClassName) {
+		int lIndex = robotName.indexOf(".");
+
+		if (lIndex > 0) {
+			String rootPackage = robotName.substring(0, lIndex);
+
+			if (rootPackage.equalsIgnoreCase("robocode")) {
+				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
+				return false;
+			}
+
+			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+				final String message = "Robot " + robotName + " has package name too long.  "
+						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
+
+				logError(message);
+				return false;
+			}
+		}
+
+		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
+			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+					+ " characters maximum please.";
+
+			logError(message);
+			return false;
+		}
+
+		return true;
+	}
+
+	public ITeamFileSpecificationExt createTeam() {
+		return new TeamFileSpecification();
+	}
 }

@@ -20,7 +20,7 @@ package robocode.dialog;
 
 import net.sf.robocode.io.Logger;
 import robocode.manager.RobocodeManager;
-import robocode.repository.TeamSpecification;
+import robocode.repository.ITeamFileSpecificationExt;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -165,7 +165,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			}
 		}
 
-		TeamSpecification teamSpec = new TeamSpecification();
+		ITeamFileSpecificationExt teamSpec = manager.getRepositoryManager().createTeam();
 		URL u = null;
 		String w = teamCreatorOptionsPanel.getWebpageField().getText();
 

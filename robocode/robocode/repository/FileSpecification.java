@@ -34,7 +34,7 @@ import java.util.StringTokenizer;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public abstract class FileSpecification implements Comparable<FileSpecification>, Serializable, Cloneable {
+abstract class FileSpecification implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -63,7 +63,6 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	private String fileName;
 	private String thisFileName;
 	private String fileType;
-	protected NameManager nameManager;
 	private long fileLastModified;
 	private long fileLength;
 
@@ -85,9 +84,9 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		FileSpecification newSpec;
 
 		if (fileType.equals(".team")) {
-			newSpec = new TeamSpecification(f, rootDir, prefix, developmentVersion);
+			newSpec = new TeamFileSpecification(f, rootDir, prefix, developmentVersion);
 		} else if (fileType.equals(".jar") || fileType.equals(".zip")) {
-			newSpec = new JarSpecification(f, rootDir, developmentVersion);
+			newSpec = new JarFileSpecification(f, rootDir, developmentVersion);
 		} else {
 			newSpec = new RobotFileSpecification(f, rootDir, prefix, developmentVersion);
 			if (!(developmentVersion || newSpec.isValid())) {
@@ -129,12 +128,6 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	public boolean isDevelopmentVersion() {
 		return developmentVersion;
-	}
-
-	public int compareTo(FileSpecification other) {
-		return FileSpecification.compare(nameManager.getFullPackage(), nameManager.getFullClassName(),
-				nameManager.getVersion(), other.nameManager.getFullPackage(), other.nameManager.getFullClassName(),
-				other.nameManager.getVersion());
 	}
 
 	public boolean isSameFile(String filePath, long fileLength, long fileLastModified) {
@@ -232,11 +225,11 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		props.setProperty(LIBRARY_DESCRIPTION, libraryDescription);
 	}
 
-	public String getThisFileName() {
+	public String getPropertiesFileName() {
 		return thisFileName;
 	}
 
-	public void setThisFileName(String thisFileName) {
+	public void setPropertiesFileName(String thisFileName) {
 		this.thisFileName = thisFileName;
 	}
 
@@ -296,38 +289,6 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		uuid = props.getProperty(UUID);
 		robocodeVersion = props.getProperty(ROBOCODE_VERSION);
 		libraryDescription = props.getProperty(LIBRARY_DESCRIPTION);
-	}
-
-	public String getFullPackage() {
-		return nameManager.getFullPackage();
-	}
-
-	public String getRootPackage() {
-		return nameManager.getRootPackage();
-	}
-
-	public String getFullClassNameWithVersion() {
-		return nameManager.getFullClassNameWithVersion();
-	}
-
-	public String getUniqueFullClassNameWithVersion() {
-		return nameManager.getUniqueFullClassNameWithVersion();
-	}
-
-	public String getUniqueShortClassNameWithVersion() {
-		return nameManager.getUniqueShortClassNameWithVersion();
-	}
-
-	public String getUniqueVeryShortClassNameWithVersion() {
-		return nameManager.getUniqueVeryShortClassNameWithVersion();
-	}
-
-	public String getFullClassName() {
-		return nameManager.getFullClassName();
-	}
-
-	public String getShortClassName() {
-		return nameManager.getShortClassName();
 	}
 
 	public boolean isValid() {
@@ -439,6 +400,6 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	public RobotSpecification createRobotSpecification() {
 		return HiddenAccess.createSpecification(this, getName(), getAuthorName(),
 				(getWebpage() != null) ? getWebpage().toString() : null, getVersion(), getRobocodeVersion(),
-				(getJarFile() != null) ? getJarFile().toString() : null, getFullClassName(), getDescription());
+				(getJarFile() != null) ? getJarFile().toString() : null, getName(), getDescription());
 	}
 }

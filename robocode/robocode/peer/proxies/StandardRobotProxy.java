@@ -17,7 +17,7 @@ import net.sf.robocode.peer.IRobotPeer;
 import robocode.RobotStatus;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
-import robocode.repository.RobotFileSpecification;
+import robocode.repository.IRobotFileSpecification;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 
@@ -32,7 +32,7 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 	private double saveGunAngleToTurn;
 	private double saveRadarAngleToTurn;
 
-	public StandardRobotProxy(RobotFileSpecification specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public StandardRobotProxy(IRobotFileSpecification specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 	}
 

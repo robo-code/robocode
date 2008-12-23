@@ -24,20 +24,22 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 class NameManager implements Serializable {
 
-	private String fullClassName;
 	private String version;
 	private boolean developmentVersion;
 
+	private String fullPackage;
+
+	private String fullClassName;
 	private String fullClassNameWithVersion;
 	private String uniqueFullClassNameWithVersion;
-	private String fullPackage;
-	private String rootPackage;
+
 	private String shortClassName;
-	private String veryShortClassName;
 	private String shortClassNameWithVersion;
+	private String uniqueShortClassNameWithVersion;
+
+	private String veryShortClassName;
 	private String veryShortClassNameWithVersion;
 	private String uniqueVeryShortClassNameWithVersion;
-	private String uniqueShortClassNameWithVersion;
 
 	public NameManager(String fullClassName, String version, boolean developmentVersion) {
 		if (fullClassName == null) {
@@ -56,15 +58,6 @@ class NameManager implements Serializable {
 
 	public String getFullClassName() {
 		return fullClassName;
-	}
-
-	public String getRootPackage() {
-		if (rootPackage == null) {
-			int dotIndex = fullClassName.indexOf(".");
-
-			rootPackage = (dotIndex > 0) ? fullClassName.substring(0, dotIndex) : null;
-		}
-		return rootPackage;
 	}
 
 	public String getShortClassName() {

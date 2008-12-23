@@ -70,19 +70,21 @@ class FileSpecificationDatabase implements Serializable {
 	public boolean contains(String fullClassName, String version, boolean isDevelopmentVersion) {
 
 		for (FileSpecification fileSpecification : hash.values()) {
-			if (fileSpecification instanceof RobotFileSpecification || fileSpecification instanceof TeamSpecification) {
-				if (fileSpecification.isDuplicate()) {
+			if (fileSpecification instanceof INamedFileSpecification) {
+				NamedFileSpecification namedFileSpecification = (NamedFileSpecification) fileSpecification;
+
+				if (namedFileSpecification.isDuplicate()) {
 					continue;
 				}
-				if (fileSpecification.isDevelopmentVersion() != isDevelopmentVersion) {
+				if (namedFileSpecification.isDevelopmentVersion() != isDevelopmentVersion) {
 					continue;
 				}
-				if (fullClassName.equals(fileSpecification.getFullClassName())) {
-					if (version == null && fileSpecification.getVersion() == null) {
+				if (fullClassName.equals(namedFileSpecification.getFullClassName())) {
+					if (version == null && namedFileSpecification.getVersion() == null) {
 						return true;
 					}
-					if (version != null && fileSpecification.getVersion() != null) {
-						if (version.equals(fileSpecification.getVersion())) {
+					if (version != null && namedFileSpecification.getVersion() != null) {
+						if (version.equals(namedFileSpecification.getVersion())) {
 							return true;
 						}
 					}
@@ -95,14 +97,16 @@ class FileSpecificationDatabase implements Serializable {
 	public FileSpecification get(String fullClassName, String version, boolean isDevelopmentVersion) {
 
 		for (FileSpecification fileSpecification : hash.values()) {
-			if (fileSpecification instanceof RobotFileSpecification || fileSpecification instanceof TeamSpecification) {
+			if (fileSpecification instanceof INamedFileSpecification) {
+				INamedFileSpecification namedFileSpecification = (INamedFileSpecification) fileSpecification;
+
 				if (fileSpecification.isDuplicate()) {
 					continue;
 				}
 				if (fileSpecification.isDevelopmentVersion() != isDevelopmentVersion) {
 					continue;
 				}
-				if (fullClassName.equals(fileSpecification.getFullClassName())) {
+				if (fullClassName.equals(namedFileSpecification.getFullClassName())) {
 					if (version == null && fileSpecification.getVersion() == null) {
 						return fileSpecification;
 					}
@@ -126,14 +130,14 @@ class FileSpecificationDatabase implements Serializable {
 		return v;
 	}
 
-	public List<JarSpecification> getJarSpecifications() {
-		List<JarSpecification> v = new ArrayList<JarSpecification>();
+	public List<JarFileSpecification> getJarSpecifications() {
+		List<JarFileSpecification> v = new ArrayList<JarFileSpecification>();
 
 		for (String key : hash.keySet()) {
 			FileSpecification spec = hash.get(key);
 
-			if (spec instanceof JarSpecification) {
-				v.add((JarSpecification) spec);
+			if (spec instanceof JarFileSpecification) {
+				v.add((JarFileSpecification) spec);
 			}
 		}
 		return v;
@@ -152,18 +156,21 @@ class FileSpecificationDatabase implements Serializable {
 	}
 
 	public void remove(String key) {
-		FileSpecification removedSpecification = hash.get(key);
+		FileSpecification removedS = hash.get(key);
 
-		if (removedSpecification == null) {
+		if (removedS == null) {
 			return;
 		}
 
 		hash.remove(key);
 
 		// No concept of duplicates for classes
-		if (!(removedSpecification instanceof RobotFileSpecification)) {
+		if (!(removedS instanceof RobotFileSpecification)) {
 			return;
 		}
+
+		RobotFileSpecification removedSpecification = (RobotFileSpecification) removedS;
+
 		// If it's already a dupe we're removing, return
 		if (removedSpecification.isDuplicate()) {
 			return;

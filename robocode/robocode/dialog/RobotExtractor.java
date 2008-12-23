@@ -25,8 +25,7 @@ package robocode.dialog;
 
 
 import robocode.manager.RobocodeManager;
-import robocode.repository.FileSpecification;
-import robocode.repository.JarSpecification;
+import robocode.repository.INamedFileSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -150,13 +149,12 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Extract");
-		List<FileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
-		FileSpecification spec = selectedRobots.get(0);
+		List<INamedFileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
+		INamedFileSpecification spec = selectedRobots.get(0);
 
 		try {
 			WindowUtil.setStatusWriter(out);
-			rv = JarSpecification.extractJar(spec.getJarFile(), manager.getRepositoryManager().getRobotsDirectory(),
-					"Extracting to " + manager.getRepositoryManager().getRobotsDirectory(), null, true, false);
+			rv = manager.getRepositoryManager().extractJar(spec.getJarFile());
 			WindowUtil.setStatusWriter(null);
 			WindowUtil.setStatus("");
 			if (rv == 0) {

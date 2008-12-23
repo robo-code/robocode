@@ -24,6 +24,7 @@ package robocode.dialog;
 
 import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
+import robocode.repository.INamedFileSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -149,7 +150,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		return rulesTab;
 	}
 
-	public List<robocode.repository.FileSpecification> getSelectedRobots() {
+	public List<INamedFileSpecification> getSelectedRobots() {
 		return getRobotSelectionPanel().getSelectedRobots();
 	}
 

@@ -112,7 +112,7 @@ import robocode.peer.BulletPeer;
 import robocode.peer.ContestantPeer;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
-import robocode.repository.RobotFileSpecification;
+import robocode.repository.IRobotFileSpecification;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -180,7 +180,7 @@ public final class Battle extends BaseBattle {
 
 		// count duplicate robots, enumerate teams, enumerate team members
 		for (RobotSpecification specification : battlingRobotsList) {
-			final String name = ((RobotFileSpecification) HiddenAccess.getFileSpecification(specification)).getFullClassNameWithVersion(); 
+			final String name = ((IRobotFileSpecification) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
 
 			if (countedNames.containsKey(name)) {
 				int value = countedNames.get(name);
@@ -228,7 +228,7 @@ public final class Battle extends BaseBattle {
 		// name robots
 		for (int i = battlingRobotsList.size() - 1; i >= 0; i--) {
 			RobotSpecification specification = battlingRobotsList.get(i);
-			String name = ((RobotFileSpecification) HiddenAccess.getFileSpecification(specification)).getFullClassNameWithVersion();
+			String name = ((IRobotFileSpecification) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
 			Integer order = countedNames.get(name);
 			int duplicate = -1;
 

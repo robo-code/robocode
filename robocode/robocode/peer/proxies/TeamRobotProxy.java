@@ -19,7 +19,7 @@ import robocode.MessageEvent;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
-import robocode.repository.RobotFileSpecification;
+import robocode.repository.IRobotFileSpecification;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.*;
@@ -33,7 +33,7 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 	final int MAX_MESSAGE_SIZE = 32768;
 	private final ByteArrayOutputStream byteStreamWriter;
 
-	public TeamRobotProxy(RobotFileSpecification specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public TeamRobotProxy(IRobotFileSpecification specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 		byteStreamWriter = new ByteArrayOutputStream(MAX_MESSAGE_SIZE);
 	}

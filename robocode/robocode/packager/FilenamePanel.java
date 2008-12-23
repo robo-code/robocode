@@ -26,7 +26,7 @@ package robocode.packager;
 
 import robocode.dialog.WizardPanel;
 import robocode.io.FileUtil;
-import robocode.repository.FileSpecification;
+import robocode.repository.INamedFileSpecification;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -90,7 +90,7 @@ public class FilenamePanel extends WizardPanel {
 				outgoingFile.mkdirs();
 			}
 			String jarName = "myrobots.jar";
-			List<FileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			List<INamedFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null && selectedRobots.size() == 1) {
 				jarName = selectedRobots.get(0).getFullClassName() + "_"

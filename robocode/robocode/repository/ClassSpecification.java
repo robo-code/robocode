@@ -19,7 +19,7 @@ package robocode.repository;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class ClassSpecification extends FileSpecification {
+class ClassSpecification extends FileSpecification {
 
 	// Used in FileSpecification
 	public ClassSpecification(RobotFileSpecification robotFileSpecification) {

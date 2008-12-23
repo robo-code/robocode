@@ -86,7 +86,7 @@ import robocode.peer.proxies.IHostingRobotProxy;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.EventQueue;
 import robocode.peer.robot.RobotStatistics;
-import robocode.repository.FileSpecification;
+import robocode.repository.IRobotFileSpecification;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
@@ -951,14 +951,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				}
 			} else {
 				final int nl = recipient.length();
-				final String currentName = member.getName();
-				final String currentNonVerName = member.statics.getNonVersionedName();
+				final String currentName = member.statics.getName();
 
-				if ((currentName.length() >= nl && currentName.substring(0, nl).equals(recipient))
-						|| (currentNonVerName.length() >= nl
-								&& member.statics.getNonVersionedName().substring(0, nl).equals(recipient))) {
+				if ((currentName.length() >= nl && currentName.substring(0, nl).equals(recipient))) {
 					return true;
 				}
+
+				final String currentClassName = member.statics.getFullClassName();
+
+				if ((currentClassName.length() >= nl && currentClassName.substring(0, nl).equals(recipient))) {
+					return true;
+				}
+
 			}
 		}
 		return false;
@@ -1471,7 +1475,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
 		// disable for next time
-		((FileSpecification) HiddenAccess.getFileSpecification(robotSpecification)).setValid(false);
+		((IRobotFileSpecification) HiddenAccess.getFileSpecification(robotSpecification)).setValid(false);
 	}
 
 	public void updateEnergy(double delta) {

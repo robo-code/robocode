@@ -31,7 +31,7 @@ import java.net.URL;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class TeamSpecification extends FileSpecification {
+class TeamFileSpecification extends NamedFileSpecification implements ITeamFileSpecificationExt {
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";
 	private final static String TEAM_AUTHOR_EMAIL = "team.author.email";
@@ -47,7 +47,7 @@ public class TeamSpecification extends FileSpecification {
 	private String uid = "";
 
 	// Used in FileSpecification
-	protected TeamSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
+	protected TeamFileSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
 		this.developmentVersion = developmentVersion;
 		this.rootDir = rootDir;
 		valid = true;
@@ -76,10 +76,10 @@ public class TeamSpecification extends FileSpecification {
 				Logger.logError("Warning:  Unable to determine canonical path for " + f.getPath());
 				setFilePath(f.getPath());
 			}
-			setThisFileName(f.getPath());
+			setPropertiesFileName(f.getPath());
 			setFileName(f.getName());
 		} else {
-			throw new RuntimeException("TeamSpecification can only be constructed from a .team file");
+			throw new RuntimeException("TeamFileSpecification can only be constructed from a .team file");
 		}
 		byte mb[] = getMembers().getBytes();
 		long uid1 = 0;
@@ -103,7 +103,7 @@ public class TeamSpecification extends FileSpecification {
 		return uid;
 	}
 
-	public TeamSpecification() {}
+	public TeamFileSpecification() {}
 
 	@Override
 	public void load(FileInputStream in) throws IOException {
@@ -126,70 +126,35 @@ public class TeamSpecification extends FileSpecification {
 		teamJavaSourceIncluded = Boolean.valueOf(props.getProperty(TEAM_JAVA_SOURCE_INCLUDED, "false"));
 	}
 
-	/**
-	 * Sets the name of the team
-	 *
-	 * @param name The new name for the team
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Sets the team description.
-	 *
-	 * @param teamDescription The new team description
-	 */
 	public void setTeamDescription(String teamDescription) {
 		this.description = teamDescription;
 		props.setProperty(TEAM_DESCRIPTION, teamDescription);
 	}
 
-	/**
-	 * Sets the the author name.
-	 *
-	 * @param teamAuthorName The new author name
-	 */
 	public void setTeamAuthorName(String teamAuthorName) {
 		this.authorName = teamAuthorName;
 		props.setProperty(TEAM_AUTHOR_NAME, teamAuthorName);
 	}
 
-	/**
-	 * Sets the e-mail address of the author.
-	 *
-	 * @param teamAuthorEmail The new e-mail address of the author.
-	 */
 	public void setTeamAuthorEmail(String teamAuthorEmail) {
 		this.authorEmail = teamAuthorEmail;
 		props.setProperty(TEAM_AUTHOR_EMAIL, teamAuthorEmail);
 	}
 
-	/**
-	 * Sets the website for the author/team.
-	 *
-	 * @param teamAuthorWebsite The new website for the author/team.
-	 */
 	public void setTeamAuthorWebsite(String teamAuthorWebsite) {
 		this.authorWebsite = teamAuthorWebsite;
 		props.setProperty(TEAM_AUTHOR_WEBSITE, teamAuthorWebsite);
 	}
 
-	/**
-	 * Sets the robot version.
-	 *
-	 * @param teamVersion The new robot version.
-	 */
 	public void setTeamVersion(String teamVersion) {
 		this.version = teamVersion;
 		props.setProperty(TEAM_VERSION, teamVersion);
 	}
 
-	/**
-	 * Sets the robot webpage.
-	 *
-	 * @param teamWebpage The new robot webpage.
-	 */
 	public void setTeamWebpage(URL teamWebpage) {
 		this.webpage = teamWebpage;
 		if (teamWebpage != null) {
@@ -199,20 +164,10 @@ public class TeamSpecification extends FileSpecification {
 		}
 	}
 
-	/**
-	 * Gets the members.
-	 *
-	 * @return Returns a String
-	 */
 	public String getMembers() {
 		return members;
 	}
 
-	/**
-	 * Sets the members.
-	 *
-	 * @param members The members to set
-	 */
 	public void setMembers(String members) {
 		this.members = members;
 		props.setProperty(TEAM_MEMBERS, members);
@@ -227,20 +182,10 @@ public class TeamSpecification extends FileSpecification {
 		props.setProperty(TEAM_MEMBERS, members);
 	}
 
-	/**
-	 * Gets the teamJavaSourceIncluded.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getTeamJavaSourceIncluded() {
 		return teamJavaSourceIncluded;
 	}
 
-	/**
-	 * Sets the teamJavaSourceIncluded.
-	 *
-	 * @param teamJavaSourceIncluded The teamJavaSourceIncluded to set
-	 */
 	public void setTeamJavaSourceIncluded(boolean teamJavaSourceIncluded) {
 		this.teamJavaSourceIncluded = teamJavaSourceIncluded;
 		props.setProperty(TEAM_JAVA_SOURCE_INCLUDED, "" + teamJavaSourceIncluded);

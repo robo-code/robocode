@@ -33,8 +33,8 @@ package robocode.dialog;
 import net.sf.robocode.io.Logger;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
-import robocode.repository.FileSpecification;
-import robocode.repository.TeamSpecification;
+import robocode.repository.INamedFileSpecification;
+import robocode.repository.ITeamFileSpecificationExt;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -88,7 +88,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private final boolean onlyShowPackaged;
 	private final boolean ignoreTeamRobots;
 	private String preSelectedRobots;
-	private final List<FileSpecification> selectedRobots = new CopyOnWriteArrayList<FileSpecification>();
+	private final List<INamedFileSpecification> selectedRobots = new CopyOnWriteArrayList<INamedFileSpecification>();
 	private final boolean showNumRoundsPanel;
 	private final RobocodeManager manager;
 
@@ -139,7 +139,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		JList selectedList = getSelectedRobotsList();
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) selectedList.getModel();
 
-		for (FileSpecification selected : availableRobotsPanel.getAvailableRobots()) {
+		for (INamedFileSpecification selected : availableRobotsPanel.getAvailableRobots()) {
 			selectedRobots.add(selected);
 		}
 
@@ -157,9 +157,9 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private void addButtonActionPerformed() {
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) getSelectedRobotsList().getModel();
-		List<FileSpecification> moves = availableRobotsPanel.getSelectedRobots();
+		List<INamedFileSpecification> moves = availableRobotsPanel.getSelectedRobots();
 
-		for (FileSpecification move : moves) {
+		for (INamedFileSpecification move : moves) {
 			selectedRobots.add(move);
 		}
 
@@ -263,7 +263,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		return sb.toString();
 	}
 
-	public List<FileSpecification> getSelectedRobots() {
+	public List<INamedFileSpecification> getSelectedRobots() {
 		return selectedRobots;
 	}
 
@@ -379,18 +379,18 @@ public class RobotSelectionPanel extends WizardPanel {
 				setForeground(list.getForeground());
 			}
 
-			if (useShortNames && value instanceof FileSpecification) {
-				FileSpecification robotSpecification = (FileSpecification) value;
+			if (useShortNames && value instanceof INamedFileSpecification) {
+				INamedFileSpecification robotSpecification = (INamedFileSpecification) value;
 
-				if (value instanceof TeamSpecification) {
+				if (value instanceof ITeamFileSpecificationExt) {
 					setText("Team: " + robotSpecification.getUniqueShortClassNameWithVersion());
 				} else {
 					setText(robotSpecification.getUniqueShortClassNameWithVersion());
 				}
-			} else if (value instanceof FileSpecification) {
-				FileSpecification robotSpecification = (FileSpecification) value;
+			} else if (value instanceof INamedFileSpecification) {
+				INamedFileSpecification robotSpecification = (INamedFileSpecification) value;
 
-				if (value instanceof TeamSpecification) {
+				if (value instanceof ITeamFileSpecificationExt) {
 					setText("Team: " + robotSpecification.getUniqueFullClassNameWithVersion());
 				} else {
 					setText(robotSpecification.getUniqueFullClassNameWithVersion());
@@ -579,8 +579,9 @@ public class RobotSelectionPanel extends WizardPanel {
 						repositoryManager.clearRobotList();
 					}
 
-					List<FileSpecification> robotList = repositoryManager.getRobotSpecificationsList(onlyShowSource,
-							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
+					List<INamedFileSpecification> robotList = repositoryManager.getRobotSpecificationsList(
+							onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged,
+							ignoreTeamRobots);
 
 					getAvailableRobotsPanel().setRobotList(robotList);
 					if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
@@ -608,7 +609,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 		if (sel.length == 1) {
 			availableRobotsPanel.clearSelection();
-			FileSpecification robotSpecification = (FileSpecification) getSelectedRobotsList().getModel().getElementAt(
+			INamedFileSpecification robotSpecification = (INamedFileSpecification) getSelectedRobotsList().getModel().getElementAt(
 					sel[0]);
 
 			showDescription(robotSpecification);
@@ -621,7 +622,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		getNumRoundsTextField().setText("" + numRounds);
 	}
 
-	private void setSelectedRobots(List<FileSpecification> robotList, String selectedRobotsString) {
+	private void setSelectedRobots(List<INamedFileSpecification> robotList, String selectedRobotsString) {
 		if (selectedRobotsString != null) {
 			StringTokenizer tokenizer;
 
@@ -634,7 +635,7 @@ public class RobotSelectionPanel extends WizardPanel {
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				for (FileSpecification selected : robotList) {
+				for (INamedFileSpecification selected : robotList) {
 					if (selected.getUniqueFullClassNameWithVersion().equals(bot)) {
 						this.selectedRobots.add(selected);
 						break;
@@ -646,7 +647,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		fireStateChanged();
 	}
 
-	public void showDescription(FileSpecification robotSpecification) {
+	public void showDescription(INamedFileSpecification robotSpecification) {
 		getDescriptionPanel().showDescription(robotSpecification);
 	}
 

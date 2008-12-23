@@ -16,7 +16,7 @@ import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.BattleRules;
 import robocode.control.RobotSpecification;
-import robocode.repository.RobotFileSpecification;
+import robocode.repository.IRobotFileSpecification;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public final class RobotStatics implements IRobotStatics {
 	private final String name;
 	private final String shortName;
 	private final String veryShortName;
-	private final String nonVersionedName;
+	private final String fullClassName;
 	private final String shortClassName;
 	private final BattleRules battleRules;
 	private final String[] teammates;
@@ -44,23 +44,23 @@ public final class RobotStatics implements IRobotStatics {
 	private final int contestantIndex;
 
 	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, TeamPeer team, int index, int contestantIndex) {
-		RobotFileSpecification specification = ((RobotFileSpecification) HiddenAccess.getFileSpecification(
+		IRobotFileSpecification specification = ((IRobotFileSpecification) HiddenAccess.getFileSpecification(
 				robotSpecification));
 
+		shortClassName = specification.getShortClassName();
+		fullClassName = specification.getFullClassName();
 		if (duplicate >= 0) {
 			String countString = " (" + (duplicate + 1) + ')';
 
-			name = specification.getFullClassNameWithVersion() + countString;
+			name = specification.getUniqueFullClassNameWithVersion() + countString;
 			shortName = specification.getUniqueShortClassNameWithVersion() + countString;
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion() + countString;
-			nonVersionedName = specification.getFullClassName() + countString;
 		} else {
-			name = specification.getFullClassNameWithVersion();
+			name = specification.getUniqueFullClassNameWithVersion();
 			shortName = specification.getUniqueShortClassNameWithVersion();
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion();
-			nonVersionedName = specification.getFullClassName();
 		}
-		shortClassName = specification.getShortClassName();
+
 		isJuniorRobot = specification.isJuniorRobot();
 		isInteractiveRobot = specification.isInteractiveRobot();
 		isPaintRobot = specification.isPaintRobot();
@@ -130,8 +130,8 @@ public final class RobotStatics implements IRobotStatics {
 		return veryShortName;
 	}
 
-	public String getNonVersionedName() {
-		return nonVersionedName;
+	public String getFullClassName() {
+		return fullClassName;
 	}
 
 	public String getShortClassName() {
