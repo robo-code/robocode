@@ -178,7 +178,7 @@ public class RepositoryManager implements IRepositoryManager {
 		for (int i = 0; i < updatedJarList.size(); i++) {
 			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
 
-			updatedJar.processJar(getRobotCache(), getRobotsDirectory());
+			updatedJar.processJar(getRobotCache(), getRobotsDirectory(), updatedJarList);
 			getRobotDatabase().put(updatedJar.getFilePath(), updatedJar);
 			updateRobotDatabase(updatedJar);
 			write = true;

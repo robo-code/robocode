@@ -156,7 +156,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		try {
 			WindowUtil.setStatusWriter(out);
 			rv = JarSpecification.extractJar(spec.getJarFile(), manager.getRepositoryManager().getRobotsDirectory(),
-					"Extracting to " + manager.getRepositoryManager().getRobotsDirectory(), false, true, false);
+					"Extracting to " + manager.getRepositoryManager().getRobotsDirectory(), null, true, false);
 			WindowUtil.setStatusWriter(null);
 			WindowUtil.setStatus("");
 			if (rv == 0) {

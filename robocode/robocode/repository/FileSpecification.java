@@ -61,7 +61,6 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	private String filePath;
 	private String fileName;
-	private String propertiesFileName;
 	private String thisFileName;
 	private String fileType;
 	protected NameManager nameManager;
@@ -180,18 +179,10 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		return false;
 	}
 
-	/**
-	 * Gets the UUID.
-	 *
-	 * @return Returns a String
-	 */
 	public String getUUID() {
 		return uuid;
 	}
 
-	/**
-	 * Sets the UUID.
-	 */
 	public void setUUID() {
 		// Generate new UUID
 		uuid = java.util.UUID.randomUUID().toString();
@@ -199,74 +190,34 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		props.setProperty(UUID, uuid);
 	}
 
-	/**
-	 * Gets the robotName.
-	 *
-	 * @return Returns a String
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Gets the robotDescription.
-	 *
-	 * @return Returns a String
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * Gets the robotAuthorName.
-	 *
-	 * @return Returns a String
-	 */
 	public String getAuthorName() {
 		return authorName;
 	}
 
-	/**
-	 * Gets the robotAuthorEmail.
-	 *
-	 * @return Returns a String
-	 */
 	public String getAuthorEmail() {
 		return authorEmail;
 	}
 
-	/**
-	 * Gets the robotAuthorWebsite.
-	 *
-	 * @return Returns a String
-	 */
 	public String getAuthorWebsite() {
 		return authorWebsite;
 	}
 
-	/**
-	 * Gets the robotVersion.
-	 *
-	 * @return Returns a String
-	 */
 	public String getVersion() {
 		return version;
 	}
 
-	/**
-	 * Gets the robocodeVersion
-	 *
-	 * @return Returns a String
-	 */
 	public String getRobocodeVersion() {
 		return robocodeVersion;
 	}
 
-	/**
-	 * Sets the robocodeVersion
-	 *
-	 * @param robocodeVersion to set
-	 */
 	public void setRobocodeVersion(String robocodeVersion) {
 		this.robocodeVersion = robocodeVersion;
 		props.setProperty(ROBOCODE_VERSION, robocodeVersion);
@@ -281,137 +232,54 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		props.setProperty(LIBRARY_DESCRIPTION, libraryDescription);
 	}
 
-	/**
-	 * Gets the thisFilename.
-	 *
-	 * @return Returns a String
-	 */
 	public String getThisFileName() {
 		return thisFileName;
 	}
 
-	/**
-	 * Sets the thisFilename.
-	 *
-	 * @param thisFileName The thisFilename to set
-	 */
 	public void setThisFileName(String thisFileName) {
 		this.thisFileName = thisFileName;
 	}
 
-	/**
-	 * Gets the filePath.
-	 *
-	 * @return Returns a String
-	 */
 	public String getFilePath() {
 		return filePath;
 	}
 
-	/**
-	 * Sets the filePath.
-	 *
-	 * @param filePath The filePath to set
-	 */
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
 
-	/**
-	 * Gets the propertiesFilename.
-	 *
-	 * @return Returns a String
-	 */
-	public String getPropertiesFileName() {
-		return propertiesFileName;
-	}
-
-	/**
-	 * Sets the propertiesFilename.
-	 *
-	 * @param propertiesFileName The propertiesFilename to set
-	 */
-	public void setPropertiesFileName(String propertiesFileName) {
-		this.propertiesFileName = propertiesFileName;
-	}
-
-	/**
-	 * Gets the filename.
-	 *
-	 * @return Returns a String
-	 */
 	public String getFileName() {
 		return fileName;
 	}
 
-	/**
-	 * Sets the filename.
-	 *
-	 * @param fileName The filename to set
-	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
 
-	/**
-	 * Gets the fileType.
-	 *
-	 * @return Returns a String
-	 */
 	public String getFileType() {
 		return fileType;
 	}
 
-	/**
-	 * Sets the fileType.
-	 *
-	 * @param fileType The fileType to set
-	 */
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
 	}
 
-	/**
-	 * Gets the robotWebpage.
-	 *
-	 * @return Returns a String
-	 */
 	public URL getWebpage() {
 		return webpage;
 	}
 
-	/**
-	 * Gets the fileLastModified.
-	 *
-	 * @return Returns a String
-	 */
 	public long getFileLastModified() {
 		return fileLastModified;
 	}
 
-	/**
-	 * Sets the fileLastModified.
-	 *
-	 * @param fileLastModified The fileLastModified to set
-	 */
 	public void setFileLastModified(long fileLastModified) {
 		this.fileLastModified = fileLastModified;
 	}
 
-	/**
-	 * Gets the fileLength.
-	 *
-	 * @return Returns a String
-	 */
 	public long getFileLength() {
 		return fileLength;
 	}
 
-	/**
-	 * Sets the fileLength.
-	 *
-	 * @param fileLength The fileLength to set
-	 */
 	public void setFileLength(long fileLength) {
 		this.fileLength = fileLength;
 	}

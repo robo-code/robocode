@@ -25,6 +25,7 @@ import javax.swing.*;
 import java.io.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.List;
 
 
 /**
@@ -63,7 +64,7 @@ public class JarSpecification extends FileSpecification {
 		return getFilePath();
 	}
 
-	public void processJar(File robotCache, File  robotsDirectory) {
+	public void processJar(File robotCache, File  robotsDirectory, List<FileSpecification> updatedJarList) {
 		WindowUtil.setStatus("Extracting .jar: " + getFileName());
 
 		File dest;
@@ -82,10 +83,10 @@ public class JarSpecification extends FileSpecification {
 
 		File f = new File(getFilePath());
 
-		extractJar(f, dest, "Extracting .jar: " + getFileName(), true, true, true);
+		extractJar(f, dest, "Extracting .jar: " + getFileName(), updatedJarList, true, true);
 	}
 
-	public static int extractJar(File f, File dest, String statusPrefix, boolean extractJars, boolean close,
+	public static int extractJar(File f, File dest, String statusPrefix, List<FileSpecification> updatedJarList, boolean close,
 			boolean alwaysReplace) {
 
 		FileInputStream fis = null;
@@ -94,7 +95,7 @@ public class JarSpecification extends FileSpecification {
 			fis = new FileInputStream(f);
 			JarInputStream jarIS = new JarInputStream(fis);
 
-			return extractJar(jarIS, dest, statusPrefix, extractJars, close, alwaysReplace);
+			return extractJar(jarIS, dest, statusPrefix, updatedJarList, close, alwaysReplace);
 		} catch (IOException e) {
 			logError("Exception reading " + f + ": " + e);
 		} finally {
@@ -107,7 +108,7 @@ public class JarSpecification extends FileSpecification {
 		return 16;
 	}
 
-	public static int extractJar(JarInputStream jarIS, File dest, String statusPrefix, boolean extractJars, boolean close,
+	public static int extractJar(JarInputStream jarIS, File dest, String statusPrefix, List<FileSpecification> updatedJarList, boolean close,
 			boolean alwaysReplace) {
 		int rc = 0;
 		boolean always = alwaysReplace;
@@ -121,7 +122,9 @@ public class JarSpecification extends FileSpecification {
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
-					dir.mkdirs();
+					if (!dir.mkdirs()) {
+						logError("Can't create dir " + dir.toString());
+					}
 				} else {
 					File out = new File(dest, entry.getName());
 
@@ -146,7 +149,9 @@ public class JarSpecification extends FileSpecification {
 					}
 					File parentDirectory = new File(out.getParent()).getCanonicalFile();
 
-					parentDirectory.mkdirs();
+					if (!parentDirectory.mkdirs()) {
+						logError("Can't create dir " + parentDirectory.toString());
+					}
 
 					FileOutputStream fos = null;
 
@@ -169,16 +174,19 @@ public class JarSpecification extends FileSpecification {
 					}
 
 					if (entry.getTime() >= 0) {
-						out.setLastModified(entry.getTime());
+						if (!out.setLastModified(entry.getTime())) {
+							logError("Can't set file time " + out.toString());
+						}
 					}
 
-					/* TODO ZAMO
-					 if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
-					 FileSpecification fileSpecification = FileSpecification.createSpecification(this, out,
-					 parentDirectory, "", false);
+					if (updatedJarList != null) {
+						if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
+							FileSpecification fileSpecification = FileSpecification.createSpecification(null, out,
+									parentDirectory, "", false);
 
-					 updatedJarList.add(fileSpecification);
-					 }*/
+							updatedJarList.add(fileSpecification);
+						}
+					}
 				}
 				entry = jarIS.getNextJarEntry();
 			}

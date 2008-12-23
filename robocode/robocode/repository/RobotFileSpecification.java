@@ -109,18 +109,18 @@ public class RobotFileSpecification extends FileSpecification {
 
 	private void loadProperties(String filepath) {
 		// Load properties if they exist...
-		String pfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".properties";
-		File pf = new File(pfn);
+		String propertiesFileName = filepath.substring(0, filepath.lastIndexOf(".")) + ".properties";
+		File propertiesFile = new File(propertiesFileName);
 
 		FileInputStream in = null;
 
 		try {
-			if (pf.exists()) {
-				in = new FileInputStream(pf);
+			if (propertiesFile.exists()) {
+				in = new FileInputStream(propertiesFile);
 
 				load(in);
 				in.close();
-				if (pf.length() == 0) {
+				if (propertiesFile.length() == 0) {
 					setRobotVersion("?");
 					if (!developmentVersion) {
 						valid = false;
@@ -132,7 +132,7 @@ public class RobotFileSpecification extends FileSpecification {
 			}
 		} catch (IOException e) {
 			// Oh well.
-			Logger.logError("Warning:  Could not load properties file: " + pfn);
+			Logger.logError("Warning:  Could not load properties file: " + propertiesFileName);
 		} finally {
 			if (in != null) {
 				try {
@@ -141,7 +141,7 @@ public class RobotFileSpecification extends FileSpecification {
 			}
 		}
 
-		setThisFileName(pfn);
+		setThisFileName(propertiesFileName);
 		String htmlfn = filepath.substring(0, filepath.lastIndexOf(".")) + ".html";
 		File htmlFile = new File(htmlfn);
 
@@ -197,80 +197,40 @@ public class RobotFileSpecification extends FileSpecification {
 		robotJavaSourceIncluded = Boolean.valueOf(props.getProperty(ROBOT_JAVA_SOURCE_INCLUDED, "false"));
 	}
 
-	/**
-	 * Sets the robotName.
-	 *
-	 * @param name The robotName to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 		props.setProperty(ROBOT_CLASSNAME, name);
 	}
 
-	/**
-	 * Sets the robotDescription.
-	 *
-	 * @param robotDescription The robotDescription to set
-	 */
 	public void setRobotDescription(String robotDescription) {
 		this.description = robotDescription;
 		props.setProperty(ROBOT_DESCRIPTION, robotDescription);
 	}
 
-	/**
-	 * Sets the robotAuthorName.
-	 *
-	 * @param robotAuthorName The robotAuthorName to set
-	 */
 	public void setRobotAuthorName(String robotAuthorName) {
 		this.authorName = robotAuthorName;
 		props.setProperty(ROBOT_AUTHOR_NAME, robotAuthorName);
 	}
 
-	/**
-	 * Sets the robotAuthorEmail.
-	 *
-	 * @param robotAuthorEmail The robotAuthorEmail to set
-	 */
 	public void setRobotAuthorEmail(String robotAuthorEmail) {
 		this.authorEmail = robotAuthorEmail;
 		props.setProperty(ROBOT_AUTHOR_EMAIL, robotAuthorEmail);
 	}
 
-	/**
-	 * Sets the robotAuthorWebsite.
-	 *
-	 * @param robotAuthorWebsite The robotAuthorWebsite to set
-	 */
 	public void setRobotAuthorWebsite(String robotAuthorWebsite) {
 		this.authorWebsite = robotAuthorWebsite;
 		props.setProperty(ROBOT_AUTHOR_WEBSITE, robotAuthorWebsite);
 	}
 
-	/**
-	 * Gets the robotJavaSourceIncluded.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getRobotJavaSourceIncluded() {
 		return robotJavaSourceIncluded;
 	}
 
-	/**
-	 * Sets the robotJavaSourceIncluded.
-	 *
-	 * @param robotJavaSourceIncluded The robotJavaSourceIncluded to set
-	 */
 	public void setRobotJavaSourceIncluded(boolean robotJavaSourceIncluded) {
 		this.robotJavaSourceIncluded = robotJavaSourceIncluded;
 		props.setProperty(ROBOT_JAVA_SOURCE_INCLUDED, "" + robotJavaSourceIncluded);
 	}
 
-	/**
-	 * Sets the robotVersion.
-	 *
-	 * @param robotVersion The robotVersion to set
-	 */
 	public void setRobotVersion(String robotVersion) {
 		this.version = robotVersion;
 		if (robotVersion != null) {
@@ -280,20 +240,10 @@ public class RobotFileSpecification extends FileSpecification {
 		}
 	}
 
-	/**
-	 * Gets the robotClasspath.
-	 *
-	 * @return Returns a String
-	 */
 	public String getRobotClassPath() {
 		return rootDir.getPath();
 	}
 
-	/**
-	 * Sets the robotWebpage.
-	 *
-	 * @param robotWebpage The robotWebpage to set
-	 */
 	public void setRobotWebpage(URL robotWebpage) {
 		this.webpage = robotWebpage;
 		if (robotWebpage == null) {
@@ -303,21 +253,11 @@ public class RobotFileSpecification extends FileSpecification {
 		}
 	}
 
-	/**
-	 * Gets the uid.
-	 *
-	 * @return Returns a String
-	 */
 	@Override
 	public String getUid() {
 		return uid;
 	}
 
-	/**
-	 * Sets the uid.
-	 *
-	 * @param uid The uid to set
-	 */
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
@@ -358,64 +298,11 @@ public class RobotFileSpecification extends FileSpecification {
 			classLoader.loadRobotClass();
 			Class<?> robotClass = classLoader.loadRobotClass();
 
-			if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
-				if (Droid.class.isAssignableFrom(robotClass)) {
-					isDroid = true;
-				}
-
-				if (ITeamRobot.class.isAssignableFrom(robotClass)) {
-					isTeamRobot = true;
-				}
-
-				if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
-					isAdvancedRobot = true;
-				}
-
-				if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
-					// in this case we make sure that robot don't waste time
-					if (checkMethodOverride(robotClass, Robot.class, "getInteractiveEventListener")
-							|| checkMethodOverride(robotClass, Robot.class, "onKeyPressed", KeyEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onKeyReleased", KeyEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onKeyTyped", KeyEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onMouseClicked", MouseEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onMouseEntered", MouseEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onMouseExited", MouseEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onMousePressed", MouseEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onMouseReleased", MouseEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onMouseMoved", MouseEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onMouseDragged", MouseEvent.class)
-							|| checkMethodOverride(robotClass, Robot.class, "onMouseWheelMoved", MouseWheelEvent.class)
-							) {
-						isInteractiveRobot = true;
-					}
-				}
-
-				if (IPaintRobot.class.isAssignableFrom(robotClass)) {
-					if (checkMethodOverride(robotClass, Robot.class, "getPaintEventListener")
-							|| checkMethodOverride(robotClass, Robot.class, "onPaint", Graphics2D.class)
-							) {
-						isPaintRobot = true;
-					}
-				}
-
-				if (Robot.class.isAssignableFrom(robotClass) && !isAdvancedRobot) {
-					isStandardRobot = true;
-				}
-
-				if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
-					isJuniorRobot = true;
-					if (isAdvancedRobot) {
-						throw new AccessControlException(
-								getName() + ": Junior robot should not implement IAdvancedRobot interface.");
-					}
-				}
-
-				if (IBasicRobot.class.isAssignableFrom(robotClass)) {
-					if (!isAdvancedRobot || !isJuniorRobot) {
-						isStandardRobot = true;
-					}
-				}
+			if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
+				// this class is not robot
+				return false;
 			}
+			checkInterfaces(robotClass);
 			if (!isJuniorRobot && !isStandardRobot && !isAdvancedRobot) {
 				// this class is not robot
 				return false;
@@ -425,6 +312,65 @@ public class RobotFileSpecification extends FileSpecification {
 		} catch (Throwable t) {
 			logError(getName() + ": Got an error with this class: " + t.toString()); // just message here
 			return false;
+		}
+	}
+
+	private void checkInterfaces(Class<?> robotClass) {
+		if (Droid.class.isAssignableFrom(robotClass)) {
+			isDroid = true;
+		}
+
+		if (ITeamRobot.class.isAssignableFrom(robotClass)) {
+			isTeamRobot = true;
+		}
+
+		if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
+			isAdvancedRobot = true;
+		}
+
+		if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
+			// in this case we make sure that robot don't waste time
+			if (checkMethodOverride(robotClass, Robot.class, "getInteractiveEventListener")
+					|| checkMethodOverride(robotClass, Robot.class, "onKeyPressed", KeyEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onKeyReleased", KeyEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onKeyTyped", KeyEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onMouseClicked", MouseEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onMouseEntered", MouseEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onMouseExited", MouseEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onMousePressed", MouseEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onMouseReleased", MouseEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onMouseMoved", MouseEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onMouseDragged", MouseEvent.class)
+					|| checkMethodOverride(robotClass, Robot.class, "onMouseWheelMoved", MouseWheelEvent.class)
+					) {
+				isInteractiveRobot = true;
+			}
+		}
+
+		if (IPaintRobot.class.isAssignableFrom(robotClass)) {
+			if (checkMethodOverride(robotClass, Robot.class, "getPaintEventListener")
+					|| checkMethodOverride(robotClass, Robot.class, "onPaint", Graphics2D.class)
+					) {
+				isPaintRobot = true;
+			}
+		}
+
+		if (Robot.class.isAssignableFrom(robotClass) && !isAdvancedRobot) {
+			isStandardRobot = true;
+		}
+
+		if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
+			isJuniorRobot = true;
+			if (isAdvancedRobot) {
+				throw new AccessControlException(
+						getName() + ": Junior robot should not implement IAdvancedRobot interface.");
+			}
+		}
+
+		if (IBasicRobot.class.isAssignableFrom(robotClass)) {
+			if (!isAdvancedRobot || !isJuniorRobot) {
+				isStandardRobot = true;
+			}
 		}
 	}
 

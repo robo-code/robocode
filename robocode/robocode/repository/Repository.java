@@ -83,6 +83,10 @@ class Repository {
 					if (onlyWithSource && !robotSpec.getRobotJavaSourceIncluded()) {
 						continue;
 					}
+
+					if (ignoreTeamRobots && robotSpec.isTeamRobot()) {
+						continue;
+					}
 				} else if (spec instanceof TeamSpecification) {
 					TeamSpecification teamSpec = (TeamSpecification) spec;
 
