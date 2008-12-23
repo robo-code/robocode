@@ -234,12 +234,7 @@ class Version implements Comparable<Object> {
 	}
 
 	public int getEra() {
-		final String[] blocks = version.split(" ");
-
-		if (blocks.length < 3) {
-			throw new Error("Unexpected format");
-		}
-		final String[] numbers = blocks[1].split(".");
+		final String[] numbers = version.split("\\.");
 
 		if (numbers.length < 3) {
 			throw new Error("Unexpected format");
@@ -248,12 +243,7 @@ class Version implements Comparable<Object> {
 	}
 
 	public int getMajor() {
-		final String[] blocks = version.split(" ");
-
-		if (blocks.length < 3) {
-			throw new Error("Unexpected format");
-		}
-		final String[] numbers = blocks[1].split(".");
+		final String[] numbers = version.split("\\.");
 
 		if (numbers.length < 3) {
 			throw new Error("Unexpected format");
@@ -262,12 +252,7 @@ class Version implements Comparable<Object> {
 	}
 
 	public int getMinor() {
-		final String[] blocks = version.split(" ");
-
-		if (blocks.length < 3) {
-			throw new Error("Unexpected format");
-		}
-		final String[] numbers = blocks[1].split(".");
+		final String[] numbers = version.split("\\.");
 
 		if (numbers.length < 3) {
 			throw new Error("Unexpected format");

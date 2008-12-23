@@ -11,22 +11,24 @@
  *     Flemming N. Larsen
  *     - Rewritten
  *******************************************************************************/
-package robocode.battlefield;
+package robocode.battleview;
 
 
 import robocode.common.BoundingRectangle;
+
+import java.io.Serializable;
 
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class DefaultBattleField implements BattleField {
+public class BattleField implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final BoundingRectangle boundingBox;
 
-	public DefaultBattleField(int width, int height) {
+	public BattleField(int width, int height) {
 		super();
 		this.boundingBox = new BoundingRectangle(0, 0, width, height);
 	}

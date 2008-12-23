@@ -17,8 +17,6 @@ package robocode.battleview;
 
 
 import robocode.battle.snapshot.RobotSnapshot;
-import robocode.battlefield.BattleField;
-import robocode.battlefield.DefaultBattleField;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
@@ -112,7 +110,7 @@ public class BattleView extends Canvas {
 		this.manager = manager;
 		imageManager = manager.getImageManager();
 
-		battleField = new DefaultBattleField(800, 600);
+		battleField = new BattleField(800, 600);
 
 		new BattleObserver(manager.getWindowManager());
 	}
@@ -631,7 +629,7 @@ public class BattleView extends Canvas {
 
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			battleField = new DefaultBattleField(event.getBattleRules().getBattlefieldWidth(),
+			battleField = new BattleField(event.getBattleRules().getBattlefieldWidth(),
 					event.getBattleRules().getBattlefieldHeight());
 			setVisible(true);
 			setInitialized(false);

@@ -102,7 +102,7 @@ import robocode.*;
 import robocode.repository.RobotFileSpecification;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
-import robocode.common.Command;
+import robocode.battle.Command;
 import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
