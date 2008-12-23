@@ -197,14 +197,16 @@ public class RobotButton extends JButton implements ActionListener {
 				maxScore = 1;
 			}
 
-			final int newScore = (int) scoreSnapshotList[contestIndex].getCurrentScore();
-			final int newEnergy = (int) robots[robotIndex].getEnergy();
-			boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
-
-			lastEnergy = newEnergy;
-			lastScore = newScore;
-			if (rep) {
-				repaint();
+			if (scoreSnapshotList.length > contestIndex) { // Sanity check to prevent bug with ArrayIndexOutOfBoundsException
+				final int newScore = (int) scoreSnapshotList[contestIndex].getCurrentScore();
+				final int newEnergy = (int) robots[robotIndex].getEnergy();
+				boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
+	
+				lastEnergy = newEnergy;
+				lastScore = newScore;
+				if (rep) {
+					repaint();
+				}
 			}
 		}
 

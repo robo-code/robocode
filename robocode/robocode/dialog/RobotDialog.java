@@ -455,21 +455,22 @@ public class RobotDialog extends JFrame {
 				return;
 			}
 
-			lastSnapshot = turn.getRobots()[robotIndex];
-			final String text = lastSnapshot.getOutputStreamSnapshot();
-
-			if (text != null && text.length() > 0) {
-				getConsoleScrollPane().append(text);
-				getConsoleScrollPane().scrollToBottom();
+			if (turn.getRobots().length > robotIndex) { // Sanity check to prevent bug with ArrayIndexOutOfBoundsException
+				lastSnapshot = turn.getRobots()[robotIndex];
+				final String text = lastSnapshot.getOutputStreamSnapshot();
+	
+				if (text != null && text.length() > 0) {
+					getConsoleScrollPane().append(text);
+					getConsoleScrollPane().scrollToBottom();
+				}
+	
+				if (lastSnapshot.isPaintRobot() && !grayGreenButton) {
+					grayGreenButton = true;
+					getPaintButton().setBackground(grayGreen);
+				}
+	
+				paintSnapshot();
 			}
-
-			if (lastSnapshot.isPaintRobot() && !grayGreenButton) {
-				grayGreenButton = true;
-				getPaintButton().setBackground(grayGreen);
-			}
-
-			paintSnapshot();
 		}
-
 	}
 }

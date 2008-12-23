@@ -35,7 +35,6 @@ import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
 import robocode.repository.TeamSpecification;
-import robocode.recording.BattleRecordFormat;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
