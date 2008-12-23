@@ -21,6 +21,7 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
 import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -31,7 +32,6 @@ import robocode.manager.IImageManager;
 import robocode.manager.IWindowManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
-import robocode.control.snapshot.BulletState;
 import robocode.robotpaint.Graphics2DSerialized;
 import robocode.robotpaint.IGraphicsProxy;
 

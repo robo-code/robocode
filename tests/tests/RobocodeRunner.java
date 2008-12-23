@@ -1,14 +1,8 @@
-
-import java.io.File;
-
 import robocode.BattleResults;
 import robocode.control.*;
-import robocode.control.events.BattleAdaptor;
-import robocode.control.events.BattleCompletedEvent;
-import robocode.control.events.BattleErrorEvent;
-import robocode.control.events.BattleFinishedEvent;
-import robocode.control.events.BattleMessageEvent;
-import robocode.control.events.BattleStartedEvent;
+import robocode.control.events.*;
+
+import java.io.File;
 
 
 /**

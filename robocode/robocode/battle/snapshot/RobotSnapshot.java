@@ -14,14 +14,14 @@
 package robocode.battle.snapshot;
 
 
-import net.sf.robocode.serialization.XmlWriter;
-import robocode.control.snapshot.IRobotSnapshot;
-import robocode.control.snapshot.IScoreSnapshot;
-import robocode.control.snapshot.RobotState;
 import net.sf.robocode.peer.DebugProperty;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
+import net.sf.robocode.serialization.XmlWriter;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.RobotState;
 import robocode.peer.RobotPeer;
 
 import java.awt.geom.Arc2D;

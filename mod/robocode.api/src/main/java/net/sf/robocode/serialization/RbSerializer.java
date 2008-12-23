@@ -14,6 +14,7 @@ package net.sf.robocode.serialization;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
+import robocode.*;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -21,8 +22,6 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.*;
-
-import robocode.*;
 
 
 /**

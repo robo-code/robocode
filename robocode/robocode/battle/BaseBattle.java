@@ -17,7 +17,6 @@ import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import robocode.BattleRules;
 import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.Command;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.manager.IBattleManager;

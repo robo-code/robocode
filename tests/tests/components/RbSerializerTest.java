@@ -12,22 +12,22 @@
 package components;
 
 
-import org.junit.Test;
-import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.serialization.ObjectCloner;
-import robocode.robotpaint.Graphics2DSerialized;
-import net.sf.robocode.peer.TeamMessage;
-import net.sf.robocode.peer.ExecCommands;
-import net.sf.robocode.peer.DebugProperty;
 import net.sf.robocode.peer.BulletCommand;
+import net.sf.robocode.peer.DebugProperty;
+import net.sf.robocode.peer.ExecCommands;
+import net.sf.robocode.peer.TeamMessage;
+import net.sf.robocode.serialization.ObjectCloner;
+import net.sf.robocode.serialization.RbSerializer;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.Test;
+import robocode.robotpaint.Graphics2DSerialized;
 
 import javax.swing.*;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ByteArrayInputStream;
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 
 /**

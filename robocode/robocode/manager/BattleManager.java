@@ -57,7 +57,6 @@ package robocode.manager;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-import net.sf.robocode.security.HiddenAccess;
 import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
@@ -72,9 +71,6 @@ import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.io.FileUtil;
 import robocode.recording.BattlePlayer;
-import robocode.repository.FileSpecification;
-import robocode.repository.RobotFileSpecification;
-import robocode.repository.TeamSpecification;
 
 import java.io.*;
 import java.util.ArrayList;

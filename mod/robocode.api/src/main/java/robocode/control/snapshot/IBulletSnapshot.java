@@ -14,9 +14,6 @@
 package robocode.control.snapshot;
 
 
-import robocode.control.snapshot.BulletState;
-
-
 /**
  * Interface of a bullet snapshot.
  * 

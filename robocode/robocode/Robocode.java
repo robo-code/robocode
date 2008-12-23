@@ -39,7 +39,6 @@ import robocode.recording.BattleRecordFormat;
 import robocode.security.LoggingThreadGroup;
 import robocode.ui.BattleResultsTableModel;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -181,10 +180,11 @@ public class Robocode {
 			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
 			battleManager.setDefaultBattleProperties();
 			manager.getProperties().setOptionsCommonShowResults(origShowResults);
-			/*TODO restartButton.setEnabled(false);
-			getRobotButtonsPanel().removeAll();
-			getRobotButtonsPanel().repaint();
-			*/
+
+			/* TODO restartButton.setEnabled(false);
+			 getRobotButtonsPanel().removeAll();
+			 getRobotButtonsPanel().repaint();
+			 */
 		}
 	}
 

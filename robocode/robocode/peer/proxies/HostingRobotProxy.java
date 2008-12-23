@@ -13,14 +13,14 @@ package robocode.peer.proxies;
 
 
 import static net.sf.robocode.io.Logger.logMessage;
+import net.sf.robocode.peer.ExecCommands;
+import net.sf.robocode.peer.IRobotPeer;
 import robocode.RobotStatus;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import robocode.manager.IHostManager;
-import net.sf.robocode.peer.ExecCommands;
-import net.sf.robocode.peer.IRobotPeer;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.*;
 import robocode.robotinterfaces.IBasicRobot;

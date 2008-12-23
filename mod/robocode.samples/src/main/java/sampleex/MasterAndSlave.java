@@ -12,14 +12,14 @@
 package sampleex;
 
 
-import robocode.robotinterfaces.IAdvancedRobot;
-import robocode.robotinterfaces.IInteractiveEvents;
-import robocode.robotinterfaces.IAdvancedEvents;
-import robocode.robotinterfaces.IBasicEvents;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.ScannedRobotEvent;
-import robocode.HitByBulletEvent;
 import robocode.AdvancedRobot;
+import robocode.HitByBulletEvent;
+import robocode.ScannedRobotEvent;
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.IAdvancedRobot;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IInteractiveEvents;
+import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.io.PrintStream;
 

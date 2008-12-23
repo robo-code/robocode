@@ -12,16 +12,15 @@
 package robocode.manager;
 
 
+import net.sf.robocode.gui.IWindowManagerBase;
+import robocode.battle.BattleProperties;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.dialog.RobocodeFrame;
 import robocode.ui.BattleResultsTableModel;
-import robocode.battle.BattleProperties;
 
 import javax.swing.*;
-
-import net.sf.robocode.gui.IWindowManagerBase;
 
 
 /**

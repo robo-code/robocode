@@ -20,7 +20,6 @@ import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IJuniorRobot;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 import robocode.util.Utils;
-import static robocode.util.Utils.normalRelativeAngle;
 
 import java.awt.*;
 import static java.lang.Math.toDegrees;

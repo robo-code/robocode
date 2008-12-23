@@ -12,11 +12,11 @@
 package robocode.manager;
 
 
+import net.sf.robocode.peer.*;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.peer.*;
 import robocode.control.RobotSpecification;
-import robocode.peer.*;
+import robocode.peer.RobotStatics;
 import robocode.peer.proxies.*;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.RobotFileSpecification;

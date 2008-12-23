@@ -12,13 +12,12 @@
 package robocode.manager;
 
 
-import robocode.repository.FileSpecification;
+import net.sf.robocode.repository.IRepositoryManagerBase;
 import robocode.control.RobotSpecification;
+import robocode.repository.FileSpecification;
 
 import java.io.File;
 import java.util.List;
-
-import net.sf.robocode.repository.IRepositoryManagerBase;
 
 
 /**

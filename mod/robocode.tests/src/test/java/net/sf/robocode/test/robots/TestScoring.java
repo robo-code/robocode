@@ -12,11 +12,9 @@
 package net.sf.robocode.test.robots;
 
 
-import static org.hamcrest.CoreMatchers.is;
 import net.sf.robocode.test.helpers.RobotTestBed;
-
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
-
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.events.TurnEndedEvent;

@@ -13,18 +13,16 @@
 package net.sf.robocode.test.helpers;
 
 
+import net.sf.robocode.io.Logger;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import robocode.control.events.BattleAdaptor;
 import robocode.control.*;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 
 import java.util.Random;
-
-import net.sf.robocode.io.Logger;
 
 
 /**

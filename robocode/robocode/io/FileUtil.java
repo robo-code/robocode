@@ -19,6 +19,7 @@ package robocode.io;
 
 
 import static net.sf.robocode.io.Logger.logError;
+
 import java.io.*;
 
 

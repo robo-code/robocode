@@ -36,7 +36,6 @@ import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.gfx.ImageUtil;
-import robocode.io.FileUtil;
 import robocode.manager.*;
 
 import javax.swing.*;
@@ -44,7 +43,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;

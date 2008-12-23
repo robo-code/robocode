@@ -19,17 +19,16 @@
 package robocode.repository;
 
 
+import net.sf.robocode.security.HiddenAccess;
+import robocode.control.RobotSpecification;
 import robocode.io.FileUtil;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.NameManager;
-import robocode.control.RobotSpecification;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import net.sf.robocode.security.HiddenAccess;
 
 
 /**

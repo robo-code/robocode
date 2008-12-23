@@ -37,15 +37,14 @@
 package robocode.control;
 
 
+import net.sf.robocode.manager.IRobocodeManagerBase;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import net.sf.robocode.manager.IRobocodeManagerBase;
-import net.sf.robocode.security.HiddenAccess;
 
 
 /**

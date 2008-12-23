@@ -13,8 +13,8 @@ package sampleex;
 
 
 import robocode.AdvancedRobot;
-import robocode.ScannedRobotEvent;
 import robocode.HitByBulletEvent;
+import robocode.ScannedRobotEvent;
 
 
 /**

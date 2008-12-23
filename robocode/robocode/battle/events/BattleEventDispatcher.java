@@ -12,12 +12,11 @@
 package robocode.battle.events;
 
 
+import static net.sf.robocode.io.Logger.logError;
 import robocode.control.events.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import static net.sf.robocode.io.Logger.logError;
 
 
 /**

@@ -24,16 +24,15 @@
 package net.sf.robocode.roborumble.battlesengine;
 
 
-import robocode.control.events.BattleAdaptor;
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 import robocode.control.*;
+import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
-import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.util.*;
-
-import net.sf.robocode.io.Logger;
 
 
 /**

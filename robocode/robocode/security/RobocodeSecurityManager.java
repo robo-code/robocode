@@ -27,27 +27,30 @@
 package robocode.security;
 
 
-import net.sf.robocode.serialization.RbSerializer;
-import robocode.exception.RobotException;
-import robocode.io.RobocodeObjectInputStream;
-import robocode.manager.IThreadManager;
-import robocode.peer.*;
 import net.sf.robocode.peer.BulletCommand;
-import robocode.control.snapshot.BulletState;
 import net.sf.robocode.peer.DebugProperty;
 import net.sf.robocode.peer.ExecResults;
 import net.sf.robocode.peer.TeamMessage;
+import net.sf.robocode.serialization.RbSerializer;
+import robocode.control.snapshot.BulletState;
+import robocode.exception.RobotException;
+import robocode.io.RobocodeObjectInputStream;
+import robocode.manager.IThreadManager;
+import robocode.peer.RobotPeer;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.RobotOutputStream;
 
 import java.awt.*;
-import java.io.*;
+import java.io.FilePermission;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.security.Permission;
-import java.util.*;
+import java.util.HashSet;
+import java.util.PropertyPermission;
+import java.util.Set;
 
 
 /**

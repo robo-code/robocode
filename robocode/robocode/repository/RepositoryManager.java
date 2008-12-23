@@ -37,12 +37,12 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
+import robocode.control.RobotSpecification;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
 import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
-import robocode.control.RobotSpecification;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -545,10 +545,8 @@ public class RepositoryManager implements IRepositoryManager {
 		return repository.get(fullClassNameWithVersion);
 	}
 
-
-
 	public boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
-		return load(battlingRobotsList,bot,battleRobotSpec,String.format("%4d", teamNum), false);
+		return load(battlingRobotsList, bot, battleRobotSpec, String.format("%4d", teamNum), false);
 	}
 
 	private boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
@@ -585,6 +583,5 @@ public class RepositoryManager implements IRepositoryManager {
 		}
 		return false;
 	}
-
 
 }

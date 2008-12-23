@@ -115,8 +115,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		String resultsString;
 
 		int rc = packageRobots();
-		ConsoleDialog d = new ConsoleDialog(manager.getWindowManager().getRobocodeFrame(),
-				"Packaging results", false);
+		ConsoleDialog d = new ConsoleDialog(manager.getWindowManager().getRobocodeFrame(), "Packaging results", false);
 
 		if (rc < 8) {
 			outputSizeClass();
@@ -324,8 +323,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 							}
 						}
 						robotFileSpecification.setRobotWebpage(u);
-						robotFileSpecification.setRobocodeVersion(
-								manager.getVersionManager().getVersion());
+						robotFileSpecification.setRobocodeVersion(manager.getVersionManager().getVersion());
 
 						FileOutputStream fos2 = null;
 

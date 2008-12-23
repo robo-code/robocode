@@ -20,17 +20,19 @@
 package robocode.manager;
 
 
+import net.sf.robocode.security.HiddenAccess;
+import robocode.exception.RobotException;
 import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileOutputStream;
 import robocode.peer.robot.RobotFileSystemManager;
-import robocode.exception.RobotException;
 
-import java.io.*;
-import java.util.*;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-
-import net.sf.robocode.security.HiddenAccess;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**

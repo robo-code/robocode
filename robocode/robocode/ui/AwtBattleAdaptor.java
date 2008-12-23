@@ -12,6 +12,7 @@
 package robocode.ui;
 
 
+import net.sf.robocode.io.Logger;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.events.*;
@@ -25,8 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-
-import net.sf.robocode.io.Logger;
 
 
 /**

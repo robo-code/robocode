@@ -15,20 +15,16 @@
 package robocode.peer.proxies;
 
 
-import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.peer.ExecCommands;
-import net.sf.robocode.peer.BulletCommand;
-import net.sf.robocode.peer.BulletStatus;
 import net.sf.robocode.peer.*;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.Event;
 import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.manager.IHostManager;
-import robocode.peer.*;
+import robocode.peer.RobotStatics;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.RobotClassManager;
-import net.sf.robocode.peer.TeamMessage;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotpaint.Graphics2DSerialized;
 import robocode.robotpaint.IGraphicsProxy;

@@ -13,16 +13,16 @@ package robocode.recording;
 
 
 import static net.sf.robocode.io.Logger.logError;
-import robocode.BattleResults;
-import robocode.BattleRules;
-import robocode.io.FileUtil;
-import robocode.battle.IBattle;
-import robocode.battle.events.BattleEventDispatcher;
-import robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
+import robocode.BattleResults;
+import robocode.BattleRules;
+import robocode.battle.IBattle;
+import robocode.battle.events.BattleEventDispatcher;
+import robocode.battle.snapshot.TurnSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
+import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 
 import java.io.*;

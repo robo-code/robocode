@@ -13,7 +13,6 @@ package net.sf.robocode.security;
 
 
 import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 

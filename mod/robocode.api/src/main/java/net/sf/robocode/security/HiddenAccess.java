@@ -13,18 +13,20 @@ package net.sf.robocode.security;
 
 
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.manager.IRobocodeManagerBase;
-import robocode.*;
+import net.sf.robocode.peer.IRobotStatics;
+import robocode.BattleRules;
+import robocode.Bullet;
 import robocode.Event;
+import robocode.RobotStatus;
 import robocode.control.RobotSpecification;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
-import java.io.File;
 
 
 /**

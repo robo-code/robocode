@@ -15,8 +15,8 @@ package robocode.peer;
 import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.BattleRules;
-import robocode.repository.RobotFileSpecification;
 import robocode.control.RobotSpecification;
+import robocode.repository.RobotFileSpecification;
 
 import java.util.List;
 

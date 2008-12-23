@@ -12,11 +12,10 @@
 package robocode.manager;
 
 
+import net.sf.robocode.security.IThreadManagerBase;
 import robocode.peer.proxies.IHostedThread;
 
 import java.io.PrintStream;
-
-import net.sf.robocode.security.IThreadManagerBase;
 
 
 /**

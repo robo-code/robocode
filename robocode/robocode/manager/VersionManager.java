@@ -26,17 +26,13 @@ package robocode.manager;
 
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Calendar;
-import java.util.Date;
 
 
 /**

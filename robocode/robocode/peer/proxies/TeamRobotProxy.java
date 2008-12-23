@@ -13,12 +13,12 @@
 package robocode.peer.proxies;
 
 
+import net.sf.robocode.peer.IRobotPeer;
+import net.sf.robocode.peer.TeamMessage;
 import robocode.MessageEvent;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IHostManager;
-import net.sf.robocode.peer.IRobotPeer;
 import robocode.peer.RobotStatics;
-import net.sf.robocode.peer.TeamMessage;
 import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 

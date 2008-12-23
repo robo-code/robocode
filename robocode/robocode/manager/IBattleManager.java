@@ -12,11 +12,9 @@
 package robocode.manager;
 
 
+import net.sf.robocode.battle.IBattleManagerBase;
 import robocode.Event;
 import robocode.battle.BattleProperties;
-import robocode.control.BattleSpecification;
-import robocode.control.events.IBattleListener;
-import net.sf.robocode.battle.IBattleManagerBase;
 
 
 /**

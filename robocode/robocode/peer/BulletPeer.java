@@ -45,16 +45,15 @@
 package robocode.peer;
 
 
+import net.sf.robocode.peer.BulletStatus;
 import robocode.*;
-import robocode.control.snapshot.BulletState;
 import robocode.battle.Battle;
+import robocode.control.snapshot.BulletState;
 
 import java.awt.geom.Line2D;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import java.util.List;
-
-import net.sf.robocode.peer.BulletStatus;
 
 
 /**

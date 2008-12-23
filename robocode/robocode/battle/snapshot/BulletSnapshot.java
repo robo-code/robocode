@@ -14,14 +14,14 @@
 package robocode.battle.snapshot;
 
 
+import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
-import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.BulletState;
-import net.sf.robocode.peer.ExecCommands;
-import robocode.peer.ExplosionPeer;
+import robocode.control.snapshot.IBulletSnapshot;
 import robocode.peer.BulletPeer;
+import robocode.peer.ExplosionPeer;
 
 import java.io.IOException;
 import java.util.Dictionary;

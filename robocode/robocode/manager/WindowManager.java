@@ -23,6 +23,7 @@
 package robocode.manager;
 
 
+import robocode.battle.BattleProperties;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -32,7 +33,6 @@ import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
 import robocode.ui.AwtBattleAdaptor;
 import robocode.ui.BattleResultsTableModel;
-import robocode.battle.BattleProperties;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;

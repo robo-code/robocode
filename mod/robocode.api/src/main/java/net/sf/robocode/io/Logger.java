@@ -15,14 +15,13 @@
 package net.sf.robocode.io;
 
 
+import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;
 import robocode.control.events.IBattleListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
-import net.sf.robocode.security.HiddenAccess;
 
 
 /**
