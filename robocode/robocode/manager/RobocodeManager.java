@@ -35,7 +35,7 @@ import net.sf.robocode.security.HiddenAccess;
 import robocode.io.FileUtil;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
-import robocode.repository.RobotRepositoryManager;
+import robocode.repository.RepositoryManager;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
@@ -107,7 +107,7 @@ public class RobocodeManager implements IRobocodeManagerBase {
 	 */
 	public IRepositoryManager getRepositoryManager() {
 		if (repositoryManager == null) {
-			repositoryManager = new RobotRepositoryManager(this);
+			repositoryManager = new RepositoryManager(this);
 		}
 		return repositoryManager;
 	}

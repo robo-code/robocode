@@ -33,13 +33,9 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	void loadRobotRepository();
 
-	boolean cleanupOldSampleRobots(boolean delete);
-
-	RobocodeManager getManager();
-
 	List<FileSpecification> getRobotSpecificationsList();
 	List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots);
 
-	FileSpecification getRobot(String fullClassNameWithVersion);
+	boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum);
 }

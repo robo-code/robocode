@@ -81,7 +81,7 @@ public class RobotFileSpecification extends FileSpecification {
 		return nameManager;
 	}
 
-	// Used in RobotRepositoryManager
+	// Used in RepositoryManager
 	protected RobotFileSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
 		valid = true;
 		String filename = f.getName();

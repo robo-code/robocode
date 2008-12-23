@@ -115,7 +115,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		String resultsString;
 
 		int rc = packageRobots();
-		ConsoleDialog d = new ConsoleDialog(repositoryManager.getManager().getWindowManager().getRobocodeFrame(),
+		ConsoleDialog d = new ConsoleDialog(manager.getWindowManager().getRobocodeFrame(),
 				"Packaging results", false);
 
 		if (rc < 8) {
@@ -298,7 +298,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 			fos = new FileOutputStream(f);
 			jarout = new NoDuplicateJarOutputStream(fos);
-			jarout.setComment(repositoryManager.getManager().getVersionManager().getVersion() + " - Robocode version");
+			jarout.setComment(manager.getVersionManager().getVersion() + " - Robocode version");
 
 			for (FileSpecification fileSpecification : selectedRobots) {
 				if (fileSpecification instanceof RobotFileSpecification) {
@@ -325,7 +325,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 						}
 						robotFileSpecification.setRobotWebpage(u);
 						robotFileSpecification.setRobocodeVersion(
-								repositoryManager.getManager().getVersionManager().getVersion());
+								manager.getVersionManager().getVersion());
 
 						FileOutputStream fos2 = null;
 
@@ -374,7 +374,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 					teamSpecification.setTeamWebpage(u);
 					teamSpecification.setTeamDescription(getPackagerOptionsPanel().getDescriptionArea().getText());
 					teamSpecification.setTeamAuthorName(getPackagerOptionsPanel().getAuthorField().getText());
-					teamSpecification.setRobocodeVersion(repositoryManager.getManager().getVersionManager().getVersion());
+					teamSpecification.setRobocodeVersion(manager.getVersionManager().getVersion());
 
 					FileOutputStream fos2 = null;
 

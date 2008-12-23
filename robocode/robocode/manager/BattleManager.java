@@ -133,7 +133,7 @@ public class BattleManager implements IBattleManager {
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				boolean failed = loadRobot(battlingRobotsList, bot, null, String.format("%4d", num), false);
+				boolean failed = loadRobot(battlingRobotsList, bot, null, num);
 
 				if (failed) {
 					return;
@@ -165,7 +165,7 @@ public class BattleManager implements IBattleManager {
 			}
 
 			String bot = battleRobotSpec.getNameAndVersion();
-			boolean failed = loadRobot(battlingRobotsList, bot, battleRobotSpec, String.format("%4d", num), false);
+			boolean failed = loadRobot(battlingRobotsList, bot, battleRobotSpec, num);
 
 			num++;
 
@@ -176,40 +176,8 @@ public class BattleManager implements IBattleManager {
 		startNewBattleImpl(battlingRobotsList, waitTillOver);
 	}
 
-	private boolean loadRobot(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
-		boolean found = false;
-
-		final FileSpecification fileSpec = manager.getRepositoryManager().getRobot(bot);
-
-		if (fileSpec != null) {
-			if (fileSpec instanceof RobotFileSpecification) {
-				RobotSpecification specification;
-
-				if (!inTeam && battleRobotSpec != null) {
-					specification = battleRobotSpec;
-				} else {
-					specification = fileSpec.createRobotSpecification();
-				}
-				HiddenAccess.setTeamName(specification, inTeam ? teamName : null);
-				battlingRobotsList.add(specification);
-				found = true;
-			} else if (fileSpec instanceof TeamSpecification) {
-				TeamSpecification currentTeam = (TeamSpecification) fileSpec;
-				String version = currentTeam.getVersion();
-
-				if (version == null) {
-					version = "";
-				}
-
-				StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
-
-				while (teamTokenizer.hasMoreTokens()) {
-					loadRobot(battlingRobotsList, currentTeam.getRootDir() + teamTokenizer.nextToken(), battleRobotSpec,
-							currentTeam.getName() + version + "[" + teamName + "]", true);
-				}
-				found = true;
-			}
-		}
+	private boolean loadRobot(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
+		boolean found = manager.getRepositoryManager().load(battlingRobotsList, bot, battleRobotSpec, teamNum);
 
 		if (!found) {
 			logError("Aborting battle, could not find robot: " + bot);

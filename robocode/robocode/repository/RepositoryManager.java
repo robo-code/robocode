@@ -36,6 +36,7 @@ package robocode.repository;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
@@ -56,7 +57,7 @@ import java.util.StringTokenizer;
  * @author Robert D. Maupin (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotRepositoryManager implements IRepositoryManager {
+public class RepositoryManager implements IRepositoryManager {
 	private FileSpecificationDatabase robotDatabase;
 
 	private File robotsDirectory;
@@ -69,7 +70,7 @@ public class RobotRepositoryManager implements IRepositoryManager {
 			new ArrayList<FileSpecification>());
 	private boolean write;
 
-	public RobotRepositoryManager(RobocodeManager manager) {
+	public RepositoryManager(RobocodeManager manager) {
 		this.manager = manager;
 	}
 
@@ -490,38 +491,6 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		}
 	}
 
-	public boolean cleanupOldSampleRobots(boolean delete) {
-		// TODO: Needs to be updated?
-		String oldSampleList[] = {
-			"Corners.java", "Crazy.java", "Fire.java", "MyFirstRobot.java", "RamFire.java", "SittingDuck.java",
-			"SpinBot.java", "Target.java", "Tracker.java", "TrackFire.java", "Walls.java", "Corners.class",
-			"Crazy.class", "Fire.class", "MyFirstRobot.class", "RamFire.class", "SittingDuck.class", "SpinBot.class",
-			"Target.class", "Target$1.class", "Tracker.class", "TrackFire.class", "Walls.class"
-		};
-
-		File robotDir = getRobotsDirectory();
-
-		if (robotDir.isDirectory()) {
-			for (File sampleBot : robotDir.listFiles()) {
-				if (!sampleBot.isDirectory()) {
-					for (String oldSampleBot : oldSampleList) {
-						if (sampleBot.getName().equals(oldSampleBot)) {
-							logMessage("Deleting old sample file: " + sampleBot.getName());
-							if (delete) {
-								if (!sampleBot.delete()) {
-									Logger.logError("Can't detele " + sampleBot.toString());
-								}
-							} else {
-								return true;
-							}
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
 	private void renameOldDataDir(File dir, File f) {
 		String name = f.getName();
 		String botName = name.substring(name.indexOf(".") + 1);
@@ -571,9 +540,51 @@ public class RobotRepositoryManager implements IRepositoryManager {
 		return robotSpecs;
 	}
 
-	public FileSpecification getRobot(String fullClassNameWithVersion) {
+	private FileSpecification getRobot(String fullClassNameWithVersion) {
 		loadRobotRepository();
 		return repository.get(fullClassNameWithVersion);
 	}
+
+
+
+	public boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
+		return load(battlingRobotsList,bot,battleRobotSpec,String.format("%4d", teamNum), false);
+	}
+
+	private boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
+		final FileSpecification fileSpec = getRobot(bot);
+
+		if (fileSpec != null) {
+			if (fileSpec instanceof RobotFileSpecification) {
+				RobotSpecification specification;
+
+				if (!inTeam && battleRobotSpec != null) {
+					specification = battleRobotSpec;
+				} else {
+					specification = fileSpec.createRobotSpecification();
+				}
+				HiddenAccess.setTeamName(specification, inTeam ? teamName : null);
+				battlingRobotsList.add(specification);
+				return true;
+			} else if (fileSpec instanceof TeamSpecification) {
+				TeamSpecification currentTeam = (TeamSpecification) fileSpec;
+				String version = currentTeam.getVersion();
+
+				if (version == null) {
+					version = "";
+				}
+
+				StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+
+				while (teamTokenizer.hasMoreTokens()) {
+					load(battlingRobotsList, currentTeam.getRootDir() + teamTokenizer.nextToken(), battleRobotSpec,
+							currentTeam.getName() + version + "[" + teamName + "]", true);
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 }
