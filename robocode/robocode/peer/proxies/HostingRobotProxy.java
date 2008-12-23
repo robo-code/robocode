@@ -54,8 +54,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;
-		this.robotSpecification=robotSpecification;
-		this.robotClassLoader =new RobotClassLoader(robotSpecification);
+		this.robotSpecification = robotSpecification;
+		this.robotClassLoader = new RobotClassLoader(robotSpecification);
 
 		out = new RobotOutputStream();
 		robotThreadManager = new RobotThreadManager(this);
@@ -63,8 +63,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		loadClassBattle();
 
 		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
-				robotClassLoader.getClassDirectory(),
-				robotClassLoader.getRootPackageDirectory());
+				robotClassLoader.getClassDirectory(), robotClassLoader.getRootPackageDirectory());
 		robotFileSystemManager.initializeQuota();
 	}
 
@@ -167,9 +166,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 
 	private void loadClassBattle() {
-		try {
-
-		} catch (Throwable e) {
+		try {} catch (Throwable e) {
 			println("SYSTEM: Could not load " + statics.getName() + " : ");
 			println(e);
 			drainEnergy();

@@ -51,10 +51,10 @@ import java.util.*;
  */
 public class RobotClassLoader extends ClassLoader {
 	private final Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
+	private final Map<String, Boolean> referencedClasses = Collections.synchronizedMap(new HashMap<String, Boolean>());
 	private Class<?> robotClass;
 
 	private RobotFileSpecification robotFileSpecification;
-	private final Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
 	private String rootPackageDirectory;
 	private String rootDirectory;
 	private String classDirectory;
@@ -131,7 +131,7 @@ public class RobotClassLoader extends ClassLoader {
 	}
 
 	public Class<?> loadRobotClass() throws ClassNotFoundException {
-		if (robotClass==null){
+		if (robotClass == null) {
 			String className = robotFileSpecification.getFullClassName();
 
 			// Pre-load robot classes without security...
@@ -146,7 +146,7 @@ public class RobotClassLoader extends ClassLoader {
 		return robotClass;
 	}
 
-	public synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
+	private synchronized Class<?> loadRobotClass(String name, boolean toplevel) throws ClassNotFoundException {
 		if (cachedClasses.containsKey(name)) {
 			return cachedClasses.get(name);
 		}
@@ -166,7 +166,8 @@ public class RobotClassLoader extends ClassLoader {
 						+ name);
 				logError("To do this in Robocode, you must put your robot into a package.");
 				throw new ClassNotFoundException(
-						robotFileSpecification.getFullClassName() + "is not in a package, but is trying to reference class " + name);
+						robotFileSpecification.getFullClassName() + "is not in a package, but is trying to reference class "
+						+ name);
 			}
 		}
 
@@ -262,7 +263,7 @@ public class RobotClassLoader extends ClassLoader {
 		while (keys.hasNext()) {
 			String s = keys.next();
 
-			if (referencedClasses.get(s).equals("false")) {
+			if (!referencedClasses.get(s)) {
 				// resolve, then rebuild keys...
 				if (isSecutityOn()) {
 					loadRobotClass(s, false);
@@ -278,6 +279,10 @@ public class RobotClassLoader extends ClassLoader {
 	public void cleanup() {
 		if (cachedClasses != null) {
 			cachedClasses.clear();
+		}
+
+		if (referencedClasses != null) {
+			referencedClasses.clear();
 		}
 
 		// Set ClassLoader.class.classes to null to prevent memory leaks
@@ -301,12 +306,14 @@ public class RobotClassLoader extends ClassLoader {
 		for (String refClass : refClasses) {
 			String className = refClass.replace('/', '.');
 
-			if (robotFileSpecification.getRootPackage() == null || !(className.startsWith("java") || className.startsWith("robocode"))) { // TODO ZAMO || className.startsWith("scala")
-				if (robotFileSpecification.getRootPackage() == null && !className.equals(robotFileSpecification.getFullClassName())) {
+			if (robotFileSpecification.getRootPackage() == null
+					|| !(className.startsWith("java") || className.startsWith("robocode"))) { // TODO ZAMO || className.startsWith("scala")
+				if (robotFileSpecification.getRootPackage() == null
+						&& !className.equals(robotFileSpecification.getFullClassName())) {
 					continue;
 				}
 				if (!referencedClasses.containsKey(className)) {
-					referencedClasses.put(className, "false");
+					referencedClasses.put(className, Boolean.FALSE);
 				}
 			}
 		}
@@ -314,10 +321,12 @@ public class RobotClassLoader extends ClassLoader {
 
 	private void addResolvedClass(String className) {
 		if (!referencedClasses.containsKey(className)) {
-			Logger.logError(robotFileSpecification.getFullClassName() + ": Cannot set " + className + " to resolved, did not know it was referenced.");
+			Logger.logError(
+					robotFileSpecification.getFullClassName() + ": Cannot set " + className
+					+ " to resolved, did not know it was referenced.");
 			return;
 		}
-		referencedClasses.put(className, "true");
+		referencedClasses.put(className, Boolean.TRUE);
 	}
 
 	private static boolean isSecutityOn() {

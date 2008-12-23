@@ -573,7 +573,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public void addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, RobotFileSpecification robotFileSpecification) {
 		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification);
 
-
 		try {
 			classLoader.loadRobotClass();
 			Iterator<String> classes = classLoader.getReferencedClasses().iterator();
@@ -581,7 +580,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 			// Save props:
 			try {
-				JarEntry entry = new JarEntry(robotFileSpecification.getFullClassName().replace('.', '/') + ".properties");
+				JarEntry entry = new JarEntry(
+						robotFileSpecification.getFullClassName().replace('.', '/') + ".properties");
 
 				jarout.putNextEntry(entry);
 				robotFileSpecification.store(jarout, "Robot Properties");
@@ -674,7 +674,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 				}
 			}
 
-			File dataDirectory = new File(rootDirectory, robotFileSpecification.getFullClassName().replace('.', '/') + ".data");
+			File dataDirectory = new File(rootDirectory,
+					robotFileSpecification.getFullClassName().replace('.', '/') + ".data");
 
 			if (dataDirectory.exists()) {
 				File files[] = dataDirectory.listFiles();

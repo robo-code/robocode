@@ -78,6 +78,7 @@ public class RobotFileSpecification extends FileSpecification {
 		String filename = f.getName();
 		String filepath = f.getPath();
 		String fileType = FileUtil.getFileType(filename);
+
 		this.rootDir = rootDir; 
 
 		this.developmentVersion = developmentVersion;
@@ -353,6 +354,7 @@ public class RobotFileSpecification extends FileSpecification {
 
 		try {
 			RobotClassLoader classLoader = new RobotClassLoader(this);
+
 			classLoader.loadRobotClass();
 			Class<?> robotClass = classLoader.loadRobotClass();
 

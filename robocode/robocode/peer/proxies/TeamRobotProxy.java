@@ -98,7 +98,8 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 				ByteArrayInputStream byteStreamReader = new ByteArrayInputStream(teamMessage.message);
 
 				byteStreamReader.reset();
-				RobocodeObjectInputStream objectStreamReader = new RobocodeObjectInputStream(byteStreamReader, robotClassLoader);
+				RobocodeObjectInputStream objectStreamReader = new RobocodeObjectInputStream(byteStreamReader,
+						robotClassLoader);
 				Serializable message = (Serializable) objectStreamReader.readObject();
 				final MessageEvent event = new MessageEvent(teamMessage.sender, message);
 
