@@ -51,24 +51,24 @@ import java.util.zip.ZipEntry;
 public class BotsDownload {
 
 	// private String internetrepository;
-	private String botsrepository;
-	private String participantsfile;
-	private String participantsurl;
-	private String tempdir;
-	private String tag;
-	private String isteams;
-	private String sizesfile;
-	private CompetitionsSelector size;
-	private String ratingsurl;
+	private final String botsrepository;
+	private final String participantsfile;
+	private final String participantsurl;
+	private final String tempdir;
+	private final String tag;
+	private final String isteams;
+	private final String sizesfile;
+	private final CompetitionsSelector size;
+	private final String ratingsurl;
 	private String generalbots;
-	private String minibots;
-	private String microbots;
-	private String nanobots;
-	private String generalbotsfile;
-	private String minibotsfile;
-	private String microbotsfile;
-	private String nanobotsfile;
-	private String removeboturl;
+	private final String minibots;
+	private final String microbots;
+	private final String nanobots;
+	private final String generalbotsfile;
+	private final String minibotsfile;
+	private final String microbotsfile;
+	private final String nanobotsfile;
+	private final String removeboturl;
 	private String[] excludes;
 
 	public BotsDownload(String propertiesfile) {
@@ -207,13 +207,13 @@ public class BotsDownload {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		return true;
 	}
 
-	public boolean downloadMissingBots() {
+	public void downloadMissingBots() {
 		Vector<String> jars = new Vector<String>();
 		Vector<String> ids = new Vector<String>();
 		Vector<String> names = new Vector<String>();
@@ -241,12 +241,12 @@ public class BotsDownload {
 		} catch (IOException e) {
 			System.out.println("Participants file not found ... Aborting");
 			System.out.println(e);
-			return false;
+			return;
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -266,7 +266,6 @@ public class BotsDownload {
 				}
 			}
 		}
-		return true;
 	}
 
 	public void updateCodeSize() {
@@ -291,7 +290,7 @@ public class BotsDownload {
 				if (br != null) {
 					try {
 						br.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
@@ -428,7 +427,7 @@ public class BotsDownload {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (outtxt != null) {
 				outtxt.close();
@@ -441,7 +440,7 @@ public class BotsDownload {
 	// download ratings file
 	// ----------------------------------------------------------------------------------
 
-	public boolean notifyServerForOldParticipants() {
+	public void notifyServerForOldParticipants() {
 		// Load participants names
 		Hashtable<String, String> namesall = new Hashtable<String, String>();
 		BufferedReader br = null;
@@ -461,12 +460,12 @@ public class BotsDownload {
 		} catch (IOException e) {
 			System.out.println("Participants file not found when removing old participants ... Aborting");
 			System.out.println(e);
-			return false;
+			return;
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -518,8 +517,6 @@ public class BotsDownload {
 				removebot(nanobots, bot);
 			}
 		}
-
-		return true;
 	}
 
 	private void removebot(String game, String bot) {
@@ -558,7 +555,7 @@ public class BotsDownload {
 			if (rd != null) {
 				try {
 					rd.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

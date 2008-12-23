@@ -83,7 +83,8 @@ public class SittingDuck extends AdvancedRobot {
 				out.println("I could not write the count!");
 			}
 		} catch (IOException e) {
-			out.println("IOException trying to write: " + e);
+			out.println("IOException trying to write: ");
+			e.printStackTrace(out);
 		} finally {
 			if (w != null) {
 				w.close();

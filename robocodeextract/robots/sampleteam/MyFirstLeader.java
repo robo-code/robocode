@@ -51,7 +51,7 @@ public class MyFirstLeader extends TeamRobot {
 		try {
 			// Send RobotColors object to our entire team
 			broadcastMessage(c);
-		} catch (IOException e) {}
+		} catch (IOException ignored) {}
 		// Normal behavior
 		while (true) {
 			setTurnRadarRight(10000);
@@ -78,7 +78,8 @@ public class MyFirstLeader extends TeamRobot {
 			// Send enemy position to teammates
 			broadcastMessage(new Point(enemyX, enemyY));
 		} catch (IOException ex) {
-			out.println("Unable to send order: " + ex);
+			out.println("Unable to send order: ");
+			ex.printStackTrace(out);
 		}
 	}
 

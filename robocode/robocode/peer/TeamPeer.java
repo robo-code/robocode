@@ -15,11 +15,14 @@
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
+ *     Pavel Savara
+ *     - member names are known in constructor
  *******************************************************************************/
 package robocode.peer;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,17 +33,16 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
-	private String name;
-	private boolean isDuplicate;
+	private final List<String> memberNames;
+	private final String name;
+	private final int contestIndex;
 	private RobotPeer teamLeader;
-	private TeamStatistics teamStatistics;
+	private final TeamStatistics teamStatistics;
 
-	public TeamPeer(String name, String version) {
-		if (version != null) {
-			name += " " + version;
-		}
-
+	public TeamPeer(String name, List<String> memberNames, int contestIndex) {
 		this.name = name;
+		this.contestIndex = contestIndex;
+		this.memberNames = memberNames;
 		this.teamStatistics = new TeamStatistics(this);
 	}
 
@@ -48,7 +50,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		double myScore = teamStatistics.getTotalScore();
 		double hisScore = cp.getStatistics().getTotalScore();
 
-		if (teamLeader != null && teamLeader.getBattle().isRunning()) {
+		if (teamLeader != null && teamLeader.getRobotStatistics().isInRound()) {
 			myScore += teamStatistics.getCurrentScore();
 			hisScore += cp.getStatistics().getCurrentScore();
 		}
@@ -69,15 +71,12 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		return name;
 	}
 
-	public void setDuplicate(int count) {
-		isDuplicate = true;
-		String countString = " (" + (count + 1) + ')';
-
-		name = name + countString;
+	public int getContestIndex() {
+		return contestIndex;
 	}
 
-	public boolean isDuplicate() {
-		return isDuplicate;
+	public List<String> getMemberNames() {
+		return memberNames;
 	}
 
 	public RobotPeer getTeamLeader() {
@@ -93,14 +92,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 	}
 
 	@Override
-	public boolean contains(Object s) {
-		if (s != null && s instanceof String) {
-			for (RobotPeer r : this) {
-				if (s.equals(r.getName())) {
-					return true;
-				}
-			}
-		}
-		return false;
+	public String toString() {
+		return " [" + size() + "] " + getName();
 	}
 }

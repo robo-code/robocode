@@ -22,15 +22,26 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.peer.robot.IHiddenEventHelper;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+import java.io.Serializable;
+import java.util.Hashtable;
+
+
 /**
  * The superclass of all Robocode events.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class Event implements Comparable<Event> {
-	private int priority = 0;
-	private long time = 0;
+public abstract class Event implements Comparable<Event>, Serializable {
+	private static final long serialVersionUID = 1L;
+
+	private long time;
+	private int priority;
 
 	/**
 	 * Called by the game to create a new Event.
@@ -68,7 +79,7 @@ public class Event implements Comparable<Event> {
 		}
 
 		// Same time -> Compare the difference in priority
-		int priorityDiff = event.priority - priority;
+		int priorityDiff = event.getPriority() - getPriority();
 
 		if (priorityDiff != 0) {
 			return priorityDiff; // Priority differ
@@ -95,32 +106,111 @@ public class Event implements Comparable<Event> {
 	/**
 	 * Returns the time this event occurred.
 	 *
-	 * @return the time this event occurred
+	 * @return the time this event occurred.
 	 */
-	public long getTime() {
+	public final long getTime() {
 		return time;
 	}
 
 	/**
-	 * Called by the game to set the priority of an event to the priority your
-	 * robot specified for this type of event (or the default priority).
-	 * <p/>
-	 * An event priority is a value from 0 - 99. The higher value, the higher
-	 * priority. The default priority is 80.
+	 * Sets the priority of this event, which must be between 0 and 99.
 	 *
-	 * @param newPriority the new priority of this event
-	 * @see AdvancedRobot#setEventPriority(String, int)
+	 * @param newPriority the new priority of this event.
 	 */
-	public void setPriority(int newPriority) {
+	// this method is invisible on RobotAPI
+	final void setPriority(int newPriority) {
+		if (newPriority < 0) {
+			System.out.println("SYSTEM: Priority must be between 0 and 99");
+			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 0");
+			newPriority = 0;
+		} else if (newPriority > 99) {
+			System.out.println("SYSTEM: Priority must be between 0 and 99");
+			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 99");
+			newPriority = 99;
+		}
 		priority = newPriority;
 	}
 
 	/**
-	 * Called by the game to set the time this event occurred.
+	 * Sets the time when this event occurred.
 	 *
-	 * @param newTime the time this event occurred
+	 * @param time the time when this event occurred. 
 	 */
-	public void setTime(long newTime) {
-		time = newTime;
+	// this method is invisible on RobotAPI
+	private void setTime(long time) {
+		this.time = time;
+	}
+
+	/**
+	 * Dispatch this event for a robot, it's statistics, and graphics context.
+	 *
+	 * @param robot the robot to dispatch to.
+	 * @param statics the statistics to dispatch to.
+	 * @param graphics the graphics to dispatch to.
+	 */
+	// this method is invisible on RobotAPI
+	abstract void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics);
+
+	/**
+	 * Returns the default priority of this event class.
+	 * 
+	 * @return the default priority of this event class.
+	 */
+	// this method is invisible on RobotAPI
+	abstract int getDefaultPriority();
+
+	/**
+	 * Checks if this event must be delivered event after timeout.
+	 *
+	 * @return {@code true} when this event must be delivered even after timeout; {@code false} otherwise.
+	 */
+	// this method is invisible on RobotAPI
+	boolean isCriticalEvent() {
+		return false;
+	}
+
+	/**
+	 * This method is replacing bullet on event with bullet instance which was passed to robot as result of fire command
+	 * @param bullets collection containing all moving bullets known to robot
+	 */
+	// this method is invisible on RobotAPI
+	void updateBullets(Hashtable<Integer, Bullet> bullets) {}
+
+	/**
+	 * Creates a hidden event helper for accessing hidden methods on this object.
+	 * 
+	 * @return a hidden event helper.
+	 */
+	// this method is invisible on RobotAPI
+	static IHiddenEventHelper createHiddenHelper() {
+		return new HiddenEventHelper();
+	}
+
+	// this class is invisible on RobotAPI
+	private static class HiddenEventHelper implements IHiddenEventHelper {
+
+		public void setTime(Event event, long newTime) {
+			event.setTime(newTime);
+		}
+
+		public void setDefaultPriority(Event event) {
+			event.setPriority(event.getDefaultPriority());
+		}
+
+		public void setPriority(Event event, int newPriority) {
+			event.setPriority(newPriority);
+		}
+
+		public boolean isCriticalEvent(Event event) {
+			return event.isCriticalEvent();
+		}
+
+		public void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+			event.dispatch(robot, statics, graphics);
+		}
+
+		public void updateBullets(Event event, Hashtable<Integer, Bullet> bullets) {
+			event.updateBullets(bullets);
+		}
 	}
 }

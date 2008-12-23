@@ -33,26 +33,27 @@ public class NewBattleBattleFieldTab extends JPanel {
 	private final static int MAX_SIZE = 5000;
 	private final static int STEP_SIZE = 100;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
-	private SizeButton[] sizeButtons = {
+	private final SizeButton[] sizeButtons = {
 		new SizeButton(400, 400), new SizeButton(600, 400), new SizeButton(600, 600), new SizeButton(800, 600),
 		new SizeButton(800, 800), new SizeButton(1000, 800), new SizeButton(1000, 1000), new SizeButton(1200, 1200),
 		new SizeButton(2000, 2000), new SizeButton(5000, 5000)
 	};
 
-	private JSlider battleFieldWidthSlider = createBattleFieldWidthSlider();
-	private JSlider battleFieldHeightSlider = createBattleFieldHeightSlider();
+	private final JSlider battleFieldWidthSlider = createBattleFieldWidthSlider();
+	private final JSlider battleFieldHeightSlider = createBattleFieldHeightSlider();
 
-	private JLabel battleFieldSizeLabel = createBattleFieldSizeLabel();
-
-	private JPanel sliderPanel = createSliderPanel();
-	private JPanel buttonsPanel = createButtonsPanel();
+	private final JLabel battleFieldSizeLabel = createBattleFieldSizeLabel();
 
 	public NewBattleBattleFieldTab() {
 		super();
 
+		JPanel sliderPanel = createSliderPanel();
+
 		add(sliderPanel);
+		JPanel buttonsPanel = createButtonsPanel();
+
 		add(buttonsPanel);
 	}
 
@@ -146,8 +147,8 @@ public class NewBattleBattleFieldTab extends JPanel {
 	}
 
 	private class SizeButton extends JButton {
-		int width;
-		int height;
+		final int width;
+		final int height;
 
 		public SizeButton(int width, int height) {
 			super(width + "x" + height);

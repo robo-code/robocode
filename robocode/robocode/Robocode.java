@@ -29,12 +29,18 @@
 package robocode;
 
 
-import robocode.battle.IBattleManager;
-import robocode.battle.events.*;
+import robocode.control.events.BattleAdaptor;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleErrorEvent;
+import robocode.control.events.BattleMessageEvent;
+import robocode.control.events.BattleStartedEvent;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
+import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
+import robocode.recording.BattleRecordFormat;
+import robocode.security.LoggingThreadGroup;
 import robocode.security.SecurePrintStream;
 import robocode.ui.BattleResultsTableModel;
 
@@ -65,24 +71,31 @@ public class Robocode {
 	 *
 	 * @param args an array of command-line arguments
 	 */
-	public static void main(String[] args) {
-		Robocode robocode = new Robocode();
+	public static void main(final String[] args) {
+		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
 
-		robocode.loadSetup(args);
-		robocode.run();
+		new Thread(group, "Robocode main thread") {
+			public void run() {
+				Robocode robocode = new Robocode();
+
+				robocode.loadSetup(args);
+				robocode.run();
+			}
+		}.start();
 	}
 
-	private RobocodeManager manager;
-	private Setup setup;
-	private BattleObserver battleObserver = new BattleObserver();
+	private final RobocodeManager manager;
+	private final Setup setup;
+	private final BattleObserver battleObserver = new BattleObserver();
 
 	private class Setup {
 		boolean securityOn = true;
-		boolean experimentalOn = false;
-		boolean minimize = false;
-		boolean exitOnComplete = false;
-		String battleFilename = null;
-		String resultsFilename = null;
+		boolean experimentalOn;
+		boolean minimize;
+		boolean exitOnComplete;
+		String battleFilename;
+		String replayFilename;
+		String resultsFilename;
 		int tps;
 	}
 
@@ -91,7 +104,7 @@ public class Robocode {
 		setup = new Setup();
 	}
 
-	private boolean run() {
+	private void run() {
 		try {
 			manager.initSecurity(setup.securityOn, setup.experimentalOn);
 
@@ -130,22 +143,38 @@ public class Robocode {
 
 			// Note: At this point the GUI should be opened (if enabled) before starting the battle from a battle file
 			if (setup.battleFilename != null) {
+				if (setup.replayFilename != null) {
+					System.err.println("You cannot run both a battle and replay a battle record in the same time.");
+					System.exit(8);
+				}
+
 				setup.exitOnComplete = true;
+
 				IBattleManager battleManager = manager.getBattleManager();
 
 				battleManager.setBattleFilename(setup.battleFilename);
-				if (new File(battleManager.getBattleFilename()).exists()) {
-					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, false);
+				if (new File(setup.battleFilename).exists()) {
+					battleManager.startNewBattle(battleManager.loadBattleProperties(), false);
 				} else {
 					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
 					System.exit(8);
 				}
-			}
+			} else if (setup.replayFilename != null) {
 
-			return true;
+				setup.exitOnComplete = true;
+
+				manager.getRecordManager().loadRecord(setup.replayFilename, BattleRecordFormat.BINARY_ZIP);
+
+				if (new File(setup.replayFilename).exists()) {
+					manager.getBattleManager().replay();
+				} else {
+					System.err.println(
+							"The specified battle record file '" + setup.replayFilename + "' was not be found");
+					System.exit(8);
+				}
+			}
 		} catch (Throwable e) {
 			Logger.logError(e);
-			return false;
 		}
 	}
 
@@ -177,6 +206,9 @@ public class Robocode {
 				i++;
 			} else if (args[i].equals("-battle") && (i < args.length + 1)) {
 				setup.battleFilename = args[i + 1];
+				i++;
+			} else if (args[i].equals("-replay") && (i < args.length + 1)) {
+				setup.replayFilename = args[i + 1];
 				i++;
 			} else if (args[i].equals("-results") && (i < args.length + 1)) {
 				setup.resultsFilename = args[i + 1];
@@ -231,6 +263,7 @@ public class Robocode {
 						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
 						+ "  -cwd <path>             Change the current working directory\n"
 						+ "  -battle <battle file>   Run the battle specified in a battle file\n"
+						+ "  -replay <record file>   Replay the specified battle record\n"
 						+ "  -results <file>         Save results to the specified text file\n"
 						+ "  -tps <tps>              Set the TPS (Turns Per Second) to use. TPS must be > 0\n"
 						+ "  -minimize               Run minimized when Robocode starts\n"
@@ -268,8 +301,8 @@ public class Robocode {
 			}
 		}
 
-		BattleResultsTableModel resultsTable = new BattleResultsTableModel(event.getResults(),
-				event.getBattleProperties().getNumRounds());
+		BattleResultsTableModel resultsTable = new BattleResultsTableModel(event.getSortedResults(),
+				event.getBattleRules().getNumRounds());
 
 		if (out != null) {
 			resultsTable.print(out);
@@ -308,5 +341,4 @@ public class Robocode {
 			SecurePrintStream.realErr.println(event.getError());
 		}
 	}
-
 }

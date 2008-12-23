@@ -38,19 +38,19 @@ import java.util.Vector;
  */
 public class PrepareBattles {
 
-	private String botsrepository;
-	private String participantsfile;
-	private String battlesfile;
-	private int numbattles;
-	private CompetitionsSelector size;
-	private String runonly;
-	private Properties generalratings;
-	private Properties miniratings;
-	private Properties microratings;
-	private Properties nanoratings;
-	private String priority;
-	private int prioritynum;
-	private int meleebots;
+	private final String botsrepository;
+	private final String participantsfile;
+	private final String battlesfile;
+	private final int numbattles;
+	private final CompetitionsSelector size;
+	private final String runonly;
+	private final Properties generalratings;
+	private final Properties miniratings;
+	private final Properties microratings;
+	private final Properties nanoratings;
+	private final String priority;
+	private final int prioritynum;
+	private final int meleebots;
 
 	public PrepareBattles(String propertiesfile) {
 		// Read parameters
@@ -74,7 +74,6 @@ public class PrepareBattles {
 	}
 
 	public boolean createBattlesList() {
-		Vector<String> jars = new Vector<String>();
 		Vector<String> names = new Vector<String>();
 
 		// Read participants
@@ -98,7 +97,6 @@ public class PrepareBattles {
 								|| (runonly.equals("MICRO") && size.checkCompetitorsForSize(name, name, 750))
 								|| (runonly.equals("NANO") && size.checkCompetitorsForSize(name, name, 250))
 								|| (!runonly.equals("MINI") && !runonly.equals("MICRO") && !runonly.equals("NANO"))) {
-							jars.add(jar);
 							names.add(name);
 						}
 					}
@@ -112,7 +110,7 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		// Open battles file
@@ -204,7 +202,7 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -240,7 +238,7 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -385,7 +383,7 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 

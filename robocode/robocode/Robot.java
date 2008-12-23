@@ -956,8 +956,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   }
 	 * </pre>
 	 *
-	 * @param bodyColor    the new body color
-	 * @param gunColor     the new gun color
+	 * @param bodyColor	the new body color
+	 * @param gunColor	 the new gun color
 	 * @param radarColor   the new radar color
 	 * @param bulletColor  the new bullet color
 	 * @param scanArcColor the new scan arc color
@@ -1445,6 +1445,26 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		}
 		uninitializedException();
 		return null; // never called
+	}
+
+	/**
+	 * Sets the debug property with the specified key to the specified value.
+	 * <p/>
+	 * This method is very useful when debugging or reviewing your robot as you
+	 * will be able to see this property displayed in the robot console for your
+	 * robots under the Debug Properties tab page.
+	 *
+	 * @param key the name/key of the debug property.
+	 * @param value the new value of the debug property, where {@code null} or
+	 *              the empty string is used for removing this debug property. 
+	 * @since 1.6.2
+	 */
+	public void setDebugProperty(String key, String value) {
+		if (peer != null) {
+			peer.setDebugProperty(key, value);
+			return;
+		}
+		uninitializedException();
 	}
 
 	/**

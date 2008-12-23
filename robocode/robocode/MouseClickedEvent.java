@@ -14,6 +14,14 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IInteractiveEvents;
+import robocode.robotinterfaces.IInteractiveRobot;
+
+import java.awt.*;
+
+
 /**
  * A MouseClickedEvent is sent to {@link Robot#onMouseClicked(java.awt.event.MouseEvent)
  * onMouseClicked()} when the mouse is clicked inside the battle view.
@@ -29,6 +37,8 @@ package robocode;
  * @since 1.6.1
  */
 public final class MouseClickedEvent extends MouseEvent {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 98;
 
 	/**
 	 * Called by the game to create a new MouseClickedEvent.
@@ -37,5 +47,27 @@ public final class MouseClickedEvent extends MouseEvent {
 	 */
 	public MouseClickedEvent(java.awt.event.MouseEvent source) {
 		super(source);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isInteractiveRobot()) {
+			IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+
+			if (listener != null) {
+				listener.onMouseClicked(getSourceEvent());
+			}
+		}
 	}
 }

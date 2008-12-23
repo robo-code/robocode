@@ -15,7 +15,7 @@ package robots;
 import helpers.Assert;
 import helpers.RobotTestBed;
 import org.junit.Test;
-import robocode.battle.events.TurnEndedEvent;
+import robocode.control.events.TurnEndedEvent;
 
 
 /**
@@ -32,7 +32,7 @@ public class TestIncludeNamespaceAttack extends RobotTestBed {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
 
 		if (out.contains("from access to the internal Robocode pakage: robocode.manager")) {
 			messaged = true;

@@ -8,16 +8,23 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Xml Serialization, refactoring
  *******************************************************************************/
 package robocode.battle.snapshot;
 
 
+import robocode.common.IXmlSerializable;
+import robocode.common.XmlReader;
+import robocode.common.XmlWriter;
+import robocode.control.snapshot.IBulletSnapshot;
+import robocode.control.snapshot.BulletState;
 import robocode.peer.BulletPeer;
-import robocode.peer.BulletState;
+import robocode.peer.ExecCommands;
 import robocode.peer.ExplosionPeer;
-import static robocode.util.ObjectCloner.deepCopy;
 
-import java.awt.*;
+import java.io.IOException;
+import java.util.Dictionary;
 
 
 /**
@@ -38,9 +45,10 @@ import java.awt.*;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * @since 1.6.1
  */
-public class BulletSnapshot implements java.io.Serializable {
+public final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, IBulletSnapshot {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,32 +56,32 @@ public class BulletSnapshot implements java.io.Serializable {
 	// private final String ownerName;
 
 	// The bullet state
-	private final BulletState state;
+	private BulletState state;
 
 	// The bullet power
-	private final double power;
+	private double power;
 
 	// The x coordinate
-	private final double x;
+	private double x;
 	// The y coordinate
-	private final double y;
+	private double y;
 
 	// The x coordinate for painting (due to offset on robot when bullet hits a robot)
-	private final double paintX;
+	private double paintX;
 	// The y coordinate for painting (due to offset on robot when bullet hits a robot)
-	private final double paintY;
+	private double paintY;
 
 	// The color of the bullet
-	private final Color color;
+	private int color = ExecCommands.defaultBulletColor;
 
 	// The current frame number to display
-	private final int frame;
+	private int frame;
 
 	// Flag specifying if this bullet has turned into an explosion
-	private final boolean isExplosion;
+	private boolean isExplosion;
 
 	// Index to which explosion image that must be rendered
-	private final int explosionImageIndex;
+	private int explosionImageIndex;
 
 	/**
 	 * Constructs a snapshot of the bullet.
@@ -93,7 +101,7 @@ public class BulletSnapshot implements java.io.Serializable {
 		paintX = peer.getPaintX();
 		paintY = peer.getPaintY();
 
-		color = deepCopy(peer.getColor());
+		color = peer.getColor();
 
 		frame = peer.getFrame();
 
@@ -110,94 +118,126 @@ public class BulletSnapshot implements java.io.Serializable {
 	// return ownerName;
 	// }
 
-	/**
-	 * Returns the bullet state.
-	 *
-	 * @return the bullet state.
-	 */
 	public BulletState getState() {
 		return state;
 	}
 
-	/**
-	 * Returns the bullet power.
-	 *
-	 * @return the bullet power.
-	 */
 	public double getPower() {
 		return power;
 	}
 
-	/**
-	 * Returns the x coordinate of the bullet.
-	 *
-	 * @return the x coordinate of the bullet.
-	 */
 	public double getX() {
 		return x;
 	}
 
-	/**
-	 * Returns the y coordinate of the bullet.
-	 *
-	 * @return the y coordinate of the bullet.
-	 */
 	public double getY() {
 		return y;
 	}
 
-	/**
-	 * Returns the x coordinate where to paint the bullet.
-	 *
-	 * @return the x coordinate where to paint the bullet.
-	 */
 	public double getPaintX() {
 		return paintX;
 	}
 
-	/**
-	 * Returns the y coordinate where to paint the bullet.
-	 *
-	 * @return the y coordinate where to paint the bullet.
-	 */
 	public double getPaintY() {
 		return paintY;
 	}
 
-	/**
-	 * Returns the color of the bullet.
-	 *
-	 * @return the color of the bullet.
-	 */
-	public Color getColor() {
-		return deepCopy(color);
+	public int getColor() {
+		return color;
 	}
 
-	/**
-	 * Returns the frame number to display.
-	 *
-	 * @return the frame number to display.
-	 */
 	public int getFrame() {
 		return frame;
 	}
 
-	/**
-	 * Returns the flag specifying if this bullet has turned into an explosion.
-	 *
-	 * @return {@code true} if this bullet is now an explosion; {@code false}
-	 *         otherwise
-	 */
 	public boolean isExplosion() {
 		return isExplosion;
 	}
 
-	/**
-	 * Returns the index to which explosion image that must be rendered.
-	 *
-	 * @return the index to which explosion image that must be rendered.
-	 */
 	public int getExplosionImageIndex() {
 		return explosionImageIndex;
+	}
+
+	public BulletSnapshot() {}
+
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
+		writer.startElement("bullet"); {
+			writer.writeAttribute("state", state.toString());
+			writer.writeAttribute("power", power);
+			writer.writeAttribute("x", paintX);
+			writer.writeAttribute("y", paintY);
+			if (color != ExecCommands.defaultBulletColor) {
+				writer.writeAttribute("color", Integer.toHexString(color).toUpperCase());
+			}
+			if (frame != 0) {
+				writer.writeAttribute("frame", frame);
+			}
+			if (isExplosion) {
+				writer.writeAttribute("isExplosion", true);
+				writer.writeAttribute("explosion", explosionImageIndex);
+			}
+			writer.writeAttribute("ver", serialVersionUID);
+		}
+		writer.endElement();
+	}
+
+	public XmlReader.Element readXml(XmlReader reader) {
+		return reader.expect("bullet", new XmlReader.Element() {
+			public IXmlSerializable read(XmlReader reader) {
+				final BulletSnapshot snapshot = new BulletSnapshot();
+
+				reader.expect("state", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.state = BulletState.valueOf(value);
+					}
+				});
+
+				reader.expect("power", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.power = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("x", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.x = Double.parseDouble(value);
+						snapshot.paintX = snapshot.x;
+					}
+				});
+
+				reader.expect("y", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.y = Double.parseDouble(value);
+						snapshot.paintY = snapshot.y;
+					}
+				});
+
+				reader.expect("color", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.color = Long.valueOf(value.toUpperCase(), 16).intValue();
+					}
+				});
+
+				reader.expect("isExplosion", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.isExplosion = Boolean.parseBoolean(value);
+					}
+				});
+
+				reader.expect("explosion", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.explosionImageIndex = Integer.parseInt(value);
+					}
+				});
+
+				reader.expect("frame", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.frame = Integer.parseInt(value);
+					}
+				});
+				return snapshot;
+			}
+		});
+
 	}
 }

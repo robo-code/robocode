@@ -18,6 +18,7 @@ import robocode.HitRobotEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 import java.awt.*;
 
@@ -90,7 +91,7 @@ public class Tracker extends Robot {
 		count = 0;
 		// If our target is too far away, turn and move torward it.
 		if (e.getDistance() > 150) {
-			gunTurnAmt = normalRelativeAngle(e.getBearing() + (getHeading() - getRadarHeading()));
+			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 
 			turnGunRight(gunTurnAmt); // Try changing these to setTurnGunRight,
 			turnRight(e.getBearing()); // and see how much Tracker improves...
@@ -100,7 +101,7 @@ public class Tracker extends Robot {
 		}
 
 		// Our target is close.
-		gunTurnAmt = normalRelativeAngle(e.getBearing() + (getHeading() - getRadarHeading()));
+		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		turnGunRight(gunTurnAmt);
 		fire(3);
 
@@ -128,7 +129,7 @@ public class Tracker extends Robot {
 		// Back up a bit.
 		// Note:  We won't get scan events while we're doing this!
 		// An AdvancedRobot might use setBack(); execute();
-		gunTurnAmt = normalRelativeAngle(e.getBearing() + (getHeading() - getRadarHeading()));
+		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		turnGunRight(gunTurnAmt);
 		fire(3);
 		back(50);
@@ -142,43 +143,5 @@ public class Tracker extends Robot {
 			turnRight(30);
 			turnLeft(30);
 		}
-	}
-
-	// normalAbsoluteAngle is not used in this robot,
-	// but is here for reference.
-	/**
-	 * normalAbsoluteAngle:  Returns angle such that 0 <= angle < 360
-	 */
-	public double normalAbsoluteAngle(double angle) {
-		if (angle >= 0 && angle < 360) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle < 0) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle >= 360) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
-	}
-
-	/**
-	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */
-	public double normalRelativeAngle(double angle) {
-		if (angle > -180 && angle <= 180) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle <= -180) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle > 180) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
 	}
 }

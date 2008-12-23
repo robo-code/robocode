@@ -88,7 +88,6 @@ public class RoboRumbleAtHome {
 						download.notifyServerForOldParticipants();
 					}
 
-					download = null;
 					lastdownload = System.currentTimeMillis();
 				}
 			}
@@ -115,8 +114,6 @@ public class RoboRumbleAtHome {
 					}
 				}
 
-				battles = null;
-
 				// Disable the -DPRARALLEL and -DRANDOMSEED options
 				System.setProperty("PARALLEL", "false"); // TODO: Remove when robot thread CPU time can be measured
 				System.setProperty("RANDOMSEED", "none"); // In tournaments, robots should not be deterministic!
@@ -127,12 +124,11 @@ public class RoboRumbleAtHome {
 
 					if (melee.equals("YES")) {
 						System.out.println("Executing melee battles ...");
-						engine.runMeleeBattles();
+						engine.runBattlesImpl(true);
 					} else {
 						System.out.println("Executing battles ...");
-						engine.runBattles();
+						engine.runBattlesImpl(false);
 					}
-					engine = null;
 				}
 			}
 
@@ -143,14 +139,12 @@ public class RoboRumbleAtHome {
 
 				// Uploads the results to the server
 				upload.uploadResults();
-				upload = null;
 
 				// Updates the number of battles from the info received from the server
 				System.out.println("Updating number of battles fought ...");
 				UpdateRatingFiles updater = new UpdateRatingFiles(parameters);
 
 				ratingsdownloaded = updater.updateRatings();
-				updater = null;
 			}
 
 			iterations++;

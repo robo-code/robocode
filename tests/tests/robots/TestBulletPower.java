@@ -12,11 +12,11 @@
 package robots;
 
 
-import helpers.RobotTestBed;
 import helpers.Assert;
+import helpers.RobotTestBed;
 import org.junit.Test;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 
 
 /**
@@ -35,7 +35,7 @@ public class TestBulletPower extends RobotTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		RobotSnapshot bp = event.getTurnSnapshot().getRobots().get(1);
+		IRobotSnapshot bp = event.getTurnSnapshot().getRobots()[1];
 
 		final int time = event.getTurnSnapshot().getTurn();
 
@@ -57,7 +57,7 @@ public class TestBulletPower extends RobotTestBed {
 		}
 	}
 
-	private void test(RobotSnapshot gh, String s) {
+	private void test(IRobotSnapshot gh, String s) {
 		Assert.assertTrue(gh.getOutputStreamSnapshot() + " expected " + s, gh.getOutputStreamSnapshot().contains(s));
 	}
 }

@@ -29,7 +29,7 @@ import java.io.FileFilter;
 public class FileTypeFilter implements FileFilter {
 
 	// Array of file types
-	private String[] fileTypes;
+	private final String[] fileTypes;
 
 	/**
 	 * Creates a new file type filter.

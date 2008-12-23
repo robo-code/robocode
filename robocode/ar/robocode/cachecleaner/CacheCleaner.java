@@ -64,23 +64,18 @@ public final class CacheCleaner {
 		}
 	}
 
-	private static boolean recursivelyDelete(File file) throws IOException {
-		if (!file.exists()) {
-			return false;
-		}
+	private static void recursivelyDelete(File file) throws IOException {
+		if (file.exists()) {
+			if (file.isDirectory()) {
+				final File[] files = file.listFiles();
 
-		if (file.isDirectory()) {
-			final File[] files = file.listFiles();
-
-			for (File f : files) {
-				recursivelyDelete(f);
+				for (File f : files) {
+					recursivelyDelete(f);
+				}
+			}
+			if (!file.delete()) {
+				throw new IOException("Delete failed.");
 			}
 		}
-
-		if (!file.delete()) {
-			throw new IOException("Delete failed.");
-		}
-
-		return true;
 	}
 }

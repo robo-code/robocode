@@ -43,11 +43,11 @@ import java.util.Date;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public final class VersionManager {
+public final class VersionManager implements IVersionManager {
 	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
 
-	private String version;
-	private RobocodeManager manager;
+	private static String version;
+	private final RobocodeManager manager;
 
 	public VersionManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -80,7 +80,7 @@ public final class VersionManager {
 		try {
 			url = new URL("http://robocode.sourceforge.net/version/version.html");
 		} catch (MalformedURLException e) {
-			logError("Unable to check for new version: " + e);
+			logError("Unable to check for new version: ", e);
 			if (notifyNoUpdate) {
 				WindowUtil.messageError("Unable to check for new version: " + e);
 			}
@@ -153,17 +153,17 @@ public final class VersionManager {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (inputStreamReader != null) {
 				try {
 					inputStreamReader.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (reader != null) {
 				try {
 					reader.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -171,19 +171,23 @@ public final class VersionManager {
 	}
 
 	public String getVersion() {
+		return getVersionStatic();
+	}
+
+	public static String getVersionStatic() {
 		if (version == null) {
 			version = getVersionFromJar();
 		}
 		return version;
 	}
 
-	private String getVersionFromJar() {
+	private static String getVersionFromJar() {
 		String versionString = null;
 
 		BufferedReader in = null;
 
 		try {
-			URL versionsUrl = getClass().getResource("/resources/versions.txt");
+			URL versionsUrl = VersionManager.class.getResource("/resources/versions.txt");
 
 			if (versionsUrl == null) {
 				logError("no url");
@@ -206,7 +210,7 @@ public final class VersionManager {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -226,7 +230,7 @@ public final class VersionManager {
 		return version;
 	}
 
-	private String getVersionFromFile() {
+	private static String getVersionFromFile() {
 		String versionString = null;
 
 		FileReader fileReader = null;
@@ -250,12 +254,12 @@ public final class VersionManager {
 			if (fileReader != null) {
 				try {
 					fileReader.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -270,6 +274,10 @@ public final class VersionManager {
 		}
 		return version;
 	}
+
+	public static int compare(String a, String b) {
+		return new Version(a).compareTo(new Version(b));
+	}
 }
 
 
@@ -278,7 +286,8 @@ class Version implements Comparable<Object> {
 	private final String version;
 
 	public Version(String version) {
-		this.version = version.replaceAll("\\.\\s++", ".").replaceAll("\\s++|lpha|eta", "");
+		this.version = version.replaceAll("Alpha", ".A.").replaceAll("Beta", ".B.").replaceAll("\\s++", ".").replaceAll(
+				"\\.++", "\\.");
 	}
 
 	public boolean isAlpha() {
@@ -305,83 +314,38 @@ class Version implements Comparable<Object> {
 			if (version.equalsIgnoreCase(v.version)) {
 				return 0;
 			}
+			String[] left = version.split("[. \t]");
+			String[] right = v.version.split("[. \t]");
 
-			String[] split1 = version.split(" ", 2);
-			String[] split2 = v.version.split(" ", 2);
-
-			if (split1[0].equalsIgnoreCase(split2[0])) {
-				if (split1.length == 1) {
-					return 1;
-				}
-				if (split2.length == 1) {
-					return -1;
-				}
-
-				split1 = split1[1].split(" ", 2);
-				split2 = split2[1].split(" ", 2);
-
-				int compare = split1[0].compareToIgnoreCase(split2[0]);
-
-				if (compare == 0) {
-					if (split1.length == 1) {
-						return -1;
-					}
-					if (split2.length == 1) {
-						return 1;
-					}
-					return split1[1].compareToIgnoreCase(split2[1]);
-				}
-				return compare;
-			}
-
-			split1 = split1[0].split("\\.", 3);
-			split2 = split2[0].split("\\.", 3);
-
-			split1[0] = split1[0].trim();
-			split2[0] = split2[0].trim();
-			int compare = split1[0].compareToIgnoreCase(split2[0]);
-
-			if (compare == 0) {
-				if (split1.length == 1) {
-					return -1;
-				}
-				if (split2.length == 1) {
-					return 1;
-				}
-
-				split1[1] = (split1[1] + '\uffff').trim();
-				split2[1] = (split2[1] + '\uffff').trim();
-				compare = split1[1].compareToIgnoreCase(split2[1]);
-
-				if (compare == 0) {
-					if (split1.length == 2) {
-						return -1;
-					}
-					if (split2.length == 2) {
-						return 1;
-					}
-
-					split1[2] = (split1[2] + '\uffff').trim();
-					split2[2] = (split2[2] + '\uffff').trim();
-					compare = split1[2].compareToIgnoreCase(split2[2]);
-
-					if (compare == 0) {
-						if (split1.length == 3) {
-							return -1;
-						}
-						if (split2.length == 3) {
-							return 1;
-						}
-					}
-					return compare;
-				}
-				return compare;
-			}
-			return compare;
-
+			return compare(left, right);
 		} else {
 			throw new IllegalArgumentException("The input object must be a String or Version object");
 		}
+	}
+
+	private int compare(String[] left, String[] right) {
+		int i = 0;
+
+		for (i = 0; i < left.length && i < right.length; i++) {
+			int res = left[i].compareToIgnoreCase(right[i]);
+
+			if (res != 0) {
+				return res;
+			}
+		}
+		if (left.length > right.length) {
+			if (left[i].equals("B") || left[i].equals("A")) {
+				return -1; 
+			}
+			return 1;
+		}
+		if (left.length < right.length) {
+			if (right[i].equals("B") || right[i].equals("A")) {
+				return 1; 
+			}
+			return -1;
+		}
+		return 0;
 	}
 
 	@Override

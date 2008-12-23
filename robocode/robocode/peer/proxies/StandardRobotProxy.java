@@ -12,7 +12,12 @@
 package robocode.peer.proxies;
 
 
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.RobotStatus;
+import robocode.manager.IHostManager;
+import robocode.peer.ExecCommands;
+import robocode.peer.IRobotPeer;
+import robocode.peer.RobotStatics;
+import robocode.peer.robot.RobotClassManager;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 
@@ -21,40 +26,99 @@ import robocode.robotinterfaces.peer.IStandardRobotPeer;
  */
 public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobotPeer {
 
-	public StandardRobotProxy(IBasicRobotPeer peer) {
-		super(peer);
+	private boolean isStopped;
+	private double saveAngleToTurn;
+	private double saveDistanceToGo;
+	private double saveGunAngleToTurn;
+	private double saveRadarAngleToTurn;
+
+	public StandardRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+		super(robotClassManager, hostManager, peer, statics);
+	}
+
+	@Override
+	protected void initializeRound(ExecCommands commands, RobotStatus status) {
+		super.initializeRound(commands, status);
+		isStopped = true;
 	}
 
 	// blocking actions
 	public void stop(boolean overwrite) {
-		((IStandardRobotPeer) peer).stop(overwrite);
+		setStopImpl(overwrite);
+		execute();
 	}
 
 	public void resume() {
-		((IStandardRobotPeer) peer).resume();
+		setResumeImpl();
+		execute();
 	}
 
 	public void rescan() {
-		((IStandardRobotPeer) peer).rescan();
+		boolean reset = false;
+		boolean resetValue = false;
+
+		if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority()) {
+			reset = true;
+			resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());
+			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), true);
+		}
+
+		commands.setScan(true);
+		executeImpl();
+		if (reset) {
+			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), resetValue);
+		}
 	}
 
 	public void turnRadar(double radians) {
-		((IStandardRobotPeer) peer).turnRadar(radians);
+		setTurnRadarImpl(radians);
+		do {
+			execute(); // Always tick at least once
+		} while (getRadarTurnRemaining() != 0);
 	}
 
 	// fast setters
 	public void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
-		peer.setCall();
-		((IStandardRobotPeer) peer).setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
+		setCall();
+		commands.setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
 	}
 
 	public void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
-		peer.setCall();
-		((IStandardRobotPeer) peer).setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
+		setCall();
+		commands.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
+		if (!commands.isAdjustRadarForBodyTurnSet()) {
+			commands.setAdjustRadarForBodyTurn(newAdjustRadarForGunTurn);
+		}
 	}
 
 	public void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
-		peer.setCall();
-		((IStandardRobotPeer) peer).setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
+		setCall();
+		commands.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
+		commands.setAdjustRadarForBodyTurnSet(true);
+	}
+
+	protected final void setResumeImpl() {
+		if (isStopped) {
+			isStopped = false;
+			commands.setDistanceRemaining(saveDistanceToGo);
+			commands.setBodyTurnRemaining(saveAngleToTurn);
+			commands.setGunTurnRemaining(saveGunAngleToTurn);
+			commands.setRadarTurnRemaining(saveRadarAngleToTurn);
+		}
+	}
+
+	protected final void setStopImpl(boolean overwrite) {
+		if (!isStopped || overwrite) {
+			this.saveDistanceToGo = getDistanceRemaining();
+			this.saveAngleToTurn = getBodyTurnRemaining();
+			this.saveGunAngleToTurn = getGunTurnRemaining();
+			this.saveRadarAngleToTurn = getRadarTurnRemaining();
+		}
+		isStopped = true;
+
+		commands.setDistanceRemaining(0);
+		commands.setBodyTurnRemaining(0);
+		commands.setGunTurnRemaining(0);
+		commands.setRadarTurnRemaining(0);
 	}
 }

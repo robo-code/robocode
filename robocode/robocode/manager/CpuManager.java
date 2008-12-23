@@ -36,12 +36,12 @@ import robocode.io.Logger;
  * @author Robert Maupin (contributor)
  * @author Pavel Savara (contributor)
  */
-public class CpuManager {
+public class CpuManager implements ICpuManager {
 	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
 	private final static int TEST_PERIOD_MILLIS = 5000;
 
 	private long cpuConstant = -1;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	public CpuManager(RobocodeManager manager) {
 		this.manager = manager;

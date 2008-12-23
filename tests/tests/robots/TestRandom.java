@@ -15,8 +15,8 @@ package robots;
 import helpers.Assert;
 import helpers.RobotTestBed;
 import org.junit.Test;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 
 
 /**
@@ -44,8 +44,8 @@ public class TestRandom extends RobotTestBed {
 		super.onTurnEnded(event);
 
 		Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 1223);
-		RobotSnapshot fire = event.getTurnSnapshot().getRobots().get(0);
-		RobotSnapshot random = event.getTurnSnapshot().getRobots().get(1);
+		IRobotSnapshot fire = event.getTurnSnapshot().getRobots()[0];
+		IRobotSnapshot random = event.getTurnSnapshot().getRobots()[1];
 
 		if (event.getTurnSnapshot().getTurn() == 1223) {
 			Assert.assertNear(498.9405462, fire.getX());

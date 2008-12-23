@@ -18,7 +18,7 @@ package robocode.peer.robot;
 
 
 import robocode.RobocodeFileOutputStream;
-import robocode.peer.RobotPeer;
+import robocode.peer.proxies.IHostedThread;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,18 +32,19 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class RobotFileSystemManager {
-	private RobotPeer robotPeer;
+	private final IHostedThread robotProxy;
 	private long quotaUsed = 0;
 	private boolean quotaMessagePrinted = false;
-	private List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
+	private final List<RobocodeFileOutputStream> streams = new ArrayList<RobocodeFileOutputStream>();
 	private long maxQuota = 0;
+	private final String classDirectory;
+	private final String rootPackageDirectory;
 
-	/**
-	 * RobotFileSystemHandler constructor comment.
-	 */
-	public RobotFileSystemManager(RobotPeer robotPeer, long maxQuota) {
-		this.robotPeer = robotPeer;
+	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String classDirectory, String rootPackageDirectory) {
+		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;
+		this.classDirectory = classDirectory;
+		this.rootPackageDirectory = rootPackageDirectory;
 	}
 
 	public void addStream(RobocodeFileOutputStream s) throws IOException {
@@ -77,7 +78,7 @@ public class RobotFileSystemManager {
 			return;
 		}
 		if (!quotaMessagePrinted) {
-			robotPeer.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
+			robotProxy.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
 			quotaMessagePrinted = true;
 		}
 		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");
@@ -92,22 +93,22 @@ public class RobotFileSystemManager {
 	}
 
 	public File getReadableDirectory() {
-		if (robotPeer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory() == null) {
-			return null;
-		}
 		try {
-			return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getRootPackageDirectory()).getCanonicalFile();
+			final String dir = rootPackageDirectory;
+
+			return (dir == null) ? null : new File(dir).getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}
 	}
 
 	public File getWritableDirectory() {
-		if (robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory() == null) {
-			return null;
-		}
 		try {
-			return new File(robotPeer.getRobotClassManager().getRobotClassLoader().getClassDirectory(), robotPeer.getRobotClassManager().getClassNameManager().getShortClassName() + ".data").getCanonicalFile();
+			final String dir = classDirectory;
+
+			return (dir == null)
+					? null
+					: new File(classDirectory, robotProxy.getStatics().getShortClassName() + ".data").getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}
@@ -185,12 +186,7 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		if (attemptedFile.equals(allowedDirectory)) {
-			return true; // recursive check
-		}
-
-		return attemptedFile.getParentFile().equals(allowedDirectory);
-
+		return attemptedFile.equals(allowedDirectory) || attemptedFile.getParentFile().equals(allowedDirectory);
 	}
 
 	public void removeStream(RobocodeFileOutputStream s) {

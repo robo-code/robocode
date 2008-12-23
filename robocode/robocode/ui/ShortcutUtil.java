@@ -30,6 +30,8 @@ public class ShortcutUtil {
 
 	/**
 	 * Returns the text for the shortcut modifier key.
+	 *
+	 * @return the text for the shortcut modifier key.
 	 */
 	public static String getModifierKeyText() {
 

@@ -46,31 +46,62 @@ import java.util.Vector;
 public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents {
 
 	/**
-	 * Checks if a given robot name is the name of one of your teammates.
+	 * Broadcasts a message to all teammates.
 	 * <p/>
 	 * Example:
 	 * <pre>
-	 *   public void onScannedRobot(ScannedRobotEvent e) {
-	 *       if (isTeammate(e.getName()) {
-	 *           return;
-	 *       }
-	 *       fire(1);
+	 *   public void run() {
+	 *       broadcastMessage("I'm here!");
 	 *   }
 	 * </pre>
 	 *
-	 * @param name the robot name to check
-	 * @return {@code true} if the specified name belongs to one of your
-	 *         teammates; {@code false} otherwise.
+	 * @param message the message to broadcast to all teammates
+	 * @throws IOException if the message could not be broadcasted to the
+	 *                     teammates
+	 * @see #isTeammate(String)
 	 * @see #getTeammates()
-	 * @see #broadcastMessage(Serializable)
 	 * @see #sendMessage(String, Serializable)
 	 */
-	public boolean isTeammate(String name) {
+	public void broadcastMessage(Serializable message) throws IOException {
 		if (peer != null) {
-			return ((ITeamRobotPeer) peer).isTeammate(name);
+			((ITeamRobotPeer) peer).broadcastMessage(message);
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Returns a vector containing all MessageEvents currently in the robot's
+	 * queue. You might, for example, call this while processing another event.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   for (MessageEvent e : getMessageEvents()) {
+	 *      // do something with e
+	 *   }
+	 * </pre>
+	 *
+	 * @return a vector containing all MessageEvents currently in the robot's
+	 *         queue
+	 * @see #onMessageReceived(MessageEvent)
+	 * @see MessageEvent
+	 * @since 1.2.6
+	 */
+	public Vector<MessageEvent> getMessageEvents() {
+		if (peer != null) {
+			return new Vector<MessageEvent>(((ITeamRobotPeer) peer).getMessageEvents());
 		}
 		uninitializedException();
-		return false;
+		return null; // never called
+	}
+
+	/**
+	 * Do not call this method!
+	 * <p/>
+	 * {@inheritDoc}
+	 */
+	public final ITeamEvents getTeamEventListener() {
+		return this; // this robot is listening
 	}
 
 	/**
@@ -106,29 +137,37 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	}
 
 	/**
-	 * Broadcasts a message to all teammates.
+	 * Checks if a given robot name is the name of one of your teammates.
 	 * <p/>
 	 * Example:
 	 * <pre>
-	 *   public void run() {
-	 *       broadcastMessage("I'm here!");
+	 *   public void onScannedRobot(ScannedRobotEvent e) {
+	 *       if (isTeammate(e.getName()) {
+	 *           return;
+	 *       }
+	 *       fire(1);
 	 *   }
 	 * </pre>
 	 *
-	 * @param message the message to broadcast to all teammates
-	 * @throws IOException if the message could not be broadcasted to the
-	 *                     teammates
-	 * @see #isTeammate(String)
+	 * @param name the robot name to check
+	 * @return {@code true} if the specified name belongs to one of your
+	 *         teammates; {@code false} otherwise.
 	 * @see #getTeammates()
+	 * @see #broadcastMessage(Serializable)
 	 * @see #sendMessage(String, Serializable)
 	 */
-	public void broadcastMessage(Serializable message) throws IOException {
+	public boolean isTeammate(String name) {
 		if (peer != null) {
-			((ITeamRobotPeer) peer).broadcastMessage(message);
-		} else {
-			uninitializedException();
+			return ((ITeamRobotPeer) peer).isTeammate(name);
 		}
+		uninitializedException();
+		return false;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onMessageReceived(MessageEvent event) {}
 
 	/**
 	 * Sends a message to one (or more) teammates.
@@ -140,7 +179,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	 *   }
 	 * </pre>
 	 *
-	 * @param name    the name of the intended recipient of the message
+	 * @param name	the name of the intended recipient of the message
 	 * @param message the message to send
 	 * @throws IOException if the message could not be sent
 	 * @see #isTeammate(String)
@@ -153,44 +192,5 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 		} else {
 			uninitializedException();
 		}
-	}
-
-	/**
-	 * Returns a vector containing all MessageEvents currently in the robot's
-	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   for (MessageEvent e : getMessageEvents()) {
-	 *      // do something with e
-	 *   }
-	 * </pre>
-	 *
-	 * @return a vector containing all MessageEvents currently in the robot's
-	 *         queue
-	 * @see #onMessageReceived(MessageEvent)
-	 * @see MessageEvent
-	 * @since 1.2.6
-	 */
-	public Vector<MessageEvent> getMessageEvents() {
-		if (peer != null) {
-			return new Vector<MessageEvent>(((ITeamRobotPeer) peer).getMessageEvents());
-		}
-		uninitializedException();
-		return null; // never called
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onMessageReceived(MessageEvent event) {}
-
-	/**
-	 * Do not call this method!
-	 * <p/>
-	 * {@inheritDoc}
-	 */
-	public final ITeamEvents getTeamEventListener() {
-		return this; // this robot is listening
 	}
 }

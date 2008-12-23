@@ -131,7 +131,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @param doc The destination for the insertion.
 	 * @param pos The location in the document to place the
 	 *            content >= 0.
-	 * @throws IOException          on any I/O error
+	 * @throws IOException		  on any I/O error
 	 * @throws BadLocationException if pos represents an invalid
 	 *                              location within the document.
 	 */
@@ -154,7 +154,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @param doc The destination for the insertion.
 	 * @param pos The location in the document to place the
 	 *            content >= 0.
-	 * @throws IOException          on any I/O error
+	 * @throws IOException		  on any I/O error
 	 * @throws BadLocationException if pos represents an invalid
 	 *                              location within the document.
 	 */
@@ -176,7 +176,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @param pos The location in the document to fetch the
 	 *            content from >= 0.
 	 * @param len The amount to write out >= 0.
-	 * @throws IOException          on any I/O error
+	 * @throws IOException		  on any I/O error
 	 * @throws BadLocationException if pos represents an invalid
 	 *                              location within the document.
 	 */
@@ -199,7 +199,7 @@ public class RobocodeEditorKit extends DefaultEditorKit {
 	 * @param pos The location in the document to fetch the
 	 *            content >= 0.
 	 * @param len The amount to write out >= 0.
-	 * @throws IOException          on any I/O error
+	 * @throws IOException		  on any I/O error
 	 * @throws BadLocationException if pos represents an invalid
 	 *                              location within the document.
 	 */

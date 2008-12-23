@@ -12,7 +12,11 @@
 package robocode;
 
 
-import robocode.peer.RobotPeer;
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
 
 
 /**
@@ -22,7 +26,9 @@ import robocode.peer.RobotPeer;
  * @author Flemming N. Larsen (original)
  * @since 1.5
  */
-public class StatusEvent extends Event {
+public final class StatusEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 99;
 
 	private final RobotStatus status;
 
@@ -30,12 +36,12 @@ public class StatusEvent extends Event {
 	 * This constructor is called internally from the game in order to create
 	 * a new {@link RobotStatus}.
 	 *
-	 * @param robotPeer the RobotPeer containing the current states
+	 * @param status the current states
 	 */
-	public StatusEvent(RobotPeer robotPeer) {
+	public StatusEvent(RobotStatus status) {
 		super();
 
-		status = new RobotStatus(robotPeer);
+		this.status = status;
 	}
 
 	/**
@@ -46,5 +52,25 @@ public class StatusEvent extends Event {
 	 */
 	public RobotStatus getStatus() {
 		return status;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onStatus(this);
+		}
 	}
 }

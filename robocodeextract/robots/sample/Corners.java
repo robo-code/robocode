@@ -17,6 +17,7 @@ package sample;
 import robocode.DeathEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 import java.awt.*;
 
@@ -69,7 +70,7 @@ public class Corners extends Robot {
 		// We don't want to stop when we're just turning...
 		stopWhenSeeRobot = false;
 		// turn to face the wall to the "right" of our desired corner.
-		turnRight(normalRelativeAngle(corner - getHeading()));
+		turnRight(normalRelativeAngleDegrees(corner - getHeading()));
 		// Ok, now we don't want to crash into any robot in our way...
 		stopWhenSeeRobot = true;
 		// Move to that wall
@@ -106,6 +107,8 @@ public class Corners extends Robot {
 
 	/**
 	 * smartFire:  Custom fire method that determines firepower based on distance.
+	 *
+	 * @param robotDistance the distance to the robot to fire at
 	 */
 	public void smartFire(double robotDistance) {
 		if (robotDistance > 200 || getEnergy() < 15) {
@@ -136,23 +139,5 @@ public class Corners extends Robot {
 		} else {
 			out.println("I died but did well.  I will still use corner " + corner);
 		}
-	}
-
-	/**
-	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */
-	public double normalRelativeAngle(double angle) {
-		if (angle > -180 && angle <= 180) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle <= -180) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle > 180) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
 	}
 }

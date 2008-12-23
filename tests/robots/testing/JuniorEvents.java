@@ -13,11 +13,13 @@ package testing;
 
 
 import robocode.*;
+import robocode.Event;
 import robocode.robotinterfaces.IBasicEvents;
 import robocode.robotinterfaces.IJuniorRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.util.Utils;
 
+import java.awt.*;
 import java.io.PrintStream;
 import java.util.Hashtable;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 
 	IBasicRobotPeer peer;
 	PrintStream out;
-	Hashtable<String, Integer> counts = new Hashtable<String, Integer>();
+	final Hashtable<String, Integer> counts = new Hashtable<String, Integer>();
 	Bullet bullet;
 
 	public void run() {
@@ -61,6 +63,10 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 
 	public void onStatus(StatusEvent event) {
 		count(event);
+		final Graphics2D g = peer.getGraphics();
+
+		g.setColor(Color.orange);
+		g.drawOval((int) (peer.getX() - 55), (int) (peer.getY() - 55), 110, 110);
 	}
 
 	public void onBulletHit(BulletHitEvent event) {
@@ -97,6 +103,8 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 
 	public void onWin(WinEvent event) {
 		count(event);
+
+		// this is tested output
 		for (Map.Entry<String, Integer> s : counts.entrySet()) {
 			out.println(s.getKey() + " " + s.getValue());
 		}
@@ -110,8 +118,9 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 		peer.turnGun(Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians() - peer.getGunHeading())); //
 
 		// Fire!
-		bullet = peer.fire(
-				1);
+		double power = 1;
+
+		bullet = peer.fire(power);
 	}
 
 	private void count(Event event) {
@@ -122,6 +131,5 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 			curr = 0;
 		}
 		counts.put(name, curr + 1);
-		// out.println(event.getTime() + name);
 	}
 }

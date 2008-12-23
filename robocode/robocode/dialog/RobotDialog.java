@@ -21,14 +21,21 @@
 package robocode.dialog;
 
 
-import robocode.battle.events.*;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.BattleAdaptor;
+import robocode.control.events.*;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
+import robocode.control.snapshot.IDebugProperty;
 import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Hashtable;
+import java.util.Map;
 
 
 /**
@@ -37,9 +44,12 @@ import java.awt.event.ActionListener;
  */
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
-	private RobocodeManager manager;
+	private final Color grayGreen = new Color(0x0080C080);
+	private final RobocodeManager manager;
 	private RobotButton robotButton;
+	private JTabbedPane tabbedPane;
 	private ConsoleScrollPane scrollPane;
+	private ConsoleScrollPane propertiesPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
 	private JButton okButton;
@@ -50,11 +60,17 @@ public class RobotDialog extends JFrame {
 	private JToggleButton pauseButton;
 	private boolean isListening;
 	private int robotIndex;
+	private IRobotSnapshot lastSnapshot;
+	private boolean paintSnapshot;
+	private boolean grayGreenButton;
+	private final Hashtable<String, String> debugProperties = new Hashtable<String, String>();
 
-	private BattleObserver battleObserver = new BattleObserver();
+	private final BattleObserver battleObserver = new BattleObserver();
 
 	/**
 	 * RobotDialog constructor
+	 * @param manager game root
+	 * @param robotButton related button
 	 */
 	public RobotDialog(RobocodeManager manager, RobotButton robotButton) {
 		super();
@@ -88,21 +104,25 @@ public class RobotDialog extends JFrame {
 
 	public void detach() {
 		if (isListening) {
-			manager.getBattleManager().removeListener(battleObserver);
+			manager.getWindowManager().removeBattleListener(battleObserver);
 			isListening = false;
 		}
 		robotButton.detach();
 	}
 
-	public void attach() {
+	public void attach(RobotButton robotButton) {
+		this.robotButton = robotButton;
+		robotIndex = this.robotButton.getRobotIndex();
 		if (!isListening) {
 			isListening = true;
-			manager.getBattleManager().addListener(battleObserver);
+			manager.getWindowManager().addBattleListener(battleObserver);
 		}
 	}
 
 	public void reset() {
 		getConsoleScrollPane().setText(null);
+		lastSnapshot = null;
+		debugProperties.clear();
 	}
 
 	/**
@@ -135,7 +155,7 @@ public class RobotDialog extends JFrame {
 		return getSGCheckBox().isSelected();
 	}
 
-	private ActionListener eventHandler = new ActionListener() {
+	private final ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
 
@@ -164,10 +184,76 @@ public class RobotDialog extends JFrame {
 		if (robotDialogContentPane == null) {
 			robotDialogContentPane = new JPanel();
 			robotDialogContentPane.setLayout(new BorderLayout());
-			robotDialogContentPane.add(getConsoleScrollPane());
+			robotDialogContentPane.add(getTabbedPane());
 			robotDialogContentPane.add(getButtonPanel(), BorderLayout.SOUTH);
 		}
 		return robotDialogContentPane;
+	}
+
+	private JTabbedPane getTabbedPane() {
+		if (tabbedPane == null) {
+			tabbedPane = new JTabbedPane();
+			tabbedPane.setLayout(new BorderLayout());
+			tabbedPane.addTab("Console", getConsoleScrollPane());
+			tabbedPane.addTab("Properties", getTurnScrollPane());
+			// tabbedPane.setSelectedIndex(0);
+			tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+			tabbedPane.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					paintSnapshot = (tabbedPane.getSelectedIndex() == 1);
+					paintSnapshot();
+				}
+			});
+		}
+		return tabbedPane;
+	}
+
+	private void paintSnapshot() {
+		if (paintSnapshot) {
+			if (lastSnapshot != null) {
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("energy: ").append(lastSnapshot.getEnergy()).append('\n');
+				sb.append("x: ").append(lastSnapshot.getX()).append('\n');
+				sb.append("y: ").append(lastSnapshot.getY()).append('\n');
+				sb.append("velocity: ").append(lastSnapshot.getVelocity()).append('\n');
+				sb.append("heat: ").append(lastSnapshot.getGunHeat()).append('\n');
+				sb.append("bodyHeading: rad: ").append(lastSnapshot.getBodyHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getBodyHeading())).append(
+						'\n');
+				sb.append("gunHeading: rad: ").append(lastSnapshot.getGunHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getGunHeading())).append(
+						'\n');
+				sb.append("radarHeading: rad: ").append(lastSnapshot.getRadarHeading()).append(" deg: ").append(Math.toDegrees(lastSnapshot.getRadarHeading())).append(
+						'\n');
+				sb.append("state: ").append(lastSnapshot.getState()).append('\n');
+				sb.append('\n');
+				IDebugProperty[] debugPropeties = lastSnapshot.getDebugProperties();
+
+				if (debugPropeties != null) {
+					for (IDebugProperty prop : debugPropeties) {
+						if (prop.getValue() == null || prop.getValue().length() == 0) {
+							debugProperties.remove(prop.getKey());
+						} else {
+							debugProperties.put(prop.getKey(), prop.getValue());
+						}
+					}
+				}
+				for (Map.Entry<String, String> prop : debugProperties.entrySet()) {
+					sb.append(prop.getKey()).append(": ").append(prop.getValue()).append('\n');
+				}
+
+				getTurnScrollPane().setText(sb.toString());
+			} else {
+				getTurnScrollPane().setText(null);
+			}
+		}
+	}
+
+	private ConsoleScrollPane getTurnScrollPane() {
+		if (propertiesPane == null) {
+			propertiesPane = new ConsoleScrollPane();
+		}
+		return propertiesPane;
 	}
 
 	/**
@@ -344,7 +430,9 @@ public class RobotDialog extends JFrame {
 		}
 
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
+			lastSnapshot = null;
+			paintSnapshot();
 			getPauseButton().setEnabled(false);
 			getKillButton().setEnabled(false);
 		}
@@ -361,21 +449,26 @@ public class RobotDialog extends JFrame {
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			// TODO: Get rid of this check (bugfix) if possible:
-			// Make sanity check as a new battle could have been started since the dialog was initialized,
-			// and thus the robot index can be too high compared to the robot's array size causing an
-			// ArrayOutOfBoundsException. This is a bugfix
-			if (robotIndex >= event.getTurnSnapshot().getRobots().size()) {
+			final ITurnSnapshot turn = event.getTurnSnapshot();
+
+			if (turn == null) {
 				return;
 			}
 
-			final RobotSnapshot robotSnapshot = event.getTurnSnapshot().getRobots().get(robotIndex);
-			final String text = robotSnapshot.getOutputStreamSnapshot();
+			lastSnapshot = turn.getRobots()[robotIndex];
+			final String text = lastSnapshot.getOutputStreamSnapshot();
 
 			if (text != null && text.length() > 0) {
 				getConsoleScrollPane().append(text);
 				getConsoleScrollPane().scrollToBottom();
 			}
+
+			if (lastSnapshot.isPaintRobot() && !grayGreenButton) {
+				grayGreenButton = true;
+				getPaintButton().setBackground(grayGreen);
+			}
+
+			paintSnapshot();
 		}
 
 	}

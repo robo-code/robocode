@@ -22,17 +22,25 @@
  *       synchronized List and HashMap
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - we create safe AWT queue for robot's thread group
  *******************************************************************************/
 package robocode.security;
 
 
 import robocode.RobocodeFileOutputStream;
-import robocode.manager.ThreadManager;
-import robocode.peer.BulletState;
-import robocode.peer.RobotPeer;
+import robocode.common.ObjectCloner;
+import robocode.exception.RobotException;
+import robocode.io.RobocodeObjectInputStream;
+import robocode.manager.IThreadManager;
+import robocode.peer.BulletCommand;
+import robocode.control.snapshot.BulletState;
+import robocode.peer.DebugProperty;
+import robocode.peer.ExecResults;
+import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
-import robocode.peer.robot.RobotMessageManager;
+import robocode.peer.robot.TeamMessage;
 
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,7 +48,6 @@ import java.security.AccessControlException;
 import java.security.Permission;
 import java.util.*;
 import java.util.List;
-import java.awt.*;
 
 
 /**
@@ -52,7 +59,7 @@ import java.awt.*;
 public class RobocodeSecurityManager extends SecurityManager {
 	private final PrintStream syserr = System.err;
 
-	private final ThreadManager threadManager;
+	private final IThreadManager threadManager;
 	private final Object safeSecurityContext;
 	private final boolean enabled;
 	private final boolean experimental;
@@ -61,21 +68,51 @@ public class RobocodeSecurityManager extends SecurityManager {
 			new HashMap<Thread, RobocodeFileOutputStream>());
 	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
 	private final List<ThreadGroup> safeThreadGroups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
+	private final Set<String> alowedPackages = new HashSet<String>();
 
 	private Thread battleThread;
 
-	public RobocodeSecurityManager(Thread safeThread, ThreadManager threadManager, boolean enabled, boolean experimental) {
+	public RobocodeSecurityManager(Thread safeThread, IThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
-		safeThreads.add(safeThread);
 		this.threadManager = threadManager;
 		this.enabled = enabled;
 		this.experimental = experimental;
 		safeSecurityContext = getSecurityContext();
 
-		BulletState s = BulletState.INACTIVE; // Fake class loading
+		// Loading of classes to prevent security issues on untrusted threads 
+		try {
+			final ClassLoader scl = ClassLoader.getSystemClassLoader();
 
-		RobotMessageManager.loadThisClass();
-		Toolkit.getDefaultToolkit(); 
+			scl.loadClass(BulletState.class.getName());
+			scl.loadClass(BulletCommand.class.getName());
+			scl.loadClass(ExecResults.class.getName());
+			scl.loadClass(TeamMessage.class.getName());
+			scl.loadClass(DebugProperty.class.getName());
+			scl.loadClass(RobotException.class.getName());
+			scl.loadClass(RobocodeObjectInputStream.class.getName());
+			scl.loadClass(ObjectCloner.class.getName());
+			Toolkit.getDefaultToolkit();
+		} catch (ClassNotFoundException e) {
+			throw new Error("We can't load important classes", e);
+		}
+
+		alowedPackages.add("util");
+		alowedPackages.add("robotinterfaces");
+		alowedPackages.add("robotpaint");
+		// alowedPackages.add("robocodeGL");
+		if (experimental) {
+			alowedPackages.add("robotinterfaces.peer");
+		}
+
+		ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+		while (tg != null) {
+			addSafeThreadGroup(tg);
+			tg = tg.getParent();
+		}
+		// we need to excersize it, to load all used classes on this thread.
+		isSafeThread();
+		isSafeContext();
 	}
 
 	private synchronized void addRobocodeOutputStream(RobocodeFileOutputStream o) {
@@ -94,20 +131,26 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(Thread t) {
-		super.checkAccess(t);
-		Thread c = Thread.currentThread();
-
-		if (isSafeThread(c) && isSafeContext()) {
+		if (!enabled) {
 			return;
 		}
+		Thread c = Thread.currentThread();
 
-		RobotPeer robotPeer = threadManager.getRobotPeer(c);
+		if (isSafeThread(c)) {
+			return;
+		}
+		if (isSafeContext()) {
+			return;
+		}
+		super.checkAccess(t);
 
-		if (robotPeer == null) {
-			robotPeer = threadManager.getLoadingRobotPeer(c);
-			if (robotPeer != null) {
+		IHostedThread robotProxy = threadManager.getRobotProxy(c);
+
+		if (robotProxy == null) {
+			robotProxy = threadManager.getLoadingRobotProxy(c);
+			if (robotProxy != null) {
 				throw new AccessControlException(
-						"Preventing " + robotPeer.getName() + " from access to thread: " + t.getName());
+						"Preventing " + robotProxy.getStatics().getName() + " from access to thread: " + t.getName());
 			}
 			checkPermission(new RuntimePermission("modifyThread"));
 			return;
@@ -139,13 +182,19 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(ThreadGroup g) {
-		super.checkAccess(g);
-
-		Thread c = Thread.currentThread();
-
-		if (isSafeThread(c) && isSafeContext()) {
+		if (!enabled) {
 			return;
 		}
+		Thread c = Thread.currentThread();
+
+		if (isSafeThread(c)) {
+			return;
+		}
+		if (isSafeContext()) {
+			return;
+		}
+		super.checkAccess(g);
+
 		ThreadGroup cg = c.getThreadGroup();
 
 		if (cg == null) {
@@ -154,13 +203,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
-		RobotPeer robotPeer = threadManager.getRobotPeer(c);
+		IHostedThread robotProxy = threadManager.getRobotProxy(c);
 
-		if (robotPeer == null) {
-			robotPeer = threadManager.getLoadingRobotPeer(c);
-			if (robotPeer != null) {
+		if (robotProxy == null) {
+			robotProxy = threadManager.getLoadingRobotProxy(c);
+			if (robotProxy != null) {
 				throw new AccessControlException(
-						"Preventing " + robotPeer.getName() + " from access to threadgroup: " + g.getName());
+						"Preventing " + robotProxy.getStatics().getName() + " from access to threadgroup: " + g.getName());
 			}
 			checkPermission(new RuntimePermission("modifyThreadGroup"));
 			return;
@@ -179,7 +228,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
-		robotPeer.setEnergy(0);
+		robotProxy.drainEnergy();
 		throw new AccessControlException(
 				"Preventing " + Thread.currentThread().getName() + " from access to threadgroup: " + g.getName()
 				+ " -- you must use your own ThreadGroup.");
@@ -193,8 +242,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 	 */
 	@Override
 	public void checkPermission(Permission perm, Object context) {
+		if (!enabled) {
+			return;
+		}
 		syserr.println("Checking permission " + perm + " for context " + context);
-		super.checkPermission(perm);
+		checkPermission(perm);
 	}
 
 	@Override
@@ -205,7 +257,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		// Check if the current running thread is a safe thread
-		if (isSafeThread(Thread.currentThread())) {
+		if (isSafeThread()) {
 			return;
 		}
 
@@ -221,9 +273,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// This allows doPrivileged blocks to work.
 		try {
 			super.checkPermission(perm);
-			return;
-		} catch (SecurityException e) {}
+		} catch (SecurityException e) {
+			// ok wa have a problem
+			handleSecurityProblem(perm);
+		}
+	}
 
+	private void handleSecurityProblem(Permission perm) {
 		// For development purposes, allow read any file if override is set.
 		if (perm instanceof FilePermission) {
 			FilePermission fp = (FilePermission) perm;
@@ -253,10 +309,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// Ok, we need to figure out who our robot is.
 		Thread c = Thread.currentThread();
 
-		RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
+		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
 		// We don't know who this is, so deny permission.
-		if (robotPeer == null) {
+		if (robotProxy == null) {
 			if (perm instanceof RobocodePermission) {
 				if (perm.getName().equals("System.out") || perm.getName().equals("System.err")
 						|| perm.getName().equals("System.in")) {
@@ -281,7 +337,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 					"Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
 		}
 
-		// At this point, we have robotPeer set to the RobotPeer object requesting permission.
+		// At this point, we have robotProxy set to the RobotProxy object requesting permission.
 
 		// FilePermission access request.
 		if (perm instanceof FilePermission) {
@@ -290,22 +346,22 @@ public class RobocodeSecurityManager extends SecurityManager {
 			// Robot wants access to read something
 			if (fp.getActions().equals("read")) {
 				// Get the fileSystemManager
-				RobotFileSystemManager fileSystemManager = robotPeer.getRobotFileSystemManager();
+				RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
 
 				// If there is no readable directory, deny access.
 				if (fileSystemManager.getReadableDirectory() == null) {
-					robotPeer.setEnergy(0);
+					robotProxy.drainEnergy();
 					throw new AccessControlException(
-							"Preventing " + robotPeer.getName() + " from access: " + perm
+							"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 							+ ": Robots that are not in a package may not read any files.");
 				}
 				// If this is a readable file, return.
 				if (fileSystemManager.isReadable(fp.getName())) {
 					return;
 				} // Else disable robot
-				robotPeer.setEnergy(0);
+				robotProxy.drainEnergy();
 				throw new AccessControlException(
-						"Preventing " + robotPeer.getName() + " from access: " + perm
+						"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 						+ ": You may only read files in your own root package directory. ");
 			} // Robot wants access to write something
 			else if (fp.getActions().equals("write")) {
@@ -314,23 +370,23 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// There isn't one.  Deny access.
 				if (o == null) {
-					robotPeer.setEnergy(0);
+					robotProxy.drainEnergy();
 					throw new AccessControlException(
-							"Preventing " + robotPeer.getName() + " from access: " + perm
+							"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 							+ ": You must use a RobocodeOutputStream.");
 				}
 				// Remove the RobocodeOutputStream so future access checks will fail.
 				removeRobocodeOutputStream();
 
 				// Get the fileSystemManager
-				RobotFileSystemManager fileSystemManager = robotPeer.getRobotFileSystemManager();
+				RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
 
 				// If there is no writable directory, deny access
 				if (fileSystemManager.getWritableDirectory() == null) {
-					robotPeer.setEnergy(0);
+					robotProxy.drainEnergy();
 
 					throw new AccessControlException(
-							"Preventing " + robotPeer.getName() + " from access: " + perm
+							"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 							+ ": Robots that are not in a package may not write any files.");
 				}
 				// If this is a writable file, permit access
@@ -343,25 +399,25 @@ public class RobocodeSecurityManager extends SecurityManager {
 					return;
 				} // Not a writable directory.
 
-				robotPeer.setEnergy(0);
-				// robotPeer.out.println("I would allow access to: " + fileSystemManager.getWritableDirectory());
-				threadOut(
-						"Preventing " + robotPeer.getName() + " from access: " + perm
+				robotProxy.drainEnergy();
+				// robotProxy.getOut().println("I would allow access to: " + fileSystemManager.getWritableDirectory());
+				robotProxy.getOut().println(
+						"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 						+ ": You may only write files in your own data directory. ");
 
 				throw new AccessControlException(
-						"Preventing " + robotPeer.getName() + " from access: " + perm
+						"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 						+ ": You may only write files in your own data directory. ");
 			} // Robot wants access to write something
 			else if (fp.getActions().equals("delete")) {
 				// Get the fileSystemManager
-				RobotFileSystemManager fileSystemManager = robotPeer.getRobotFileSystemManager();
+				RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
 
 				// If there is no writable directory, deny access
 				if (fileSystemManager.getWritableDirectory() == null) {
-					robotPeer.setEnergy(0);
+					robotProxy.drainEnergy();
 					throw new AccessControlException(
-							"Preventing " + robotPeer.getName() + " from access: " + perm
+							"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 							+ ": Robots that are not in a package may not delete any files.");
 				}
 				// If this is a writable file, permit access
@@ -371,13 +427,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 				// We are deleting our data directory.
 				if (fileSystemManager.getWritableDirectory().toString().equals(fp.getName())) {
-					// robotPeer.out.println("SYSTEM:  Please let me know if you see this string.  Thanks.  -Mat");
+					// robotProxy.out.println("SYSTEM:  Please let me know if you see this string.  Thanks.  -Mat");
 					return;
 				} // Not a writable directory.
 
-				robotPeer.setEnergy(0);
+				robotProxy.drainEnergy();
 				throw new AccessControlException(
-						"Preventing " + robotPeer.getName() + " from access: " + perm
+						"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm
 						+ ": You may only delete files in your own data directory. ");
 			}
 		}
@@ -385,21 +441,23 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (perm instanceof RobocodePermission) {
 
 			if (perm.getName().equals("System.out") || perm.getName().equals("System.err")) {
-				robotPeer.getOut().println("SYSTEM:  You cannot write to System.out or System.err.");
-				robotPeer.getOut().println("SYSTEM:  Please use out.println instead of System.out.println");
-				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access: " + perm);
+				robotProxy.println("SYSTEM:  You cannot write to System.out or System.err.");
+				robotProxy.println("SYSTEM:  Please use out.println instead of System.out.println");
+				throw new AccessControlException(
+						"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm);
 			} else if (perm.getName().equals("System.in")) {
-				robotPeer.getOut().println("SYSTEM:  You cannot read from System.in.");
-				throw new AccessControlException("Preventing " + robotPeer.getName() + " from access: " + perm);
+				robotProxy.println("SYSTEM:  You cannot read from System.in.");
+				throw new AccessControlException(
+						"Preventing " + robotProxy.getStatics().getName() + " from access: " + perm);
 
 			}
 
 		}
 
 		// Permission denied.
-		syserr.println("Preventing " + robotPeer.getName() + " from access: " + perm);
+		syserr.println("Preventing " + robotProxy.getStatics().getName() + " from access: " + perm);
 
-		robotPeer.setEnergy(0);
+		robotProxy.drainEnergy();
 
 		if (perm instanceof java.awt.AWTPermission) {
 			if (perm.getName().equals("showWindowWithoutWarningBanner")) {
@@ -420,17 +478,19 @@ public class RobocodeSecurityManager extends SecurityManager {
 		try {
 			fos = new FileOutputStream(o.getName(), append);
 		} catch (FileNotFoundException e) {
-			RobotPeer robotPeer = threadManager.getRobotPeer(Thread.currentThread());
+			IHostedThread robotProxy = threadManager.getRobotProxy(Thread.currentThread());
 
-			if (robotPeer == null) {
-				syserr.println("RobotPeer is null");
+			if (robotProxy == null) {
+				syserr.println("RobotProxy is null");
 				return;
 			}
-			File dir = robotPeer.getRobotFileSystemManager().getWritableDirectory();
+			File dir = robotProxy.getRobotFileSystemManager().getWritableDirectory();
 
 			addRobocodeOutputStream(o); // it's gone already...
-			robotPeer.getOut().println("SYSTEM: Creating a data directory for you.");
-			dir.mkdir();
+			robotProxy.println("SYSTEM: Creating a data directory for you.");
+
+			// noinspection ResultOfMethodCallIgnored
+			dir.mkdir(); // result direcotry was already there ?
 			addRobocodeOutputStream(o); // one more time...
 			fos = new FileOutputStream(o.getName(), append);
 		}
@@ -441,27 +501,49 @@ public class RobocodeSecurityManager extends SecurityManager {
 		return outputStreamThreads.get(Thread.currentThread());
 	}
 
-	public boolean isSafeThread(Thread c) {
-		if (c == getBattleThread()) {
-			return true;
-		}
+	public static boolean isSafeThreadSt() { 
+		RobocodeSecurityManager rsm = (RobocodeSecurityManager) System.getSecurityManager();
 
-		if (safeThreads.contains(c)) {
-			return true;
-		}
+		return rsm.isSafeThread();
+	}
 
-		for (ThreadGroup tg : safeThreadGroups) {
-			if (c.getThreadGroup() == tg) {
-				safeThreads.add(c);
+	private boolean isSafeThread() {
+		return isSafeThread(Thread.currentThread());
+	}
+
+	private boolean isSafeThread(Thread c) {
+		try {
+			if (c == battleThread) {
 				return true;
 			}
-		}
 
-		return false;
+			if (safeThreads.contains(c)) {
+				return true;
+			}
+
+			for (ThreadGroup tg : safeThreadGroups) {
+				if (c.getThreadGroup() == tg) {
+					safeThreads.add(c);
+					return true;
+				}
+			}
+
+			return false;
+		} catch (Exception e) {
+			syserr.println("Exception checking safe thread: ");
+			e.printStackTrace(syserr);
+			return false;
+		}
 	}
 
 	private boolean isSafeContext() {
-		return getSecurityContext().equals(safeSecurityContext);
+		try {
+			return getSecurityContext().equals(safeSecurityContext);
+		} catch (Exception e) {
+			syserr.println("Exception checking safe thread: ");
+			e.printStackTrace(syserr);
+			return false;
+		}
 	}
 
 	private synchronized void removeRobocodeOutputStream() {
@@ -473,34 +555,29 @@ public class RobocodeSecurityManager extends SecurityManager {
 		safeThreads.remove(safeThread);
 	}
 
-	public synchronized Thread getBattleThread() {
-		return battleThread;
-	}
-
 	public synchronized void setBattleThread(Thread newBattleThread) {
 		checkPermission(new RobocodePermission("setBattleThread"));
 		battleThread = newBattleThread;
 	}
 
-	public void threadOut(String s) {
-		Thread c = Thread.currentThread();
-		RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
+	public static void printlnToRobot(String s) {
+		SecurityManager m = System.getSecurityManager();
 
-		if (robotPeer == null) {
-			throw new AccessControlException("Cannot call threadOut from unknown thread.");
+		if (m instanceof RobocodeSecurityManager) {
+			RobocodeSecurityManager rsm = (RobocodeSecurityManager) m;
+
+			final PrintStream stream = rsm.getRobotOutputStream();
+
+			if (stream != null) {
+				stream.println(s);
+			}
 		}
-
-		robotPeer.getOut().println(s);
 	}
 
 	public PrintStream getRobotOutputStream() {
 		Thread c = Thread.currentThread();
 
-		try {
-			if (isSafeThread(c)) {
-				return null;
-			}
-		} catch (Exception e) {
+		if (isSafeThread(c)) {
 			return null;
 		}
 
@@ -509,57 +586,44 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return null;
 		}
 
-		try {
-			RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
+		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
-			return (robotPeer != null) ? robotPeer.getOut() : null;
-
-		} catch (Exception e) {
-			syserr.println("Unable to get output stream: " + e);
-			return syserr;
-		}
-	}
-
-	public boolean isSafeThread() {
-		try {
-			return isSafeThread(Thread.currentThread());
-		} catch (Exception e) {
-			syserr.println("Exception checking safe thread: " + e);
-			return false;
-		}
+		return (robotProxy != null) ? robotProxy.getOut() : null;
 	}
 
 	@Override
 	public void checkPackageAccess(String pkg) {
-		super.checkPackageAccess(pkg);
-
+		if (!enabled) {
+			return;
+		}
+		if (pkg.equals("java.lang")) {
+			return;
+		}
+		if (isSafeThread()) {
+			return;
+		}
 		if (isSafeContext()) {
 			return;
 		}
+		super.checkPackageAccess(pkg);
 
 		// Access to robocode sub package?
 		if (pkg.startsWith("robocode.")) {
 
 			String subPkg = pkg.substring(9);
 
-			// Only access to robocode.util or robocode.robotinterfaces is allowed
-			if (!(subPkg.equals("util") || subPkg.equals("robotinterfaces")
-					|| (experimental && subPkg.equals("robotinterfaces.peer")) || (subPkg.equals("robotpaint")))) {
+			if (!alowedPackages.contains(subPkg)) {
 
 				Thread c = Thread.currentThread();
 
-				if (isSafeThread(c)) {
-					return;
-				}
+				IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
-				RobotPeer robotPeer = threadManager.getLoadedOrLoadingRobotPeer(c);
-
-				if (robotPeer != null) {
-					robotPeer.setEnergy(0);
+				if (robotProxy != null) {
+					robotProxy.drainEnergy();
 					if (!experimental && subPkg.equals("robotinterfaces.peer")) {
-						robotPeer.getOut().println(
-								"SYSTEM: " + robotPeer.getName() + " is not allowed to access the internal Robocode package: "
-								+ pkg + "\n"
+						robotProxy.println(
+								"SYSTEM: " + robotProxy.getStatics().getName()
+								+ " is not allowed to access the internal Robocode package: " + pkg + "\n"
 								+ "SYSTEM: Perhaps you did not set the -DEXPERIMENTAL=true option in the robocode.bat or robocode.sh file?\n"
 								+ "SYSTEM: ----");
 					}
@@ -572,17 +636,19 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 	}
 
-	public static void createNewAppContext() {
+	public static Object createNewAppContext() {
 		// same as SunToolkit.createNewAppContext();
 		// we can't assume that we are always on Suns JVM, so we can't reference it directly
 		// why we call that ? Because SunToolkit is caching AWTQueue instance form main thread group and use it on robots threads
-		// and he is not asking us for checkAwtEventQueueAccess above 
+		// and he is not asking us for checkAwtEventQueueAccess above
 		try {
 			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.SunToolkit");
 			final Method createNewAppContext = sunToolkit.getDeclaredMethod("createNewAppContext");
 
-			createNewAppContext.invoke(null);
-		} catch (ClassNotFoundException e) {// we are not on sun JVM
+			return createNewAppContext.invoke(null);
+		} catch (ClassNotFoundException e) {
+			// we are not on sun JVM
+			return -1;
 		} catch (NoSuchMethodException e) {
 			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
 		} catch (InvocationTargetException e) {
@@ -591,6 +657,19 @@ public class RobocodeSecurityManager extends SecurityManager {
 			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
 		}
 		// end: same as SunToolkit.createNewAppContext();
+	}
+
+	public static boolean disposeAppContext(Object appContext) {
+		// same as AppContext.dispose();
+		try {
+			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.AppContext");
+			final Method dispose = sunToolkit.getDeclaredMethod("dispose");
+
+			dispose.invoke(appContext);
+			return true;
+		} catch (ClassNotFoundException ignore) {} catch (NoSuchMethodException ignore) {} catch (InvocationTargetException ignore) {} catch (IllegalAccessException ignore) {}
+		return false;
+		// end: same as AppContext.dispose();
 	}
 
 }

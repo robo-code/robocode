@@ -24,7 +24,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobotRepositoryManager;
+import robocode.manager.IRepositoryManager;
 import robocode.peer.robot.RobotClassManager;
 import robocode.repository.FileSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
@@ -50,8 +50,8 @@ import java.util.Set;
 public class RobotExtractor extends JDialog implements WizardListener {
 	String unusedrobotPath;
 
-	private int minRobots = 1;
-	private int maxRobots = 1; // 250;
+	private final int minRobots = 1;
+	private final int maxRobots = 1; // 250;
 
 	private JPanel robotImporterContentPane;
 
@@ -61,24 +61,21 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	public byte buf[] = new byte[4096];
 	private StringWriter output;
-	private RobotRepositoryManager robotManager;
+	private final IRepositoryManager repositoryManager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
+				getRobotSelectionPanel().refreshRobotList(false);
 			}
 		}
 	}
 
-	/**
-	 * Packager constructor comment.
-	 */
-	public RobotExtractor(JFrame owner, RobotRepositoryManager robotManager) {
+	public RobotExtractor(JFrame owner, IRepositoryManager repositoryManager) {
 		super(owner);
-		this.robotManager = robotManager;
+		this.repositoryManager = repositoryManager;
 		initialize();
 	}
 
@@ -90,7 +87,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		int rc = extractRobot();
 		ConsoleDialog d;
 
-		d = new ConsoleDialog(robotManager.getManager().getWindowManager().getRobocodeFrame(), "Extract results", false);
+		d = new ConsoleDialog(repositoryManager.getManager().getWindowManager().getRobocodeFrame(), "Extract results",
+				false);
 		d.setText(output.toString());
 		d.pack();
 		d.pack();
@@ -100,11 +98,6 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		}
 	}
 
-	/**
-	 * Return the buttonsPanel
-	 *
-	 * @return JButton
-	 */
 	private WizardController getButtonsPanel() {
 		if (buttonsPanel == null) {
 			buttonsPanel = getWizardPanel().getWizardController();
@@ -117,11 +110,6 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		return robotClassManager.getReferencedClasses();
 	}
 
-	/**
-	 * Return the newBattleDialogContentPane
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getRobotImporterContentPane() {
 		if (robotImporterContentPane == null) {
 			robotImporterContentPane = new JPanel();
@@ -138,25 +126,15 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		return robotImporterContentPane;
 	}
 
-	/**
-	 * Return the Page property value.
-	 *
-	 * @return JPanel
-	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(robotManager, minRobots, maxRobots, false,
+			robotSelectionPanel = new RobotSelectionPanel(repositoryManager.getManager(), minRobots, maxRobots, false,
 					"Select the robot you would like to extract to the robots directory.  Robots not shown do not include source.",
 					true, true, true, false, true, true, null);
 		}
 		return robotSelectionPanel;
 	}
 
-	/**
-	 * Return the tabbedPane.
-	 *
-	 * @return JTabbedPane
-	 */
 	private WizardCardPanel getWizardPanel() {
 		if (wizardPanel == null) {
 			wizardPanel = new WizardCardPanel(this);
@@ -172,7 +150,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	}
 
 	private int extractRobot() {
-		robotManager.clearRobotList();
+		repositoryManager.clearRobotList();
 		int rv;
 
 		output = new StringWriter();
@@ -184,8 +162,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 		try {
 			WindowUtil.setStatusWriter(out);
-			rv = robotManager.extractJar(spec.getJarFile(), robotManager.getRobotsDirectory(),
-					"Extracting to " + robotManager.getRobotsDirectory(), false, true, false);
+			rv = repositoryManager.extractJar(spec.getJarFile(), repositoryManager.getRobotsDirectory(),
+					"Extracting to " + repositoryManager.getRobotsDirectory(), false, true, false);
 			WindowUtil.setStatusWriter(null);
 			WindowUtil.setStatus("");
 			if (rv == 0) {

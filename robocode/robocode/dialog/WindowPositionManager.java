@@ -40,9 +40,6 @@ public class WindowPositionManager implements ComponentListener {
 
 	private Properties windowPositions;
 
-	/**
-	 * WindowPositionManager constructor comment.
-	 */
 	public WindowPositionManager() {
 		super();
 	}
@@ -64,7 +61,7 @@ public class WindowPositionManager implements ComponentListener {
 				if (in != null) {
 					try {
 						in.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
@@ -79,7 +76,7 @@ public class WindowPositionManager implements ComponentListener {
 				|| e.getComponent().getBounds().getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().height) {
 			return;
 		}
-		setWindowRect(true, (Window) e.getComponent(), e.getComponent().getBounds());
+		setWindowRect((Window) e.getComponent(), e.getComponent().getBounds());
 	}
 
 	public void componentResized(ComponentEvent e) {
@@ -88,12 +85,12 @@ public class WindowPositionManager implements ComponentListener {
 				|| e.getComponent().getBounds().getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().height) {
 			return;
 		}
-		setWindowRect(false, (Window) e.getComponent(), e.getComponent().getBounds());
+		setWindowRect((Window) e.getComponent(), e.getComponent().getBounds());
 	}
 
 	public void componentShown(ComponentEvent e) {}
 
-	public void setWindowRect(boolean move, Window w, Rectangle rect) {
+	public void setWindowRect(Window w, Rectangle rect) {
 		String rString = rect.x + "," + rect.y + "," + rect.width + "," + rect.height;
 
 		getWindowPositions().put(w.getClass().getName(), rString);
@@ -125,12 +122,12 @@ public class WindowPositionManager implements ComponentListener {
 
 			getWindowPositions().store(out, "Robocode window sizes");
 		} catch (IOException e) {
-			Logger.logError("Warning:  Unable to save window positions: " + e);
+			Logger.logError("Warning:  Unable to save window positions: ", e);
 		} finally {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

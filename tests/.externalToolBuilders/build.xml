@@ -19,12 +19,6 @@
     <copy todir="${launch.dir}/robots/testing">
       <fileset dir="bin/testing"/>
     </copy>
-    <copy todir="${launch.dir}/robots/robocode">
-      <fileset dir="bin/robocode"/>
-    </copy>
-    <copy todir="${launch.dir}/robots/tooLongNamespaceThisIsReallyTooLongNamespace">
-      <fileset dir="bin/tooLongNamespaceThisIsReallyTooLongNamespace"/>
-    </copy>
   </target>
 
 </project>

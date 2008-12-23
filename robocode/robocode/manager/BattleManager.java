@@ -47,6 +47,9 @@
  *     Nathaniel Troutman
  *     - Bugfix: Added cleanup() to prevent memory leaks by removing circular
  *       references
+ *     Pavel Savara
+ *     - now driven by BattleObserver and commands to battle
+ *     - initial code of battle recorder and player 
  *******************************************************************************/
 package robocode.manager;
 
@@ -54,27 +57,29 @@ package robocode.manager;
 import robocode.Event;
 import robocode.battle.Battle;
 import robocode.battle.BattleProperties;
-import robocode.battle.IBattleManager;
-import robocode.battle.events.*;
-import robocode.battlefield.BattleField;
-import robocode.battlefield.DefaultBattleField;
+import robocode.battle.IBattle;
+import robocode.battle.events.BattleEventDispatcher;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.BattlePausedEvent;
+import robocode.control.events.BattleResumedEvent;
+import robocode.control.events.IBattleListener;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
 import static robocode.io.Logger.logMessage;
-import robocode.peer.TeamPeer;
 import robocode.peer.robot.RobotClassManager;
+import robocode.recording.BattlePlayer;
 import robocode.repository.FileSpecification;
+import robocode.repository.Repository;
 import robocode.repository.RobotFileSpecification;
 import robocode.repository.TeamSpecification;
 import robocode.security.RobocodeSecurityManager;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -86,11 +91,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class BattleManager implements IBattleManager {
 	private RobocodeManager manager;
 
-	private Battle battle;
+	private volatile IBattle battle;
 	private BattleProperties battleProperties = new BattleProperties();
 
 	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
@@ -99,7 +105,7 @@ public class BattleManager implements IBattleManager {
 	private String battlePath;
 
 	private int pauseCount = 0;
-	private AtomicBoolean isManagedTPS = new AtomicBoolean(false);
+	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
 	public BattleManager(RobocodeManager manager) {
 		this.manager = manager;
@@ -107,6 +113,7 @@ public class BattleManager implements IBattleManager {
 
 	public synchronized void cleanup() {
 		if (battle != null) {
+			battle.waitTillOver();
 			battle.cleanup();
 			battle = null;
 		}
@@ -115,34 +122,33 @@ public class BattleManager implements IBattleManager {
 	}
 
 	// Called when starting a new battle from GUI
-	public boolean startNewBattle(BattleProperties battleProperties, boolean replay, boolean waitTillOver) {
+	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver) {
 		this.battleProperties = battleProperties;
 
-		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
-				false, false, false, false, false, false);
-
-		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
+		List<RobotClassManager> battlingRobotsList = new ArrayList<RobotClassManager>();
 
 		if (battleProperties.getSelectedRobots() != null) {
 			StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
 
+			int num = 0;
+
 			while (tokenizer.hasMoreTokens()) {
 				String bot = tokenizer.nextToken();
 
-				boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, null);
+				boolean failed = loadRobot(battlingRobotsList, bot, null, String.format("%4d", num), false);
 
 				if (failed) {
-					return false;
+					return;
 				}
+				num++;
 			}
 		}
 
-		startNewBattleImpl(battlingRobotsList, replay, waitTillOver);
-		return true;
+		startNewBattleImpl(battlingRobotsList, waitTillOver);
 	}
 
 	// Called from the RobocodeEngine
-	public boolean startNewBattle(BattleSpecification spec, boolean waitTillOver) {
+	public void startNewBattle(BattleSpecification spec, boolean waitTillOver) {
 		battleProperties = new BattleProperties();
 		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
 		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -151,105 +157,89 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setNumRounds(spec.getNumRounds());
 		battleProperties.setSelectedRobots(spec.getRobots());
 
-		List<FileSpecification> robotSpecificationsList = manager.getRobotRepositoryManager().getRobotRepository().getRobotSpecificationsList(
-				false, false, false, false, false, false);
-		List<RobotClassManager> battlingRobotsList = Collections.synchronizedList(new ArrayList<RobotClassManager>());
+		List<RobotClassManager> battlingRobotsList = new ArrayList<RobotClassManager>();
+
+		int num = 0;
 
 		for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
 			if (battleRobotSpec == null) {
 				break;
 			}
 
-			String bot = battleRobotSpec.getClassName();
+			String bot = battleRobotSpec.getNameAndVersion();
+			boolean failed = loadRobot(battlingRobotsList, bot, battleRobotSpec, String.format("%4d", num), false);
 
-			if (!(battleRobotSpec.getVersion() == null || battleRobotSpec.getVersion().length() == 0)) {
-				bot += ' ' + battleRobotSpec.getVersion();
-			}
-
-			boolean failed = loadRobot(robotSpecificationsList, battlingRobotsList, bot, battleRobotSpec);
+			num++;
 
 			if (failed) {
-				return false;
+				return;
 			}
 		}
-		startNewBattleImpl(battlingRobotsList, false, waitTillOver);
-		return true;
+		startNewBattleImpl(battlingRobotsList, waitTillOver);
 	}
 
-	private boolean loadRobot(List<FileSpecification> robotSpecificationsList, List<RobotClassManager> battlingRobotsList, String bot, RobotSpecification battleRobotSpec) {
+	private boolean loadRobot(List<RobotClassManager> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
 		boolean found = false;
 
-		for (FileSpecification fileSpec : robotSpecificationsList) {
-			if (fileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-				if (fileSpec instanceof RobotFileSpecification) {
-					RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec);
+		final Repository repository = manager.getRobotRepositoryManager().getRobotRepository();
+		final FileSpecification fileSpec = repository.get(bot);
 
-					if (battleRobotSpec != null) {
-						rcm.setControlRobotSpecification(battleRobotSpec);
-					}
-					battlingRobotsList.add(rcm);
-					found = true;
-					break;
-				} else if (fileSpec instanceof TeamSpecification) {
-					TeamSpecification currentTeam = (TeamSpecification) fileSpec;
-					TeamPeer teamManager = new TeamPeer(currentTeam.getName(), currentTeam.getVersion());
+		if (fileSpec != null) {
+			if (fileSpec instanceof RobotFileSpecification) {
+				final String tn = inTeam ? teamName : null;
+				RobotClassManager rcm = new RobotClassManager((RobotFileSpecification) fileSpec, tn);
 
-					StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
-
-					while (teamTokenizer.hasMoreTokens()) {
-						bot = teamTokenizer.nextToken();
-						RobotFileSpecification match = null;
-
-						for (FileSpecification teamFileSpec : robotSpecificationsList) {
-							// Teams cannot include teams
-							if (teamFileSpec instanceof TeamSpecification) {
-								continue;
-							}
-							if (teamFileSpec.getNameManager().getUniqueFullClassNameWithVersion().equals(bot)) {
-								// Found team member
-								match = (RobotFileSpecification) teamFileSpec;
-								if (currentTeam.getRootDir().equals(teamFileSpec.getRootDir())
-										|| currentTeam.getRootDir().equals(teamFileSpec.getRootDir().getParentFile())) {
-									found = true;
-									break;
-								}
-								// else, still looking
-							}
-						}
-						RobotClassManager rcm = new RobotClassManager(match, teamManager);
-
-						if (battleRobotSpec != null) {
-							rcm.setControlRobotSpecification(battleRobotSpec);
-						}
-						battlingRobotsList.add(rcm);
-					}
-					break;
+				if (battleRobotSpec != null) {
+					rcm.setControlRobotSpecification(battleRobotSpec);
 				}
+				battlingRobotsList.add(rcm);
+				found = true;
+			} else if (fileSpec instanceof TeamSpecification) {
+				TeamSpecification currentTeam = (TeamSpecification) fileSpec;
+				String version = currentTeam.getVersion();
+
+				if (version == null) {
+					version = "";
+				}
+
+				StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
+
+				while (teamTokenizer.hasMoreTokens()) {
+					loadRobot(battlingRobotsList, currentTeam.getRootDir() + teamTokenizer.nextToken(), battleRobotSpec,
+							currentTeam.getName() + version + "[" + teamName + "]", true);
+				}
+				found = true;
 			}
 		}
 
 		if (!found) {
 			logError("Aborting battle, could not find robot: " + bot);
-			this.battleEventDispatcher.onBattleEnded(new BattleEndedEvent(true));
+			this.battleEventDispatcher.onBattleFinished(new BattleFinishedEvent(true));
 			return true;
 		}
 		return false;
 	}
 
-	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean replay, boolean waitTillOver) {
+	private void startNewBattleImpl(List<RobotClassManager> battlingRobotsList, boolean waitTillOver) {
 
-		logMessage("Preparing battle...");
-		if (battle != null && battle.isRunning()) { // TODO is that good way ? should we rather throw exception here when battle is running ?
+		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
 		}
 
-		BattleField battleField = new DefaultBattleField(battleProperties.getBattlefieldWidth(),
-				battleProperties.getBattlefieldHeight());
-
 		Logger.setLogListener(battleEventDispatcher);
+		logMessage("Preparing battle...");
 
 		if (manager.isSoundEnabled()) {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
+		}
+
+		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording()
+				&& System.getProperty("TESTING", "none").equals("none");
+
+		if (recording) {
+			manager.getRecordManager().attachRecorder(battleEventDispatcher);
+		} else {
+			manager.getRecordManager().detachRecorder();
 		}
 
 		// resets seed for deterministic behavior of Random
@@ -262,37 +252,67 @@ public class BattleManager implements IBattleManager {
 			RandomFactory.resetDeterministic(Long.valueOf(seed));
 		}
 
-		battle = new Battle(battleField, manager, battleEventDispatcher, isPaused());
+		Battle realBattle = new Battle(battlingRobotsList, battleProperties, manager, battleEventDispatcher, isPaused());
 
-		// Set stuff the view needs to know
-		battle.setProperties(battleProperties);
+		if (recording) {
+			realBattle.setAllPaintRecorded(true);
+		}
 
-		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
+		battle = realBattle;
+
+		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), realBattle);
 
 		battleThread.setPriority(Thread.NORM_PRIORITY);
 		battleThread.setName("Battle Thread");
-		battle.setBattleThread(battleThread);
-		battle.setReplay(replay);
+		realBattle.setBattleThread(battleThread);
 
 		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
 			((RobocodeSecurityManager) System.getSecurityManager()).addSafeThread(battleThread);
 			((RobocodeSecurityManager) System.getSecurityManager()).setBattleThread(battleThread);
 		}
 
-		for (RobotClassManager robotClassMgr : battlingRobotsList) {
-			battle.addRobot(robotClassMgr);
-		}
-
-		// Start the battle thread
+		// Start the realBattle thread
 		battleThread.start();
 
-		// Wait until the battle is running and ended.
-		// This must be done as a new battle could be started immediately after this one causing
-		// multiple battle threads to run at the same time, which must be prevented!
-		battle.waitTillStarted();
+		// Wait until the realBattle is running and ended.
+		// This must be done as a new realBattle could be started immediately after this one causing
+		// multiple realBattle threads to run at the same time, which must be prevented!
+		realBattle.waitTillStarted();
 		if (waitTillOver) {
+			realBattle.waitTillOver();
+		}
+	}
+
+	public void waitTillOver() {
+		if (battle != null) {
 			battle.waitTillOver();
 		}
+	}
+
+	private void replayBattle() {
+		logMessage("Preparing replay...");
+		if (battle != null && battle.isRunning()) {
+			battle.stop(true);
+		}
+
+		Logger.setLogListener(battleEventDispatcher);
+
+		if (manager.isSoundEnabled()) {
+			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
+		}
+
+		manager.getRecordManager().detachRecorder();
+		// BattlePlayer battlePlayer
+
+		battle = manager.getRecordManager().createPlayer(battleEventDispatcher);
+
+		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
+
+		battleThread.setPriority(Thread.NORM_PRIORITY);
+		battleThread.setName("BattlePlayer Thread");
+
+		// Start the battlePlayer thread
+		battleThread.start();
 	}
 
 	public String getBattleFilename() {
@@ -386,13 +406,6 @@ public class BattleManager implements IBattleManager {
 		battleProperties = new BattleProperties();
 	}
 
-	public boolean hasReplayRecord() { // TODO get rid of this after redording rework
-		if (battle == null) {
-			return false;
-		}
-		return battle.hasReplayRecord();
-	}
-
 	public boolean isManagedTPS() {
 		return isManagedTPS.get();
 	}
@@ -417,11 +430,11 @@ public class BattleManager implements IBattleManager {
 
 	public synchronized void restart() {
 		// Start new battle. The old battle is automatically stopped
-		startNewBattle(battleProperties, false, false);
+		startNewBattle(battleProperties, false);
 	}
 
 	public synchronized void replay() {
-		startNewBattle(battleProperties, true, false);
+		replayBattle();
 	}
 
 	private boolean isPaused() {
@@ -490,9 +503,15 @@ public class BattleManager implements IBattleManager {
 		}
 	}
 
+	public synchronized void prevTurn() {
+		if (battle != null && battle.isRunning() && battle instanceof BattlePlayer) {
+			((BattlePlayer) battle).stepBack();
+		}
+	}
+
 	public synchronized void killRobot(int robotIndex) {
-		if (battle != null && battle.isRunning()) {
-			battle.killRobot(robotIndex);
+		if (battle != null && battle.isRunning() && battle instanceof Battle) {
+			((Battle) battle).killRobot(robotIndex);
 		}
 	}
 
@@ -503,14 +522,14 @@ public class BattleManager implements IBattleManager {
 	}
 
 	public synchronized void setSGPaintEnabled(int robotIndex, boolean enable) {
-		if (battle != null && battle.isRunning()) {
-			battle.setSGPaintEnabled(robotIndex, enable);
+		if (battle != null && battle.isRunning() && battle instanceof Battle) {
+			((Battle) battle).setSGPaintEnabled(robotIndex, enable);
 		}
 	}
 
 	public synchronized void sendInteractiveEvent(Event event) {
-		if (battle != null && battle.isRunning() && !isPaused()) {
-			battle.sendInteractiveEvent(event);
+		if (battle != null && battle.isRunning() && !isPaused() && battle instanceof Battle) {
+			((Battle) battle).sendInteractiveEvent(event);
 		}
 	}
 }

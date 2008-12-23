@@ -19,8 +19,15 @@
 package robocode.dialog;
 
 
-import robocode.battle.IBattleManager;
-import robocode.manager.RobotDialogManager;
+import robocode.BattleResults;
+import robocode.control.events.BattleAdaptor;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
+import robocode.manager.RobocodeManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,25 +42,35 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class RobotButton extends JButton implements ActionListener {
 
-	private final RobotDialogManager robotDialogManager;
+	private static final int BAR_MARGIN = 2;
+	private static final int BAR_HEIGHT = 3;
+
+	private final RobocodeManager manager;
+	private final BattleObserver battleObserver = new BattleObserver();
 	private RobotDialog robotDialog;
 	private final String name;
-	private final int index;
+	private final int robotIndex;
+	private final int contestIndex;
+	private int maxEnergy = 1;
+	private int maxScore = 1;
+	private int lastEnergy;
+	private int lastScore;
+	private boolean isListening;
 
-	/**
-	 * RobotButton constructor
-	 */
-	public RobotButton(RobotDialogManager robotDialogManager, IBattleManager battleControl, String name, int index, boolean attach) {
-		this.robotDialogManager = robotDialogManager;
+	public RobotButton(RobocodeManager manager, String name, int maxEnergy, int robotIndex, int contestIndex, boolean attach) {
+		this.manager = manager;
 		this.name = name;
-		this.index = index;
+		this.robotIndex = robotIndex;
+		this.contestIndex = contestIndex;
+		this.lastEnergy = maxEnergy;
+		this.maxEnergy = maxEnergy; 
 
 		initialize();
 		if (attach) {
 			attach();
 			robotDialog.reset();
-			battleControl.setPaintEnabled(index, robotDialog.isPaintEnabled());
-			battleControl.setSGPaintEnabled(index, robotDialog.isSGPaintEnabled());
+			manager.getBattleManager().setPaintEnabled(robotIndex, robotDialog.isPaintEnabled());
+			manager.getBattleManager().setSGPaintEnabled(robotIndex, robotDialog.isSGPaintEnabled());
 		}
 	}
 
@@ -65,6 +82,41 @@ public class RobotButton extends JButton implements ActionListener {
 			}
 		} else {
 			robotDialog.setVisible(true);
+		}
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+
+		Graphics2D g2 = (Graphics2D) g;
+
+		final int barMaxWidth = getWidth() - (2 * BAR_MARGIN);
+
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f));
+
+		if (lastEnergy > 0) {
+			Color color;
+
+			if (lastEnergy > 50) {
+				color = Color.GREEN;
+			} else if (lastEnergy > 25) {
+				color = Color.YELLOW;
+			} else {
+				color = Color.RED;
+			}
+			g.setColor(color);
+
+			final int widthLife = Math.max(Math.min(barMaxWidth * lastEnergy / maxEnergy, barMaxWidth), 0);
+
+			g.fillRect(BAR_MARGIN, getHeight() - (2 * BAR_HEIGHT + BAR_MARGIN), widthLife, BAR_HEIGHT);
+		}
+		if (lastScore > 0) {
+			g.setColor(Color.BLUE);
+
+			final int widthScore = Math.max(Math.min(barMaxWidth * lastScore / maxScore, barMaxWidth), 0);
+
+			g.fillRect(BAR_MARGIN, getHeight() - (BAR_HEIGHT + BAR_MARGIN), widthScore, BAR_HEIGHT);
 		}
 	}
 
@@ -82,21 +134,97 @@ public class RobotButton extends JButton implements ActionListener {
 	}
 
 	public void attach() {
-		if (robotDialog == null) {
-			robotDialog = robotDialogManager.getRobotDialog(this, name, true);
+		if (!isListening) {
+			isListening = true;
+			manager.getWindowManager().addBattleListener(battleObserver);
 		}
-		robotDialog.attach();
+		if (robotDialog == null) {
+			robotDialog = manager.getRobotDialogManager().getRobotDialog(this, name, true);
+		}
+		robotDialog.attach(this);
 	}
 
 	public void detach() {
-		robotDialog = null;
+		if (isListening) {
+			manager.getWindowManager().removeBattleListener(battleObserver);
+			isListening = false;
+		}
+		if (robotDialog != null) {
+			final RobotDialog dialog = robotDialog;
+
+			robotDialog = null;
+			dialog.detach();
+		}
 	}
 
 	public int getRobotIndex() {
-		return index;
+		return robotIndex;
 	}
 
 	public String getRobotName() {
 		return name;
+	}
+
+	private class BattleObserver extends BattleAdaptor {
+
+		@Override
+		public void onTurnEnded(TurnEndedEvent event) {
+			final ITurnSnapshot turn = event.getTurnSnapshot();
+
+			if (turn == null) {
+				return;
+			}
+			final IRobotSnapshot[] robots = turn.getRobots();
+			final IScoreSnapshot[] scoreSnapshotList = event.getTurnSnapshot().getIndexedTeamScores();
+
+			maxEnergy = 0;
+			for (IRobotSnapshot robot : robots) {
+				if (maxEnergy < robot.getEnergy()) {
+					maxEnergy = (int) robot.getEnergy();
+				}
+			}
+			if (maxEnergy == 0) {
+				maxEnergy = 1;
+			}
+
+			maxScore = 0;
+			for (IScoreSnapshot team : scoreSnapshotList) {
+				if (maxScore < team.getCurrentScore()) {
+					maxScore = (int) team.getCurrentScore();
+				}
+			}
+			if (maxScore == 0) {
+				maxScore = 1;
+			}
+
+			final int newScore = (int) scoreSnapshotList[contestIndex].getCurrentScore();
+			final int newEnergy = (int) robots[robotIndex].getEnergy();
+			boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
+
+			lastEnergy = newEnergy;
+			lastScore = newScore;
+			if (rep) {
+				repaint();
+			}
+		}
+
+		public void onBattleCompleted(final BattleCompletedEvent event) {
+			maxScore = 0;
+			for (BattleResults team : event.getIndexedResults()) {
+				if (maxScore < team.getScore()) {
+					maxScore = team.getScore();
+				}
+			}
+			if (maxScore == 0) {
+				maxScore = 1;
+			}
+			lastScore = event.getIndexedResults()[contestIndex].getScore();
+			repaint();
+		}
+		
+		public void onBattleFinished(final BattleFinishedEvent event) {
+			lastEnergy = 0;
+			repaint();
+		}
 	}
 }

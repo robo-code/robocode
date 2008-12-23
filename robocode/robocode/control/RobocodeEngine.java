@@ -37,10 +37,7 @@
 package robocode.control;
 
 
-import robocode.battle.events.BattleAdaptor;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.BattleMessageEvent;
+import robocode.control.events.*;
 import robocode.io.FileUtil;
 import robocode.manager.RobocodeManager;
 import robocode.repository.FileSpecification;
@@ -48,6 +45,8 @@ import robocode.repository.Repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -69,6 +68,7 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  * @author Joachim Hofer (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobocodeEngine {
 
@@ -77,36 +77,62 @@ public class RobocodeEngine {
 	private BattleSpecification battleSpecification;
 
 	/**
+	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
+	 * Robocode is used to determine the root directory of Robocode.
+	 *
+	 * @see #RobocodeEngine(File)
+	 * @see #close()
+	 * @since 1.6.2
+	 */
+	public RobocodeEngine() {
+		init(FileUtil.getCwd(), null);
+	}
+
+	/**
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
-	 * @param listener     the listener that must receive the callbacks from this
+	 * @see #RobocodeEngine()
+	 * @see #close()
+	 * @since 1.6.2
+	 */
+	public RobocodeEngine(File robocodeHome) {
+		init(robocodeHome, null);
+	}
+
+	/**
+	 * @deprecated Since 1.6.2. Use {@link #RobocodeEngine(File)} and
+	 * {@link #addBattleListener(IBattleListener) addBattleListener()} instead.
+	 * <p/>
+	 * Creates a new RobocodeEngine for controlling Robocode.
+	 *
+	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
+	 * @param listener	 the listener that must receive the callbacks from this
 	 *                     RobocodeEngine.
-	 * @see #RobocodeEngine(RobocodeListener)
+	 * @see #RobocodeEngine()
+	 * @see #RobocodeEngine(File)
 	 * @see #close()
 	 */
+	@Deprecated
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
 		init(robocodeHome, listener);
 	}
 
 	/**
+	 * @deprecated Since 1.6.2. Use {@link #RobocodeEngine()} and
+	 * {@link #addBattleListener(IBattleListener) addBattleListener()} instead.
+	 * <p/>
 	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
 	 * Robocode is used to determine the root directory of Robocode.
-	 * See {@link #RobocodeEngine(File, RobocodeListener)}.
 	 *
 	 * @param listener the listener that must receive the callbacks from this
 	 *                 RobocodeEngine.
-	 * @see #RobocodeEngine(File, RobocodeListener)
+	 * @see #RobocodeEngine()
+	 * @see #RobocodeEngine(File)
 	 * @see #close()
 	 */
+	@Deprecated
 	public RobocodeEngine(RobocodeListener listener) {
-		File robotsDir = FileUtil.getRobotsDir();
-
-		if (robotsDir == null) {
-			throw new RuntimeException("No valid robot directory is specified");
-		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
-			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
-		}
 		init(FileUtil.getCwd(), listener);
 	}
 
@@ -123,7 +149,16 @@ public class RobocodeEngine {
 		}
 	}
 
+	@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 	private void init(File robocodeHome, RobocodeListener listener) {
+		File robotsDir = FileUtil.getRobotsDir();
+
+		if (robotsDir == null) {
+			throw new RuntimeException("No valid robot directory is specified");
+		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
+			throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
+		}
+
 		manager = new RobocodeManager(true);
 		manager.setEnableGUI(false);
 
@@ -140,6 +175,29 @@ public class RobocodeEngine {
 			battleObserver.listener = listener;
 			manager.getBattleManager().addListener(battleObserver);
 		}
+	}
+
+	/**
+	 * Adds a battle listener that must receive events occurring in battles.
+	 *
+	 * @param listener the battle listener that must retrieve the event from
+	 *                 the battles.
+	 * @see #removeBattleListener(IBattleListener)
+	 * @since 1.6.2
+	 */
+	public void addBattleListener(IBattleListener listener) {
+		manager.getBattleManager().addListener(listener);
+	}
+
+	/**
+	 * Removes a battle listener that has previously been added to this object.
+	 *
+	 * @param listener the battle listener that must be removed.
+	 * @see #addBattleListener(IBattleListener)
+	 * @since 1.6.2
+	 */
+	public void removeBattleListener(IBattleListener listener) {
+		manager.getBattleManager().removeListener(listener);
 	}
 
 	/**
@@ -197,6 +255,7 @@ public class RobocodeEngine {
 	 *
 	 * @return an array of all available robots from the local robot repository.
 	 * @see RobotSpecification
+	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
 		Repository robotRepository = manager.getRobotRepositoryManager().getRobotRepository();
@@ -205,9 +264,56 @@ public class RobocodeEngine {
 		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
 
 		for (int i = 0; i < robotSpecs.length; i++) {
-			robotSpecs[i] = new RobotSpecification(list.get(i));
+			final FileSpecification specification = list.get(i);
+
+			if (specification.isValid()) {
+				robotSpecs[i] = new RobotSpecification(specification);
+			}
 		}
 		return robotSpecs;
+	}
+
+	/**
+	 * Returns a selection of robots available from the local robot repository
+	 * of Robocode. These robots must exists in the /robocode/robots directory,
+	 * and must be compiled in advance.
+	 * </p>
+	 * Notice: If a specified robot cannot be found in the repository, it will
+	 * not be returned in the array of robots returned by this method.
+	 *
+	 * @param selectedRobotList a comma or space separated list of robots to
+	 *                          return. The full class name must be used for
+	 *                          specifying the individual robot, e.g.
+	 *                          "sample.Corners, sample.Crazy"
+	 * @return an array containing the available robots from the local robot
+	 *         repository based on the selected robots specified with the
+	 *         {@code selectedRobotList} parameter.
+	 * @see RobotSpecification
+	 * @see #getLocalRepository()
+	 * @since 1.6.2
+	 */
+	public RobotSpecification[] getLocalRepository(String selectedRobotList) {
+		RobotSpecification[] repository = getLocalRepository();
+
+		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
+
+		for (RobotSpecification spec : repository) {
+			robotSpecMap.put(spec.getNameAndVersion(), spec);
+		}
+
+		String[] selectedRobots = selectedRobotList.split("[\\s,;]+");
+
+		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
+
+		RobotSpecification spec;
+
+		for (String robot : selectedRobots) {
+			spec = robotSpecMap.get(robot);
+			if (spec != null) {
+				selectedRobotSpecs.add(spec);
+			}
+		}
+		return selectedRobotSpecs.toArray(new RobotSpecification[selectedRobotSpecs.size()]);
 	}
 
 	/**
@@ -215,6 +321,7 @@ public class RobocodeEngine {
 	 *
 	 * @param battleSpecification the specification of the battle to play including the
 	 *                            participation robots.
+	 * @see #runBattle(BattleSpecification, boolean)
 	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
 	 * @see RobocodeListener#battleMessage(String)
 	 * @see BattleSpecification
@@ -223,6 +330,34 @@ public class RobocodeEngine {
 	public void runBattle(BattleSpecification battleSpecification) {
 		this.battleSpecification = battleSpecification;
 		manager.getBattleManager().startNewBattle(battleSpecification, false);
+	}
+
+	/**
+	 * Runs the specified battle.
+	 *
+	 * @param battleSpecification	   the specification of the battle to run including the
+	 *                     participating robots.
+	 * @param waitTillOver will block caller till end of battle if set
+	 * @see #runBattle(BattleSpecification)
+	 * @see RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
+	 * @see RobocodeListener#battleMessage(String)
+	 * @see BattleSpecification
+	 * @see #getLocalRepository()
+	 * @since 1.6.2
+	 */
+	public void runBattle(BattleSpecification battleSpecification, boolean waitTillOver) {
+		this.battleSpecification = battleSpecification;
+		manager.getBattleManager().startNewBattle(battleSpecification, waitTillOver);
+	}
+
+	/**
+	 * Will block caller until current battle is over 
+	 * @see #runBattle(BattleSpecification)
+	 * @see #runBattle(BattleSpecification, boolean)
+	 * @since 1.6.2
+	 */
+	public void waitTillBattleOver() {
+		manager.getBattleManager().waitTillOver();
 	}
 
 	/**
@@ -236,23 +371,70 @@ public class RobocodeEngine {
 	}
 
 	/**
-	 * Registede only if listener in not null
+	 * Print out all running threads to standard system out.
+	 *
+	 * @since 1.6.2
+	 */
+	public static void printRunningThreads() {
+		ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+
+		if (currentGroup == null) {
+			return;
+		}
+
+		while (currentGroup.getParent() != null) {
+			currentGroup = currentGroup.getParent();
+		}
+
+		ThreadGroup groups[] = new ThreadGroup[256];
+		Thread threads[] = new Thread[256];
+
+		int numGroups = currentGroup.enumerate(groups, true);
+
+		for (int i = 0; i < numGroups; i++) {
+			currentGroup = groups[i];
+			if (currentGroup.isDaemon()) {
+				System.out.print("  ");
+			} else {
+				System.out.print("* ");
+			}
+			System.out.println("In group: " + currentGroup.getName());
+			int numThreads = currentGroup.enumerate(threads);
+
+			for (int j = 0; j < numThreads; j++) {
+				if (threads[j].isDaemon()) {
+					System.out.print("  ");
+				} else {
+					System.out.print("* ");
+				}
+				System.out.println(threads[j].getName());
+			}
+			System.out.println("---------------");
+		}
+	}
+
+	/**
+	 * Registered only if listener in not null.
 	 */
 	private class BattleObserver extends BattleAdaptor {
+		@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 		private RobocodeListener listener;
 
+		@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			if (event.isAborted()) {
 				listener.battleAborted(battleSpecification);
 			}
 		}
 
+		@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			listener.battleComplete(battleSpecification, (RobotResults[]) event.getResults());
+			listener.battleComplete(battleSpecification, RobotResults.convertResults(event.getSortedResults()));
 		}
 
+		@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 		@Override
 		public void onBattleMessage(BattleMessageEvent event) {
 			listener.battleMessage(event.getMessage());

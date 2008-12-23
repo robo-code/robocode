@@ -31,7 +31,7 @@ import java.io.IOException;
 public class JarSpecification extends FileSpecification {
 
 	// Used in FileSpecification
-	protected JarSpecification(File f, File rootDir, String prefix, boolean developmentVersion) {
+	protected JarSpecification(File f, File rootDir, boolean developmentVersion) {
 		this.rootDir = rootDir;
 		this.developmentVersion = developmentVersion;
 		valid = true;

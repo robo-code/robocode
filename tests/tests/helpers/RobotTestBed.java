@@ -18,9 +18,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import robocode.battle.events.*;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.BattleAdaptor;
 import robocode.control.*;
+import robocode.control.events.*;
+import robocode.control.snapshot.IRobotSnapshot;
 import robocode.io.FileUtil;
 import robocode.security.SecurePrintStream;
 
@@ -31,14 +32,15 @@ import java.util.Random;
  * @author Pavel Savara (original)
  */
 public abstract class RobotTestBed extends BattleAdaptor {
-	protected static RobocodeEngine2 engine;
+	protected static RobocodeEngine engine;
 	protected BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected int errors = 0;
 	protected int messages = 0;
 
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
-		engine = new RobocodeEngine2(FileUtil.getCwd());
+		System.setProperty("TESTING", "true");
+		engine = new RobocodeEngine(FileUtil.getCwd());
 	}
 
 	public RobotTestBed() {}
@@ -67,7 +69,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		if (isDumpingTurns) {
 			SecurePrintStream.realOut.println("turn " + event.getTurnSnapshot().getTurn());
 		}
-		for (RobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
+		for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
 			if (isDumpingPositions) {
 				SecurePrintStream.realOut.print(robot.getVeryShortName());
 				SecurePrintStream.realOut.print(" X:");

@@ -14,6 +14,14 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+import java.util.Hashtable;
+
+
 /**
  * This event is sent to {@link Robot#onBulletMissed(BulletMissedEvent)
  * onBulletMissed} when one of your bullets has missed, i.e. when the bullet has
@@ -21,7 +29,10 @@ package robocode;
  *
  * @author Mathew A. Nelson (original)
  */
-public class BulletMissedEvent extends Event {
+public final class BulletMissedEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 60;
+
 	private Bullet bullet;
 
 	/**
@@ -40,5 +51,34 @@ public class BulletMissedEvent extends Event {
 	 */
 	public Bullet getBullet() {
 		return bullet;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onBulletMissed(this);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void updateBullets(Hashtable<Integer, Bullet> bullets) {
+		// we need to pass same instance
+		bullet = bullets.get(bullet.getBulletId());
 	}
 }

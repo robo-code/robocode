@@ -68,7 +68,7 @@ public class JavaDocument extends PlainDocument {
 			Element element = getDefaultRootElement().getElement(elementIndex);
 			int startOffset = element.getStartOffset();
 			int endOffset = element.getEndOffset();
-			String elementText = null;
+			String elementText;
 
 			elementText = getText(startOffset, endOffset - startOffset);
 			int tabCount = 0;
@@ -153,15 +153,15 @@ public class JavaDocument extends PlainDocument {
 
 		int startOffset = element.getStartOffset();
 		int endOffset = element.getEndOffset();
-		String elementText = null;
+		String elementText;
 
 		try {
 			elementText = getText(startOffset, endOffset - startOffset);
 		} catch (BadLocationException e) {
-			Logger.logError("Error processing updates: " + e);
+			Logger.logError("Error processing updates: ", e);
 			return;
 		}
-		boolean followingLineComment = false,
+		boolean followingLineComment,
 				previousLineComment = false,
 				startsComment = false,
 				endsComment = false;
@@ -318,6 +318,8 @@ public class JavaDocument extends PlainDocument {
 
 	/**
 	 * Returns the UndoHandler
+	 *
+	 * @return the UndoHandler
 	 */
 	private UndoHandler getUndoHandler() {
 		if (undoHandler == null) {

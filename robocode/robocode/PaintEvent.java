@@ -12,6 +12,11 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IPaintEvents;
+import robocode.robotinterfaces.IPaintRobot;
+
 import java.awt.*;
 
 
@@ -25,12 +30,36 @@ import java.awt.*;
  *
  * @author Flemming N. Larsen (original)
  */
-public class PaintEvent extends Event {
+public final class PaintEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 5;
 
 	/**
 	 * Called by the game to create a new PaintEvent.
 	 */
 	public PaintEvent() {
 		super();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isPaintRobot()) {
+			IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
+
+			if (listener != null) {
+				listener.onPaint(graphics);
+			}
+		}
 	}
 }

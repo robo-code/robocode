@@ -14,6 +14,13 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+
+
 /**
  * A HitByBulletEvent is sent to {@link Robot#onHitByBullet(HitByBulletEvent)
  * onHitByBullet()} when your robot has been hit by a bullet.
@@ -21,9 +28,12 @@ package robocode;
  *
  * @author Mathew A. Nelson (original)
  */
-public class HitByBulletEvent extends Event {
-	private double bearing;
-	private Bullet bullet;
+public final class HitByBulletEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 20;
+
+	private final double bearing;
+	private final Bullet bullet;
 
 	/**
 	 * Called by the game to create a new HitByBulletEvent.
@@ -138,5 +148,25 @@ public class HitByBulletEvent extends Event {
 	 */
 	public double getVelocity() {
 		return bullet.getVelocity();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onHitByBullet(this);
+		}
 	}
 }

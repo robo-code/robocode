@@ -47,7 +47,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	public static final int REGULAR_WINDOW = 0, SPECIAL_MORE = 2;
 	private EditWindow window;
 	private JMenu parentMenu;
-	private int type;
+	private final int type;
 
 	/**
 	 * WindowMenuItem Constructor
@@ -83,7 +83,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 		if (window.isIcon()) {
 			try {
 				window.setIcon(false);
-			} catch (Throwable t) {}
+			} catch (Throwable ignored) {}
 		}
 		if (window.getDesktopPane() != null) {
 			window.getDesktopPane().setSelectedFrame(window);
@@ -92,7 +92,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 		window.grabFocus();
 		try {
 			window.setSelected(true);
-		} catch (Throwable t) {}
+		} catch (Throwable ignored) {}
 	}
 
 	/**
@@ -275,9 +275,8 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 */
 	@Override
 	public boolean isSelected() {
-		return (type == SPECIAL_MORE)
-				? false
-				: (window != null && window.getDesktopPane() != null) && window.getDesktopPane().getSelectedFrame() == window;
+		return (type != SPECIAL_MORE) && (window != null && window.getDesktopPane() != null)
+				&& window.getDesktopPane().getSelectedFrame() == window;
 	}
 
 	/**

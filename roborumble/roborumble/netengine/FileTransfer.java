@@ -50,18 +50,20 @@ public class FileTransfer {
 	 */
 	private static class WorkerThread extends Thread {
 
-		public volatile boolean finish;
+		final Object monitor = new Object();
+
+		volatile boolean isFinished;
 
 		public WorkerThread(String name) {
 			super(name);
 			setDaemon(true);
 		}
 
-		protected void notifyFinish() {
+		void notifyFinish() {
 			// Notify that this thread is finish
-			synchronized (this) {
-				finish = true;
-				notifyAll();
+			synchronized (monitor) {
+				isFinished = true;
+				monitor.notifyAll();
 			}
 		}
 	}
@@ -89,10 +91,10 @@ public class FileTransfer {
 			sessionIdThread.start();
 
 			// Wait for the session id
-			synchronized (sessionIdThread) {
-				while (!sessionIdThread.finish) {
+			synchronized (sessionIdThread.monitor) {
+				while (!sessionIdThread.isFinished) {
 					try {
-						sessionIdThread.wait(CONNECTION_TIMEOUT);
+						sessionIdThread.monitor.wait(CONNECTION_TIMEOUT);
 						sessionIdThread.interrupt();
 					} catch (InterruptedException e) {
 						// Immediately reasserts the exception by interrupting the caller thread itself
@@ -127,11 +129,11 @@ public class FileTransfer {
 	private final static class GetSessionIdThread extends WorkerThread {
 
 		// The resulting session id to read out
-		private String sessionId;
+		String sessionId;
 
-		private final HttpURLConnection con;
+		final HttpURLConnection con;
 
-		private GetSessionIdThread(HttpURLConnection con) {
+		GetSessionIdThread(HttpURLConnection con) {
 			super("FileTransfer: Get session ID");
 			this.con = con;
 		}
@@ -193,10 +195,10 @@ public class FileTransfer {
 			downloadThread.start();
 
 			// Wait for the download to complete
-			synchronized (downloadThread) {
-				while (!downloadThread.finish) {
+			synchronized (downloadThread.monitor) {
+				while (!downloadThread.isFinished) {
 					try {
-						downloadThread.wait();
+						downloadThread.monitor.wait();
 					} catch (InterruptedException e) {
 						return DownloadStatus.COULD_NOT_CONNECT;
 					}
@@ -227,15 +229,15 @@ public class FileTransfer {
 	private final static class DownloadThread extends WorkerThread {
 
 		// The download status to be read out
-		private DownloadStatus status = DownloadStatus.COULD_NOT_CONNECT; // Default error
+		DownloadStatus status = DownloadStatus.COULD_NOT_CONNECT; // Default error
 
-		private final HttpURLConnection con;
-		private final String filename;
+		final HttpURLConnection con;
+		final String filename;
 
-		private InputStream in;
-		private OutputStream out;
+		InputStream in;
+		OutputStream out;
 
-		private DownloadThread(HttpURLConnection con, String filename) {
+		DownloadThread(HttpURLConnection con, String filename) {
 			super("FileTransfer: Download");
 			this.con = con;
 			this.filename = filename;
@@ -250,10 +252,10 @@ public class FileTransfer {
 				responseThread.start();
 
 				// Wait for the response to finish
-				synchronized (responseThread) {
-					while (!responseThread.finish) {
+				synchronized (responseThread.monitor) {
+					while (!responseThread.isFinished) {
 						try {
-							responseThread.wait(CONNECTION_TIMEOUT);
+							responseThread.monitor.wait(CONNECTION_TIMEOUT);
 							responseThread.interrupt();
 						} catch (InterruptedException e) {
 							notifyFinish();
@@ -287,10 +289,10 @@ public class FileTransfer {
 				contentLengthThread.start();
 
 				// Wait for the file size
-				synchronized (contentLengthThread) {
-					while (!contentLengthThread.finish) {
+				synchronized (contentLengthThread.monitor) {
+					while (!contentLengthThread.isFinished) {
 						try {
-							contentLengthThread.wait(CONNECTION_TIMEOUT);
+							contentLengthThread.monitor.wait(CONNECTION_TIMEOUT);
 							contentLengthThread.interrupt();
 						} catch (InterruptedException e) {
 							notifyFinish();
@@ -329,10 +331,10 @@ public class FileTransfer {
 					readThread.start();
 
 					// Wait for the reading to finish
-					synchronized (readThread) {
-						while (!readThread.finish) {
+					synchronized (readThread.monitor) {
+						while (!readThread.isFinished) {
 							try {
-								readThread.wait(CONNECTION_TIMEOUT);
+								readThread.monitor.wait(CONNECTION_TIMEOUT);
 								readThread.interrupt();
 							} catch (InterruptedException e) {
 								notifyFinish();
@@ -389,14 +391,14 @@ public class FileTransfer {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private final static class GetResponseCodeThread extends WorkerThread {
+	final static class GetResponseCodeThread extends WorkerThread {
 
 		// The response code to read out
-		private int responseCode;
+		int responseCode;
 
-		private final HttpURLConnection con;
+		final HttpURLConnection con;
 
-		private GetResponseCodeThread(HttpURLConnection con) {
+		GetResponseCodeThread(HttpURLConnection con) {
 			super("FileTransfer: Get response code");
 			this.con = con;
 		}
@@ -421,14 +423,14 @@ public class FileTransfer {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private final static class GetContentLengthThread extends WorkerThread {
+	final static class GetContentLengthThread extends WorkerThread {
 
 		// The content length to read out
-		private int contentLength;
+		int contentLength;
 
-		private final HttpURLConnection con;
+		final HttpURLConnection con;
 
-		private GetContentLengthThread(HttpURLConnection con) {
+		GetContentLengthThread(HttpURLConnection con) {
 			super("FileTransfer: Get content length");
 			this.con = con;
 		}
@@ -453,15 +455,15 @@ public class FileTransfer {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private final static class ReadInputStreamToBufferThread extends WorkerThread {
+	final static class ReadInputStreamToBufferThread extends WorkerThread {
 
-		private int bytesRead;
+		int bytesRead;
 
-		private final InputStream in;
+		final InputStream in;
 
-		private final byte[] buf;
+		final byte[] buf;
 
-		private ReadInputStreamToBufferThread(InputStream in, byte[] buf) {
+		ReadInputStreamToBufferThread(InputStream in, byte[] buf) {
 			super("FileTransfer: Read input stream to buffer");
 			this.in = in;
 			this.buf = buf;

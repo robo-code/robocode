@@ -10,8 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
- *     - Fixed potential NullPointerException in getLoadingRobotPeer()
- *     - Added getRobotClasses() and getRobotPeers() for the
+ *     - Fixed potential NullPointerException in getLoadingRobotProxy()
+ *     - Added getRobotClasses() and getRobotProxies() for the
  *       RobocodeSecurityManager
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
@@ -20,8 +20,7 @@
 package robocode.manager;
 
 
-import robocode.peer.RobotPeer;
-import robocode.robotinterfaces.IBasicRobot;
+import robocode.peer.proxies.IHostedThread;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,29 +32,29 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class ThreadManager {
+public class ThreadManager implements IThreadManager {
 
-	private List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
+	private final List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
 	private Thread robotLoaderThread;
-	private RobotPeer loadingRobot;
-	private List<RobotPeer> robots = Collections.synchronizedList(new ArrayList<RobotPeer>());
+	private IHostedThread loadingRobot;
+	private final List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
 
 	public ThreadManager() {
 		super();
 	}
 
-	public void addThreadGroup(ThreadGroup g, RobotPeer robotPeer) {
+	public void addThreadGroup(ThreadGroup g, IHostedThread robotProxy) {
 		if (!groups.contains(g)) {
 			groups.add(g);
-			robots.add(robotPeer);
+			robots.add(robotProxy);
 		}
 	}
 
-	public synchronized RobotPeer getLoadingRobot() {
+	public synchronized IHostedThread getLoadingRobot() {
 		return loadingRobot;
 	}
 
-	public synchronized RobotPeer getLoadingRobotPeer(Thread t) {
+	public synchronized IHostedThread getLoadingRobotProxy(Thread t) {
 		if (t != null && robotLoaderThread != null
 				&& (t.equals(robotLoaderThread)
 				|| (t.getThreadGroup() != null && t.getThreadGroup().equals(robotLoaderThread.getThreadGroup())))) {
@@ -64,16 +63,16 @@ public class ThreadManager {
 		return null;
 	}
 
-	public synchronized RobotPeer getLoadedOrLoadingRobotPeer(Thread t) {
-		RobotPeer robotPeer = getRobotPeer(t);
+	public synchronized IHostedThread getLoadedOrLoadingRobotProxy(Thread t) {
+		IHostedThread robotProxy = getRobotProxy(t);
 
-		if (robotPeer == null) {
-			robotPeer = getLoadingRobotPeer(t);
+		if (robotProxy == null) {
+			robotProxy = getLoadingRobotProxy(t);
 		}
-		return robotPeer;
+		return robotProxy;
 	}
 
-	public RobotPeer getRobotPeer(Thread t) {
+	public IHostedThread getRobotProxy(Thread t) {
 		ThreadGroup g = t.getThreadGroup();
 
 		if (g == null) {
@@ -92,51 +91,13 @@ public class ThreadManager {
 		robots.clear();
 	}
 
-	public synchronized void setLoadingRobot(RobotPeer newLoadingRobotPeer) {
-		if (robotLoaderThread != null && robotLoaderThread.equals(Thread.currentThread())) {
-			loadingRobot = newLoadingRobotPeer;
+	public synchronized void setLoadingRobot(IHostedThread newLoadingRobotProxy) {
+		if (newLoadingRobotProxy == null) {
+			this.robotLoaderThread = null;
+			loadingRobot = null;
+		} else {
+			this.robotLoaderThread = Thread.currentThread();
+			loadingRobot = newLoadingRobotProxy;
 		}
-	}
-
-	public synchronized void setRobotLoaderThread(Thread robotLoaderThread) {
-		this.robotLoaderThread = robotLoaderThread;
-	}
-
-	public List<Class<?>> getRobotClasses() {
-		List<Class<?>> classes = new ArrayList<Class<?>>();
-
-		RobotPeer robotPeer;
-		IBasicRobot robot;
-
-		for (int i = robots.size() - 1; i >= 0; i--) {
-			robotPeer = robots.get(i);
-			if (robotPeer != null) {
-				robot = robotPeer.getRobot();
-				if (robot != null) {
-					classes.add(robot.getClass());
-				}
-			}
-		}
-		return classes;
-	}
-
-	public List<RobotPeer> getRobotPeers(Class<?> robotClass) {
-		List<RobotPeer> robotPeers = new ArrayList<RobotPeer>();
-
-		for (int i = robots.size() - 1; i >= 0; i--) {
-			RobotPeer robotPeer = robots.get(i);
-
-			if (robotPeer != null) {
-				IBasicRobot robot = robotPeer.getRobot();
-
-				// NOTE: The check is on name level, as the equals() method does not work between
-				// the two classes, and isAssignableFrom() does not work here either! -FNL
-				if (robot != null && robot.getClass().getName().equals(robotClass.getName())) {
-					robotPeers.add(robotPeer);
-				}
-			}
-		}
-
-		return robotPeers;
 	}
 }

@@ -22,9 +22,8 @@
 package robocode.manager;
 
 
-import robocode.battle.snapshot.RobotSnapshot;
-import robocode.dialog.RobotButton;
-import robocode.dialog.RobotDialog;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.dialog.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,25 +36,26 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class RobotDialogManager {
+public class RobotDialogManager implements IRobotDialogManager {
 
-	public static final int MAX_PRE_ATTACHED = 10;
+	public static final int MAX_PRE_ATTACHED = 25;
 
-	private Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
-	private RobocodeManager manager;
+	private final Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
+	private BattleDialog battleDialog = null;
+	private final RobocodeManager manager;
 
 	public RobotDialogManager(RobocodeManager manager) {
 		super();
 		this.manager = manager;
 	}
 
-	public void trim(List<RobotSnapshot> robots) {
+	public void trim(List<IRobotSnapshot> robots) {
 
 		// new ArrayList in order to prevent ConcurrentModificationException
 		for (String name : new ArrayList<String>(robotDialogMap.keySet())) {
 			boolean found = false;
 
-			for (RobotSnapshot robot : robots) {
+			for (IRobotSnapshot robot : robots) {
 				if (robot.getName().equals(name)) {
 					found = true;
 					break;
@@ -84,15 +84,28 @@ public class RobotDialogManager {
 	}
 
 	public RobotDialog getRobotDialog(RobotButton robotButton, String name, boolean create) {
-		RobotDialog dialog = robotDialogMap.get(name);
+		RobotDialog robotDialog = robotDialogMap.get(name);
 
-		if (create && dialog == null) {
+		if (create && robotDialog == null) {
 			if (robotDialogMap.size() > MAX_PRE_ATTACHED) {
 				reset();
 			}
-			dialog = new RobotDialog(manager, robotButton);
-			robotDialogMap.put(name, dialog);
+			robotDialog = new RobotDialog(manager, robotButton);
+			robotDialog.pack();
+			WindowUtil.place(robotDialog);
+			robotDialogMap.put(name, robotDialog);
 		}
-		return dialog;
+		return robotDialog;
 	}
+
+	public BattleDialog getBattleDialog(BattleButton battleButton, boolean create) {
+
+		if (create && battleDialog == null) {
+			battleDialog = new BattleDialog(manager, battleButton);
+			battleDialog.pack();
+			WindowUtil.place(battleDialog);
+		}
+		return battleDialog;
+	}
+
 }

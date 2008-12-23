@@ -49,27 +49,27 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SuppressWarnings("serial")
 public class AvailableRobotsPanel extends JPanel {
 
-	private List<FileSpecification> availableRobots = new CopyOnWriteArrayList<FileSpecification>();
+	private final List<FileSpecification> availableRobots = new CopyOnWriteArrayList<FileSpecification>();
 	private List<FileSpecification> robotList = new CopyOnWriteArrayList<FileSpecification>();
-	private List<String> availablePackages = new CopyOnWriteArrayList<String>();
+	private final List<String> availablePackages = new CopyOnWriteArrayList<String>();
 
 	private JScrollPane availableRobotsScrollPane;
 	private JList availableRobotsList;
 
-	private JButton actionButton;
+	private final JButton actionButton;
 
-	private JList actionList;
+	private final JList actionList;
 	private JList availablePackagesList;
 
 	private JScrollPane availablePackagesScrollPane;
 
 	private RobotNameCellRenderer robotNamesCellRenderer;
 
-	private RobotSelectionPanel robotSelectionPanel;
+	private final RobotSelectionPanel robotSelectionPanel;
 
-	private String title;
+	private final String title;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	public AvailableRobotsPanel(JButton actionButton, String title, JList actionList,
 			RobotSelectionPanel robotSelectionPanel) {
@@ -81,11 +81,6 @@ public class AvailableRobotsPanel extends JPanel {
 		initialize();
 	}
 
-	/**
-	 * Return the Page property value.
-	 *
-	 * @return JPanel
-	 */
 	private void initialize() {
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title));
 		setLayout(new BorderLayout());

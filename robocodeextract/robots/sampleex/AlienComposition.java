@@ -32,8 +32,8 @@ import java.io.PrintStream;
 public class AlienComposition implements IBasicRobot {
 	PrintStream out;
 	IStandardRobotPeer peer;
-	AlienMain main;
-	AlienEventHandler handler;
+	final AlienMain main;
+	final AlienEventHandler handler;
 
 	public AlienComposition() {
 		main = new AlienMain();

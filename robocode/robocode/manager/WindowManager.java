@@ -23,14 +23,16 @@
 package robocode.manager;
 
 
-import robocode.battle.BattleProperties;
-import robocode.battle.IBattleManager;
-import robocode.battle.events.BattleCompletedEvent;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.IBattleListener;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.dialog.*;
 import robocode.editor.RobocodeEditor;
 import robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
+import robocode.ui.AwtBattleAdaptor;
 import robocode.ui.BattleResultsTableModel;
+import robocode.battle.BattleProperties;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -44,22 +46,50 @@ import java.io.IOException;
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  */
-public class WindowManager {
+public class WindowManager implements IWindowManager {
 
+	private final static int TIMER_TICKS_PER_SECOND = 50;
+	private final AwtBattleAdaptor awtAdaptor;
 	private RobocodeEditor robocodeEditor;
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
 	private RobocodeFrame robocodeFrame;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 	private RankingDialog rankingDialog;
 
 	public WindowManager(RobocodeManager manager) {
 		this.manager = manager;
+		awtAdaptor = new AwtBattleAdaptor(manager.getBattleManager(), TIMER_TICKS_PER_SECOND, true);
+
+		// we will set UI better priority than robots and battle have
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Thread.currentThread().setPriority(Thread.NORM_PRIORITY + 2);
+				} catch (SecurityException ex) {// that's a pity
+				}
+			}
+		});
+	}
+
+	public synchronized void addBattleListener(IBattleListener listener) {
+		awtAdaptor.addListener(listener);
+	}
+
+	public synchronized void removeBattleListener(IBattleListener listener) {
+		awtAdaptor.removeListener(listener);
+	}
+
+	public ITurnSnapshot getLastSnapshot() {
+		return awtAdaptor.getLastSnapshot();
+	}
+
+	public int getFPS() {
+		return awtAdaptor.getFPS();
 	}
 
 	public RobocodeFrame getRobocodeFrame() {
 		if (robocodeFrame == null) {
-			// Create the frame
 			robocodeFrame = new RobocodeFrame(manager);
 		}
 		return robocodeFrame;
@@ -79,49 +109,71 @@ public class WindowManager {
 	}
 
 	public void showAboutBox() {
-		packCenterShow(new AboutBox(getRobocodeFrame(), manager));
+		packCenterShow(new AboutBox(getRobocodeFrame(), manager), true);
 	}
 
-	public void showBattleOpenDialog() {
-		IBattleManager battleManager = manager.getBattleManager();
+	public String showBattleOpenDialog(final String defExt, final String name) {
+		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
 
-		try {
-			battleManager.pauseBattle();
-
-			JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
-
-			chooser.setFileFilter(new FileFilter() {
-				@Override
-				public boolean accept(File pathname) {
-					if (pathname.isDirectory()) {
-						return true;
-					}
-					String filename = pathname.getName();
-					int idx = filename.lastIndexOf('.');
-
-					String extension = "";
-
-					if (idx >= 0) {
-						extension = filename.substring(idx);
-					}
-					return extension.equalsIgnoreCase(".battle");
-				}
-
-				@Override
-				public String getDescription() {
-					return "Battles";
-				}
-			});
-
-			if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
-				battleManager.setBattleFilename(chooser.getSelectedFile().getPath());
-				BattleProperties battleProperties = battleManager.loadBattleProperties();
-
-				showNewBattleDialog(battleProperties);
+		chooser.setFileFilter(
+				new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				return pathname.isDirectory()
+						|| pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
+								== pathname.getName().length() - defExt.length();
 			}
-		} finally {
-			battleManager.resumeBattle();
+
+			@Override
+			public String getDescription() {
+				return name;
+			}
+		});
+
+		if (chooser.showOpenDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile().getPath();
 		}
+		return null;
+	}
+
+	public String saveBattleDialog(String path, final String defExt, final String name) {
+		File f = new File(path);
+
+		JFileChooser chooser;
+
+		chooser = new JFileChooser(f);
+
+		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				return pathname.isDirectory()
+						|| pathname.getName().toLowerCase().lastIndexOf(defExt.toLowerCase())
+								== pathname.getName().length() - defExt.length();
+			}
+
+			@Override
+			public String getDescription() {
+				return name;
+			}
+		};
+
+		chooser.setFileFilter(filter);
+		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
+		String result = null;
+
+		if (rv == JFileChooser.APPROVE_OPTION) {
+			result = chooser.getSelectedFile().getPath();
+			int idx = result.lastIndexOf('.');
+			String extension = "";
+
+			if (idx > 0) {
+				extension = result.substring(idx);
+			}
+			if (!(extension.equalsIgnoreCase(defExt))) {
+				result += defExt;
+			}
+		}
+		return result;
 	}
 
 	public void showVersionsTxt() {
@@ -168,35 +220,36 @@ public class WindowManager {
 		try {
 			manager.getBattleManager().pauseBattle();
 
-			// Create the preferencesDialog
-			PreferencesDialog preferencesDialog = new PreferencesDialog(manager);
-
-			// Show it
-			WindowUtil.packCenterShow(getRobocodeFrame(), preferencesDialog);
+			WindowUtil.packCenterShow(getRobocodeFrame(), new PreferencesDialog(manager));
 		} finally {
 			manager.getBattleManager().resumeIfPausedBattle(); // THIS is just dirty hack-fix of more complex problem with desiredTPS and pausing.  resumeBattle() belongs here.
 		}
 	}
 
 	public void showResultsDialog(BattleCompletedEvent event) {
-		packCenterShow(new ResultsDialog(manager, event.getResults(), event.getBattleProperties().getNumRounds()));
+		packCenterShow(new ResultsDialog(manager, event.getSortedResults(), event.getBattleRules().getNumRounds()), true);
 	}
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
 			rankingDialog = new RankingDialog(manager);
-		}
-		if (visible) {
-			packCenterShow(rankingDialog);
+			if (visible) {
+				packCenterShow(rankingDialog, true);
+			} else {
+				rankingDialog.dispose();
+			}
 		} else {
-			rankingDialog.dispose();
+			if (visible) {
+				packCenterShow(rankingDialog, false);
+			} else {
+				rankingDialog.dispose();
+			}
 		}
 	}
 
 	public void showRobocodeEditor() {
 		if (robocodeEditor == null) {
 			robocodeEditor = new robocode.editor.RobocodeEditor(manager);
-			// Pack, center, and show it
 			WindowUtil.packCenterShow(robocodeEditor);
 		} else {
 			robocodeEditor.setVisible(true);
@@ -209,8 +262,7 @@ public class WindowManager {
 			robotPackager = null;
 		}
 
-		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager(), false);
-		// Pack, center, and show it
+		robotPackager = new robocode.packager.RobotPackager(manager.getRobotRepositoryManager());
 		WindowUtil.packCenterShow(robotPackager);
 	}
 
@@ -221,25 +273,13 @@ public class WindowManager {
 		}
 
 		robotExtractor = new robocode.dialog.RobotExtractor(owner, manager.getRobotRepositoryManager());
-		// Pack, center, and show it
 		WindowUtil.packCenterShow(robotExtractor);
 	}
 
 	public void showSplashScreen() {
-		// Create the splash screen
-		SplashScreen splashScreen = new SplashScreen(manager);
+		RcSplashScreen splashScreen = new RcSplashScreen(manager);
 
-		synchronized (splashScreen) {
-			// Pack, center, and show it
-			packCenterShow(splashScreen);
-
-			try {
-				splashScreen.wait(20000);
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-			}
-		}
+		packCenterShow(splashScreen, true);
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
@@ -258,11 +298,7 @@ public class WindowManager {
 	public void showNewBattleDialog(BattleProperties battleProperties) {
 		try {
 			manager.getBattleManager().pauseBattle();
-
-			NewBattleDialog newBattleDialog = new NewBattleDialog(manager, battleProperties);
-
-			// Pack, center, and show it
-			WindowUtil.packCenterShow(getRobocodeFrame(), newBattleDialog);
+			WindowUtil.packCenterShow(getRobocodeFrame(), new NewBattleDialog(manager, battleProperties));
 		} finally {
 			manager.getBattleManager().resumeBattle();
 		}
@@ -426,12 +462,16 @@ public class WindowManager {
 
 	/**
 	 * Packs, centers, and shows the specified window on the screen.
+	 * @param window the window to pack, center, and show
+	 * @param center {@code true} if the window must be centered; {@code false} otherwise
 	 */
-	private void packCenterShow(Window window) {
+	private void packCenterShow(Window window, boolean center) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		window.pack();
-		window.setLocation((screenSize.width - window.getWidth()) / 2, (screenSize.height - window.getHeight()) / 2);
+		if (center) {
+			window.setLocation((screenSize.width - window.getWidth()) / 2, (screenSize.height - window.getHeight()) / 2);
+		}
 		window.setVisible(true);
 	}
 }

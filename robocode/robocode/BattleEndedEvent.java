@@ -14,6 +14,14 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicEvents2;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+
+
 /**
  * A BattleEndedEvent is sent to {@link Robot#onBattleEnded(BattleEndedEvent)
  * onBattleEnded()} when the battle is ended.
@@ -25,10 +33,12 @@ package robocode;
  * @see Robot#onBattleEnded(BattleEndedEvent)
  * @since 1.6.1
  */
-public class BattleEndedEvent extends Event {
+public final class BattleEndedEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
 
-	private boolean aborted;
-	private BattleResults results;
+	private final boolean aborted;
+	private final BattleResults results;
 
 	/**
 	 * Called by the game to create a new BattleEndedEvent.
@@ -57,5 +67,43 @@ public class BattleEndedEvent extends Event {
 	 */
 	public BattleResults getResults() {
 		return results;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final int getPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (robot != null) {
+			IBasicEvents listener = robot.getBasicEventListener();
+
+			if (listener != null && IBasicEvents2.class.isAssignableFrom(listener.getClass())) {
+				((IBasicEvents2) listener).onBattleEnded(this);
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final boolean isCriticalEvent() {
+		return true;
 	}
 }

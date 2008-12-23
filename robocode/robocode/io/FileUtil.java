@@ -145,35 +145,30 @@ public class FileUtil {
 	 * Deletes a directory.
 	 *
 	 * @param dir the file for the directory to delete
-	 * @return {@code true} if the directory was deleted;
-	 *         {@code false} otherwise if e.g. the file is not a directory
 	 */
 	public static boolean deleteDir(File dir) {
-		if (!dir.isDirectory()) {
-			return false;
-		}
-
-		for (File file : dir.listFiles()) {
-			if (file.isDirectory()) {
-				try {
-					// Test for symlink and ignore.
-					// Robocode won't create one, but just in case a user does...
-					if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
-						deleteDir(file);
-						file.delete();
-					} else {
-						System.out.println("Warning: " + file + " may be a symlink.  Ignoring.");
+		if (dir.isDirectory()) {
+			for (File file : dir.listFiles()) {
+				if (file.isDirectory()) {
+					try {
+						// Test for symlink and ignore.
+						// Robocode won't create one, but just in case a user does...
+						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
+							deleteDir(file);
+							file.delete();
+						} else {
+							System.out.println("Warning: " + file + " may be a symlink.  Ignoring.");
+						}
+					} catch (IOException e) {
+						System.out.println("Warning: Cannot determine canonical file for " + file + " - ignoring.");
 					}
-				} catch (IOException e) {
-					System.out.println("Warning: Cannot determine canonical file for " + file + " - ignoring.");
+				} else {
+					file.delete();
 				}
-			} else {
-				file.delete();
 			}
+			return dir.delete();
 		}
-		dir.delete();
-
-		return true;
+		return false;
 	}
 
 	/**

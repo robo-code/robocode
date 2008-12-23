@@ -16,10 +16,10 @@
 package robocode.peer.robot;
 
 
-import robocode.*;
+import robocode.Event;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Vector;
 
 
 /**
@@ -27,21 +27,7 @@ import java.util.Vector;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class EventQueue extends Vector<Event> {
-
-	private final EventManager eventManager;
-
-	public EventQueue(EventManager eventManager) {
-		super();
-		this.eventManager = eventManager;
-	}
-
-	@Override
-	public boolean add(Event e) {
-		e.setPriority(eventManager.getEventPriority(e));
-		e.setTime(eventManager.getTime());
-		return super.add(e);
-	}
+public class EventQueue extends ArrayList<Event> {
 
 	public void clear(boolean includingSystemEvents) {
 		if (includingSystemEvents) {
@@ -49,35 +35,26 @@ public class EventQueue extends Vector<Event> {
 			return;
 		}
 
-		synchronized (this) {
-			for (int i = 0; i < size(); i++) {
-				Event e = get(i);
+		for (int i = 0; i < size(); i++) {
+			Event e = get(i);
 
-				if (!(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent
-						|| e instanceof BattleEndedEvent)) {
-					remove(i--);
-				}
+			if (!RobotClassManager.isCriticalEvent(e)) {
+				remove(i--);
 			}
 		}
 	}
 
 	public void clear(long clearTime) {
-		synchronized (this) {
-			for (int i = 0; i < size(); i++) {
-				Event e = get(i);
+		for (int i = 0; i < size(); i++) {
+			Event e = get(i);
 
-				if ((e.getTime() <= clearTime)
-						&& !(e instanceof SkippedTurnEvent || e instanceof DeathEvent || e instanceof WinEvent
-						|| e instanceof BattleEndedEvent)) {
-					remove(i--);
-				}
+			if ((e.getTime() <= clearTime) && !RobotClassManager.isCriticalEvent(e)) {
+				remove(i--);
 			}
 		}
 	}
 
 	public void sort() {
-		synchronized (this) {
-			Collections.sort(this);
-		}
+		Collections.sort(this);
 	}
 }

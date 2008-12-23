@@ -47,26 +47,20 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private final static int MAX_ROBOTS = 256; // 64;
 	private final static int MIN_ROBOTS = 1;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 	private JPanel newBattleDialogContentPane;
 	private WizardTabbedPane tabbedPane;
 	private NewBattleBattleFieldTab battleFieldTab;
 
-	private BattleProperties battleProperties;
+	private final BattleProperties battleProperties;
 
 	private NewBattleRulesTab rulesTab;
 	private WizardController wizardController;
 
 	private RobotSelectionPanel robotSelectionPanel;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
-	/**
-	 * NewBattleDialog constructor comment.
-	 *
-	 * @param manager          robocode main manager
-	 * @param battleProperties properties for current game
-	 */
 	public NewBattleDialog(RobocodeManager manager, BattleProperties battleProperties) {
 		super(manager.getWindowManager().getRobocodeFrame(), true);
 		this.manager = manager;
@@ -110,7 +104,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		dispose();
 
 		// Start new battle after the dialog has been disposed and hence has called resumeBattle()
-		manager.getBattleManager().startNewBattle(battleProperties, false, false);
+		manager.getBattleManager().startNewBattle(battleProperties, false);
 	}
 
 	/**
@@ -214,8 +208,8 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			if (battleProperties != null) {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
-			robotSelectionPanel = new RobotSelectionPanel(manager.getRobotRepositoryManager(), MIN_ROBOTS, MAX_ROBOTS,
-					true, "Select robots for the battle", false, false, false, false, false,
+			robotSelectionPanel = new RobotSelectionPanel(manager, MIN_ROBOTS, MAX_ROBOTS, true,
+					"Select robots for the battle", false, false, false, false, false,
 					!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}
 		return robotSelectionPanel;
@@ -257,7 +251,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private class EventHandler extends WindowAdapter implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Refresh")) {
-				getRobotSelectionPanel().refreshRobotList();
+				getRobotSelectionPanel().refreshRobotList(true);
 			}
 		}
 	}

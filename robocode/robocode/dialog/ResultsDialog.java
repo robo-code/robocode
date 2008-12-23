@@ -41,12 +41,9 @@ public class ResultsDialog extends BaseScoreDialog {
 	private JPanel buttonPanel;
 	private JButton okButton;
 	private JButton saveButton;
-	private BattleResultsTableModel tableModel;
-	private ButtonEventHandler buttonEventHandler;
+	private final BattleResultsTableModel tableModel;
+	private final ButtonEventHandler buttonEventHandler;
 
-	/**
-	 * RankingDialog constructor
-	 */
 	public ResultsDialog(RobocodeManager manager, BattleResults[] results, int numRounds) {
 		super(manager, true);
 		tableModel = new BattleResultsTableModel(results, numRounds);
@@ -69,11 +66,6 @@ public class ResultsDialog extends BaseScoreDialog {
 		return tableModel;
 	}
 
-	/**
-	 * Return the content pane.
-	 *
-	 * @return JPanel
-	 */
 	@Override
 	protected JPanel getDialogContentPane() {
 		if (contentPane == null) {
@@ -85,11 +77,6 @@ public class ResultsDialog extends BaseScoreDialog {
 		return contentPane;
 	}
 
-	/**
-	 * Return the buttonPanel.
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getButtonPanel() {
 		if (buttonPanel == null) {
 			buttonPanel = new JPanel();
@@ -100,11 +87,6 @@ public class ResultsDialog extends BaseScoreDialog {
 		return buttonPanel;
 	}
 
-	/**
-	 * Return the okButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getOkButton() {
 		if (okButton == null) {
 			okButton = new JButton();
@@ -115,11 +97,6 @@ public class ResultsDialog extends BaseScoreDialog {
 		return okButton;
 	}
 
-	/**
-	 * Return the saveButton
-	 *
-	 * @return JButton
-	 */
 	private JButton getSaveButton() {
 		if (saveButton == null) {
 			saveButton = new JButton();

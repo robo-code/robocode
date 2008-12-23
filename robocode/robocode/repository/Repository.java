@@ -23,6 +23,7 @@ package robocode.repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 
@@ -32,10 +33,26 @@ import java.util.List;
  * @author Robert D. Maupin (contributor)
  */
 public class Repository {
-	private List<FileSpecification> fileSpecifications = Collections.synchronizedList(new ArrayList<FileSpecification>());
+	private final List<FileSpecification> fileSpecifications = Collections.synchronizedList(
+			new ArrayList<FileSpecification>());
+	private final Hashtable<String, FileSpecification> fileSpecificationsDict = new Hashtable<String, FileSpecification>();
 
 	public void add(FileSpecification fileSpecification) {
 		fileSpecifications.add(fileSpecification);
+		final String name = fileSpecification.getNameManager().getFullClassNameWithVersion();
+		final String unname = fileSpecification.getNameManager().getUniqueFullClassNameWithVersion();
+		final String rootDir = fileSpecification.getRootDir().toString();
+
+		fileSpecificationsDict.put(name, fileSpecification);
+		fileSpecificationsDict.put(rootDir + name, fileSpecification);
+		if (!name.equals(unname)) {
+			fileSpecificationsDict.put(unname, fileSpecification);
+			fileSpecificationsDict.put(rootDir + unname, fileSpecification);
+		}
+	}
+
+	public FileSpecification get(String fullClassNameWithVersion) {
+		return fileSpecificationsDict.get(fullClassNameWithVersion);
 	}
 
 	public List<FileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
@@ -44,6 +61,9 @@ public class Repository {
 		List<FileSpecification> v = Collections.synchronizedList(new ArrayList<FileSpecification>());
 
 		for (FileSpecification spec : fileSpecifications) {
+			if (!spec.isValid()) {
+				continue;
+			}
 			if (spec.isDuplicate()) {
 				continue;
 			}

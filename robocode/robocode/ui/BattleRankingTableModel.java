@@ -27,13 +27,11 @@
 package robocode.ui;
 
 
-import robocode.battle.snapshot.ScoreSnapshot;
-import robocode.battle.snapshot.TurnSnapshot;
+import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.text.StringUtil;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -48,33 +46,30 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
-	List<ScoreSnapshot> scoreSnapshotList;
-	
+	IScoreSnapshot[] scoreSnapshotList;
+
 	// The sum of the scores gathered by the robots in the actual round
 	private double currentSum;
 
 	// The sum of the scores gathered by the robots in the previous rounds
 	private double totalSum;
-	
+
 	/**
 	 * Function for counting the sum of the scores gathered by the robots.
 	 */
 	private void countTotalScores() {
 		currentSum = 0;
 		totalSum = 0;
-		Iterator<ScoreSnapshot> it = scoreSnapshotList.iterator();
-		
-		while (it.hasNext()) {
-			ScoreSnapshot score = it.next();
 
+		for (IScoreSnapshot score : scoreSnapshotList) {
 			currentSum += score.getCurrentScore();
 			totalSum += score.getTotalScore();
 		}
 	}
 
-	public void updateSource(TurnSnapshot snapshot) {
+	public void updateSource(ITurnSnapshot snapshot) {
 		if (snapshot != null) {
-			scoreSnapshotList = snapshot.getTeamScores();
+			scoreSnapshotList = snapshot.getSortedTeamScores();
 			countTotalScores();
 		} else {
 			scoreSnapshotList = null;
@@ -86,7 +81,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		return scoreSnapshotList == null ? 0 : scoreSnapshotList.size();
+		return scoreSnapshotList == null ? 0 : scoreSnapshotList.length;
 	}
 
 	@Override
@@ -135,7 +130,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 	public Object getValueAt(int row, int col) {
 
-		final ScoreSnapshot statistics = scoreSnapshotList.get(row);
+		final IScoreSnapshot statistics = scoreSnapshotList[row];
 
 		switch (col) {
 		case 0:

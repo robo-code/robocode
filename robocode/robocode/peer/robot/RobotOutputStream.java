@@ -29,21 +29,25 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	private final static int MAX = 100;
 
-	private Thread battleThread;
-
 	private int count = 0;
 	private boolean messaged = false;
-	private StringBuilder text;
+	private final StringBuilder text;
 	private final Object syncRoot = new Object();
 
-	public RobotOutputStream(Thread battleThread) {
+	public RobotOutputStream() {
 		super(new BufferedPipedOutputStream(128, true));
-		this.battleThread = battleThread;
 		this.text = new StringBuilder(8192);
 	}
 
 	public String readAndReset() {
 		synchronized (syncRoot) {
+
+			// Out's counter must be reset before processing event.
+			// Otherwise, it will not be reset when printing in the onScannedEvent()
+			// before a scan() call, which will potentially cause a new onScannedEvent()
+			// and therefore not be able to reset the counter.
+			count = 0;
+
 			if (text.length() > 0) {
 				final String result = text.toString();
 
@@ -57,10 +61,8 @@ public class RobotOutputStream extends java.io.PrintStream {
 	private boolean isOkToPrint() {
 		synchronized (syncRoot) {
 			if (count++ > MAX) {
-				if (Thread.currentThread() == battleThread) {
-					return true;
-				}
 				if (!messaged) {
+					text.append("\n");
 					text.append(
 							"SYSTEM: This robot is printing too much between actions.  Output stopped until next action.");
 					text.append("\n");
@@ -70,12 +72,6 @@ public class RobotOutputStream extends java.io.PrintStream {
 			}
 			messaged = false;
 			return true;
-		}
-	}
-
-	public void resetCounter() {
-		synchronized (syncRoot) {
-			count = 0;
 		}
 	}
 

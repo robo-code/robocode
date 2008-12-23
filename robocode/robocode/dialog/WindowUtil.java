@@ -28,8 +28,8 @@ import java.io.PrintWriter;
  */
 public class WindowUtil {
 
-	private static Point origin = new Point(0, 0);
-	private static WindowPositionManager windowPositionManager = new WindowPositionManager();
+	private static final Point origin = new Point(0, 0);
+	private static final WindowPositionManager windowPositionManager = new WindowPositionManager();
 	private static JLabel statusLabel;
 	private static PrintWriter statusWriter;
 	private static JLabel defaultStatusLabel;
@@ -161,15 +161,15 @@ public class WindowUtil {
 			size.width = screenSize.width;
 		}
 
+		w.setLocation(origin);
+		origin.y += 150;
+		if (origin.y + size.height > screenSize.height) {
+			origin.y = 0;
+			origin.x += 40;
+		}
 		if (origin.x + size.width > screenSize.width) {
 			origin.x = 0;
 		}
-		if (origin.y + size.height > screenSize.height) {
-			origin.y = 0;
-		}
-		w.setLocation(origin);
-		origin.x += 10;
-		origin.y += 10;
 	}
 
 	public static void saveWindowPositions() {

@@ -23,7 +23,7 @@ public interface ContestantPeer extends Comparable<ContestantPeer> {
 
 	public String getName();
 
-	public void setDuplicate(int count);
+	public String toString();
 
-	public boolean isDuplicate();
+	public int getContestIndex();
 }

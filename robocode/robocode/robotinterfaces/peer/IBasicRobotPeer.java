@@ -674,4 +674,18 @@ public interface IBasicRobotPeer {
 	 * @since 1.6.1
 	 */
 	Graphics2D getGraphics();
+
+	/**
+	 * Sets the debug property with the specified key to the specified value.
+	 * <p/>
+	 * This method is very useful when debugging or reviewing your robot as you
+	 * will be able to see this property displayed in the robot console for your
+	 * robots under the Debug Properties tab page.
+	 *
+	 * @param key the name/key of the debug property.
+	 * @param value the new value of the debug property, where {@code null} or
+	 *              the empty string is used for removing this debug property. 
+	 * @since 1.6.2
+	 */
+	void setDebugProperty(String key, String value);
 }

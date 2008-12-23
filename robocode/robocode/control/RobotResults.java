@@ -33,24 +33,24 @@ public class RobotResults extends BattleResults {
 
 	private static final long serialVersionUID = 2L;
 
-	private RobotSpecification robot;
+	private final RobotSpecification robot;
 
 	/**
 	 * Constructs new RobotResults.
 	 *
-	 * @param robot             the robot these results are for
-	 * @param teamLeaderName    team name
-	 * @param rank              the rank of the robot in the battle
-	 * @param score             the total score for the robot in the battle
-	 * @param survival          the survival score for the robot in the battle
+	 * @param robot			 the robot these results are for
+	 * @param teamLeaderName	team name
+	 * @param rank			  the rank of the robot in the battle
+	 * @param score			 the total score for the robot in the battle
+	 * @param survival		  the survival score for the robot in the battle
 	 * @param lastSurvivorBonus the last survivor bonus for the robot in the battle
-	 * @param bulletDamage      the bullet damage score for the robot in the battle
+	 * @param bulletDamage	  the bullet damage score for the robot in the battle
 	 * @param bulletDamageBonus the bullet damage bonus for the robot in the battle
-	 * @param ramDamage         the ramming damage for the robot in the battle
-	 * @param ramDamageBonus    the ramming damage bonus for the robot in the battle
-	 * @param firsts            the number of rounds this robot placed first
-	 * @param seconds           the number of rounds this robot placed second
-	 * @param thirds            the number of rounds this robot placed third
+	 * @param ramDamage		 the ramming damage for the robot in the battle
+	 * @param ramDamageBonus	the ramming damage bonus for the robot in the battle
+	 * @param firsts			the number of rounds this robot placed first
+	 * @param seconds		   the number of rounds this robot placed second
+	 * @param thirds			the number of rounds this robot placed third
 	 */
 	public RobotResults(
 			RobotSpecification robot,
@@ -76,7 +76,7 @@ public class RobotResults extends BattleResults {
 	 * Constructs new RobotResults based on a {@link RobotSpecification} and {@link robocode.BattleResults
 	 * BattleResults}.
 	 *
-	 * @param robot the robot these results are for
+	 * @param robot   the robot these results are for
 	 * @param results the battle results for the robot
 	 */
 	public RobotResults(
@@ -96,5 +96,21 @@ public class RobotResults extends BattleResults {
 	 */
 	public RobotSpecification getRobot() {
 		return robot;
+	}
+
+	/**
+	 * Converts an array of {@link BattleResults} into an array of {@link RobotResults}.
+	 *
+	 * @param results an array of BattleResults to convert.
+	 * @return an array of RobotResults converted from BattleResults.
+	 * @since 1.6.2
+	 */
+	public static RobotResults[] convertResults(BattleResults[] results) {
+		RobotResults[] resultsConv = new RobotResults[results.length];
+
+		for (int i = 0; i < results.length; i++) {
+			resultsConv[i] = (RobotResults) results[i];
+		}
+		return resultsConv;
 	}
 }

@@ -17,20 +17,18 @@ import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
 import robocode.BattleResults;
-import robocode.battle.events.BattleCompletedEvent;
-import robocode.battle.events.BattleEndedEvent;
-import robocode.battle.events.BattleStartedEvent;
-import robocode.battle.events.TurnEndedEvent;
-import robocode.battle.snapshot.RobotSnapshot;
-
-import java.util.List;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleFinishedEvent;
+import robocode.control.events.RoundStartedEvent;
+import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class TestDuplicatesAndScore extends RobotTestBed {
-	private List<RobotSnapshot> robots;
+	private IRobotSnapshot[] robots;
 	private BattleResults[] results;
 	private int lastTurn;
 
@@ -50,27 +48,29 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 	}
 
 	@Override
-	public void onBattleStarted(BattleStartedEvent event) {
-		super.onBattleStarted(event);
-		robots = event.getTurnSnapshot().getRobots();
+	public void onRoundStarted(final RoundStartedEvent event) {
+		super.onRoundStarted(event);
+		if (event.getRound() == 0) {
+			robots = event.getStartSnapshot().getRobots();
 
-		helpers.Assert.assertNear(566.2968069, robots.get(0).getX());
-		helpers.Assert.assertNear(436.3146436, robots.get(1).getX());
-		helpers.Assert.assertNear(317.3362130, robots.get(2).getX());
-		helpers.Assert.assertNear(717.6994092, robots.get(3).getX());
-		helpers.Assert.assertNear(145.5531935, robots.get(4).getX());
-		helpers.Assert.assertNear(734.4305396, robots.get(5).getX());
-		helpers.Assert.assertNear(335.7732607, robots.get(6).getX());
-		helpers.Assert.assertNear(390.8076498, robots.get(7).getX());
+			helpers.Assert.assertNear(566.2968069, robots[0].getX());
+			helpers.Assert.assertNear(436.3146436, robots[1].getX());
+			helpers.Assert.assertNear(317.3362130, robots[2].getX());
+			helpers.Assert.assertNear(717.6994092, robots[3].getX());
+			helpers.Assert.assertNear(145.5531935, robots[4].getX());
+			helpers.Assert.assertNear(734.4305396, robots[5].getX());
+			helpers.Assert.assertNear(335.7732607, robots[6].getX());
+			helpers.Assert.assertNear(390.8076498, robots[7].getX());
 
-		helpers.Assert.assertNear(100.000, robots.get(0).getEnergy());
-		helpers.Assert.assertNear(200.000, robots.get(1).getEnergy());
-		helpers.Assert.assertNear(120.000, robots.get(2).getEnergy());
-		helpers.Assert.assertNear(100.000, robots.get(3).getEnergy());
-		helpers.Assert.assertNear(200.000, robots.get(4).getEnergy());
-		helpers.Assert.assertNear(120.000, robots.get(5).getEnergy());
-		helpers.Assert.assertNear(100.000, robots.get(6).getEnergy());
-		helpers.Assert.assertNear(100.000, robots.get(7).getEnergy());
+			helpers.Assert.assertNear(100.000, robots[0].getEnergy());
+			helpers.Assert.assertNear(200.000, robots[1].getEnergy());
+			helpers.Assert.assertNear(120.000, robots[2].getEnergy());
+			helpers.Assert.assertNear(100.000, robots[3].getEnergy());
+			helpers.Assert.assertNear(200.000, robots[4].getEnergy());
+			helpers.Assert.assertNear(120.000, robots[5].getEnergy());
+			helpers.Assert.assertNear(100.000, robots[6].getEnergy());
+			helpers.Assert.assertNear(100.000, robots[7].getEnergy());
+		}
 	}
 
 	@Override
@@ -80,30 +80,30 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 		robots = event.getTurnSnapshot().getRobots();
 
 		if (lastTurn == 1) {
-			helpers.Assert.assertNear(566.2968069, robots.get(0).getX());
-			helpers.Assert.assertNear(437.1810299, robots.get(1).getX());
-			helpers.Assert.assertNear(317.3362130, robots.get(2).getX());
-			helpers.Assert.assertNear(717.6994092, robots.get(3).getX());
-			helpers.Assert.assertNear(145.2637220, robots.get(4).getX());
-			helpers.Assert.assertNear(734.4305396, robots.get(5).getX());
-			helpers.Assert.assertNear(335.7732607, robots.get(6).getX());
-			helpers.Assert.assertNear(389.8100070, robots.get(7).getX());
+			helpers.Assert.assertNear(566.2968069, robots[0].getX());
+			helpers.Assert.assertNear(437.1810299, robots[1].getX());
+			helpers.Assert.assertNear(317.3362130, robots[2].getX());
+			helpers.Assert.assertNear(717.6994092, robots[3].getX());
+			helpers.Assert.assertNear(145.2637220, robots[4].getX());
+			helpers.Assert.assertNear(734.4305396, robots[5].getX());
+			helpers.Assert.assertNear(335.7732607, robots[6].getX());
+			helpers.Assert.assertNear(389.8100070, robots[7].getX());
 		}
 
 		if (lastTurn == 1365) {
-			helpers.Assert.assertNear(456.1227607, robots.get(0).getX());
-			helpers.Assert.assertNear(401.8030122, robots.get(1).getX());
-			helpers.Assert.assertNear(317.3362130, robots.get(2).getX());
-			helpers.Assert.assertNear(685.9435204, robots.get(3).getX());
-			helpers.Assert.assertNear(97.20308612, robots.get(4).getX());
-			helpers.Assert.assertNear(734.4305396, robots.get(5).getX());
-			helpers.Assert.assertNear(327.2578349, robots.get(6).getX());
-			helpers.Assert.assertNear(523.5054202, robots.get(7).getX());
+			helpers.Assert.assertNear(456.1227607, robots[0].getX());
+			helpers.Assert.assertNear(401.8030122, robots[1].getX());
+			helpers.Assert.assertNear(317.3362130, robots[2].getX());
+			helpers.Assert.assertNear(685.9435204, robots[3].getX());
+			helpers.Assert.assertNear(97.20308612, robots[4].getX());
+			helpers.Assert.assertNear(734.4305396, robots[5].getX());
+			helpers.Assert.assertNear(327.2578349, robots[6].getX());
+			helpers.Assert.assertNear(523.5054202, robots[7].getX());
 		}
 	}
 
 	@Override
-	public void onBattleEnded(BattleEndedEvent event) {
+	public void onBattleFinished(BattleFinishedEvent event) {
 		if (event.isAborted()) {
 			results = null;
 		}
@@ -111,21 +111,21 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 
 	@Override
 	public void onBattleCompleted(BattleCompletedEvent event) {
-		results = event.getResults();
+		results = event.getSortedResults();
 	}
 
 	@Override
 	protected void runTeardown() {
 		Assert.assertNotNull(results);
 		Assert.assertNotNull(robots);
-		Assert.assertThat(robots.get(0).getName(), is("sample.Fire (1)"));
-		Assert.assertThat(robots.get(1).getName(), is("sampleteam.MyFirstLeader (1)"));
-		Assert.assertThat(robots.get(2).getName(), is("sampleteam.MyFirstDroid (1)"));
-		Assert.assertThat(robots.get(3).getName(), is("sample.Fire (2)"));
-		Assert.assertThat(robots.get(4).getName(), is("sampleteam.MyFirstLeader (2)"));
-		Assert.assertThat(robots.get(5).getName(), is("sampleteam.MyFirstDroid (2)"));
-		Assert.assertThat(robots.get(6).getName(), is("sample.Fire (3)"));
-		Assert.assertThat(robots.get(7).getName(), is("sample.Crazy"));
+		Assert.assertThat(robots[0].getName(), is("sample.Fire (1)"));
+		Assert.assertThat(robots[1].getName(), is("sampleteam.MyFirstLeader (1)"));
+		Assert.assertThat(robots[2].getName(), is("sampleteam.MyFirstDroid (1)"));
+		Assert.assertThat(robots[3].getName(), is("sample.Fire (2)"));
+		Assert.assertThat(robots[4].getName(), is("sampleteam.MyFirstLeader (2)"));
+		Assert.assertThat(robots[5].getName(), is("sampleteam.MyFirstDroid (2)"));
+		Assert.assertThat(robots[6].getName(), is("sample.Fire (3)"));
+		Assert.assertThat(robots[7].getName(), is("sample.Crazy"));
 		Assert.assertThat(results[0].getTeamLeaderName(), is("testing.TestTeam (2)"));
 		Assert.assertThat(results[1].getTeamLeaderName(), is("sample.Fire (1)"));
 		Assert.assertThat(results[2].getTeamLeaderName(), is("testing.TestTeam (1)"));

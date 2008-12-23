@@ -10,6 +10,8 @@
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Code cleanup
+ *     Pavel Savara
+ *     - number of rows limited
  *******************************************************************************/
 package robocode.dialog;
 
@@ -28,9 +30,10 @@ import java.io.InputStreamReader;
  */
 @SuppressWarnings("serial")
 public class ConsoleScrollPane extends JScrollPane {
-
+	private final int MAX_ROWS = 500;
 	private JTextArea textPane;
-	private Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);
+	private int lines;
+	private final Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);
 
 	public ConsoleScrollPane() {
 		super();
@@ -38,7 +41,21 @@ public class ConsoleScrollPane extends JScrollPane {
 	}
 
 	public void append(String text) {
+		lines++;
 		getTextPane().append(text);
+		if (lines > MAX_ROWS) {
+			lines = 0;
+			final String[] rows = getTextPane().getText().split("\n");
+			StringBuilder sb = new StringBuilder();
+			final int from = Math.min(rows.length, Math.max((MAX_ROWS / 2), rows.length - (MAX_ROWS / 2)));
+
+			for (int i = from; i < rows.length; i++) {
+				sb.append(rows[i]);
+				sb.append('\n');
+				lines++;
+			}
+			getTextPane().setText(sb.toString());
+		}
 	}
 
 	public Dimension getAreaSize() {
@@ -53,11 +70,6 @@ public class ConsoleScrollPane extends JScrollPane {
 		return getTextPane().getText();
 	}
 
-	/**
-	 * Return the textPane
-	 *
-	 * @return JTextPane
-	 */
 	public JTextArea getTextPane() {
 		if (textPane == null) {
 			textPane = new JTextArea();
@@ -68,12 +80,8 @@ public class ConsoleScrollPane extends JScrollPane {
 		return textPane;
 	}
 
-	/**
-	 * Return the scrollPane.
-	 *
-	 * @return JScrollPane
-	 */
 	private void initialize() {
+		lines = 0;
 		setViewportView(getTextPane());
 	}
 
@@ -97,7 +105,7 @@ public class ConsoleScrollPane extends JScrollPane {
 		scrollToBottom();
 	}
 
-	private Runnable scroller = new Runnable() {
+	private final Runnable scroller = new Runnable() {
 		public void run() {
 			getViewport().scrollRectToVisible(bottomRect);
 			getViewport().repaint();

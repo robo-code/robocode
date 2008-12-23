@@ -39,21 +39,21 @@ public class SoundCache {
 	/**
 	 * Table containing all sound clips
 	 */
-	private Map<Object, ClipClones> soundTable;
+	private final Map<Object, ClipClones> soundTable;
 
 	/**
 	 * Mixer used for creating clip instances
 	 */
-	private Mixer mixer;
+	private final Mixer mixer;
 
 	/**
 	 * Holds data, length and format for a given sound effect, which can be used to create
 	 * multiple instances of the same clip.
 	 */
 	private static class SoundData {
-		private AudioFormat format;
-		private int length;
-		private byte[] byteData;
+		private final AudioFormat format;
+		private final int length;
+		private final byte[] byteData;
 
 		private SoundData(AudioInputStream ais) throws IOException {
 			int bytesRead, pos;
@@ -81,13 +81,18 @@ public class SoundCache {
 	 * recently used clip will be returned.
 	 */
 	private static class ClipClones {
-		private Clip[] clips;
+		private final Clip[] clips;
 		private int idx;
 
 		private ClipClones(Mixer mixer, SoundData soundData, int size) throws LineUnavailableException {
 			idx = 0;
 			clips = new Clip[size];
+
 			DataLine.Info info = new DataLine.Info(Clip.class, soundData.format);
+
+			if (!AudioSystem.isLineSupported(info)) {
+				throw new LineUnavailableException("Required data line is not supported by the audio system");
+			}
 
 			for (int i = 0; i < size; i++) {
 				clips[i] = (Clip) mixer.getLine(info);
@@ -127,9 +132,9 @@ public class SoundCache {
 	 * If there is any error, the method returns silently, and clip instances will
 	 * not be found later for the provided key.
 	 *
-	 * @param key          the key to be used for later retrieval of the sound
+	 * @param key		  the key to be used for later retrieval of the sound
 	 * @param resourceName the resource holding the audio data
-	 * @param numClones    the number of copies of the clip to be created
+	 * @param numClones	the number of copies of the clip to be created
 	 */
 	public void addSound(Object key, String resourceName, int numClones) {
 		if (mixer == null || resourceName == null || (resourceName.trim().length() == 0)) {

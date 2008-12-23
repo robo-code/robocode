@@ -27,12 +27,12 @@ public class RenderImage extends RenderObject {
 	/**
 	 * Image
 	 */
-	protected Image image;
+	protected final Image image;
 
 	/**
 	 * Area containing the bounds of the image to paint
 	 */
-	protected Area boundArea;
+	protected final Area boundArea;
 
 	/**
 	 * Constructs a new {@code RenderImage}, which has it's origin in the center

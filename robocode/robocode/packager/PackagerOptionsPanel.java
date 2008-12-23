@@ -41,9 +41,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class PackagerOptionsPanel extends WizardPanel {
-	private RobotPackager robotPackager;
+	private final RobotPackager robotPackager;
 	private JCheckBox includeSource;
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private JLabel authorLabel;
 	private JTextField authorField;
@@ -400,7 +400,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 	}
 
 	static class PackAndShowFrameWorker implements Runnable {
-		JFrame frame;
+		final JFrame frame;
 
 		public PackAndShowFrameWorker(JFrame frame) {
 			this.frame = frame;

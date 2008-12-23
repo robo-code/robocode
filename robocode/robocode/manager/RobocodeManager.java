@@ -22,19 +22,23 @@
  *     Nathaniel Troutman
  *     - Bugfix: Added cleanup() to prevent memory leaks by removing circular
  *       references
+ *     Pavel Savara
+ *     - uses interfaces of components
  *******************************************************************************/
 package robocode.manager;
 
 
 import robocode.RobocodeFileOutputStream;
-import robocode.battle.IBattleManager;
 import robocode.io.FileUtil;
 import robocode.io.Logger;
 import static robocode.io.Logger.logError;
+import robocode.recording.IRecordManager;
+import robocode.recording.RecordManager;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
+import robocode.sound.ISoundManager;
 import robocode.sound.SoundManager;
 
 import java.io.*;
@@ -47,17 +51,19 @@ import java.security.Policy;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeManager {
-	private BattleManager battleManager;
-	private CpuManager cpuManager;
-	private ImageManager imageManager;
-	private RobotDialogManager robotDialogManager;
-	private RobotRepositoryManager robotRepositoryManager;
-	private ThreadManager threadManager;
-	private WindowManager windowManager;
-	private VersionManager versionManager;
-	private SoundManager soundManager;
+	private IBattleManager battleManager;
+	private ICpuManager cpuManager;
+	private IImageManager imageManager;
+	private IRobotDialogManager robotDialogManager;
+	private IRepositoryManager repositoryManager;
+	private IThreadManager threadManager;
+	private IWindowManager windowManager;
+	private IVersionManager versionManager;
+	private ISoundManager soundManager;
+	private IRecordManager recordManager;
+	private IHostManager hostManager;
 
-	private boolean slave;
+	private final boolean slave;
 
 	private RobocodeProperties properties;
 
@@ -84,16 +90,23 @@ public class RobocodeManager {
 		return battleManager;
 	}
 
+	public IHostManager getHostManager() {
+		if (hostManager == null) {
+			hostManager = new HostManager(this);
+		}
+		return hostManager;
+	}
+
 	/**
 	 * Gets the robotManager.
 	 *
 	 * @return Returns a RobotListManager
 	 */
-	public RobotRepositoryManager getRobotRepositoryManager() {
-		if (robotRepositoryManager == null) {
-			robotRepositoryManager = new RobotRepositoryManager(this);
+	public IRepositoryManager getRobotRepositoryManager() {
+		if (repositoryManager == null) {
+			repositoryManager = new RobotRepositoryManager(this);
 		}
-		return robotRepositoryManager;
+		return repositoryManager;
 	}
 
 	/**
@@ -101,7 +114,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a WindowManager
 	 */
-	public WindowManager getWindowManager() {
+	public IWindowManager getWindowManager() {
 		if (windowManager == null) {
 			windowManager = new WindowManager(this);
 		}
@@ -113,7 +126,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a ThreadManager
 	 */
-	public ThreadManager getThreadManager() {
+	public IThreadManager getThreadManager() {
 		if (threadManager == null) {
 			threadManager = new ThreadManager();
 		}
@@ -125,7 +138,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a RobotDialogManager
 	 */
-	public RobotDialogManager getRobotDialogManager() {
+	public IRobotDialogManager getRobotDialogManager() {
 		if (robotDialogManager == null) {
 			robotDialogManager = new RobotDialogManager(this);
 		}
@@ -147,6 +160,7 @@ public class RobocodeManager {
 				logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 			} finally {
 				if (in != null) {
+					// noinspection EmptyCatchBlock
 					try {
 						in.close();
 					} catch (IOException e) {}
@@ -171,6 +185,7 @@ public class RobocodeManager {
 			Logger.logError(e);
 		} finally {
 			if (out != null) {
+				// noinspection EmptyCatchBlock
 				try {
 					out.close();
 				} catch (IOException e) {}
@@ -183,7 +198,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a ImageManager
 	 */
-	public ImageManager getImageManager() {
+	public IImageManager getImageManager() {
 		if (imageManager == null) {
 			imageManager = new ImageManager(this);
 		}
@@ -195,7 +210,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a VersionManager
 	 */
-	public VersionManager getVersionManager() {
+	public IVersionManager getVersionManager() {
 		if (versionManager == null) {
 			versionManager = new VersionManager(this);
 		}
@@ -207,7 +222,7 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a CpuManager
 	 */
-	public CpuManager getCpuManager() {
+	public ICpuManager getCpuManager() {
 		if (cpuManager == null) {
 			cpuManager = new CpuManager(this);
 		}
@@ -219,11 +234,23 @@ public class RobocodeManager {
 	 *
 	 * @return Returns a SoundManager
 	 */
-	public SoundManager getSoundManager() {
+	public ISoundManager getSoundManager() {
 		if (soundManager == null) {
 			soundManager = new SoundManager(this);
 		}
 		return soundManager;
+	}
+
+	/**
+	 * Gets the Battle Recoder.
+	 *
+	 * @return Returns a BattleRecoder
+	 */
+	public IRecordManager getRecordManager() {
+		if (recordManager == null) {
+			recordManager = new RecordManager(this);
+		}
+		return recordManager;
 	}
 
 	/**
@@ -236,9 +263,9 @@ public class RobocodeManager {
 	}
 
 	private static void initStreams() {
-		PrintStream sysout = new SecurePrintStream(System.out, true, "System.out");
-		PrintStream syserr = new SecurePrintStream(System.err, true, "System.err");
-		InputStream sysin = new SecureInputStream(System.in, "System.in");
+		PrintStream sysout = new SecurePrintStream(System.out, true);
+		PrintStream syserr = new SecurePrintStream(System.err, true);
+		InputStream sysin = new SecureInputStream(System.in);
 
 		System.setOut(sysout);
 		if (!System.getProperty("debug", "false").equals("true")) {
@@ -260,15 +287,6 @@ public class RobocodeManager {
 		System.setSecurityManager(securityManager);
 
 		RobocodeFileOutputStream.setThreadManager(getThreadManager());
-
-		if (securityOn) {
-			ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-			while (tg != null) {
-				securityManager.addSafeThreadGroup(tg);
-				tg = tg.getParent();
-			}
-		}
 	}
 
 	public boolean isGUIEnabled() {
@@ -291,6 +309,10 @@ public class RobocodeManager {
 		if (battleManager != null) {
 			battleManager.cleanup();
 			battleManager = null;
+		}
+		if (hostManager != null) {
+			hostManager.cleanup();
+			hostManager = null;
 		}
 	}
 }

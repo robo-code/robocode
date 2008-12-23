@@ -49,9 +49,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class FilenamePanel extends WizardPanel {
-	private RobotPackager robotPackager;
+	private final RobotPackager robotPackager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 	private boolean robocodeErrorShown;
 
 	private JButton browseButton;
@@ -202,7 +202,7 @@ public class FilenamePanel extends WizardPanel {
 		return filenameField;
 	}
 
-	public boolean showFileSelectDialog() {
+	public void showFileSelectDialog() {
 		File f = new File("outgoing" + File.separatorChar);
 
 		JFileChooser chooser = new JFileChooser(f);
@@ -257,20 +257,17 @@ public class FilenamePanel extends WizardPanel {
 						continue;
 					}
 					if (ok == JOptionPane.CANCEL_OPTION) {
-						return false;
+						return;
 					}
 				}
 				getFilenameField().setText(robotFileName);
 				fireStateChanged();
-			} else {
-				return false;
 			}
 		}
-		return true;
 	}
 
 	static class ShowFrameWorker implements Runnable {
-		JFrame frame;
+		final JFrame frame;
 
 		public ShowFrameWorker(JFrame frame) {
 			this.frame = frame;

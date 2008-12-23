@@ -14,15 +14,26 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+import java.util.Hashtable;
+
+
 /**
  * This event is sent to {@link Robot#onBulletHit(BulletHitEvent) onBulletHit}
  * when one of your bullets has hit another robot.
  *
  * @author Mathew A. Nelson (original)
  */
-public class BulletHitEvent extends Event {
-	private String name;
-	private double energy;
+public final class BulletHitEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 50;
+
+	private final String name;
+	private final double energy;
 	private Bullet bullet;
 
 	/**
@@ -92,5 +103,34 @@ public class BulletHitEvent extends Event {
 	@Deprecated
 	public String getRobotName() {
 		return name;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onBulletHit(this);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void updateBullets(Hashtable<Integer, Bullet> bullets) {
+		// we need to pass same instance
+		bullet = bullets.get(bullet.getBulletId());
 	}
 }

@@ -35,9 +35,9 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	private JButton browseButton;
 	private JTextField pathTextField;
 
-	public RobocodeManager manager;
+	public final RobocodeManager manager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -53,9 +53,6 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 		}
 	}
 
-	/**
-	 * PreferencesDialog constructor
-	 */
 	public PreferencesDevelopmentOptionsTab(RobocodeManager manager) {
 		super();
 		this.manager = manager;

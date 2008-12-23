@@ -41,14 +41,14 @@ import java.util.Vector;
 public class UpdateRatingFiles {
 
 	private String game;
-	private String minibots;
-	private String microbots;
-	private String nanobots;
-	private String battlesnumfile;
-	private String generalratings;
-	private String miniratings;
-	private String microratings;
-	private String nanoratings;
+	private final String minibots;
+	private final String microbots;
+	private final String nanobots;
+	private final String battlesnumfile;
+	private final String generalratings;
+	private final String miniratings;
+	private final String microratings;
+	private final String nanoratings;
 
 	public UpdateRatingFiles(String propertiesfile) {
 		// Read parameters
@@ -93,7 +93,7 @@ public class UpdateRatingFiles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 

@@ -14,7 +14,10 @@
 package robocode;
 
 
-import robocode.peer.BulletPeer;
+import robocode.peer.BulletStatus;
+import robocode.peer.robot.IHiddenBulletHelper;
+
+import java.io.Serializable;
 
 
 /**
@@ -29,16 +32,39 @@ import robocode.peer.BulletPeer;
  * @see BulletMissedEvent
  * @see BulletHitBulletEvent
  */
-public class Bullet {
-	private BulletPeer peer;
+public class Bullet implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	private final double headingRadians;
+	private double x;
+	private double y;
+	private final double power;
+	private final String ownerName;
+	private String victimName;
+	private boolean isActive;
+	private int bulletId;
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object
 	 *
-	 * @param peer the bullet peer of the {@code Bullet}
+	 * @param heading   the heading of the bullet, in radians.
+	 * @param x		 the starting x position of the bullet.
+	 * @param y		 the starting y position of the bullet.
+	 * @param power	 the power of the bullet.
+	 * @param ownerName the name of the owner robot that owns the bullet.
+	 * @param victimName the name of the robot hit by bullet
+	 * @param isActive still moves
+	 * @param bulletId unique id of bullet for owner robot
 	 */
-	public Bullet(BulletPeer peer) {
-		this.peer = peer;
+	public Bullet(double heading, double x, double y, double power, String ownerName, String victimName, boolean isActive, int bulletId) {
+		this.headingRadians = heading;
+		this.bulletId = bulletId;
+		this.x = x;
+		this.y = y;
+		this.power = power;
+		this.ownerName = ownerName;
+		this.victimName = victimName;
+		this.isActive = isActive; 
 	}
 
 	/**
@@ -49,7 +75,7 @@ public class Bullet {
 	 * @return the direction the bullet is/was heading, in degrees
 	 */
 	public double getHeading() {
-		return Math.toDegrees(peer.getHeading());
+		return Math.toDegrees(headingRadians);
 	}
 
 	/**
@@ -60,7 +86,7 @@ public class Bullet {
 	 * @return the direction the bullet is/was heading, in radians
 	 */
 	public double getHeadingRadians() {
-		return peer.getHeading();
+		return headingRadians;
 	}
 
 	/**
@@ -69,7 +95,7 @@ public class Bullet {
 	 * @return the name of the robot that fired this bullet
 	 */
 	public String getName() {
-		return peer.getOwner().getName();
+		return ownerName;
 	}
 
 	/**
@@ -82,7 +108,7 @@ public class Bullet {
 	 * @return the power of the bullet
 	 */
 	public double getPower() {
-		return peer.getPower();
+		return power;
 	}
 
 	/**
@@ -92,7 +118,7 @@ public class Bullet {
 	 * @return the velocity of the bullet
 	 */
 	public double getVelocity() {
-		return peer.getVelocity();
+		return Rules.getBulletSpeed(power);
 	}
 
 	/**
@@ -103,7 +129,7 @@ public class Bullet {
 	 *         the bullet has not hit a robot.
 	 */
 	public String getVictim() {
-		return (peer.getVictim() != null) ? peer.getVictim().getName() : null;
+		return victimName;
 	}
 
 	/**
@@ -112,7 +138,7 @@ public class Bullet {
 	 * @return the X position of the bullet
 	 */
 	public double getX() {
-		return peer.getX();
+		return x;
 	}
 
 	/**
@@ -121,7 +147,7 @@ public class Bullet {
 	 * @return the Y position of the bullet
 	 */
 	public double getY() {
-		return peer.getY();
+		return y;
 	}
 
 	/**
@@ -131,6 +157,45 @@ public class Bullet {
 	 *         {@code false} otherwise
 	 */
 	public boolean isActive() {
-		return peer.isActive();
+		return isActive;
+	}
+
+	/**
+	 * Updates this bullet based on the specified bullet status.
+	 *
+	 * @param status the new bullet status.
+	 */
+	// this method is invisible on RobotAPI
+	private void update(BulletStatus status) {
+		x = status.x;
+		y = status.y;
+		victimName = status.victimName;
+		isActive = status.isActive;
+	}
+
+	// this method is invisible on RobotAPI
+	/**
+	 * @return unique id of bullet for owner robot
+	 */
+	int getBulletId() {
+		return bulletId;
+	}
+
+	/**
+	 * Creates a hidden event helper for accessing hidden methods on this object.
+	 * 
+	 * @return a hidden event helper.
+	 */
+	// this method is invisible on RobotAPI
+	static IHiddenBulletHelper createHiddenHelper() {
+		return new HiddenBulletHelper();
+	}
+
+	// this class is invisible on RobotAPI
+	private static class HiddenBulletHelper implements IHiddenBulletHelper {
+
+		public void update(Bullet bullet, BulletStatus status) {
+			bullet.update(status);
+		}
 	}
 }

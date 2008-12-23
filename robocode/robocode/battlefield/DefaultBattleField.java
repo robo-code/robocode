@@ -14,7 +14,7 @@
 package robocode.battlefield;
 
 
-import robocode.util.BoundingRectangle;
+import robocode.common.BoundingRectangle;
 
 
 /**
@@ -22,7 +22,9 @@ import robocode.util.BoundingRectangle;
  * @author Flemming N. Larsen (contributor)
  */
 public class DefaultBattleField implements BattleField {
-	private BoundingRectangle boundingBox;
+	private static final long serialVersionUID = 1L;
+
+	private final BoundingRectangle boundingBox;
 
 	public DefaultBattleField(int width, int height) {
 		super();

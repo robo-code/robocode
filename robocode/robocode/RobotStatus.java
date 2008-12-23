@@ -12,7 +12,11 @@
 package robocode;
 
 
+import robocode.battle.Battle;
+import robocode.peer.ExecCommands;
 import robocode.peer.RobotPeer;
+
+import java.io.Serializable;
 
 
 /**
@@ -22,42 +26,53 @@ import robocode.peer.RobotPeer;
  * @author Flemming N. Larsen (original)
  * @since 1.5
  */
-public class RobotStatus {
+public final class RobotStatus implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	private double energy;
-	private double x;
-	private double y;
-	private double heading;
-	private double gunHeading;
-	private double radarHeading;
-	private double velocity;
-	private double turnRemaining;
-	private double radarTurnRemaining;
-	private double gunTurnRemaining;
-	private double distanceRemaining;
-	private double gunHeat;
+	private final double energy;
+	private final double x;
+	private final double y;
+	private final double bodyHeading;
+	private final double gunHeading;
+	private final double radarHeading;
+	private final double velocity;
+	private final double bodyTurnRemaining;
+	private final double radarTurnRemaining;
+	private final double gunTurnRemaining;
+	private final double distanceRemaining;
+	private final double gunHeat;
+	private final int others;
+	private final int roundNum;
+	private final int numRounds;
+	private final long time;
 
 	/**
 	 * Creates a new RobotStatus based a a RobotPeer.
 	 * This constructor is called internally from the game.
 	 *
 	 * @param robotPeer the RobotPeer containing the states we must make a snapshot of
+	 * @param commands  data from commands
+	 * @param battle	data from battle
 	 */
-	public RobotStatus(RobotPeer robotPeer) {
-		synchronized (robotPeer) {
-			energy = robotPeer.getEnergy();
-			x = robotPeer.getX();
-			y = robotPeer.getY();
-			heading = robotPeer.getBodyHeading();
-			gunHeading = robotPeer.getGunHeading();
-			radarHeading = robotPeer.getRadarHeading();
-			velocity = robotPeer.getVelocity();
-			turnRemaining = robotPeer.getBodyTurnRemaining();
-			radarTurnRemaining = robotPeer.getRadarTurnRemaining();
-			gunTurnRemaining = robotPeer.getGunTurnRemaining();
-			distanceRemaining = robotPeer.getDistanceRemaining();
-			gunHeat = robotPeer.getGunHeat();
-		}
+	public RobotStatus(RobotPeer robotPeer, ExecCommands commands, Battle battle) {
+		energy = robotPeer.getEnergy();
+		x = robotPeer.getX();
+		y = robotPeer.getY();
+		bodyHeading = robotPeer.getBodyHeading();
+		gunHeading = robotPeer.getGunHeading();
+		radarHeading = robotPeer.getRadarHeading();
+		velocity = robotPeer.getVelocity();
+		gunHeat = robotPeer.getGunHeat();
+
+		bodyTurnRemaining = commands.getBodyTurnRemaining();
+		radarTurnRemaining = commands.getRadarTurnRemaining();
+		gunTurnRemaining = commands.getGunTurnRemaining();
+		distanceRemaining = commands.getDistanceRemaining();
+
+		others = battle.getActiveRobots() - (robotPeer.isAlive() ? 1 : 0);
+		roundNum = battle.getRoundNum();
+		numRounds = battle.getNumRounds();
+		time = battle.getTime();
 	}
 
 	/**
@@ -101,7 +116,7 @@ public class RobotStatus {
 	 * @return the direction that the robot's body is facing, in radians.
 	 */
 	public double getHeadingRadians() {
-		return heading;
+		return bodyHeading;
 	}
 
 	/**
@@ -114,7 +129,7 @@ public class RobotStatus {
 	 * @return the direction that the robot's body is facing, in degrees.
 	 */
 	public double getHeading() {
-		return Math.toDegrees(heading);
+		return Math.toDegrees(bodyHeading);
 	}
 
 	/**
@@ -192,7 +207,7 @@ public class RobotStatus {
 	 * @return the angle remaining in the robots's turn, in radians
 	 */
 	public double getTurnRemainingRadians() {
-		return turnRemaining;
+		return bodyTurnRemaining;
 	}
 
 	/**
@@ -205,7 +220,7 @@ public class RobotStatus {
 	 * @return the angle remaining in the robots's turn, in degrees
 	 */
 	public double getTurnRemaining() {
-		return Math.toDegrees(turnRemaining);
+		return Math.toDegrees(bodyTurnRemaining);
 	}
 
 	/**
@@ -294,5 +309,48 @@ public class RobotStatus {
 	 */
 	public double getGunHeat() {
 		return gunHeat;
+	}
+
+	/**
+	 * Returns how many opponents that are left in the current round.
+	 *
+	 * @return how many opponents that are left in the current round.
+	 * @since 1.6.2
+	 */
+	public int getOthers() {
+		return others;
+	}
+
+	/**
+	 * Returns the number of rounds in the current battle.
+	 *
+	 * @return the number of rounds in the current battle
+	 * @see #getRoundNum()
+	 * @since 1.6.2
+	 */
+	public int getNumRounds() {
+		return numRounds;
+	}
+
+	/**
+	 * Returns the current round number (0 to {@link #getNumRounds()} - 1) of
+	 * the battle.
+	 *
+	 * @return the current round number of the battle
+	 * @see #getNumRounds()
+	 * @since 1.6.2
+	 */
+	public int getRoundNum() {
+		return roundNum;
+	}
+
+	/**
+	 * Returns the game time of the round, where the time is equal to the current turn in the round.
+	 *
+	 * @return the game time/turn of the current round.
+	 * @since 1.6.2
+	 */
+	public long getTime() {
+		return time;
 	}
 }

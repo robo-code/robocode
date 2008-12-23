@@ -14,6 +14,12 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.ITeamEvents;
+import robocode.robotinterfaces.ITeamRobot;
+
+import java.awt.*;
 import java.io.Serializable;
 
 
@@ -24,9 +30,12 @@ import java.io.Serializable;
  *
  * @author Mathew A. Nelson (original)
  */
-public class MessageEvent extends Event {
-	private String sender;
-	private Serializable message;
+public final class MessageEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 75;
+
+	private final String sender;
+	private final Serializable message;
 
 	/**
 	 * Called by the game to create a new MessageEvent.
@@ -55,5 +64,27 @@ public class MessageEvent extends Event {
 	 */
 	public Serializable getMessage() {
 		return message;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isTeamRobot()) {
+			ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
+
+			if (listener != null) {
+				listener.onMessageReceived(this);
+			}
+		}
 	}
 }

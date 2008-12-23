@@ -29,10 +29,15 @@ import robocode.BattleResults;
  */
 public class TeamStatistics implements ContestantStatistics {
 
-	private TeamPeer teamPeer;
+	private final TeamPeer teamPeer;
+	private int rank;
 
 	public TeamStatistics(TeamPeer teamPeer) {
 		this.teamPeer = teamPeer;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
 	}
 
 	public double getTotalScore() {
@@ -143,6 +148,15 @@ public class TeamStatistics implements ContestantStatistics {
 		return d;
 	}
 
+	public double getCurrentSurvivalBonus() {
+		double d = 0;
+
+		for (RobotPeer teammate : teamPeer) {
+			d += teammate.getRobotStatistics().getCurrentSurvivalBonus();
+		}
+		return d;
+	}
+
 	public double getCurrentBulletDamageScore() {
 		double d = 0;
 
@@ -179,20 +193,10 @@ public class TeamStatistics implements ContestantStatistics {
 		return d;
 	}
 
-	public BattleResults getFinalResults(int rank) {
+	public BattleResults getFinalResults() {
 		return new BattleResults(teamPeer.getName(), rank, getTotalScore(), getTotalSurvivalScore(),
 				getTotalLastSurvivorBonus(), getTotalBulletDamageScore(), getTotalBulletKillBonus(),
 				getTotalRammingDamageScore(), getTotalRammingKillBonus(), getTotalFirsts(), getTotalSeconds(),
-				getTotalThirds());
-	}
-
-	public BattleResults getCurrentResults(int rank) {
-		return new BattleResults(teamPeer.getName(), rank, getTotalScore() + getCurrentScore(),
-				getTotalSurvivalScore() + getCurrentSurvivalScore(), getTotalLastSurvivorBonus(),
-				getTotalBulletDamageScore() + getCurrentBulletDamageScore(),
-				getTotalBulletKillBonus() + getCurrentBulletKillBonus(),
-				getTotalRammingDamageScore() + getCurrentRammingDamageScore(),
-				getTotalRammingKillBonus() + getCurrentRammingKillBonus(), getTotalFirsts(), getTotalSeconds(),
 				getTotalThirds());
 	}
 }

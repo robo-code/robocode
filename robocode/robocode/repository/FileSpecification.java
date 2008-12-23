@@ -20,9 +20,8 @@ package robocode.repository;
 
 
 import robocode.io.FileUtil;
-import robocode.io.Logger;
+import robocode.manager.IRepositoryManager;
 import robocode.manager.NameManager;
-import robocode.manager.RobotRepositoryManager;
 
 import java.io.*;
 import java.net.URL;
@@ -38,7 +37,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 
 	private static final long serialVersionUID = 1L;
 
-	protected Properties props = new Properties();
+	protected final Properties props = new Properties();
 
 	private final static String ROBOCODE_VERSION = "robocode.version";
 	private final static String LIBRARY_DESCRIPTION = "library.description";
@@ -64,27 +63,22 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	private String propertiesFileName;
 	private String thisFileName;
 	private String fileType;
-	private NameManager nameManager;
+	protected NameManager nameManager;
 	private long fileLastModified;
 	private long fileLength;
 
 	private boolean duplicate;
 
 	@Override
-	public Object clone() {
-		try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			Logger.logError("Clone not supported!");
-			return null;
-		}
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 	protected FileSpecification() {}
 
 	public abstract String getUid();
 
-	public static FileSpecification createSpecification(RobotRepositoryManager repositoryManager, File f, File rootDir, String prefix, boolean developmentVersion) {
+	public static FileSpecification createSpecification(IRepositoryManager repositoryManager, File f, File rootDir, String prefix, boolean developmentVersion) {
 		String filename = f.getName();
 		String fileType = FileUtil.getFileType(filename);
 
@@ -93,10 +87,10 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		if (fileType.equals(".team")) {
 			newSpec = new TeamSpecification(f, rootDir, prefix, developmentVersion);
 		} else if (fileType.equals(".jar") || fileType.equals(".zip")) {
-			newSpec = new JarSpecification(f, rootDir, prefix, developmentVersion);
+			newSpec = new JarSpecification(f, rootDir, developmentVersion);
 		} else {
 			newSpec = new RobotFileSpecification(f, rootDir, prefix, developmentVersion);
-			if (!(developmentVersion || newSpec.getValid())) {
+			if (!(developmentVersion || newSpec.isValid())) {
 				newSpec = new ClassSpecification((RobotFileSpecification) newSpec);
 			}
 		}
@@ -447,8 +441,16 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 		return getNameManager().getFullClassName();
 	}
 
-	public boolean getValid() {
+	public String getShortClassName() {
+		return getNameManager().getShortClassName();
+	}
+
+	public boolean isValid() {
 		return valid;
+	}
+
+	public void setValid(boolean value) {
+		valid = value;
 	}
 
 	public boolean isDuplicate() {
@@ -460,16 +462,7 @@ public abstract class FileSpecification implements Comparable<FileSpecification>
 	}
 
 	public NameManager getNameManager() {
-		if (nameManager == null) {
-			if (this instanceof RobotFileSpecification) {
-				nameManager = new NameManager(name, version, developmentVersion, false);
-			} else if (this instanceof TeamSpecification) {
-				nameManager = new NameManager(name, version, developmentVersion, true);
-			} else {
-				throw new RuntimeException("Cannot get a nameManager for file type " + getFileType());
-			}
-		}
-		return nameManager;
+		throw new RuntimeException("Cannot get a nameManager for file type " + getFileType());
 	}
 
 	public boolean exists() {

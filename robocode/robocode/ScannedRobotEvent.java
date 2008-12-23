@@ -14,6 +14,13 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+
+
 /**
  * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot(ScannedRobotEvent)
  * onScannedRobot()} when you scan a robot.
@@ -21,18 +28,21 @@ package robocode;
  *
  * @author Mathew A. Nelson (original)
  */
-public class ScannedRobotEvent extends Event {
-	private String name;
-	private double energy;
-	private double heading;
-	private double bearing;
-	private double distance;
-	private double velocity;
+public final class ScannedRobotEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 10;
+
+	private final String name;
+	private final double energy;
+	private final double heading;
+	private final double bearing;
+	private final double distance;
+	private final double velocity;
 
 	/**
 	 * Called by the game to create a new ScannedRobotEvent.
 	 *
-	 * @param name     the name of the scanned robot
+	 * @param name	 the name of the scanned robot
 	 * @param energy   the energy of the scanned robot
 	 * @param bearing  the bearing of the scanned robot, in radians
 	 * @param distance the distance from your robot to the scanned robot
@@ -226,7 +236,7 @@ public class ScannedRobotEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int compareTo(Event event) {
+	public final int compareTo(Event event) {
 		final int res = super.compareTo(event);
 
 		if (res != 0) {
@@ -239,5 +249,25 @@ public class ScannedRobotEvent extends Event {
 		}
 		// No difference found
 		return 0;
-	}    
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onScannedRobot(this);
+		}
+	}
 }

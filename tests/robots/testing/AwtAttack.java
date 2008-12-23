@@ -16,8 +16,8 @@ import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 
 import javax.swing.*;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 
@@ -65,7 +65,7 @@ public class AwtAttack extends AdvancedRobot {
 	}
 
 	private void writeAttack() {
-		FileOutputStream fs = null;
+		FileOutputStream fs;
 
 		try {
 			fs = new FileOutputStream("C:\\Robocode.attack");

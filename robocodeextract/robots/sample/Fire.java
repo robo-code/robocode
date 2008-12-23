@@ -18,6 +18,7 @@ import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 import java.awt.*;
 
@@ -67,7 +68,7 @@ public class Fire extends Robot {
 	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
-		turnRight(normalRelativeAngle(90 - (getHeading() - e.getHeading())));
+		turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
 
 		ahead(dist);
 		dist *= -1;
@@ -78,27 +79,9 @@ public class Fire extends Robot {
 	 * onHitRobot:  Aim at it.  Fire Hard!
 	 */
 	public void onHitRobot(HitRobotEvent e) {
-		double turnGunAmt = normalRelativeAngle(e.getBearing() + getHeading() - getGunHeading());
+		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
 
 		turnGunRight(turnGunAmt);
 		fire(3);
-	}
-
-	/**
-	 * normalRelativeAngle:  Returns angle such that -180 < angle <= 180
-	 */
-	public double normalRelativeAngle(double angle) {
-		if (angle > -180 && angle <= 180) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle <= -180) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle > 180) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
 	}
 }

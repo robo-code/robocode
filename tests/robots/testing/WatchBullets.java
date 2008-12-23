@@ -13,6 +13,7 @@ package testing;
 
 
 import robocode.*;
+import static robocode.util.Utils.normalRelativeAngle;
 
 
 /**
@@ -34,6 +35,14 @@ public class WatchBullets extends AdvancedRobot {
 		dump();
 	}
 
+	@Override
+	public void onBulletHit(BulletHitEvent event) {
+		if (bullet != event.getBullet()) {
+			out.println("Failed bullet identity");
+		}
+	}
+
+	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// Calculate exact location of the robot
 		double absoluteBearing = getHeading() + e.getBearing();
@@ -45,12 +54,10 @@ public class WatchBullets extends AdvancedRobot {
 			// We check gun heat here, because calling fire()
 			// uses a turn, which could cause us to lose track
 			// of the other robot.
-			if (getGunHeat() == 0) {
+			if (getGunHeat() == 0 && bullet == null) {
 				final Bullet lbullet = fireBullet(Math.min(3 - Math.abs(bearingFromGun), getEnergy() - .1));
 
-				if (bullet == null) {
-					bullet = lbullet;
-				}
+				bullet = lbullet;
 			}
 		} // otherwise just set the gun to turn.
 		// Note:  This will have no effect until we call scan()
@@ -71,20 +78,5 @@ public class WatchBullets extends AdvancedRobot {
 					getTime() + "Bullet " + bullet.getX() + " " + bullet.getY() + " " + bullet.getHeading() + " "
 					+ bullet.isActive());
 		}
-	}
-
-	public double normalRelativeAngle(double angle) {
-		if (angle > -180 && angle <= 180) {
-			return angle;
-		}
-		double fixedAngle = angle;
-
-		while (fixedAngle <= -180) {
-			fixedAngle += 360;
-		}
-		while (fixedAngle > 180) {
-			fixedAngle -= 360;
-		}
-		return fixedAngle;
 	}
 }

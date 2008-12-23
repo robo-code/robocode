@@ -24,21 +24,21 @@
  *     Luis Crespo
  *     - Added debug step feature by adding a "Next Turn" button, and changing
  *       the "Pause" button into a "Pause/Debug" button
+ *     Pavel Savara
+ *     - now driven by BattleObserver
  *******************************************************************************/
 package robocode.dialog;
 
 
-import robocode.battle.IBattleManager;
-import robocode.battle.events.*;
-import robocode.battle.snapshot.RobotSnapshot;
+import robocode.control.events.BattleAdaptor;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
+import robocode.control.events.*;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.ITurnSnapshot;
 import robocode.gfx.ImageUtil;
 import robocode.io.FileUtil;
-import robocode.manager.RobocodeManager;
-import robocode.manager.RobocodeProperties;
-import robocode.manager.RobotDialogManager;
-import robocode.manager.WindowManager;
+import robocode.manager.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -46,6 +46,9 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -63,10 +66,13 @@ public class RobocodeFrame extends JFrame {
 
 	private final static int UPDATE_TITLE_INTERVAL = 500; // milliseconds
 
-	private EventHandler eventHandler = new EventHandler();
+	private static final Cursor BUSY_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+
+	private final EventHandler eventHandler = new EventHandler();
 	private BattleObserver battleObserver;
 
-	private InteractiveHandler interactiveHandler;
+	private final InteractiveHandler interactiveHandler;
 
 	private RobocodeMenuBar robocodeMenuBar;
 
@@ -79,6 +85,7 @@ public class RobocodeFrame extends JFrame {
 
 	private JPanel mainPanel;
 	private JPanel battleViewPanel;
+	private JPanel sidePanel;
 	private JPanel robotButtonsPanel;
 
 	private JToolBar toolBar;
@@ -95,9 +102,11 @@ public class RobocodeFrame extends JFrame {
 	private boolean iconified;
 	private boolean exitOnClose = true;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
-	private WindowManager windowManager;
+	private final IWindowManager windowManager;
+
+	final List<RobotButton> robotButtons = new ArrayList<RobotButton>();
 
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
@@ -109,13 +118,20 @@ public class RobocodeFrame extends JFrame {
 
 	protected void finalize() throws Throwable {
 		try {
-			manager.getBattleManager().removeListener(battleObserver);
+			manager.getWindowManager().removeBattleListener(battleObserver);
 		} finally {
 			super.finalize();
 		}
 	}
 
+	public void setBusyPointer(boolean enabled) {
+		setCursor(enabled ? BUSY_CURSOR : DEFAULT_CURSOR);
+	}
+
 	public void addRobotButton(JButton b) {
+		if (b instanceof RobotButton) {
+			robotButtons.add((RobotButton) b);
+		}
 		getRobotButtonsPanel().add(b);
 		b.setVisible(true);
 		getRobotButtonsPanel().validate();
@@ -132,7 +148,7 @@ public class RobocodeFrame extends JFrame {
 			boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
 
 			manager.getProperties().setOptionsCommonShowResults(false);
-			battleManager.startNewBattle(battleManager.loadBattleProperties(), false, true);
+			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
 			battleManager.setDefaultBattleProperties();
 			manager.getProperties().setOptionsCommonShowResults(origShowResults);
 			restartButton.setEnabled(false);
@@ -181,7 +197,7 @@ public class RobocodeFrame extends JFrame {
 		if (mainPanel == null) {
 			mainPanel = new JPanel();
 			mainPanel.setLayout(new BorderLayout());
-			mainPanel.add(getRobotButtonsScrollPane(), BorderLayout.EAST);
+			mainPanel.add(getSidePanel(), BorderLayout.EAST);
 			mainPanel.add(getBattleViewPanel());
 		}
 		return mainPanel;
@@ -229,6 +245,21 @@ public class RobocodeFrame extends JFrame {
 			robocodeMenuBar = new RobocodeMenuBar(manager, this);
 		}
 		return robocodeMenuBar;
+	}
+
+	/**
+	 * Return the sidePanel.
+	 *
+	 * @return JPanel
+	 */
+	private JPanel getSidePanel() {
+		if (sidePanel == null) {
+			sidePanel = new JPanel();
+			sidePanel.setLayout(new BorderLayout());
+			sidePanel.add(getRobotButtonsScrollPane(), BorderLayout.CENTER);
+			sidePanel.add(new BattleButton(manager.getRobotDialogManager(), true), BorderLayout.SOUTH);
+		}
+		return sidePanel;
 	}
 
 	/**
@@ -288,7 +319,6 @@ public class RobocodeFrame extends JFrame {
 		if (pauseButton == null) {
 			pauseButton = new JToggleButton("Pause/Debug");
 			pauseButton.setMnemonic('P');
-			pauseButton.setDisplayedMnemonicIndex(0);
 			pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			pauseButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			pauseButton.addActionListener(eventHandler);
@@ -305,7 +335,6 @@ public class RobocodeFrame extends JFrame {
 		if (nextTurnButton == null) {
 			nextTurnButton = new JButton("Next Turn");
 			nextTurnButton.setMnemonic('N');
-			nextTurnButton.setDisplayedMnemonicIndex(0);
 			nextTurnButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			nextTurnButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			nextTurnButton.addActionListener(eventHandler);
@@ -324,7 +353,6 @@ public class RobocodeFrame extends JFrame {
 		if (stopButton == null) {
 			stopButton = new JButton("Stop");
 			stopButton.setMnemonic('S');
-			stopButton.setDisplayedMnemonicIndex(0);
 			stopButton.setHorizontalTextPosition(SwingConstants.CENTER);
 			stopButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			stopButton.addActionListener(eventHandler);
@@ -358,7 +386,7 @@ public class RobocodeFrame extends JFrame {
 	 *
 	 * @return JButton
 	 */
-	private JButton getReplayButton() {
+	public JButton getReplayButton() {
 		if (replayButton == null) {
 			replayButton = new JButton("Replay");
 			replayButton.setMnemonic('y');
@@ -492,7 +520,7 @@ public class RobocodeFrame extends JFrame {
 		setContentPane(getRobocodeContentPane());
 		setJMenuBar(getRobocodeMenuBar());
 
-		battleObserver = new BattleObserver(manager.getBattleManager());
+		battleObserver = new BattleObserver(manager.getWindowManager());
 
 		addWindowListener(eventHandler);
 
@@ -538,7 +566,7 @@ public class RobocodeFrame extends JFrame {
 
 	private int getTpsFromSlider() {
 		final int value = getTpsSlider().getValue();
-		
+
 		if (value <= 30) {
 			return value;
 		}
@@ -684,7 +712,7 @@ public class RobocodeFrame extends JFrame {
 			}
 			if (windowManager.closeRobocodeEditor()) {
 				WindowUtil.saveWindowPositions();
-				battleObserver.dispose();
+				battleObserver = null;
 				dispose();
 			}
 			manager.saveProperties();
@@ -726,7 +754,7 @@ public class RobocodeFrame extends JFrame {
 
 
 	private class BattleObserver extends BattleAdaptor {
-		private IBattleManager battleManager;
+		private final IWindowManager windowManager;
 		private int tps;
 		private int currentRound;
 		private int numberOfRounds;
@@ -736,25 +764,30 @@ public class RobocodeFrame extends JFrame {
 		private boolean isBattleReplay;
 		private long lastTitleUpdateTime;
 
-		public BattleObserver(IBattleManager battleManager) {
-			this.battleManager = battleManager;
-			battleManager.addListener(this);
+		public BattleObserver(IWindowManager windowManager) {
+			this.windowManager = windowManager;
+			windowManager.addBattleListener(this);
 		}
 
-		public void dispose() {
-			battleManager.removeListener(this);
+		protected void finalize() throws Throwable {
+			try {
+				windowManager.removeBattleListener(this);
+			} finally {
+				super.finalize();
+			}
 		}
 
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			numberOfRounds = event.getBattleProperties().getNumRounds();
+			numberOfRounds = event.getBattleRules().getNumRounds();
 			isBattleRunning = true;
 			isBattleReplay = event.isReplay();
 
 			getStopButton().setEnabled(true);
-			getRestartButton().setEnabled(true);
-			getReplayButton().setEnabled(false);
-
+			getRestartButton().setEnabled(manager.getBattleManager().getBattleProperties().getSelectedRobots() != null);
+			getReplayButton().setEnabled(event.isReplay());
+			getRobocodeMenuBar().getBattleSaveRecordAsMenuItem().setEnabled(false);
+			getRobocodeMenuBar().getBattleExportRecordMenuItem().setEnabled(false);
 			getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
 			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
 
@@ -765,38 +798,63 @@ public class RobocodeFrame extends JFrame {
 				manager.getWindowManager().showRankingDialog(!isBattleReplay);
 			}
 
-			getRobotButtonsPanel().removeAll();
-
-			final RobotDialogManager dialogManager = manager.getRobotDialogManager();
-			final java.util.List<RobotSnapshot> robots = event.getTurnSnapshot().getRobots();
-
-			dialogManager.trim(robots);
-			for (int index = 0; index < robots.size(); index++) {
-				final RobotSnapshot robot = robots.get(index);
-				final String name = robot.getName();
-				final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-				final RobotButton button = new RobotButton(dialogManager, manager.getBattleManager(), name, index,
-						attach);
-
-				button.setText(robot.getShortName());
-				addRobotButton(button);
-			}
-
-			getRobotButtonsPanel().repaint();
-
 			validate();
 
 			updateTitle();
 		}
 
+		public void onRoundStarted(final RoundStartedEvent event) {
+			if (event.getRound() == 0) {
+				getRobotButtonsPanel().removeAll();
+
+				final IRobotDialogManager dialogManager = manager.getRobotDialogManager();
+				final List<IRobotSnapshot> robots = Arrays.asList(event.getStartSnapshot().getRobots());
+
+				dialogManager.trim(robots);
+
+				int maxEnergy = 0;
+
+				for (IRobotSnapshot robot : robots) {
+					if (maxEnergy < robot.getEnergy()) {
+						maxEnergy = (int) robot.getEnergy();
+					}
+				}
+				if (maxEnergy == 0) {
+					maxEnergy = 1;
+				}
+				for (int index = 0; index < robots.size(); index++) {
+					final IRobotSnapshot robot = robots.get(index);
+					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
+					final RobotButton button = new RobotButton(manager, robot.getName(), maxEnergy, index,
+							robot.getContestantIndex(), attach);
+
+					button.setText(robot.getShortName());
+					addRobotButton(button);
+				}
+				getRobotButtonsPanel().repaint();
+			}
+		}
+
 		@Override
-		public void onBattleEnded(BattleEndedEvent event) {
+		public void onBattleFinished(BattleFinishedEvent event) {
 			isBattleRunning = false;
 
+			for (RobotButton robotButton : robotButtons) {
+				robotButton.detach();
+			}
+			robotButtons.clear();
+
+			final boolean canReplayRecord = (manager.getRecordManager().hasRecord());
+
+			final boolean enableSaveRecord = (manager.getProperties().getOptionsCommonEnableReplayRecording()
+					& manager.getRecordManager().hasRecord());
+
 			getStopButton().setEnabled(false);
-			getReplayButton().setEnabled(battleManager.hasReplayRecord());
+			getReplayButton().setEnabled(canReplayRecord);
 			getNextTurnButton().setEnabled(false);
 
+			getRobocodeMenuBar().getBattleSaveRecordAsMenuItem().setEnabled(enableSaveRecord);
+			getRobocodeMenuBar().getBattleExportRecordMenuItem().setEnabled(enableSaveRecord);
 			getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setEnabled(false);
 
 			updateTitle();
@@ -828,6 +886,15 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		public void onTurnEnded(TurnEndedEvent event) {
+			if (event == null) {
+				return;
+			}
+			final ITurnSnapshot turn = event.getTurnSnapshot();
+
+			if (turn == null) {
+				return;
+			}
+
 			tps = event.getTurnSnapshot().getTPS();
 			currentRound = event.getTurnSnapshot().getRound();
 			currentTurn = event.getTurnSnapshot().getTurn();
@@ -870,7 +937,7 @@ public class RobocodeFrame extends JFrame {
 								title.append(", ");
 							}
 							if (dispFps) {
-								title.append(battleView.getFPS()).append(" FPS");
+								title.append(manager.getWindowManager().getFPS()).append(" FPS");
 							}
 						}
 					}
@@ -895,7 +962,7 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		private class ResultsTask implements Runnable {
-			BattleCompletedEvent event;
+			final BattleCompletedEvent event;
 
 			ResultsTask(BattleCompletedEvent event) {
 				this.event = event;

@@ -25,6 +25,7 @@ import java.awt.*;
 /**
  * PaintingRobot - a sample robot that demonstrates the onPaint() and
  * getGraphics() methods.
+ * Also demonstrate feature of debugging properties on RobotDialog
  * <p/>
  * Moves in a seesaw motion, and spins the gun around at each end.
  * When painting is enabled for this robot, a red circle will be painted
@@ -51,6 +52,9 @@ public class PaintingRobot extends Robot {
 	 * Fire when we see a robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
+		// demonstrate feature of debugging properties on RobotDialog
+		setDebugProperty("lastScannedRobot", e.getName() + " at " + e.getBearing() + " degrees at time " + getTime());
+		
 		fire(1);
 	}
 
@@ -60,6 +64,13 @@ public class PaintingRobot extends Robot {
 	 * In addition, draw orange circles where we were hit.
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
+		// demonstrate feature of debugging properties on RobotDialog
+		setDebugProperty("lastHitBy", e.getName() + " with power of bullet " + e.getPower() + " at time " + getTime());
+
+		// show how to remove debugging property
+		setDebugProperty("lastScannedRobot", null);
+
+		// gebugging by painting to battle view
 		Graphics2D g = getGraphics();
 
 		g.setColor(Color.orange);

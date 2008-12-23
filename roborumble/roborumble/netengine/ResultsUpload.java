@@ -21,6 +21,7 @@
 package roborumble.netengine;
 
 
+import robocode.manager.VersionManager;
 import roborumble.battlesengine.CompetitionsSelector;
 import static roborumble.util.PropertiesUtil.getProperties;
 
@@ -40,18 +41,21 @@ import java.util.Vector;
  */
 public class ResultsUpload {
 
-	private String resultsfile;
-	private String resultsurl;
-	private String tempdir;
+	private final String client;
+	private final String resultsfile;
+	private final String resultsurl;
+	private final String tempdir;
 	private String game;
-	private String user;
-	private String sizesfile;
-	private String minibots;
-	private String microbots;
-	private String nanobots;
-	private CompetitionsSelector size;
-	private String battlesnumfile;
-	private String priority;
+	private final String user;
+	private final String sizesfile;
+	private final String minibots;
+	private final String microbots;
+	private final String nanobots;
+	private final CompetitionsSelector size;
+	private final String battlesnumfile;
+	private final String priority;
+	private final String teams;
+	private final String melee;
 
 	public ResultsUpload(String propertiesfile) {
 		// Read parameters
@@ -74,12 +78,15 @@ public class ResultsUpload {
 		nanobots = parameters.getProperty("NANOBOTS", "");
 		battlesnumfile = parameters.getProperty("BATTLESNUMFILE", "");
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
+		client = VersionManager.getVersionStatic();
+		teams = parameters.getProperty("TEAMS", "");
+		melee = parameters.getProperty("MELEE", "");
 
 		// Open competitions selector
 		size = new CompetitionsSelector(sizesfile, botsrepository);
 	}
 
-	public boolean uploadResults() {
+	public void uploadResults() {
 
 		boolean errorsfound = false;
 
@@ -114,12 +121,12 @@ public class ResultsUpload {
 			}
 		} catch (IOException e) {
 			System.out.println("Can't open result file for upload");
-			return false;
+			return;
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -131,7 +138,7 @@ public class ResultsUpload {
 		} catch (IOException e) {
 			System.out.println("Not able to open output file ... Aborting");
 			System.out.println(e);
-			return false;
+			return;
 		}
 
 		// Open the file to put the battles number for each participant
@@ -144,7 +151,7 @@ public class ResultsUpload {
 			System.out.println(e);
 
 			outtxt.close();
-			return false;
+			return;
 		}
 
 		// Open the file to put the battles which have priority
@@ -158,7 +165,7 @@ public class ResultsUpload {
 
 			outtxt.close();
 			battlesnum.close();
-			return false;
+			return;
 		}
 
 		// Post the results
@@ -179,10 +186,11 @@ public class ResultsUpload {
 
 			// if the match mode was general, then send the results to all competitions (asuming codesize is used).
 			// if its not, then send results only to smaller size competitions
-			String data = "version=1" + "&" + "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2]
-					+ "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
-					+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0]
-					+ "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
+			String data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee + "&"
+					+ "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&"
+					+ "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore=" + first[1] + "&" + "fbulletd="
+					+ first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0] + "&" + "sscore=" + second[1]
+					+ "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
 
 			if (matchtype.equals("GENERAL") || matchtype.equals("SERVER")) {
 				errorsfound = errorsfound | senddata(game, data, outtxt, true, results, i, battlesnum, prioritybattles);
@@ -191,28 +199,30 @@ public class ResultsUpload {
 			if (sizesfile.length() != 0) { // upload also related competitions
 				if (minibots.length() != 0 && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 1500)) {
-					data = "version=1" + "&" + "game=" + minibots + "&" + "rounds=" + header[1] + "&" + "field="
-							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
-							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
-							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
-							+ "ssurvival=" + second[3];
+					data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee
+							+ "&" + "game=" + minibots + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&"
+							+ "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
+							+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname="
+							+ second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival="
+							+ second[3];
 					errorsfound = errorsfound | senddata(minibots, data, outtxt, false, results, i, battlesnum, null);
 				}
 				if (microbots.length() != 0 && !matchtype.equals("NANO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 750)) {
-					data = "version=1" + "&" + "game=" + microbots + "&" + "rounds=" + header[1] + "&" + "field="
-							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
-							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
-							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
-							+ "ssurvival=" + second[3];
+					data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee
+							+ "&" + "game=" + microbots + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&"
+							+ "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
+							+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname="
+							+ second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival="
+							+ second[3];
 					errorsfound = errorsfound | senddata(microbots, data, outtxt, false, results, i, battlesnum, null);
 				}
 				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
-					data = "version=1" + "&" + "game=" + nanobots + "&" + "rounds=" + header[1] + "&" + "field="
-							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
-							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
-							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
-							+ "ssurvival=" + second[3];
+					data = "version=1" + "&" + "client=" + client + "&" + "game=" + nanobots + "&" + "rounds="
+							+ header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&"
+							+ "fname=" + first[0] + "&" + "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&"
+							+ "fsurvival=" + first[3] + "&" + "sname=" + second[0] + "&" + "sscore=" + second[1] + "&"
+							+ "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
 					errorsfound = errorsfound | senddata(nanobots, data, outtxt, false, results, i, battlesnum, null);
 				}
 			}
@@ -237,8 +247,6 @@ public class ResultsUpload {
 				System.out.println("Error when copying results errors file.");
 			}
 		}
-
-		return true;
 	}
 
 	private void saverror(PrintStream outtxt, String match, String bot1, String bot2, boolean saveonerror) {
@@ -328,7 +336,7 @@ public class ResultsUpload {
 			if (rd != null) {
 				try {
 					rd.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		return errorsfound;

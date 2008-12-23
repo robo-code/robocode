@@ -14,6 +14,14 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IAdvancedEvents;
+import robocode.robotinterfaces.IAdvancedRobot;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+
+
 /**
  * This event is sent to {@link AdvancedRobot#onCustomEvent(CustomEvent)
  * onCustomEvent()} when a custom condition is met. Be sure to reset or remove
@@ -24,7 +32,10 @@ package robocode;
  * @see #getCondition()
  */
 public class CustomEvent extends Event {
-	private Condition condition;
+	private static final long serialVersionUID = 1L;
+	private static final int DEFAULT_PRIORITY = 80;
+
+	private final Condition condition;
 
 	/**
 	 * Called by the game to create a new CustomEvent when a condition is met.
@@ -49,8 +60,9 @@ public class CustomEvent extends Event {
 	 */
 	public CustomEvent(Condition condition, int priority) {
 		this.condition = condition;
+		setPriority(priority);
 		if (condition != null) {
-			condition.setPriority(priority);
+			condition.setPriority(getPriority());
 		}
 	}
 
@@ -71,5 +83,54 @@ public class CustomEvent extends Event {
 	 */
 	public Condition getCondition() {
 		return condition;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		if (statics.isAdvancedRobot()) {
+			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+
+			if (listener != null) {
+				listener.onCustomEvent(this);
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	// final to disable overrides
+	public final int compareTo(Event event) {
+		return super.compareTo(event);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	// final to disable overrides
+	final boolean isCriticalEvent() {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	// final to disable overrides
+	public final int getPriority() {
+		return super.getPriority();
 	}
 }

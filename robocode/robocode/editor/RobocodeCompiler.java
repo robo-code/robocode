@@ -32,14 +32,11 @@ import java.io.IOException;
  */
 public class RobocodeCompiler {
 
-	private String compilerBinary;
-	private RobocodeEditor editor;
-	private String compilerOptions;
-	private String compilerClassPath;
+	private final String compilerBinary;
+	private final RobocodeEditor editor;
+	private final String compilerOptions;
+	private final String compilerClassPath;
 
-	/**
-	 * RobocodeCompiler constructor comment.
-	 */
 	protected RobocodeCompiler(RobocodeEditor editor, String binary, String options, String classPath) {
 		super();
 		this.compilerBinary = binary;

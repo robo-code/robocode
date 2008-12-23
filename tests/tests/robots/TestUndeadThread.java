@@ -12,10 +12,10 @@
 package robots;
 
 
-import helpers.RobotTestBed;
 import helpers.Assert;
+import helpers.RobotTestBed;
 import org.junit.Test;
-import robocode.battle.events.BattleErrorEvent;
+import robocode.control.events.BattleErrorEvent;
 
 import java.io.File;
 
@@ -24,7 +24,7 @@ import java.io.File;
  * @author Pavel Savara (original)
  */
 public class TestUndeadThread extends RobotTestBed {
-	boolean messagedDestroy;
+	boolean messagedStop;
 	boolean messagedForcing;
 
 	@Test
@@ -39,14 +39,14 @@ public class TestUndeadThread extends RobotTestBed {
 		if (error.contains("is not stopping.  Forcing a stop.")) {
 			messagedForcing = true;
 		}
-		if (error.contains("Warning, could not destroy")) {
-			messagedDestroy = true;
+		if (error.contains("Unable to stop thread")) {
+			messagedStop = true;
 		}
 	}
 
 	@Override
 	protected int getExpectedErrors() {
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class TestUndeadThread extends RobotTestBed {
 	@Override
 	protected void runTeardown() {
 		Assert.assertTrue(messagedForcing);
-		Assert.assertTrue(messagedDestroy);
+		Assert.assertTrue(messagedStop);
 		Assert.assertFalse(new File("C:\\Robocode.attack").exists());
 	}
 

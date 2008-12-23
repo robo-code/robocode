@@ -28,11 +28,13 @@
  *       of the robots folder and not from sub folders of the robots folder
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - detection of type of robot by overriden methods
  *******************************************************************************/
 package robocode.manager;
 
 
 import robocode.Droid;
+import robocode.Robot;
 import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
 import robocode.io.FileUtil;
@@ -43,7 +45,12 @@ import robocode.repository.*;
 import robocode.robotinterfaces.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,16 +66,17 @@ import java.util.jar.JarInputStream;
  * @author Robert D. Maupin (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotRepositoryManager {
+public class RobotRepositoryManager implements IRepositoryManager {
 	private FileSpecificationDatabase robotDatabase;
 
 	private File robotsDirectory;
 	private File robotCache;
 
 	private Repository repository;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
-	private List<FileSpecification> updatedJarList = Collections.synchronizedList(new ArrayList<FileSpecification>());
+	private final List<FileSpecification> updatedJarList = Collections.synchronizedList(
+			new ArrayList<FileSpecification>());
 	private boolean write;
 
 	public RobotRepositoryManager(RobocodeManager manager) {
@@ -158,6 +166,7 @@ public class RobotRepositoryManager {
 		// This loop should not be changed to an for-each loop as the updated jar list
 		// gets updated (jars are added) by the methods called in this loop, which can
 		// cause a ConcurrentModificationException!
+		// noinspection ForLoopReplaceableByForEach
 		for (int i = 0; i < updatedJarList.size(); i++) {
 			JarSpecification updatedJar = (JarSpecification) updatedJarList.get(i);
 
@@ -186,7 +195,7 @@ public class RobotRepositoryManager {
 			if (fs instanceof TeamSpecification) {
 				repository.add(fs);
 			} else if (fs instanceof RobotFileSpecification) {
-				if (verifyRootPackage(fs.getName())) {
+				if (verifyRobotName(fs.getName(), fs.getShortClassName())) {
 					repository.add(fs);
 				}
 			}
@@ -232,7 +241,7 @@ public class RobotRepositoryManager {
 	}
 
 	private void cleanupDatabase() {
-		List<File> externalDirectories = Collections.synchronizedList(new ArrayList<File>());
+		List<File> externalDirectories = new ArrayList<File>();
 		String externalPath = manager.getProperties().getOptionsDevelopmentPath();
 		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
 
@@ -359,7 +368,7 @@ public class RobotRepositoryManager {
 						}
 					}
 				}
-				if (fileSpecification.getValid()) {
+				if (fileSpecification.isValid()) {
 					robotList.add(fileSpecification);
 				}
 			}
@@ -375,7 +384,7 @@ public class RobotRepositoryManager {
 		try {
 			robotDatabase.store(new File(getRobotsDirectory(), "robot.database"));
 		} catch (IOException e) {
-			logError("IO Exception writing robot database: " + e);
+			logError("IO Exception writing robot database: ", e);
 		}
 	}
 
@@ -399,7 +408,7 @@ public class RobotRepositoryManager {
 
 				robotFileSpecification.setUid(robotClassManager.getUid());
 
-				if (robotFileSpecification.getValid()) {
+				if (robotFileSpecification.isValid()) {
 					if (!java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 						if (Droid.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setDroid(true);
@@ -414,16 +423,35 @@ public class RobotRepositoryManager {
 						}
 
 						if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
-							robotFileSpecification.setInteractiveRobot(true);
+							// in this case we make sure that robot don't waste time
+							if (checkMethodOverride(robotClass, Robot.class, "getInteractiveEventListener")
+									|| checkMethodOverride(robotClass, Robot.class, "onKeyPressed", KeyEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onKeyReleased", KeyEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onKeyTyped", KeyEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseClicked", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseEntered", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseExited", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMousePressed", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseReleased", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseMoved", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseDragged", MouseEvent.class)
+									|| checkMethodOverride(robotClass, Robot.class, "onMouseWheelMoved", MouseWheelEvent.class)
+									) {
+								robotFileSpecification.setInteractiveRobot(true);
+							}
 						}
 
 						if (IPaintRobot.class.isAssignableFrom(robotClass)) {
-							robotFileSpecification.setPaintRobot(true);
+							if (checkMethodOverride(robotClass, Robot.class, "getPaintEventListener")
+									|| checkMethodOverride(robotClass, Robot.class, "onPaint", Graphics2D.class)
+									) {
+								robotFileSpecification.setPaintRobot(true);
+							}
 						}
 
-						/* if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
-						 robotFileSpecification.setClassicRobot(true);
-						 }*/
+						if (Robot.class.isAssignableFrom(robotClass) && !robotFileSpecification.isAdvancedRobot()) {
+							robotFileSpecification.setStandardRobot(true);
+						}
 
 						if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
 							robotFileSpecification.setJuniorRobot(true);
@@ -435,6 +463,9 @@ public class RobotRepositoryManager {
 						}
 
 						if (IBasicRobot.class.isAssignableFrom(robotClass)) {
+							if (!robotFileSpecification.isAdvancedRobot() || !robotFileSpecification.isJuniorRobot()) {
+								robotFileSpecification.setStandardRobot(true);
+							}
 							updateNoDuplicates(robotFileSpecification);
 							return;
 						}
@@ -442,8 +473,9 @@ public class RobotRepositoryManager {
 				}
 				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
 			} catch (Throwable t) {
+				robotFileSpecification.setValid(false);
 				getRobotDatabase().put(key, robotFileSpecification);
-				logError(robotFileSpecification.getName() + ": Got an error with this class: " + t);
+				logError(robotFileSpecification.getName() + ": Got an error with this class: " + t.toString()); // just message here
 			}
 		} else if (fileSpecification instanceof JarSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
@@ -454,6 +486,22 @@ public class RobotRepositoryManager {
 		} else {
 			System.out.println("Update robot database not possible for type " + fileSpecification.getFileType());
 		}
+	}
+
+	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class<?>... parameterTypes) {
+		if (knownBase.isAssignableFrom(robotClass)) {
+			final Method getInteractiveEventListener;
+
+			try {
+				getInteractiveEventListener = robotClass.getMethod(name, parameterTypes);
+			} catch (NoSuchMethodException e) {
+				return false;
+			}
+			if (getInteractiveEventListener.getDeclaringClass().equals(knownBase)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void updateNoDuplicates(FileSpecification spec) {
@@ -519,12 +567,12 @@ public class RobotRepositoryManager {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (writer != null) {
 				try {
 					writer.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}
@@ -547,7 +595,7 @@ public class RobotRepositoryManager {
 				out.println("then copy the files into your robots directory");
 				out.println("and make the changes there.");
 				out.close();
-			} catch (IOException e) {}
+			} catch (IOException ignored) {}
 		}
 		WindowUtil.setStatus("Extracting .jar: " + jarSpecification.getFileName());
 
@@ -585,7 +633,7 @@ public class RobotRepositoryManager {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 		return 16;
@@ -628,7 +676,7 @@ public class RobotRepositoryManager {
 							continue;
 						}
 					}
-					File parentDirectory = new File(out.getParent());
+					File parentDirectory = new File(out.getParent()).getCanonicalFile();
 
 					parentDirectory.mkdirs();
 
@@ -669,13 +717,13 @@ public class RobotRepositoryManager {
 				jarIS.close();
 			}
 		} catch (IOException e) {
-			logError("IOException " + statusPrefix + ": " + e);
+			logError("IOException " + statusPrefix + ": ", e);
 		}
 		return rc;
 	}
 
-	// TODO: Needs to be updated?
 	public boolean cleanupOldSampleRobots(boolean delete) {
+		// TODO: Needs to be updated?
 		String oldSampleList[] = {
 			"Corners.java", "Crazy.java", "Fire.java", "MyFirstRobot.java", "RamFire.java", "SittingDuck.java",
 			"SpinBot.java", "Target.java", "Tracker.java", "TrackFire.java", "Walls.java", "Corners.class",
@@ -717,54 +765,41 @@ public class RobotRepositoryManager {
 		}
 	}
 
-	// TODO: Needs to be updated?
-	public boolean verifyRootPackage(String robotName) {
+	// Allowed maximum length for a robot's full package name
+	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+	// Allowed maximum length for a robot's short class name
+	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
+
+	public boolean verifyRobotName(String robotName, String shortClassName) {
 		int lIndex = robotName.indexOf(".");
+		String rootPackage = robotName;
 
 		if (lIndex > 0) {
-			String rootPackage = robotName.substring(0, lIndex);
+			rootPackage = robotName.substring(0, lIndex);
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
 				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
 				return false;
 			}
-			if (rootPackage.equalsIgnoreCase("sample")) {
-				if (robotName.equals("sample.Corners")) {
-					return true;
-				}
-				if (robotName.equals("sample.Crazy")) {
-					return true;
-				}
-				if (robotName.equals("sample.Fire")) {
-					return true;
-				}
-				if (robotName.equals("sample.MyFirstRobot")) {
-					return true;
-				}
-				if (robotName.equals("sample.RamFire")) {
-					return true;
-				}
-				if (robotName.equals("sample.SittingDuck")) {
-					return true;
-				}
-				if (robotName.equals("sample.SpinBot")) {
-					return true;
-				}
-				if (robotName.equals("sample.Target")) {
-					return true;
-				}
-				if (robotName.equals("sample.TrackFire")) {
-					return true;
-				}
-				if (robotName.equals("sample.Tracker")) {
-					return true;
-				}
-				if (robotName.equals("sample.Walls")) {
-					return true;
-				}
-				return true; // false;
+
+			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
+				final String message = "Robot " + robotName + " has package name too long.  "
+						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
+
+				logError(message);
+				return false;
 			}
+		} else {// TODO every robot should be in package, right. Kick thim out.
 		}
+
+		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
+			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+					+ " characters maximum please.";
+
+			logError(message);
+			return false;
+		}
+
 		return true;
 	}
 

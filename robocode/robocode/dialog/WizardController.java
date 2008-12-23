@@ -31,7 +31,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class WizardController extends JPanel implements ChangeListener {
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private JButton backButton;
 	private JButton nextButton;
@@ -78,7 +78,6 @@ public class WizardController extends JPanel implements ChangeListener {
 			backButton = new JButton();
 			backButton.setText("Back");
 			backButton.setMnemonic('B');
-			backButton.setDisplayedMnemonicIndex(0);
 			backButton.addActionListener(eventHandler);
 		}
 		return backButton;
@@ -94,7 +93,6 @@ public class WizardController extends JPanel implements ChangeListener {
 			cancelButton = new JButton();
 			cancelButton.setText("Cancel");
 			cancelButton.setMnemonic('C');
-			cancelButton.setDisplayedMnemonicIndex(0);
 			cancelButton.addActionListener(eventHandler);
 		}
 		return cancelButton;
@@ -110,7 +108,6 @@ public class WizardController extends JPanel implements ChangeListener {
 			finishButton = new JButton();
 			finishButton.setText("Finish");
 			finishButton.setMnemonic('F');
-			finishButton.setDisplayedMnemonicIndex(0);
 			finishButton.addActionListener(eventHandler);
 		}
 		return finishButton;
@@ -136,7 +133,6 @@ public class WizardController extends JPanel implements ChangeListener {
 			nextButton = new JButton();
 			nextButton.setText("Next");
 			nextButton.setMnemonic('N');
-			nextButton.setDisplayedMnemonicIndex(0);
 			nextButton.addActionListener(eventHandler);
 		}
 		return nextButton;

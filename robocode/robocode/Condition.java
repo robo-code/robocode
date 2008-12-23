@@ -79,30 +79,18 @@ public abstract class Condition {
 	 * A condition priority is a value from 0 - 99. The higher value, the
 	 * higher priority. The default priority is 80.
 	 *
-	 * @param name     the name for the new condition
+	 * @param name	 the name for the new condition
 	 * @param priority the priority of the new condition
 	 */
 	public Condition(String name, int priority) {
 		this.name = name;
 		if (priority < 0) {
-			SecurityManager m = System.getSecurityManager();
-
-			if (m instanceof RobocodeSecurityManager) {
-				RobocodeSecurityManager rsm = (RobocodeSecurityManager) m;
-
-				rsm.threadOut("SYSTEM: Priority must be between 0 and 99.");
-				rsm.threadOut("SYSTEM: Priority for condition " + name + " will be 0.");
-			}
+			RobocodeSecurityManager.printlnToRobot("SYSTEM: Priority must be between 0 and 99.");
+			RobocodeSecurityManager.printlnToRobot("SYSTEM: Priority for condition " + name + " will be 0.");
 			priority = 0;
 		} else if (priority > 99) {
-			SecurityManager m = System.getSecurityManager();
-
-			if (m instanceof RobocodeSecurityManager) {
-				RobocodeSecurityManager rsm = (RobocodeSecurityManager) m;
-
-				rsm.threadOut("SYSTEM: Priority must be between 0 and 99.");
-				rsm.threadOut("SYSTEM: Priority for condition " + name + " will be 99.");
-			}
+			RobocodeSecurityManager.printlnToRobot("SYSTEM: Priority must be between 0 and 99.");
+			RobocodeSecurityManager.printlnToRobot("SYSTEM: Priority for condition " + name + " will be 99.");
 			priority = 99;
 		}
 		this.priority = priority;
@@ -124,7 +112,7 @@ public abstract class Condition {
 	 *
 	 * @return the priority of this condition
 	 */
-	public int getPriority() {
+	public final int getPriority() {
 		return priority;
 	}
 

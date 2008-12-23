@@ -14,18 +14,63 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+
+
 /**
  * This event is sent to {@link Robot#onDeath(DeathEvent) onDeath()} when your
  * robot dies.
  *
  * @author Mathew A. Nelson (original)
  */
-public class DeathEvent extends Event {
+public final class DeathEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = -1; // System event -> cannot be changed!;
 
 	/**
 	 * Called by the game to create a new DeathEvent.
 	 */
 	public DeathEvent() {
 		super();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final int getPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onDeath(this);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final boolean isCriticalEvent() {
+		return true;
 	}
 }

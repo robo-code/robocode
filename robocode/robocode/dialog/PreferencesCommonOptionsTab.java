@@ -31,11 +31,8 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	private JCheckBox appendWhenSavingResultsCheckBox;
 	private JCheckBox enableReplayRecordingCheckBox;
 
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
-	/**
-	 * PreferencesCommonOptionsTab constructor
-	 */
 	public PreferencesCommonOptionsTab(RobocodeManager manager) {
 		super();
 		this.manager = manager;
@@ -48,11 +45,6 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		loadPreferences(manager.getProperties());
 	}
 
-	/**
-	 * Return the optionsPanel
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getOptionsPanel() {
 		if (optionsPanel == null) {
 			optionsPanel = new JPanel();
@@ -66,11 +58,6 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		return optionsPanel;
 	}
 
-	/**
-	 * Return the showResultsCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getShowResultsCheckBox() {
 		if (showResultsCheckBox == null) {
 			showResultsCheckBox = new JCheckBox("Show results when battle(s) ends");
@@ -80,30 +67,18 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		return showResultsCheckBox;
 	}
 
-	/**
-	 * Return the appendToSavedResultsCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getAppendWhenSavingResultsCheckBox() {
 		if (appendWhenSavingResultsCheckBox == null) {
 			appendWhenSavingResultsCheckBox = new JCheckBox("Append when saving results");
 			appendWhenSavingResultsCheckBox.setMnemonic('A');
-			appendWhenSavingResultsCheckBox.setDisplayedMnemonicIndex(0);
 		}
 		return appendWhenSavingResultsCheckBox;
 	}
 
-	/**
-	 * Return the enableReplayRecordingCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getEnableReplayRecordingCheckBox() {
 		if (enableReplayRecordingCheckBox == null) {
-			enableReplayRecordingCheckBox = new JCheckBox("Enable replay recording (uses memory)");
+			enableReplayRecordingCheckBox = new JCheckBox("Enable replay recording (uses memory and disk space)");
 			enableReplayRecordingCheckBox.setMnemonic('E');
-			enableReplayRecordingCheckBox.setDisplayedMnemonicIndex(0);
 		}
 		return enableReplayRecordingCheckBox;
 	}

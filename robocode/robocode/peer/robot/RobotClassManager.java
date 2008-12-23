@@ -25,13 +25,21 @@
 package robocode.peer.robot;
 
 
+import robocode.Bullet;
+import robocode.Event;
 import robocode.io.Logger;
 import robocode.manager.NameManager;
-import robocode.peer.TeamPeer;
+import robocode.peer.BulletStatus;
+import robocode.peer.RobotStatics;
 import robocode.repository.RobotFileSpecification;
+import robocode.robotinterfaces.IBasicRobot;
 import robocode.security.RobocodeClassLoader;
 
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
+import java.util.List;
 
 
 /**
@@ -43,14 +51,14 @@ import java.util.*;
 public class RobotClassManager {
 	private RobotFileSpecification robotFileSpecification;
 	private Class<?> robotClass;
-	private Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
+	private final Map<String, String> referencedClasses = Collections.synchronizedMap(new HashMap<String, String>());
 
 	private RobocodeClassLoader robotClassLoader = null;
 	// only used if we're being controlled by RobocodeEngine:
 	private robocode.control.RobotSpecification controlRobotSpecification;
 
-	private String fullClassName;
-	private TeamPeer teamManager;
+	private final String fullClassName;
+	private final String teamName;
 
 	private String uid = "";
 
@@ -63,10 +71,10 @@ public class RobotClassManager {
 		this(robotFileSpecification, null);
 	}
 
-	public RobotClassManager(RobotFileSpecification robotFileSpecification, TeamPeer teamManager) {
+	public RobotClassManager(RobotFileSpecification robotFileSpecification, String teamName) {
 		this.robotFileSpecification = robotFileSpecification;
 		this.fullClassName = robotFileSpecification.getName();
-		this.teamManager = teamManager;
+		this.teamName = teamName;
 	}
 
 	public String getRootPackage() {
@@ -177,10 +185,10 @@ public class RobotClassManager {
 	/**
 	 * Gets the teamManager.
 	 *
-	 * @return Returns a TeamManager
+	 * @return Returns a name of team
 	 */
-	public TeamPeer getTeamManager() {
-		return teamManager;
+	public String getTeamName() {
+		return teamName;
 	}
 
 	/**
@@ -221,5 +229,62 @@ public class RobotClassManager {
 		}
 
 		robotFileSpecification = null;
+	}
+
+	// -----------
+	// helpers for accessing hidden methods on events
+	// -----------
+
+	private static IHiddenEventHelper eventHelper;
+	private static IHiddenBulletHelper bulletHelper;
+
+	static {
+		Method method;
+
+		try {
+			method = Event.class.getDeclaredMethod("createHiddenHelper");
+			method.setAccessible(true);
+			eventHelper = (IHiddenEventHelper) method.invoke(null);
+			method.setAccessible(false);
+
+			method = Bullet.class.getDeclaredMethod("createHiddenHelper");
+			method.setAccessible(true);
+			bulletHelper = (IHiddenBulletHelper) method.invoke(null);
+			method.setAccessible(false);
+		} catch (NoSuchMethodException e) {
+			Logger.logError(e);
+		} catch (InvocationTargetException e) {
+			Logger.logError(e);
+		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		}
+	}
+
+	public static boolean isCriticalEvent(Event e) {
+		return eventHelper.isCriticalEvent(e);
+	}
+
+	public static void setTime(Event e, long newTime) {
+		eventHelper.setTime(e, newTime);
+	}
+
+	public static void setEventPriority(Event e, int newPriority) {
+		eventHelper.setPriority(e, newPriority);
+	}
+
+	public static void dispatch(Event event, IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		eventHelper.dispatch(event, robot, statics, graphics);
+	}
+
+	public static void setDefaultPriority(Event e) {
+		eventHelper.setDefaultPriority(e);
+	}
+
+	public static void updateBullets(Event e, Hashtable<Integer, Bullet> bullets) {
+		eventHelper.updateBullets(e, bullets);
+	}
+
+	public static void update(Bullet bullet, BulletStatus status) {
+		bulletHelper.update(bullet, status);
 	}
 }

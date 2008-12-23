@@ -53,19 +53,19 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	private JDesktopPane desktopPane;
 	public boolean isApplication;
 
-	public Point origin = new Point();
-	public File robotsDirectory;
+	public final Point origin = new Point();
+	public final File robotsDirectory;
 	private JToolBar statusBar;
 	private JLabel lineLabel;
 
 	private RobocodeProperties robocodeProperties;
 	private File editorDirectory;
-	private RobocodeManager manager;
+	private final RobocodeManager manager;
 
 	private FindReplaceDialog findReplaceDialog;
 	private ReplaceAction replaceAction;
 
-	EventHandler eventHandler = new EventHandler();
+	final EventHandler eventHandler = new EventHandler();
 
 	class EventHandler implements ComponentListener {
 		public void componentMoved(ComponentEvent e) {}
@@ -94,9 +94,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * RoboCodeEditor constructor
-	 */
 	public RobocodeEditor(RobocodeManager manager) {
 		super();
 		this.manager = manager;
@@ -200,12 +197,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (dis != null) {
 				try {
 					dis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -331,7 +328,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			}
 
 			if (done && manager != null) {
-				done = manager.getRobotRepositoryManager().verifyRootPackage(packageName + "." + name);
+				done = manager.getRobotRepositoryManager().verifyRobotName(packageName + "." + name, name);
 				if (!done) {
 					message = "This package is reserved.  Please select a different package.";
 				}
@@ -365,12 +362,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 			if (dis != null) {
 				try {
 					dis.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 
@@ -431,11 +428,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return RobocodeCompilerFactory.createCompiler(this);
 	}
 
-	/**
-	 * Return the desktopPane
-	 *
-	 * @return JDesktopPane
-	 */
 	public JDesktopPane getDesktopPane() {
 		if (desktopPane == null) {
 			desktopPane = new JDesktopPane();
@@ -445,11 +437,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return desktopPane;
 	}
 
-	/**
-	 * Return the line label.
-	 *
-	 * @return JLabel
-	 */
 	private JLabel getLineLabel() {
 		if (lineLabel == null) {
 			lineLabel = new JLabel();
@@ -457,11 +444,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return lineLabel;
 	}
 
-	/**
-	 * Return the robocodeEditorContentPane
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getRobocodeEditorContentPane() {
 		if (robocodeEditorContentPane == null) {
 			robocodeEditorContentPane = new JPanel();
@@ -472,11 +454,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return robocodeEditorContentPane;
 	}
 
-	/**
-	 * Return the robocodeEditorMenuBar property value.
-	 *
-	 * @return robocode.editor.RobocodeEditorMenuBar
-	 */
 	private RobocodeEditorMenuBar getRobocodeEditorMenuBar() {
 		if (robocodeEditorMenuBar == null) {
 			robocodeEditorMenuBar = new RobocodeEditorMenuBar(this);
@@ -501,18 +478,13 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				if (in != null) {
 					try {
 						in.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
 		return robocodeProperties;
 	}
 
-	/**
-	 * Return the toolBar.
-	 *
-	 * @return JToolBar
-	 */
 	private JToolBar getStatusBar() {
 		if (statusBar == null) {
 			statusBar = new JToolBar();
@@ -522,11 +494,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return statusBar;
 	}
 
-	/**
-	 * Return the findReplaceDialog
-	 *
-	 * @return robocode.editor.FindReplaceDialog
-	 */
 	public FindReplaceDialog getFindReplaceDialog() {
 		if (findReplaceDialog == null) {
 			findReplaceDialog = new FindReplaceDialog(this);
@@ -534,11 +501,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return findReplaceDialog;
 	}
 
-	/**
-	 * Return the replaceAction
-	 *
-	 * @return Action
-	 */
 	public Action getReplaceAction() {
 		if (replaceAction == null) {
 			replaceAction = new ReplaceAction();
@@ -546,18 +508,12 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return replaceAction;
 	}
 
-	/**
-	 * Adds the given window to the Window menu.
-	 */
 	public void addToWindowMenu(EditWindow window) {
 		WindowMenuItem item = new WindowMenuItem(window, getRobocodeEditorMenuBar().getWindowMenu());
 
 		getRobocodeEditorMenuBar().getMoreWindowsDialog().addWindowItem(item);
 	}
 
-	/**
-	 * Adds the given window to the Window menu.
-	 */
 	public void removeFromWindowMenu(EditWindow window) {
 		for (Component c : getRobocodeEditorMenuBar().getWindowMenu().getMenuComponents()) {
 			if (c instanceof WindowMenuItem) {
@@ -572,9 +528,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	/**
-	 * Initialize the class.
-	 */
 	private void initialize() {
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -590,11 +543,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		addComponentListener(eventHandler);
 	}
 
-	/**
-	 * main entrypoint - starts the part when it is run as an application
-	 *
-	 * @param args the arguments for the application
-	 */
 	public static void main(String[] args) {
 		try {
 			// Set the Look and Feel (LAF)
@@ -647,10 +595,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				if (idx >= 0) {
 					extension = fn.substring(idx);
 				}
-				if (extension.equalsIgnoreCase(".java")) {
-					return true;
-				}
-				return false;
+				return extension.equalsIgnoreCase(".java");
 			}
 
 			@Override
@@ -691,7 +636,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				if (fileReader != null) {
 					try {
 						fileReader.close();
-					} catch (IOException e) {}
+					} catch (IOException ignored) {}
 				}
 			}
 		}
@@ -730,7 +675,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

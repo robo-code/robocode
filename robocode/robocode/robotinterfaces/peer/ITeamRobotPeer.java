@@ -114,7 +114,7 @@ public interface ITeamRobotPeer extends IAdvancedRobotPeer {
 	 *   }
 	 * </pre>
 	 *
-	 * @param name    the name of the intended recipient of the message
+	 * @param name	the name of the intended recipient of the message
 	 * @param message the message to send
 	 * @throws IOException if the message could not be sent
 	 * @see #isTeammate(String)

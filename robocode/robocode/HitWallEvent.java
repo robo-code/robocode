@@ -14,6 +14,13 @@
 package robocode;
 
 
+import robocode.peer.RobotStatics;
+import robocode.robotinterfaces.IBasicEvents;
+import robocode.robotinterfaces.IBasicRobot;
+
+import java.awt.*;
+
+
 /**
  * A HitWallEvent is sent to {@link Robot#onHitWall(HitWallEvent) onHitWall()}
  * when you collide a wall.
@@ -21,8 +28,11 @@ package robocode;
  *
  * @author Mathew A. Nelson (original)
  */
-public class HitWallEvent extends Event {
-	private double bearing = 0.0;
+public final class HitWallEvent extends Event {
+	private static final long serialVersionUID = 1L;
+	private final static int DEFAULT_PRIORITY = 30;
+
+	private final double bearing;
 
 	/**
 	 * Called by the game to create a new HitWallEvent.
@@ -60,5 +70,25 @@ public class HitWallEvent extends Event {
 	 */
 	public double getBearingRadians() {
 		return bearing;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	final void dispatch(IBasicRobot robot, RobotStatics statics, Graphics2D graphics) {
+		IBasicEvents listener = robot.getBasicEventListener();
+
+		if (listener != null) {
+			listener.onHitWall(this);
+		}
 	}
 }

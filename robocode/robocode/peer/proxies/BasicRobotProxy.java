@@ -8,192 +8,505 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     - hosting related logic moved here from robot peer
+ *     - interlocked synchronization
+ *     - (almost) minimized surface between RobotPeer and RobotProxy to serializable messages.
  *******************************************************************************/
 package robocode.peer.proxies;
 
 
-import robocode.Bullet;
+import robocode.*;
+import robocode.Event;
+import robocode.exception.DisabledException;
+import robocode.exception.RobotException;
+import robocode.manager.IHostManager;
+import robocode.peer.*;
+import robocode.peer.robot.EventManager;
+import robocode.peer.robot.RobotClassManager;
+import robocode.peer.robot.TeamMessage;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.robotpaint.Graphics2DProxy;
+import robocode.util.Utils;
 
 import java.awt.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import java.util.Hashtable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class BasicRobotProxy implements IBasicRobotPeer {
-	IBasicRobotPeer peer;
+public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPeer {
+	private static final long
+			MAX_SET_CALL_COUNT = 10000,
+			MAX_GET_CALL_COUNT = 10000;
 
-	public BasicRobotProxy(IBasicRobotPeer peer) {
-		this.peer = peer;
+	private Graphics2DProxy graphicsProxy;
+
+	protected RobotStatus status;
+	protected ExecCommands commands;
+	private ExecResults execResults;
+	private final Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>();
+	private int bulletCounter; 
+
+	private final AtomicInteger setCallCount = new AtomicInteger(0);
+	private final AtomicInteger getCallCount = new AtomicInteger(0);
+
+	protected Condition waitCondition;
+	protected boolean testingCondition;
+	protected double firedEnergy;
+	protected double firedHeat;
+
+	public BasicRobotProxy(RobotClassManager robotClassManager, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+		super(robotClassManager, hostManager, peer, statics);
+
+		eventManager = new EventManager(this);
+
+		graphicsProxy = new Graphics2DProxy();
+
+		// dummy
+		execResults = new ExecResults(null, null, null, null, null, false, false, false);
+
+		setSetCallCount(0);
+		setGetCallCount(0);
+	}
+
+	protected void initializeRound(ExecCommands commands, RobotStatus status) {
+		updateStatus(commands, status);
+		eventManager.reset();
+		final StatusEvent start = new StatusEvent(status);
+
+		RobotClassManager.setTime(start, 0);
+		eventManager.add(start);
+		setSetCallCount(0);
+		setGetCallCount(0);
+	}
+
+	@Override
+	public void cleanup() {
+		super.cleanup();
+
+		// Cleanup and remove current wait condition
+		if (waitCondition != null) {
+			waitCondition.cleanup();
+			waitCondition = null;
+		}
+
+		// Cleanup and remove the event manager
+		if (eventManager != null) {
+			eventManager.cleanup();
+			eventManager = null;
+		}
+
+		// Cleanup graphics proxy
+		graphicsProxy = null;
+		execResults = null;
+		status = null;
+		commands = null;
 	}
 
 	// asynchronous actions
 	public Bullet setFire(double power) {
-		return peer.setFire(power);
+		setCall();
+		return setFireImpl(power);
 	}
 
 	// blocking actions
 	public void execute() {
-		peer.execute();
+		executeImpl();
 	}
 
 	public void move(double distance) {
-		peer.move(distance);
+		setMoveImpl(distance);
+		do {
+			execute(); // Always tick at least once
+		} while (getDistanceRemaining() != 0);
 	}
 
 	public void turnBody(double radians) {
-		peer.turnBody(radians);
+		setTurnBodyImpl(radians);
+		do {
+			execute(); // Always tick at least once
+		} while (getBodyTurnRemaining() != 0);
 	}
 
 	public void turnGun(double radians) {
-		peer.turnGun(radians);
+		setTurnGunImpl(radians);
+		do {
+			execute(); // Always tick at least once
+		} while (getGunTurnRemaining() != 0);
 	}
 
 	public Bullet fire(double power) {
-		return peer.fire(power);
+		Bullet bullet = setFire(power);
+
+		execute();
+		return bullet;
 	}
 
 	// fast setters
 	public void setBodyColor(Color color) {
-		peer.setCall();
-		peer.setBodyColor(color);
+		setCall();
+		commands.setBodyColor(color != null ? color.getRGB() : ExecCommands.defaultBodyColor);
 	}
 
 	public void setGunColor(Color color) {
-		peer.setCall();
-		peer.setGunColor(color);
+		setCall();
+		commands.setGunColor(color != null ? color.getRGB() : ExecCommands.defaultGunColor);
 	}
 
 	public void setRadarColor(Color color) {
-		peer.setCall();
-		peer.setRadarColor(color);
+		setCall();
+		commands.setRadarColor(color != null ? color.getRGB() : ExecCommands.defaultRadarColor);
 	}
 
 	public void setBulletColor(Color color) {
-		peer.setCall();
-		peer.setBulletColor(color);
+		setCall();
+		commands.setBulletColor(color != null ? color.getRGB() : ExecCommands.defaultBulletColor);
 	}
 
 	public void setScanColor(Color color) {
-		peer.setCall();
-		peer.setScanColor(color);
+		setCall();
+		commands.setScanColor(color != null ? color.getRGB() : ExecCommands.defaultScanColor);
 	}
 
 	// counters
-	public void getCall() {
-		peer.getCall();
-	}
-
 	public void setCall() {
-		peer.setCall();
+		final int res = setCallCount.incrementAndGet();
+
+		if (res >= MAX_SET_CALL_COUNT) {
+			println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
+			throw new DisabledException("Too many calls to setXX methods");
+		}
 	}
 
-	// AdvancedRobot calls below
-	public double getRadarTurnRemaining() {
-		peer.getCall();
-		return peer.getRadarTurnRemaining();
+	public void getCall() {
+		final int res = getCallCount.incrementAndGet();
+
+		if (res >= MAX_GET_CALL_COUNT) {
+			println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
+			throw new DisabledException("Too many calls to getXX methods");
+		}
 	}
 
 	public double getDistanceRemaining() {
-		peer.getCall();
-		return peer.getDistanceRemaining();
+		getCall();
+		return commands.getDistanceRemaining();
+	}
+
+	public double getRadarTurnRemaining() {
+		getCall();
+		return commands.getRadarTurnRemaining();
 	}
 
 	public double getBodyTurnRemaining() {
-		peer.getCall();
-		return peer.getBodyTurnRemaining();
-	}
-
-	// Robot calls below
-	public double getVelocity() {
-		peer.getCall();
-		return peer.getVelocity();
-	}
-
-	public double getRadarHeading() {
-		peer.getCall();
-		return peer.getRadarHeading();
-	}
-
-	public double getGunCoolingRate() {
-		peer.getCall();
-		return peer.getGunCoolingRate();
-	}
-
-	public String getName() {
-		peer.getCall();
-		return peer.getName();
-	}
-
-	public long getTime() {
-		peer.getCall();
-		return peer.getTime();
-	}
-
-	// Junior calls below
-	public double getBodyHeading() {
-		peer.getCall();
-		return peer.getBodyHeading();
-	}
-
-	public double getGunHeading() {
-		peer.getCall();
-		return peer.getGunHeading();
+		getCall();
+		return commands.getBodyTurnRemaining();
 	}
 
 	public double getGunTurnRemaining() {
-		peer.getCall();
-		return peer.getGunTurnRemaining();
+		getCall();
+		return commands.getGunTurnRemaining();
+	}
+
+	public double getVelocity() {
+		getCall();
+		return status.getVelocity();
+	}
+
+	public double getGunCoolingRate() {
+		getCall();
+		return statics.getBattleRules().getGunCoolingRate();
+	}
+
+	public String getName() {
+		getCall();
+		return statics.getName();
+	}
+
+	public long getTime() {
+		getCall();
+		return getTimeImpl();
+	}
+
+	public double getBodyHeading() {
+		getCall();
+		return status.getHeadingRadians();
+	}
+
+	public double getGunHeading() {
+		getCall();
+		return status.getGunHeadingRadians();
+	}
+
+	public double getRadarHeading() {
+		getCall();
+		return status.getRadarHeadingRadians();
 	}
 
 	public double getEnergy() {
-		peer.getCall();
-		return peer.getEnergy();
+		getCall();
+		return getEnergyImpl();
 	}
 
 	public double getGunHeat() {
-		peer.getCall();
-		return peer.getGunHeat();
-	}
-
-	public double getBattleFieldHeight() {
-		peer.getCall();
-		return peer.getBattleFieldHeight();
-	}
-
-	public double getBattleFieldWidth() {
-		peer.getCall();
-		return peer.getBattleFieldWidth();
+		getCall();
+		return getGunHeatImpl();
 	}
 
 	public double getX() {
-		peer.getCall();
-		return peer.getX();
+		getCall();
+		return status.getX();
 	}
 
 	public double getY() {
-		peer.getCall();
-		return peer.getY();
+		getCall();
+		return status.getY();
 	}
 
 	public int getOthers() {
-		peer.getCall();
-		return peer.getOthers();
+		getCall();
+		return status.getOthers();
+	}
+
+	public double getBattleFieldHeight() {
+		getCall();
+		return statics.getBattleRules().getBattlefieldHeight();
+	}
+
+	public double getBattleFieldWidth() {
+		getCall();
+		return statics.getBattleRules().getBattlefieldWidth();
 	}
 
 	public int getNumRounds() {
-		peer.getCall();
-		return peer.getNumRounds();
+		getCall();
+		return statics.getBattleRules().getNumRounds();
 	}
 
 	public int getRoundNum() {
-		peer.getCall();
-		return peer.getRoundNum();
+		getCall();
+		return status.getRoundNum();
 	}
 
 	public Graphics2D getGraphics() {
-		peer.getCall();
-		return peer.getGraphics();
+		getCall();
+		commands.setTryingToPaint(true);
+		return getGraphicsImpl();
+	}
+
+	public void setDebugProperty(String key, String value) {
+		setCall();
+		commands.setDebugProperty(key, value);
+	}
+
+	// -----------
+	// implementations
+	// -----------
+
+	public long getTimeImpl() {
+		return status.getTime();
+	}
+
+	public Graphics2D getGraphicsImpl() {
+		return graphicsProxy;
+	}
+
+	@Override
+	protected final void executeImpl() {
+		if (execResults == null) {
+			// this is to slow down undead robot after cleanup, from fast exception-loop
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {// just swalow here
+			}
+		}
+
+		// Entering tick
+		robotThreadManager.checkRunThread();
+		if (testingCondition) {
+			throw new RobotException(
+					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
+		}
+
+		setSetCallCount(0);
+		setGetCallCount(0);
+
+		// This stops autoscan from scanning...
+		if (waitCondition != null && waitCondition.test()) {
+			waitCondition = null;
+			commands.setScan(true);
+		}
+
+		commands.setOutputText(out.readAndReset());
+		commands.setGraphicsCalls(graphicsProxy.getQueuedCalls());
+		graphicsProxy.clearQueue();
+
+		// call server
+		execResults = peer.executeImpl(commands);
+
+		updateStatus(execResults.getCommands(), execResults.getStatus());
+		graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
+		firedEnergy = 0;
+		firedHeat = 0;
+
+		// add new events first
+		if (execResults.getEvents() != null) {
+			for (Event event : execResults.getEvents()) {
+				eventManager.add(event);
+				RobotClassManager.updateBullets(event, bullets);
+			}
+		}
+
+		for (BulletStatus s : execResults.getBulletUpdates()) {
+			final Bullet bullet = bullets.get(s.bulletId);
+
+			if (bullet != null) {
+				RobotClassManager.update(bullet, s);
+				if (!s.isActive) {
+					bullets.remove(s.bulletId);
+				}
+			}
+		}
+
+		// add new team messages
+		loadTeamMessages(execResults.getTeamMessages());
+
+		eventManager.processEvents();
+	}
+
+	@Override
+	protected final void waitForBattleEndImpl() {
+		eventManager.clearAllEvents(false);
+		graphicsProxy.setPaintingEnabled(false);
+		do {
+			commands.setOutputText(out.readAndReset());
+			commands.setGraphicsCalls(graphicsProxy.getQueuedCalls());
+			graphicsProxy.clearQueue();
+
+			// call server
+			execResults = peer.waitForBattleEndImpl(commands);
+
+			updateStatus(execResults.getCommands(), execResults.getStatus());
+
+			// add new events
+			if (execResults.getEvents() != null) {
+				for (Event event : execResults.getEvents()) {
+					if (event instanceof BattleEndedEvent) {
+						eventManager.add(event);
+					}
+				}
+			}
+			eventManager.resetCustomEvents();
+			eventManager.processEvents();
+		} while (!execResults.isHalt() && execResults.isShouldWait());
+	}
+
+	private void updateStatus(ExecCommands commands, RobotStatus status) {
+		this.status = status;
+		this.commands = commands;
+	}
+
+	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}
+
+	protected final double getEnergyImpl() {
+		return status.getEnergy() - firedEnergy;
+	}
+
+	protected final double getGunHeatImpl() {
+		return status.getGunHeat() + firedHeat;
+	}
+
+	protected final void setMoveImpl(double distance) {
+		if (getEnergyImpl() == 0) {
+			return;
+		}
+		commands.setDistanceRemaining(distance);
+		commands.setMoved(true);
+	}
+
+	protected final Bullet setFireImpl(double power) {
+		if (Double.isNaN(power)) {
+			println("SYSTEM: You cannot call fire(NaN)");
+			return null;
+		}
+		if (getGunHeatImpl() > 0 || getEnergyImpl() == 0) {
+			return null;
+		}
+
+		power = min(getEnergyImpl(), min(max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+
+		Bullet bullet;
+		BulletCommand wrapper;
+		Event currentTopEvent = eventManager.getCurrentTopEvent();
+
+		bulletCounter++;
+
+		if (currentTopEvent != null && currentTopEvent.getTime() == status.getTime() && !statics.isAdvancedRobot()
+				&& status.getGunHeadingRadians() == status.getRadarHeadingRadians()
+				&& ScannedRobotEvent.class.isAssignableFrom(currentTopEvent.getClass())) {
+			// this is angle assisted bullet
+			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent;
+			double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeadingRadians() + e.getBearingRadians());
+
+			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true, bulletCounter);
+			wrapper = new BulletCommand(power, true, fireAssistAngle, bulletCounter);
+		} else {
+			// this is normal bullet
+			bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName(), null, true,
+					bulletCounter);
+			wrapper = new BulletCommand(power, false, 0, bulletCounter);
+		}
+
+		firedEnergy += power;
+		firedHeat += Rules.getGunHeat(power);
+
+		commands.getBullets().add(wrapper);
+
+		bullets.put(bulletCounter, bullet);
+
+		return bullet;
+	}
+
+	protected final void setTurnGunImpl(double radians) {
+		commands.setGunTurnRemaining(radians);
+	}
+
+	protected final void setTurnBodyImpl(double radians) {
+		if (getEnergyImpl() > 0) {
+			commands.setBodyTurnRemaining(radians);
+		}
+	}
+
+	protected final void setTurnRadarImpl(double radians) {
+		commands.setRadarTurnRemaining(radians);
+	}
+
+	// -----------
+	// battle driven methods
+	// -----------
+
+	private void setSetCallCount(int setCallCount) {
+		this.setCallCount.set(setCallCount);
+	}
+
+	private void setGetCallCount(int getCallCount) {
+		this.getCallCount.set(getCallCount);
+	}
+
+	// -----------
+	// for robot thread
+	// -----------
+
+	public void setTestingCondition(boolean testingCondition) {
+		this.testingCondition = testingCondition;
+	}
+
+	@Override
+	public String toString() {
+		return statics.getShortName() + "(" + (int) status.getEnergy() + ") X" + (int) status.getX() + " Y"
+				+ (int) status.getY();
 	}
 }

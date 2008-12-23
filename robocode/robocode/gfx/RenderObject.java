@@ -32,7 +32,7 @@ public class RenderObject {
 	/**
 	 * Current transform that is concatenated with the base transform
 	 */
-	protected AffineTransform transform;
+	protected final AffineTransform transform;
 
 	/**
 	 * Current frame that must be rendered
@@ -48,13 +48,14 @@ public class RenderObject {
 	}
 
 	/**
-	 * Constructs a new {@code RenderObject} that is a copy of another
-	 * {@code RenderObject}.
+	 * Constructs a new {@code RenderObject} that is a copy of another {@code RenderObject}.
+	 *
+	 * @param renderObject the RenderObject to copy.
 	 */
-	public RenderObject(RenderObject ro) {
-		baseTransform = new AffineTransform(ro.baseTransform);
-		transform = new AffineTransform(ro.transform);
-		frame = ro.frame;
+	public RenderObject(RenderObject renderObject) {
+		baseTransform = new AffineTransform(renderObject.baseTransform);
+		transform = new AffineTransform(renderObject.transform);
+		frame = renderObject.frame;
 	}
 
 	/**

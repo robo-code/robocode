@@ -43,7 +43,7 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 	private JLabel findLabel;
 	private JLabel replaceLabel;
 	private boolean initLoc;
-	private RobocodeEditor window;
+	private final RobocodeEditor window;
 
 	public FindReplaceDialog(RobocodeEditor parentFrame) {
 		super(parentFrame, false);
@@ -127,7 +127,6 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			getRootPane().setDefaultButton(getFindNextButton());
 			getToggleReplaceButton().setText("Replace...");
 			getToggleReplaceButton().setMnemonic('R');
-			getToggleReplaceButton().setDisplayedMnemonicIndex(0);
 		}
 		pack();
 		if (!initLoc) {
@@ -182,7 +181,6 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			findNextButton = new JButton();
 			findNextButton.setText("Find Next");
 			findNextButton.setMnemonic('F');
-			findNextButton.setDisplayedMnemonicIndex(0);
 			findNextButton.setDefaultCapable(true);
 			findNextButton.addActionListener(this);
 		}
@@ -194,7 +192,6 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			replaceButton = new JButton();
 			replaceButton.setText("Replace");
 			replaceButton.setMnemonic('R');
-			replaceButton.setDisplayedMnemonicIndex(0);
 			replaceButton.setDefaultCapable(true);
 			replaceButton.addActionListener(this);
 		}
@@ -236,7 +233,6 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			caseSensitiveCheckBox = new JCheckBox();
 			caseSensitiveCheckBox.setText("Case Sensitive");
 			caseSensitiveCheckBox.setMnemonic('C');
-			caseSensitiveCheckBox.setDisplayedMnemonicIndex(0);
 			caseSensitiveCheckBox.addActionListener(this);
 		}
 		return caseSensitiveCheckBox;
@@ -247,7 +243,6 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			wholeWordCheckBox = new JCheckBox();
 			wholeWordCheckBox.setText("Whole Word");
 			wholeWordCheckBox.setMnemonic('W');
-			wholeWordCheckBox.setDisplayedMnemonicIndex(0);
 			wholeWordCheckBox.addActionListener(this);
 		}
 		return wholeWordCheckBox;
@@ -259,7 +254,6 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			literalButton.setText("Literal");
 			literalButton.setMnemonic('L');
 			literalButton.setSelected(true);
-			literalButton.setDisplayedMnemonicIndex(0);
 			literalButton.addActionListener(this);
 		}
 		return literalButton;

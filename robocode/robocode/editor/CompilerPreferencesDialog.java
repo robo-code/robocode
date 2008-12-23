@@ -47,7 +47,7 @@ public class CompilerPreferencesDialog extends JDialog {
 	private CompilerProperties compilerProperties;
 	private JButton okButton;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -67,25 +67,21 @@ public class CompilerPreferencesDialog extends JDialog {
 		}
 	}
 
-	private void initialize() {
-		setTitle("Compiler Preferences");
-		setContentPane(getCompilerPreferencesContentPane());
-	}
-
-	/**
-	 * PackagerOptionsPanel constructor comment.
-	 */
 	public CompilerPreferencesDialog(JFrame owner) {
 		super(owner, true);
 		this.compilerProperties = RobocodeCompilerFactory.getCompilerProperties();
 		initialize();
 	}
 
+	private void initialize() {
+		setTitle("Compiler Preferences");
+		setContentPane(getCompilerPreferencesContentPane());
+	}
+
 	public JButton getCancelButton() {
 		if (cancelButton == null) {
 			cancelButton = new JButton("Cancel");
 			cancelButton.setMnemonic('C');
-			cancelButton.setDisplayedMnemonicIndex(0);
 			cancelButton.addActionListener(eventHandler);
 		}
 		return cancelButton;
@@ -158,7 +154,6 @@ public class CompilerPreferencesDialog extends JDialog {
 		if (okButton == null) {
 			okButton = new JButton("OK");
 			okButton.setMnemonic('O');
-			okButton.setDisplayedMnemonicIndex(0);
 			okButton.addActionListener(eventHandler);
 		}
 		return okButton;
@@ -181,7 +176,7 @@ public class CompilerPreferencesDialog extends JDialog {
 			if (out != null) {
 				try {
 					out.close();
-				} catch (IOException e) {}
+				} catch (IOException ignored) {}
 			}
 		}
 	}

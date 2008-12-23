@@ -39,17 +39,16 @@
  *     - Bugfix: Added Battle parameter to the constructor that takes a
  *       BulletRecord as parameter due to a NullPointerException that was raised
  *       as the battleField variable was not intialized
+ *     Pavel Savara
+ *     - disconnected from Bullet, now we rather send BulletStatus to proxy side
  *******************************************************************************/
 package robocode.peer;
 
 
 import robocode.*;
+import robocode.control.snapshot.BulletState;
 import robocode.battle.Battle;
-import robocode.battle.record.BulletRecord;
-import robocode.battlefield.BattleField;
-import static robocode.gfx.ColorUtil.toColor;
 
-import java.awt.*;
 import java.awt.geom.Line2D;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -71,14 +70,13 @@ public class BulletPeer {
 
 	protected final RobotPeer owner;
 	protected final Battle battle;
-	private final BattleField battleField;
+	private final BattleRules battleRules;
+	private final int bulletId;
 
-	private Bullet bullet;
 	protected RobotPeer victim;
 
 	protected BulletState state;
 
-	private double velocity;
 	private double heading;
 
 	protected double x;
@@ -92,11 +90,11 @@ public class BulletPeer {
 	private double deltaX;
 	private double deltaY;
 
-	private Line2D.Double boundingLine = new Line2D.Double();
+	private final Line2D.Double boundingLine = new Line2D.Double();
 
 	protected int frame;
 
-	private Color color;
+	private final int color;
 
 	protected int explosionImageIndex;
 
@@ -105,42 +103,43 @@ public class BulletPeer {
 	 *
 	 * @param owner  who fire the bullet
 	 * @param battle root battle
+	 * @param bulletId bullet
 	 */
-	public BulletPeer(RobotPeer owner, Battle battle) {
+	public BulletPeer(RobotPeer owner, Battle battle, int bulletId) {
 		super();
 
 		this.owner = owner;
 		this.battle = battle;
-		battleField = battle.getBattleField();
-		bullet = new Bullet(this);
+		battleRules = battle.getBattleRules();
+		this.bulletId = bulletId;
 		state = BulletState.FIRED;
 		color = owner.getBulletColor(); // Store current bullet color set on robot
 	}
 
-	public BulletPeer(RobotPeer owner, Battle battle, BulletRecord br) {
-		this(owner, battle);
-
-		x = br.x;
-		y = br.y;
-		power = ((double) br.power) / 10;
-		frame = br.frame;
-		state = BulletState.toState(br.state);
-		color = toColor(br.color);
-	}
-
-	private void checkBulletCollision() {
-		for (BulletPeer b : battle.getBullets()) {
+	private void checkBulletCollision(List<BulletPeer> bullets) {
+		for (BulletPeer b : bullets) {
 			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
 				state = BulletState.HIT_BULLET;
 				b.setState(state);
 				frame = 0;
 				x = lastX;
 				y = lastY;
-				owner.getEventManager().add(new BulletHitBulletEvent(bullet, b.bullet));
-				b.owner.getEventManager().add(new BulletHitBulletEvent(b.bullet, bullet));
+				owner.addEvent(new BulletHitBulletEvent(createBullet(), b.createBullet()));
+				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(), createBullet()));
 				break;
 			}
 		}
+	}
+
+	private Bullet createBullet() {
+		final Bullet bullet = new Bullet(heading, x, y, power, owner == null ? null : owner.getName(),
+				victim == null ? null : victim.getName(), isActive(), bulletId);
+
+		return bullet;
+	}
+
+	private BulletStatus createStatus() {
+		return new BulletStatus(bulletId, x, y, victim == null ? null : victim.getName(), isActive());
 	}
 
 	// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6457965
@@ -159,9 +158,8 @@ public class BulletPeer {
 		return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1);
 	}
 
-	private void checkRobotCollision() {
+	private void checkRobotCollision(List<RobotPeer> robots) {
 		RobotPeer robotPeer;
-		List<RobotPeer> robots = battle.getRobots();
 
 		for (int i = 0; i < robots.size(); i++) {
 			robotPeer = robots.get(i);
@@ -175,24 +173,39 @@ public class BulletPeer {
 				if (score > robotPeer.getEnergy()) {
 					score = robotPeer.getEnergy();
 				}
-				robotPeer.setEnergy(robotPeer.getEnergy() - damage);
+				robotPeer.updateEnergy(-damage);
 
-				owner.getRobotStatistics().scoreBulletDamage(i, score);
+				boolean teamFire = (owner.getTeamPeer() != null && owner.getTeamPeer() == robotPeer.getTeamPeer());
+
+				if (!teamFire) {
+					owner.getRobotStatistics().scoreBulletDamage(i, score);
+				}
 
 				if (robotPeer.getEnergy() <= 0) {
 					if (robotPeer.isAlive()) {
 						robotPeer.kill();
-						owner.getRobotStatistics().scoreBulletKill(i);
+						if (!teamFire) {
+							final double bonus = owner.getRobotStatistics().scoreBulletKill(i);
+
+							if (bonus > 0) {
+								owner.println(
+										"SYSTEM: Bonus for killing " + (robotPeer.getName() + ": " + (int) (bonus + .5)));
+							}
+						}
 					}
 				}
-				owner.setEnergy(owner.getEnergy() + Rules.getBulletHitBonus(power));
+				owner.updateEnergy(Rules.getBulletHitBonus(power));
 
-				robotPeer.getEventManager().add(
-						new HitByBulletEvent(
-								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()), getBullet()));
+				HitByBulletEvent event = new HitByBulletEvent(
+						robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()),
+						createBullet());
+
+				robotPeer.addEvent(event);
 
 				state = BulletState.HIT_VICTIM;
-				owner.getEventManager().add(new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), bullet));
+				final BulletHitEvent bhe = new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), createBullet());
+
+				owner.addEvent(bhe);
 				frame = 0;
 				victim = robotPeer;
 
@@ -218,26 +231,22 @@ public class BulletPeer {
 	}
 
 	private void checkWallCollision() {
-		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleField.getWidth())
-				|| (y + RADIUS >= battleField.getHeight())) {
+		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
+				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
-			owner.getEventManager().add(new BulletMissedEvent(bullet));
+			owner.addEvent(new BulletMissedEvent(createBullet()));
 		}
 	}
 
-	public BattleField getBattleField() {
-		return battleField;
+	public int getBulletId() {
+		return bulletId;
 	}
 
-	public Bullet getBullet() {
-		return bullet;
-	}
-
-	public synchronized int getFrame() {
+	public int getFrame() {
 		return frame;
 	}
 
-	public synchronized double getHeading() {
+	public double getHeading() {
 		return heading;
 	}
 
@@ -245,81 +254,78 @@ public class BulletPeer {
 		return owner;
 	}
 
-	public synchronized double getPower() {
+	public double getPower() {
 		return power;
 	}
 
-	public synchronized double getVelocity() {
-		return velocity;
+	public double getVelocity() {
+		return Rules.getBulletSpeed(power);
 	}
 
-	public synchronized RobotPeer getVictim() {
+	public RobotPeer getVictim() {
 		return victim;
 	}
 
-	public synchronized double getX() {
+	public double getX() {
 		return x;
 	}
 
-	public synchronized double getY() {
+	public double getY() {
 		return y;
 	}
 
-	public synchronized double getPaintX() {
+	public double getPaintX() {
 		return (state == BulletState.HIT_VICTIM && victim != null) ? victim.getX() + deltaX : x;
 	}
 
-	public synchronized double getPaintY() {
+	public double getPaintY() {
 		return (state == BulletState.HIT_VICTIM && victim != null) ? victim.getY() + deltaY : y;
 	}
 
-	public synchronized boolean isActive() {
+	public boolean isActive() {
 		return state.getValue() <= BulletState.MOVING.getValue();
 	}
 
-	public synchronized BulletState getState() {
+	public BulletState getState() {
 		return state;
 	}
 
-	public Color getColor() {
+	public int getColor() {
 		return color;
 	}
 
-	public synchronized void setHeading(double newHeading) {
+	public void setHeading(double newHeading) {
 		heading = newHeading;
 	}
 
-	public synchronized void setPower(double newPower) {
+	public void setPower(double newPower) {
 		power = newPower;
 	}
 
-	public synchronized void setVelocity(double newVelocity) {
-		velocity = newVelocity;
-	}
-
-	public synchronized void setVictim(RobotPeer newVictim) {
+	public void setVictim(RobotPeer newVictim) {
 		victim = newVictim;
 	}
 
-	public synchronized void setX(double newX) {
+	public void setX(double newX) {
 		x = lastX = newX;
 	}
 
-	public synchronized void setY(double newY) {
+	public void setY(double newY) {
 		y = lastY = newY;
 	}
 
-	public synchronized void setState(BulletState newState) {
+	public void setState(BulletState newState) {
 		state = newState;
 	}
 
-	public synchronized void update() {
+	public void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		if (isActive()) {
 			updateMovement();
-
-			checkBulletCollision();
+			if (bullets != null) {
+				checkBulletCollision(bullets);
+			}
 			if (isActive()) {
-				checkRobotCollision();
+				checkRobotCollision(robots);
 			}
 			if (isActive()) {
 				checkWallCollision();
@@ -328,6 +334,7 @@ public class BulletPeer {
 			frame++;
 		}
 		updateBulletState();
+		owner.addBulletStatus(createStatus());
 	}
 
 	protected void updateBulletState() {
@@ -348,10 +355,6 @@ public class BulletPeer {
 			state = BulletState.INACTIVE;
 			break;
 		}
-
-		if (state == BulletState.INACTIVE) {
-			battle.removeBullet(this);
-		}
 	}
 
 	private void updateMovement() {
@@ -366,7 +369,7 @@ public class BulletPeer {
 		boundingLine.setLine(lastX, lastY, x, y);
 	}
 
-	public synchronized void nextFrame() {
+	public void nextFrame() {
 		frame++;
 	}
 
@@ -376,5 +379,11 @@ public class BulletPeer {
 
 	protected int getExplosionLength() {
 		return EXPLOSION_LENGTH;
+	}
+
+	@Override
+	public String toString() {
+		return getOwner().getName() + " V" + getVelocity() + " *" + (int) power + " X" + (int) x + " Y" + (int) y + " H"
+				+ heading + " " + state.toString();
 	}
 }

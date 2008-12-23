@@ -15,7 +15,7 @@ package robots;
 import helpers.Assert;
 import helpers.RobotTestBed;
 import org.junit.Test;
-import robocode.battle.events.TurnEndedEvent;
+import robocode.control.events.TurnEndedEvent;
 
 import javax.swing.*;
 
@@ -34,7 +34,7 @@ public class TestAwtAttack extends RobotTestBed {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots().get(1).getOutputStreamSnapshot();
+		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
 
 		if (out.contains("Hacked!!!")) {
 			messagedBreakthru = true;
@@ -69,7 +69,6 @@ public class TestAwtAttack extends RobotTestBed {
 		javax.swing.SwingUtilities.invokeLater(doHack);
 
 		frame.setVisible(false);
-		frame.dispose();
 		Assert.assertFalse(messagedBreakthru);
 		Assert.assertTrue(messagedAttack);
 	}

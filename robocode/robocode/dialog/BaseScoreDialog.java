@@ -27,9 +27,9 @@ import java.awt.event.ComponentListener;
  */
 @SuppressWarnings("serial")
 public abstract class BaseScoreDialog extends JDialog {
-	protected RobocodeManager manager;
+	protected final RobocodeManager manager;
 
-	private EventHandler eventHandler = new EventHandler();
+	private final EventHandler eventHandler = new EventHandler();
 	protected JPanel contentPane;
 	protected JScrollPane scrollPane;
 	protected JTable table;
@@ -113,7 +113,7 @@ public abstract class BaseScoreDialog extends JDialog {
 
 		public void componentResized(ComponentEvent e) {
 			if (e.getSource() == BaseScoreDialog.this.getScrollPane()) {
-				scrollPaneComponentResized(e);
+				scrollPaneComponentResized();
 			}
 		}
 
@@ -128,7 +128,7 @@ public abstract class BaseScoreDialog extends JDialog {
 		dispose();
 	}
 
-	protected void scrollPaneComponentResized(ComponentEvent componentEvent) {
+	protected void scrollPaneComponentResized() {
 		// This code is not working...
 		Dimension scrollPaneExtent = getScrollPane().getViewport().getExtentSize();
 

@@ -59,43 +59,41 @@
  *       to prevent circular references causing memory leaks
  *     Pavel Savara
  *     - Re-work of robot interfaces
+ *     - hosting related logic moved to robot proxy
+ *     - interlocked synchronization
+ *     - (almost) minimized surface between RobotPeer and RobotProxy to serializable messages.
  *******************************************************************************/
 package robocode.peer;
 
 
 import robocode.*;
-import robocode.Event;
 import robocode.battle.Battle;
-import robocode.battle.record.RobotRecord;
-import robocode.battlefield.BattleField;
-import robocode.exception.*;
-import static robocode.gfx.ColorUtil.toColor;
+import robocode.common.BoundingRectangle;
+import robocode.control.RandomFactory;
+import robocode.control.RobotSpecification;
+import robocode.control.snapshot.RobotState;
+import robocode.control.snapshot.BulletState;
+import robocode.exception.AbortedException;
+import robocode.exception.DeathException;
+import robocode.exception.WinException;
+import robocode.io.Logger;
 import static robocode.io.Logger.logMessage;
-import robocode.manager.NameManager;
-import robocode.peer.proxies.AdvancedRobotProxy;
-import robocode.peer.proxies.JuniorRobotProxy;
-import robocode.peer.proxies.StandardRobotProxy;
-import robocode.peer.proxies.TeamRobotProxy;
+import robocode.manager.IHostManager;
+import robocode.peer.proxies.*;
 import robocode.peer.robot.*;
-import robocode.robotinterfaces.*;
-import robocode.robotinterfaces.peer.IBasicRobotPeer;
-import robocode.robotinterfaces.peer.IJuniorRobotPeer;
-import robocode.robotinterfaces.peer.ITeamRobotPeer;
+import robocode.repository.RobotFileSpecification;
 import robocode.robotpaint.Graphics2DProxy;
-import robocode.util.BoundingRectangle;
 import static robocode.util.Utils.*;
 
-import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
 import static java.lang.Math.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.security.AccessControlException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -110,7 +108,7 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, ContestantPeer {
+public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public static final int
 			WIDTH = 40,
@@ -120,282 +118,829 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
 			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
 
-	private static final long
-			MAX_SET_CALL_COUNT = 10000,
-			MAX_GET_CALL_COUNT = 10000;
+	private static final int maxSkippedTurns = 30;
+	private static final int maxSkippedTurnsWithIO = 240;
 
-	IBasicRobot robot;
+	private Battle battle;
+	private RobotStatistics statistics;
+	private final TeamPeer teamPeer;
+	private final RobotSpecification controlRobotSpecification;
+	private final RobotFileSpecification robotSpecification;
 
-	int index; // robot index in battle
+	private IHostingRobotProxy robotProxy;
+	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
+	private AtomicReference<ExecCommands> commands = new AtomicReference<ExecCommands>();
+	private AtomicReference<EventQueue> events = new AtomicReference<EventQueue>(new EventQueue());
+	private AtomicReference<List<TeamMessage>> teamMessages = new AtomicReference<List<TeamMessage>>(
+			new ArrayList<TeamMessage>());
+	private AtomicReference<List<BulletStatus>> bulletUpdates = new AtomicReference<List<BulletStatus>>(
+			new ArrayList<BulletStatus>());
 
-	private RobotOutputStream out;
+	private final StringBuilder battleText = new StringBuilder(1024);
+	private final StringBuilder proxyText = new StringBuilder(1024);
+	private RobotStatics statics;
+	private BattleRules battleRules;
+
+	// for battle thread, during robots processing
+	private ExecCommands currentCommands;
+	private double lastHeading;
+	private double lastGunHeading;
+	private double lastRadarHeading;
 
 	private double energy;
 	private double velocity;
-	private double heading;
+	private double bodyHeading;
 	private double radarHeading;
 	private double gunHeading;
+	private double gunHeat;
 	private double x;
 	private double y;
-
-	private double acceleration;
-	private double maxVelocity = Rules.MAX_VELOCITY; // Can be changed by robot
-	private double maxTurnRate = Rules.MAX_TURN_RATE_RADIANS; // Can be changed by robot
-
-	private double turnRemaining;
-	private double radarTurnRemaining;
-	private double gunTurnRemaining;
-
-	private double distanceRemaining;
-
-	private double gunHeat;
-
-	private BattleField battleField;
-
-	private BoundingRectangle boundingBox;
-
-	private Arc2D scanArc;
-
-	private boolean isJuniorRobot;
-	private boolean isInteractiveRobot;
-	private boolean isPaintRobot;
-	private boolean isAdvancedRobot;
-	private boolean isTeamRobot;
-	private boolean isDroid;
-	private boolean isIORobot;
-
-	// thread is running
-	private boolean isRunning;
-
-	// waiting for next tick
-	private boolean isSleeping;
-
-	private boolean isStopped;
-	private boolean isWinner;
-
-	private double lastGunHeading;
-	private double lastHeading;
-	private double lastRadarHeading;
-	private double lastX;
-	private double lastY;
-
-	private double saveAngleToTurn;
-	private double saveDistanceToGo;
-	private double saveGunAngleToTurn;
-	private double saveRadarAngleToTurn;
-	private boolean scan;
-
-	private Battle battle;
-
-	private EventManager eventManager;
-
-	private Condition waitCondition;
-
-	private boolean isAdjustGunForBodyTurn;
-	private boolean isAdjustRadarForGunTurn;
-	private boolean isAdjustRadarForBodyTurn;
-
-	private boolean isAdjustRadarForBodyTurnSet;
-
-	private boolean checkFileQuota;
-
-	private boolean halt;
-	private boolean inCollision;
-
-	private String name;
-	private String shortName;
-	private String veryShortName;
-	private String nonVersionedName;
-
-	private int setCallCount;
-	private int getCallCount;
-
-	private RobotClassManager robotClassManager;
-	private RobotFileSystemManager robotFileSystemManager;
-	private RobotThreadManager robotThreadManager;
-
 	private int skippedTurns;
 
-	private RobotStatistics statistics;
-
-	private Color bodyColor;
-	private Color gunColor;
-	private Color radarColor;
-	private Color bulletColor;
-	private Color scanColor;
-
-	private RobotMessageManager messageManager;
-
-	private TeamPeer teamPeer;
-
-	private boolean isDuplicate;
 	private boolean slowingDown;
-
 	private int moveDirection;
+	private double acceleration;
+	private boolean scan;
+	private boolean turnedRadarWithGun; // last round
 
-	private boolean testingCondition;
-
-	private BulletPeer newBullet;
-
-	private boolean paintEnabled;
+	private boolean isIORobot;
+	private boolean isPaintRecorded;
+	private boolean isPaintEnabled;
 	private boolean sgPaintEnabled;
 
-	private Graphics2DProxy graphicsProxy;
+	// waiting for next tick
+	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
+	private final AtomicBoolean halt = new AtomicBoolean(false);
+	private boolean disableExec = false;
+	private boolean isWinner;
+	private boolean inCollision;
+	private RobotState state;
+	private final Arc2D scanArc;
+	private final BoundingRectangle boundingBox;
 
-	protected RobotState state;
-
-	private IBasicRobotPeer robotProxy;
-
-	/**
-	 * RobotPeer constructor
-	 */
-	public RobotPeer(RobotClassManager robotClassManager, long fileSystemQuota, int index) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotClassManager robotClassManager, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();
-		this.robotClassManager = robotClassManager;
-		robotThreadManager = new RobotThreadManager(this);
-		robotFileSystemManager = new RobotFileSystemManager(this, fileSystemQuota);
-		eventManager = new EventManager(this);
+		if (team != null) {
+			team.add(this);
+		}
+		robotSpecification = robotClassManager.getRobotSpecification();
+
+		this.battle = battle;
 		boundingBox = new BoundingRectangle();
 		scanArc = new Arc2D.Double();
-		teamPeer = robotClassManager.getTeamManager();
+		teamPeer = team;
 		state = RobotState.ACTIVE;
-		this.index = index;
+		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
 
-		// Create statistics after teamPeer set
-		statistics = new RobotStatistics(this);
-	}
+		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-	public int getIndex() {
-		return index;
-	}
+		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battle.getBattleRules(), team, index,
+				contestantIndex);
+		battleRules = battle.getBattleRules();
 
-	public boolean isIORobot() {
-		return isIORobot;
-	}
+		controlRobotSpecification = robotClassManager.getControlRobotSpecification();
 
-	public void setIORobot(boolean ioRobot) {
-		this.isIORobot = ioRobot;
-	}
-
-	public synchronized void setTestingCondition(boolean testingCondition) {
-		this.testingCondition = testingCondition;
-	}
-
-	public synchronized boolean getTestingCondition() {
-		return testingCondition;
-	}
-
-	public boolean isDroid() {
-		return isDroid;
-	}
-
-	public void setDroid(boolean droid) {
-		this.isDroid = droid;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link IJuniorRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isJuniorRobot() {
-		return isJuniorRobot;
-	}
-
-	public void setJuniorRobot(boolean value) {
-		this.isJuniorRobot = value;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link IInteractiveRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isInteractiveRobot() {
-		return isInteractiveRobot;
-	}
-
-	public void setInteractiveRobot(boolean value) {
-		this.isInteractiveRobot = value;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link IPaintRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isPaintRobot() {
-		return isPaintRobot;
-	}
-
-	public void setPaintRobot(boolean value) {
-		this.isPaintRobot = value;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link IAdvancedRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isAdvancedRobot() {
-		return isAdvancedRobot;
-	}
-
-	public void setAdvancedRobot(boolean value) {
-		this.isAdvancedRobot = value;
-	}
-
-	/**
-	 * Returns <code>true</code> if the robot is implementing the
-	 * {@link ITeamRobot}; <code>false</code> otherwise.
-	 */
-	public boolean isTeamRobot() {
-		return isTeamRobot;
-	}
-
-	public void setTeamRobot(boolean value) {
-		this.isTeamRobot = value;
-	}
-
-	/**
-	 * Creates and returns a new robot proxy
-	 */
-	public void createRobotProxy() {
-		if (isTeamRobot) {
-			robotProxy = new TeamRobotProxy(this);
-		} else if (isAdvancedRobot) {
-			robotProxy = new AdvancedRobotProxy(this);
-		} else if (isInteractiveRobot) {
-			robotProxy = new StandardRobotProxy(this);
-		} else if (isJuniorRobot) {
-			robotProxy = new JuniorRobotProxy(this);
+		if (robotSpecification.isTeamRobot()) {
+			robotProxy = new TeamRobotProxy(robotClassManager, hostManager, this, statics);
+		} else if (robotSpecification.isAdvancedRobot()) {
+			robotProxy = new AdvancedRobotProxy(robotClassManager, hostManager, this, statics);
+		} else if (robotSpecification.isStandardRobot()) {
+			robotProxy = new StandardRobotProxy(robotClassManager, hostManager, this, statics);
+		} else if (robotSpecification.isJuniorRobot()) {
+			robotProxy = new JuniorRobotProxy(robotClassManager, hostManager, this, statics);
 		} else {
 			throw new AccessControlException("Unknown robot type");
 		}
 	}
 
-	public IBasicRobotPeer getRobotProxy() {
-		return robotProxy;
+	public void println(String s) {
+		synchronized (proxyText) {
+			battleText.append(s);
+			battleText.append("\n");
+		}
 	}
 
-	public final void move(double distance) {
-		setMove(distance);
-		do {
-			execute(); // Always tick at least once
-		} while (getDistanceRemaining() != 0);
+	public void print(Throwable ex) {
+		println(ex.toString());
+		StackTraceElement[] trace = ex.getStackTrace();
+
+		for (StackTraceElement aTrace : trace) {
+			println("\tat " + aTrace);
+		}
+
+		Throwable ourCause = ex.getCause();
+
+		if (ourCause != null) {
+			print(ourCause);
+		}
 	}
 
-	private void checkRobotCollision() {
+	public void printProxy(String s) {
+		synchronized (proxyText) {
+			proxyText.append(s);
+		}
+	}
+
+	public String readOutText() {
+		synchronized (proxyText) {
+			final String robotText = battleText.toString() + proxyText.toString();
+
+			battleText.setLength(0);
+			proxyText.setLength(0);
+			return robotText;
+		}
+	}
+
+	public RobotStatistics getRobotStatistics() {
+		return statistics;
+	}
+
+	public ContestantStatistics getStatistics() {
+		return statistics;
+	}
+
+	public RobotSpecification getControlRobotSpecification() {
+		return controlRobotSpecification;
+	}
+
+	// -------------------
+	// statics 
+	// -------------------
+
+	public boolean isDroid() {
+		return statics.isDroid();
+	}
+
+	public boolean isJuniorRobot() {
+		return statics.isJuniorRobot();
+	}
+
+	public boolean isInteractiveRobot() {
+		return statics.isInteractiveRobot();
+	}
+
+	public boolean isPaintRobot() {
+		return statics.isPaintRobot();
+	}
+
+	public boolean isAdvancedRobot() {
+		return statics.isAdvancedRobot();
+	}
+
+	public boolean isTeamRobot() {
+		return statics.isTeamRobot();
+	}
+
+	public String getName() {
+		return statics.getName();
+	}
+
+	public String getShortName() {
+		return statics.getShortName();
+	}
+
+	public String getVeryShortName() {
+		return statics.getVeryShortName();
+	}
+
+	public int getIndex() {
+		return statics.getIndex();
+	}
+
+	public int getContestIndex() {
+		return statics.getContestIndex();
+	}
+
+	// -------------------
+	// status 
+	// -------------------
+
+	public void setPaintEnabled(boolean enabled) {
+		isPaintEnabled = enabled;
+	}
+
+	public void setPaintRecorded(boolean enabled) {
+		isPaintRecorded = enabled;
+	}
+
+	public boolean isPaintRecorded() {
+		return isPaintRecorded;
+	}
+
+	public boolean isPaintEnabled() {
+		return isPaintEnabled;
+	}
+
+	public void setSGPaintEnabled(boolean enabled) {
+		sgPaintEnabled = enabled;
+	}
+
+	public boolean isSGPaintEnabled() {
+		return sgPaintEnabled;
+	}
+
+	public RobotState getState() {
+		return state;
+	}
+
+	public void setState(RobotState state) {
+		this.state = state;
+	}
+
+	public boolean isDead() {
+		return state == RobotState.DEAD;
+	}
+
+	public boolean isAlive() {
+		return state != RobotState.DEAD;
+	}
+
+	public boolean isWinner() {
+		return isWinner;
+	}
+
+	public boolean isRunning() {
+		return robotProxy.isRunning();
+	}
+
+	public boolean isSleeping() {
+		return isSleeping.get();
+	}
+
+	public boolean getHalt() {
+		return halt.get();
+	}
+
+	public void setHalt(boolean value) {
+		halt.set(value);
+	}
+
+	public BoundingRectangle getBoundingBox() {
+		return boundingBox;
+	}
+
+	public Arc2D getScanArc() {
+		return scanArc;
+	}
+
+	// -------------------
+	// robot space
+	// -------------------
+
+	public double getGunHeading() {
+		return gunHeading;
+	}
+
+	public double getBodyHeading() {
+		return bodyHeading;
+	}
+
+	public double getRadarHeading() {
+		return radarHeading;
+	}
+
+	public double getVelocity() {
+		return velocity;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public double getEnergy() {
+		return energy;
+	}
+
+	public double getGunHeat() {
+		return gunHeat;
+	}
+
+	public int getBodyColor() {
+		return commands.get().getBodyColor();
+	}
+
+	public int getRadarColor() {
+		return commands.get().getRadarColor();
+	}
+
+	public int getGunColor() {
+		return commands.get().getGunColor();
+	}
+
+	public int getBulletColor() {
+		return commands.get().getBulletColor();
+	}
+
+	public int getScanColor() {
+		return commands.get().getScanColor();
+	}
+
+	// ------------
+	// team
+	// ------------
+
+	public TeamPeer getTeamPeer() {
+		return teamPeer;
+	}
+
+	public String getTeamName() {
+		return statics.getTeamName();
+	}
+
+	public boolean isTeamLeader() {
+		return statics.isTeamLeader();
+	}
+
+	// -----------
+	// execute
+	// -----------
+
+
+	// TODO this is there just to prove that now is possible play over the wire
+	// public final ExecResults executeImpl(ExecCommands newCommands) {
+	// return (ExecResults) ObjectCloner.deepCopy(executeImplIn((ExecCommands) ObjectCloner.deepCopy(newCommands)));
+	// }
+
+	public final ExecResults executeImpl(ExecCommands newCommands) {
+		newCommands.validate(this);
+
+		if (!disableExec) {
+			// from robot to battle
+			commands.set(new ExecCommands(newCommands, true));
+			printProxy(newCommands.getOutputText());
+		} else {
+			// slow down spammer
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+
+		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
+		if (battle.isAborted()) {
+			disableExec = true;
+			throw new AbortedException();
+		}
+		if (isDead()) {
+			disableExec = true;
+			throw new DeathException();
+		}
+		if (getHalt()) {
+			disableExec = true;
+			if (isWinner) {
+				throw new WinException();
+			} else {
+				throw new AbortedException();
+			}
+		}
+
+		waitForNextRound();
+
+		// from battle to robot
+		final ExecCommands resCommands = new ExecCommands(this.commands.get(), false);
+		final RobotStatus resStatus = status.get();
+
+		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
+
+		return new ExecResults(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(),
+				getHalt(), shouldWait, isPaintEnabled() || isPaintRecorded);
+	}
+
+	public final ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
+		if (!getHalt()) {
+			// from robot to battle
+			commands.set(new ExecCommands(newCommands, true));
+			printProxy(newCommands.getOutputText());
+
+			waitForNextRound();
+		}
+		// from battle to robot
+		final ExecCommands resCommands = new ExecCommands(this.commands.get(), false);
+		final RobotStatus resStatus = status.get();
+
+		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && !isWinner());
+
+		readoutTeamMessages(); // throw away
+		
+		return new ExecResults(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),
+				getHalt(), shouldWait, false);
+	}
+
+	private List<Event> readoutEvents() {
+		return events.getAndSet(new EventQueue());
+	}
+
+	private List<TeamMessage> readoutTeamMessages() {
+		return teamMessages.getAndSet(new ArrayList<TeamMessage>());
+	}
+
+	private List<BulletStatus> readoutBullets() {
+		return bulletUpdates.getAndSet(new ArrayList<BulletStatus>());
+	}
+
+	private void waitForNextRound() {
+		synchronized (isSleeping) {
+			// Notify the battle that we are now asleep.
+			// This ends any pending wait() call in battle.runRound().
+			// Should not actually take place until we release the lock in wait(), below.
+			isSleeping.set(true);
+			isSleeping.notifyAll();
+			// Notifying battle that we're asleep
+			// Sleeping and waiting for battle to wake us up.
+			try {
+				isSleeping.wait();
+			} catch (InterruptedException e) {
+				// We are expecting this to happen when a round is ended!
+
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+			}
+			isSleeping.set(false);
+			// Notify battle thread, which is waiting in
+			// our wakeup() call, to return.
+			// It's quite possible, by the way, that we'll be back in sleep (above)
+			// before the battle thread actually wakes up
+			isSleeping.notifyAll();
+		}
+	}
+
+	// -----------
+	// called on battle thread
+	// -----------
+
+	public void waitWakeup() {
+		synchronized (isSleeping) {
+			if (isSleeping()) {
+				// Wake up the thread
+				isSleeping.notifyAll();
+				try {
+					isSleeping.wait(10000);
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+				}
+			}
+		}
+	}
+
+	public void waitWakeupNoWait() {
+		synchronized (isSleeping) {
+			if (isSleeping()) {
+				// Wake up the thread
+				isSleeping.notifyAll();
+			}
+		}
+	}
+
+	public void waitSleeping(int millisWait, int microWait) {
+		synchronized (isSleeping) {
+			// It's quite possible for simple robots to
+			// complete their processing before we get here,
+			// so we test if the robot is already asleep.
+
+			if (!isSleeping()) {
+				try {
+					for (int i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
+						isSleeping.wait(0, 999999);
+					}
+					if (!isSleeping()) {
+						isSleeping.wait(0, microWait);
+					}
+				} catch (InterruptedException e) {
+					// Immediately reasserts the exception by interrupting the caller thread itself
+					Thread.currentThread().interrupt();
+
+					logMessage("Wait for " + getName() + " interrupted.");
+				}
+			}
+		}
+	}
+
+	public void setSkippedTurns() {
+
+		if (battle.isDebugging() || isPaintEnabled()) {
+			skippedTurns = 0;
+		} else {
+			println("SYSTEM: you skipped turn");
+			skippedTurns++;
+			events.get().clear(false);
+			if (!isDead()) {
+				addEvent(new SkippedTurnEvent());
+			}
+
+			if ((!isIORobot && (skippedTurns > maxSkippedTurns))
+					|| (isIORobot && (skippedTurns > maxSkippedTurnsWithIO))) {
+				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
+				println("SYSTEM: No score will be generated.");
+				setHalt(true);
+				waitWakeupNoWait();
+				punishBadBehavior();
+				robotProxy.forceStopThread();
+			}
+		}
+	}
+
+	public void initializeRound(List<RobotPeer> robots, double[][] initialRobotPositions) {
+		boolean valid = false;
+
+		if (initialRobotPositions != null) {
+
+			if (statics.getIndex() >= 0 && statics.getIndex() < initialRobotPositions.length) {
+				double[] pos = initialRobotPositions[statics.getIndex()];
+
+				x = pos[0];
+				y = pos[1];
+				bodyHeading = pos[2];
+				gunHeading = radarHeading = bodyHeading;
+				updateBoundingBox();
+				valid = validSpot(robots);
+			}
+		}
+
+		if (!valid) {
+			final Random random = RandomFactory.getRandom();
+
+			for (int j = 0; j < 1000; j++) {
+				x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+				y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+				bodyHeading = 2 * Math.PI * random.nextDouble();
+				gunHeading = radarHeading = bodyHeading;
+				updateBoundingBox();
+
+				if (validSpot(robots)) {
+					break;
+				}
+			}
+		}
+
+		setState(RobotState.ACTIVE);
+
+		isWinner = false;
+		acceleration = velocity = 0;
+
+		if (statics.isTeamLeader() && statics.isDroid()) {
+			energy = 220;
+		} else if (statics.isTeamLeader()) {
+			energy = 200;
+		} else if (statics.isDroid()) {
+			energy = 120;
+		} else {
+			energy = 100;
+		}
+		gunHeat = 3;
+
+		setHalt(false);
+		disableExec = false;
+
+		scan = false;
+
 		inCollision = false;
 
-		for (int i = 0; i < battle.getRobots().size(); i++) {
-			RobotPeer r = battle.getRobots().get(i);
+		scanArc.setAngleStart(0);
+		scanArc.setAngleExtent(0);
+		scanArc.setFrame(-100, -100, 1, 1);
 
-			if (!(r == null || r == this || r.isDead()) && boundingBox.intersects(r.boundingBox)) {
+		skippedTurns = 0;
+
+		status = new AtomicReference<RobotStatus>();
+		commands = new AtomicReference<ExecCommands>(new ExecCommands());
+		readoutEvents();
+		readoutTeamMessages();
+		readoutBullets();
+		battleText.setLength(0);
+		proxyText.setLength(0);
+	}
+
+	private boolean validSpot(List<RobotPeer> robots) {
+		for (RobotPeer otherRobot : robots) {
+			if (otherRobot != null && otherRobot != this) {
+				if (getBoundingBox().intersects(otherRobot.getBoundingBox())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public void startRound(long waitTime) {
+		synchronized (isSleeping) {
+			try {
+				Logger.logMessage(".", false);
+
+				currentCommands = new ExecCommands();
+				RobotStatus stat = new RobotStatus(this, currentCommands, battle);
+
+				status.set(stat);
+				robotProxy.startRound(currentCommands, stat);
+
+				if (!battle.isDebugging()) {
+					// Wait for the robot to go to sleep (take action)
+					isSleeping.wait(waitTime / 1000000, (int) (waitTime % 1000000));
+				}
+			} catch (InterruptedException e) {
+				logMessage("Wait for " + getName() + " interrupted.");
+
+				// Immediately reasserts the exception by interrupting the caller thread itself
+				Thread.currentThread().interrupt();
+			}
+		}
+		if (!(isSleeping() || battle.isDebugging())) {
+			logMessage("\n" + getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
+		}
+	}
+
+	public void performLoadCommands() {
+		currentCommands = commands.get();
+
+		fireBullets(currentCommands.getBullets());
+
+		if (currentCommands.isScan()) {
+			scan = true;
+		}
+
+		if (currentCommands.isIORobot()) {
+			isIORobot = true;
+		}
+
+		if (currentCommands.isMoved()) {
+			acceleration = 0;
+			if (currentCommands.getDistanceRemaining() == 0) {
+				moveDirection = 0;
+			} else if (currentCommands.getDistanceRemaining() > 0) {
+				moveDirection = 1;
+			} else {
+				moveDirection = -1;
+			}
+			slowingDown = false;
+			currentCommands.setMoved(false);
+		}
+	}
+
+	private void fireBullets(List<BulletCommand> bulletCommands) {
+		BulletPeer newBullet = null;
+
+		for (BulletCommand bulletCmd : bulletCommands) {
+			if (Double.isNaN(bulletCmd.getPower())) {
+				println("SYSTEM: You cannot call fire(NaN)");
+				continue;
+			}
+			if (gunHeat > 0 || energy == 0) {
+				return;
+			}
+
+			double firePower = min(energy,
+					min(max(bulletCmd.getPower(), Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+
+			updateEnergy(-firePower);
+
+			gunHeat += Rules.getGunHeat(firePower);
+
+			newBullet = new BulletPeer(this, battle, bulletCmd.getBulletId());
+
+			newBullet.setPower(firePower);
+			if (!turnedRadarWithGun || !bulletCmd.isFireAssistValid() || statics.isAdvancedRobot()) {
+				newBullet.setHeading(gunHeading);
+			} else {
+				newBullet.setHeading(bulletCmd.getFireAssistAngle());
+			}
+			newBullet.setX(x);
+			newBullet.setY(y);
+		}
+		// there is only last bullet in one turn
+		if (newBullet != null) {
+			// newBullet.update(robots, bullets);
+			battle.addBullet(newBullet);
+		}
+	}
+
+	public final void performMove(List<RobotPeer> robots, double zapEnergy) {
+
+		// Reset robot state to active if it is not dead
+		if (isDead()) {
+			return;
+		}
+
+		setState(RobotState.ACTIVE);
+
+		updateGunHeat();
+
+		lastHeading = bodyHeading;
+		lastGunHeading = gunHeading;
+		lastRadarHeading = radarHeading;
+		final double lastX = x;
+		final double lastY = y;
+
+		if (!inCollision) {
+			updateHeading();
+		}
+
+		updateGunHeading();
+		updateRadarHeading();
+		updateMovement();
+
+		// At this point, robot has turned then moved.
+		// We could be touching a wall or another bot...
+
+		// First and foremost, we can never go through a wall:
+		checkWallCollision();
+
+		// Now check for robot collision
+		checkRobotCollision(robots);
+
+		// Scan false means robot did not call scan() manually.
+		// But if we're moving, scan
+		if (!scan) {
+			scan = (lastHeading != bodyHeading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
+					|| lastX != x || lastY != y);
+		}
+
+		if (isDead()) {
+			return;
+		}
+
+		// zap
+		if (zapEnergy != 0) {
+			zap(zapEnergy);
+		}
+	}
+
+	public void performScan(List<RobotPeer> robots) {
+		if (isDead()) {
+			return;
+		}
+
+		turnedRadarWithGun = false;
+		// scan
+		if (scan) {
+			scan(lastRadarHeading, robots);
+			turnedRadarWithGun = (lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading);
+			scan = false;
+		}
+
+		// dispatch messages
+		if (statics.isTeamRobot() && teamPeer != null) {
+			for (TeamMessage teamMessage : currentCommands.getTeamMessages()) {
+				for (RobotPeer member : teamPeer) {
+					if (checkDispatchToMember(member, teamMessage.recipient)) {
+						member.addTeamMessage(teamMessage);
+					}
+				}
+			}
+		}
+		currentCommands = null;
+		lastHeading = -1;
+		lastGunHeading = -1;
+		lastRadarHeading = -1;
+	}
+
+	private void addTeamMessage(TeamMessage message) {
+		final List<TeamMessage> queue = teamMessages.get();
+
+		queue.add(message);
+	}
+
+	private boolean checkDispatchToMember(RobotPeer member, String recipient) {
+		if (member.isAlive()) {
+			if (recipient == null) {
+				if (member != this) {
+					return true;
+				}
+			} else {
+				final int nl = recipient.length();
+				final String currentName = member.getName();
+				final String currentNonVerName = member.statics.getNonVersionedName();
+
+				if ((currentName.length() >= nl && currentName.substring(0, nl).equals(recipient))
+						|| (currentNonVerName.length() >= nl
+								&& member.statics.getNonVersionedName().substring(0, nl).equals(recipient))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void checkRobotCollision(List<RobotPeer> robots) {
+		inCollision = false;
+
+		for (int i = 0; i < robots.size(); i++) {
+			RobotPeer otherRobot = robots.get(i);
+
+			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead())
+					&& boundingBox.intersects(otherRobot.boundingBox)) {
 				// Bounce back
-				double angle = atan2(r.getX() - x, r.getY() - y);
+				double angle = atan2(otherRobot.x - x, otherRobot.y - y);
 
-				double movedx = velocity * sin(heading);
-				double movedy = velocity * cos(heading);
+				double movedx = velocity * sin(bodyHeading);
+				double movedy = velocity * cos(bodyHeading);
 
 				boolean atFault;
-				double bearing = normalRelativeAngle(angle - heading);
+				double bearing = normalRelativeAngle(angle - bodyHeading);
 
 				if ((velocity > 0 && bearing > -PI / 2 && bearing < PI / 2)
 						|| (velocity < 0 && (bearing < -PI / 2 || bearing > PI / 2))) {
@@ -403,30 +948,44 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 					inCollision = true;
 					atFault = true;
 					velocity = 0;
-					distanceRemaining = 0;
+					currentCommands.setDistanceRemaining(0);
 					x -= movedx;
 					y -= movedy;
 
-					statistics.scoreRammingDamage(i);
+					boolean teamFire = (teamPeer != null && teamPeer == otherRobot.teamPeer);
 
-					this.setEnergy(energy - Rules.ROBOT_HIT_DAMAGE);
-					r.setEnergy(r.getEnergy() - Rules.ROBOT_HIT_DAMAGE);
+					if (!teamFire) {
+						statistics.scoreRammingDamage(i);
+					}
 
-					if (r.getEnergy() == 0) {
-						if (r.isAlive()) {
-							r.kill();
-							statistics.scoreRammingKill(i);
+					this.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
+					otherRobot.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
+
+					if (otherRobot.energy == 0) {
+						if (otherRobot.isAlive()) {
+							otherRobot.kill();
+							if (!teamFire) {
+								final double bonus = statistics.scoreRammingKill(i);
+
+								if (bonus > 0) {
+									println(
+											"SYSTEM: Ram bonus for killing " + otherRobot.getName() + ": "
+											+ (int) (bonus + .5));
+								}
+							}
 						}
 					}
-					eventManager.add(
-							new HitRobotEvent(r.getName(), normalRelativeAngle(angle - heading), r.getEnergy(), atFault));
-					r.eventManager.add(
-							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - r.getBodyHeading()), energy, false));
+					addEvent(
+							new HitRobotEvent(otherRobot.getName(), normalRelativeAngle(angle - bodyHeading),
+							otherRobot.energy, atFault));
+					otherRobot.addEvent(
+							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - otherRobot.getBodyHeading()), energy,
+							false));
 				}
 			}
 		}
 		if (inCollision) {
-			state = RobotState.HIT_ROBOT;
+			setState(RobotState.HIT_ROBOT);
 		}
 	}
 
@@ -438,33 +997,33 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		if (x > getBattleFieldWidth() - HALF_WIDTH_OFFSET) {
 			hitWall = true;
 			fixx = getBattleFieldWidth() - HALF_WIDTH_OFFSET - x;
-			angle = normalRelativeAngle(PI / 2 - heading);
+			angle = normalRelativeAngle(PI / 2 - bodyHeading);
 		}
 
 		if (x < HALF_WIDTH_OFFSET) {
 			hitWall = true;
 			fixx = HALF_WIDTH_OFFSET - x;
-			angle = normalRelativeAngle(3 * PI / 2 - heading);
+			angle = normalRelativeAngle(3 * PI / 2 - bodyHeading);
 		}
 
 		if (y > getBattleFieldHeight() - HALF_HEIGHT_OFFSET) {
 			hitWall = true;
 			fixy = getBattleFieldHeight() - HALF_HEIGHT_OFFSET - y;
-			angle = normalRelativeAngle(-heading);
+			angle = normalRelativeAngle(-bodyHeading);
 		}
 
 		if (y < HALF_HEIGHT_OFFSET) {
 			hitWall = true;
 			fixy = HALF_HEIGHT_OFFSET - y;
-			angle = normalRelativeAngle(PI - heading);
+			angle = normalRelativeAngle(PI - bodyHeading);
 		}
 
 		if (hitWall) {
-			eventManager.add(new HitWallEvent(angle));
+			addEvent(new HitWallEvent(angle));
 
 			// only fix both x and y values if hitting wall at an angle
-			if ((heading % (Math.PI / 2)) != 0) {
-				double tanHeading = tan(heading);
+			if ((bodyHeading % (Math.PI / 2)) != 0) {
+				double tanHeading = tan(bodyHeading);
 
 				// if it hits bottom or top wall
 				if (fixx == 0) {
@@ -490,514 +1049,86 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
 
 			// Update energy, but do not reset inactiveTurnCount
-			if (isAdvancedRobot) {
-				this.setEnergy(energy - Rules.getWallHitDamage(velocity), false);
+			if (statics.isAdvancedRobot()) {
+				setEnergy(energy - Rules.getWallHitDamage(velocity), false);
 			}
 
 			updateBoundingBox();
 
-			distanceRemaining = 0;
+			currentCommands.setDistanceRemaining(0);
 			velocity = 0;
 			acceleration = 0;
 		}
 		if (hitWall) {
-			state = RobotState.HIT_WALL;
+			setState(RobotState.HIT_WALL);
 		}
 	}
 
-	public Battle getBattle() {
-		return battle;
+	private double getBattleFieldHeight() {
+		return battleRules.getBattlefieldHeight();
 	}
 
-	public double getBattleFieldHeight() {
-		return battleField.getHeight();
+	private double getBattleFieldWidth() {
+		return battleRules.getBattlefieldWidth();
 	}
 
-	public double getBattleFieldWidth() {
-		return battleField.getWidth();
-	}
-
-	public BoundingRectangle getBoundingBox() {
-		return boundingBox;
-	}
-
-	public synchronized double getGunHeading() {
-		return gunHeading;
-	}
-
-	public synchronized double getBodyHeading() {
-		return heading;
-	}
-
-	public String getName() {
-		return (name != null) ? name : robotClassManager.getClassNameManager().getFullClassNameWithVersion();
-	}
-
-	public String getShortName() {
-		return (shortName != null)
-				? shortName
-				: robotClassManager.getClassNameManager().getUniqueShortClassNameWithVersion();
-	}
-
-	public String getVeryShortName() {
-		return (veryShortName != null)
-				? veryShortName
-				: robotClassManager.getClassNameManager().getUniqueVeryShortClassNameWithVersion();
-	}
-
-	public String getNonVersionedName() {
-		return (nonVersionedName != null)
-				? nonVersionedName
-				: robotClassManager.getClassNameManager().getFullClassName();
-	}
-
-	public int getOthers() {
-		return battle.getActiveRobots() - (isAlive() ? 1 : 0);
-	}
-
-	public synchronized double getRadarHeading() {
-		return radarHeading;
-	}
-
-	public double getGunCoolingRate() {
-		return battle.getGunCoolingRate();
-	}
-
-	public synchronized double getX() {
-		return x;
-	}
-
-	public synchronized double getY() {
-		return y;
-	}
-
-	public synchronized boolean isAdjustGunForBodyTurn() {
-		return isAdjustGunForBodyTurn;
-	}
-
-	public synchronized boolean isAdjustRadarForGunTurn() {
-		return isAdjustRadarForGunTurn;
-	}
-
-	public synchronized boolean isDead() {
-		return state == RobotState.DEAD;
-	}
-
-	public synchronized boolean isAlive() {
-		return state != RobotState.DEAD;
-	}
-
-	private boolean intersects(Arc2D arc, Rectangle2D rect) {
-		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
-				arc.getStartPoint().getY()))
-				|| arc.intersects(rect);
-	}
-
-	public void rescan() {
-		boolean reset = false;
-		boolean resetValue = false;
-
-		if (getEventManager().getCurrentTopEventPriority() == getEventManager().getScannedRobotEventPriority()) {
-			reset = true;
-			resetValue = getEventManager().getInterruptible(getEventManager().getScannedRobotEventPriority());
-			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), true);
-		}
-
-		setScan(true);
-		execute();
-		if (reset) {
-			getEventManager().setInterruptible(getEventManager().getScannedRobotEventPriority(), resetValue);
-		}
-	}
-
-	public void scan() {
-		if (isDroid) {
-			return;
-		}
-
-		double startAngle = getLastRadarHeading();
-		double scanRadians = getRadarHeading() - startAngle;
-
-		// Check if we passed through 360
-		if (scanRadians < -PI) {
-			scanRadians = 2 * PI + scanRadians;
-		} else if (scanRadians > PI) {
-			scanRadians = scanRadians - 2 * PI;
-		}
-
-		// In our coords, we are scanning clockwise, with +y up
-		// In java coords, we are scanning counterclockwise, with +y down
-		// All we need to do is adjust our angle by -90 for this to work.
-		startAngle -= PI / 2;
-
-		startAngle = normalAbsoluteAngle(startAngle);
-
-		scanArc.setArc(getX() - Rules.RADAR_SCAN_RADIUS, getY() - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
-				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
-
-		for (RobotPeer robotPeer : battle.getRobots()) {
-			if (!(robotPeer == null || robotPeer == this || robotPeer.isDead())
-					&& intersects(scanArc, robotPeer.boundingBox)) {
-				double dx = robotPeer.getX() - getX();
-				double dy = robotPeer.getY() - getY();
-				double angle = atan2(dx, dy);
-				double dist = Math.hypot(dx, dy);
-
-				eventManager.add(
-						new ScannedRobotEvent(robotPeer.getName(), robotPeer.getEnergy(),
-						normalRelativeAngle(angle - getBodyHeading()), dist, robotPeer.getBodyHeading(),
-						robotPeer.getVelocity()));
-			}
-		}
-	}
-
-	public synchronized void setAdjustGunForBodyTurn(boolean newAdjustGunForBodyTurn) {
-		isAdjustGunForBodyTurn = newAdjustGunForBodyTurn;
-	}
-
-	public synchronized void setAdjustRadarForGunTurn(boolean newAdjustRadarForGunTurn) {
-		isAdjustRadarForGunTurn = newAdjustRadarForGunTurn;
-		if (!isAdjustRadarForBodyTurnSet) {
-			isAdjustRadarForBodyTurn = newAdjustRadarForGunTurn;
-		}
-	}
-
-	public final synchronized void setMove(double distance) {
-		if (energy == 0) {
-			return;
-		}
-		distanceRemaining = distance;
-		acceleration = 0;
-
-		if (distance == 0) {
-			moveDirection = 0;
-		} else if (distance > 0) {
-			moveDirection = 1;
-		} else {
-			moveDirection = -1;
-		}
-		slowingDown = false;
-	}
-
-	public void setBattle(Battle newBattle) {
-		battle = newBattle;
-		battleField = battle.getBattleField();
-	}
-
-	public synchronized void kill() {
-		battle.resetInactiveTurnCount(10.0);
-		if (isAlive()) {
-			eventManager.add(new DeathEvent());
-			if (isTeamLeader()) {
-				for (RobotPeer teammate : teamPeer) {
-					if (!(teammate.isDead() || teammate == this)) {
-						teammate.setEnergy(teammate.getEnergy() - 30);
-
-						BulletPeer sBullet = new BulletPeer(this, battle);
-
-						sBullet.setState(BulletState.HIT_VICTIM);
-						sBullet.setX(teammate.getX());
-						sBullet.setY(teammate.getY());
-						sBullet.setVictim(teammate);
-						sBullet.setPower(4);
-						battle.addBullet(sBullet);
-					}
-				}
-			}
-			battle.generateDeathEvents(this);
-
-			// 'fake' bullet for explosion on self
-			battle.addBullet(new ExplosionPeer(this, battle));
-		}
-		setEnergy(0);
-
-		state = RobotState.DEAD;
-	}
-
-	public synchronized void preInitialize() {
-		state = RobotState.DEAD;
-	}
-
-	public synchronized void setGunHeading(double newGunHeading) {
-		gunHeading = newGunHeading;
-	}
-
-	public synchronized void setHeading(double heading) {
-		this.heading = heading;
-	}
-
-	public synchronized void setRadarHeading(double newRadarHeading) {
-		radarHeading = newRadarHeading;
-	}
-
-	public synchronized void setX(double newX) {
-		x = newX;
-	}
-
-	public synchronized void setY(double newY) {
-		y = newY;
-	}
-
-	public void run() {
-		setRunning(true);
-
-		try {
-			robotThreadManager.initAWT();
-			if (robot != null) {
-
-				// Process all events for the first turn.
-				// This is done as the first robot status event must occur before the robot
-				// has started running.
-				eventManager.processEvents();
-
-				Runnable runnable = robot.getRobotRunnable();
-
-				if (runnable != null) {
-					runnable.run();
-				}
-			}
-			for (;;) {
-				execute();
-			}
-		} catch (AbortedException e) {
-			waitForBattleEndedEvent();
-		} catch (DeathException e) {
-			out.println("SYSTEM: " + getName() + " has died");
-			waitForBattleEndedEvent();
-		} catch (WinException e) {// Do nothing
-		} catch (DisabledException e) {
-			setEnergy(0);
-			String msg = e.getMessage();
-
-			if (msg == null) {
-				msg = "";
-			} else {
-				msg = ": " + msg;
-			}
-			out.println("SYSTEM: Robot disabled" + msg);
-		} catch (Exception e) {
-			setEnergy(0);
-			final String message = getName() + ": Exception: " + e;
-
-			out.println(message);
-			out.printStackTrace(e);
-			logMessage(message);
-		} catch (Throwable t) {
-			setEnergy(0);
-			if (!(t instanceof ThreadDeath)) {
-				final String message = getName() + ": Throwable: " + t;
-
-				out.println(message);
-				out.printStackTrace(t);
-				logMessage(message);
-			} else {
-				logMessage(getName() + " stopped successfully.");
-			}
-		}
-
-		// If battle is waiting for us, well, all done!
-		synchronized (this) {
-			isRunning = false;
-			notifyAll();
-		}
-	}
-
-	public final void execute() {
-		// Entering tick
-		if (robotThreadManager == null || Thread.currentThread() != robotThreadManager.getRunThread()) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {// just swallow here
-			}
-			throw new RobotException("You cannot take action in this thread!");
-		}
-		if (getTestingCondition()) {
-			throw new RobotException(
-					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
-		}
-
-		setSetCallCount(0);
-		setGetCallCount(0);
-
-		if (newBullet != null) {
-			battle.addBullet(newBullet);
-			newBullet = null;
-		}
-
-		// This stops autoscan from scanning...
-		if (waitCondition != null && waitCondition.test()) {
-			waitCondition = null;
-		}
-
-		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
-		if (battle.isAborted()) {
-			throw new AbortedException();
-		}
-		if (isDead()) {
-			throw new DeathException();
-		}
-		if (getHalt()) {
-			if (isWinner) {
-				throw new WinException();
-			} else {
-				throw new AbortedException();
-			}
-		}
-
-		waitForNextRound();
-
-		eventManager.setFireAssistValid(false);
-
-		// Out's counter must be reset before processing event.
-		// Otherwise, it will not be reset when printing in the onScannedEvent()
-		// before a scan() call, which will potentially cause a new onScannedEvent()
-		// and therefore not be able to reset the counter.
-		out.resetCounter();
-
-		eventManager.processEvents();
-	}
-
-	private void waitForBattleEndedEvent() {
-		if (battle.isAborted() || (battle.isLastRound() && isDead())) {
-			while (!getHalt() && !eventManager.processBattleEndedEvent()) {
-				waitForNextRound();
-			}
-		}
-	}
-
-	private void waitForNextRound() {
-		synchronized (this) {
-			// Notify the battle that we are now asleep.
-			// This ends any pending wait() call in battle.runRound().
-			// Should not actually take place until we release the lock in wait(), below.
-			isSleeping = true;
-			notifyAll();
-			// Notifying battle that we're asleep
-			// Sleeping and waiting for battle to wake us up.
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				// We are expecting this to happen when a round is ended!
-
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-			}
-			isSleeping = false;
-			// Notify battle thread, which is waiting in
-			// our wakeup() call, to return.
-			// It's quite possible, by the way, that we'll be back in sleep (above)
-			// before the battle thread actually wakes up
-			notifyAll();
-		}
-	}
-
-	public synchronized final void setTurnGun(double radians) {
-		this.gunTurnRemaining = radians;
-	}
-
-	public final void turnGun(double radians) {
-		setTurnGun(radians);
-		do {
-			execute(); // Always tick at least once
-		} while (getGunTurnRemaining() != 0);
-	}
-
-	public synchronized final void setTurnBody(double radians) {
-		if (energy > 0) {
-			turnRemaining = radians;
-		}
-	}
-
-	public final void turnBody(double radians) {
-		setTurnBody(radians);
-		do {
-			execute(); // Always tick at least once
-		} while (getBodyTurnRemaining() != 0);
-	}
-
-	public synchronized final void setTurnRadar(double radians) {
-		this.radarTurnRemaining = radians;
-	}
-
-	public final void turnRadar(double radians) {
-		setTurnRadar(radians);
-		do {
-			execute(); // Always tick at least once
-		} while (getRadarTurnRemaining() != 0);
-	}
-
-	public final synchronized void update() {
-		// Reset robot state to active if it is not dead
-		if (isAlive()) {
-			state = RobotState.ACTIVE;
-		}
-
-		updateGunHeat();
-
-		lastHeading = heading;
-		lastGunHeading = gunHeading;
-		lastRadarHeading = radarHeading;
-
-		if (!inCollision) {
-			updateHeading();
-		}
-
-		updateGunHeading();
-		updateRadarHeading();
-		updateMovement();
-
-		// At this point, robot has turned then moved.
-		// We could be touching a wall or another bot...
-
-		// First and foremost, we can never go through a wall:
-		checkWallCollision();
-
-		// Now check for robot collision
-		checkRobotCollision();
-
-		// Scan false means robot did not call scan() manually.
-		// But if we're moving, scan
-		if (!scan) {
-			scan = (lastHeading != heading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
-					|| lastX != x || lastY != y || waitCondition != null);
-		}
-	}
-
-	public synchronized void updateBoundingBox() {
+	public void updateBoundingBox() {
 		boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
 	}
 
+	public void addEvent(Event event) {
+		if (isRunning()) {
+			final EventQueue queue = events.get();
+
+			if ((queue.size() > EventManager.MAX_QUEUE_SIZE)
+					&& !(event instanceof DeathEvent || event instanceof WinEvent || event instanceof SkippedTurnEvent)) {
+				println(
+						"Not adding to " + statics.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
+						+ " events in queue.");
+				// clean up old stuff                
+				queue.clear(battle.getTime() - EventManager.MAX_EVENT_STACK);
+				return;
+			}
+			RobotClassManager.setTime(event, battle.getTime());
+			queue.add(event);
+		}
+	}
+
 	private void updateGunHeading() {
-		if (gunTurnRemaining > 0) {
-			if (gunTurnRemaining < Rules.GUN_TURN_RATE_RADIANS) {
-				gunHeading += gunTurnRemaining;
-				radarHeading += gunTurnRemaining;
-				if (isAdjustRadarForGunTurn()) {
-					radarTurnRemaining -= gunTurnRemaining;
+		if (currentCommands.getGunTurnRemaining() > 0) {
+			if (currentCommands.getGunTurnRemaining() < Rules.GUN_TURN_RATE_RADIANS) {
+				gunHeading += currentCommands.getGunTurnRemaining();
+				radarHeading += currentCommands.getGunTurnRemaining();
+				if (currentCommands.isAdjustRadarForGunTurn()) {
+					currentCommands.setRadarTurnRemaining(
+							currentCommands.getRadarTurnRemaining() - currentCommands.getGunTurnRemaining());
 				}
-				gunTurnRemaining = 0;
+				currentCommands.setGunTurnRemaining(0);
 			} else {
 				gunHeading += Rules.GUN_TURN_RATE_RADIANS;
 				radarHeading += Rules.GUN_TURN_RATE_RADIANS;
-				gunTurnRemaining -= Rules.GUN_TURN_RATE_RADIANS;
-				if (isAdjustRadarForGunTurn()) {
-					radarTurnRemaining -= Rules.GUN_TURN_RATE_RADIANS;
+				currentCommands.setGunTurnRemaining(currentCommands.getGunTurnRemaining() - Rules.GUN_TURN_RATE_RADIANS);
+				if (currentCommands.isAdjustRadarForGunTurn()) {
+					currentCommands.setRadarTurnRemaining(
+							currentCommands.getRadarTurnRemaining() - Rules.GUN_TURN_RATE_RADIANS);
 				}
 			}
-		} else if (gunTurnRemaining < 0) {
-			if (gunTurnRemaining > -Rules.GUN_TURN_RATE_RADIANS) {
-				gunHeading += gunTurnRemaining;
-				radarHeading += gunTurnRemaining;
-				if (isAdjustRadarForGunTurn()) {
-					radarTurnRemaining -= gunTurnRemaining;
+		} else if (currentCommands.getGunTurnRemaining() < 0) {
+			if (currentCommands.getGunTurnRemaining() > -Rules.GUN_TURN_RATE_RADIANS) {
+				gunHeading += currentCommands.getGunTurnRemaining();
+				radarHeading += currentCommands.getGunTurnRemaining();
+				if (currentCommands.isAdjustRadarForGunTurn()) {
+					currentCommands.setRadarTurnRemaining(
+							currentCommands.getRadarTurnRemaining() - currentCommands.getGunTurnRemaining());
 				}
-				gunTurnRemaining = 0;
+				currentCommands.setGunTurnRemaining(0);
 			} else {
 				gunHeading -= Rules.GUN_TURN_RATE_RADIANS;
 				radarHeading -= Rules.GUN_TURN_RATE_RADIANS;
-				gunTurnRemaining += Rules.GUN_TURN_RATE_RADIANS;
-				if (isAdjustRadarForGunTurn()) {
-					radarTurnRemaining += Rules.GUN_TURN_RATE_RADIANS;
+				currentCommands.setGunTurnRemaining(currentCommands.getGunTurnRemaining() + Rules.GUN_TURN_RATE_RADIANS);
+				if (currentCommands.isAdjustRadarForGunTurn()) {
+					currentCommands.setRadarTurnRemaining(
+							currentCommands.getRadarTurnRemaining() + Rules.GUN_TURN_RATE_RADIANS);
 				}
 			}
 		}
@@ -1007,55 +1138,59 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 	private void updateHeading() {
 		boolean normalizeHeading = true;
 
-		double turnRate = min(maxTurnRate,
+		double turnRate = min(currentCommands.getMaxTurnRate(),
 				(.4 + .6 * (1 - (abs(velocity) / Rules.MAX_VELOCITY))) * Rules.MAX_TURN_RATE_RADIANS);
 
-		if (turnRemaining > 0) {
-			if (turnRemaining < turnRate) {
-				heading += turnRemaining;
-				gunHeading += turnRemaining;
-				radarHeading += turnRemaining;
-				if (isAdjustGunForBodyTurn()) {
-					gunTurnRemaining -= turnRemaining;
+		if (currentCommands.getBodyTurnRemaining() > 0) {
+			if (currentCommands.getBodyTurnRemaining() < turnRate) {
+				bodyHeading += currentCommands.getBodyTurnRemaining();
+				gunHeading += currentCommands.getBodyTurnRemaining();
+				radarHeading += currentCommands.getBodyTurnRemaining();
+				if (currentCommands.isAdjustGunForBodyTurn()) {
+					currentCommands.setGunTurnRemaining(
+							currentCommands.getGunTurnRemaining() - currentCommands.getBodyTurnRemaining());
 				}
-				if (isAdjustRadarForBodyTurn()) {
-					radarTurnRemaining -= turnRemaining;
+				if (currentCommands.isAdjustRadarForBodyTurn()) {
+					currentCommands.setRadarTurnRemaining(
+							currentCommands.getRadarTurnRemaining() - currentCommands.getBodyTurnRemaining());
 				}
-				turnRemaining = 0;
+				currentCommands.setBodyTurnRemaining(0);
 			} else {
-				heading += turnRate;
+				bodyHeading += turnRate;
 				gunHeading += turnRate;
 				radarHeading += turnRate;
-				turnRemaining -= turnRate;
-				if (isAdjustGunForBodyTurn()) {
-					gunTurnRemaining -= turnRate;
+				currentCommands.setBodyTurnRemaining(currentCommands.getBodyTurnRemaining() - turnRate);
+				if (currentCommands.isAdjustGunForBodyTurn()) {
+					currentCommands.setGunTurnRemaining(currentCommands.getGunTurnRemaining() - turnRate);
 				}
-				if (isAdjustRadarForBodyTurn()) {
-					radarTurnRemaining -= turnRate;
+				if (currentCommands.isAdjustRadarForBodyTurn()) {
+					currentCommands.setRadarTurnRemaining(currentCommands.getRadarTurnRemaining() - turnRate);
 				}
 			}
-		} else if (turnRemaining < 0) {
-			if (turnRemaining > -turnRate) {
-				heading += turnRemaining;
-				gunHeading += turnRemaining;
-				radarHeading += turnRemaining;
-				if (isAdjustGunForBodyTurn()) {
-					gunTurnRemaining -= turnRemaining;
+		} else if (currentCommands.getBodyTurnRemaining() < 0) {
+			if (currentCommands.getBodyTurnRemaining() > -turnRate) {
+				bodyHeading += currentCommands.getBodyTurnRemaining();
+				gunHeading += currentCommands.getBodyTurnRemaining();
+				radarHeading += currentCommands.getBodyTurnRemaining();
+				if (currentCommands.isAdjustGunForBodyTurn()) {
+					currentCommands.setGunTurnRemaining(
+							currentCommands.getGunTurnRemaining() - currentCommands.getBodyTurnRemaining());
 				}
-				if (isAdjustRadarForBodyTurn()) {
-					radarTurnRemaining -= turnRemaining;
+				if (currentCommands.isAdjustRadarForBodyTurn()) {
+					currentCommands.setRadarTurnRemaining(
+							currentCommands.getRadarTurnRemaining() - currentCommands.getBodyTurnRemaining());
 				}
-				turnRemaining = 0;
+				currentCommands.setBodyTurnRemaining(0);
 			} else {
-				heading -= turnRate;
+				bodyHeading -= turnRate;
 				gunHeading -= turnRate;
 				radarHeading -= turnRate;
-				turnRemaining += turnRate;
-				if (isAdjustGunForBodyTurn()) {
-					gunTurnRemaining += turnRate;
+				currentCommands.setBodyTurnRemaining(currentCommands.getBodyTurnRemaining() + turnRate);
+				if (currentCommands.isAdjustGunForBodyTurn()) {
+					currentCommands.setGunTurnRemaining(currentCommands.getGunTurnRemaining() + turnRate);
 				}
-				if (isAdjustRadarForBodyTurn()) {
-					radarTurnRemaining += turnRate;
+				if (currentCommands.isAdjustRadarForBodyTurn()) {
+					currentCommands.setRadarTurnRemaining(currentCommands.getRadarTurnRemaining() + turnRate);
 				}
 			}
 		} else {
@@ -1063,24 +1198,45 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 
 		if (normalizeHeading) {
-			if (turnRemaining == 0) {
-				heading = normalNearAbsoluteAngle(heading);
+			if (currentCommands.getBodyTurnRemaining() == 0) {
+				bodyHeading = normalNearAbsoluteAngle(bodyHeading);
 			} else {
-				heading = normalAbsoluteAngle(heading);
+				bodyHeading = normalAbsoluteAngle(bodyHeading);
 			}
 		}
-		if (Double.isNaN(heading)) {
+		if (Double.isNaN(bodyHeading)) {
 			System.out.println("HOW IS HEADING NAN HERE");
 		}
 	}
 
-	private void updateMovement() {
-		if (distanceRemaining == 0 && velocity == 0) {
-			return;
+	private void updateRadarHeading() {
+		if (currentCommands.getRadarTurnRemaining() > 0) {
+			if (currentCommands.getRadarTurnRemaining() < Rules.RADAR_TURN_RATE_RADIANS) {
+				radarHeading += currentCommands.getRadarTurnRemaining();
+				currentCommands.setRadarTurnRemaining(0);
+			} else {
+				radarHeading += Rules.RADAR_TURN_RATE_RADIANS;
+				currentCommands.setRadarTurnRemaining(
+						currentCommands.getRadarTurnRemaining() - Rules.RADAR_TURN_RATE_RADIANS);
+			}
+		} else if (currentCommands.getRadarTurnRemaining() < 0) {
+			if (currentCommands.getRadarTurnRemaining() > -Rules.RADAR_TURN_RATE_RADIANS) {
+				radarHeading += currentCommands.getRadarTurnRemaining();
+				currentCommands.setRadarTurnRemaining(0);
+			} else {
+				radarHeading -= Rules.RADAR_TURN_RATE_RADIANS;
+				currentCommands.setRadarTurnRemaining(
+						currentCommands.getRadarTurnRemaining() + Rules.RADAR_TURN_RATE_RADIANS);
+			}
 		}
 
-		lastX = x;
-		lastY = y;
+		radarHeading = normalAbsoluteAngle(radarHeading);
+	}
+
+	private void updateMovement() {
+		if (currentCommands.getDistanceRemaining() == 0 && velocity == 0) {
+			return;
+		}
 
 		if (!slowingDown) {
 			// Set moveDir and slow down for move(0)
@@ -1099,12 +1255,12 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			}
 		}
 
-		double desiredDistanceRemaining = distanceRemaining;
+		double desiredDistanceRemaining = currentCommands.getDistanceRemaining();
 
 		if (slowingDown) {
-			if (moveDirection == 1 && distanceRemaining < 0) {
+			if (moveDirection == 1 && currentCommands.getDistanceRemaining() < 0) {
 				desiredDistanceRemaining = 0;
-			} else if (moveDirection == -1 && distanceRemaining > 0) {
+			} else if (moveDirection == -1 && currentCommands.getDistanceRemaining() > 0) {
 				desiredDistanceRemaining = 0;
 			}
 		}
@@ -1142,9 +1298,9 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 
 		if (slowingDown) {
 			// note:  if slowing down, velocity and distanceremaining have same sign
-			if (distanceRemaining != 0 && abs(velocity) <= Rules.DECELERATION
-					&& abs(distanceRemaining) <= Rules.DECELERATION) {
-				slowDownVelocity = distanceRemaining;
+			if (currentCommands.getDistanceRemaining() != 0 && abs(velocity) <= Rules.DECELERATION
+					&& abs(currentCommands.getDistanceRemaining()) <= Rules.DECELERATION) {
+				slowDownVelocity = currentCommands.getDistanceRemaining();
 			}
 
 			double perfectAccel = slowDownVelocity - velocity;
@@ -1159,20 +1315,20 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 
 		// Calculate velocity
-		if (velocity > maxVelocity || velocity < -maxVelocity) {
+		if (velocity > currentCommands.getMaxVelocity() || velocity < -currentCommands.getMaxVelocity()) {
 			acceleration = 0;
 		}
 
 		velocity += acceleration;
-		if (velocity > maxVelocity) {
-			velocity -= min(Rules.DECELERATION, velocity - maxVelocity);
+		if (velocity > currentCommands.getMaxVelocity()) {
+			velocity -= min(Rules.DECELERATION, velocity - currentCommands.getMaxVelocity());
 		}
-		if (velocity < -maxVelocity) {
-			velocity += min(Rules.DECELERATION, -velocity - maxVelocity);
+		if (velocity < -currentCommands.getMaxVelocity()) {
+			velocity += min(Rules.DECELERATION, -velocity - currentCommands.getMaxVelocity());
 		}
 
-		double dx = velocity * sin(heading);
-		double dy = velocity * cos(heading);
+		double dx = velocity * sin(bodyHeading);
+		double dy = velocity * cos(bodyHeading);
 
 		x += dx;
 		y += dy;
@@ -1184,7 +1340,7 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		}
 
 		if (slowingDown && velocity == 0) {
-			distanceRemaining = 0;
+			currentCommands.setDistanceRemaining(0);
 			moveDirection = 0;
 			slowingDown = false;
 			acceleration = 0;
@@ -1194,57 +1350,212 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 			updateBoundingBox();
 		}
 
-		distanceRemaining -= velocity;
+		currentCommands.setDistanceRemaining(currentCommands.getDistanceRemaining() - velocity);
 	}
 
-	private void updateRadarHeading() {
-		if (radarTurnRemaining > 0) {
-			if (radarTurnRemaining < Rules.RADAR_TURN_RATE_RADIANS) {
-				radarHeading += radarTurnRemaining;
-				radarTurnRemaining = 0;
-			} else {
-				radarHeading += Rules.RADAR_TURN_RATE_RADIANS;
-				radarTurnRemaining -= Rules.RADAR_TURN_RATE_RADIANS;
-			}
-		} else if (radarTurnRemaining < 0) {
-			if (radarTurnRemaining > -Rules.RADAR_TURN_RATE_RADIANS) {
-				radarHeading += radarTurnRemaining;
-				radarTurnRemaining = 0;
-			} else {
-				radarHeading -= Rules.RADAR_TURN_RATE_RADIANS;
-				radarTurnRemaining += Rules.RADAR_TURN_RATE_RADIANS;
-			}
-		}
-
-		radarHeading = normalAbsoluteAngle(radarHeading);
-	}
-
-	public synchronized void wakeup() {
-		if (isSleeping) {
-			// Wake up the thread
-			notifyAll();
-			try {
-				wait(10000);
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-			}
+	private void updateGunHeat() {
+		gunHeat -= battleRules.getGunCoolingRate();
+		if (gunHeat < 0) {
+			gunHeat = 0;
 		}
 	}
 
-	private synchronized boolean getHalt() {
-		return halt;
+	private void scan(double lastRadarHeading, List<RobotPeer> robots) {
+		if (statics.isDroid()) {
+			return;
+		}
+
+		double startAngle = lastRadarHeading;
+		double scanRadians = getRadarHeading() - startAngle;
+
+		// Check if we passed through 360
+		if (scanRadians < -PI) {
+			scanRadians = 2 * PI + scanRadians;
+		} else if (scanRadians > PI) {
+			scanRadians = scanRadians - 2 * PI;
+		}
+
+		// In our coords, we are scanning clockwise, with +y up
+		// In java coords, we are scanning counterclockwise, with +y down
+		// All we need to do is adjust our angle by -90 for this to work.
+		startAngle -= PI / 2;
+
+		startAngle = normalAbsoluteAngle(startAngle);
+
+		scanArc.setArc(x - Rules.RADAR_SCAN_RADIUS, y - Rules.RADAR_SCAN_RADIUS, 2 * Rules.RADAR_SCAN_RADIUS,
+				2 * Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
+
+		for (RobotPeer otherRobot : robots) {
+			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead())
+					&& intersects(scanArc, otherRobot.boundingBox)) {
+				double dx = otherRobot.x - x;
+				double dy = otherRobot.y - y;
+				double angle = atan2(dx, dy);
+				double dist = Math.hypot(dx, dy);
+
+				final ScannedRobotEvent event = new ScannedRobotEvent(otherRobot.getName(), otherRobot.energy,
+						normalRelativeAngle(angle - getBodyHeading()), dist, otherRobot.getBodyHeading(),
+						otherRobot.getVelocity());
+
+				addEvent(event);
+			}
+		}
 	}
 
-	public synchronized void setHalt(boolean halt) {
-		this.halt = halt;
+	private boolean intersects(Arc2D arc, Rectangle2D rect) {
+		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
+				arc.getStartPoint().getY()))
+				|| arc.intersects(rect);
+	}
+
+	private void zap(double zapAmount) {
+		if (energy == 0) {
+			kill();
+			return;
+		}
+		energy -= abs(zapAmount);
+		if (energy < .1) {
+			energy = 0;
+			currentCommands.setDistanceRemaining(0);
+			currentCommands.setBodyTurnRemaining(0);
+		}
+	}
+
+	public void drainEnergy() {
+		setEnergy(0, true);
+	}
+
+	public void punishBadBehavior() {
+		setState(RobotState.DEAD);
+		statistics.setInactive();
+		// disable for next time
+		robotSpecification.setValid(false);
+	}
+
+	public void updateEnergy(double delta) {
+		setEnergy(energy + delta, true);
+	}
+
+	private void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
+		if (resetInactiveTurnCount && (energy != newEnergy)) {
+			battle.resetInactiveTurnCount(energy - newEnergy);
+		}
+		energy = newEnergy;
+		if (energy < .01) {
+			energy = 0;
+			ExecCommands localCommands = commands.get();
+
+			localCommands.setDistanceRemaining(0);
+			localCommands.setBodyTurnRemaining(0);
+		}
+	}
+
+	public void setWinner(boolean newWinner) {
+		isWinner = newWinner;
+	}
+
+	public void kill() {
+		battle.resetInactiveTurnCount(10.0);
+		if (isAlive()) {
+			addEvent(new DeathEvent());
+			if (statics.isTeamLeader()) {
+				for (RobotPeer teammate : teamPeer) {
+					if (!(teammate.isDead() || teammate == this)) {
+						teammate.updateEnergy(-30);
+
+						BulletPeer sBullet = new BulletPeer(this, battle, -1);
+
+						sBullet.setState(BulletState.HIT_VICTIM);
+						sBullet.setX(teammate.x);
+						sBullet.setY(teammate.y);
+						sBullet.setVictim(teammate);
+						sBullet.setPower(4);
+						battle.addBullet(sBullet);
+					}
+				}
+			}
+			battle.registerDeathRobot(this);
+
+			// 'fake' bullet for explosion on self
+			final ExplosionPeer fake = new ExplosionPeer(this, battle);
+
+			battle.addBullet(fake);
+		}
+		updateEnergy(-energy);
+
+		setState(RobotState.DEAD);
+	}
+
+	public void waitForStop() {
+		robotProxy.waitForStopThread();
+	}
+
+	/**
+	 * Clean things up removing all references to the robot.
+	 */
+	public void cleanup() {
+		if (statistics != null) {
+			statistics.cleanup();
+			statistics = null;
+		}
+
+		battle = null;
+
+		if (robotProxy != null) {
+			robotProxy.cleanup();
+		}
+
+		// Cleanup robot proxy
+		robotProxy = null;
+
+		status = null;
+		commands = null;
+		events = null;
+		teamMessages = null;
+		bulletUpdates = null;
+		battleText.setLength(0);
+		proxyText.setLength(0);
+		statics = null;
+		battleRules = null;
+	}
+
+	public List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
+		return commands.get().getGraphicsCalls();
+	}
+
+	public boolean isTryingToPaint() {
+		return commands.get().isTryingToPaint();
+	}
+
+	public List<DebugProperty> getDebugProperties() {
+		return commands.get().getDebugProperties();
+	}
+
+	public void publishStatus(long currentTurn) {
+		RobotStatus stat = new RobotStatus(this, commands.get(), battle);
+
+		status.set(stat);
+
+		if (!isDead()) {
+			addEvent(new StatusEvent(stat));
+			// Add paint event, if robot is a paint robot and its painting is enabled
+			if (isPaintRobot() && (isPaintEnabled() || isPaintRecorded) && currentTurn > 0) {
+				addEvent(new PaintEvent());
+			}
+		}
+	}
+
+	public void addBulletStatus(BulletStatus bulletStatus) {
+		if (isAlive()) {
+			bulletUpdates.get().add(bulletStatus);
+		}
 	}
 
 	public int compareTo(ContestantPeer cp) {
 		double myScore = statistics.getTotalScore();
 		double hisScore = cp.getStatistics().getTotalScore();
 
-		if (battle.isRunning()) {
+		if (statistics.isInRound()) {
 			myScore += statistics.getCurrentScore();
 			hisScore += cp.getStatistics().getCurrentScore();
 		}
@@ -1257,807 +1568,10 @@ public class RobotPeer implements ITeamRobotPeer, IJuniorRobotPeer, Runnable, Co
 		return 0;
 	}
 
-	public IBasicRobot getRobot() {
-		return robot;
-	}
-
-	public TeamPeer getTeamPeer() {
-		return teamPeer;
-	}
-
-	public String getTeamName() {
-		if (teamPeer != null) {
-			return teamPeer.getName();
-		}
-		return getName();
-	}
-
-	public boolean isTeamLeader() {
-		return (getTeamPeer() != null && getTeamPeer().getTeamLeader() == this);
-	}
-
-	public long getTime() {
-		return battle.getCurrentTime();
-	}
-
-	public synchronized double getVelocity() {
-		return velocity;
-	}
-
-	public synchronized void initialize(double x, double y, double heading) {
-		state = RobotState.ACTIVE;
-
-		isWinner = false;
-		this.x = lastX = x;
-		this.y = lastY = y;
-
-		setLastHeading();
-		this.heading = gunHeading = radarHeading = lastGunHeading = lastRadarHeading = heading;
-
-		acceleration = velocity = 0;
-
-		if (isTeamLeader() && isDroid) {
-			energy = 220;
-		} else if (isTeamLeader()) {
-			energy = 200;
-		} else if (isDroid) {
-			energy = 120;
-		} else {
-			energy = 100;
-		}
-		gunHeat = 3;
-
-		distanceRemaining = turnRemaining = gunTurnRemaining = radarTurnRemaining = 0;
-
-		setStop(true);
-		setHalt(false);
-
-		setScan(false);
-
-		inCollision = false;
-
-		scanArc.setAngleStart(0);
-		scanArc.setAngleExtent(0);
-		scanArc.setFrame(-100, -100, 1, 1);
-
-		eventManager.reset();
-
-		setMaxVelocity(Double.MAX_VALUE);
-		setMaxTurnRate(Double.MAX_VALUE);
-
-		statistics.initialize();
-
-		out.resetCounter();
-
-		setTestingCondition(false);
-
-		setSetCallCount(0);
-		setGetCallCount(0);
-		skippedTurns = 0;
-
-		setAdjustGunForBodyTurn(false);
-		setAdjustRadarForBodyTurn(false);
-		setAdjustRadarForGunTurn(false);
-		isAdjustRadarForBodyTurnSet = false;
-
-		newBullet = null;
-	}
-
-	public boolean isWinner() {
-		return isWinner;
-	}
-
-	public final void resume() {
-		setResume();
-		execute();
-	}
-
-	public synchronized void setMaxTurnRate(double newTurnRate) {
-		if (Double.isNaN(newTurnRate)) {
-			out.println("You cannot setMaxTurnRate to: " + newTurnRate);
-			return;
-		}
-		maxTurnRate = min(abs(newTurnRate), Rules.MAX_TURN_RATE_RADIANS);
-	}
-
-	public synchronized void setMaxVelocity(double newVelocity) {
-		if (Double.isNaN(newVelocity)) {
-			out.println("You cannot setMaxVelocity to: " + newVelocity);
-			return;
-		}
-		maxVelocity = min(abs(newVelocity), Rules.MAX_VELOCITY);
-	}
-
-	public synchronized final void setResume() {
-		if (isStopped) {
-			isStopped = false;
-			distanceRemaining = saveDistanceToGo;
-			turnRemaining = saveAngleToTurn;
-			gunTurnRemaining = saveGunAngleToTurn;
-			radarTurnRemaining = saveRadarAngleToTurn;
-		}
-	}
-
-	public void setRobot(IBasicRobot newRobot) {
-		robot = newRobot;
-		if (robot != null) {
-			if (robot instanceof ITeamRobot) {
-				messageManager = new RobotMessageManager(this);
-			}
-			eventManager.setRobot(newRobot);
-		}
-	}
-
-	public final synchronized void setStop(boolean overwrite) {
-		if (!isStopped || overwrite) {
-			this.saveDistanceToGo = distanceRemaining;
-			this.saveAngleToTurn = turnRemaining;
-			this.saveGunAngleToTurn = gunTurnRemaining;
-			this.saveRadarAngleToTurn = radarTurnRemaining;
-		}
-		isStopped = true;
-
-		this.distanceRemaining = 0;
-		this.turnRemaining = 0;
-		this.gunTurnRemaining = 0;
-		this.radarTurnRemaining = 0;
-	}
-
-	public synchronized void setVelocity(double newVelocity) {
-		velocity = newVelocity;
-	}
-
-	public void setWinner(boolean newWinner) {
-		isWinner = newWinner;
-	}
-
-	public final void stop(boolean overwrite) {
-		setStop(overwrite);
-		execute();
-	}
-
-	public synchronized void waitFor(Condition condition) {
-		waitCondition = condition;
-		do {
-			execute(); // Always tick at least once
-		} while (!condition.test());
-
-		waitCondition = null;
-	}
-
-	public EventManager getEventManager() {
-		return eventManager;
-	}
-
-	public synchronized double getLastGunHeading() {
-		return lastGunHeading;
-	}
-
-	public synchronized double getLastRadarHeading() {
-		return lastRadarHeading;
-	}
-
-	public synchronized void setScan(boolean scan) {
-		this.scan = scan;
-	}
-
-	public File getDataDirectory() {
-		setIORobot(true);
-		return getRobotFileSystemManager().getWritableDirectory();
-	}
-
-	public File getDataFile(String filename) {
-		setIORobot(true);
-		return new File(getRobotFileSystemManager().getWritableDirectory(), filename);
-	}
-
-	public long getDataQuotaAvailable() {
-		return getRobotFileSystemManager().getMaxQuota() - getRobotFileSystemManager().getQuotaUsed();
-	}
-
-	public void sendMessage(String name, Serializable message) throws IOException {
-		if (getMessageManager() == null) {
-			throw new IOException("You are not on a team.");
-		}
-		getMessageManager().sendMessage(name, message);
-	}
-
-	public void broadcastMessage(Serializable message) throws IOException {
-		if (getMessageManager() == null) {
-			throw new IOException("You are not on a team.");
-		}
-		getMessageManager().sendMessage(null, message);
-	}
-
-	public String[] getTeammates() {
-		robocode.peer.TeamPeer teamPeer = getTeamPeer();
-
-		if (teamPeer == null) {
-			return null;
-		}
-		String s[] = new String[teamPeer.size() - 1];
-
-		int index = 0;
-
-		for (RobotPeer teammate : teamPeer) {
-			if (teammate != this) {
-				s[index++] = teammate.getName();
-			}
-		}
-		return s;
-	}
-
-	public boolean isTeammate(String name) {
-		return getTeamPeer() != null && getTeamPeer().contains(name);
-	}
-
-	public synchronized Bullet fire(double power) {
-		Bullet bullet = setFire(power);
-
-		execute();
-		return bullet;
-	}
-
-	public synchronized Bullet setFire(double power) {
-		if (Double.isNaN(power)) {
-			out.println("SYSTEM: You cannot call fire(NaN)");
-			return null;
-		}
-		if (gunHeat > 0 || energy == 0) {
-			return null;
-		}
-
-		double firePower = min(energy, min(max(power, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
-
-		this.setEnergy(energy - firePower);
-
-		gunHeat += Rules.getGunHeat(firePower);
-
-		BulletPeer bullet = new BulletPeer(this, battle);
-
-		bullet.setPower(firePower);
-		bullet.setVelocity(Rules.getBulletSpeed(firePower));
-		if (eventManager.isFireAssistValid()) {
-			bullet.setHeading(eventManager.getFireAssistAngle());
-		} else {
-			bullet.setHeading(getGunHeading());
-		}
-		bullet.setX(x);
-		bullet.setY(y);
-
-		newBullet = bullet;
-
-		return bullet.getBullet();
-	}
-
-	public synchronized double getDistanceRemaining() {
-		return distanceRemaining;
-	}
-
-	public synchronized double getEnergy() {
-		return energy;
-	}
-
-	public synchronized double getGunHeat() {
-		return gunHeat;
-	}
-
-	public synchronized double getGunTurnRemaining() {
-		return gunTurnRemaining;
-	}
-
-	public synchronized double getMaxVelocity() {
-		return maxVelocity;
-	}
-
-	public synchronized double getMaxTurnRate() {
-		return maxTurnRate;
-	}
-
-	public int getNumRounds() {
-		return getBattle().getNumRounds();
-	}
-
-	public synchronized RobotOutputStream getOut() {
-		if (out == null && battle != null) {
-			out = new RobotOutputStream(battle.getBattleThread());
-		}
-		return out;
-	}
-
-	public synchronized double getRadarTurnRemaining() {
-		return radarTurnRemaining;
-	}
-
-	public RobotClassManager getRobotClassManager() {
-		return robotClassManager;
-	}
-
-	public RobotFileSystemManager getRobotFileSystemManager() {
-		return robotFileSystemManager;
-	}
-
-	public RobotThreadManager getRobotThreadManager() {
-		return robotThreadManager;
-	}
-
-	public int getRoundNum() {
-		return getBattle().getRoundNum();
-	}
-
-	public synchronized boolean getScan() {
-		return scan;
-	}
-
-	public Arc2D getScanArc() {
-		return scanArc;
-	}
-
-	public int getSkippedTurns() {
-		return skippedTurns;
-	}
-
-	public RobotStatistics getRobotStatistics() {
-		return statistics;
-	}
-
-	public ContestantStatistics getStatistics() {
-		return statistics;
-	}
-
-	public synchronized double getBodyTurnRemaining() {
-		return turnRemaining;
-	}
-
-	public synchronized boolean isAdjustRadarForBodyTurn() {
-		return isAdjustRadarForBodyTurn;
-	}
-
-	public boolean isCheckFileQuota() {
-		return checkFileQuota;
-	}
-
-	public synchronized void setCall() {
-		setCallCount++;
-		if (setCallCount == MAX_SET_CALL_COUNT) {
-			out.println("SYSTEM: You have made " + setCallCount + " calls to setXX methods without calling execute()");
-			throw new DisabledException("Too many calls to setXX methods");
-		}
-	}
-
-	public synchronized void getCall() {
-		getCallCount++;
-		if (getCallCount == MAX_GET_CALL_COUNT) {
-			out.println("SYSTEM: You have made " + getCallCount + " calls to getXX methods without calling execute()");
-			throw new DisabledException("Too many calls to getXX methods");
-		}
-	}
-
-	public synchronized void setAdjustRadarForBodyTurn(boolean newAdjustRadarForBodyTurn) {
-		isAdjustRadarForBodyTurn = newAdjustRadarForBodyTurn;
-		isAdjustRadarForBodyTurnSet = true;
-	}
-
-	public void setCheckFileQuota(boolean newCheckFileQuota) {
-		out.println("CheckFileQuota on");
-		checkFileQuota = newCheckFileQuota;
-	}
-
-	public synchronized void setDistanceRemaining(double new_distanceRemaining) {
-		distanceRemaining = new_distanceRemaining;
-	}
-
-	public synchronized void setDuplicate(int count) {
-		isDuplicate = true;
-
-		NameManager cnm = getRobotClassManager().getClassNameManager();
-
-		String countString = " (" + (count + 1) + ')';
-
-		name = cnm.getFullClassNameWithVersion() + countString;
-		shortName = cnm.getUniqueShortClassNameWithVersion() + countString;
-		veryShortName = cnm.getUniqueVeryShortClassNameWithVersion() + countString;
-		nonVersionedName = cnm.getFullClassName() + countString;
-	}
-
-	public synchronized void setUnicate() {
-		isDuplicate = false;
-
-		NameManager cnm = getRobotClassManager().getClassNameManager();
-
-		name = cnm.getFullClassNameWithVersion();
-		shortName = cnm.getUniqueShortClassNameWithVersion();
-		veryShortName = cnm.getUniqueVeryShortClassNameWithVersion();
-		nonVersionedName = cnm.getFullClassName();
-	}
-
-	public synchronized boolean isDuplicate() {
-		return isDuplicate;
-	}
-
-	public synchronized void setEnergy(double newEnergy) {
-		setEnergy(newEnergy, true);
-	}
-
-	public synchronized void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
-		if (resetInactiveTurnCount && (energy != newEnergy)) {
-			battle.resetInactiveTurnCount(energy - newEnergy);
-		}
-		energy = newEnergy;
-		if (energy < .01) {
-			energy = 0;
-			distanceRemaining = 0;
-			turnRemaining = 0;
-		}
-	}
-
-	public synchronized void setGunHeat(double newGunHeat) {
-		gunHeat = newGunHeat;
-	}
-
-	public synchronized void setInterruptible(boolean interruptable) {
-		eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
-	}
-
-	public void setEventPriority(String eventClass, int priority) {
-		eventManager.setEventPriority(eventClass, priority);
-	}
-
-	public int getEventPriority(String eventClass) {
-		return eventManager.getEventPriority(eventClass);
-	}
-
-	public void removeCustomEvent(Condition condition) {
-		eventManager.removeCustomEvent(condition);
-	}
-
-	public void addCustomEvent(Condition condition) {
-		eventManager.addCustomEvent(condition);
-	}
-
-	public void clearAllEvents() {
-		eventManager.clearAllEvents(false);
-	}
-
-	public List<Event> getAllEvents() {
-		return eventManager.getAllEvents();
-	}
-
-	public List<StatusEvent> getStatusEvents() {
-		return eventManager.getStatusEvents();
-	}
-
-	public List<BulletMissedEvent> getBulletMissedEvents() {
-		return eventManager.getBulletMissedEvents();
-	}
-
-	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
-		return eventManager.getBulletHitBulletEvents();
-	}
-
-	public List<BulletHitEvent> getBulletHitEvents() {
-		return eventManager.getBulletHitEvents();
-	}
-
-	public List<HitByBulletEvent> getHitByBulletEvents() {
-		return eventManager.getHitByBulletEvents();
-	}
-
-	public List<HitRobotEvent> getHitRobotEvents() {
-		return eventManager.getHitRobotEvents();
-	}
-
-	public List<HitWallEvent> getHitWallEvents() {
-		return eventManager.getHitWallEvents();
-	}
-
-	public List<RobotDeathEvent> getRobotDeathEvents() {
-		return eventManager.getRobotDeathEvents();
-	}
-
-	public List<ScannedRobotEvent> getScannedRobotEvents() {
-		return eventManager.getScannedRobotEvents();
-	}
-
-	public List<MessageEvent> getMessageEvents() {
-		return eventManager.getMessageEvents();
-	}
-
-	public void setSkippedTurns(int newSkippedTurns) {
-		skippedTurns = newSkippedTurns;
-	}
-
-	public void setStatistics(RobotStatistics newStatistics) {
-		statistics = newStatistics;
-	}
-
-	private synchronized void updateGunHeat() {
-		gunHeat -= battle.getGunCoolingRate();
-		if (gunHeat < 0) {
-			gunHeat = 0;
-		}
-	}
-
-	public synchronized void zap(double zapAmount) {
-		if (energy == 0) {
-			kill();
-			return;
-		}
-		energy -= abs(zapAmount);
-		if (energy < .1) {
-			energy = 0;
-			distanceRemaining = 0;
-			turnRemaining = 0;
-		}
-	}
-
-	public synchronized boolean isRunning() {
-		return isRunning;
-	}
-
-	public synchronized void setRunning(boolean running) {
-		this.isRunning = running;
-	}
-
-	public synchronized boolean isSleeping() {
-		return isSleeping;
-	}
-
-	public synchronized void setSetCallCount(int setCallCount) {
-		this.setCallCount = setCallCount;
-	}
-
-	public synchronized void setGetCallCount(int getCallCount) {
-		this.getCallCount = getCallCount;
-	}
-
-	public Color getBodyColor() {
-		return bodyColor;
-	}
-
-	public void setBodyColor(Color color) {
-		bodyColor = color;
-	}
-
-	public Color getRadarColor() {
-		return radarColor;
-	}
-
-	public void setRadarColor(Color color) {
-		radarColor = color;
-	}
-
-	public Color getGunColor() {
-		return gunColor;
-	}
-
-	public void setGunColor(Color color) {
-		gunColor = color;
-	}
-
-	public Color getBulletColor() {
-		return bulletColor;
-	}
-
-	public void setBulletColor(Color color) {
-		bulletColor = color;
-	}
-
-	public Color getScanColor() {
-		return scanColor;
-	}
-
-	public void setScanColor(Color color) {
-		scanColor = color;
-	}
-
-	public RobotMessageManager getMessageManager() {
-		return messageManager;
-	}
-
-	public void setPaintEnabled(boolean enabled) {
-		paintEnabled = enabled;
-	}
-
-	public boolean isPaintEnabled() {
-		return paintEnabled;
-	}
-
-	public void setSGPaintEnabled(boolean enabled) {
-		sgPaintEnabled = enabled;
-	}
-
-	public boolean isSGPaintEnabled() {
-		return sgPaintEnabled;
-	}
-
-	public synchronized RobotState getState() {
-		return state;
-	}
-
-	public synchronized void setState(RobotState newState) {
-		state = newState;
-	}
-
-	public synchronized void set(RobotRecord rr) {
-		x = rr.x;
-		y = rr.y;
-		energy = (double) rr.energy / 10;
-		heading = Math.PI * rr.heading / 128;
-		radarHeading = Math.PI * rr.radarHeading / 128;
-		gunHeading = Math.PI * rr.gunHeading / 128;
-		state = RobotState.toState(rr.state);
-		bodyColor = toColor(rr.bodyColor);
-		gunColor = toColor(rr.gunColor);
-		radarColor = toColor(rr.radarColor);
-		scanColor = toColor(rr.scanColor);
-	}
-
-	private synchronized void setLastHeading() {
-		lastHeading = heading;
-	}
-
-	/**
-	 * Clean things up removing all references to the robot.
-	 */
-	public void cleanup() {
-		// Cleanup and remove the event manager
-		if (eventManager != null) {
-			eventManager.cleanup();
-			eventManager = null;
-		}
-
-		// Cleanup and remove class manager
-		if (robotClassManager != null) {
-			robotClassManager.cleanup();
-			robotClassManager = null;
-		}
-
-		if (statistics != null) {
-			statistics.cleanup();
-			statistics = null;
-		}
-
-		out = null;
-		battle = null;
-
-		// Remove the file system and the manager
-		robotFileSystemManager = null;
-		robotThreadManager = null;
-
-		// Cleanup and remove current wait condition
-		if (waitCondition != null) {
-			waitCondition.cleanup();
-			waitCondition = null;
-		}
-
-		// Cleanup robot proxy
-		robotProxy = null;
-
-		// Cleanup graphics proxy
-		graphicsProxy = null;
-	}
-
-	public void cleanupStaticFields() {
-		if (robot == null) {
-			return;
-		}
-
-		Field[] fields = new Field[0];
-
-		// This try-catch-throwable must be here, as it is not always possible to get the
-		// declared fields without getting a Throwable like java.lang.NoClassDefFoundError.
-		try {
-			fields = robot.getClass().getDeclaredFields();
-		} catch (Throwable t) {// Do nothing
-		}
-
-		for (Field f : fields) {
-			int m = f.getModifiers();
-
-			if (Modifier.isStatic(m) && !(Modifier.isFinal(m) || f.getType().isPrimitive())) {
-				try {
-					f.setAccessible(true);
-					f.set(robot, null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	public void turnAndMove(double distance, double radians) {
-		if (distance == 0) {
-			turnBody(radians);
-			return;
-		}
-
-		// Save current max. velocity and max. turn rate so they can be restored
-		final double savedMaxVelocity = getMaxVelocity();
-		final double savedMaxTurnRate = getMaxTurnRate();
-
-		final double absDegrees = Math.abs(Math.toDegrees(radians));
-		final double absDistance = Math.abs(distance);
-
-		// -- Calculate max. velocity for moving perfect in a circle --
-
-		// maxTurnRate = 10 * 0.75 * velocity  (Robocode rule), and
-		// maxTurnRate = velocity * degrees / distance  (curve turn rate)
-		//
-		// Hence, max. velocity = 10 / (degrees / distance + 0.75)
-
-		final double maxVelocity = Math.min(Rules.MAX_VELOCITY, 10 / (absDegrees / absDistance + 0.75));
-
-		// -- Calculate number of turns for acceleration + deceleration --
-
-		double accDist = 0; // accumulated distance during acceleration
-		double decDist = 0; // accumulated distance during deceleration
-
-		int turns = 0; // number of turns to it will take to move the distance
-
-		// Calculate the amount of turn it will take to accelerate + decelerate
-		// up to the max. velocity, but stop if the distance for used for
-		// acceleration + deceleration gets bigger than the total distance to move
-		for (int t = 1; t < maxVelocity; t++) {
-
-			// Add the current velocity to the acceleration distance
-			accDist += t;
-
-			// Every 2nd time we add the deceleration distance needed to
-			// get to a velocity of 0
-			if (t > 2 && (t % 2) > 0) {
-				decDist += t - 2;
-			}
-
-			// Stop if the acceleration + deceleration > total distance to move
-			if ((accDist + decDist) >= absDistance) {
-				break;
-			}
-
-			// Increment turn for acceleration
-			turns++;
-
-			// Every 2nd time we increment time for deceleration
-			if (t > 2 && (t % 2) > 0) {
-				turns++;
-			}
-		}
-
-		// Add number of turns for the remaining distance at max velocity
-		if ((accDist + decDist) < absDistance) {
-			turns += (int) ((absDistance - accDist - decDist) / maxVelocity + 1);
-		}
-
-		// -- Move and turn in a curve --
-
-		// Set the calculated max. velocity
-		setMaxVelocity(maxVelocity);
-
-		// Set the robot to move the specified distance
-		setMove(distance);
-		// Set the robot to turn its body to the specified amount of radians
-		setTurnBody(radians);
-
-		// Loop thru the number of turns it will take to move the distance and adjust
-		// the max. turn rate so it fit the current velocity of the robot
-		for (int t = turns; t >= 0; t--) {
-			setMaxTurnRate(getVelocity() * radians / absDistance);
-			execute(); // Perform next turn
-		}
-
-		// Restore the saved max. velocity and max. turn rate
-		setMaxVelocity(savedMaxVelocity);
-		setMaxTurnRate(savedMaxTurnRate);
-	}
-
-	public Graphics2D getGraphics() {
-		if (graphicsProxy == null) {
-			graphicsProxy = new Graphics2DProxy();
-		}
-		return graphicsProxy;
-	}
-
-	public void onInteractiveEvent(robocode.Event e) {
-		eventManager.add(e);
+	@Override
+	public String toString() {
+		return statics.getShortName() + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString()
+				+ (isSleeping() ? " sleeping " : "") + (isRunning() ? " running" : "") + (getHalt() ? " halted" : "");
 	}
 }
+

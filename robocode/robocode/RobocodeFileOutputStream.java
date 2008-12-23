@@ -20,8 +20,8 @@ package robocode;
 
 import robocode.exception.RobotException;
 import robocode.io.Logger;
-import robocode.manager.ThreadManager;
-import robocode.peer.RobotPeer;
+import robocode.manager.IThreadManager;
+import robocode.peer.proxies.IHostedThread;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.security.RobocodePermission;
 import robocode.security.RobocodeSecurityManager;
@@ -46,7 +46,7 @@ import java.io.*;
  * @see java.io.FileOutputStream
  */
 public class RobocodeFileOutputStream extends OutputStream {
-	private static ThreadManager threadManager;
+	private static IThreadManager threadManager;
 	private FileOutputStream out;
 	private String fileName;
 	private RobotFileSystemManager fileSystemManager;
@@ -99,18 +99,18 @@ public class RobocodeFileOutputStream extends OutputStream {
 		Thread c = Thread.currentThread();
 
 		this.fileName = fileName;
-		RobotPeer robotPeer = threadManager.getRobotPeer(c);
+		IHostedThread robotProxy = threadManager.getRobotProxy(c);
 
-		if (robotPeer == null) {
-			Logger.logError("RobotPeer is null");
+		if (robotProxy == null) {
+			Logger.logError("RobotProxy is null");
 			return;
 		}
 
-		if (!robotPeer.isAdvancedRobot()) {
+		if (!robotProxy.getStatics().isAdvancedRobot()) {
 			throw new RobotException("Only advanced robots may write to the filesystem");
 		}
 
-		this.fileSystemManager = robotPeer.getRobotFileSystemManager();
+		this.fileSystemManager = robotProxy.getRobotFileSystemManager();
 
 		// First, we see if the file exists:
 		File f = new File(fileName);
@@ -179,7 +179,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	/**
 	 * The system calls this method, you should not call it.
 	 */
-	public static void setThreadManager(ThreadManager threadManager) {
+	public static void setThreadManager(IThreadManager threadManager) {
 		System.getSecurityManager().checkPermission(new RobocodePermission("setThreadManager"));
 		RobocodeFileOutputStream.threadManager = threadManager;
 	}
@@ -199,7 +199,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 		} catch (IOException e) {
 			try {
 				close();
-			} catch (IOException f) {}
+			} catch (IOException ignored) {}
 			throw e;
 		}
 	}
@@ -223,7 +223,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 			close();
 			try {
 				close();
-			} catch (IOException f) {}
+			} catch (IOException ignored) {}
 			throw e;
 		}
 	}
@@ -244,7 +244,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 			close();
 			try {
 				close();
-			} catch (IOException f) {}
+			} catch (IOException ignored) {}
 			throw e;
 		}
 	}

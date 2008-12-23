@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 @SuppressWarnings("serial")
 public class RobotDescriptionPanel extends JPanel {
 	private JLabel robotNameLabel;
-	private JLabel descriptionLabel[] = new JLabel[3];
+	private final JLabel[] descriptionLabel = new JLabel[3];
 	private JPanel descriptionPanel;
 	private JButton detailsButton;
 	private JLabel robocodeVersionLabel;
@@ -45,9 +45,9 @@ public class RobotDescriptionPanel extends JPanel {
 
 	private final static String BLANK_STRING = "                                                                        ";
 
-	private EventManager eventManager = new EventManager();
+	private final EventHandler eventHandler = new EventHandler();
 
-	private class EventManager implements ActionListener {
+	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == getDetailsButton()) {
 				if (currentRobotSpecification != null) {
@@ -56,16 +56,13 @@ public class RobotDescriptionPanel extends JPanel {
 					if (htmlFile != null && htmlFile.toString().length() > 0) {
 						try {
 							BrowserManager.openURL(htmlFile.toString());
-						} catch (IOException ex) {}
+						} catch (IOException ignored) {}
 					}
 				}
 			}
 		}
 	}
 
-	/**
-	 * NewBattleRobotsTabDescriptionPanel constructor.
-	 */
 	public RobotDescriptionPanel() {
 		super();
 		initialize();
@@ -106,10 +103,9 @@ public class RobotDescriptionPanel extends JPanel {
 		if (detailsButton == null) {
 			detailsButton = new JButton("Webpage");
 			detailsButton.setMnemonic('W');
-			detailsButton.setDisplayedMnemonicIndex(0);
 			detailsButton.setVisible(false);
 			detailsButton.setAlignmentY(Component.CENTER_ALIGNMENT);
-			detailsButton.addActionListener(eventManager);
+			detailsButton.addActionListener(eventHandler);
 		}
 		return detailsButton;
 	}
@@ -130,11 +126,6 @@ public class RobotDescriptionPanel extends JPanel {
 		return robotNameLabel;
 	}
 
-	/**
-	 * Return the Page property value.
-	 *
-	 * @return JPanel
-	 */
 	private void initialize() {
 		setLayout(new BorderLayout());
 		JPanel p = new JPanel();

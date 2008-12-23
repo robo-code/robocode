@@ -54,6 +54,97 @@ import static java.lang.Math.toRadians;
  */
 public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
+	/*
+	 * The JuniorRobot event handler, which implements the basic robot events,
+	 * JuniorRobot event, and Runnable.
+	 */
+	private final class InnerEventHandler implements IBasicEvents, Runnable {
+
+		private double juniorFirePower;
+
+		public void onBulletHit(BulletHitEvent event) {}
+
+		public void onBulletHitBullet(BulletHitBulletEvent event) {}
+
+		public void onBulletMissed(BulletMissedEvent event) {}
+
+		public void onDeath(DeathEvent event) {}
+
+		public void onHitByBullet(HitByBulletEvent event) {
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
+
+			hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitByBulletBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitByBullet();
+		}
+
+		public void onHitRobot(HitRobotEvent event) {
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
+
+			hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitRobotBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitRobot();
+		}
+
+		public void onHitWall(HitWallEvent event) {
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
+
+			hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitWallBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitWall();
+		}
+
+		public void onRobotDeath(RobotDeathEvent event) {
+			others = peer.getOthers();
+		}
+
+		public void onScannedRobot(ScannedRobotEvent event) {
+			scannedDistance = (int) (event.getDistance() + 0.5);
+			scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
+			scannedAngle = (int) (Math.toDegrees(
+					Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians()))
+							+ 0.5);
+			scannedBearing = (int) (event.getBearing() + 0.5);
+			scannedHeading = (int) (event.getHeading() + 0.5);
+			scannedVelocity = (int) (event.getVelocity() + 0.5);
+
+			JuniorRobot.this.onScannedRobot();
+		}
+
+		public void onStatus(StatusEvent e) {
+			final RobotStatus s = e.getStatus();
+
+			others = peer.getOthers();
+			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
+			robotX = (int) (s.getX() + 0.5);
+			robotY = (int) (s.getY() + 0.5);
+			heading = (int) (toDegrees(s.getHeading()) + 0.5);
+			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
+			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
+			gunReady = (s.getGunHeat() <= 0);
+
+			// Auto fire
+			if (juniorFirePower > 0 && gunReady && (peer.getGunTurnRemaining() == 0)) {
+				if (peer.setFire(juniorFirePower) != null) {
+					gunReady = false;
+					juniorFirePower = 0;
+				}
+			}
+		}
+
+		public void onWin(WinEvent event) {}
+
+		public void run() {
+			fieldWidth = (int) (peer.getBattleFieldWidth() + 0.5);
+			fieldHeight = (int) (peer.getBattleFieldHeight() + 0.5);
+
+			// noinspection InfiniteLoopStatement
+			while (true) {
+				JuniorRobot.this.run();
+			}
+		}
+	}
+
 	/**
 	 * The color black (0x000000)
 	 */
@@ -338,38 +429,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	public int hitWallBearing = -1;
 
 	/**
-	 * Do not call this method!
-	 * <p/>
-	 * {@inheritDoc}
+	 * The robot event handler for this robot.
 	 */
-	public final Runnable getRobotRunnable() {
-		return getEventHandler();
-	}
-
-	/**
-	 * Do not call this method!
-	 * <p/>
-	 * {@inheritDoc}
-	 */
-	public final IBasicEvents getBasicEventListener() {
-		return getEventHandler();
-	}
-
-	/**
-	 * The main method in every robot. You must override this to set up your
-	 * robot's basic behavior.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   // A basic robot that moves around in a square
-	 *   public void run() {
-	 *       ahead(100);
-	 *       turnRight(90);
-	 *   }
-	 * </pre>
-	 * This method is automatically re-called when it has returned.
-	 */
-	public void run() {}
+	private InnerEventHandler innerEventHandler;
 
 	/**
 	 * Moves this robot forward by pixels.
@@ -400,58 +462,200 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	}
 
 	/**
-	 * Turns this robot left by degrees.
+	 * Turns the gun to the specified angle (in degrees) relative to body of this robot.
+	 * The gun will turn to the side with the shortest delta angle to the specified angle.
 	 *
-	 * @param degrees the amount of degrees to turn to the left
-	 * @see #heading
-	 * @see #turnRight(int)
-	 * @see #turnTo(int)
-	 * @see #turnAheadLeft(int, int)
-	 * @see #turnAheadRight(int, int)
-	 * @see #turnBackLeft(int, int)
-	 * @see #turnBackRight(int, int)
+	 * @param angle the angle to turn the gun to relative to the body of this robot
+	 * @see #gunHeading
+	 * @see #gunBearing
+	 * @see #turnGunLeft(int)
+	 * @see #turnGunRight(int)
+	 * @see #turnGunTo(int)
 	 */
-	public void turnLeft(int degrees) {
-		turnRight(-degrees);
-	}
-
-	/**
-	 * Turns this robot right by degrees.
-	 *
-	 * @param degrees the amount of degrees to turn to the right
-	 * @see #heading
-	 * @see #turnLeft(int)
-	 * @see #turnTo(int)
-	 * @see #turnAheadLeft(int, int)
-	 * @see #turnAheadRight(int, int)
-	 * @see #turnBackLeft(int, int)
-	 * @see #turnBackRight(int, int)
-	 */
-	public void turnRight(int degrees) {
+	public void bearGunTo(int angle) {
 		if (peer != null) {
-			peer.turnBody(toRadians(degrees));
+			peer.turnGun(normalRelativeAngle(peer.getBodyHeading() + toRadians(angle) - peer.getGunHeading()));
 		} else {
 			uninitializedException();
 		}
 	}
 
 	/**
-	 * Turns this robot to the specified angle (in degrees).
-	 * The robot will turn to the side with the shortest delta angle to the
-	 * specified angle.
+	 * Skips a turn.
 	 *
-	 * @param angle the angle to turn this robot to
-	 * @see #heading
-	 * @see #turnLeft(int)
-	 * @see #turnRight(int)
-	 * @see #turnAheadLeft(int, int)
-	 * @see #turnAheadRight(int, int)
-	 * @see #turnBackLeft(int, int)
-	 * @see #turnBackRight(int, int)
+	 * @see #doNothing(int)
 	 */
-	public void turnTo(int angle) {
+	public void doNothing() {
 		if (peer != null) {
-			peer.turnBody(normalRelativeAngle(toRadians(angle) - peer.getBodyHeading()));
+			peer.execute();
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Skips the specified number of turns.
+	 *
+	 * @param turns the number of turns to skip
+	 * @see #doNothing()
+	 */
+	public void doNothing(int turns) {
+		if (turns <= 0) {
+			return;
+		}
+		if (peer != null) {
+			for (int i = 0; i < turns; i++) {
+				peer.execute();
+			}
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Fires a bullet with the default power of 1.
+	 * If the gun heat is more than 0 and hence cannot fire, this method will
+	 * suspend until the gun is ready to fire, and then fire a bullet.
+	 *
+	 * @see #gunReady
+	 */
+	public void fire() {
+		fire(1);
+	}
+
+	/**
+	 * Fires a bullet with the specified bullet power, which is between 0.1 and 3
+	 * where 3 is the maximum bullet power.
+	 * If the gun heat is more than 0 and hence cannot fire, this method will
+	 * suspend until the gun is ready to fire, and then fire a bullet.
+	 *
+	 * @param power between 0.1 and 3
+	 * @see #gunReady
+	 */
+	public void fire(double power) {
+		if (peer != null) {
+			getEventHandler().juniorFirePower = power;
+			peer.execute();
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Do not call this method!
+	 * <p/>
+	 * {@inheritDoc}
+	 */
+	public final IBasicEvents getBasicEventListener() {
+		return getEventHandler();
+	}
+
+	/**
+	 * Do not call this method!
+	 * <p/>
+	 * {@inheritDoc}
+	 */
+	public final Runnable getRobotRunnable() {
+		return getEventHandler();
+	}
+
+	/**
+	 * This event methods is called from the game when this robot has been hit
+	 * by another robot's bullet. When this event occurs the
+	 * {@link #hitByBulletAngle} and {@link #hitByBulletBearing} fields values
+	 * are automatically updated.
+	 *
+	 * @see #hitByBulletAngle
+	 * @see #hitByBulletBearing
+	 */
+	public void onHitByBullet() {}
+
+	/**
+	 * This event methods is called from the game when a bullet from this robot
+	 * has hit another robot. When this event occurs the {@link #hitRobotAngle}
+	 * and {@link #hitRobotBearing} fields values are automatically updated.
+	 *
+	 * @see #hitRobotAngle
+	 * @see #hitRobotBearing
+	 */
+	public void onHitRobot() {}
+
+	/**
+	 * This event methods is called from the game when this robot has hit a wall.
+	 * When this event occurs the {@link #hitWallAngle} and {@link #hitWallBearing}
+	 * fields values are automatically updated.
+	 *
+	 * @see #hitWallAngle
+	 * @see #hitWallBearing
+	 */
+	public void onHitWall() {}
+
+	/**
+	 * This event method is called from the game when the radar detects another
+	 * robot. When this event occurs the {@link #scannedDistance},
+	 * {@link #scannedAngle}, {@link #scannedBearing}, and {@link #scannedEnergy}
+	 * field values are automatically updated.
+	 *
+	 * @see #scannedDistance
+	 * @see #scannedAngle
+	 * @see #scannedBearing
+	 * @see #scannedEnergy
+	 */
+	public void onScannedRobot() {}
+
+	/**
+	 * The main method in every robot. You must override this to set up your
+	 * robot's basic behavior.
+	 * <p/>
+	 * Example:
+	 * <pre>
+	 *   // A basic robot that moves around in a square
+	 *   public void run() {
+	 *       ahead(100);
+	 *       turnRight(90);
+	 *   }
+	 * </pre>
+	 * This method is automatically re-called when it has returned.
+	 */
+	public void run() {}
+
+	/**
+	 * Sets the colors of the robot. The color values are RGB values.
+	 * You can use the colors that are already defined for this class.
+	 *
+	 * @param bodyColor  the RGB color value for the body
+	 * @param gunColor   the RGB color value for the gun
+	 * @param radarColor the RGB color value for the radar
+	 * @see #setColors(int, int, int, int, int)
+	 */
+	public void setColors(int bodyColor, int gunColor, int radarColor) {
+		if (peer != null) {
+			peer.setBodyColor(new Color(bodyColor));
+			peer.setGunColor(new Color(gunColor));
+			peer.setRadarColor(new Color(radarColor));
+		} else {
+			uninitializedException();
+		}
+	}
+
+	/**
+	 * Sets the colors of the robot. The color values are RGB values.
+	 * You can use the colors that are already defined for this class.
+	 *
+	 * @param bodyColor	the RGB color value for the body
+	 * @param gunColor	 the RGB color value for the gun
+	 * @param radarColor   the RGB color value for the radar
+	 * @param bulletColor  the RGB color value for the bullets
+	 * @param scanArcColor the RGB color value for the scan arc
+	 * @see #setColors(int, int, int)
+	 */
+	public void setColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor) {
+		if (peer != null) {
+			peer.setBodyColor(new Color(bodyColor));
+			peer.setGunColor(new Color(gunColor));
+			peer.setRadarColor(new Color(radarColor));
+			peer.setBulletColor(new Color(bulletColor));
+			peer.setScanColor(new Color(scanArcColor));
 		} else {
 			uninitializedException();
 		}
@@ -614,275 +818,70 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 	}
 
 	/**
-	 * Turns the gun to the specified angle (in degrees) relative to body of this robot.
-	 * The gun will turn to the side with the shortest delta angle to the specified angle.
+	 * Turns this robot left by degrees.
 	 *
-	 * @param angle the angle to turn the gun to relative to the body of this robot
-	 * @see #gunHeading
-	 * @see #gunBearing
-	 * @see #turnGunLeft(int)
-	 * @see #turnGunRight(int)
-	 * @see #turnGunTo(int)
+	 * @param degrees the amount of degrees to turn to the left
+	 * @see #heading
+	 * @see #turnRight(int)
+	 * @see #turnTo(int)
+	 * @see #turnAheadLeft(int, int)
+	 * @see #turnAheadRight(int, int)
+	 * @see #turnBackLeft(int, int)
+	 * @see #turnBackRight(int, int)
 	 */
-	public void bearGunTo(int angle) {
+	public void turnLeft(int degrees) {
+		turnRight(-degrees);
+	}
+
+	/**
+	 * Turns this robot right by degrees.
+	 *
+	 * @param degrees the amount of degrees to turn to the right
+	 * @see #heading
+	 * @see #turnLeft(int)
+	 * @see #turnTo(int)
+	 * @see #turnAheadLeft(int, int)
+	 * @see #turnAheadRight(int, int)
+	 * @see #turnBackLeft(int, int)
+	 * @see #turnBackRight(int, int)
+	 */
+	public void turnRight(int degrees) {
 		if (peer != null) {
-			peer.turnGun(normalRelativeAngle(peer.getBodyHeading() + toRadians(angle) - peer.getGunHeading()));
+			peer.turnBody(toRadians(degrees));
 		} else {
 			uninitializedException();
 		}
 	}
 
 	/**
-	 * Fires a bullet with the default power of 1.
-	 * If the gun heat is more than 0 and hence cannot fire, this method will
-	 * suspend until the gun is ready to fire, and then fire a bullet.
+	 * Turns this robot to the specified angle (in degrees).
+	 * The robot will turn to the side with the shortest delta angle to the
+	 * specified angle.
 	 *
-	 * @see #gunReady
+	 * @param angle the angle to turn this robot to
+	 * @see #heading
+	 * @see #turnLeft(int)
+	 * @see #turnRight(int)
+	 * @see #turnAheadLeft(int, int)
+	 * @see #turnAheadRight(int, int)
+	 * @see #turnBackLeft(int, int)
+	 * @see #turnBackRight(int, int)
 	 */
-	public void fire() {
-		fire(1);
-	}
-
-	/**
-	 * Fires a bullet with the specified bullet power, which is between 0.1 and 3
-	 * where 3 is the maximum bullet power.
-	 * If the gun heat is more than 0 and hence cannot fire, this method will
-	 * suspend until the gun is ready to fire, and then fire a bullet.
-	 *
-	 * @param power between 0.1 and 3
-	 * @see #gunReady
-	 */
-	public void fire(double power) {
+	public void turnTo(int angle) {
 		if (peer != null) {
-			getEventHandler().juniorFirePower = power;
-			peer.execute();
+			peer.turnBody(normalRelativeAngle(toRadians(angle) - peer.getBodyHeading()));
 		} else {
 			uninitializedException();
 		}
 	}
-
-	/**
-	 * Skips a turn.
-	 *
-	 * @see #doNothing(int)
-	 */
-	public void doNothing() {
-		if (peer != null) {
-			peer.execute();
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Skips the specified number of turns.
-	 *
-	 * @param turns the number of turns to skip
-	 * @see #doNothing()
-	 */
-	public void doNothing(int turns) {
-		if (turns <= 0) {
-			return;
-		}
-		if (peer != null) {
-			for (int i = 0; i < turns; i++) {
-				peer.execute();
-			}
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Sets the colors of the robot. The color values are RGB values.
-	 * You can use the colors that are already defined for this class.
-	 *
-	 * @param bodyColor  the RGB color value for the body
-	 * @param gunColor   the RGB color value for the gun
-	 * @param radarColor the RGB color value for the radar
-	 * @see #setColors(int, int, int, int, int)
-	 */
-	public void setColors(int bodyColor, int gunColor, int radarColor) {
-		if (peer != null) {
-			peer.setBodyColor(new Color(bodyColor));
-			peer.setGunColor(new Color(gunColor));
-			peer.setRadarColor(new Color(radarColor));
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * Sets the colors of the robot. The color values are RGB values.
-	 * You can use the colors that are already defined for this class.
-	 *
-	 * @param bodyColor    the RGB color value for the body
-	 * @param gunColor     the RGB color value for the gun
-	 * @param radarColor   the RGB color value for the radar
-	 * @param bulletColor  the RGB color value for the bullets
-	 * @param scanArcColor the RGB color value for the scan arc
-	 * @see #setColors(int, int, int)
-	 */
-	public void setColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor) {
-		if (peer != null) {
-			peer.setBodyColor(new Color(bodyColor));
-			peer.setGunColor(new Color(gunColor));
-			peer.setRadarColor(new Color(radarColor));
-			peer.setBulletColor(new Color(bulletColor));
-			peer.setScanColor(new Color(scanArcColor));
-		} else {
-			uninitializedException();
-		}
-	}
-
-	/**
-	 * This event method is called from the game when the radar detects another
-	 * robot. When this event occurs the {@link #scannedDistance},
-	 * {@link #scannedAngle}, {@link #scannedBearing}, and {@link #scannedEnergy}
-	 * field values are automatically updated.
-	 *
-	 * @see #scannedDistance
-	 * @see #scannedAngle
-	 * @see #scannedBearing
-	 * @see #scannedEnergy
-	 */
-	public void onScannedRobot() {}
-
-	/**
-	 * This event methods is called from the game when this robot has been hit
-	 * by another robot's bullet. When this event occurs the
-	 * {@link #hitByBulletAngle} and {@link #hitByBulletBearing} fields values
-	 * are automatically updated.
-	 *
-	 * @see #hitByBulletAngle
-	 * @see #hitByBulletBearing
-	 */
-	public void onHitByBullet() {}
-
-	/**
-	 * This event methods is called from the game when a bullet from this robot
-	 * has hit another robot. When this event occurs the {@link #hitRobotAngle}
-	 * and {@link #hitRobotBearing} fields values are automatically updated.
-	 *
-	 * @see #hitRobotAngle
-	 * @see #hitRobotBearing
-	 */
-	public void onHitRobot() {}
-
-	/**
-	 * This event methods is called from the game when this robot has hit a wall.
-	 * When this event occurs the {@link #hitWallAngle} and {@link #hitWallBearing}
-	 * fields values are automatically updated.
-	 *
-	 * @see #hitWallAngle
-	 * @see #hitWallBearing
-	 */
-	public void onHitWall() {}
-
-	/**
-	 * The robot event handler for this robot.
-	 */
-	private EventHandler eventHandler;
 
 	/*
 	 * Returns the event handler of this robot.
 	 */
-	private EventHandler getEventHandler() {
-		if (eventHandler == null) {
-			eventHandler = new EventHandler();
+	private InnerEventHandler getEventHandler() {
+		if (innerEventHandler == null) {
+			innerEventHandler = new InnerEventHandler();
 		}
-		return eventHandler;
-	}
-
-	/*
-	 * The JuniorRobot event handler, which implements the basic robot events,
-	 * JuniorRobot event, and Runnable.
-	 */
-	private final class EventHandler implements IBasicEvents, Runnable {
-
-		private double juniorFirePower;
-
-		public void run() {
-			fieldWidth = (int) (peer.getBattleFieldWidth() + 0.5);
-			fieldHeight = (int) (peer.getBattleFieldHeight() + 0.5);
-
-			while (true) {
-				JuniorRobot.this.run();
-			}
-		}
-
-		public void onStatus(StatusEvent e) {
-			final RobotStatus s = e.getStatus();
-
-			others = peer.getOthers();
-			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
-			robotX = (int) (s.getX() + 0.5);
-			robotY = (int) (s.getY() + 0.5);
-			heading = (int) (toDegrees(s.getHeading()) + 0.5);
-			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
-			gunBearing = (int) (toDegrees(normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
-			gunReady = (s.getGunHeat() <= 0);
-
-			// Auto fire
-			if (juniorFirePower > 0 && gunReady && (peer.getGunTurnRemaining() == 0)) {
-				if (peer.setFire(juniorFirePower) != null) {
-					gunReady = false;
-					juniorFirePower = 0;
-				}
-			}
-		}
-
-		public void onBulletHit(BulletHitEvent event) {}
-
-		public void onBulletHitBullet(BulletHitBulletEvent event) {}
-
-		public void onBulletMissed(BulletMissedEvent event) {}
-
-		public void onRobotDeath(RobotDeathEvent event) {
-			others = peer.getOthers();
-		}
-
-		public void onWin(WinEvent event) {}
-
-		public void onDeath(DeathEvent event) {}
-
-		public void onHitByBullet(HitByBulletEvent event) {
-			double angle = peer.getBodyHeading() + event.getBearingRadians();
-
-			hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			hitByBulletBearing = (int) (event.getBearing() + 0.5);
-			JuniorRobot.this.onHitByBullet();
-		}
-
-		public void onHitRobot(HitRobotEvent event) {
-			double angle = peer.getBodyHeading() + event.getBearingRadians();
-
-			hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			hitRobotBearing = (int) (event.getBearing() + 0.5);
-			JuniorRobot.this.onHitRobot();
-		}
-
-		public void onHitWall(HitWallEvent event) {
-			double angle = peer.getBodyHeading() + event.getBearingRadians();
-
-			hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			hitWallBearing = (int) (event.getBearing() + 0.5);
-			JuniorRobot.this.onHitWall();
-		}
-
-		public void onScannedRobot(ScannedRobotEvent event) {
-			scannedDistance = (int) (event.getDistance() + 0.5);
-			scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
-			scannedAngle = (int) (Math.toDegrees(
-					Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians()))
-							+ 0.5);
-			scannedBearing = (int) (event.getBearing() + 0.5);
-			scannedHeading = (int) (event.getHeading() + 0.5);
-			scannedVelocity = (int) (event.getVelocity() + 0.5);
-
-			JuniorRobot.this.onScannedRobot();
-		}
-
-		public void onPaint(Graphics2D g) {}
+		return innerEventHandler;
 	}
 }

@@ -8,18 +8,28 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Pavel Savara
+ *     - Xml Serialization, refactoring
  *******************************************************************************/
 package robocode.battle.snapshot;
 
 
+import robocode.common.IXmlSerializable;
+import robocode.common.XmlReader;
+import robocode.common.XmlWriter;
+import robocode.control.snapshot.IRobotSnapshot;
+import robocode.control.snapshot.IScoreSnapshot;
+import robocode.control.snapshot.RobotState;
+import robocode.peer.DebugProperty;
+import robocode.peer.ExecCommands;
 import robocode.peer.RobotPeer;
-import robocode.peer.RobotState;
 import robocode.robotpaint.Graphics2DProxy;
-import static robocode.util.ObjectCloner.deepCopy;
 
-import java.awt.*;
 import java.awt.geom.Arc2D;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Dictionary;
+import java.util.List;
 
 
 /**
@@ -40,92 +50,102 @@ import java.io.Serializable;
  * that to return.
  *
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  * @since 1.6.1
  */
-public class RobotSnapshot implements Serializable {
+public final class RobotSnapshot implements Serializable, IXmlSerializable, IRobotSnapshot {
 
 	private static final long serialVersionUID = 1L;
 
 	// The name of the robot
-	private final String name;
+	private String name;
 
 	// The short name of the robot
-	private final String shortName;
+	private String shortName;
 
 	// The very short name of the robot
-	private final String veryShortName;
+	private String veryShortName;
 
 	// The very short name of the team leader robot (might be null)
-	private final String teamName;
+	private String teamName;
+
+	private int contestIndex;
 
 	// The robot state
-	private final RobotState state;
+	private RobotState state;
 
 	// The energy level
-	private final double energy;
+	private double energy;
 
 	// The energy level
-	private final double velocity;
+	private double velocity;
+
+	// The heat level
+	private double gunHeat;
 
 	// The body heading in radians
-	private final double bodyHeading;
+	private double bodyHeading;
 	// The gun heading in radians
-	private final double gunHeading;
+	private double gunHeading;
 	// The radar heading in radians
-	private final double radarHeading;
+	private double radarHeading;
 
 	// The x coordinate
-	private final double x;
+	private double x;
 	// The y coordinate
-	private final double y;
+	private double y;
 
 	// The color of the body
-	private final Color bodyColor;
+	private int bodyColor = ExecCommands.defaultBodyColor;
 	// The color of the gun
-	private final Color gunColor;
+	private int gunColor = ExecCommands.defaultGunColor;
 	// The color of the radar
-	private final Color radarColor;
+	private int radarColor = ExecCommands.defaultRadarColor;
 	// The color of the scan arc
-	private final Color scanColor;
+	private int scanColor = ExecCommands.defaultScanColor;
 	// The color of the bullet
-	// private final Color bulletColor;
 
 	// Flag specifying if this robot is a Droid
-	private final boolean isDroid;
-	// Flag specifying if this robot is a IPaintRobot
-	private final boolean isPaintRobot;
+	private boolean isDroid;
+	// Flag specifying if this robot is a IPaintRobot or is asking for getGraphics
+	private boolean isPaintRobot;
 	// Flag specifying if robot's (onPaint) painting is enabled for the robot
-	private final boolean isPaintEnabled;
+	private boolean isPaintEnabled;
 	// Flag specifying if RobocodeSG painting is enabled for the robot
-	private final boolean isSGPaintEnabled;
+	private boolean isSGPaintEnabled;
 
 	// The scan arc
-	private final SerializableArc scanArc;
+	private SerializableArc scanArc;
 
 	// The Graphics2D proxy
-	private final Graphics2DProxy graphicsProxy;
+	private List<Graphics2DProxy.QueuedCall> graphicsCalls;
+
+	private DebugProperty[] debugProperties;
 
 	// The output print stream proxy
-	private final String outputStreamSnapshot;
+	private String outputStreamSnapshot;
 
 	// Snapshot of score for robot
-	private final ScoreSnapshot robotScoreSnapshot;
+	private IScoreSnapshot robotScoreSnapshot;
 
 	/**
 	 * Constructs a snapshot of the robot.
 	 *
 	 * @param peer the robot peer to make a snapshot of.
+	 * @param readoutText true to send text from robot
 	 */
-	public RobotSnapshot(RobotPeer peer) {
+	public RobotSnapshot(RobotPeer peer, boolean readoutText) {
 		name = peer.getName();
 		shortName = peer.getShortName();
 		veryShortName = peer.getVeryShortName();
 		teamName = peer.getTeamName();
+		contestIndex = peer.getContestIndex();
 
 		state = peer.getState();
 
 		energy = peer.getEnergy();
 		velocity = peer.getVelocity();
+		gunHeat = peer.getGunHeat(); 
 
 		bodyHeading = peer.getBodyHeading();
 		gunHeading = peer.getGunHeading();
@@ -134,218 +154,127 @@ public class RobotSnapshot implements Serializable {
 		x = peer.getX();
 		y = peer.getY();
 
-		bodyColor = deepCopy(peer.getBodyColor());
-		gunColor = deepCopy(peer.getGunColor());
-		radarColor = deepCopy(peer.getRadarColor());
-		scanColor = deepCopy(peer.getScanColor());
-		// bulletColor = deepCopy(peer.getBulletColor());
+		bodyColor = peer.getBodyColor();
+		gunColor = peer.getGunColor();
+		radarColor = peer.getRadarColor();
+		scanColor = peer.getScanColor();
 
 		isDroid = peer.isDroid();
-		isPaintRobot = peer.isPaintRobot();
+		isPaintRobot = peer.isPaintRobot() || peer.isTryingToPaint();
 		isPaintEnabled = peer.isPaintEnabled();
 		isSGPaintEnabled = peer.isSGPaintEnabled();
 
 		scanArc = peer.getScanArc() != null ? new SerializableArc((Arc2D.Double) peer.getScanArc()) : null;
 
-		Graphics2D peerGfx = peer.getGraphics();
+		graphicsCalls = peer.getGraphicsCalls();
 
-		graphicsProxy = peerGfx != null ? (Graphics2DProxy) peerGfx.create() : null;
+		final List<DebugProperty> dp = peer.getDebugProperties();
 
-		outputStreamSnapshot = peer.getOut().readAndReset();
+		debugProperties = dp != null ? dp.toArray(new DebugProperty[dp.size()]) : null;
+
+		if (readoutText) {
+			outputStreamSnapshot = peer.readOutText();
+		}
 
 		robotScoreSnapshot = new ScoreSnapshot(peer.getRobotStatistics(), peer.getName());
 	}
 
-	/**
-	 * Returns the name of the robot.
-	 *
-	 * @return the name of the robot.
-	 */
 	public String getName() {
+		// used to identify buttons
 		return name;
 	}
 
-	/**
-	 * Returns the very short name of this robot.
-	 *
-	 * @return the very short name of this robot.
-	 */
 	public String getShortName() {
+		// used for text on buttons
 		return shortName;
 	}
 
-	/**
-	 * Returns the very short name of this robot.
-	 *
-	 * @return the very short name of this robot.
-	 */
 	public String getVeryShortName() {
+		// used for drawign text on battleview
 		return veryShortName;
 	}
 
-	/**
-	 * Returns the name of the team or name of the robot if the robot is not a part of a team.
-	 *
-	 * @return the name of the team or name of the robot if the robot is not a part of a team.
-	 */
 	public String getTeamName() {
 		return teamName;
 	}
 
-	/**
-	 * Returns the robot status.
-	 *
-	 * @return the robot status.
-	 */
+	public int getContestantIndex() {
+		return contestIndex;
+	}
+
 	public RobotState getState() {
 		return state;
 	}
 
-	/**
-	 * Returns the energy level.
-	 *
-	 * @return the energy level.
-	 */
 	public double getEnergy() {
 		return energy;
 	}
 
-	/**
-	 * Returns the velocity.
-	 *
-	 * @return the velocity.
-	 */
 	public double getVelocity() {
 		return velocity;
 	}
 
-	/**
-	 * Returns the body heading in radians.
-	 *
-	 * @return the body heading in radians.
-	 */
 	public double getBodyHeading() {
 		return bodyHeading;
 	}
 
-	/**
-	 * Returns the gun heading in radians.
-	 *
-	 * @return the gun heading in radians.
-	 */
 	public double getGunHeading() {
 		return gunHeading;
 	}
 
-	/**
-	 * Returns the radar heading in radians.
-	 *
-	 * @return the radar heading in radians.
-	 */
 	public double getRadarHeading() {
 		return radarHeading;
 	}
 
-	/**
-	 * Returns the x coordinate of the robot.
-	 *
-	 * @return the x coordinate of the robot.
-	 */
+	public double getGunHeat() {
+		return gunHeat;
+	}
+
 	public double getX() {
 		return x;
 	}
 
-	/**
-	 * Returns the y coordinate of the robot.
-	 *
-	 * @return the y coordinate of the robot.
-	 */
 	public double getY() {
 		return y;
 	}
 
-	/**
-	 * Returns the color of the body.
-	 *
-	 * @return the color of the body.
-	 */
-	public Color getBodyColor() {
-		return deepCopy(bodyColor);
+	public int getBodyColor() {
+		return bodyColor;
 	}
 
-	/**
-	 * Returns the color of the gun.
-	 *
-	 * @return the color of the gun.
-	 */
-	public Color getGunColor() {
-		return deepCopy(gunColor);
+	public int getGunColor() {
+		return gunColor;
 	}
 
-	/**
-	 * Returns the color of the radar.
-	 *
-	 * @return the color of the radar.
-	 */
-	public Color getRadarColor() {
-		return deepCopy(radarColor);
+	public int getRadarColor() {
+		return radarColor;
 	}
 
-	/**
-	 * Returns the color of the scan arc.
-	 *
-	 * @return the color of the scan arc.
-	 */
-	public Color getScanColor() {
-		return deepCopy(scanColor);
+	public int getScanColor() {
+		return scanColor;
 	}
 
-	/**
-	 * Returns the color of the bullet.
-	 *
-	 * @return the color of the bullet.
-	 */
-	// public Color getBulletColor() {
-	// return deepCopy(bulletColor);
-	// }
-
-	/**
-	 * Returns a flag specifying if this robot is a Droid.
-	 *
-	 * @return {@code true} if this robot is a Droid; {@code false} otherwise.
-	 */
 	public boolean isDroid() {
 		return isDroid;
 	}
 
-	/**
-	 * Returns a flag specifying if this robot is an IPaintRobot.
-	 *
-	 * @return {@code true} if this robot is a an IPaintRobot; {@code false}
-	 *         otherwise.
-	 */
 	public boolean isPaintRobot() {
 		return isPaintRobot;
 	}
 
-	/**
-	 * Returns a flag specifying if robot's (onPaint) painting is enabled for
-	 * the robot.
-	 *
-	 * @return {@code true} if the paintings for this robot is enabled;
-	 *         {@code false} otherwise.
-	 */
 	public boolean isPaintEnabled() {
 		return isPaintEnabled;
 	}
 
 	/**
-	 * Returns a flag specifying if RobocodeSG painting is enabled for the
-	 * robot.
-	 *
-	 * @return {@code true} if RobocodeSG painting is enabled for this robot;
-	 *         {@code false} otherwise.
+	 * Updates a flag specifying if robot's (onPaint) painting is enabled for
+	 * the robot.
+	 * @param value new value
 	 */
+	public void overridePaintEnabled(boolean value) {
+		isPaintEnabled = value;
+	}
+
 	public boolean isSGPaintEnabled() {
 		return isSGPaintEnabled;
 	}
@@ -356,62 +285,264 @@ public class RobotSnapshot implements Serializable {
 	 * @return the scan arc for the robot.
 	 */
 	public Arc2D getScanArc() {
-		return scanArc != null ? (Arc2D) scanArc.clone() : null;
+		return scanArc != null ? scanArc.create() : null;
 	}
 
 	/**
-	 * Returns the Graphics2D proxy for this robot.
+	 * Returns the Graphics2D queued calls for this robot.
 	 *
-	 * @return the Graphics2D proxy for this robot.
+	 * @return the Graphics2D queued calls for this robot.
 	 */
-	public Graphics2DProxy getGraphicsProxy() {
-		return graphicsProxy != null ? (Graphics2DProxy) graphicsProxy.create() : null;
+	public java.util.List<Graphics2DProxy.QueuedCall> getGraphicsCalls() {
+		return graphicsCalls;
 	}
 
-	/**
-	 * Returns the output print stream snapshot for this robot.
-	 *
-	 * @return the output print stream snapshot for this robot.
-	 */
+	public DebugProperty[] getDebugProperties() {
+		return debugProperties;
+	}
+
 	public String getOutputStreamSnapshot() {
 		return outputStreamSnapshot;
 	}
 
 	/**
-	 * Returns snapshot of score for robot
+	 * Sets new value of out text
 	 *
-	 * @return snapshot of score for robot
+	 * @param text new value
 	 */
-	public ScoreSnapshot getRobotScoreSnapshot() {
+	public void updateOutputStreamSnapshot(String text) {
+		outputStreamSnapshot = text;
+	}
+
+	public IScoreSnapshot getScoreSnapshot() {
 		return robotScoreSnapshot;
 	}
 
-	/**
-	 * The purpose of this class it to serialize the Arc2D.Double class,
-	 * which does not support the Serializable interface itself.
-	 *
-	 * @author Flemming N. Larsen
-	 * @since 1.6.1
-	 */
-	private class SerializableArc extends Arc2D.Double implements Serializable {
-
+	// to overcome various serialization problems with Arc2D
+	// to cope with bug in Java 6
+	// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6522514
+	private class SerializableArc implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		/**
-		 * Public constructor needed for Serialization.
-		 */
-		public SerializableArc() {
-			super();
+		public double x;
+		public double y;
+		public double w;
+		public double h;
+		public double start;
+		public double extent;
+		public int type;
+
+		public SerializableArc() {}
+
+		public SerializableArc(Arc2D.Double arc) {
+			x = arc.getX();
+			y = arc.getY();
+			w = arc.getWidth();
+			h = arc.getHeight();
+			start = arc.getAngleStart();
+			extent = arc.getAngleExtent();
+			type = arc.getArcType();
 		}
 
-		/**
-		 * Copy constructor used for construction a SerializableArc based
-		 * on a Arc2D.Double.
-		 *
-		 * @param arc the Arc2D.Double object to copy
-		 */
-		public SerializableArc(Arc2D.Double arc) {
-			super(arc.getBounds(), arc.start, arc.extent, arc.getArcType());
+		public Arc2D create() {
+			return new Arc2D.Double(x, y, w, h, start, extent, type);
 		}
 	}
+
+	@Override
+	public String toString() {
+		return shortName + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
+	}
+
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
+		writer.startElement("robot"); {
+			final Object details = options == null ? null : options.get("skipDetails");
+
+			writer.writeAttribute("vsName", veryShortName);
+			writer.writeAttribute("state", state.toString());
+			writer.writeAttribute("energy", energy);
+			writer.writeAttribute("x", x);
+			writer.writeAttribute("y", y);
+			writer.writeAttribute("bodyHeading", bodyHeading);
+			writer.writeAttribute("gunHeading", gunHeading);
+			writer.writeAttribute("radarHeading", radarHeading);
+			writer.writeAttribute("gunHeat", gunHeat);
+			writer.writeAttribute("velocity", velocity);
+			writer.writeAttribute("teamName", teamName);
+			if (details == null) {
+				writer.writeAttribute("name", name);
+				writer.writeAttribute("sName", shortName);
+				if (isDroid) {
+					writer.writeAttribute("isDroid", true);
+				}
+				if (bodyColor != ExecCommands.defaultBodyColor) {
+					writer.writeAttribute("bodyColor", Integer.toHexString(bodyColor).toUpperCase());
+				}
+				if (gunColor != ExecCommands.defaultGunColor) {
+					writer.writeAttribute("gunColor", Integer.toHexString(gunColor).toUpperCase());
+				}
+				if (radarColor != ExecCommands.defaultRadarColor) {
+					writer.writeAttribute("radarColor", Integer.toHexString(radarColor).toUpperCase());
+				}
+				if (scanColor != ExecCommands.defaultScanColor) {
+					writer.writeAttribute("scanColor", Integer.toHexString(scanColor).toUpperCase());
+				}
+			}
+			writer.writeAttribute("ver", serialVersionUID);
+			if (outputStreamSnapshot != null && outputStreamSnapshot.length() != 0) {
+				writer.writeAttribute("out", outputStreamSnapshot);
+			}
+
+			if (debugProperties != null) {
+				writer.startElement("debugProperties"); {
+					for (DebugProperty prop : debugProperties) {
+						prop.writeXml(writer, options);
+					}
+				}
+				writer.endElement();
+			}
+
+			((ScoreSnapshot) robotScoreSnapshot).writeXml(writer, options);
+		}
+		writer.endElement();
+
+	}
+
+	public XmlReader.Element readXml(XmlReader reader) {
+		return reader.expect("robot", new XmlReader.Element() {
+			public IXmlSerializable read(XmlReader reader) {
+				final RobotSnapshot snapshot = new RobotSnapshot();
+
+				reader.expect("name", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.name = value;
+					}
+				});
+
+				reader.expect("sName", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.shortName = value;
+					}
+				});
+
+				reader.expect("vsName", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.veryShortName = value;
+					}
+				});
+
+				reader.expect("teamName", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.teamName = value;
+					}
+				});
+
+				reader.expect("state", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.state = RobotState.valueOf(value);
+					}
+				});
+
+				reader.expect("isDroid", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.isDroid = Boolean.valueOf(value);
+					}
+				});
+
+				reader.expect("bodyColor", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.bodyColor = (Long.valueOf(value.toUpperCase(), 16).intValue());
+					}
+				});
+
+				reader.expect("gunColor", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.gunColor = Long.valueOf(value.toUpperCase(), 16).intValue();
+					}
+				});
+
+				reader.expect("radarColor", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.radarColor = Long.valueOf(value.toUpperCase(), 16).intValue();
+					}
+				});
+
+				reader.expect("scanColor", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.scanColor = Long.valueOf(value.toUpperCase(), 16).intValue();
+					}
+				});
+
+				reader.expect("energy", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.energy = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("velocity", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.velocity = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("gunHeat", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.gunHeat = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("bodyHeading", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.bodyHeading = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("gunHeading", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.gunHeading = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("radarHeading", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.radarHeading = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("x", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.x = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("y", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.y = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("out", new XmlReader.Attribute() {
+					public void read(String value) {
+						if (value != null && value.length() != 0) {
+							snapshot.outputStreamSnapshot = value;
+						}
+					}
+				});
+
+				final XmlReader.Element element = (new ScoreSnapshot()).readXml(reader);
+
+				reader.expect("score", new XmlReader.Element() {
+					public IXmlSerializable read(XmlReader reader) {
+						snapshot.robotScoreSnapshot = (IScoreSnapshot) element.read(reader);
+						return (ScoreSnapshot) snapshot.robotScoreSnapshot;
+					}
+				});
+
+				return snapshot;
+			}
+		});
+	}
+
+	public RobotSnapshot() {}
+
 }

@@ -61,7 +61,7 @@ public class MasterAndSlave extends MasterBase implements IAdvancedRobot {
  * Only reason to use this inheritance and this class is that external robots are unable to call RobotPeer directly
  */
 class Slave extends AdvancedRobot {
-	MasterBase parent;
+	final MasterBase parent;
 
 	public Slave(MasterBase parent) {
 		this.parent = parent;
@@ -90,7 +90,7 @@ abstract class MasterBase {
 		helperRobot = new Slave(this);
 	}
 
-	private AdvancedRobot helperRobot;
+	private final AdvancedRobot helperRobot;
 
 	public IAdvancedEvents getAdvancedEventListener() {
 		return helperRobot;

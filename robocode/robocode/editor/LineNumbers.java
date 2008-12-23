@@ -36,12 +36,9 @@ import static java.lang.Math.min;
 public class LineNumbers extends JComponent implements DocumentListener, MouseListener, MouseMotionListener,
 		CaretListener {
 
-	private JEditorPane editorPane;
+	private final JEditorPane editorPane;
 	private int currentLines, lineWidth, anchor, lastIndex, offset, textWidth;
 
-	/**
-	 * Constructor for LineNumbers.
-	 */
 	public LineNumbers(JEditorPane editorPane) {
 		this.editorPane = editorPane;
 		editorPane.getDocument().addDocumentListener(this);
@@ -102,6 +99,8 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 	/**
 	 * Called by the DocumentListener methods to check if the number of lines
 	 * has changed, and if it has, it updates the display.
+	 *
+	 * @param text the text to compare to the current text
 	 */
 	protected void checkLines(String text) {
 		int lines = 0;
@@ -195,7 +194,7 @@ public class LineNumbers extends JComponent implements DocumentListener, MouseLi
 			}
 			editorPane.setSelectionStart(firstindex);
 			editorPane.setSelectionEnd(lastindex);
-		} catch (BadLocationException ex) {}
+		} catch (BadLocationException ignored) {}
 	}
 
 	/**

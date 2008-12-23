@@ -33,9 +33,9 @@ import java.util.StringTokenizer;
  * @author Robert D. Maupin (contributor)
  */
 public class RobocodeSecurityPolicy extends Policy {
-	private Policy parentPolicy;
-	private PermissionCollection permissionCollection;
-	private List<URL> trustedCodeUrls;
+	private final Policy parentPolicy;
+	private final PermissionCollection permissionCollection;
+	private final List<URL> trustedCodeUrls;
 
 	public RobocodeSecurityPolicy(Policy parentPolicy) {
 		this.parentPolicy = parentPolicy;
@@ -52,6 +52,7 @@ public class RobocodeSecurityPolicy extends Policy {
 		String classPath = System.getProperty("java.class.path");
 		StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator);
 
+		// TODO skip robots path if is there
 		while (tokenizer.hasMoreTokens()) {
 			try {
 				URL u = new File(tokenizer.nextToken()).toURI().toURL();
@@ -59,7 +60,7 @@ public class RobocodeSecurityPolicy extends Policy {
 				if (!trustedCodeUrls.contains(u)) {
 					trustedCodeUrls.add(u);
 				}
-			} catch (MalformedURLException e) {}
+			} catch (MalformedURLException ignored) {}
 		}
 	}
 

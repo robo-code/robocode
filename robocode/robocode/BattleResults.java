@@ -23,36 +23,37 @@ package robocode;
  * @see Robot#onBattleEnded(BattleEndedEvent)
  * @since 1.6.1
  */
-public class BattleResults implements java.io.Serializable {
-	private static final long serialVersionUID = 1L;
+public class BattleResults implements java.io.Serializable, Comparable<BattleResults> {
+	protected static final long serialVersionUID = 1L;
 
-	private final String teamLeaderName;
-	private final int rank;
-	private final double score;
-	private final double survival;
-	private final double lastSurvivorBonus;
-	private final double bulletDamage;
-	private final double bulletDamageBonus;
-	private final double ramDamage;
-	private final double ramDamageBonus;
-	private final int firsts;
-	private final int seconds;
-	private final int thirds;
+	protected final String teamLeaderName;
+	protected int rank;
+	protected double score;
+	protected double survival;
+	protected double lastSurvivorBonus;
+	protected double bulletDamage;
+	protected double bulletDamageBonus;
+	protected double ramDamage;
+	protected double ramDamageBonus;
+	protected int firsts;
+	protected int seconds;
+	protected int thirds;
 
 	/**
-	 * Constructs a new RobotResults.
+	 * Constructs this BattleResults object.
 	 *
-	 * @param rank              the rank of the robot in the battle
-	 * @param score             the total score for the robot in the battle
-	 * @param survival          the survival score for the robot in the battle
-	 * @param lastSurvivorBonus the last survivor bonus for the robot in the battle
-	 * @param bulletDamage      the bullet damage score for the robot in the battle
-	 * @param bulletDamageBonus the bullet damage bonus for the robot in the battle
-	 * @param ramDamage         the ramming damage for the robot in the battle
-	 * @param ramDamageBonus    the ramming damage bonus for the robot in the battle
-	 * @param firsts            the number of rounds this robot placed first
-	 * @param seconds           the number of rounds this robot placed second
-	 * @param thirds            the number of rounds this robot placed third
+	 * @param teamLeaderName    the name of the team leader.
+	 * @param rank              the rank of the robot in the battle.
+	 * @param score             the total score for the robot in the battle.
+	 * @param survival          the survival score for the robot in the battle.
+	 * @param lastSurvivorBonus the last survivor bonus for the robot in the battle.
+	 * @param bulletDamage      the bullet damage score for the robot in the battle.
+	 * @param bulletDamageBonus the bullet damage bonus for the robot in the battle.
+	 * @param ramDamage         the ramming damage for the robot in the battle.
+	 * @param ramDamageBonus    the ramming damage bonus for the robot in the battle.
+	 * @param firsts            the number of rounds this robot placed first.
+	 * @param seconds           the number of rounds this robot placed second.
+	 * @param thirds            the number of rounds this robot placed third.
 	 */
 	public BattleResults(
 			String teamLeaderName,
@@ -189,5 +190,12 @@ public class BattleResults implements java.io.Serializable {
 	 */
 	public int getThirds() {
 		return thirds;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int compareTo(BattleResults o) {
+		return ((Double) score).compareTo(o.score);
 	}
 }

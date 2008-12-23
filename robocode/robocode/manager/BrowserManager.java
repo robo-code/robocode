@@ -25,7 +25,7 @@ import java.io.IOException;
  */
 public class BrowserManager {
 
-	private static String browserCommand;
+	private static final String browserCommand;
 
 	static {
 		if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {

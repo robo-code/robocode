@@ -30,8 +30,8 @@ public class WizardCardPanel extends JPanel implements Wizard {
 	private WizardController wizardController;
 	private CardLayout cardLayout = null;
 	private int currentIndex = 0;
-	private WizardListener listener;
-	private EventHandler eventHandler = new EventHandler();
+	private final WizardListener listener;
+	private final EventHandler eventHandler = new EventHandler();
 
 	public class EventHandler implements ContainerListener {
 		public void componentRemoved(ContainerEvent e) {}
