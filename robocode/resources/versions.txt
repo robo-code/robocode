@@ -1,12 +1,13 @@
 Version 1.6.2 Beta 4
-(22-Dec-2008)
+(23-Dec-2008)
 ---------------
 
 = Bugfixes =
-* Fixed open battle dialog, which was not loading.
-* Fixed recorder NPE
-* Fixed serialization problems of scan arc (Arc2D)
-* Fixed problem with reloading robot repository on each next battle dialog
+* Fixed the Open Battle dialog, where the robots were not being loaded, but which instead behaved the same way as the New Battle dialog. 
+* Fixed NullPointerException with the new Record and Playback (Replay) feature, when trying to play a recorded battle.
+* Fixed serialization problems with scan arcs (Arc2D), when robot paintings with scan arcs are being recorded.
+* Fixed problem with reloading robot repository on each next battle dialog. Now the user must press Ctrl+R in order to refresh the robot repository as this is not done automatically anymore.
+* Fixed two ArrayIndexOutOfBoundsExceptions occurring when opening a new battle with fewer robots, when a battle with more robots are ongoing. 
 
 Version 1.6.2 Beta 3
 (18-Dec-2008)
