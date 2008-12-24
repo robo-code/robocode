@@ -30,8 +30,8 @@ package robocode.security;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import robocode.packager.ClassAnalyzer;
-import robocode.repository.IRobotFileSpecification;
 
 import java.io.*;
 import java.lang.reflect.Field;

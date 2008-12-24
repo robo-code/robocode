@@ -21,7 +21,7 @@ package robocode.packager;
 
 
 import robocode.dialog.WizardPanel;
-import robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.INamedFileSpecification;
 import robocode.text.LimitedDocument;
 
 import javax.swing.*;

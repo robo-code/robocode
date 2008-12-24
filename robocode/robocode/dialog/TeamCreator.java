@@ -165,7 +165,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			}
 		}
 
-		ITeamFileSpecificationExt teamSpec = manager.getRepositoryManager().createTeam();
+		ITeamFileSpecificationExt teamSpec = (ITeamFileSpecificationExt) manager.getRepositoryManager().createTeam();
 		URL u = null;
 		String w = teamCreatorOptionsPanel.getWebpageField().getText();
 

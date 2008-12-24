@@ -55,6 +55,7 @@ package robocode.manager;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import robocode.Event;
@@ -69,7 +70,6 @@ import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
-import robocode.io.FileUtil;
 import robocode.recording.BattlePlayer;
 
 import java.io.*;

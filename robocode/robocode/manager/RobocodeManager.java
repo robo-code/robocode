@@ -29,10 +29,11 @@ package robocode.manager;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.security.HiddenAccess;
-import robocode.io.FileUtil;
+import net.sf.robocode.repository.IRepositoryManager;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
 import robocode.repository.RepositoryManager;

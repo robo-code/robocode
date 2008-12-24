@@ -15,7 +15,7 @@
  *     - Added the quoteFileName(), createDir(), getRobotsDir(), getConfigDir(),
  *       getRobocodeConfigFile(), getWindowConfigFile(), getCompilerConfigFile()
  *******************************************************************************/
-package robocode.io;
+package net.sf.robocode.io;
 
 
 import static net.sf.robocode.io.Logger.logError;

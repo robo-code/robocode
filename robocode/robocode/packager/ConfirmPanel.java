@@ -19,7 +19,7 @@ package robocode.packager;
 
 
 import robocode.dialog.WizardPanel;
-import robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.INamedFileSpecification;
 
 import javax.swing.*;
 import java.awt.*;

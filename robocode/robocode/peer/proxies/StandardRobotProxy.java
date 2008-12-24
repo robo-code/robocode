@@ -14,10 +14,10 @@ package robocode.peer.proxies;
 
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import robocode.RobotStatus;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
-import robocode.repository.IRobotFileSpecification;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 

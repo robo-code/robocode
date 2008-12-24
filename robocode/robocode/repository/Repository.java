@@ -21,6 +21,8 @@
 package robocode.repository;
 
 
+import net.sf.robocode.repository.INamedFileSpecification;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;

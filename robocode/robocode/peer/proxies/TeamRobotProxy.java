@@ -15,11 +15,11 @@ package robocode.peer.proxies;
 
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.peer.TeamMessage;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import robocode.MessageEvent;
 import robocode.io.RobocodeObjectInputStream;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
-import robocode.repository.IRobotFileSpecification;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
 import java.io.*;

@@ -86,7 +86,7 @@ import robocode.peer.proxies.IHostingRobotProxy;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.EventQueue;
 import robocode.peer.robot.RobotStatistics;
-import robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;

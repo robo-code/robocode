@@ -12,6 +12,8 @@
 package robocode.repository;
 
 
+import net.sf.robocode.repository.IRobotFileSpecification;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;

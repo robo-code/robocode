@@ -98,6 +98,7 @@ package robocode.battle;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import robocode.*;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
@@ -112,7 +113,6 @@ import robocode.peer.BulletPeer;
 import robocode.peer.ContestantPeer;
 import robocode.peer.RobotPeer;
 import robocode.peer.TeamPeer;
-import robocode.repository.IRobotFileSpecification;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;

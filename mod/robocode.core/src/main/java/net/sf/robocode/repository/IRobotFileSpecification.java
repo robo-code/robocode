@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
 
 /**

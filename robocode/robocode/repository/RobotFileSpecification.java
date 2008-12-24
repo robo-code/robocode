@@ -19,10 +19,10 @@ package robocode.repository;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.Droid;
 import robocode.Robot;
-import robocode.io.FileUtil;
 import robocode.robotinterfaces.*;
 import robocode.security.RobotClassLoader;
 

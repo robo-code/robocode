@@ -17,9 +17,9 @@ package robocode.repository;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.dialog.WindowUtil;
-import robocode.io.FileUtil;
 
 import javax.swing.*;
 import java.io.*;

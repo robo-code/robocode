@@ -29,11 +29,11 @@ package robocode.packager;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryManager;
 import robocode.dialog.*;
 import robocode.io.NoDuplicateJarOutputStream;
-import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
-import robocode.repository.INamedFileSpecification;
 import robocode.repository.IRobotFileSpecificationExt;
 import robocode.repository.ITeamFileSpecificationExt;
 import robocode.security.RobotClassLoader;

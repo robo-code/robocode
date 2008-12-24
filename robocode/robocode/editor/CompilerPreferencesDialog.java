@@ -21,7 +21,7 @@ package robocode.editor;
 
 
 import net.sf.robocode.io.Logger;
-import robocode.io.FileUtil;
+import net.sf.robocode.io.FileUtil;
 
 import javax.swing.*;
 import java.awt.*;

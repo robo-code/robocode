@@ -9,13 +9,10 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.repository;
 
 
-import net.sf.robocode.repository.IRepositoryManagerBase;
 import robocode.control.RobotSpecification;
-import robocode.repository.INamedFileSpecification;
-import robocode.repository.ITeamFileSpecificationExt;
 
 import java.io.File;
 import java.util.List;
@@ -42,5 +39,5 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 	boolean verifyRobotName(String robotName, String shortClassName);
 	int extractJar(File jarFile);
 
-	ITeamFileSpecificationExt createTeam();
+	INamedFileSpecification createTeam();
 }

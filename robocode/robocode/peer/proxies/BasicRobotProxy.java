@@ -24,7 +24,7 @@ import robocode.exception.RobotException;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.EventManager;
-import robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotpaint.Graphics2DSerialized;
 import robocode.robotpaint.IGraphicsProxy;

@@ -15,7 +15,7 @@
 package ar.robocode.cachecleaner;
 
 
-import robocode.manager.IRepositoryManager;
+import net.sf.robocode.repository.IRepositoryManager;
 import robocode.manager.RobocodeManager;
 
 import java.io.File;

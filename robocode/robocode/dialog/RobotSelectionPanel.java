@@ -31,9 +31,9 @@ package robocode.dialog;
 
 
 import net.sf.robocode.io.Logger;
-import robocode.manager.IRepositoryManager;
+import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryManager;
 import robocode.manager.RobocodeManager;
-import robocode.repository.INamedFileSpecification;
 import robocode.repository.ITeamFileSpecificationExt;
 
 import javax.swing.*;

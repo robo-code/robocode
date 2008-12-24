@@ -20,7 +20,7 @@
 package robocode.dialog;
 
 
-import robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.INamedFileSpecification;
 import robocode.text.LimitedClassnameDocument;
 import robocode.text.LimitedDocument;
 

@@ -30,9 +30,9 @@ package robocode;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.FileUtil;
 import robocode.control.events.*;
 import robocode.dialog.WindowUtil;
-import robocode.io.FileUtil;
 import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.recording.BattleRecordFormat;

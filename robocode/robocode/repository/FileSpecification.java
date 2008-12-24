@@ -21,8 +21,8 @@ package robocode.repository;
 
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
-import robocode.io.FileUtil;
-import robocode.manager.IRepositoryManager;
+import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.repository.IRepositoryManager;
 
 import java.io.*;
 import java.net.URL;

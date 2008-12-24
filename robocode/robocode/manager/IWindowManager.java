@@ -82,4 +82,7 @@ public interface IWindowManager extends IWindowManagerBase {
 	int getFPS();
 
 	ITurnSnapshot getLastSnapshot();
+
+	void setStatus(String s);
+
 }

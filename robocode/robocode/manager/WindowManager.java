@@ -29,7 +29,7 @@ import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.dialog.*;
 import robocode.editor.RobocodeEditor;
-import robocode.io.FileUtil;
+import net.sf.robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
 import robocode.ui.AwtBattleAdaptor;
 import robocode.ui.BattleResultsTableModel;
@@ -486,5 +486,9 @@ public class WindowManager implements IWindowManager {
 		if (manager.isGUIEnabled()) {
 			getRobocodeFrame().dispose();
 		}
+	}
+
+	public void setStatus(String s){
+		WindowUtil.setStatus(s);
 	}
 }

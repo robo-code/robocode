@@ -20,6 +20,8 @@
 package robocode.repository;
 
 
+import net.sf.robocode.repository.INamedFileSpecification;
+
 import java.io.*;
 import java.util.*;
 

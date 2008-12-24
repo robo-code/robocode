@@ -13,6 +13,7 @@
     <orderEntry type="module" module-name="robocode.core" />
     <orderEntry type="module" module-name="robocode.battle" />
     <orderEntry type="module" module-name="robocode.ui" />
+    <orderEntry type="module" module-name="robocode.repository" />
   </component>
 </module>
 

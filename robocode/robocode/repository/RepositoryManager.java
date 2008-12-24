@@ -34,14 +34,14 @@ package robocode.repository;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryManager;
 import robocode.control.RobotSpecification;
-import robocode.dialog.WindowUtil;
 import robocode.io.FileTypeFilter;
-import robocode.io.FileUtil;
-import robocode.manager.IRepositoryManager;
 import robocode.manager.RobocodeManager;
 
 import java.io.*;
@@ -117,7 +117,7 @@ public final class RepositoryManager implements IRepositoryManager {
 
 	private FileSpecificationDatabase getRobotDatabase() {
 		if (robotDatabase == null) {
-			WindowUtil.setStatus("Reading robot database");
+			manager.getWindowManager().setStatus("Reading robot database");
 			robotDatabase = new FileSpecificationDatabase();
 			try {
 				robotDatabase.load(new File(getRobotsDirectory(), "robot.database"));
@@ -139,7 +139,7 @@ public final class RepositoryManager implements IRepositoryManager {
 			return;
 		}
 
-		WindowUtil.setStatus("Refreshing robot database");
+		manager.getWindowManager().setStatus("Refreshing robot database");
 
 		updatedJarList.clear();
 		this.write = false;
@@ -151,7 +151,7 @@ public final class RepositoryManager implements IRepositoryManager {
 
 		// Clean up cache -- delete nonexistent jar directories
 		cleanupCache();
-		WindowUtil.setStatus("Cleaning up robot database");
+		manager.getWindowManager().setStatus("Cleaning up robot database");
 		cleanupDatabase();
 
 		String externalRobotsPath = manager.getProperties().getOptionsDevelopmentPath(); {
@@ -171,7 +171,7 @@ public final class RepositoryManager implements IRepositoryManager {
 
 		File f = getRobotsDirectory();
 
-		WindowUtil.setStatus("Reading: " + f.getName());
+		manager.getWindowManager().setStatus("Reading: " + f.getName());
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", true);
 		}
@@ -191,7 +191,7 @@ public final class RepositoryManager implements IRepositoryManager {
 		updatedJarList.clear();
 
 		f = getRobotCache();
-		WindowUtil.setStatus("Reading: " + getRobotCache());
+		manager.getWindowManager().setStatus("Reading: " + getRobotCache());
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", false);
 		}
@@ -199,11 +199,11 @@ public final class RepositoryManager implements IRepositoryManager {
 		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
 		if (write) {
-			WindowUtil.setStatus("Saving robot database");
+			manager.getWindowManager().setStatus("Saving robot database");
 			saveRobotDatabase();
 		}
 
-		WindowUtil.setStatus("Adding robots to repository");
+		manager.getWindowManager().setStatus("Adding robots to repository");
 
 		for (FileSpecification fs : fileSpecificationList) {
 			if (fs instanceof INamedFileSpecification) {
@@ -211,9 +211,9 @@ public final class RepositoryManager implements IRepositoryManager {
 			}
 		}
 
-		WindowUtil.setStatus("Sorting repository");
+		manager.getWindowManager().setStatus("Sorting repository");
 		repository.sortRobotSpecifications();
-		WindowUtil.setStatus("");
+		manager.getWindowManager().setStatus("");
 	}
 
 	private void cleanupCache() {
@@ -232,7 +232,7 @@ public final class RepositoryManager implements IRepositoryManager {
 					if (f.exists() && !f.getName().startsWith("robocode")) {
 						continue;
 					}
-					WindowUtil.setStatus("Cleaning up cache: Removing " + file);
+					manager.getWindowManager().setStatus("Cleaning up cache: Removing " + file);
 					FileUtil.deleteDir(file);
 				}
 			}
@@ -422,7 +422,7 @@ public final class RepositoryManager implements IRepositoryManager {
 	private void updateNoDuplicates(NamedFileSpecification spec) {
 		String key = spec.getFilePath();
 
-		WindowUtil.setStatus("Updating database: " + spec.getName());
+		manager.getWindowManager().setStatus("Updating database: " + spec.getName());
 		if (!spec.isDevelopmentVersion()
 				&& getRobotDatabase().contains(spec.getFullClassName(), spec.getVersion(), false)) {
 			FileSpecification existingSpec = getRobotDatabase().get(spec.getFullClassName(), spec.getVersion(), false);

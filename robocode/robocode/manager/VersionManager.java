@@ -26,7 +26,7 @@ package robocode.manager;
 
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-import robocode.io.FileUtil;
+import net.sf.robocode.io.FileUtil;
 
 import java.io.*;
 import java.net.HttpURLConnection;
