@@ -82,7 +82,7 @@ public class HiddenAccess {
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
 
-			Class<?> robocodeManager = ClassLoader.getSystemClassLoader().loadClass("robocode.manager.RobocodeManager");
+			Class<?> robocodeManager = ClassLoader.getSystemClassLoader().loadClass("robocode.RobocodeManager");
 
 			robocodeManagerFactoryRE = robocodeManager.getDeclaredMethod("createRobocodeManagerForRobotEngine",
 					File.class);

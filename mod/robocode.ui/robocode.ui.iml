@@ -14,9 +14,9 @@
     <orderEntry type="module" module-name="robocode.api" exported="" />
     <orderEntry type="module" module-name="robocode.core" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
+    <orderEntry type="module" module-name="robocode.battle" exported="" />
     <orderEntry type="module" module-name="robocode.host" exported="" />
     <orderEntry type="module" module-name="robocode.repository" exported="" />
-    <orderEntry type="module" module-name="robocode.battle" exported="" />
     <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
     <orderEntry type="library" exported="" name="Maven: plexus:plexus-compiler-jikes:1.3" level="project" />
     <orderEntry type="library" exported="" name="Maven: plexus:plexus-container-default:1.0-alpha-2" level="project" />

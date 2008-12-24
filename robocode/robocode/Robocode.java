@@ -30,15 +30,16 @@ package robocode;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.ui.LookAndFeelManager;
 import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.battle.BattleResultsTableModel;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.security.LoggingThreadGroup;
 import robocode.control.events.*;
-import robocode.dialog.WindowUtil;
-import robocode.ui.BattleResultsTableModel;
+import net.sf.robocode.ui.dialog.WindowUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -105,7 +106,7 @@ public class Robocode {
 
 			// Set the Look and Feel (LAF)
 			if (manager.isGUIEnabled()) {
-				robocode.manager.LookAndFeelManager.setLookAndFeel();
+				LookAndFeelManager.setLookAndFeel();
 			}
 
 			manager.getProperties().setOptionsBattleDesiredTPS(setup.tps);

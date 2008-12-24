@@ -22,11 +22,13 @@
             <artifactId>robocode.core</artifactId>
             <version>1.7</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
             <version>1.7</version>
         </dependency>
+        -->
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.battle</artifactId>
