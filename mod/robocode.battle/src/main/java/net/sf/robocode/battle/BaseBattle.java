@@ -9,11 +9,10 @@
  *     Pavel Savara
  *     - Refactoring
  *******************************************************************************/
-package robocode.battle;
+package net.sf.robocode.battle;
 
 
 import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;

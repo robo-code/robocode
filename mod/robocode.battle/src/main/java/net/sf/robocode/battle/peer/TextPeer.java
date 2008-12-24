@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Removed dirty rectangle
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle.peer;
 
 
 import java.awt.*;

@@ -14,8 +14,8 @@ package robocode.ui;
 
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.io.Logger;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;

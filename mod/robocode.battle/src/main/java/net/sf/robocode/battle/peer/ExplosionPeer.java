@@ -24,10 +24,10 @@
  *       BulletRecord as parameter due to a NullPointerException that was raised
  *       as the battleField variable was not intialized
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle.peer;
 
 
-import robocode.battle.Battle;
+import robocode.BattleRules;
 import robocode.control.snapshot.BulletState;
 
 import java.util.List;
@@ -43,8 +43,8 @@ public class ExplosionPeer extends BulletPeer {
 
 	private static final int EXPLOSION_LENGTH = 71;
 
-	public ExplosionPeer(RobotPeer owner, Battle battle) {
-		super(owner, battle, -1);
+	public ExplosionPeer(RobotPeer owner, BattleRules battleRules) {
+		super(owner, battleRules, -1);
 
 		x = owner.getX();
 		y = owner.getY();

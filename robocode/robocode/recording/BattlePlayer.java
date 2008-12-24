@@ -13,10 +13,10 @@ package robocode.recording;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.BaseBattle;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import robocode.BattleResults;
-import robocode.battle.BaseBattle;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;

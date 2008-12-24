@@ -13,7 +13,9 @@ package robocode.recording;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattle;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.recording.BattleRecordFormat;
@@ -23,8 +25,6 @@ import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.BattleResults;
 import robocode.BattleRules;
-import robocode.battle.IBattle;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 
 import java.io.*;

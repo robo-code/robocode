@@ -18,7 +18,7 @@
  *     Pavel Savara
  *     - member names are known in constructor
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle.peer;
 
 
 import java.util.ArrayList;

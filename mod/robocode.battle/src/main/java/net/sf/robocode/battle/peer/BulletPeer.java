@@ -42,12 +42,11 @@
  *     Pavel Savara
  *     - disconnected from Bullet, now we rather send BulletStatus to proxy side
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle.peer;
 
 
 import net.sf.robocode.peer.BulletStatus;
 import robocode.*;
-import robocode.battle.Battle;
 import robocode.control.snapshot.BulletState;
 
 import java.awt.geom.Line2D;
@@ -70,7 +69,7 @@ public class BulletPeer {
 	private static final int RADIUS = 3;
 
 	protected final RobotPeer owner;
-	protected final Battle battle;
+	// protected final Battle battle;
 	private final BattleRules battleRules;
 	private final int bulletId;
 
@@ -99,19 +98,11 @@ public class BulletPeer {
 
 	protected int explosionImageIndex;
 
-	/**
-	 * BulletPeer constructor
-	 *
-	 * @param owner  who fire the bullet
-	 * @param battle root battle
-	 * @param bulletId bullet
-	 */
-	public BulletPeer(RobotPeer owner, Battle battle, int bulletId) {
+	public BulletPeer(RobotPeer owner, BattleRules battleRules, int bulletId) {
 		super();
 
 		this.owner = owner;
-		this.battle = battle;
-		battleRules = battle.getBattleRules();
+		this.battleRules = battleRules;
 		this.bulletId = bulletId;
 		state = BulletState.FIRED;
 		color = owner.getBulletColor(); // Store current bullet color set on robot

@@ -11,14 +11,14 @@
  *     Pavel Savara
  *     - Xml Serialization, refactoring
  *******************************************************************************/
-package robocode.battle.snapshot;
+package net.sf.robocode.battle.snapshot;
 
 
+import net.sf.robocode.battle.peer.RobotStatistics;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.IScoreSnapshot;
-import robocode.peer.robot.RobotStatistics;
 
 import java.io.IOException;
 import java.io.Serializable;

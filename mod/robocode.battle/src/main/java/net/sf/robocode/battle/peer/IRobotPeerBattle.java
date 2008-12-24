@@ -9,11 +9,10 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle.peer;
 
 
 import robocode.Event;
-import robocode.peer.robot.RobotStatistics;
 
 import java.util.List;
 

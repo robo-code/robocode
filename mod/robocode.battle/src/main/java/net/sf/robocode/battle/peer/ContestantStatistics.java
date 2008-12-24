@@ -14,7 +14,7 @@
  *     - Renamed method names and removed unused methods
  *     - Added methods for getting current scores
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle.peer;
 
 
 import robocode.BattleResults;

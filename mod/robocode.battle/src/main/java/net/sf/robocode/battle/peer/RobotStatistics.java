@@ -34,11 +34,10 @@
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
  *******************************************************************************/
-package robocode.peer.robot;
+package net.sf.robocode.battle.peer;
 
 
 import robocode.BattleResults;
-import robocode.peer.RobotPeer;
 
 
 /**
@@ -49,7 +48,7 @@ import robocode.peer.RobotPeer;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobotStatistics implements robocode.peer.ContestantStatistics {
+public class RobotStatistics implements ContestantStatistics {
 
 	private final RobotPeer robotPeer;
 	private int rank;

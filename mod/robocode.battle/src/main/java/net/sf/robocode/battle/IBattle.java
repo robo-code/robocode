@@ -6,24 +6,31 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Ported to Java 5
+ *     Pavel Savara
+ *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle;
 
 
 /**
- * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (original)
  */
-public interface ContestantPeer extends Comparable<ContestantPeer> {
-	public ContestantStatistics getStatistics();
+public interface IBattle extends Runnable {
+	void cleanup();
 
-	public String getName();
+	boolean isRunning();
 
-	public String toString();
+	void stop(boolean waitTillEnd);
 
-	public int getContestIndex();
+	void pause();
+
+	void resume();
+
+	void step();
+
+	void waitTillStarted();
+
+	void waitTillOver();
+
+	void setPaintEnabled(int robotIndex, boolean enable);
 }

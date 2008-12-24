@@ -1,4 +1,4 @@
-package robocode.battle;
+package net.sf.robocode.battle;
 
 
 public abstract class Command {

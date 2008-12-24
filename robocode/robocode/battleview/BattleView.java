@@ -17,11 +17,11 @@ package robocode.battleview;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.robotpaint.IGraphicsProxy;
 import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IWindowManager;
-import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;

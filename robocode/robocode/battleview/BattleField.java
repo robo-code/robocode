@@ -14,7 +14,7 @@
 package robocode.battleview;
 
 
-import robocode.common.BoundingRectangle;
+import net.sf.robocode.battle.BoundingRectangle;
 
 import java.io.Serializable;
 

@@ -16,7 +16,7 @@
  *     - Ordered all methods more naturally
  *     - Added methods for getting current scores
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle.peer;
 
 
 import robocode.BattleResults;

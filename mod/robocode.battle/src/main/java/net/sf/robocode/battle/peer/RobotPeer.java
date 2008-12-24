@@ -63,9 +63,11 @@
  *     - interlocked synchronization
  *     - (almost) minimized surface between RobotPeer and RobotProxy to serializable messages.
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.battle.peer;
 
 
+import net.sf.robocode.battle.Battle;
+import net.sf.robocode.battle.BoundingRectangle;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.events.EventManager;
@@ -78,8 +80,6 @@ import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
-import robocode.battle.Battle;
-import robocode.common.BoundingRectangle;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
 import robocode.control.snapshot.BulletState;
@@ -87,7 +87,6 @@ import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
-import robocode.peer.robot.RobotStatistics;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
@@ -843,7 +842,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			gunHeat += Rules.getGunHeat(firePower);
 
-			newBullet = new BulletPeer(this, battle, bulletCmd.getBulletId());
+			newBullet = new BulletPeer(this, battleRules, bulletCmd.getBulletId());
 
 			newBullet.setPower(firePower);
 			if (!turnedRadarWithGun || !bulletCmd.isFireAssistValid() || statics.isAdvancedRobot()) {
@@ -1513,7 +1512,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					if (!(teammate.isDead() || teammate == this)) {
 						teammate.updateEnergy(-30);
 
-						BulletPeer sBullet = new BulletPeer(this, battle, -1);
+						BulletPeer sBullet = new BulletPeer(this, battleRules, -1);
 
 						sBullet.setState(BulletState.HIT_VICTIM);
 						sBullet.setX(teammate.x);
@@ -1527,7 +1526,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			battle.registerDeathRobot(this);
 
 			// 'fake' bullet for explosion on self
-			final ExplosionPeer fake = new ExplosionPeer(this, battle);
+			final ExplosionPeer fake = new ExplosionPeer(this, battleRules);
 
 			battle.addBullet(fake);
 		}

@@ -93,27 +93,26 @@
  *     - Refactored large methods into several smaller methods
  *     - decomposed RobotPeer from RobotProxy, now sending messages beteen them
  *******************************************************************************/
-package robocode.battle;
+package net.sf.robocode.battle;
 
 
 import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.peer.BulletPeer;
+import net.sf.robocode.battle.peer.ContestantPeer;
+import net.sf.robocode.battle.peer.RobotPeer;
+import net.sf.robocode.battle.peer.TeamPeer;
+import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
-import robocode.battle.snapshot.TurnSnapshot;
 import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
 import robocode.control.events.*;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.peer.BulletPeer;
-import robocode.peer.ContestantPeer;
-import robocode.peer.RobotPeer;
-import robocode.peer.TeamPeer;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
