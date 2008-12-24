@@ -14,7 +14,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
@@ -117,7 +117,7 @@ public final class AboutBox extends JDialog {
 		}
 	};
 
-	public AboutBox(Frame owner, RobocodeManager manager) {
+	public AboutBox(Frame owner, IRobocodeManager manager) {
 		super(owner, true);
 
 		robocodeVersion = manager.getVersionManager().getVersion();

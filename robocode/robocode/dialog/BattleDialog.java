@@ -17,7 +17,7 @@ import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -45,13 +45,13 @@ public class BattleDialog extends JFrame {
 	private JPanel battleDialogContentPane;
 	private JPanel buttonPanel;
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 	private final BattleButton battleButton;
 	private boolean isListening;
 	private ITurnSnapshot lastSnapshot;
 	private boolean paintSnapshot;
 
-	public BattleDialog(RobocodeManager manager, BattleButton battleButton) {
+	public BattleDialog(IRobocodeManager manager, BattleButton battleButton) {
 		this.manager = manager;
 		this.battleButton = battleButton;
 		initialize();

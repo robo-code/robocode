@@ -19,7 +19,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,9 +44,9 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
 	private PreferencesCommonOptionsTab commonOptionsTab;
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
-	public PreferencesDialog(RobocodeManager manager) {
+	public PreferencesDialog(IRobocodeManager manager) {
 		super(manager.getWindowManager().getRobocodeFrame(), true);
 		this.manager = manager;
 		initialize();
@@ -150,7 +150,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		commonOptionsTab.storePreferences();
 
 		// Make sure the BattleView will use the new setting immediately
-		//TODO ZAMO manager.getWindowManager().getRobocodeFrame().getBattleView().setDisplayOptions(); // TODO: Find better solution?
+		// TODO ZAMO manager.getWindowManager().getRobocodeFrame().getBattleView().setDisplayOptions(); // TODO: Find better solution?
 
 		dispose();
 	}

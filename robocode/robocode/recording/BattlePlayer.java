@@ -19,7 +19,7 @@ import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 
 /**
@@ -31,7 +31,7 @@ public final class BattlePlayer extends BaseBattle {
 	private final RecordManager recordManager;
 	private boolean[] paint;
 
-	public BattlePlayer(RobocodeManager manager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) {
+	public BattlePlayer(IRobocodeManager manager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) {
 		super(manager, eventDispatcher, false);
 		this.recordManager = recordManager;
 	}

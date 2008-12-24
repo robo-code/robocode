@@ -17,7 +17,7 @@ package robocode.dialog;
 
 
 import robocode.gfx.RobocodeLogo;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -55,7 +55,7 @@ public class RcSplashScreen extends JWindow {
 		}
 	};
 
-	public RcSplashScreen(RobocodeManager manager) {
+	public RcSplashScreen(IRobocodeManager manager) {
 		super();
 		this.version = manager.getVersionManager().getVersion();
 		initialize();

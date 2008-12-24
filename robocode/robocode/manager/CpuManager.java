@@ -41,9 +41,9 @@ public class CpuManager implements ICpuManager {
 	private final static int TEST_PERIOD_MILLIS = 5000;
 
 	private long cpuConstant = -1;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
-	public CpuManager(RobocodeManager manager) {
+	public CpuManager(IRobocodeManager manager) {
 		this.manager = manager;
 	}
 

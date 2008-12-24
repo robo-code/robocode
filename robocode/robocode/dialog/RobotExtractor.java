@@ -25,7 +25,7 @@ package robocode.dialog;
 
 
 import net.sf.robocode.repository.INamedFileSpecification;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -59,7 +59,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	public byte buf[] = new byte[4096];
 	private StringWriter output;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -71,7 +71,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		}
 	}
 
-	public RobotExtractor(JFrame owner, RobocodeManager manager) {
+	public RobotExtractor(JFrame owner, IRobocodeManager manager) {
 		super(owner);
 		this.manager = manager;
 		initialize();

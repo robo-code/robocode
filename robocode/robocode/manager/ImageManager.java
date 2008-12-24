@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class ImageManager implements IImageManager {
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private Image[] groundImages;
 
@@ -51,7 +51,7 @@ public class ImageManager implements IImageManager {
 	private HashMap<Integer, RenderImage> robotGunImageCache;
 	private HashMap<Integer, RenderImage> robotRadarImageCache;
 
-	public ImageManager(RobocodeManager manager) {
+	public ImageManager(IRobocodeManager manager) {
 		this.manager = manager;
 		initialize();
 	}

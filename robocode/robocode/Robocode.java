@@ -31,10 +31,11 @@ package robocode;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 import robocode.dialog.WindowUtil;
 import robocode.manager.IBattleManager;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.recording.BattleRecordFormat;
 import robocode.security.LoggingThreadGroup;
 import robocode.ui.BattleResultsTableModel;
@@ -78,7 +79,7 @@ public class Robocode {
 		}.start();
 	}
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 	private final Setup setup;
 	private final BattleObserver battleObserver = new BattleObserver();
 
@@ -94,7 +95,7 @@ public class Robocode {
 	}
 
 	private Robocode() {
-		manager = new RobocodeManager(false);
+		manager = (IRobocodeManager) HiddenAccess.createRobocodeManager();
 		setup = new Setup();
 	}
 

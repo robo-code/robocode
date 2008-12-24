@@ -88,7 +88,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Pavel Savara (contributor)
  */
 public class BattleManager implements IBattleManager {
-	private RobocodeManager manager;
+	private IRobocodeManager manager;
 
 	private volatile IBattle battle;
 	private BattleProperties battleProperties = new BattleProperties();
@@ -101,7 +101,7 @@ public class BattleManager implements IBattleManager {
 	private int pauseCount = 0;
 	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
-	public BattleManager(RobocodeManager manager) {
+	public BattleManager(IRobocodeManager manager) {
 		this.manager = manager;
 	}
 

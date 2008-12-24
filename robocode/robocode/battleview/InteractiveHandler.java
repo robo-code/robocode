@@ -18,7 +18,7 @@ package robocode.battleview;
 import net.sf.robocode.security.SafeComponent;
 import robocode.*;
 import robocode.battle.BattleProperties;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -37,10 +37,10 @@ import static java.lang.Math.min;
  * @author Flemming N. Larsen (contributor)
  */
 public final class InteractiveHandler implements KeyEventDispatcher, MouseListener, MouseMotionListener, MouseWheelListener {
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 	private final BattleView battleView;
 
-	public InteractiveHandler(RobocodeManager manager, BattleView battleView) {
+	public InteractiveHandler(IRobocodeManager manager, BattleView battleView) {
 		this.manager = manager;
 		this.battleView = battleView;
 	}

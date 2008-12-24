@@ -108,7 +108,7 @@ import robocode.control.RobotSpecification;
 import robocode.control.events.*;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.peer.BulletPeer;
 import robocode.peer.ContestantPeer;
 import robocode.peer.RobotPeer;
@@ -160,7 +160,7 @@ public final class Battle extends BaseBattle {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	public Battle(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
+	public Battle(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, IRobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		super(manager, eventDispatcher, paused);
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),

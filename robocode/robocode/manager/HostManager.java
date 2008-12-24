@@ -27,9 +27,9 @@ import java.security.AccessControlException;
  * @author Pavel Savara (original)
  */
 public class HostManager implements IHostManager {
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
-	HostManager(RobocodeManager manager) {
+	HostManager(IRobocodeManager manager) {
 		this.manager = manager;
 	}
 
@@ -38,7 +38,7 @@ public class HostManager implements IHostManager {
 	}
 
 	public IThreadManager getThreadManager() {
-		return RobocodeManager.getThreadManager();
+		return manager.getThreadManager();
 	}
 
 	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {

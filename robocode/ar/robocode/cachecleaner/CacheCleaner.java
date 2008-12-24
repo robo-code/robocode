@@ -16,7 +16,8 @@ package ar.robocode.cachecleaner;
 
 
 import net.sf.robocode.repository.IRepositoryManager;
-import robocode.manager.RobocodeManager;
+import net.sf.robocode.security.HiddenAccess;
+import robocode.manager.IRobocodeManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +51,8 @@ public final class CacheCleaner {
 
 		System.out.print("Rebuilding robot database... ");
 
-		final IRepositoryManager repositoryManager = new RobocodeManager(false).getRepositoryManager();
+		IRobocodeManager manager = (IRobocodeManager) HiddenAccess.createRobocodeManager();
+		final IRepositoryManager repositoryManager = manager.getRepositoryManager();
 
 		repositoryManager.clearRobotList();
 		repositoryManager.loadRobotRepository();

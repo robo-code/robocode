@@ -101,13 +101,13 @@ public class RobocodeFrame extends JFrame {
 	private boolean iconified;
 	private boolean exitOnClose = true;
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private final IWindowManagerExt windowManager;
 
 	final List<RobotButton> robotButtons = new ArrayList<RobotButton>();
 
-	public RobocodeFrame(RobocodeManager manager) {
+	public RobocodeFrame(IRobocodeManager manager) {
 		super();
 		this.windowManager = (IWindowManagerExt) manager.getWindowManager();
 		this.manager = manager;

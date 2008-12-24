@@ -24,7 +24,7 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.ui.BattleRankingTableModel;
 
 import javax.swing.*;
@@ -52,7 +52,7 @@ public class RankingDialog extends BaseScoreDialog {
 	private ITurnSnapshot lastSnapshot;
 	private int lastRows;
 
-	public RankingDialog(RobocodeManager manager) {
+	public RankingDialog(IRobocodeManager manager) {
 		super(manager, false);
 		battleObserver = new BattleObserver();
 		timerTask = new Timer(1000 / 2, new TimerTask());
@@ -93,7 +93,7 @@ public class RankingDialog extends BaseScoreDialog {
 	}
 
 	protected void onDialogHidden() {
-		//TODO ZAMO manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(false);
+		// TODO ZAMO manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(false);
 		timerTask.stop();
 		manager.getWindowManager().removeBattleListener(battleObserver);
 		dispose();

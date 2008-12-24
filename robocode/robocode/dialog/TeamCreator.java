@@ -19,7 +19,7 @@ package robocode.dialog;
 
 
 import net.sf.robocode.io.Logger;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.repository.ITeamFileSpecificationExt;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
@@ -54,7 +54,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 	private final int minRobots = 2;
 	private final int maxRobots = 10;
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -66,7 +66,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 		}
 	}
 
-	public TeamCreator(RobocodeManager manager) {
+	public TeamCreator(IRobocodeManager manager) {
 		super(manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
 		initialize();

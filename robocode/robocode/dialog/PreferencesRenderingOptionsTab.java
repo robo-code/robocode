@@ -12,7 +12,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 
 import javax.swing.*;
@@ -27,7 +27,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class PreferencesRenderingOptionsTab extends WizardPanel {
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private JPanel specificSettingsPanel;
 	private JPanel predefinedSettingsPanel;
@@ -46,7 +46,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 
 	private EventHandler eventHandler;
 
-	public PreferencesRenderingOptionsTab(RobocodeManager manager) {
+	public PreferencesRenderingOptionsTab(IRobocodeManager manager) {
 		super();
 		this.manager = manager;
 		initialize();
@@ -309,7 +309,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 				}.start();
 				return;
 			}
-			//TODO ZAMO manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
+			// TODO ZAMO manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
 		}
 	}
 }

@@ -36,7 +36,7 @@ import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.RobotState;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 
 import javax.sound.sampled.AudioSystem;
@@ -62,14 +62,14 @@ public class SoundManager implements ISoundManager {
 	// Access to properties
 	private final RobocodeProperties properties;
 	private BattleObserver battleObserver = null;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	/**
 	 * Constructs a new sound manager.
 	 *
 	 * @param manager the Robocode manager
 	 */
-	public SoundManager(RobocodeManager manager) {
+	public SoundManager(IRobocodeManager manager) {
 		this.manager = manager;
 		properties = manager.getProperties();
 	}

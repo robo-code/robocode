@@ -27,7 +27,7 @@ import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +45,7 @@ public class RobotButton extends JButton implements ActionListener {
 	private static final int BAR_MARGIN = 2;
 	private static final int BAR_HEIGHT = 3;
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 	private final BattleObserver battleObserver = new BattleObserver();
 	private RobotDialog robotDialog;
 	private final String name;
@@ -57,7 +57,7 @@ public class RobotButton extends JButton implements ActionListener {
 	private int lastScore;
 	private boolean isListening;
 
-	public RobotButton(RobocodeManager manager, String name, int maxEnergy, int robotIndex, int contestIndex, boolean attach) {
+	public RobotButton(IRobocodeManager manager, String name, int maxEnergy, int robotIndex, int contestIndex, boolean attach) {
 		this.manager = manager;
 		this.name = name;
 		this.robotIndex = robotIndex;

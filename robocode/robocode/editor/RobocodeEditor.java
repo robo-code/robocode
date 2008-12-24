@@ -29,7 +29,7 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.gfx.ImageUtil;
 import robocode.manager.BrowserManager;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.ui.IWindowManagerExt;
 
@@ -61,7 +61,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 
 	private RobocodeProperties robocodeProperties;
 	private File editorDirectory;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private FindReplaceDialog findReplaceDialog;
 	private ReplaceAction replaceAction;
@@ -95,7 +95,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	public RobocodeEditor(RobocodeManager manager) {
+	public RobocodeEditor(IRobocodeManager manager) {
 		super();
 		this.manager = manager;
 		if (manager != null) {
@@ -644,7 +644,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public void extractRobot() {
-		((IWindowManagerExt)manager.getWindowManager()).showRobotExtractor(this);
+		((IWindowManagerExt) manager.getWindowManager()).showRobotExtractor(this);
 	}
 
 	public void run() {
@@ -722,7 +722,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	 *
 	 * @return Returns a RobocodeManager
 	 */
-	public RobocodeManager getManager() {
+	public IRobocodeManager getManager() {
 		return manager;
 	}
 

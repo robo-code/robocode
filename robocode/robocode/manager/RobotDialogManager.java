@@ -42,9 +42,9 @@ public class RobotDialogManager implements IRobotDialogManager {
 
 	private final Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
 	private BattleDialog battleDialog = null;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
-	public RobotDialogManager(RobocodeManager manager) {
+	public RobotDialogManager(IRobocodeManager manager) {
 		super();
 		this.manager = manager;
 	}

@@ -12,7 +12,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 
 import javax.sound.sampled.*;
@@ -29,7 +29,7 @@ import java.util.Vector;
 @SuppressWarnings("serial")
 public class PreferencesSoundOptionsTab extends WizardPanel {
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -52,7 +52,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	private JCheckBox enableMixerVolumeCheckBox;
 	private JCheckBox enableMixerPanCheckBox;
 
-	public PreferencesSoundOptionsTab(RobocodeManager manager) {
+	public PreferencesSoundOptionsTab(IRobocodeManager manager) {
 		super();
 		this.manager = manager;
 		initialize();

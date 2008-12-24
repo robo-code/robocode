@@ -16,6 +16,7 @@
 package robocode.battleview;
 
 
+import net.sf.robocode.ui.IWindowManager;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
@@ -29,8 +30,7 @@ import robocode.gfx.GraphicsState;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
 import robocode.manager.IImageManager;
-import robocode.manager.IWindowManager;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.robotpaint.Graphics2DSerialized;
 import robocode.robotpaint.IGraphicsProxy;
@@ -90,7 +90,7 @@ public class BattleView extends Canvas {
 
 	private final IImageManager imageManager;
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private BufferStrategy bufferStrategy;
 
@@ -104,7 +104,7 @@ public class BattleView extends Canvas {
 	private final GraphicsState graphicsState = new GraphicsState();
 	private IGraphicsProxy[] robotGraphics;
 
-	public BattleView(RobocodeManager manager) {
+	public BattleView(IRobocodeManager manager) {
 		super();
 
 		this.manager = manager;
@@ -131,8 +131,8 @@ public class BattleView extends Canvas {
 			initialize();
 		}
 
-		if (manager.getWindowManager().isIconified() || offscreenImage == null || !isDisplayable()
-				|| (getWidth() <= 0) || (getHeight() <= 0)) {
+		if (manager.getWindowManager().isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
+				|| (getHeight() <= 0)) {
 			return;
 		}
 

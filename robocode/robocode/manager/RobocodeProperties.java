@@ -199,13 +199,13 @@ public class RobocodeProperties {
 
 			NUMBER_OF_ROUNDS = "robocode.numberOfBattles";
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private final RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
 
 	private final List<PropertyListener> listeners = new ArrayList<PropertyListener>();
 
-	public RobocodeProperties(RobocodeManager manager) {
+	public RobocodeProperties(IRobocodeManager manager) {
 		this.manager = manager;
 	}
 

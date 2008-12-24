@@ -14,7 +14,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 
 import javax.swing.*;
@@ -35,7 +35,7 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	private JButton browseButton;
 	private JTextField pathTextField;
 
-	public final RobocodeManager manager;
+	public final IRobocodeManager manager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -53,7 +53,7 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 		}
 	}
 
-	public PreferencesDevelopmentOptionsTab(RobocodeManager manager) {
+	public PreferencesDevelopmentOptionsTab(IRobocodeManager manager) {
 		super();
 		this.manager = manager;
 		initialize();

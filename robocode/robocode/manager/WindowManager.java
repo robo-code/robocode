@@ -55,10 +55,10 @@ public class WindowManager implements IWindowManagerExt {
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
 	private RobocodeFrame robocodeFrame;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 	private RankingDialog rankingDialog;
 
-	public WindowManager(RobocodeManager manager) {
+	public WindowManager(IRobocodeManager manager) {
 		this.manager = manager;
 		awtAdaptor = new AwtBattleAdaptor(manager.getBattleManager(), TIMER_TICKS_PER_SECOND, true);
 
@@ -321,7 +321,7 @@ public class WindowManager implements IWindowManagerExt {
 	 *
 	 * @return Returns a RobocodeManager
 	 */
-	public RobocodeManager getManager() {
+	public IRobocodeManager getManager() {
 		return manager;
 	}
 
@@ -489,7 +489,7 @@ public class WindowManager implements IWindowManagerExt {
 		}
 	}
 
-	public void setStatus(String s){
+	public void setStatus(String s) {
 		WindowUtil.setStatus(s);
 	}
 

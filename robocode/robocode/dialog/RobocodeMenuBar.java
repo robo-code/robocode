@@ -28,7 +28,7 @@ package robocode.dialog;
 
 
 import robocode.manager.IBattleManager;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.recording.BattleRecordFormat;
 import robocode.ui.IWindowManagerExt;
@@ -95,7 +95,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem helpYahooGroupRobocodeMenuItem;
 	private JMenuItem helpRobocodeRepositoryMenuItem;
 	private final RobocodeFrame robocodeFrame;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 	private final IWindowManagerExt windowManager;
 
 	private class EventHandler implements ActionListener, MenuListener {
@@ -186,7 +186,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 	public final RobocodeMenuBar.EventHandler eventHandler = new EventHandler();
 
-	public RobocodeMenuBar(RobocodeManager manager, RobocodeFrame robocodeFrame) {
+	public RobocodeMenuBar(IRobocodeManager manager, RobocodeFrame robocodeFrame) {
 		super();
 		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
@@ -250,8 +250,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		try {
 			battleManager.pauseBattle();
 
-			String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".battle",
-					"Battles");
+			String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".battle", "Battles");
 
 			if (path != null) {
 				battleManager.setBattleFilename(path);
@@ -329,8 +328,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			try {
 				battleManager.pauseBattle();
 
-				String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".br",
-						"Records");
+				String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".br", "Records");
 
 				if (path != null) {
 					try {
@@ -353,8 +351,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			try {
 				battleManager.pauseBattle();
 
-				String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".br.xml",
-						"XML Records");
+				String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".br.xml", "XML Records");
 
 				if (path != null) {
 					try {

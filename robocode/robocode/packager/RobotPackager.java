@@ -33,7 +33,7 @@ import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
 import robocode.dialog.*;
 import robocode.io.NoDuplicateJarOutputStream;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.repository.IRobotFileSpecificationExt;
 import robocode.repository.ITeamFileSpecificationExt;
 import robocode.security.RobotClassLoader;
@@ -79,7 +79,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public final byte[] buf = new byte[4096];
 	private StringWriter output;
 	private final IRepositoryManager repositoryManager;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -91,7 +91,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		}
 	}
 
-	public RobotPackager(RobocodeManager manager) {
+	public RobotPackager(IRobocodeManager manager) {
 		super(manager.getWindowManager().getRobocodeFrame());
 		this.manager = manager;
 		this.repositoryManager = manager.getRepositoryManager();

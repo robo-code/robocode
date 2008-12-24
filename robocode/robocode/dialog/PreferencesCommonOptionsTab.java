@@ -12,7 +12,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 
 import javax.swing.*;
@@ -31,9 +31,9 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	private JCheckBox appendWhenSavingResultsCheckBox;
 	private JCheckBox enableReplayRecordingCheckBox;
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
-	public PreferencesCommonOptionsTab(RobocodeManager manager) {
+	public PreferencesCommonOptionsTab(IRobocodeManager manager) {
 		super();
 		this.manager = manager;
 		initialize();

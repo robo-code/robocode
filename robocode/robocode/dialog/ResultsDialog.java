@@ -15,7 +15,7 @@ package robocode.dialog;
 
 
 import robocode.BattleResults;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.ui.BattleResultsTableModel;
 import robocode.ui.IWindowManagerExt;
 
@@ -45,7 +45,7 @@ public class ResultsDialog extends BaseScoreDialog {
 	private final BattleResultsTableModel tableModel;
 	private final ButtonEventHandler buttonEventHandler;
 
-	public ResultsDialog(RobocodeManager manager, BattleResults[] results, int numRounds) {
+	public ResultsDialog(IRobocodeManager manager, BattleResults[] results, int numRounds) {
 		super(manager, true);
 		tableModel = new BattleResultsTableModel(results, numRounds);
 		buttonEventHandler = new ButtonEventHandler();
@@ -55,7 +55,7 @@ public class ResultsDialog extends BaseScoreDialog {
 	}
 
 	private void saveButtonActionPerformed() {
-		((IWindowManagerExt)manager.getWindowManager()).showSaveResultsDialog(tableModel);
+		((IWindowManagerExt) manager.getWindowManager()).showSaveResultsDialog(tableModel);
 	}
 
 	private void okButtonActionPerformed() {

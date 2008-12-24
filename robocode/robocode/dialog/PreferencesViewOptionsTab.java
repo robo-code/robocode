@@ -24,7 +24,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 
 import javax.swing.*;
@@ -74,7 +74,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton fastTpsButton;
 	private JButton maxTpsButton;
 
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {
@@ -110,7 +110,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		}
 	}
 
-	public PreferencesViewOptionsTab(RobocodeManager manager) {
+	public PreferencesViewOptionsTab(IRobocodeManager manager) {
 		super();
 		this.manager = manager;
 		initialize();

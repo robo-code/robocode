@@ -42,7 +42,7 @@ import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
 import robocode.io.FileTypeFilter;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -69,13 +69,13 @@ public final class RepositoryManager implements IRepositoryManager {
 	private File robotCache;
 
 	private Repository repository;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	private final List<FileSpecification> updatedJarList = Collections.synchronizedList(
 			new ArrayList<FileSpecification>());
 	private boolean write;
 
-	public RepositoryManager(RobocodeManager manager) {
+	public RepositoryManager(IRobocodeManager manager) {
 		this.manager = manager;
 	}
 
@@ -516,7 +516,7 @@ public final class RepositoryManager implements IRepositoryManager {
 	 *
 	 * @return Returns a RobocodeManager
 	 */
-	public RobocodeManager getManager() {
+	public IRobocodeManager getManager() {
 		return manager;
 	}
 

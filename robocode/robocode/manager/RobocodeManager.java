@@ -34,6 +34,7 @@ import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.ui.IWindowManager;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
 import robocode.repository.RepositoryManager;
@@ -53,7 +54,7 @@ import java.security.Policy;
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobocodeManager implements IRobocodeManagerBase {
+class RobocodeManager implements IRobocodeManager {
 	private IBattleManager battleManager;
 	private ICpuManager cpuManager;
 	private IImageManager imageManager;
@@ -74,7 +75,7 @@ public class RobocodeManager implements IRobocodeManagerBase {
 	private boolean isSoundEnabled = true;
 
 	static {
-		RobocodeManager.initStreams();
+		initStreams();
 	}
 
 	public RobocodeManager(boolean slave) {
@@ -125,12 +126,11 @@ public class RobocodeManager implements IRobocodeManagerBase {
 		return windowManager;
 	}
 
-	/**
-	 * Gets the threadManager.
-	 *
-	 * @return Returns a ThreadManager
-	 */
-	public static IThreadManager getThreadManager() {
+	public IThreadManager getThreadManager() {
+		return getThreadManagerStatic(); 
+	}
+
+	public static IThreadManager getThreadManagerStatic() {
 		if (threadManager == null) {
 			threadManager = new ThreadManager();
 		}
@@ -340,6 +340,10 @@ public class RobocodeManager implements IRobocodeManagerBase {
 			getWindowManager().showRobocodeFrame(visible, false);
 			getProperties().setOptionsCommonShowResults(visible);
 		}
+	}
+
+	public static IRobocodeManager createRobocodeManager() {
+		return new RobocodeManager(false);
 	}
 
 	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {

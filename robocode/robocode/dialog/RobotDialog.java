@@ -25,7 +25,7 @@ import robocode.control.events.*;
 import robocode.control.snapshot.IDebugProperty;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -44,7 +44,7 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private final Color grayGreen = new Color(0x0080C080);
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 	private RobotButton robotButton;
 	private JTabbedPane tabbedPane;
 	private ConsoleScrollPane scrollPane;
@@ -71,7 +71,7 @@ public class RobotDialog extends JFrame {
 	 * @param manager game root
 	 * @param robotButton related button
 	 */
-	public RobotDialog(RobocodeManager manager, RobotButton robotButton) {
+	public RobotDialog(IRobocodeManager manager, RobotButton robotButton) {
 		super();
 		this.manager = manager;
 		this.robotButton = robotButton;

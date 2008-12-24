@@ -23,7 +23,7 @@ import robocode.battle.IBattle;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -40,7 +40,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class RecordManager implements IRecordManager {
 	private File tempFile;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 	private BattleRecorder recorder;
 
 	public BattleRecordInfo recordInfo;
@@ -52,7 +52,7 @@ public class RecordManager implements IRecordManager {
 	private BufferedInputStream bufferedReadStream;
 	private ObjectInputStream objectReadStream;
 
-	public RecordManager(RobocodeManager manager) {
+	public RecordManager(IRobocodeManager manager) {
 		this.manager = manager;
 		recorder = new BattleRecorder(this);
 	}

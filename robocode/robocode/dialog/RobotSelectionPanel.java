@@ -33,7 +33,7 @@ package robocode.dialog;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 import robocode.repository.ITeamFileSpecificationExt;
 
 import javax.swing.*;
@@ -90,9 +90,9 @@ public class RobotSelectionPanel extends WizardPanel {
 	private String preSelectedRobots;
 	private final List<INamedFileSpecification> selectedRobots = new CopyOnWriteArrayList<INamedFileSpecification>();
 	private final boolean showNumRoundsPanel;
-	private final RobocodeManager manager;
+	private final IRobocodeManager manager;
 
-	public RobotSelectionPanel(RobocodeManager manager, int minRobots, int maxRobots,
+	public RobotSelectionPanel(IRobocodeManager manager, int minRobots, int maxRobots,
 			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
 			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
 			String preSelectedRobots) {

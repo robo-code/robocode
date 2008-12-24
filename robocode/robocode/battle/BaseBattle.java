@@ -20,7 +20,7 @@ import robocode.battle.events.BattleEventDispatcher;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.manager.IBattleManager;
-import robocode.manager.RobocodeManager;
+import robocode.manager.IRobocodeManager;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -40,7 +40,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected Thread battleThread;
 	protected IBattleManager battleManager;
 	protected final BattleEventDispatcher eventDispatcher;
-	protected final RobocodeManager manager;
+	protected final IRobocodeManager manager;
 
 	// rules
 	protected BattleRules battleRules;
@@ -67,7 +67,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	private boolean roundOver;
 	private final Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
-	protected BaseBattle(RobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
+	protected BaseBattle(IRobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
 		isPaused = paused;
 		stepCount = 0;
 
