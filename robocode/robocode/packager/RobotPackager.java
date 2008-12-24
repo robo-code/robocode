@@ -509,7 +509,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		};
 
-		manager.getThreadManager().addSafeThread(thread);
+		manager.getHostManager().addSafeThread(thread);
 
 		thread.start();
 
@@ -522,7 +522,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		}
 
-		manager.getThreadManager().removeSafeThread(thread);
+		manager.getHostManager().removeSafeThread(thread);
 	}
 
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,

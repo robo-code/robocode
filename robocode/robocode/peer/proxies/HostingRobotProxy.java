@@ -21,7 +21,9 @@ import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
+import robocode.manager.HostManager;
 import robocode.manager.IHostManager;
+import robocode.manager.IThreadManager;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.RobotFileSystemManager;
@@ -48,6 +50,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected RobotOutputStream out;
 	protected final IRobotPeer peer;
 	protected final IHostManager hostManager;
+	private IThreadManager threadManager;
 	protected IBasicRobot robot;
 
 	HostingRobotProxy(IRobotFileSpecification robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
@@ -148,7 +151,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	public void startRound(ExecCommands commands, RobotStatus status) {
 		initializeRound(commands, status);
-		robotThreadManager.start(hostManager.getThreadManager());
+		threadManager = ((HostManager) hostManager).getThreadManager();
+		robotThreadManager.start(threadManager);
 	}
 
 	public void forceStopThread() {
@@ -166,7 +170,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 
 	private void loadClassBattle() {
-		try {} catch (Throwable e) {
+		try {
+			robotClassLoader.loadRobotClass();
+		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + statics.getName() + " : ");
 			println(e);
 			drainEnergy();
@@ -178,7 +184,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		Class<?> robotClass;
 
 		try {
-			hostManager.getThreadManager().setLoadingRobot(this);
+			threadManager.setLoadingRobot(this);
 			robotClass = robotClassLoader.loadRobotClass();
 			if (robotClass == null) {
 				println("SYSTEM: Skipping robot: " + statics.getName());
@@ -203,7 +209,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			logMessage(e);
 			return false;
 		} finally {
-			hostManager.getThreadManager().setLoadingRobot(null);
+			threadManager.setLoadingRobot(null);
 		}
 		return true;
 	}

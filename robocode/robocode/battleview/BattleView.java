@@ -34,6 +34,7 @@ import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.robotpaint.Graphics2DSerialized;
 import robocode.robotpaint.IGraphicsProxy;
+import robocode.ui.IWindowManagerExt;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -108,7 +109,7 @@ public class BattleView extends Canvas {
 		super();
 
 		this.manager = manager;
-		imageManager = manager.getImageManager();
+		imageManager = ((IWindowManagerExt) manager.getWindowManager()).getImageManager();
 
 		battleField = new BattleField(800, 600);
 

@@ -28,6 +28,7 @@ import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.manager.IRobocodeManager;
+import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;
 import java.awt.*;
@@ -139,7 +140,8 @@ public class RobotButton extends JButton implements ActionListener {
 			manager.getWindowManager().addBattleListener(battleObserver);
 		}
 		if (robotDialog == null) {
-			robotDialog = manager.getRobotDialogManager().getRobotDialog(this, name, true);
+			robotDialog = ((IWindowManagerExt) manager.getWindowManager()).getRobotDialogManager().getRobotDialog(this,
+					name, true);
 		}
 		robotDialog.attach(this);
 	}

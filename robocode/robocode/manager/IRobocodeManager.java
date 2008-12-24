@@ -39,19 +39,11 @@ public interface IRobocodeManager extends IRobocodeManagerBase {
 
 	IRecordManager getRecordManager();
 
-	IImageManager getImageManager();
-
-	IRobotDialogManager getRobotDialogManager();
-
-	IThreadManager getThreadManager();
-
 	RobocodeProperties getProperties();
 
 	void setEnableGUI(boolean enable);
 
 	void setEnableSound(boolean enable);
-
-	void initSecurity(boolean securityOn, boolean experimentalOn);
 
 	void saveProperties();
 

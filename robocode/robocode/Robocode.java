@@ -101,7 +101,7 @@ public class Robocode {
 
 	private void run() {
 		try {
-			manager.initSecurity(setup.securityOn, setup.experimentalOn);
+			manager.getHostManager().initSecurity(setup.securityOn, setup.experimentalOn);
 
 			// Set the Look and Feel (LAF)
 			if (manager.isGUIEnabled()) {

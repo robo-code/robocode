@@ -17,14 +17,25 @@ import robocode.control.RobotSpecification;
 import robocode.peer.RobotStatics;
 import robocode.peer.proxies.IHostingRobotProxy;
 
+import java.io.PrintStream;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IHostManager {
+
+	void initSecurity(boolean securityOn, boolean experimentalOn);
+
 	long getRobotFilesystemQuota();
 
-	IThreadManager getThreadManager();
+	void resetThreadManager();
+
+	void addSafeThread(Thread safeThread);
+	
+	void removeSafeThread(Thread safeThread);
+
+	PrintStream getRobotOutputStream();
 
 	IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer);
 

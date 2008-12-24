@@ -38,15 +38,12 @@ import net.sf.robocode.ui.IWindowManager;
 import robocode.recording.IRecordManager;
 import robocode.recording.RecordManager;
 import robocode.repository.RepositoryManager;
-import robocode.security.RobocodeSecurityManager;
-import robocode.security.RobocodeSecurityPolicy;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
 import robocode.sound.ISoundManager;
 import robocode.sound.SoundManager;
 
 import java.io.*;
-import java.security.Policy;
 
 
 /**
@@ -57,10 +54,7 @@ import java.security.Policy;
 class RobocodeManager implements IRobocodeManager {
 	private IBattleManager battleManager;
 	private ICpuManager cpuManager;
-	private IImageManager imageManager;
-	private IRobotDialogManager robotDialogManager;
 	private IRepositoryManager repositoryManager;
-	private static IThreadManager threadManager;
 	private IWindowManager windowManager;
 	private IVersionManager versionManager;
 	private ISoundManager soundManager;
@@ -126,29 +120,6 @@ class RobocodeManager implements IRobocodeManager {
 		return windowManager;
 	}
 
-	public IThreadManager getThreadManager() {
-		return getThreadManagerStatic(); 
-	}
-
-	public static IThreadManager getThreadManagerStatic() {
-		if (threadManager == null) {
-			threadManager = new ThreadManager();
-		}
-		return threadManager;
-	}
-
-	/**
-	 * Gets the robotDialogManager.
-	 *
-	 * @return Returns a RobotDialogManager
-	 */
-	public IRobotDialogManager getRobotDialogManager() {
-		if (robotDialogManager == null) {
-			robotDialogManager = new RobotDialogManager(this);
-		}
-		return robotDialogManager;
-	}
-
 	public RobocodeProperties getProperties() {
 		if (properties == null) {
 			properties = new RobocodeProperties(this);
@@ -195,18 +166,6 @@ class RobocodeManager implements IRobocodeManager {
 				} catch (IOException e) {}
 			}
 		}
-	}
-
-	/**
-	 * Gets the imageManager.
-	 *
-	 * @return Returns a ImageManager
-	 */
-	public IImageManager getImageManager() {
-		if (imageManager == null) {
-			imageManager = new ImageManager(this);
-		}
-		return imageManager;
 	}
 
 	/**
@@ -278,28 +237,6 @@ class RobocodeManager implements IRobocodeManager {
 		System.setIn(sysin);
 	}
 
-	public void initSecurity(boolean securityOn, boolean experimentalOn) {
-		Thread.currentThread().setName("Application Thread");
-
-		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
-
-		Policy.setPolicy(securityPolicy);
-
-		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(getThreadManager(), securityOn,
-				experimentalOn);
-
-		System.setSecurityManager(securityManager);
-
-		if (securityOn) {
-			ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-			while (tg != null) {
-				getThreadManager().addSafeThreadGroup(tg);
-				tg = tg.getParent();
-			}
-		}
-	}
-
 	public boolean isGUIEnabled() {
 		return isGUIEnabled;
 	}
@@ -369,7 +306,7 @@ class RobocodeManager implements IRobocodeManager {
 		RobocodeManager manager = new RobocodeManager(true);
 
 		manager.setEnableGUI(false);
-		manager.initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
+		manager.getHostManager().initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
 
 		return manager;
 	}

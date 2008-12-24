@@ -303,7 +303,9 @@ public class RobocodeFrame extends JFrame {
 			sidePanel = new JPanel();
 			sidePanel.setLayout(new BorderLayout());
 			sidePanel.add(getRobotButtonsScrollPane(), BorderLayout.CENTER);
-			sidePanel.add(new BattleButton(manager.getRobotDialogManager(), true), BorderLayout.SOUTH);
+			sidePanel.add(
+					new BattleButton(((IWindowManagerExt) manager.getWindowManager()).getRobotDialogManager(), true),
+					BorderLayout.SOUTH);
 		}
 		return sidePanel;
 	}
@@ -851,7 +853,7 @@ public class RobocodeFrame extends JFrame {
 			if (event.getRound() == 0) {
 				getRobotButtonsPanel().removeAll();
 
-				final IRobotDialogManager dialogManager = manager.getRobotDialogManager();
+				final IRobotDialogManager dialogManager = ((IWindowManagerExt) manager.getWindowManager()).getRobotDialogManager();
 				final List<IRobotSnapshot> robots = Arrays.asList(event.getStartSnapshot().getRobots());
 
 				dialogManager.trim(robots);

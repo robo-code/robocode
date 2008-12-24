@@ -57,6 +57,8 @@ public class WindowManager implements IWindowManagerExt {
 	private RobocodeFrame robocodeFrame;
 	private final IRobocodeManager manager;
 	private RankingDialog rankingDialog;
+	private IImageManager imageManager;
+	private IRobotDialogManager robotDialogManager;
 
 	public WindowManager(IRobocodeManager manager) {
 		this.manager = manager;
@@ -294,7 +296,7 @@ public class WindowManager implements IWindowManagerExt {
 		manager.getRepositoryManager().loadRobotRepository();
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
-		manager.getImageManager();
+		getImageManager();
 		manager.getCpuManager().getCpuConstant();
 
 		WindowUtil.setStatus("");
@@ -495,5 +497,19 @@ public class WindowManager implements IWindowManagerExt {
 
 	public boolean isIconified() {
 		return getRobocodeFrame().isIconified();
+	}
+
+	public IImageManager getImageManager() {
+		if (imageManager == null) {
+			imageManager = new ImageManager(manager);
+		}
+		return imageManager;
+	}
+
+	public IRobotDialogManager getRobotDialogManager() {
+		if (robotDialogManager == null) {
+			robotDialogManager = new RobotDialogManager(manager);
+		}
+		return robotDialogManager;
 	}
 }

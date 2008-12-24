@@ -295,7 +295,7 @@ public class SecurePrintStream extends PrintStream {
 		SecurityManager securityManager = System.getSecurityManager();
 
 		if (securityManager != null && securityManager instanceof RobocodeSecurityManager) {
-			PrintStream out = ((IRobocodeManager) HiddenAccess.manager).getThreadManager().getRobotOutputStream();
+			PrintStream out = ((IRobocodeManager) HiddenAccess.manager).getHostManager().getRobotOutputStream();
 
 			return (out == null) ? this : out;
 		}

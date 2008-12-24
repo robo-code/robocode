@@ -12,7 +12,6 @@
 package robocode.recording;
 
 
-import robocode.battle.IBattle;
 import robocode.battle.events.BattleEventDispatcher;
 
 
@@ -24,7 +23,6 @@ public interface IRecordManager {
 
 	void attachRecorder(BattleEventDispatcher battleEventDispatcher);
 	void detachRecorder();
-	IBattle createPlayer(BattleEventDispatcher battleEventDispatcher);
 
 	void saveRecord(String fileName, BattleRecordFormat format);
 

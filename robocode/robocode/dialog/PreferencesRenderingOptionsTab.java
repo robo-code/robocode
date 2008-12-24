@@ -14,6 +14,7 @@ package robocode.dialog;
 
 import robocode.manager.IRobocodeManager;
 import robocode.manager.RobocodeProperties;
+import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;
 import java.awt.*;
@@ -304,7 +305,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 					@Override
 					public void run() {
 						storePreferences();
-						manager.getImageManager().initialize();
+						((IWindowManagerExt) manager.getWindowManager()).getImageManager().initialize();
 					}
 				}.start();
 				return;

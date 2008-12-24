@@ -71,6 +71,7 @@ import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.recording.BattlePlayer;
+import robocode.recording.RecordManager;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -230,7 +231,7 @@ public class BattleManager implements IBattleManager {
 		realBattle.setBattleThread(battleThread);
 
 		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-			manager.getThreadManager().addSafeThread(battleThread);
+			manager.getHostManager().addSafeThread(battleThread);
 		}
 
 		// Start the realBattle thread
@@ -263,10 +264,10 @@ public class BattleManager implements IBattleManager {
 			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
 		}
 
-		manager.getRecordManager().detachRecorder();
-		// BattlePlayer battlePlayer
+		final RecordManager iRecordManager = (RecordManager) manager.getRecordManager();
 
-		battle = manager.getRecordManager().createPlayer(battleEventDispatcher);
+		iRecordManager.detachRecorder();
+		battle = iRecordManager.createPlayer(battleEventDispatcher);
 
 		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
 

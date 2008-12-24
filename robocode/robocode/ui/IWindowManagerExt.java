@@ -15,6 +15,8 @@ package robocode.ui;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.battle.BattleProperties;
 import robocode.control.events.BattleCompletedEvent;
+import robocode.manager.IImageManager;
+import robocode.manager.IRobotDialogManager;
 
 import javax.swing.*;
 
@@ -70,5 +72,9 @@ public interface IWindowManagerExt extends IWindowManager {
 	void showSaveResultsDialog(BattleResultsTableModel tableModel);
 
 	int getFPS();
+
+	IImageManager getImageManager();
+
+	IRobotDialogManager getRobotDialogManager();
 
 }

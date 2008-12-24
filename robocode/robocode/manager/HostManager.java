@@ -19,8 +19,12 @@ import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.RobotSpecification;
 import robocode.peer.RobotStatics;
 import robocode.peer.proxies.*;
+import robocode.security.RobocodeSecurityManager;
+import robocode.security.RobocodeSecurityPolicy;
 
+import java.io.PrintStream;
 import java.security.AccessControlException;
+import java.security.Policy;
 
 
 /**
@@ -28,9 +32,11 @@ import java.security.AccessControlException;
  */
 public class HostManager implements IHostManager {
 	private final IRobocodeManager manager;
+	private IThreadManager threadManager;
 
 	HostManager(IRobocodeManager manager) {
 		this.manager = manager;
+		threadManager = new ThreadManager();
 	}
 
 	public long getRobotFilesystemQuota() {
@@ -38,7 +44,23 @@ public class HostManager implements IHostManager {
 	}
 
 	public IThreadManager getThreadManager() {
-		return manager.getThreadManager();
+		return threadManager;
+	}
+
+	public void resetThreadManager() {
+		threadManager.reset();
+	}
+
+	public void addSafeThread(Thread safeThread) {
+		threadManager.addSafeThread(safeThread);
+	}
+
+	public void removeSafeThread(Thread safeThread) {
+		threadManager.removeSafeThread(safeThread);
+	}
+
+	public PrintStream getRobotOutputStream() {
+		return threadManager.getRobotOutputStream();
 	}
 
 	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
@@ -71,4 +93,26 @@ public class HostManager implements IHostManager {
 
 	public void cleanup() {// TODO
 	}
+
+	public void initSecurity(boolean securityOn, boolean experimentalOn) {
+		Thread.currentThread().setName("Application Thread");
+
+		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
+
+		Policy.setPolicy(securityPolicy);
+
+		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(threadManager, securityOn, experimentalOn);
+
+		System.setSecurityManager(securityManager);
+
+		if (securityOn) {
+			ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+			while (tg != null) {
+				threadManager.addSafeThreadGroup(tg);
+				tg = tg.getParent();
+			}
+		}
+	}
+
 }

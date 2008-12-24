@@ -398,7 +398,7 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer robotPeer : robots) {
 			robotPeer.cleanup();
 		}
-		manager.getThreadManager().reset();
+		manager.getHostManager().resetThreadManager();
 
 		super.finalizeBattle();
 	}
@@ -425,7 +425,7 @@ public final class Battle extends BaseBattle {
 
 		computeActiveRobots();
 
-		manager.getThreadManager().reset();
+		manager.getHostManager().resetThreadManager();
 	}
 
 	@Override
