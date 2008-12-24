@@ -16,8 +16,8 @@
 package robocode.repository;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -24,8 +24,8 @@
 package robocode.dialog;
 
 
-import robocode.manager.RobocodeManager;
 import net.sf.robocode.repository.INamedFileSpecification;
+import robocode.manager.RobocodeManager;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;

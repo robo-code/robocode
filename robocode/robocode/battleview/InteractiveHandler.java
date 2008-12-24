@@ -38,9 +38,11 @@ import static java.lang.Math.min;
  */
 public final class InteractiveHandler implements KeyEventDispatcher, MouseListener, MouseMotionListener, MouseWheelListener {
 	private final RobocodeManager manager;
+	private final BattleView battleView;
 
-	public InteractiveHandler(RobocodeManager manager) {
+	public InteractiveHandler(RobocodeManager manager, BattleView battleView) {
 		this.manager = manager;
+		this.battleView = battleView;
 	}
 
 	public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) {
@@ -108,7 +110,6 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 
 		double scale;
 		BattleProperties battleProps = manager.getBattleManager().getBattleProperties();
-		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 		int vWidth = battleView.getWidth();
 		int vHeight = battleView.getHeight();
@@ -135,7 +136,6 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 
 		double scale;
 		BattleProperties battleProps = manager.getBattleManager().getBattleProperties();
-		BattleView battleView = manager.getWindowManager().getRobocodeFrame().getBattleView();
 
 		int vWidth = battleView.getWidth();
 		int vHeight = battleView.getHeight();

@@ -18,8 +18,8 @@
 package robocode.dialog;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 
 import java.awt.*;
 import java.awt.event.ComponentEvent;

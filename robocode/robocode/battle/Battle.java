@@ -97,8 +97,8 @@ package robocode.battle;
 
 
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.battle.events.BattleEventDispatcher;
 import robocode.battle.snapshot.TurnSnapshot;

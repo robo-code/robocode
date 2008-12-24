@@ -23,16 +23,17 @@
 package robocode.manager;
 
 
+import net.sf.robocode.io.FileUtil;
 import robocode.battle.BattleProperties;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.dialog.*;
 import robocode.editor.RobocodeEditor;
-import net.sf.robocode.io.FileUtil;
 import robocode.packager.RobotPackager;
 import robocode.ui.AwtBattleAdaptor;
 import robocode.ui.BattleResultsTableModel;
+import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -46,7 +47,7 @@ import java.io.IOException;
  * @author Flemming N. Larsen (contributor)
  * @author Luis Crespo (contributor)
  */
-public class WindowManager implements IWindowManager {
+public class WindowManager implements IWindowManagerExt {
 
 	private final static int TIMER_TICKS_PER_SECOND = 50;
 	private final AwtBattleAdaptor awtAdaptor;
@@ -490,5 +491,9 @@ public class WindowManager implements IWindowManager {
 
 	public void setStatus(String s){
 		WindowUtil.setStatus(s);
+	}
+
+	public boolean isIconified() {
+		return getRobocodeFrame().isIconified();
 	}
 }

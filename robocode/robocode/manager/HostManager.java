@@ -13,12 +13,12 @@ package robocode.manager;
 
 
 import net.sf.robocode.peer.*;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.RobotSpecification;
 import robocode.peer.RobotStatics;
 import robocode.peer.proxies.*;
-import net.sf.robocode.repository.IRobotFileSpecification;
 
 import java.security.AccessControlException;
 

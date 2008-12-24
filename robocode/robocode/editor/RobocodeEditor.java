@@ -24,13 +24,14 @@
 package robocode.editor;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.gfx.ImageUtil;
 import robocode.manager.BrowserManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
+import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -643,7 +644,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public void extractRobot() {
-		manager.getWindowManager().showRobotExtractor(this);
+		((IWindowManagerExt)manager.getWindowManager()).showRobotExtractor(this);
 	}
 
 	public void run() {

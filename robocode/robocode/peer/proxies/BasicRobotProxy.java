@@ -16,6 +16,7 @@ package robocode.peer.proxies;
 
 
 import net.sf.robocode.peer.*;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.Event;
@@ -24,7 +25,6 @@ import robocode.exception.RobotException;
 import robocode.manager.IHostManager;
 import robocode.peer.RobotStatics;
 import robocode.peer.robot.EventManager;
-import net.sf.robocode.repository.IRobotFileSpecification;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.robotpaint.Graphics2DSerialized;
 import robocode.robotpaint.IGraphicsProxy;

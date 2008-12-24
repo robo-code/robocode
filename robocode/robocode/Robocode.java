@@ -29,8 +29,8 @@
 package robocode;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import robocode.control.events.*;
 import robocode.dialog.WindowUtil;
 import robocode.manager.IBattleManager;

@@ -19,10 +19,10 @@
 package robocode.repository;
 
 
-import net.sf.robocode.security.HiddenAccess;
-import robocode.control.RobotSpecification;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.security.HiddenAccess;
+import robocode.control.RobotSpecification;
 
 import java.io.*;
 import java.net.URL;

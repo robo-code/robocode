@@ -18,8 +18,8 @@
 package robocode.editor;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import robocode.dialog.ConsoleDialog;
 import robocode.dialog.WindowUtil;
 

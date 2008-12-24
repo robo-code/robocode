@@ -93,8 +93,7 @@ public class RankingDialog extends BaseScoreDialog {
 	}
 
 	protected void onDialogHidden() {
-		manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(
-				false);
+		//TODO ZAMO manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(false);
 		timerTask.stop();
 		manager.getWindowManager().removeBattleListener(battleObserver);
 		dispose();

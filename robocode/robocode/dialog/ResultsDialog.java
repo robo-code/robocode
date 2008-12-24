@@ -17,6 +17,7 @@ package robocode.dialog;
 import robocode.BattleResults;
 import robocode.manager.RobocodeManager;
 import robocode.ui.BattleResultsTableModel;
+import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -54,7 +55,7 @@ public class ResultsDialog extends BaseScoreDialog {
 	}
 
 	private void saveButtonActionPerformed() {
-		manager.getWindowManager().showSaveResultsDialog(tableModel);
+		((IWindowManagerExt)manager.getWindowManager()).showSaveResultsDialog(tableModel);
 	}
 
 	private void okButtonActionPerformed() {

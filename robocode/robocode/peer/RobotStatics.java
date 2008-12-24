@@ -13,10 +13,10 @@ package robocode.peer;
 
 
 import net.sf.robocode.peer.IRobotStatics;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.BattleRules;
 import robocode.control.RobotSpecification;
-import net.sf.robocode.repository.IRobotFileSpecification;
 
 import java.util.List;
 

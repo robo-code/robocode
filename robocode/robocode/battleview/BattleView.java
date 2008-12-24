@@ -131,7 +131,7 @@ public class BattleView extends Canvas {
 			initialize();
 		}
 
-		if (manager.getWindowManager().getRobocodeFrame().isIconified() || offscreenImage == null || !isDisplayable()
+		if (manager.getWindowManager().isIconified() || offscreenImage == null || !isDisplayable()
 				|| (getWidth() <= 0) || (getHeight() <= 0)) {
 			return;
 		}

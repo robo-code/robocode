@@ -24,9 +24,9 @@
 package robocode.packager;
 
 
-import robocode.dialog.WizardPanel;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.repository.INamedFileSpecification;
+import robocode.dialog.WizardPanel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

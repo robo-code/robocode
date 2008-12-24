@@ -22,9 +22,9 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.repository.INamedFileSpecification;
 import robocode.battle.BattleProperties;
 import robocode.manager.RobocodeManager;
-import net.sf.robocode.repository.INamedFileSpecification;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;

@@ -37,6 +37,7 @@ import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.gfx.ImageUtil;
 import robocode.manager.*;
+import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -102,15 +103,15 @@ public class RobocodeFrame extends JFrame {
 
 	private final RobocodeManager manager;
 
-	private final IWindowManager windowManager;
+	private final IWindowManagerExt windowManager;
 
 	final List<RobotButton> robotButtons = new ArrayList<RobotButton>();
 
 	public RobocodeFrame(RobocodeManager manager) {
 		super();
-		interactiveHandler = new InteractiveHandler(manager);
-		this.windowManager = manager.getWindowManager();
+		this.windowManager = (IWindowManagerExt) manager.getWindowManager();
 		this.manager = manager;
+		interactiveHandler = new InteractiveHandler(manager, getBattleView());
 		initialize();
 	}
 
@@ -565,7 +566,7 @@ public class RobocodeFrame extends JFrame {
 		setContentPane(getRobocodeContentPane());
 		setJMenuBar(getRobocodeMenuBar());
 
-		battleObserver = new BattleObserver(manager.getWindowManager());
+		battleObserver = new BattleObserver();
 
 		addWindowListener(eventHandler);
 
@@ -799,7 +800,6 @@ public class RobocodeFrame extends JFrame {
 
 
 	private class BattleObserver extends BattleAdaptor {
-		private final IWindowManager windowManager;
 		private int tps;
 		private int currentRound;
 		private int numberOfRounds;
@@ -809,8 +809,7 @@ public class RobocodeFrame extends JFrame {
 		private boolean isBattleReplay;
 		private long lastTitleUpdateTime;
 
-		public BattleObserver(IWindowManager windowManager) {
-			this.windowManager = windowManager;
+		public BattleObserver() {
 			windowManager.addBattleListener(this);
 		}
 
@@ -840,7 +839,7 @@ public class RobocodeFrame extends JFrame {
 
 			rankingCheckBoxMenuItem.setEnabled(!isBattleReplay);
 			if (rankingCheckBoxMenuItem.isSelected()) {
-				manager.getWindowManager().showRankingDialog(!isBattleReplay);
+				windowManager.showRankingDialog(!isBattleReplay);
 			}
 
 			validate();
@@ -982,7 +981,7 @@ public class RobocodeFrame extends JFrame {
 								title.append(", ");
 							}
 							if (dispFps) {
-								title.append(manager.getWindowManager().getFPS()).append(" FPS");
+								title.append(windowManager.getFPS()).append(" FPS");
 							}
 						}
 					}
@@ -1014,7 +1013,7 @@ public class RobocodeFrame extends JFrame {
 			}
 
 			public void run() {
-				manager.getWindowManager().showResultsDialog(event);
+				windowManager.showResultsDialog(event);
 			}
 		}
 	}

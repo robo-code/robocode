@@ -16,8 +16,8 @@
 package robocode.dialog;
 
 
-import robocode.manager.BrowserManager;
 import net.sf.robocode.repository.INamedFileSpecification;
+import robocode.manager.BrowserManager;
 
 import javax.swing.*;
 import java.awt.*;

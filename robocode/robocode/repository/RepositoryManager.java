@@ -33,13 +33,13 @@
 package robocode.repository;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
 import robocode.io.FileTypeFilter;
 import robocode.manager.RobocodeManager;

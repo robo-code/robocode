@@ -31,6 +31,7 @@ import robocode.manager.IBattleManager;
 import robocode.manager.RobocodeManager;
 import robocode.manager.RobocodeProperties;
 import robocode.recording.BattleRecordFormat;
+import robocode.ui.IWindowManagerExt;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -95,6 +96,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem helpRobocodeRepositoryMenuItem;
 	private final RobocodeFrame robocodeFrame;
 	private final RobocodeManager manager;
+	private final IWindowManagerExt windowManager;
 
 	private class EventHandler implements ActionListener, MenuListener {
 		public void actionPerformed(ActionEvent e) {
@@ -188,6 +190,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		super();
 		this.manager = manager;
 		this.robocodeFrame = robocodeFrame;
+		windowManager = (IWindowManagerExt) manager.getWindowManager();
 		add(getBattleMenu());
 		add(getRobotMenu());
 		add(getOptionsMenu());
@@ -202,7 +205,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	 * Handle battleNew menu item action
 	 */
 	private void battleNewActionPerformed() {
-		manager.getWindowManager().showNewBattleDialog(manager.getBattleManager().getBattleProperties());
+		windowManager.showNewBattleDialog(manager.getBattleManager().getBattleProperties());
 	}
 
 	private void battleOpenActionPerformed() {
@@ -211,11 +214,11 @@ public class RobocodeMenuBar extends JMenuBar {
 		try {
 			battleManager.pauseBattle();
 
-			String path = manager.getWindowManager().showBattleOpenDialog(".battle", "Battles");
+			String path = windowManager.showBattleOpenDialog(".battle", "Battles");
 
 			if (path != null) {
 				battleManager.setBattleFilename(path);
-				manager.getWindowManager().showNewBattleDialog(battleManager.loadBattleProperties());
+				windowManager.showNewBattleDialog(battleManager.loadBattleProperties());
 			}
 		} finally {
 			battleManager.resumeBattle();
@@ -230,7 +233,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			String path = battleManager.getBattleFilename();
 
 			if (path == null) {
-				path = manager.getWindowManager().saveBattleDialog(battleManager.getBattlePath(), ".battle", "Battles");
+				path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".battle", "Battles");
 			}
 			if (path != null) {
 				battleManager.setBattleFilename(path);
@@ -247,7 +250,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		try {
 			battleManager.pauseBattle();
 
-			String path = manager.getWindowManager().saveBattleDialog(battleManager.getBattlePath(), ".battle",
+			String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".battle",
 					"Battles");
 
 			if (path != null) {
@@ -265,7 +268,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		try {
 			battleManager.pauseBattle();
 
-			String path = manager.getWindowManager().showBattleOpenDialog(".br", "Records");
+			String path = windowManager.showBattleOpenDialog(".br", "Records");
 
 			if (path != null) {
 				manager.getBattleManager().stop(true);
@@ -295,7 +298,7 @@ public class RobocodeMenuBar extends JMenuBar {
 		try {
 			battleManager.pauseBattle();
 
-			String path = manager.getWindowManager().showBattleOpenDialog(".br.xml", "XML Records");
+			String path = windowManager.showBattleOpenDialog(".br.xml", "XML Records");
 
 			if (path != null) {
 				manager.getBattleManager().stop(true);
@@ -326,7 +329,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			try {
 				battleManager.pauseBattle();
 
-				String path = manager.getWindowManager().saveBattleDialog(battleManager.getBattlePath(), ".br",
+				String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".br",
 						"Records");
 
 				if (path != null) {
@@ -350,7 +353,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			try {
 				battleManager.pauseBattle();
 
-				String path = manager.getWindowManager().saveBattleDialog(battleManager.getBattlePath(), ".br.xml",
+				String path = windowManager.saveBattleDialog(battleManager.getBattlePath(), ".br.xml",
 						"XML Records");
 
 				if (path != null) {
@@ -792,11 +795,11 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void teamCreateTeamActionPerformed() {
-		manager.getWindowManager().showCreateTeamDialog();
+		windowManager.showCreateTeamDialog();
 	}
 
 	private void helpAboutActionPerformed() {
-		manager.getWindowManager().showAboutBox();
+		windowManager.showAboutBox();
 	}
 
 	private void helpCheckForNewVersionActionPerformed() {
@@ -806,47 +809,47 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void helpFaqActionPerformed() {
-		manager.getWindowManager().showFaq();
+		windowManager.showFaq();
 	}
 
 	private void helpOnlineHelpActionPerformed() {
-		manager.getWindowManager().showOnlineHelp();
+		windowManager.showOnlineHelp();
 	}
 
 	private void helpVersionsTxtActionPerformed() {
-		manager.getWindowManager().showVersionsTxt();
+		windowManager.showVersionsTxt();
 	}
 
 	private void helpRobocodeApiActionPerformed() {
-		manager.getWindowManager().showHelpApi();
+		windowManager.showHelpApi();
 	}
 
 	private void helpRobocodeHomeMenuItemActionPerformed() {
-		manager.getWindowManager().showRobocodeHome();
+		windowManager.showRobocodeHome();
 	}
 
 	private void helpJavaDocumentationActionPerformed() {
-		manager.getWindowManager().showJavaDocumentation();
+		windowManager.showJavaDocumentation();
 	}
 
 	private void helpRoboWikiMenuItemActionPerformed() {
-		manager.getWindowManager().showRoboWiki();
+		windowManager.showRoboWiki();
 	}
 
 	private void helpYahooGroupRobocodeActionPerformed() {
-		manager.getWindowManager().showYahooGroupRobocode();
+		windowManager.showYahooGroupRobocode();
 	}
 
 	private void helpRobocodeRepositoryActionPerformed() {
-		manager.getWindowManager().showRobocodeRepository();
+		windowManager.showRobocodeRepository();
 	}
 
 	private void optionsFitWindowActionPerformed() {
-		WindowUtil.fitWindow(manager.getWindowManager().getRobocodeFrame());
+		WindowUtil.fitWindow(windowManager.getRobocodeFrame());
 	}
 
 	private void optionsShowRankingActionPerformed() {
-		manager.getWindowManager().showRankingDialog(getOptionsShowRankingCheckBoxMenuItem().getState());
+		windowManager.showRankingDialog(getOptionsShowRankingCheckBoxMenuItem().getState());
 	}
 
 	private void optionsRecalculateCpuConstantPerformed() {
@@ -883,18 +886,18 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void optionsPreferencesActionPerformed() {
-		manager.getWindowManager().showOptionsPreferences();
+		windowManager.showOptionsPreferences();
 	}
 
 	private void robotEditorActionPerformed() {
-		manager.getWindowManager().showRobocodeEditor();
+		windowManager.showRobocodeEditor();
 	}
 
 	private void robotImportActionPerformed() {
-		manager.getWindowManager().showImportRobotDialog();
+		windowManager.showImportRobotDialog();
 	}
 
 	private void robotPackagerActionPerformed() {
-		manager.getWindowManager().showRobotPackager();
+		windowManager.showRobotPackager();
 	}
 }

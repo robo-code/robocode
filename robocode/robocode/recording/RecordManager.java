@@ -12,8 +12,8 @@
 package robocode.recording;
 
 
-import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.io.FileUtil;
+import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
