@@ -53,7 +53,7 @@ public class TestWatchBullet extends RobotTestBed {
 
 	@Override
 	protected void runTeardown() {
-		net.sf.robocode.test.helpers.Assert.assertFalse(messagedIdentity);
+		net.sf.robocode.test.Assert.assertFalse(messagedIdentity);
 	}
 
 	private void test(String out, int timecurr, int timeWatch, String in) {

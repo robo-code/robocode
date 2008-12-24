@@ -9,7 +9,7 @@
  *     Pavel Savara & Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.recording;
+package net.sf.robocode.recording;
 
 
 import net.sf.robocode.IRobocodeManager;

@@ -14,6 +14,7 @@ package net.sf.robocode.test.helpers;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.test.Assert;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.After;
 import org.junit.Before;

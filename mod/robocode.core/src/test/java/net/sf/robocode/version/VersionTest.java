@@ -9,13 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package components;
+package net.sf.robocode.version;
 
 
-import net.sf.robocode.test.helpers.Assert;
 import org.junit.Test;
-import net.sf.robocode.version.IVersionManager;
-import net.sf.robocode.version.VersionManager;
+import org.junit.Assert;
 
 
 /**

@@ -30,14 +30,17 @@ package robocode.manager;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.battle.BattleManager;
 import net.sf.robocode.host.HostManager;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.CpuManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.recording.IRecordManager;
+import net.sf.robocode.recording.RecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository.RepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
@@ -46,7 +49,6 @@ import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
 import net.sf.robocode.version.VersionManager;
-import robocode.recording.RecordManager;
 import robocode.sound.SoundManager;
 
 import java.io.*;
@@ -77,6 +79,7 @@ class RobocodeManager implements IRobocodeManager {
 	public RobocodeManager(boolean slave) {
 		this.slave = slave;
 		HiddenAccess.manager = this;
+		getHostManager();
 	}
 
 	/**

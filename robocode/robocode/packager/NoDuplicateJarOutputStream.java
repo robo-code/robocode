@@ -18,7 +18,7 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.io;
+package robocode.packager;
 
 
 import java.io.IOException;

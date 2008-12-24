@@ -51,10 +51,11 @@
  *     - now driven by BattleObserver and commands to battle
  *     - initial code of battle recorder and player 
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.battle;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.IBattle;
@@ -72,8 +73,7 @@ import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
-import robocode.recording.BattlePlayer;
-import robocode.recording.RecordManager;
+import net.sf.robocode.recording.RecordManager;
 
 import java.io.*;
 import java.util.ArrayList;

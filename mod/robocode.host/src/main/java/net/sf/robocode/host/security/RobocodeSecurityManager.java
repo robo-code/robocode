@@ -50,6 +50,7 @@ import java.security.Permission;
 import java.util.HashSet;
 import java.util.PropertyPermission;
 import java.util.Set;
+import java.util.ArrayList;
 
 
 /**
@@ -70,7 +71,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	public RobocodeSecurityManager(IThreadManager threadManager, boolean enabled, boolean experimental) {
 		super();
-		threadManager.addSafeThread(Thread.currentThread());
 		this.threadManager = threadManager;
 		this.enabled = enabled;
 		this.experimental = experimental;
@@ -93,6 +93,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 			scl.loadClass(RobotFileSystemManager.class.getName());
 			scl.loadClass(IHostedThread.class.getName());
 			scl.loadClass(RobotOutputStream.class.getName());
+			scl.loadClass(ThreadGroup.class.getName());
+			scl.loadClass(ArrayList.class.getName());
+			scl.loadClass(List.class.getName());
 
 			Toolkit.getDefaultToolkit();
 		} catch (ClassNotFoundException e) {
@@ -488,6 +491,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 		if (pkg.equals("java.lang")) {
+			return;
+		}
+		if (pkg.equals("java.util")) {
 			return;
 		}
 		if (isSafeThread()) {

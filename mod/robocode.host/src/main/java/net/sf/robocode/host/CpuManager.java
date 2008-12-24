@@ -23,13 +23,11 @@
  *     - Cheating the optimizer with the setCpuConstant() so the optimizer does
  *       not throw the rational computation away  
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.host;
 
 
 import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.io.Logger;
-import robocode.dialog.WindowUtil;
 
 
 /**
@@ -60,7 +58,7 @@ public class CpuManager implements ICpuManager {
 	}
 
 	public void calculateCpuConstant() {
-		WindowUtil.setStatus("Estimating CPU speed, please wait...");
+		manager.getWindowManager().setStatus("Estimating CPU speed, please wait...");
 
 		setCpuConstant();
 		Logger.logMessage(
@@ -69,7 +67,7 @@ public class CpuManager implements ICpuManager {
 		manager.getProperties().setCpuConstant(cpuConstant);
 		manager.saveProperties();
 
-		WindowUtil.setStatus("");
+		manager.getWindowManager().setStatus("");
 	}
 
 	private void setCpuConstant() {
