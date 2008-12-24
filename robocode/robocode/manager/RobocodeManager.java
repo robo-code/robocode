@@ -30,6 +30,7 @@ package robocode.manager;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.host.HostManager;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
@@ -38,6 +39,7 @@ import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.repository.RepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.sound.ISoundManager;
@@ -45,9 +47,6 @@ import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
 import net.sf.robocode.version.VersionManager;
 import robocode.recording.RecordManager;
-import net.sf.robocode.repository.RepositoryManager;
-import robocode.security.SecureInputStream;
-import robocode.security.SecurePrintStream;
 import robocode.sound.SoundManager;
 
 import java.io.*;
@@ -74,10 +73,6 @@ class RobocodeManager implements IRobocodeManager {
 
 	private boolean isGUIEnabled = true;
 	private boolean isSoundEnabled = true;
-
-	static {
-		initStreams();
-	}
 
 	public RobocodeManager(boolean slave) {
 		this.slave = slave;
@@ -230,18 +225,6 @@ class RobocodeManager implements IRobocodeManager {
 	 */
 	public boolean isSlave() {
 		return slave;
-	}
-
-	private static void initStreams() {
-		PrintStream sysout = new SecurePrintStream(System.out, true);
-		PrintStream syserr = new SecurePrintStream(System.err, true);
-		InputStream sysin = new SecureInputStream(System.in);
-
-		System.setOut(sysout);
-		if (!System.getProperty("debug", "false").equals("true")) {
-			System.setErr(syserr);
-		}
-		System.setIn(sysin);
 	}
 
 	public boolean isGUIEnabled() {

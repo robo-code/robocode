@@ -19,8 +19,8 @@ import net.sf.robocode.peer.TeamMessage;
 import net.sf.robocode.serialization.ObjectCloner;
 import net.sf.robocode.serialization.RbSerializer;
 import net.sf.robocode.test.helpers.Assert;
+import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import org.junit.Test;
-import robocode.robotpaint.Graphics2DSerialized;
 
 import javax.swing.*;
 import java.awt.*;

@@ -29,13 +29,14 @@ package robocode.packager;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.repository.IRobotFileSpecificationExt;
 import net.sf.robocode.repository.ITeamFileSpecificationExt;
 import robocode.dialog.*;
 import robocode.io.NoDuplicateJarOutputStream;
-import net.sf.robocode.repository.IRobotFileSpecificationExt;
-import net.sf.robocode.repository.*;
-import robocode.security.RobotClassLoader;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;

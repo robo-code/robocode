@@ -34,8 +34,8 @@ import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.repository.ITeamFileSpecificationExt;
+import net.sf.robocode.settings.RobocodeProperties;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

@@ -35,9 +35,9 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.security.LoggingThreadGroup;
 import robocode.control.events.*;
 import robocode.dialog.WindowUtil;
-import robocode.security.LoggingThreadGroup;
 import robocode.ui.BattleResultsTableModel;
 
 import java.io.File;

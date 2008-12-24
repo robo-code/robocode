@@ -68,6 +68,9 @@ package robocode.peer;
 
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
+import net.sf.robocode.host.events.EventManager;
+import net.sf.robocode.host.events.EventQueue;
+import net.sf.robocode.host.proxies.IHostingRobotProxy;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.*;
@@ -84,9 +87,6 @@ import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
-import robocode.peer.proxies.IHostingRobotProxy;
-import robocode.peer.robot.EventManager;
-import robocode.peer.robot.EventQueue;
 import robocode.peer.robot.RobotStatistics;
 import static robocode.util.Utils.*;
 

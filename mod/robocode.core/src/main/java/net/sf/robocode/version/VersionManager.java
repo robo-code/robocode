@@ -11,13 +11,15 @@
  *******************************************************************************/
 package net.sf.robocode.version;
 
+
 import net.sf.robocode.io.FileUtil;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
 
 /**
  * @author Mathew A. Nelson (original)
