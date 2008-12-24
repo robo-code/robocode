@@ -30,13 +30,18 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.version.IVersionManager;
 import robocode.battleview.BattleView;
 import robocode.battleview.InteractiveHandler;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 import robocode.gfx.ImageUtil;
-import robocode.manager.*;
+import robocode.manager.BrowserManager;
+import robocode.manager.IRobotDialogManager;
+import robocode.manager.RobotDialogManager;
 import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;

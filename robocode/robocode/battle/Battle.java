@@ -96,10 +96,12 @@
 package robocode.battle;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.BattleProperties;
+import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.battle.events.BattleEventDispatcher;
 import robocode.*;
 import robocode.battle.snapshot.TurnSnapshot;
 import robocode.control.RandomFactory;
@@ -108,7 +110,6 @@ import robocode.control.RobotSpecification;
 import robocode.control.events.*;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.IRobocodeManager;
 import robocode.peer.BulletPeer;
 import robocode.peer.ContestantPeer;
 import robocode.peer.RobotPeer;

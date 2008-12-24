@@ -54,14 +54,16 @@
 package robocode.manager;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.BattleProperties;
+import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-import net.sf.robocode.battle.events.BattleEventDispatcher;
 import robocode.Event;
 import robocode.battle.Battle;
-import robocode.battle.BattleProperties;
 import robocode.battle.IBattle;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;

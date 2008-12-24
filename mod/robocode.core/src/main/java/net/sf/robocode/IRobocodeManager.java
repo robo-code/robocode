@@ -9,16 +9,19 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode;
 
 
-import net.sf.robocode.manager.IRobocodeManagerBase;
-import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.ui.IWindowManager;
-import net.sf.robocode.recording.IRecordManager;
-import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.ICpuManager;
-import robocode.sound.ISoundManager;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.manager.IRobocodeManagerBase;
+import net.sf.robocode.recording.IRecordManager;
+import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.sound.ISoundManager;
+import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.version.IVersionManager;
 
 
 /**

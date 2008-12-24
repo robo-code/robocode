@@ -12,6 +12,8 @@
 package robocode.peer.proxies;
 
 
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.RobotStatics;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
@@ -22,8 +24,6 @@ import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.WinException;
 import robocode.manager.HostManager;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.RobotStatics;
 import robocode.manager.IThreadManager;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.RobotFileSystemManager;

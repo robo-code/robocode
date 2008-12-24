@@ -66,14 +66,14 @@
 package robocode.peer;
 
 
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.RobotStatics;
 import robocode.*;
 import robocode.battle.Battle;
 import robocode.common.BoundingRectangle;

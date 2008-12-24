@@ -14,8 +14,8 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.IRobocodeManager;
 import robocode.BattleResults;
-import robocode.manager.IRobocodeManager;
 import robocode.ui.BattleResultsTableModel;
 import robocode.ui.IWindowManagerExt;
 

@@ -16,8 +16,8 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.IRobocodeManager;
 import robocode.gfx.RobocodeLogo;
-import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;

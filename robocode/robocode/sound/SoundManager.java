@@ -28,7 +28,10 @@
 package robocode.sound;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.sound.ISoundManager;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
@@ -36,8 +39,6 @@ import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.RobotState;
-import robocode.manager.IRobocodeManager;
-import robocode.manager.RobocodeProperties;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;

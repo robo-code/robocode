@@ -20,11 +20,11 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.IRobocodeManager;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.IRobocodeManager;
 import robocode.ui.BattleRankingTableModel;
 
 import javax.swing.*;

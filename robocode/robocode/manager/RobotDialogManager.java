@@ -22,6 +22,7 @@
 package robocode.manager;
 
 
+import net.sf.robocode.IRobocodeManager;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.dialog.*;
 

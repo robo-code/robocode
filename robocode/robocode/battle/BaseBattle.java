@@ -12,15 +12,15 @@
 package robocode.battle;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import robocode.BattleRules;
-import net.sf.robocode.battle.events.BattleEventDispatcher;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
-import robocode.manager.IBattleManager;
-import robocode.manager.IRobocodeManager;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

@@ -33,6 +33,7 @@
 package robocode.repository;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
@@ -42,7 +43,6 @@ import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
 import robocode.io.FileTypeFilter;
-import robocode.manager.IRobocodeManager;
 
 import java.io.*;
 import java.util.ArrayList;

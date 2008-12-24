@@ -12,12 +12,13 @@
 package robocode.manager;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.RobotStatics;
 import robocode.control.RobotSpecification;
 import robocode.peer.proxies.*;
 import robocode.security.RobocodeSecurityManager;

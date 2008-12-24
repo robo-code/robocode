@@ -23,8 +23,9 @@
 package robocode.manager;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.io.FileUtil;
-import robocode.battle.BattleProperties;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;

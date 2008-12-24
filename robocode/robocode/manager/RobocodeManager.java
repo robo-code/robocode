@@ -28,21 +28,25 @@
 package robocode.manager;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.host.ICpuManager;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.manager.IRobocodeManagerBase;
+import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
-import net.sf.robocode.recording.IRecordManager;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.ICpuManager;
+import net.sf.robocode.version.IVersionManager;
 import robocode.recording.RecordManager;
 import robocode.repository.RepositoryManager;
 import robocode.security.SecureInputStream;
 import robocode.security.SecurePrintStream;
-import robocode.sound.ISoundManager;
 import robocode.sound.SoundManager;
 
 import java.io.*;

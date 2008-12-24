@@ -21,11 +21,11 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.IRobocodeManager;
 import robocode.control.events.*;
 import robocode.control.snapshot.IDebugProperty;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

@@ -29,14 +29,14 @@
 package robocode;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 import robocode.dialog.WindowUtil;
-import robocode.manager.IBattleManager;
-import robocode.manager.IRobocodeManager;
-import net.sf.robocode.recording.BattleRecordFormat;
 import robocode.security.LoggingThreadGroup;
 import robocode.ui.BattleResultsTableModel;
 

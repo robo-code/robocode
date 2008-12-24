@@ -30,10 +30,11 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
-import robocode.manager.IRobocodeManager;
+import net.sf.robocode.settings.RobocodeProperties;
 import robocode.repository.ITeamFileSpecificationExt;
 
 import javax.swing.*;
@@ -515,7 +516,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	private JTextField getNumRoundsTextField() {
-		final robocode.manager.RobocodeProperties props = manager.getProperties();
+		final RobocodeProperties props = manager.getProperties();
 
 		if (numRoundsTextField == null) {
 			numRoundsTextField = new JTextField();

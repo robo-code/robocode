@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.sound;
+package net.sf.robocode.sound;
 
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;

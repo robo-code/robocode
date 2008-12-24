@@ -24,8 +24,8 @@
 package robocode.dialog;
 
 
-import robocode.manager.IRobocodeManager;
-import robocode.manager.RobocodeProperties;
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.settings.RobocodeProperties;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

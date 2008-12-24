@@ -14,8 +14,8 @@
 package robocode.security;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.security.HiddenAccess;
-import robocode.manager.IRobocodeManager;
 
 import java.io.OutputStream;
 import java.io.PrintStream;

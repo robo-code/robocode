@@ -12,7 +12,7 @@
 package robocode.dialog;
 
 
-import robocode.manager.IRobocodeManager;
+import net.sf.robocode.IRobocodeManager;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

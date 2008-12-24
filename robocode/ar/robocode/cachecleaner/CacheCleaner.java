@@ -15,9 +15,9 @@
 package ar.robocode.cachecleaner;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
-import robocode.manager.IRobocodeManager;
 
 import java.io.File;
 import java.io.IOException;

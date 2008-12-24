@@ -9,12 +9,10 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.battle;
 
 
-import net.sf.robocode.battle.IBattleManagerBase;
 import robocode.Event;
-import robocode.battle.BattleProperties;
 
 
 /**

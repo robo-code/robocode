@@ -15,10 +15,10 @@
 package robocode.battleview;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.security.SafeComponent;
 import robocode.*;
-import robocode.battle.BattleProperties;
-import robocode.manager.IRobocodeManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

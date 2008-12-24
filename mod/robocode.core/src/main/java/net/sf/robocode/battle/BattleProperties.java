@@ -13,7 +13,7 @@
  *     - Added property for specifying initial positions and headings of the
  *       selected robots
  *******************************************************************************/
-package robocode.battle;
+package net.sf.robocode.battle;
 
 
 import robocode.AdvancedRobot;

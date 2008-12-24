@@ -12,12 +12,12 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.IRobocodeManager;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

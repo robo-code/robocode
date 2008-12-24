@@ -13,7 +13,6 @@ package net.sf.robocode.recording;
 
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
-import net.sf.robocode.recording.BattleRecordFormat;
 
 
 /**

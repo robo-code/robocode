@@ -32,9 +32,10 @@
  *     Nathaniel Troutman
  *     - Added missing removePropertyListener() method
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.settings;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.Logger;
 
 import java.awt.*;
@@ -51,6 +52,7 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
  */
+//TODO ZAMO, refactor, split by modules
 public class RobocodeProperties {
 	// Default SFX files
 	private final static String

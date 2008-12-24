@@ -24,13 +24,13 @@
 package robocode.editor;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
+import net.sf.robocode.settings.RobocodeProperties;
 import robocode.gfx.ImageUtil;
 import robocode.manager.BrowserManager;
-import robocode.manager.IRobocodeManager;
-import robocode.manager.RobocodeProperties;
 import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;

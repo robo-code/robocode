@@ -19,6 +19,7 @@
 package robocode.manager;
 
 
+import net.sf.robocode.IRobocodeManager;
 import robocode.gfx.ImageUtil;
 import robocode.gfx.RenderImage;
 

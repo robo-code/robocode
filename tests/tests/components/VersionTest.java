@@ -14,7 +14,7 @@ package components;
 
 import net.sf.robocode.test.helpers.Assert;
 import org.junit.Test;
-import robocode.manager.IVersionManager;
+import net.sf.robocode.version.IVersionManager;
 import robocode.manager.VersionManager;
 
 

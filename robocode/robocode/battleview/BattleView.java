@@ -16,6 +16,8 @@
 package robocode.battleview;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.battle.snapshot.RobotSnapshot;
 import robocode.control.events.BattleAdaptor;
@@ -30,8 +32,6 @@ import robocode.gfx.GraphicsState;
 import robocode.gfx.RenderImage;
 import robocode.gfx.RobocodeLogo;
 import robocode.manager.IImageManager;
-import robocode.manager.IRobocodeManager;
-import robocode.manager.RobocodeProperties;
 import robocode.robotpaint.Graphics2DSerialized;
 import robocode.robotpaint.IGraphicsProxy;
 import robocode.ui.IWindowManagerExt;

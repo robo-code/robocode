@@ -27,10 +27,10 @@
 package robocode.dialog;
 
 
-import robocode.manager.IBattleManager;
-import robocode.manager.IRobocodeManager;
-import robocode.manager.RobocodeProperties;
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.recording.BattleRecordFormat;
+import net.sf.robocode.settings.RobocodeProperties;
 import robocode.ui.IWindowManagerExt;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 

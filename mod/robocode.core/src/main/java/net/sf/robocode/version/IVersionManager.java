@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.version;
 
 
 import net.sf.robocode.manager.IVersionManagerBase;

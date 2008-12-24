@@ -19,6 +19,7 @@
 package robocode.dialog;
 
 
+import net.sf.robocode.IRobocodeManager;
 import robocode.BattleResults;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
@@ -27,7 +28,6 @@ import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
-import robocode.manager.IRobocodeManager;
 import robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;
