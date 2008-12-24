@@ -6,35 +6,18 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Changed to give notification only if the available version number is
- *       greater than the version retrieved from the robocode.jar file, and only
- *       give warning if the user rejects downloading a new version, if the new
- *       version is a final version
- *     - Changed the checkdate time interval from 10 days to 5 days
- *     - Updated to use methods from WindowUtil, FileUtil, Logger, which replaces
- *       methods that have been (re)moved from the Utils and Constants class
- *     - Added a connect timeout of 5 seconds when checking for a new version
- *     - Added missing close() on input stream readers
- *     - Added the Version class for comparing versions with compareTo()
+ *     Pavel Savara
+ *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
-
+package net.sf.robocode.version;
 
 import net.sf.robocode.io.FileUtil;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
-import net.sf.robocode.version.IVersionManager;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 
 /**
  * @author Mathew A. Nelson (original)
@@ -59,11 +42,11 @@ public final class VersionManager implements IVersionManager {
 			urlConnection.setConnectTimeout(5000);
 
 			if (urlConnection instanceof HttpURLConnection) {
-				logMessage("Update checking with http.");
+				net.sf.robocode.io.Logger.logMessage("Update checking with http.");
 				HttpURLConnection h = (HttpURLConnection) urlConnection;
 
 				if (h.usingProxy()) {
-					logMessage("http using proxy.");
+					net.sf.robocode.io.Logger.logMessage("http using proxy.");
 				}
 			}
 			inputStream = urlConnection.getInputStream();
@@ -73,10 +56,10 @@ public final class VersionManager implements IVersionManager {
 			newVersLine = reader.readLine();
 
 		} catch (MalformedURLException e) {
-			logError("Unable to check for new version: ", e);
+			net.sf.robocode.io.Logger.logError("Unable to check for new version: ", e);
 			newVersLine = null;
 		} catch (IOException e) {
-			logError("Unable to check for new version: " + e);
+			net.sf.robocode.io.Logger.logError("Unable to check for new version: " + e);
 			newVersLine = null;
 		} finally {
 			FileUtil.cleanupStream(inputStream);
@@ -105,12 +88,12 @@ public final class VersionManager implements IVersionManager {
 		if (version == null) {
 			version = getVersionFromJar();
 		}
-		if (version == "unknown") {
+		if (version.equals("unknown")) {
 			return 0;
 		}
 		final Version v = new Version(version);
 
-		return v.getEra() * 0x010000 + v.getMajor() * 0x000100 + v.getMinor() * 0x000001;
+		return v.getEra() * 0x010000 + v.getMajor() * 0x000100 + v.getMinor();
 	}
 
 	private static String getVersionFromJar() {
@@ -122,7 +105,7 @@ public final class VersionManager implements IVersionManager {
 			URL versionsUrl = VersionManager.class.getResource("/versions.txt");
 
 			if (versionsUrl == null) {
-				logError("no url");
+				net.sf.robocode.io.Logger.logError("no url");
 				versionString = "unknown";
 			} else {
 				in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
@@ -133,10 +116,10 @@ public final class VersionManager implements IVersionManager {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			logError("No versions.txt file in robocode.jar.");
+			net.sf.robocode.io.Logger.logError("No versions.txt file in robocode.jar.");
 			versionString = "unknown";
 		} catch (IOException e) {
-			logError("IO Exception reading versions.txt from robocode.jar" + e);
+			net.sf.robocode.io.Logger.logError("IO Exception reading versions.txt from robocode.jar" + e);
 			versionString = "unknown";
 		} finally {
 			if (in != null) {
@@ -156,7 +139,7 @@ public final class VersionManager implements IVersionManager {
 			}
 		}
 		if (version.equals("unknown")) {
-			logError("Warning:  Getting version from file.");
+			net.sf.robocode.io.Logger.logError("Warning:  Getting version from file.");
 			return getVersionFromFile();
 		}
 		return version;
@@ -177,10 +160,10 @@ public final class VersionManager implements IVersionManager {
 				versionString = in.readLine();
 			}
 		} catch (FileNotFoundException e) {
-			logError("No versions.txt file.");
+			net.sf.robocode.io.Logger.logError("No versions.txt file.");
 			versionString = "unknown";
 		} catch (IOException e) {
-			logError("IO Exception reading versions.txt" + e);
+			net.sf.robocode.io.Logger.logError("IO Exception reading versions.txt" + e);
 			versionString = "unknown";
 		} finally {
 			if (fileReader != null) {
@@ -210,105 +193,105 @@ public final class VersionManager implements IVersionManager {
 	public int compare(String a, String b) {
 		return new Version(a).compareTo(new Version(b));
 	}
-}
 
+	class Version implements Comparable<Object> {
 
-class Version implements Comparable<Object> {
+		private final String version;
 
-	private final String version;
-
-	public Version(String version) {
-		this.version = version.replaceAll("Alpha", ".A.").replaceAll("Beta", ".B.").replaceAll("\\s++", ".").replaceAll(
-				"\\.++", "\\.");
-	}
-
-	public boolean isAlpha() {
-		return (version.matches(".*(A|a).*"));
-	}
-
-	public boolean isBeta() {
-		return (version.matches(".*(B|b).*"));
-	}
-
-	public int getEra() {
-		final String[] numbers = version.split("\\.");
-
-		if (numbers.length < 3) {
-			throw new Error("Unexpected format");
+		public Version(String version) {
+			this.version = version.replaceAll("Alpha", ".A.").replaceAll("Beta", ".B.").replaceAll("\\s++", ".").replaceAll(
+					"\\.++", "\\.");
 		}
-		return Integer.parseInt(numbers[0]);
-	}
 
-	public int getMajor() {
-		final String[] numbers = version.split("\\.");
-
-		if (numbers.length < 3) {
-			throw new Error("Unexpected format");
+		public boolean isAlpha() {
+			return (version.matches(".*(A|a).*"));
 		}
-		return Integer.parseInt(numbers[1]);
-	}
 
-	public int getMinor() {
-		final String[] numbers = version.split("\\.");
-
-		if (numbers.length < 3) {
-			throw new Error("Unexpected format");
+		public boolean isBeta() {
+			return (version.matches(".*(B|b).*"));
 		}
-		return Integer.parseInt(numbers[2]);
-	}
 
-	public boolean isFinal() {
-		return !(isAlpha() || isBeta());
-	}
+		public int getEra() {
+			final String[] numbers = version.split("\\.");
 
-	public int compareTo(Object o) {
-		if (o == null) {
-			throw new IllegalArgumentException();
-		}
-		if (o instanceof String) {
-			return compareTo(new Version((String) o));
-		} else if (o instanceof Version) {
-			Version v = (Version) o;
-
-			if (version.equalsIgnoreCase(v.version)) {
-				return 0;
+			if (numbers.length < 3) {
+				throw new Error("Unexpected format");
 			}
-			String[] left = version.split("[. \t]");
-			String[] right = v.version.split("[. \t]");
-
-			return compare(left, right);
-		} else {
-			throw new IllegalArgumentException("The input object must be a String or Version object");
+			return Integer.parseInt(numbers[0]);
 		}
-	}
 
-	private int compare(String[] left, String[] right) {
-		int i = 0;
+		public int getMajor() {
+			final String[] numbers = version.split("\\.");
 
-		for (i = 0; i < left.length && i < right.length; i++) {
-			int res = left[i].compareToIgnoreCase(right[i]);
+			if (numbers.length < 3) {
+				throw new Error("Unexpected format");
+			}
+			return Integer.parseInt(numbers[1]);
+		}
 
-			if (res != 0) {
-				return res;
+		public int getMinor() {
+			final String[] numbers = version.split("\\.");
+
+			if (numbers.length < 3) {
+				throw new Error("Unexpected format");
+			}
+			return Integer.parseInt(numbers[2]);
+		}
+
+		public boolean isFinal() {
+			return !(isAlpha() || isBeta());
+		}
+
+		public int compareTo(Object o) {
+			if (o == null) {
+				throw new IllegalArgumentException();
+			}
+			if (o instanceof String) {
+				return compareTo(new Version((String) o));
+			} else if (o instanceof Version) {
+				Version v = (Version) o;
+
+				if (version.equalsIgnoreCase(v.version)) {
+					return 0;
+				}
+				String[] left = version.split("[. \t]");
+				String[] right = v.version.split("[. \t]");
+
+				return compare(left, right);
+			} else {
+				throw new IllegalArgumentException("The input object must be a String or Version object");
 			}
 		}
-		if (left.length > right.length) {
-			if (left[i].equals("B") || left[i].equals("A")) {
-				return -1; 
+
+		private int compare(String[] left, String[] right) {
+			int i;
+
+			for (i = 0; i < left.length && i < right.length; i++) {
+				int res = left[i].compareToIgnoreCase(right[i]);
+
+				if (res != 0) {
+					return res;
+				}
 			}
-			return 1;
-		}
-		if (left.length < right.length) {
-			if (right[i].equals("B") || right[i].equals("A")) {
-				return 1; 
+			if (left.length > right.length) {
+				if (left[i].equals("B") || left[i].equals("A")) {
+					return -1;
+				}
+				return 1;
 			}
-			return -1;
+			if (left.length < right.length) {
+				if (right[i].equals("B") || right[i].equals("A")) {
+					return 1;
+				}
+				return -1;
+			}
+			return 0;
 		}
-		return 0;
+
+		@Override
+		public String toString() {
+			return version;
+		}
 	}
 
-	@Override
-	public String toString() {
-		return version;
-	}
 }

@@ -43,6 +43,7 @@ import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.version.VersionManager;
 import robocode.recording.RecordManager;
 import net.sf.robocode.repository.RepositoryManager;
 import robocode.security.SecureInputStream;
