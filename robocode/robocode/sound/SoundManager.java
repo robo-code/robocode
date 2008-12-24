@@ -28,7 +28,7 @@
 package robocode.sound;
 
 
-import robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.events.BattleEventDispatcher;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
@@ -322,7 +322,7 @@ public class SoundManager implements ISoundManager {
 
 	private class BattleObserver extends BattleAdaptor {
 
-		final robocode.battle.events.BattleEventDispatcher dispatcher;
+		final BattleEventDispatcher dispatcher;
 
 		public BattleObserver(BattleEventDispatcher dispatcher) {
 			this.dispatcher = dispatcher;

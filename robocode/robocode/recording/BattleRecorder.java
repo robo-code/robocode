@@ -12,7 +12,7 @@
 package robocode.recording;
 
 
-import robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.events.BattleEventDispatcher;
 import robocode.control.events.*;
 
 import java.util.Arrays;
@@ -45,7 +45,7 @@ public class BattleRecorder {
 	}
 
 	private class BattleObserver extends BattleAdaptor {
-		private final robocode.battle.events.BattleEventDispatcher dispatcher;
+		private final BattleEventDispatcher dispatcher;
 
 		private int currentTurn;
 		private int currentRound;

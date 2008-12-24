@@ -12,7 +12,7 @@
 package robocode.peer.proxies;
 
 
-import robocode.peer.RobotStatics;
+import net.sf.robocode.host.RobotStatics;
 import robocode.peer.robot.RobotFileSystemManager;
 import robocode.peer.robot.RobotOutputStream;
 

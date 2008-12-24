@@ -9,7 +9,7 @@
  *     Flemming N. Larsen & Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.battle.events;
+package net.sf.robocode.battle.events;
 
 
 import static net.sf.robocode.io.Logger.logError;

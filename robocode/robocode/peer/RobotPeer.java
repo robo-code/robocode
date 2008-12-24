@@ -72,6 +72,8 @@ import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.RobotStatics;
 import robocode.*;
 import robocode.battle.Battle;
 import robocode.common.BoundingRectangle;
@@ -82,7 +84,6 @@ import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
-import robocode.manager.IHostManager;
 import robocode.peer.proxies.IHostingRobotProxy;
 import robocode.peer.robot.EventManager;
 import robocode.peer.robot.EventQueue;
@@ -201,11 +202,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		this.robotSpecification = robotSpecification;
 
 		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
-
-		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battleRules, team, index, contestantIndex);
+		String teamName = team == null ? null : team.getName();
+		List<String> teamMmebers = team == null ? null : team.getMemberNames(); 
+		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battleRules, teamName, teamMmebers, index, contestantIndex);
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-		robotProxy = hostManager.createRobotProxy(robotSpecification, statics, this);
+		robotProxy = (IHostingRobotProxy) hostManager.createRobotProxy(robotSpecification, statics, this);
 
 	}
 

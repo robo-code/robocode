@@ -12,7 +12,7 @@
 package robocode.sound;
 
 
-import robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.events.BattleEventDispatcher;
 
 
 /**

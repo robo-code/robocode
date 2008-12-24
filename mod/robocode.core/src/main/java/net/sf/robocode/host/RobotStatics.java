@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.peer;
+package net.sf.robocode.host;
 
 
 import net.sf.robocode.peer.IRobotStatics;
@@ -43,7 +43,7 @@ public final class RobotStatics implements IRobotStatics {
 	private final int index;
 	private final int contestantIndex;
 
-	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, TeamPeer team, int index, int contestantIndex) {
+	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, String teamName, List<String> teamMembers, int index, int contestantIndex) {
 		IRobotFileSpecification specification = ((IRobotFileSpecification) HiddenAccess.getFileSpecification(
 				robotSpecification));
 
@@ -72,21 +72,19 @@ public final class RobotStatics implements IRobotStatics {
 		this.index = index;
 		this.contestantIndex = contestantIndex;
 
-		if (team != null) {
-			List<String> memberNames = team.getMemberNames();
-
-			teammates = new String[memberNames.size() - 1];
+		if (teamMembers != null) {
+			teammates = new String[teamMembers.size() - 1];
 			int i = 0;
 
-			for (String mate : memberNames) {
+			for (String mate : teamMembers) {
 				if (!name.equals(mate)) {
 					teammates[i++] = mate;
 				}
 			}
-			teamName = team.getName();
+			this.teamName = teamName;
 		} else {
 			teammates = new String[0];
-			teamName = name;
+			this.teamName = name;
 		}
 	}
 

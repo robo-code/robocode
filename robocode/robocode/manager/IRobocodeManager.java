@@ -15,7 +15,9 @@ package robocode.manager;
 import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.IWindowManager;
-import robocode.recording.IRecordManager;
+import net.sf.robocode.recording.IRecordManager;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.ICpuManager;
 import robocode.sound.ISoundManager;
 
 

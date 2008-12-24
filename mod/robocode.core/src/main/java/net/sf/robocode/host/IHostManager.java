@@ -9,13 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.manager;
+package net.sf.robocode.host;
 
 
 import net.sf.robocode.peer.IRobotPeer;
 import robocode.control.RobotSpecification;
-import robocode.peer.RobotStatics;
-import robocode.peer.proxies.IHostingRobotProxy;
 
 import java.io.PrintStream;
 
@@ -37,7 +35,7 @@ public interface IHostManager {
 
 	PrintStream getRobotOutputStream();
 
-	IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer);
+	Object createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer);
 
 	void cleanup();
 }

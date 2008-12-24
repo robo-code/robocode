@@ -9,10 +9,11 @@
  *     Pavel Savara & Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-package robocode.recording;
+package net.sf.robocode.recording;
 
 
-import robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.recording.BattleRecordFormat;
 
 
 /**

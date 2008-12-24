@@ -27,6 +27,7 @@ package robocode.manager;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.host.ICpuManager;
 import robocode.dialog.WindowUtil;
 
 

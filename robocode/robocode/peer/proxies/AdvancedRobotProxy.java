@@ -16,9 +16,9 @@ package robocode.peer.proxies;
 
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.RobotStatics;
 import robocode.*;
-import robocode.manager.IHostManager;
-import robocode.peer.RobotStatics;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 import java.io.File;
