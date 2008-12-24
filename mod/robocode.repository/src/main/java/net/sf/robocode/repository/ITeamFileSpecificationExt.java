@@ -9,10 +9,8 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
-
-import net.sf.robocode.repository.INamedFileSpecification;
 
 import java.io.IOException;
 import java.io.OutputStream;

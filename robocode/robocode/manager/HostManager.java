@@ -17,12 +17,14 @@ import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotFileSpecificationExt;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.RobotSpecification;
 import robocode.peer.proxies.*;
 import robocode.security.RobocodeSecurityManager;
 import robocode.security.RobocodeSecurityPolicy;
+import robocode.security.RobotClassLoader;
 
 import java.io.PrintStream;
 import java.security.AccessControlException;
@@ -94,6 +96,16 @@ public class HostManager implements IHostManager {
 	}
 
 	public void cleanup() {// TODO
+	}
+
+	public Class<?> loadRobotClass(IRobotFileSpecification robotFileSpecification) throws ClassNotFoundException {
+		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification);
+
+		classLoader.loadRobotClass();
+		Class<?> robotClass = classLoader.loadRobotClass();
+
+		((IRobotFileSpecificationExt) robotFileSpecification).setUid(classLoader.getUid());
+		return robotClass;
 	}
 
 	public void initSecurity(boolean securityOn, boolean experimentalOn) {

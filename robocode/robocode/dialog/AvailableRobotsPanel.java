@@ -26,7 +26,7 @@ package robocode.dialog;
 
 
 import net.sf.robocode.repository.INamedFileSpecification;
-import robocode.repository.ITeamFileSpecificationExt;
+import net.sf.robocode.repository.ITeamFileSpecificationExt;
 import robocode.ui.ShortcutUtil;
 
 import javax.swing.*;

@@ -9,10 +9,8 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
-
-import net.sf.robocode.repository.IRobotFileSpecification;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +28,7 @@ public interface IRobotFileSpecificationExt extends IRobotFileSpecification, Clo
 	void setRobotWebpage(URL robotWebpage);
 	void setRobocodeVersion(String version);
 	void setRobotVersion(String robotVersion);
+	void setUid(String uid);
 	
 	String getPropertiesFileName();
 	File getRootDir();

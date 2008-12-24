@@ -15,16 +15,16 @@
  *     Pavel Savara
  *     - Re-work of robot interfaces
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
 
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.Droid;
 import robocode.Robot;
 import robocode.robotinterfaces.*;
-import robocode.security.RobotClassLoader;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -290,25 +290,17 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 		return isJuniorRobot;
 	}
 
-	public boolean update() {
+	public boolean update(IRobocodeManager manager) {
 
 		try {
-			RobotClassLoader classLoader = new RobotClassLoader(this);
-
-			classLoader.loadRobotClass();
-			Class<?> robotClass = classLoader.loadRobotClass();
+			Class<?> robotClass = manager.getHostManager().loadRobotClass(this);
 
 			if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 				// this class is not robot
 				return false;
 			}
 			checkInterfaces(robotClass);
-			if (!isJuniorRobot && !isStandardRobot && !isAdvancedRobot) {
-				// this class is not robot
-				return false;
-			}
-			setUid(classLoader.getUid());
-			return true;
+			return isJuniorRobot || isStandardRobot || isAdvancedRobot;
 		} catch (Throwable t) {
 			logError(getName() + ": Got an error with this class: " + t.toString()); // just message here
 			return false;

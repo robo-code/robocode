@@ -9,10 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode.repository;
-
-
-import net.sf.robocode.repository.INamedFileSpecification;
+package net.sf.robocode.repository;
 
 
 /**
@@ -149,7 +146,7 @@ abstract class NamedFileSpecification extends FileSpecification implements Compa
 	}
 
 	public int compareTo(INamedFileSpecification other) {
-		return FileSpecification.compare(getFullPackage(), getFullClassName(), getVersion(), other.getFullPackage(),
+		return compare(getFullPackage(), getFullClassName(), getVersion(), other.getFullPackage(),
 				other.getFullClassName(), other.getVersion());
 	}
 }

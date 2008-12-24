@@ -13,7 +13,7 @@
  *       and added javadoc comments
  *     - Changed the constructor to make a deep copy of the file types
  *******************************************************************************/
-package robocode.io;
+package net.sf.robocode.repository;
 
 
 import java.io.File;

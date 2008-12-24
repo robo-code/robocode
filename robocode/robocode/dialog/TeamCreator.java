@@ -20,7 +20,7 @@ package robocode.dialog;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.Logger;
-import robocode.repository.ITeamFileSpecificationExt;
+import net.sf.robocode.repository.ITeamFileSpecificationExt;
 import static robocode.ui.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;

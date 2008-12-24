@@ -13,7 +13,7 @@
  *     - Updated to use methods from FileUtil and Logger, which replaces methods
  *       that have been (re)moved from the robocode.util.Utils class
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
 
 import net.sf.robocode.io.FileUtil;

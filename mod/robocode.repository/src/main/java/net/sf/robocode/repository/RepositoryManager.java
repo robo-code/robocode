@@ -30,7 +30,7 @@
  *     - Re-work of robot interfaces
  *     - detection of type of robot by overriden methods
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
 
 import net.sf.robocode.IRobocodeManager;
@@ -38,11 +38,8 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-import net.sf.robocode.repository.INamedFileSpecification;
-import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
-import robocode.io.FileTypeFilter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -401,7 +398,7 @@ public final class RepositoryManager implements IRepositoryManager {
 			RobotFileSpecification robotFileSpecification = (RobotFileSpecification) fileSpecification;
 
 			if (robotFileSpecification.isValid() && robotFileSpecification.verifyRobotName()
-					&& robotFileSpecification.update()) {
+					&& robotFileSpecification.update(manager)) {
 				updateNoDuplicates(robotFileSpecification);
 			} else {
 				robotFileSpecification.setValid(false);

@@ -17,10 +17,8 @@
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
-
-import net.sf.robocode.repository.INamedFileSpecification;
 
 import java.io.*;
 import java.util.*;

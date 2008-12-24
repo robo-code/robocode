@@ -16,11 +16,10 @@
  *     - Moved the compare() method from robocode.util.Utils into this class
  *     - Bugfix: Removed NullPointerException from the exists() method
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
 

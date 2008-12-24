@@ -11,7 +11,7 @@
  *     Flemming N. Larsen
  *     - Code cleanup
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
 
 /**

@@ -13,13 +13,12 @@
  *       that have been (re)moved from the robocode.util.Utils class
  *     - Code cleanup
  *******************************************************************************/
-package robocode.repository;
+package net.sf.robocode.repository;
 
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
-import robocode.dialog.WindowUtil;
 
 import javax.swing.*;
 import java.io.*;
@@ -65,7 +64,7 @@ class JarFileSpecification extends FileSpecification {
 	}
 
 	public void processJar(File robotCache, File  robotsDirectory, List<FileSpecification> updatedJarList) {
-		WindowUtil.setStatus("Extracting .jar: " + getFileName());
+		// TODO WindowUtil.setStatus("Extracting .jar: " + getFileName());
 
 		File dest;
 
@@ -118,7 +117,7 @@ class JarFileSpecification extends FileSpecification {
 			JarEntry entry = jarIS.getNextJarEntry();
 
 			while (entry != null) {
-				WindowUtil.setStatus(statusPrefix + " (" + entry.getName() + ")");
+				// TODO WindowUtil.setStatus(statusPrefix + " (" + entry.getName() + ")");
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
@@ -138,7 +137,7 @@ class JarFileSpecification extends FileSpecification {
 						if (r == 0) {
 							always = true;
 						} else if (r == 2) {
-							WindowUtil.setStatus(entry.getName() + " skipped.");
+							// TODO WindowUtil.setStatus(entry.getName() + " skipped.");
 							entry = jarIS.getNextJarEntry();
 							continue;
 						} else if (r == 3) {
@@ -181,8 +180,8 @@ class JarFileSpecification extends FileSpecification {
 
 					if (updatedJarList != null) {
 						if (entry.getName().indexOf("/") < 0 && FileUtil.getFileType(entry.getName()).equals(".jar")) {
-							FileSpecification fileSpecification = FileSpecification.createSpecification(null, out,
-									parentDirectory, "", false);
+							FileSpecification fileSpecification = createSpecification(null, out, parentDirectory, "",
+									false);
 
 							updatedJarList.add(fileSpecification);
 						}

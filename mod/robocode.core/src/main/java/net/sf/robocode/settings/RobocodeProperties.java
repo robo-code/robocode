@@ -52,7 +52,7 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-//TODO ZAMO, refactor, split by modules
+// TODO ZAMO, refactor, split by modules
 public class RobocodeProperties {
 	// Default SFX files
 	private final static String

@@ -13,6 +13,7 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.peer.IRobotPeer;
+import net.sf.robocode.repository.IRobotFileSpecification;
 import robocode.control.RobotSpecification;
 
 import java.io.PrintStream;
@@ -38,4 +39,6 @@ public interface IHostManager {
 	Object createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer);
 
 	void cleanup();
+
+	Class<?> loadRobotClass(IRobotFileSpecification robotFileSpecification) throws ClassNotFoundException;
 }
