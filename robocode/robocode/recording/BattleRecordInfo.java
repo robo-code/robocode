@@ -204,6 +204,11 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 				public IXmlSerializable read(XmlReader reader) {
 					final BattleResultsWrapper rules = new BattleResultsWrapper();
 
+					reader.expect("teamLeaderName", new XmlReader.Attribute() {
+						public void read(String value) {
+							rules.teamLeaderName = value;
+						}
+					});
 					reader.expect("rank", new XmlReader.Attribute() {
 						public void read(String value) {
 							rules.rank = Integer.parseInt(value);

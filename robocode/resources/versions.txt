@@ -1,3 +1,10 @@
+Version 1.6.2
+(26-Dec-2008)
+---------------
+
+= Bugfixes =
+* Bug [2467536] Robot name was missing when replaying XML record.
+
 Version 1.6.2 Beta 4
 (23-Dec-2008)
 ---------------
