@@ -1,9 +1,11 @@
 Version 1.6.2
-(26-Dec-2008)
+(27-Dec-2008)
 ---------------
 
 = Bugfixes =
 * Bug [2467536] Robot name was missing when replaying XML record.
+* Bug [2465580] Junior Robot turnAheadRight() bug. When a JuniorRobot was calling turnAheadRight(), turnAheadLeft(), turnBackRight(), or turnBackLeft() - the following exception occurred causing the robot to be terminated:
+  java.lang.ClassCastException: robocode.peer.proxies.StandardRobotProxy
 
 Version 1.6.2 Beta 4
 (23-Dec-2008)
