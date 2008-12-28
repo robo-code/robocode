@@ -89,7 +89,7 @@ public class Tracker extends Robot {
 		}
 		// This is our target.  Reset count (see the run method)
 		count = 0;
-		// If our target is too far away, turn and move torward it.
+		// If our target is too far away, turn and move toward it.
 		if (e.getDistance() > 150) {
 			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 
