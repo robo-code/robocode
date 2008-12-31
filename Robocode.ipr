@@ -141,11 +141,11 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/mod/pom.xml" />
-        <option value="$PROJECT_DIR$/mod/robocode.api/pom.xml" />
-        <option value="$PROJECT_DIR$/mod/robocode.ui/pom.xml" />
-        <option value="$PROJECT_DIR$/mod/robocode.core/pom.xml" />
-        <option value="$PROJECT_DIR$/mod/robocode.battle/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/robocode.api/pom.xml" />
+        <option value="$PROJECT_DIR$/robocode.ui/pom.xml" />
+        <option value="$PROJECT_DIR$/robocode.core/pom.xml" />
+        <option value="$PROJECT_DIR$/robocode.battle/pom.xml" />
       </list>
     </option>
   </component>
@@ -276,17 +276,17 @@
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mod/_root.iml" filepath="$PROJECT_DIR$/mod/_root.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/mod/robocode.api/robocode.api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/mod/robocode.battle/robocode.battle.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/mod/robocode.core/robocode.core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/mod/robocode.host/robocode.host.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/mod/robocode.installer/robocode.installer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.repository/robocode.repository.iml" filepath="$PROJECT_DIR$/mod/robocode.repository/robocode.repository.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/mod/robocode.roborumble/robocode.roborumble.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/mod/robocode.samples/robocode.samples.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/mod/robocode.tests/robocode.tests.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod/robocode.ui/robocode.ui.iml" filepath="$PROJECT_DIR$/mod/robocode.ui/robocode.ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/_root.iml" filepath="$PROJECT_DIR$/_root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/robocode.api/robocode.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/robocode.installer/robocode.installer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.repository/robocode.repository.iml" filepath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.ui/robocode.ui.iml" filepath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
