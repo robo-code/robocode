@@ -26,20 +26,17 @@
  *       could not be found
  *     - Extended the usage / syntax for using Robocode from a console
  *******************************************************************************/
-package robocode;
+package net.sf.robocode.core;
 
 
-import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.ui.LookAndFeelManager;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.BattleResultsTableModel;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
-import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.security.LoggingThreadGroup;
+import net.sf.robocode.IRobocodeManager;
 import robocode.control.events.*;
-import net.sf.robocode.ui.dialog.WindowUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,32 +53,11 @@ import java.io.PrintStream;
  * @author Pavel Savara (contributor)
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
-public class Robocode {
+public class RobocodeMain implements Runnable{
 
-	/**
-	 * Use the command-line to start Robocode.
-	 * The command is:
-	 * <pre>
-	 *    java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
-	 * </pre>
-	 *
-	 * @param args an array of command-line arguments
-	 */
-	public static void main(final String[] args) {
-		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
-
-		new Thread(group, "Robocode main thread") {
-			public void run() {
-				Robocode robocode = new Robocode();
-
-				robocode.loadSetup(args);
-				robocode.run();
-			}
-		}.start();
-	}
-
-	private final IRobocodeManager manager;
+	private IRobocodeManager manager;
 	private final Setup setup;
+	private final String[] args;
 	private final BattleObserver battleObserver = new BattleObserver();
 
 	private class Setup {
@@ -95,18 +71,27 @@ public class Robocode {
 		int tps;
 	}
 
-	private Robocode() {
-		manager = (IRobocodeManager) HiddenAccess.createRobocodeManager();
+	public RobocodeMain(String[] args) {
 		setup = new Setup();
+		this.args = args; 
 	}
 
-	private void run() {
+	public static void main(Object args) {
+		RobocodeMain main=new RobocodeMain((String[])args);
+		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
+		new Thread(group, main, "Robocode main thread").start();
+	}
+
+	public void run() {
 		try {
+			manager = Container.instance.getComponent(IRobocodeManager.class);
+
+			loadSetup();
 			manager.getHostManager().initSecurity(setup.securityOn, setup.experimentalOn);
 
 			// Set the Look and Feel (LAF)
 			if (manager.isGUIEnabled()) {
-				LookAndFeelManager.setLookAndFeel();
+				manager.getWindowManager().setLookAndFeel();
 			}
 
 			manager.getProperties().setOptionsBattleDesiredTPS(setup.tps);
@@ -190,13 +175,14 @@ public class Robocode {
 		}
 	}
 
-	private void loadSetup(String args[]) {
+	private void loadSetup() {
 		final String robocodeDir = System.getProperty("WORKINGDIRECTORY");
 
 		if (robocodeDir != null) {
 			changeDirectory(robocodeDir);
 		}
 
+		/*TODO
 		if (System.getProperty("NOSECURITY", "false").equals("true")) {
 			WindowUtil.messageWarning(
 					"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
@@ -209,6 +195,7 @@ public class Robocode {
 					+ "You should only run robots which you trust!");
 			setup.experimentalOn = true;
 		}
+		*/
 
 		setup.tps = manager.getProperties().getOptionsBattleDesiredTPS();
 

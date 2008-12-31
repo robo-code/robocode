@@ -43,7 +43,7 @@ public class HiddenAccess {
 	private static IHiddenStatusHelper statusHelper;
 	private static IHiddenRulesHelper rulesHelper;
 	private static Method robocodeManagerFactoryRE;
-	private static Method robocodeManagerFactory;
+	private static Method robocodeMain;
 	private static boolean initialized;
 
 	static {
@@ -82,14 +82,16 @@ public class HiddenAccess {
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
 
-			Class<?> robocodeManager = ClassLoader.getSystemClassLoader().loadClass("robocode.RobocodeManager");
+			Class<?> robocodeManager = ClassLoader.getSystemClassLoader().loadClass("net.sf.robocode.core.RobocodeManager");
 
 			robocodeManagerFactoryRE = robocodeManager.getDeclaredMethod("createRobocodeManagerForRobotEngine",
 					File.class);
 			robocodeManagerFactoryRE.setAccessible(true);
 
-			robocodeManagerFactory = robocodeManager.getDeclaredMethod("createRobocodeManager");
-			robocodeManagerFactory.setAccessible(true);
+			Class<?> robocodeMainC = ClassLoader.getSystemClassLoader().loadClass("net.sf.robocode.core.RobocodeMain");
+			//
+			robocodeMain = robocodeMainC.getDeclaredMethod("main", Object.class);
+			robocodeMain.setAccessible(true);
 
 			initialized = true;
 		} catch (NoSuchMethodException e) {
@@ -100,7 +102,11 @@ public class HiddenAccess {
 			Logger.logError(e);
 		} catch (ClassNotFoundException e) {
 			Logger.logError(e);
+		} catch (Error e) {
+			Logger.logError(e);
+			throw e;
 		}
+
 	}
 
 	public static boolean isCriticalEvent(Event e) {
@@ -162,18 +168,6 @@ public class HiddenAccess {
 		return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
 	}
 
-	public static IRobocodeManagerBase createRobocodeManager() {
-		init();
-		try {
-			return (IRobocodeManagerBase) robocodeManagerFactory.invoke(null);
-		} catch (IllegalAccessException e) {
-			Logger.logError(e);
-		} catch (InvocationTargetException e) {
-			Logger.logError(e);
-		}
-		return null;
-	}
-
 	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
 		init();
 		try {
@@ -185,4 +179,18 @@ public class HiddenAccess {
 		}
 		return null;
 	}
+
+
+	public static void robocodeMain(final String[] args) {
+		init();
+		try {
+			Object a=args;
+			robocodeMain.invoke(null, a);
+		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		} catch (InvocationTargetException e) {
+			Logger.logError(e);
+		}
+	}
+
 }

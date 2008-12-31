@@ -9,15 +9,16 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package robocode;
+package runner;
 
 import robocode.control.*;
 import robocode.control.events.*;
+import robocode.BattleResults;
 
 import java.io.File;
 
 /**
- * Application that runs two sample robots in Robocode.
+ * Sample application that runs two sample robots in Robocode.
  *
  * @author Flemming N. Larsen
  */

@@ -52,8 +52,8 @@ public class ImageManager implements IImageManager {
 	private HashMap<Integer, RenderImage> robotGunImageCache;
 	private HashMap<Integer, RenderImage> robotRadarImageCache;
 
-	public ImageManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public ImageManager() {
+		this.manager = net.sf.robocode.core.Container.instance.getComponent(IRobocodeManager.class);
 		initialize();
 	}
 

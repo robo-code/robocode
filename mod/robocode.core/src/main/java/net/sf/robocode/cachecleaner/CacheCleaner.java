@@ -16,8 +16,8 @@ package net.sf.robocode.cachecleaner;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.security.HiddenAccess;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public final class CacheCleaner {
 	private CacheCleaner() {}
 
 	public static void main(String[] args) {
-		IRobocodeManager manager = (IRobocodeManager) HiddenAccess.createRobocodeManager();
+		IRobocodeManager manager = Container.instance.getComponent(IRobocodeManager.class);
 		clean(manager);
 	}
 

@@ -13,6 +13,7 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
 import net.sf.robocode.peer.*;
@@ -35,8 +36,8 @@ public class HostManager implements IHostManager {
 	private final IRobocodeManager manager;
 	private IThreadManager threadManager;
 
-	public HostManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public HostManager() {
+		this.manager = Container.instance.getComponent(IRobocodeManager.class);
 		threadManager = new ThreadManager();
 	}
 

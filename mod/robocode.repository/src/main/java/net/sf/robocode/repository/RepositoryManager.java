@@ -34,6 +34,7 @@ package net.sf.robocode.repository;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
@@ -72,8 +73,8 @@ public final class RepositoryManager implements IRepositoryManager {
 			new ArrayList<FileSpecification>());
 	private boolean write;
 
-	public RepositoryManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public RepositoryManager() {
+		this.manager = Container.instance.getComponent(IRobocodeManager.class);
 	}
 
 	public File getRobotCache() {

@@ -23,6 +23,7 @@ package net.sf.robocode.ui;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.ui.dialog.*;
 import robocode.control.snapshot.IRobotSnapshot;
 
@@ -45,9 +46,9 @@ public class RobotDialogManager implements IRobotDialogManager {
 	private BattleDialog battleDialog = null;
 	private final IRobocodeManager manager;
 
-	public RobotDialogManager(IRobocodeManager manager) {
+	public RobotDialogManager() {
 		super();
-		this.manager = manager;
+		this.manager = Container.instance.getComponent(IRobocodeManager.class);
 	}
 
 	public void trim(List<IRobotSnapshot> robots) {

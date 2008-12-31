@@ -31,7 +31,7 @@ import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.BrowserManager;
 import net.sf.robocode.ui.IWindowManagerExt;
-import net.sf.robocode.ui.LookAndFeelManager;
+import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.gfx.ImageUtil;
 
 import javax.swing.*;
@@ -548,7 +548,8 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	public static void main(String[] args) {
 		try {
 			// Set the Look and Feel (LAF)
-			LookAndFeelManager.setLookAndFeel();
+			final IWindowManager windowManager = net.sf.robocode.core.Container.instance.getComponent(IWindowManager.class);
+			windowManager.setLookAndFeel();
 
 			RobocodeEditor robocodeEditor;
 

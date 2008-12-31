@@ -9,32 +9,15 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.ui;
+package net.sf.robocode.core;
 
-
-import net.sf.robocode.gui.IWindowManagerBase;
-import robocode.control.events.IBattleListener;
-import robocode.control.snapshot.ITurnSnapshot;
-
-import javax.swing.*;
-
+import net.sf.robocode.IRobocodeManager;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IWindowManager extends IWindowManagerBase {
-	boolean isIconified();
-
-	JFrame getRobocodeFrame();
-
-	void setStatus(String s);
-
-	ITurnSnapshot getLastSnapshot();
-
-	void addBattleListener(IBattleListener listener);
-
-	void removeBattleListener(IBattleListener listener);
-
-	void setLookAndFeel();
-
+class Module {
+	static{
+		Container.instance.addComponent(IRobocodeManager.class, RobocodeManager.class);
+	}
 }

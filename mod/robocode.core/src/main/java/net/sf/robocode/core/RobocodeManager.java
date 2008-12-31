@@ -25,33 +25,25 @@
  *     Pavel Savara
  *     - uses interfaces of components
  *******************************************************************************/
-package robocode;
+package net.sf.robocode.core;
 
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.battle.BattleManager;
-import net.sf.robocode.host.HostManager;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.CpuManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.recording.IRecordManager;
-import net.sf.robocode.recording.RecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository.RepositoryManager;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
-import net.sf.robocode.ui.WindowManager;
-import net.sf.robocode.ui.LookAndFeelManager;
 import net.sf.robocode.version.IVersionManager;
 import net.sf.robocode.version.VersionManager;
-import net.sf.robocode.sound.SoundManager;
 
 import java.io.*;
 
@@ -61,7 +53,7 @@ import java.io.*;
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-class RobocodeManager implements IRobocodeManager {
+public class RobocodeManager implements IRobocodeManager {
 	private IBattleManager battleManager;
 	private ICpuManager cpuManager;
 	private IRepositoryManager repositoryManager;
@@ -71,17 +63,19 @@ class RobocodeManager implements IRobocodeManager {
 	private IRecordManager recordManager;
 	private IHostManager hostManager;
 
-	private final boolean slave;
+	private boolean slave;
 
 	private RobocodeProperties properties;
 
 	private boolean isGUIEnabled = true;
 	private boolean isSoundEnabled = true;
 
-	public RobocodeManager(boolean slave) {
-		this.slave = slave;
+	public RobocodeManager() {
 		HiddenAccess.manager = this;
-		getHostManager();
+	}
+
+	public void setSlave(boolean value){
+		slave=value;
 	}
 
 	/**
@@ -91,14 +85,14 @@ class RobocodeManager implements IRobocodeManager {
 	 */
 	public IBattleManager getBattleManager() {
 		if (battleManager == null) {
-			battleManager = new BattleManager(this);
+			battleManager = Container.instance.getComponent(IBattleManager.class);
 		}
 		return battleManager;
 	}
 
 	public IHostManager getHostManager() {
 		if (hostManager == null) {
-			hostManager = new HostManager(this);
+			hostManager = Container.instance.getComponent(IHostManager.class);
 		}
 		return hostManager;
 	}
@@ -110,7 +104,7 @@ class RobocodeManager implements IRobocodeManager {
 	 */
 	public IRepositoryManager getRepositoryManager() {
 		if (repositoryManager == null) {
-			repositoryManager = new RepositoryManager(this);
+			repositoryManager = Container.instance.getComponent(IRepositoryManager.class);
 		}
 		return repositoryManager;
 	}
@@ -122,7 +116,7 @@ class RobocodeManager implements IRobocodeManager {
 	 */
 	public IWindowManager getWindowManager() {
 		if (windowManager == null) {
-			windowManager = new WindowManager(this);
+			windowManager = Container.instance.getComponent(IWindowManager.class);
 		}
 		return windowManager;
 	}
@@ -194,7 +188,7 @@ class RobocodeManager implements IRobocodeManager {
 	 */
 	public ICpuManager getCpuManager() {
 		if (cpuManager == null) {
-			cpuManager = new CpuManager(this);
+			cpuManager = Container.instance.getComponent(ICpuManager.class);
 		}
 		return cpuManager;
 	}
@@ -206,7 +200,7 @@ class RobocodeManager implements IRobocodeManager {
 	 */
 	public ISoundManager getSoundManager() {
 		if (soundManager == null) {
-			soundManager = new SoundManager(this);
+			soundManager = Container.instance.getComponent(ISoundManager.class);
 		}
 		return soundManager;
 	}
@@ -218,7 +212,7 @@ class RobocodeManager implements IRobocodeManager {
 	 */
 	public IRecordManager getRecordManager() {
 		if (recordManager == null) {
-			recordManager = new RecordManager(this);
+			recordManager = Container.instance.getComponent(IRecordManager.class);
 		}
 		return recordManager;
 	}
@@ -265,17 +259,13 @@ class RobocodeManager implements IRobocodeManager {
 			setEnableGUI(true);
 
 			// Set the Look and Feel (LAF)
-			LookAndFeelManager.setLookAndFeel();
+			getWindowManager().setLookAndFeel();
 		}
 
 		if (isGUIEnabled()) {
 			getWindowManager().showRobocodeFrame(visible, false);
 			getProperties().setOptionsCommonShowResults(visible);
 		}
-	}
-
-	public static IRobocodeManager createRobocodeManager() {
-		return new RobocodeManager(false);
 	}
 
 	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
@@ -298,8 +288,9 @@ class RobocodeManager implements IRobocodeManager {
 			return null;
 		}
 
-		RobocodeManager manager = new RobocodeManager(true);
-
+		RobocodeManager manager = (RobocodeManager) Container.instance.getComponent(IRobocodeManager.class);
+		manager.getHostManager();
+		manager.setSlave(true);
 		manager.setEnableGUI(false);
 		manager.getHostManager().initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
 

@@ -15,7 +15,6 @@
   <target name="jacobe">
   	<beautify dir="../../mod"/>
   	<beautify dir="../../robocode"/>
-  	<beautify dir="../../tests"/>
   </target>
 
   <macrodef name="beautify">

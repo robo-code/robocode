@@ -11,30 +11,18 @@
  *******************************************************************************/
 package net.sf.robocode.ui;
 
-
-import net.sf.robocode.gui.IWindowManagerBase;
-import robocode.control.events.IBattleListener;
-import robocode.control.snapshot.ITurnSnapshot;
-
-import javax.swing.*;
-
+import net.sf.robocode.core.Container;
+import net.sf.robocode.sound.ISoundManager;
+import net.sf.robocode.sound.SoundManager;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IWindowManager extends IWindowManagerBase {
-	boolean isIconified();
-
-	JFrame getRobocodeFrame();
-
-	void setStatus(String s);
-
-	ITurnSnapshot getLastSnapshot();
-
-	void addBattleListener(IBattleListener listener);
-
-	void removeBattleListener(IBattleListener listener);
-
-	void setLookAndFeel();
-
+public class Module {
+	static{
+		Container.instance.addComponent(IImageManager.class, ImageManager.class);
+		Container.instance.addComponent(IWindowManagerExt.class, WindowManager.class);
+		Container.instance.addComponent(IRobotDialogManager.class, RobotDialogManager.class);
+		Container.instance.addComponent(ISoundManager.class, SoundManager.class);
+	}
 }

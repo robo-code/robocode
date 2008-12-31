@@ -9,32 +9,25 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.ui;
+package robocode;
 
-
-import net.sf.robocode.gui.IWindowManagerBase;
-import robocode.control.events.IBattleListener;
-import robocode.control.snapshot.ITurnSnapshot;
-
-import javax.swing.*;
-
+import net.sf.robocode.security.HiddenAccess;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IWindowManager extends IWindowManagerBase {
-	boolean isIconified();
+public class Robocode {
 
-	JFrame getRobocodeFrame();
-
-	void setStatus(String s);
-
-	ITurnSnapshot getLastSnapshot();
-
-	void addBattleListener(IBattleListener listener);
-
-	void removeBattleListener(IBattleListener listener);
-
-	void setLookAndFeel();
-
+	/**
+	 * Use the command-line to start Robocode.
+	 * The command is:
+	 * <pre>
+	 *    java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
+	 * </pre>
+	 *
+	 * @param args an array of command-line arguments
+	 */
+	public static void main(final String[] args) {
+		HiddenAccess.robocodeMain(args);
+	}
 }

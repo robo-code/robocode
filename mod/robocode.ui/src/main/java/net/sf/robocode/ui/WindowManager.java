@@ -40,6 +40,7 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 
 /**
@@ -60,8 +61,8 @@ public class WindowManager implements IWindowManagerExt {
 	private IImageManager imageManager;
 	private IRobotDialogManager robotDialogManager;
 
-	public WindowManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public WindowManager() {
+		this.manager = net.sf.robocode.core.Container.instance.getComponent(IRobocodeManager.class);
 		awtAdaptor = new AwtBattleAdaptor(manager.getBattleManager(), TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have
@@ -501,15 +502,38 @@ public class WindowManager implements IWindowManagerExt {
 
 	public IImageManager getImageManager() {
 		if (imageManager == null) {
-			imageManager = new ImageManager(manager);
+			imageManager = new ImageManager();
 		}
 		return imageManager;
 	}
 
 	public IRobotDialogManager getRobotDialogManager() {
 		if (robotDialogManager == null) {
-			robotDialogManager = new RobotDialogManager(manager);
+			robotDialogManager = new RobotDialogManager();
 		}
 		return robotDialogManager;
 	}
+
+	/**
+	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
+	 * system's LAF. If this fails, it try to use the cross platform LAF.
+	 * If this also fails, the LAF will not be changed.
+	 */
+	public void setLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable t) {
+			// Work-around for problems with setting Look and Feel described here:
+			// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6468089
+			Locale.setDefault(Locale.US);
+
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Throwable t2) {
+				// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
+				System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
+			}
+		}
+	}
+
 }

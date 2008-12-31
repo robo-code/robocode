@@ -27,6 +27,7 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.io.Logger;
 
 
@@ -43,8 +44,8 @@ public class CpuManager implements ICpuManager {
 	private long cpuConstant = -1;
 	private final IRobocodeManager manager;
 
-	public CpuManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public CpuManager() {
+		this.manager = Container.instance.getComponent(IRobocodeManager.class);
 	}
 
 	public long getCpuConstant() {

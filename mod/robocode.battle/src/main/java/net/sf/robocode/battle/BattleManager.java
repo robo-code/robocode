@@ -55,6 +55,7 @@ package net.sf.robocode.battle;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BattleProperties;
@@ -104,8 +105,8 @@ public class BattleManager implements IBattleManager {
 	private int pauseCount = 0;
 	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
-	public BattleManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public BattleManager() {
+		this.manager = Container.instance.getComponent(IRobocodeManager.class);
 	}
 
 	public synchronized void cleanup() {

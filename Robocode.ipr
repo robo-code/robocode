@@ -277,7 +277,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/mod/_root.iml" filepath="$PROJECT_DIR$/mod/_root.iml" />
-      <module fileurl="file://$PROJECT_DIR$/robocode/robocode.iml" filepath="$PROJECT_DIR$/robocode/robocode.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/mod/robocode.api/robocode.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/mod/robocode.battle/robocode.battle.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/mod/robocode.core/robocode.core.iml" />
