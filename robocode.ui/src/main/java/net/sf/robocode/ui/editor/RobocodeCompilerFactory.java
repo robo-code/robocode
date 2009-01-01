@@ -56,7 +56,7 @@ public class RobocodeCompilerFactory {
 	private final IVersionManager versionManager;
 
 	public RobocodeCompilerFactory(IVersionManager versionManager) {
-		this.versionManager=versionManager;
+		this.versionManager = versionManager;
 	}
 
 	public RobocodeCompiler createCompiler(RobocodeEditor editor) {
@@ -114,16 +114,16 @@ public class RobocodeCompilerFactory {
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
-					if (!dir.mkdirs()){
-						Logger.logError("Can't create "+dir);
+					if (!dir.mkdirs()) {
+						Logger.logError("Can't create " + dir);
 					}
 				} else {
 					status.setText(entryName + " " + SPINNER[spin++]);
 					File out = new File(dest, entry.getName());
 					File parentDirectory = new File(out.getParent());
 
-					if (!parentDirectory.mkdirs()){
-						Logger.logError("Can't create "+parentDirectory);
+					if (!parentDirectory.mkdirs()) {
+						Logger.logError("Can't create " + parentDirectory);
 					}
 
 					int index = 0;

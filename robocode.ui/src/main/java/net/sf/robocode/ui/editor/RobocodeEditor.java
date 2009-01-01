@@ -101,7 +101,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		super();
 		this.manager = manager;
 		this.windowManager = (IWindowManagerExt) windowManager;
-		this.repositoryManager=repositoryManager;
+		this.repositoryManager = repositoryManager;
 		if (manager != null) {
 			robotsDirectory = repositoryManager.getRobotsDirectory();
 		} else {
@@ -467,30 +467,30 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	/* TODO DELETE ?
-	public RobocodeProperties getRobocodeProperties() {
-		if (robocodeProperties == null) {
-			robocodeProperties = new RobocodeProperties(manager);
+	 public RobocodeProperties getRobocodeProperties() {
+	 if (robocodeProperties == null) {
+	 robocodeProperties = new RobocodeProperties(manager);
 
-			FileInputStream in = null;
+	 FileInputStream in = null;
 
-			try {
-				in = new FileInputStream(FileUtil.getRobocodeConfigFile());
-				robocodeProperties.load(in);
-			} catch (FileNotFoundException e) {
-				logError("No " + FileUtil.getRobocodeConfigFile().getName() + " file, using defaults.");
-			} catch (IOException e) {
-				logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName(), e);
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (IOException ignored) {}
-				}
-			}
-		}
-		return robocodeProperties;
-	}
-	*/
+	 try {
+	 in = new FileInputStream(FileUtil.getRobocodeConfigFile());
+	 robocodeProperties.load(in);
+	 } catch (FileNotFoundException e) {
+	 logError("No " + FileUtil.getRobocodeConfigFile().getName() + " file, using defaults.");
+	 } catch (IOException e) {
+	 logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName(), e);
+	 } finally {
+	 if (in != null) {
+	 try {
+	 in.close();
+	 } catch (IOException ignored) {}
+	 }
+	 }
+	 }
+	 return robocodeProperties;
+	 }
+	 */
 
 	private JToolBar getStatusBar() {
 		if (statusBar == null) {
@@ -554,9 +554,11 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		try {
 			// Set the Look and Feel (LAF)
 			final IWindowManager windowManager = net.sf.robocode.core.Container.cache.getComponent(IWindowManager.class);
+
 			windowManager.setLookAndFeel();
 
 			RobocodeEditor robocodeEditor = net.sf.robocode.core.Container.cache.getComponent(RobocodeEditor.class);
+
 			robocodeEditor.isApplication = true; // used for close
 			robocodeEditor.pack();
 			// Center robocodeEditor
@@ -665,28 +667,28 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	/* TODO DELETE
-	public void saveRobocodeProperties() {
-		if (robocodeProperties == null) {
-			logError("Cannot save null robocode properties");
-			return;
-		}
-		FileOutputStream out = null;
+	 public void saveRobocodeProperties() {
+	 if (robocodeProperties == null) {
+	 logError("Cannot save null robocode properties");
+	 return;
+	 }
+	 FileOutputStream out = null;
 
-		try {
-			out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
+	 try {
+	 out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
 
-			robocodeProperties.store(out, "Robocode Properties");
-		} catch (IOException e) {
-			Logger.logError(e);
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException ignored) {}
-			}
-		}
-	}
-	*/
+	 robocodeProperties.store(out, "Robocode Properties");
+	 } catch (IOException e) {
+	 Logger.logError(e);
+	 } finally {
+	 if (out != null) {
+	 try {
+	 out.close();
+	 } catch (IOException ignored) {}
+	 }
+	 }
+	 }
+	 */
 
 	public void resetCompilerProperties() {
 		CompilerProperties props = Container.cache.getComponent(RobocodeCompilerFactory.class).getCompilerProperties();

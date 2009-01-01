@@ -61,7 +61,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		super();
 		this.editor = editor;
 		this.robotsDirectory = robotsDirectory;
-		this.repositoryManager=repositoryManager;
+		this.repositoryManager = repositoryManager;
 		initialize();
 	}
 
@@ -322,7 +322,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
 			if (ok == JOptionPane.YES_OPTION) {
-				if (!f.mkdirs()){
+				if (!f.mkdirs()) {
 					Logger.logError("Can't create" + f);
 				}
 				f = new File(saveDir);

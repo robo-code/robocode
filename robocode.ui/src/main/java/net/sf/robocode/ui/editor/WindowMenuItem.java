@@ -49,11 +49,6 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	private JMenu parentMenu;
 	private final int type;
 
-	/**
-	 * WindowMenuItem Constructor
-	 * <p/>
-	 * Initializes the WindowMenuItem and adds it to the parentMenu.
-	 */
 	public WindowMenuItem(EditWindow window, JMenu parentMenu) {
 		super();
 		this.window = window;
@@ -127,12 +122,6 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 		return text;
 	}
 
-	/**
-	 * Gets the name of the file represented by this item.
-	 * <p/>
-	 * Creates a unique filler filename if the window is nameless. May shorten
-	 * the filename if the name is long.
-	 */
 	protected String getFileName() {
 		if (window.getFileName() == null) {
 			return "Untitled " + (getPrecedingNewFiles() + 1);
@@ -175,7 +164,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	}
 
 	/**
-	 * Figures out how many nameless windows occur before this one in the parent.
+	 * @return how many nameless windows occur before this one in the parent.
 	 */
 	protected int getPrecedingNewFiles() {
 		int count = 0;
@@ -196,7 +185,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	 * Figures out what index (from 0 to WINDOW_MENU_MAX_SIZE-1) this item is in
 	 * the window menu.
 	 * <p/>
-	 * Returns -1 if this item isn't showing.
+	 * @return -1 if this item isn't showing.
 	 */
 	protected int getIndex() {
 		for (int i = 0; i < WINDOW_MENU_MAX_SIZE
@@ -288,7 +277,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	}
 
 	/**
-	 * Gets the EditWindow that this menu item is tied to.
+	 * @return the EditWindow that this menu item is tied to.
 	 */
 	public EditWindow getEditWindow() {
 		return window;

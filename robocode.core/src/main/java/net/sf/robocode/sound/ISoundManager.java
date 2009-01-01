@@ -12,9 +12,6 @@
 package net.sf.robocode.sound;
 
 
-import net.sf.robocode.battle.events.BattleEventDispatcher;
-
-
 /**
  * @author Pavel Savara (original)
  */

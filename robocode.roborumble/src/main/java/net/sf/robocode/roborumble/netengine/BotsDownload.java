@@ -27,6 +27,7 @@ package net.sf.robocode.roborumble.netengine;
 import net.sf.robocode.roborumble.battlesengine.CompetitionsSelector;
 import static net.sf.robocode.roborumble.netengine.FileTransfer.DownloadStatus;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
+import net.sf.robocode.io.Logger;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -126,16 +127,24 @@ public class BotsDownload {
 	public boolean downloadRatings() {
 		// delete previous files
 		if (generalbotsfile.length() != 0) {
-			(new File(generalbotsfile)).delete();
+			if (!(new File(generalbotsfile)).delete()) {
+				Logger.logError("Can't delete file");
+			}
 		}
 		if (minibotsfile.length() != 0) {
-			(new File(minibotsfile)).delete();
+			if (!(new File(minibotsfile)).delete()) {
+				Logger.logError("Can't delete file");
+			}
 		}
 		if (microbotsfile.length() != 0) {
-			(new File(microbotsfile)).delete();
+			if (!(new File(microbotsfile)).delete()) {
+				Logger.logError("Can't delete file");
+			}
 		}
 		if (nanobotsfile.length() != 0) {
-			(new File(nanobotsfile)).delete();
+			if (!(new File(nanobotsfile)).delete()) {
+				Logger.logError("Can't delete file");
+			}
 		}
 		// download new ones
 		if (ratingsurl.length() == 0) {

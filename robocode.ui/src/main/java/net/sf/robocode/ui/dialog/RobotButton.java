@@ -63,12 +63,12 @@ public class RobotButton extends JButton implements ActionListener {
 	private boolean isListening;
 
 	public RobotButton(IWindowManager windowManager, IBattleManager battleManager, IRobotDialogManager dialogManager) {
-		this.windowManager = (IWindowManagerExt)windowManager;
-		this.battleManager=battleManager;
-		this.dialogManager=dialogManager;
+		this.windowManager = (IWindowManagerExt) windowManager;
+		this.battleManager = battleManager;
+		this.dialogManager = dialogManager;
 	}
 
-	public void setup(String name, int maxEnergy, int robotIndex, int contestIndex, boolean attach){
+	public void setup(String name, int maxEnergy, int robotIndex, int contestIndex, boolean attach) {
 		this.name = name;
 		this.robotIndex = robotIndex;
 		this.contestIndex = contestIndex;
@@ -148,8 +148,7 @@ public class RobotButton extends JButton implements ActionListener {
 			windowManager.addBattleListener(battleObserver);
 		}
 		if (robotDialog == null) {
-			robotDialog = dialogManager.getRobotDialog(this,
-					name, true);
+			robotDialog = dialogManager.getRobotDialog(this, name, true);
 		}
 		robotDialog.attach(this);
 	}

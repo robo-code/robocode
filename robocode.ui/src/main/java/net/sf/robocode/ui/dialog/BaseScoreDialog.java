@@ -38,7 +38,7 @@ public abstract class BaseScoreDialog extends JDialog {
 
 	public BaseScoreDialog(IWindowManager windowManager, boolean modal) {
 		super(windowManager.getRobocodeFrame(), modal);
-		this.windowManager = (IWindowManagerExt)windowManager;
+		this.windowManager = (IWindowManagerExt) windowManager;
 	}
 
 	protected void initialize() {

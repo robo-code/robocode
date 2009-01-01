@@ -144,6 +144,7 @@ public class FileUtil {
 	 * Deletes a directory.
 	 *
 	 * @param dir the file for the directory to delete
+	 * @return true if susscess
 	 */
 	public static boolean deleteDir(File dir) {
 		if (dir.isDirectory()) {
@@ -154,7 +155,9 @@ public class FileUtil {
 						// Robocode won't create one, but just in case a user does...
 						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
 							deleteDir(file);
-							file.delete();
+							if (!file.delete()) {
+								Logger.logError("Can't delete" + file);
+							}
 						} else {
 							System.out.println("Warning: " + file + " may be a symlink.  Ignoring.");
 						}
@@ -162,7 +165,9 @@ public class FileUtil {
 						System.out.println("Warning: Cannot determine canonical file for " + file + " - ignoring.");
 					}
 				} else {
-					file.delete();
+					if (!file.delete()) {
+						Logger.logError("Can't delete" + file);
+					}
 				}
 			}
 			return dir.delete();
@@ -178,7 +183,9 @@ public class FileUtil {
 	 */
 	public static File createDir(File dir) {
 		if (dir != null && !dir.exists()) {
-			dir.mkdir();
+			if (!dir.mkdir()) {
+				Logger.logError("Can't create" + dir);
+			}
 		}
 		return dir;
 	}

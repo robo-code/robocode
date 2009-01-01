@@ -30,8 +30,8 @@ import java.util.Random;
  * @author Pavel Savara (original)
  */
 public abstract class RobotTestBed extends BattleAdaptor {
-	protected static IRobocodeEngine engine;
-	protected BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
+	protected static final IRobocodeEngine engine;
+	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected int errors = 0;
 	protected int messages = 0;
 
@@ -57,11 +57,11 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		errors++;
 	}
 
-	public boolean isDumpingPositions = false;
-	public boolean isDumpingTurns = false;
-	public boolean isDumpingOutput = true;
-	public boolean isDumpingErrors = true;
-	public boolean isDumpingMessages = true;
+	public final boolean isDumpingPositions = false;
+	public final boolean isDumpingTurns = false;
+	public final boolean isDumpingOutput = true;
+	public final boolean isDumpingErrors = true;
+	public final boolean isDumpingMessages = true;
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {

@@ -25,6 +25,7 @@ package net.sf.robocode.ui.packager;
 
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.ui.dialog.WizardPanel;
 
@@ -87,7 +88,9 @@ public class FilenamePanel extends WizardPanel {
 			File outgoingFile = new File(fileName);
 
 			if (!outgoingFile.exists()) {
-				outgoingFile.mkdirs();
+				if (!outgoingFile.mkdirs()) {
+					Logger.logError("Can't create" + outgoingFile);
+				}
 			}
 			String jarName = "myrobots.jar";
 			List<INamedFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();

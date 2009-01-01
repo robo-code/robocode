@@ -11,7 +11,9 @@
  *******************************************************************************/
 package robocode;
 
+
 import net.sf.robocode.security.HiddenAccess;
+
 
 /**
  * @author Pavel Savara (original)

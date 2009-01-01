@@ -37,14 +37,14 @@ public class RobotSpecification implements java.io.Serializable {
 
 	private final Object fileSpecification;
 	private String teamName;
-	private String name;
-	private String author;
-	private String webpage;
-	private String version;
-	private String robocodeVersion;
-	private String jarFile;
-	private String fullClassName;
-	private String description;
+	private final String name;
+	private final String author;
+	private final String webpage;
+	private final String version;
+	private final String robocodeVersion;
+	private final String jarFile;
+	private final String fullClassName;
+	private final String description;
 
 	private RobotSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
 		this.fileSpecification = fileSpecification;

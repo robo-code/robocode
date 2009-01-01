@@ -35,8 +35,8 @@
 package net.sf.robocode.settings;
 
 
-import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.IRepositoryManager;
 
 import java.awt.*;
 import java.io.FileInputStream;

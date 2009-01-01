@@ -14,8 +14,8 @@
 package net.sf.robocode.host.security;
 
 
-import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.core.Container;
+import net.sf.robocode.host.IHostManager;
 
 import java.io.OutputStream;
 import java.io.PrintStream;

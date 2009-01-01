@@ -33,15 +33,15 @@
 package net.sf.robocode.repository;
 
 
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.core.Container;
+import net.sf.robocode.ui.IWindowManager;
 import robocode.control.RobotSpecification;
 
 import java.io.*;
@@ -69,7 +69,7 @@ public final class RepositoryManager implements IRepositoryManager {
 	private File robotCache;
 
 	private Repository repository;
-	//private final IRobocodeManager manager;
+	// private final IRobocodeManager manager;
 
 	private final List<FileSpecification> updatedJarList = Collections.synchronizedList(
 			new ArrayList<FileSpecification>());
@@ -80,7 +80,7 @@ public final class RepositoryManager implements IRepositoryManager {
 
 	public RepositoryManager(IRobocodeManager manager, IHostManager hostManager) {
 		this.hostManager = hostManager;
-		this.manager=manager;
+		this.manager = manager;
 	}
 
 	public File getRobotCache() {
@@ -137,7 +137,8 @@ public final class RepositoryManager implements IRepositoryManager {
 	}
 
 	private void setStatus(String message) {
-		IWindowManager windowManager=Container.cache.getComponent(IWindowManager.class);
+		IWindowManager windowManager = Container.cache.getComponent(IWindowManager.class);
+
 		if (windowManager != null) {
 			windowManager.setStatus(message);
 		}

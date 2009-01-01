@@ -32,6 +32,7 @@ public class RobocodePermission extends java.security.Permission {
 	 * @return true if both Permission objects are equivalent.
 	 */
 	@Override
+	@SuppressWarnings({ "EqualsWhichDoesntCheckParameterClass"})
 	public boolean equals(Object obj) {
 		return false;
 	}

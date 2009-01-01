@@ -12,8 +12,8 @@
 package net.sf.robocode.version;
 
 
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 
 /**
@@ -21,7 +21,7 @@ import org.junit.Assert;
  */
 public class VersionTest {
 
-	IVersionManager versionManager = new VersionManager();
+	final IVersionManager versionManager = new VersionManager();
 
 	@Test
 	public void same() {

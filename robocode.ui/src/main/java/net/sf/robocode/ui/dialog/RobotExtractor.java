@@ -28,6 +28,7 @@ import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import org.picocontainer.Characteristics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +38,6 @@ import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-
-import org.picocontainer.Characteristics;
 
 
 /**
@@ -125,7 +124,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotSelectionPanel.class);
+			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(
+					RobotSelectionPanel.class);
 			robotSelectionPanel.setup(minRobots, maxRobots, false,
 					"Select the robot you would like to extract to the robots directory.  Robots not shown do not include source.",
 					true, true, true, false, true, true, null);

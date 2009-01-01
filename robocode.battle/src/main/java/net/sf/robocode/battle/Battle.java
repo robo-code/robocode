@@ -97,14 +97,14 @@ package net.sf.robocode.battle;
 
 
 import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.ContestantPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.battle.peer.TeamPeer;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
+import net.sf.robocode.host.ICpuManager;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
@@ -172,7 +172,7 @@ public final class Battle extends BaseBattle {
 		this.cpuConstant = cpuManager.getCpuConstant();
 	}
 
-	public void setup(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, boolean paused){
+	public void setup(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, boolean paused) {
 		isPaused = paused;
 		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
@@ -291,8 +291,7 @@ public final class Battle extends BaseBattle {
 				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team,
-					robots.size(), cindex);
+			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team, robots.size(), cindex);
 
 			robots.add(robotPeer);
 			if (team == null) {

@@ -36,10 +36,10 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	private final static int MAX_TPS = 10000;
 
 	// Objects we use
-	protected Thread battleThread;
-	protected IBattleManager battleManager;
+	private Thread battleThread;
+	IBattleManager battleManager;
 	protected final BattleEventDispatcher eventDispatcher;
-	protected final IRobocodeManager manager;
+	private final IRobocodeManager manager;
 
 	// rules
 	protected BattleRules battleRules;
@@ -60,7 +60,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected boolean isAborted;
 
 	// Battle control
-	protected boolean isPaused;
+	boolean isPaused;
 	private int stepCount;
 	private boolean runBackward;
 	private boolean roundOver;

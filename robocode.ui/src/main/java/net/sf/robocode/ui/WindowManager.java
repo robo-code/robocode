@@ -71,9 +71,9 @@ public class WindowManager implements IWindowManagerExt {
 	public WindowManager(IRobocodeManager manager, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
 		this.manager = manager;
 		this.battleManager = battleManager;
-		this.repositoryManager=repositoryManager;
-		this.cpuManager=cpuManager;
-		this.imageManager=imageManager;
+		this.repositoryManager = repositoryManager;
+		this.cpuManager = cpuManager;
+		this.imageManager = imageManager;
 		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have
@@ -104,8 +104,8 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public RobocodeFrame getRobocodeFrame() {
-		if (robocodeFrame == null){
-			this.robocodeFrame=Container.cache.getComponent(RobocodeFrame.class);
+		if (robocodeFrame == null) {
+			this.robocodeFrame = Container.cache.getComponent(RobocodeFrame.class);
 
 		}
 		return robocodeFrame;
@@ -251,6 +251,7 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void showResultsDialog(BattleCompletedEvent event) {
 		final ResultsDialog dialog = Container.cache.getComponent(ResultsDialog.class);
+
 		dialog.setup(event.getSortedResults(), event.getBattleRules().getNumRounds());
 		packCenterShow(dialog, true);
 	}
@@ -324,6 +325,7 @@ public class WindowManager implements IWindowManagerExt {
 		try {
 			battleManager.pauseBattle();
 			final NewBattleDialog battleDialog = Container.cache.getComponent(NewBattleDialog.class);
+
 			battleDialog.setup(battleManager.getBattleProperties());
 			WindowUtil.packCenterShow(getRobocodeFrame(), battleDialog);
 		} finally {
@@ -346,6 +348,7 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void showCreateTeamDialog() {
 		TeamCreator teamCreator = Container.cache.getComponent(TeamCreator.class);
+
 		WindowUtil.packCenterShow(teamCreator);
 	}
 
@@ -382,8 +385,7 @@ public class WindowManager implements IWindowManagerExt {
 			}
 		});
 
-		chooser.setDialogTitle(
-				"Select the robot .jar file to copy to " + repositoryManager.getRobotsDirectory());
+		chooser.setDialogTitle("Select the robot .jar file to copy to " + repositoryManager.getRobotsDirectory());
 
 		if (chooser.showDialog(getRobocodeFrame(), "Import") == JFileChooser.APPROVE_OPTION) {
 			File inputFile = chooser.getSelectedFile();

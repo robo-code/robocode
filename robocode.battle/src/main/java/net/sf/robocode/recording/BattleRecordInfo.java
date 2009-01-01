@@ -274,7 +274,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		}
 
 		final BattleProperties props = new BattleProperties();
-		BattleRecordInfo recinfo;
+		final BattleRecordInfo recinfo;
 
 		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}
 

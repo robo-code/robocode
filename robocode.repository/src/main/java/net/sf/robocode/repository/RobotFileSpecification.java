@@ -18,7 +18,6 @@
 package net.sf.robocode.repository;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;

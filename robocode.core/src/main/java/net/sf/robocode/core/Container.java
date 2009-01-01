@@ -11,22 +11,23 @@
  *******************************************************************************/
 package net.sf.robocode.core;
 
-import org.picocontainer.MutablePicoContainer;
+
+import net.sf.robocode.io.Logger;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.OptInCaching;
 
 import java.io.File;
 import java.io.FilenameFilter;
 
-import net.sf.robocode.io.Logger;
 
 /**
  * @author Pavel Savara (original)
  */
 public final class Container {
-	public static MutablePicoContainer cache;
-	public static MutablePicoContainer factory;
+	public static final MutablePicoContainer cache;
+	public static final MutablePicoContainer factory;
 
 	static {
 		cache = new DefaultPicoContainer(new Caching());
@@ -37,19 +38,22 @@ public final class Container {
 
 	private static void loadModules() {
 		final String classPath = System.getProperties().getProperty("java.class.path", null);
-		for(String path : classPath.split(";")){
-			File pathf=new File(path);
-			if (pathf.isDirectory()){
+
+		for (String path : classPath.split(";")) {
+			File pathf = new File(path);
+
+			if (pathf.isDirectory()) {
 				final int i = path.lastIndexOf("robocode.");
-				if (i>0){
+
+				if (i > 0) {
 					String name = path.substring(i);
+
 					name = "net.sf." + name.substring(0, name.indexOf("\\"));
 					loadModule(name);
 				} else {
 					loadModules(pathf);
 				}
-			}
-			else if (path.startsWith("robocode") && path.endsWith(".jar")){
+			} else if (path.startsWith("robocode") && path.endsWith(".jar")) {
 				loadModule(pathf.toString());
 			}
 		}
@@ -62,19 +66,21 @@ public final class Container {
 				return name.startsWith("robocode") && name.endsWith(".jar");
 			}
 		});
-		for(File module : modules){
+
+		for (File module : modules) {
 			loadModule(module.toString());
 		}
 	}
 
-	private static void loadModule(String module){
+	private static void loadModule(String module) {
 		try {
 			Class<?> modClass = ClassLoader.getSystemClassLoader().loadClass(module + ".Module");
+
 			modClass.newInstance();
-			Logger.logMessage("Loaded "+module);
+			Logger.logMessage("Loaded " + module);
 		} catch (ClassNotFoundException e) {
 			// OK, no worries, it is not module
-			Logger.logMessage("Can't load "+module);
+			Logger.logMessage("Can't load " + module);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		} catch (InstantiationException e) {

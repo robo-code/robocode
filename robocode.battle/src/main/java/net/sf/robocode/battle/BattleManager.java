@@ -55,16 +55,18 @@ package net.sf.robocode.battle;
 
 
 import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.ICpuManager;
-import net.sf.robocode.core.Container;
-import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.core.Container;
+import net.sf.robocode.host.ICpuManager;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
+import net.sf.robocode.recording.BattlePlayer;
+import net.sf.robocode.recording.IRecordManager;
+import net.sf.robocode.repository.IRepositoryManager;
+import org.picocontainer.Characteristics;
 import robocode.Event;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
@@ -73,15 +75,12 @@ import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
-import net.sf.robocode.recording.IRecordManager;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.picocontainer.Characteristics;
 
 
 /**
@@ -110,13 +109,13 @@ public class BattleManager implements IBattleManager {
 	private int pauseCount = 0;
 	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
-	public BattleManager(IRobocodeManager manager, IRepositoryManager repositoryManager, IHostManager hostManager, ICpuManager cpuManager,BattleEventDispatcher battleEventDispatcher, IRecordManager recordManager) {
+	public BattleManager(IRobocodeManager manager, IRepositoryManager repositoryManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher battleEventDispatcher, IRecordManager recordManager) {
 		this.manager = manager;
-		this.recordManager=recordManager;
-		this.repositoryManager=repositoryManager;
-		this.cpuManager=cpuManager;
-		this.hostManager=hostManager;
-		this.battleEventDispatcher=battleEventDispatcher;
+		this.recordManager = recordManager;
+		this.repositoryManager = repositoryManager;
+		this.cpuManager = cpuManager;
+		this.hostManager = hostManager;
+		this.battleEventDispatcher = battleEventDispatcher;
 	}
 
 	public synchronized void cleanup() {
@@ -224,6 +223,7 @@ public class BattleManager implements IBattleManager {
 		}
 
 		Battle realBattle = Container.factory.as(Characteristics.NO_CACHE).getComponent(Battle.class);
+
 		realBattle.setup(battlingRobotsList, battleProperties, isPaused());
 
 		if (recording) {

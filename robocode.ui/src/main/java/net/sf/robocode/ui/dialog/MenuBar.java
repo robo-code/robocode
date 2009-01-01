@@ -193,15 +193,15 @@ public class MenuBar extends JMenuBar {
 	private final ICpuManager cpuManager;
 
 	public MenuBar(IRobocodeManager manager,
-						   IWindowManagerExt windowManager,
-						   IBattleManager battleManager,
-						   IRecordManager recordManager,
-						   ICpuManager cpuManager) {
+			IWindowManagerExt windowManager,
+			IBattleManager battleManager,
+			IRecordManager recordManager,
+			ICpuManager cpuManager) {
 		this.manager = manager;
-		this.windowManager=windowManager;
-		this.battleManager=battleManager;
-		this.recordManager=recordManager;
-		this.cpuManager=cpuManager;
+		this.windowManager = windowManager;
+		this.battleManager = battleManager;
+		this.recordManager = recordManager;
+		this.cpuManager = cpuManager;
 
 		// FNL: Make sure that menus are heavy-weight components so that the menus are not painted
 		// behind the BattleView which is a heavy-weight component. This must be done before
@@ -214,7 +214,7 @@ public class MenuBar extends JMenuBar {
 		add(getHelpMenu());
 	}
 
-	public void setup(RobocodeFrame robocodeFrame){
+	public void setup(RobocodeFrame robocodeFrame) {
 		this.robocodeFrame = robocodeFrame;
 	}
 

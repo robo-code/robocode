@@ -11,13 +11,15 @@
  *******************************************************************************/
 package net.sf.robocode.repository;
 
+
 import net.sf.robocode.core.Container;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class Module {
-	static{
+	static {
 		Container.cache.addComponent(IRepositoryManager.class, RepositoryManager.class);
 	}
 }

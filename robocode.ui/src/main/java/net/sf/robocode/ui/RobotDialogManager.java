@@ -24,14 +24,13 @@ package net.sf.robocode.ui;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.ui.dialog.*;
+import org.picocontainer.Characteristics;
 import robocode.control.snapshot.IRobotSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.picocontainer.Characteristics;
 
 
 /**

@@ -40,6 +40,7 @@ import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.dialog.*;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 import net.sf.robocode.version.IVersionManager;
+import org.picocontainer.Characteristics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,8 +57,6 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.Manifest;
 import java.util.zip.ZipException;
-
-import org.picocontainer.Characteristics;
 
 
 /**
@@ -100,11 +99,11 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	public RobotPackager(IRobocodeManager manager, IRepositoryManager repositoryManager, IWindowManager windowManager, IVersionManager versionManager, IBattleManager battleManager) {
 		super(windowManager.getRobocodeFrame());
-		this.manager=manager;
-		this.versionManager=versionManager;
+		this.manager = manager;
+		this.versionManager = versionManager;
 		this.repositoryManager = repositoryManager;
 		this.windowManager = windowManager;
-		this.battleManager=battleManager;
+		this.battleManager = battleManager;
 		initialize();
 	}
 
@@ -225,10 +224,11 @@ public class RobotPackager extends JDialog implements WizardListener {
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotSelectionPanel.class);
-			robotSelectionPanel.setup(minRobots, maxRobots, false,
-					"Select the robot or team you would like to package.", /* true */false, false, false/* true */, true,
-					false, true, null);
+			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(
+					RobotSelectionPanel.class);
+			robotSelectionPanel.setup(minRobots, maxRobots, false, "Select the robot or team you would like to package.", /* true */
+					false,
+					false, false/* true */, true, false, true, null);
 		}
 		return robotSelectionPanel;
 	}
@@ -520,7 +520,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		};
 
-		//TODO ? manager.getHostManager().addSafeThread(thread);
+		// TODO ? manager.getHostManager().addSafeThread(thread);
 
 		thread.start();
 
@@ -533,7 +533,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		}
 
-		//TODO ? manager.getHostManager().removeSafeThread(thread);
+		// TODO ? manager.getHostManager().removeSafeThread(thread);
 	}
 
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,

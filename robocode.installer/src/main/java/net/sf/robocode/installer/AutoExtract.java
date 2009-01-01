@@ -37,13 +37,13 @@ import java.util.jar.JarInputStream;
  * @author Flemming N. Larsen (contributor)
  */
 public class AutoExtract implements ActionListener {
-	public JDialog licenseDialog;
-	public boolean accepted;
-	public String spinner[] = { "-", "\\", "|", "/"};
-	public String message = "";
-	public static String osName = System.getProperty("os.name");
-	public static double osVersion = doubleValue(System.getProperty("os.version"));
-	public static String javaVersion = System.getProperty("java.version");
+	private JDialog licenseDialog;
+	private boolean accepted;
+	private final String[] spinner = { "-", "\\", "|", "/"};
+	private String message = "";
+	private static final String osName = System.getProperty("os.name");
+	private static final double osVersion = doubleValue(System.getProperty("os.version"));
+	private static final String javaVersion = System.getProperty("java.version");
 
 	/**
 	 * AutoExtract constructor.
@@ -66,7 +66,9 @@ public class AutoExtract implements ActionListener {
 
 		try {
 			d = Double.parseDouble(s);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+			e.printStackTrace(System.err);
+		}
 
 		return d;
 	}
@@ -198,48 +200,44 @@ public class AutoExtract implements ActionListener {
 				int spin = 0;
 
 				entryName = entry.getName();
-				if (entry == null) {
-					System.err.println("Could not find entry: " + entry);
+				if (entry.isDirectory()) {
+					File dir = new File(dest, entry.getName());
+
+					dir.mkdirs();
 				} else {
-					if (entry.isDirectory()) {
-						File dir = new File(dest, entry.getName());
+					status.setText(entryName + " " + spinner[spin++]);
 
-						dir.mkdirs();
-					} else {
-						status.setText(entryName + " " + spinner[spin++]);
+					File out = new File(dest, entry.getName());
+					File parentDirectory = new File(out.getParent());
 
-						File out = new File(dest, entry.getName());
-						File parentDirectory = new File(out.getParent());
+					parentDirectory.mkdirs();
+					fos = new FileOutputStream(out);
 
-						parentDirectory.mkdirs();
-						fos = new FileOutputStream(out);
+					int index = 0;
+					int num;
+					int count = 0;
 
-						int index = 0;
-						int num;
-						int count = 0;
-
-						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-							fos.write(buf, 0, num);
-							index += num;
-							count++;
-							if (count > 80) {
-								status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
-								if (spin > 3) {
-									spin = 0;
-								}
-								count = 0;
+					while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+						fos.write(buf, 0, num);
+						index += num;
+						count++;
+						if (count > 80) {
+							status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
+							if (spin > 3) {
+								spin = 0;
 							}
+							count = 0;
 						}
-						fos.close();
-
-						if (entryName.length() > 3 && entryName.substring(entryName.length() - 3).equals(".sh")) {
-							if (File.separatorChar == '/') {
-								Runtime.getRuntime().exec("chmod 755 " + out.toString());
-							}
-						}
-
-						status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
 					}
+					fos.close();
+
+					if (entryName.length() > 3 && entryName.substring(entryName.length() - 3).equals(".sh")) {
+						if (File.separatorChar == '/') {
+							Runtime.getRuntime().exec("chmod 755 " + out.toString());
+						}
+					}
+
+					status.setText(entryName + " " + spinner[spin] + " (" + index + " bytes)");
 				}
 				entry = jarIS.getNextJarEntry();
 			}
@@ -433,16 +431,18 @@ public class AutoExtract implements ActionListener {
 			Process p = Runtime.getRuntime().exec(command + " makeshortcut.js", null, installDir);
 			int rv = p.waitFor();
 
-			try {
-				shortcutMaker.delete();
-			} catch (Exception e) {}
+			shortcutMaker.delete();
 			if (rv == 0) {
 				JOptionPane.showMessageDialog(null,
 						message + "\n" + "A Robocode program group has been added to your Start menu\n"
 						+ "A Robocode icon has been added to your desktop.");
 				return true;
 			}
-		} catch (Exception e) {}
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+		} catch (InterruptedException e) {
+			e.printStackTrace(System.err);
+		}
 
 		return false;
 	}
@@ -481,7 +481,9 @@ public class AutoExtract implements ActionListener {
 				in.close();
 				out.close();
 
-			} catch (IOException e) {}
+			} catch (IOException e) {
+				e.printStackTrace(System.err);
+			}
 			srcFile.delete();
 		}
 	}

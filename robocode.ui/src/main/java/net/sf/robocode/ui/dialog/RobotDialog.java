@@ -74,10 +74,10 @@ public class RobotDialog extends JFrame {
 		super();
 		this.manager = manager;
 		this.battleManager = battleManager;
-		this.windowManager=windowManager;
+		this.windowManager = windowManager;
 	}
 
-	public void setup(RobotButton robotButton){
+	public void setup(RobotButton robotButton) {
 		this.robotButton = robotButton;
 		initialize();
 	}

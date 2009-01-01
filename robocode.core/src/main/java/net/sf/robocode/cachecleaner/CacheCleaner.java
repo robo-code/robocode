@@ -35,6 +35,7 @@ public final class CacheCleaner {
 
 	public static void main(String[] args) {
 		IRobocodeManager manager = Container.cache.getComponent(IRobocodeManager.class);
+
 		clean(manager);
 	}
 

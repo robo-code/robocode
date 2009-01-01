@@ -18,7 +18,7 @@ package robocode.exception;
 public class EventInterruptedException extends Error { // Must be error!
 	private static final long serialVersionUID = 1L;
 
-	int priority = Integer.MIN_VALUE;
+	private int priority = Integer.MIN_VALUE;
 
 	public EventInterruptedException(int priority) {
 		this.priority = priority;

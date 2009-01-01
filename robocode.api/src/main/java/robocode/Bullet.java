@@ -44,7 +44,7 @@ public class Bullet implements Serializable {
 	private final String ownerName;
 	private String victimName;
 	private boolean isActive;
-	private int bulletId;
+	private final int bulletId;
 
 	/**
 	 * Called by the game to create a new {@code Bullet} object

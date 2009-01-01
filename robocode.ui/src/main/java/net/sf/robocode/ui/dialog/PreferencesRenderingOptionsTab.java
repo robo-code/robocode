@@ -51,7 +51,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	public PreferencesRenderingOptionsTab(IRobocodeManager manager, IImageManager imageManager) {
 		super();
 		this.manager = manager;
-		this.imageManager=imageManager;
+		this.imageManager = imageManager;
 		initialize();
 	}
 

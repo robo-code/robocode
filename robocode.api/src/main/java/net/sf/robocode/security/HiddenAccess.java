@@ -83,15 +83,18 @@ public class HiddenAccess {
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
 
-			Class<?> robocodeManager = ClassLoader.getSystemClassLoader().loadClass("net.sf.robocode.core.RobocodeManager");
+			Class<?> robocodeManager = ClassLoader.getSystemClassLoader().loadClass(
+					"net.sf.robocode.core.RobocodeManager");
 
 			robocodeManagerFactory = robocodeManager.getDeclaredMethod("createRobocodeManager");
 			robocodeManagerFactory.setAccessible(true);
 
-			robocodeManagerFactoryRE = robocodeManager.getDeclaredMethod("createRobocodeManagerForRobotEngine", File.class);
+			robocodeManagerFactoryRE = robocodeManager.getDeclaredMethod("createRobocodeManagerForRobotEngine",
+					File.class);
 			robocodeManagerFactoryRE.setAccessible(true);
 
 			Class<?> robocodeMainC = ClassLoader.getSystemClassLoader().loadClass("net.sf.robocode.core.RobocodeMain");
+
 			//
 			robocodeMain = robocodeMainC.getDeclaredMethod("main", Object.class);
 			robocodeMain.setAccessible(true);
@@ -200,8 +203,7 @@ public class HiddenAccess {
 	public static void robocodeMain(final String[] args) {
 		init();
 		try {
-			Object a=args;
-			robocodeMain.invoke(null, a);
+			robocodeMain.invoke(null, (Object) args);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		} catch (InvocationTargetException e) {

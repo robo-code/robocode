@@ -11,11 +11,13 @@
  *******************************************************************************/
 package runner;
 
+
+import robocode.BattleResults;
 import robocode.control.*;
 import robocode.control.events.*;
-import robocode.BattleResults;
 
 import java.io.File;
+
 
 /**
  * Sample application that runs two sample robots in Robocode.

@@ -49,7 +49,7 @@ public class ResultsDialog extends BaseScoreDialog {
 		buttonEventHandler = new ButtonEventHandler();
 	}
 
-	public void setup(BattleResults[] results, int numRounds){
+	public void setup(BattleResults[] results, int numRounds) {
 		tableModel = new BattleResultsTableModel(results, numRounds);
 		initialize();
 		setTitle(((BattleResultsTableModel) getTableModel()).getTitle());

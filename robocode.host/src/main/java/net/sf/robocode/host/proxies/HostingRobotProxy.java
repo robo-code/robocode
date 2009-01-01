@@ -41,7 +41,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected EventManager eventManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
-	private IRobotFileSpecification robotSpecification;
+	private final IRobotFileSpecification robotSpecification;
 	protected RobotClassLoader robotClassLoader;
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;

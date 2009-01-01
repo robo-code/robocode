@@ -13,13 +13,10 @@ package net.sf.robocode.recording;
 
 
 import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.battle.IBattle;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
-import net.sf.robocode.recording.BattleRecordFormat;
-import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;

@@ -13,6 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.io.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,18 +34,22 @@ public class TestFileWrite extends RobotTestBed {
 		return "sample.Walls,sample.SittingDuck";
 	}
 
-	File file = new File("robots/sample/SittingDuck.data/count.dat");
+	final File file = new File("robots/sample/SittingDuck.data/count.dat");
 
 	@Override
 	protected void runSetup() {
 		if (file.exists()) {
-			file.delete();
+			if (!file.delete()) {
+				Logger.logError("Can't delete" + file);
+			}
 		}
 	}
 
 	@Override
 	protected void runTeardown() {
 		Assert.assertTrue(file.exists());
-		file.delete();
+		if (!file.delete()) {
+			Logger.logError("Can't delete" + file);
+		}
 	}
 }

@@ -64,7 +64,7 @@ public class SoundManager implements ISoundManager {
 	private final IBattleManager battleManager;
 
 	public SoundManager(IRobocodeManager manager, IBattleManager battleManager) {
-		this.battleManager=battleManager;
+		this.battleManager = battleManager;
 		properties = manager.getProperties();
 		battleManager.addListener(new BattleObserver());
 	}

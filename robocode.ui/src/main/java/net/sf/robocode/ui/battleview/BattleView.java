@@ -107,7 +107,7 @@ public class BattleView extends Canvas {
 
 	public BattleView(IRobocodeManager manager, IWindowManager windowManager, IImageManager imageManager) {
 		this.manager = manager;
-		this.windowManager = (IWindowManagerExt)windowManager;
+		this.windowManager = (IWindowManagerExt) windowManager;
 		this.imageManager = imageManager; 
 
 		battleField = new BattleField(800, 600);

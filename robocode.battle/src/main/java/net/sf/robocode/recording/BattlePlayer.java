@@ -22,6 +22,8 @@ import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 
+import java.util.List;
+
 
 /**
  * @author Pavel Savara (original)
@@ -57,8 +59,10 @@ public final class BattlePlayer extends BaseBattle {
 		eventDispatcher.onBattleFinished(new BattleFinishedEvent(aborted));
 
 		if (!aborted) {
+			final List<BattleResults> res = recordManager.recordInfo.results;
+
 			eventDispatcher.onBattleCompleted(
-					new BattleCompletedEvent(battleRules, recordManager.recordInfo.results.toArray(new BattleResults[] {})));
+					new BattleCompletedEvent(battleRules, res.toArray(new BattleResults[res.size()])));
 		}
 
 		super.finalizeBattle();

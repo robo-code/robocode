@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.sf.robocode.api;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public class Module {
-	//dummy for now, just to staisfy module loader
+public class Module {// dummy for now, just to staisfy module loader
 }

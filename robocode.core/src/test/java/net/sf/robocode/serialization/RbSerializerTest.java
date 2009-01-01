@@ -16,14 +16,11 @@ import net.sf.robocode.peer.BulletCommand;
 import net.sf.robocode.peer.DebugProperty;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.TeamMessage;
-import net.sf.robocode.serialization.ObjectCloner;
-import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.test.Assert;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.security.HiddenAccess;
-import org.junit.Test;
-import org.junit.Before;
+import net.sf.robocode.test.Assert;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +36,7 @@ import java.io.IOException;
 public class RbSerializerTest {
 
 	@BeforeClass
-	public static void init(){
+	public static void init() {
 		HiddenAccess.createRobocodeManager();
 	}
 
@@ -162,7 +159,7 @@ public class RbSerializerTest {
 
 	// @Test
 	// 21 seconds for 100 000
-	public void speed2() throws IOException {
+	public void speed2() {
 		ExecCommands ec = new ExecCommands();
 
 		ec.setBodyTurnRemaining(150.123);

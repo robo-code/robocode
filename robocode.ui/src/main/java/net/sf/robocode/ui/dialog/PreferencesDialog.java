@@ -52,7 +52,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	public PreferencesDialog(IRobocodeManager manager, IWindowManager windowManager, IImageManager imageManager) {
 		super(windowManager.getRobocodeFrame(), true);
 		this.manager = manager;
-		this.imageManager=imageManager;
+		this.imageManager = imageManager;
 		initialize();
 	}
 

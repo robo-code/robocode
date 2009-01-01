@@ -20,14 +20,10 @@ import robocode.BattleResults;
 
 
 /**
- * Contains the battle results for an individual robot, which is given as input
- * parameter with the
- * {@link RobocodeListener#battleComplete(BattleSpecification, RobotResults[])
- * RobocodeListener#battleComplete()} event handler.
+ * Contains the battle results for an individual robot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
- * @see RobocodeListener
  */
 public class RobotResults extends BattleResults {
 

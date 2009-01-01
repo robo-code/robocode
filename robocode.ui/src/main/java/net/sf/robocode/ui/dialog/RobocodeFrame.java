@@ -39,6 +39,7 @@ import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
 import net.sf.robocode.ui.gfx.ImageUtil;
 import net.sf.robocode.version.IVersionManager;
+import org.picocontainer.Characteristics;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -51,8 +52,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-
-import org.picocontainer.Characteristics;
 
 
 /**
@@ -116,23 +115,23 @@ public class RobocodeFrame extends JFrame {
 	final List<RobotButton> robotButtons = new ArrayList<RobotButton>();
 
 	public RobocodeFrame(IRobocodeManager manager,
-						 IWindowManager windowManager,
-						 IRobotDialogManager dialogManager,
-						 IVersionManager versionManager,
-						 IBattleManager battleManager,
-						 IRecordManager recordManager,
-						 InteractiveHandler interactiveHandler,
-						 MenuBar menuBar,BattleView battleView
-						 ) {
+			IWindowManager windowManager,
+			IRobotDialogManager dialogManager,
+			IVersionManager versionManager,
+			IBattleManager battleManager,
+			IRecordManager recordManager,
+			InteractiveHandler interactiveHandler,
+			MenuBar menuBar, BattleView battleView
+			) {
 		this.windowManager = (IWindowManagerExt) windowManager;
 		this.manager = manager;
 		this.interactiveHandler = interactiveHandler;
-		this.versionManager=versionManager;
-		this.battleManager=battleManager;
-		this.dialogManager=dialogManager;
-		this.recordManager=recordManager;
+		this.versionManager = versionManager;
+		this.battleManager = battleManager;
+		this.dialogManager = dialogManager;
+		this.recordManager = recordManager;
 		menuBar.setup(this);
-		this.battleView=battleView;
+		this.battleView = battleView;
 		this.menuBar = menuBar;
 		initialize();
 	}
@@ -300,6 +299,7 @@ public class RobocodeFrame extends JFrame {
 			sidePanel.setLayout(new BorderLayout());
 			sidePanel.add(getRobotButtonsScrollPane(), BorderLayout.CENTER);
 			final BattleButton btn = net.sf.robocode.core.Container.cache.getComponent(BattleButton.class);
+
 			btn.attach();
 			sidePanel.add(btn, BorderLayout.SOUTH);
 		}
@@ -861,7 +861,9 @@ public class RobocodeFrame extends JFrame {
 				for (int index = 0; index < robots.size(); index++) {
 					final IRobotSnapshot robot = robots.get(index);
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-					final RobotButton button = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotButton.class);
+					final RobotButton button = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(
+							RobotButton.class);
+
 					button.setup(robot.getName(), maxEnergy, index, robot.getContestantIndex(), attach);
 					button.setText(robot.getShortName());
 					addRobotButton(button);
@@ -880,7 +882,8 @@ public class RobocodeFrame extends JFrame {
 			robotButtons.clear();
 
 			final boolean canReplayRecord = recordManager.hasRecord();
-			final boolean enableSaveRecord = (manager.getProperties().getOptionsCommonEnableReplayRecording() & canReplayRecord);
+			final boolean enableSaveRecord = (manager.getProperties().getOptionsCommonEnableReplayRecording()
+					& canReplayRecord);
 
 			getStopButton().setEnabled(false);
 			getReplayButton().setEnabled(canReplayRecord);

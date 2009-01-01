@@ -22,7 +22,7 @@ import java.awt.*;
  *
  * @author Flemming N. Larsen (original)
  */
-public class ColorUtil {
+class ColorUtil {
 
 	/**
 	 * Return a Color based on a color in RGB565 format.

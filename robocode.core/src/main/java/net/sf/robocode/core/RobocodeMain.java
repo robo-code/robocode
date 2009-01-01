@@ -29,18 +29,18 @@
 package net.sf.robocode.core;
 
 
-import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BattleResultsTableModel;
+import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.security.LoggingThreadGroup;
-import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.version.IVersionManager;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
-import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.version.IVersionManager;
 import robocode.control.events.*;
 
 import java.io.File;
@@ -58,7 +58,7 @@ import java.io.PrintStream;
  * @author Pavel Savara (contributor)
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
-public class RobocodeMain implements Runnable{
+public class RobocodeMain implements Runnable {
 
 	private final Setup setup;
 	private final BattleObserver battleObserver = new BattleObserver();
@@ -71,7 +71,7 @@ public class RobocodeMain implements Runnable{
 	final private IVersionManager versionManager;
 
 	private class Setup {
-		boolean securityOn = true;
+		final boolean securityOn = true;
 		boolean experimentalOn;
 		boolean minimize;
 		boolean exitOnComplete;
@@ -82,27 +82,29 @@ public class RobocodeMain implements Runnable{
 	}
 
 	public RobocodeMain(IRobocodeManager manager,
-						IHostManager hostManager,
-						IWindowManager windowManager,
-						ISoundManager soundManager,
-						IBattleManager battleManager,
-						IRecordManager recordManager,
-						IVersionManager versionManager
-	) {
+			IHostManager hostManager,
+			IWindowManager windowManager,
+			ISoundManager soundManager,
+			IBattleManager battleManager,
+			IRecordManager recordManager,
+			IVersionManager versionManager
+			) {
 		setup = new Setup();
-		this.manager=manager;
-		this.hostManager=hostManager;
-		this.windowManager=windowManager;
-		this.soundManager=soundManager;
-		this.battleManager=battleManager;
-		this.recordManager=recordManager;
-		this.versionManager=versionManager;
+		this.manager = manager;
+		this.hostManager = hostManager;
+		this.windowManager = windowManager;
+		this.soundManager = soundManager;
+		this.battleManager = battleManager;
+		this.recordManager = recordManager;
+		this.versionManager = versionManager;
 	}
 
 	public static void main(Object args) {
-		RobocodeMain main=Container.cache.getComponent(RobocodeMain.class);
-		main.loadSetup((String[])args);
+		RobocodeMain main = Container.cache.getComponent(RobocodeMain.class);
+
+		main.loadSetup((String[]) args);
 		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
+
 		new Thread(group, main, "Robocode main thread").start();
 	}
 
@@ -130,6 +132,7 @@ public class RobocodeMain implements Runnable{
 
 				// Play the intro battle if a battle file is not specified and this is the first time Robocode is being run
 				final String currentVersion = versionManager.getVersion();
+
 				if (setup.battleFilename == null && !manager.getProperties().getLastRunVersion().equals(currentVersion)) {
 					manager.getProperties().setLastRunVersion(currentVersion);
 					manager.saveProperties();
@@ -200,20 +203,20 @@ public class RobocodeMain implements Runnable{
 			changeDirectory(robocodeDir);
 		}
 
-		/*TODO
-		if (System.getProperty("NOSECURITY", "false").equals("true")) {
-			WindowUtil.messageWarning(
-					"Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-					+ "You should only run robots which you trust!");
-			setup.securityOn = false;
-		}
-		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-			WindowUtil.messageWarning(
-					"Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
-					+ "You should only run robots which you trust!");
-			setup.experimentalOn = true;
-		}
-		*/
+		/* TODO
+		 if (System.getProperty("NOSECURITY", "false").equals("true")) {
+		 WindowUtil.messageWarning(
+		 "Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
+		 + "You should only run robots which you trust!");
+		 setup.securityOn = false;
+		 }
+		 if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+		 WindowUtil.messageWarning(
+		 "Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
+		 + "You should only run robots which you trust!");
+		 setup.experimentalOn = true;
+		 }
+		 */
 
 		setup.tps = manager.getProperties().getOptionsBattleDesiredTPS();
 

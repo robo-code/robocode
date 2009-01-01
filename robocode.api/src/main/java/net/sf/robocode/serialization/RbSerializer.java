@@ -76,7 +76,7 @@ public final class RbSerializer {
 	private final CharsetEncoder encoder;
 	private final CharsetDecoder decoder;
 
-	private int currentVersion;
+	private final int currentVersion;
 
 	static {
 		charset = Charset.forName("UTF8"); // we will use it as UCS-2

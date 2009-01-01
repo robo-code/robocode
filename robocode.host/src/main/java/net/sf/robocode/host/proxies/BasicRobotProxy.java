@@ -47,7 +47,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	private IGraphicsProxy graphicsProxy;
 
-	protected RobotStatus status;
+	private RobotStatus status;
 	protected ExecCommands commands;
 	private ExecResults execResults;
 	private final Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>();
@@ -57,9 +57,9 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	private final AtomicInteger getCallCount = new AtomicInteger(0);
 
 	protected Condition waitCondition;
-	protected boolean testingCondition;
-	protected double firedEnergy;
-	protected double firedHeat;
+	private boolean testingCondition;
+	private double firedEnergy;
+	private double firedHeat;
 
 	public BasicRobotProxy(IRobotFileSpecification specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);

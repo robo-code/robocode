@@ -99,13 +99,14 @@ public class RobotSelectionPanel extends WizardPanel {
 	public RobotSelectionPanel(IRobocodeManager manager, IBattleManager battleManager, IRepositoryManager repositoryManager) {
 		super();
 		this.manager = manager;
-		this.repositoryManager=repositoryManager;
-		this.battleManager=battleManager;
+		this.repositoryManager = repositoryManager;
+		this.battleManager = battleManager;
 	}
+
 	public void setup(int minRobots, int maxRobots,
 			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
 			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
-			String preSelectedRobots){
+			String preSelectedRobots) {
 		this.showNumRoundsPanel = showNumRoundsPanel;
 		this.minRobots = minRobots;
 		this.maxRobots = maxRobots;

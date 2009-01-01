@@ -11,21 +11,23 @@
  *******************************************************************************/
 package net.sf.robocode.ui;
 
+
 import net.sf.robocode.core.Container;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.sound.SoundManager;
-import net.sf.robocode.ui.battleview.InteractiveHandler;
 import net.sf.robocode.ui.battleview.BattleView;
+import net.sf.robocode.ui.battleview.InteractiveHandler;
 import net.sf.robocode.ui.dialog.*;
 import net.sf.robocode.ui.editor.RobocodeCompilerFactory;
 import net.sf.robocode.ui.editor.RobocodeEditor;
 import net.sf.robocode.ui.packager.RobotPackager;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public class Module {
-	static{
+	static {
 		Container.cache.addComponent(AboutBox.class);
 		Container.cache.addComponent(BattleButton.class);
 		Container.cache.addComponent(BattleView.class);

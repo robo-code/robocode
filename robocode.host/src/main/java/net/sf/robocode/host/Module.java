@@ -11,13 +11,15 @@
  *******************************************************************************/
 package net.sf.robocode.host;
 
+
 import net.sf.robocode.core.Container;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class Module {
-	static{
+	static {
 		Container.cache.addComponent(IHostManager.class, HostManager.class);
 		Container.cache.addComponent(ICpuManager.class, CpuManager.class);
 	}

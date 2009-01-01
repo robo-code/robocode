@@ -28,6 +28,7 @@ import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import org.picocontainer.Characteristics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,8 +37,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.util.List;
-
-import org.picocontainer.Characteristics;
 
 
 /**
@@ -70,11 +69,11 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	public NewBattleDialog(IRobocodeManager manager, IWindowManager windowManager, IBattleManager battleManager) {
 		super(windowManager.getRobocodeFrame(), true);
 		this.manager = manager;
-		this.battleManager=battleManager;
+		this.battleManager = battleManager;
 
 	}
 
-	public void setup(BattleProperties battleProperties){
+	public void setup(BattleProperties battleProperties) {
 		this.battleProperties = battleProperties;
 		initialize();
 	}
@@ -218,10 +217,10 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			if (battleProperties != null) {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
-			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotSelectionPanel.class);
-			robotSelectionPanel.setup(MIN_ROBOTS, MAX_ROBOTS, true,
-					"Select robots for the battle", false, false, false, false, false,
-					!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
+			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(
+					RobotSelectionPanel.class);
+			robotSelectionPanel.setup(MIN_ROBOTS, MAX_ROBOTS, true, "Select robots for the battle", false, false, false,
+					false, false, !manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}
 		return robotSelectionPanel;
 	}

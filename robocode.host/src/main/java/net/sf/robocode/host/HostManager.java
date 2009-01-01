@@ -13,10 +13,9 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.core.Container;
 import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
-import net.sf.robocode.peer.*;
+import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.repository.IRobotFileSpecificationExt;
 import net.sf.robocode.security.HiddenAccess;

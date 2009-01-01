@@ -28,8 +28,8 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.core.Container;
-import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.ui.IWindowManager;
 
 
 /**
@@ -94,7 +94,8 @@ public class CpuManager implements ICpuManager {
 	}
 
 	private void setStatus(String message) {
-		IWindowManager windowManager=Container.cache.getComponent(IWindowManager.class);
+		IWindowManager windowManager = Container.cache.getComponent(IWindowManager.class);
+
 		if (windowManager != null) {
 			windowManager.setStatus(message);
 		}

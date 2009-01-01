@@ -11,18 +11,20 @@
  *******************************************************************************/
 package net.sf.robocode.core;
 
+
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.peer.*;
+import net.sf.robocode.serialization.RbSerializer;
 import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.version.IVersionManager;
 import net.sf.robocode.version.VersionManager;
-import net.sf.robocode.peer.*;
-import net.sf.robocode.serialization.RbSerializer;
+
 
 /**
  * @author Pavel Savara (original)
  */
 class Module {
-	static{
+	static {
 		Container.cache.addComponent(IRobocodeManager.class, RobocodeManager.class);
 		Container.cache.addComponent(IVersionManager.class, VersionManager.class);
 		Container.cache.addComponent(RobocodeMain.class);

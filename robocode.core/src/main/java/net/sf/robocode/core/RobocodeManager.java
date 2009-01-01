@@ -64,8 +64,8 @@ public class RobocodeManager implements IRobocodeManager {
 		HiddenAccess.manager = this;
 	}
 
-	public void setSlave(boolean value){
-		slave=value;
+	public void setSlave(boolean value) {
+		slave = value;
 	}
 
 	public RobocodeProperties getProperties() {
@@ -196,9 +196,11 @@ public class RobocodeManager implements IRobocodeManager {
 		}
 
 		RobocodeManager manager = (RobocodeManager) Container.cache.getComponent(IRobocodeManager.class);
+
 		manager.setSlave(true);
 		manager.setEnableGUI(false);
-		Container.cache.getComponent(IHostManager.class).initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
+		Container.cache.getComponent(IHostManager.class).initSecurity(true,
+				System.getProperty("EXPERIMENTAL", "false").equals("true"));
 
 		return manager;
 	}

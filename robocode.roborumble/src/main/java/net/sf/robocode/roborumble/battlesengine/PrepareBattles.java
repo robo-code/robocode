@@ -22,6 +22,7 @@ package net.sf.robocode.roborumble.battlesengine;
 
 
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
+import net.sf.robocode.io.Logger;
 
 import java.io.*;
 import java.util.Properties;
@@ -245,7 +246,9 @@ public class PrepareBattles {
 		// Delete priority battles (avoid duplication)
 		File r = new File(priority);
 
-		r.delete();
+		if (!r.delete()) {
+			Logger.logError("Can't delete" + r);
+		}
 
 		// Open battles file
 		PrintStream outtxt;

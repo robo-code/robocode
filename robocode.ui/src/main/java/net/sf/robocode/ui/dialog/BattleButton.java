@@ -27,7 +27,7 @@ public class BattleButton extends JButton implements ActionListener {
 	private final BattleDialog battleDialog;
 
 	public BattleButton(BattleDialog battleDialog) {
-		this.battleDialog=battleDialog;
+		this.battleDialog = battleDialog;
 
 		initialize();
 	}

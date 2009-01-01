@@ -133,7 +133,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private ByteBuffer calls;
 
-	private RbSerializer serializer = new RbSerializer();
+	private final RbSerializer serializer = new RbSerializer();
 
 	private Method lastRead; // TODO remove debug
 	private int lastPos;
@@ -1484,9 +1484,9 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private class DeserializePathIterator implements PathIterator {
-		int count;
+		final int count;
 		int pos;
-		int windingRule;
+		final int windingRule;
 		int[] type;
 		double[][] coords;
 

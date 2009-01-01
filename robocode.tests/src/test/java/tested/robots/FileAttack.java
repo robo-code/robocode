@@ -47,10 +47,10 @@ public class FileAttack extends AdvancedRobot {
 		try {
 			FileInputStream fs = new FileInputStream("C:\\MSDOS.SYS");
 
-			fs.read();
-			fs.read();
-			fs.read();
-			fs.read();
+			System.out.print(fs.read());
+			System.out.print(fs.read());
+			System.out.print(fs.read());
+			System.out.print(fs.read());
 			fs.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace(out);
