@@ -20,6 +20,8 @@ import org.picocontainer.behaviors.OptInCaching;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -28,15 +30,20 @@ import java.io.FilenameFilter;
 public final class Container {
 	public static final MutablePicoContainer cache;
 	public static final MutablePicoContainer factory;
+	private static List<String> known = new ArrayList<String>(); 
 
 	static {
 		cache = new DefaultPicoContainer(new Caching());
 		// new instance for every lookup, or same when asked for
 		factory = new DefaultPicoContainer(new OptInCaching(), cache);
-		loadModules();
+		final int modules = loadModules();
+		if (modules <2){
+			throw new Error("Main modules not loaded, something went wrong");
+		}
 	}
 
-	private static void loadModules() {
+	private static int loadModules() {
+		int res=0;
 		final String classPath = System.getProperties().getProperty("java.class.path", null);
 
 		for (String path : classPath.split(";")) {
@@ -49,17 +56,23 @@ public final class Container {
 					String name = path.substring(i);
 
 					name = "net.sf." + name.substring(0, name.indexOf("\\"));
-					loadModule(name);
+					if (loadModule(name)){
+						res++;
+					}
 				} else {
-					loadModules(pathf);
+					res+=loadModules(pathf);
 				}
 			} else if (path.startsWith("robocode") && path.endsWith(".jar")) {
-				loadModule(pathf.toString());
+				if (loadModule(pathf.toString())){
+					res++;
+				}
 			}
 		}
+		return res;
 	}
 
-	private static void loadModules(File pathf) {
+	private static int loadModules(File pathf) {
+		int res=0;
 		System.out.println("Searching " + pathf);
 		final File[] modules = pathf.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
@@ -68,16 +81,25 @@ public final class Container {
 		});
 
 		for (File module : modules) {
-			loadModule(module.toString());
+			if (loadModule(module.toString())){
+				res++;
+			}
 		}
+		return res;
 	}
 
-	private static void loadModule(String module) {
+	private static boolean loadModule(String module) {
 		try {
+			if (known.contains(module)){
+				// Logger.logMessage("already loaded " + module);
+				return false;
+			}
 			Class<?> modClass = ClassLoader.getSystemClassLoader().loadClass(module + ".Module");
 
 			modClass.newInstance();
 			Logger.logMessage("Loaded " + module);
+			known.add(module);
+			return true;
 		} catch (ClassNotFoundException e) {
 			// OK, no worries, it is not module
 			Logger.logMessage("Can't load " + module);
@@ -86,5 +108,6 @@ public final class Container {
 		} catch (InstantiationException e) {
 			Logger.logError(e);
 		}
+		return false;
 	}
 }

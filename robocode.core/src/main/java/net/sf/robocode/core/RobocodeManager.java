@@ -195,7 +195,7 @@ public class RobocodeManager implements IRobocodeManager {
 			return null;
 		}
 
-		RobocodeManager manager = (RobocodeManager) Container.cache.getComponent(IRobocodeManager.class);
+		RobocodeManager manager = (RobocodeManager) createRobocodeManager();
 
 		manager.setSlave(true);
 		manager.setEnableGUI(false);
