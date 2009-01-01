@@ -31,6 +31,7 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
@@ -75,29 +76,36 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private final EventHandler eventHandler = new EventHandler();
 	private RobotDescriptionPanel descriptionPanel;
-	private final String instructions;
+	private String instructions;
 	private JLabel instructionsLabel;
 	private JPanel mainPanel;
 	private int maxRobots = 1;
 	private int minRobots = 1;
 	private JPanel numRoundsPanel;
 	private JTextField numRoundsTextField;
-	private final boolean onlyShowSource;
-	private final boolean onlyShowWithPackage;
-	private final boolean onlyShowRobots;
-	private final boolean onlyShowDevelopment;
-	private final boolean onlyShowPackaged;
-	private final boolean ignoreTeamRobots;
+	private boolean onlyShowSource;
+	private boolean onlyShowWithPackage;
+	private boolean onlyShowRobots;
+	private boolean onlyShowDevelopment;
+	private boolean onlyShowPackaged;
+	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
 	private final List<INamedFileSpecification> selectedRobots = new CopyOnWriteArrayList<INamedFileSpecification>();
-	private final boolean showNumRoundsPanel;
+	private boolean showNumRoundsPanel;
 	private final IRobocodeManager manager;
+	private final IBattleManager battleManager;
+	private final IRepositoryManager repositoryManager;
 
-	public RobotSelectionPanel(IRobocodeManager manager, int minRobots, int maxRobots,
+	public RobotSelectionPanel(IRobocodeManager manager, IBattleManager battleManager, IRepositoryManager repositoryManager) {
+		super();
+		this.manager = manager;
+		this.repositoryManager=repositoryManager;
+		this.battleManager=battleManager;
+	}
+	public void setup(int minRobots, int maxRobots,
 			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
 			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
-			String preSelectedRobots) {
-		super();
+			String preSelectedRobots){
 		this.showNumRoundsPanel = showNumRoundsPanel;
 		this.minRobots = minRobots;
 		this.maxRobots = maxRobots;
@@ -109,7 +117,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		this.onlyShowPackaged = onlyShowPackaged;
 		this.ignoreTeamRobots = ignoreTeamRobots;
 		this.preSelectedRobots = preSelectedRobots;
-		this.manager = manager;
 		initialize();
 	}
 
@@ -544,7 +551,7 @@ public class RobotSelectionPanel extends WizardPanel {
 					try {
 						int numRounds = Integer.parseInt(numRoundsTextField.getText());
 
-						manager.getBattleManager().getBattleProperties().setNumRounds(numRounds);
+						battleManager.getBattleProperties().setNumRounds(numRounds);
 
 						if (numRounds != props.getNumberOfRounds()) {
 							props.setNumberOfRounds(numRounds);
@@ -573,8 +580,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			public void run() {
 				try {
 					setBusyPointer(true);
-
-					final IRepositoryManager repositoryManager = manager.getRepositoryManager();
 
 					if (withClear) {
 						repositoryManager.clearRobotList();

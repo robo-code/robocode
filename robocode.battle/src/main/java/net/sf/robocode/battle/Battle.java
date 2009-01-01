@@ -97,6 +97,8 @@ package net.sf.robocode.battle;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.ContestantPeer;
@@ -134,6 +136,9 @@ import java.util.regex.Pattern;
  */
 public final class Battle extends BaseBattle {
 
+	private final IHostManager hostManager;
+	private final long cpuConstant;
+
 	// Inactivity related items
 	private int inactiveTurnCount;
 	private double inactivityEnergy;
@@ -145,7 +150,7 @@ public final class Battle extends BaseBattle {
 	private int microWait;
 
 	// Objects in the battle
-	private final int robotsCount;
+	private int robotsCount;
 	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
 	private final List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
@@ -160,9 +165,15 @@ public final class Battle extends BaseBattle {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	public Battle(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, IRobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
-		super(manager, eventDispatcher, paused);
+	public Battle(IRobocodeManager manager, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) {
+		super(manager, battleManager, eventDispatcher);
 		isDebugging = System.getProperty("debug", "false").equals("true");
+		this.hostManager = hostManager;
+		this.cpuConstant = cpuManager.getCpuConstant();
+	}
+
+	public void setup(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, boolean paused){
+		isPaused = paused;
 		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
 				battleProperties.getInactivityTime());
@@ -280,7 +291,7 @@ public final class Battle extends BaseBattle {
 				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, manager.getHostManager(), specification, duplicate, team,
+			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team,
 					robots.size(), cindex);
 
 			robots.add(robotPeer);
@@ -372,15 +383,13 @@ public final class Battle extends BaseBattle {
 			if (parallelConstant < 1) {
 				parallelConstant = 1;
 			}
-			final long waitTime = (long) (manager.getCpuManager().getCpuConstant() * parallelConstant);
+			final long waitTime = (long) (cpuConstant * parallelConstant);
 
 			millisWait = (int) (waitTime / 1000000);
 			microWait = (int) (waitTime % 1000000);
 		} else {
-			final long waitTime = manager.getCpuManager().getCpuConstant();
-
-			millisWait = (int) (waitTime / 1000000);
-			microWait = (int) (waitTime % 1000000);
+			millisWait = (int) (cpuConstant / 1000000);
+			microWait = (int) (cpuConstant % 1000000);
 		}
 		if (microWait == 0) {
 			microWait = 1;
@@ -398,7 +407,7 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer robotPeer : robots) {
 			robotPeer.cleanup();
 		}
-		manager.getHostManager().resetThreadManager();
+		hostManager.resetThreadManager();
 
 		super.finalizeBattle();
 	}
@@ -425,7 +434,7 @@ public final class Battle extends BaseBattle {
 
 		computeActiveRobots();
 
-		manager.getHostManager().resetThreadManager();
+		hostManager.resetThreadManager();
 	}
 
 	@Override
@@ -434,7 +443,7 @@ public final class Battle extends BaseBattle {
 		inactiveTurnCount = 0;
 
 		// start robots
-		final long waitTime = Math.min(300 * manager.getCpuManager().getCpuConstant(), 10000000000L);
+		final long waitTime = Math.min(300 * cpuConstant, 10000000000L);
 
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 			robotPeer.getRobotStatistics().initialize();

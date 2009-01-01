@@ -35,7 +35,7 @@
 package net.sf.robocode.settings;
 
 
-import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.io.Logger;
 
 import java.awt.*;
@@ -201,14 +201,14 @@ public class RobocodeProperties {
 
 			NUMBER_OF_ROUNDS = "robocode.numberOfBattles";
 
-	private final IRobocodeManager manager;
+	private final IRepositoryManager repositoryManager;
 
 	private final RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
 
 	private final List<PropertyListener> listeners = new ArrayList<PropertyListener>();
 
-	public RobocodeProperties(IRobocodeManager manager) {
-		this.manager = manager;
+	public RobocodeProperties(IRepositoryManager repositoryManager) {
+		this.repositoryManager = repositoryManager;
 	}
 
 	/**
@@ -870,7 +870,7 @@ public class RobocodeProperties {
 	 */
 	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
 		if (!optionsDevelopmentPath.equals(this.optionsDevelopmentPath)) {
-			manager.getRepositoryManager().clearRobotList();
+			repositoryManager.clearRobotList();
 		}
 		this.optionsDevelopmentPath = optionsDevelopmentPath;
 		props.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);

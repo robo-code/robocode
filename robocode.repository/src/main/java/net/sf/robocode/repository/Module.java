@@ -18,6 +18,6 @@ import net.sf.robocode.core.Container;
  */
 public class Module {
 	static{
-		Container.instance.addComponent(IRepositoryManager.class, RepositoryManager.class);
+		Container.cache.addComponent(IRepositoryManager.class, RepositoryManager.class);
 	}
 }

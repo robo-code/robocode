@@ -13,6 +13,8 @@ package net.sf.robocode.core;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.OptInCaching;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -23,10 +25,17 @@ import net.sf.robocode.io.Logger;
  * @author Pavel Savara (original)
  */
 public final class Container {
-	public static MutablePicoContainer instance;
+	public static MutablePicoContainer cache;
+	public static MutablePicoContainer factory;
 
 	static {
-		instance = new DefaultPicoContainer();
+		cache = new DefaultPicoContainer(new Caching());
+		// new instance for every lookup, or same when asked for
+		factory = new DefaultPicoContainer(new OptInCaching(), cache);
+		loadModules();
+	}
+
+	private static void loadModules() {
 		final String classPath = System.getProperties().getProperty("java.class.path", null);
 		for(String path : classPath.split(";")){
 			File pathf=new File(path);

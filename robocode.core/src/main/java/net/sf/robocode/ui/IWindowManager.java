@@ -12,7 +12,6 @@
 package net.sf.robocode.ui;
 
 
-import net.sf.robocode.gui.IWindowManagerBase;
 import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
 
@@ -22,7 +21,13 @@ import javax.swing.*;
 /**
  * @author Pavel Savara (original)
  */
-public interface IWindowManager extends IWindowManagerBase {
+public interface IWindowManager {
+	void showRobocodeFrame(boolean visible, boolean iconified);
+
+	void showSplashScreen();
+
+	void cleanup();
+
 	boolean isIconified();
 
 	JFrame getRobocodeFrame();

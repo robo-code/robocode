@@ -14,8 +14,8 @@
 package net.sf.robocode.host.security;
 
 
-import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.core.Container;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -292,7 +292,7 @@ public class SecurePrintStream extends PrintStream {
 	}
 
 	private PrintStream checkAccess() {
-		PrintStream out = ((IRobocodeManager) HiddenAccess.manager).getHostManager().getRobotOutputStream();
+		PrintStream out = Container.cache.getComponent(IHostManager.class).getRobotOutputStream();
 
 		return (out == null) ? this : out;
 	}

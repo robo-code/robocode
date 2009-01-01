@@ -26,7 +26,11 @@ package net.sf.robocode.ui;
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.BattleResultsTableModel;
+import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.core.Container;
+import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.battle.AwtBattleAdaptor;
 import net.sf.robocode.ui.dialog.*;
 import net.sf.robocode.ui.editor.RobocodeEditor;
@@ -55,15 +59,22 @@ public class WindowManager implements IWindowManagerExt {
 	private RobocodeEditor robocodeEditor;
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
-	private RobocodeFrame robocodeFrame;
-	private final IRobocodeManager manager;
 	private RankingDialog rankingDialog;
-	private IImageManager imageManager;
+	private final IRobocodeManager manager;
+	private final IImageManager imageManager;
+	private final IBattleManager battleManager;
+	private final ICpuManager cpuManager;
+	private final IRepositoryManager repositoryManager;
 	private IRobotDialogManager robotDialogManager;
+	private RobocodeFrame robocodeFrame;
 
-	public WindowManager() {
-		this.manager = net.sf.robocode.core.Container.instance.getComponent(IRobocodeManager.class);
-		awtAdaptor = new AwtBattleAdaptor(manager.getBattleManager(), TIMER_TICKS_PER_SECOND, true);
+	public WindowManager(IRobocodeManager manager, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
+		this.manager = manager;
+		this.battleManager = battleManager;
+		this.repositoryManager=repositoryManager;
+		this.cpuManager=cpuManager;
+		this.imageManager=imageManager;
+		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have
 		EventQueue.invokeLater(new Runnable() {
@@ -93,8 +104,9 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public RobocodeFrame getRobocodeFrame() {
-		if (robocodeFrame == null) {
-			robocodeFrame = new RobocodeFrame(manager);
+		if (robocodeFrame == null){
+			this.robocodeFrame=Container.cache.getComponent(RobocodeFrame.class);
+
 		}
 		return robocodeFrame;
 	}
@@ -120,11 +132,11 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showAboutBox() {
-		packCenterShow(new AboutBox(getRobocodeFrame(), manager), true);
+		packCenterShow(net.sf.robocode.core.Container.cache.getComponent(AboutBox.class), true);
 	}
 
 	public String showBattleOpenDialog(final String defExt, final String name) {
-		JFileChooser chooser = new JFileChooser(manager.getBattleManager().getBattlePath());
+		JFileChooser chooser = new JFileChooser(battleManager.getBattlePath());
 
 		chooser.setFileFilter(
 				new FileFilter() {
@@ -169,7 +181,7 @@ public class WindowManager implements IWindowManagerExt {
 		};
 
 		chooser.setFileFilter(filter);
-		int rv = chooser.showSaveDialog(manager.getWindowManager().getRobocodeFrame());
+		int rv = chooser.showSaveDialog(getRobocodeFrame());
 		String result = null;
 
 		if (rv == JFileChooser.APPROVE_OPTION) {
@@ -229,21 +241,23 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void showOptionsPreferences() {
 		try {
-			manager.getBattleManager().pauseBattle();
+			battleManager.pauseBattle();
 
-			WindowUtil.packCenterShow(getRobocodeFrame(), new PreferencesDialog(manager));
+			WindowUtil.packCenterShow(getRobocodeFrame(), Container.cache.getComponent(PreferencesDialog.class));
 		} finally {
-			manager.getBattleManager().resumeIfPausedBattle(); // THIS is just dirty hack-fix of more complex problem with desiredTPS and pausing.  resumeBattle() belongs here.
+			battleManager.resumeIfPausedBattle(); // THIS is just dirty hack-fix of more complex problem with desiredTPS and pausing.  resumeBattle() belongs here.
 		}
 	}
 
 	public void showResultsDialog(BattleCompletedEvent event) {
-		packCenterShow(new ResultsDialog(manager, event.getSortedResults(), event.getBattleRules().getNumRounds()), true);
+		final ResultsDialog dialog = Container.cache.getComponent(ResultsDialog.class);
+		dialog.setup(event.getSortedResults(), event.getBattleRules().getNumRounds());
+		packCenterShow(dialog, true);
 	}
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
-			rankingDialog = new RankingDialog(manager);
+			rankingDialog = Container.cache.getComponent(RankingDialog.class);
 			if (visible) {
 				packCenterShow(rankingDialog, true);
 			} else {
@@ -260,7 +274,7 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void showRobocodeEditor() {
 		if (robocodeEditor == null) {
-			robocodeEditor = new net.sf.robocode.ui.editor.RobocodeEditor(manager);
+			robocodeEditor = net.sf.robocode.core.Container.cache.getComponent(RobocodeEditor.class);
 			WindowUtil.packCenterShow(robocodeEditor);
 		} else {
 			robocodeEditor.setVisible(true);
@@ -273,7 +287,7 @@ public class WindowManager implements IWindowManagerExt {
 			robotPackager = null;
 		}
 
-		robotPackager = new net.sf.robocode.ui.packager.RobotPackager(manager);
+		robotPackager = net.sf.robocode.core.Container.cache.getComponent(RobotPackager.class);
 		WindowUtil.packCenterShow(robotPackager);
 	}
 
@@ -283,22 +297,22 @@ public class WindowManager implements IWindowManagerExt {
 			robotExtractor = null;
 		}
 
-		robotExtractor = new net.sf.robocode.ui.dialog.RobotExtractor(owner, manager);
+		robotExtractor = new net.sf.robocode.ui.dialog.RobotExtractor(owner, this, repositoryManager);
 		WindowUtil.packCenterShow(robotExtractor);
 	}
 
 	public void showSplashScreen() {
-		RcSplashScreen splashScreen = new RcSplashScreen(manager);
+		RcSplashScreen splashScreen = Container.cache.getComponent(RcSplashScreen.class);
 
 		packCenterShow(splashScreen, true);
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
-		manager.getRepositoryManager().loadRobotRepository();
+		repositoryManager.loadRobotRepository();
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
-		getImageManager();
-		manager.getCpuManager().getCpuConstant();
+		imageManager.initialize();
+		cpuManager.getCpuConstant();
 
 		WindowUtil.setStatus("");
 		WindowUtil.setStatusLabel(null);
@@ -308,10 +322,12 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void showNewBattleDialog(BattleProperties battleProperties) {
 		try {
-			manager.getBattleManager().pauseBattle();
-			WindowUtil.packCenterShow(getRobocodeFrame(), new NewBattleDialog(manager, battleProperties));
+			battleManager.pauseBattle();
+			final NewBattleDialog battleDialog = Container.cache.getComponent(NewBattleDialog.class);
+			battleDialog.setup(battleManager.getBattleProperties());
+			WindowUtil.packCenterShow(getRobocodeFrame(), battleDialog);
 		} finally {
-			manager.getBattleManager().resumeBattle();
+			battleManager.resumeBattle();
 		}
 	}
 
@@ -329,8 +345,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showCreateTeamDialog() {
-		TeamCreator teamCreator = new TeamCreator(manager);
-
+		TeamCreator teamCreator = Container.cache.getComponent(TeamCreator.class);
 		WindowUtil.packCenterShow(teamCreator);
 	}
 
@@ -368,7 +383,7 @@ public class WindowManager implements IWindowManagerExt {
 		});
 
 		chooser.setDialogTitle(
-				"Select the robot .jar file to copy to " + manager.getRepositoryManager().getRobotsDirectory());
+				"Select the robot .jar file to copy to " + repositoryManager.getRobotsDirectory());
 
 		if (chooser.showDialog(getRobocodeFrame(), "Import") == JFileChooser.APPROVE_OPTION) {
 			File inputFile = chooser.getSelectedFile();
@@ -382,7 +397,7 @@ public class WindowManager implements IWindowManagerExt {
 			if (!extension.equalsIgnoreCase(".jar")) {
 				fileName += ".jar";
 			}
-			File outputFile = new File(manager.getRepositoryManager().getRobotsDirectory(), fileName);
+			File outputFile = new File(repositoryManager.getRobotsDirectory(), fileName);
 
 			if (inputFile.equals(outputFile)) {
 				JOptionPane.showMessageDialog(getRobocodeFrame(),
@@ -402,7 +417,7 @@ public class WindowManager implements IWindowManagerExt {
 					== JOptionPane.OK_OPTION) {
 				try {
 					FileUtil.copy(inputFile, outputFile);
-					manager.getRepositoryManager().clearRobotList();
+					repositoryManager.clearRobotList();
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Robot imported successfully.");
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Import failed: " + e);
@@ -498,13 +513,6 @@ public class WindowManager implements IWindowManagerExt {
 
 	public boolean isIconified() {
 		return getRobocodeFrame().isIconified();
-	}
-
-	public IImageManager getImageManager() {
-		if (imageManager == null) {
-			imageManager = new ImageManager();
-		}
-		return imageManager;
 	}
 
 	public IRobotDialogManager getRobotDialogManager() {

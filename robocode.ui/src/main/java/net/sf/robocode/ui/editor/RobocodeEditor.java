@@ -25,13 +25,13 @@ package net.sf.robocode.ui.editor;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.BrowserManager;
-import net.sf.robocode.ui.IWindowManagerExt;
 import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.ui.IWindowManagerExt;
 import net.sf.robocode.ui.gfx.ImageUtil;
 
 import javax.swing.*;
@@ -60,9 +60,10 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	private JToolBar statusBar;
 	private JLabel lineLabel;
 
-	private RobocodeProperties robocodeProperties;
 	private File editorDirectory;
 	private final IRobocodeManager manager;
+	private final IRepositoryManager repositoryManager;
+	private final IWindowManagerExt windowManager;
 
 	private FindReplaceDialog findReplaceDialog;
 	private ReplaceAction replaceAction;
@@ -96,11 +97,13 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	public RobocodeEditor(IRobocodeManager manager) {
+	public RobocodeEditor(IRobocodeManager manager, IRepositoryManager repositoryManager, IWindowManager windowManager) {
 		super();
 		this.manager = manager;
+		this.windowManager = (IWindowManagerExt) windowManager;
+		this.repositoryManager=repositoryManager;
 		if (manager != null) {
-			robotsDirectory = manager.getRepositoryManager().getRobotsDirectory();
+			robotsDirectory = repositoryManager.getRobotsDirectory();
 		} else {
 			robotsDirectory = FileUtil.getRobotsDir();
 		}
@@ -172,7 +175,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			packageName = "mypackage";
 		}
 
-		EditWindow editWindow = new EditWindow(this, robotsDirectory);
+		EditWindow editWindow = new EditWindow(repositoryManager, this, robotsDirectory);
 
 		editWindow.setModified(false);
 
@@ -330,14 +333,14 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			}
 
 			if (done && manager != null) {
-				done = manager.getRepositoryManager().verifyRobotName(packageName + "." + name, name);
+				done = repositoryManager.verifyRobotName(packageName + "." + name, name);
 				if (!done) {
 					message = "This package is reserved.  Please select a different package.";
 				}
 			}
 		}
 
-		EditWindow editWindow = new EditWindow(this, robotsDirectory);
+		EditWindow editWindow = new EditWindow(repositoryManager, this, robotsDirectory);
 
 		editWindow.setRobotName(name);
 		editWindow.setModified(false);
@@ -397,7 +400,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 		addPlaceShowFocus(editWindow);
 		if (manager != null) {
-			manager.getRepositoryManager().clearRobotList();
+			repositoryManager.clearRobotList();
 		}
 	}
 
@@ -427,7 +430,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public RobocodeCompiler getCompiler() {
-		return RobocodeCompilerFactory.createCompiler(this);
+		return net.sf.robocode.core.Container.cache.getComponent(RobocodeCompilerFactory.class).createCompiler(this);
 	}
 
 	public JDesktopPane getDesktopPane() {
@@ -463,6 +466,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return robocodeEditorMenuBar;
 	}
 
+	/* TODO DELETE ?
 	public RobocodeProperties getRobocodeProperties() {
 		if (robocodeProperties == null) {
 			robocodeProperties = new RobocodeProperties(manager);
@@ -486,6 +490,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 		return robocodeProperties;
 	}
+	*/
 
 	private JToolBar getStatusBar() {
 		if (statusBar == null) {
@@ -548,12 +553,10 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	public static void main(String[] args) {
 		try {
 			// Set the Look and Feel (LAF)
-			final IWindowManager windowManager = net.sf.robocode.core.Container.instance.getComponent(IWindowManager.class);
+			final IWindowManager windowManager = net.sf.robocode.core.Container.cache.getComponent(IWindowManager.class);
 			windowManager.setLookAndFeel();
 
-			RobocodeEditor robocodeEditor;
-
-			robocodeEditor = new RobocodeEditor(null);
+			RobocodeEditor robocodeEditor = net.sf.robocode.core.Container.cache.getComponent(RobocodeEditor.class);
 			robocodeEditor.isApplication = true; // used for close
 			robocodeEditor.pack();
 			// Center robocodeEditor
@@ -620,7 +623,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			try {
 				fileReader = new FileReader(robotFilename);
 
-				EditWindow editWindow = new EditWindow(this, robotsDirectory);
+				EditWindow editWindow = new EditWindow(repositoryManager, this, robotsDirectory);
 
 				editWindow.getEditorPane().read(fileReader, new File(robotFilename));
 				editWindow.getEditorPane().setCaretPosition(0);
@@ -646,7 +649,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public void extractRobot() {
-		((IWindowManagerExt) manager.getWindowManager()).showRobotExtractor(this);
+		windowManager.showRobotExtractor(this);
 	}
 
 	public void run() {
@@ -661,6 +664,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
+	/* TODO DELETE
 	public void saveRobocodeProperties() {
 		if (robocodeProperties == null) {
 			logError("Cannot save null robocode properties");
@@ -682,9 +686,10 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			}
 		}
 	}
+	*/
 
 	public void resetCompilerProperties() {
-		CompilerProperties props = RobocodeCompilerFactory.getCompilerProperties();
+		CompilerProperties props = Container.cache.getComponent(RobocodeCompilerFactory.class).getCompilerProperties();
 
 		props.resetCompiler();
 		RobocodeCompilerFactory.saveCompilerProperties();
@@ -717,15 +722,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open browser!",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-	}
-
-	/**
-	 * Gets the manager.
-	 *
-	 * @return Returns a RobocodeManager
-	 */
-	public IRobocodeManager getManager() {
-		return manager;
 	}
 
 	public void setSaveFileMenuItemsEnabled(boolean enabled) {

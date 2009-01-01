@@ -14,7 +14,7 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.settings.RobocodeProperties;
-import net.sf.robocode.ui.IWindowManagerExt;
+import net.sf.robocode.ui.IImageManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,10 +46,12 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JButton predefinedQualityButton;
 
 	private EventHandler eventHandler;
+	private final IImageManager imageManager;
 
-	public PreferencesRenderingOptionsTab(IRobocodeManager manager) {
+	public PreferencesRenderingOptionsTab(IRobocodeManager manager, IImageManager imageManager) {
 		super();
 		this.manager = manager;
+		this.imageManager=imageManager;
 		initialize();
 	}
 
@@ -305,7 +307,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 					@Override
 					public void run() {
 						storePreferences();
-						((IWindowManagerExt) manager.getWindowManager()).getImageManager().initialize();
+						imageManager.initialize();
 					}
 				}.start();
 				return;

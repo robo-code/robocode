@@ -18,7 +18,7 @@ import net.sf.robocode.core.Container;
  */
 public class Module {
 	static{
-		Container.instance.addComponent(IHostManager.class, HostManager.class);
-		Container.instance.addComponent(ICpuManager.class, CpuManager.class);
+		Container.cache.addComponent(IHostManager.class, HostManager.class);
+		Container.cache.addComponent(ICpuManager.class, CpuManager.class);
 	}
 }

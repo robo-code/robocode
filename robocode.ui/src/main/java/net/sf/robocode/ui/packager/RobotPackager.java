@@ -29,14 +29,17 @@ package net.sf.robocode.ui.packager;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository.IRobotFileSpecificationExt;
 import net.sf.robocode.repository.ITeamFileSpecificationExt;
+import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.dialog.*;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import net.sf.robocode.version.IVersionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +56,8 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.Manifest;
 import java.util.zip.ZipException;
+
+import org.picocontainer.Characteristics;
 
 
 /**
@@ -78,7 +83,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 	public final byte[] buf = new byte[4096];
 	private StringWriter output;
 	private final IRepositoryManager repositoryManager;
+	private final IWindowManager windowManager;
 	private final IRobocodeManager manager;
+	private final IVersionManager versionManager;
+	private final IBattleManager battleManager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -90,10 +98,13 @@ public class RobotPackager extends JDialog implements WizardListener {
 		}
 	}
 
-	public RobotPackager(IRobocodeManager manager) {
-		super(manager.getWindowManager().getRobocodeFrame());
-		this.manager = manager;
-		this.repositoryManager = manager.getRepositoryManager();
+	public RobotPackager(IRobocodeManager manager, IRepositoryManager repositoryManager, IWindowManager windowManager, IVersionManager versionManager, IBattleManager battleManager) {
+		super(windowManager.getRobocodeFrame());
+		this.manager=manager;
+		this.versionManager=versionManager;
+		this.repositoryManager = repositoryManager;
+		this.windowManager = windowManager;
+		this.battleManager=battleManager;
 		initialize();
 	}
 
@@ -113,7 +124,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		String resultsString;
 
 		int rc = packageRobots();
-		ConsoleDialog d = new ConsoleDialog(manager.getWindowManager().getRobocodeFrame(), "Packaging results", false);
+		ConsoleDialog d = new ConsoleDialog(windowManager.getRobocodeFrame(), "Packaging results", false);
 
 		if (rc < 8) {
 			outputSizeClass();
@@ -214,7 +225,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(manager, minRobots, maxRobots, false,
+			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotSelectionPanel.class);
+			robotSelectionPanel.setup(minRobots, maxRobots, false,
 					"Select the robot or team you would like to package.", /* true */false, false, false/* true */, true,
 					false, true, null);
 		}
@@ -290,7 +302,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 			fos = new FileOutputStream(f);
 			jarout = new NoDuplicateJarOutputStream(fos);
-			jarout.setComment(manager.getVersionManager().getVersion() + " - Robocode version");
+			jarout.setComment(versionManager.getVersion() + " - Robocode version");
 
 			for (INamedFileSpecification fileSpecification : selectedRobots) {
 				if (fileSpecification instanceof IRobotFileSpecificationExt) {
@@ -316,7 +328,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 							}
 						}
 						robotFileSpecification.setRobotWebpage(u);
-						robotFileSpecification.setRobocodeVersion(manager.getVersionManager().getVersion());
+						robotFileSpecification.setRobocodeVersion(versionManager.getVersion());
 
 						FileOutputStream fos2 = null;
 
@@ -365,7 +377,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 					teamSpecification.setTeamWebpage(u);
 					teamSpecification.setTeamDescription(getPackagerOptionsPanel().getDescriptionArea().getText());
 					teamSpecification.setTeamAuthorName(getPackagerOptionsPanel().getAuthorField().getText());
-					teamSpecification.setRobocodeVersion(manager.getVersionManager().getVersion());
+					teamSpecification.setRobocodeVersion(versionManager.getVersion());
 
 					FileOutputStream fos2 = null;
 
@@ -508,7 +520,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		};
 
-		manager.getHostManager().addSafeThread(thread);
+		//TODO ? manager.getHostManager().addSafeThread(thread);
 
 		thread.start();
 
@@ -521,7 +533,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		}
 
-		manager.getHostManager().removeSafeThread(thread);
+		//TODO ? manager.getHostManager().removeSafeThread(thread);
 	}
 
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,

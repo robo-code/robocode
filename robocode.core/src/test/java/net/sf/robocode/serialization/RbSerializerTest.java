@@ -20,7 +20,10 @@ import net.sf.robocode.serialization.ObjectCloner;
 import net.sf.robocode.serialization.RbSerializer;
 import net.sf.robocode.test.Assert;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
+import net.sf.robocode.security.HiddenAccess;
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,8 +37,15 @@ import java.io.IOException;
  * @author Pavel Savara (original)
  */
 public class RbSerializerTest {
+
+	@BeforeClass
+	public static void init(){
+		HiddenAccess.createRobocodeManager();
+	}
+
 	@Test
 	public void empty() throws IOException {
+		HiddenAccess.createRobocodeManager();
 		ExecCommands ec = new ExecCommands();
 
 		ec.setBodyTurnRemaining(150.123);

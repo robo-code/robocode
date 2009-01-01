@@ -34,8 +34,13 @@ import net.sf.robocode.battle.BattleResultsTableModel;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
+import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.security.LoggingThreadGroup;
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.sound.ISoundManager;
+import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.host.IHostManager;
 import robocode.control.events.*;
 
 import java.io.File;
@@ -55,10 +60,15 @@ import java.io.PrintStream;
  */
 public class RobocodeMain implements Runnable{
 
-	private IRobocodeManager manager;
 	private final Setup setup;
-	private final String[] args;
 	private final BattleObserver battleObserver = new BattleObserver();
+	final private IRobocodeManager manager;
+	final private IHostManager hostManager;
+	final private IWindowManager windowManager;
+	final private ISoundManager soundManager;
+	final private IBattleManager battleManager;
+	final private IRecordManager recordManager;
+	final private IVersionManager versionManager;
 
 	private class Setup {
 		boolean securityOn = true;
@@ -71,46 +81,57 @@ public class RobocodeMain implements Runnable{
 		int tps;
 	}
 
-	public RobocodeMain(String[] args) {
+	public RobocodeMain(IRobocodeManager manager,
+						IHostManager hostManager,
+						IWindowManager windowManager,
+						ISoundManager soundManager,
+						IBattleManager battleManager,
+						IRecordManager recordManager,
+						IVersionManager versionManager
+	) {
 		setup = new Setup();
-		this.args = args; 
+		this.manager=manager;
+		this.hostManager=hostManager;
+		this.windowManager=windowManager;
+		this.soundManager=soundManager;
+		this.battleManager=battleManager;
+		this.recordManager=recordManager;
+		this.versionManager=versionManager;
 	}
 
 	public static void main(Object args) {
-		RobocodeMain main=new RobocodeMain((String[])args);
+		RobocodeMain main=Container.cache.getComponent(RobocodeMain.class);
+		main.loadSetup((String[])args);
 		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
 		new Thread(group, main, "Robocode main thread").start();
 	}
 
 	public void run() {
 		try {
-			manager = Container.instance.getComponent(IRobocodeManager.class);
-
-			loadSetup();
-			manager.getHostManager().initSecurity(setup.securityOn, setup.experimentalOn);
+			hostManager.initSecurity(setup.securityOn, setup.experimentalOn);
 
 			// Set the Look and Feel (LAF)
 			if (manager.isGUIEnabled()) {
-				manager.getWindowManager().setLookAndFeel();
+				windowManager.setLookAndFeel();
 			}
 
 			manager.getProperties().setOptionsBattleDesiredTPS(setup.tps);
 
-			manager.getBattleManager().addListener(battleObserver);
+			battleManager.addListener(battleObserver);
 
 			if (manager.isGUIEnabled()) {
 				if (!setup.minimize && setup.battleFilename == null) {
 					if (manager.isSoundEnabled()) {
-						manager.getSoundManager().playThemeMusic();
+						soundManager.playThemeMusic();
 					}
-					manager.getWindowManager().showSplashScreen();
+					windowManager.showSplashScreen();
 				}
-				manager.getWindowManager().showRobocodeFrame(true, setup.minimize);
+				windowManager.showRobocodeFrame(true, setup.minimize);
 
 				// Play the intro battle if a battle file is not specified and this is the first time Robocode is being run
-				if (setup.battleFilename == null
-						&& !manager.getProperties().getLastRunVersion().equals(manager.getVersionManager().getVersion())) {
-					manager.getProperties().setLastRunVersion(manager.getVersionManager().getVersion());
+				final String currentVersion = versionManager.getVersion();
+				if (setup.battleFilename == null && !manager.getProperties().getLastRunVersion().equals(currentVersion)) {
+					manager.getProperties().setLastRunVersion(currentVersion);
 					manager.saveProperties();
 					runIntroBattle();
 				}
@@ -125,8 +146,6 @@ public class RobocodeMain implements Runnable{
 
 				setup.exitOnComplete = true;
 
-				IBattleManager battleManager = manager.getBattleManager();
-
 				battleManager.setBattleFilename(setup.battleFilename);
 				if (new File(setup.battleFilename).exists()) {
 					battleManager.startNewBattle(battleManager.loadBattleProperties(), false);
@@ -138,10 +157,10 @@ public class RobocodeMain implements Runnable{
 
 				setup.exitOnComplete = true;
 
-				manager.getRecordManager().loadRecord(setup.replayFilename, BattleRecordFormat.BINARY_ZIP);
+				recordManager.loadRecord(setup.replayFilename, BattleRecordFormat.BINARY_ZIP);
 
 				if (new File(setup.replayFilename).exists()) {
-					manager.getBattleManager().replay();
+					battleManager.replay();
 				} else {
 					System.err.println(
 							"The specified battle record file '" + setup.replayFilename + "' was not be found");
@@ -154,7 +173,6 @@ public class RobocodeMain implements Runnable{
 	}
 
 	public void runIntroBattle() {
-		IBattleManager battleManager = manager.getBattleManager();
 		final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
 
 		if (intro.exists()) {
@@ -175,7 +193,7 @@ public class RobocodeMain implements Runnable{
 		}
 	}
 
-	private void loadSetup() {
+	private void loadSetup(String[] args) {
 		final String robocodeDir = System.getProperty("WORKINGDIRECTORY");
 
 		if (robocodeDir != null) {

@@ -20,8 +20,8 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BattleRankingTableModel;
+import net.sf.robocode.ui.IWindowManager;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.TurnEndedEvent;
@@ -52,8 +52,8 @@ public class RankingDialog extends BaseScoreDialog {
 	private ITurnSnapshot lastSnapshot;
 	private int lastRows;
 
-	public RankingDialog(IRobocodeManager manager) {
-		super(manager, false);
+	public RankingDialog(IWindowManager windowManager) {
+		super(windowManager, false);
 		battleObserver = new BattleObserver();
 		timerTask = new Timer(1000 / 2, new TimerTask());
 		snapshot = new AtomicReference<ITurnSnapshot>();
@@ -88,14 +88,14 @@ public class RankingDialog extends BaseScoreDialog {
 	}
 
 	protected void onDialogShown() {
-		manager.getWindowManager().addBattleListener(battleObserver);
+		windowManager.addBattleListener(battleObserver);
 		timerTask.start();
 	}
 
 	protected void onDialogHidden() {
 		// TODO ZAMO manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(false);
 		timerTask.stop();
-		manager.getWindowManager().removeBattleListener(battleObserver);
+		windowManager.removeBattleListener(battleObserver);
 		dispose();
 	}
 

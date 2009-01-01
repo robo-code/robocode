@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.repository</artifactId>
     <version>1.7</version>
-    <name>Dummy module</name>
+    <name>Robocode Repository</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>

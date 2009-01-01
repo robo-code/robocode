@@ -154,7 +154,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 		if (listener != null) {
 			battleObserver = new BattleObserver();
 			battleObserver.listener = listener;
-			manager.getBattleManager().addListener(battleObserver);
+			manager.getBattleManagerBase().addListener(battleObserver);
 		}
 	}
 
@@ -167,7 +167,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public void addBattleListener(IBattleListener listener) {
-		manager.getBattleManager().addListener(listener);
+		manager.getBattleManagerBase().addListener(listener);
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public void removeBattleListener(IBattleListener listener) {
-		manager.getBattleManager().removeListener(listener);
+		manager.getBattleManagerBase().removeListener(listener);
 	}
 
 	/**
@@ -187,9 +187,8 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * This method automatically disposes the Robocode window if it open.
 	 */
 	public void close() {
-		manager.getWindowManager().cleanup();
 		if (battleObserver != null) {
-			manager.getBattleManager().removeListener(battleObserver);
+			manager.getBattleManagerBase().removeListener(battleObserver);
 		}
 		manager.cleanup();
 		manager = null;
@@ -201,7 +200,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
-		return manager.getVersionManager().getVersion();
+		return manager.getVersionManagerBase().getVersion();
 	}
 
 	/**
@@ -224,7 +223,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		return manager.getRepositoryManager().getRobotSpecifications();
+		return manager.getRepositoryManagerBase().getRobotSpecifications();
 	}
 
 	/**
@@ -281,7 +280,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification) {
 		this.battleSpecification = battleSpecification;
-		manager.getBattleManager().startNewBattle(battleSpecification, false);
+		manager.getBattleManagerBase().startNewBattle(battleSpecification, false);
 	}
 
 	/**
@@ -297,7 +296,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification, boolean waitTillOver) {
 		this.battleSpecification = battleSpecification;
-		manager.getBattleManager().startNewBattle(battleSpecification, waitTillOver);
+		manager.getBattleManagerBase().startNewBattle(battleSpecification, waitTillOver);
 	}
 
 	/**
@@ -307,7 +306,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public void waitTillBattleOver() {
-		manager.getBattleManager().waitTillOver();
+		manager.getBattleManagerBase().waitTillOver();
 	}
 
 	/**
@@ -316,7 +315,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #runBattle(BattleSpecification)
 	 */
 	public void abortCurrentBattle() {
-		manager.getBattleManager().stop(true);
+		manager.getBattleManagerBase().stop(true);
 	}
 
 	/**

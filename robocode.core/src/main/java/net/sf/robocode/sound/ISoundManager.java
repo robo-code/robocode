@@ -20,6 +20,4 @@ import net.sf.robocode.battle.events.BattleEventDispatcher;
  */
 public interface ISoundManager {
 	void playThemeMusic();
-
-	void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher);
 }

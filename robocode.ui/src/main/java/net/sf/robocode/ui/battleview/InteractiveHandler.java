@@ -15,8 +15,8 @@
 package net.sf.robocode.ui.battleview;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BattleProperties;
+import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.security.SafeComponent;
 import robocode.*;
 
@@ -37,11 +37,11 @@ import static java.lang.Math.min;
  * @author Flemming N. Larsen (contributor)
  */
 public final class InteractiveHandler implements KeyEventDispatcher, MouseListener, MouseMotionListener, MouseWheelListener {
-	private final IRobocodeManager manager;
+	private final IBattleManager battleManager;
 	private final BattleView battleView;
 
-	public InteractiveHandler(IRobocodeManager manager, BattleView battleView) {
-		this.manager = manager;
+	public InteractiveHandler(IBattleManager battleManager, BattleView battleView) {
+		this.battleManager = battleManager;
 		this.battleView = battleView;
 	}
 
@@ -103,13 +103,13 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	}
 
 	private void handleInteractiveEvent(robocode.Event event) {
-		manager.getBattleManager().sendInteractiveEvent(event);
+		battleManager.sendInteractiveEvent(event);
 	}
 
 	private MouseEvent mirroredMouseEvent(final MouseEvent e) {
 
 		double scale;
-		BattleProperties battleProps = manager.getBattleManager().getBattleProperties();
+		BattleProperties battleProps = battleManager.getBattleProperties();
 
 		int vWidth = battleView.getWidth();
 		int vHeight = battleView.getHeight();
@@ -135,7 +135,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 	private MouseWheelEvent mirroredMouseWheelEvent(final MouseWheelEvent e) {
 
 		double scale;
-		BattleProperties battleProps = manager.getBattleManager().getBattleProperties();
+		BattleProperties battleProps = battleManager.getBattleProperties();
 
 		int vWidth = battleView.getWidth();
 		int vHeight = battleView.getHeight();

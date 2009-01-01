@@ -16,8 +16,8 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.ui.gfx.RobocodeLogo;
+import net.sf.robocode.version.IVersionManager;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -55,9 +55,9 @@ public class RcSplashScreen extends JWindow {
 		}
 	};
 
-	public RcSplashScreen(IRobocodeManager manager) {
+	public RcSplashScreen(IVersionManager versionManager) {
 		super();
-		this.version = manager.getVersionManager().getVersion();
+		this.version = versionManager.getVersion();
 		initialize();
 	}
 

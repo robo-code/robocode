@@ -18,10 +18,12 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository.ITeamFileSpecificationExt;
+import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import net.sf.robocode.version.IVersionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +35,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.picocontainer.Characteristics;
 
 
 /**
@@ -54,8 +58,6 @@ public class TeamCreator extends JDialog implements WizardListener {
 	private final int minRobots = 2;
 	private final int maxRobots = 10;
 
-	private final IRobocodeManager manager;
-
 	private final EventHandler eventHandler = new EventHandler();
 
 	class EventHandler implements ActionListener {
@@ -66,9 +68,13 @@ public class TeamCreator extends JDialog implements WizardListener {
 		}
 	}
 
-	public TeamCreator(IRobocodeManager manager) {
-		super(manager.getWindowManager().getRobocodeFrame());
-		this.manager = manager;
+	private final IVersionManager versionManager;
+	private final IRepositoryManager repositoryManager;
+
+	public TeamCreator(IWindowManager windowManager, IRepositoryManager repositoryManager, IVersionManager versionManager) {
+		super(windowManager.getRobocodeFrame());
+		this.repositoryManager = repositoryManager;
+		this.versionManager=versionManager;
 		initialize();
 	}
 
@@ -97,7 +103,8 @@ public class TeamCreator extends JDialog implements WizardListener {
 
 	protected RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = new RobotSelectionPanel(manager, minRobots, maxRobots, false,
+			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotSelectionPanel.class);
+			robotSelectionPanel.setup(minRobots, maxRobots, false,
 					"Select the robots for this team.", false, true, true, false, false, false, null);
 		}
 		return robotSelectionPanel;
@@ -147,7 +154,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 	}
 
 	public int createTeam() throws IOException {
-		File f = new File(manager.getRepositoryManager().getRobotsDirectory(),
+		File f = new File(repositoryManager.getRobotsDirectory(),
 				teamCreatorOptionsPanel.getTeamPackage().replace('.', File.separatorChar)
 				+ teamCreatorOptionsPanel.getTeamNameField().getText() + ".team");
 
@@ -165,7 +172,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			}
 		}
 
-		ITeamFileSpecificationExt teamSpec = (ITeamFileSpecificationExt) manager.getRepositoryManager().createTeam();
+		ITeamFileSpecificationExt teamSpec = (ITeamFileSpecificationExt) repositoryManager.createTeam();
 		URL u = null;
 		String w = teamCreatorOptionsPanel.getWebpageField().getText();
 
@@ -183,7 +190,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 		teamSpec.setTeamDescription(teamCreatorOptionsPanel.getDescriptionArea().getText());
 		teamSpec.setTeamAuthorName(teamCreatorOptionsPanel.getAuthorField().getText());
 		teamSpec.setMembers(robotSelectionPanel.getSelectedRobotsAsString());
-		teamSpec.setRobocodeVersion(manager.getVersionManager().getVersion());
+		teamSpec.setRobocodeVersion(versionManager.getVersion());
 
 		FileOutputStream out = null;
 
@@ -196,7 +203,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 			}
 		}
 
-		manager.getRepositoryManager().clearRobotList();
+		repositoryManager.clearRobotList();
 
 		return 0;
 	}

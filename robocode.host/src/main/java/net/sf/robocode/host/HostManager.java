@@ -20,7 +20,6 @@ import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.repository.IRobotFileSpecificationExt;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.RobotSpecification;
 
 import java.io.InputStream;
@@ -36,8 +35,8 @@ public class HostManager implements IHostManager {
 	private final IRobocodeManager manager;
 	private IThreadManager threadManager;
 
-	public HostManager() {
-		this.manager = Container.instance.getComponent(IRobocodeManager.class);
+	public HostManager(IRobocodeManager manager) {
+		this.manager = manager;
 		threadManager = new ThreadManager();
 	}
 
@@ -98,15 +97,6 @@ public class HostManager implements IHostManager {
 			throw new AccessControlException("Unknown robot type");
 		}
 		return robotProxy;
-	}
-
-	static {
-		RbSerializer.register(ExecCommands.class, RbSerializer.ExecCommands_TYPE);
-		RbSerializer.register(BulletCommand.class, RbSerializer.BulletCommand_TYPE);
-		RbSerializer.register(TeamMessage.class, RbSerializer.TeamMessage_TYPE);
-		RbSerializer.register(DebugProperty.class, RbSerializer.DebugProperty_TYPE);
-		RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
-		RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
 	}
 
 	public void cleanup() {// TODO

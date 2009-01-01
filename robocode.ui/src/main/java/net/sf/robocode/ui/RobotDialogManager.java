@@ -22,7 +22,6 @@
 package net.sf.robocode.ui;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.ui.dialog.*;
 import robocode.control.snapshot.IRobotSnapshot;
@@ -31,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.picocontainer.Characteristics;
 
 
 /**
@@ -44,11 +45,9 @@ public class RobotDialogManager implements IRobotDialogManager {
 
 	private final Map<String, RobotDialog> robotDialogMap = new ConcurrentHashMap<String, RobotDialog>();
 	private BattleDialog battleDialog = null;
-	private final IRobocodeManager manager;
 
 	public RobotDialogManager() {
 		super();
-		this.manager = Container.instance.getComponent(IRobocodeManager.class);
 	}
 
 	public void trim(List<IRobotSnapshot> robots) {
@@ -92,7 +91,8 @@ public class RobotDialogManager implements IRobotDialogManager {
 			if (robotDialogMap.size() > MAX_PRE_ATTACHED) {
 				reset();
 			}
-			robotDialog = new RobotDialog(manager, robotButton);
+			robotDialog = Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotDialog.class);
+			robotDialog.setup(robotButton);
 			robotDialog.pack();
 			WindowUtil.place(robotDialog);
 			robotDialogMap.put(name, robotDialog);
@@ -103,7 +103,7 @@ public class RobotDialogManager implements IRobotDialogManager {
 	public BattleDialog getBattleDialog(BattleButton battleButton, boolean create) {
 
 		if (create && battleDialog == null) {
-			battleDialog = new BattleDialog(manager, battleButton);
+			battleDialog = Container.cache.getComponent(BattleDialog.class);
 			battleDialog.pack();
 			WindowUtil.place(battleDialog);
 		}

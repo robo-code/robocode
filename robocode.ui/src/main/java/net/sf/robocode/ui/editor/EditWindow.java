@@ -22,6 +22,7 @@ package net.sf.robocode.ui.editor;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.IRepositoryManager;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -48,6 +49,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 	private String robotName;
 	public boolean modified;
 	private final RobocodeEditor editor;
+	private final IRepositoryManager repositoryManager;
 	private JEditorPane editorPane;
 	private JPanel editWindowContentPane;
 	private final File robotsDirectory;
@@ -55,10 +57,11 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 
 	private LineNumbers lineNumbers;
 
-	public EditWindow(RobocodeEditor editor, File robotsDirectory) {
+	public EditWindow(IRepositoryManager repositoryManager, RobocodeEditor editor, File robotsDirectory) {
 		super();
 		this.editor = editor;
 		this.robotsDirectory = robotsDirectory;
+		this.repositoryManager=repositoryManager;
 		initialize();
 	}
 
@@ -240,9 +243,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 						return false;
 					}
 					if (ok == JOptionPane.YES_OPTION) {
-						if (editor.getManager() != null) {
-							editor.getManager().getRepositoryManager().clearRobotList();
-						}
+						repositoryManager.clearRobotList();
 						return fileSaveAs();
 					}
 				}
@@ -321,7 +322,9 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
 			if (ok == JOptionPane.YES_OPTION) {
-				f.mkdirs();
+				if (!f.mkdirs()){
+					Logger.logError("Can't create" + f);
+				}
 				f = new File(saveDir);
 			}
 			if (ok == JOptionPane.CANCEL_OPTION) {

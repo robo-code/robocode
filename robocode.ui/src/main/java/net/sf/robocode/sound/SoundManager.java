@@ -29,7 +29,7 @@ package net.sf.robocode.sound;
 
 
 import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.settings.RobocodeProperties;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
@@ -61,17 +61,12 @@ public class SoundManager implements ISoundManager {
 
 	// Access to properties
 	private final RobocodeProperties properties;
-	private BattleObserver battleObserver = null;
-	private final IRobocodeManager manager;
+	private final IBattleManager battleManager;
 
-	/**
-	 * Constructs a new sound manager.
-	 *
-	 * @param manager the Robocode manager
-	 */
-	public SoundManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public SoundManager(IRobocodeManager manager, IBattleManager battleManager) {
+		this.battleManager=battleManager;
 		properties = manager.getProperties();
+		battleManager.addListener(new BattleObserver());
 	}
 
 	/**
@@ -313,26 +308,7 @@ public class SoundManager implements ISoundManager {
 		return (float) (bp.getPower() / robocode.Rules.MAX_BULLET_POWER);
 	}
 
-	public void setBattleEventDispatcher(BattleEventDispatcher battleEventDispatcher) {
-		if (battleObserver != null) {
-			battleObserver.dispose();
-		}
-		battleObserver = new BattleObserver(battleEventDispatcher);
-	}
-
 	private class BattleObserver extends BattleAdaptor {
-
-		final BattleEventDispatcher dispatcher;
-
-		public BattleObserver(BattleEventDispatcher dispatcher) {
-			this.dispatcher = dispatcher;
-			dispatcher.addListener(this);
-		}
-
-		public void dispose() {
-			dispatcher.removeListener(this);
-		}
-
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
 			playBackgroundMusic();
@@ -346,7 +322,7 @@ public class SoundManager implements ISoundManager {
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			int battleFieldWidth = manager.getBattleManager().getBattleProperties().getBattlefieldWidth();
+			int battleFieldWidth = battleManager.getBattleProperties().getBattlefieldWidth();
 
 			for (IBulletSnapshot bp : event.getTurnSnapshot().getBullets()) {
 				if (bp.getFrame() == 0) {

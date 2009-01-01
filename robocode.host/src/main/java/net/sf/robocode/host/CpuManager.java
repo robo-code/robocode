@@ -28,6 +28,7 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.core.Container;
+import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.io.Logger;
 
 
@@ -44,8 +45,8 @@ public class CpuManager implements ICpuManager {
 	private long cpuConstant = -1;
 	private final IRobocodeManager manager;
 
-	public CpuManager() {
-		this.manager = Container.instance.getComponent(IRobocodeManager.class);
+	public CpuManager(IRobocodeManager manager) {
+		this.manager = manager;
 	}
 
 	public long getCpuConstant() {
@@ -59,7 +60,7 @@ public class CpuManager implements ICpuManager {
 	}
 
 	public void calculateCpuConstant() {
-		manager.getWindowManager().setStatus("Estimating CPU speed, please wait...");
+		setStatus("Estimating CPU speed, please wait...");
 
 		setCpuConstant();
 		Logger.logMessage(
@@ -68,7 +69,7 @@ public class CpuManager implements ICpuManager {
 		manager.getProperties().setCpuConstant(cpuConstant);
 		manager.saveProperties();
 
-		manager.getWindowManager().setStatus("");
+		setStatus("");
 	}
 
 	private void setCpuConstant() {
@@ -91,4 +92,12 @@ public class CpuManager implements ICpuManager {
 
 		cpuConstant = Math.max(1, (long) (1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));
 	}
+
+	private void setStatus(String message) {
+		IWindowManager windowManager=Container.cache.getComponent(IWindowManager.class);
+		if (windowManager != null) {
+			windowManager.setStatus(message);
+		}
+	}
+
 }

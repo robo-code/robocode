@@ -69,7 +69,7 @@ public class CompilerPreferencesDialog extends JDialog {
 
 	public CompilerPreferencesDialog(JFrame owner) {
 		super(owner, true);
-		this.compilerProperties = RobocodeCompilerFactory.getCompilerProperties();
+		this.compilerProperties = net.sf.robocode.core.Container.cache.getComponent(RobocodeCompilerFactory.class).getCompilerProperties();
 		initialize();
 	}
 

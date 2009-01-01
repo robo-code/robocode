@@ -114,7 +114,7 @@ public final class RbSerializer {
 	}
 
 	public RbSerializer() {
-		this.currentVersion = HiddenAccess.manager.getVersionManager().getVersionInt();
+		this.currentVersion = HiddenAccess.manager.getVersionManagerBase().getVersionInt();
 		encoder = charset.newEncoder();
 		encoder.onMalformedInput(CodingErrorAction.REPORT);
 		encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);

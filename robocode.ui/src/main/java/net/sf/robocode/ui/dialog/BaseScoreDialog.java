@@ -12,7 +12,8 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.ui.IWindowManagerExt;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -27,7 +28,7 @@ import java.awt.event.ComponentListener;
  */
 @SuppressWarnings("serial")
 public abstract class BaseScoreDialog extends JDialog {
-	protected final IRobocodeManager manager;
+	protected final IWindowManagerExt windowManager;
 
 	private final EventHandler eventHandler = new EventHandler();
 	protected JPanel contentPane;
@@ -35,9 +36,9 @@ public abstract class BaseScoreDialog extends JDialog {
 	protected JTable table;
 	protected Dimension tableSize;
 
-	public BaseScoreDialog(IRobocodeManager manager, boolean modal) {
-		super(manager.getWindowManager().getRobocodeFrame(), modal);
-		this.manager = manager;
+	public BaseScoreDialog(IWindowManager windowManager, boolean modal) {
+		super(windowManager.getRobocodeFrame(), modal);
+		this.windowManager = (IWindowManagerExt)windowManager;
 	}
 
 	protected void initialize() {

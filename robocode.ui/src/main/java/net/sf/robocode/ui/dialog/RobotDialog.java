@@ -22,6 +22,8 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.ui.IWindowManager;
 import robocode.control.events.*;
 import robocode.control.snapshot.IDebugProperty;
 import robocode.control.snapshot.IRobotSnapshot;
@@ -44,7 +46,6 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class RobotDialog extends JFrame {
 	private final Color grayGreen = new Color(0x0080C080);
-	private final IRobocodeManager manager;
 	private RobotButton robotButton;
 	private JTabbedPane tabbedPane;
 	private ConsoleScrollPane scrollPane;
@@ -65,22 +66,22 @@ public class RobotDialog extends JFrame {
 	private final Hashtable<String, String> debugProperties = new Hashtable<String, String>();
 
 	private final BattleObserver battleObserver = new BattleObserver();
+	private final IRobocodeManager manager;
+	private final IWindowManager windowManager;
+	private final IBattleManager battleManager;
 
-	/**
-	 * RobotDialog constructor
-	 * @param manager game root
-	 * @param robotButton related button
-	 */
-	public RobotDialog(IRobocodeManager manager, RobotButton robotButton) {
+	public RobotDialog(IRobocodeManager manager, IWindowManager windowManager, IBattleManager battleManager) {
 		super();
 		this.manager = manager;
+		this.battleManager = battleManager;
+		this.windowManager=windowManager;
+	}
+
+	public void setup(RobotButton robotButton){
 		this.robotButton = robotButton;
 		initialize();
 	}
 
-	/**
-	 * Initialize the dialog
-	 */
 	private void initialize() {
 		robotIndex = robotButton.getRobotIndex();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -103,7 +104,7 @@ public class RobotDialog extends JFrame {
 
 	public void detach() {
 		if (isListening) {
-			manager.getWindowManager().removeBattleListener(battleObserver);
+			windowManager.removeBattleListener(battleObserver);
 			isListening = false;
 		}
 		robotButton.detach();
@@ -114,7 +115,7 @@ public class RobotDialog extends JFrame {
 		robotIndex = this.robotButton.getRobotIndex();
 		if (!isListening) {
 			isListening = true;
-			manager.getWindowManager().addBattleListener(battleObserver);
+			windowManager.addBattleListener(battleObserver);
 		}
 	}
 
@@ -396,28 +397,28 @@ public class RobotDialog extends JFrame {
 	 * Is called when the Kill button has been activated
 	 */
 	private void killButtonActionPerformed() {
-		manager.getBattleManager().killRobot(robotIndex);
+		battleManager.killRobot(robotIndex);
 	}
 
 	/**
 	 * Is called when the Paint button has been activated
 	 */
 	private void paintButtonActionPerformed() {
-		manager.getBattleManager().setPaintEnabled(robotIndex, getPaintButton().isSelected());
+		battleManager.setPaintEnabled(robotIndex, getPaintButton().isSelected());
 	}
 
 	/**
 	 * Is called when the SG check box has been activated
 	 */
 	private void sgCheckBoxActionPerformed() {
-		manager.getBattleManager().setSGPaintEnabled(robotIndex, getSGCheckBox().isSelected());
+		battleManager.setSGPaintEnabled(robotIndex, getSGCheckBox().isSelected());
 	}
 
 	/**
 	 * Is called when the Pause/Resume button has been activated
 	 */
 	private void pauseResumeButtonActionPerformed() {
-		manager.getBattleManager().togglePauseResumeBattle();
+		battleManager.togglePauseResumeBattle();
 	}
 
 	private class BattleObserver extends BattleAdaptor {

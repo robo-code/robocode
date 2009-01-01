@@ -101,11 +101,6 @@ public class RecordManager implements IRecordManager {
 		recorder.detachRecorder();
 	}
 
-	public IBattle createPlayer(BattleEventDispatcher battleEventDispatcher) {
-		prepareInputStream();
-		return new BattlePlayer(manager, this, battleEventDispatcher);
-	}
-
 	private void createTempFile() {
 		try {
 			if (tempFile == null) {

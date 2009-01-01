@@ -28,6 +28,7 @@ import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.ui.dialog.ConsoleDialog;
 import net.sf.robocode.ui.dialog.WindowUtil;
+import net.sf.robocode.version.IVersionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,11 +53,13 @@ public class RobocodeCompilerFactory {
 		'-', '\\', '|', '/'
 	};
 
-	public RobocodeCompilerFactory() {
-		super();
+	private final IVersionManager versionManager;
+
+	public RobocodeCompilerFactory(IVersionManager versionManager) {
+		this.versionManager=versionManager;
 	}
 
-	public static RobocodeCompiler createCompiler(RobocodeEditor editor) {
+	public RobocodeCompiler createCompiler(RobocodeEditor editor) {
 		compilerProperties = null;
 		if (getCompilerProperties().getCompilerBinary() == null
 				|| getCompilerProperties().getCompilerBinary().length() == 0) {
@@ -71,7 +74,7 @@ public class RobocodeCompilerFactory {
 				getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
 	}
 
-	public static boolean extract(File src, File dest) {
+	public boolean extract(File src, File dest) {
 		JDialog statusDialog = new JDialog();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int height = 50;
@@ -111,13 +114,17 @@ public class RobocodeCompilerFactory {
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
-					dir.mkdirs();
+					if (!dir.mkdirs()){
+						Logger.logError("Can't create "+dir);
+					}
 				} else {
 					status.setText(entryName + " " + SPINNER[spin++]);
 					File out = new File(dest, entry.getName());
 					File parentDirectory = new File(out.getParent());
 
-					parentDirectory.mkdirs();
+					if (!parentDirectory.mkdirs()){
+						Logger.logError("Can't create "+parentDirectory);
+					}
 
 					int index = 0;
 
@@ -140,12 +147,10 @@ public class RobocodeCompilerFactory {
 							}
 						}
 					} finally {
-						if (fos != null) {
-							fos.close();
-						}
+						FileUtil.cleanupStream(fos);
 					}
 
-					status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
+					status.setText(entryName + " " + SPINNER[spin] + " (" + index + " bytes)");
 				}
 				entry = jarIS.getNextJarEntry();
 			}
@@ -156,20 +161,12 @@ public class RobocodeCompilerFactory {
 			WindowUtil.error(null, e.toString());
 			return false;
 		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException ignored) {}
-			}
-			if (jarIS != null) {
-				try {
-					jarIS.close();
-				} catch (IOException ignored) {}
-			}
+			FileUtil.cleanupStream(fis);
+			FileUtil.cleanupStream(jarIS);
 		}
 	}
 
-	public static CompilerProperties getCompilerProperties() {
+	public CompilerProperties getCompilerProperties() {
 		if (compilerProperties == null) {
 			compilerProperties = new CompilerProperties();
 
@@ -213,7 +210,7 @@ public class RobocodeCompilerFactory {
 		return FileUtil.quoteFileName(javalib);
 	}
 
-	public static boolean installCompiler(RobocodeEditor editor) {
+	public boolean installCompiler(RobocodeEditor editor) {
 		if (compilerInstalling) {
 			JOptionPane.showMessageDialog(editor,
 					"Sorry, the compiler is still installing.\nPlease wait until it is complete.", "Error",
@@ -245,7 +242,7 @@ public class RobocodeCompilerFactory {
 		String jikesBinary;
 		boolean noExtract = false;
 
-		compilerProperties.setRobocodeVersion(editor.getManager().getVersionManager().getVersion());
+		compilerProperties.setRobocodeVersion(versionManager.getVersion());
 
 		if (osName.indexOf("Windows") == 0) {
 			jikesJar = "compilers/jikes-1.22.win.jar";

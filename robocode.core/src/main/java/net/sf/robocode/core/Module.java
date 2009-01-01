@@ -12,12 +12,30 @@
 package net.sf.robocode.core;
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.version.VersionManager;
+import net.sf.robocode.peer.*;
+import net.sf.robocode.serialization.RbSerializer;
 
 /**
  * @author Pavel Savara (original)
  */
 class Module {
 	static{
-		Container.instance.addComponent(IRobocodeManager.class, RobocodeManager.class);
+		Container.cache.addComponent(IRobocodeManager.class, RobocodeManager.class);
+		Container.cache.addComponent(IVersionManager.class, VersionManager.class);
+		Container.cache.addComponent(RobocodeMain.class);
+		Container.cache.addComponent(RobocodeProperties.class);
+		initSerializer();
+	}
+
+	private static void initSerializer() {
+		RbSerializer.register(ExecCommands.class, RbSerializer.ExecCommands_TYPE);
+		RbSerializer.register(BulletCommand.class, RbSerializer.BulletCommand_TYPE);
+		RbSerializer.register(TeamMessage.class, RbSerializer.TeamMessage_TYPE);
+		RbSerializer.register(DebugProperty.class, RbSerializer.DebugProperty_TYPE);
+		RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
+		RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
 	}
 }

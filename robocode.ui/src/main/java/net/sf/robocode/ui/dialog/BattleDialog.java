@@ -12,10 +12,10 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlWriter;
+import net.sf.robocode.ui.IWindowManager;
 import robocode.control.events.*;
 import robocode.control.snapshot.ITurnSnapshot;
 
@@ -45,15 +45,13 @@ public class BattleDialog extends JFrame {
 	private JPanel battleDialogContentPane;
 	private JPanel buttonPanel;
 
-	private final IRobocodeManager manager;
-	private final BattleButton battleButton;
+	private final IWindowManager windowManager;
 	private boolean isListening;
 	private ITurnSnapshot lastSnapshot;
 	private boolean paintSnapshot;
 
-	public BattleDialog(IRobocodeManager manager, BattleButton battleButton) {
-		this.manager = manager;
-		this.battleButton = battleButton;
+	public BattleDialog(IWindowManager windowManager) {
+		this.windowManager = windowManager;
 		initialize();
 	}
 
@@ -65,10 +63,9 @@ public class BattleDialog extends JFrame {
 
 	public void detach() {
 		if (isListening) {
-			manager.getWindowManager().removeBattleListener(battleObserver);
+			windowManager.removeBattleListener(battleObserver);
 			isListening = false;
 		}
-		battleButton.detach();
 	}
 
 	public void reset() {
@@ -80,7 +77,7 @@ public class BattleDialog extends JFrame {
 	public void attach() {
 		if (!isListening) {
 			isListening = true;
-			manager.getWindowManager().addBattleListener(battleObserver);
+			windowManager.addBattleListener(battleObserver);
 		}
 	}
 

@@ -55,12 +55,11 @@ package net.sf.robocode.battle;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.core.Container;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.recording.BattlePlayer;
-import net.sf.robocode.battle.Battle;
-import net.sf.robocode.battle.BattleProperties;
-import net.sf.robocode.battle.IBattle;
-import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
@@ -74,13 +73,15 @@ import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
-import net.sf.robocode.recording.RecordManager;
+import net.sf.robocode.recording.IRecordManager;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.picocontainer.Characteristics;
 
 
 /**
@@ -92,12 +93,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Pavel Savara (contributor)
  */
 public class BattleManager implements IBattleManager {
-	private IRobocodeManager manager;
+	private final IRobocodeManager manager;
+	private final IHostManager hostManager;
+	private final ICpuManager cpuManager;
+	private final IRecordManager recordManager;
+	private final IRepositoryManager repositoryManager;
 
 	private volatile IBattle battle;
 	private BattleProperties battleProperties = new BattleProperties();
 
-	private BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
+	private final BattleEventDispatcher battleEventDispatcher;
 
 	private String battleFilename;
 	private String battlePath;
@@ -105,8 +110,13 @@ public class BattleManager implements IBattleManager {
 	private int pauseCount = 0;
 	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
-	public BattleManager() {
-		this.manager = Container.instance.getComponent(IRobocodeManager.class);
+	public BattleManager(IRobocodeManager manager, IRepositoryManager repositoryManager, IHostManager hostManager, ICpuManager cpuManager,BattleEventDispatcher battleEventDispatcher, IRecordManager recordManager) {
+		this.manager = manager;
+		this.recordManager=recordManager;
+		this.repositoryManager=repositoryManager;
+		this.cpuManager=cpuManager;
+		this.hostManager=hostManager;
+		this.battleEventDispatcher=battleEventDispatcher;
 	}
 
 	public synchronized void cleanup() {
@@ -115,8 +125,6 @@ public class BattleManager implements IBattleManager {
 			battle.cleanup();
 			battle = null;
 		}
-		manager = null;
-		battleEventDispatcher = null;
 	}
 
 	// Called when starting a new battle from GUI
@@ -177,7 +185,7 @@ public class BattleManager implements IBattleManager {
 	}
 
 	private boolean loadRobot(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
-		boolean found = manager.getRepositoryManager().load(battlingRobotsList, bot, battleRobotSpec, teamNum);
+		boolean found = repositoryManager.load(battlingRobotsList, bot, battleRobotSpec, teamNum);
 
 		if (!found) {
 			logError("Aborting battle, could not find robot: " + bot);
@@ -196,17 +204,13 @@ public class BattleManager implements IBattleManager {
 		Logger.setLogListener(battleEventDispatcher);
 		logMessage("Preparing battle...");
 
-		if (manager.isSoundEnabled()) {
-			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
-		}
-
 		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording()
 				&& System.getProperty("TESTING", "none").equals("none");
 
 		if (recording) {
-			manager.getRecordManager().attachRecorder(battleEventDispatcher);
+			recordManager.attachRecorder(battleEventDispatcher);
 		} else {
-			manager.getRecordManager().detachRecorder();
+			recordManager.detachRecorder();
 		}
 
 		// resets seed for deterministic behavior of Random
@@ -214,12 +218,13 @@ public class BattleManager implements IBattleManager {
 
 		if (!seed.equals("none")) {
 			// init soon as it reads random
-			manager.getCpuManager().getCpuConstant();
+			cpuManager.getCpuConstant();
 
 			RandomFactory.resetDeterministic(Long.valueOf(seed));
 		}
 
-		Battle realBattle = new Battle(battlingRobotsList, battleProperties, manager, battleEventDispatcher, isPaused());
+		Battle realBattle = Container.factory.as(Characteristics.NO_CACHE).getComponent(Battle.class);
+		realBattle.setup(battlingRobotsList, battleProperties, isPaused());
 
 		if (recording) {
 			realBattle.setAllPaintRecorded(true);
@@ -234,7 +239,7 @@ public class BattleManager implements IBattleManager {
 		realBattle.setBattleThread(battleThread);
 
 		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-			manager.getHostManager().addSafeThread(battleThread);
+			hostManager.addSafeThread(battleThread);
 		}
 
 		// Start the realBattle thread
@@ -263,14 +268,8 @@ public class BattleManager implements IBattleManager {
 
 		Logger.setLogListener(battleEventDispatcher);
 
-		if (manager.isSoundEnabled()) {
-			manager.getSoundManager().setBattleEventDispatcher(battleEventDispatcher);
-		}
-
-		final RecordManager iRecordManager = (RecordManager) manager.getRecordManager();
-
-		iRecordManager.detachRecorder();
-		battle = iRecordManager.createPlayer(battleEventDispatcher);
+		recordManager.detachRecorder();
+		battle = Container.factory.as(Characteristics.NO_CACHE).getComponent(BattlePlayer.class);
 
 		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
 

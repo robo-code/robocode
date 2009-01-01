@@ -13,7 +13,6 @@ package net.sf.robocode.manager;
 
 
 import net.sf.robocode.battle.IBattleManagerBase;
-import net.sf.robocode.gui.IWindowManagerBase;
 import net.sf.robocode.repository.IRepositoryManagerBase;
 
 
@@ -21,10 +20,9 @@ import net.sf.robocode.repository.IRepositoryManagerBase;
  * @author Pavel Savara (original)
  */
 public interface IRobocodeManagerBase {
-	IBattleManagerBase getBattleManager();
-	IWindowManagerBase getWindowManager();
-	IVersionManagerBase getVersionManager();
-	IRepositoryManagerBase getRepositoryManager();
+	IBattleManagerBase getBattleManagerBase();
+	IVersionManagerBase getVersionManagerBase();
+	IRepositoryManagerBase getRepositoryManagerBase();
 	void setVisibleForRobotEngine(boolean visible);
 	void cleanup();
 }

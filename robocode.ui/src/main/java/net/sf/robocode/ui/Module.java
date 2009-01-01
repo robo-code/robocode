@@ -14,15 +14,42 @@ package net.sf.robocode.ui;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.sound.SoundManager;
+import net.sf.robocode.ui.battleview.InteractiveHandler;
+import net.sf.robocode.ui.battleview.BattleView;
+import net.sf.robocode.ui.dialog.*;
+import net.sf.robocode.ui.editor.RobocodeCompilerFactory;
+import net.sf.robocode.ui.editor.RobocodeEditor;
+import net.sf.robocode.ui.packager.RobotPackager;
 
 /**
  * @author Pavel Savara (original)
  */
 public class Module {
 	static{
-		Container.instance.addComponent(IImageManager.class, ImageManager.class);
-		Container.instance.addComponent(IWindowManagerExt.class, WindowManager.class);
-		Container.instance.addComponent(IRobotDialogManager.class, RobotDialogManager.class);
-		Container.instance.addComponent(ISoundManager.class, SoundManager.class);
+		Container.cache.addComponent(AboutBox.class);
+		Container.cache.addComponent(BattleButton.class);
+		Container.cache.addComponent(BattleView.class);
+		Container.cache.addComponent(BattleDialog.class);
+		Container.cache.addComponent(IImageManager.class, ImageManager.class);
+		Container.cache.addComponent(IRobotDialogManager.class, RobotDialogManager.class);
+		Container.cache.addComponent(ISoundManager.class, SoundManager.class);
+		Container.cache.addComponent(IWindowManagerExt.class, WindowManager.class);
+		Container.cache.addComponent(InteractiveHandler.class);
+		Container.cache.addComponent(NewBattleDialog.class);
+		Container.cache.addComponent(PreferencesDialog.class);
+		Container.cache.addComponent(RankingDialog.class);
+		Container.cache.addComponent(RcSplashScreen.class);
+		Container.cache.addComponent(ResultsDialog.class);
+		Container.cache.addComponent(RobocodeCompilerFactory.class);
+		Container.cache.addComponent(RobocodeEditor.class);
+		Container.cache.addComponent(RobotPackager.class);
+		Container.cache.addComponent(MenuBar.class);
+		Container.cache.addComponent(TeamCreator.class);
+		Container.cache.addComponent(RobocodeFrame.class);
+
+		// new instance for every lookup
+		Container.factory.addComponent(RobotSelectionPanel.class);
+		Container.factory.addComponent(RobotDialog.class);
+		Container.factory.addComponent(RobotButton.class);
 	}
 }

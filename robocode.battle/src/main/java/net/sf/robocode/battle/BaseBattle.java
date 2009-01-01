@@ -60,20 +60,19 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected boolean isAborted;
 
 	// Battle control
-	private boolean isPaused;
+	protected boolean isPaused;
 	private int stepCount;
 	private boolean runBackward;
 	private boolean roundOver;
 	private final Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
-	protected BaseBattle(IRobocodeManager manager, BattleEventDispatcher eventDispatcher, boolean paused) {
-		isPaused = paused;
+	protected BaseBattle(IRobocodeManager manager, IBattleManager battleManager, BattleEventDispatcher eventDispatcher) {
 		stepCount = 0;
 
 		this.manager = manager;
 		this.eventDispatcher = eventDispatcher;
 
-		battleManager = manager.getBattleManager();
+		this.battleManager = battleManager;
 	}
 
 	protected int getEndTimer() {

@@ -29,7 +29,9 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.recording.BattleRecordFormat;
+import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IWindowManagerExt;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
@@ -52,7 +54,7 @@ import java.awt.event.KeyEvent;
  * @author Luis Crespo (contributor)
  */
 @SuppressWarnings("serial")
-public class RobocodeMenuBar extends JMenuBar {
+public class MenuBar extends JMenuBar {
 
 	// Battle menu
 	private JMenu battleMenu;
@@ -94,14 +96,11 @@ public class RobocodeMenuBar extends JMenuBar {
 	private JMenuItem helpRoboWikiMenuItem;
 	private JMenuItem helpYahooGroupRobocodeMenuItem;
 	private JMenuItem helpRobocodeRepositoryMenuItem;
-	private final RobocodeFrame robocodeFrame;
-	private final IRobocodeManager manager;
-	private final IWindowManagerExt windowManager;
 
 	private class EventHandler implements ActionListener, MenuListener {
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
-			RobocodeMenuBar mb = RobocodeMenuBar.this;
+			MenuBar mb = MenuBar.this;
 
 			// Battle menu
 			if (source == mb.getBattleNewMenuItem()) {
@@ -174,27 +173,49 @@ public class RobocodeMenuBar extends JMenuBar {
 		}
 
 		public void menuDeselected(MenuEvent e) {
-			manager.getBattleManager().resumeBattle();
+			battleManager.resumeBattle();
 		}
 
 		public void menuSelected(MenuEvent e) {
-			manager.getBattleManager().pauseBattle();
+			battleManager.pauseBattle();
 		}
 
 		public void menuCanceled(MenuEvent e) {}
 	}
 
-	public final RobocodeMenuBar.EventHandler eventHandler = new EventHandler();
+	public final MenuBar.EventHandler eventHandler = new EventHandler();
 
-	public RobocodeMenuBar(IRobocodeManager manager, RobocodeFrame robocodeFrame) {
-		super();
+	private RobocodeFrame robocodeFrame;
+	private final IRobocodeManager manager;
+	private final IWindowManagerExt windowManager;
+	private final IBattleManager battleManager;
+	private final IRecordManager recordManager;
+	private final ICpuManager cpuManager;
+
+	public MenuBar(IRobocodeManager manager,
+						   IWindowManagerExt windowManager,
+						   IBattleManager battleManager,
+						   IRecordManager recordManager,
+						   ICpuManager cpuManager) {
 		this.manager = manager;
-		this.robocodeFrame = robocodeFrame;
-		windowManager = (IWindowManagerExt) manager.getWindowManager();
+		this.windowManager=windowManager;
+		this.battleManager=battleManager;
+		this.recordManager=recordManager;
+		this.cpuManager=cpuManager;
+
+		// FNL: Make sure that menus are heavy-weight components so that the menus are not painted
+		// behind the BattleView which is a heavy-weight component. This must be done before
+		// adding any menu to the menubar.
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
 		add(getBattleMenu());
 		add(getRobotMenu());
 		add(getOptionsMenu());
 		add(getHelpMenu());
+	}
+
+	public void setup(RobocodeFrame robocodeFrame){
+		this.robocodeFrame = robocodeFrame;
 	}
 
 	private void battleExitActionPerformed() {
@@ -205,12 +226,10 @@ public class RobocodeMenuBar extends JMenuBar {
 	 * Handle battleNew menu item action
 	 */
 	private void battleNewActionPerformed() {
-		windowManager.showNewBattleDialog(manager.getBattleManager().getBattleProperties());
+		windowManager.showNewBattleDialog(battleManager.getBattleProperties());
 	}
 
 	private void battleOpenActionPerformed() {
-		IBattleManager battleManager = manager.getBattleManager();
-
 		try {
 			battleManager.pauseBattle();
 
@@ -226,8 +245,6 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleSaveActionPerformed() {
-		IBattleManager battleManager = manager.getBattleManager();
-
 		try {
 			battleManager.pauseBattle();
 			String path = battleManager.getBattleFilename();
@@ -245,8 +262,6 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleSaveAsActionPerformed() {
-		IBattleManager battleManager = manager.getBattleManager();
-
 		try {
 			battleManager.pauseBattle();
 
@@ -262,15 +277,13 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleOpenRecordActionPerformed() {
-		IBattleManager battleManager = manager.getBattleManager();
-
 		try {
 			battleManager.pauseBattle();
 
 			String path = windowManager.showBattleOpenDialog(".br", "Records");
 
 			if (path != null) {
-				manager.getBattleManager().stop(true);
+				battleManager.stop(true);
 
 				robocodeFrame.getReplayButton().setVisible(true);
 				robocodeFrame.getReplayButton().setEnabled(true);
@@ -280,7 +293,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 				try {
 					robocodeFrame.setBusyPointer(true);
-					manager.getRecordManager().loadRecord(path, BattleRecordFormat.BINARY_ZIP);
+					recordManager.loadRecord(path, BattleRecordFormat.BINARY_ZIP);
 				} finally {
 					robocodeFrame.setBusyPointer(false);
 				}
@@ -292,15 +305,13 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleImportRecordActionPerformed() {
-		IBattleManager battleManager = manager.getBattleManager();
-
 		try {
 			battleManager.pauseBattle();
 
 			String path = windowManager.showBattleOpenDialog(".br.xml", "XML Records");
 
 			if (path != null) {
-				manager.getBattleManager().stop(true);
+				battleManager.stop(true);
 
 				robocodeFrame.getReplayButton().setVisible(true);
 				robocodeFrame.getReplayButton().setEnabled(true);
@@ -310,7 +321,7 @@ public class RobocodeMenuBar extends JMenuBar {
 
 				try {
 					robocodeFrame.setBusyPointer(true);
-					manager.getRecordManager().loadRecord(path, BattleRecordFormat.XML);
+					recordManager.loadRecord(path, BattleRecordFormat.XML);
 				} finally {
 					robocodeFrame.setBusyPointer(false);
 				}
@@ -322,9 +333,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleSaveRecordAsActionPerformed() {
-		IBattleManager battleManager = manager.getBattleManager();
-
-		if (manager.getRecordManager().hasRecord()) {
+		if (recordManager.hasRecord()) {
 			try {
 				battleManager.pauseBattle();
 
@@ -333,7 +342,7 @@ public class RobocodeMenuBar extends JMenuBar {
 				if (path != null) {
 					try {
 						robocodeFrame.setBusyPointer(true);
-						manager.getRecordManager().saveRecord(path, BattleRecordFormat.BINARY_ZIP);
+						recordManager.saveRecord(path, BattleRecordFormat.BINARY_ZIP);
 					} finally {
 						robocodeFrame.setBusyPointer(false);
 					}
@@ -345,9 +354,7 @@ public class RobocodeMenuBar extends JMenuBar {
 	}
 
 	private void battleExportRecordActionPerformed() {
-		IBattleManager battleManager = manager.getBattleManager();
-
-		if (manager.getRecordManager().hasRecord()) {
+		if (recordManager.hasRecord()) {
 			try {
 				battleManager.pauseBattle();
 
@@ -356,7 +363,7 @@ public class RobocodeMenuBar extends JMenuBar {
 				if (path != null) {
 					try {
 						robocodeFrame.setBusyPointer(true);
-						manager.getRecordManager().saveRecord(path, BattleRecordFormat.XML);
+						recordManager.saveRecord(path, BattleRecordFormat.XML);
 					} finally {
 						robocodeFrame.setBusyPointer(false);
 					}
@@ -488,7 +495,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override
 				public void enableReplayRecordingChanged(boolean enabled) {
-					final boolean canReplayRecord = manager.getRecordManager().hasRecord();
+					final boolean canReplayRecord = recordManager.hasRecord();
 					final boolean enableSaveRecord = enabled & canReplayRecord;
 
 					battleSaveRecordAsMenuItem.setEnabled(enableSaveRecord);
@@ -513,7 +520,7 @@ public class RobocodeMenuBar extends JMenuBar {
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override
 				public void enableReplayRecordingChanged(boolean enabled) {
-					final boolean canReplayRecord = manager.getRecordManager().hasRecord();
+					final boolean canReplayRecord = recordManager.hasRecord();
 					final boolean enableSaveRecord = enabled & canReplayRecord;
 
 					battleExportRecordMenuItem.setEnabled(enableSaveRecord);
@@ -856,12 +863,12 @@ public class RobocodeMenuBar extends JMenuBar {
 		if (ok == JOptionPane.YES_OPTION) {
 			try {
 				robocodeFrame.setBusyPointer(true);
-				manager.getCpuManager().calculateCpuConstant();
+				cpuManager.calculateCpuConstant();
 			} finally {
 				robocodeFrame.setBusyPointer(false);
 			}
 
-			long cpuConstant = manager.getCpuManager().getCpuConstant();
+			long cpuConstant = cpuManager.getCpuConstant();
 
 			JOptionPane.showMessageDialog(this, "CPU constant: " + cpuConstant + " nanoseconds per turn",
 					"New CPU constant", JOptionPane.INFORMATION_MESSAGE);

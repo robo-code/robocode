@@ -33,13 +33,15 @@
 package net.sf.robocode.repository;
 
 
-import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.core.Container;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.core.Container;
 import robocode.control.RobotSpecification;
 
 import java.io.*;
@@ -67,14 +69,18 @@ public final class RepositoryManager implements IRepositoryManager {
 	private File robotCache;
 
 	private Repository repository;
-	private final IRobocodeManager manager;
+	//private final IRobocodeManager manager;
 
 	private final List<FileSpecification> updatedJarList = Collections.synchronizedList(
 			new ArrayList<FileSpecification>());
 	private boolean write;
 
-	public RepositoryManager() {
-		this.manager = Container.instance.getComponent(IRobocodeManager.class);
+	private final IRobocodeManager manager;
+	private final IHostManager hostManager;
+
+	public RepositoryManager(IRobocodeManager manager, IHostManager hostManager) {
+		this.hostManager = hostManager;
+		this.manager=manager;
 	}
 
 	public File getRobotCache() {
@@ -115,7 +121,7 @@ public final class RepositoryManager implements IRepositoryManager {
 
 	private FileSpecificationDatabase getRobotDatabase() {
 		if (robotDatabase == null) {
-			manager.getWindowManager().setStatus("Reading robot database");
+			setStatus("Reading robot database");
 			robotDatabase = new FileSpecificationDatabase();
 			try {
 				robotDatabase.load(new File(getRobotsDirectory(), "robot.database"));
@@ -130,6 +136,13 @@ public final class RepositoryManager implements IRepositoryManager {
 		return robotDatabase;
 	}
 
+	private void setStatus(String message) {
+		IWindowManager windowManager=Container.cache.getComponent(IWindowManager.class);
+		if (windowManager != null) {
+			windowManager.setStatus(message);
+		}
+	}
+
 	public void loadRobotRepository() {
 		// Don't reload the repository
 		// If we want to do that, set repository to null by calling clearRobotList().
@@ -137,7 +150,7 @@ public final class RepositoryManager implements IRepositoryManager {
 			return;
 		}
 
-		manager.getWindowManager().setStatus("Refreshing robot database");
+		setStatus("Refreshing robot database");
 
 		updatedJarList.clear();
 		this.write = false;
@@ -149,7 +162,7 @@ public final class RepositoryManager implements IRepositoryManager {
 
 		// Clean up cache -- delete nonexistent jar directories
 		cleanupCache();
-		manager.getWindowManager().setStatus("Cleaning up robot database");
+		setStatus("Cleaning up robot database");
 		cleanupDatabase();
 
 		String externalRobotsPath = manager.getProperties().getOptionsDevelopmentPath(); {
@@ -169,7 +182,7 @@ public final class RepositoryManager implements IRepositoryManager {
 
 		File f = getRobotsDirectory();
 
-		manager.getWindowManager().setStatus("Reading: " + f.getName());
+		setStatus("Reading: " + f.getName());
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", true);
 		}
@@ -189,7 +202,7 @@ public final class RepositoryManager implements IRepositoryManager {
 		updatedJarList.clear();
 
 		f = getRobotCache();
-		manager.getWindowManager().setStatus("Reading: " + getRobotCache());
+		setStatus("Reading: " + getRobotCache());
 		if (f.exists() && f.isDirectory()) { // it better be!
 			getSpecificationsInDirectory(f, f, "", false);
 		}
@@ -197,11 +210,11 @@ public final class RepositoryManager implements IRepositoryManager {
 		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
 		if (write) {
-			manager.getWindowManager().setStatus("Saving robot database");
+			setStatus("Saving robot database");
 			saveRobotDatabase();
 		}
 
-		manager.getWindowManager().setStatus("Adding robots to repository");
+		setStatus("Adding robots to repository");
 
 		for (FileSpecification fs : fileSpecificationList) {
 			if (fs instanceof INamedFileSpecification) {
@@ -209,9 +222,9 @@ public final class RepositoryManager implements IRepositoryManager {
 			}
 		}
 
-		manager.getWindowManager().setStatus("Sorting repository");
+		setStatus("Sorting repository");
 		repository.sortRobotSpecifications();
-		manager.getWindowManager().setStatus("");
+		setStatus("");
 	}
 
 	private void cleanupCache() {
@@ -230,7 +243,7 @@ public final class RepositoryManager implements IRepositoryManager {
 					if (f.exists() && !f.getName().startsWith("robocode")) {
 						continue;
 					}
-					manager.getWindowManager().setStatus("Cleaning up cache: Removing " + file);
+					setStatus("Cleaning up cache: Removing " + file);
 					FileUtil.deleteDir(file);
 				}
 			}
@@ -399,7 +412,7 @@ public final class RepositoryManager implements IRepositoryManager {
 			RobotFileSpecification robotFileSpecification = (RobotFileSpecification) fileSpecification;
 
 			if (robotFileSpecification.isValid() && robotFileSpecification.verifyRobotName()
-					&& robotFileSpecification.update(manager)) {
+					&& robotFileSpecification.update(hostManager)) {
 				updateNoDuplicates(robotFileSpecification);
 			} else {
 				robotFileSpecification.setValid(false);
@@ -420,7 +433,7 @@ public final class RepositoryManager implements IRepositoryManager {
 	private void updateNoDuplicates(NamedFileSpecification spec) {
 		String key = spec.getFilePath();
 
-		manager.getWindowManager().setStatus("Updating database: " + spec.getName());
+		setStatus("Updating database: " + spec.getName());
 		if (!spec.isDevelopmentVersion()
 				&& getRobotDatabase().contains(spec.getFullClassName(), spec.getVersion(), false)) {
 			FileSpecification existingSpec = getRobotDatabase().get(spec.getFullClassName(), spec.getVersion(), false);
@@ -507,15 +520,6 @@ public final class RepositoryManager implements IRepositoryManager {
 				Logger.logError("Can't move " + oldFile.toString());
 			}
 		}
-	}
-
-	/**
-	 * Gets the manager.
-	 *
-	 * @return Returns a RobocodeManager
-	 */
-	public IRobocodeManager getManager() {
-		return manager;
 	}
 
 	public List<INamedFileSpecification> getRobotSpecificationsList() {

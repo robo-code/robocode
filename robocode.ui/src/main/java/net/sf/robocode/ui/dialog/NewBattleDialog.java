@@ -24,7 +24,9 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BattleProperties;
+import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -34,6 +36,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.util.List;
+
+import org.picocontainer.Characteristics;
 
 
 /**
@@ -53,7 +57,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private WizardTabbedPane tabbedPane;
 	private NewBattleBattleFieldTab battleFieldTab;
 
-	private final BattleProperties battleProperties;
+	private BattleProperties battleProperties;
 
 	private NewBattleRulesTab rulesTab;
 	private WizardController wizardController;
@@ -61,12 +65,17 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private RobotSelectionPanel robotSelectionPanel;
 
 	private final IRobocodeManager manager;
+	private final IBattleManager battleManager;
 
-	public NewBattleDialog(IRobocodeManager manager, BattleProperties battleProperties) {
-		super(manager.getWindowManager().getRobocodeFrame(), true);
+	public NewBattleDialog(IRobocodeManager manager, IWindowManager windowManager, IBattleManager battleManager) {
+		super(windowManager.getRobocodeFrame(), true);
 		this.manager = manager;
-		this.battleProperties = battleProperties;
+		this.battleManager=battleManager;
 
+	}
+
+	public void setup(BattleProperties battleProperties){
+		this.battleProperties = battleProperties;
 		initialize();
 	}
 
@@ -105,7 +114,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		dispose();
 
 		// Start new battle after the dialog has been disposed and hence has called resumeBattle()
-		manager.getBattleManager().startNewBattle(battleProperties, false);
+		battleManager.startNewBattle(battleProperties, false);
 	}
 
 	/**
@@ -209,7 +218,8 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			if (battleProperties != null) {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
-			robotSelectionPanel = new RobotSelectionPanel(manager, MIN_ROBOTS, MAX_ROBOTS, true,
+			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotSelectionPanel.class);
+			robotSelectionPanel.setup(MIN_ROBOTS, MAX_ROBOTS, true,
 					"Select robots for the battle", false, false, false, false, false,
 					!manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}

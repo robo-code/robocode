@@ -20,6 +20,8 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.ui.IImageManager;
+import net.sf.robocode.ui.IWindowManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,10 +47,12 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private PreferencesCommonOptionsTab commonOptionsTab;
 
 	private final IRobocodeManager manager;
+	private final IImageManager imageManager;
 
-	public PreferencesDialog(IRobocodeManager manager) {
-		super(manager.getWindowManager().getRobocodeFrame(), true);
+	public PreferencesDialog(IRobocodeManager manager, IWindowManager windowManager, IImageManager imageManager) {
+		super(windowManager.getRobocodeFrame(), true);
 		this.manager = manager;
+		this.imageManager=imageManager;
 		initialize();
 	}
 
@@ -116,7 +120,7 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	private JPanel getRenderingOptionsTab() {
 		if (renderingOptionsTab == null) {
-			renderingOptionsTab = new PreferencesRenderingOptionsTab(manager);
+			renderingOptionsTab = new PreferencesRenderingOptionsTab(manager, imageManager);
 		}
 		return renderingOptionsTab;
 	}

@@ -19,7 +19,9 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.ui.IRobotDialogManager;
+import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.IWindowManagerExt;
 import robocode.BattleResults;
 import robocode.control.events.BattleAdaptor;
@@ -46,32 +48,38 @@ public class RobotButton extends JButton implements ActionListener {
 	private static final int BAR_MARGIN = 2;
 	private static final int BAR_HEIGHT = 3;
 
-	private final IRobocodeManager manager;
+	private final IWindowManagerExt windowManager;
+	private final IBattleManager battleManager;
 	private final BattleObserver battleObserver = new BattleObserver();
+	private final IRobotDialogManager dialogManager;
 	private RobotDialog robotDialog;
-	private final String name;
-	private final int robotIndex;
-	private final int contestIndex;
+	private String name;
+	private int robotIndex;
+	private int contestIndex;
 	private int maxEnergy = 1;
 	private int maxScore = 1;
 	private int lastEnergy;
 	private int lastScore;
 	private boolean isListening;
 
-	public RobotButton(IRobocodeManager manager, String name, int maxEnergy, int robotIndex, int contestIndex, boolean attach) {
-		this.manager = manager;
+	public RobotButton(IWindowManager windowManager, IBattleManager battleManager, IRobotDialogManager dialogManager) {
+		this.windowManager = (IWindowManagerExt)windowManager;
+		this.battleManager=battleManager;
+		this.dialogManager=dialogManager;
+	}
+
+	public void setup(String name, int maxEnergy, int robotIndex, int contestIndex, boolean attach){
 		this.name = name;
 		this.robotIndex = robotIndex;
 		this.contestIndex = contestIndex;
 		this.lastEnergy = maxEnergy;
-		this.maxEnergy = maxEnergy; 
-
+		this.maxEnergy = maxEnergy;
 		initialize();
 		if (attach) {
 			attach();
 			robotDialog.reset();
-			manager.getBattleManager().setPaintEnabled(robotIndex, robotDialog.isPaintEnabled());
-			manager.getBattleManager().setSGPaintEnabled(robotIndex, robotDialog.isSGPaintEnabled());
+			battleManager.setPaintEnabled(robotIndex, robotDialog.isPaintEnabled());
+			battleManager.setSGPaintEnabled(robotIndex, robotDialog.isSGPaintEnabled());
 		}
 	}
 
@@ -137,10 +145,10 @@ public class RobotButton extends JButton implements ActionListener {
 	public void attach() {
 		if (!isListening) {
 			isListening = true;
-			manager.getWindowManager().addBattleListener(battleObserver);
+			windowManager.addBattleListener(battleObserver);
 		}
 		if (robotDialog == null) {
-			robotDialog = ((IWindowManagerExt) manager.getWindowManager()).getRobotDialogManager().getRobotDialog(this,
+			robotDialog = dialogManager.getRobotDialog(this,
 					name, true);
 		}
 		robotDialog.attach(this);
@@ -148,7 +156,7 @@ public class RobotButton extends JButton implements ActionListener {
 
 	public void detach() {
 		if (isListening) {
-			manager.getWindowManager().removeBattleListener(battleObserver);
+			windowManager.removeBattleListener(battleObserver);
 			isListening = false;
 		}
 		if (robotDialog != null) {

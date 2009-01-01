@@ -31,11 +31,10 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.settings.RobocodeProperties;
-import net.sf.robocode.ui.BrowserManager;
-import net.sf.robocode.ui.IRobotDialogManager;
-import net.sf.robocode.ui.IWindowManagerExt;
-import net.sf.robocode.ui.RobotDialogManager;
+import net.sf.robocode.ui.*;
 import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
 import net.sf.robocode.ui.gfx.ImageUtil;
@@ -52,6 +51,8 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+
+import org.picocontainer.Characteristics;
 
 
 /**
@@ -78,12 +79,8 @@ public class RobocodeFrame extends JFrame {
 
 	private final InteractiveHandler interactiveHandler;
 
-	private RobocodeMenuBar robocodeMenuBar;
-
 	private JPanel robocodeContentPane;
 	private JLabel statusLabel;
-
-	private BattleView battleView;
 
 	private JScrollPane robotButtonsScrollPane;
 
@@ -109,20 +106,40 @@ public class RobocodeFrame extends JFrame {
 	private final IRobocodeManager manager;
 
 	private final IWindowManagerExt windowManager;
+	private final IVersionManager versionManager;
+	private final IBattleManager battleManager;
+	private final IRobotDialogManager dialogManager;
+	private final IRecordManager recordManager;
+	private final BattleView battleView;
+	private final MenuBar menuBar;
 
 	final List<RobotButton> robotButtons = new ArrayList<RobotButton>();
 
-	public RobocodeFrame(IRobocodeManager manager) {
-		super();
-		this.windowManager = (IWindowManagerExt) manager.getWindowManager();
+	public RobocodeFrame(IRobocodeManager manager,
+						 IWindowManager windowManager,
+						 IRobotDialogManager dialogManager,
+						 IVersionManager versionManager,
+						 IBattleManager battleManager,
+						 IRecordManager recordManager,
+						 InteractiveHandler interactiveHandler,
+						 MenuBar menuBar,BattleView battleView
+						 ) {
+		this.windowManager = (IWindowManagerExt) windowManager;
 		this.manager = manager;
-		interactiveHandler = new InteractiveHandler(manager, getBattleView());
+		this.interactiveHandler = interactiveHandler;
+		this.versionManager=versionManager;
+		this.battleManager=battleManager;
+		this.dialogManager=dialogManager;
+		this.recordManager=recordManager;
+		menuBar.setup(this);
+		this.battleView=battleView;
+		this.menuBar = menuBar;
 		initialize();
 	}
 
 	protected void finalize() throws Throwable {
 		try {
-			manager.getWindowManager().removeBattleListener(battleObserver);
+			windowManager.removeBattleListener(battleObserver);
 		} finally {
 			super.finalize();
 		}
@@ -165,7 +182,6 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	public boolean checkForNewVersion(boolean notifyNoUpdate) {
-		final IVersionManager versionManager = manager.getVersionManager();
 		String newVersion = versionManager.checkForNewVersion();
 
 		String currentVersion = versionManager.getVersion();
@@ -201,7 +217,7 @@ public class RobocodeFrame extends JFrame {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open browser!",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
-		} else if (manager.getVersionManager().isFinal(newVersion)) {
+		} else if (versionManager.isFinal(newVersion)) {
 			JOptionPane.showMessageDialog(this,
 					"It is highly recommended that you always download the latest version.  You may get it at " + INSTALL_URL,
 					"Update when you can!", JOptionPane.INFORMATION_MESSAGE);
@@ -223,19 +239,6 @@ public class RobocodeFrame extends JFrame {
 	 */
 	private void battleViewPanelResized() {
 		battleView.setBounds(getBattleViewPanel().getBounds());
-	}
-
-	/**
-	 * Return the BattleView.
-	 *
-	 * @return robocode.BattleView
-	 */
-	public BattleView getBattleView() {
-		if (battleView == null) {
-			battleView = new BattleView(manager);
-			battleView.addComponentListener(eventHandler);
-		}
-		return battleView;
 	}
 
 	/**
@@ -265,7 +268,7 @@ public class RobocodeFrame extends JFrame {
 			battleViewPanel = new JPanel();
 			battleViewPanel.setPreferredSize(new Dimension(800, 600));
 			battleViewPanel.setLayout(null);
-			battleViewPanel.add(getBattleView());
+			battleViewPanel.add(battleView);
 			battleViewPanel.addComponentListener(eventHandler);
 		}
 		return battleViewPanel;
@@ -287,18 +290,6 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	/**
-	 * Return the menu bar.
-	 *
-	 * @return JMenuBar
-	 */
-	public RobocodeMenuBar getRobocodeMenuBar() {
-		if (robocodeMenuBar == null) {
-			robocodeMenuBar = new RobocodeMenuBar(manager, this);
-		}
-		return robocodeMenuBar;
-	}
-
-	/**
 	 * Return the sidePanel.
 	 *
 	 * @return JPanel
@@ -308,9 +299,9 @@ public class RobocodeFrame extends JFrame {
 			sidePanel = new JPanel();
 			sidePanel.setLayout(new BorderLayout());
 			sidePanel.add(getRobotButtonsScrollPane(), BorderLayout.CENTER);
-			sidePanel.add(
-					new BattleButton(((IWindowManagerExt) manager.getWindowManager()).getRobotDialogManager(), true),
-					BorderLayout.SOUTH);
+			final BattleButton btn = net.sf.robocode.core.Container.cache.getComponent(BattleButton.class);
+			btn.attach();
+			sidePanel.add(btn, BorderLayout.SOUTH);
 		}
 		return sidePanel;
 	}
@@ -565,27 +556,22 @@ public class RobocodeFrame extends JFrame {
 		setResizable(true);
 		setVisible(false);
 
-		// FNL: Make sure that menus are heavy-weight components so that the menus are not painted
-		// behind the BattleView which is a heavy-weight component. This must be done before
-		// adding any menu to the menubar.
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
 		setContentPane(getRobocodeContentPane());
-		setJMenuBar(getRobocodeMenuBar());
+		setJMenuBar(menuBar);
 
 		battleObserver = new BattleObserver();
 
 		addWindowListener(eventHandler);
 
-		getBattleView().addMouseListener(interactiveHandler);
-		getBattleView().addMouseMotionListener(interactiveHandler);
-		getBattleView().addMouseWheelListener(interactiveHandler);
-		getBattleView().setFocusable(true);
+		battleView.addMouseListener(interactiveHandler);
+		battleView.addMouseMotionListener(interactiveHandler);
+		battleView.addMouseWheelListener(interactiveHandler);
+		battleView.setFocusable(true);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(interactiveHandler);
 
 		if (manager.isSlave()) {
-			getRobocodeMenuBar().getBattleMenu().setEnabled(false);
-			getRobocodeMenuBar().getRobotMenu().setEnabled(false);
+			menuBar.getBattleMenu().setEnabled(false);
+			menuBar.getRobotMenu().setEnabled(false);
 			getStopButton().setEnabled(false);
 			getPauseButton().setEnabled(false);
 			getNextTurnButton().setEnabled(false);
@@ -596,7 +582,7 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private void pauseResumeButtonActionPerformed() {
-		manager.getBattleManager().togglePauseResumeBattle();
+		battleManager.togglePauseResumeBattle();
 	}
 
 	/**
@@ -719,18 +705,18 @@ public class RobocodeFrame extends JFrame {
 			if (source == getPauseButton()) {
 				pauseResumeButtonActionPerformed();
 			} else if (source == getStopButton()) {
-				manager.getBattleManager().stop(false);
+				battleManager.stop(false);
 			} else if (source == getRestartButton()) {
-				manager.getBattleManager().restart();
+				battleManager.restart();
 			} else if (source == getNextTurnButton()) {
-				manager.getBattleManager().nextTurn();
+				battleManager.nextTurn();
 			} else if (source == getReplayButton()) {
-				manager.getBattleManager().replay();
+				battleManager.replay();
 			}
 		}
 
 		public void componentResized(ComponentEvent e) {
-			if (e.getSource() == getBattleView()) {
+			if (e.getSource() == battleView) {
 				battleViewResized();
 			}
 			if (e.getSource() == getBattleViewPanel()) {
@@ -775,16 +761,16 @@ public class RobocodeFrame extends JFrame {
 
 		public void windowDeiconified(WindowEvent e) {
 			setIconified(false);
-			manager.getBattleManager().setManagedTPS(true);
+			battleManager.setManagedTPS(true);
 		}
 
 		public void windowIconified(WindowEvent e) {
 			setIconified(true);
-			manager.getBattleManager().setManagedTPS(false);
+			battleManager.setManagedTPS(false);
 		}
 
 		public void windowOpened(WindowEvent e) {
-			manager.getBattleManager().setManagedTPS(true);
+			battleManager.setManagedTPS(true);
 		}
 
 		public void stateChanged(ChangeEvent e) {
@@ -793,11 +779,11 @@ public class RobocodeFrame extends JFrame {
 
 				// TODO refactor
 				if (tps == 0) {
-					manager.getBattleManager().pauseIfResumedBattle();
+					battleManager.pauseIfResumedBattle();
 				} else {
 					// Only set desired TPS if it is not set to zero
 					manager.getProperties().setOptionsBattleDesiredTPS(tps);
-					manager.getBattleManager().resumeIfPausedBattle(); // TODO causing problems when called from PreferencesViewOptionsTab.storePreferences()
+					battleManager.resumeIfPausedBattle(); // TODO causing problems when called from PreferencesViewOptionsTab.storePreferences()
 				}
 
 				tpsLabel.setText(getTpsFromSliderAsString());
@@ -835,14 +821,14 @@ public class RobocodeFrame extends JFrame {
 			isBattleReplay = event.isReplay();
 
 			getStopButton().setEnabled(true);
-			getRestartButton().setEnabled(manager.getBattleManager().getBattleProperties().getSelectedRobots() != null);
+			getRestartButton().setEnabled(battleManager.getBattleProperties().getSelectedRobots() != null);
 			getReplayButton().setEnabled(event.isReplay());
-			getRobocodeMenuBar().getBattleSaveRecordAsMenuItem().setEnabled(false);
-			getRobocodeMenuBar().getBattleExportRecordMenuItem().setEnabled(false);
-			getRobocodeMenuBar().getBattleSaveAsMenuItem().setEnabled(true);
-			getRobocodeMenuBar().getBattleSaveMenuItem().setEnabled(true);
+			menuBar.getBattleSaveRecordAsMenuItem().setEnabled(false);
+			menuBar.getBattleExportRecordMenuItem().setEnabled(false);
+			menuBar.getBattleSaveAsMenuItem().setEnabled(true);
+			menuBar.getBattleSaveMenuItem().setEnabled(true);
 
-			JCheckBoxMenuItem rankingCheckBoxMenuItem = getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem();
+			JCheckBoxMenuItem rankingCheckBoxMenuItem = menuBar.getOptionsShowRankingCheckBoxMenuItem();
 
 			rankingCheckBoxMenuItem.setEnabled(!isBattleReplay);
 			if (rankingCheckBoxMenuItem.isSelected()) {
@@ -858,7 +844,6 @@ public class RobocodeFrame extends JFrame {
 			if (event.getRound() == 0) {
 				getRobotButtonsPanel().removeAll();
 
-				final IRobotDialogManager dialogManager = ((IWindowManagerExt) manager.getWindowManager()).getRobotDialogManager();
 				final List<IRobotSnapshot> robots = Arrays.asList(event.getStartSnapshot().getRobots());
 
 				dialogManager.trim(robots);
@@ -876,9 +861,8 @@ public class RobocodeFrame extends JFrame {
 				for (int index = 0; index < robots.size(); index++) {
 					final IRobotSnapshot robot = robots.get(index);
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-					final RobotButton button = new RobotButton(manager, robot.getName(), maxEnergy, index,
-							robot.getContestantIndex(), attach);
-
+					final RobotButton button = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotButton.class);
+					button.setup(robot.getName(), maxEnergy, index, robot.getContestantIndex(), attach);
 					button.setText(robot.getShortName());
 					addRobotButton(button);
 				}
@@ -895,18 +879,16 @@ public class RobocodeFrame extends JFrame {
 			}
 			robotButtons.clear();
 
-			final boolean canReplayRecord = (manager.getRecordManager().hasRecord());
-
-			final boolean enableSaveRecord = (manager.getProperties().getOptionsCommonEnableReplayRecording()
-					& manager.getRecordManager().hasRecord());
+			final boolean canReplayRecord = recordManager.hasRecord();
+			final boolean enableSaveRecord = (manager.getProperties().getOptionsCommonEnableReplayRecording() & canReplayRecord);
 
 			getStopButton().setEnabled(false);
 			getReplayButton().setEnabled(canReplayRecord);
 			getNextTurnButton().setEnabled(false);
 
-			getRobocodeMenuBar().getBattleSaveRecordAsMenuItem().setEnabled(enableSaveRecord);
-			getRobocodeMenuBar().getBattleExportRecordMenuItem().setEnabled(enableSaveRecord);
-			getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setEnabled(false);
+			menuBar.getBattleSaveRecordAsMenuItem().setEnabled(enableSaveRecord);
+			menuBar.getBattleExportRecordMenuItem().setEnabled(enableSaveRecord);
+			menuBar.getOptionsShowRankingCheckBoxMenuItem().setEnabled(false);
 
 			updateTitle();
 		}

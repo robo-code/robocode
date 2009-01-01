@@ -12,19 +12,21 @@
 package net.sf.robocode.battle;
 
 import net.sf.robocode.core.Container;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.HostManager;
-import net.sf.robocode.host.ICpuManager;
-import net.sf.robocode.host.CpuManager;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.recording.RecordManager;
+import net.sf.robocode.recording.BattlePlayer;
+import net.sf.robocode.battle.events.BattleEventDispatcher;
 
 /**
  * @author Pavel Savara (original)
  */
 public class Module {
 	static{
-		Container.instance.addComponent(IBattleManager.class, BattleManager.class);
-		Container.instance.addComponent(IRecordManager.class, RecordManager.class);
+		Container.cache.addComponent(IBattleManager.class, BattleManager.class);
+		Container.cache.addComponent(BattleEventDispatcher.class);
+		Container.cache.addComponent(IRecordManager.class, RecordManager.class);
+
+		Container.factory.addComponent(Battle.class);
+		Container.factory.addComponent(BattlePlayer.class);
 	}
 }

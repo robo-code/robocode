@@ -14,8 +14,8 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.ui.BrowserManager;
+import net.sf.robocode.version.IVersionManager;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
@@ -118,10 +118,10 @@ public final class AboutBox extends JDialog {
 		}
 	};
 
-	public AboutBox(Frame owner, IRobocodeManager manager) {
+	public AboutBox(Frame owner, IVersionManager versionManager) {
 		super(owner, true);
 
-		robocodeVersion = manager.getVersionManager().getVersion();
+		robocodeVersion = versionManager.getVersion();
 
 		iconURL = ClassLoader.class.getResource("/icons/robocode-icon.png");
 

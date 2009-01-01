@@ -70,9 +70,4 @@ public interface IWindowManagerExt extends IWindowManager {
 	void showSaveResultsDialog(BattleResultsTableModel tableModel);
 
 	int getFPS();
-
-	IImageManager getImageManager();
-
-	IRobotDialogManager getRobotDialogManager();
-
 }

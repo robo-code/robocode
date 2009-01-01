@@ -90,8 +90,8 @@ public class BattleView extends Canvas {
 	private FontMetrics smallFontMetrics;
 
 	private final IImageManager imageManager;
-
 	private final IRobocodeManager manager;
+	private final IWindowManagerExt windowManager;
 
 	private BufferStrategy bufferStrategy;
 
@@ -105,20 +105,19 @@ public class BattleView extends Canvas {
 	private final GraphicsState graphicsState = new GraphicsState();
 	private IGraphicsProxy[] robotGraphics;
 
-	public BattleView(IRobocodeManager manager) {
-		super();
-
+	public BattleView(IRobocodeManager manager, IWindowManager windowManager, IImageManager imageManager) {
 		this.manager = manager;
-		imageManager = ((IWindowManagerExt) manager.getWindowManager()).getImageManager();
+		this.windowManager = (IWindowManagerExt)windowManager;
+		this.imageManager = imageManager; 
 
 		battleField = new BattleField(800, 600);
 
-		new BattleObserver(manager.getWindowManager());
+		new BattleObserver(windowManager);
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		final ITurnSnapshot lastSnapshot = manager.getWindowManager().getLastSnapshot();
+		final ITurnSnapshot lastSnapshot = windowManager.getLastSnapshot();
 
 		if (lastSnapshot != null) {
 			update(lastSnapshot);
@@ -132,7 +131,7 @@ public class BattleView extends Canvas {
 			initialize();
 		}
 
-		if (manager.getWindowManager().isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
+		if (windowManager.isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
 				|| (getHeight() <= 0)) {
 			return;
 		}

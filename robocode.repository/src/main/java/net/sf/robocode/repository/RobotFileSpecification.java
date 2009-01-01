@@ -19,6 +19,7 @@ package net.sf.robocode.repository;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
@@ -290,10 +291,10 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 		return isJuniorRobot;
 	}
 
-	public boolean update(IRobocodeManager manager) {
+	public boolean update(IHostManager hostManager) {
 
 		try {
-			Class<?> robotClass = manager.getHostManager().loadRobotClass(this);
+			Class<?> robotClass = hostManager.loadRobotClass(this);
 
 			if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 				// this class is not robot

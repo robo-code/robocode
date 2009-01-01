@@ -34,7 +34,7 @@ public final class CacheCleaner {
 	private CacheCleaner() {}
 
 	public static void main(String[] args) {
-		IRobocodeManager manager = Container.instance.getComponent(IRobocodeManager.class);
+		IRobocodeManager manager = Container.cache.getComponent(IRobocodeManager.class);
 		clean(manager);
 	}
 
@@ -52,7 +52,7 @@ public final class CacheCleaner {
 
 		System.out.print("Rebuilding robot database... ");
 
-		final IRepositoryManager repositoryManager = manager.getRepositoryManager();
+		final IRepositoryManager repositoryManager = Container.cache.getComponent(IRepositoryManager.class);
 
 		repositoryManager.clearRobotList();
 		repositoryManager.loadRobotRepository();

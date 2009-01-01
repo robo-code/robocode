@@ -14,9 +14,8 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BattleResultsTableModel;
-import net.sf.robocode.ui.IWindowManagerExt;
+import net.sf.robocode.ui.IWindowManager;
 import robocode.BattleResults;
 
 import javax.swing.*;
@@ -42,20 +41,23 @@ public class ResultsDialog extends BaseScoreDialog {
 	private JPanel buttonPanel;
 	private JButton okButton;
 	private JButton saveButton;
-	private final BattleResultsTableModel tableModel;
+	private BattleResultsTableModel tableModel;
 	private final ButtonEventHandler buttonEventHandler;
 
-	public ResultsDialog(IRobocodeManager manager, BattleResults[] results, int numRounds) {
+	public ResultsDialog(IWindowManager manager) {
 		super(manager, true);
-		tableModel = new BattleResultsTableModel(results, numRounds);
 		buttonEventHandler = new ButtonEventHandler();
+	}
+
+	public void setup(BattleResults[] results, int numRounds){
+		tableModel = new BattleResultsTableModel(results, numRounds);
 		initialize();
 		setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
 		addCancelByEscapeKey();
 	}
 
 	private void saveButtonActionPerformed() {
-		((IWindowManagerExt) manager.getWindowManager()).showSaveResultsDialog(tableModel);
+		windowManager.showSaveResultsDialog(tableModel);
 	}
 
 	private void okButtonActionPerformed() {

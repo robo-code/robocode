@@ -30,20 +30,19 @@ package net.sf.robocode.core;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.host.ICpuManager;
+import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.manager.IRobocodeManagerBase;
-import net.sf.robocode.recording.IRecordManager;
+import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.repository.IRepositoryManagerBase;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.RobocodeProperties;
-import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
-import net.sf.robocode.version.VersionManager;
 
 import java.io.*;
 
@@ -54,15 +53,6 @@ import java.io.*;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobocodeManager implements IRobocodeManager {
-	private IBattleManager battleManager;
-	private ICpuManager cpuManager;
-	private IRepositoryManager repositoryManager;
-	private IWindowManager windowManager;
-	private IVersionManager versionManager;
-	private ISoundManager soundManager;
-	private IRecordManager recordManager;
-	private IHostManager hostManager;
-
 	private boolean slave;
 
 	private RobocodeProperties properties;
@@ -78,52 +68,9 @@ public class RobocodeManager implements IRobocodeManager {
 		slave=value;
 	}
 
-	/**
-	 * Gets the battleManager.
-	 *
-	 * @return Returns a BattleManager
-	 */
-	public IBattleManager getBattleManager() {
-		if (battleManager == null) {
-			battleManager = Container.instance.getComponent(IBattleManager.class);
-		}
-		return battleManager;
-	}
-
-	public IHostManager getHostManager() {
-		if (hostManager == null) {
-			hostManager = Container.instance.getComponent(IHostManager.class);
-		}
-		return hostManager;
-	}
-
-	/**
-	 * Gets the robotManager.
-	 *
-	 * @return Returns a RobotListManager
-	 */
-	public IRepositoryManager getRepositoryManager() {
-		if (repositoryManager == null) {
-			repositoryManager = Container.instance.getComponent(IRepositoryManager.class);
-		}
-		return repositoryManager;
-	}
-
-	/**
-	 * Gets the windowManager.
-	 *
-	 * @return Returns a WindowManager
-	 */
-	public IWindowManager getWindowManager() {
-		if (windowManager == null) {
-			windowManager = Container.instance.getComponent(IWindowManager.class);
-		}
-		return windowManager;
-	}
-
 	public RobocodeProperties getProperties() {
 		if (properties == null) {
-			properties = new RobocodeProperties(this);
+			properties = Container.cache.getComponent(RobocodeProperties.class);
 
 			FileInputStream in = null;
 
@@ -169,59 +116,18 @@ public class RobocodeManager implements IRobocodeManager {
 		}
 	}
 
-	/**
-	 * Gets the versionManager.
-	 *
-	 * @return Returns a VersionManager
-	 */
-	public IVersionManager getVersionManager() {
-		if (versionManager == null) {
-			versionManager = new VersionManager();
-		}
-		return versionManager;
+	public IVersionManagerBase getVersionManagerBase() {
+		return Container.cache.getComponent(IVersionManager.class);
 	}
 
-	/**
-	 * Gets the cpuManager.
-	 *
-	 * @return Returns a CpuManager
-	 */
-	public ICpuManager getCpuManager() {
-		if (cpuManager == null) {
-			cpuManager = Container.instance.getComponent(ICpuManager.class);
-		}
-		return cpuManager;
+	public IBattleManagerBase getBattleManagerBase() {
+		return Container.cache.getComponent(IBattleManager.class);
 	}
 
-	/**
-	 * Gets the Sound Manager.
-	 *
-	 * @return Returns a SoundManager
-	 */
-	public ISoundManager getSoundManager() {
-		if (soundManager == null) {
-			soundManager = Container.instance.getComponent(ISoundManager.class);
-		}
-		return soundManager;
+	public IRepositoryManagerBase getRepositoryManagerBase() {
+		return Container.cache.getComponent(IRepositoryManager.class);
 	}
 
-	/**
-	 * Gets the Battle Recoder.
-	 *
-	 * @return Returns a BattleRecoder
-	 */
-	public IRecordManager getRecordManager() {
-		if (recordManager == null) {
-			recordManager = Container.instance.getComponent(IRecordManager.class);
-		}
-		return recordManager;
-	}
-
-	/**
-	 * Gets the slave.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean isSlave() {
 		return slave;
 	}
@@ -243,14 +149,11 @@ public class RobocodeManager implements IRobocodeManager {
 	}
 
 	public void cleanup() {
-		if (battleManager != null) {
-			battleManager.cleanup();
-			battleManager = null;
+		if (isGUIEnabled) {
+			Container.cache.getComponent(IWindowManager.class).cleanup();
 		}
-		if (hostManager != null) {
-			hostManager.cleanup();
-			hostManager = null;
-		}
+		Container.cache.getComponent(IBattleManager.class).cleanup();
+		Container.cache.getComponent(IHostManager.class).cleanup();
 	}
 
 	public void setVisibleForRobotEngine(boolean visible) {
@@ -259,15 +162,19 @@ public class RobocodeManager implements IRobocodeManager {
 			setEnableGUI(true);
 
 			// Set the Look and Feel (LAF)
-			getWindowManager().setLookAndFeel();
+			Container.cache.getComponent(IWindowManager.class).setLookAndFeel();
 		}
 
 		if (isGUIEnabled()) {
-			getWindowManager().showRobocodeFrame(visible, false);
+			Container.cache.getComponent(IWindowManager.class).showRobocodeFrame(visible, false);
 			getProperties().setOptionsCommonShowResults(visible);
 		}
 	}
 
+	public static IRobocodeManagerBase createRobocodeManager() {
+		return Container.cache.getComponent(IRobocodeManager.class);
+	}
+	
 	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
 		try {
 			if (robocodeHome == null) {
@@ -288,11 +195,10 @@ public class RobocodeManager implements IRobocodeManager {
 			return null;
 		}
 
-		RobocodeManager manager = (RobocodeManager) Container.instance.getComponent(IRobocodeManager.class);
-		manager.getHostManager();
+		RobocodeManager manager = (RobocodeManager) Container.cache.getComponent(IRobocodeManager.class);
 		manager.setSlave(true);
 		manager.setEnableGUI(false);
-		manager.getHostManager().initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
+		Container.cache.getComponent(IHostManager.class).initSecurity(true, System.getProperty("EXPERIMENTAL", "false").equals("true"));
 
 		return manager;
 	}
