@@ -40,17 +40,15 @@ import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.snapshot.BulletState;
 import robocode.exception.RobotException;
 
-import java.awt.*;
 import java.io.FilePermission;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.security.Permission;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.PropertyPermission;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
+import java.awt.*;
 
 
 /**

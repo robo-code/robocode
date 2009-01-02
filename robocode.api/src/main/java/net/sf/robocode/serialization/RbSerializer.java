@@ -81,36 +81,6 @@ public final class RbSerializer {
 	static {
 		charset = Charset.forName("UTF8"); // we will use it as UCS-2
 		register(null, TERMINATOR_TYPE); // reserved for end of (list) element
-		register(RobotStatus.class, RobotStatus_TYPE);
-		register(BattleResults.class, BattleResults_TYPE);
-		register(Bullet.class, Bullet_TYPE);
-
-		// events
-		register(BattleEndedEvent.class, BattleEndedEvent_TYPE);
-		register(BulletHitBulletEvent.class, BulletHitBulletEvent_TYPE);
-		register(BulletHitEvent.class, BulletHitEvent_TYPE);
-		register(BulletMissedEvent.class, BulletMissedEvent_TYPE);
-		register(DeathEvent.class, DeathEvent_TYPE);
-
-		register(WinEvent.class, WinEvent_TYPE);
-		register(HitWallEvent.class, HitWallEvent_TYPE);
-		register(RobotDeathEvent.class, RobotDeathEvent_TYPE);
-		register(SkippedTurnEvent.class, SkippedTurnEvent_TYPE);
-		register(ScannedRobotEvent.class, ScannedRobotEvent_TYPE);
-		register(HitByBulletEvent.class, HitByBulletEvent_TYPE);
-		register(HitRobotEvent.class, HitRobotEvent_TYPE);
-		register(KeyPressedEvent.class, KeyPressedEvent_TYPE);
-		register(KeyReleasedEvent.class, KeyReleasedEvent_TYPE);
-		register(KeyTypedEvent.class, KeyTypedEvent_TYPE);
-		register(MouseClickedEvent.class, MouseClickedEvent_TYPE);
-		register(MouseDraggedEvent.class, MouseDraggedEvent_TYPE);
-		register(MouseEnteredEvent.class, MouseEnteredEvent_TYPE);
-		register(MouseExitedEvent.class, MouseExitedEvent_TYPE);
-		register(MouseMovedEvent.class, MouseMovedEvent_TYPE);
-		register(MousePressedEvent.class, MousePressedEvent_TYPE);
-		register(MouseReleasedEvent.class, MouseReleasedEvent_TYPE);
-		register(MouseWheelMovedEvent.class, MouseWheelMovedEvent_TYPE);
-
 	}
 
 	public RbSerializer() {
