@@ -91,6 +91,7 @@ public class RobotThreadManager {
 			runThread = new Thread(runThreadGroup, robotProxy, robotProxy.getStatics().getName());
 			runThread.setDaemon(true);
 			runThread.setPriority(Thread.NORM_PRIORITY - 1);
+			runThread.setContextClassLoader(this.robotProxy.getRobotClassloader());
 			runThread.start();
 		} catch (Exception e) {
 			logError("Exception starting thread: ", e);

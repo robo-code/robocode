@@ -139,6 +139,10 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	public RobotFileSystemManager getRobotFileSystemManager() {
 		return robotFileSystemManager;
 	}
+	
+	public ClassLoader getRobotClassloader(){
+		return robotClassLoader;
+	}
 
 	// -----------
 	// battle driven methods

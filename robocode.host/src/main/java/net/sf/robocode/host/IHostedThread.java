@@ -29,4 +29,6 @@ public interface IHostedThread extends Runnable {
 	RobotFileSystemManager getRobotFileSystemManager();
 
 	RobotOutputStream getOut();
+
+	ClassLoader getRobotClassloader();
 }

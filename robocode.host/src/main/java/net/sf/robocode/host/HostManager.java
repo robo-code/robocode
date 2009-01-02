@@ -115,14 +115,13 @@ public class HostManager implements IHostManager {
 		Thread.currentThread().setName("Application Thread");
 
 		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
-
-		Policy.setPolicy(securityPolicy);
-
 		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(threadManager, securityOn, experimentalOn);
 
-		System.setSecurityManager(securityManager);
 
 		if (securityOn) {
+			Policy.setPolicy(securityPolicy);
+			System.setSecurityManager(securityManager);
+
 			ThreadGroup tg = Thread.currentThread().getThreadGroup();
 
 			while (tg != null) {
