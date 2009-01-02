@@ -34,7 +34,6 @@ public class Module {
 		Container.cache.addComponent(BattleDialog.class);
 		Container.cache.addComponent(IImageManager.class, ImageManager.class);
 		Container.cache.addComponent(IRobotDialogManager.class, RobotDialogManager.class);
-		Container.cache.addComponent(ISoundManager.class, SoundManager.class);
 		Container.cache.addComponent(IWindowManagerExt.class, WindowManager.class);
 		Container.cache.addComponent(InteractiveHandler.class);
 		Container.cache.addComponent(NewBattleDialog.class);

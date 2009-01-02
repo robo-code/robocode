@@ -56,11 +56,11 @@ import java.util.List;
 public class RobocodeProperties {
 	// Default SFX files
 	private final static String
-			DEFAULT_FILE_GUNSHOT_SFX = "/sounds/zap.wav",
-			DEFAULT_FILE_ROBOT_COLLISION_SFX = "/sounds/13831_adcbicycle_22.wav",
+			DEFAULT_FILE_GUNSHOT_SFX = "/net/sf/robocode/sound/sounds/zap.wav",
+			DEFAULT_FILE_ROBOT_COLLISION_SFX = "/net/sf/robocode/sound/sounds/13831_adcbicycle_22.wav",
 			DEFAULT_FILE_WALL_COLLISION_SFX = DEFAULT_FILE_ROBOT_COLLISION_SFX,
-			DEFAULT_FILE_ROBOT_DEATH_SFX = "/sounds/explode.wav",
-			DEFAULT_FILE_BULLET_HITS_ROBOT_SFX = "/sounds/shellhit.wav",
+			DEFAULT_FILE_ROBOT_DEATH_SFX = "/net/sf/robocode/sound/sounds/explode.wav",
+			DEFAULT_FILE_BULLET_HITS_ROBOT_SFX = "/net/sf/robocode/sound/sounds/shellhit.wav",
 			DEFAULT_FILE_BULLET_HITS_BULLET_SFX = DEFAULT_FILE_BULLET_HITS_ROBOT_SFX;
 
 	// View Options (Arena)

@@ -17,6 +17,7 @@
         <module>robocode.battle</module>
         <module>robocode.host</module>
         <module>robocode.ui</module>
+        <module>robocode.sound</module>
         <module>robocode.samples</module>
         <module>robocode.roborumble</module>
         <module>robocode.tests</module>
@@ -38,20 +39,34 @@
         </repository>
     </distributionManagement>
     <build>
-      <plugins>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <configuration>
-                  <source>1.5</source>
-                  <target>1.5</target>
-              </configuration>
-          </plugin>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <version>2.4.3</version>
-          </plugin>
-      </plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.3</version>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/_svn/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/test/resources</directory>
+                <excludes>
+                    <exclude>**/_svn/**</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
 </project>

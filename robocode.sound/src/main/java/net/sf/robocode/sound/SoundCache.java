@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Luis Crespo (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class SoundCache {
+class SoundCache {
 
 	/**
 	 * Table containing all sound clips
@@ -167,7 +167,7 @@ public class SoundCache {
 	 */
 	private SoundData createSoundData(String resourceName) {
 		SoundData data;
-		URL url = ClassLoader.class.getResource(resourceName);
+		URL url = SoundCache.class.getResource(resourceName);
 
 		if (url == null) {
 			Logger.logError("Could not load sound because of invalid resource name: " + resourceName);
