@@ -116,6 +116,7 @@ public class BattleManager implements IBattleManager {
 		this.cpuManager = cpuManager;
 		this.hostManager = hostManager;
 		this.battleEventDispatcher = battleEventDispatcher;
+		Logger.setLogListener(battleEventDispatcher);
 	}
 
 	public synchronized void cleanup() {
@@ -200,7 +201,6 @@ public class BattleManager implements IBattleManager {
 			battle.stop(true);
 		}
 
-		Logger.setLogListener(battleEventDispatcher);
 		logMessage("Preparing battle...");
 
 		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording()

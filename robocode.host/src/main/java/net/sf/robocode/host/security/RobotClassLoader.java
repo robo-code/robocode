@@ -31,6 +31,7 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.core.Container;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -69,11 +70,7 @@ public class RobotClassLoader extends ClassLoader {
 	private Field classesField = null;
 
 	public RobotClassLoader(IRobotFileSpecification robotFileSpecification) {
-		this(RobotClassLoader.class.getClassLoader(), robotFileSpecification);
-	}
-
-	public RobotClassLoader(ClassLoader parent, IRobotFileSpecification robotFileSpecification) {
-		super(parent);
+		super(Container.cache.getComponent(RestrictedClassLoader.class));
 		this.robotFileSpecification = robotFileSpecification;
 
 		// Deep within the class loader is a vector of classes, and is VM

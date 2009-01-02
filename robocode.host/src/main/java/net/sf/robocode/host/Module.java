@@ -13,6 +13,7 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.core.Container;
+import net.sf.robocode.host.security.RestrictedClassLoader;
 
 
 /**
@@ -22,5 +23,6 @@ public class Module {
 	static {
 		Container.cache.addComponent(IHostManager.class, HostManager.class);
 		Container.cache.addComponent(ICpuManager.class, CpuManager.class);
+		Container.cache.addComponent(RestrictedClassLoader.class);
 	}
 }
