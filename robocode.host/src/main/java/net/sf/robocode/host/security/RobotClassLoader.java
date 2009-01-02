@@ -53,6 +53,7 @@ public class RobotClassLoader extends ClassLoader {
 	private final Map<String, Class<?>> cachedClasses = new HashMap<String, Class<?>>();
 	private final Map<String, Boolean> referencedClasses = Collections.synchronizedMap(new HashMap<String, Boolean>());
 	private Class<?> robotClass;
+	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 
 	private IRobotFileSpecification robotFileSpecification;
 	private String rootPackageDirectory;
@@ -140,7 +141,7 @@ public class RobotClassLoader extends ClassLoader {
 			// Pre-load robot classes without security...
 			// loadClass WILL NOT LINK the class, so static "cheats" will not work.
 			// in the safe robot loader the class is linked.
-			if (isSecutityOn()) {
+			if (isSecutityOn) {
 				robotClass = loadRobotClass(className, true);
 			} else {
 				robotClass = loadClass(className);
@@ -265,7 +266,7 @@ public class RobotClassLoader extends ClassLoader {
 
 			if (!referencedClasses.get(s)) {
 				// resolve, then rebuild keys...
-				if (isSecutityOn()) {
+				if (isSecutityOn) {
 					loadRobotClass(s, false);
 				} else {
 					loadClass(s, true);
@@ -324,9 +325,5 @@ public class RobotClassLoader extends ClassLoader {
 			return;
 		}
 		referencedClasses.put(className, Boolean.TRUE);
-	}
-
-	private static boolean isSecutityOn() {
-		return !System.getProperty("NOSECURITY", "false").equals("true");
 	}
 }

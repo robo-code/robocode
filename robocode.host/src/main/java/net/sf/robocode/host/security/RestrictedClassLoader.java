@@ -11,21 +11,14 @@
  *******************************************************************************/
 package net.sf.robocode.host.security;
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.core.Container;
-
-import java.net.URLClassLoader;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.IOException;
-import java.io.File;
 
 /**
  * @author Pavel Savara (original)
  */
 public class RestrictedClassLoader extends ClassLoader{
+	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
+
 	public RestrictedClassLoader() {
 		super(Container.systemLoader);
 	}
@@ -33,11 +26,13 @@ public class RestrictedClassLoader extends ClassLoader{
 	public synchronized Class<?> loadClass(String name, boolean resolve)
 	throws ClassNotFoundException
 	{
-		if (name.startsWith("net.sf.robocode")){
-			throw new ClassNotFoundException();
-		}
-		if (name.startsWith("robocode.control")){
-			throw new ClassNotFoundException();
+		if (isSecutityOn){
+			if (name.startsWith("net.sf.robocode")){
+				throw new ClassNotFoundException();
+			}
+			if (name.startsWith("robocode.control")){
+				throw new ClassNotFoundException();
+			}
 		}
 		return super.loadClass(name, resolve);
 	}
