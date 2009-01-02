@@ -53,23 +53,23 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 		if (event.getRound() == 0) {
 			robots = event.getStartSnapshot().getRobots();
 
-			net.sf.robocode.test.Assert.assertNear(566.2968069, robots[0].getX());
-			net.sf.robocode.test.Assert.assertNear(436.3146436, robots[1].getX());
-			net.sf.robocode.test.Assert.assertNear(317.3362130, robots[2].getX());
-			net.sf.robocode.test.Assert.assertNear(717.6994092, robots[3].getX());
-			net.sf.robocode.test.Assert.assertNear(145.5531935, robots[4].getX());
-			net.sf.robocode.test.Assert.assertNear(734.4305396, robots[5].getX());
-			net.sf.robocode.test.Assert.assertNear(335.7732607, robots[6].getX());
-			net.sf.robocode.test.Assert.assertNear(390.8076498, robots[7].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(566.2968069, robots[0].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(436.3146436, robots[1].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(317.3362130, robots[2].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(717.6994092, robots[3].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(145.5531935, robots[4].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(734.4305396, robots[5].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(335.7732607, robots[6].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(390.8076498, robots[7].getX());
 
-			net.sf.robocode.test.Assert.assertNear(100.000, robots[0].getEnergy());
-			net.sf.robocode.test.Assert.assertNear(200.000, robots[1].getEnergy());
-			net.sf.robocode.test.Assert.assertNear(120.000, robots[2].getEnergy());
-			net.sf.robocode.test.Assert.assertNear(100.000, robots[3].getEnergy());
-			net.sf.robocode.test.Assert.assertNear(200.000, robots[4].getEnergy());
-			net.sf.robocode.test.Assert.assertNear(120.000, robots[5].getEnergy());
-			net.sf.robocode.test.Assert.assertNear(100.000, robots[6].getEnergy());
-			net.sf.robocode.test.Assert.assertNear(100.000, robots[7].getEnergy());
+			net.sf.robocode.test.helpers.Assert.assertNear(100.000, robots[0].getEnergy());
+			net.sf.robocode.test.helpers.Assert.assertNear(200.000, robots[1].getEnergy());
+			net.sf.robocode.test.helpers.Assert.assertNear(120.000, robots[2].getEnergy());
+			net.sf.robocode.test.helpers.Assert.assertNear(100.000, robots[3].getEnergy());
+			net.sf.robocode.test.helpers.Assert.assertNear(200.000, robots[4].getEnergy());
+			net.sf.robocode.test.helpers.Assert.assertNear(120.000, robots[5].getEnergy());
+			net.sf.robocode.test.helpers.Assert.assertNear(100.000, robots[6].getEnergy());
+			net.sf.robocode.test.helpers.Assert.assertNear(100.000, robots[7].getEnergy());
 		}
 	}
 
@@ -80,25 +80,25 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 		robots = event.getTurnSnapshot().getRobots();
 
 		if (lastTurn == 1) {
-			net.sf.robocode.test.Assert.assertNear(566.2968069, robots[0].getX());
-			net.sf.robocode.test.Assert.assertNear(437.1810299, robots[1].getX());
-			net.sf.robocode.test.Assert.assertNear(317.3362130, robots[2].getX());
-			net.sf.robocode.test.Assert.assertNear(717.6994092, robots[3].getX());
-			net.sf.robocode.test.Assert.assertNear(145.2637220, robots[4].getX());
-			net.sf.robocode.test.Assert.assertNear(734.4305396, robots[5].getX());
-			net.sf.robocode.test.Assert.assertNear(335.7732607, robots[6].getX());
-			net.sf.robocode.test.Assert.assertNear(389.8100070, robots[7].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(566.2968069, robots[0].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(437.1810299, robots[1].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(317.3362130, robots[2].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(717.6994092, robots[3].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(145.2637220, robots[4].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(734.4305396, robots[5].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(335.7732607, robots[6].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(389.8100070, robots[7].getX());
 		}
 
 		if (lastTurn == 1365) {
-			net.sf.robocode.test.Assert.assertNear(456.1227607, robots[0].getX());
-			net.sf.robocode.test.Assert.assertNear(401.8030122, robots[1].getX());
-			net.sf.robocode.test.Assert.assertNear(317.3362130, robots[2].getX());
-			net.sf.robocode.test.Assert.assertNear(685.9435204, robots[3].getX());
-			net.sf.robocode.test.Assert.assertNear(97.20308612, robots[4].getX());
-			net.sf.robocode.test.Assert.assertNear(734.4305396, robots[5].getX());
-			net.sf.robocode.test.Assert.assertNear(327.2578349, robots[6].getX());
-			net.sf.robocode.test.Assert.assertNear(523.5054202, robots[7].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(456.1227607, robots[0].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(401.8030122, robots[1].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(317.3362130, robots[2].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(685.9435204, robots[3].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(97.20308612, robots[4].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(734.4305396, robots[5].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(327.2578349, robots[6].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(523.5054202, robots[7].getX());
 		}
 	}
 

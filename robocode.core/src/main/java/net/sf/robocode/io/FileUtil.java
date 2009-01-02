@@ -37,7 +37,8 @@ public class FileUtil {
 	// Initializes the current working directory
 	static {
 		try {
-			FileUtil.setCwd(new File(""));
+			final String wd = System.getProperty("WORKINGDIRECTORY", "");
+			FileUtil.setCwd(new File(wd));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -13,7 +13,7 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.Assert;
+import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobotTestBed;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;

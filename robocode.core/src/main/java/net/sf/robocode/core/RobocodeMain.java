@@ -197,11 +197,13 @@ public class RobocodeMain implements Runnable {
 	}
 
 	private void loadSetup(String[] args) {
+		/* TODO REMOVE 
 		final String robocodeDir = System.getProperty("WORKINGDIRECTORY");
 
 		if (robocodeDir != null) {
 			changeDirectory(robocodeDir);
 		}
+		*/
 
 		/* TODO
 		 if (System.getProperty("NOSECURITY", "false").equals("true")) {

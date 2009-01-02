@@ -18,9 +18,9 @@ import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.TeamMessage;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.test.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.Assert;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +28,8 @@ import java.awt.geom.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import robocode.util.Utils;
 
 
 /**
@@ -55,7 +57,7 @@ public class RbSerializerTest {
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
-		Assert.assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
+		assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
 		Assert.assertEquals(ec2.isTryingToPaint(), true);
 	}
 
@@ -75,8 +77,8 @@ public class RbSerializerTest {
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
-		Assert.assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
-		Assert.assertNear(ec2.getBullets().get(0).getPower(), 1.0);
+		assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
+		assertNear(ec2.getBullets().get(0).getPower(), 1.0);
 		Assert.assertEquals(ec2.getBullets().get(1).isFireAssistValid(), false);
 		Assert.assertEquals(ec2.getBullets().get(2).isFireAssistValid(), true);
 		Assert.assertEquals(ec2.getBullets().get(2).getBulletId(), -128);
@@ -234,4 +236,7 @@ public class RbSerializerTest {
 		f.setVisible(false);
 	}
 
+	public static void assertNear(double v1, double v2) {
+		org.junit.Assert.assertEquals(v1, v2, Utils.NEAR_DELTA);
+	}
 }

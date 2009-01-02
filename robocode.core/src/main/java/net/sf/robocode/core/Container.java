@@ -38,33 +38,33 @@ public final class Container {
 		factory = new DefaultPicoContainer(new OptInCaching(), cache);
 		final int modules = loadModules();
 		if (modules <2){
-			throw new Error("Main modules not loaded, something went wrong");
+			throw new Error("Main modules not loaded, something went wrong " + known.size());
 		}
 	}
 
 	private static int loadModules() {
 		int res=0;
-		final String classPath = System.getProperties().getProperty("java.class.path", null);
+		final String classPath = System.getProperties().getProperty("java.class.path", null).toLowerCase();
 
 		for (String path : classPath.split(";")) {
 			File pathf = new File(path);
 
 			if (pathf.isDirectory()) {
-				final int i = path.lastIndexOf("robocode.");
+				String name = getModuleName(path);
 
-				if (i > 0) {
-					String name = path.substring(i);
-
-					name = "net.sf." + name.substring(0, name.indexOf("\\"));
+				if (name!=null) {
 					if (loadModule(name)){
 						res++;
 					}
 				} else {
 					res+=loadModules(pathf);
 				}
-			} else if (path.startsWith("robocode") && path.endsWith(".jar")) {
-				if (loadModule(pathf.toString())){
-					res++;
+			} else if (path.contains(File.separator + "robocode.") && path.endsWith(".jar")) {
+				String name = getModuleName(path);
+				if (name!=null){
+					if (loadModule(name)){
+						res++;
+					}
 				}
 			}
 		}
@@ -102,12 +102,33 @@ public final class Container {
 			return true;
 		} catch (ClassNotFoundException e) {
 			// OK, no worries, it is not module
-			Logger.logMessage("Can't load " + module);
+			// Logger.logMessage("Can't load " + module);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		} catch (InstantiationException e) {
 			Logger.logError(e);
 		}
 		return false;
+	}
+
+	private static String getModuleName(String path){
+		if (path.endsWith("robocode.jar")){
+			return "net.sf.robocode.api";
+		}
+		int i = path.lastIndexOf("robocode.");
+		if (i > 0) {
+			String name = path.substring(i);
+
+			i = name.indexOf("\\");
+			if (i > 0){
+				return "net.sf." + name.substring(0, i);
+			}
+			i = name.indexOf(".jar");
+			if (i > 0){
+				return "net.sf." + name.substring(0, i);
+			}
+			return "net.sf." + name;
+		}
+		return null;
 	}
 }

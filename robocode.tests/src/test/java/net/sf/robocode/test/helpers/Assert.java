@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.test;
+package net.sf.robocode.test.helpers;
 
 
 import robocode.util.Utils;

@@ -14,7 +14,7 @@ package net.sf.robocode.test.helpers;
 
 
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.test.Assert;
+import net.sf.robocode.test.helpers.Assert;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.After;
 import org.junit.Before;
@@ -38,6 +38,8 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
+		System.setProperty("WORKINGDIRECTORY", "target//classes");
+		System.setProperty("ROBOTPATH", "target//classes");
 		engine = new RobocodeEngine();
 	}
 
