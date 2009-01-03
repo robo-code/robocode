@@ -77,7 +77,7 @@ public class RobotFileSystemManager {
 			return;
 		}
 		if (!quotaMessagePrinted) {
-			robotProxy.getOut().println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
+			robotProxy.println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
 			quotaMessagePrinted = true;
 		}
 		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");

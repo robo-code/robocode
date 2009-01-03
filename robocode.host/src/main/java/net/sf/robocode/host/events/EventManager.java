@@ -486,7 +486,7 @@ public class EventManager implements IEventManager {
 					HiddenAccess.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
 				}
 			} catch (Exception ex) {
-				robotProxy.getOut().println("SYSTEM: Exception occurred on " + currentEvent.getClass().getName());
+				robotProxy.println("SYSTEM: Exception occurred on " + currentEvent.getClass().getName());
 				ex.printStackTrace(robotProxy.getOut());
 			}
 		}
@@ -590,7 +590,7 @@ public class EventManager implements IEventManager {
 		final Event event = namedEvents.get(eventClass);
 
 		if (event == null) {
-			robotProxy.getOut().println("SYSTEM: Unknown event class: " + eventClass);
+			robotProxy.println("SYSTEM: Unknown event class: " + eventClass);
 			return;
 		}
 		if (HiddenAccess.isCriticalEvent(event)) {

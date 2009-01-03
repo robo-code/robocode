@@ -79,7 +79,7 @@ public class RobocodeSecurityPolicy extends Policy {
 	}
 
 	@Override
-	public PermissionCollection getPermissions(CodeSource codeSource) {
+	public PermissionCollection getPermissions(final CodeSource codeSource) {
 		if (!isSecutityOn) {
 			return allPermissions;
 		}
@@ -90,12 +90,11 @@ public class RobocodeSecurityPolicy extends Policy {
 			return new Permissions();
 		}
 
-		if (trustedCodeUrls.contains(source)) {
-			return allPermissions;
-		}
-
-		// Trust everyone on the classpath
-		return parentPolicy.getPermissions(codeSource);
+		return AccessController.doPrivileged(new PrivilegedAction<PermissionCollection>() {
+			public PermissionCollection run() {
+				return parentPolicy.getPermissions(codeSource);
+			}
+		});
 	}
 
 	@Override
@@ -156,9 +155,13 @@ public class RobocodeSecurityPolicy extends Policy {
 
 		// Attempt to stop the window from displaying
 		if (perm instanceof java.awt.AWTPermission) {
-			Logger.logError("Preventing " + robotProxy.getStatics().getName() + " from access to AWT: " + perm);
+			final String message = "Preventing " + robotProxy.getStatics().getName() + " from access to AWT: " + perm;
+
+			Logger.logError(message);
 			robotProxy.drainEnergy();
-			return false;
+
+			// this is hack, because security exception is not enough
+			throw new ThreadDeath();
 		}
 
 		// FilePermission access request.

@@ -29,6 +29,7 @@ package net.sf.robocode.host.security;
 
 import net.sf.robocode.core.Container;
 import static net.sf.robocode.io.Logger.logError;
+import net.sf.robocode.host.IHostedThread;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -56,12 +57,18 @@ public class RobotClassLoader extends URLClassLoader {
 	private Class<?> robotClass;
 	private final String fullClassName;
 	private PermissionCollection emptyPermissions;
+	private IHostedThread robotProxy;
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
+		this(robotClassPath, robotFullClassName, null);
+	}
+	
+	public RobotClassLoader(URL robotClassPath, String robotFullClassName, IHostedThread robotProxy) {
 		super(new URL[] { robotClassPath}, Container.systemLoader);
 		prepareForCleanup();
 		fullClassName = robotFullClassName;
 		emptyPermissions = new Permissions();
+		this.robotProxy = robotProxy;
 	}
 
 	public synchronized Class<?> loadClass(String name, boolean resolve)
@@ -72,13 +79,24 @@ public class RobotClassLoader extends URLClassLoader {
 		}
 		if (isSecutityOn) {
 			if (name.startsWith("net.sf.robocode")) {
-				throw new ClassNotFoundException(
-						"Robots are not alowed to reference robocode engine in net.sf.robocode package");
+				final String message = "Robots are not alowed to reference robocode engine in net.sf.robocode package";
+
+				notifyRobot(message);
+				throw new ClassNotFoundException(message);
 			}
 			if (name.startsWith("robocode.control")) {
-				throw new ClassNotFoundException(
-						"Robots are not alowed to reference robocode engine in robocode.control package");
+				final String message = "Robots are not alowed to reference robocode engine in robocode.control package";
+
+				notifyRobot(message);
+				throw new ClassNotFoundException(message);
 			}
+			if (name.startsWith("javax.swing")) {
+				final String message = "Robots are not alowed to reference javax.swing package";
+
+				notifyRobot(message);
+				throw new ClassNotFoundException(message);
+			}
+
 			if (!name.startsWith("robocode")) {
 				if (isRobotClass(name)) {
 					// yes, it is in robot's classpath
@@ -111,6 +129,13 @@ public class RobotClassLoader extends URLClassLoader {
 		String path = name.replace('.', '/').concat(".class");
 
 		return findResource(path) != null;
+	}
+
+	private void notifyRobot(String s) {
+		if (robotProxy != null) {
+			robotProxy.println(s);
+			robotProxy.drainEnergy();
+		}
 	}
 
 	protected PermissionCollection getPermissions(CodeSource codesource) {

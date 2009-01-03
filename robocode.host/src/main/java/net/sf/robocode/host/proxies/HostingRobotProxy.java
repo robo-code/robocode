@@ -56,7 +56,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		this.hostManager = hostManager;
 		this.robotSpecification = robotSpecification;
 		this.robotClassLoader = new RobotClassLoader(robotSpecification.getRobotClassPath(),
-				robotSpecification.getFullClassName());
+				robotSpecification.getFullClassName(), this);
 
 		out = new RobotOutputStream();
 		robotThreadManager = new RobotThreadManager(this);
@@ -195,7 +195,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				return false;
 			}
 			robot = (IBasicRobot) robotClass.newInstance();
-			robot.setOut(getOut());
+			robot.setOut(out);
 			robot.setPeer((IBasicRobotPeer) this);
 			eventManager.setRobot(robot);
 		} catch (IllegalAccessException e) {
