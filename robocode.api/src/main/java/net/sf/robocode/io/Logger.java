@@ -94,6 +94,9 @@ public class Logger {
 	}
 
 	private static String toStackTraceString(Throwable t) {
+		if (t==null){
+			return "";
+		}
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(baos);
 
