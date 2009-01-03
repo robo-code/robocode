@@ -252,16 +252,7 @@ public final class RepositoryManager implements IRepositoryManager {
 	}
 
 	private void cleanupDatabase() {
-		List<File> externalDirectories = new ArrayList<File>();
-		String externalPath = manager.getProperties().getOptionsDevelopmentPath();
-		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
-
-		while (tokenizer.hasMoreTokens()) {
-			File f = new File(tokenizer.nextToken());
-
-			externalDirectories.add(f);
-		}
-
+		List<File> develDirectories = getDevelDirectories();
 		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
 
 		for (FileSpecification fs : fileSpecificationList) {
@@ -279,7 +270,7 @@ public final class RepositoryManager implements IRepositoryManager {
 				if (rootDir.equals(getRobotsDirectory())) {
 					continue;
 				}
-				if (externalDirectories.contains(rootDir)) {
+				if (develDirectories.contains(rootDir)) {
 					continue;
 				}
 
@@ -291,6 +282,21 @@ public final class RepositoryManager implements IRepositoryManager {
 				write = true;
 			}
 		}
+	}
+
+	public List<File> getDevelDirectories() {
+		List<File> develDirectories;
+
+		develDirectories = new ArrayList<File>();
+		String externalPath = manager.getProperties().getOptionsDevelopmentPath();
+		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
+
+		while (tokenizer.hasMoreTokens()) {
+			File f = new File(tokenizer.nextToken());
+
+			develDirectories.add(f);
+		}
+		return develDirectories;
 	}
 
 	public File getRobotsDirectory() {

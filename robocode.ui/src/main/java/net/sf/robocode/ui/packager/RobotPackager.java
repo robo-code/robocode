@@ -582,10 +582,11 @@ public class RobotPackager extends JDialog implements WizardListener {
 	}
 
 	public void addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, IRobotFileSpecificationExt robotFileSpecification) {
-		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification);
+		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification.getRobotClassPath(),
+				robotFileSpecification.getFullClassName());
 
 		try {
-			classLoader.loadRobotClass();
+			classLoader.loadRobotMainClass();
 			Iterator<String> classes = classLoader.getReferencedClasses().iterator();
 			String rootDirectory = robotFileSpecification.getRootDir().toString();
 

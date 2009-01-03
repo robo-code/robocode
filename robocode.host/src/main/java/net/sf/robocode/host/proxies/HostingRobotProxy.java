@@ -55,15 +55,18 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		this.statics = statics;
 		this.hostManager = hostManager;
 		this.robotSpecification = robotSpecification;
-		this.robotClassLoader = new RobotClassLoader(robotSpecification);
+		this.robotClassLoader = new RobotClassLoader(robotSpecification.getRobotClassPath(),
+				robotSpecification.getFullClassName());
 
 		out = new RobotOutputStream();
 		robotThreadManager = new RobotThreadManager(this);
 
 		loadClassBattle();
+		String classDirectory = robotSpecification.getRobotPackageDirectory();
+		String rootPackageDirectory = robotSpecification.getRootPackageDirectory();
 
-		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
-				robotClassLoader.getClassDirectory(), robotClassLoader.getRootPackageDirectory());
+		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(), classDirectory,
+				rootPackageDirectory);
 		robotFileSystemManager.initializeQuota();
 	}
 
@@ -140,7 +143,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		return robotFileSystemManager;
 	}
 	
-	public ClassLoader getRobotClassloader(){
+	public ClassLoader getRobotClassloader() {
 		return robotClassLoader;
 	}
 
@@ -172,7 +175,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	private void loadClassBattle() {
 		try {
-			robotClassLoader.loadRobotClass();
+			robotClassLoader.loadRobotMainClass();
 		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + statics.getName() + " : ");
 			println(e);
@@ -186,7 +189,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		try {
 			threadManager.setLoadingRobot(this);
-			robotClass = robotClassLoader.loadRobotClass();
+			robotClass = robotClassLoader.loadRobotMainClass();
 			if (robotClass == null) {
 				println("SYSTEM: Skipping robot: " + statics.getName());
 				return false;

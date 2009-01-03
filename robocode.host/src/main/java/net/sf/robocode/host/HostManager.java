@@ -102,10 +102,10 @@ public class HostManager implements IHostManager {
 	}
 
 	public Class<?> loadRobotClass(IRobotFileSpecification robotFileSpecification) throws ClassNotFoundException {
-		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification);
+		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification.getRobotClassPath(),
+				robotFileSpecification.getFullClassName());
 
-		classLoader.loadRobotClass();
-		Class<?> robotClass = classLoader.loadRobotClass();
+		Class<?> robotClass = classLoader.loadRobotMainClass();
 
 		((IRobotFileSpecificationExt) robotFileSpecification).setUid(classLoader.getUid());
 		return robotClass;
@@ -116,7 +116,6 @@ public class HostManager implements IHostManager {
 
 		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
 		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(threadManager, securityOn, experimentalOn);
-
 
 		if (securityOn) {
 			Policy.setPolicy(securityPolicy);

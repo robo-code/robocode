@@ -36,19 +36,20 @@ public final class Container {
 
 	static {
 		systemLoader = ClassLoader.getSystemClassLoader();
-		engineLoader = systemLoader; //todo
+		engineLoader = systemLoader; // todo
 		cache = new DefaultPicoContainer(new Caching());
 		// new instance for every lookup, or same when asked for
 		factory = new DefaultPicoContainer(new OptInCaching(), cache);
 		loadModule("net.sf.robocode.api", systemLoader);
 		final int modules = loadModules();
-		if (modules <2){
+
+		if (modules < 2) {
 			throw new Error("Main modules not loaded, something went wrong " + known.size());
 		}
 	}
 
 	private static int loadModules() {
-		int res=0;
+		int res = 0;
 		final String classPath = System.getProperties().getProperty("java.class.path", null);
 
 		for (String path : classPath.split(";")) {
@@ -58,17 +59,18 @@ public final class Container {
 			if (pathf.isDirectory()) {
 				String name = getModuleName(path);
 
-				if (name!=null) {
-					if (loadModule(name, engineLoader)){
+				if (name != null) {
+					if (loadModule(name, engineLoader)) {
 						res++;
 					}
 				} else {
-					res+=loadModules(pathf);
+					res += loadModules(pathf);
 				}
 			} else if (test.contains(File.separator + "robocode.") && test.endsWith(".jar")) {
 				String name = getModuleName(path);
-				if (name!=null){
-					if (loadModule(name, engineLoader)){
+
+				if (name != null) {
+					if (loadModule(name, engineLoader)) {
 						res++;
 					}
 				}
@@ -78,7 +80,7 @@ public final class Container {
 	}
 
 	private static int loadModules(File pathf) {
-		int res=0;
+		int res = 0;
 		final File[] modules = pathf.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().startsWith("robocode") && name.toLowerCase().endsWith(".jar");
@@ -86,7 +88,7 @@ public final class Container {
 		});
 
 		for (File module : modules) {
-			if (loadModule(module.toString(), engineLoader)){
+			if (loadModule(module.toString(), engineLoader)) {
 				res++;
 			}
 		}
@@ -95,7 +97,7 @@ public final class Container {
 
 	private static boolean loadModule(String module, ClassLoader loader) {
 		try {
-			if (known.contains(module)){
+			if (known.contains(module)) {
 				// Logger.logMessage("already loaded " + module);
 				return false;
 			}
@@ -105,8 +107,7 @@ public final class Container {
 			Logger.logMessage("Loaded " + module);
 			known.add(module);
 			return true;
-		} catch (ClassNotFoundException e) {
-			// OK, no worries, it is not module
+		} catch (ClassNotFoundException e) {// OK, no worries, it is not module
 			// Logger.logMessage("Can't load " + module);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
@@ -116,21 +117,23 @@ public final class Container {
 		return false;
 	}
 
-	private static String getModuleName(String path){
+	private static String getModuleName(String path) {
 		final String test = path.toLowerCase();
-		if (test.endsWith("robocode.jar") || test.contains("robocode.api")){
+
+		if (test.endsWith("robocode.jar") || test.contains("robocode.api")) {
 			return null;
 		}
 		int i = test.lastIndexOf("robocode.");
+
 		if (i > 0) {
 			String name = path.substring(i);
 
 			i = name.indexOf(File.separator);
-			if (i > 0){
+			if (i > 0) {
 				return "net.sf." + name.substring(0, i);
 			}
 			i = name.indexOf(".jar");
-			if (i > 0){
+			if (i > 0) {
 				return "net.sf." + name.substring(0, i);
 			}
 			return "net.sf." + name;

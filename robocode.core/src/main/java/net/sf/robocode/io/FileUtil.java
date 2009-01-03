@@ -38,6 +38,7 @@ public class FileUtil {
 	static {
 		try {
 			final String wd = System.getProperty("WORKINGDIRECTORY", "");
+
 			FileUtil.setCwd(new File(wd));
 		} catch (IOException e) {
 			e.printStackTrace();

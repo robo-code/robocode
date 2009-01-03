@@ -9,17 +9,18 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.sound;
+package tested.robots;
 
 
-import net.sf.robocode.core.Container;
+import robocode.Robot;
+import robocode.exception.RobotException;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class Module {
-	static {
-		Container.cache.addComponent(ISoundManager.class, SoundManager.class);
+public class DieFast extends Robot {
+	public void run() {
+		throw new RobotException();
 	}
 }

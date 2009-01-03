@@ -22,35 +22,18 @@ import robocode.control.events.TurnEndedEvent;
  * @author Pavel Savara (original)
  */
 public class TestIncludeNamespaceAttack extends RobotTestBed {
-	boolean messaged;
-	boolean messagedBreakthru;
-
 	@Test
 	public void run() {
 		super.run();
 	}
 
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
-
-		if (out.contains("from access to the internal Robocode pakage: robocode.manager")) {
-			messaged = true;
-		}
-		if (out.contains("Hacked!!!")) {
-			messagedBreakthru = true;
-		}
+	@Override
+	public int getExpectedRobotCount(String list) {
+		return 1;
 	}
 
 	@Override
 	public String getRobotNames() {
-		return "sample.SittingDuck,tested.robots.IncludeNamespaceAttack";
+		return "tested.robots.DieFast,tested.robots.IncludeNamespaceAttack";
 	}
-
-	@Override
-	protected void runTeardown() {
-		Assert.assertFalse(messagedBreakthru);
-		Assert.assertTrue(messaged);
-	}
-
 }

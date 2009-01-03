@@ -12,11 +12,18 @@
 package net.sf.robocode.repository;
 
 
+import java.net.URL;
+
+
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobotFileSpecification extends INamedFileSpecification {
-	String getRobotClassPath();
+	URL getRobotClassPath();
+
+	String getRobotPackageDirectory();
+
+	String getRootPackageDirectory();
 
 	boolean isDroid();
 

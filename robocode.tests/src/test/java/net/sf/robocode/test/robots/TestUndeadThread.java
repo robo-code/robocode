@@ -58,7 +58,6 @@ public class TestUndeadThread extends RobotTestBed {
 	protected void runTeardown() {
 		Assert.assertTrue(messagedForcing);
 		Assert.assertTrue(messagedStop);
-		Assert.assertFalse(new File("C:\\Robocode.attack").exists());
 	}
 
 }

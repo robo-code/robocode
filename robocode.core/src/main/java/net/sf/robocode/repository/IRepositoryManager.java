@@ -26,6 +26,8 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	File getRobotsDirectory();
 
+	List<File> getDevelDirectories();
+
 	void clearRobotList();
 
 	void loadRobotRepository();

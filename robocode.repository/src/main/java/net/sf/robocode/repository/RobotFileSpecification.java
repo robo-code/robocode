@@ -240,8 +240,25 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 		}
 	}
 
-	public String getRobotClassPath() {
-		return rootDir.getPath();
+	public URL getRobotClassPath() {
+		try {
+			return rootDir.getCanonicalFile().toURL();
+		} catch (MalformedURLException e) {
+			throw new Error(e);
+		} catch (IOException e) {
+			throw new Error(e);
+		}
+	}
+
+	public String getRootPackageDirectory() {
+		int dotIndex = name.indexOf(".");
+		String rootPackage = (dotIndex > 0) ? name.substring(0, dotIndex) : null;
+
+		return rootDir.toString() + File.separator + rootPackage;
+	}
+
+	public String getRobotPackageDirectory() {
+		return rootDir.toString() + File.separator + getFullPackage();
 	}
 
 	public void setRobotWebpage(URL robotWebpage) {

@@ -32,6 +32,7 @@ import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
@@ -202,6 +203,8 @@ public class RobocodeManager implements IRobocodeManager {
 		Container.cache.getComponent(IHostManager.class).initSecurity(true,
 				System.getProperty("EXPERIMENTAL", "false").equals("true"));
 
+		Container.cache.getComponent(ICpuManager.class).getCpuConstant();
+		Container.cache.getComponent(IRepositoryManager.class).loadRobotRepository();
 		return manager;
 	}
 }

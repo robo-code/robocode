@@ -14,9 +14,7 @@ package tested.robots;
 
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
-
-
-// TODO ZAMO import robocode.manager.BattleManager;
+import net.sf.robocode.battle.BattleManager;
 
 
 /**
@@ -40,13 +38,14 @@ public class IncludeNamespaceAttack extends AdvancedRobot {
 		namespaceAttack();
 	}
 
-	private void namespaceAttack() {/* TODO ZAMO
-		 try {
-		 BattleManager bm = BattleManager.class.newInstance();
+	private void namespaceAttack() {
+		try {
+			BattleManager bm = BattleManager.class.newInstance();
 
-		 bm.stop(true);
-		 } catch (Throwable e) {
-		 // swalow security exception
-		 e.printStackTrace(out);
-		 }*/}
+			bm.stop(true);
+		} catch (Throwable e) {
+			// swalow security exception
+			e.printStackTrace(out);
+		}
+	}
 }

@@ -36,14 +36,14 @@ public class RobotFileSystemManager {
 	private boolean quotaMessagePrinted = false;
 	private final List<RobotFileOutputStream> streams = new ArrayList<RobotFileOutputStream>();
 	private long maxQuota = 0;
-	private final String classDirectory;
-	private final String rootPackageDirectory;
+	private final String writableRootDirectory;
+	private final String readableRootDirectory;
 
-	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String classDirectory, String rootPackageDirectory) {
+	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String writableRootDirectory, String readableRootDirectory) {
 		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;
-		this.classDirectory = classDirectory;
-		this.rootPackageDirectory = rootPackageDirectory;
+		this.writableRootDirectory = writableRootDirectory;
+		this.readableRootDirectory = readableRootDirectory;
 	}
 
 	public void addStream(RobotFileOutputStream s) throws IOException {
@@ -93,7 +93,7 @@ public class RobotFileSystemManager {
 
 	public File getReadableDirectory() {
 		try {
-			final String dir = rootPackageDirectory;
+			final String dir = readableRootDirectory;
 
 			return (dir == null) ? null : new File(dir).getCanonicalFile();
 		} catch (java.io.IOException e) {
@@ -103,11 +103,11 @@ public class RobotFileSystemManager {
 
 	public File getWritableDirectory() {
 		try {
-			final String dir = classDirectory;
+			final String dir = writableRootDirectory;
 
 			return (dir == null)
 					? null
-					: new File(classDirectory, robotProxy.getStatics().getShortClassName() + ".data").getCanonicalFile();
+					: new File(writableRootDirectory, robotProxy.getStatics().getShortClassName() + ".data").getCanonicalFile();
 		} catch (java.io.IOException e) {
 			return null;
 		}
