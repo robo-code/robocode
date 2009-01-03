@@ -12,9 +12,9 @@
 package tested.robots;
 
 
+import net.sf.robocode.battle.BattleManager;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
-import net.sf.robocode.battle.BattleManager;
 
 
 /**

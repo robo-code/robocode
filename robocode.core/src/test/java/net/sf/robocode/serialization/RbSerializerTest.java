@@ -18,9 +18,10 @@ import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.TeamMessage;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.security.HiddenAccess;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.Assert;
+import robocode.util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,8 +29,6 @@ import java.awt.geom.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import robocode.util.Utils;
 
 
 /**

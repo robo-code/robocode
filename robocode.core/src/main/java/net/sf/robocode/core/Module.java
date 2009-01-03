@@ -23,7 +23,7 @@ import net.sf.robocode.version.VersionManager;
 /**
  * @author Pavel Savara (original)
  */
-class Module {
+public class Module {
 	static {
 		Container.cache.addComponent(IRobocodeManager.class, RobocodeManager.class);
 		Container.cache.addComponent(IVersionManager.class, VersionManager.class);

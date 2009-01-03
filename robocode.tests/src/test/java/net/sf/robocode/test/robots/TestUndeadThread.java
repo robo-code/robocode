@@ -17,8 +17,6 @@ import net.sf.robocode.test.helpers.RobotTestBed;
 import org.junit.Test;
 import robocode.control.events.BattleErrorEvent;
 
-import java.io.File;
-
 
 /**
  * @author Pavel Savara (original)

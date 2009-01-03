@@ -31,12 +31,11 @@ package net.sf.robocode.core;
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.IBattleManagerBase;
-import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.ICpuManager;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
-import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository.IRepositoryManagerBase;
@@ -45,7 +44,10 @@ import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 /**
@@ -53,7 +55,7 @@ import java.io.*;
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobocodeManager implements IRobocodeManager {
+public final class RobocodeManager implements IRobocodeManager {
 	private boolean slave;
 
 	private RobocodeProperties properties;
@@ -157,6 +159,16 @@ public class RobocodeManager implements IRobocodeManager {
 		Container.cache.getComponent(IHostManager.class).cleanup();
 	}
 
+	public void initForRobotEngine() {
+		setSlave(true);
+		setEnableGUI(false);
+		final boolean experimental = System.getProperty("EXPERIMENTAL", "false").equals("true");
+
+		Container.cache.getComponent(IHostManager.class).initSecurity(true, experimental);
+		Container.cache.getComponent(ICpuManager.class).getCpuConstant();
+		Container.cache.getComponent(IRepositoryManager.class).loadRobotRepository();
+	}
+
 	public void setVisibleForRobotEngine(boolean visible) {
 		if (visible && !isGUIEnabled()) {
 			// The GUI must be enabled in order to show the window
@@ -170,41 +182,5 @@ public class RobocodeManager implements IRobocodeManager {
 			Container.cache.getComponent(IWindowManager.class).showRobocodeFrame(visible, false);
 			getProperties().setOptionsCommonShowResults(visible);
 		}
-	}
-
-	public static IRobocodeManagerBase createRobocodeManager() {
-		return Container.cache.getComponent(IRobocodeManager.class);
-	}
-	
-	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
-		try {
-			if (robocodeHome == null) {
-				robocodeHome = FileUtil.getCwd();
-			}
-			FileUtil.setCwd(robocodeHome);
-
-			File robotsDir = FileUtil.getRobotsDir();
-
-			if (robotsDir == null) {
-				throw new RuntimeException("No valid robot directory is specified");
-			} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
-				throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
-			}
-
-		} catch (IOException e) {
-			System.err.println(e);
-			return null;
-		}
-
-		RobocodeManager manager = (RobocodeManager) createRobocodeManager();
-
-		manager.setSlave(true);
-		manager.setEnableGUI(false);
-		Container.cache.getComponent(IHostManager.class).initSecurity(true,
-				System.getProperty("EXPERIMENTAL", "false").equals("true"));
-
-		Container.cache.getComponent(ICpuManager.class).getCpuConstant();
-		Container.cache.getComponent(IRepositoryManager.class).loadRobotRepository();
-		return manager;
 	}
 }

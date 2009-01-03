@@ -13,18 +13,32 @@ package net.sf.robocode.core;
 
 
 import net.sf.robocode.io.Logger;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.OptInCaching;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
+ * Root of loaders.
+ *
+ * we have three types of classLoaders.
+ * 1) System classloader. Is loaded by default and is parent of loaders below. It contains this container class. All content of robot.api module. All general java stuff.
+ * 2) EngineClassLoader. Is used as isolation of all other robocode modules from system classloader. Anything loaded by engine is loaded there. We use single instance of this loader.
+ * 3) RobotClassLoader. Is used by robots. It will load every class on robot's private classPath. It blocks malicious attempts of references to robocode engine classes. We use multiple instances of this loader.
+ * - communication between classes from different classloaders must be done using interfaces or data types from system classLoader
+ * - this class must not reference any class of EngineClassLoader scope
+ *
+ * Dependency injection
+ * We use PicoContainer as IoC vehicle. We configure it by loading Module class in every .jar or classpath we can find on system classPath
+ * 1) Container.cache is containing sigletons
+ * 2) Container.factory will create always new instance of component 
+ *
  * @author Pavel Savara (original)
  */
 public final class Container {
@@ -32,15 +46,16 @@ public final class Container {
 	public static final MutablePicoContainer factory;
 	public static final ClassLoader systemLoader;
 	public static final ClassLoader engineLoader;
-	private static List<String> known = new ArrayList<String>();
+	private static Set<String> known = new HashSet<String>();
 
 	static {
 		systemLoader = ClassLoader.getSystemClassLoader();
-		engineLoader = systemLoader; // todo
-		cache = new DefaultPicoContainer(new Caching());
+		engineLoader = new EngineClassLoader(systemLoader);
+		cache = new DefaultClassLoadingPicoContainer(engineLoader, new Caching(), null);
 		// new instance for every lookup, or same when asked for
-		factory = new DefaultPicoContainer(new OptInCaching(), cache);
+		factory = new DefaultClassLoadingPicoContainer(engineLoader, new OptInCaching(), cache);
 		loadModule("net.sf.robocode.api", systemLoader);
+		Thread.currentThread().setContextClassLoader(engineLoader);
 		final int modules = loadModules();
 
 		if (modules < 2) {
@@ -140,4 +155,5 @@ public final class Container {
 		}
 		return null;
 	}
+
 }

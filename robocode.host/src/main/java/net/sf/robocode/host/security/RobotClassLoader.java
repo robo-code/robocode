@@ -27,16 +27,16 @@
 package net.sf.robocode.host.security;
 
 
-import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.core.Container;
+import static net.sf.robocode.io.Logger.logError;
 
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSource;
-import java.security.Permissions;
 import java.security.PermissionCollection;
-import java.util.*;
+import java.security.Permissions;
+import java.util.Set;
 
 
 /**
@@ -131,16 +131,18 @@ public class RobotClassLoader extends URLClassLoader {
 	}
 
 	public Class<?> loadRobotMainClass() throws ClassNotFoundException {
-		try{
+		try {
 			if (robotClass == null) {
 				robotClass = loadClass(fullClassName, true);
 				// just to force dependencies resolution
 				robotClass.getMethods();
 			}
-		}
-		catch (Throwable e){
-			robotClass=null;
-			throw new ClassNotFoundException(e.getMessage() + "\nRobots are not alowed to reference robocode engine in robocode.control or net.sf.robocode packages", e); 
+		} catch (Throwable e) {
+			robotClass = null;
+			throw new ClassNotFoundException(
+					e.getMessage()
+							+ "\nRobots are not alowed to reference robocode engine in robocode.control or net.sf.robocode packages",
+							e); 
 		}
 		return robotClass;
 	}

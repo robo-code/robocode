@@ -12,8 +12,8 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobotTestBed;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.test.helpers.RobotTestBed;
 import org.junit.Assert;
 import org.junit.Test;
 

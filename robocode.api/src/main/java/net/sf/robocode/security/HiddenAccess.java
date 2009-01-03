@@ -83,20 +83,15 @@ public class HiddenAccess {
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
 
-			Class<?> robocodeManager = ClassLoader.getSystemClassLoader().loadClass(
-					"net.sf.robocode.core.RobocodeManager");
+			Class<?> container = ClassLoader.getSystemClassLoader().loadClass("net.sf.robocode.core.RobocodeMainBase");
 
-			robocodeManagerFactory = robocodeManager.getDeclaredMethod("createRobocodeManager");
+			robocodeManagerFactory = container.getDeclaredMethod("createRobocodeManager");
 			robocodeManagerFactory.setAccessible(true);
 
-			robocodeManagerFactoryRE = robocodeManager.getDeclaredMethod("createRobocodeManagerForRobotEngine",
-					File.class);
+			robocodeManagerFactoryRE = container.getDeclaredMethod("createRobocodeManagerForRobotEngine", File.class);
 			robocodeManagerFactoryRE.setAccessible(true);
 
-			Class<?> robocodeMainC = ClassLoader.getSystemClassLoader().loadClass("net.sf.robocode.core.RobocodeMain");
-
-			//
-			robocodeMain = robocodeMainC.getDeclaredMethod("main", Object.class);
+			robocodeMain = container.getDeclaredMethod("robocodeMain", Object.class);
 			robocodeMain.setAccessible(true);
 
 			initialized = true;

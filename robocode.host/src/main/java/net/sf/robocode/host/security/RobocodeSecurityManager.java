@@ -40,6 +40,7 @@ import net.sf.robocode.serialization.RbSerializer;
 import robocode.control.snapshot.BulletState;
 import robocode.exception.RobotException;
 
+import java.awt.*;
 import java.io.FilePermission;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
@@ -48,7 +49,6 @@ import java.security.AccessControlException;
 import java.security.Permission;
 import java.util.*;
 import java.util.List;
-import java.awt.*;
 
 
 /**

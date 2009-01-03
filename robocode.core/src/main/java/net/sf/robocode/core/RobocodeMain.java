@@ -37,7 +37,6 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
-import net.sf.robocode.security.LoggingThreadGroup;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
@@ -58,7 +57,7 @@ import java.io.PrintStream;
  * @author Pavel Savara (contributor)
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
-public class RobocodeMain implements Runnable {
+public final class RobocodeMain extends RobocodeMainBase {
 
 	private final Setup setup;
 	private final BattleObserver battleObserver = new BattleObserver();
@@ -97,15 +96,6 @@ public class RobocodeMain implements Runnable {
 		this.battleManager = battleManager;
 		this.recordManager = recordManager;
 		this.versionManager = versionManager;
-	}
-
-	public static void main(Object args) {
-		RobocodeMain main = Container.cache.getComponent(RobocodeMain.class);
-
-		main.loadSetup((String[]) args);
-		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
-
-		new Thread(group, main, "Robocode main thread").start();
 	}
 
 	public void run() {
@@ -196,7 +186,7 @@ public class RobocodeMain implements Runnable {
 		}
 	}
 
-	private void loadSetup(String[] args) {
+	public void loadSetup(String[] args) {
 
 		/* TODO REMOVE 
 		 final String robocodeDir = System.getProperty("WORKINGDIRECTORY");

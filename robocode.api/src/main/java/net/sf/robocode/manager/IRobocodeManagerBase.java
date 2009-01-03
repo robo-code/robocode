@@ -23,6 +23,7 @@ public interface IRobocodeManagerBase {
 	IBattleManagerBase getBattleManagerBase();
 	IVersionManagerBase getVersionManagerBase();
 	IRepositoryManagerBase getRepositoryManagerBase();
+	void initForRobotEngine();
 	void setVisibleForRobotEngine(boolean visible);
 	void cleanup();
 }
