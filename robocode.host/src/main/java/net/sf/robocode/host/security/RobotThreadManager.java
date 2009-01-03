@@ -33,6 +33,11 @@ import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.LoggingThreadGroup;
 import robocode.exception.RobotException;
 
+import java.security.PrivilegedAction;
+import java.security.AccessController;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -65,7 +70,11 @@ public class RobotThreadManager {
 
 	public void initAWT() {
 		if (awtForThreadGroup == null) {
-			awtForThreadGroup = RobocodeSecurityManager.createNewAppContext();
+			awtForThreadGroup = AccessController.doPrivileged(new PrivilegedAction<Object>() {
+				public Object run() {
+					return createNewAppContext();
+				}
+			});
 		}
 	}
 
@@ -73,7 +82,7 @@ public class RobotThreadManager {
 		boolean res = false;
 
 		if (awtForThreadGroup != null && !(awtForThreadGroup instanceof Integer)) {
-			res = RobocodeSecurityManager.disposeAppContext(awtForThreadGroup);
+			res = disposeAppContext(awtForThreadGroup);
 			awtForThreadGroup = null;
 		}
 		return res;
@@ -236,4 +245,41 @@ public class RobotThreadManager {
 		// bit lower than battle have
 		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY - 1);
 	}
+
+	public static Object createNewAppContext() {
+		// same as SunToolkit.createNewAppContext();
+		// we can't assume that we are always on Suns JVM, so we can't reference it directly
+		// why we call that ? Because SunToolkit is caching AWTQueue instance form main thread group and use it on robots threads
+		// and he is not asking us for checkAwtEventQueueAccess above
+		try {
+			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.SunToolkit");
+			final Method createNewAppContext = sunToolkit.getDeclaredMethod("createNewAppContext");
+
+			return createNewAppContext.invoke(null);
+		} catch (ClassNotFoundException e) {
+			// we are not on sun JVM
+			return -1;
+		} catch (NoSuchMethodException e) {
+			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
+		} catch (InvocationTargetException e) {
+			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
+		} catch (IllegalAccessException e) {
+			throw new Error("Looks like SunVM but unable to assure secured AWTQueue, sorry", e);
+		}
+		// end: same as SunToolkit.createNewAppContext();
+	}
+
+	public static boolean disposeAppContext(Object appContext) {
+		// same as AppContext.dispose();
+		try {
+			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.AppContext");
+			final Method dispose = sunToolkit.getDeclaredMethod("dispose");
+
+			dispose.invoke(appContext);
+			return true;
+		} catch (ClassNotFoundException ignore) {} catch (NoSuchMethodException ignore) {} catch (InvocationTargetException ignore) {} catch (IllegalAccessException ignore) {}
+		return false;
+		// end: same as AppContext.dispose();
+	}
+
 }

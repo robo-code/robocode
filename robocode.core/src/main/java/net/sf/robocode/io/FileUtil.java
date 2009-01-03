@@ -216,15 +216,19 @@ public class FileUtil {
 	 * @return a File that is the directory containing the robots
 	 */
 	public static File getRobotsDir() {
-		File file;
-		String robotPath = System.getProperty("ROBOTPATH");
+		try {
+			File file;
+			String robotPath = System.getProperty("ROBOTPATH");
 
-		if (robotPath != null) {
-			file = new File(robotPath);
-		} else {
-			file = new File(cwd, "/robots");
+			if (robotPath != null) {
+				file = new File(robotPath).getCanonicalFile();
+			} else {
+				file = new File(cwd, "/robots").getCanonicalFile();
+			}
+			return createDir(file);
+		} catch (IOException e) {
+			throw new Error(e);
 		}
-		return createDir(file);
 	}
 
 	/**

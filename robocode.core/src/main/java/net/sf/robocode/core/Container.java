@@ -51,11 +51,14 @@ public final class Container {
 	static {
 		systemLoader = ClassLoader.getSystemClassLoader();
 		engineLoader = new EngineClassLoader(systemLoader);
+		final Thread currentThread = Thread.currentThread();
+
+		currentThread.setContextClassLoader(engineLoader);
+		currentThread.setName("Application Thread");
+
 		cache = new DefaultClassLoadingPicoContainer(engineLoader, new Caching(), null);
-		// new instance for every lookup, or same when asked for
 		factory = new DefaultClassLoadingPicoContainer(engineLoader, new OptInCaching(), cache);
 		loadModule("net.sf.robocode.api", systemLoader);
-		Thread.currentThread().setContextClassLoader(engineLoader);
 		final int modules = loadModules();
 
 		if (modules < 2) {

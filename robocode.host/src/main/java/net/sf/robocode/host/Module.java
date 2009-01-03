@@ -13,6 +13,7 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.core.Container;
+import net.sf.robocode.host.security.RobocodeSecurityPolicy;
 
 
 /**

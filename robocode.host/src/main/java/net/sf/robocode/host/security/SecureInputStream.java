@@ -14,6 +14,7 @@ package net.sf.robocode.host.security;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.AccessController;
 
 
 /**
@@ -41,11 +42,7 @@ public class SecureInputStream extends java.io.InputStream {
 	}
 
 	private void checkAccess() {
-		SecurityManager securityManager = System.getSecurityManager();
-
-		if (securityManager != null) {
-			securityManager.checkPermission(inputPermission);
-		}
+		AccessController.checkPermission(inputPermission);
 	}
 
 	@Override

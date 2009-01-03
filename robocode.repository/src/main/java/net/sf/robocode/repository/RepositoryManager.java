@@ -292,9 +292,13 @@ public final class RepositoryManager implements IRepositoryManager {
 		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
 
 		while (tokenizer.hasMoreTokens()) {
-			File f = new File(tokenizer.nextToken());
+			try {
+				File f = new File(tokenizer.nextToken()).getCanonicalFile();
 
-			develDirectories.add(f);
+				develDirectories.add(f);
+			} catch (IOException e) {
+				throw new Error(e);
+			}
 		}
 		return develDirectories;
 	}

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 
 /**
@@ -82,9 +84,13 @@ public class EngineClassLoader extends URLClassLoader {
 				return false;
 			}
 			// try to find it in engine's classpath
-			String path = name.replace('.', '/').concat(".class");
+			final String path = name.replace('.', '/').concat(".class");
 
-			return findResource(path) != null;
+			return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+				public Boolean run() {
+					return findResource(path) != null;
+				}
+			});
 		}
 		return false;
 	}

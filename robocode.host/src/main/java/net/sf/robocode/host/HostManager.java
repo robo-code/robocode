@@ -112,10 +112,9 @@ public class HostManager implements IHostManager {
 	}
 
 	public void initSecurity(boolean securityOn, boolean experimentalOn) {
-		Thread.currentThread().setName("Application Thread");
 
-		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(Policy.getPolicy());
-		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(threadManager, securityOn, experimentalOn);
+		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(threadManager, securityOn);
+		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(threadManager);
 
 		if (securityOn) {
 			Policy.setPolicy(securityPolicy);

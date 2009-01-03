@@ -37,12 +37,11 @@ public class TestFileAttack extends RobotTestBed {
 		super.onTurnEnded(event);
 		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
 
-		if (out.contains(
-				"java.security.AccessControlException: Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")) {
+		if (out.contains("Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")) {
 			messagedRead = true;
 		}
 		if (out.contains(
-				"java.security.AccessControlException: Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\Robocode.attack write)")) {
+				"Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\Robocode.attack write)")) {
 			messagedWrite = true;
 		}
 	}
@@ -50,6 +49,15 @@ public class TestFileAttack extends RobotTestBed {
 	@Override
 	public String getRobotNames() {
 		return "sample.SittingDuck,tested.robots.FileAttack";
+	}
+
+	@Override
+	protected void runSetup() {
+		File attack = new File("C:\\Robocode.attack");
+
+		if (attack.exists()) {
+			Assert.assertTrue(attack.delete());
+		}
 	}
 
 	@Override
