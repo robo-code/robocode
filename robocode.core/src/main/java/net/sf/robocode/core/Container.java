@@ -21,6 +21,7 @@ import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ import java.util.Set;
  */
 public final class Container {
 	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
-	private static final String classPath = System.getProperties().getProperty("java.class.path", null);
+	private static final String classPath = System.getProperties().getProperty("robocode.class.path", null);
 
 	public static final MutablePicoContainer cache;
 	public static final MutablePicoContainer factory;
@@ -53,7 +54,7 @@ public final class Container {
 	private static Set<String> known = new HashSet<String>();
 
 	static {
-		systemLoader = ClassLoader.getSystemClassLoader();
+		systemLoader = Container.class.getClassLoader();
 		if (isSecutityOn) {
 			engineLoader = new EngineClassLoader(systemLoader);
 		} else {
@@ -70,7 +71,9 @@ public final class Container {
 		cache = new DefaultClassLoadingPicoContainer(engineLoader, new Caching(), null);
 		factory = new DefaultClassLoadingPicoContainer(engineLoader, new OptInCaching(), cache);
 		loadModule("net.sf.robocode.api", systemLoader);
-		loadModules();
+		for (String path : classPath.split(";")) {
+			loadFromPath(path);
+		}
 
 		if (known.size() < 2) {
 			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size());
@@ -79,39 +82,48 @@ public final class Container {
 		}
 	}
 
-	private static void loadModules() {
-
-		for (String path : classPath.split(";")) {
+	private static void loadFromPath(String path) {
+		try {
+			File pathf = new File(path).getCanonicalFile();
+			path=pathf.toString();
 			final String test = path.toLowerCase();
-			File pathf = new File(path);
-
 			if (pathf.isDirectory()) {
 				String name = getModuleName(path);
 
 				if (name != null) {
 					loadModule(name, engineLoader);
 				} else {
-					loadModules(pathf);
+					loadJars(pathf);
 				}
 			} else if (test.contains(File.separator + "robocode.") && test.endsWith(".jar")) {
-				String name = getModuleName(path);
-
-				if (name != null) {
-					loadModule(name, engineLoader);
+				final int i = test.lastIndexOf("robocode.jar");
+				if (i>0){
+					//load other .jar files in location
+					final File dir = new File(path.substring(0, i));
+					Logger.logMessage("Loading plugins from " + dir.toString());
+					loadJars(dir);
+				}
+				else{
+					String name = getModuleName(path);
+					if (name != null) {
+						loadModule(name, engineLoader);
+					}
 				}
 			}
+		} catch (IOException e) {
+			Logger.logError(e);
 		}
 	}
 
-	private static void loadModules(File pathf) {
-		final File[] modules = pathf.listFiles(new FilenameFilter() {
+	private static void loadJars(File pathf) {
+		final File[] files = pathf.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().startsWith("robocode") && name.toLowerCase().endsWith(".jar");
 			}
 		});
 
-		for (File module : modules) {
-			loadModule(module.toString(), engineLoader);
+		for (File file : files) {
+			loadModule(getModuleName(file.toString()), engineLoader);
 		}
 	}
 

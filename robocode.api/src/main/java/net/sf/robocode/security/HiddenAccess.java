@@ -24,9 +24,14 @@ import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
+import java.util.ArrayList;
+import java.net.URLClassLoader;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 
 /**
@@ -83,7 +88,8 @@ public class HiddenAccess {
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
 
-			Class<?> container = ClassLoader.getSystemClassLoader().loadClass("net.sf.robocode.core.RobocodeMainBase");
+			ClassLoader loader = getLoader();
+			Class<?> container = loader.loadClass("net.sf.robocode.core.RobocodeMainBase");
 
 			robocodeManagerFactory = container.getDeclaredMethod("createRobocodeManager");
 			robocodeManagerFactory.setAccessible(true);
@@ -103,11 +109,43 @@ public class HiddenAccess {
 			Logger.logError(e);
 		} catch (ClassNotFoundException e) {
 			Logger.logError(e);
+		} catch (MalformedURLException e) {
+			Logger.logError(e);
 		} catch (Error e) {
 			Logger.logError(e);
 			throw e;
 		}
 
+	}
+
+	private static ClassLoader getLoader() throws MalformedURLException {
+		// if other modules are .jar next to robocode.jar on same path, we will create classloader which will load them
+		// otherwise we rely on that they are already on classpath
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
+		final String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().toString();
+		final int i = path.lastIndexOf("robocode.jar");
+		if (i>0){
+			final String dir = path.substring(0, i).substring(6);
+			File dirf = new File(dir);
+			ArrayList<URL> urls = new ArrayList<URL>();
+			System.out.println("Adding to classPath " + dir + "*.jar");
+			final File[] files = dirf.listFiles(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					return name.toLowerCase().endsWith(".jar");
+				}
+			});
+
+			StringBuilder classPath = new StringBuilder(System.getProperty("java.class.path", null));
+			for (File file : files){
+				urls.add(file.toURL());
+				classPath.append(File.pathSeparator);
+				classPath.append(file.toString());
+			}
+			System.setProperty("robocode.class.path", classPath.toString());
+			System.out.println("Final CP: " + classPath);
+			loader = new URLClassLoader(urls.toArray(new URL[urls.size()]), loader);
+		}
+		return loader;
 	}
 
 	public static boolean isCriticalEvent(Event e) {

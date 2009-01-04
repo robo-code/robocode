@@ -44,7 +44,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	public RobotTestBed() {
 		// silent when running in maven
-		if (true || System.getProperty("surefire.test.class.path", null) != null) {
+		if (System.getProperty("surefire.test.class.path", null) != null) {
 			isDumpingOutput = false;
 			isDumpingErrors = false;
 			isDumpingMessages = false;

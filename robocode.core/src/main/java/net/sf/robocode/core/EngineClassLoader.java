@@ -97,7 +97,7 @@ public class EngineClassLoader extends URLClassLoader {
 
 	private static URL[] initRobotClassLoader() {
 		List<String> urls = new ArrayList<String>();
-		final String classPath = System.getProperties().getProperty("java.class.path", null);
+		final String classPath = System.getProperty("robocode.class.path", null);
 
 		for (String path : classPath.split(";")) {
 			String test = path.toLowerCase();
