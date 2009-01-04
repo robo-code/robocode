@@ -20,7 +20,6 @@
     <orderEntry type="module" module-name="robocode.sound" exported="" />
     <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
     <orderEntry type="library" exported="" name="Maven: plexus:plexus-compiler-jikes:1.3" level="project" />
-    <orderEntry type="library" exported="" name="Maven: plexus:plexus-container-default:1.0-alpha-2" level="project" />
     <orderEntry type="library" exported="" name="Maven: plexus:plexus-compiler-api:1.3" level="project" />
   </component>
 </module>

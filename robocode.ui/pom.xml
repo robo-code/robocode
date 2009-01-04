@@ -48,6 +48,12 @@
             <groupId>plexus</groupId>
             <artifactId>plexus-compiler-jikes</artifactId>
             <version>1.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>plexus</groupId>
+                    <artifactId>plexus-container-default</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

@@ -11,12 +11,34 @@
     <artifactId>robocode.installer</artifactId>
     <version>1.7</version>
     <name>Robocode Installer</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.samples</artifactId>
+            <version>1.7</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sf.robocode</groupId>
+                    <artifactId>robocode.api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.content</artifactId>
+            <version>1.7</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
                         <manifest>
                             <mainClass>net.sf.robocode.installer.AutoExtract</mainClass>
                         </manifest>

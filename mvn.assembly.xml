@@ -1,64 +1,77 @@
 <assembly>
-    <id>bin</id>
     <formats>
+        <format>jar</format>
         <format>zip</format>
     </formats>
-    <!--
-      <componentDescriptors>
-         <componentDescriptor>robocode.api/mvn.assembly.xml</componentDescriptor>
-       </componentDescriptors>
-      <repositories>
-        <repository>
-          <outputDirectory>repository</outputDirectory>
-        </repository>
-      </repositories>
-       -->
-
+    
     <includeBaseDirectory>false</includeBaseDirectory>
     <moduleSets>
-        <!--
+        <!-- robocode.api renamed ro robocode.jar -->
         <moduleSet>
             <includes>
                 <include>net.sf.robocode:robocode.api</include>
             </includes>
             <binaries>
+                <outputFileNameMapping>robocode.${module.extension}</outputFileNameMapping>
                 <includeDependencies>false</includeDependencies>
                 <outputDirectory>libs</outputDirectory>
                 <unpack>false</unpack>
             </binaries>
         </moduleSet>
-        -->
+
+        <!-- other libraries -->
         <moduleSet>
             <includes>
                 <include>net.sf.robocode:robocode.ui</include>
             </includes>
-            <excludes>
-                <exclude>net.sf.robocode:robocode.api</exclude>
-            </excludes>
             <binaries>
+                <excludes>
+                    <exclude>net.sf.robocode:robocode.api</exclude>
+                </excludes>
                 <outputDirectory>libs</outputDirectory>
                 <unpack>false</unpack>
             </binaries>
         </moduleSet>
+
+        <!-- installer and static content -->
         <moduleSet>
             <includes>
-                <include>net.sf.robocode:robocode.samples</include>
+                <include>net.sf.robocode:robocode.installer</include>
             </includes>
             <binaries>
                 <includeDependencies>false</includeDependencies>
-                <outputDirectory>robots</outputDirectory>
                 <unpack>true</unpack>
-            </binaries>
-        </moduleSet>
-        <moduleSet>
-            <includes>
-                <include>net.sf.robocode:robocode.content</include>
-            </includes>
-            <binaries>
-                <includeDependencies>false</includeDependencies>
-                <outputDirectory></outputDirectory>
+                <dependencySets>
+                    <!-- installer and static content -->
+                    <dependencySet>
+                        <excludes>
+                            <exclude>net.sf.robocode:robocode.samples</exclude>
+                        </excludes>
+                        <unpack>true</unpack>
+                        <unpackOptions>
+                            <excludes>
+                                <exclude>**/META-INF/**</exclude>
+                            </excludes>
+                        </unpackOptions>
+                    </dependencySet>
+
+                    <!-- sample robots -->
+                    <dependencySet>
+                        <excludes>
+                            <exclude>net.sf.robocode:robocode.content</exclude>
+                        </excludes>
+                        <outputDirectory>robots</outputDirectory>
+                        <unpack>true</unpack>
+                        <unpackOptions>
+                            <excludes>
+                                <exclude>**/META-INF/**</exclude>
+                            </excludes>
+                        </unpackOptions>
+                    </dependencySet>
+                </dependencySets>
             </binaries>
         </moduleSet>
     </moduleSets>
-
 </assembly>
+
+

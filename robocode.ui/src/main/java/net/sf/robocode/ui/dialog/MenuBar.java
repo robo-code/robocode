@@ -882,7 +882,7 @@ public class MenuBar extends JMenuBar {
 		if (ok == JOptionPane.YES_OPTION) {
 			try {
 				robocodeFrame.setBusyPointer(true);
-				net.sf.robocode.cachecleaner.CacheCleaner.clean(manager);
+				net.sf.robocode.cachecleaner.CacheCleaner.clean();
 			} finally {
 				robocodeFrame.setBusyPointer(false);
 			}
