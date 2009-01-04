@@ -94,7 +94,6 @@ public final class Container {
 					loadModules(pathf);
 				}
 			} else if (test.contains(File.separator + "robocode.") && test.endsWith(".jar")) {
-				Logger.logMessage("JAR: " + test);
 				String name = getModuleName(path);
 
 				if (name != null) {

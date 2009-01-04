@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package runner;
+package net.sf.robocode.test.samples;
 
 
 import robocode.BattleResults;

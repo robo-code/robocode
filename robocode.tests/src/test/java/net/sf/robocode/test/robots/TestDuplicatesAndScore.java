@@ -16,6 +16,7 @@ import net.sf.robocode.test.helpers.RobotTestBed;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Ignore;
 import robocode.BattleResults;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleFinishedEvent;

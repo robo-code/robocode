@@ -38,7 +38,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
-		System.setProperty("WORKINGDIRECTORY", "target//classes");
+		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
 		System.setProperty("ROBOTPATH", "target//classes");
 		engine = new RobocodeEngine();
 	}
