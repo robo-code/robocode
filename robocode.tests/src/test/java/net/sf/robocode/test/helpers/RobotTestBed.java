@@ -23,6 +23,7 @@ import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 
 import java.util.Random;
+import java.util.Properties;
 
 
 /**
@@ -42,7 +43,14 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		engine = new RobocodeEngine();
 	}
 
-	public RobotTestBed() {}
+	public RobotTestBed() {
+		// silent when running in maven
+		if (System.getProperty("surefire.test.class.path", null) != null) {
+			isDumpingOutput = false;
+			isDumpingErrors = false;
+			isDumpingMessages = false;
+		}
+	}
 
 	public void onBattleMessage(BattleMessageEvent event) {
 		if (isDumpingMessages) {
@@ -58,11 +66,11 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		errors++;
 	}
 
-	public final boolean isDumpingPositions = false;
-	public final boolean isDumpingTurns = false;
-	public final boolean isDumpingOutput = true;
-	public final boolean isDumpingErrors = true;
-	public final boolean isDumpingMessages = true;
+	public boolean isDumpingPositions = false;
+	public boolean isDumpingTurns = false;
+	public boolean isDumpingOutput = true;
+	public boolean isDumpingErrors = true;
+	public boolean isDumpingMessages = true;
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {

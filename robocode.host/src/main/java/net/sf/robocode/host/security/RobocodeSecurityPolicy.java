@@ -50,13 +50,11 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	private final Policy parentPolicy;
 	private final PermissionCollection allPermissions;
-	private Set<String> trustedCodeUrls;
 	private Set<String> untrustedCodeUrls;
 
 	private final IThreadManager threadManager;
 
 	public RobocodeSecurityPolicy(IThreadManager threadManager) {
-
 		this.parentPolicy = Policy.getPolicy();
 		this.allPermissions = new Permissions();
 		this.allPermissions.add(new AllPermission());
@@ -71,6 +69,10 @@ public class RobocodeSecurityPolicy extends Policy {
 		}
 
 		initUrls();
+
+		if (isSecutityOn) {
+			Policy.setPolicy(this);			
+		}
 	}
 
 	@Override
@@ -113,13 +115,6 @@ public class RobocodeSecurityPolicy extends Policy {
 			});
 		}
 
-		if (trustedCodeUrls.contains(source)) {
-			return true;
-		}
-
-		Logger.realOut.println(source);
-		trustedCodeUrls.add(source);
-		// Trust everyone on the classpath
 		return true;
 	}
 
@@ -301,7 +296,6 @@ public class RobocodeSecurityPolicy extends Policy {
 	}
 
 	private void initUrls() {
-		trustedCodeUrls = new HashSet<String>();
 		untrustedCodeUrls = new HashSet<String>();
 
 		String classPath = System.getProperty("java.class.path");
@@ -324,10 +318,6 @@ public class RobocodeSecurityPolicy extends Policy {
 				if (robots.contains(u)) {
 					if (!untrustedCodeUrls.contains(u)) {
 						untrustedCodeUrls.add(u);
-					}
-				} else {
-					if (!trustedCodeUrls.contains(u)) {
-						trustedCodeUrls.add(u);
 					}
 				}
 			}

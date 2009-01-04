@@ -111,22 +111,9 @@ public class HostManager implements IHostManager {
 		return robotClass;
 	}
 
-	public void initSecurity(boolean securityOn, boolean experimentalOn) {
-
-		RobocodeSecurityManager securityManager = new RobocodeSecurityManager(threadManager, securityOn);
-		RobocodeSecurityPolicy securityPolicy = new RobocodeSecurityPolicy(threadManager);
-
-		if (securityOn) {
-			Policy.setPolicy(securityPolicy);
-			System.setSecurityManager(securityManager);
-
-			ThreadGroup tg = Thread.currentThread().getThreadGroup();
-
-			while (tg != null) {
-				threadManager.addSafeThreadGroup(tg);
-				tg = tg.getParent();
-			}
-		}
+	public void initSecurity() {
+		new RobocodeSecurityPolicy(threadManager);
+		new RobocodeSecurityManager(threadManager);
 	}
 
 }

@@ -24,7 +24,7 @@ import java.io.PrintStream;
  */
 public interface IHostManager {
 
-	void initSecurity(boolean securityOn, boolean experimentalOn);
+	void initSecurity();
 
 	long getRobotFilesystemQuota();
 

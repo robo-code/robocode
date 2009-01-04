@@ -100,7 +100,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	public void run() {
 		try {
-			hostManager.initSecurity(setup.securityOn, setup.experimentalOn);
+			hostManager.initSecurity();
 
 			// Set the Look and Feel (LAF)
 			if (manager.isGUIEnabled()) {

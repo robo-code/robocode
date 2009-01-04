@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashSet;
 import java.util.Set;
+import java.awt.*;
 
 
 /**
@@ -42,6 +43,9 @@ import java.util.Set;
  * @author Pavel Savara (original)
  */
 public final class Container {
+	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
+	private static final String classPath = System.getProperties().getProperty("java.class.path", null);
+
 	public static final MutablePicoContainer cache;
 	public static final MutablePicoContainer factory;
 	public static final ClassLoader systemLoader;
@@ -50,25 +54,32 @@ public final class Container {
 
 	static {
 		systemLoader = ClassLoader.getSystemClassLoader();
-		engineLoader = new EngineClassLoader(systemLoader);
+		if (isSecutityOn) {
+			engineLoader = new EngineClassLoader(systemLoader);
+		} else {
+			engineLoader = systemLoader;
+		}
 		final Thread currentThread = Thread.currentThread();
 
 		currentThread.setContextClassLoader(engineLoader);
 		currentThread.setName("Application Thread");
 
+		// make sure we have AWT before we init security
+		Toolkit.getDefaultToolkit();
+
 		cache = new DefaultClassLoadingPicoContainer(engineLoader, new Caching(), null);
 		factory = new DefaultClassLoadingPicoContainer(engineLoader, new OptInCaching(), cache);
 		loadModule("net.sf.robocode.api", systemLoader);
-		final int modules = loadModules();
+		loadModules();
 
-		if (modules < 2) {
-			throw new Error("Main modules not loaded, something went wrong " + known.size());
+		if (known.size() < 2) {
+			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size());
+			Logger.logError("ClassPath : " + classPath);
+			throw new Error("Main modules not loaded");
 		}
 	}
 
-	private static int loadModules() {
-		int res = 0;
-		final String classPath = System.getProperties().getProperty("java.class.path", null);
+	private static void loadModules() {
 
 		for (String path : classPath.split(";")) {
 			final String test = path.toLowerCase();
@@ -78,27 +89,22 @@ public final class Container {
 				String name = getModuleName(path);
 
 				if (name != null) {
-					if (loadModule(name, engineLoader)) {
-						res++;
-					}
+					loadModule(name, engineLoader);
 				} else {
-					res += loadModules(pathf);
+					loadModules(pathf);
 				}
 			} else if (test.contains(File.separator + "robocode.") && test.endsWith(".jar")) {
+				Logger.logMessage("JAR: " + test);
 				String name = getModuleName(path);
 
 				if (name != null) {
-					if (loadModule(name, engineLoader)) {
-						res++;
-					}
+					loadModule(name, engineLoader);
 				}
 			}
 		}
-		return res;
 	}
 
-	private static int loadModules(File pathf) {
-		int res = 0;
+	private static void loadModules(File pathf) {
 		final File[] modules = pathf.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().startsWith("robocode") && name.toLowerCase().endsWith(".jar");
@@ -106,11 +112,8 @@ public final class Container {
 		});
 
 		for (File module : modules) {
-			if (loadModule(module.toString(), engineLoader)) {
-				res++;
-			}
+			loadModule(module.toString(), engineLoader);
 		}
-		return res;
 	}
 
 	private static boolean loadModule(String module, ClassLoader loader) {
@@ -125,8 +128,9 @@ public final class Container {
 			Logger.logMessage("Loaded " + module);
 			known.add(module);
 			return true;
-		} catch (ClassNotFoundException e) {// OK, no worries, it is not module
-			// Logger.logMessage("Can't load " + module);
+		} catch (ClassNotFoundException ignore) {
+			// it is not our module ?
+			//Logger.logMessage("Can't load " + module);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		} catch (InstantiationException e) {
@@ -150,7 +154,7 @@ public final class Container {
 			if (i > 0) {
 				return "net.sf." + name.substring(0, i);
 			}
-			i = name.indexOf(".jar");
+			i = name.indexOf("-");
 			if (i > 0) {
 				return "net.sf." + name.substring(0, i);
 			}

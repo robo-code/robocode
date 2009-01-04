@@ -13,6 +13,7 @@ package net.sf.robocode.test.host.security;
 
 
 import net.sf.robocode.core.Container;
+import net.sf.robocode.core.EngineClassLoader;
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.security.HiddenAccess;
 import org.junit.Assert;
@@ -40,12 +41,12 @@ public class RobotClassLoaderTest {
 
 	@Test
 	public void engineAlowed() throws ClassNotFoundException {
-		final ClassLoader engineLoader = Container.engineLoader;
+		final ClassLoader engineLoader = new EngineClassLoader(ClassLoader.getSystemClassLoader());
 
 		engineLoader.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
 		final Class<?> c = engineLoader.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
 
-		Assert.assertEquals(Container.engineLoader, c.getClassLoader());
+		Assert.assertEquals(engineLoader, c.getClassLoader());
 	}
 
 	@Test

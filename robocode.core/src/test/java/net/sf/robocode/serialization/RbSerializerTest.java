@@ -38,6 +38,8 @@ public class RbSerializerTest {
 
 	@BeforeClass
 	public static void init() {
+		// we need to switch off engine classloader for this test
+		System.setProperty("NOSECURITY", "true");
 		HiddenAccess.createRobocodeManager();
 	}
 

@@ -162,9 +162,7 @@ public final class RobocodeManager implements IRobocodeManager {
 	public void initForRobotEngine() {
 		setSlave(true);
 		setEnableGUI(false);
-		final boolean experimental = System.getProperty("EXPERIMENTAL", "false").equals("true");
-
-		Container.cache.getComponent(IHostManager.class).initSecurity(true, experimental);
+		Container.cache.getComponent(IHostManager.class).initSecurity();
 		Container.cache.getComponent(ICpuManager.class).getCpuConstant();
 		Container.cache.getComponent(IRepositoryManager.class).loadRobotRepository();
 	}
