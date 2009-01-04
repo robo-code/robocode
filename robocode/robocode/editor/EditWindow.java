@@ -175,6 +175,12 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 
 		if (compiler != null) {
 			compiler.compile(fileName);
+
+			// The following is a bugfix (#2449081):
+			// Make sure that the robot list in the robot repository is cleared to prevent
+			// problems with old robot file specifications that are inconsistent compared to
+			// the compiled classes.
+			editor.getManager().getRobotRepositoryManager().clearRobotList();
 		} else {
 			JOptionPane.showMessageDialog(editor, "No compiler installed.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
