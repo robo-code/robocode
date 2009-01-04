@@ -23,7 +23,6 @@ import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 
 import java.util.Random;
-import java.util.Properties;
 
 
 /**
@@ -45,7 +44,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	public RobotTestBed() {
 		// silent when running in maven
-		if (System.getProperty("surefire.test.class.path", null) != null) {
+		if (true || System.getProperty("surefire.test.class.path", null) != null) {
 			isDumpingOutput = false;
 			isDumpingErrors = false;
 			isDumpingMessages = false;

@@ -229,7 +229,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else if (args[i].equals("-tps") && (i < args.length + 1)) {
 				setup.tps = Integer.parseInt(args[i + 1]);
 				if (setup.tps < 1) {
-					System.out.println("tps must be > 0");
+					Logger.logError("tps must be > 0");
 					System.exit(8);
 				}
 				i++;
@@ -245,7 +245,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				printUsage();
 				System.exit(0);
 			} else {
-				System.out.println("Not understood: " + args[i]);
+				Logger.logError("Not understood: " + args[i]);
 				printUsage();
 				System.exit(8);
 			}
@@ -271,7 +271,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 	}
 
 	private void printUsage() {
-		System.out.print(
+		Logger.logMessage(
 				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
 						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
 						+ "  -cwd <path>             Change the current working directory\n"

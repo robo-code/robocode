@@ -21,8 +21,8 @@
 package net.sf.robocode.roborumble.battlesengine;
 
 
-import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 import net.sf.robocode.io.Logger;
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.util.Properties;

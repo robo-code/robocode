@@ -57,7 +57,6 @@ public class TestWin extends RobotTestBed {
 		if (streamSnapshot.contains("BattleEnded!")) {
 			end++;
 		}
-		System.out.print(streamSnapshot);
 	}
 
 	public void onBattleCompleted(BattleCompletedEvent event) {

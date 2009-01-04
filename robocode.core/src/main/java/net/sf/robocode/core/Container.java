@@ -14,15 +14,15 @@ package net.sf.robocode.core;
 
 import net.sf.robocode.io.Logger;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.OptInCaching;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashSet;
 import java.util.Set;
-import java.awt.*;
 
 
 /**
@@ -127,9 +127,8 @@ public final class Container {
 			Logger.logMessage("Loaded " + module);
 			known.add(module);
 			return true;
-		} catch (ClassNotFoundException ignore) {
-			// it is not our module ?
-			//Logger.logMessage("Can't load " + module);
+		} catch (ClassNotFoundException ignore) {// it is not our module ?
+			// Logger.logMessage("Can't load " + module);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		} catch (InstantiationException e) {

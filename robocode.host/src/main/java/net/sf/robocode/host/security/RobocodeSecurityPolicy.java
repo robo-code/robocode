@@ -21,16 +21,16 @@
 package net.sf.robocode.host.security;
 
 
-import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.host.io.RobotFileSystemManager;
+import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.IRepositoryManager;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.FilePermission;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.*;
 import java.util.*;

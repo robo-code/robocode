@@ -37,6 +37,7 @@
 package robocode.control;
 
 
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
@@ -342,22 +343,22 @@ public class RobocodeEngine implements IRobocodeEngine {
 		for (int i = 0; i < numGroups; i++) {
 			currentGroup = groups[i];
 			if (currentGroup.isDaemon()) {
-				System.out.print("  ");
+				Logger.realOut.print("  ");
 			} else {
-				System.out.print("* ");
+				Logger.realOut.print("* ");
 			}
-			System.out.println("In group: " + currentGroup.getName());
+			Logger.realOut.println("In group: " + currentGroup.getName());
 			int numThreads = currentGroup.enumerate(threads);
 
 			for (int j = 0; j < numThreads; j++) {
 				if (threads[j].isDaemon()) {
-					System.out.print("  ");
+					Logger.realOut.print("  ");
 				} else {
-					System.out.print("* ");
+					Logger.realOut.print("* ");
 				}
-				System.out.println(threads[j].getName());
+				Logger.realOut.println(threads[j].getName());
 			}
-			System.out.println("---------------");
+			Logger.realOut.println("---------------");
 		}
 	}
 

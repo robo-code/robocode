@@ -12,6 +12,7 @@
 package net.sf.robocode.test.robots;
 
 
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobotTestBed;
 import org.junit.Test;
@@ -60,13 +61,13 @@ public class TestAwtAttack extends RobotTestBed {
 	@Override
 	protected void runTeardown() {
 
-		Runnable doHack = new Runnable() {
+		Runnable doCheck = new Runnable() {
 			public void run() {
-				System.out.println("works still!!!");
+				Logger.logMessage("works still!!!");
 			}
 		};
 
-		javax.swing.SwingUtilities.invokeLater(doHack);
+		javax.swing.SwingUtilities.invokeLater(doCheck);
 
 		frame.setVisible(false);
 		Assert.assertFalse(messagedBreakthru);

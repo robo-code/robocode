@@ -16,16 +16,15 @@ package net.sf.robocode.host.proxies;
 
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
-import net.sf.robocode.host.security.RobocodeSecurityManager;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import robocode.*;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 import java.io.File;
-import java.util.List;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.List;
 
 
 /**

@@ -12,9 +12,9 @@
 package net.sf.robocode.core;
 
 
-import net.sf.robocode.security.LoggingThreadGroup;
-import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.manager.IRobocodeManagerBase;
+import net.sf.robocode.security.LoggingThreadGroup;
 
 import java.io.File;
 import java.io.IOException;

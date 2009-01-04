@@ -15,8 +15,8 @@
 package net.sf.robocode.cachecleaner;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.core.Container;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import java.io.File;
@@ -34,21 +34,19 @@ public final class CacheCleaner {
 	private CacheCleaner() {}
 
 	public static void main(String[] args) {
-		IRobocodeManager manager = Container.cache.getComponent(IRobocodeManager.class);
-
-		clean(manager);
+		clean();
 	}
 
-	public static void clean(IRobocodeManager manager) {
+	public static void clean() {
 		deleteFile("roborumble/temp");
 		deleteFile("robots/.robotcache");
 		deleteFile("robots/robot.database");
 
-		System.out.print("Creating roborumble/temp... ");
+		Logger.logMessage("Creating roborumble/temp... ", false);
 		if (new File("roborumble/temp").mkdir()) {
-			System.out.println("done.");
+			Logger.logMessage("done.");
 		} else {
-			System.out.println("failed.");
+			Logger.logMessage("failed.");
 		}
 
 		System.out.print("Rebuilding robot database... ");
@@ -58,16 +56,16 @@ public final class CacheCleaner {
 		repositoryManager.clearRobotList();
 		repositoryManager.loadRobotRepository();
 
-		System.out.println("done.");
+		Logger.logMessage("done.");
 	}
 
 	private static void deleteFile(String filename) {
 		System.out.print("Deleting " + filename + "... ");
 		try {
 			recursivelyDelete(new File(filename));
-			System.out.println("done.");
+			Logger.logMessage("done.");
 		} catch (IOException ex) {
-			System.out.println("failed.");
+			Logger.logMessage("failed.");
 		}
 	}
 

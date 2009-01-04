@@ -16,7 +16,6 @@ import net.sf.robocode.test.helpers.RobotTestBed;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.Ignore;
 import robocode.BattleResults;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleFinishedEvent;
@@ -53,6 +52,7 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 		super.onRoundStarted(event);
 		if (event.getRound() == 0) {
 			robots = event.getStartSnapshot().getRobots();
+			Assert.assertEquals(8, robots.length);
 
 			net.sf.robocode.test.helpers.Assert.assertNear(566.2968069, robots[0].getX());
 			net.sf.robocode.test.helpers.Assert.assertNear(436.3146436, robots[1].getX());

@@ -13,8 +13,6 @@ package net.sf.robocode.ui;
 
 
 import net.sf.robocode.core.Container;
-import net.sf.robocode.sound.ISoundManager;
-import net.sf.robocode.sound.SoundManager;
 import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
 import net.sf.robocode.ui.dialog.*;

@@ -54,7 +54,6 @@ public class TestLost extends RobotTestBed {
 		if (streamSnapshot.contains("BattleEnded!")) {
 			end++;
 		}
-		System.out.print(streamSnapshot);
 	}
 
 	@Override

@@ -161,10 +161,10 @@ public class FileUtil {
 								Logger.logError("Can't delete" + file);
 							}
 						} else {
-							System.out.println("Warning: " + file + " may be a symlink.  Ignoring.");
+							Logger.logMessage("Warning: " + file + " may be a symlink.  Ignoring.");
 						}
 					} catch (IOException e) {
-						System.out.println("Warning: Cannot determine canonical file for " + file + " - ignoring.");
+						Logger.logMessage("Warning: Cannot determine canonical file for " + file + " - ignoring.");
 					}
 				} else {
 					if (!file.delete()) {

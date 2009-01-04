@@ -317,6 +317,13 @@ public final class RepositoryManager implements IRepositoryManager {
 	private List<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
 		List<FileSpecification> robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
 
+		try {
+			rootDir = rootDir.getCanonicalFile();
+		} catch (IOException e) {
+			Logger.logError(e);
+			return robotList; 
+		}
+
 		// Order is important?
 		String fileTypes[] = {
 			".class", ".jar", ".team", ".jar.zip"
@@ -437,7 +444,7 @@ public final class RepositoryManager implements IRepositoryManager {
 		} else if (fileSpecification instanceof ClassSpecification) {
 			getRobotDatabase().put(key, fileSpecification);
 		} else {
-			System.out.println("Update robot database not possible for type " + fileSpecification.getFileType());
+			Logger.logMessage("Update robot database not possible for type " + fileSpecification.getFileType());
 		}
 	}
 
@@ -590,11 +597,18 @@ public final class RepositoryManager implements IRepositoryManager {
 					version = "";
 				}
 
+				final String newTeam = currentTeam.getName() + version + "[" + teamName + "]";
 				StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
 
 				while (teamTokenizer.hasMoreTokens()) {
-					load(battlingRobotsList, currentTeam.getRootDir() + teamTokenizer.nextToken(), battleRobotSpec,
-							currentTeam.getName() + version + "[" + teamName + "]", true);
+					final String botName = teamTokenizer.nextToken();
+					// first load from same classPath
+					String teamBot = currentTeam.getRootDir() + File.separator + botName;
+
+					if (!load(battlingRobotsList, teamBot, battleRobotSpec, newTeam, true)) {
+						// try general search
+						load(battlingRobotsList, botName, battleRobotSpec, newTeam, true);
+					}
 				}
 				return true;
 			}

@@ -33,10 +33,10 @@ import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.LoggingThreadGroup;
 import robocode.exception.RobotException;
 
-import java.security.PrivilegedAction;
-import java.security.AccessController;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 
 /**

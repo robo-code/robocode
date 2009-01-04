@@ -28,8 +28,8 @@ package net.sf.robocode.host.security;
 
 
 import net.sf.robocode.core.Container;
-import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.host.IHostedThread;
+import static net.sf.robocode.io.Logger.logError;
 
 import java.lang.reflect.Field;
 import java.net.URL;
