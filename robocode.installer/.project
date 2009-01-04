@@ -1,0 +1,16 @@
+<projectDescription>
+  <name>robocode.installer</name>
+  <comment/>
+  <projects>
+    <project>robocode.content</project>
+    <project>robocode.samples</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
