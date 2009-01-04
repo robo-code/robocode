@@ -51,12 +51,9 @@ public class HiddenAccess {
 	private static Method robocodeManagerFactoryRE;
 	private static Method robocodeMain;
 	private static boolean initialized;
+	private static boolean foundCore = false;
 
-	static {
-		init();
-	}
-
-	private static void init() {
+	public static void init() {
 		if (initialized) {
 			return;
 		}
@@ -88,7 +85,7 @@ public class HiddenAccess {
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
 
-			ClassLoader loader = getLoader();
+			ClassLoader loader = getClassLoader();
 			Class<?> container = loader.loadClass("net.sf.robocode.core.RobocodeMainBase");
 
 			robocodeManagerFactory = container.getDeclaredMethod("createRobocodeManager");
@@ -109,6 +106,11 @@ public class HiddenAccess {
 			Logger.logError(e);
 		} catch (ClassNotFoundException e) {
 			Logger.logError(e);
+			if (!foundCore){
+				System.out.println("Can't find robocode.core-1.x.jar module near to robocode.jar");
+				System.out.println("ClassPath: " + System.getProperty("robocode.class.path", null));
+			}
+			System.exit(-1);
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		} catch (Error e) {
@@ -118,33 +120,42 @@ public class HiddenAccess {
 
 	}
 
-	private static ClassLoader getLoader() throws MalformedURLException {
+	private static ClassLoader getClassLoader() throws MalformedURLException {
 		// if other modules are .jar next to robocode.jar on same path, we will create classloader which will load them
 		// otherwise we rely on that they are already on classpath
+		StringBuilder classPath = new StringBuilder(System.getProperty("java.class.path", null));
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		final String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().toString();
 		final int i = path.lastIndexOf("robocode.jar");
 		if (i>0){
-			final String dir = path.substring(0, i).substring(6);
-			File dirf = new File(dir);
-			ArrayList<URL> urls = new ArrayList<URL>();
-			System.out.println("Adding to classPath " + dir + "*.jar");
-			final File[] files = dirf.listFiles(new FilenameFilter() {
-				public boolean accept(File dir, String name) {
-					return name.toLowerCase().endsWith(".jar");
-				}
-			});
-
-			StringBuilder classPath = new StringBuilder(System.getProperty("java.class.path", null));
-			for (File file : files){
-				urls.add(file.toURL());
-				classPath.append(File.pathSeparator);
-				classPath.append(file.toString());
-			}
-			System.setProperty("robocode.class.path", classPath.toString());
-			System.out.println("Final CP: " + classPath);
-			loader = new URLClassLoader(urls.toArray(new URL[urls.size()]), loader);
+			loader = createClassLoader(classPath, loader, path, i);
 		}
+		System.setProperty("robocode.class.path", classPath.toString());
+		return loader;
+	}
+
+	private static ClassLoader createClassLoader(StringBuilder classPath, ClassLoader loader, String path, int i) throws MalformedURLException {
+		final String dir = path.substring(0, i).substring(6);
+		File dirf = new File(dir);
+		ArrayList<URL> urls = new ArrayList<URL>();
+		//System.out.println("Adding to classPath " + dir + "*.jar");
+		final File[] files = dirf.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				final String test = name.toLowerCase();
+				return test.endsWith(".jar") && !test.endsWith("robocode.jar");
+			}
+		});
+
+
+		for (File file : files){
+			if (file.toString().toLowerCase().contains("robocode.core")){
+				foundCore=true;
+			}
+			urls.add(file.toURL());
+			classPath.append(File.pathSeparator);
+			classPath.append(file.toString());
+		}
+		loader = new URLClassLoader(urls.toArray(new URL[urls.size()]), loader);
 		return loader;
 	}
 

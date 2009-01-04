@@ -83,24 +83,24 @@ public class RobocodeLogo {
 		drawRobot(g, 492, 82, -0.3f, -0.27f, -0.27f, new Color(0x00, 0x00, 0x01, 0xff));
 
 		transform(g, AffineTransform.getTranslateInstance(270, -25));
-		RenderImage explRenderImage1 = new RenderImage(ImageUtil.getImage("/images/explosion/explosion2-24.png"));
+		RenderImage explRenderImage1 = new RenderImage(ImageUtil.getImage("/net/sf/robocode/ui/images/explosion/explosion2-24.png"));
 
 		explRenderImage1.paint(g);
 
 		transform(g, AffineTransform.getTranslateInstance(23, 102));
-		RenderImage explRenderImage2 = new RenderImage(ImageUtil.getImage("/images/explosion/explosion1-8.png"));
+		RenderImage explRenderImage2 = new RenderImage(ImageUtil.getImage("/net/sf/robocode/ui/images/explosion/explosion1-8.png"));
 
 		explRenderImage2.setTransform(AffineTransform.getScaleInstance(0.3, 0.3));
 		explRenderImage2.paint(g);
 
 		transform(g, AffineTransform.getTranslateInstance(464, 55));
-		RenderImage explRenderImage3 = new RenderImage(ImageUtil.getImage("/images/explosion/explosion1-1.png"));
+		RenderImage explRenderImage3 = new RenderImage(ImageUtil.getImage("/net/sf/robocode/ui/images/explosion/explosion1-1.png"));
 
 		explRenderImage3.setTransform(AffineTransform.getScaleInstance(0.5, 0.5));
 		explRenderImage3.paint(g);
 
 		transform(g, AffineTransform.getTranslateInstance(488, 72));
-		RenderImage explRenderImage4 = new RenderImage(ImageUtil.getImage("/images/explosion/explosion1-6.png"));
+		RenderImage explRenderImage4 = new RenderImage(ImageUtil.getImage("/net/sf/robocode/ui/images/explosion/explosion1-6.png"));
 
 		explRenderImage4.setTransform(AffineTransform.getScaleInstance(0.4, 0.4));
 		explRenderImage4.paint(g);
@@ -114,19 +114,19 @@ public class RobocodeLogo {
 		transform(g, AffineTransform.getTranslateInstance(x, y));
 
 		RenderImage bodyRenderImage = new RenderImage(
-				ImageUtil.createColouredRobotImage(ImageUtil.getImage("/images/body.png"), color));
+				ImageUtil.createColouredRobotImage(ImageUtil.getImage("/net/sf/robocode/ui/images/body.png"), color));
 
 		bodyRenderImage.setTransform(AffineTransform.getRotateInstance(bodyAngle));
 		bodyRenderImage.paint(g);
 
 		RenderImage gunRenderImage = new RenderImage(
-				ImageUtil.createColouredRobotImage(ImageUtil.getImage("/images/turret.png"), color));
+				ImageUtil.createColouredRobotImage(ImageUtil.getImage("/net/sf/robocode/ui/images/turret.png"), color));
 
 		gunRenderImage.setTransform(AffineTransform.getRotateInstance(gunAngle));
 		gunRenderImage.paint(g);
 
 		RenderImage radarRenderImage = new RenderImage(
-				ImageUtil.createColouredRobotImage(ImageUtil.getImage("/images/radar.png"), color));
+				ImageUtil.createColouredRobotImage(ImageUtil.getImage("/net/sf/robocode/ui/images/radar.png"), color));
 
 		radarRenderImage.setTransform(AffineTransform.getRotateInstance(radarAngle));
 		radarRenderImage.paint(g);

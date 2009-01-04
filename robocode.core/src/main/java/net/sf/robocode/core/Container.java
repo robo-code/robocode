@@ -92,8 +92,6 @@ public final class Container {
 
 				if (name != null) {
 					loadModule(name, engineLoader);
-				} else {
-					loadJars(pathf);
 				}
 			} else if (test.contains(File.separator + "robocode.") && test.endsWith(".jar")) {
 				final int i = test.lastIndexOf("robocode.jar");

@@ -59,6 +59,7 @@
                 <version>2.2-beta-2</version>
                 <configuration>
                     <finalName>robocode-setup-${project.version}</finalName>
+                    <ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
                     <descriptors>
                         <descriptor>mvn.assembly.xml</descriptor>
                     </descriptors>

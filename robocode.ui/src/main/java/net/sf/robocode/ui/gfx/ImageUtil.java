@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.RGBImageFilter;
 import java.net.URL;
+import java.io.IOException;
 
 
 /**
@@ -36,7 +37,7 @@ public class ImageUtil {
 	 * @return the loaded image
 	 */
 	public static Image getImage(String filename) {
-		URL url = ClassLoader.class.getResource(filename);
+		URL url = ImageUtil.class.getResource(filename);
 
 		if (url == null) {
 			Logger.logError("Could not load image because of invalid filename: " + filename);
@@ -44,11 +45,18 @@ public class ImageUtil {
 		}
 
 		try {
-			return ImageIO.read(url);
-		} catch (Exception e) {
+			final BufferedImage result = ImageIO.read(url);
+			if (result==null){
+				final String message = "Could not load image: " + filename;
+				Logger.logError(message);
+				throw new Error();
+			}
+			return result;
+		} catch (IOException e) {
 			Logger.logError("Could not load image: " + filename);
 			return null;
 		}
+
 	}
 
 	/**

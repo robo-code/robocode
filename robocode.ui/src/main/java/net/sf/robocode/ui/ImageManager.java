@@ -79,7 +79,7 @@ public class ImageManager implements IImageManager {
 
 	public Image getGroundTileImage(int index) {
 		if (groundImages[index] == null) {
-			groundImages[index] = getImage("/images/ground/blue_metal/blue_metal_" + index + ".png");
+			groundImages[index] = getImage("/net/sf/robocode/ui/images/ground/blue_metal/blue_metal_" + index + ".png");
 		}
 		return groundImages[index];
 	}
@@ -97,9 +97,9 @@ public class ImageManager implements IImageManager {
 				List<RenderImage> frames = new ArrayList<RenderImage>();
 
 				for (numFrame = 1;; numFrame++) {
-					filename = "/images/explosion/explosion" + numExplosion + '-' + numFrame + ".png";
+					filename = "/net/sf/robocode/ui/images/explosion/explosion" + numExplosion + '-' + numFrame + ".png";
 
-					if (ClassLoader.class.getResource(filename) == null) {
+					if (ImageManager.class.getResource(filename) == null) {
 						if (numFrame == 1) {
 							done = true;
 						} else {
@@ -124,7 +124,7 @@ public class ImageManager implements IImageManager {
 
 	public RenderImage getExplosionDebriseRenderImage() {
 		if (debriseRenderImage == null) {
-			debriseRenderImage = new RenderImage(getImage("/images/ground/explode_debris.png"));
+			debriseRenderImage = new RenderImage(getImage("/net/sf/robocode/ui/images/ground/explode_debris.png"));
 		}
 		return debriseRenderImage;
 	}
@@ -146,7 +146,7 @@ public class ImageManager implements IImageManager {
 	 */
 	private Image getBodyImage() {
 		if (bodyImage == null) {
-			bodyImage = getImage("/images/body.png");
+			bodyImage = getImage("/net/sf/robocode/ui/images/body.png");
 		}
 		return bodyImage;
 	}
@@ -159,7 +159,7 @@ public class ImageManager implements IImageManager {
 	 */
 	private Image getGunImage() {
 		if (gunImage == null) {
-			gunImage = getImage("/images/turret.png");
+			gunImage = getImage("/net/sf/robocode/ui/images/turret.png");
 		}
 		return gunImage;
 	}
@@ -172,7 +172,7 @@ public class ImageManager implements IImageManager {
 	 */
 	private Image getRadarImage() {
 		if (radarImage == null) {
-			radarImage = getImage("/images/radar.png");
+			radarImage = getImage("/net/sf/robocode/ui/images/radar.png");
 		}
 		return radarImage;
 	}
