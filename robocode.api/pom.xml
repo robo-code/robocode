@@ -12,36 +12,43 @@
     <version>${parent.version}</version>
     <name>Robocode API</name>
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <configuration>
-                        <finalName>robocode</finalName>
-                        <archive>
-                            <addMavenDescriptor>false</addMavenDescriptor>
-                            <manifest>
-                                <mainClass>robocode.Robocode</mainClass>
-                            </manifest>
-                        </archive>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.4</version>
-                    <configuration>
-                        <excludePackageNames>net.sf.robocode:robocode._*</excludePackageNames>
-                        <windowtitle>Robocode ${version} API</windowtitle>
-                        <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
-                        <links>
-                            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-                        </links>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <finalName>robocode</finalName>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                        <manifest>
+                            <mainClass>robocode.Robocode</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludePackageNames>net.sf.robocode:robocode._*</excludePackageNames>
+                    <windowtitle>Robocode ${version} API</windowtitle>
+                    <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
+                    <links>
+                        <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+                    </links>
+                    <use>false</use>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
     <reporting>
         <plugins>

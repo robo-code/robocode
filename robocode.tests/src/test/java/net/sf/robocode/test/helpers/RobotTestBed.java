@@ -21,6 +21,7 @@ import org.junit.Test;
 import robocode.control.*;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
+import robocode.util.Utils;
 
 import java.util.Random;
 
@@ -94,7 +95,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	public void onBattleStarted(BattleStartedEvent event) {
 		if (isDeterministic() && isCheckOnBattleStart()) {
-			final Random random = RandomFactory.getRandom();
+			final Random random = Utils.getRandom();
 
 			Assert.assertNear(0.98484154, random.nextDouble());
 		}

@@ -36,7 +36,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  * @see TeamRobot
  * @since 1.4
  */
-public abstract class _RobotBase implements IBasicRobot, Runnable {
+abstract class _RobotBase implements IBasicRobot, Runnable {
 
 	// Internal for this package
 	_RobotBase() {}

@@ -326,29 +326,6 @@ public class AutoExtract implements ActionListener {
 			} else {
 				JOptionPane.showMessageDialog(null, extractor.message);
 			}
-
-			// Move robocode.properties, window.properties, and compile.properties
-			move(new File(installDir, "robocode.properties"), new File(installDir, "config/robocode.properties"));
-			move(new File(installDir, "window.properties"), new File(installDir, "config/window.properties"));
-			move(new File(installDir, "compiler.properties"), new File(installDir, "config/compiler.properties"));
-
-			// Move robot.database
-			move(new File(installDir, "robot.database"), new File(installDir, "robots/robot.database"));
-
-			// Move .robotcache
-			move(new File(installDir, ".robotcache"), new File(installDir, "robots/.robotcache"));
-
-			// Create RoboRumble dir
-			File roborumbleDir = createDir(new File(installDir, "roborumble"));
-
-			// Create RoboRumble working dirs
-			createDir(new File(roborumbleDir, "files"));
-			createDir(new File(roborumbleDir, "temp"));
-
-			// Move RoboRumble config files from /config folder into the /roborumble folder
-			move(new File(installDir, "config/roborumble.txt"), new File(installDir, "roborumble/roborumble.txt"));
-			move(new File(installDir, "config/meleerumble.txt"), new File(installDir, "roborumble/meleerumble.txt"));
-			move(new File(installDir, "config/teamrumble.txt"), new File(installDir, "roborumble/teamrumble.txt"));
 		} else {
 			JOptionPane.showMessageDialog(null, "Installation cancelled.");
 		}

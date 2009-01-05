@@ -12,23 +12,20 @@
     <version>${parent.version}</version>
     <name>Roborumble</name>
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <configuration>
-                        <finalName>robocode</finalName>
-                        <finalName>roborumble</finalName>
-                        <archive>
-                            <manifest>
-                                <mainClass>roborumble.RoboRumbleAtHome</mainClass>
-                            </manifest>
-                        </archive>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <finalName>roborumble</finalName>
+                    <archive>
+                        <manifest>
+                            <mainClass>roborumble.RoboRumbleAtHome</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
     <dependencies>
         <dependency>

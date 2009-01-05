@@ -157,7 +157,7 @@ public class FileUtil {
 						// Robocode won't create one, but just in case a user does...
 						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
 							deleteDir(file);
-							if (!file.delete()) {
+							if (file.exists() && !file.delete()) {
 								Logger.logError("Can't delete" + file);
 							}
 						} else {
@@ -167,7 +167,7 @@ public class FileUtil {
 						Logger.logMessage("Warning: Cannot determine canonical file for " + file + " - ignoring.");
 					}
 				} else {
-					if (!file.delete()) {
+					if (file.exists() && !file.delete()) {
 						Logger.logError("Can't delete" + file);
 					}
 				}
