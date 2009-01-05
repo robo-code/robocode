@@ -1,6 +1,6 @@
 <classpath>
   <classpathentry kind="src" path="src/main/java"/>
-  <classpathentry kind="src" path="src/main/resources" excluding="**/_svn/**|**/*.java"/>
+  <classpathentry kind="src" path="src/main/resources" including="**/*.properties" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="src" path="/robocode.api"/>
