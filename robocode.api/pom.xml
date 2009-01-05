@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.api</artifactId>
-    <version>1.7</version>
+    <version>${parent.version}</version>
     <name>Robocode API</name>
     <build>
         <pluginManagement>
@@ -25,6 +25,19 @@
                                 <mainClass>robocode.Robocode</mainClass>
                             </manifest>
                         </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.4</version>
+                    <configuration>
+                        <excludePackageNames>net.sf.robocode:robocode._*</excludePackageNames>
+                        <windowtitle>Robocode ${version} API</windowtitle>
+                        <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
+                        <links>
+                            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+                        </links>
                     </configuration>
                 </plugin>
             </plugins>

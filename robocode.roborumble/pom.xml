@@ -9,13 +9,32 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.roborumble</artifactId>
-    <version>1.7</version>
+    <version>${parent.version}</version>
     <name>Roborumble</name>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <finalName>robocode</finalName>
+                        <finalName>roborumble</finalName>
+                        <archive>
+                            <manifest>
+                                <mainClass>roborumble.RoboRumbleAtHome</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.api</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>

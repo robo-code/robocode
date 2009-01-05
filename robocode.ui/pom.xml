@@ -9,35 +9,35 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.ui</artifactId>
-    <version>1.7</version>
+    <version>${parent.version}</version>
     <name>Robocode UI</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.api</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.core</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
         </dependency>
         <!--
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
         </dependency>
         -->
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.battle</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.sound</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>

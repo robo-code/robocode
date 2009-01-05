@@ -36,6 +36,7 @@ import java.util.jar.JarInputStream;
  * @author Mathew A. Nelsen (original)
  * @author Flemming N. Larsen (contributor)
  */
+@SuppressWarnings({"ResultOfMethodCallIgnored"})
 public class AutoExtract implements ActionListener {
 	private JDialog licenseDialog;
 	private boolean accepted;
@@ -153,7 +154,7 @@ public class AutoExtract implements ActionListener {
 		licenseDialog = null;
 	}
 
-	private boolean extract(String src, File dest) {
+	private boolean extract(File dest) {
 		JDialog statusDialog = new JDialog();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -178,20 +179,17 @@ public class AutoExtract implements ActionListener {
 
 		byte buf[] = new byte[2048];
 
-		InputStream is = getClass().getClassLoader().getResourceAsStream(src);
+		final String name = AutoExtract.class.getName().replaceAll("\\.", "/") + ".class";
+		String urlJar =AutoExtract.class.getClassLoader().getResource(name).toString();
+		final String src = urlJar.substring("jar:file:".length(), urlJar.indexOf("!/"));
 
-		if (is == null) {
-			String r = getClass().getClassLoader().getResource(src).toString();
-			int i = r.lastIndexOf("!");
-
-			if (i >= 0) {
-				r = r.substring(0, i);
-			}
+		if (src.contains("!")) {
 			JOptionPane.showMessageDialog(null,
-					r + "\nContains an exclamation point.  Please move the file to a different directory.");
+					src + "\nContains an exclamation point.  Please move the file to a different directory.");
 			System.exit(0);
 		}
 		try {
+			InputStream is = new FileInputStream(src);
 			JarInputStream jarIS = new JarInputStream(is);
 
 			JarEntry entry = jarIS.getNextJarEntry();
@@ -201,43 +199,45 @@ public class AutoExtract implements ActionListener {
 
 				entryName = entry.getName();
 				if (entry.isDirectory()) {
-					File dir = new File(dest, entry.getName());
-
-					dir.mkdirs();
+					if (!entryName.startsWith("net")){
+						File dir = new File(dest, entry.getName());
+						dir.mkdirs();
+					}
 				} else {
-					status.setText(entryName + " " + spinner[spin++]);
+					if (!entryName.equals(name)){
+						status.setText(entryName + " " + spinner[spin++]);
 
-					File out = new File(dest, entry.getName());
-					File parentDirectory = new File(out.getParent());
+						File out = new File(dest, entry.getName());
+						File parentDirectory = new File(out.getParent());
+						parentDirectory.mkdirs();
+						fos = new FileOutputStream(out);
 
-					parentDirectory.mkdirs();
-					fos = new FileOutputStream(out);
+						int index = 0;
+						int num;
+						int count = 0;
 
-					int index = 0;
-					int num;
-					int count = 0;
-
-					while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-						fos.write(buf, 0, num);
-						index += num;
-						count++;
-						if (count > 80) {
-							status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
-							if (spin > 3) {
-								spin = 0;
+						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+							fos.write(buf, 0, num);
+							index += num;
+							count++;
+							if (count > 80) {
+								status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
+								if (spin > 3) {
+									spin = 0;
+								}
+								count = 0;
 							}
-							count = 0;
 						}
-					}
-					fos.close();
+						fos.close();
 
-					if (entryName.length() > 3 && entryName.substring(entryName.length() - 3).equals(".sh")) {
-						if (File.separatorChar == '/') {
-							Runtime.getRuntime().exec("chmod 755 " + out.toString());
+						if (entryName.length() > 3 && entryName.substring(entryName.length() - 3).equals(".sh")) {
+							if (File.separatorChar == '/') {
+								Runtime.getRuntime().exec("chmod 755 " + out.toString());
+							}
 						}
-					}
 
-					status.setText(entryName + " " + spinner[spin] + " (" + index + " bytes)");
+						status.setText(entryName + " " + spinner[spin] + " (" + index + " bytes)");
+					}
 				}
 				entry = jarIS.getNextJarEntry();
 			}
@@ -319,7 +319,7 @@ public class AutoExtract implements ActionListener {
 					System.exit(0);
 				}
 			}
-			boolean rv = extractor.extract("extract.jar", installDir);
+			boolean rv = extractor.extract(installDir);
 
 			if (rv) {
 				extractor.createShortcuts(installDir, "robocode.bat", "Robocode", "Robocode");
@@ -431,7 +431,10 @@ public class AutoExtract implements ActionListener {
 			Process p = Runtime.getRuntime().exec(command + " makeshortcut.js", null, installDir);
 			int rv = p.waitFor();
 
-			shortcutMaker.delete();
+			if (!shortcutMaker.delete())
+			{
+				System.out.println("Can't delete " + shortcutMaker);
+			}
 			if (rv == 0) {
 				JOptionPane.showMessageDialog(null,
 						message + "\n" + "A Robocode program group has been added to your Start menu\n"
@@ -461,7 +464,7 @@ public class AutoExtract implements ActionListener {
 
 	private static File createDir(File dir) {
 		if (dir != null && !dir.isDirectory()) {
-			dir.mkdir();
+			dir.mkdirs();
 		}
 		return dir;
 	}
@@ -484,7 +487,10 @@ public class AutoExtract implements ActionListener {
 			} catch (IOException e) {
 				e.printStackTrace(System.err);
 			}
-			srcFile.delete();
+			if (!srcFile.delete())
+			{
+				System.out.println("Can't delete " + srcFile);
+			}
 		}
 	}
 }

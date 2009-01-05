@@ -9,14 +9,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.installer</artifactId>
-    <version>1.7</version>
+    <version>${parent.version}</version>
     <name>Robocode Installer</name>
 
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.samples</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sf.robocode</groupId>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.content</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 

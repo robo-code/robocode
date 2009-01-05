@@ -15,7 +15,7 @@
  *       ITERATE=YES, DOWNLOAD=YES, and RUNONLY=SERVER, the ratings were only
  *       read once, not per iteration
  *******************************************************************************/
-package net.sf.robocode.roborumble;
+package roborumble;
 
 
 import net.sf.robocode.roborumble.battlesengine.BattlesRunner;

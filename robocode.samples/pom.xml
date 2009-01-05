@@ -9,13 +9,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.samples</artifactId>
-    <version>1.7</version>
+    <version>${parent.version}</version>
     <name>Robocode Samples</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.api</artifactId>
-            <version>1.7</version>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
     <build>

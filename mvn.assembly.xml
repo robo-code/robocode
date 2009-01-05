@@ -6,13 +6,26 @@
     
     <includeBaseDirectory>false</includeBaseDirectory>
     <moduleSets>
-        <!-- robocode.api renamed ro robocode.jar -->
+        <!-- robocode.api renamed to robocode.jar -->
         <moduleSet>
             <includes>
                 <include>net.sf.robocode:robocode.api</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>robocode.${module.extension}</outputFileNameMapping>
+                <includeDependencies>false</includeDependencies>
+                <outputDirectory>libs</outputDirectory>
+                <unpack>false</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- robocode.roborumble renamed to roborumble.jar -->
+        <moduleSet>
+            <includes>
+                <include>net.sf.robocode:robocode.roborumble</include>
+            </includes>
+            <binaries>
+                <outputFileNameMapping>roborumble.${module.extension}</outputFileNameMapping>
                 <includeDependencies>false</includeDependencies>
                 <outputDirectory>libs</outputDirectory>
                 <unpack>false</unpack>

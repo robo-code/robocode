@@ -47,6 +47,8 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                    <encoding>8859_1</encoding>
+                    <optimize>true</optimize>
                 </configuration>
             </plugin>
             <plugin>
