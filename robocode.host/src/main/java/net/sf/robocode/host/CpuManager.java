@@ -26,9 +26,9 @@
 package net.sf.robocode.host;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IWindowManager;
 
 
@@ -43,15 +43,15 @@ public class CpuManager implements ICpuManager {
 	private final static int TEST_PERIOD_MILLIS = 5000;
 
 	private long cpuConstant = -1;
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 
-	public CpuManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public CpuManager(RobocodeProperties properties) {
+		this.properties = properties;
 	}
 
 	public long getCpuConstant() {
 		if (cpuConstant == -1) {
-			cpuConstant = manager.getProperties().getCpuConstant();
+			cpuConstant = properties.getCpuConstant();
 			if (cpuConstant == -1) {
 				calculateCpuConstant();
 			}
@@ -66,8 +66,8 @@ public class CpuManager implements ICpuManager {
 		Logger.logMessage(
 				"Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
 
-		manager.getProperties().setCpuConstant(cpuConstant);
-		manager.saveProperties();
+		properties.setCpuConstant(cpuConstant);
+		properties.saveProperties();
 
 		setStatus("");
 	}

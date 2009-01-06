@@ -13,8 +13,8 @@ package net.sf.robocode.core;
 
 
 import net.sf.robocode.io.Logger;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Characteristics;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.OptInCaching;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
@@ -25,8 +25,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 
 /**

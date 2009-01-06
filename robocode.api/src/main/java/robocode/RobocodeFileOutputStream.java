@@ -18,9 +18,8 @@
 package robocode;
 
 
-import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.security.IThreadManagerBase;
 import net.sf.robocode.core.ContainerBase;
+import net.sf.robocode.security.IThreadManagerBase;
 import robocode.exception.RobotException;
 
 import java.io.*;

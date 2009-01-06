@@ -22,10 +22,10 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
@@ -62,12 +62,12 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	private RobotSelectionPanel robotSelectionPanel;
 
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private final IBattleManager battleManager;
 
-	public NewBattleDialog(IRobocodeManager manager, IWindowManager windowManager, IBattleManager battleManager) {
+	public NewBattleDialog(RobocodeProperties properties, IWindowManager windowManager, IBattleManager battleManager) {
 		super(windowManager.getRobocodeFrame(), true);
-		this.manager = manager;
+		this.properties = properties;
 		this.battleManager = battleManager;
 
 	}
@@ -170,7 +170,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		setContentPane(getNewBattleDialogContentPane());
 		addCancelByEscapeKey();
 
-		battleProperties.setNumRounds(manager.getProperties().getNumberOfRounds());
+		battleProperties.setNumRounds(properties.getNumberOfRounds());
 		processBattleProperties();
 	}
 
@@ -218,7 +218,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			}
 			robotSelectionPanel = net.sf.robocode.core.Container.createComponent(RobotSelectionPanel.class);
 			robotSelectionPanel.setup(MIN_ROBOTS, MAX_ROBOTS, true, "Select robots for the battle", false, false, false,
-					false, false, !manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
+					false, false, !properties.getOptionsTeamShowTeamRobots(), selectedRobots);
 		}
 		return robotSelectionPanel;
 	}

@@ -29,16 +29,16 @@
 package net.sf.robocode.core;
 
 
-import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.battle.BattleResultsTableModel;
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.ICpuManager;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
+import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
@@ -63,7 +63,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	private final Setup setup;
 	private final BattleObserver battleObserver = new BattleObserver();
-	final private IRobocodeManager manager;
+	final private RobocodeProperties properties;
 	final private IHostManager hostManager;
 	final private IWindowManager windowManager;
 	final private ISoundManager soundManager;
@@ -82,7 +82,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		int tps;
 	}
 
-	public RobocodeMain(IRobocodeManager manager,
+	public RobocodeMain(RobocodeProperties properties,
 			IHostManager hostManager,
 			IWindowManager windowManager,
 			ISoundManager soundManager,
@@ -91,7 +91,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			IVersionManager versionManager
 			) {
 		setup = new Setup();
-		this.manager = manager;
+		this.properties = properties;
 		this.hostManager = hostManager;
 		this.windowManager = windowManager;
 		this.soundManager = soundManager;
@@ -100,14 +100,14 @@ public final class RobocodeMain extends RobocodeMainBase {
 		this.versionManager = versionManager;
 	}
 
-	public RobocodeMain(IRobocodeManager manager,
+	public RobocodeMain(RobocodeProperties properties,
 			IHostManager hostManager,
 			IBattleManager battleManager,
 			IRecordManager recordManager,
 			IVersionManager versionManager
 			) {
 		setup = new Setup();
-		this.manager = manager;
+		this.properties = properties;
 		this.hostManager = hostManager;
 		this.windowManager = null;
 		this.soundManager = null;
@@ -125,7 +125,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				windowManager.setLookAndFeel();
 			}
 
-			manager.getProperties().setOptionsBattleDesiredTPS(setup.tps);
+			properties.setOptionsBattleDesiredTPS(setup.tps);
 
 			battleManager.addListener(battleObserver);
 
@@ -139,9 +139,9 @@ public final class RobocodeMain extends RobocodeMainBase {
 				// Play the intro battle if a battle file is not specified and this is the first time Robocode is being run
 				final String currentVersion = versionManager.getVersion();
 
-				if (setup.battleFilename == null && !manager.getProperties().getLastRunVersion().equals(currentVersion)) {
-					manager.getProperties().setLastRunVersion(currentVersion);
-					manager.saveProperties();
+				if (setup.battleFilename == null && !properties.getLastRunVersion().equals(currentVersion)) {
+					properties.setLastRunVersion(currentVersion);
+					properties.saveProperties();
 					runIntroBattle();
 				}
 			}
@@ -188,12 +188,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 			battleManager.setBattleFilename(intro.getPath());
 			battleManager.loadBattleProperties();
 
-			boolean origShowResults = manager.getProperties().getOptionsCommonShowResults();
+			boolean origShowResults = properties.getOptionsCommonShowResults();
 
-			manager.getProperties().setOptionsCommonShowResults(false);
+			properties.setOptionsCommonShowResults(false);
 			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
 			battleManager.setDefaultBattleProperties();
-			manager.getProperties().setOptionsCommonShowResults(origShowResults);
+			properties.setOptionsCommonShowResults(origShowResults);
 
 			/* TODO restartButton.setEnabled(false);
 			 getRobotButtonsPanel().removeAll();
@@ -227,7 +227,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		 }
 		 */
 
-		setup.tps = manager.getProperties().getOptionsBattleDesiredTPS();
+		setup.tps = properties.getOptionsBattleDesiredTPS();
 
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-cwd") && (i < args.length + 1)) {

@@ -96,7 +96,6 @@
 package net.sf.robocode.battle;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.ContestantPeer;
@@ -108,6 +107,7 @@ import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.settings.RobocodeProperties;
 import robocode.*;
 import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
@@ -165,8 +165,8 @@ public final class Battle extends BaseBattle {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	public Battle(IRobocodeManager manager, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) {
-		super(manager, battleManager, eventDispatcher);
+	public Battle(RobocodeProperties properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) {
+		super(properties, battleManager, eventDispatcher);
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		this.hostManager = hostManager;
 		this.cpuConstant = cpuManager.getCpuConstant();

@@ -54,7 +54,6 @@
 package net.sf.robocode.battle;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.ICpuManager;
@@ -66,7 +65,7 @@ import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
-import org.picocontainer.Characteristics;
+import net.sf.robocode.settings.RobocodeProperties;
 import robocode.Event;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
@@ -92,7 +91,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Pavel Savara (contributor)
  */
 public class BattleManager implements IBattleManager {
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private final IHostManager hostManager;
 	private final ICpuManager cpuManager;
 	private final IRecordManager recordManager;
@@ -109,8 +108,8 @@ public class BattleManager implements IBattleManager {
 	private int pauseCount = 0;
 	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
-	public BattleManager(IRobocodeManager manager, IRepositoryManager repositoryManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher battleEventDispatcher, IRecordManager recordManager) {
-		this.manager = manager;
+	public BattleManager(RobocodeProperties properties, IRepositoryManager repositoryManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher battleEventDispatcher, IRecordManager recordManager) {
+		this.properties = properties;
 		this.recordManager = recordManager;
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
@@ -203,7 +202,7 @@ public class BattleManager implements IBattleManager {
 
 		logMessage("Preparing battle...");
 
-		final boolean recording = manager.getProperties().getOptionsCommonEnableReplayRecording()
+		final boolean recording = properties.getOptionsCommonEnableReplayRecording()
 				&& System.getProperty("TESTING", "none").equals("none");
 
 		if (recording) {

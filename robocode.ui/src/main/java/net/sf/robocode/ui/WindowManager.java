@@ -23,7 +23,6 @@
 package net.sf.robocode.ui;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.BattleResultsTableModel;
 import net.sf.robocode.battle.IBattleManager;
@@ -31,6 +30,7 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.battle.AwtBattleAdaptor;
 import net.sf.robocode.ui.dialog.*;
 import net.sf.robocode.ui.editor.RobocodeEditor;
@@ -60,7 +60,7 @@ public class WindowManager implements IWindowManagerExt {
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
 	private RankingDialog rankingDialog;
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private final IImageManager imageManager;
 	private final IBattleManager battleManager;
 	private final ICpuManager cpuManager;
@@ -70,8 +70,8 @@ public class WindowManager implements IWindowManagerExt {
 	private boolean isGUIEnabled = true;
 	private boolean slave = false;
 
-	public WindowManager(IRobocodeManager manager, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
-		this.manager = manager;
+	public WindowManager(RobocodeProperties properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
+		this.properties = properties;
 		this.battleManager = battleManager;
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
@@ -355,15 +355,6 @@ public class WindowManager implements IWindowManagerExt {
 		return robocodeEditor == null || !robocodeEditor.isVisible() || robocodeEditor.close();
 	}
 
-	/**
-	 * Gets the manager.
-	 *
-	 * @return Returns a RobocodeManager
-	 */
-	public IRobocodeManager getManager() {
-		return manager;
-	}
-
 	public void showCreateTeamDialog() {
 		TeamCreator teamCreator = Container.getComponent(TeamCreator.class);
 
@@ -500,7 +491,7 @@ public class WindowManager implements IWindowManagerExt {
 				filename += ".csv";
 			}
 
-			boolean append = manager.getProperties().getOptionsCommonAppendWhenSavingResults();
+			boolean append = properties.getOptionsCommonAppendWhenSavingResults();
 
 			tableModel.saveToFile(filename, append);
 		}
@@ -575,7 +566,7 @@ public class WindowManager implements IWindowManagerExt {
 
 		if (isGUIEnabled()) {
 			showRobocodeFrame(visible, false);
-			manager.getProperties().setOptionsCommonShowResults(visible);
+			properties.setOptionsCommonShowResults(visible);
 		}
 	}
 }

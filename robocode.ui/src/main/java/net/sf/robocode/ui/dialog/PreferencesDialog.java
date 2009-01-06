@@ -19,7 +19,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IImageManager;
 import net.sf.robocode.ui.IWindowManager;
 
@@ -46,12 +46,12 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
 	private PreferencesCommonOptionsTab commonOptionsTab;
 
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private final IImageManager imageManager;
 
-	public PreferencesDialog(IRobocodeManager manager, IWindowManager windowManager, IImageManager imageManager) {
+	public PreferencesDialog(RobocodeProperties properties, IWindowManager windowManager, IImageManager imageManager) {
 		super(windowManager.getRobocodeFrame(), true);
-		this.manager = manager;
+		this.properties = properties;
 		this.imageManager = imageManager;
 		initialize();
 	}
@@ -113,35 +113,35 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 
 	private JPanel getViewOptionsTab() {
 		if (viewOptionsTab == null) {
-			viewOptionsTab = new PreferencesViewOptionsTab(manager);
+			viewOptionsTab = new PreferencesViewOptionsTab(properties);
 		}
 		return viewOptionsTab;
 	}
 
 	private JPanel getRenderingOptionsTab() {
 		if (renderingOptionsTab == null) {
-			renderingOptionsTab = new PreferencesRenderingOptionsTab(manager, imageManager);
+			renderingOptionsTab = new PreferencesRenderingOptionsTab(properties, imageManager);
 		}
 		return renderingOptionsTab;
 	}
 
 	private JPanel getSoundOptionsTab() {
 		if (soundOptionsTab == null) {
-			soundOptionsTab = new PreferencesSoundOptionsTab(manager);
+			soundOptionsTab = new PreferencesSoundOptionsTab(properties);
 		}
 		return soundOptionsTab;
 	}
 
 	private JPanel getDevelopmentOptionsTab() {
 		if (developmentOptionsTab == null) {
-			developmentOptionsTab = new PreferencesDevelopmentOptionsTab(manager);
+			developmentOptionsTab = new PreferencesDevelopmentOptionsTab(properties);
 		}
 		return developmentOptionsTab;
 	}
 
 	private JPanel getCommonOptionsTab() {
 		if (commonOptionsTab == null) {
-			commonOptionsTab = new PreferencesCommonOptionsTab(manager);
+			commonOptionsTab = new PreferencesCommonOptionsTab(properties);
 		}
 		return commonOptionsTab;
 	}

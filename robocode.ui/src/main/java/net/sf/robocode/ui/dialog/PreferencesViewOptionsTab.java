@@ -24,7 +24,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.settings.RobocodeProperties;
 
 import javax.swing.*;
@@ -74,7 +73,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton fastTpsButton;
 	private JButton maxTpsButton;
 
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 
 	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {
@@ -110,9 +109,9 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		}
 	}
 
-	public PreferencesViewOptionsTab(IRobocodeManager manager) {
+	public PreferencesViewOptionsTab(RobocodeProperties properties) {
 		super();
-		this.manager = manager;
+		this.properties = properties;
 		initialize();
 	}
 
@@ -407,7 +406,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		add(getVisibleOptionsPanel());
 		add(getTpsOptionsPanel());
 
-		RobocodeProperties props = manager.getProperties();
+		RobocodeProperties props = properties;
 
 		loadPreferences(props);
 
@@ -432,7 +431,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = manager.getProperties();
+		RobocodeProperties props = properties;
 
 		props.setOptionsViewFPS(getDisplayFpsCheckBox().isSelected());
 		props.setOptionsViewTPS(getDisplayTpsCheckBox().isSelected());
@@ -443,7 +442,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		props.setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
 		props.setOptionsViewExplosionDebris(getVisibleExplosionDebrisCheckBox().isSelected());
 		props.setOptionsBattleDesiredTPS(Integer.parseInt(getDesiredTpsTextField().getText()));
-		manager.saveProperties();
+		properties.saveProperties();
 	}
 
 	@Override

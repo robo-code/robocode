@@ -28,8 +28,6 @@
 package net.sf.robocode.ui.packager;
 
 
-import net.sf.robocode.IRobocodeManager;
-import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
@@ -82,9 +80,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	private StringWriter output;
 	private final IRepositoryManager repositoryManager;
 	private final IWindowManager windowManager;
-	private final IRobocodeManager manager;
 	private final IVersionManager versionManager;
-	private final IBattleManager battleManager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -96,13 +92,11 @@ public class RobotPackager extends JDialog implements WizardListener {
 		}
 	}
 
-	public RobotPackager(IRobocodeManager manager, IRepositoryManager repositoryManager, IWindowManager windowManager, IVersionManager versionManager, IBattleManager battleManager) {
+	public RobotPackager(IRepositoryManager repositoryManager, IWindowManager windowManager, IVersionManager versionManager) {
 		super(windowManager.getRobocodeFrame());
-		this.manager = manager;
 		this.versionManager = versionManager;
 		this.repositoryManager = repositoryManager;
 		this.windowManager = windowManager;
-		this.battleManager = battleManager;
 		initialize();
 	}
 

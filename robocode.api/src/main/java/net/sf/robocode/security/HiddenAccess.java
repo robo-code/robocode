@@ -12,9 +12,9 @@
 package net.sf.robocode.security;
 
 
+import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotStatics;
-import net.sf.robocode.core.ContainerBase;
 import robocode.BattleRules;
 import robocode.Bullet;
 import robocode.Event;

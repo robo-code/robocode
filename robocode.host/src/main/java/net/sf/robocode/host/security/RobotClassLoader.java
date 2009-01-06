@@ -29,20 +29,22 @@ package net.sf.robocode.host.security;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
-import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.MalformedURLException;
+import java.nio.ByteBuffer;
 import java.security.CodeSource;
 import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.cert.Certificate;
 import java.util.Set;
-import java.io.*;
-import java.nio.ByteBuffer;
 
 
 /**

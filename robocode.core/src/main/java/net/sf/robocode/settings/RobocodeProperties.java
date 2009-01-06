@@ -35,11 +35,14 @@
 package net.sf.robocode.settings;
 
 
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import java.awt.*;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -201,15 +204,51 @@ public class RobocodeProperties {
 
 			NUMBER_OF_ROUNDS = "robocode.numberOfBattles";
 
-	private final IRepositoryManager repositoryManager;
-
 	private final RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
 
 	private final List<PropertyListener> listeners = new ArrayList<PropertyListener>();
 
-	public RobocodeProperties(IRepositoryManager repositoryManager) {
-		this.repositoryManager = repositoryManager;
+	public RobocodeProperties() {
+
+		FileInputStream in = null;
+
+		try {
+			in = new FileInputStream(FileUtil.getRobocodeConfigFile());
+			this.load(in);
+		} catch (FileNotFoundException e) {
+			logError("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
+		} catch (IOException e) {
+			logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+		} finally {
+			if (in != null) {
+				// noinspection EmptyCatchBlock
+				try {
+					in.close();
+				} catch (IOException e) {
+				}
+			}
+		}
 	}
+
+	public void saveProperties() {
+		FileOutputStream out = null;
+
+		try {
+			out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
+
+			this.store(out, "Robocode Properties");
+		} catch (IOException e) {
+			Logger.logError(e);
+		} finally {
+			if (out != null) {
+				// noinspection EmptyCatchBlock
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
+		}
+	}
+
 
 	/**
 	 * Gets the optionsViewRobotNames.
@@ -870,7 +909,7 @@ public class RobocodeProperties {
 	 */
 	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
 		if (!optionsDevelopmentPath.equals(this.optionsDevelopmentPath)) {
-			repositoryManager.clearRobotList();
+			net.sf.robocode.core.Container.getComponent(IRepositoryManager.class).clearRobotList();
 		}
 		this.optionsDevelopmentPath = optionsDevelopmentPath;
 		props.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);

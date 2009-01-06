@@ -12,11 +12,11 @@
 package net.sf.robocode.recording;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.BaseBattle;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.RobotSnapshot;
+import net.sf.robocode.settings.RobocodeProperties;
 import robocode.BattleResults;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
@@ -34,8 +34,8 @@ public final class BattlePlayer extends BaseBattle {
 	private final RecordManager recordManager;
 	private boolean[] paint;
 
-	public BattlePlayer(IRobocodeManager manager, IBattleManager battleManager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) {
-		super(manager, battleManager, eventDispatcher);
+	public BattlePlayer(RobocodeProperties properties, IBattleManager battleManager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) {
+		super(properties, battleManager, eventDispatcher);
 		this.recordManager = recordManager;
 		recordManager.prepareInputStream();
 	}

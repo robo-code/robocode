@@ -30,7 +30,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.settings.RobocodeProperties;
@@ -101,7 +100,7 @@ public class RobocodeFrame extends JFrame {
 	private boolean iconified;
 	private boolean exitOnClose = true;
 
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 
 	private final IWindowManagerExt windowManager;
 	private final IVersionManager versionManager;
@@ -113,7 +112,7 @@ public class RobocodeFrame extends JFrame {
 
 	final List<RobotButton> robotButtons = new ArrayList<RobotButton>();
 
-	public RobocodeFrame(IRobocodeManager manager,
+	public RobocodeFrame(RobocodeProperties properties,
 			IWindowManager windowManager,
 			IRobotDialogManager dialogManager,
 			IVersionManager versionManager,
@@ -123,7 +122,7 @@ public class RobocodeFrame extends JFrame {
 			MenuBar menuBar, BattleView battleView
 			) {
 		this.windowManager = (IWindowManagerExt) windowManager;
-		this.manager = manager;
+		this.properties = properties;
 		this.interactiveHandler = interactiveHandler;
 		this.versionManager = versionManager;
 		this.battleManager = battleManager;
@@ -158,14 +157,14 @@ public class RobocodeFrame extends JFrame {
 
 	public void checkUpdateOnStart() {
 		if (!isIconified()) {
-			Date lastCheckedDate = manager.getProperties().getVersionChecked();
+			Date lastCheckedDate = properties.getVersionChecked();
 
 			Date today = new Date();
 
 			if (lastCheckedDate == null) {
 				lastCheckedDate = today;
-				manager.getProperties().setVersionChecked(lastCheckedDate);
-				manager.saveProperties();
+				properties.setVersionChecked(lastCheckedDate);
+				properties.saveProperties();
 			}
 			Calendar checkDate = Calendar.getInstance();
 
@@ -173,8 +172,8 @@ public class RobocodeFrame extends JFrame {
 			checkDate.add(Calendar.DATE, 5);
 
 			if (checkDate.getTime().before(today) && checkForNewVersion(false)) {
-				manager.getProperties().setVersionChecked(today);
-				manager.saveProperties();
+				properties.setVersionChecked(today);
+				properties.saveProperties();
 			}
 		}
 	}
@@ -438,7 +437,7 @@ public class RobocodeFrame extends JFrame {
 			replayButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			replayButton.addActionListener(eventHandler);
 
-			RobocodeProperties props = manager.getProperties();
+			RobocodeProperties props = properties;
 
 			replayButton.setVisible(props.getOptionsCommonEnableReplayRecording());
 
@@ -447,7 +446,7 @@ public class RobocodeFrame extends JFrame {
 				@Override
 				public void enableReplayRecordingChanged(boolean enabled) {
 					replayButton.setVisible(
-							RobocodeFrame.this.manager.getProperties().getOptionsCommonEnableReplayRecording());
+							RobocodeFrame.this.properties.getOptionsCommonEnableReplayRecording());
 				}
 			});
 
@@ -463,7 +462,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	private JSlider getTpsSlider() {
 		if (tpsSlider == null) {
-			RobocodeProperties props = manager.getProperties();
+			RobocodeProperties props = properties;
 
 			int tps = Math.max(props.getOptionsBattleDesiredTPS(), 1);
 
@@ -753,7 +752,7 @@ public class RobocodeFrame extends JFrame {
 				battleObserver = null;
 				dispose();
 			}
-			manager.saveProperties();
+			properties.saveProperties();
 		}
 
 		public void windowDeactivated(WindowEvent e) {}
@@ -781,7 +780,7 @@ public class RobocodeFrame extends JFrame {
 					battleManager.pauseIfResumedBattle();
 				} else {
 					// Only set desired TPS if it is not set to zero
-					manager.getProperties().setOptionsBattleDesiredTPS(tps);
+					properties.setOptionsBattleDesiredTPS(tps);
 					battleManager.resumeIfPausedBattle(); // TODO causing problems when called from PreferencesViewOptionsTab.storePreferences()
 				}
 
@@ -881,7 +880,7 @@ public class RobocodeFrame extends JFrame {
 			robotButtons.clear();
 
 			final boolean canReplayRecord = recordManager.hasRecord();
-			final boolean enableSaveRecord = (manager.getProperties().getOptionsCommonEnableReplayRecording()
+			final boolean enableSaveRecord = (properties.getOptionsCommonEnableReplayRecording()
 					& canReplayRecord);
 
 			getStopButton().setEnabled(false);
@@ -959,8 +958,8 @@ public class RobocodeFrame extends JFrame {
 					title.append(currentRound + 1).append(" of ").append(numberOfRounds);
 
 					if (!isBattlePaused) {
-						boolean dispTps = manager.getProperties().getOptionsViewTPS();
-						boolean dispFps = manager.getProperties().getOptionsViewFPS();
+						boolean dispTps = properties.getOptionsViewTPS();
+						boolean dispFps = properties.getOptionsViewFPS();
 
 						if (dispTps | dispFps) {
 							title.append(", ");
@@ -988,7 +987,7 @@ public class RobocodeFrame extends JFrame {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			if (manager.getProperties().getOptionsCommonShowResults()) {
+			if (properties.getOptionsCommonShowResults()) {
 				// show on ATW thread
 				ResultsTask resultTask = new ResultsTask(event);
 

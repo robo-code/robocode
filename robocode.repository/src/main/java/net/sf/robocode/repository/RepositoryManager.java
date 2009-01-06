@@ -33,7 +33,6 @@
 package net.sf.robocode.repository;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
@@ -41,6 +40,7 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.control.RobotSpecification;
 
@@ -69,18 +69,18 @@ public final class RepositoryManager implements IRepositoryManager {
 	private File robotCache;
 
 	private Repository repository;
-	// private final IRobocodeManager manager;
+	// private final RobocodeProperties properties;
 
 	private final List<FileSpecification> updatedJarList = Collections.synchronizedList(
 			new ArrayList<FileSpecification>());
 	private boolean write;
 
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private final IHostManager hostManager;
 
-	public RepositoryManager(IRobocodeManager manager, IHostManager hostManager) {
+	public RepositoryManager(RobocodeProperties properties, IHostManager hostManager) {
 		this.hostManager = hostManager;
-		this.manager = manager;
+		this.properties = properties;
 	}
 
 	public File getRobotCache() {
@@ -166,7 +166,7 @@ public final class RepositoryManager implements IRepositoryManager {
 		setStatus("Cleaning up robot database");
 		cleanupDatabase();
 
-		String externalRobotsPath = manager.getProperties().getOptionsDevelopmentPath(); {
+		String externalRobotsPath = properties.getOptionsDevelopmentPath(); {
 			StringTokenizer tokenizer = new StringTokenizer(externalRobotsPath, File.pathSeparator);
 
 			while (tokenizer.hasMoreTokens()) {
@@ -288,7 +288,7 @@ public final class RepositoryManager implements IRepositoryManager {
 		List<File> develDirectories;
 
 		develDirectories = new ArrayList<File>();
-		String externalPath = manager.getProperties().getOptionsDevelopmentPath();
+		String externalPath = properties.getOptionsDevelopmentPath();
 		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
 
 		while (tokenizer.hasMoreTokens()) {

@@ -28,7 +28,6 @@
 package net.sf.robocode.sound;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.settings.RobocodeProperties;
 import robocode.control.events.BattleAdaptor;
@@ -62,14 +61,12 @@ public class SoundManager implements ISoundManager {
 	// Access to properties
 	private final RobocodeProperties properties;
 	private final IBattleManager battleManager;
-	private final IRobocodeManager manager;
 	private boolean isSoundEnabled = true;
 	final BattleObserver observer = new BattleObserver();
 
-	public SoundManager(IRobocodeManager manager, IBattleManager battleManager) {
+	public SoundManager(RobocodeProperties properties, IBattleManager battleManager) {
 		this.battleManager = battleManager;
-		this.manager=manager;
-		properties = manager.getProperties();
+		this.properties = properties;
 		battleManager.addListener(observer);
 	}
 
@@ -83,7 +80,7 @@ public class SoundManager implements ISoundManager {
 	}
 
 	private boolean isSoundEnabled() {
-		return isSoundEnabled && manager.getProperties().getOptionsSoundEnableSound();
+		return isSoundEnabled && properties.getOptionsSoundEnableSound();
 	}
 
 	public void setEnableSound(boolean enable) {

@@ -30,7 +30,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
@@ -92,13 +91,13 @@ public class RobotSelectionPanel extends WizardPanel {
 	private String preSelectedRobots;
 	private final List<INamedFileSpecification> selectedRobots = new CopyOnWriteArrayList<INamedFileSpecification>();
 	private boolean showNumRoundsPanel;
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private final IBattleManager battleManager;
 	private final IRepositoryManager repositoryManager;
 
-	public RobotSelectionPanel(IRobocodeManager manager, IBattleManager battleManager, IRepositoryManager repositoryManager) {
+	public RobotSelectionPanel(RobocodeProperties properties, IBattleManager battleManager, IRepositoryManager repositoryManager) {
 		super();
-		this.manager = manager;
+		this.properties = properties;
 		this.repositoryManager = repositoryManager;
 		this.battleManager = battleManager;
 	}
@@ -493,7 +492,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		try {
 			return Integer.parseInt(getNumRoundsTextField().getText());
 		} catch (NumberFormatException e) {
-			int numRounds = manager.getProperties().getNumberOfRounds();
+			int numRounds = properties.getNumberOfRounds();
 
 			getNumRoundsTextField().setText("" + numRounds);
 			return numRounds;
@@ -524,7 +523,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	private JTextField getNumRoundsTextField() {
-		final RobocodeProperties props = manager.getProperties();
+		final RobocodeProperties props = properties;
 
 		if (numRoundsTextField == null) {
 			numRoundsTextField = new JTextField();

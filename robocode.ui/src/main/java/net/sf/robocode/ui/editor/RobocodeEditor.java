@@ -24,7 +24,6 @@
 package net.sf.robocode.ui.editor;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
@@ -61,7 +60,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	private JLabel lineLabel;
 
 	private File editorDirectory;
-	private final IRobocodeManager manager;
 	private final IRepositoryManager repositoryManager;
 	private final IWindowManagerExt windowManager;
 
@@ -97,16 +95,11 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		}
 	}
 
-	public RobocodeEditor(IRobocodeManager manager, IRepositoryManager repositoryManager, IWindowManager windowManager) {
+	public RobocodeEditor(IRepositoryManager repositoryManager, IWindowManager windowManager) {
 		super();
-		this.manager = manager;
 		this.windowManager = (IWindowManagerExt) windowManager;
 		this.repositoryManager = repositoryManager;
-		if (manager != null) {
-			robotsDirectory = repositoryManager.getRobotsDirectory();
-		} else {
-			robotsDirectory = FileUtil.getRobotsDir();
-		}
+		robotsDirectory = FileUtil.getRobotsDir();
 		initialize();
 	}
 
@@ -332,7 +325,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 				done = false;
 			}
 
-			if (done && manager != null) {
+			if (done && repositoryManager != null) {
 				done = repositoryManager.verifyRobotName(packageName + "." + name, name);
 				if (!done) {
 					message = "This package is reserved.  Please select a different package.";
@@ -399,7 +392,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			((JavaDocument) d).setEditing(true);
 		}
 		addPlaceShowFocus(editWindow);
-		if (manager != null) {
+		if (repositoryManager != null) {
 			repositoryManager.clearRobotList();
 		}
 	}

@@ -12,7 +12,6 @@
 package net.sf.robocode.host;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
 import net.sf.robocode.io.Logger;
@@ -20,6 +19,7 @@ import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.repository.IRobotFileSpecificationExt;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.settings.RobocodeProperties;
 import robocode.control.RobotSpecification;
 
 import java.io.InputStream;
@@ -31,11 +31,11 @@ import java.security.AccessControlException;
  * @author Pavel Savara (original)
  */
 public class HostManager implements IHostManager {
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private IThreadManager threadManager;
 
-	public HostManager(IRobocodeManager manager, IThreadManager threadManager) {
-		this.manager = manager;
+	public HostManager(RobocodeProperties properties, IThreadManager threadManager) {
+		this.properties = properties;
 		this.threadManager = threadManager;
 	}
 
@@ -56,7 +56,7 @@ public class HostManager implements IHostManager {
 	}
 
 	public long getRobotFilesystemQuota() {
-		return manager.getProperties().getRobotFilesystemQuota();
+		return properties.getRobotFilesystemQuota();
 	}
 
 	public IThreadManager getThreadManager() {

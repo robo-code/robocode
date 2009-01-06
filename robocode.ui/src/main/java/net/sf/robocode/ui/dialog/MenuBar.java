@@ -27,7 +27,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.recording.BattleRecordFormat;
@@ -186,18 +185,18 @@ public class MenuBar extends JMenuBar {
 	public final MenuBar.EventHandler eventHandler = new EventHandler();
 
 	private RobocodeFrame robocodeFrame;
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private final IWindowManagerExt windowManager;
 	private final IBattleManager battleManager;
 	private final IRecordManager recordManager;
 	private final ICpuManager cpuManager;
 
-	public MenuBar(IRobocodeManager manager,
+	public MenuBar(RobocodeProperties properties,
 			IWindowManagerExt windowManager,
 			IBattleManager battleManager,
 			IRecordManager recordManager,
 			ICpuManager cpuManager) {
-		this.manager = manager;
+		this.properties = properties;
 		this.windowManager = windowManager;
 		this.battleManager = battleManager;
 		this.recordManager = recordManager;
@@ -490,7 +489,7 @@ public class MenuBar extends JMenuBar {
 			battleSaveRecordAsMenuItem.setEnabled(false);
 			battleSaveRecordAsMenuItem.addActionListener(eventHandler);
 
-			RobocodeProperties props = manager.getProperties();
+			RobocodeProperties props = properties;
 
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override
@@ -515,7 +514,7 @@ public class MenuBar extends JMenuBar {
 			battleExportRecordMenuItem.setEnabled(false);
 			battleExportRecordMenuItem.addActionListener(eventHandler);
 
-			RobocodeProperties props = manager.getProperties();
+			RobocodeProperties props = properties;
 
 			props.addPropertyListener(props.new PropertyListener() {
 				@Override

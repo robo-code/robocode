@@ -12,7 +12,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IImageManager;
 
@@ -28,7 +27,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class PreferencesRenderingOptionsTab extends WizardPanel {
 
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 
 	private JPanel specificSettingsPanel;
 	private JPanel predefinedSettingsPanel;
@@ -48,9 +47,9 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private EventHandler eventHandler;
 	private final IImageManager imageManager;
 
-	public PreferencesRenderingOptionsTab(IRobocodeManager manager, IImageManager imageManager) {
+	public PreferencesRenderingOptionsTab(RobocodeProperties properties, IImageManager imageManager) {
 		super();
-		this.manager = manager;
+		this.properties = properties;
 		this.imageManager = imageManager;
 		initialize();
 	}
@@ -64,7 +63,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		add(getPredefinedSettingsPanel());
 		add(getOtherSettingsPanel());
 
-		loadPreferences(manager.getProperties());
+		loadPreferences(properties);
 	}
 
 	private JPanel getSpecificSettingsPanel() {
@@ -268,7 +267,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = manager.getProperties();
+		RobocodeProperties props = properties;
 
 		props.setOptionsRenderingAntialiasing(optionsRenderingAntialiasingComboBox.getSelectedIndex());
 		props.setOptionsRenderingTextAntialiasing(optionsRenderingTextAntialiasingComboBox.getSelectedIndex());
@@ -276,7 +275,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		props.setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
 		props.setOptionsRenderingBufferImages(optionsRenderingBufferImagesCheckBox.isSelected());
 		props.setOptionsRenderingForceBulletColor(optionsRendereringForceBulletColorCheckBox.isSelected());
-		manager.saveProperties();
+		properties.saveProperties();
 	}
 
 	@Override

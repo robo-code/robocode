@@ -19,7 +19,7 @@
 package net.sf.robocode.ui;
 
 
-import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.gfx.ImageUtil;
 import net.sf.robocode.ui.gfx.RenderImage;
 
@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class ImageManager implements IImageManager {
 
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 
 	private Image[] groundImages;
 
@@ -52,8 +52,8 @@ public class ImageManager implements IImageManager {
 	private HashMap<Integer, RenderImage> robotGunImageCache;
 	private HashMap<Integer, RenderImage> robotRadarImageCache;
 
-	public ImageManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public ImageManager(RobocodeProperties properties) {
+		this.properties = properties;
 	}
 
 	public void initialize() {
@@ -132,7 +132,7 @@ public class ImageManager implements IImageManager {
 	private Image getImage(String filename) {
 		Image image = ImageUtil.getImage(filename);
 
-		if (manager.getProperties().getOptionsRenderingBufferImages()) {
+		if (properties.getOptionsRenderingBufferImages()) {
 			image = ImageUtil.getBufferedImage(image);
 		}
 		return image;

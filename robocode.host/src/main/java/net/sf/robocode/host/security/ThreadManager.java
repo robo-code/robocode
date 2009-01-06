@@ -24,7 +24,6 @@ import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.host.io.RobotFileOutputStream;
 import net.sf.robocode.host.io.RobotFileSystemManager;
-import net.sf.robocode.security.HiddenAccess;
 import robocode.exception.RobotException;
 
 import java.io.File;
@@ -147,7 +146,7 @@ public class ThreadManager implements IThreadManager {
 		if (!dir.exists()) {
 			robotProxy.println("SYSTEM: Creating a data directory for you.");
 			outputStreamThreads.add(c);
-			if (!dir.mkdir()) {
+			if (dir.exists() && !dir.mkdir()) {
 				syserr.println("Can't create dir " + dir.toString());
 			}
 		}

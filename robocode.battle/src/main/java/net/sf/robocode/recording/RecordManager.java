@@ -12,7 +12,6 @@
 package net.sf.robocode.recording;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
@@ -20,6 +19,7 @@ import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
+import net.sf.robocode.settings.RobocodeProperties;
 import robocode.BattleResults;
 import robocode.BattleRules;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -39,7 +39,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class RecordManager implements IRecordManager {
 	private File tempFile;
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private BattleRecorder recorder;
 
 	public BattleRecordInfo recordInfo;
@@ -51,8 +51,8 @@ public class RecordManager implements IRecordManager {
 	private BufferedInputStream bufferedReadStream;
 	private ObjectInputStream objectReadStream;
 
-	public RecordManager(IRobocodeManager manager) {
-		this.manager = manager;
+	public RecordManager(RobocodeProperties properties) {
+		this.properties = properties;
 		recorder = new BattleRecorder(this);
 	}
 

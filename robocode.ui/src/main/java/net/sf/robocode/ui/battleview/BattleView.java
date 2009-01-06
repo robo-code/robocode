@@ -16,7 +16,6 @@
 package net.sf.robocode.ui.battleview;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.robotpaint.IGraphicsProxy;
@@ -90,7 +89,7 @@ public class BattleView extends Canvas {
 	private FontMetrics smallFontMetrics;
 
 	private final IImageManager imageManager;
-	private final IRobocodeManager manager;
+	private final RobocodeProperties properties;
 	private final IWindowManagerExt windowManager;
 
 	private BufferStrategy bufferStrategy;
@@ -105,8 +104,8 @@ public class BattleView extends Canvas {
 	private final GraphicsState graphicsState = new GraphicsState();
 	private IGraphicsProxy[] robotGraphics;
 
-	public BattleView(IRobocodeManager manager, IWindowManager windowManager, IImageManager imageManager) {
-		this.manager = manager;
+	public BattleView(RobocodeProperties properties, IWindowManager windowManager, IImageManager imageManager) {
+		this.properties = properties;
 		this.windowManager = (IWindowManagerExt) windowManager;
 		this.imageManager = imageManager; 
 
@@ -161,7 +160,7 @@ public class BattleView extends Canvas {
 	}
 
 	public void setDisplayOptions() {
-		RobocodeProperties props = manager.getProperties();
+		RobocodeProperties props = properties;
 
 		drawRobotName = props.getOptionsViewRobotNames();
 		drawRobotEnergy = props.getOptionsViewRobotEnergy();
@@ -519,7 +518,7 @@ public class BattleView extends Canvas {
 
 				Color bulletColor;
 
-				if (manager.getProperties().getOptionsRenderingForceBulletColor()) {
+				if (properties.getOptionsRenderingForceBulletColor()) {
 					bulletColor = Color.WHITE;
 				} else {
 					bulletColor = new Color(IBulletSnapshot.getColor());
