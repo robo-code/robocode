@@ -35,7 +35,7 @@ public class RobotClassLoaderTest {
 
 	@BeforeClass
 	public static void init() throws IOException {
-		HiddenAccess.createRobocodeManager();
+		HiddenAccess.initContainer();
 		classPath = new File("target/classes").getCanonicalFile().toURL();
 	}
 

@@ -13,7 +13,6 @@ package net.sf.robocode.core;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.security.LoggingThreadGroup;
 
 import java.io.File;
@@ -28,6 +27,8 @@ import java.io.IOException;
  */
 public abstract class RobocodeMainBase implements Runnable {
 	public abstract void loadSetup(String[] args);
+	public abstract void initForRobotEngine();
+	public abstract void cleanup();
 
 	// -----------
 	// entrypoints called with reflection from HiddenAccess in robocode.api module
@@ -43,12 +44,12 @@ public abstract class RobocodeMainBase implements Runnable {
 		new Thread(group, main, "Robocode main thread").start();
 	}
 
-	public static IRobocodeManagerBase createRobocodeManager() {
+	public static void initContainer() {
 		// here we cross transition to EngineClassLoader classes using interface which is defined in system classLoader
-		return Container.getComponent(IRobocodeManagerBase.class);
+		Container.init();
 	}
 
-	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
+	public static void initContainerForRobotEngine(File robocodeHome) {
 		try {
 			if (robocodeHome == null) {
 				robocodeHome = FileUtil.getCwd();
@@ -65,14 +66,12 @@ public abstract class RobocodeMainBase implements Runnable {
 
 		} catch (IOException e) {
 			System.err.println(e);
-			return null;
+			return;
 		}
 
-		IRobocodeManagerBase manager = createRobocodeManager();
-
-		manager.initForRobotEngine();
-
-		return manager;
+		// here we cross transition to EngineClassLoader classes using interface which is defined in system classLoader
+		RobocodeMainBase main = Container.getComponent(RobocodeMainBase.class);
+		main.initForRobotEngine();
 	}
 
 }

@@ -30,9 +30,11 @@ package net.sf.robocode.core;
 
 
 import net.sf.robocode.IRobocodeManager;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.battle.BattleResultsTableModel;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
@@ -98,6 +100,22 @@ public final class RobocodeMain extends RobocodeMainBase {
 		this.versionManager = versionManager;
 	}
 
+	public RobocodeMain(IRobocodeManager manager,
+			IHostManager hostManager,
+			IBattleManager battleManager,
+			IRecordManager recordManager,
+			IVersionManager versionManager
+			) {
+		setup = new Setup();
+		this.manager = manager;
+		this.hostManager = hostManager;
+		this.windowManager = null;
+		this.soundManager = null;
+		this.battleManager = battleManager;
+		this.recordManager = recordManager;
+		this.versionManager = versionManager;
+	}
+
 	public void run() {
 		try {
 			hostManager.initSecurity();
@@ -112,7 +130,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			battleManager.addListener(battleObserver);
 
 			if (windowManager.isGUIEnabled()) {
-				if (!setup.minimize && setup.battleFilename == null) {
+				if (!setup.minimize && setup.battleFilename == null && soundManager!=null) {
 					soundManager.playThemeMusic();
 					windowManager.showSplashScreen();
 				}
@@ -234,11 +252,17 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else if (args[i].equals("-minimize")) {
 				setup.minimize = true;
 			} else if (args[i].equals("-nodisplay")) {
-				windowManager.setEnableGUI(false);
-				soundManager.setEnableSound(false);
+				if (windowManager != null) {
+					windowManager.setEnableGUI(false);
+				}
+				if (soundManager != null) {
+					soundManager.setEnableSound(false);
+				}
 				setup.tps = 10000; // set TPS to maximum
 			} else if (args[i].equals("-nosound")) {
-				soundManager.setEnableSound(false);
+				if (soundManager != null) {
+					soundManager.setEnableSound(false);
+				}
 			} else if (args[i].equals("-?") || args[i].equals("-help")) {
 				printUsage();
 				System.exit(0);
@@ -352,4 +376,25 @@ public final class RobocodeMain extends RobocodeMainBase {
 			Logger.realErr.println(event.getError());
 		}
 	}
+
+	public void cleanup() {
+		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
+		if (windowManager !=null) {
+			windowManager.cleanup();
+		}
+		Container.getComponent(IBattleManager.class).cleanup();
+		Container.getComponent(IHostManager.class).cleanup();
+	}
+
+	public void initForRobotEngine() {
+		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
+		if (windowManager != null) {
+			windowManager.setSlave(true);
+			windowManager.setEnableGUI(false);
+		}
+		Container.getComponent(IHostManager.class).initSecurity();
+		Container.getComponent(ICpuManager.class).getCpuConstant();
+		Container.getComponent(IRepositoryManager.class).loadRobotRepository();
+	}
+
 }

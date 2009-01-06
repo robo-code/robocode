@@ -19,6 +19,8 @@ package robocode;
 
 
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.security.IThreadManagerBase;
+import net.sf.robocode.core.ContainerBase;
 import robocode.exception.RobotException;
 
 import java.io.*;
@@ -85,11 +87,12 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream#FileOutputStream(String, boolean)
 	 */
 	public RobocodeFileOutputStream(String fileName, boolean append) throws IOException {
-		if (HiddenAccess.threadManager == null) {
+		final IThreadManagerBase threadManager = ContainerBase.getComponent(IThreadManagerBase.class);
+		if (threadManager == null) {
 			throw new RobotException("ThreadManager cannot be null!");
 		}
 
-		out = HiddenAccess.threadManager.createRobotFileStream(fileName, append);
+		out = threadManager.createRobotFileStream(fileName, append);
 	}
 
 	/**

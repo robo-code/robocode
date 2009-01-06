@@ -41,7 +41,6 @@ import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.gui.IWindowManagerBase;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.repository.IRepositoryManagerBase;
 import net.sf.robocode.security.HiddenAccess;
@@ -75,7 +74,6 @@ import java.util.List;
  */
 public class RobocodeEngine implements IRobocodeEngine {
 
-	private IRobocodeManagerBase manager;
 	private BattleObserver battleObserver;
 	private BattleSpecification battleSpecification;
 
@@ -156,7 +154,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 
 	@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 	private void init(File robocodeHome, RobocodeListener listener) {
-		manager = HiddenAccess.createRobocodeManagerForRobotEngine(robocodeHome);
+		HiddenAccess.initContainerForRobotEngine(robocodeHome);
 		if (listener != null) {
 			battleObserver = new BattleObserver();
 			battleObserver.listener = listener;
@@ -196,8 +194,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 		if (battleObserver != null) {
 			ContainerBase.getComponent(IBattleManagerBase.class).removeListener(battleObserver);
 		}
-		manager.cleanup();
-		manager = null;
+		HiddenAccess.cleanup();
 	}
 
 	/**

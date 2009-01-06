@@ -53,7 +53,6 @@ public class ThreadManager implements IThreadManager {
 	private final List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
 
 	public ThreadManager() {
-		HiddenAccess.threadManager = this;
 	}
 
 	public void addSafeThread(Thread safeThread) {

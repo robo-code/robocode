@@ -25,6 +25,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 
 /**
@@ -55,7 +57,7 @@ public final class Container extends ContainerBase {
 	private static Set<String> known = new HashSet<String>();
 
 	static {
-		instance = new Container(); 
+		instance = new Container();
 		systemLoader = Container.class.getClassLoader();
 		if (isSecutityOn) {
 			engineLoader = new EngineClassLoader(systemLoader);
@@ -82,6 +84,9 @@ public final class Container extends ContainerBase {
 			Logger.logError("ClassPath : " + classPath);
 			throw new Error("Main modules not loaded");
 		}
+	}
+
+	public static void init(){
 	}
 
 	private static void loadFromPath(String path) {
@@ -173,7 +178,7 @@ public final class Container extends ContainerBase {
 		return null;
 	}
 
-	public <T> T getBaseComponent(Class<T> tClass) {
+	public <T> T getBaseComponent(final Class<T> tClass) {
 		return cache.getComponent(tClass);
 	}
 

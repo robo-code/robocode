@@ -13,8 +13,8 @@ package net.sf.robocode.security;
 
 
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.peer.IRobotStatics;
+import net.sf.robocode.core.ContainerBase;
 import robocode.BattleRules;
 import robocode.Bullet;
 import robocode.Event;
@@ -39,15 +39,14 @@ import java.util.Hashtable;
  * @author Pavel Savara (original)
  */
 public class HiddenAccess {
-	public static IThreadManagerBase threadManager;
-
 	private static IHiddenEventHelper eventHelper;
 	private static IHiddenBulletHelper bulletHelper;
 	private static IHiddenSpecificationHelper specificationHelper;
 	private static IHiddenStatusHelper statusHelper;
 	private static IHiddenRulesHelper rulesHelper;
-	private static Method robocodeManagerFactory;
-	private static Method robocodeManagerFactoryRE;
+	private static Method initContainer;
+	private static Method initContainerRe;
+	private static Method cleanup;
 	private static Method robocodeMain;
 	private static boolean initialized;
 	private static boolean foundCore = false;
@@ -85,15 +84,18 @@ public class HiddenAccess {
 			method.setAccessible(false);
 
 			ClassLoader loader = getClassLoader();
-			Class<?> container = loader.loadClass("net.sf.robocode.core.RobocodeMainBase");
+			Class<?> main = loader.loadClass("net.sf.robocode.core.RobocodeMainBase");
 
-			robocodeManagerFactory = container.getDeclaredMethod("createRobocodeManager");
-			robocodeManagerFactory.setAccessible(true);
+			initContainer = main.getDeclaredMethod("initContainer");
+			initContainer.setAccessible(true);
 
-			robocodeManagerFactoryRE = container.getDeclaredMethod("createRobocodeManagerForRobotEngine", File.class);
-			robocodeManagerFactoryRE.setAccessible(true);
+			initContainerRe = main.getDeclaredMethod("initContainerForRobotEngine", File.class);
+			initContainerRe.setAccessible(true);
 
-			robocodeMain = container.getDeclaredMethod("robocodeMain", Object.class);
+			cleanup = main.getDeclaredMethod("cleanup");
+			cleanup.setAccessible(true);
+
+			robocodeMain = main.getDeclaredMethod("robocodeMain", Object.class);
 			robocodeMain.setAccessible(true);
 
 			initialized = true;
@@ -217,30 +219,45 @@ public class HiddenAccess {
 		return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
 	}
 
-	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
-		init();
-		try {
-			return (IRobocodeManagerBase) robocodeManagerFactoryRE.invoke(null, robocodeHome);
-		} catch (IllegalAccessException e) {
-			Logger.logError(e);
-		} catch (InvocationTargetException e) {
-			Logger.logError(e.getCause());
-			Logger.logError(e);
-		}
-		return null;
+	public static boolean isSafeThread(){
+		final IThreadManagerBase threadManager = ContainerBase.getComponent(IThreadManagerBase.class);
+		return threadManager != null && threadManager.isSafeThread();
 	}
 
-	public static IRobocodeManagerBase createRobocodeManager() {
+	public static void initContainerForRobotEngine(File robocodeHome) {
 		init();
 		try {
-			return (IRobocodeManagerBase) robocodeManagerFactory.invoke(null);
+			initContainerRe.invoke(null, robocodeHome);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		} catch (InvocationTargetException e) {
 			Logger.logError(e.getCause());
 			Logger.logError(e);
 		}
-		return null;
+	}
+
+	public static void initContainer() {
+		init();
+		try {
+			initContainer.invoke(null);
+		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		} catch (InvocationTargetException e) {
+			Logger.logError(e.getCause());
+			Logger.logError(e);
+		}
+	}
+
+	public static void cleanup() {
+		init();
+		try {
+			cleanup.invoke(null);
+		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		} catch (InvocationTargetException e) {
+			Logger.logError(e.getCause());
+			Logger.logError(e);
+		}
 	}
 
 	public static void robocodeMain(final String[] args) {

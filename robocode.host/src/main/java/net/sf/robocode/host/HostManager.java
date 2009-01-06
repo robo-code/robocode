@@ -34,9 +34,9 @@ public class HostManager implements IHostManager {
 	private final IRobocodeManager manager;
 	private IThreadManager threadManager;
 
-	public HostManager(IRobocodeManager manager) {
+	public HostManager(IRobocodeManager manager, IThreadManager threadManager) {
 		this.manager = manager;
-		threadManager = new ThreadManager();
+		this.threadManager = threadManager;
 	}
 
 	static {

@@ -40,12 +40,12 @@ public class RbSerializerTest {
 	public static void init() {
 		// we need to switch off engine classloader for this test
 		System.setProperty("NOSECURITY", "true");
-		HiddenAccess.createRobocodeManager();
+		HiddenAccess.initContainer();
 	}
 
 	@Test
 	public void empty() throws IOException {
-		HiddenAccess.createRobocodeManager();
+		HiddenAccess.initContainer();
 		ExecCommands ec = new ExecCommands();
 
 		ec.setBodyTurnRemaining(150.123);

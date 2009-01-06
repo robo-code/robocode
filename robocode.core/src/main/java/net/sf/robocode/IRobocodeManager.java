@@ -12,14 +12,13 @@
 package net.sf.robocode;
 
 
-import net.sf.robocode.manager.IRobocodeManagerBase;
 import net.sf.robocode.settings.RobocodeProperties;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobocodeManager extends IRobocodeManagerBase {
+public interface IRobocodeManager{
 	RobocodeProperties getProperties();
 
 	void saveProperties();

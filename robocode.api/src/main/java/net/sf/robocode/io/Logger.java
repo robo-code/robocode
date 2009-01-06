@@ -71,7 +71,7 @@ public class Logger {
 			}
 		} else {
 			synchronized (logBuffer) {
-				if (HiddenAccess.threadManager == null || !HiddenAccess.threadManager.isSafeThread()) {
+				if (!HiddenAccess.isSafeThread()) {
 					// we just queue it, to not let unsafe thread travel thru system
 					logBuffer.append(s);
 					logBuffer.append("\n");

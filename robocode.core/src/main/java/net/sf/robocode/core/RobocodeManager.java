@@ -106,23 +106,4 @@ public final class RobocodeManager implements IRobocodeManager {
 		}
 	}
 
-	public void cleanup() {
-		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
-		if (windowManager !=null) {
-			windowManager.cleanup();
-		}
-		Container.getComponent(IBattleManager.class).cleanup();
-		Container.getComponent(IHostManager.class).cleanup();
-	}
-
-	public void initForRobotEngine() {
-		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
-		if (windowManager != null) {
-			windowManager.setSlave(true);
-			windowManager.setEnableGUI(false);
-		}
-		Container.getComponent(IHostManager.class).initSecurity();
-		Container.getComponent(ICpuManager.class).getCpuConstant();
-		Container.getComponent(IRepositoryManager.class).loadRobotRepository();
-	}
 }
