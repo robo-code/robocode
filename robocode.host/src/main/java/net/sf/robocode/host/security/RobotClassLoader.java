@@ -30,14 +30,19 @@ package net.sf.robocode.host.security;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import static net.sf.robocode.io.Logger.logError;
+import net.sf.robocode.io.Logger;
 
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.MalformedURLException;
 import java.security.CodeSource;
 import java.security.PermissionCollection;
 import java.security.Permissions;
+import java.security.cert.Certificate;
 import java.util.Set;
+import java.io.*;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -58,6 +63,8 @@ public class RobotClassLoader extends URLClassLoader {
 	private final String fullClassName;
 	private PermissionCollection emptyPermissions;
 	private IHostedThread robotProxy;
+	private CodeSource codeSource;
+	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		this(robotClassPath, robotFullClassName, null);
@@ -69,6 +76,10 @@ public class RobotClassLoader extends URLClassLoader {
 		fullClassName = robotFullClassName;
 		emptyPermissions = new Permissions();
 		this.robotProxy = robotProxy;
+		try {
+			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
+		} catch (MalformedURLException ignored) {
+		}
 	}
 
 	public synchronized Class<?> loadClass(String name, boolean resolve)
@@ -98,10 +109,11 @@ public class RobotClassLoader extends URLClassLoader {
 			}
 
 			if (!name.startsWith("robocode")) {
-				if (isRobotClass(name)) {
+				final Class<?> result = loadRobotClassLocaly(name, resolve);
+				if (result != null) {
 					// yes, it is in robot's classpath
-					// we load it localy
-					return loadRobotClass(name, resolve);
+					// we loaded it localy
+					return result;
 				}
 			}
 		}
@@ -112,23 +124,55 @@ public class RobotClassLoader extends URLClassLoader {
 		return super.loadClass(name, resolve);
 	}
 
-	private Class<?> loadRobotClass(String name, boolean resolve) throws ClassNotFoundException {
+	private Class<?> loadRobotClassLocaly(String name, boolean resolve) throws ClassNotFoundException {
 		Class<?> result = findLoadedClass(name);
 
 		if (result == null) {
-			result = findClass(name);
-		}
-		if (resolve) {
-			resolveClass(result);
+			final ByteBuffer resource = findLocalResource(name);
+			if (resource != null) {
+				result = defineClass(name, resource, codeSource);
+				if (resolve) {
+					resolveClass(result);
+				}
+			}
 		}
 		return result;
 	}
 
-	private boolean isRobotClass(String name) {
+	// this whole fun is there to be able to provide defineClass with bytes
+	// we need to call defineClass to be able to set codeSource to untrustedLocation  
+	private ByteBuffer findLocalResource(String name) {
 		// try to find it in robot's classpath
-		String path = name.replace('.', '/').concat(".class");
+		String path = name.replace('.', File.separatorChar).concat(".class");
 
-		return findResource(path) != null;
+		final URL url = findResource(path);
+		ByteBuffer result = null;
+		if (url != null){
+			try {
+				final InputStream is = url.openStream();
+				result = ByteBuffer.allocate(10*16);
+				boolean done=false;
+				do{
+					do {
+						int res = is.read(result.array(), result.position(), result.remaining());
+						if (res == -1) {
+							done=true;
+							break;
+						}
+						result.position(result.position() + res);
+					} while (result.remaining() != 0);
+					result.flip();
+					if (!done){
+						result = ByteBuffer.allocate(result.capacity()*2).put(result);
+					}
+				}while (!done);
+
+			} catch (IOException e) {
+				Logger.logError(e);
+				return null;
+			}
+		}
+		return result;
 	}
 
 	private void notifyRobot(String s) {

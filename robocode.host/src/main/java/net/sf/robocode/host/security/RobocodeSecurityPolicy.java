@@ -100,22 +100,22 @@ public class RobocodeSecurityPolicy extends Policy {
 	}
 
 	@Override
+	@SuppressWarnings({"SimplifiableIfStatement"})
 	public boolean implies(ProtectionDomain domain, final Permission permission) {
 		if (!isSecutityOn) {
 			return true;
 		}
 		final String source = domain.getCodeSource().getLocation().toString();
 
-		if (untrustedCodeUrls.contains(source)) {
-
-			return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-				public Boolean run() {
-					return impliesRobot(permission);
-				}
-			});
+		if (!untrustedCodeUrls.contains(source)) {
+			return true;
 		}
 
-		return true;
+		return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+			public Boolean run() {
+				return impliesRobot(permission);
+			}
+		});
 	}
 
 	private boolean impliesRobot(Permission perm) {
@@ -297,6 +297,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	private void initUrls() {
 		untrustedCodeUrls = new HashSet<String>();
+		untrustedCodeUrls.add(RobotClassLoader.untrustedURL);
 
 		String classPath = System.getProperty("robocode.class.path");
 		StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator);

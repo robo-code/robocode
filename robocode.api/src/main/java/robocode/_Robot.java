@@ -34,7 +34,7 @@ package robocode;
  * @author Pavel Savara (contributor)
  * @see Robot
  */
-abstract class _Robot extends _RobotBase {
+public abstract class _Robot extends _RobotBase {
 	private String robotImageName;
 	private String gunImageName;
 	private String radarImageName;

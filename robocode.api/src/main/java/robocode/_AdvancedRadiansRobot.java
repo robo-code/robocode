@@ -37,7 +37,7 @@ import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
  * @author Pavel Savara (contributor)
  * @see AdvancedRobot
  */
-class _AdvancedRadiansRobot extends _AdvancedRobot {
+public class _AdvancedRadiansRobot extends _AdvancedRobot {
 
 	_AdvancedRadiansRobot() {}
 
