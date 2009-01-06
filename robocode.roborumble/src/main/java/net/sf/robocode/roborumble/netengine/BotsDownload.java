@@ -126,6 +126,7 @@ public class BotsDownload {
 
 	public boolean downloadRatings() {
 		File file;
+
 		// delete previous files
 		if (generalbotsfile.length() != 0) {
 			file = new File(generalbotsfile);

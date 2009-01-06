@@ -51,8 +51,7 @@ public class ThreadManager implements IThreadManager {
 	private IHostedThread loadingRobot;
 	private final List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
 
-	public ThreadManager() {
-	}
+	public ThreadManager() {}
 
 	public void addSafeThread(Thread safeThread) {
 		safeThreads.add(safeThread);

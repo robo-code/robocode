@@ -224,8 +224,7 @@ public class RobocodeProperties {
 				// noinspection EmptyCatchBlock
 				try {
 					in.close();
-				} catch (IOException e) {
-				}
+				} catch (IOException e) {}
 			}
 		}
 	}
@@ -248,7 +247,6 @@ public class RobocodeProperties {
 			}
 		}
 	}
-
 
 	/**
 	 * Gets the optionsViewRobotNames.

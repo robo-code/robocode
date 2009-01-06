@@ -36,7 +36,7 @@ import java.util.jar.JarInputStream;
  * @author Mathew A. Nelsen (original)
  * @author Flemming N. Larsen (contributor)
  */
-@SuppressWarnings({"ResultOfMethodCallIgnored"})
+@SuppressWarnings({ "ResultOfMethodCallIgnored"})
 public class AutoExtract implements ActionListener {
 	private JDialog licenseDialog;
 	private boolean accepted;
@@ -180,7 +180,7 @@ public class AutoExtract implements ActionListener {
 		byte buf[] = new byte[2048];
 
 		final String name = AutoExtract.class.getName().replaceAll("\\.", "/") + ".class";
-		String urlJar =AutoExtract.class.getClassLoader().getResource(name).toString();
+		String urlJar = AutoExtract.class.getClassLoader().getResource(name).toString();
 		final String src = urlJar.substring("jar:file:".length(), urlJar.indexOf("!/"));
 
 		if (src.contains("!")) {
@@ -199,16 +199,18 @@ public class AutoExtract implements ActionListener {
 
 				entryName = entry.getName();
 				if (entry.isDirectory()) {
-					if (!entryName.startsWith("net")){
+					if (!entryName.startsWith("net")) {
 						File dir = new File(dest, entry.getName());
+
 						dir.mkdirs();
 					}
 				} else {
-					if (!entryName.equals(name)){
+					if (!entryName.equals(name)) {
 						status.setText(entryName + " " + spinner[spin++]);
 
 						File out = new File(dest, entry.getName());
 						File parentDirectory = new File(out.getParent());
+
 						parentDirectory.mkdirs();
 						fos = new FileOutputStream(out);
 
@@ -408,8 +410,7 @@ public class AutoExtract implements ActionListener {
 			Process p = Runtime.getRuntime().exec(command + " makeshortcut.js", null, installDir);
 			int rv = p.waitFor();
 
-			if (!shortcutMaker.delete())
-			{
+			if (!shortcutMaker.delete()) {
 				System.out.println("Can't delete " + shortcutMaker);
 			}
 			if (rv == 0) {
@@ -464,8 +465,7 @@ public class AutoExtract implements ActionListener {
 			} catch (IOException e) {
 				e.printStackTrace(System.err);
 			}
-			if (!srcFile.delete())
-			{
+			if (!srcFile.delete()) {
 				System.out.println("Can't delete " + srcFile);
 			}
 		}

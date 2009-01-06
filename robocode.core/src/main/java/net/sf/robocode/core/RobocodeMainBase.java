@@ -27,7 +27,9 @@ import java.io.IOException;
  */
 public abstract class RobocodeMainBase implements Runnable {
 	public abstract void loadSetup(String[] args);
+
 	public abstract void initForRobotEngine();
+
 	public abstract void cleanup();
 
 	// -----------
@@ -71,6 +73,7 @@ public abstract class RobocodeMainBase implements Runnable {
 
 		// here we cross transition to EngineClassLoader classes using interface which is defined in system classLoader
 		RobocodeMainBase main = Container.getComponent(RobocodeMainBase.class);
+
 		main.initForRobotEngine();
 	}
 

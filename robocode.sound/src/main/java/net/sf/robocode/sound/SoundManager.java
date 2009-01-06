@@ -84,11 +84,11 @@ public class SoundManager implements ISoundManager {
 	}
 
 	public void setEnableSound(boolean enable) {
-		if (isSoundEnabled != enable){
+		if (isSoundEnabled != enable) {
 			isSoundEnabled = enable;
-			if (isSoundEnabled){
+			if (isSoundEnabled) {
 				battleManager.addListener(observer);
-			} else{
+			} else {
 				battleManager.removeListener(observer);
 			}
 		}
@@ -329,7 +329,7 @@ public class SoundManager implements ISoundManager {
 	private class BattleObserver extends BattleAdaptor {
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			if (isSoundEnabled()){
+			if (isSoundEnabled()) {
 				playBackgroundMusic();
 			}
 		}
@@ -337,14 +337,14 @@ public class SoundManager implements ISoundManager {
 		@Override
 		public void onBattleFinished(BattleFinishedEvent event) {
 			stopBackgroundMusic();
-			if (isSoundEnabled()){
+			if (isSoundEnabled()) {
 				playEndOfBattleMusic();
 			}
 		}
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			if (isSoundEnabled()){
+			if (isSoundEnabled()) {
 				int battleFieldWidth = battleManager.getBattleProperties().getBattlefieldWidth();
 
 				for (IBulletSnapshot bp : event.getTurnSnapshot().getBullets()) {

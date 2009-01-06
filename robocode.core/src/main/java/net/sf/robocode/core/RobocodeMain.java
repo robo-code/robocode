@@ -130,7 +130,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			battleManager.addListener(battleObserver);
 
 			if (windowManager.isGUIEnabled()) {
-				if (!setup.minimize && setup.battleFilename == null && soundManager!=null) {
+				if (!setup.minimize && setup.battleFilename == null && soundManager != null) {
 					soundManager.playThemeMusic();
 					windowManager.showSplashScreen();
 				}
@@ -379,7 +379,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	public void cleanup() {
 		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
-		if (windowManager !=null) {
+
+		if (windowManager != null) {
 			windowManager.cleanup();
 		}
 		Container.getComponent(IBattleManager.class).cleanup();
@@ -388,6 +389,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	public void initForRobotEngine() {
 		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
+
 		if (windowManager != null) {
 			windowManager.setSlave(true);
 			windowManager.setEnableGUI(false);

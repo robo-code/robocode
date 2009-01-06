@@ -80,8 +80,7 @@ public class RobotClassLoader extends URLClassLoader {
 		this.robotProxy = robotProxy;
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
-		} catch (MalformedURLException ignored) {
-		}
+		} catch (MalformedURLException ignored) {}
 	}
 
 	public synchronized Class<?> loadClass(String name, boolean resolve)
@@ -112,6 +111,7 @@ public class RobotClassLoader extends URLClassLoader {
 
 			if (!name.startsWith("robocode")) {
 				final Class<?> result = loadRobotClassLocaly(name, resolve);
+
 				if (result != null) {
 					// yes, it is in robot's classpath
 					// we loaded it localy
@@ -131,6 +131,7 @@ public class RobotClassLoader extends URLClassLoader {
 
 		if (result == null) {
 			final ByteBuffer resource = findLocalResource(name);
+
 			if (resource != null) {
 				result = defineClass(name, resource, codeSource);
 				if (resolve) {
@@ -149,23 +150,27 @@ public class RobotClassLoader extends URLClassLoader {
 
 		final URL url = findResource(path);
 		ByteBuffer result = null;
-		if (url != null){
+
+		if (url != null) {
 			try {
 				final InputStream is = url.openStream();
-				result = ByteBuffer.allocate(1024*8);
-				boolean done=false;
-				do{
+
+				result = ByteBuffer.allocate(1024 * 8);
+				boolean done = false;
+
+				do {
 					do {
 						int res = is.read(result.array(), result.position(), result.remaining());
+
 						if (res == -1) {
-							done=true;
+							done = true;
 							break;
 						}
 						result.position(result.position() + res);
 					} while (result.remaining() != 0);
 					result.flip();
-					if (!done){
-						result = ByteBuffer.allocate(result.capacity()*2).put(result);
+					if (!done) {
+						result = ByteBuffer.allocate(result.capacity() * 2).put(result);
 					}
 				}while (!done);
 

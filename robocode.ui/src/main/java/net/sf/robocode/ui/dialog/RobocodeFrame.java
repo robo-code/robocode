@@ -441,12 +441,10 @@ public class RobocodeFrame extends JFrame {
 
 			replayButton.setVisible(props.getOptionsCommonEnableReplayRecording());
 
-			props.addPropertyListener(
-					props.new PropertyListener() {
+			props.addPropertyListener(props.new PropertyListener() {
 				@Override
 				public void enableReplayRecordingChanged(boolean enabled) {
-					replayButton.setVisible(
-							RobocodeFrame.this.properties.getOptionsCommonEnableReplayRecording());
+					replayButton.setVisible(RobocodeFrame.this.properties.getOptionsCommonEnableReplayRecording());
 				}
 			});
 
@@ -859,8 +857,7 @@ public class RobocodeFrame extends JFrame {
 				for (int index = 0; index < robots.size(); index++) {
 					final IRobotSnapshot robot = robots.get(index);
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-					final RobotButton button = net.sf.robocode.core.Container.createComponent(
-							RobotButton.class);
+					final RobotButton button = net.sf.robocode.core.Container.createComponent(RobotButton.class);
 
 					button.setup(robot.getName(), maxEnergy, index, robot.getContestantIndex(), attach);
 					button.setText(robot.getShortName());
@@ -880,8 +877,7 @@ public class RobocodeFrame extends JFrame {
 			robotButtons.clear();
 
 			final boolean canReplayRecord = recordManager.hasRecord();
-			final boolean enableSaveRecord = (properties.getOptionsCommonEnableReplayRecording()
-					& canReplayRecord);
+			final boolean enableSaveRecord = (properties.getOptionsCommonEnableReplayRecording() & canReplayRecord);
 
 			getStopButton().setEnabled(false);
 			getReplayButton().setEnabled(canReplayRecord);

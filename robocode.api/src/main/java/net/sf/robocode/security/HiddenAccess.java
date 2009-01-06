@@ -107,7 +107,7 @@ public class HiddenAccess {
 			Logger.logError(e);
 		} catch (ClassNotFoundException e) {
 			Logger.logError(e);
-			if (!foundCore){
+			if (!foundCore) {
 				System.out.println("Can't find robocode.core-1.x.jar module near to robocode.jar");
 				System.out.println("ClassPath: " + System.getProperty("robocode.class.path", null));
 			}
@@ -128,7 +128,8 @@ public class HiddenAccess {
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		final String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().toString();
 		final int i = path.lastIndexOf("robocode.jar");
-		if (i>0){
+
+		if (i > 0) {
 			loader = createClassLoader(classPath, loader, path, i);
 		}
 		System.setProperty("robocode.class.path", classPath.toString());
@@ -139,18 +140,18 @@ public class HiddenAccess {
 		final String dir = path.substring(0, i).substring(6);
 		File dirf = new File(dir);
 		ArrayList<URL> urls = new ArrayList<URL>();
-		//System.out.println("Adding to classPath " + dir + "*.jar");
+		// System.out.println("Adding to classPath " + dir + "*.jar");
 		final File[] files = dirf.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				final String test = name.toLowerCase();
+
 				return test.endsWith(".jar") && !test.endsWith("robocode.jar");
 			}
 		});
 
-
-		for (File file : files){
-			if (file.toString().toLowerCase().contains("robocode.core")){
-				foundCore=true;
+		for (File file : files) {
+			if (file.toString().toLowerCase().contains("robocode.core")) {
+				foundCore = true;
 			}
 			urls.add(file.toURL());
 			classPath.append(File.pathSeparator);
@@ -219,8 +220,9 @@ public class HiddenAccess {
 		return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
 	}
 
-	public static boolean isSafeThread(){
+	public static boolean isSafeThread() {
 		final IThreadManagerBase threadManager = ContainerBase.getComponent(IThreadManagerBase.class);
+
 		return threadManager != null && threadManager.isSafeThread();
 	}
 

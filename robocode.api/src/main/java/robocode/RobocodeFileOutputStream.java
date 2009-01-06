@@ -87,6 +87,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 */
 	public RobocodeFileOutputStream(String fileName, boolean append) throws IOException {
 		final IThreadManagerBase threadManager = ContainerBase.getComponent(IThreadManagerBase.class);
+
 		if (threadManager == null) {
 			throw new RobotException("ThreadManager cannot be null!");
 		}

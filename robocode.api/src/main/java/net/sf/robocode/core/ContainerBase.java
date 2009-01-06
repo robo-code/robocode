@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.sf.robocode.core;
 
+
 /**
  * @author Pavel Savara (original)
  */
@@ -19,7 +20,7 @@ public abstract class ContainerBase {
 
 	public abstract <T> T getBaseComponent(java.lang.Class<T> tClass);
 
-	public static <T> T getComponent(java.lang.Class<T> tClass){
+	public static <T> T getComponent(java.lang.Class<T> tClass) {
 		return instance == null ? null : instance.getBaseComponent(tClass);
 	}
 }

@@ -46,8 +46,10 @@ public class ImageUtil {
 
 		try {
 			final BufferedImage result = ImageIO.read(url);
-			if (result==null){
+
+			if (result == null) {
 				final String message = "Could not load image: " + filename;
+
 				Logger.logError(message);
 				throw new Error();
 			}

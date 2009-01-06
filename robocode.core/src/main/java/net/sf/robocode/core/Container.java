@@ -84,14 +84,15 @@ public final class Container extends ContainerBase {
 		}
 	}
 
-	public static void init(){
-	}
+	public static void init() {}
 
 	private static void loadFromPath(String path) {
 		try {
 			File pathf = new File(path).getCanonicalFile();
-			path=pathf.toString();
+
+			path = pathf.toString();
 			final String test = path.toLowerCase();
+
 			if (pathf.isDirectory()) {
 				String name = getModuleName(path);
 
@@ -100,14 +101,16 @@ public final class Container extends ContainerBase {
 				}
 			} else if (test.contains(File.separator + "robocode.") && test.endsWith(".jar")) {
 				final int i = test.lastIndexOf("robocode.jar");
-				if (i>0){
-					//load other .jar files in location
+
+				if (i > 0) {
+					// load other .jar files in location
 					final File dir = new File(path.substring(0, i));
+
 					Logger.logMessage("Loading plugins from " + dir.toString());
 					loadJars(dir);
-				}
-				else{
+				} else {
 					String name = getModuleName(path);
+
 					if (name != null) {
 						loadModule(name, engineLoader);
 					}
@@ -180,11 +183,11 @@ public final class Container extends ContainerBase {
 		return cache.getComponent(tClass);
 	}
 
-	public static <T> T getComponent(java.lang.Class<T> tClass){
+	public static <T> T getComponent(java.lang.Class<T> tClass) {
 		return cache.getComponent(tClass);
 	}
 
-	public static <T> T createComponent(java.lang.Class<T> tClass){
+	public static <T> T createComponent(java.lang.Class<T> tClass) {
 		return factory.as(Characteristics.NO_CACHE).getComponent(tClass);
 	}
 }
