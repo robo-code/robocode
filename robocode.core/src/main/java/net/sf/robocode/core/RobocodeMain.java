@@ -38,7 +38,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
@@ -63,7 +63,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	private final Setup setup;
 	private final BattleObserver battleObserver = new BattleObserver();
-	final private RobocodeProperties properties;
+	final private ISettingsManager properties;
 	final private IHostManager hostManager;
 	final private IWindowManager windowManager;
 	final private ISoundManager soundManager;
@@ -82,7 +82,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		int tps;
 	}
 
-	public RobocodeMain(RobocodeProperties properties,
+	public RobocodeMain(ISettingsManager properties,
 			IHostManager hostManager,
 			IWindowManager windowManager,
 			ISoundManager soundManager,
@@ -100,7 +100,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		this.versionManager = versionManager;
 	}
 
-	public RobocodeMain(RobocodeProperties properties,
+	public RobocodeMain(ISettingsManager properties,
 			IHostManager hostManager,
 			IBattleManager battleManager,
 			IRecordManager recordManager,

@@ -31,7 +31,8 @@ import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.ui.IWindowManagerExt;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
@@ -185,13 +186,13 @@ public class MenuBar extends JMenuBar {
 	public final MenuBar.EventHandler eventHandler = new EventHandler();
 
 	private RobocodeFrame robocodeFrame;
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IWindowManagerExt windowManager;
 	private final IBattleManager battleManager;
 	private final IRecordManager recordManager;
 	private final ICpuManager cpuManager;
 
-	public MenuBar(RobocodeProperties properties,
+	public MenuBar(ISettingsManager properties,
 			IWindowManagerExt windowManager,
 			IBattleManager battleManager,
 			IRecordManager recordManager,
@@ -489,15 +490,18 @@ public class MenuBar extends JMenuBar {
 			battleSaveRecordAsMenuItem.setEnabled(false);
 			battleSaveRecordAsMenuItem.addActionListener(eventHandler);
 
-			RobocodeProperties props = properties;
+			ISettingsManager props = properties;
 
-			props.addPropertyListener(props.new PropertyListener() {
-				@Override
-				public void enableReplayRecordingChanged(boolean enabled) {
-					final boolean canReplayRecord = recordManager.hasRecord();
-					final boolean enableSaveRecord = enabled & canReplayRecord;
+			props.addPropertyListener(
+					new ISettingsListener() {
+				public void settingChanged(String property) {
+					if (property.equals(ISettingsManager.OPTIONS_COMMON_ENABLE_REPLAY_RECORDING)) {
+						final boolean canReplayRecord = recordManager.hasRecord();
+						final boolean enableSaveRecord = properties.getOptionsCommonEnableReplayRecording()
+								& canReplayRecord;
 
-					battleSaveRecordAsMenuItem.setEnabled(enableSaveRecord);
+						battleSaveRecordAsMenuItem.setEnabled(enableSaveRecord);
+					}
 				}
 			});
 		}
@@ -514,15 +518,18 @@ public class MenuBar extends JMenuBar {
 			battleExportRecordMenuItem.setEnabled(false);
 			battleExportRecordMenuItem.addActionListener(eventHandler);
 
-			RobocodeProperties props = properties;
+			ISettingsManager props = properties;
 
-			props.addPropertyListener(props.new PropertyListener() {
-				@Override
-				public void enableReplayRecordingChanged(boolean enabled) {
-					final boolean canReplayRecord = recordManager.hasRecord();
-					final boolean enableSaveRecord = enabled & canReplayRecord;
+			props.addPropertyListener(
+					new ISettingsListener() {
+				public void settingChanged(String property) {
+					if (property.equals(ISettingsManager.OPTIONS_COMMON_ENABLE_REPLAY_RECORDING)) {
+						final boolean canReplayRecord = recordManager.hasRecord();
+						final boolean enableSaveRecord = properties.getOptionsCommonEnableReplayRecording()
+								& canReplayRecord;
 
-					battleExportRecordMenuItem.setEnabled(enableSaveRecord);
+						battleExportRecordMenuItem.setEnabled(enableSaveRecord);
+					}
 				}
 			});
 		}

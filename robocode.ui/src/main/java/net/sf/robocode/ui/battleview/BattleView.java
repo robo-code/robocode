@@ -19,7 +19,7 @@ package net.sf.robocode.ui.battleview;
 import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.robotpaint.IGraphicsProxy;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IImageManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.IWindowManagerExt;
@@ -89,7 +89,7 @@ public class BattleView extends Canvas {
 	private FontMetrics smallFontMetrics;
 
 	private final IImageManager imageManager;
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IWindowManagerExt windowManager;
 
 	private BufferStrategy bufferStrategy;
@@ -104,7 +104,7 @@ public class BattleView extends Canvas {
 	private final GraphicsState graphicsState = new GraphicsState();
 	private IGraphicsProxy[] robotGraphics;
 
-	public BattleView(RobocodeProperties properties, IWindowManager windowManager, IImageManager imageManager) {
+	public BattleView(ISettingsManager properties, IWindowManager windowManager, IImageManager imageManager) {
 		this.properties = properties;
 		this.windowManager = (IWindowManagerExt) windowManager;
 		this.imageManager = imageManager; 
@@ -160,7 +160,7 @@ public class BattleView extends Canvas {
 	}
 
 	public void setDisplayOptions() {
-		RobocodeProperties props = properties;
+		ISettingsManager props = properties;
 
 		drawRobotName = props.getOptionsViewRobotNames();
 		drawRobotEnergy = props.getOptionsViewRobotEnergy();

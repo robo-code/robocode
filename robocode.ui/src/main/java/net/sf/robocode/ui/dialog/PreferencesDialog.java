@@ -19,7 +19,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IImageManager;
 import net.sf.robocode.ui.IWindowManager;
 
@@ -46,10 +46,10 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
 	private PreferencesCommonOptionsTab commonOptionsTab;
 
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IImageManager imageManager;
 
-	public PreferencesDialog(RobocodeProperties properties, IWindowManager windowManager, IImageManager imageManager) {
+	public PreferencesDialog(ISettingsManager properties, IWindowManager windowManager, IImageManager imageManager) {
 		super(windowManager.getRobocodeFrame(), true);
 		this.properties = properties;
 		this.imageManager = imageManager;

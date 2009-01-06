@@ -459,32 +459,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 		return robocodeEditorMenuBar;
 	}
 
-	/* TODO DELETE ?
-	 public RobocodeProperties getRobocodeProperties() {
-	 if (robocodeProperties == null) {
-	 robocodeProperties = new RobocodeProperties(manager);
-
-	 FileInputStream in = null;
-
-	 try {
-	 in = new FileInputStream(FileUtil.getRobocodeConfigFile());
-	 robocodeProperties.load(in);
-	 } catch (FileNotFoundException e) {
-	 logError("No " + FileUtil.getRobocodeConfigFile().getName() + " file, using defaults.");
-	 } catch (IOException e) {
-	 logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName(), e);
-	 } finally {
-	 if (in != null) {
-	 try {
-	 in.close();
-	 } catch (IOException ignored) {}
-	 }
-	 }
-	 }
-	 return robocodeProperties;
-	 }
-	 */
-
 	private JToolBar getStatusBar() {
 		if (statusBar == null) {
 			statusBar = new JToolBar();
@@ -658,30 +632,6 @@ public class RobocodeEditor extends JFrame implements Runnable {
 			editWindow.fileSaveAs();
 		}
 	}
-
-	/* TODO DELETE
-	 public void saveRobocodeProperties() {
-	 if (robocodeProperties == null) {
-	 logError("Cannot save null robocode properties");
-	 return;
-	 }
-	 FileOutputStream out = null;
-
-	 try {
-	 out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
-
-	 robocodeProperties.store(out, "Robocode Properties");
-	 } catch (IOException e) {
-	 Logger.logError(e);
-	 } finally {
-	 if (out != null) {
-	 try {
-	 out.close();
-	 } catch (IOException ignored) {}
-	 }
-	 }
-	 }
-	 */
 
 	public void resetCompilerProperties() {
 		CompilerProperties props = Container.getComponent(RobocodeCompilerFactory.class).getCompilerProperties();

@@ -14,7 +14,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	private JButton browseButton;
 	private JTextField pathTextField;
 
-	public final RobocodeProperties properties;
+	public final ISettingsManager properties;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -52,7 +52,7 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 		}
 	}
 
-	public PreferencesDevelopmentOptionsTab(RobocodeProperties properties) {
+	public PreferencesDevelopmentOptionsTab(ISettingsManager properties) {
 		super();
 		this.properties = properties;
 		initialize();
@@ -129,7 +129,7 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 		return pathTextField;
 	}
 
-	private void loadPreferences(RobocodeProperties robocodeProperties) {
+	private void loadPreferences(ISettingsManager robocodeProperties) {
 		getPathTextField().setText(robocodeProperties.getOptionsDevelopmentPath());
 	}
 

@@ -24,7 +24,8 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.settings.ISettingsListener;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -73,7 +74,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton fastTpsButton;
 	private JButton maxTpsButton;
 
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 
 	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {
@@ -109,7 +110,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		}
 	}
 
-	public PreferencesViewOptionsTab(RobocodeProperties properties) {
+	public PreferencesViewOptionsTab(ISettingsManager properties) {
 		super();
 		this.properties = properties;
 		initialize();
@@ -406,19 +407,20 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		add(getVisibleOptionsPanel());
 		add(getTpsOptionsPanel());
 
-		RobocodeProperties props = properties;
+		final ISettingsManager props = properties;
 
 		loadPreferences(props);
 
-		props.addPropertyListener(props.new PropertyListener() {
-			@Override
-			public void desiredTpsChanged(int tps) {
-				PreferencesViewOptionsTab.this.desiredTpsTextField.setText("" + tps);
+		props.addPropertyListener(new ISettingsListener() {
+			public void settingChanged(String property) {
+				if (property.equals(ISettingsManager.OPTIONS_BATTLE_DESIREDTPS)) {
+					PreferencesViewOptionsTab.this.desiredTpsTextField.setText("" + props.getOptionsBattleDesiredTPS());
+				}
 			}
 		});
 	}
 
-	private void loadPreferences(RobocodeProperties robocodeProperties) {
+	private void loadPreferences(ISettingsManager robocodeProperties) {
 		getDisplayFpsCheckBox().setSelected(robocodeProperties.getOptionsViewFPS());
 		getDisplayTpsCheckBox().setSelected(robocodeProperties.getOptionsViewTPS());
 		getVisibleRobotNameCheckBox().setSelected(robocodeProperties.getOptionsViewRobotNames());
@@ -431,7 +433,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = properties;
+		ISettingsManager props = properties;
 
 		props.setOptionsViewFPS(getDisplayFpsCheckBox().isSelected());
 		props.setOptionsViewTPS(getDisplayTpsCheckBox().isSelected());

@@ -16,7 +16,7 @@ import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import robocode.BattleRules;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
@@ -39,7 +39,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	private Thread battleThread;
 	IBattleManager battleManager;
 	protected final BattleEventDispatcher eventDispatcher;
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 
 	// rules
 	protected BattleRules battleRules;
@@ -66,7 +66,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	private boolean roundOver;
 	private final Queue<Command> pendingCommands = new ConcurrentLinkedQueue<Command>();
 
-	protected BaseBattle(RobocodeProperties properties, IBattleManager battleManager, BattleEventDispatcher eventDispatcher) {
+	protected BaseBattle(ISettingsManager properties, IBattleManager battleManager, BattleEventDispatcher eventDispatcher) {
 		stepCount = 0;
 
 		this.properties = properties;

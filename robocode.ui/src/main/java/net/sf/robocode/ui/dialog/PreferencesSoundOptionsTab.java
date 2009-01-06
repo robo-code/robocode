@@ -12,7 +12,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -28,7 +28,7 @@ import java.util.Vector;
 @SuppressWarnings("serial")
 public class PreferencesSoundOptionsTab extends WizardPanel {
 
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -51,7 +51,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	private JCheckBox enableMixerVolumeCheckBox;
 	private JCheckBox enableMixerPanCheckBox;
 
-	public PreferencesSoundOptionsTab(RobocodeProperties properties) {
+	public PreferencesSoundOptionsTab(ISettingsManager properties) {
 		super();
 		this.properties = properties;
 		initialize();
@@ -272,7 +272,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		return enableMixerPanCheckBox;
 	}
 
-	private void loadPreferences(RobocodeProperties robocodeProperties) {
+	private void loadPreferences(ISettingsManager robocodeProperties) {
 		getEnableSoundCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableSound());
 		getEnableGunshotCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableGunshot());
 		getEnableBulletHitCheckBox().setSelected(robocodeProperties.getOptionsSoundEnableBulletHit());
@@ -286,7 +286,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = properties;
+		ISettingsManager props = properties;
 
 		props.setOptionsSoundEnableSound(getEnableSoundCheckBox().isSelected());
 		props.setOptionsSoundEnableGunshot(getEnableGunshotCheckBox().isSelected());

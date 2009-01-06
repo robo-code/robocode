@@ -65,7 +65,7 @@ import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import robocode.Event;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
@@ -91,7 +91,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Pavel Savara (contributor)
  */
 public class BattleManager implements IBattleManager {
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IHostManager hostManager;
 	private final ICpuManager cpuManager;
 	private final IRecordManager recordManager;
@@ -108,7 +108,7 @@ public class BattleManager implements IBattleManager {
 	private int pauseCount = 0;
 	private final AtomicBoolean isManagedTPS = new AtomicBoolean(false);
 
-	public BattleManager(RobocodeProperties properties, IRepositoryManager repositoryManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher battleEventDispatcher, IRecordManager recordManager) {
+	public BattleManager(ISettingsManager properties, IRepositoryManager repositoryManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher battleEventDispatcher, IRecordManager recordManager) {
 		this.properties = properties;
 		this.recordManager = recordManager;
 		this.repositoryManager = repositoryManager;

@@ -40,7 +40,7 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.control.RobotSpecification;
 
@@ -69,16 +69,15 @@ public final class RepositoryManager implements IRepositoryManager {
 	private File robotCache;
 
 	private Repository repository;
-	// private final RobocodeProperties properties;
 
 	private final List<FileSpecification> updatedJarList = Collections.synchronizedList(
 			new ArrayList<FileSpecification>());
 	private boolean write;
 
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IHostManager hostManager;
 
-	public RepositoryManager(RobocodeProperties properties, IHostManager hostManager) {
+	public RepositoryManager(ISettingsManager properties, IHostManager hostManager) {
 		this.hostManager = hostManager;
 		this.properties = properties;
 	}

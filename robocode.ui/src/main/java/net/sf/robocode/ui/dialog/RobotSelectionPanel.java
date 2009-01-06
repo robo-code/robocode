@@ -35,7 +35,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository.ITeamFileSpecificationExt;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -91,11 +91,11 @@ public class RobotSelectionPanel extends WizardPanel {
 	private String preSelectedRobots;
 	private final List<INamedFileSpecification> selectedRobots = new CopyOnWriteArrayList<INamedFileSpecification>();
 	private boolean showNumRoundsPanel;
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IBattleManager battleManager;
 	private final IRepositoryManager repositoryManager;
 
-	public RobotSelectionPanel(RobocodeProperties properties, IBattleManager battleManager, IRepositoryManager repositoryManager) {
+	public RobotSelectionPanel(ISettingsManager properties, IBattleManager battleManager, IRepositoryManager repositoryManager) {
 		super();
 		this.properties = properties;
 		this.repositoryManager = repositoryManager;
@@ -523,7 +523,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	private JTextField getNumRoundsTextField() {
-		final RobocodeProperties props = properties;
+		final ISettingsManager props = properties;
 
 		if (numRoundsTextField == null) {
 			numRoundsTextField = new JTextField();

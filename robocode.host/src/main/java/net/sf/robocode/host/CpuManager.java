@@ -28,7 +28,7 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 
 
@@ -43,9 +43,9 @@ public class CpuManager implements ICpuManager {
 	private final static int TEST_PERIOD_MILLIS = 5000;
 
 	private long cpuConstant = -1;
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 
-	public CpuManager(RobocodeProperties properties) {
+	public CpuManager(ISettingsManager properties) {
 		this.properties = properties;
 	}
 

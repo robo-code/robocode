@@ -107,7 +107,7 @@ import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import robocode.*;
 import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
@@ -165,7 +165,7 @@ public final class Battle extends BaseBattle {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	public Battle(RobocodeProperties properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) {
+	public Battle(ISettingsManager properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) {
 		super(properties, battleManager, eventDispatcher);
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		this.hostManager = hostManager;

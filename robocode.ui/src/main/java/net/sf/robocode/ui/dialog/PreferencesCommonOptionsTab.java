@@ -12,7 +12,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,9 +30,9 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	private JCheckBox appendWhenSavingResultsCheckBox;
 	private JCheckBox enableReplayRecordingCheckBox;
 
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 
-	public PreferencesCommonOptionsTab(RobocodeProperties properties) {
+	public PreferencesCommonOptionsTab(ISettingsManager properties) {
 		super();
 		this.properties = properties;
 		initialize();
@@ -82,14 +82,14 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		return enableReplayRecordingCheckBox;
 	}
 
-	private void loadPreferences(RobocodeProperties robocodeProperties) {
+	private void loadPreferences(ISettingsManager robocodeProperties) {
 		getShowResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonShowResults());
 		getAppendWhenSavingResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonAppendWhenSavingResults());
 		getEnableReplayRecordingCheckBox().setSelected(robocodeProperties.getOptionsCommonEnableReplayRecording());
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = properties;
+		ISettingsManager props = properties;
 
 		props.setOptionsCommonShowResults(getShowResultsCheckBox().isSelected());
 		props.setOptionsCommonAppendWhenSavingResults(getAppendWhenSavingResultsCheckBox().isSelected());

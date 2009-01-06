@@ -32,7 +32,8 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.recording.IRecordManager;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.ui.*;
 import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
@@ -100,7 +101,7 @@ public class RobocodeFrame extends JFrame {
 	private boolean iconified;
 	private boolean exitOnClose = true;
 
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 
 	private final IWindowManagerExt windowManager;
 	private final IVersionManager versionManager;
@@ -112,7 +113,7 @@ public class RobocodeFrame extends JFrame {
 
 	final List<RobotButton> robotButtons = new ArrayList<RobotButton>();
 
-	public RobocodeFrame(RobocodeProperties properties,
+	public RobocodeFrame(ISettingsManager properties,
 			IWindowManager windowManager,
 			IRobotDialogManager dialogManager,
 			IVersionManager versionManager,
@@ -437,14 +438,15 @@ public class RobocodeFrame extends JFrame {
 			replayButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 			replayButton.addActionListener(eventHandler);
 
-			RobocodeProperties props = properties;
+			ISettingsManager props = properties;
 
 			replayButton.setVisible(props.getOptionsCommonEnableReplayRecording());
 
-			props.addPropertyListener(props.new PropertyListener() {
-				@Override
-				public void enableReplayRecordingChanged(boolean enabled) {
-					replayButton.setVisible(RobocodeFrame.this.properties.getOptionsCommonEnableReplayRecording());
+			props.addPropertyListener(new ISettingsListener() {
+				public void settingChanged(String property) {
+					if (property.equals(ISettingsManager.OPTIONS_COMMON_ENABLE_REPLAY_RECORDING)) {
+						replayButton.setVisible(properties.getOptionsCommonEnableReplayRecording());
+					}
 				}
 			});
 
@@ -460,7 +462,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	private JSlider getTpsSlider() {
 		if (tpsSlider == null) {
-			RobocodeProperties props = properties;
+			final ISettingsManager props = properties;
 
 			int tps = Math.max(props.getOptionsBattleDesiredTPS(), 1);
 
@@ -492,11 +494,11 @@ public class RobocodeFrame extends JFrame {
 
 			WindowUtil.setFixedSize(tpsSlider, new Dimension((MAX_TPS_SLIDER_VALUE + 1) * 6, 40));
 
-			props.addPropertyListener(props.new PropertyListener() {
-				@Override
-				public void desiredTpsChanged(int tps) {
-					// TODO refactor, causing cycles
-					setTpsOnSlider(tps);
+			props.addPropertyListener(new ISettingsListener() {
+				public void settingChanged(String property) {
+					if (property.equals(ISettingsManager.OPTIONS_BATTLE_DESIREDTPS)) {
+						setTpsOnSlider(props.getOptionsBattleDesiredTPS());
+					}
 				}
 			});
 		}

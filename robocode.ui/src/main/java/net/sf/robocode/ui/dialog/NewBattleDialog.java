@@ -25,7 +25,7 @@ package net.sf.robocode.ui.dialog;
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.repository.INamedFileSpecification;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
@@ -62,10 +62,10 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	private RobotSelectionPanel robotSelectionPanel;
 
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IBattleManager battleManager;
 
-	public NewBattleDialog(RobocodeProperties properties, IWindowManager windowManager, IBattleManager battleManager) {
+	public NewBattleDialog(ISettingsManager properties, IWindowManager windowManager, IBattleManager battleManager) {
 		super(windowManager.getRobocodeFrame(), true);
 		this.properties = properties;
 		this.battleManager = battleManager;

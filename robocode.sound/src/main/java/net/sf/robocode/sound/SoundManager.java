@@ -29,7 +29,8 @@ package net.sf.robocode.sound;
 
 
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.settings.ISettingsListener;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
@@ -59,15 +60,27 @@ public class SoundManager implements ISoundManager {
 	private SoundCache sounds;
 
 	// Access to properties
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IBattleManager battleManager;
 	private boolean isSoundEnabled = true;
-	final BattleObserver observer = new BattleObserver();
+	BattleObserver observer;
 
-	public SoundManager(RobocodeProperties properties, IBattleManager battleManager) {
+	public SoundManager(final ISettingsManager properties, IBattleManager battleManager) {
 		this.battleManager = battleManager;
 		this.properties = properties;
-		battleManager.addListener(observer);
+		if (isSoundEnabled()) {
+			observer = new BattleObserver();
+			battleManager.addListener(observer);
+		}
+
+		properties.addPropertyListener(new ISettingsListener() {
+			public void settingChanged(String property) {
+				if (property.equals(ISettingsManager.OPTIONS_SOUND_ENABLESOUND)) {
+					updateListener();
+				}
+			}
+		});
+
 	}
 
 	/**
@@ -84,13 +97,17 @@ public class SoundManager implements ISoundManager {
 	}
 
 	public void setEnableSound(boolean enable) {
-		if (isSoundEnabled != enable) {
-			isSoundEnabled = enable;
-			if (isSoundEnabled) {
-				battleManager.addListener(observer);
-			} else {
-				battleManager.removeListener(observer);
-			}
+		isSoundEnabled = enable;
+		updateListener();
+	}
+
+	private void updateListener() {
+		if (observer == null && isSoundEnabled()) {
+			observer = new BattleObserver();
+			battleManager.addListener(observer);
+		} else if (observer != null && !isSoundEnabled()) {
+			battleManager.removeListener(observer);
+			observer = null;
 		}
 	}
 

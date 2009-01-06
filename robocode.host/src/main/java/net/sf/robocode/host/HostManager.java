@@ -19,7 +19,7 @@ import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotFileSpecification;
 import net.sf.robocode.repository.IRobotFileSpecificationExt;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import robocode.control.RobotSpecification;
 
 import java.io.InputStream;
@@ -31,10 +31,10 @@ import java.security.AccessControlException;
  * @author Pavel Savara (original)
  */
 public class HostManager implements IHostManager {
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private IThreadManager threadManager;
 
-	public HostManager(RobocodeProperties properties, IThreadManager threadManager) {
+	public HostManager(ISettingsManager properties, IThreadManager threadManager) {
 		this.properties = properties;
 		this.threadManager = threadManager;
 	}

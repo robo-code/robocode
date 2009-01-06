@@ -30,7 +30,7 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.battle.AwtBattleAdaptor;
 import net.sf.robocode.ui.dialog.*;
 import net.sf.robocode.ui.editor.RobocodeEditor;
@@ -60,7 +60,7 @@ public class WindowManager implements IWindowManagerExt {
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
 	private RankingDialog rankingDialog;
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 	private final IImageManager imageManager;
 	private final IBattleManager battleManager;
 	private final ICpuManager cpuManager;
@@ -70,7 +70,7 @@ public class WindowManager implements IWindowManagerExt {
 	private boolean isGUIEnabled = true;
 	private boolean slave = false;
 
-	public WindowManager(RobocodeProperties properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
+	public WindowManager(ISettingsManager properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
 		this.properties = properties;
 		this.battleManager = battleManager;
 		this.repositoryManager = repositoryManager;

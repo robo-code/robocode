@@ -56,7 +56,7 @@ import java.util.List;
  * @author Nathaniel Troutman (contributor)
  */
 // TODO ZAMO, refactor, split by modules
-public class RobocodeProperties {
+public class SettingsManager implements ISettingsManager {
 	// Default SFX files
 	private final static String
 			DEFAULT_FILE_GUNSHOT_SFX = "/net/sf/robocode/sound/sounds/zap.wav",
@@ -148,67 +148,11 @@ public class RobocodeProperties {
 
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
 
-	private final static String
-			OPTIONS_VIEW_ROBOTNAMES = "robocode.options.view.robotNames",
-			OPTIONS_VIEW_SCANARCS = "robocode.options.view.scanArcs",
-			OPTIONS_VIEW_ROBOTENERGY = "robocode.options.view.robotEnergy",
-			OPTIONS_VIEW_GROUND = "robocode.options.view.ground",
-			OPTIONS_VIEW_TPS = "robocode.options.view.TPS",
-			OPTIONS_VIEW_FPS = "robocode.options.view.FPS",
-			OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions",
-			OPTIONS_VIEW_EXPLOSION_DEBRIS = "robocode.options.view.explosionDebris",
-
-			OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS",
-
-			OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing",
-			OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing",
-			OPTIONS_RENDERING_METHOD = "robocode.options.rendering.method",
-			OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers",
-			OPTIONS_RENDERING_BUFFER_IMAGES = "robocode.options.rendering.bufferImages",
-			OPTIONS_RENDERING_FORCE_BULLET_COLOR = "robocode.options.rendering.forceBulletColor",
-
-			OPTIONS_SOUND_ENABLESOUND = "robocode.options.sound.enableSound",
-			OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunshot",
-			OPTIONS_SOUND_ENABLEBULLETHIT = "robocode.options.sound.enableBulletHit",
-			OPTIONS_SOUND_ENABLEROBOTDEATH = "robocode.options.sound.enableRobotDeath",
-			OPTIONS_SOUND_ENABLEWALLCOLLISION = "robocode.options.sound.enableWallCollision",
-			OPTIONS_SOUND_ENABLEROBOTCOLLISION = "robocode.options.sound.enableRobotCollision",
-
-			OPTIONS_SOUND_MIXER = "robocode.options.sound.mixer",
-			OPTIONS_SOUND_ENABLEMIXERVOLUME = "robocode.options.sound.enableMixerVolume",
-			OPTIONS_SOUND_ENABLEMIXERPAN = "robocode.options.sound.enableMixerPan",
-
-			OPTIONS_COMMON_SHOW_RESULTS = "robocode.options.common.showResults",
-			OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS = "robocode.options.common.appendWhenSavingResults",
-			OPTIONS_COMMON_ENABLE_REPLAY_RECORDING = "robocode.options.common.enableReplayRecording",
-
-			OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots",
-
-			FILE_THEME_MUSIC = "robocode.file.music.theme",
-			FILE_BACKGROUND_MUSIC = "robocode.file.music.background",
-			FILE_END_OF_BATTLE_MUSIC = "robocode.file.music.endOfBattle",
-
-			FILE_GUNSHOT_SFX = "robocode.file.sfx.gunshot",
-			FILE_ROBOT_COLLISION_SFX = "robocode.file.sfx.robotCollision",
-			FILE_WALL_COLLISION_SFX = "robocode.file.sfx.wallCollision",
-			FILE_ROBOT_DEATH_SFX = "robocode.file.sfx.robotDeath",
-			FILE_BULLET_HITS_ROBOT_SFX = "robocode.file.sfx.bulletHitsRobot",
-			FILE_BULLET_HITS_BULLET_SFX = "robocode.file.sfx.bulletHitsBullet",
-
-			OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path",
-			VERSIONCHECKED = "robocode.versionchecked",
-			ROBOT_FILESYSTEM_QUOTA = "robocode.robot.filesystem.quota",
-			CONSOLE_QUOTA = "robocode.console.quota",
-			CPU_CONSTANT = "robocode.cpu.constant",
-			LAST_RUN_VERSION = "robocode.version.lastrun",
-
-			NUMBER_OF_ROUNDS = "robocode.numberOfBattles";
-
 	private final RenderingHints renderingHints = new RenderingHints(new HashMap<RenderingHints.Key, Object>());
 
-	private final List<PropertyListener> listeners = new ArrayList<PropertyListener>();
+	private final List<ISettingsListener> listeners = new ArrayList<ISettingsListener>();
 
-	public RobocodeProperties() {
+	public SettingsManager() {
 
 		FileInputStream in = null;
 
@@ -593,8 +537,6 @@ public class RobocodeProperties {
 	public void setOptionsBattleDesiredTPS(int optionsBattleDesiredTPS) {
 		this.optionsBattleDesiredTPS = optionsBattleDesiredTPS;
 		props.setProperty(OPTIONS_BATTLE_DESIREDTPS, "" + optionsBattleDesiredTPS);
-
-		notifyDesiredTpsChanged();
 	}
 
 	/**
@@ -968,8 +910,6 @@ public class RobocodeProperties {
 	public void setOptionsCommonEnableReplayRecording(boolean enable) {
 		this.optionsCommonEnableReplayRecording = enable;
 		props.setProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "" + enable);
-
-		notifyReplayRecordingChanged();
 	}
 
 	public int getNumberOfRounds() {
@@ -1073,23 +1013,21 @@ public class RobocodeProperties {
 		props.setProperty(LAST_RUN_VERSION, "" + lastRunVersion);
 	}
 
-	public void addPropertyListener(PropertyListener listener) {
+	public void addPropertyListener(ISettingsListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removePropertyListener(PropertyListener propertyListener) {
+	public void removePropertyListener(ISettingsListener propertyListener) {
 		listeners.remove(propertyListener);
 	}
 
-	private void notifyDesiredTpsChanged() {
-		for (PropertyListener listener : listeners) {
-			listener.desiredTpsChanged(optionsBattleDesiredTPS);
-		}
-	}
-
-	private void notifyReplayRecordingChanged() {
-		for (PropertyListener listener : listeners) {
-			listener.enableReplayRecordingChanged(optionsCommonEnableReplayRecording);
+	private void notifyPropertyChanged(String name) {
+		for (ISettingsListener listener : listeners) {
+			try {
+				listener.settingChanged(name);
+			} catch (Exception e) {
+				Logger.logError(e);
+			}
 		}
 	}
 
@@ -1098,7 +1036,7 @@ public class RobocodeProperties {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private static class SortedProperties extends Properties {
+	private class SortedProperties extends Properties {
 		private static final long serialVersionUID = 1L;
 
 		@SuppressWarnings("unchecked")
@@ -1117,17 +1055,14 @@ public class RobocodeProperties {
 			// noinspection RedundantCast
 			return (Enumeration) keyList.elements();
 		}
-	}
 
+		@Override
+		public synchronized Object setProperty(String key, String value) {
+			final Object res = super.setProperty(key, value);
 
-	/**
-	 * Property listener.
-	 *
-	 * @author Flemming N. Larsen
-	 */
-	public class PropertyListener {
-		public void desiredTpsChanged(int tps) {}
+			notifyPropertyChanged(key);
+			return res;
+		}
 
-		public void enableReplayRecordingChanged(boolean enabled) {}
 	}
 }

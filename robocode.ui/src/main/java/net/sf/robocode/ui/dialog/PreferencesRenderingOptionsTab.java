@@ -12,7 +12,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.settings.RobocodeProperties;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IImageManager;
 
 import javax.swing.*;
@@ -27,7 +27,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class PreferencesRenderingOptionsTab extends WizardPanel {
 
-	private final RobocodeProperties properties;
+	private final ISettingsManager properties;
 
 	private JPanel specificSettingsPanel;
 	private JPanel predefinedSettingsPanel;
@@ -47,7 +47,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private EventHandler eventHandler;
 	private final IImageManager imageManager;
 
-	public PreferencesRenderingOptionsTab(RobocodeProperties properties, IImageManager imageManager) {
+	public PreferencesRenderingOptionsTab(ISettingsManager properties, IImageManager imageManager) {
 		super();
 		this.properties = properties;
 		this.imageManager = imageManager;
@@ -257,7 +257,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return optionsRendereringForceBulletColorCheckBox;
 	}
 
-	private void loadPreferences(RobocodeProperties props) {
+	private void loadPreferences(ISettingsManager props) {
 		getOptionsRenderingAntialiasingComboBox().setSelectedIndex(props.getOptionsRenderingAntialiasing());
 		getOptionsRenderingTextAntialiasingComboBox().setSelectedIndex(props.getOptionsRenderingTextAntialiasing());
 		getOptionsRenderingMethodComboBox().setSelectedIndex(props.getOptionsRenderingMethod());
@@ -267,7 +267,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		RobocodeProperties props = properties;
+		ISettingsManager props = properties;
 
 		props.setOptionsRenderingAntialiasing(optionsRenderingAntialiasingComboBox.getSelectedIndex());
 		props.setOptionsRenderingTextAntialiasing(optionsRenderingTextAntialiasingComboBox.getSelectedIndex());
