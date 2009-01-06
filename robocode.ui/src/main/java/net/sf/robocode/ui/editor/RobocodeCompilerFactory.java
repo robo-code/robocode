@@ -114,7 +114,7 @@ public class RobocodeCompilerFactory {
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
-					if (!dir.mkdirs()) {
+					if (!dir.exists() && !dir.mkdirs()) {
 						Logger.logError("Can't create " + dir);
 					}
 				} else {
@@ -122,7 +122,7 @@ public class RobocodeCompilerFactory {
 					File out = new File(dest, entry.getName());
 					File parentDirectory = new File(out.getParent());
 
-					if (!parentDirectory.mkdirs()) {
+					if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
 						Logger.logError("Can't create " + parentDirectory);
 					}
 

@@ -125,24 +125,29 @@ public class BotsDownload {
 	}
 
 	public boolean downloadRatings() {
+		File file;
 		// delete previous files
 		if (generalbotsfile.length() != 0) {
-			if (!(new File(generalbotsfile)).delete()) {
+			file = new File(generalbotsfile);
+			if (file.exists() && !file.delete()) {
 				Logger.logError("Can't delete file");
 			}
 		}
 		if (minibotsfile.length() != 0) {
-			if (!(new File(minibotsfile)).delete()) {
+			file = new File(minibotsfile);
+			if (file.exists() && !file.delete()) {
 				Logger.logError("Can't delete file");
 			}
 		}
 		if (microbotsfile.length() != 0) {
-			if (!(new File(microbotsfile)).delete()) {
+			file = new File(microbotsfile);
+			if (file.exists() && !file.delete()) {
 				Logger.logError("Can't delete file");
 			}
 		}
 		if (nanobotsfile.length() != 0) {
-			if (!(new File(nanobotsfile)).delete()) {
+			file = new File(nanobotsfile);
+			if (file.exists() && !file.delete()) {
 				Logger.logError("Can't delete file");
 			}
 		}

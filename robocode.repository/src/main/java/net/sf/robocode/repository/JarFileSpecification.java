@@ -76,7 +76,7 @@ class JarFileSpecification extends FileSpecification {
 		if (dest.exists()) {
 			FileUtil.deleteDir(dest);
 		}
-		if (dest.mkdirs()) {
+		if (!dest.exists() && !dest.mkdirs()) {
 			Logger.logError("Can't create" + dest.toString());
 		}
 
@@ -121,7 +121,7 @@ class JarFileSpecification extends FileSpecification {
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
-					if (!dir.mkdirs()) {
+					if (!dir.exists() && !dir.mkdirs()) {
 						logError("Can't create dir " + dir.toString());
 					}
 				} else {
@@ -148,7 +148,7 @@ class JarFileSpecification extends FileSpecification {
 					}
 					File parentDirectory = new File(out.getParent()).getCanonicalFile();
 
-					if (!parentDirectory.mkdirs()) {
+					if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
 						logError("Can't create dir " + parentDirectory.toString());
 					}
 

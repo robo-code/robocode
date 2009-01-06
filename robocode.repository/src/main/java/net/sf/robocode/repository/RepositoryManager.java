@@ -385,12 +385,8 @@ public final class RepositoryManager implements IRepositoryManager {
 					updateRobotDatabase(fileSpecification);
 					write = true;
 					if (fileSpecification instanceof JarFileSpecification) {
-						String path = fileSpecification.getFilePath();
 
-						path = path.substring(0, path.lastIndexOf(File.separatorChar));
-						path = path.substring(path.lastIndexOf(File.separatorChar) + 1);
-
-						if (path.equalsIgnoreCase("robots")) {
+						if (fileSpecification.getRootDir().equals(getRobotsDirectory())) {
 							// this file is changed
 							updatedJarList.add(fileSpecification);
 						}

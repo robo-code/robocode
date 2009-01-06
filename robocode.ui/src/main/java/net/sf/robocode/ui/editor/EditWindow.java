@@ -322,7 +322,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
 			if (ok == JOptionPane.YES_OPTION) {
-				if (!f.mkdirs()) {
+				if (!f.exists() && !f.mkdirs()) {
 					Logger.logError("Can't create" + f);
 				}
 				f = new File(saveDir);

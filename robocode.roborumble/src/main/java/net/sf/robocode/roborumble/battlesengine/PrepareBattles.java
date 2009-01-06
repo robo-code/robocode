@@ -246,7 +246,7 @@ public class PrepareBattles {
 		// Delete priority battles (avoid duplication)
 		File r = new File(priority);
 
-		if (!r.delete()) {
+		if (r.exists() && !r.delete()) {
 			Logger.logError("Can't delete" + r);
 		}
 
