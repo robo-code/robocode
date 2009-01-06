@@ -387,7 +387,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		Container.getComponent(IHostManager.class).cleanup();
 	}
 
-	public void initForRobotEngine() {
+	public void initForRobocodeEngine() {
 		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
 
 		if (windowManager != null) {
