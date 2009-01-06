@@ -569,7 +569,7 @@ public class RobocodeFrame extends JFrame {
 		battleView.setFocusable(true);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(interactiveHandler);
 
-		if (manager.isSlave()) {
+		if (windowManager.isSlave()) {
 			menuBar.getBattleMenu().setEnabled(false);
 			menuBar.getRobotMenu().setEnabled(false);
 			getStopButton().setEnabled(false);
@@ -744,7 +744,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void windowClosing(WindowEvent e) {
 			exitOnClose = true;
-			if (manager.isSlave()) {
+			if (windowManager.isSlave()) {
 				WindowUtil.message("If you wish to exit Robocode, please exit the program controlling it.");
 				exitOnClose = false;
 				return;

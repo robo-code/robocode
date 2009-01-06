@@ -62,11 +62,15 @@ public class SoundManager implements ISoundManager {
 	// Access to properties
 	private final RobocodeProperties properties;
 	private final IBattleManager battleManager;
+	private final IRobocodeManager manager;
+	private boolean isSoundEnabled = true;
+	final BattleObserver observer = new BattleObserver();
 
 	public SoundManager(IRobocodeManager manager, IBattleManager battleManager) {
 		this.battleManager = battleManager;
+		this.manager=manager;
 		properties = manager.getProperties();
-		battleManager.addListener(new BattleObserver());
+		battleManager.addListener(observer);
 	}
 
 	/**
@@ -76,6 +80,21 @@ public class SoundManager implements ISoundManager {
 	 */
 	public Mixer getMixer() {
 		return findMixer(properties.getOptionsSoundMixer());
+	}
+
+	private boolean isSoundEnabled() {
+		return isSoundEnabled && manager.getProperties().getOptionsSoundEnableSound();
+	}
+
+	public void setEnableSound(boolean enable) {
+		if (isSoundEnabled != enable){
+			isSoundEnabled = enable;
+			if (isSoundEnabled){
+				battleManager.addListener(observer);
+			} else{
+				battleManager.removeListener(observer);
+			}
+		}
 	}
 
 	/**
@@ -257,7 +276,9 @@ public class SoundManager implements ISoundManager {
 	 * Plays the theme music once.
 	 */
 	public void playThemeMusic() {
-		playMusic("theme", 0);
+		if (isSoundEnabled()) {
+			playMusic("theme", 0);
+		}
 	}
 
 	/**
@@ -311,37 +332,43 @@ public class SoundManager implements ISoundManager {
 	private class BattleObserver extends BattleAdaptor {
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			playBackgroundMusic();
+			if (isSoundEnabled()){
+				playBackgroundMusic();
+			}
 		}
 
 		@Override
 		public void onBattleFinished(BattleFinishedEvent event) {
 			stopBackgroundMusic();
-			playEndOfBattleMusic();
+			if (isSoundEnabled()){
+				playEndOfBattleMusic();
+			}
 		}
 
 		@Override
 		public void onTurnEnded(TurnEndedEvent event) {
-			int battleFieldWidth = battleManager.getBattleProperties().getBattlefieldWidth();
+			if (isSoundEnabled()){
+				int battleFieldWidth = battleManager.getBattleProperties().getBattlefieldWidth();
 
-			for (IBulletSnapshot bp : event.getTurnSnapshot().getBullets()) {
-				if (bp.getFrame() == 0) {
-					playBulletSound(bp, battleFieldWidth);
-				}
-			}
-
-			boolean playedRobotHitRobot = false;
-
-			for (IRobotSnapshot rp : event.getTurnSnapshot().getRobots()) {
-				// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
-				if (rp.getState() == RobotState.HIT_ROBOT) {
-					if (playedRobotHitRobot) {
-						continue;
+				for (IBulletSnapshot bp : event.getTurnSnapshot().getBullets()) {
+					if (bp.getFrame() == 0) {
+						playBulletSound(bp, battleFieldWidth);
 					}
-					playedRobotHitRobot = true;
 				}
 
-				playRobotSound(rp, battleFieldWidth);
+				boolean playedRobotHitRobot = false;
+
+				for (IRobotSnapshot rp : event.getTurnSnapshot().getRobots()) {
+					// Make sure that robot-hit-robot events do not play twice (one per colliding robot)
+					if (rp.getState() == RobotState.HIT_ROBOT) {
+						if (playedRobotHitRobot) {
+							continue;
+						}
+						playedRobotHitRobot = true;
+					}
+
+					playRobotSound(rp, battleFieldWidth);
+				}
 			}
 		}
 	}

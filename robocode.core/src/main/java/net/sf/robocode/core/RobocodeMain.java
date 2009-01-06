@@ -103,7 +103,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			hostManager.initSecurity();
 
 			// Set the Look and Feel (LAF)
-			if (manager.isGUIEnabled()) {
+			if (windowManager.isGUIEnabled()) {
 				windowManager.setLookAndFeel();
 			}
 
@@ -111,11 +111,9 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 			battleManager.addListener(battleObserver);
 
-			if (manager.isGUIEnabled()) {
+			if (windowManager.isGUIEnabled()) {
 				if (!setup.minimize && setup.battleFilename == null) {
-					if (manager.isSoundEnabled()) {
-						soundManager.playThemeMusic();
-					}
+					soundManager.playThemeMusic();
 					windowManager.showSplashScreen();
 				}
 				windowManager.showRobocodeFrame(true, setup.minimize);
@@ -236,11 +234,11 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else if (args[i].equals("-minimize")) {
 				setup.minimize = true;
 			} else if (args[i].equals("-nodisplay")) {
-				manager.setEnableGUI(false);
-				manager.setEnableSound(false);
+				windowManager.setEnableGUI(false);
+				soundManager.setEnableSound(false);
 				setup.tps = 10000; // set TPS to maximum
 			} else if (args[i].equals("-nosound")) {
-				manager.setEnableSound(false);
+				soundManager.setEnableSound(false);
 			} else if (args[i].equals("-?") || args[i].equals("-help")) {
 				printUsage();
 				System.exit(0);
@@ -294,7 +292,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	private void printResultsData(BattleCompletedEvent event) {
 		// Do not print out if no result file has been specified and the GUI is enabled
-		if ((setup.resultsFilename == null && (!setup.exitOnComplete || manager.isGUIEnabled()))) {
+		if ((setup.resultsFilename == null && (!setup.exitOnComplete || windowManager.isGUIEnabled()))) {
 			return;
 		}
 

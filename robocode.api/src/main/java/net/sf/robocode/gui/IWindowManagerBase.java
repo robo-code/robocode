@@ -9,14 +9,11 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.sound;
-
+package net.sf.robocode.gui;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface ISoundManager {
-	void setEnableSound(boolean enable);
-
-	void playThemeMusic();
+public interface IWindowManagerBase {
+	void setVisibleForRobotEngine(boolean visible);
 }

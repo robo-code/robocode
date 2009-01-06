@@ -67,6 +67,8 @@ public class WindowManager implements IWindowManagerExt {
 	private final IRepositoryManager repositoryManager;
 	private IRobotDialogManager robotDialogManager;
 	private RobocodeFrame robocodeFrame;
+	private boolean isGUIEnabled = true;
+	private boolean slave = false;
 
 	public WindowManager(IRobocodeManager manager, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
 		this.manager = manager;
@@ -93,6 +95,22 @@ public class WindowManager implements IWindowManagerExt {
 
 	public synchronized void removeBattleListener(IBattleListener listener) {
 		awtAdaptor.removeListener(listener);
+	}
+
+	public boolean isGUIEnabled() {
+		return isGUIEnabled;
+	}
+
+	public void setEnableGUI(boolean enable) {
+		isGUIEnabled = enable;
+	}
+
+	public void setSlave(boolean value) {
+		slave = value;
+	}
+
+	public boolean isSlave() {
+		return slave;
 	}
 
 	public ITurnSnapshot getLastSnapshot() {
@@ -504,7 +522,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void cleanup() {
-		if (manager.isGUIEnabled()) {
+		if (isGUIEnabled()) {
 			getRobocodeFrame().dispose();
 		}
 	}
@@ -546,4 +564,18 @@ public class WindowManager implements IWindowManagerExt {
 		}
 	}
 
+	public void setVisibleForRobotEngine(boolean visible) {
+		if (visible && !isGUIEnabled()) {
+			// The GUI must be enabled in order to show the window
+			setEnableGUI(true);
+
+			// Set the Look and Feel (LAF)
+			setLookAndFeel();
+		}
+
+		if (isGUIEnabled()) {
+			showRobocodeFrame(visible, false);
+			manager.getProperties().setOptionsCommonShowResults(visible);
+		}
+	}
 }

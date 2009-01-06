@@ -150,7 +150,7 @@ public class RobotClassLoader extends URLClassLoader {
 		if (url != null){
 			try {
 				final InputStream is = url.openStream();
-				result = ByteBuffer.allocate(10*16);
+				result = ByteBuffer.allocate(1024*8);
 				boolean done=false;
 				do{
 					do {

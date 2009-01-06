@@ -30,19 +30,14 @@ package net.sf.robocode.core;
 
 import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
-import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository.IRepositoryManagerBase;
-import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.RobocodeProperties;
 import net.sf.robocode.ui.IWindowManager;
-import net.sf.robocode.version.IVersionManager;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -56,20 +51,12 @@ import java.io.IOException;
  * @author Nathaniel Troutman (contributor)
  */
 public final class RobocodeManager implements IRobocodeManager {
-	private boolean slave;
 
 	private RobocodeProperties properties;
 
-	private boolean isGUIEnabled = true;
-	private boolean isSoundEnabled = true;
-
 	public RobocodeManager() {
-		HiddenAccess.manager = this;
 	}
 
-	public void setSlave(boolean value) {
-		slave = value;
-	}
 
 	public RobocodeProperties getProperties() {
 		if (properties == null) {
@@ -119,66 +106,23 @@ public final class RobocodeManager implements IRobocodeManager {
 		}
 	}
 
-	public IVersionManagerBase getVersionManagerBase() {
-		return Container.cache.getComponent(IVersionManager.class);
-	}
-
-	public IBattleManagerBase getBattleManagerBase() {
-		return Container.cache.getComponent(IBattleManager.class);
-	}
-
-	public IRepositoryManagerBase getRepositoryManagerBase() {
-		return Container.cache.getComponent(IRepositoryManager.class);
-	}
-
-	public boolean isSlave() {
-		return slave;
-	}
-
-	public boolean isGUIEnabled() {
-		return isGUIEnabled;
-	}
-
-	public void setEnableGUI(boolean enable) {
-		isGUIEnabled = enable;
-	}
-
-	public boolean isSoundEnabled() {
-		return isSoundEnabled && getProperties().getOptionsSoundEnableSound();
-	}
-
-	public void setEnableSound(boolean enable) {
-		isSoundEnabled = enable;
-	}
-
 	public void cleanup() {
-		if (isGUIEnabled) {
-			Container.cache.getComponent(IWindowManager.class).cleanup();
+		final IWindowManager windowManager = Container.cache.getComponent(IWindowManager.class);
+		if (windowManager !=null) {
+			windowManager.cleanup();
 		}
 		Container.cache.getComponent(IBattleManager.class).cleanup();
 		Container.cache.getComponent(IHostManager.class).cleanup();
 	}
 
 	public void initForRobotEngine() {
-		setSlave(true);
-		setEnableGUI(false);
+		final IWindowManager windowManager = Container.cache.getComponent(IWindowManager.class);
+		if (windowManager != null) {
+			windowManager.setSlave(true);
+			windowManager.setEnableGUI(false);
+		}
 		Container.cache.getComponent(IHostManager.class).initSecurity();
 		Container.cache.getComponent(ICpuManager.class).getCpuConstant();
 		Container.cache.getComponent(IRepositoryManager.class).loadRobotRepository();
-	}
-
-	public void setVisibleForRobotEngine(boolean visible) {
-		if (visible && !isGUIEnabled()) {
-			// The GUI must be enabled in order to show the window
-			setEnableGUI(true);
-
-			// Set the Look and Feel (LAF)
-			Container.cache.getComponent(IWindowManager.class).setLookAndFeel();
-		}
-
-		if (isGUIEnabled()) {
-			Container.cache.getComponent(IWindowManager.class).showRobocodeFrame(visible, false);
-			getProperties().setOptionsCommonShowResults(visible);
-		}
 	}
 }

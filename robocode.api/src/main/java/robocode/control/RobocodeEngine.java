@@ -37,8 +37,13 @@
 package robocode.control;
 
 
+import net.sf.robocode.battle.IBattleManagerBase;
+import net.sf.robocode.core.ContainerBase;
+import net.sf.robocode.gui.IWindowManagerBase;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IRobocodeManagerBase;
+import net.sf.robocode.manager.IVersionManagerBase;
+import net.sf.robocode.repository.IRepositoryManagerBase;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 
@@ -155,7 +160,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 		if (listener != null) {
 			battleObserver = new BattleObserver();
 			battleObserver.listener = listener;
-			manager.getBattleManagerBase().addListener(battleObserver);
+			ContainerBase.getComponent(IBattleManagerBase.class).addListener(battleObserver);
 		}
 	}
 
@@ -168,7 +173,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public void addBattleListener(IBattleListener listener) {
-		manager.getBattleManagerBase().addListener(listener);
+		ContainerBase.getComponent(IBattleManagerBase.class).addListener(listener);
 	}
 
 	/**
@@ -179,7 +184,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public void removeBattleListener(IBattleListener listener) {
-		manager.getBattleManagerBase().removeListener(listener);
+		ContainerBase.getComponent(IBattleManagerBase.class).removeListener(listener);
 	}
 
 	/**
@@ -189,7 +194,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void close() {
 		if (battleObserver != null) {
-			manager.getBattleManagerBase().removeListener(battleObserver);
+			ContainerBase.getComponent(IBattleManagerBase.class).removeListener(battleObserver);
 		}
 		manager.cleanup();
 		manager = null;
@@ -201,7 +206,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @return the installed version of Robocode.
 	 */
 	public String getVersion() {
-		return manager.getVersionManagerBase().getVersion();
+		return ContainerBase.getComponent(IVersionManagerBase.class).getVersion();
 	}
 
 	/**
@@ -211,7 +216,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 *                {@code false} otherwise.
 	 */
 	public void setVisible(boolean visible) {
-		manager.setVisibleForRobotEngine(visible);
+		ContainerBase.getComponent(IWindowManagerBase.class).setVisibleForRobotEngine(visible);
 	}
 
 	/**
@@ -224,7 +229,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		return manager.getRepositoryManagerBase().getRobotSpecifications();
+		return ContainerBase.getComponent(IRepositoryManagerBase.class).getRobotSpecifications();
 	}
 
 	/**
@@ -281,7 +286,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification) {
 		this.battleSpecification = battleSpecification;
-		manager.getBattleManagerBase().startNewBattle(battleSpecification, false);
+		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, false);
 	}
 
 	/**
@@ -297,7 +302,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification, boolean waitTillOver) {
 		this.battleSpecification = battleSpecification;
-		manager.getBattleManagerBase().startNewBattle(battleSpecification, waitTillOver);
+		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, waitTillOver);
 	}
 
 	/**
@@ -307,7 +312,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public void waitTillBattleOver() {
-		manager.getBattleManagerBase().waitTillOver();
+		ContainerBase.getComponent(IBattleManagerBase.class).waitTillOver();
 	}
 
 	/**
@@ -316,7 +321,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #runBattle(BattleSpecification)
 	 */
 	public void abortCurrentBattle() {
-		manager.getBattleManagerBase().stop(true);
+		ContainerBase.getComponent(IBattleManagerBase.class).stop(true);
 	}
 
 	/**

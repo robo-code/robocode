@@ -12,18 +12,10 @@
 package net.sf.robocode.manager;
 
 
-import net.sf.robocode.battle.IBattleManagerBase;
-import net.sf.robocode.repository.IRepositoryManagerBase;
-
-
 /**
  * @author Pavel Savara (original)
  */
 public interface IRobocodeManagerBase {
-	IBattleManagerBase getBattleManagerBase();
-	IVersionManagerBase getVersionManagerBase();
-	IRepositoryManagerBase getRepositoryManagerBase();
 	void initForRobotEngine();
-	void setVisibleForRobotEngine(boolean visible);
 	void cleanup();
 }

@@ -43,7 +43,7 @@ import java.util.Set;
  *
  * @author Pavel Savara (original)
  */
-public final class Container {
+public final class Container extends ContainerBase {
 	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private static final String classPath = System.getProperties().getProperty("robocode.class.path", null);
 
@@ -54,6 +54,7 @@ public final class Container {
 	private static Set<String> known = new HashSet<String>();
 
 	static {
+		instance = new Container(); 
 		systemLoader = Container.class.getClassLoader();
 		if (isSecutityOn) {
 			engineLoader = new EngineClassLoader(systemLoader);
@@ -171,4 +172,7 @@ public final class Container {
 		return null;
 	}
 
+	public <T> T getBaseComponent(Class<T> tClass) {
+		return cache.getComponent(tClass);
+	}
 }

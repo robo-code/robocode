@@ -21,7 +21,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.IRobocodeManager;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.control.events.*;
@@ -66,13 +65,11 @@ public class RobotDialog extends JFrame {
 	private final Hashtable<String, String> debugProperties = new Hashtable<String, String>();
 
 	private final BattleObserver battleObserver = new BattleObserver();
-	private final IRobocodeManager manager;
 	private final IWindowManager windowManager;
 	private final IBattleManager battleManager;
 
-	public RobotDialog(IRobocodeManager manager, IWindowManager windowManager, IBattleManager battleManager) {
+	public RobotDialog(IWindowManager windowManager, IBattleManager battleManager) {
 		super();
-		this.manager = manager;
 		this.battleManager = battleManager;
 		this.windowManager = windowManager;
 	}
@@ -86,7 +83,7 @@ public class RobotDialog extends JFrame {
 		robotIndex = robotButton.getRobotIndex();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setContentPane(getRobotDialogContentPane());
-		if (manager.isSlave()) {
+		if (windowManager.isSlave()) {
 			getKillButton().setEnabled(false);
 		}
 		this.setTitle(robotButton.getRobotName());

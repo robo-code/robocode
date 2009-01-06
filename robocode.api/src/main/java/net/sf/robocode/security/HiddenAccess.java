@@ -27,11 +27,11 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Hashtable;
-import java.util.ArrayList;
-import java.net.URLClassLoader;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 /**
@@ -40,7 +40,6 @@ import java.net.MalformedURLException;
  */
 public class HiddenAccess {
 	public static IThreadManagerBase threadManager;
-	public static IRobocodeManagerBase manager;
 
 	private static IHiddenEventHelper eventHelper;
 	private static IHiddenBulletHelper bulletHelper;

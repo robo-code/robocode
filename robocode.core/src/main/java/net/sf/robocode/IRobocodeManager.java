@@ -22,16 +22,5 @@ import net.sf.robocode.settings.RobocodeProperties;
 public interface IRobocodeManager extends IRobocodeManagerBase {
 	RobocodeProperties getProperties();
 
-	void setEnableGUI(boolean enable);
-
-	void setEnableSound(boolean enable);
-
 	void saveProperties();
-
-	boolean isSlave();
-
-	boolean isSoundEnabled();
-
-	boolean isGUIEnabled();
-
 }

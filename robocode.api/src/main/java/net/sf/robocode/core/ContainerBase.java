@@ -9,14 +9,17 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.sound;
-
+package net.sf.robocode.core;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface ISoundManager {
-	void setEnableSound(boolean enable);
+public abstract class ContainerBase {
+	public static ContainerBase instance;
 
-	void playThemeMusic();
+	public abstract <T> T getBaseComponent(java.lang.Class<T> tClass);
+
+	public static <T> T getComponent(java.lang.Class<T> tClass){
+		return instance.getBaseComponent(tClass);
+	}
 }

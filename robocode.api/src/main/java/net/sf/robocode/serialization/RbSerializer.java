@@ -12,7 +12,9 @@
 package net.sf.robocode.serialization;
 
 
+import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.Event;
 
@@ -84,7 +86,7 @@ public final class RbSerializer {
 	}
 
 	public RbSerializer() {
-		this.currentVersion = HiddenAccess.manager.getVersionManagerBase().getVersionInt();
+		this.currentVersion = ContainerBase.getComponent(IVersionManagerBase.class).getVersionInt();
 		encoder = charset.newEncoder();
 		encoder.onMalformedInput(CodingErrorAction.REPORT);
 		encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
