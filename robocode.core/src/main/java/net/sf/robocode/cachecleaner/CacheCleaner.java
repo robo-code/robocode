@@ -51,7 +51,7 @@ public final class CacheCleaner {
 
 		System.out.print("Rebuilding robot database... ");
 
-		final IRepositoryManager repositoryManager = Container.cache.getComponent(IRepositoryManager.class);
+		final IRepositoryManager repositoryManager = Container.getComponent(IRepositoryManager.class);
 
 		repositoryManager.clearRobotList();
 		repositoryManager.loadRobotRepository();

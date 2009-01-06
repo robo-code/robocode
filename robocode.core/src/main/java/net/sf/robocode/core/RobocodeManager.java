@@ -60,7 +60,7 @@ public final class RobocodeManager implements IRobocodeManager {
 
 	public RobocodeProperties getProperties() {
 		if (properties == null) {
-			properties = Container.cache.getComponent(RobocodeProperties.class);
+			properties = Container.getComponent(RobocodeProperties.class);
 
 			FileInputStream in = null;
 
@@ -107,22 +107,22 @@ public final class RobocodeManager implements IRobocodeManager {
 	}
 
 	public void cleanup() {
-		final IWindowManager windowManager = Container.cache.getComponent(IWindowManager.class);
+		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
 		if (windowManager !=null) {
 			windowManager.cleanup();
 		}
-		Container.cache.getComponent(IBattleManager.class).cleanup();
-		Container.cache.getComponent(IHostManager.class).cleanup();
+		Container.getComponent(IBattleManager.class).cleanup();
+		Container.getComponent(IHostManager.class).cleanup();
 	}
 
 	public void initForRobotEngine() {
-		final IWindowManager windowManager = Container.cache.getComponent(IWindowManager.class);
+		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
 		if (windowManager != null) {
 			windowManager.setSlave(true);
 			windowManager.setEnableGUI(false);
 		}
-		Container.cache.getComponent(IHostManager.class).initSecurity();
-		Container.cache.getComponent(ICpuManager.class).getCpuConstant();
-		Container.cache.getComponent(IRepositoryManager.class).loadRobotRepository();
+		Container.getComponent(IHostManager.class).initSecurity();
+		Container.getComponent(ICpuManager.class).getCpuConstant();
+		Container.getComponent(IRepositoryManager.class).loadRobotRepository();
 	}
 }

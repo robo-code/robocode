@@ -137,7 +137,7 @@ public final class RepositoryManager implements IRepositoryManager {
 	}
 
 	private void setStatus(String message) {
-		IWindowManager windowManager = Container.cache.getComponent(IWindowManager.class);
+		IWindowManager windowManager = Container.getComponent(IWindowManager.class);
 
 		if (windowManager != null) {
 			windowManager.setStatus(message);

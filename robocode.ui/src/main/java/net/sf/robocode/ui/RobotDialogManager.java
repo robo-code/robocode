@@ -24,7 +24,6 @@ package net.sf.robocode.ui;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.ui.dialog.*;
-import org.picocontainer.Characteristics;
 import robocode.control.snapshot.IRobotSnapshot;
 
 import java.util.ArrayList;
@@ -90,7 +89,7 @@ public class RobotDialogManager implements IRobotDialogManager {
 			if (robotDialogMap.size() > MAX_PRE_ATTACHED) {
 				reset();
 			}
-			robotDialog = Container.factory.as(Characteristics.NO_CACHE).getComponent(RobotDialog.class);
+			robotDialog = Container.createComponent(RobotDialog.class);
 			robotDialog.setup(robotButton);
 			robotDialog.pack();
 			WindowUtil.place(robotDialog);
@@ -102,7 +101,7 @@ public class RobotDialogManager implements IRobotDialogManager {
 	public BattleDialog getBattleDialog(BattleButton battleButton, boolean create) {
 
 		if (create && battleDialog == null) {
-			battleDialog = Container.cache.getComponent(BattleDialog.class);
+			battleDialog = Container.getComponent(BattleDialog.class);
 			battleDialog.pack();
 			WindowUtil.place(battleDialog);
 		}

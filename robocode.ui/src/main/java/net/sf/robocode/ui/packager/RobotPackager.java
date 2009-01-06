@@ -40,7 +40,6 @@ import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.dialog.*;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 import net.sf.robocode.version.IVersionManager;
-import org.picocontainer.Characteristics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -224,8 +223,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 	 */
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(
-					RobotSelectionPanel.class);
+			robotSelectionPanel = net.sf.robocode.core.Container.createComponent(RobotSelectionPanel.class);
 			robotSelectionPanel.setup(minRobots, maxRobots, false, "Select the robot or team you would like to package.", /* true */
 					false,
 					false, false/* true */, true, false, true, null);

@@ -19,8 +19,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.RGBImageFilter;
-import java.net.URL;
 import java.io.IOException;
+import java.net.URL;
 
 
 /**

@@ -292,7 +292,7 @@ public class SecurePrintStream extends PrintStream {
 	}
 
 	private PrintStream checkAccess() {
-		PrintStream out = Container.cache.getComponent(IHostManager.class).getRobotOutputStream();
+		PrintStream out = Container.getComponent(IHostManager.class).getRobotOutputStream();
 
 		return (out == null) ? this : out;
 	}

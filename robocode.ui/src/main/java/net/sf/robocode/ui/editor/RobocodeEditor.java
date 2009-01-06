@@ -430,7 +430,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	}
 
 	public RobocodeCompiler getCompiler() {
-		return net.sf.robocode.core.Container.cache.getComponent(RobocodeCompilerFactory.class).createCompiler(this);
+		return net.sf.robocode.core.Container.getComponent(RobocodeCompilerFactory.class).createCompiler(this);
 	}
 
 	public JDesktopPane getDesktopPane() {
@@ -553,11 +553,11 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	public static void main(String[] args) {
 		try {
 			// Set the Look and Feel (LAF)
-			final IWindowManager windowManager = net.sf.robocode.core.Container.cache.getComponent(IWindowManager.class);
+			final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
 
 			windowManager.setLookAndFeel();
 
-			RobocodeEditor robocodeEditor = net.sf.robocode.core.Container.cache.getComponent(RobocodeEditor.class);
+			RobocodeEditor robocodeEditor = net.sf.robocode.core.Container.getComponent(RobocodeEditor.class);
 
 			robocodeEditor.isApplication = true; // used for close
 			robocodeEditor.pack();
@@ -691,7 +691,7 @@ public class RobocodeEditor extends JFrame implements Runnable {
 	 */
 
 	public void resetCompilerProperties() {
-		CompilerProperties props = Container.cache.getComponent(RobocodeCompilerFactory.class).getCompilerProperties();
+		CompilerProperties props = Container.getComponent(RobocodeCompilerFactory.class).getCompilerProperties();
 
 		props.resetCompiler();
 		RobocodeCompilerFactory.saveCompilerProperties();

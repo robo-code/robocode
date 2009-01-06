@@ -304,7 +304,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 		try {
 			final List<String> robots = new ArrayList<String>();
-			IRepositoryManager repositoryManager = Container.cache.getComponent(IRepositoryManager.class);
+			IRepositoryManager repositoryManager = Container.getComponent(IRepositoryManager.class);
 
 			if (repositoryManager != null) {
 				robots.add(repositoryManager.getRobotsDirectory().toURL().toString());

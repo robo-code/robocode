@@ -28,7 +28,6 @@ import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
-import org.picocontainer.Characteristics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -217,8 +216,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			if (battleProperties != null) {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
-			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(
-					RobotSelectionPanel.class);
+			robotSelectionPanel = net.sf.robocode.core.Container.createComponent(RobotSelectionPanel.class);
 			robotSelectionPanel.setup(MIN_ROBOTS, MAX_ROBOTS, true, "Select robots for the battle", false, false, false,
 					false, false, !manager.getProperties().getOptionsTeamShowTeamRobots(), selectedRobots);
 		}

@@ -222,7 +222,7 @@ public class BattleManager implements IBattleManager {
 			RandomFactory.resetDeterministic(Long.valueOf(seed));
 		}
 
-		Battle realBattle = Container.factory.as(Characteristics.NO_CACHE).getComponent(Battle.class);
+		Battle realBattle = Container.createComponent(Battle.class);
 
 		realBattle.setup(battlingRobotsList, battleProperties, isPaused());
 
@@ -269,7 +269,7 @@ public class BattleManager implements IBattleManager {
 		Logger.setLogListener(battleEventDispatcher);
 
 		recordManager.detachRecorder();
-		battle = Container.factory.as(Characteristics.NO_CACHE).getComponent(BattlePlayer.class);
+		battle = Container.createComponent(BattlePlayer.class);
 
 		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
 

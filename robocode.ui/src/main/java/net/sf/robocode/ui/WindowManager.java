@@ -123,7 +123,7 @@ public class WindowManager implements IWindowManagerExt {
 
 	public RobocodeFrame getRobocodeFrame() {
 		if (robocodeFrame == null) {
-			this.robocodeFrame = Container.cache.getComponent(RobocodeFrame.class);
+			this.robocodeFrame = Container.getComponent(RobocodeFrame.class);
 
 		}
 		return robocodeFrame;
@@ -150,7 +150,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showAboutBox() {
-		packCenterShow(net.sf.robocode.core.Container.cache.getComponent(AboutBox.class), true);
+		packCenterShow(net.sf.robocode.core.Container.getComponent(AboutBox.class), true);
 	}
 
 	public String showBattleOpenDialog(final String defExt, final String name) {
@@ -261,14 +261,14 @@ public class WindowManager implements IWindowManagerExt {
 		try {
 			battleManager.pauseBattle();
 
-			WindowUtil.packCenterShow(getRobocodeFrame(), Container.cache.getComponent(PreferencesDialog.class));
+			WindowUtil.packCenterShow(getRobocodeFrame(), Container.getComponent(PreferencesDialog.class));
 		} finally {
 			battleManager.resumeIfPausedBattle(); // THIS is just dirty hack-fix of more complex problem with desiredTPS and pausing.  resumeBattle() belongs here.
 		}
 	}
 
 	public void showResultsDialog(BattleCompletedEvent event) {
-		final ResultsDialog dialog = Container.cache.getComponent(ResultsDialog.class);
+		final ResultsDialog dialog = Container.getComponent(ResultsDialog.class);
 
 		dialog.setup(event.getSortedResults(), event.getBattleRules().getNumRounds());
 		packCenterShow(dialog, true);
@@ -276,7 +276,7 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void showRankingDialog(boolean visible) {
 		if (rankingDialog == null) {
-			rankingDialog = Container.cache.getComponent(RankingDialog.class);
+			rankingDialog = Container.getComponent(RankingDialog.class);
 			if (visible) {
 				packCenterShow(rankingDialog, true);
 			} else {
@@ -293,7 +293,7 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void showRobocodeEditor() {
 		if (robocodeEditor == null) {
-			robocodeEditor = net.sf.robocode.core.Container.cache.getComponent(RobocodeEditor.class);
+			robocodeEditor = net.sf.robocode.core.Container.getComponent(RobocodeEditor.class);
 			WindowUtil.packCenterShow(robocodeEditor);
 		} else {
 			robocodeEditor.setVisible(true);
@@ -306,7 +306,7 @@ public class WindowManager implements IWindowManagerExt {
 			robotPackager = null;
 		}
 
-		robotPackager = net.sf.robocode.core.Container.cache.getComponent(RobotPackager.class);
+		robotPackager = net.sf.robocode.core.Container.getComponent(RobotPackager.class);
 		WindowUtil.packCenterShow(robotPackager);
 	}
 
@@ -321,7 +321,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showSplashScreen() {
-		RcSplashScreen splashScreen = Container.cache.getComponent(RcSplashScreen.class);
+		RcSplashScreen splashScreen = Container.getComponent(RcSplashScreen.class);
 
 		packCenterShow(splashScreen, true);
 
@@ -342,7 +342,7 @@ public class WindowManager implements IWindowManagerExt {
 	public void showNewBattleDialog(BattleProperties battleProperties) {
 		try {
 			battleManager.pauseBattle();
-			final NewBattleDialog battleDialog = Container.cache.getComponent(NewBattleDialog.class);
+			final NewBattleDialog battleDialog = Container.getComponent(NewBattleDialog.class);
 
 			battleDialog.setup(battleManager.getBattleProperties());
 			WindowUtil.packCenterShow(getRobocodeFrame(), battleDialog);
@@ -365,7 +365,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showCreateTeamDialog() {
-		TeamCreator teamCreator = Container.cache.getComponent(TeamCreator.class);
+		TeamCreator teamCreator = Container.getComponent(TeamCreator.class);
 
 		WindowUtil.packCenterShow(teamCreator);
 	}

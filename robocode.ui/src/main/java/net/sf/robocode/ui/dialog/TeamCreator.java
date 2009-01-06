@@ -24,7 +24,6 @@ import net.sf.robocode.repository.ITeamFileSpecificationExt;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 import net.sf.robocode.version.IVersionManager;
-import org.picocontainer.Characteristics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,8 +101,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 
 	protected RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			robotSelectionPanel = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(
-					RobotSelectionPanel.class);
+			robotSelectionPanel = net.sf.robocode.core.Container.createComponent(RobotSelectionPanel.class);
 			robotSelectionPanel.setup(minRobots, maxRobots, false, "Select the robots for this team.", false, true, true,
 					false, false, false, null);
 		}

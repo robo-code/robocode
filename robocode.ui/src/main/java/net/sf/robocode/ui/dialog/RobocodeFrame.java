@@ -39,7 +39,6 @@ import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
 import net.sf.robocode.ui.gfx.ImageUtil;
 import net.sf.robocode.version.IVersionManager;
-import org.picocontainer.Characteristics;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -298,7 +297,7 @@ public class RobocodeFrame extends JFrame {
 			sidePanel = new JPanel();
 			sidePanel.setLayout(new BorderLayout());
 			sidePanel.add(getRobotButtonsScrollPane(), BorderLayout.CENTER);
-			final BattleButton btn = net.sf.robocode.core.Container.cache.getComponent(BattleButton.class);
+			final BattleButton btn = net.sf.robocode.core.Container.getComponent(BattleButton.class);
 
 			btn.attach();
 			sidePanel.add(btn, BorderLayout.SOUTH);
@@ -861,7 +860,7 @@ public class RobocodeFrame extends JFrame {
 				for (int index = 0; index < robots.size(); index++) {
 					final IRobotSnapshot robot = robots.get(index);
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
-					final RobotButton button = net.sf.robocode.core.Container.factory.as(Characteristics.NO_CACHE).getComponent(
+					final RobotButton button = net.sf.robocode.core.Container.createComponent(
 							RobotButton.class);
 
 					button.setup(robot.getName(), maxEnergy, index, robot.getContestantIndex(), attach);

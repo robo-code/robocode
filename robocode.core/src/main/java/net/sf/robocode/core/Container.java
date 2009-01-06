@@ -14,6 +14,7 @@ package net.sf.robocode.core;
 
 import net.sf.robocode.io.Logger;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.OptInCaching;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
@@ -174,5 +175,13 @@ public final class Container extends ContainerBase {
 
 	public <T> T getBaseComponent(Class<T> tClass) {
 		return cache.getComponent(tClass);
+	}
+
+	public static <T> T getComponent(java.lang.Class<T> tClass){
+		return cache.getComponent(tClass);
+	}
+
+	public static <T> T createComponent(java.lang.Class<T> tClass){
+		return factory.as(Characteristics.NO_CACHE).getComponent(tClass);
 	}
 }

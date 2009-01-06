@@ -35,7 +35,7 @@ public abstract class RobocodeMainBase implements Runnable {
 
 	public static void robocodeMain(Object args) {
 		// here we cross transition to EngineClassLoader classes using interface which is defined in system classLoader
-		RobocodeMainBase main = Container.cache.getComponent(RobocodeMainBase.class);
+		RobocodeMainBase main = Container.getComponent(RobocodeMainBase.class);
 
 		main.loadSetup((String[]) args);
 		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
@@ -45,7 +45,7 @@ public abstract class RobocodeMainBase implements Runnable {
 
 	public static IRobocodeManagerBase createRobocodeManager() {
 		// here we cross transition to EngineClassLoader classes using interface which is defined in system classLoader
-		return Container.cache.getComponent(IRobocodeManagerBase.class);
+		return Container.getComponent(IRobocodeManagerBase.class);
 	}
 
 	public static IRobocodeManagerBase createRobocodeManagerForRobotEngine(File robocodeHome) {
