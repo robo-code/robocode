@@ -27,7 +27,7 @@ public class Module {
 	static {
 		Container.cache.addComponent(RobocodeMain.class);
 		Container.cache.addComponent(IVersionManager.class, VersionManager.class);
-		Container.cache.addComponent(ISettingsManager.class,SettingsManager.class);
+		Container.cache.addComponent(ISettingsManager.class, SettingsManager.class);
 		initSerializer();
 	}
 
