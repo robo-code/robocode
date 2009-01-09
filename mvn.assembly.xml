@@ -36,6 +36,7 @@
         <moduleSet>
             <includes>
                 <include>net.sf.robocode:robocode.ui</include>
+                <include>net.sf.robocode:robocode.ui.editor</include>
             </includes>
             <binaries>
                 <excludes>

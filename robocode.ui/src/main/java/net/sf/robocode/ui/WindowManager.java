@@ -33,8 +33,8 @@ import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.battle.AwtBattleAdaptor;
 import net.sf.robocode.ui.dialog.*;
-import net.sf.robocode.ui.editor.RobocodeEditor;
 import net.sf.robocode.ui.packager.RobotPackager;
+import net.sf.robocode.ui.editor.IRobocodeEditor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -56,7 +56,6 @@ public class WindowManager implements IWindowManagerExt {
 
 	private final static int TIMER_TICKS_PER_SECOND = 50;
 	private final AwtBattleAdaptor awtAdaptor;
-	private RobocodeEditor robocodeEditor;
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
 	private RankingDialog rankingDialog;
@@ -292,11 +291,11 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showRobocodeEditor() {
-		if (robocodeEditor == null) {
-			robocodeEditor = net.sf.robocode.core.Container.getComponent(RobocodeEditor.class);
-			WindowUtil.packCenterShow(robocodeEditor);
+		JFrame editor = (JFrame)net.sf.robocode.core.Container.getComponent(IRobocodeEditor.class);
+		if (!editor.isVisible()) {
+			WindowUtil.packCenterShow(editor);
 		} else {
-			robocodeEditor.setVisible(true);
+			editor.setVisible(true);
 		}
 	}
 
@@ -352,7 +351,8 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public boolean closeRobocodeEditor() {
-		return robocodeEditor == null || !robocodeEditor.isVisible() || robocodeEditor.close();
+		IRobocodeEditor editor = net.sf.robocode.core.Container.getComponent(IRobocodeEditor.class);
+		return editor == null || !((JFrame) editor).isVisible() || editor.close();
 	}
 
 	public void showCreateTeamDialog() {

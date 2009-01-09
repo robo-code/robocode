@@ -17,6 +17,7 @@
         <module>robocode.battle</module>
         <module>robocode.host</module>
         <module>robocode.ui</module>
+        <module>robocode.ui.editor</module>
         <module>robocode.sound</module>
         <module>robocode.samples</module>
         <module>robocode.roborumble</module>

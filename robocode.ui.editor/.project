@@ -1,0 +1,21 @@
+<projectDescription>
+  <name>robocode.ui.editor</name>
+  <comment/>
+  <projects>
+    <project>robocode.api</project>
+    <project>robocode.battle</project>
+    <project>robocode.core</project>
+    <project>robocode.host</project>
+    <project>robocode.repository</project>
+    <project>robocode.sound</project>
+    <project>robocode.ui</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

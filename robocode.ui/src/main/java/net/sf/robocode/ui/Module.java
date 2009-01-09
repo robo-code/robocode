@@ -16,8 +16,6 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
 import net.sf.robocode.ui.dialog.*;
-import net.sf.robocode.ui.editor.RobocodeCompilerFactory;
-import net.sf.robocode.ui.editor.RobocodeEditor;
 import net.sf.robocode.ui.packager.RobotPackager;
 
 
@@ -39,8 +37,6 @@ public class Module {
 		Container.cache.addComponent(RankingDialog.class);
 		Container.cache.addComponent(RcSplashScreen.class);
 		Container.cache.addComponent(ResultsDialog.class);
-		Container.cache.addComponent(RobocodeCompilerFactory.class);
-		Container.cache.addComponent(RobocodeEditor.class);
 		Container.cache.addComponent(RobotPackager.class);
 		Container.cache.addComponent(MenuBar.class);
 		Container.cache.addComponent(TeamCreator.class);

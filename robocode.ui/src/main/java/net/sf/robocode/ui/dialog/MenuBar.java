@@ -34,7 +34,9 @@ import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.ui.IWindowManagerExt;
+import net.sf.robocode.ui.editor.IRobocodeEditor;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
+import net.sf.robocode.core.*;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -43,6 +45,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.*;
 
 
 /**
@@ -752,6 +755,7 @@ public class MenuBar extends JMenuBar {
 			robotEditorMenuItem = new JMenuItem();
 			robotEditorMenuItem.setText("Editor");
 			robotEditorMenuItem.setMnemonic('E');
+			robotEditorMenuItem.setVisible(net.sf.robocode.core.Container.getComponent(IRobocodeEditor.class)!=null);
 			robotEditorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, MENU_SHORTCUT_KEY_MASK, false));
 			robotEditorMenuItem.addActionListener(eventHandler);
 		}

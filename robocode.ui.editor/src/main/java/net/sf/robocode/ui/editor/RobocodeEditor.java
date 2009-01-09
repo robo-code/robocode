@@ -47,7 +47,7 @@ import java.io.*;
  * @author Flemming N. Larsen (contributor)
  */
 @SuppressWarnings("serial")
-public class RobocodeEditor extends JFrame implements Runnable {
+public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor {
 	private JPanel robocodeEditorContentPane;
 
 	private RobocodeEditorMenuBar robocodeEditorMenuBar;
