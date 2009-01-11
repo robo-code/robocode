@@ -1,0 +1,174 @@
+<project name="common" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <property file="${common.dir}/build.properties"/>
+    <property name="ivy.jar.dir" value="${user.home}/.ivy2/jars"/>
+    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
+
+    <path id="lib.path.id">
+        <fileset dir="${lib.dir}"/>
+    </path>
+    <path id="run.path.id">
+        <path refid="lib.path.id"/>
+        <path location="${classes.dir}"/>
+    </path>
+
+
+    <!-- setup ivy default configuration with some custom info -->
+    <property name="ivy.local.default.root" value="${repository.dir}/local"/>
+    <property name="ivy.shared.default.root" value="${repository.dir}/shared"/>
+
+    <ivy:settings file="${common.dir}/ivysettings.xml"/>
+
+
+    <!-- ================================= 
+              target: resolve
+             ================================= -->
+    <target name="resolve" depends="clean-lib" description="--> resolve and retrieve dependencies with ivy">
+        <mkdir dir="${lib.dir}"/>
+        <!-- not usually necessary, ivy creates the directory IF there are dependencies -->
+
+        <!-- the call to resolve is not mandatory, retrieve makes an implicit call if we don't -->
+        <ivy:resolve file="${ivy.file}"/>
+        <ivy:retrieve pattern="${lib.dir}/[artifact].[ext]"/>
+    </target>
+
+    <!-- ================================= 
+              target: report
+             ================================= -->
+    <target name="report" depends="resolve" description="--> generates a report of dependencies">
+        <ivy:report todir="${build.dir}"/>
+    </target>
+
+    <!-- ================================= 
+              target: compile
+             ================================= -->
+    <target name="compile" depends="resolve" description="--> compile the project">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="lib.path.id" debug="false"/>
+    </target>
+
+
+    <!-- ================================= 
+              target: test-compile
+             ================================= -->
+    <target name="test-compile" depends="resolve, compile" description="--> compile the project">
+        <mkdir dir="${test-classes.dir}"/>
+        <javac srcdir="${test-src.dir}" destdir="${test-classes.dir}" classpathref="lib.path.id" debug="true"/>
+    </target>
+
+    <!-- ================================= 
+          target: test
+         ================================= -->
+    <target name="test" depends="resolve, test-compile" description="--> test the project">
+
+
+    </target>
+
+    <!-- ================================= 
+          target: run
+         ================================= -->
+    <target name="run" depends="version, compile" description="--> compile and run the project">
+        <java classpathref="run.path.id" classname="${main.class.name}"/>
+    </target>
+
+    <!-- ================================= 
+          targets: ivy versions
+         ================================= -->
+    <target name="ivy-new-version" unless="ivy.new.revision">
+        <!-- default module version prefix value -->
+        <property name="module.version.prefix" value="${module.version.target}-dev-b"/>
+
+        <!-- asks to ivy an available version number -->
+        <ivy:info file="${ivy.file}"/>
+        <ivy:buildnumber
+                organisation="${ivy.organisation}" module="${ivy.module}"
+                revision="${module.version.prefix}" defaultBuildNumber="1" revSep=""/>
+    </target>
+
+    <target name="local-version">
+        <tstamp>
+            <format property="now" pattern="yyyyMMddHHmmss"/>
+        </tstamp>
+        <property name="ivy.new.revision" value="${module.version.target}-local-${now}"/>
+    </target>
+
+    <target name="version" depends="ivy-new-version">
+        <!-- create version file in classpath for later inclusion in jar -->
+        <mkdir dir="${classes.dir}"/>
+        <echo message="version=${ivy.new.revision}" file="${classes.dir}/${ant.project.name}.properties"
+              append="false"/>
+
+        <!-- load generated version properties file -->
+        <property file="${classes.dir}/${ant.project.name}.properties"/>
+    </target>
+
+    <!-- =================================
+              target: jar
+             ================================= -->
+    <target name="jar" depends="version, compile" description="--> make a jar file for this project">
+        <jar destfile="${jar.file}">
+            <fileset dir="${classes.dir}"/>
+            <manifest>
+                <attribute name="Built-By" value="${user.name}"/>
+                <attribute name="Build-Version" value="${version}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- ================================= 
+          target: publish              
+         ================================= -->
+    <target name="publish" depends="clean-build, jar" description="--> publish this project in the ivy repository">
+        <ivy:publish artifactspattern="${build.dir}/[artifact].[ext]"
+                     resolver="shared"
+                     pubrevision="${version}"
+                     status="release"
+                />
+        <echo message="project ${ant.project.name} released with version ${version}"/>
+    </target>
+
+    <!-- ================================= 
+          target: publish-local              
+         ================================= -->
+    <target name="publish-local" depends="local-version, jar"
+            description="--> publish this project in the local ivy repository">
+        <ivy:publish artifactspattern="${build.dir}/[artifact].[ext]"
+                     resolver="local"
+                     pubrevision="${version}"
+                     pubdate="${now}"
+                     status="integration"
+                     forcedeliver="true"
+                />
+        <echo message="project ${ant.project.name} published locally with version ${version}"/>
+    </target>
+
+    <!-- =================================
+              target: clean-local
+             ================================= -->
+    <target name="clean-local"
+            description="--> cleans the local repository for the current module">
+        <ivy:info file="${ivy.file}"/>
+        <delete dir="${ivy.local.default.root}/${ivy.organisation}/${ivy.module}"/>
+    </target>
+
+    <!-- =================================
+              target: clean-lib
+             ================================= -->
+    <target name="clean-lib" description="--> clean the project libraries directory (dependencies)">
+        <delete includeemptydirs="true" dir="${lib.dir}"/>
+    </target>
+
+    <!-- ================================= 
+          target: clean-build              
+         ================================= -->
+    <target name="clean-build" description="--> clean the project built files">
+        <echo message="Cleaning ${ant.project.name}"/>
+        <delete includeemptydirs="true" dir="${build.dir}"/>
+    </target>
+
+    <!-- ================================= 
+          target: clean              
+         ================================= -->
+    <target name="clean" depends="clean-build, clean-lib" description="--> clean the project">
+    </target>
+</project>

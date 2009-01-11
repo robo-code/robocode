@@ -1,0 +1,4 @@
+<project name="robocode.tests" default="compile">
+	<property file="build.properties"/>
+	<import file="${common.dir}/common.xml"/>
+</project>

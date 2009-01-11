@@ -1,0 +1,15 @@
+<ivy-module version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="net.sf.robocode"
+          module="robocode.samples"
+          status="integration"/>
+    <configurations>
+        <conf name="core"/>
+    </configurations>
+    <publications>
+        <artifact name="${ant.project.name}" type="jar"/>
+    </publications>
+    <dependencies>
+        <dependency name="robocode.host" rev="latest.integration"/>
+    </dependencies>
+</ivy-module>

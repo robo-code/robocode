@@ -1,0 +1,45 @@
+<project name="Robocode" xmlns:ivy="antlib:org.apache.ivy.ant" default="publish">
+
+    <property name="ivy.jar.dir" value="${user.home}/.ivy2/jars"/>
+    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
+
+    <property name="build.dir" value="target"/>
+    <property name="src.dir" value="src"/>
+
+
+    <target name="load-ivy">
+        <path id="ivy.lib.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+        </path>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    </target>
+
+    <target name="buildlist" depends="load-ivy">
+        <ivy:buildlist reference="build-path" onMissingDescriptor="fail">
+            <fileset dir="." includes="robocode.*/build.xml" excludes="robocode.dummy/build.xml"/>
+        </ivy:buildlist>
+    </target>
+
+    <target name="publish" depends="buildlist" description="compile, jar and publish all projects in the right order">
+        <subant target="publish" buildpathref="build-path"/>
+    </target>
+
+    <target name="clean" depends="buildlist" description="delete repository, and all projects">
+        <subant target="clean" buildpathref="build-path"/>
+        <delete dir="target/repository"/>
+    </target>
+
+    <target name="clean-cache" depends="load-ivy" description="clean ivy cache">
+        <ivy:cleancache/>
+    </target>
+
+    <target name="test" depends="buildlist" description="compile, and test">
+        <subant target="test" buildpathref="build-path"/>
+    </target>
+
+    <target name="report" depends="buildlist" description="compile, and test">
+        <subant target="report" buildpathref="build-path"/>
+    </target>
+
+</project>
