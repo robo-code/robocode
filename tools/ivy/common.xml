@@ -4,14 +4,30 @@
     <property name="ivy.jar.dir" value="${user.home}/.ivy2/jars"/>
     <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
 
+    <!-- ====================================== -->
+    <!-- Default Excludes                       -->
+    <!-- ====================================== -->
+
+    <defaultexcludes add="build.xml"/>	 <!-- Ant build scripts -->
+    <defaultexcludes add="**/.*/**"/>      <!-- Eclipse configuration folders -->
+    <defaultexcludes add="**/*.iml"/>      <!-- IDEA -->
+    <defaultexcludes add="**/*.ipr"/>      <!-- IDEA -->
+    <defaultexcludes add="**/*.iws"/>      <!-- IDEA -->
+    <defaultexcludes add="**/*.bak"/>      <!-- Windows backup files -->
+    <defaultexcludes add="**/Thumbs.db"/>  <!-- Windows thumbs databases -->
+    <defaultexcludes add="**/~*"/>         <!-- Unix backup files -->
+    <defaultexcludes add="**/.*"/>         <!-- Hidden unix file types -->
+    <defaultexcludes add="**/.svn/**"/>    <!-- Subversion directories -->
+    <defaultexcludes add="**/_svn/**"/>    <!-- Subversion directories -->
+    <defaultexcludes add="**/launch/**"/>  <!-- Robocode launch directory -->
+
     <path id="lib.path.id">
         <fileset dir="${lib.dir}"/>
     </path>
     <path id="run.path.id">
         <path refid="lib.path.id"/>
-        <path location="${classes.dir}"/>
+        <path location="${main.classes.dir}"/>
     </path>
-
 
     <!-- setup ivy default configuration with some custom info -->
     <property name="ivy.local.default.root" value="${repository.dir}/local"/>
@@ -20,10 +36,22 @@
     <ivy:settings file="${common.dir}/ivysettings.xml"/>
 
 
-    <!-- ================================= 
+    <!-- =================================
+              target: init
+             ================================= -->
+    <target name="init" description="--> init state">
+        <uptodate property="uptodate" targetfile="${jar.file}">
+          <srcfiles dir="${src.dir}"/>
+        </uptodate>
+        <available property="exits.src.main.res" file="${src.main.res.dir}"/>
+        <available property="exits.src.test.res" file="${src.test.res.dir}"/>
+        <available property="exits.src.test.java" file="${src.test.java.dir}"/>
+    </target>
+
+    <!-- =================================
               target: resolve
              ================================= -->
-    <target name="resolve" depends="clean-lib" description="--> resolve and retrieve dependencies with ivy">
+    <target name="resolve" depends="init, clean-lib" description="--> resolve and retrieve dependencies with ivy">
         <mkdir dir="${lib.dir}"/>
         <!-- not usually necessary, ivy creates the directory IF there are dependencies -->
 
@@ -32,46 +60,34 @@
         <ivy:retrieve pattern="${lib.dir}/[artifact].[ext]"/>
     </target>
 
-    <!-- ================================= 
+
+    <!-- =================================
               target: report
              ================================= -->
     <target name="report" depends="resolve" description="--> generates a report of dependencies">
         <ivy:report todir="${build.dir}"/>
     </target>
 
-    <!-- ================================= 
+    <!-- =================================
+              target: resources
+             ================================= -->
+    <target name="resources" depends="init" if="exits.src.main.res" unless="uptodate" description="--> copy resources">
+        <copy todir="${main.classes.dir}">
+            <resources>
+                <fileset dir="${src.main.res.dir}"/>
+            </resources>
+        </copy>
+    </target>
+
+    <!-- =================================
               target: compile
              ================================= -->
-    <target name="compile" depends="resolve" description="--> compile the project">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="lib.path.id" debug="false"/>
+    <target name="compile" depends="resolve, resources" unless="uptodate" description="--> compile the project">
+        <mkdir dir="${main.classes.dir}"/>
+        <javac srcdir="${src.main.java.dir}" destdir="${main.classes.dir}" classpathref="lib.path.id" debug="false"/>
     </target>
 
-
-    <!-- ================================= 
-              target: test-compile
-             ================================= -->
-    <target name="test-compile" depends="resolve, compile" description="--> compile the project">
-        <mkdir dir="${test-classes.dir}"/>
-        <javac srcdir="${test-src.dir}" destdir="${test-classes.dir}" classpathref="lib.path.id" debug="true"/>
-    </target>
-
-    <!-- ================================= 
-          target: test
-         ================================= -->
-    <target name="test" depends="resolve, test-compile" description="--> test the project">
-
-
-    </target>
-
-    <!-- ================================= 
-          target: run
-         ================================= -->
-    <target name="run" depends="version, compile" description="--> compile and run the project">
-        <java classpathref="run.path.id" classname="${main.class.name}"/>
-    </target>
-
-    <!-- ================================= 
+    <!-- =================================
           targets: ivy versions
          ================================= -->
     <target name="ivy-new-version" unless="ivy.new.revision">
@@ -94,23 +110,26 @@
 
     <target name="version" depends="ivy-new-version">
         <!-- create version file in classpath for later inclusion in jar -->
-        <mkdir dir="${classes.dir}"/>
-        <echo message="version=${ivy.new.revision}" file="${classes.dir}/${ant.project.name}.properties"
+        <mkdir dir="${main.classes.dir}"/>
+        <echo message="version=${ivy.new.revision}" file="${main.classes.dir}/${ant.project.name}.properties"
               append="false"/>
 
         <!-- load generated version properties file -->
-        <property file="${classes.dir}/${ant.project.name}.properties"/>
+        <property file="${main.classes.dir}/${ant.project.name}.properties"/>
     </target>
 
     <!-- =================================
               target: jar
              ================================= -->
-    <target name="jar" depends="version, compile" description="--> make a jar file for this project">
+    <target name="jar" depends="version, compile, resources" unless="uptodate" description="--> make a jar file for this project">
         <jar destfile="${jar.file}">
-            <fileset dir="${classes.dir}"/>
+            <fileset dir="${main.classes.dir}"/>
             <manifest>
                 <attribute name="Built-By" value="${user.name}"/>
                 <attribute name="Build-Version" value="${version}"/>
+                <attribute name="Main-Class" value="${main.class.name}"/>
+                <attribute name="Implementation-Title" value="Robocode"/>
+                <attribute name="Implementation-Vendor" value="Mathew A. Nelson, Flemming N. Larsen, Pavel Savara"/>
             </manifest>
         </jar>
     </target>
@@ -154,7 +173,7 @@
     <!-- =================================
               target: clean-lib
              ================================= -->
-    <target name="clean-lib" description="--> clean the project libraries directory (dependencies)">
+    <target name="clean-lib" unless="uptodate" description="--> clean the project libraries directory (dependencies)">
         <delete includeemptydirs="true" dir="${lib.dir}"/>
     </target>
 

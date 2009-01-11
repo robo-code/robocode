@@ -1,7 +1,7 @@
 <ivy-module version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
     <info organisation="net.sf.robocode"
-          module="robocode.sound"
+          module="robocode.installer"
           status="integration"/>
     <configurations>
         <conf name="core"/>

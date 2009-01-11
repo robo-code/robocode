@@ -8,7 +8,7 @@
         <conf name="test" extends="core"/>
     </configurations>
     <publications>
-        <artifact name="${ant.project.name}" type="jar"/>
+        <artifact name="${jar.shortfile}" type="jar"/>
     </publications>
     <dependencies>
         <dependency name="robocode.battle" rev="latest.integration"/>

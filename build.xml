@@ -1,4 +1,4 @@
-<project name="Robocode" xmlns:ivy="antlib:org.apache.ivy.ant" default="publish">
+<project name="Robocode" xmlns:ivy="antlib:org.apache.ivy.ant" default="publish-local">
 
     <property name="ivy.jar.dir" value="${user.home}/.ivy2/jars"/>
     <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
@@ -23,6 +23,10 @@
 
     <target name="publish" depends="buildlist" description="compile, jar and publish all projects in the right order">
         <subant target="publish" buildpathref="build-path"/>
+    </target>
+
+    <target name="publish-local" depends="buildlist" description="compile, jar">
+        <subant target="publish-local" buildpathref="build-path"/>
     </target>
 
     <target name="clean" depends="buildlist" description="delete repository, and all projects">
