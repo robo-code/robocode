@@ -32,7 +32,7 @@ import java.nio.ByteBuffer;
 public class BattleResults implements java.io.Serializable, Comparable<BattleResults> {
 	protected static final long serialVersionUID = 1L;
 
-	protected final String teamLeaderName;
+	protected String teamLeaderName;
 	protected int rank;
 	protected double score;
 	protected double survival;

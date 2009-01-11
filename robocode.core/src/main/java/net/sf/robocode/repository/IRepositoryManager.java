@@ -30,6 +30,8 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	void clearRobotList();
 
+	void reload(String file);
+
 	void loadRobotRepository();
 
 	List<INamedFileSpecification> getRobotSpecificationsList();
