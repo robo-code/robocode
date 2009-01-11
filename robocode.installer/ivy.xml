@@ -10,6 +10,8 @@
         <artifact name="${jar.shortfile}" type="jar"/>
     </publications>
     <dependencies>
-        <dependency name="robocode.core" rev="latest.integration"/>
+        <dependency name="robocode.ui" rev="latest.integration"/>
+        <dependency name="robocode.ui.editor" rev="latest.integration"/>
+        <dependency name="robocode.roborumble" rev="latest.integration"/>
     </dependencies>
 </ivy-module>
