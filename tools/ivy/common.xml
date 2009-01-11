@@ -49,11 +49,14 @@
               target: init
              ================================= -->
     <target name="init" description="--> init state">
-        <uptodate property="uptodate" targetfile="${jar.file}">
+        <uptodate property="jar.uptodate" targetfile="${jar.file}">
           <srcfiles dir="${src.dir}"/>
         </uptodate>
         <uptodate property="test.green" targetfile="${build.dir}/.tests_run">
           <srcfiles dir="${src.dir}"/>
+        </uptodate>
+        <uptodate property="javadoc.uptodate" targetfile="${build.dir}/.javadoc_build">
+          <srcfiles dir="${src.main.java.dir}" includes="**/*.java"/>
         </uptodate>
         <available property="exits.src.main.res" file="${src.main.res.dir}"/>
         <available property="exits.src.test.res" file="${src.test.res.dir}"/>
@@ -83,7 +86,7 @@
     <!-- =================================
               target: resources
              ================================= -->
-    <target name="resources" depends="init" if="exits.src.main.res" unless="uptodate" description="--> copy resources">
+    <target name="resources" depends="init" if="exits.src.main.res" unless="jar.uptodate" description="--> copy resources">
         <copy todir="${main.classes.dir}">
             <resources>
                 <fileset dir="${src.main.res.dir}"/>
@@ -94,9 +97,17 @@
     <!-- =================================
               target: compile
              ================================= -->
-    <target name="compile" depends="resolve, resources" unless="uptodate" description="--> compile the project">
+    <target name="compile" depends="resolve, resources" unless="jar.uptodate" description="--> compile the project">
         <mkdir dir="${main.classes.dir}"/>
-        <javac srcdir="${src.main.java.dir}" destdir="${main.classes.dir}" classpathref="lib.path.id" debug="false"/>
+        <javac srcdir="${src.main.java.dir}" destdir="${main.classes.dir}" classpathref="lib.path.id"
+               debug="false"
+               encoding="8859_1"
+               source="1.5"
+               target="1.5"
+               optimize="true"
+                >
+            <compilerarg value="-Xlint"/>
+        </javac>
     </target>
 
 
@@ -116,7 +127,15 @@
              ================================= -->
     <target name="test.compile" depends="compile, test.resources" unless="tests.green" if="exits.src.test.java" description="--> compile tests">
         <mkdir dir="${test.classes.dir}"/>
-        <javac srcdir="${src.test.java.dir}" destdir="${test.classes.dir}" classpathref="libmain.path.id" debug="false"/>
+        <javac srcdir="${src.test.java.dir}" destdir="${test.classes.dir}" classpathref="libmain.path.id"
+               debug="true"
+               encoding="8859_1"
+               source="1.5"
+               target="1.5"
+               optimize="true"
+                >
+            <compilerarg value="-Xlint"/>
+        </javac>
     </target>
 
     <!-- =================================
@@ -143,8 +162,38 @@
     </target>
 
     <!-- =================================
-              targets: ivy versions
+              target: javadoc
              ================================= -->
+    <target
+            name="javadoc"
+            description="Generate javadoc"
+            depends="init"
+            if="javadoc.required"
+            unless="javadoc.uptodate">
+
+        <echo message="Generating javadoc..."/>
+
+        <!-- Generate the javadoc documentation -->
+        <javadoc
+                destdir="${build.dir}/javadoc"
+                sourcepath="${src.main.java.dir}"
+                excludepackagenames="robocode.*, codesize.*, ar.*"
+                windowtitle="Robocode ${version} API"
+                link="http://java.sun.com/j2se/1.5.0/docs/api">
+            <fileset dir="${src.main.java.dir}" defaultexcludes="yes">
+                <include name="robocode/**/*.java"/>
+                <exclude name="robocode/_*.java"/>
+                <exclude name="robocode/control/RandomFactory.java"/>
+            </fileset>
+            <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
+        </javadoc>
+
+        <!-- Flag that javadoc has been built -->
+        <touch file="${build.dir}/.javadoc_build"/>
+    </target>
+    <!-- =================================
+                  targets: ivy versions
+                 ================================= -->
     <target name="ivy-new-version" unless="ivy.new.revision">
         <!-- default module version prefix value -->
         <property name="module.version.prefix" value="${module.version.target}-dev-b"/>
@@ -176,7 +225,7 @@
     <!-- =================================
               target: jar
              ================================= -->
-    <target name="jar" depends="version, compile, resources" unless="uptodate" description="--> make a jar file for this project">
+    <target name="jar" depends="version, compile, resources" unless="jar.uptodate" description="--> make a jar file for this project">
         <jar destfile="${jar.file}">
             <fileset dir="${main.classes.dir}"/>
             <manifest>
@@ -192,7 +241,7 @@
     <!-- ================================= 
           target: publish              
          ================================= -->
-    <target name="publish" depends="clean-build, test, jar" description="--> publish this project in the ivy repository">
+    <target name="publish" depends="clean-build, test, jar, javadoc" description="--> publish this project in the ivy repository">
         <ivy:publish artifactspattern="${build.dir}/[artifact].[ext]"
                      resolver="shared"
                      pubrevision="${version}"
@@ -228,7 +277,7 @@
     <!-- =================================
               target: clean-lib
              ================================= -->
-    <target name="clean-lib" unless="uptodate" description="--> clean the project libraries directory (dependencies)">
+    <target name="clean-lib" unless="jar.uptodate" description="--> clean the project libraries directory (dependencies)">
         <delete includeemptydirs="true" dir="${lib.dir}"/>
     </target>
 
