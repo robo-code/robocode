@@ -24,6 +24,15 @@
     <path id="lib.path.id">
         <fileset dir="${lib.dir}"/>
     </path>
+    <path id="libmain.path.id">
+        <fileset dir="${lib.dir}"/>
+        <path location="${main.classes.dir}"/>
+    </path>
+    <path id="libtest.path.id">
+        <fileset dir="${lib.dir}"/>
+        <path location="${main.classes.dir}"/>
+        <path location="${test.classes.dir}"/>
+    </path>
     <path id="run.path.id">
         <path refid="lib.path.id"/>
         <path location="${main.classes.dir}"/>
@@ -41,6 +50,9 @@
              ================================= -->
     <target name="init" description="--> init state">
         <uptodate property="uptodate" targetfile="${jar.file}">
+          <srcfiles dir="${src.dir}"/>
+        </uptodate>
+        <uptodate property="test.green" targetfile="${build.dir}/.tests_run">
           <srcfiles dir="${src.dir}"/>
         </uptodate>
         <available property="exits.src.main.res" file="${src.main.res.dir}"/>
@@ -87,9 +99,52 @@
         <javac srcdir="${src.main.java.dir}" destdir="${main.classes.dir}" classpathref="lib.path.id" debug="false"/>
     </target>
 
+
     <!-- =================================
-          targets: ivy versions
-         ================================= -->
+              target: test.resources
+             ================================= -->
+    <target name="test.resources" depends="init" if="exits.src.test.res" unless="tests.green" description="--> copy test resources">
+        <copy todir="${test.classes.dir}">
+            <resources>
+                <fileset dir="${src.test.res.dir}"/>
+            </resources>
+        </copy>
+    </target>
+
+    <!-- =================================
+              target: test.compile
+             ================================= -->
+    <target name="test.compile" depends="compile, test.resources" unless="tests.green" if="exits.src.test.java" description="--> compile tests">
+        <mkdir dir="${test.classes.dir}"/>
+        <javac srcdir="${src.test.java.dir}" destdir="${test.classes.dir}" classpathref="libmain.path.id" debug="false"/>
+    </target>
+
+    <!-- =================================
+              target: test
+             ================================= -->
+    <target name="test" depends="init, test.compile" unless="tests.green" if="exits.src.test.java" description="Run tests">
+        <delete includeemptydirs="true" dir="${build.dir}/test-reports" quiet="true"/>
+        <mkdir dir="${build.dir}/test-reports"/>
+
+        <junit printsummary="yes" haltonfailure="yes" dir="${basedir}">
+            <classpath refid="libtest.path.id"/>
+            <formatter type="plain"/>
+            <batchtest fork="yes" todir="${build.dir}/test-reports">
+                <fileset dir="${src.test.java.dir}">
+                    <include name="**/*Test*.java"/>
+                    <exclude name="**/RobotTestBed.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+
+        <!-- Flag that Robocode has been built -->
+        <touch file="${build.dir}/.tests_run"/>
+    </target>
+
+    <!-- =================================
+              targets: ivy versions
+             ================================= -->
     <target name="ivy-new-version" unless="ivy.new.revision">
         <!-- default module version prefix value -->
         <property name="module.version.prefix" value="${module.version.target}-dev-b"/>
@@ -137,7 +192,7 @@
     <!-- ================================= 
           target: publish              
          ================================= -->
-    <target name="publish" depends="clean-build, jar" description="--> publish this project in the ivy repository">
+    <target name="publish" depends="clean-build, test, jar" description="--> publish this project in the ivy repository">
         <ivy:publish artifactspattern="${build.dir}/[artifact].[ext]"
                      resolver="shared"
                      pubrevision="${version}"
