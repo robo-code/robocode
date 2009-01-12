@@ -629,6 +629,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 			while (classes.hasNext()) {
 				String className = classes.next();
 
+				if (className.startsWith("java") || className.startsWith("robocode")) {
+					continue;
+				}
+
 				// Add source file if selected (not inner classes of course)
 				if (getPackagerOptionsPanel().getIncludeSource().isSelected()) {
 					if (className.indexOf("$") < 0) {

@@ -26,6 +26,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -53,7 +55,7 @@ public class ClassAnalyzer {
 		super();
 	}
 
-	public static List<String> getReferencedClasses(byte[] classFile) {
+	public static void getReferencedClasses(ByteBuffer classFile, Set<String> collection) {
 
 		/*
 		 http://java.sun.com/docs/books/vmspec/2nd-edition/html/ClassFile.doc.html
@@ -80,17 +82,16 @@ public class ClassAnalyzer {
 		 attribute_info attributes[attributes_count];
 		 }
 		 */
-		List<String> referencedClasses = new ArrayList<String>();
 		String strings[];
 		List<Integer> classNameIndexes = new ArrayList<Integer>();
 
 		try {
-			DataInputStream in = new DataInputStream(new ByteArrayInputStream(classFile));
+			DataInputStream in = new DataInputStream(new ByteArrayInputStream(classFile.array(), 0, classFile.limit()));
 			long magic = in.readInt();
 
 			if (magic != 0xCAFEBABE) {
 				Logger.logError("Not a class file!");
-				return null;
+				return;
 			}
 			in.readUnsignedShort(); // minor version
 			in.readUnsignedShort(); // major version
@@ -244,17 +245,15 @@ public class ClassAnalyzer {
 				} // switch
 			} // for i
 		} catch (IOException e) {
-			return null;
+			return;
 		}
 
 		for (Integer classNameIndex : classNameIndexes) {
 			String className = strings[classNameIndex];
 
-			if (className.indexOf("[") != 0) {
-				referencedClasses.add(className);
+			if (className.indexOf("[") != 0 && !collection.contains(className)) {
+				collection.add(className);
 			}
 		}
-
-		return referencedClasses;
 	}
 }

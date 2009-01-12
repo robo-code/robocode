@@ -194,9 +194,13 @@ public final class RepositoryManager implements IRepositoryManager {
 		for (int i = 0; i < updatedJarList.size(); i++) {
 			JarFileSpecification updatedJar = (JarFileSpecification) updatedJarList.get(i);
 
-			updatedJar.processJar(getRobotCache(), getRobotsDirectory(), updatedJarList);
-			getRobotDatabase().put(updatedJar.getFilePath(), updatedJar);
-			updateRobotDatabase(updatedJar);
+			try {
+				updatedJar.processJar(getRobotCache(), getRobotsDirectory(), updatedJarList);
+				getRobotDatabase().put(updatedJar.getFilePath(), updatedJar);
+				updateRobotDatabase(updatedJar);
+			} catch (Throwable t) {
+				logError(t);
+			}
 			write = true;
 		}
 		updatedJarList.clear();

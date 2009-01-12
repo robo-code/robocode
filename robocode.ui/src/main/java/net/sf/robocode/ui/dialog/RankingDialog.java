@@ -60,7 +60,7 @@ public class RankingDialog extends BaseScoreDialog {
 		snapshot = new AtomicReference<ITurnSnapshot>();
 		lastRows = 0;
 		tableModel = new BattleRankingTableModel();
-		this.menu=menu;
+		this.menu = menu;
 		initialize();
 		setTitle("Ranking");
 	}

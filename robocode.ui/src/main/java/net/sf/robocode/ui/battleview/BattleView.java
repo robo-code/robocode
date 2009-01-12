@@ -117,8 +117,8 @@ public class BattleView extends Canvas {
 		properties.addPropertyListener(new ISettingsListener() {
 			public void settingChanged(String property) {
 				loadDisplayOptions();
-				if (property.startsWith("robocode.options.rendering")){
-					initialized=false;
+				if (property.startsWith("robocode.options.rendering")) {
+					initialized = false;
 				}
 			}
 		});

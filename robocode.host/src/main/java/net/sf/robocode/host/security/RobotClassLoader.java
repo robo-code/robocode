@@ -45,6 +45,7 @@ import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.cert.Certificate;
 import java.util.Set;
+import java.util.HashSet;
 
 
 /**
@@ -66,7 +67,10 @@ public class RobotClassLoader extends URLClassLoader {
 	private PermissionCollection emptyPermissions;
 	private IHostedThread robotProxy;
 	private CodeSource codeSource;
+	private Set<String> referencedClasses = new HashSet<String>();
 	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
+	private long uid1;
+	private long uid2;
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		this(robotClassPath, robotFullClassName, null);
@@ -137,6 +141,7 @@ public class RobotClassLoader extends URLClassLoader {
 				if (resolve) {
 					resolveClass(result);
 				}
+				ClassAnalyzer.getReferencedClasses(resource, referencedClasses);
 			}
 		}
 		return result;
@@ -202,8 +207,7 @@ public class RobotClassLoader extends URLClassLoader {
 	}
 
 	public Set<String> getReferencedClasses() {
-		// TODO ZAMO
-		return null;
+		return referencedClasses;
 	}
 
 	public Class<?> loadRobotMainClass() throws ClassNotFoundException {
