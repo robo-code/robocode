@@ -345,7 +345,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
 		// call server
-		execResults = peer.executeImpl(commands);
+		callBattle();
 
 		updateStatus(execResults.getCommands(), execResults.getStatus());
 		graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
@@ -385,6 +385,34 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		eventManager.processEvents();
 	}
+
+	private void callBattle() {
+		execResults = peer.executeImpl(commands);
+	}
+
+	/* TODO this stuff will be used only for IPC/serialized communication with battle 
+	private void callBattleSerial() {
+		// we need to elevate just for interactive robot, because of MouseEvent constructors calling security check
+		ExecutePrivilegedAction rpa = new ExecutePrivilegedAction();
+
+		rpa.newCommands = commands;
+		execResults  = AccessController.doPrivileged(rpa);
+	}
+
+	public class ExecutePrivilegedAction implements PrivilegedAction<ExecResults> {
+		public ExecCommands newCommands;
+
+		public ExecResults run() {
+			final ByteBuffer result;
+			try {
+				result = peer.executeImplSerial(RbSerializer.serializeToBuffer(commands));
+				return RbSerializer.deserializeFromBuffer(result);
+			} catch (IOException e) {
+				Logger.logError(e);
+				return null;
+			}
+		}
+	}*/
 
 	@Override
 	protected final void waitForBattleEndImpl() {

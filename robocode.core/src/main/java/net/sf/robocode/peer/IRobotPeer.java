@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.sf.robocode.peer;
 
+import java.nio.ByteBuffer;
+import java.io.IOException;
+
 
 /**
  * @author Pavel Savara (original)
@@ -26,4 +29,8 @@ public interface IRobotPeer {
 	ExecResults waitForBattleEndImpl(ExecCommands newCommands);
 
 	ExecResults executeImpl(ExecCommands newCommands);
+
+	ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException;
+	
+	ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException;
 }

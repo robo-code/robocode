@@ -181,10 +181,10 @@ public class ExecResults implements Serializable {
 			res.shouldWait = serializer.deserializeBoolean(buffer);
 			res.paintEnabled = serializer.deserializeBoolean(buffer);
 
-			res.commands = (ExecCommands) serializer.deserialize(buffer);
-			res.status = (RobotStatus) serializer.deserialize(buffer);
+			res.commands = (ExecCommands) serializer.deserializeAny(buffer);
+			res.status = (RobotStatus) serializer.deserializeAny(buffer);
 
-			Object item = serializer.deserialize(buffer);
+			Object item = serializer.deserializeAny(buffer);
 
 			res.events = new ArrayList<Event>();
 			res.teamMessages = new ArrayList<TeamMessage>();
@@ -193,21 +193,21 @@ public class ExecResults implements Serializable {
 				if (item instanceof Event) {
 					res.events.add((Event) item);
 				}
-				item = serializer.deserialize(buffer);
+				item = serializer.deserializeAny(buffer);
 			}
-			item = serializer.deserialize(buffer);
+			item = serializer.deserializeAny(buffer);
 			while (item != null) {
 				if (item instanceof TeamMessage) {
 					res.teamMessages.add((TeamMessage) item);
 				}
-				item = serializer.deserialize(buffer);
+				item = serializer.deserializeAny(buffer);
 			}
-			item = serializer.deserialize(buffer);
+			item = serializer.deserializeAny(buffer);
 			while (item != null) {
 				if (item instanceof BulletStatus) {
 					res.bulletUpdates.add((BulletStatus) item);
 				}
-				item = serializer.deserialize(buffer);
+				item = serializer.deserializeAny(buffer);
 			}
 			return res;
 		}

@@ -201,7 +201,7 @@ public final class HitByBulletEvent extends Event {
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
-			Bullet bullet = (Bullet) serializer.deserialize(buffer);
+			Bullet bullet = (Bullet) serializer.deserializeAny(buffer);
 			double bearing = buffer.getDouble();
 
 			return new HitByBulletEvent(bearing, bullet);

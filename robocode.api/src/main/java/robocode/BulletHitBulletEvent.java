@@ -127,7 +127,7 @@ public final class BulletHitBulletEvent extends Event {
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
 			Bullet bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
-			Bullet hitBullet = (Bullet) serializer.deserialize(buffer);
+			Bullet hitBullet = (Bullet) serializer.deserializeAny(buffer);
 
 			return new BulletHitBulletEvent(bullet, hitBullet);
 		}

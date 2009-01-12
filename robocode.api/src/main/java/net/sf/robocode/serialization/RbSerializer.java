@@ -24,6 +24,8 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.*;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 
 /**
@@ -74,6 +76,7 @@ public final class RbSerializer {
 	public final static byte MouseWheelMovedEvent_TYPE = 54;
 
 	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
+	private static Dictionary<Class, Byte> classToType = new Hashtable<Class, Byte>();
 	private final static Charset charset;
 	private final CharsetEncoder encoder;
 	private final CharsetDecoder decoder;
@@ -119,6 +122,23 @@ public final class RbSerializer {
 		target.write(buffer.array());
 	}
 
+	public ByteBuffer serialize(byte type, Object object) throws IOException {
+		int length = sizeOf(type, object);
+
+		// header
+		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + length);
+
+		buffer.putInt(currentVersion);
+		buffer.putInt(length);
+
+		// body
+		serialize(buffer, type, object);
+		if (buffer.remaining() != 0) {
+			throw new IOException("Serialization failed: bad size");
+		}
+		return buffer;
+	}
+
 	public Object deserialize(InputStream source) throws IOException {
 		// header
 		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT);
@@ -136,8 +156,27 @@ public final class RbSerializer {
 		buffer = ByteBuffer.allocate(length);
 		fillBuffer(source, buffer);
 		buffer.flip();
-		final Object res = deserialize(buffer);
+		final Object res = deserializeAny(buffer);
 
+		if (buffer.remaining() != 0) {
+			throw new IOException("Serialization failed");
+		}
+		return res;
+	}
+
+	public Object deserialize(final ByteBuffer buffer) throws IOException {
+		int version = buffer.getInt();
+
+		if (version != currentVersion) {
+			throw new IOException("Version of data is not supported. We support only strong match");
+		}
+		int length = buffer.getInt();
+		if (length != buffer.remaining()) {
+			throw new IOException("Wrong buffer size, " + length + "expected but got " + buffer.remaining());
+		}
+
+		// body
+		final Object res = deserializeAny(buffer);
 		if (buffer.remaining() != 0) {
 			throw new IOException("Serialization failed");
 		}
@@ -250,7 +289,7 @@ public final class RbSerializer {
 		serialize(buffer, type, event);
 	}
 
-	public Object deserialize(ByteBuffer buffer) {
+	public Object deserializeAny(ByteBuffer buffer) {
 		final byte type = buffer.get();
 
 		if (type == TERMINATOR_TYPE) {
@@ -422,6 +461,7 @@ public final class RbSerializer {
 
 				method.setAccessible(false);
 				typeToHelper[type] = helper;
+				classToType.put(realClass, type);
 			}
 		} catch (NoSuchMethodException e) {
 			Logger.logError(e);
@@ -430,6 +470,19 @@ public final class RbSerializer {
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		}
+	}
+
+	public static ByteBuffer serializeToBuffer(Object src) throws IOException {
+		RbSerializer rbs = new RbSerializer();
+		final Byte type = classToType.get(src.getClass());
+		return rbs.serialize(type, src);
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public static <T> T deserializeFromBuffer(ByteBuffer buffer) throws IOException {
+		RbSerializer rbs = new RbSerializer();
+		final Object res = rbs.deserialize(buffer);
+		return (T) res;
 	}
 
 	public static Object deepCopy(byte type, Object src) {

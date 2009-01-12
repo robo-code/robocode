@@ -92,13 +92,13 @@ import static robocode.util.Utils.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import static java.lang.Math.*;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.nio.ByteBuffer;
+import java.io.IOException;
 
 
 /**
@@ -458,40 +458,19 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// execute
 	// -----------
 
-	public final ExecResults executeImpl(final ExecCommands newCommands) {
-		if (isInteractiveRobot()) {
-			// we need to elevate just for interactive robot, because of MouseEvent constructors calling security check
-			ExecutePrivilegedAction rpa = new ExecutePrivilegedAction();
-
-			rpa.newCommands = newCommands;
-			return AccessController.doPrivileged(rpa);
-		} else {
-			return executeImplSerial(newCommands);
-		}
+	public ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException {
+		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
+		final ExecResults results = executeImpl(commands);
+		return RbSerializer.serializeToBuffer(results);
 	}
 
-	public class ExecutePrivilegedAction implements PrivilegedAction<ExecResults> {
-		public ExecCommands newCommands;
-
-		public ExecResults run() {
-			// serializer tets
-			// noinspection ConstantIfStatement
-			if (true) {
-				return executeImplSerial(newCommands);
-			} else {
-				return executeImplIn(newCommands);
-			}
-		}
+	public ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException {
+		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
+		final ExecResults results = waitForBattleEndImpl(commands);
+		return RbSerializer.serializeToBuffer(results);
 	}
 
-	public final ExecResults executeImplSerial(ExecCommands newCommands) {
-		final ExecCommands commands = (ExecCommands) RbSerializer.deepCopy(RbSerializer.ExecCommands_TYPE, newCommands);
-		final ExecResults results = executeImplIn(commands);
-
-		return (ExecResults) RbSerializer.deepCopy(RbSerializer.ExecResults_TYPE, results);
-	}
-
-	public final ExecResults executeImplIn(ExecCommands newCommands) {
+	public final ExecResults executeImpl(ExecCommands newCommands) {
 		validateCommands(newCommands);
 
 		if (!disableExec) {

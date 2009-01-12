@@ -395,27 +395,27 @@ public final class ExecCommands implements Serializable {
 			
 			res.graphicsCalls = serializer.deserializeBytes(buffer);
 
-			Object item = serializer.deserialize(buffer);
+			Object item = serializer.deserializeAny(buffer);
 
 			while (item != null) {
 				if (item instanceof BulletCommand) {
 					res.bullets.add((BulletCommand) item);
 				}
-				item = serializer.deserialize(buffer);
+				item = serializer.deserializeAny(buffer);
 			}
-			item = serializer.deserialize(buffer);
+			item = serializer.deserializeAny(buffer);
 			while (item != null) {
 				if (item instanceof TeamMessage) {
 					res.teamMessages.add((TeamMessage) item);
 				}
-				item = serializer.deserialize(buffer);
+				item = serializer.deserializeAny(buffer);
 			}
-			item = serializer.deserialize(buffer);
+			item = serializer.deserializeAny(buffer);
 			while (item != null) {
 				if (item instanceof DebugProperty) {
 					res.debugProperties.add((DebugProperty) item);
 				}
-				item = serializer.deserialize(buffer);
+				item = serializer.deserializeAny(buffer);
 			}
 			return res;
 		}

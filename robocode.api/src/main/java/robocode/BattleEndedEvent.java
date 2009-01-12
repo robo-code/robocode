@@ -139,7 +139,7 @@ public final class BattleEndedEvent extends Event {
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
 			boolean aborted = serializer.deserializeBoolean(buffer);
-			BattleResults results = (BattleResults) serializer.deserialize(buffer);
+			BattleResults results = (BattleResults) serializer.deserializeAny(buffer);
 
 			return new BattleEndedEvent(aborted, results);
 		}
