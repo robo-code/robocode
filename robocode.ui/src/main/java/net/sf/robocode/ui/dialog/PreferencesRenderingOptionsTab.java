@@ -311,7 +311,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 				}.start();
 				return;
 			}
-			// TODO ZAMO manager.getWindowManager().getRobocodeFrame().getBattleView().setInitialized(false);
 		}
 	}
 }

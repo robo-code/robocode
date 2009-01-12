@@ -11,7 +11,9 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
+
 import net.sf.robocode.core.Container;
+
 
 /**
  * @author Pavel Savara (original)

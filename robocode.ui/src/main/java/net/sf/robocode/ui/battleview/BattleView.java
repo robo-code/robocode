@@ -20,6 +20,7 @@ import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.robotpaint.IGraphicsProxy;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.ui.IImageManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.IWindowManagerExt;
@@ -112,6 +113,16 @@ public class BattleView extends Canvas {
 		battleField = new BattleField(800, 600);
 
 		new BattleObserver(windowManager);
+
+		properties.addPropertyListener(new ISettingsListener() {
+			public void settingChanged(String property) {
+				loadDisplayOptions();
+				if (property.startsWith("robocode.options.rendering")){
+					initialized=false;
+				}
+			}
+		});
+
 	}
 
 	@Override
@@ -159,7 +170,7 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	public void setDisplayOptions() {
+	private void loadDisplayOptions() {
 		ISettingsManager props = properties;
 
 		drawRobotName = props.getOptionsViewRobotNames();
@@ -174,7 +185,7 @@ public class BattleView extends Canvas {
 	}
 
 	private void initialize() {
-		setDisplayOptions();
+		loadDisplayOptions();
 
 		if (offscreenImage != null) {
 			offscreenImage.flush();

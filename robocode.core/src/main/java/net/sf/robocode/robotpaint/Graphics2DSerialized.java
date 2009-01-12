@@ -135,7 +135,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private final RbSerializer serializer = new RbSerializer();
 
-	private Method lastRead; // TODO remove debug
+	// FOR-DEBUG private Method lastRead;
 	private int lastPos;
 
 	// --------------------------------------------------------------------------
@@ -1682,30 +1682,24 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private Method readMethod() {
-		// TODO remove debug
-		if (calls.getInt() != 0xBADF00D) {
-			calls.position(lastPos);
-			// throw new Error();
-		}
-		// TODO remove debug
-		lastPos = calls.position();
+		// FOR-DEBUG if (calls.getInt() != 0xBADF00D) {
+		// FOR-DEBUG 	calls.position(lastPos);
+		// FOR-DEBUG 	// throw new Error();
+		// FOR-DEBUG }
+		// FOR-DEBUG lastPos = calls.position();
 		Method m = methods[calls.get()];
 
-		// TODO remove debug
-		if (calls.getInt() != 0xBADF00D) {
-			throw new Error();
-		}
-		// TODO remove debug
-		lastRead = m;
+		// FOR-DEBUG if (calls.getInt() != 0xBADF00D) {
+		// FOR-DEBUG 	throw new Error();
+		// FOR-DEBUG }
+		// FOR-DEBUG lastRead = m;
 		return m;
 	}
 
 	private void put(Method m) {
-		// TODO remove debug
-		calls.putInt(0xBADF00D);
+		// FOR-DEBUG calls.putInt(0xBADF00D);
 		calls.put((byte) m.ordinal());
-		// TODO remove debug
-		calls.putInt(0xBADF00D);
+		// FOR-DEBUG calls.putInt(0xBADF00D);
 	}
 
 	private void put(AttributedCharacterIterator iterator) {

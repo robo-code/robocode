@@ -29,6 +29,7 @@ package net.sf.robocode.ui.packager;
 
 
 import net.sf.robocode.host.security.RobotClassLoader;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
@@ -512,7 +513,9 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		};
 
-		// TODO ? manager.getHostManager().addSafeThread(thread);
+		final IHostManager hostManager = net.sf.robocode.core.Container.getComponent(IHostManager.class);
+
+		hostManager.addSafeThread(thread);
 
 		thread.start();
 
@@ -525,7 +528,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		}
 
-		// TODO ? manager.getHostManager().removeSafeThread(thread);
+		hostManager.removeSafeThread(thread);
 	}
 
 	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,

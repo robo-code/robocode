@@ -147,7 +147,7 @@ public final class RbSerializer {
 	public void serialize(ByteBuffer buffer, byte type, Object object) {
 		ISerializableHelper helper = getHelper(type);
 
-		int expect = sizeOf(type, object) + buffer.position(); // TODO remove
+		// FOR-DEBUG int expect = sizeOf(type, object) + buffer.position();
 
 		if (object != null) {
 			buffer.put(type);
@@ -155,9 +155,9 @@ public final class RbSerializer {
 		} else {
 			buffer.put(TERMINATOR_TYPE);
 		}
-		if (expect != buffer.position()) {
-			throw new Error("Bad size");
-		}
+		// FOR-DEBUG if (expect != buffer.position()) {
+		// FOR-DEBUG 	throw new Error("Bad size");
+		// FOR-DEBUG }
 	}
 
 	public void serialize(ByteBuffer buffer, String data) {

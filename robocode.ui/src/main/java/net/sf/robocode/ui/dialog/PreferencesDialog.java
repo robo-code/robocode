@@ -153,9 +153,6 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		developmentOptionsTab.storePreferences();
 		commonOptionsTab.storePreferences();
 
-		// Make sure the BattleView will use the new setting immediately
-		// TODO ZAMO manager.getWindowManager().getRobocodeFrame().getBattleView().setDisplayOptions(); // TODO: Find better solution?
-
 		dispose();
 	}
 }

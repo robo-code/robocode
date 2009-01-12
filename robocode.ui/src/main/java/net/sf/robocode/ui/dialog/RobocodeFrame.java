@@ -592,6 +592,12 @@ public class RobocodeFrame extends JFrame {
 		return iconified;
 	}
 
+	public void afterIntroBattle() {
+		getRestartButton().setEnabled(false);
+		getRobotButtonsPanel().removeAll();
+		getRobotButtonsPanel().repaint();
+	}
+
 	/**
 	 * Sets the iconified.
 	 *

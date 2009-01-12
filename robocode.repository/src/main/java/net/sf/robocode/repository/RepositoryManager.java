@@ -313,12 +313,11 @@ public final class RepositoryManager implements IRepositoryManager {
 		repository = null;
 	}
 
-	public void reload(String file){
+	public void reload(String file) {
 		clearRobotList();
-		//TODO above line is just dummy implementation
-		//TODO implement smarter way, so that just the single robot is loaded or re-loaded
+		// TODO above line is just dummy implementation
+		// TODO implement smarter way, so that just the single robot is loaded or re-loaded
 	}
-
 
 	private List<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
 		List<FileSpecification> robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());

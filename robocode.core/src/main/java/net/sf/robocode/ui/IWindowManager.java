@@ -43,6 +43,8 @@ public interface IWindowManager extends IWindowManagerBase {
 
 	void setStatus(String s);
 
+	void messageWarning(String s);
+
 	ITurnSnapshot getLastSnapshot();
 
 	void addBattleListener(IBattleListener listener);
@@ -50,5 +52,7 @@ public interface IWindowManager extends IWindowManagerBase {
 	void removeBattleListener(IBattleListener listener);
 
 	void setLookAndFeel();
+
+	void runIntroBattle();
 
 }

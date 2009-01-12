@@ -123,7 +123,6 @@ public class WindowManager implements IWindowManagerExt {
 	public RobocodeFrame getRobocodeFrame() {
 		if (robocodeFrame == null) {
 			this.robocodeFrame = Container.getComponent(RobocodeFrame.class);
-
 		}
 		return robocodeFrame;
 	}
@@ -291,7 +290,8 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showRobocodeEditor() {
-		JFrame editor = (JFrame)net.sf.robocode.core.Container.getComponent(IRobocodeEditor.class);
+		JFrame editor = (JFrame) net.sf.robocode.core.Container.getComponent(IRobocodeEditor.class);
+
 		if (!editor.isVisible()) {
 			WindowUtil.packCenterShow(editor);
 		} else {
@@ -352,6 +352,7 @@ public class WindowManager implements IWindowManagerExt {
 
 	public boolean closeRobocodeEditor() {
 		IRobocodeEditor editor = net.sf.robocode.core.Container.getComponent(IRobocodeEditor.class);
+
 		return editor == null || !((JFrame) editor).isVisible() || editor.close();
 	}
 
@@ -522,6 +523,10 @@ public class WindowManager implements IWindowManagerExt {
 		WindowUtil.setStatus(s);
 	}
 
+	public void messageWarning(String s) {
+		WindowUtil.messageWarning(s);
+	}
+
 	public boolean isIconified() {
 		return getRobocodeFrame().isIconified();
 	}
@@ -552,6 +557,23 @@ public class WindowManager implements IWindowManagerExt {
 				// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
 				System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
 			}
+		}
+	}
+
+	public void runIntroBattle() {
+		final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
+
+		if (intro.exists()) {
+			battleManager.setBattleFilename(intro.getPath());
+			battleManager.loadBattleProperties();
+
+			boolean origShowResults = properties.getOptionsCommonShowResults();
+
+			properties.setOptionsCommonShowResults(false);
+			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
+			battleManager.setDefaultBattleProperties();
+			properties.setOptionsCommonShowResults(origShowResults);
+			robocodeFrame.afterIntroBattle();
 		}
 	}
 

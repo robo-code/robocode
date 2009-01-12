@@ -19,6 +19,7 @@ package net.sf.robocode.repository;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
+import net.sf.robocode.ui.IWindowManager;
 
 import javax.swing.*;
 import java.io.*;
@@ -64,7 +65,11 @@ class JarFileSpecification extends FileSpecification {
 	}
 
 	public void processJar(File robotCache, File  robotsDirectory, List<FileSpecification> updatedJarList) {
-		// TODO WindowUtil.setStatus("Extracting .jar: " + getFileName());
+		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
+
+		if (windowManager != null) {
+			windowManager.setStatus("Extracting .jar: " + getFileName());
+		}
 
 		File dest;
 
@@ -113,11 +118,15 @@ class JarFileSpecification extends FileSpecification {
 		boolean always = alwaysReplace;
 		byte buf[] = new byte[2048];
 
+		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
+
 		try {
 			JarEntry entry = jarIS.getNextJarEntry();
 
 			while (entry != null) {
-				// TODO WindowUtil.setStatus(statusPrefix + " (" + entry.getName() + ")");
+				if (windowManager != null) {
+					windowManager.setStatus(statusPrefix + " (" + entry.getName() + ")");
+				}
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
 
@@ -137,7 +146,9 @@ class JarFileSpecification extends FileSpecification {
 						if (r == 0) {
 							always = true;
 						} else if (r == 2) {
-							// TODO WindowUtil.setStatus(entry.getName() + " skipped.");
+							if (windowManager != null) {
+								windowManager.setStatus(entry.getName() + " skipped.");
+							}
 							entry = jarIS.getNextJarEntry();
 							continue;
 						} else if (r == 3) {

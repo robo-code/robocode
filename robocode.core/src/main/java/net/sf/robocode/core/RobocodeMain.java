@@ -72,8 +72,6 @@ public final class RobocodeMain extends RobocodeMainBase {
 	final private IVersionManager versionManager;
 
 	private class Setup {
-		final boolean securityOn = true;
-		boolean experimentalOn;
 		boolean minimize;
 		boolean exitOnComplete;
 		String battleFilename;
@@ -142,7 +140,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				if (setup.battleFilename == null && !properties.getLastRunVersion().equals(currentVersion)) {
 					properties.setLastRunVersion(currentVersion);
 					properties.saveProperties();
-					runIntroBattle();
+					windowManager.runIntroBattle();
 				}
 			}
 
@@ -181,51 +179,27 @@ public final class RobocodeMain extends RobocodeMainBase {
 		}
 	}
 
-	public void runIntroBattle() {
-		final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
-
-		if (intro.exists()) {
-			battleManager.setBattleFilename(intro.getPath());
-			battleManager.loadBattleProperties();
-
-			boolean origShowResults = properties.getOptionsCommonShowResults();
-
-			properties.setOptionsCommonShowResults(false);
-			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
-			battleManager.setDefaultBattleProperties();
-			properties.setOptionsCommonShowResults(origShowResults);
-
-			/* TODO restartButton.setEnabled(false);
-			 getRobotButtonsPanel().removeAll();
-			 getRobotButtonsPanel().repaint();
-			 */
-		}
-	}
-
 	public void loadSetup(String[] args) {
 
-		/* TODO REMOVE 
-		 final String robocodeDir = System.getProperty("WORKINGDIRECTORY");
+		final String nosecMessage = "Robocode is running without a security manager.\n"
+				+ "Robots have full access to your system.\n" + "You should only run robots which you trust!";
+		final String exMessage = "Robocode is running in experimental mode.\n"
+				+ "Robots have access to their IRobotPeer interfaces.\n" + "You should only run robots which you trust!";
 
-		 if (robocodeDir != null) {
-		 changeDirectory(robocodeDir);
-		 }
-		 */
-
-		/* TODO
-		 if (System.getProperty("NOSECURITY", "false").equals("true")) {
-		 WindowUtil.messageWarning(
-		 "Robocode is running without a security manager.\n" + "Robots have full access to your system.\n"
-		 + "You should only run robots which you trust!");
-		 setup.securityOn = false;
-		 }
-		 if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-		 WindowUtil.messageWarning(
-		 "Robocode is running in experimental mode.\n" + "Robots have access to their IRobotPeer interfaces.\n"
-		 + "You should only run robots which you trust!");
-		 setup.experimentalOn = true;
-		 }
-		 */
+		if (System.getProperty("NOSECURITY", "false").equals("true")) {
+			Logger.logMessage(nosecMessage);
+		}
+		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+			Logger.logMessage(exMessage);
+		}
+		if (windowManager != null) {
+			if (System.getProperty("NOSECURITY", "false").equals("true")) {
+				windowManager.messageWarning(nosecMessage);
+			}
+			if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
+				windowManager.messageWarning(exMessage);
+			}
+		}
 
 		setup.tps = properties.getOptionsBattleDesiredTPS();
 

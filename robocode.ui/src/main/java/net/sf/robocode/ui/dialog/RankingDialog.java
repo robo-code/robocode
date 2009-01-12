@@ -51,14 +51,16 @@ public class RankingDialog extends BaseScoreDialog {
 	private final AtomicReference<ITurnSnapshot> snapshot;
 	private ITurnSnapshot lastSnapshot;
 	private int lastRows;
+	private final MenuBar menu;
 
-	public RankingDialog(IWindowManager windowManager) {
+	public RankingDialog(IWindowManager windowManager, MenuBar menu) {
 		super(windowManager, false);
 		battleObserver = new BattleObserver();
 		timerTask = new Timer(1000 / 2, new TimerTask());
 		snapshot = new AtomicReference<ITurnSnapshot>();
 		lastRows = 0;
 		tableModel = new BattleRankingTableModel();
+		this.menu=menu;
 		initialize();
 		setTitle("Ranking");
 	}
@@ -93,7 +95,7 @@ public class RankingDialog extends BaseScoreDialog {
 	}
 
 	protected void onDialogHidden() {
-		// TODO ZAMO manager.getWindowManager().getRobocodeFrame().getRobocodeMenuBar().getOptionsShowRankingCheckBoxMenuItem().setState(false);
+		menu.getOptionsShowRankingCheckBoxMenuItem().setState(false);
 		timerTask.stop();
 		windowManager.removeBattleListener(battleObserver);
 		dispose();
