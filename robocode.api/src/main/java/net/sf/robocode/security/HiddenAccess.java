@@ -89,10 +89,10 @@ public class HiddenAccess {
 			initContainer = main.getDeclaredMethod("initContainer");
 			initContainer.setAccessible(true);
 
-			initContainerRe = main.getDeclaredMethod("initContainerForRobotEngine", File.class);
+			initContainerRe = main.getDeclaredMethod("initContainerForRobocodeEngine", File.class);
 			initContainerRe.setAccessible(true);
 
-			cleanup = main.getDeclaredMethod("cleanup");
+			cleanup = main.getDeclaredMethod("cleanupForRobocodeEngine");
 			cleanup.setAccessible(true);
 
 			robocodeMain = main.getDeclaredMethod("robocodeMain", Object.class);

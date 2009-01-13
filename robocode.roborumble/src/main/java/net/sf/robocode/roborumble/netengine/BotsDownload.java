@@ -207,6 +207,11 @@ public class BotsDownload {
 			}
 			urlc.disconnect();
 
+			final File dir = new File(participantsfile).getParentFile();
+			if (!dir.exists() && !dir.mkdirs()) {
+				Logger.logError("Can't create " + dir);
+			}
+
 			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(participantsfile)), false);
 
 			for (String bot : bots) {
@@ -424,6 +429,11 @@ public class BotsDownload {
 			urlc.setRequestMethod("GET");
 			urlc.setDoInput(true);
 			urlc.connect();
+
+			final File dir = new File(file).getParentFile();
+			if (!dir.exists() && !dir.mkdirs()) {
+				Logger.logError("Can't create " + dir);
+			}
 
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);
 

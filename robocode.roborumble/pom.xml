@@ -38,5 +38,10 @@
             <artifactId>codesize</artifactId>
             <version>1.1</version>
         </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.battle</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
     </dependencies>
 </project>

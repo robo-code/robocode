@@ -51,7 +51,13 @@ public abstract class RobocodeMainBase implements Runnable {
 		Container.init();
 	}
 
-	public static void initContainerForRobotEngine(File robocodeHome) {
+	public static void cleanupForRobocodeEngine() {
+		// here we cross transition to EngineClassLoader classes using interface which is defined in system classLoader
+		RobocodeMainBase main = Container.getComponent(RobocodeMainBase.class);
+		main.cleanup();
+	}
+
+	public static void initContainerForRobocodeEngine(File robocodeHome) {
 		try {
 			if (robocodeHome == null) {
 				robocodeHome = FileUtil.getCwd();
