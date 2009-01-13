@@ -377,7 +377,7 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 		}
 
 		if (IBasicRobot.class.isAssignableFrom(robotClass)) {
-			if (!isAdvancedRobot || !isJuniorRobot) {
+			if (!(isAdvancedRobot || isJuniorRobot)) {
 				isStandardRobot = true;
 			}
 		}
