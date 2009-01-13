@@ -119,7 +119,7 @@ public class RbSerializerTest {
 		ec.getBullets().add(new BulletCommand(1.0, true, 0.9354, 11));
 		ec.getTeamMessages().add(new TeamMessage("Foo", "Bar", null));
 		ec.getDebugProperties().add(
-				new DebugProperty("UTF8 Native characters", "Pøíliš luouèkı kùò úpìl ïábelské ódy"));
+				new DebugProperty("UTF8 Native characters", "Pøíliš lu?ouèkı kùò úpìl ïábelské ódy"));
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
 		RbSerializer rbs = new RbSerializer();
@@ -129,7 +129,7 @@ public class RbSerializerTest {
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
 		Assert.assertEquals(ec2.getDebugProperties().get(0).getKey(), "UTF8 Native characters");
-		Assert.assertEquals(ec2.getDebugProperties().get(0).getValue(), "Pøíliš luouèkı kùò úpìl ïábelské ódy");
+		Assert.assertEquals(ec2.getDebugProperties().get(0).getValue(), "Pøíliš lu?ouèkı kùò úpìl ïábelské ódy");
 	}
 
 	// @Test
@@ -183,6 +183,7 @@ public class RbSerializerTest {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	@Test
 	public void graphics() throws InterruptedException {
 		final Graphics2DSerialized sg = new Graphics2DSerialized();

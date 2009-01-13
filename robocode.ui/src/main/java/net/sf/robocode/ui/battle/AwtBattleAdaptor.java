@@ -127,7 +127,8 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 				if (lastSnapshot != current || !skipSameFrames || forceRepaint) {
 					lastSnapshot = current;
 
-					IRobotSnapshot[] robots=null;
+					IRobotSnapshot[] robots = null;
+
 					if (readoutText) {
 						synchronized (snapshot) {
 							robots = lastSnapshot.getRobots();
@@ -148,7 +149,6 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 							((RobotSnapshot) robot).updateOutputStreamSnapshot(null);
 						}
 					}
-
 
 					calculateFPS();
 				}

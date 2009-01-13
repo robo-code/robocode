@@ -208,6 +208,7 @@ public class BotsDownload {
 			urlc.disconnect();
 
 			final File dir = new File(participantsfile).getParentFile();
+
 			if (!dir.exists() && !dir.mkdirs()) {
 				Logger.logError("Can't create " + dir);
 			}
@@ -431,6 +432,7 @@ public class BotsDownload {
 			urlc.connect();
 
 			final File dir = new File(file).getParentFile();
+
 			if (!dir.exists() && !dir.mkdirs()) {
 				Logger.logError("Can't create " + dir);
 			}

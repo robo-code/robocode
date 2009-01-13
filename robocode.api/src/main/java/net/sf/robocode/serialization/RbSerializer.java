@@ -76,7 +76,7 @@ public final class RbSerializer {
 	public final static byte MouseWheelMovedEvent_TYPE = 54;
 
 	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
-	private static Dictionary<Class, Byte> classToType = new Hashtable<Class, Byte>();
+	private static Dictionary<Class<?>, Byte> classToType = new Hashtable<Class<?>, Byte>();
 	private final static Charset charset;
 	private final CharsetEncoder encoder;
 	private final CharsetDecoder decoder;
@@ -171,12 +171,14 @@ public final class RbSerializer {
 			throw new IOException("Version of data is not supported. We support only strong match");
 		}
 		int length = buffer.getInt();
+
 		if (length != buffer.remaining()) {
 			throw new IOException("Wrong buffer size, " + length + "expected but got " + buffer.remaining());
 		}
 
 		// body
 		final Object res = deserializeAny(buffer);
+
 		if (buffer.remaining() != 0) {
 			throw new IOException("Serialization failed");
 		}
@@ -475,13 +477,15 @@ public final class RbSerializer {
 	public static ByteBuffer serializeToBuffer(Object src) throws IOException {
 		RbSerializer rbs = new RbSerializer();
 		final Byte type = classToType.get(src.getClass());
+
 		return rbs.serialize(type, src);
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({ "unchecked"})
 	public static <T> T deserializeFromBuffer(ByteBuffer buffer) throws IOException {
 		RbSerializer rbs = new RbSerializer();
 		final Object res = rbs.deserialize(buffer);
+
 		return (T) res;
 	}
 

@@ -39,7 +39,6 @@ import java.util.zip.ZipOutputStream;
  */
 public class RecordManager implements IRecordManager {
 	private File tempFile;
-	private final ISettingsManager properties;
 	private BattleRecorder recorder;
 
 	public BattleRecordInfo recordInfo;
@@ -52,7 +51,6 @@ public class RecordManager implements IRecordManager {
 	private ObjectInputStream objectReadStream;
 
 	public RecordManager(ISettingsManager properties) {
-		this.properties = properties;
 		recorder = new BattleRecorder(this);
 	}
 

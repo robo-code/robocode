@@ -16,6 +16,8 @@ package net.sf.robocode.repository;
  * @author Pavel Savara (original)
  */
 abstract class NamedFileSpecification extends FileSpecification implements Comparable<INamedFileSpecification>, INamedFileSpecification {
+	private static final long serialVersionUID = 1L;
+
 	private String fullPackage;
 
 	private String fullClassNameWithVersion;

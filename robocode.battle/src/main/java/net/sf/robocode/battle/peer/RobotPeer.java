@@ -461,12 +461,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException {
 		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
 		final ExecResults results = executeImpl(commands);
+
 		return RbSerializer.serializeToBuffer(results);
 	}
 
 	public ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException {
 		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
 		final ExecResults results = waitForBattleEndImpl(commands);
+
 		return RbSerializer.serializeToBuffer(results);
 	}
 
