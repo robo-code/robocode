@@ -127,9 +127,10 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 				if (lastSnapshot != current || !skipSameFrames || forceRepaint) {
 					lastSnapshot = current;
 
+					IRobotSnapshot[] robots=null;
 					if (readoutText) {
 						synchronized (snapshot) {
-							IRobotSnapshot[] robots = lastSnapshot.getRobots();
+							robots = lastSnapshot.getRobots();
 
 							for (int i = 0; i < robots.length; i++) {
 								RobotSnapshot robot = (RobotSnapshot) robots[i];
@@ -141,6 +142,13 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 					}
 
 					battleEventDispatcher.onTurnEnded(new TurnEndedEvent(lastSnapshot));
+
+					if (readoutText) {
+						for (IRobotSnapshot robot : robots) {
+							((RobotSnapshot) robot).updateOutputStreamSnapshot(null);
+						}
+					}
+
 
 					calculateFPS();
 				}

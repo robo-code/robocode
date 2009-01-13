@@ -217,8 +217,9 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 				selectedRobots = battleProperties.getSelectedRobots();
 			}
 			robotSelectionPanel = net.sf.robocode.core.Container.createComponent(RobotSelectionPanel.class);
+			final boolean ignoreTeamRobots =  false; //TODO do we reall want to have this !properties.getOptionsTeamShowTeamRobots();
 			robotSelectionPanel.setup(MIN_ROBOTS, MAX_ROBOTS, true, "Select robots for the battle", false, false, false,
-					false, false, !properties.getOptionsTeamShowTeamRobots(), selectedRobots);
+					false, false, ignoreTeamRobots, selectedRobots);
 		}
 		return robotSelectionPanel;
 	}

@@ -69,8 +69,6 @@ public class RobotClassLoader extends URLClassLoader {
 	private CodeSource codeSource;
 	private Set<String> referencedClasses = new HashSet<String>();
 	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
-	private long uid1;
-	private long uid2;
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		this(robotClassPath, robotFullClassName, null);
