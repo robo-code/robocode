@@ -19,7 +19,6 @@
                 <configuration>
                     <finalName>robocode</finalName>
                     <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
                         <manifest>
                             <mainClass>robocode.Robocode</mainClass>
                         </manifest>
