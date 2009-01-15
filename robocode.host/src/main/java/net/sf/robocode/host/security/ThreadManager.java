@@ -145,7 +145,7 @@ public class ThreadManager implements IThreadManager {
 		if (!dir.exists()) {
 			robotProxy.println("SYSTEM: Creating a data directory for you.");
 			outputStreamThreads.add(c);
-			if (!dir.exists() && !dir.mkdir()) {
+			if (!dir.exists() && !dir.mkdirs()) {
 				syserr.println("Can't create dir " + dir.toString());
 			}
 		}
