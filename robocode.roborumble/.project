@@ -3,6 +3,10 @@
   <comment/>
   <projects>
     <project>robocode.api</project>
+    <project>robocode.battle</project>
+    <project>robocode.core</project>
+    <project>robocode.host</project>
+    <project>robocode.repository</project>
   </projects>
   <buildSpec>
     <buildCommand>
