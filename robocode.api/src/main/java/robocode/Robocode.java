@@ -16,7 +16,13 @@ import net.sf.robocode.security.HiddenAccess;
 
 
 /**
- * @author Pavel Savara (original)
+ * Robocode - A programming game involving battling AI tanks.<br>
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
+ *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
+ * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public class Robocode {
 

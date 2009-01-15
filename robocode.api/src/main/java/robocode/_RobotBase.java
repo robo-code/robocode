@@ -20,6 +20,8 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 
 /**
+ * @exclude
+ *
  * This is the base class of all robots used by the system. You should not base
  * your robots on this class.
  * <p/>

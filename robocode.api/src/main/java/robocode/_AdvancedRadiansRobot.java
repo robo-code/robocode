@@ -23,6 +23,8 @@ import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 
 /**
+ * @exclude
+ * 
  * This class is used by the system as a placeholder for all *Radians calls in
  * {@link AdvancedRobot}. You may refer to this class for documentation only.
  * <p/>
