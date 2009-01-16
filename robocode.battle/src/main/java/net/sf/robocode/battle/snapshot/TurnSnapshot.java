@@ -30,21 +30,8 @@ import java.util.*;
 
 
 /**
- * A battle snapshot, which is a view of the data for the battle at a particular
- * instant in time.
- * </p>
- * Note that this class is implemented as an immutable object. The idea of the
- * immutable object is that it cannot be modified after it has been created.
- * See the <a href="http://en.wikipedia.org/wiki/Immutable_object">Immutable
- * object</a> definition on Wikipedia.
- * </p>
- * Immutable objects are considered to be more thread-safe than mutable
- * objects, if implemented correctly.
- * </p>
- * All member fields must be final, and provided thru the constructor.
- * The constructor <em>must</em> make a deep copy of the data assigned to the
- * member fields and the getters of this class must return a copy of the data
- * that to return.
+ * A snapshot of a battle turn at a specific time instant in a battle.
+ * The snapshot contains a snapshot of the battle turn data at that specific time.
  *
  * @author Flemming N. Larsen (original)
  * @author Pavel Savara (contributor)
@@ -54,39 +41,36 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 
 	private static final long serialVersionUID = 1L;
 
-	// The width of the battlefield
-	// private final int fieldWidth;
-
-	// The height of the battlefield
-	// private final int fieldHeight;
-
-	// List of all robots participating in the battle
+	/** List of snapshots for the robots participating in the battle */
 	private List<IRobotSnapshot> robots;
 
-	// List of all bullets currently the battlefield
+	/** List of snapshots for the bullets that are currently on the battlefield */
 	private List<IBulletSnapshot> bullets;
 
-	// Current TPS (turns per second)
+	/** Current TPS (turns per second) */
 	private int tps;
 
-	// Current turn
-	private int turn;
-
-	// Current round
+	/** Current round in the battle */
 	private int round;
 
+	/** Current turn in the battle round */
+	private int turn;
+
 	/**
-	 * Constructs a snapshot of the battle.
+	 * Creates a snapshot of a battle turn that must be filled out with data later.
+	 */
+	public TurnSnapshot() {}
+
+	/**
+	 * Creates a snapshot of a battle turn.
 	 *
-	 * @param battle		the battle to make a snapshot of.
-	 * @param battleRobots TODO
-	 * @param battleBullets TODO
-	 * @param readoutText TODO
+	 * @param battle the battle to make a snapshot of.
+	 * @param battleRobots the robots participating in the battle.
+	 * @param battleBullets the current bullet on the battlefield.
+	 * @param readoutText {@code true} if the output text from the robots must be included in the snapshot;
+	 *                    {@code false} otherwise.
 	 */
 	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets, boolean readoutText) {
-		// fieldWidth = battle.getBattleField().getWidth();
-		// fieldHeight = battle.getBattleField().getHeight();
-
 		robots = new ArrayList<IRobotSnapshot>();
 		bullets = new ArrayList<IBulletSnapshot>();
 
@@ -103,26 +87,49 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		round = battle.getRoundNum();
 	}
 
+	@Override
+	public String toString() {
+		return this.round + "/" + turn + " (" + this.robots.size() + ")";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public IRobotSnapshot[] getRobots() {
 		return robots.toArray(new IRobotSnapshot[robots.size()]);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public IBulletSnapshot[] getBullets() {
 		return bullets.toArray(new IBulletSnapshot[bullets.size()]);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getTPS() {
 		return tps;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getRound() {
 		return round;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getTurn() {
 		return turn;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public IScoreSnapshot[] getSortedTeamScores() {
 		List<IScoreSnapshot> copy = new ArrayList<IScoreSnapshot>(Arrays.asList(getIndexedTeamScores()));
 
@@ -131,6 +138,9 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		return copy.toArray(new IScoreSnapshot[copy.size()]);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public IScoreSnapshot[] getIndexedTeamScores() {
 		// team scores are computed on demand from team scores to not duplicate data in the snapshot
 
@@ -146,7 +156,7 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 			if (snapshot == null) {
 				results.set(robot.getContestantIndex(), robot.getScoreSnapshot());
 			} else {
-				final ScoreSnapshot sum = new ScoreSnapshot(snapshot, robot.getScoreSnapshot(), robot.getTeamName());
+				final ScoreSnapshot sum = new ScoreSnapshot(robot.getTeamName(), snapshot, robot.getScoreSnapshot());
 
 				results.set(robot.getContestantIndex(), sum);
 			}
@@ -162,11 +172,9 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		return scores.toArray(new IScoreSnapshot[scores.size()]);
 	}
 
-	@Override
-	public String toString() {
-		return this.round + "/" + turn + " (" + this.robots.size() + ")";
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("turn"); {
 			writer.writeAttribute("round", round);
@@ -190,8 +198,9 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		writer.endElement();
 	}
 
-	public TurnSnapshot() {}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("turn", new XmlReader.Element() {
 			public IXmlSerializable read(XmlReader reader) {

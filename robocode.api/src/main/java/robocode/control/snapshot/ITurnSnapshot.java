@@ -15,7 +15,7 @@ package robocode.control.snapshot;
 
 
 /**
- * Interface of a turn snapshot.
+ * Interface of a battle turn snapshot at a specific time instant in a battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -25,16 +25,16 @@ package robocode.control.snapshot;
 public interface ITurnSnapshot {
 
 	/**
-	 * Returns all robots participating in the battle.
+	 * Returns a list of snapshots for the robots participating in the battle. 
 	 *
-	 * @return a list containing all robots participating in the battle.
+	 * @return a list of snapshots for the robots participating in the battle. 
 	 */
 	IRobotSnapshot[] getRobots();
 
 	/**
-	 * Returns all bullets currently the battlefield.
+	 * Returns a list of snapshots for the bullets that are currently on the battlefield.
 	 *
-	 * @return a list containing all bullets currently the battlefield.
+	 * @return a list of snapshots for the bullets that are currently on the battlefield.
 	 */
 	IBulletSnapshot[] getBullets();
 
@@ -46,26 +46,30 @@ public interface ITurnSnapshot {
 	int getTPS();
 
 	/**
-	 * Returns the current turn.
+	 * Returns the current round of the battle.
 	 *
-	 * @return the current turn.
+	 * @return the current round of the battle.
 	 */
 	int getRound();
 
 	/**
-	 * Returns the current turn.
+	 * Returns the current turn in the battle round.
 	 *
-	 * @return the current turn.
+	 * @return the current turn in the battle round.
 	 */
 	int getTurn();
 
 	/**
-	 * @return scores grouped by teams, ordered by position
+	 * Returns a list of sorted scores grouped by teams, ordered by position.
+	 *
+	 * @return a list of sorted scores grouped by teams, ordered by position.
 	 */
 	IScoreSnapshot[] getSortedTeamScores();
 
 	/**
-	 * @return scores grouped by teams, in stable order
+	 * Returns a list of indexed scores grouped by teams, i.e. unordered.
+	 *
+	 * @return a list of indexed scores grouped by teams, i.e. unordered.
 	 */
 	IScoreSnapshot[] getIndexedTeamScores();
 }

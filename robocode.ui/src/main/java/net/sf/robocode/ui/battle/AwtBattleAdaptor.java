@@ -136,7 +136,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 							for (int i = 0; i < robots.length; i++) {
 								RobotSnapshot robot = (RobotSnapshot) robots[i];
 
-								robot.updateOutputStreamSnapshot(outCache[i].toString());
+								robot.setOutputStreamSnapshot(outCache[i].toString());
 								outCache[i].setLength(0);
 							}
 						}
@@ -146,7 +146,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 					if (readoutText) {
 						for (IRobotSnapshot robot : robots) {
-							((RobotSnapshot) robot).updateOutputStreamSnapshot(null);
+							((RobotSnapshot) robot).setOutputStreamSnapshot(null);
 						}
 					}
 

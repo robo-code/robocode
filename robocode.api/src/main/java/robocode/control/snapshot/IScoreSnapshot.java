@@ -15,7 +15,7 @@ package robocode.control.snapshot;
 
 
 /**
- * Interface of a robot/team score snapshot.
+ * Interface of a score snapshot at a specific time instant in a battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -25,9 +25,9 @@ package robocode.control.snapshot;
 public interface IScoreSnapshot extends Comparable<IScoreSnapshot> {
 
 	/**
-	 * Returns the name of the robot.
+	 * Returns the name of the contestant, i.e. a robot or team.
 	 *
-	 * @return the name of the robot.
+	 * @return the name of the contestant, i.e. a robot or team.
 	 */
 	String getName();
 

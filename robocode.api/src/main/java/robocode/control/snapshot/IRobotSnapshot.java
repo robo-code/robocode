@@ -15,7 +15,7 @@ package robocode.control.snapshot;
 
 
 /**
- * Interface of a robot snapshot.
+ * Interface of a robot snapshot at a specific time instant in a battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -32,9 +32,9 @@ public interface IRobotSnapshot {
 	String getName();
 
 	/**
-	 * Returns the very short name of the robot.
+	 * Returns the short name of the robot.
 	 *
-	 * @return the very short name of the robot.
+	 * @return the short name of the robot.
 	 */
 	String getShortName();
 
@@ -46,37 +46,37 @@ public interface IRobotSnapshot {
 	String getVeryShortName();
 
 	/**
-	 * Returns the name of the team, or name of the robot if the contestant is not a team.
+	 * Returns the name of the team, which can be the name of a robot if the contestant is not a team, but a robot.  
 	 *
-	 * @return the name of the team, or name of the robot if the contestant is not a team.
+	 * @return the name of the team.
 	 */
 	String getTeamName();
 
 	/**
-	 * Returns the index of the contestant that will not be changed during a battle.
+	 * Returns the contestant index, which will not be changed during a battle.
 	 *
-	 * @return the index of the contestant that will not be changed during a battle.
+	 * @return the contestant index.
 	 */
 	int getContestantIndex();
 
 	/**
-	 * Returns the robot status.
+	 * Returns the robot state.
 	 *
-	 * @return the robot status.
+	 * @return the robot state.
 	 */
 	RobotState getState();
 
 	/**
-	 * Returns the energy level.
+	 * Returns the energy level of the robot.
 	 *
-	 * @return the energy level.
+	 * @return the energy level of the robot.
 	 */
 	double getEnergy();
 
 	/**
-	 * Returns the velocity.
+	 * Returns the velocity of the robot.
 	 *
-	 * @return the velocity.
+	 * @return the velocity of the robot.
 	 */
 	double getVelocity();
 
@@ -102,30 +102,30 @@ public interface IRobotSnapshot {
 	double getRadarHeading();
 
 	/**
-	 * Returns the gun heat.
+	 * Returns the gun heat of the robot.
 	 *
-	 * @return the gun heat.
+	 * @return the gun heat of the robot.
 	 */
 	double getGunHeat();
 
 	/**
-	 * Returns the x coordinate of the robot.
+	 * Returns the X position of the robot.
 	 *
-	 * @return the x coordinate of the robot.
+	 * @return the X position of the robot.
 	 */
 	double getX();
 
 	/**
-	 * Returns the y coordinate of the robot.
+	 * Returns the Y position of the robot.
 	 *
-	 * @return the y coordinate of the robot.
+	 * @return the Y position of the robot.
 	 */
 	double getY();
 
 	/**
 	 * Returns the color of the body.
 	 *
-	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
@@ -134,7 +134,7 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the color of the gun.
 	 *
-	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
@@ -143,7 +143,7 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the color of the radar.
 	 *
-	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
@@ -152,62 +152,58 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the color of the scan arc.
 	 *
-	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
 	int getScanColor();
 
 	/**
-	 * Returns a flag specifying if this robot is a {@link robocode.Droid Droid}.
+	 * Checks if this robot is a {@link robocode.Droid Droid}.
 	 *
 	 * @return {@code true} if this robot is a Droid; {@code false} otherwise.
 	 */
 	boolean isDroid();
 
 	/**
-	 * Returns a flag specifying if this robot is an {@link robocode.robotinterfaces.IPaintRobot IPaintRobot}
-	 * or is asking for getGraphics().
+	 * Checks if this robot is a {@link robocode.robotinterfaces.IPaintRobot IPaintRobot} or is invoking getGraphics()
 	 *
-	 * @return {@code true} if this robot is a an IPaintRobot or is asking for getGraphics();
-	 *         {@code false} otherwise.
+	 * @return {@code true} if this robot is a painting; {@code false} otherwise.
 	 */
 	boolean isPaintRobot();
 
 	/**
-	 * Returns a flag specifying if robot's (onPaint) painting is enabled for the robot.
+	 * Checks if painting is enabled for this robot.
 	 *
-	 * @return {@code true} if the paintings for this robot is enabled;
-	 *         {@code false} otherwise.
+	 * @return {@code true} if painting is enabled for this robot; {@code false} otherwise.
 	 */
 	boolean isPaintEnabled();
 
 	/**
-	 * Returns a flag specifying if RobocodeSG painting is enabled for the robot.
+	 * Checks if RobocodeSG painting is enabled for this robot.
 	 *
-	 * @return {@code true} if RobocodeSG painting is enabled for this robot;
-	 *         {@code false} otherwise.
+	 * @return {@code true} if RobocodeSG painting is enabled for this robot; {@code false} otherwise.
 	 */
 	boolean isSGPaintEnabled();
 
 	/**
-	 * Returns a list of all debug properties.
+	 * Returns snapshot of debug properties.
 	 * 
-	 * @return a list of all debug properties.
+	 * @return snapshot of debug properties.
 	 */
 	IDebugProperty[] getDebugProperties();
 
 	/**
-	 * Returns a snapshot of the output print stream for this robot.
+	 * Returns snapshot of the output print stream for this robot.
 	 *
 	 * @return a string containing the snapshot of the output print stream.
 	 */
 	String getOutputStreamSnapshot();
 
 	/**
-	 * Returns snapshot current score.
+	 * Returns snapshot of the current score for this robot.
 	 *
-	 * @return snapshot current score.
+	 * @return snapshot of the current score for this robot.
 	 */
 	IScoreSnapshot getScoreSnapshot();
 }

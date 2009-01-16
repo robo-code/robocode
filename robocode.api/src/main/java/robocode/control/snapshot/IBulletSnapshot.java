@@ -15,7 +15,7 @@ package robocode.control.snapshot;
 
 
 /**
- * Interface of a bullet snapshot.
+ * Interface of a bullet snapshot at a specific time instant in a battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -39,61 +39,68 @@ public interface IBulletSnapshot {
 	double getPower();
 
 	/**
-	 * Returns the x coordinate of the bullet.
+	 * Returns the X position of the bullet.
 	 *
-	 * @return the x coordinate of the bullet.
+	 * @return the X position of the bullet.
 	 */
 	double getX();
 
 	/**
-	 * Returns the y coordinate of the bullet.
+	 * Returns the Y position of the bullet.
 	 *
-	 * @return the y coordinate of the bullet.
+	 * @return the Y position of the bullet.
 	 */
 	double getY();
 
 	/**
-	 * Returns the x coordinate where to paint the bullet.
+	 * Returns the X painting position of the bullet.
+	 * Note that this is not necessarily equal to the X position of the bullet, even though
+	 * it will be in most cases. The painting position of the bullet is needed as the bullet
+	 * will "stick" to its victim, but only visually. 
 	 *
-	 * @return the x coordinate where to paint the bullet.
+	 * @return the X painting position of the bullet.
 	 */
 	double getPaintX();
 
 	/**
-	 * Returns the y coordinate where to paint the bullet.
+	 * Returns the Y painting position of the bullet.
+	 * Note that this is not necessarily equal to the Y position of the bullet, even though
+	 * it will be in most cases. The painting position of the bullet is needed as the bullet
+	 * will "stick" to its victim, but only visually. 
 	 *
-	 * @return the y coordinate where to paint the bullet.
+	 * @return the Y painting position of the bullet.
 	 */
 	double getPaintY();
 
 	/**
 	 * Returns the color of the bullet.
 	 *
-	 * @return a RGBA color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
 	int getColor();
 
 	/**
-	 * Returns the frame number to display.
+	 * Returns the frame number to display, i.e. when the bullet explodes.
 	 *
-	 * @return the frame number to display.
+	 * @return the frame number.
 	 */
 	int getFrame();
 
 	/**
-	 * Returns the flag specifying if this bullet has turned into an explosion.
+	 * Checks if the bullet has become an explosion.
 	 *
-	 * @return {@code true} if this bullet has turned into an explosion;
-	 *         {@code false} otherwise
+	 * @return {@code true} if the bullet is an explosion; {@code false} otherwise.
 	 */
 	boolean isExplosion();
 
 	/**
-	 * Returns the index to which explosion image that must be rendered.
+	 * Returns the explosion image index, which is different depending on the type of explosion.
+	 * E.g. if it is a small explosion on a robot that has been hit by this bullet,
+	 * or a big explosion when a robot dies.
 	 *
-	 * @return the index to which explosion image that must be rendered.
+	 * @return the explosion image index.
 	 */
 	int getExplosionImageIndex();
 }

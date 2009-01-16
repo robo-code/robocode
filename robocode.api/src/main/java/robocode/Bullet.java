@@ -50,13 +50,13 @@ public class Bullet implements Serializable {
 	 * Called by the game to create a new {@code Bullet} object
 	 *
 	 * @param heading   the heading of the bullet, in radians.
-	 * @param x		 the starting x position of the bullet.
-	 * @param y		 the starting y position of the bullet.
+	 * @param x		 the starting X position of the bullet.
+	 * @param y		 the starting Y position of the bullet.
 	 * @param power	 the power of the bullet.
 	 * @param ownerName the name of the owner robot that owns the bullet.
-	 * @param victimName the name of the robot hit by bullet
-	 * @param isActive still moves
-	 * @param bulletId unique id of bullet for owner robot
+	 * @param victimName the name of the robot hit by the bullet.
+	 * @param isActive {@code true} if the bullet still moves; {@code false} otherwise.
+	 * @param bulletId unique id of bullet for owner robot.
 	 */
 	public Bullet(double heading, double x, double y, double power, String ownerName, String victimName, boolean isActive, int bulletId) {
 		this.headingRadians = heading;
@@ -164,10 +164,11 @@ public class Bullet implements Serializable {
 
 	/**
 	 * Updates this bullet based on the specified bullet status.
-	 * @param x TODO
-	 * @param y TODO
-	 * @param victimName TODO
-	 * @param isActive TODO
+	 *
+	 * @param x the new X position of the bullet .
+	 * @param y the new Y position of the bullet.
+	 * @param victimName the name if the victim that has been hit by this bullet.
+	 * @param isActive {@code true} if the bullet still moves; {@code false} otherwise.
 	 */
 	// this method is invisible on RobotAPI
 	private void update(double x, double y, String victimName, boolean isActive) {
@@ -242,6 +243,5 @@ public class Bullet implements Serializable {
 
 			return new Bullet(headingRadians, x, y, power, ownerName, victimName, isActive, -1);
 		}
-
 	}
 }

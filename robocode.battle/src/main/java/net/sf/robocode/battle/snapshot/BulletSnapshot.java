@@ -28,21 +28,8 @@ import java.util.Dictionary;
 
 
 /**
- * A bullet snapshot, which is a view of the data for the bullet at a particular
- * instant in time.
- * </p>
- * Note that this class is implemented as an immutable object. The idea of the
- * immutable object is that it cannot be modified after it has been created.
- * See the <a href="http://en.wikipedia.org/wiki/Immutable_object">Immutable
- * object</a> definition on Wikipedia.
- * </p>
- * Immutable objects are considered to be more thread-safe than mutable
- * objects, if implemented correctly.
- * </p>
- * All member fields must be final, and provided thru the constructor.
- * The constructor <em>must</em> make a deep copy of the data assigned to the
- * member fields and the getters of this class must return a copy of the data
- * that to return.
+ * A snapshot of a bullet at a specific time instant in a battle.
+ * The snapshot contains a snapshot of the bullet data at that specific time.
  *
  * @author Flemming N. Larsen (original)
  * @author Pavel Savara (contributor)
@@ -52,114 +39,138 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 
 	private static final long serialVersionUID = 1L;
 
-	// The name of the robot that owns this bullet
-	// private final String ownerName;
-
-	// The bullet state
+	/** The bullet state */
 	private BulletState state;
 
-	// The bullet power
+	/** The bullet power */
 	private double power;
 
-	// The x coordinate
+	/** The x position */
 	private double x;
-	// The y coordinate
+
+	/** The y position */
 	private double y;
 
-	// The x coordinate for painting (due to offset on robot when bullet hits a robot)
+	/** The x painting position (due to offset on robot when bullet hits a robot) */
 	private double paintX;
-	// The y coordinate for painting (due to offset on robot when bullet hits a robot)
+
+	/** The y painting position (due to offset on robot when bullet hits a robot) */
 	private double paintY;
 
-	// The color of the bullet
+	/** The ARGB color of the bullet */
 	private int color = ExecCommands.defaultBulletColor;
 
-	// The current frame number to display
+	/** The current frame number to display, i.e. when the bullet explodes */
 	private int frame;
 
-	// Flag specifying if this bullet has turned into an explosion
+	/** Flag specifying if this bullet has turned into an explosion */
 	private boolean isExplosion;
 
-	// Index to which explosion image that must be rendered
+	/** Index to which explosion image that must be rendered */
 	private int explosionImageIndex;
 
 	/**
-	 * Constructs a snapshot of the bullet.
-	 *
-	 * @param peer the bullet peer to make a snapshot of.
+	 * Creates a snapshot of a bullet that must be filled out with data later.
 	 */
-	public BulletSnapshot(BulletPeer peer) {
-		// ownerName = peer.getOwner().getName();
+	public BulletSnapshot() {}
 
-		state = peer.getState();
+	/**
+	 * Creates a snapshot of a bullet.
+	 *
+	 * @param bullet the bullet to make a snapshot of.
+	 */
+	public BulletSnapshot(BulletPeer bullet) {
+		state = bullet.getState();
 
-		power = peer.getPower();
+		power = bullet.getPower();
 
-		x = peer.getX();
-		y = peer.getY();
+		x = bullet.getX();
+		y = bullet.getY();
 
-		paintX = peer.getPaintX();
-		paintY = peer.getPaintY();
+		paintX = bullet.getPaintX();
+		paintY = bullet.getPaintY();
 
-		color = peer.getColor();
+		color = bullet.getColor();
 
-		frame = peer.getFrame();
+		frame = bullet.getFrame();
 
-		isExplosion = peer instanceof ExplosionPeer;
-		explosionImageIndex = peer.getExplosionImageIndex();
+		isExplosion = (bullet instanceof ExplosionPeer);
+		explosionImageIndex = bullet.getExplosionImageIndex();
 	}
 
 	/**
-	 * Returns the name of the robot that owns this bullet.
-	 *
-	 * @return the name of the robot that owns this bullet.
+	 * {@inheritDoc}
 	 */
-	// public String getOwnerName() {
-	// return ownerName;
-	// }
-
 	public BulletState getState() {
 		return state;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public double getPower() {
 		return power;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public double getPaintX() {
 		return paintX;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public double getPaintY() {
 		return paintY;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getColor() {
 		return color;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getFrame() {
 		return frame;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isExplosion() {
 		return isExplosion;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getExplosionImageIndex() {
 		return explosionImageIndex;
 	}
 
-	public BulletSnapshot() {}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("bullet"); {
 			writer.writeAttribute("state", state.toString());
@@ -181,6 +192,9 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 		writer.endElement();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public XmlReader.Element readXml(XmlReader reader) {
 		return reader.expect("bullet", new XmlReader.Element() {
 			public IXmlSerializable read(XmlReader reader) {
@@ -238,6 +252,5 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 				return snapshot;
 			}
 		});
-
 	}
 }

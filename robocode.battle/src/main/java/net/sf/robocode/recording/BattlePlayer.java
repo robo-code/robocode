@@ -105,7 +105,7 @@ public final class BattlePlayer extends BaseBattle {
 			for (int i = 0; i < robots.length; i++) {
 				RobotSnapshot robot = (RobotSnapshot) robots[i];
 
-				robot.overridePaintEnabled(paint[i]);
+				robot.setPaintEnabled(paint[i]);
 			}
 			eventDispatcher.onTurnEnded(new TurnEndedEvent(snapshot));
 		}
