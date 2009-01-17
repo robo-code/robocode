@@ -38,7 +38,6 @@ package net.sf.robocode.settings;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
-import net.sf.robocode.repository.IRepositoryManager;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -848,9 +847,6 @@ public class SettingsManager implements ISettingsManager {
 	 * @param optionsDevelopmentPath The optionsDevelopmentPath to set
 	 */
 	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
-		if (!optionsDevelopmentPath.equals(this.optionsDevelopmentPath)) {
-			net.sf.robocode.core.Container.getComponent(IRepositoryManager.class).clearRobotList();
-		}
 		this.optionsDevelopmentPath = optionsDevelopmentPath;
 		props.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);
 	}

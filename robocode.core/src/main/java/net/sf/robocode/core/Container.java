@@ -179,7 +179,7 @@ public final class Container extends ContainerBase {
 		return null;
 	}
 
-	public <T> T getBaseComponent(final Class<T> tClass) {
+	protected <T> T getBaseComponent(final Class<T> tClass) {
 		return cache.getComponent(tClass);
 	}
 

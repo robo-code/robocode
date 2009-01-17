@@ -41,6 +41,7 @@ import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.control.RobotSpecification;
 
@@ -80,6 +81,14 @@ public final class RepositoryManager implements IRepositoryManager {
 	public RepositoryManager(ISettingsManager properties, IHostManager hostManager) {
 		this.hostManager = hostManager;
 		this.properties = properties;
+
+		properties.addPropertyListener(new ISettingsListener() {
+			public void settingChanged(String property) {
+				if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)) {
+					clearRobotList();
+				}
+			}
+		});
 	}
 
 	public File getRobotCache() {
