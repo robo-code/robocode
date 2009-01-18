@@ -102,7 +102,7 @@
     </fileSets>
     <files>
         <file>
-            <source>robocode.core/src/main/resources/versions.txt</source>
+            <source>versions.txt</source>
         </file>
     </files>
 </assembly>
