@@ -74,8 +74,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 		super.checkAccess(g);
 
-		ThreadGroup cg = c.getThreadGroup();
-
+		final ThreadGroup cg = c.getThreadGroup();
 		if (cg == null) {
 			// What the heck is going on here?  JDK 1.3 is sending me a dead thread.
 			// This crashes the entire jvm if I don't return here.
@@ -85,7 +84,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
 		if (robotProxy != null) {
-			// TODO ZAMO, review, should I rather ban all access to thread and thread group ?
 			if (cg.activeCount() > 5) {
 				final String message = "Preventing " + Thread.currentThread().getName()
 						+ " from access to threadgroup: " + g.getName() + ".  You may only create 5 threads.";
@@ -94,7 +92,10 @@ public class RobocodeSecurityManager extends SecurityManager {
 				robotProxy.drainEnergy();
 				throw new AccessControlException(message);
 			}
+			return;
 		}
+
+		throw new AccessControlException("Preventing thread with unknown thread group from access");
 	}
 
 	private boolean isSafeThread(Thread c) {
