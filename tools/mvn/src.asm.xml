@@ -8,6 +8,12 @@
     <fileSets>
         <fileSet>
             <excludes>
+                <exclude>**/*.iws</exclude>
+                <exclude>**/*.bak</exclude>
+                <exclude>**/Thumbs.db</exclude>
+                <exclude>**/~*</exclude>
+                <exclude>**/.*</exclude>
+                <exclude>**/.*</exclude>
                 <exclude>**/_svn/**</exclude>
                 <exclude>**/.svn/**</exclude>
                 <exclude>**/.metadata/**</exclude>
