@@ -1,1 +1,1 @@
-mvn package assembly:assembly -Dmaven.test.skip=true
+tools\bin\mvn package assembly:assembly -Dmaven.test.skip=true

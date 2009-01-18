@@ -35,6 +35,11 @@
         <!-- other libraries -->
         <moduleSet>
             <includes>
+                <include>net.sf.robocode:robocode.core</include>
+                <include>net.sf.robocode:robocode.repository</include>
+                <include>net.sf.robocode:robocode.host</include>
+                <include>net.sf.robocode:robocode.battle</include>
+                <include>net.sf.robocode:robocode.sound</include>
                 <include>net.sf.robocode:robocode.ui</include>
                 <include>net.sf.robocode:robocode.ui.editor</include>
             </includes>
@@ -51,6 +56,7 @@
         <moduleSet>
             <includes>
                 <include>net.sf.robocode:robocode.installer</include>
+                <include>net.sf.robocode:robocode.content</include>
             </includes>
             <binaries>
                 <includeDependencies>false</includeDependencies>
@@ -73,6 +79,7 @@
                     <dependencySet>
                         <excludes>
                             <exclude>net.sf.robocode:robocode.content</exclude>
+                            <exclude>net.sf.robocode:robocode.installer</exclude>
                         </excludes>
                         <outputDirectory>robots</outputDirectory>
                         <unpack>true</unpack>

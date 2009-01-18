@@ -1,7 +1,9 @@
 <projectDescription>
   <name>robocode.content</name>
   <comment/>
-  <projects/>
+  <projects>
+    <project>robocode.samples</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>

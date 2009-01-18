@@ -36,7 +36,6 @@ import java.util.jar.JarInputStream;
  * @author Mathew A. Nelsen (original)
  * @author Flemming N. Larsen (contributor)
  */
-@SuppressWarnings({ "ResultOfMethodCallIgnored"})
 public class AutoExtract implements ActionListener {
 	private JDialog licenseDialog;
 	private boolean accepted;
@@ -183,7 +182,7 @@ public class AutoExtract implements ActionListener {
 		String urlJar = AutoExtract.class.getClassLoader().getResource(name).toString();
 		final String src = urlJar.substring("jar:file:".length(), urlJar.indexOf("!/"));
 
-		if (src.contains("!")) {
+		if (src.indexOf('!')>-1) {
 			JOptionPane.showMessageDialog(null,
 					src + "\nContains an exclamation point.  Please move the file to a different directory.");
 			System.exit(0);
@@ -202,7 +201,9 @@ public class AutoExtract implements ActionListener {
 					if (!entryName.startsWith("net")) {
 						File dir = new File(dest, entry.getName());
 
-						dir.mkdirs();
+						if (!dir.exists() && !dir.mkdirs()){
+							System.out.println("Can't create dir " + dir);
+						}
 					}
 				} else {
 					if (!entryName.equals(name)) {
@@ -211,7 +212,9 @@ public class AutoExtract implements ActionListener {
 						File out = new File(dest, entry.getName());
 						File parentDirectory = new File(out.getParent());
 
-						parentDirectory.mkdirs();
+						if (!parentDirectory.exists() && !parentDirectory.mkdirs()){
+							System.out.println("Can't create dir " + parentDirectory);
+						}
 						fos = new FileOutputStream(out);
 
 						int index = 0;
@@ -315,7 +318,9 @@ public class AutoExtract implements ActionListener {
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (rc == JOptionPane.YES_OPTION) {
-					installDir.mkdirs();
+					if (!installDir.exists() && !installDir.mkdirs()){
+						System.out.println("Can't create dir " + installDir);
+					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Installation cancelled.");
 					System.exit(0);

@@ -41,6 +41,8 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.properties</include>
+                    <include>**/*.team</include>
+                    <include>**/*.html</include>
                 </includes>
             </resource>
         </resources>

@@ -11,6 +11,19 @@
     <artifactId>robocode.content</artifactId>
     <version>${parent.version}</version>
     <name>Static content</name>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.samples</artifactId>
+            <version>${parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sf.robocode</groupId>
+                    <artifactId>robocode.api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>

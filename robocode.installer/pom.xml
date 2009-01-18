@@ -11,28 +11,16 @@
     <artifactId>robocode.installer</artifactId>
     <version>${parent.version}</version>
     <name>Robocode Installer</name>
-
-    <dependencies>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.samples</artifactId>
-            <version>${parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.sf.robocode</groupId>
-                    <artifactId>robocode.api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.content</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.4</source>
+                    <target>1.4</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
