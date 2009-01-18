@@ -13,13 +13,13 @@
   <taskdef name="jacobe" classname="com.tiobe.jacobe.JacobeTask" classpath="jacobe.jar"/>
   
   <target name="jacobe">
-  	<beautify dir="../../"/>
+  	<beautify dir="${basedir}/../../"/>
   </target>
 
   <macrodef name="beautify">
     <attribute name="dir"/>
     <sequential>
-      <jacobe input="@{dir}" cfg="robocode.cfg" overwrite="true" nobackup="true"/>
+      <jacobe input="@{dir}" cfg="${basedir}/robocode.cfg" overwrite="true" nobackup="true"/>
     </sequential>
   </macrodef>
 
