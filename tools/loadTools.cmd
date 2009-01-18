@@ -1,1 +1,1 @@
-java -cp loader Loader http://robocode.sourceforge.net/tools/libs/ lib/ ant.jar ant-launcher.jar ivy-2.0.0-rc2.jar jacobe.jar junit.jar
+java -cp loader Loader http://robocode.sourceforge.net/tools/libs/ lib/ ant.jar ant-launcher.jar jacobe.jar junit.jar
