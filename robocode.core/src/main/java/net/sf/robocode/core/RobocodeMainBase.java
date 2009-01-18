@@ -18,6 +18,8 @@ import net.sf.robocode.security.LoggingThreadGroup;
 import java.io.File;
 import java.io.IOException;
 
+import robocode.control.events.IBattleListener;
+
 
 /**
  * There are entrypoints called with reflection from HiddenAccess in robocode.api module,
@@ -28,7 +30,7 @@ import java.io.IOException;
 public abstract class RobocodeMainBase implements Runnable {
 	public abstract void loadSetup(String[] args);
 
-	public abstract void initForRobocodeEngine();
+	public abstract void initForRobocodeEngine(IBattleListener listener);
 
 	public abstract void cleanup();
 
@@ -58,7 +60,7 @@ public abstract class RobocodeMainBase implements Runnable {
 		main.cleanup();
 	}
 
-	public static void initContainerForRobocodeEngine(File robocodeHome) {
+	public static void initContainerForRobocodeEngine(File robocodeHome, IBattleListener listener) {
 		try {
 			if (robocodeHome == null) {
 				robocodeHome = FileUtil.getCwd();
@@ -81,7 +83,7 @@ public abstract class RobocodeMainBase implements Runnable {
 		// here we cross transition to EngineClassLoader classes using interface which is defined in system classLoader
 		RobocodeMainBase main = Container.getComponent(RobocodeMainBase.class);
 
-		main.initForRobocodeEngine();
+		main.initForRobocodeEngine(listener);
 	}
 
 }

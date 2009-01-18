@@ -32,15 +32,34 @@ import java.util.Random;
 public abstract class RobotTestBed extends BattleAdaptor {
 	protected static final IRobocodeEngine engine;
 	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
-	protected int errors = 0;
-	protected int messages = 0;
+	protected static int errors = 0;
+	protected static int messages = 0;
+	public static boolean isDumpingPositions = false;
+	public static boolean isDumpingTurns = false;
+	public static boolean isDumpingOutput = true;
+	public static boolean isDumpingErrors = true;
+	public static boolean isDumpingMessages = true;
 
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
 		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
 		System.setProperty("ROBOTPATH", "target//classes");
-		engine = new RobocodeEngine();
+		engine = new RobocodeEngine(new BattleAdaptor() {
+			public void onBattleMessage(BattleMessageEvent event) {
+				if (isDumpingMessages) {
+					Logger.realOut.println(event.getMessage());
+				}
+				messages++;
+			}
+
+			public void onBattleError(BattleErrorEvent event) {
+				if (isDumpingErrors) {
+					Logger.realErr.println(event.getError());
+				}
+				errors++;
+			}
+		});
 	}
 
 	public RobotTestBed() {
@@ -50,27 +69,9 @@ public abstract class RobotTestBed extends BattleAdaptor {
 			isDumpingErrors = false;
 			isDumpingMessages = false;
 		}
+		errors = 0;
+		messages = 0;
 	}
-
-	public void onBattleMessage(BattleMessageEvent event) {
-		if (isDumpingMessages) {
-			Logger.realOut.println(event.getMessage());
-		}
-		messages++;
-	}
-
-	public void onBattleError(BattleErrorEvent event) {
-		if (isDumpingErrors) {
-			Logger.realErr.println(event.getError());
-		}
-		errors++;
-	}
-
-	public boolean isDumpingPositions = false;
-	public boolean isDumpingTurns = false;
-	public boolean isDumpingOutput = true;
-	public boolean isDumpingErrors = true;
-	public boolean isDumpingMessages = true;
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {

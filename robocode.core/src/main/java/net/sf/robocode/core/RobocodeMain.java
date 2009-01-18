@@ -361,7 +361,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		Container.getComponent(IHostManager.class).cleanup();
 	}
 
-	public void initForRobocodeEngine() {
+	public void initForRobocodeEngine(IBattleListener listener) {
 		final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
 
 		if (windowManager != null) {
@@ -369,6 +369,9 @@ public final class RobocodeMain extends RobocodeMainBase {
 			windowManager.setEnableGUI(false);
 		}
 		Container.getComponent(IHostManager.class).initSecurity();
+		if (listener!=null){
+			Container.getComponent(IBattleManager.class).addListener(listener);
+		}
 		Container.getComponent(ICpuManager.class).getCpuConstant();
 		Container.getComponent(IRepositoryManager.class).loadRobotRepository();
 	}

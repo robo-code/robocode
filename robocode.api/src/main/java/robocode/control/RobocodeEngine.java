@@ -86,7 +86,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public RobocodeEngine() {
-		init(null, null);
+		init(null, (IBattleListener)null);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public RobocodeEngine(File robocodeHome) {
-		init(robocodeHome, null);
+		init(robocodeHome, (IBattleListener)null);
 	}
 
 	/**
@@ -139,6 +139,11 @@ public class RobocodeEngine implements IRobocodeEngine {
 		init(null, listener);
 	}
 
+	public RobocodeEngine(IBattleListener listener) {
+		init(null, listener);
+	}
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -154,12 +159,15 @@ public class RobocodeEngine implements IRobocodeEngine {
 
 	@SuppressWarnings("deprecation") // We must still support deprecated RobocodeListener
 	private void init(File robocodeHome, RobocodeListener listener) {
-		HiddenAccess.initContainerForRobotEngine(robocodeHome);
 		if (listener != null) {
 			battleObserver = new BattleObserver();
 			battleObserver.listener = listener;
-			ContainerBase.getComponent(IBattleManagerBase.class).addListener(battleObserver);
 		}
+		HiddenAccess.initContainerForRobotEngine(robocodeHome, battleObserver);
+	}
+
+	private void init(File robocodeHome, IBattleListener listener) {
+		HiddenAccess.initContainerForRobotEngine(robocodeHome, listener);
 	}
 
 	/**

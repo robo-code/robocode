@@ -20,6 +20,7 @@ import robocode.Bullet;
 import robocode.Event;
 import robocode.RobotStatus;
 import robocode.control.RobotSpecification;
+import robocode.control.events.IBattleListener;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
@@ -89,7 +90,7 @@ public class HiddenAccess {
 			initContainer = main.getDeclaredMethod("initContainer");
 			initContainer.setAccessible(true);
 
-			initContainerRe = main.getDeclaredMethod("initContainerForRobocodeEngine", File.class);
+			initContainerRe = main.getDeclaredMethod("initContainerForRobocodeEngine", File.class, IBattleListener.class);
 			initContainerRe.setAccessible(true);
 
 			cleanup = main.getDeclaredMethod("cleanupForRobocodeEngine");
@@ -226,10 +227,10 @@ public class HiddenAccess {
 		return threadManager != null && threadManager.isSafeThread();
 	}
 
-	public static void initContainerForRobotEngine(File robocodeHome) {
+	public static void initContainerForRobotEngine(File robocodeHome, IBattleListener listener) {
 		init();
 		try {
-			initContainerRe.invoke(null, robocodeHome);
+			initContainerRe.invoke(null, robocodeHome, listener);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		} catch (InvocationTargetException e) {
