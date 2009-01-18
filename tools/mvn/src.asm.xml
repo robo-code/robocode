@@ -1,0 +1,19 @@
+<assembly>
+    <id>src</id>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <excludes>
+                <exclude>**/_svn/**</exclude>
+                <exclude>**/.svn/**</exclude>
+                <exclude>**/.metadata/**</exclude>
+                <exclude>**/target/**</exclude>
+                <exclude>**/lib/**</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+</assembly>

@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>_root</artifactId>
+    <artifactId>robocode</artifactId>
     <version>1.7</version>
     <packaging>pom</packaging>
     <name>Robocode</name>
@@ -61,10 +61,11 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.2-beta-2</version>
                 <configuration>
-                    <finalName>robocode-setup-${project.version}</finalName>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
                     <ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
                     <descriptors>
-                        <descriptor>mvn.assembly.xml</descriptor>
+                        <descriptor>tools/mvn/setup.asm.xml</descriptor>
+                        <descriptor>tools/mvn/src.asm.xml</descriptor>
                     </descriptors>
                     <archive>
                         <manifest>

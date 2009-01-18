@@ -1,4 +1,5 @@
 <assembly>
+    <id>setup</id>
     <formats>
         <format>dir</format>
         <format>jar</format>

@@ -188,9 +188,69 @@
     <autodetection-disabled>
       <facet-type id="IvyIDEA">
         <modules>
-          <module name="_root">
+          <module name="robocode">
             <files>
               <file url="file://$PROJECT_DIR$/robocode.dummy/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.api">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.api/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.battle">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.battle/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.core">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.core/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.host">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.host/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.installer">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.installer/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.repository">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.repository/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.roborumble">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.roborumble/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.samples">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.samples/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.sound">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.sound/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.tests">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.tests/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.ui">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.ui/ivy.xml" />
+            </files>
+          </module>
+          <module name="robocode.ui.editor">
+            <files>
+              <file url="file://$PROJECT_DIR$/robocode.ui.editor/ivy.xml" />
             </files>
           </module>
         </modules>
@@ -385,7 +445,7 @@
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/_root.iml" filepath="$PROJECT_DIR$/_root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.iml" filepath="$PROJECT_DIR$/robocode.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/robocode.api/robocode.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" />
