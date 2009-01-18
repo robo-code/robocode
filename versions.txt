@@ -1,3 +1,21 @@
+Version 1.7 Beta
+(18-Jan-2009)
+---------------
+
+= Bugfixes =
+* Bug [2497164] Spammy output on robot console windows
+
+= Changes =
+* Robocode was modularized using dependency injection framework picocontainer. This work includes intoduction of many interfaces to existing components.
+* Introduced Maven2 as build setup, whole directory layout is now standard mvn structure
+* Rewriten RobotClassloader to able to load .jar file in future
+* Rewriten security layer to use AccessController and CodeSource for detection of trusted code
+* Redesigned RobocodeProperties to SettingsManager and introduced ISettingsListener
+* Implemented RbSerializer to be able to implement IPC in future
+* Redesigned RepositoryManager and nearby to hide implementation details
+* moved implementation of robocode to package net.sf.robocode, old package robocode is now used only for API to outer world
+
+
 Version 1.6.2
 (04-Jan-2009)
 ---------------
