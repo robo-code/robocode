@@ -112,4 +112,15 @@ public class VersionTest {
 		Assert.assertTrue(versionManager.compare("1.1.3Beta2", "1.1.3 Beta 3") < 0);
 	}
 
+	@Test
+	public void compareBetasShort() {
+		// we can't name versions Beta 2
+		Assert.assertTrue(versionManager.compare("1.7 Beta", "1.1") > 0);
+	}
+
+	@Test
+	public void compareBetasShort2() {
+		// we can't name versions Beta 2
+		Assert.assertTrue(versionManager.compare("1.7 Beta", "1.8") < 0);
+	}
 }
