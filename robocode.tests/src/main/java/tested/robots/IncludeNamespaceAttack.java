@@ -12,7 +12,7 @@
 package tested.robots;
 
 
-import net.sf.robocode.battle.BattleManager;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 
@@ -40,9 +40,7 @@ public class IncludeNamespaceAttack extends AdvancedRobot {
 
 	private void namespaceAttack() {
 		try {
-			BattleManager bm = BattleManager.class.newInstance();
-
-			bm.stop(true);
+			HiddenAccess.createRules(10,10,10,10,1);
 		} catch (Throwable e) {
 			// swalow security exception
 			e.printStackTrace(out);

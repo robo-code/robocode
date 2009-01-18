@@ -44,8 +44,7 @@ import java.security.CodeSource;
 import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.cert.Certificate;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 
 /**
@@ -208,12 +207,19 @@ public class RobotClassLoader extends URLClassLoader {
 		return referencedClasses;
 	}
 
-	public Class<?> loadRobotMainClass() throws ClassNotFoundException {
+	public synchronized Class<?> loadRobotMainClass() throws ClassNotFoundException {
 		try {
 			if (robotClass == null) {
 				robotClass = loadClass(fullClassName, true);
-				// just to force dependencies resolution
-				robotClass.getMethods();
+				// itterate thru dependencies until we didn't found any new
+				HashSet<String> clone = null;
+				do {
+					clone = new HashSet<String>(referencedClasses);
+					for (String reference : clone) {
+						loadClass(reference, true);
+					}
+				}
+				while (referencedClasses.size() != clone.size());
 			}
 		} catch (Throwable e) {
 			robotClass = null;
