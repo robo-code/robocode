@@ -4,12 +4,12 @@
     <parent>
         <artifactId>robocode</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>1.7.Beta</version>
+        <version>${robocode.version}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.tests</artifactId>
-    <version>${parent.version}</version>
+    <version>${robocode.version}</version>
     <name>Robocode Tests</name>
     <dependencies>
         <dependency>
@@ -21,32 +21,32 @@
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.api</artifactId>
-            <version>${parent.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.core</artifactId>
-            <version>${parent.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.samples</artifactId>
-            <version>${parent.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
-            <version>${parent.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.battle</artifactId>
-            <version>${parent.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.repository</artifactId>
-            <version>${parent.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
     </dependencies>
     <build>

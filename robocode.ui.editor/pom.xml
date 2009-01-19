@@ -4,18 +4,18 @@
     <parent>
         <artifactId>robocode</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>1.7.Beta</version>
+        <version>${robocode.version}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.ui.editor</artifactId>
-    <version>${parent.version}</version>
+    <version>${robocode.version}</version>
     <name>Robocode UI Robot editor</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.ui</artifactId>
-            <version>${parent.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <!--
         <dependency>
