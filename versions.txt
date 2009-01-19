@@ -1,20 +1,20 @@
 Version 1.7 Beta
-(18-Jan-2009)
+(19-Jan-2009)
 ---------------
+* This version represents a completely new infrastructure of Robocode making it easier to extend and maintain for the future. It does not contain new features compared to the previous version of Robocode, but focus on working the same way as the previous versions despite of all the restructurings.
 
 = Bugfixes =
-* Bug [2497164] Spammy output on robot console windows
+* Bug [2497164] Spammy output on robot console windows.
 
-= Changes =
-* Robocode was modularized using dependency injection framework picocontainer. This work includes intoduction of many interfaces to existing components.
-* Introduced Maven2 as build setup, whole directory layout is now standard mvn structure
-* Rewriten RobotClassloader to able to load .jar file in future
-* Rewriten security layer to use AccessController and CodeSource for detection of trusted code
-* Redesigned RobocodeProperties to SettingsManager and introduced ISettingsListener
-* Implemented RbSerializer to be able to implement IPC in future
-* Redesigned RepositoryManager and nearby to hide implementation details
-* moved implementation of robocode to package net.sf.robocode, old package robocode is now used only for API to outer world
-
+= Internal changes =
+* Robocode was modularized using the dependency injection framework PicoContainer. This work includes introduction of many interfaces to existing components.
+* Introduced Maven2 as build setup where the whole directory layout is based on the standard Maven structure.
+* Rewritten the RobotClassLoader so it is able to load .jar file in the future.
+* Rewritten security layer to use AccessController and CodeSource for detection of trusted code.
+* Redesigned RobocodeProperties to SettingsManager and introduced ISettingsListener.
+* Implemented RbSerializer to be able to implement IPC (Inter-Process Communication) in future. This should make it possible to extend Robocode for more platforms like e.g. Microsoft .NET.
+* Redesigned RepositoryManager and nearby to hide implementation details.
+* Moved all implementation of Robocode to the package 'net.sf.robocode'. The old package 'robocode' is now used only for API to outer world in order to keep backwards compability.
 
 Version 1.6.2
 (04-Jan-2009)
@@ -24,7 +24,6 @@ Version 1.6.2
 * Bug [2467536] Robot name was missing when replaying XML record.
 * Bug [2465580] Junior Robot turnAheadRight() bug. When a JuniorRobot was calling turnAheadRight(), turnAheadLeft(), turnBackRight(), or turnBackLeft() - the following exception occurred causing the robot to be terminated:  java.lang.ClassCastException: robocode.peer.proxies.StandardRobotProxy
 * Bug [2449081] Exception when changing between Robot to AdvancedRobot. When a robot was changed from a Robot into an AdvancedRobot and recompiled, the game would cast a ClassCastException if a battle was started or restarted including that particular robot. However, this bug did not occur with new battles where the list of robots was refreshed (by pressing Ctrl+R).
-   
 
 Version 1.6.2 Beta 4
 (22-Dec-2008)
