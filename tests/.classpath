@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="tests"/>
-	<classpathentry kind="src" path="robots"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/junit-4.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/robocode"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
