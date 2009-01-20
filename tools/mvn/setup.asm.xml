@@ -36,12 +36,6 @@
         <!-- other libraries -->
         <moduleSet>
             <includes>
-                <include>net.sf.robocode:robocode.core</include>
-                <include>net.sf.robocode:robocode.repository</include>
-                <include>net.sf.robocode:robocode.host</include>
-                <include>net.sf.robocode:robocode.battle</include>
-                <include>net.sf.robocode:robocode.sound</include>
-                <include>net.sf.robocode:robocode.ui</include>
                 <include>net.sf.robocode:robocode.ui.editor</include>
             </includes>
             <binaries>

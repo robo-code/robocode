@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode</artifactId>
-    <version>1.7.1 Beta</version>
+    <version>${robocode.version}</version>
     <packaging>pom</packaging>
     <name>Robocode</name>
     <organization>
