@@ -40,7 +40,7 @@ public class IncludeNamespaceAttack extends AdvancedRobot {
 
 	private void namespaceAttack() {
 		try {
-			HiddenAccess.createRules(10,10,10,10,1);
+			HiddenAccess.createRules(10, 10, 10, 10, 1);
 		} catch (Throwable e) {
 			// swalow security exception
 			e.printStackTrace(out);

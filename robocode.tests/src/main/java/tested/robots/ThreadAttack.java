@@ -26,7 +26,7 @@ public class ThreadAttack extends AdvancedRobot {
 	@Override
 	public void run() {
 		// noinspection InfiniteLoopStatement
-		for (; ;) {
+		for (;;) {
 			turnLeft(100);
 			ahead(10);
 			turnLeft(100);
@@ -44,6 +44,7 @@ public class ThreadAttack extends AdvancedRobot {
 		try {
 			Attacker a = new Attacker();
 			Thread t = new Thread(a);
+
 			t.start();
 		} catch (Throwable e) {
 			// swalow security exception
@@ -55,8 +56,10 @@ public class ThreadAttack extends AdvancedRobot {
 		try {
 			Attacker a = new Attacker();
 			ThreadGroup tg = new ThreadGroup("MyAttack");
+
 			tg.setMaxPriority(10);
 			Thread t = new Thread(tg, a);
+
 			t.start();
 		} catch (Throwable e) {
 			// swalow security exception
@@ -66,11 +69,11 @@ public class ThreadAttack extends AdvancedRobot {
 
 	private AtomicInteger counter = new AtomicInteger();
 
-
 	private class Attacker implements Runnable {
 
 		public synchronized void run() {
 			final int id = counter.incrementAndGet();
+
 			out.println("Running id:" + id);
 
 			if (Thread.currentThread().getPriority() > 4) {

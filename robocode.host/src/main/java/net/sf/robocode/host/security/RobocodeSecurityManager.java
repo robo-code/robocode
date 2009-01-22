@@ -75,6 +75,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		super.checkAccess(g);
 
 		final ThreadGroup cg = c.getThreadGroup();
+
 		if (cg == null) {
 			// What the heck is going on here?  JDK 1.3 is sending me a dead thread.
 			// This crashes the entire jvm if I don't return here.

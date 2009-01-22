@@ -86,7 +86,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public RobocodeEngine() {
-		init(null, (IBattleListener)null);
+		init(null, (IBattleListener) null);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @since 1.6.2
 	 */
 	public RobocodeEngine(File robocodeHome) {
-		init(robocodeHome, (IBattleListener)null);
+		init(robocodeHome, (IBattleListener) null);
 	}
 
 	/**
@@ -142,7 +142,6 @@ public class RobocodeEngine implements IRobocodeEngine {
 	public RobocodeEngine(IBattleListener listener) {
 		init(null, listener);
 	}
-
 
 	/**
 	 * {@inheritDoc}

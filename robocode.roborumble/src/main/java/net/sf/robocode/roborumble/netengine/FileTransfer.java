@@ -214,14 +214,11 @@ public class FileTransfer {
 			// Make sure the connection is disconnected.
 			// This will cause threads using the connection to throw an exception
 			// and thereby terminate if they were hanging.
-			try
-			{
+			try {
 				if (con != null) {
 					con.disconnect();
 				}
-			}
-			catch (Throwable ignore){
-				// we expect this, right ?
+			} catch (Throwable ignore) {// we expect this, right ?
 			}
 		}
 	}

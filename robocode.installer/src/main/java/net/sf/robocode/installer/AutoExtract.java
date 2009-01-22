@@ -182,7 +182,7 @@ public class AutoExtract implements ActionListener {
 		String urlJar = AutoExtract.class.getClassLoader().getResource(name).toString();
 		final String src = urlJar.substring("jar:file:".length(), urlJar.indexOf("!/"));
 
-		if (src.indexOf('!')>-1) {
+		if (src.indexOf('!') > -1) {
 			JOptionPane.showMessageDialog(null,
 					src + "\nContains an exclamation point.  Please move the file to a different directory.");
 			System.exit(0);
@@ -201,7 +201,7 @@ public class AutoExtract implements ActionListener {
 					if (!entryName.startsWith("net")) {
 						File dir = new File(dest, entry.getName());
 
-						if (!dir.exists() && !dir.mkdirs()){
+						if (!dir.exists() && !dir.mkdirs()) {
 							System.out.println("Can't create dir " + dir);
 						}
 					}
@@ -212,7 +212,7 @@ public class AutoExtract implements ActionListener {
 						File out = new File(dest, entry.getName());
 						File parentDirectory = new File(out.getParent());
 
-						if (!parentDirectory.exists() && !parentDirectory.mkdirs()){
+						if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
 							System.out.println("Can't create dir " + parentDirectory);
 						}
 						fos = new FileOutputStream(out);
@@ -318,7 +318,7 @@ public class AutoExtract implements ActionListener {
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (rc == JOptionPane.YES_OPTION) {
-					if (!installDir.exists() && !installDir.mkdirs()){
+					if (!installDir.exists() && !installDir.mkdirs()) {
 						System.out.println("Can't create dir " + installDir);
 					}
 				} else {
