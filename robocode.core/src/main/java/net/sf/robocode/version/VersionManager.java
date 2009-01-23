@@ -107,7 +107,7 @@ public final class VersionManager implements IVersionManager {
 			URL versionsUrl = VersionManager.class.getResource("/versions.txt");
 
 			if (versionsUrl == null) {
-				net.sf.robocode.io.Logger.logError("no url");
+				net.sf.robocode.io.Logger.logMessage("no url");
 				versionString = "unknown";
 			} else {
 				in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
@@ -141,7 +141,7 @@ public final class VersionManager implements IVersionManager {
 			}
 		}
 		if (version.equals("unknown")) {
-			net.sf.robocode.io.Logger.logError("Warning:  Getting version from file.");
+			net.sf.robocode.io.Logger.logMessage("Warning:  Getting version from file.");
 			return getVersionFromFile();
 		}
 		return version;
@@ -154,7 +154,12 @@ public final class VersionManager implements IVersionManager {
 		BufferedReader in = null;
 
 		try {
-			fileReader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
+			if (System.getProperty("TESTING", "false").equals("true")){
+				fileReader = new FileReader(new File(FileUtil.getCwd().getParentFile().getParentFile().getParentFile(), "versions.txt"));
+			}
+			else{
+				fileReader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
+			}
 			in = new BufferedReader(fileReader);
 
 			versionString = in.readLine();
