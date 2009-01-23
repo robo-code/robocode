@@ -34,13 +34,33 @@
         </dependency>
     </dependencies>
     <build>
-        <resources>
-            <resource>
-                <directory>..\</directory>
-                <includes>
-                    <include>versions.txt</include>
-                </includes>
-            </resource>
-        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>..</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <!-- actually this is bit more complicated than usual, because of quirks with IDEA -->
+                                        <include>versions.txt</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>

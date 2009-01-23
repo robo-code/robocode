@@ -235,9 +235,9 @@ public final class VersionManager implements IVersionManager {
 			final String[] numbers = version.split("\\.");
 
 			if (numbers.length < 3) {
-				throw new Error("Unexpected format");
+				return 0;
 			}
-			if (numbers.length == 3 && (numbers[2].contains("B") || numbers[2].contains("A"))) {
+			if (numbers.length >= 3 && (numbers[2].contains("B") || numbers[2].contains("A"))) {
 				return 0;
 			}
 			return Integer.parseInt(numbers[2]);

@@ -12,14 +12,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: junit:junit:4.5" level="project" />
     <orderEntry type="module" module-name="robocode.api" exported="" />
-    <orderEntry type="module" module-name="robocode.core" exported="" />
-    <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
-    <orderEntry type="module" module-name="robocode.samples" exported="" />
-    <orderEntry type="module" module-name="robocode.host" exported="" />
-    <orderEntry type="module" module-name="robocode.repository" exported="" />
-    <orderEntry type="module" module-name="robocode.battle" exported="" />
+    <orderEntry type="library" name="Maven: junit:junit:4.5" level="project" />
+    <orderEntry type="module" module-name="robocode.core" />
+    <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
+    <orderEntry type="module" module-name="robocode.samples" />
+    <orderEntry type="module" module-name="robocode.host" />
+    <orderEntry type="module" module-name="robocode.repository" />
+    <orderEntry type="module" module-name="robocode.battle" />
   </component>
 </module>
 

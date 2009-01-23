@@ -43,6 +43,7 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.battle</artifactId>
             <version>${robocode.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>
