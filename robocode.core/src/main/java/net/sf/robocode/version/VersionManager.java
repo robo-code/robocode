@@ -12,6 +12,9 @@
 package net.sf.robocode.version;
 
 
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
+
 import net.sf.robocode.io.FileUtil;
 
 import java.io.*;
@@ -60,10 +63,10 @@ public final class VersionManager implements IVersionManager {
 			newVersLine = reader.readLine();
 
 		} catch (MalformedURLException e) {
-			net.sf.robocode.io.Logger.logError("Unable to check for new version: ", e);
+			logError("Unable to check for new version", e);
 			newVersLine = null;
 		} catch (IOException e) {
-			net.sf.robocode.io.Logger.logError("Unable to check for new version: " + e);
+			logError("Unable to check for new version", e);
 			newVersLine = null;
 		} finally {
 			FileUtil.cleanupStream(inputStream);
@@ -103,7 +106,7 @@ public final class VersionManager implements IVersionManager {
 			URL versionsUrl = VersionManager.class.getResource("/versions.txt");
 
 			if (versionsUrl == null) {
-				net.sf.robocode.io.Logger.logError("no url");
+				logMessage("The URL for the versions.txt was not found");
 				versionString = UNKNOWN_VERSION;
 			} else {
 				in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
@@ -114,10 +117,10 @@ public final class VersionManager implements IVersionManager {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			net.sf.robocode.io.Logger.logError("No versions.txt file in robocode.jar.");
+			logError("No versions.txt file in robocode.jar");
 			versionString = UNKNOWN_VERSION;
 		} catch (IOException e) {
-			net.sf.robocode.io.Logger.logError("IO Exception reading versions.txt from robocode.jar" + e);
+			logError("IO Exception reading versions.txt from robocode.jar" + e);
 			versionString = UNKNOWN_VERSION;
 		} finally {
 			if (in != null) {
@@ -127,17 +130,10 @@ public final class VersionManager implements IVersionManager {
 			}
 		}
 
-		String version = UNKNOWN_VERSION;
+		String version = (versionString != null) ? versionString : UNKNOWN_VERSION;
 
-		if (versionString != null) {
-			try {
-				version = versionString.substring(8);
-			} catch (Exception e) {
-				version = UNKNOWN_VERSION;
-			}
-		}
 		if (version.equals(UNKNOWN_VERSION)) {
-			net.sf.robocode.io.Logger.logError("Warning:  Getting version from file.");
+			logMessage("Warning: Getting version from file");
 			return getVersionFromFile();
 		}
 		return version;
@@ -150,20 +146,20 @@ public final class VersionManager implements IVersionManager {
 		BufferedReader in = null;
 
 		try {
+			File dir = FileUtil.getCwd();
+
 			if (System.getProperty("TESTING", "false").equals("true")) {
-				fileReader = new FileReader(
-						new File(FileUtil.getCwd().getParentFile().getParentFile().getParentFile(), "versions.txt"));
-			} else {
-				fileReader = new FileReader(new File(FileUtil.getCwd(), "versions.txt"));
+				dir = dir.getParentFile().getParentFile().getParentFile();
 			}
+			fileReader = new FileReader(new File(dir, "versions.txt"));
 			in = new BufferedReader(fileReader);
 
 			versionString = in.readLine();
 		} catch (FileNotFoundException e) {
-			net.sf.robocode.io.Logger.logError("No versions.txt file.");
+			logError("No versions.txt file.");
 			versionString = UNKNOWN_VERSION;
 		} catch (IOException e) {
-			net.sf.robocode.io.Logger.logError("IO Exception reading versions.txt" + e);
+			logError("IO Exception reading versions.txt" + e);
 			versionString = UNKNOWN_VERSION;
 		} finally {
 			if (fileReader != null) {
@@ -209,11 +205,11 @@ public final class VersionManager implements IVersionManager {
 		public final int maturity_version; // The number following e.g. "Alpha" or "Beta"
 
 		public Version(String version) {
-			this.version = version.trim();
-
-			if (!version.matches("[0-9]+\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?\\s*(\\s+(([aA]lpha)|([bB]eta))(\\s+[0-9])?)?")) {
+			if (!version.matches(
+					"\\s*[0-9]+\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?(\\s?(([aA]lpha)|([bB]eta))(\\s?[0-9])?)?\\s*")) {
 				throw new IllegalArgumentException("The format of the version string is not a valid");
 			}
+			this.version = version;
 
 			final String[] numbers = version.split("\\.|\\s++");
 
@@ -328,7 +324,8 @@ public final class VersionManager implements IVersionManager {
 		}
 
 		private long getVersionLong() {
-			return (major << 40) + (minor << 32) + (revision << 24) + (build << 16) + (maturity << 8) + maturity_version;
+			return ((long) major << 40) + ((long) minor << 32) + (revision << 24) + (build << 16) + (maturity << 8)
+					+ maturity_version;
 		}
 	}
 }
