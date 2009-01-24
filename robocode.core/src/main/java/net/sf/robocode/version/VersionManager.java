@@ -130,8 +130,13 @@ public final class VersionManager implements IVersionManager {
 			}
 		}
 
-		String version = (versionString != null) ? versionString : UNKNOWN_VERSION;
+		String version = UNKNOWN_VERSION;
 
+		if (versionString != null) {
+			try {
+				version = versionString.substring(7);
+			} catch (Exception e) {}
+		}
 		if (version.equals(UNKNOWN_VERSION)) {
 			logMessage("Warning: Getting version from file");
 			return getVersionFromFile();
@@ -179,9 +184,7 @@ public final class VersionManager implements IVersionManager {
 		if (versionString != null) {
 			try {
 				version = versionString.substring(7);
-			} catch (Exception e) {
-				version = UNKNOWN_VERSION;
-			}
+			} catch (Exception e) {}
 		}
 		return version;
 	}
@@ -205,14 +208,18 @@ public final class VersionManager implements IVersionManager {
 		public final int maturity_version; // The number following e.g. "Alpha" or "Beta"
 
 		public Version(String version) {
+			
+			// Validate version format
 			if (!version.matches(
 					"\\s*[0-9]+\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?(\\s?(([aA]lpha)|([bB]eta))(\\s?[0-9])?)?\\s*")) {
 				throw new IllegalArgumentException("The format of the version string is not a valid");
 			}
 			this.version = version;
 
-			final String[] numbers = version.split("\\.|\\s++");
+			// Split the version number into its integer numbers
+			final String[] numbers = version.trim().split("\\.");
 
+			// Parse the major version
 			int major = 0;
 
 			if (numbers.length >= 1) {
@@ -222,33 +229,43 @@ public final class VersionManager implements IVersionManager {
 			}
 			this.major = major;
 
+			// Parse the minor version
 			int minor = 0;
 
 			if (numbers.length >= 2) {
 				try {
-					minor = Integer.parseInt(numbers[1]);
+					String[] split = numbers[1].split("\\s++|([aA]lpha)|([bB]eta)");
+					
+					minor = Integer.parseInt(split[0]);
 				} catch (NumberFormatException e) {}
 			}
 			this.minor = minor;
 
+			// Parse the revision
 			int revision = 0;
 
 			if (numbers.length >= 3) {
 				try {
-					revision = Integer.parseInt(numbers[2]);
+					String[] split = numbers[2].split("\\s++|([aA]lpha)|([bB]eta)");
+
+					revision = Integer.parseInt(split[0]);
 				} catch (NumberFormatException e) {}
 			}
 			this.revision = revision;
 
+			// Parse the build number
 			int build = 0;
 
 			if (numbers.length >= 4) {
 				try {
-					build = Integer.parseInt(numbers[3]);
+					String[] split = numbers[3].split("\\s++|([aA]lpha)|([bB]eta)");
+
+					build = Integer.parseInt(split[0]);
 				} catch (NumberFormatException e) {}
 			}
 			this.build = build;
 
+			// Parse the maturity version, e.g. "Beta 1"
 			int maturity = 3;
 			int maturity_version = 1;
 

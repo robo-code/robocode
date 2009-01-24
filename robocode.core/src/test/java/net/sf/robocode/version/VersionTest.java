@@ -29,6 +29,21 @@ public class VersionTest {
 	}
 
 	@Test
+	public void equalVersion() {
+		Assert.assertTrue(versionManager.compare("1.1", "1.1.0.0") == 0);
+	}
+
+	@Test
+	public void equalAlphas() {
+		Assert.assertTrue(versionManager.compare(" 1.2 Alpha", "1.2.0.0alpha1 ") == 0);
+	}
+
+	@Test
+	public void equalBetas() {
+		Assert.assertTrue(versionManager.compare("4.2.1Beta2 ", "  4.2.1.0 beta 2") == 0);
+	}
+
+	@Test
 	public void greater() {
 		Assert.assertTrue(versionManager.compare("1.1.4", "1.1.3") > 0);
 	}
