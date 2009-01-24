@@ -180,14 +180,13 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	public boolean checkForNewVersion(boolean notifyNoUpdate) {
+		String currentVersion = versionManager.getVersion();
 		String newVersion = versionManager.checkForNewVersion();
 
-		String currentVersion = versionManager.getVersion();
 		boolean newVersionAvailable = false;
 
 		if (newVersion != null && currentVersion != null) {
-
-			if (versionManager.compare(currentVersion, newVersion) > 0) {
+			if (versionManager.compare(newVersion, currentVersion) > 0) {
 				newVersionAvailable = true;
 
 				showNewVersion(newVersion);

@@ -17,5 +17,5 @@ package net.sf.robocode.manager;
  */
 public interface IVersionManagerBase {
 	String getVersion();
-	int getVersionInt();
+	int getVersionAsInt();
 }

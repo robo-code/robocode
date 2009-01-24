@@ -89,7 +89,7 @@ public final class RbSerializer {
 	}
 
 	public RbSerializer() {
-		this.currentVersion = ContainerBase.getComponent(IVersionManagerBase.class).getVersionInt();
+		this.currentVersion = ContainerBase.getComponent(IVersionManagerBase.class).getVersionAsInt();
 		encoder = charset.newEncoder();
 		encoder.onMalformedInput(CodingErrorAction.REPORT);
 		encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
