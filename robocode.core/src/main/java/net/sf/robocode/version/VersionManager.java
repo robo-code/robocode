@@ -132,10 +132,10 @@ public final class VersionManager implements IVersionManager {
 
 		String version = UNKNOWN_VERSION;
 
-		if (versionString != null) {
+		if (versionString != null && !version.equals(UNKNOWN_VERSION)) {
 			try {
 				version = versionString.substring(7);
-			} catch (Exception e) {}
+			} catch (Exception ignore) {}
 		}
 		if (version.equals(UNKNOWN_VERSION)) {
 			logMessage("Warning: Getting version from file");
@@ -181,10 +181,10 @@ public final class VersionManager implements IVersionManager {
 
 		String version = UNKNOWN_VERSION;
 
-		if (versionString != null) {
+		if (versionString != null && !versionString.equals(UNKNOWN_VERSION)) {
 			try {
 				version = versionString.substring(7);
-			} catch (Exception e) {}
+			} catch (Exception ignore) {}
 		}
 		return version;
 	}
@@ -225,7 +225,7 @@ public final class VersionManager implements IVersionManager {
 			if (numbers.length >= 1) {
 				try {
 					major = Integer.parseInt(numbers[0]);
-				} catch (NumberFormatException e) {}
+				} catch (NumberFormatException ignore) {}
 			}
 			this.major = major;
 
@@ -237,7 +237,7 @@ public final class VersionManager implements IVersionManager {
 					String[] split = numbers[1].split("\\s++|([aA]lpha)|([bB]eta)");
 					
 					minor = Integer.parseInt(split[0]);
-				} catch (NumberFormatException e) {}
+				} catch (NumberFormatException ignore) {}
 			}
 			this.minor = minor;
 
@@ -249,7 +249,7 @@ public final class VersionManager implements IVersionManager {
 					String[] split = numbers[2].split("\\s++|([aA]lpha)|([bB]eta)");
 
 					revision = Integer.parseInt(split[0]);
-				} catch (NumberFormatException e) {}
+				} catch (NumberFormatException ignore) {}
 			}
 			this.revision = revision;
 
@@ -261,12 +261,12 @@ public final class VersionManager implements IVersionManager {
 					String[] split = numbers[3].split("\\s++|([aA]lpha)|([bB]eta)");
 
 					build = Integer.parseInt(split[0]);
-				} catch (NumberFormatException e) {}
+				} catch (NumberFormatException ignore) {}
 			}
 			this.build = build;
 
 			// Parse the maturity version, e.g. "Beta 1"
-			int maturity = 3;
+			int maturity;
 			int maturity_version = 1;
 
 			if (isAlpha()) {

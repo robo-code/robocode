@@ -40,6 +40,8 @@ public class RbSerializerTest {
 	public static void init() {
 		// we need to switch off engine classloader for this test
 		System.setProperty("NOSECURITY", "true");
+		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
+		System.setProperty("TESTING", "true");
 		HiddenAccess.initContainer();
 	}
 
