@@ -127,7 +127,7 @@ public class HiddenAccess {
 		// otherwise we rely on that they are already on classpath
 		StringBuilder classPath = new StringBuilder(System.getProperty("java.class.path", null));
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
-		final String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().toString();
+		final String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		final int i = path.lastIndexOf("robocode.jar");
 
 		if (i > 0) {
@@ -138,10 +138,11 @@ public class HiddenAccess {
 	}
 
 	private static ClassLoader createClassLoader(StringBuilder classPath, ClassLoader loader, String path, int i) throws MalformedURLException {
-		final String dir = path.substring(0, i).substring(6);
+		final String dir = path.substring(0, i);
+
 		File dirf = new File(dir);
 		ArrayList<URL> urls = new ArrayList<URL>();
-		// System.out.println("Adding to classPath " + dir + "*.jar");
+
 		final File[] files = dirf.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				final String test = name.toLowerCase();
@@ -150,16 +151,17 @@ public class HiddenAccess {
 			}
 		});
 
-		for (File file : files) {
-			if (file.toString().toLowerCase().contains("robocode.core")) {
-				foundCore = true;
+		if (files != null) {
+			for (File file : files) {
+				if (file.toString().toLowerCase().contains("robocode.core")) {
+					foundCore = true;
+				}
+				urls.add(file.toURL());
+				classPath.append(File.pathSeparator);
+				classPath.append(file.toString());
 			}
-			urls.add(file.toURL());
-			classPath.append(File.pathSeparator);
-			classPath.append(file.toString());
 		}
-		loader = new URLClassLoader(urls.toArray(new URL[urls.size()]), loader);
-		return loader;
+		return new URLClassLoader(urls.toArray(new URL[urls.size()]), loader);
 	}
 
 	public static boolean isCriticalEvent(Event e) {

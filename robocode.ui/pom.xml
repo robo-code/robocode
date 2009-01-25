@@ -22,13 +22,6 @@
             <artifactId>robocode.core</artifactId>
             <version>${robocode.version}</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.host</artifactId>
-            <version>${robocode.version}</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.battle</artifactId>
@@ -38,6 +31,7 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.sound</artifactId>
             <version>${robocode.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>

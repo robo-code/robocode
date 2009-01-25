@@ -24,7 +24,7 @@ import javax.swing.*;
  * @author Pavel Savara (original)
  */
 public class TestAwtAttack extends RobotTestBed {
-	//in case: boolean messagedAttack;
+	// in case: boolean messagedAttack;
 	boolean messagedBreakthru;
 
 	@Test
@@ -33,17 +33,17 @@ public class TestAwtAttack extends RobotTestBed {
 	}
 
 	/* in case that we don't block JFrame by classloader
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
+	 public void onTurnEnded(TurnEndedEvent event) {
+	 super.onTurnEnded(event);
+	 final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
 
-		if (out.contains("Hacked!!!")) {
-			messagedBreakthru = true;
-		}
-		if (out.contains("Robots are not alowed to reference javax.swing package")) {
-			messagedAttack = true;
-		}
-	} */
+	 if (out.contains("Hacked!!!")) {
+	 messagedBreakthru = true;
+	 }
+	 if (out.contains("Robots are not alowed to reference javax.swing package")) {
+	 messagedAttack = true;
+	 }
+	 } */
 
 	@Override
 	public String getRobotNames() {
@@ -76,6 +76,6 @@ public class TestAwtAttack extends RobotTestBed {
 
 		frame.setVisible(false);
 		Assert.assertFalse(messagedBreakthru);
-		//in case: Assert.assertTrue(messagedAttack);
+		// in case: Assert.assertTrue(messagedAttack);
 	}
 }

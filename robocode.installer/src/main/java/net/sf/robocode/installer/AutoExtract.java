@@ -28,6 +28,7 @@ import java.io.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
+import java.net.URL;
 
 
 /**
@@ -180,15 +181,17 @@ public class AutoExtract implements ActionListener {
 
 		final String name = AutoExtract.class.getName().replaceAll("\\.", "/") + ".class";
 		String urlJar = AutoExtract.class.getClassLoader().getResource(name).toString();
-		final String src = urlJar.substring("jar:file:".length(), urlJar.indexOf("!/"));
+		final String src = urlJar.substring("jar:file:/".length(), urlJar.indexOf("!/"));
 
-		if (src.indexOf('!')>-1) {
-			JOptionPane.showMessageDialog(null,
-					src + "\nContains an exclamation point.  Please move the file to a different directory.");
+		if (src.indexOf('!') > -1) {
+			final String message = src + "\nContains an exclamation point.  Please move the file to a different directory.";
+			JOptionPane.showMessageDialog(null, message);
+			System.err.println(message);
 			System.exit(0);
 		}
 		try {
-			InputStream is = new FileInputStream(src);
+			final URL url = new URL("file:/"+src);
+			InputStream is = url.openStream();
 			JarInputStream jarIS = new JarInputStream(is);
 
 			JarEntry entry = jarIS.getNextJarEntry();
@@ -201,7 +204,7 @@ public class AutoExtract implements ActionListener {
 					if (!entryName.startsWith("net")) {
 						File dir = new File(dest, entry.getName());
 
-						if (!dir.exists() && !dir.mkdirs()){
+						if (!dir.exists() && !dir.mkdirs()) {
 							System.out.println("Can't create dir " + dir);
 						}
 					}
@@ -212,7 +215,7 @@ public class AutoExtract implements ActionListener {
 						File out = new File(dest, entry.getName());
 						File parentDirectory = new File(out.getParent());
 
-						if (!parentDirectory.exists() && !parentDirectory.mkdirs()){
+						if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
 							System.out.println("Can't create dir " + parentDirectory);
 						}
 						fos = new FileOutputStream(out);
@@ -258,12 +261,10 @@ public class AutoExtract implements ActionListener {
 	public static void main(String argv[]) {
 		// Verify that the Java version is version 5 (1.5.0) or newer
 		if (javaVersion.startsWith("1.") && javaVersion.charAt(2) < '5') {
-			JOptionPane.showMessageDialog(null,
-					"Robocode requires Java 5.0 (1.5.0) or newer.\n" + "Your system is currently running Java " + javaVersion
-					+ ".\n" + "If you have not installed (or activated) at least\n" + "JRE 5.0 or JDK 5.0, please do so.",
-					"Error",
-					JOptionPane.ERROR_MESSAGE);
-
+			final String message = "Robocode requires Java 5.0 (1.5.0) or newer.\n" + "Your system is currently running Java " + javaVersion
+					+ ".\n" + "If you have not installed (or activated) at least\n" + "JRE 5.0 or JDK 5.0, please do so.";
+			JOptionPane.showMessageDialog(null, message,  "Error", JOptionPane.ERROR_MESSAGE);
+			System.err.println(message);
 			System.exit(0);
 		}
 
@@ -318,7 +319,7 @@ public class AutoExtract implements ActionListener {
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (rc == JOptionPane.YES_OPTION) {
-					if (!installDir.exists() && !installDir.mkdirs()){
+					if (!installDir.exists() && !installDir.mkdirs()) {
 						System.out.println("Can't create dir " + installDir);
 					}
 				} else {

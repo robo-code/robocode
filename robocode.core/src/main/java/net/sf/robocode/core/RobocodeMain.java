@@ -369,7 +369,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			windowManager.setEnableGUI(false);
 		}
 		Container.getComponent(IHostManager.class).initSecurity();
-		if (listener!=null){
+		if (listener != null) {
 			Container.getComponent(IBattleManager.class).addListener(listener);
 		}
 		Container.getComponent(ICpuManager.class).getCpuConstant();

@@ -213,13 +213,13 @@ public class RobotClassLoader extends URLClassLoader {
 				robotClass = loadClass(fullClassName, true);
 				// itterate thru dependencies until we didn't found any new
 				HashSet<String> clone;
+
 				do {
 					clone = new HashSet<String>(referencedClasses);
 					for (String reference : clone) {
 						loadClass(reference, true);
 					}
-				}
-				while (referencedClasses.size() != clone.size());
+				} while (referencedClasses.size() != clone.size());
 			}
 		} catch (Throwable e) {
 			robotClass = null;

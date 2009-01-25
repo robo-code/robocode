@@ -249,7 +249,7 @@ public class ClassAnalyzer {
 		}
 
 		for (Integer classNameIndex : classNameIndexes) {
-			String className = strings[classNameIndex].replace('\\','.').replace('/','.');
+			String className = strings[classNameIndex].replace('\\', '.').replace('/', '.');
 
 			if (className.indexOf("[") != 0 && !collection.contains(className)) {
 				collection.add(className);

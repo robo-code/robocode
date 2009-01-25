@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
-    <profiles>
-        <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <robocode.version>1.7.Beta</robocode.version>
-            </properties>
-        </profile>
-    </profiles>
-    <activeProfiles>
-        <activeProfile>default</activeProfile>
-    </activeProfiles>
-</settings>
+<profiles>
+    <profile>
+        <id>default</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <properties>
+            <robocode.version>1.7.Beta2</robocode.version>
+        </properties>
+    </profile>
+</profiles>
