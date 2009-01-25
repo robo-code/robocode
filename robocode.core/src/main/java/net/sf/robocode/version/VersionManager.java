@@ -132,7 +132,7 @@ public final class VersionManager implements IVersionManager {
 
 		String version = UNKNOWN_VERSION;
 
-		if (versionString != null && !version.equals(UNKNOWN_VERSION)) {
+		if (versionString != null && !versionString.equals(UNKNOWN_VERSION)) {
 			try {
 				version = versionString.substring(7);
 			} catch (Exception ignore) {}
@@ -154,7 +154,7 @@ public final class VersionManager implements IVersionManager {
 			File dir = FileUtil.getCwd();
 
 			if (System.getProperty("TESTING", "false").equals("true")) {
-				dir = dir.getParentFile().getParentFile();
+				dir = dir.getParentFile().getParentFile().getParentFile();
 			}
 			fileReader = new FileReader(new File(dir, "versions.txt"));
 			in = new BufferedReader(fileReader);

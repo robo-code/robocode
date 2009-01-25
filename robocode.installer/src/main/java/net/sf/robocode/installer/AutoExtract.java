@@ -184,13 +184,15 @@ public class AutoExtract implements ActionListener {
 		final String src = urlJar.substring("jar:file:/".length(), urlJar.indexOf("!/"));
 
 		if (src.indexOf('!') > -1) {
-			final String message = src + "\nContains an exclamation point.  Please move the file to a different directory.";
+			final String message = src
+					+ "\nContains an exclamation point.  Please move the file to a different directory.";
+
 			JOptionPane.showMessageDialog(null, message);
 			System.err.println(message);
 			System.exit(0);
 		}
 		try {
-			final URL url = new URL("file:/"+src);
+			final URL url = new URL("file:/" + src);
 			InputStream is = url.openStream();
 			JarInputStream jarIS = new JarInputStream(is);
 
@@ -261,9 +263,11 @@ public class AutoExtract implements ActionListener {
 	public static void main(String argv[]) {
 		// Verify that the Java version is version 5 (1.5.0) or newer
 		if (javaVersion.startsWith("1.") && javaVersion.charAt(2) < '5') {
-			final String message = "Robocode requires Java 5.0 (1.5.0) or newer.\n" + "Your system is currently running Java " + javaVersion
-					+ ".\n" + "If you have not installed (or activated) at least\n" + "JRE 5.0 or JDK 5.0, please do so.";
-			JOptionPane.showMessageDialog(null, message,  "Error", JOptionPane.ERROR_MESSAGE);
+			final String message = "Robocode requires Java 5.0 (1.5.0) or newer.\n"
+					+ "Your system is currently running Java " + javaVersion + ".\n"
+					+ "If you have not installed (or activated) at least\n" + "JRE 5.0 or JDK 5.0, please do so.";
+
+			JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 			System.err.println(message);
 			System.exit(0);
 		}
