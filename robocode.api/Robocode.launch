@@ -8,6 +8,6 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="robocode.Robocode"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="robocode.ui"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DROBOTPATH=classes"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DROBOTPATH=classes -DTESTING=true"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:robocode.samples/target}"/>
 </launchConfiguration>
