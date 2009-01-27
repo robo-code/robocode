@@ -30,7 +30,7 @@ public class IgnoredItem extends BaseItem {
 		return null;
 	}
 
-	public void update(long lastModified) {// no action
+	public void update(long lastModified, boolean force) {// no action
 	}
 
 	public boolean isValid() {

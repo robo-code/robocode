@@ -28,6 +28,6 @@ public interface IItem {
 	IRepositoryRoot getRoot();
 	long getLastModified();
 
-	void update(long lastModified);
+	void update(long lastModified, boolean force);
 	boolean isValid();
 }

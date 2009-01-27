@@ -24,6 +24,7 @@ import java.io.InputStream;
  */
 public interface IRepositoryRoot {
 	void update();
+	void update(IItem item, boolean force);
 	boolean isChanged(IItem item);
 	URL getUrl();
 	boolean isDevel();

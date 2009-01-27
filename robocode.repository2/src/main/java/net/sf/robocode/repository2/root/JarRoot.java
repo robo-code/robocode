@@ -22,9 +22,10 @@ import java.io.File;
 
 
 /**
+ * Represents one .jar file
  * @author Pavel Savara (original)
  */
-public class JarRoot implements IRepositoryRoot {
+public class 	JarRoot implements IRepositoryRoot {
 	final Database db;
 	URL url;
 	File rootPath;
@@ -45,6 +46,10 @@ public class JarRoot implements IRepositoryRoot {
 		lastModified = rootPath.lastModified();
 	}
 
+	public void update(IItem item, boolean force){
+
+	}
+	
 	public boolean isChanged(IItem item) {
 		return rootPath.lastModified() > lastModified;
 	}
@@ -55,5 +60,9 @@ public class JarRoot implements IRepositoryRoot {
 
 	public boolean isDevel() {
 		return false;
+	}
+
+	public String toString() {
+		return url.toString();
 	}
 }

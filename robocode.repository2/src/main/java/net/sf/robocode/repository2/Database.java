@@ -19,7 +19,6 @@ import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 
-import java.net.URL;
 import java.net.MalformedURLException;
 import java.util.Hashtable;
 import java.util.List;
@@ -36,7 +35,7 @@ public class Database {
 	private Hashtable<String, IItem> items = new Hashtable<String, IItem>();
 	private Hashtable<String, IItem> oldItems = new Hashtable<String, IItem>();
 
-	public void updateRoots(File robots, List<File> devDirs) {
+	public void update(File robots, List<File> devDirs) {
 		try {
 			oldItems = items;
 			items = new Hashtable<String, IItem>();
@@ -83,6 +82,11 @@ public class Database {
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
+	}
+
+	public void update(String url, boolean force) {
+		final IItem iItem = items.get(url);
+		iItem.getRoot().update(iItem, force);
 	}
 
 	public void addItem(IItem item) {

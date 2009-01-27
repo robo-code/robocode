@@ -71,8 +71,8 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 		return urls;
 	}
 
-	public void update(long lastModified) {
-		if (lastModified > this.lastModified) {
+	public void update(long lastModified, boolean force) {
+		if (lastModified > this.lastModified || force) {
 			this.lastModified = lastModified;
 			loadProperties();
 		}

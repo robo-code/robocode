@@ -30,6 +30,7 @@ import java.util.Hashtable;
 
 
 /**
+ * Represents on classpath of robots
  * @author Pavel Savara (original)
  */
 public class ClassPathRoot implements IRepositoryRoot {
@@ -138,7 +139,7 @@ public class ClassPathRoot implements IRepositoryRoot {
 			for (int i = 0; i < robotsList.size(); i++) {
 				RobotItem robot = robotsList.get(i);
 
-				robot.update(modified.get(i));
+				robot.update(modified.get(i), false);
 				db.addItem(robot);
 			}
 
@@ -150,7 +151,7 @@ public class ClassPathRoot implements IRepositoryRoot {
 				if (item == null) {
 					item = new TeamItem(tUrl, this);
 				}
-				item.update(team.lastModified());
+				item.update(team.lastModified(), false);
 				db.addItem(item);
 			}
 
@@ -159,9 +160,13 @@ public class ClassPathRoot implements IRepositoryRoot {
 		}
 	}
 
+	public void update(IItem item, boolean force){
+		File f = new File(item.getFullUrl().toString());
+		item.update(f.lastModified(), force);
+	}
+
 	public boolean isChanged(IItem item) {
 		File f = new File(item.getFullUrl().toString());
-
 		return f.lastModified() > item.getLastModified();
 	}
 
@@ -171,5 +176,9 @@ public class ClassPathRoot implements IRepositoryRoot {
 
 	public boolean isDevel() {
 		return isDevel;
+	}
+
+	public String toString() {
+		return url.toString();
 	}
 }

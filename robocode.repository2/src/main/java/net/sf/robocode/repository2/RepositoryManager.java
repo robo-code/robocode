@@ -48,7 +48,6 @@ public class RepositoryManager implements IRepositoryManager {
 			}
 		});
 		db = new Database();
-		db.updateRoots(getRobotsDirectory(), getDevelDirectories());
 	}
 
 	// ------------------------------------------
@@ -78,13 +77,17 @@ public class RepositoryManager implements IRepositoryManager {
 		return develDirectories;
 	}
 
-	public void clearRobotList() {// TODO ZAMO
+	public void clearRobotList() {
+		db = new Database();
+		//TODO persist ?
 	}
 
-	public void reload(String file) {// TODO ZAMO
+	public void reload(String file) {
+		db.update(file, true);
 	}
 
-	public void loadRobotRepository() {// TODO ZAMO
+	public void loadRobotRepository() {
+		db.update(getRobotsDirectory(), getDevelDirectories());
 	}
 
 	public List<INamedFileSpecification> getRobotSpecificationsList() {
@@ -108,6 +111,19 @@ public class RepositoryManager implements IRepositoryManager {
 	public boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
 		return load(battlingRobotsList, bot, battleRobotSpec, String.format("%4d", teamNum), false);
 	}
+
+	public boolean verifyRobotName(String robotName, String shortClassName) {
+		return RobotItem.verifyRobotName(robotName, shortClassName);
+	}
+
+	public int extractJar(File jarFile) {
+		return 0; // TODO ZAMO
+	}
+
+	public INamedFileSpecification createTeam() {
+		return null; // TODO ZAMO
+	}
+
 
 	private boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
 		final INamedFileSpecification fileSpec = getRobot(bot);
@@ -159,17 +175,5 @@ public class RepositoryManager implements IRepositoryManager {
 			return null;
 		}
 		return (INamedFileSpecification) item;
-	}
-
-	public boolean verifyRobotName(String robotName, String shortClassName) {
-		return false; // TODO ZAMO
-	}
-
-	public int extractJar(File jarFile) {
-		return 0; // TODO ZAMO
-	}
-
-	public INamedFileSpecification createTeam() {
-		return null; // TODO ZAMO
 	}
 }

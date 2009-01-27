@@ -18,7 +18,6 @@ import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.repository.IRobotFileSpecification;
-import net.sf.robocode.security.HiddenAccess;
 
 import java.net.URL;
 import java.net.MalformedURLException;
@@ -27,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.File;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -35,7 +33,6 @@ import java.awt.*;
 import java.security.AccessControlException;
 import java.lang.reflect.Method;
 
-import robocode.control.RobotSpecification;
 import robocode.Droid;
 import robocode.Robot;
 import robocode.robotinterfaces.*;
@@ -109,10 +106,6 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 		}
 	}
 
-	public String toString() {
-		return url.toString();
-	}
-
 	public void setClassUrl(URL classUrl) {
 		this.url = classUrl;
 	}
@@ -145,13 +138,13 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 		return urls;
 	}
 
-	public void update(long lastModified) {
-		if (lastModified > this.lastModified) {
+	public void update(long lastModified, boolean force) {
+		if (lastModified > this.lastModified || force) {
 			this.lastModified = lastModified;
 			if (url == null) {
 				isValid = false;
 			}
-			if (!verifyRobotName()) {
+			if (!verifyName()) {
 				isValid = false;
 				return;
 			}
@@ -176,20 +169,25 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 		}
 	}
 
-	private boolean verifyRobotName() {
+	private boolean verifyName() {
 		String robotName = getFullClassName();
-		int lIndex = robotName.indexOf(".");
+		String shortClassName = getShortClassName();
+		return verifyRobotName(robotName, shortClassName);
+	}
+
+	public static boolean verifyRobotName(String fullClassName, String shortClassName) {
+		int lIndex = fullClassName.indexOf(".");
 
 		if (lIndex > 0) {
-			String rootPackage = robotName.substring(0, lIndex);
+			String rootPackage = fullClassName.substring(0, lIndex);
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
-				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
+				logError("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
 				return false;
 			}
 
 			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				final String message = "Robot " + robotName + " has package name too long.  "
+				final String message = "Robot " + fullClassName + " has package name too long.  "
 						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
 
 				logError(message);
@@ -197,10 +195,8 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 			}
 		}
 
-		String shortClassName = getShortClassName();
-
 		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+			final String message = "Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
 					+ " characters maximum please.";
 
 			logError(message);
@@ -374,6 +370,10 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 
 	public String getWritableDirectory() {
 		return root.getUrl().getFile() + getFullPackage();
+	}
+
+	public String toString() {
+		return url.toString();
 	}
 }
 
