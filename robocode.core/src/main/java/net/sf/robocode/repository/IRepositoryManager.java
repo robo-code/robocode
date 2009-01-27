@@ -22,8 +22,6 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public interface IRepositoryManager extends IRepositoryManagerBase {
-	File getRobotCache();
-
 	File getRobotsDirectory();
 
 	List<File> getDevelDirectories();

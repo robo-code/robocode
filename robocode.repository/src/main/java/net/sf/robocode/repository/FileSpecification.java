@@ -20,11 +20,13 @@ package net.sf.robocode.repository;
 
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.RobotSpecification;
 
 import java.io.*;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -94,7 +96,9 @@ abstract class FileSpecification implements Serializable, Cloneable {
 		}
 		newSpec.developmentVersion = developmentVersion;
 		newSpec.rootDir = rootDir;
-		newSpec.storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
+
+		newSpec.storeJarFile(repositoryManager.getRobotsDirectory(),
+				((RepositoryManager) repositoryManager).getRobotCache());
 
 		return newSpec;
 	}
@@ -234,6 +238,15 @@ abstract class FileSpecification implements Serializable, Cloneable {
 
 	public String getFilePath() {
 		return filePath;
+	}
+	
+	public URL getFullUrl() {
+		try {
+			return new URL(filePath);
+		} catch (MalformedURLException e) {
+			Logger.logError(e);
+			return null;
+		}
 	}
 
 	public void setFilePath(String filePath) {

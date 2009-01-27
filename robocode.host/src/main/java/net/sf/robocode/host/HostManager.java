@@ -17,7 +17,6 @@ import net.sf.robocode.host.security.*;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotFileSpecification;
-import net.sf.robocode.repository.IRobotFileSpecificationExt;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.control.RobotSpecification;
@@ -105,10 +104,7 @@ public class HostManager implements IHostManager {
 		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification.getRobotClassPath(),
 				robotFileSpecification.getFullClassName());
 
-		Class<?> robotClass = classLoader.loadRobotMainClass();
-
-		((IRobotFileSpecificationExt) robotFileSpecification).setUid(classLoader.getUid());
-		return robotClass;
+		return classLoader.loadRobotMainClass();
 	}
 
 	public void initSecurity() {

@@ -28,7 +28,6 @@ public interface IRobotFileSpecificationExt extends IRobotFileSpecification, Clo
 	void setRobotWebpage(URL robotWebpage);
 	void setRobocodeVersion(String version);
 	void setRobotVersion(String robotVersion);
-	void setUid(String uid);
 	
 	String getPropertiesFileName();
 	File getRootDir();

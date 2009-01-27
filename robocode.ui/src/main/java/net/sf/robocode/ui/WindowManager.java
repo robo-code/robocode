@@ -57,7 +57,7 @@ public class WindowManager implements IWindowManagerExt {
 	private final static int TIMER_TICKS_PER_SECOND = 50;
 	private final AwtBattleAdaptor awtAdaptor;
 	private RobotPackager robotPackager;
-	private RobotExtractor robotExtractor;
+	// private RobotExtractor robotExtractor;
 	private RankingDialog rankingDialog;
 	private final ISettingsManager properties;
 	private final IImageManager imageManager;
@@ -309,15 +309,16 @@ public class WindowManager implements IWindowManagerExt {
 		WindowUtil.packCenterShow(robotPackager);
 	}
 
-	public void showRobotExtractor(JFrame owner) {
-		if (robotExtractor != null) {
-			robotExtractor.dispose();
-			robotExtractor = null;
-		}
+	/* TODO ?
+	 public void showRobotExtractor(JFrame owner) {
+	 if (robotExtractor != null) {
+	 robotExtractor.dispose();
+	 robotExtractor = null;
+	 }
 
-		robotExtractor = new net.sf.robocode.ui.dialog.RobotExtractor(owner, this, repositoryManager);
-		WindowUtil.packCenterShow(robotExtractor);
-	}
+	 robotExtractor = new net.sf.robocode.ui.dialog.RobotExtractor(owner, this, repositoryManager);
+	 WindowUtil.packCenterShow(robotExtractor);
+	 }*/
 
 	public void showSplashScreen() {
 		RcSplashScreen splashScreen = Container.getComponent(RcSplashScreen.class);

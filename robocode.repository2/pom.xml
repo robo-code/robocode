@@ -8,9 +8,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.host</artifactId>
+    <artifactId>robocode.repository2</artifactId>
     <version>${robocode.version}</version>
-    <name>Robocode Host</name>
+    <name>Robocode New Repository</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -22,24 +22,5 @@
             <artifactId>robocode.core</artifactId>
             <version>${robocode.version}</version>
         </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.repository</artifactId>
-            <version>${robocode.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.repository2</artifactId>
-            <version>${robocode.version}</version>
-        </dependency>
-
-        <!-- test scoped -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.5</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 </project>

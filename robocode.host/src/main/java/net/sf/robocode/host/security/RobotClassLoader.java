@@ -198,11 +198,6 @@ public class RobotClassLoader extends URLClassLoader {
 		return super.getPermissions(codesource);
 	}
 
-	public String getUid() {
-		// TODO ZAMO
-		return null;
-	}
-
 	public Set<String> getReferencedClasses() {
 		return referencedClasses;
 	}

@@ -62,8 +62,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		robotThreadManager = new RobotThreadManager(this);
 
 		loadClassBattle();
-		String classDirectory = robotSpecification.getRobotPackageDirectory();
-		String rootPackageDirectory = robotSpecification.getRootPackageDirectory();
+		String classDirectory = robotSpecification.getWritableDirectory();
+		String rootPackageDirectory = robotSpecification.getReadableDirectory();
 
 		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(), classDirectory,
 				rootPackageDirectory);

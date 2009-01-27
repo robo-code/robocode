@@ -34,9 +34,9 @@ public interface INamedFileSpecification {
 
 	URL getWebpage();
 
-	File getJarFile();
+	// TODO ? File getJarFile();
 
-	String getFilePath();
+	URL getFullUrl();
 
 	boolean isDevelopmentVersion();
 

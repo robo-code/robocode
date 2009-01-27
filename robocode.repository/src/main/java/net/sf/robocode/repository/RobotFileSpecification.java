@@ -250,14 +250,14 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 		}
 	}
 
-	public String getRootPackageDirectory() {
+	public String getReadableDirectory() {
 		int dotIndex = name.indexOf(".");
 		String rootPackage = (dotIndex > 0) ? name.substring(0, dotIndex) : null;
 
 		return rootDir.toString() + File.separator + rootPackage;
 	}
 
-	public String getRobotPackageDirectory() {
+	public String getWritableDirectory() {
 		return rootDir.toString() + File.separator + getFullPackage();
 	}
 

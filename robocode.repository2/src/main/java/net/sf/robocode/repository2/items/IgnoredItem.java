@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,33 +9,35 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository;
+package net.sf.robocode.repository2.items;
 
+
+import net.sf.robocode.repository2.root.IRepositoryRoot;
 
 import java.net.URL;
+import java.util.List;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotFileSpecification extends INamedFileSpecification {
-	URL getRobotClassPath();
+public class IgnoredItem extends BaseItem {
+	public IgnoredItem(URL url, IRepositoryRoot root) {
+		super(url, root);
+	}
 
-	String getWritableDirectory();
+	public List<String> getFriendlyUrls() {
+		return null;
+	}
 
-	String getReadableDirectory();
+	public void update(long lastModified) {// no action
+	}
 
-	boolean isDroid();
+	public boolean isValid() {
+		return false;
+	}
 
-	boolean isTeamRobot();
-
-	boolean isAdvancedRobot();
-
-	boolean isStandardRobot();
-
-	boolean isInteractiveRobot();
-
-	boolean isPaintRobot();
-
-	boolean isJuniorRobot();
+	public String toString() {
+		return url.toString();
+	}
 }

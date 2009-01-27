@@ -188,10 +188,12 @@ public class RobotDescriptionPanel extends JPanel {
 				name += " by " + s;
 			}
 			getRobotNameLabel().setText(name);
-			if (robotSpecification.getJarFile() != null) {
-				getFilePathLabel().setText(robotSpecification.getJarFile().getPath());
+			final URL url = robotSpecification.getFullUrl();
+
+			if (url != null) {
+				getFilePathLabel().setText(url.toString());
 			} else {
-				getFilePathLabel().setText(robotSpecification.getFilePath());
+				getFilePathLabel().setText("");
 			}
 
 			String desc = robotSpecification.getDescription();
