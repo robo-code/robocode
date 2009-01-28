@@ -291,7 +291,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	@Override
 	public void refresh() {
-		//TODO call refresh when robot devel directories are changed in settings
+		// TODO call refresh when robot devel directories are changed in settings
 		initUrls();
 		parentPolicy.refresh();
 	}
@@ -303,8 +303,8 @@ public class RobocodeSecurityPolicy extends Policy {
 		String classPath = System.getProperty("robocode.class.path");
 		StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator);
 
-		//TODO load URLs from new repository roots, don't forget about all robot .jar files 
-		//TODO or check it directly against repository ?
+		// TODO load URLs from new repository roots, don't forget about all robot .jar files 
+		// TODO or check it directly against repository ?
 		try {
 			final List<String> robots = new ArrayList<String>();
 			IRepositoryManager repositoryManager = Container.getComponent(IRepositoryManager.class);

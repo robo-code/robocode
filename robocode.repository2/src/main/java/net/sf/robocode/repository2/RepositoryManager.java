@@ -79,7 +79,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public void clearRobotList() {
 		db = new Database();
-		//TODO persist ?
+		// TODO persist ?
 	}
 
 	public void reload(String file) {
@@ -123,7 +123,6 @@ public class RepositoryManager implements IRepositoryManager {
 	public INamedFileSpecification createTeam() {
 		return null; // TODO ZAMO
 	}
-
 
 	private boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
 		final INamedFileSpecification fileSpec = getRobot(bot);

@@ -24,7 +24,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileFilter;
 
 
 /**
@@ -58,11 +58,11 @@ public class Database {
 			}
 
 			// find jar files
-			final File[] jars = robots.listFiles(new FilenameFilter() {
-				public boolean accept(File dir, String name) {
-					final String low = name.toLowerCase();
+			final File[] jars = robots.listFiles(new FileFilter() {
+				public boolean accept(File pathname) {
+					final String low = pathname.toString().toLowerCase();
 
-					return low.endsWith(".jar") || low.endsWith(".zip");
+					return pathname.isFile() && (low.endsWith(".jar") || low.endsWith(".zip"));
 				}
 			});
 
@@ -86,6 +86,7 @@ public class Database {
 
 	public void update(String url, boolean force) {
 		final IItem iItem = items.get(url);
+
 		iItem.getRoot().update(iItem, force);
 	}
 

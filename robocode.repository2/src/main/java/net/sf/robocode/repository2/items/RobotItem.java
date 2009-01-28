@@ -172,6 +172,7 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 	private boolean verifyName() {
 		String robotName = getFullClassName();
 		String shortClassName = getShortClassName();
+
 		return verifyRobotName(robotName, shortClassName);
 	}
 

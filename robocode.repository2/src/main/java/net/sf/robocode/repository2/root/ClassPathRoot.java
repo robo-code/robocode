@@ -62,23 +62,23 @@ public class ClassPathRoot implements IRepositoryRoot {
 
 	private void visitDirectory(ArrayList<File> properties, ArrayList<File> classes, ArrayList<File> teams, File path) {
 		// find properties
-		properties.addAll(Arrays.asList(path.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.toLowerCase().endsWith(".properties");
+		properties.addAll(Arrays.asList(path.listFiles(new FileFilter() {
+			public boolean accept(File pathname) {
+				return pathname.isFile() && pathname.toString().toLowerCase().endsWith(".properties");
 			}
 		})));
 
 		// find teams
-		teams.addAll(Arrays.asList(path.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.toLowerCase().endsWith(".team");
+		teams.addAll(Arrays.asList(path.listFiles(new FileFilter() {
+			public boolean accept(File pathname) {
+				return pathname.isFile() && pathname.toString().toLowerCase().endsWith(".team");
 			}
 		})));
 
 		// find classes
-		classes.addAll(Arrays.asList(path.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.toLowerCase().endsWith(".class");
+		classes.addAll(Arrays.asList(path.listFiles(new FileFilter() {
+			public boolean accept(File pathname) {
+				return pathname.isFile() && pathname.toString().toLowerCase().endsWith(".class");
 			}
 		})));
 
@@ -160,13 +160,15 @@ public class ClassPathRoot implements IRepositoryRoot {
 		}
 	}
 
-	public void update(IItem item, boolean force){
+	public void update(IItem item, boolean force) {
 		File f = new File(item.getFullUrl().toString());
+
 		item.update(f.lastModified(), force);
 	}
 
 	public boolean isChanged(IItem item) {
 		File f = new File(item.getFullUrl().toString());
+
 		return f.lastModified() > item.getLastModified();
 	}
 
