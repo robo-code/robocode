@@ -20,9 +20,11 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.INamedFileSpecification;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.io.File;
 import java.io.FileFilter;
 
@@ -37,8 +39,6 @@ public class Database {
 
 	public void update(File robots, List<File> devDirs) {
 		try {
-			oldItems = items;
-			items = new Hashtable<String, IItem>();
 			Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
 
 			// find directories
@@ -82,6 +82,10 @@ public class Database {
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
+		System.gc();
+		System.gc();
+		System.gc();
+		System.gc();
 	}
 
 	public void update(String url, boolean force) {
@@ -107,6 +111,20 @@ public class Database {
 
 	public IItem getOldItem(String url) {
 		return oldItems.get(url);
+	}
+
+	public void moveOldItems(IRepositoryRoot root) {
+		List<Map.Entry<String, IItem>> move =new ArrayList<Map.Entry<String, IItem>>(); 
+		for(Map.Entry<String, IItem> entry : items.entrySet()){
+			if (entry.getValue().getRoot() == root){
+				move.add(entry);
+			}
+		}
+
+		for(Map.Entry<String, IItem> entry : move){
+			oldItems.put(entry.getKey(), entry.getValue());
+			items.remove(entry.getKey());
+		}
 	}
 
 	public List<INamedFileSpecification> getRobotSpecificationsList() {

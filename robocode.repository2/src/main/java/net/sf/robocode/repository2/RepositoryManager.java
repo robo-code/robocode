@@ -79,6 +79,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public void clearRobotList() {
 		db = new Database();
+		loadRobotRepository();
 		// TODO persist ?
 	}
 
@@ -105,7 +106,27 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public List<INamedFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
-		return null; // TODO ZAMO
+		final List<INamedFileSpecification> list = db.getRobotSpecificationsList();
+		List<INamedFileSpecification> res=new ArrayList<INamedFileSpecification>();
+		for(INamedFileSpecification item : list){
+			if (onlyWithSource && !item.getJavaSourceIncluded()){
+				continue;
+			}
+			if (onlyWithPackage && item.getFullPackage() == null) {
+				continue;
+			}
+			if (onlyRobots && !(item instanceof RobotItem)){
+				continue;
+			}
+			if (onlyDevelopment && !item.isDevelopmentVersion()){
+				continue;
+			}
+			if (onlyNotDevelopment && item.isDevelopmentVersion()){
+				continue;
+			}
+			res.add(item);
+		}
+		return res;
 	}
 
 	public boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
@@ -153,7 +174,7 @@ public class RepositoryManager implements IRepositoryManager {
 				while (teamTokenizer.hasMoreTokens()) {
 					final String botName = teamTokenizer.nextToken();
 					// first load from same classPath
-					String teamBot = currentTeam.getRoot().getUrl() + botName.replace('.', '/');
+					String teamBot = currentTeam.getRoot().getRootUrl() + botName.replace('.', '/');
 
 					if (!load(battlingRobotsList, teamBot, battleRobotSpec, newTeam, true)) {
 						// try general search

@@ -477,8 +477,8 @@ public final class RepositoryManager implements IRepositoryManager {
 					getRobotDatabase().put(key, spec);
 				} else // if (duplicatePrompt)
 				{
-					File existingSource = existingSpec.getJarFile(); // getRobotsDirectory(),getRobotCache());
-					File newSource = spec.getJarFile(); // getRobotsDirectory(),getRobotCache());
+					File existingSource = new File(existingSpec.getJarFile()); // getRobotsDirectory(),getRobotCache());
+					File newSource = new File(spec.getJarFile()); // getRobotsDirectory(),getRobotCache());
 
 					if (existingSource != null && newSource != null) {
 						long t1 = existingSource.lastModified();

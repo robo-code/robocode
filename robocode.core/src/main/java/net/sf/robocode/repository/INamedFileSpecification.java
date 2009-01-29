@@ -34,7 +34,9 @@ public interface INamedFileSpecification {
 
 	URL getWebpage();
 
-	// TODO ? File getJarFile();
+	boolean getJavaSourceIncluded();
+
+	String getJarFile();
 
 	URL getFullUrl();
 
@@ -43,6 +45,8 @@ public interface INamedFileSpecification {
 	String getRobocodeVersion();
 
 	String getFullPackage();
+	
+	String getRootPackage();
 
 	String getFullClassNameWithVersion();
 

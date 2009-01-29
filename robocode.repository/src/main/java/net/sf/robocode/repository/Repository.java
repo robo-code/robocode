@@ -80,7 +80,7 @@ class Repository {
 				if (spec instanceof RobotFileSpecification) {
 					RobotFileSpecification robotSpec = (RobotFileSpecification) spec;
 
-					if (onlyWithSource && !robotSpec.getRobotJavaSourceIncluded()) {
+					if (onlyWithSource && !robotSpec.getJavaSourceIncluded()) {
 						continue;
 					}
 
@@ -90,7 +90,7 @@ class Repository {
 				} else if (spec instanceof TeamFileSpecification) {
 					TeamFileSpecification teamSpec = (TeamFileSpecification) spec;
 
-					if (onlyWithSource && !teamSpec.getTeamJavaSourceIncluded()) {
+					if (onlyWithSource && !teamSpec.getJavaSourceIncluded()) {
 						continue;
 					}
 				}

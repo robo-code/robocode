@@ -219,7 +219,7 @@ class RobotFileSpecification extends NamedFileSpecification implements IRobotFil
 		props.setProperty(ROBOT_AUTHOR_WEBSITE, robotAuthorWebsite);
 	}
 
-	public boolean getRobotJavaSourceIncluded() {
+	public boolean getJavaSourceIncluded() {
 		return robotJavaSourceIncluded;
 	}
 

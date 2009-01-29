@@ -15,6 +15,7 @@ package net.sf.robocode.repository2.items;
 import net.sf.robocode.repository2.root.IRepositoryRoot;
 
 import java.net.URL;
+import java.io.File;
 
 
 /**

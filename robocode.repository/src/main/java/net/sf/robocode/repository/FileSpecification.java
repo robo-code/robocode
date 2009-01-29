@@ -120,8 +120,8 @@ abstract class FileSpecification implements Serializable, Cloneable {
 		this.packageFile = src;
 	}
 
-	public File getJarFile() {
-		return packageFile;
+	public String getJarFile() {
+		return packageFile.toString();
 	}
 
 	@Override

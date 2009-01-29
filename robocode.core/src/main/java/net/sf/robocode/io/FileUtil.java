@@ -21,6 +21,11 @@ package net.sf.robocode.io;
 import static net.sf.robocode.io.Logger.logError;
 
 import java.io.*;
+import java.net.URLConnection;
+import java.util.jar.JarFile;
+
+import sun.net.www.protocol.jar.JarURLConnection;
+import sun.net.www.protocol.file.FileURLConnection;
 
 
 /**

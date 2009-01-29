@@ -22,8 +22,10 @@ import robocode.*;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.security.AccessControlException;
 import java.util.List;
 
 
@@ -203,10 +205,13 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	public File getDataFile(final String filename) {
 		getCall();
 		commands.setIORobot();
+		if (filename.contains("..")){
+			throw new AccessControlException("no relative path alowed");
+		}
 
 		return AccessController.doPrivileged(new PrivilegedAction<File>() {
 			public File run() {
-				return new File(robotFileSystemManager.getWritableDirectory(), filename);
+				return robotFileSystemManager.getDataFile(filename);
 			}
 		});
 	}

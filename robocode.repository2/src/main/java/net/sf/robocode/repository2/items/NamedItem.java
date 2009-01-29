@@ -45,10 +45,17 @@ public abstract class NamedItem extends BaseItem implements INamedFileSpecificat
 		return root.isDevel();
 	}
 
-	public RobotSpecification createRobotSpecification() {
-		return HiddenAccess.createSpecification(this, getFullClassNameWithVersion(), getAuthorName(),
-				(getWebpage() != null) ? getWebpage().toString() : null, getVersion(), getRobocodeVersion(),
-				root.getUrl().toString(), getFullClassName(), getDescription());
+	public String getJarFile() {
+		return root.getRootUrl().toString();
+	}
+
+	public String getRootPackage() {
+		int lIndex = getFullClassName().indexOf(".");
+		String rootPackage = null;
+		if (lIndex > 0) {
+			rootPackage = getFullClassName().substring(0, lIndex);
+		}
+		return rootPackage;
 	}
 
 	public String getFullPackage() {
@@ -137,4 +144,10 @@ public abstract class NamedItem extends BaseItem implements INamedFileSpecificat
 		}
 		return veryShortClassName;
 	}	
+
+	public RobotSpecification createRobotSpecification() {
+		return HiddenAccess.createSpecification(this, getFullClassNameWithVersion(), getAuthorName(),
+				(getWebpage() != null) ? getWebpage().toString() : null, getVersion(), getRobocodeVersion(),
+				root.getRootUrl().toString(), getFullClassName(), getDescription());
+	}
 }

@@ -52,6 +52,7 @@ public class ClassPathRoot implements IRepositoryRoot {
 	}
 
 	public void update() {
+		db.moveOldItems(this);
 		final ArrayList<File> properties = new ArrayList<File>();
 		final ArrayList<File> classes = new ArrayList<File>();
 		final ArrayList<File> teams = new ArrayList<File>();
@@ -85,7 +86,7 @@ public class ClassPathRoot implements IRepositoryRoot {
 		// find sub-directories
 		for (File subDir : path.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
-				return pathname.isDirectory();
+				return pathname.isDirectory() && !pathname.getName().toLowerCase().endsWith(".data");
 			}
 		})) {
 			visitDirectory(properties, classes, teams, subDir);
@@ -172,12 +173,20 @@ public class ClassPathRoot implements IRepositoryRoot {
 		return f.lastModified() > item.getLastModified();
 	}
 
-	public URL getUrl() {
+	public URL getRootUrl() {
 		return url; 
+	}
+
+	public URL getClassPathUrl() {
+		return url;
 	}
 
 	public boolean isDevel() {
 		return isDevel;
+	}
+
+	public boolean isPackage(){
+		return false;
 	}
 
 	public String toString() {

@@ -21,11 +21,13 @@ import net.sf.robocode.repository.IRobotFileSpecification;
 
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.File;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -78,7 +80,7 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 
 			if (cn != null) {
 				try {
-					final String cUrl = root.getUrl().toString() + cn.replace('.', '/') + ".class";
+					final String cUrl = root.getRootUrl().toString() + cn.replace('.', '/') + ".class";
 
 					url = new URL(cUrl);
 				} catch (MalformedURLException e) {
@@ -100,7 +102,7 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 			String cUrl = url.toString();
 
 			cUrl = cUrl.substring(0, cUrl.lastIndexOf('.'));
-			final String cn = cUrl.substring(root.getUrl().toString().length()).replace('/', '.').replace('\\', '.');
+			final String cn = cUrl.substring(root.getRootUrl().toString().length()).replace('/', '.').replace('\\', '.');
 
 			properties.setProperty(ROBOT_CLASSNAME, cn);
 		}
@@ -156,9 +158,10 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 	private void loadProperties() {
 		if (propertiesUrl != null) {
 			InputStream ios = null;
-
 			try {
-				ios = propertiesUrl.openStream();
+				URLConnection con = propertiesUrl.openConnection();
+				con.setUseCaches(false);
+				ios = con.getInputStream();
 				properties.load(ios);
 			} catch (IOException e) {
 				isValid = false;
@@ -213,7 +216,7 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 
 			Class<?> robotClass = hostManager.loadRobotClass(this);
 
-			if (java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
+			if (robotClass == null || java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 				// this class is not robot
 				isValid = false;
 				return;
@@ -331,7 +334,7 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 	}
 
 	public URL getRobotClassPath() {
-		return root.getUrl();
+		return root.getClassPathUrl();
 	}
 
 	public String getFullClassName() {
@@ -358,19 +361,28 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 		}
 	}
 
+	public boolean getJavaSourceIncluded() {
+		return properties.getProperty(ROBOT_JAVA_SOURCE_INCLUDED, "false").toLowerCase().equals("true");
+	}
+
 	public String getRobocodeVersion() {
 		return properties.getProperty(ROBOCODE_VERSION, null);
 	}
 
 	public String getReadableDirectory() {
-		int dotIndex = getFullClassName().indexOf(".");
-		String rootPackage = (dotIndex > 0) ? getFullClassName().substring(0, dotIndex) : null;
-
-		return root.getUrl().getFile() + rootPackage;
+		return getRootPackage() == null
+				? null
+				: root.isPackage()
+					? root.getClassPathUrl().getFile() + "_" + File.separator + getRootPackage()
+					: root.getClassPathUrl().getFile() + getRootPackage();
 	}
 
 	public String getWritableDirectory() {
-		return root.getUrl().getFile() + getFullPackage();
+		return getRootPackage() == null
+				? null
+				: root.isPackage()
+					? root.getClassPathUrl().getFile() + "_" + File.separator + getFullPackage()
+					: root.getClassPathUrl().getFile() + getFullPackage();
 	}
 
 	public String toString() {

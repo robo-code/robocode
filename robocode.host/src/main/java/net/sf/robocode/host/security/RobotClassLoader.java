@@ -30,6 +30,7 @@ package net.sf.robocode.host.security;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 
 import java.io.File;
@@ -39,12 +40,15 @@ import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.security.CodeSource;
 import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.cert.Certificate;
 import java.util.*;
+
+import robocode.robotinterfaces.IBasicRobot;
 
 
 /**
@@ -148,14 +152,17 @@ public class RobotClassLoader extends URLClassLoader {
 	// we need to call defineClass to be able to set codeSource to untrustedLocation  
 	private ByteBuffer findLocalResource(String name) {
 		// try to find it in robot's classpath
-		String path = name.replace('.', File.separatorChar).concat(".class");
+		String path = name.replace('.', '/') + ".class";
 
 		final URL url = findResource(path);
 		ByteBuffer result = null;
+		InputStream is =null;
 
 		if (url != null) {
 			try {
-				final InputStream is = url.openStream();
+				final URLConnection connection = url.openConnection();
+				connection.setUseCaches(false);
+				is = connection.getInputStream();
 
 				result = ByteBuffer.allocate(1024 * 8);
 				boolean done = false;
@@ -179,6 +186,8 @@ public class RobotClassLoader extends URLClassLoader {
 			} catch (IOException e) {
 				Logger.logError(e);
 				return null;
+			} finally {
+				FileUtil.cleanupStream(is);
 			}
 		}
 		return result;
@@ -205,7 +214,15 @@ public class RobotClassLoader extends URLClassLoader {
 	public synchronized Class<?> loadRobotMainClass() throws ClassNotFoundException {
 		try {
 			if (robotClass == null) {
-				robotClass = loadClass(fullClassName, true);
+				robotClass = loadClass(fullClassName, false);
+
+				if (!IBasicRobot.class.isAssignableFrom(robotClass)) {
+					// that's not robot
+					return null;
+				}
+
+				robotClass = loadClass(fullClassName, false);
+
 				// itterate thru dependencies until we didn't found any new
 				HashSet<String> clone;
 
@@ -227,11 +244,12 @@ public class RobotClassLoader extends URLClassLoader {
 	}
 
 	public void cleanup() {
+		referencedClasses=null;
 		// Set ClassLoader.class.classes to null to prevent memory leaks
 		if (classesField != null) {
 			try {
 				// don't do that Internal Error (44494354494F4E4152590E4350500100)
-				// classesField.setAccessible(true);
+				//classesField.setAccessible(true);
 				classesField.set(this, null);
 			} catch (IllegalArgumentException e) {// logError(e);
 			} catch (IllegalAccessException e) {// logError(e);

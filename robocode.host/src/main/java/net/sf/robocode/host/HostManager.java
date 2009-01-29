@@ -104,7 +104,9 @@ public class HostManager implements IHostManager {
 		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification.getRobotClassPath(),
 				robotFileSpecification.getFullClassName());
 
-		return classLoader.loadRobotMainClass();
+		final Class<?> clazz = classLoader.loadRobotMainClass();
+		classLoader.cleanup();
+		return clazz;
 	}
 
 	public void initSecurity() {

@@ -26,6 +26,8 @@ public interface IRepositoryRoot {
 	void update();
 	void update(IItem item, boolean force);
 	boolean isChanged(IItem item);
-	URL getUrl();
+	URL getRootUrl();
+	URL getClassPathUrl();
+	boolean isPackage();
 	boolean isDevel();
 }

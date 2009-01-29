@@ -21,6 +21,7 @@ import net.sf.robocode.io.FileUtil;
 
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
@@ -37,6 +38,7 @@ import java.util.Hashtable;
 public class JarRoot implements IRepositoryRoot {
 	final Database db;
 	URL url;
+	URL jarUrl;
 	File rootPath;
 	long lastModified;
 
@@ -44,6 +46,8 @@ public class JarRoot implements IRepositoryRoot {
 		this.db = db;
 		this.rootPath = rootPath;
 		try {
+			final String jUrl = "jar:" + rootPath.toURL().toString() + "!/";
+			jarUrl = new URL(jUrl);
 			url = rootPath.toURL();
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
@@ -54,6 +58,7 @@ public class JarRoot implements IRepositoryRoot {
 		long lm = rootPath.lastModified();
 
 		if (lm > this.lastModified) {
+			db.moveOldItems(this);
 			this.lastModified = lm;
 
 			final ArrayList<URL> properties = new ArrayList<URL>();
@@ -66,12 +71,14 @@ public class JarRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<URL> properties, ArrayList<URL> classes, ArrayList<URL> teams) {
-		final String root = url.toString();
+		final String root = jarUrl.toString();
 		InputStream is = null;
 		JarInputStream jarIS = null;
 
 		try {
-			is = url.openStream();
+			final URLConnection con = url.openConnection();
+			con.setUseCaches(false);
+			is = con.getInputStream();
 			jarIS = new JarInputStream(is);
 
 			JarEntry entry = jarIS.getNextJarEntry();
@@ -80,16 +87,19 @@ public class JarRoot implements IRepositoryRoot {
 				String name = entry.getName().toLowerCase();
 
 				if (!entry.isDirectory()) {
-					if (name.endsWith(".properties")) {
-						String pUrl = "jar:" + root + "!/" + entry.getName();
+					if (name.contains(".data/")){
+						//skip
+					}
+					else if (name.endsWith(".properties")) {
+						String pUrl = root +  entry.getName();
 
 						properties.add(new URL(pUrl));
 					} else if (name.endsWith(".team")) {
-						String tUrl = "jar:" + root + "!/" + entry.getName();
+						String tUrl = root + entry.getName();
 
 						teams.add(new URL(tUrl));
 					} else if (name.endsWith(".class")) {
-						String cUrl = "jar:" + root + "!/" + entry.getName();
+						String cUrl = root + entry.getName();
 
 						classes.add(new URL(cUrl));
 					}
@@ -163,12 +173,20 @@ public class JarRoot implements IRepositoryRoot {
 		return rootPath.lastModified() > lastModified;
 	}
 
-	public URL getUrl() {
+	public URL getRootUrl() {
+		return jarUrl;
+	}
+
+	public URL getClassPathUrl() {
 		return url;
 	}
 
 	public boolean isDevel() {
 		return false;
+	}
+
+	public boolean isPackage(){
+		return true;
 	}
 
 	public String toString() {

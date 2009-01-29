@@ -191,12 +191,12 @@ class TeamFileSpecification extends NamedFileSpecification implements ITeamFileS
 		props.setProperty(TEAM_MEMBERS, members);
 	}
 
-	public boolean getTeamJavaSourceIncluded() {
-		return teamJavaSourceIncluded;
-	}
-
 	public void setTeamJavaSourceIncluded(boolean teamJavaSourceIncluded) {
 		this.teamJavaSourceIncluded = teamJavaSourceIncluded;
 		props.setProperty(TEAM_JAVA_SOURCE_INCLUDED, "" + teamJavaSourceIncluded);
+	}
+
+	public boolean getJavaSourceIncluded() {
+		return teamJavaSourceIncluded;
 	}
 }

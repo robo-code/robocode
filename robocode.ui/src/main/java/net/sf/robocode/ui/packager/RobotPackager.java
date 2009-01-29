@@ -537,6 +537,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 		if (!robotFileSpecification.isDevelopmentVersion()) {
 			try {
+				/* TODO ZAMO
 				File inputJar = robotFileSpecification.getJarFile();
 
 				FileInputStream input = null;
@@ -559,7 +560,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 					if (input != null) {
 						input.close();
 					}
-				}
+				}*/
 			} catch (Throwable e) {
 				rv = 8;
 				Logger.logError(e);

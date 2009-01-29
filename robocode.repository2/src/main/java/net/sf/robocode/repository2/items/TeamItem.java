@@ -19,6 +19,7 @@ import net.sf.robocode.io.FileUtil;
 
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Properties;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 
 		tUrl = tUrl.substring(0, tUrl.lastIndexOf(".team"));
 		final int versionSeparator = tUrl.lastIndexOf(" ");
-		final int rootLen = root.getUrl().toString().length();
+		final int rootLen = root.getRootUrl().toString().length();
 
 		if (versionSeparator != -1) {
 			teamFullName = tUrl.substring(rootLen, versionSeparator).replace('/', '.').replace('\\', '.');
@@ -83,7 +84,9 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 			InputStream ios = null;
 
 			try {
-				ios = url.openStream();
+				final URLConnection connection = url.openConnection();
+				connection.setUseCaches(false);
+				ios = connection.getInputStream();
 				properties.load(ios);
 			} catch (IOException e) {
 				Logger.logError(e);
@@ -119,6 +122,10 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 		} catch (MalformedURLException e) {
 			return null;
 		}
+	}
+
+	public boolean getJavaSourceIncluded() {
+		return properties.getProperty(TEAM_JAVA_SOURCE_INCLUDED, "false").toLowerCase().equals("true");
 	}
 
 	public String getRobocodeVersion() {

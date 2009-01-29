@@ -35,6 +35,15 @@ abstract class NamedFileSpecification extends FileSpecification implements Compa
 		return name;
 	}
 
+	public String getRootPackage() {
+		int lIndex = getFullClassName().indexOf(".");
+		String rootPackage = null;
+		if (lIndex > 0) {
+			rootPackage = getFullClassName().substring(0, lIndex);
+		}
+		return rootPackage;
+	}
+
 	public String getShortClassName() {
 		if (shortClassName == null) {
 			if (getFullClassName().lastIndexOf(".") > 0) {

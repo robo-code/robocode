@@ -147,7 +147,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 	private int extractRobot() {
 		repositoryManager.clearRobotList();
-		int rv;
+		int rv = 0;
 
 		output = new StringWriter();
 		PrintWriter out = new PrintWriter(output);
@@ -158,14 +158,15 @@ public class RobotExtractor extends JDialog implements WizardListener {
 
 		try {
 			WindowUtil.setStatusWriter(out);
-			rv = repositoryManager.extractJar(spec.getJarFile());
+			/* TODO ZAMO
+			rv = repositoryManager.extractJar(spec.get());
 			WindowUtil.setStatusWriter(null);
 			WindowUtil.setStatus("");
 			if (rv == 0) {
 				out.println("Robot extracted successfully.");
 			} else if (rv == -1) {
 				out.println("Cancelled.");
-			}
+			}*/
 		} catch (Exception e) {
 			out.println(e);
 			rv = 8;

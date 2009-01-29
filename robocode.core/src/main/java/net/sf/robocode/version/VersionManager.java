@@ -109,7 +109,10 @@ public final class VersionManager implements IVersionManager {
 				logMessage("The URL for the versions.txt was not found");
 				versionString = UNKNOWN_VERSION;
 			} else {
-				in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
+				final URLConnection connection = versionsUrl.openConnection();
+				connection.setUseCaches(false);
+				final InputStream is = connection.getInputStream();
+				in = new BufferedReader(new InputStreamReader(is));
 
 				versionString = in.readLine();
 				while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
