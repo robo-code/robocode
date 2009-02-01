@@ -15,12 +15,13 @@ package net.sf.robocode.repository2.items;
 import net.sf.robocode.repository2.root.IRepositoryRoot;
 
 import java.net.URL;
+import java.io.Serializable;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public abstract class BaseItem implements IItem {
+public abstract class BaseItem implements IItem, Serializable {
 	protected URL url;
 	protected IRepositoryRoot root;
 	protected long lastModified;

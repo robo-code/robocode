@@ -35,6 +35,7 @@ import net.sf.robocode.ui.battle.AwtBattleAdaptor;
 import net.sf.robocode.ui.dialog.*;
 import net.sf.robocode.ui.editor.IRobocodeEditor;
 import net.sf.robocode.ui.packager.RobotPackager;
+import net.sf.robocode.version.IVersionManager;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -64,17 +65,19 @@ public class WindowManager implements IWindowManagerExt {
 	private final IBattleManager battleManager;
 	private final ICpuManager cpuManager;
 	private final IRepositoryManager repositoryManager;
+	private final IVersionManager versionManager;
 	private IRobotDialogManager robotDialogManager;
 	private RobocodeFrame robocodeFrame;
 	private boolean isGUIEnabled = true;
 	private boolean slave = false;
 
-	public WindowManager(ISettingsManager properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
+	public WindowManager(ISettingsManager properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager, IVersionManager versionManager) {
 		this.properties = properties;
 		this.battleManager = battleManager;
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
 		this.imageManager = imageManager;
+		this.versionManager=versionManager;
 		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have
@@ -327,7 +330,7 @@ public class WindowManager implements IWindowManagerExt {
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
-		repositoryManager.loadRobotRepository();
+		repositoryManager.refresh(versionManager.isLastRunVersionChanged(), true);
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 		imageManager.initialize();
@@ -430,7 +433,7 @@ public class WindowManager implements IWindowManagerExt {
 					== JOptionPane.OK_OPTION) {
 				try {
 					FileUtil.copy(inputFile, outputFile);
-					repositoryManager.clearRobotList();
+					repositoryManager.refresh();
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Robot imported successfully.");
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Import failed: " + e);

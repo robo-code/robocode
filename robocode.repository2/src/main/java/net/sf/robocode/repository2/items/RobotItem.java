@@ -46,6 +46,8 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public class RobotItem extends NamedItem implements IRobotRepositoryItem {
+	private static final long serialVersionUID = 1L;
+
 	// Allowed maximum length for a robot's full package name
 	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
 	// Allowed maximum length for a robot's short class name
@@ -80,7 +82,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		classUrlFromProperties();
 		classUrlFromPropertiesUrl();
 		classNameFromClassUrl(root);
-		verifyName();
+		verifyName(true);
 	}
 
 	// / -------------------------------------
@@ -232,11 +234,11 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			if (url == null) {
 				isValid = false;
 			}
-			if (!verifyName()) {
-				return;
-			}
 			loadProperties();
-			loadClass(false);
+			verifyName(false);
+			if (isValid){
+				loadClass(false);
+			}
 		}
 	}
 
@@ -265,11 +267,11 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		return false;
 	}
 
-	private boolean verifyName() {
+	private boolean verifyName(boolean silent) {
 		String robotName = getFullClassName();
 		String shortClassName = getShortClassName();
 
-		final boolean valid = verifyRobotName(robotName, shortClassName);
+		final boolean valid = verifyRobotName(robotName, shortClassName, silent);
 
 		if (!valid) {
 			isValid = false;
@@ -277,7 +279,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		return valid;
 	}
 
-	public static boolean verifyRobotName(String fullClassName, String shortClassName) {
+	public static boolean verifyRobotName(String fullClassName, String shortClassName, boolean silent) {
 		if (fullClassName.contains("$")) {
 			return false;
 		}
@@ -288,7 +290,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			String rootPackage = fullClassName.substring(0, lIndex);
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
-				logError("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
+				if (!silent){
+					logError("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
+				}
 				return false;
 			}
 
@@ -296,7 +300,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				final String message = "Robot " + fullClassName + " has package name too long.  "
 						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
 
-				logError(message);
+				if (!silent){
+					logError(message);
+				}
 				return false;
 			}
 		}
@@ -305,7 +311,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			final String message = "Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
 					+ " characters maximum please.";
 
-			logError(message);
+			if (!silent){
+				logError(message);
+			}
 			return false;
 		}
 

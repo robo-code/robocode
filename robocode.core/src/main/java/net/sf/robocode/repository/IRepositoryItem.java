@@ -22,7 +22,7 @@ import java.net.URL;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRepositoryItem {
+public interface IRepositoryItem extends Comparable<IRepositoryItem>{
 	boolean isValid();
 
 	boolean isTeam();

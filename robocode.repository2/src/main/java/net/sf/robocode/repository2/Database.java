@@ -13,7 +13,9 @@ package net.sf.robocode.repository2;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
@@ -21,21 +23,29 @@ import net.sf.robocode.repository2.root.ClassPathRoot;
 import net.sf.robocode.repository2.root.IRepositoryRoot;
 import net.sf.robocode.repository2.root.JarRoot;
 
-import java.io.File;
-import java.io.FileFilter;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.util.*;
+import java.lang.reflect.Array;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class Database {
+public class Database implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private Hashtable<String, IRepositoryRoot> roots = new Hashtable<String, IRepositoryRoot>();
 	private Hashtable<String, IItem> items = new Hashtable<String, IItem>();
-	private Hashtable<String, IItem> oldItems = new Hashtable<String, IItem>();
+	private transient Hashtable<String, IItem> oldItems = new Hashtable<String, IItem>();
+	private transient IRepositoryManager manager;
 
-	public void update(File robots, List<File> devDirs) {
+	public Database(IRepositoryManager manager) {
+		this.manager = manager;
+	}
+
+	public boolean update(File robots, List<File> devDirs, boolean loadPackages) {
+		final int prev = items.size();
 		try {
 			Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
 
@@ -46,50 +56,72 @@ public class Database {
 
 			// update directories
 			for (File dir : dirs) {
-				IRepositoryRoot root = roots.get(dir.toURL().toString());
+				final String key = dir.toURL().toString();
+				IRepositoryRoot root = roots.get(key);
 
 				if (root == null) {
 					root = new ClassPathRoot(this, dir);
+				}else{
+					roots.remove(key);
 				}
 				root.update();
 				newroots.put(dir.toURL().toString(), root);
 			}
 
-			// find jar files
-			final File[] jars = robots.listFiles(new FileFilter() {
-				public boolean accept(File pathname) {
-					final String low = pathname.toString().toLowerCase();
+			if (loadPackages) {
+				// find jar files
+				final File[] jars = robots.listFiles(new FileFilter() {
+					public boolean accept(File pathname) {
+						final String low = pathname.toString().toLowerCase();
 
-					return pathname.isFile() && (low.endsWith(".jar") || low.endsWith(".zip"));
+						return pathname.isFile() && (low.endsWith(".jar") || low.endsWith(".zip"));
+					}
+				});
+
+				// update jar files
+				for (File jar : jars) {
+					final String key = jar.toURL().toString();
+					IRepositoryRoot root = roots.get(key);
+
+					if (root == null) {
+						root = new JarRoot(this, jar);
+					}else{
+						roots.remove(key);
+					}
+
+					root.update();
+					newroots.put(jar.toURL().toString(), root);
 				}
-			});
-
-			// update jar files
-			for (File jar : jars) {
-				IRepositoryRoot root = roots.get(jar.toURL().toString());
-
-				if (root == null) {
-					root = new JarRoot(this, jar);
+			} else {
+				@SuppressWarnings({"unchecked"})
+				final Hashtable<String, IRepositoryRoot> clone = (Hashtable<String, IRepositoryRoot>)roots.clone();
+				
+				for (IRepositoryRoot oldRoot : clone.values()) {
+					if (oldRoot.isPackage()) {
+						final String key = oldRoot.getRootUrl().toString();
+						newroots.put(key, oldRoot);
+						roots.remove(key);
+					}
 				}
-				root.update();
-				newroots.put(jar.toURL().toString(), root);
 			}
 
+			//removed roots
+			for (IRepositoryRoot oldRoot : roots.values()) {
+				moveOldItems(oldRoot);
+			}
 			roots = newroots;
 			oldItems = new Hashtable<String, IItem>();
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
 		System.gc();
-		System.gc();
-		System.gc();
-		System.gc();
+		return prev!=items.size();
 	}
 
 	public void update(String url, boolean force) {
-		final IItem iItem = items.get(url);
+		final IItem item = items.get(url);
 
-		iItem.getRoot().update(iItem, force);
+		item.getRoot().update(item, force);
 	}
 
 	public void addItem(IItem item) {
@@ -112,7 +144,7 @@ public class Database {
 	}
 
 	public void moveOldItems(IRepositoryRoot root) {
-		List<Map.Entry<String, IItem>> move = new ArrayList<Map.Entry<String, IItem>>(); 
+		List<Map.Entry<String, IItem>> move = new ArrayList<Map.Entry<String, IItem>>();
 
 		for (Map.Entry<String, IItem> entry : items.entrySet()) {
 			if (entry.getValue().getRoot() == root) {
@@ -208,6 +240,7 @@ public class Database {
 			}
 			res.add(spec);
 		}
+		Collections.sort(res);
 		return res;
 	}
 
@@ -221,7 +254,7 @@ public class Database {
 				res.add(spec);
 			}
 		}
-		return res; 
+		return res;
 	}
 
 	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
@@ -244,5 +277,47 @@ public class Database {
 		}
 		return result;
 
+	}
+
+	public void save() {
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		try {
+			fos = new FileOutputStream(new File(manager.getRobotsDirectory(), "robot.database"));
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(this);
+		} catch (IOException e) {
+			Logger.logError("Can't save robot database", e);
+		} finally {
+			FileUtil.cleanupStream(oos);
+			FileUtil.cleanupStream(fos);
+		}
+	}
+
+	public static Database load(IRepositoryManager manager) {
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+
+		try {
+			final File file = new File(manager.getRobotsDirectory(), "robot.database");
+			if (!file.exists()){
+				return null;
+			}
+			fis = new FileInputStream(file);
+			ois = new ObjectInputStream(fis);
+			final Database res = (Database) ois.readObject();
+			res.manager = manager;
+			res.oldItems = new Hashtable<String, IItem>();
+			return res;
+		} catch (IOException e) {
+			Logger.logError("Can't load robot database", e);
+			return null;
+		} catch (ClassNotFoundException e) {
+			Logger.logError("Can't load robot database", e);
+			return null;
+		} finally {
+			FileUtil.cleanupStream(ois);
+			FileUtil.cleanupStream(fis);
+		}
 	}
 }

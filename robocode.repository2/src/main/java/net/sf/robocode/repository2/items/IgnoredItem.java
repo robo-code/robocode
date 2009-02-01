@@ -22,6 +22,8 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public class IgnoredItem extends BaseItem {
+	private static final long serialVersionUID = 1L;
+
 	public IgnoredItem(URL url, IRepositoryRoot root) {
 		super(url, root);
 	}

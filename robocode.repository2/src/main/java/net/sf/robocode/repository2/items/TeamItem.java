@@ -30,6 +30,8 @@ import java.util.Properties;
  * @author Pavel Savara (original)
  */
 public class TeamItem extends NamedItem implements IRepositoryItem {
+	private static final long serialVersionUID = 1L;
+
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";
 	// private final static String TEAM_AUTHOR_EMAIL = "team.author.email";

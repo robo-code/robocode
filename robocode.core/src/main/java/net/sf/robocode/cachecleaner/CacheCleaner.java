@@ -53,8 +53,7 @@ public final class CacheCleaner {
 
 		final IRepositoryManager repositoryManager = Container.getComponent(IRepositoryManager.class);
 
-		repositoryManager.clearRobotList();
-		repositoryManager.loadRobotRepository();
+		repositoryManager.refresh(true, true);
 
 		Logger.logMessage("done.");
 	}

@@ -393,7 +393,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		}
 		addPlaceShowFocus(editWindow);
 		if (repositoryManager != null) {
-			repositoryManager.clearRobotList();
+			repositoryManager.refresh();
 		}
 	}
 

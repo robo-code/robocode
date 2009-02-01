@@ -28,21 +28,22 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	List<File> getDevelDirectories();
 
-	void clearRobotList();
+	void refresh(String file);
 
-	void reload(String file);
+	void refresh();
+	void refresh(boolean forced, boolean refreshPackages);
 
-	void loadRobotRepository();
+	List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage,
+												boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots);
 
-	List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage,
-			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots);
+	RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots);
 
 	boolean verifyRobotName(String robotName, String shortClassName);
+
 	int extractJar(File jarFile);
 
 	void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException;
 
 	void createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots);
 
-	RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots);
 }

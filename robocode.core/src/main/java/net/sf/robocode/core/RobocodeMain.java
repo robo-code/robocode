@@ -122,7 +122,6 @@ public final class RobocodeMain extends RobocodeMainBase {
 			if (windowManager.isGUIEnabled()) {
 				windowManager.setLookAndFeel();
 			}
-
 			properties.setOptionsBattleDesiredTPS(setup.tps);
 
 			battleManager.addListener(battleObserver);
@@ -135,10 +134,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 				windowManager.showRobocodeFrame(true, setup.minimize);
 
 				// Play the intro battle if a battle file is not specified and this is the first time Robocode is being run
-				final String currentVersion = versionManager.getVersion();
 
-				if (setup.battleFilename == null && !properties.getLastRunVersion().equals(currentVersion)) {
-					properties.setLastRunVersion(currentVersion);
+				if (setup.battleFilename == null && versionManager.isLastRunVersionChanged()) {
 					properties.saveProperties();
 					windowManager.runIntroBattle();
 				}
@@ -373,7 +370,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			Container.getComponent(IBattleManager.class).addListener(listener);
 		}
 		Container.getComponent(ICpuManager.class).getCpuConstant();
-		Container.getComponent(IRepositoryManager.class).loadRobotRepository();
+		Container.getComponent(IRepositoryManager.class).refresh(versionManager.isLastRunVersionChanged(), true);
 	}
 
 }

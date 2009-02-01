@@ -178,7 +178,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 
 		if (compiler != null) {
 			compiler.compile(fileName);
-			repositoryManager.reload(fileName);
+			repositoryManager.refresh(fileName);
 		} else {
 			JOptionPane.showMessageDialog(editor, "No compiler installed.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -244,7 +244,6 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 						return false;
 					}
 					if (ok == JOptionPane.YES_OPTION) {
-						repositoryManager.clearRobotList();
 						return fileSaveAs();
 					}
 				}

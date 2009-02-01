@@ -18,9 +18,11 @@ import net.sf.robocode.repository2.Database;
 import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
+import net.sf.robocode.ui.IWindowManager;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,7 +34,9 @@ import java.util.Hashtable;
  * Represents on classpath of robots
  * @author Pavel Savara (original)
  */
-public class ClassPathRoot implements IRepositoryRoot {
+public class ClassPathRoot implements IRepositoryRoot, Serializable {
+	private static final long serialVersionUID = 1L;
+
 	final Database db;
 	URL url;
 	File rootPath;
@@ -51,13 +55,16 @@ public class ClassPathRoot implements IRepositoryRoot {
 	}
 
 	public void update() {
+		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
+
+		setStatus(windowManager, "Updating ClassPath: " + rootPath.toString());
 		db.moveOldItems(this);
 		final ArrayList<File> properties = new ArrayList<File>();
 		final ArrayList<File> classes = new ArrayList<File>();
 		final ArrayList<File> teams = new ArrayList<File>();
 
 		visitDirectory(properties, classes, teams, rootPath);
-		registerItems(properties, classes, teams);
+		registerItems(properties, classes, teams, windowManager);
 	}
 
 	private void visitDirectory(ArrayList<File> properties, ArrayList<File> classes, ArrayList<File> teams, File path) {
@@ -92,7 +99,7 @@ public class ClassPathRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void registerItems(ArrayList<File> properties, ArrayList<File> classes, ArrayList<File> teams) {
+	private void registerItems(ArrayList<File> properties, ArrayList<File> classes, ArrayList<File> teams, IWindowManager windowManager) {
 		try {
 			Hashtable<URL, RobotItem> robots = new Hashtable<URL, RobotItem>();
 			ArrayList<RobotItem> robotsList = new ArrayList<RobotItem>();
@@ -139,7 +146,10 @@ public class ClassPathRoot implements IRepositoryRoot {
 			for (int i = 0; i < robotsList.size(); i++) {
 				RobotItem robot = robotsList.get(i);
 
-				robot.update(modified.get(i), false);
+				if (robot.isValid()){
+					setStatus(windowManager, "Updating robot: " + robot.getFullClassName());
+					robot.update(modified.get(i), false);
+				}
 				db.addItem(robot);
 			}
 
@@ -151,6 +161,7 @@ public class ClassPathRoot implements IRepositoryRoot {
 				if (item == null) {
 					item = new TeamItem(tUrl, this);
 				}
+				setStatus(windowManager, "Updating team: " + ((TeamItem)item).getFullClassName());
 				item.update(team.lastModified(), false);
 				db.addItem(item);
 			}
@@ -186,6 +197,12 @@ public class ClassPathRoot implements IRepositoryRoot {
 
 	public boolean isPackage() {
 		return false;
+	}
+
+	private void setStatus(IWindowManager windowManager, String message) {
+		if (windowManager != null) {
+			windowManager.setStatus(message);
+		}
 	}
 
 	public String toString() {

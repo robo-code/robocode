@@ -25,10 +25,10 @@ import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.ui.IWindowManager;
 import robocode.control.RobotSpecification;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -49,12 +49,10 @@ public class RepositoryManager implements IRepositoryManager {
 		properties.addPropertyListener(new ISettingsListener() {
 			public void settingChanged(String property) {
 				if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)) {
-					// TODO just devel
-					clearRobotList();
+					refresh(false, false);
 				}
 			}
 		});
-		db = new Database();
 	}
 
 	// ------------------------------------------
@@ -84,25 +82,46 @@ public class RepositoryManager implements IRepositoryManager {
 		return develDirectories;
 	}
 
-	public void clearRobotList() {
-		db = new Database();
-		loadRobotRepository();
-		// TODO persist ?
-	}
-
-	public void reload(String file) {
+	public void refresh(String file) {
 		db.update(file, true);
 	}
 
-	public void loadRobotRepository() {
-		db.update(getRobotsDirectory(), getDevelDirectories());
+	public void refresh() {
+		refresh(false, true);
+	}
+
+	public void refresh(boolean forced, boolean refreshPackages) {
+		boolean save = false;
+		if (forced) {
+			db = new Database(this);
+			save = true;
+			Logger.logMessage("Rebuilding robot database.");
+		} else if (db == null) {
+			save = true;
+			setStatus("Reading robot database");
+			db = Database.load(this);
+			if (db == null) {
+				setStatus("Building robot database");
+				db = new Database(this);
+			}
+		}
+		if (db.update(getRobotsDirectory(), getDevelDirectories(), refreshPackages)){
+			save=true;
+		}
+		if (save) {
+			setStatus("Saving robot database");
+			db.save();
+		}
+		setStatus("");
 	}
 
 	public List<IRepositoryItem> getRobotSpecificationsList() {
+		checkDb();
 		return db.getAllSpecifications();
 	}
 
 	public RobotSpecification[] getSpecifications() {
+		checkDb();
 		final List<IRepositoryItem> list = db.getAllSpecifications();
 		List<RobotSpecification> res = new ArrayList<RobotSpecification>();
 
@@ -118,6 +137,7 @@ public class RepositoryManager implements IRepositoryManager {
 	 * @return robots in teams
 	 */
 	public RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots) {
+		checkDb();
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		int teamNum = 0;
 
@@ -139,6 +159,7 @@ public class RepositoryManager implements IRepositoryManager {
 	 * @return robots in teams
 	 */
 	public RobotSpecification[] loadSelectedRobots(String selectedRobots) {
+		checkDb();
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
 		int teamNum = 0;
@@ -180,6 +201,7 @@ public class RepositoryManager implements IRepositoryManager {
 	 * @return robots and teams
 	 */
 	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
+		checkDb();
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
 
@@ -190,15 +212,17 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
+		checkDb();
 		return db.getSelectedSpecifications(selectedRobots);
 	}
 
-	public List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
+	public List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
+		checkDb();
 		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment);
 	}
 
 	public boolean verifyRobotName(String robotName, String shortClassName) {
-		return RobotItem.verifyRobotName(robotName, shortClassName);
+		return RobotItem.verifyRobotName(robotName, shortClassName, true);
 	}
 
 	public int extractJar(File jarFile) {
@@ -206,19 +230,21 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException {
+		checkDb();
 		final String ver = Container.getComponent(IVersionManager.class).getVersion();
 
 		TeamItem.createOrUpdateTeam(target, web, desc, author, members, teamVersion, ver);
-		reload(target.toURL().toString());
+		refresh(target.toURL().toString());
 	}
 
 	public void createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
+		checkDb();
 		try {
 			final List<RobotItem> robots = db.expandTeams(selectedRobots);
 			final List<TeamItem> teams = db.filterTeams(selectedRobots);
 
 			JarRoot.createPackage(target, source, robots, teams);
-			reload(target.toURL().toString());
+			refresh(target.toURL().toString());
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
@@ -231,5 +257,21 @@ public class RepositoryManager implements IRepositoryManager {
 			return null;
 		}
 		return (IRepositoryItem) item;
+	}
+
+	private void setStatus(String message) {
+		IWindowManager windowManager = Container.getComponent(IWindowManager.class);
+		if (windowManager != null) {
+			windowManager.setStatus(message);
+		}
+		if (message.length()>0){
+			Logger.logMessage(message);
+		}
+	}
+
+	private void checkDb(){
+		if (db==null){
+			refresh();
+		}
 	}
 }

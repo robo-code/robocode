@@ -22,11 +22,9 @@ import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
 import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.ui.IWindowManager;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -42,7 +40,9 @@ import java.util.jar.JarOutputStream;
  * Represents one .jar file
  * @author Pavel Savara (original)
  */
-public class JarRoot implements IRepositoryRoot {
+public class JarRoot implements IRepositoryRoot, Serializable {
+	private static final long serialVersionUID = 1L;
+
 	final Database db;
 	URL url;
 	URL jarUrl;
@@ -63,6 +63,9 @@ public class JarRoot implements IRepositoryRoot {
 	}
 
 	public void update() {
+		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
+
+		setStatus(windowManager, "Updating .jar: " + rootPath.toString());
 		long lm = rootPath.lastModified();
 
 		if (lm > this.lastModified) {
@@ -74,7 +77,7 @@ public class JarRoot implements IRepositoryRoot {
 			final ArrayList<URL> teams = new ArrayList<URL>();
 
 			visitItems(properties, classes, teams);
-			registerItems(properties, classes, teams);
+			registerItems(properties, classes, teams, windowManager);
 		}
 	}
 
@@ -121,7 +124,7 @@ public class JarRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void registerItems(ArrayList<URL> properties, ArrayList<URL> classes, ArrayList<URL> teams) {
+	private void registerItems(ArrayList<URL> properties, ArrayList<URL> classes, ArrayList<URL> teams, IWindowManager windowManager) {
 		Hashtable<URL, RobotItem> robots = new Hashtable<URL, RobotItem>();
 		ArrayList<RobotItem> robotsList = new ArrayList<RobotItem>();
 
@@ -157,7 +160,10 @@ public class JarRoot implements IRepositoryRoot {
 
 		// now update robots
 		for (RobotItem robot : robotsList) {
-			robot.update(lastModified, false);
+			if (robot.isValid()){
+				setStatus(windowManager, "Updating robot: " + robot.getFullClassName());
+				robot.update(lastModified, false);
+			}
 			db.addItem(robot);
 		}
 
@@ -168,12 +174,14 @@ public class JarRoot implements IRepositoryRoot {
 			if (item == null) {
 				item = new TeamItem(tUrl, this);
 			}
+			setStatus(windowManager, "Updating team: " + ((TeamItem)item).getFullClassName());
 			item.update(lastModified, false);
 			db.addItem(item);
 		}
 	}
 
-	public void update(IItem item, boolean force) {// TODO ZAMO
+	public void update(IItem item, boolean force) {
+		item.update(rootPath.lastModified(), force);
 	}
 	
 	public boolean isChanged(IItem item) {
@@ -270,4 +278,9 @@ public class JarRoot implements IRepositoryRoot {
 		}
 	}
 
+	private void setStatus(IWindowManager windowManager, String message) {
+		if (windowManager != null) {
+			windowManager.setStatus(message);
+		}
+	}
 }
