@@ -34,7 +34,7 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 	void refresh(boolean forced, boolean refreshPackages);
 
 	List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage,
-												boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots);
+			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots);
 
 	RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots);
 

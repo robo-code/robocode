@@ -42,4 +42,8 @@ public class IgnoredItem extends BaseItem {
 	public String toString() {
 		return url.toString();
 	}
+
+	public int compareTo(Object o) {
+		return -1;
+	}
 }

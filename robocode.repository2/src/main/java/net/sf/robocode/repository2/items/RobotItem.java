@@ -70,6 +70,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private boolean isTeamRobot;
 	private boolean isDroid;
 
+	private boolean isExpectedRobot;
+
 	private URL propertiesUrl;
 
 	public RobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
@@ -108,6 +110,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			} else {
 				final String cn = properties.getProperty(ROBOT_CLASSNAME, null);
 
+				isExpectedRobot = true;
 				if (cn != null) {
 					try {
 						final String cUrl = root.getRootUrl().toString() + cn.replace('.', '/') + ".class";
@@ -236,12 +239,13 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			}
 			loadProperties();
 			verifyName(false);
-			if (isValid){
+			if (isValid) {
 				loadClass(false);
 			}
 		}
 	}
 
+	// stronger than update
 	public boolean validate() {
 		loadClass(true);
 		return isValid;
@@ -290,7 +294,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			String rootPackage = fullClassName.substring(0, lIndex);
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
-				if (!silent){
+				if (!silent) {
 					logError("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
 				}
 				return false;
@@ -300,7 +304,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				final String message = "Robot " + fullClassName + " has package name too long.  "
 						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
 
-				if (!silent){
+				if (!silent) {
 					logError(message);
 				}
 				return false;
@@ -311,7 +315,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			final String message = "Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
 					+ " characters maximum please.";
 
-			if (!silent){
+			if (!silent) {
 				logError(message);
 			}
 			return false;
@@ -339,7 +343,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 		} catch (Throwable t) {
 			isValid = false;
-			logError(getFullClassName() + ": Got an error with this class: " + t.toString()); // just message here
+			if (isExpectedRobot) {
+				logError(getFullClassName() + ": Got an error with this class: " + t.toString()); // just message here
+			}
 		} finally {
 			if (loader != null) {
 				loader.cleanup();

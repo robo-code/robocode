@@ -12,23 +12,43 @@
 package net.sf.robocode.repository2.root;
 
 
-import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.Database;
 
 import java.net.URL;
 import java.io.File;
+import java.io.Serializable;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRepositoryRoot {
-	void update();
-	void update(IItem item, boolean force);
-	boolean isChanged(IItem item);
-	URL getRootUrl();
-	File getRootPath();
-	URL getClassPathUrl();
-	boolean isPackage();
-	boolean isDevel();
+public abstract class BaseRoot implements Serializable, IRepositoryRoot {
+	protected transient Database db;
+	protected URL url;
+	protected File rootPath;
+
+	public BaseRoot(Database db, File rootPath) {
+		this.db = db;
+		this.rootPath = rootPath;
+	}
+
+	public URL getClassPathUrl() {
+		return url;
+	}
+
+	public URL getRootUrl() {
+		return url;
+	}
+
+	public File getRootPath() {
+		return rootPath;
+	}
+
+	public void setDatabase(Database db) {
+		this.db = db;
+	}
+
+	public String toString() {
+		return url.toString();
+	}
 }

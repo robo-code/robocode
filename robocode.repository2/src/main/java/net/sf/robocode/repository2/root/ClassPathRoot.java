@@ -34,17 +34,13 @@ import java.util.Hashtable;
  * Represents on classpath of robots
  * @author Pavel Savara (original)
  */
-public class ClassPathRoot implements IRepositoryRoot, Serializable {
+public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	final Database db;
-	URL url;
-	File rootPath;
 	boolean isDevel = false;
 
 	public ClassPathRoot(Database db, File rootPath) {
-		this.db = db;
-		this.rootPath = rootPath;
+		super(db, rootPath);
 		try {
 			url = rootPath.toURL();
 		} catch (MalformedURLException e) {
@@ -146,7 +142,7 @@ public class ClassPathRoot implements IRepositoryRoot, Serializable {
 			for (int i = 0; i < robotsList.size(); i++) {
 				RobotItem robot = robotsList.get(i);
 
-				if (robot.isValid()){
+				if (robot.isValid()) {
 					setStatus(windowManager, "Updating robot: " + robot.getFullClassName());
 					robot.update(modified.get(i), false);
 				}
@@ -161,7 +157,7 @@ public class ClassPathRoot implements IRepositoryRoot, Serializable {
 				if (item == null) {
 					item = new TeamItem(tUrl, this);
 				}
-				setStatus(windowManager, "Updating team: " + ((TeamItem)item).getFullClassName());
+				setStatus(windowManager, "Updating team: " + ((TeamItem) item).getFullClassName());
 				item.update(team.lastModified(), false);
 				db.addItem(item);
 			}
@@ -183,14 +179,6 @@ public class ClassPathRoot implements IRepositoryRoot, Serializable {
 		return f.lastModified() > item.getLastModified();
 	}
 
-	public URL getRootUrl() {
-		return url; 
-	}
-
-	public URL getClassPathUrl() {
-		return url;
-	}
-
 	public boolean isDevel() {
 		return isDevel;
 	}
@@ -205,7 +193,4 @@ public class ClassPathRoot implements IRepositoryRoot, Serializable {
 		}
 	}
 
-	public String toString() {
-		return url.toString();
-	}
 }

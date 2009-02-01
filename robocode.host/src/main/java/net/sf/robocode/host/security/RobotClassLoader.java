@@ -237,10 +237,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			}
 		} catch (Throwable e) {
 			robotClass = null;
-			throw new ClassNotFoundException(
-					e.getMessage()
-							+ "\nRobots are not alowed to reference robocode engine in robocode.control or net.sf.robocode packages",
-							e); 
+			throw new ClassNotFoundException(e.getMessage(), e);
 		}
 		return robotClass;
 	}

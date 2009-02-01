@@ -92,6 +92,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public void refresh(boolean forced, boolean refreshPackages) {
 		boolean save = false;
+
 		if (forced) {
 			db = new Database(this);
 			save = true;
@@ -105,19 +106,14 @@ public class RepositoryManager implements IRepositoryManager {
 				db = new Database(this);
 			}
 		}
-		if (db.update(getRobotsDirectory(), getDevelDirectories(), refreshPackages)){
-			save=true;
+		if (db.update(getRobotsDirectory(), getDevelDirectories(), refreshPackages)) {
+			save = true;
 		}
 		if (save) {
 			setStatus("Saving robot database");
 			db.save();
 		}
 		setStatus("");
-	}
-
-	public List<IRepositoryItem> getRobotSpecificationsList() {
-		checkDb();
-		return db.getAllSpecifications();
 	}
 
 	public RobotSpecification[] getSpecifications() {
@@ -261,16 +257,17 @@ public class RepositoryManager implements IRepositoryManager {
 
 	private void setStatus(String message) {
 		IWindowManager windowManager = Container.getComponent(IWindowManager.class);
+
 		if (windowManager != null) {
 			windowManager.setStatus(message);
 		}
-		if (message.length()>0){
+		if (message.length() > 0) {
 			Logger.logMessage(message);
 		}
 	}
 
-	private void checkDb(){
-		if (db==null){
+	private void checkDb() {
+		if (db == null) {
 			refresh();
 		}
 	}

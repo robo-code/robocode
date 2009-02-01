@@ -77,7 +77,7 @@ public class WindowManager implements IWindowManagerExt {
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
 		this.imageManager = imageManager;
-		this.versionManager=versionManager;
+		this.versionManager = versionManager;
 		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have

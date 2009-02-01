@@ -40,18 +40,14 @@ import java.util.jar.JarOutputStream;
  * Represents one .jar file
  * @author Pavel Savara (original)
  */
-public class JarRoot implements IRepositoryRoot, Serializable {
+public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	final Database db;
-	URL url;
-	URL jarUrl;
-	File rootPath;
-	long lastModified;
+	private URL jarUrl;
+	private long lastModified;
 
 	public JarRoot(Database db, File rootPath) {
-		this.db = db;
-		this.rootPath = rootPath;
+		super(db, rootPath);
 		try {
 			final String jUrl = "jar:" + rootPath.toURL().toString() + "!/";
 
@@ -160,7 +156,7 @@ public class JarRoot implements IRepositoryRoot, Serializable {
 
 		// now update robots
 		for (RobotItem robot : robotsList) {
-			if (robot.isValid()){
+			if (robot.isValid()) {
 				setStatus(windowManager, "Updating robot: " + robot.getFullClassName());
 				robot.update(lastModified, false);
 			}
@@ -174,7 +170,7 @@ public class JarRoot implements IRepositoryRoot, Serializable {
 			if (item == null) {
 				item = new TeamItem(tUrl, this);
 			}
-			setStatus(windowManager, "Updating team: " + ((TeamItem)item).getFullClassName());
+			setStatus(windowManager, "Updating team: " + ((TeamItem) item).getFullClassName());
 			item.update(lastModified, false);
 			db.addItem(item);
 		}
@@ -192,20 +188,12 @@ public class JarRoot implements IRepositoryRoot, Serializable {
 		return jarUrl;
 	}
 
-	public URL getClassPathUrl() {
-		return url;
-	}
-
 	public boolean isDevel() {
 		return false;
 	}
 
 	public boolean isPackage() {
 		return true;
-	}
-
-	public String toString() {
-		return url.toString();
 	}
 
 	public static void createPackage(File target, boolean source, List<RobotItem> robots, List<TeamItem> teams) {

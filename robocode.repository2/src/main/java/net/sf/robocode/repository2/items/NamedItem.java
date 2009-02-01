@@ -52,8 +52,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	public abstract URL getHtmlUrl();
 
 	public void storeHtml(OutputStream os) throws IOException {
-		if (htmlUrl != null) {
-			//TODO ZAMO
+		if (htmlUrl != null) {// TODO ZAMO
 		}
 	}
 
@@ -177,9 +176,18 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 				root.getRootUrl().toString(), getFullClassName(), getDescription());
 	}
 
-	public int compareTo(IRepositoryItem other) {
-		return compare(getFullPackage(), getFullClassName(), getVersion(), other.getFullPackage(),
-				other.getFullClassName(), other.getVersion());
+	public int compareTo(Object other) {
+		if (other == this) {
+			return 0;
+		}
+		if (other instanceof IRepositoryItem) {
+			IRepositoryItem otherRI = (IRepositoryItem) other;
+
+			return compare(getFullPackage(), getFullClassName(), getVersion(), otherRI.getFullPackage(),
+					otherRI.getFullClassName(), otherRI.getVersion());
+		}
+		// for IgnoredItem
+		return 1;
 	}
 
 	private static int compare(String p1, String c1, String v1, String p2, String c2, String v2) {

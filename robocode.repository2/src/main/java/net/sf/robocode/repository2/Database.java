@@ -22,23 +22,21 @@ import net.sf.robocode.repository2.items.TeamItem;
 import net.sf.robocode.repository2.root.ClassPathRoot;
 import net.sf.robocode.repository2.root.IRepositoryRoot;
 import net.sf.robocode.repository2.root.JarRoot;
+import net.sf.robocode.repository2.root.BaseRoot;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.util.*;
-import java.lang.reflect.Array;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class Database implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+public class Database {
 	private Hashtable<String, IRepositoryRoot> roots = new Hashtable<String, IRepositoryRoot>();
 	private Hashtable<String, IItem> items = new Hashtable<String, IItem>();
-	private transient Hashtable<String, IItem> oldItems = new Hashtable<String, IItem>();
-	private transient IRepositoryManager manager;
+	private Hashtable<String, IItem> oldItems = new Hashtable<String, IItem>();
+	private final IRepositoryManager manager;
 
 	public Database(IRepositoryManager manager) {
 		this.manager = manager;
@@ -130,7 +128,15 @@ public class Database implements Serializable {
 
 		if (friendlyUrls != null) {
 			for (String friendly : friendlyUrls) {
-				items.put(friendly, item);
+				final IItem conflict = items.get(friendly);
+				if (conflict!=null){
+					if (item.compareTo(conflict)>0){
+						//replace with highe version
+						items.put(friendly, item);
+					}
+				} else{
+					items.put(friendly, item);
+				}
 			}
 		}
 	}
@@ -249,8 +255,11 @@ public class Database implements Serializable {
 
 		for (IItem item : items.values()) {
 			final IRepositoryItem spec = (IRepositoryItem) item;
+			if (!item.isValid()){
+				continue;
+			}
 
-			if (item.isValid() && !res.contains(spec)) {
+			if (!res.contains(spec)) {
 				res.add(spec);
 			}
 		}
@@ -280,12 +289,27 @@ public class Database implements Serializable {
 	}
 
 	public void save() {
+		List<IItem> uniqueitems = new LinkedList<IItem>();
+		List<IRepositoryRoot> uniqueroots = new LinkedList<IRepositoryRoot>();
+
+		for (IItem item : items.values()) {
+			if (!uniqueitems.contains(item)) {
+				uniqueitems.add(item);
+			}
+		}
+
+		for (IRepositoryRoot root : roots.values()) {
+			uniqueroots.add(root);
+		}
+
+
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		try {
 			fos = new FileOutputStream(new File(manager.getRobotsDirectory(), "robot.database"));
 			oos = new ObjectOutputStream(fos);
-			oos.writeObject(this);
+			oos.writeObject(uniqueroots);
+			oos.writeObject(uniqueitems);
 		} catch (IOException e) {
 			Logger.logError("Can't save robot database", e);
 		} finally {
@@ -294,7 +318,10 @@ public class Database implements Serializable {
 		}
 	}
 
+	@SuppressWarnings({"unchecked"})
 	public static Database load(IRepositoryManager manager) {
+		List<IItem> uniqueitems;
+		List<IRepositoryRoot> uniqueroots;
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 
@@ -305,15 +332,19 @@ public class Database implements Serializable {
 			}
 			fis = new FileInputStream(file);
 			ois = new ObjectInputStream(fis);
-			final Database res = (Database) ois.readObject();
-			res.manager = manager;
-			res.oldItems = new Hashtable<String, IItem>();
+			uniqueroots = (List<IRepositoryRoot>) ois.readObject();
+			uniqueitems = (List<IItem>) ois.readObject();
+			Database res=new Database(manager);
+			for(IRepositoryRoot root : uniqueroots){
+				((BaseRoot)root).setDatabase(res);
+				res.roots.put(root.getRootPath().toURL().toString(), root);
+			}
+			for(IItem item : uniqueitems){
+				res.addItem(item);
+			}
 			return res;
-		} catch (IOException e) {
-			Logger.logError("Can't load robot database", e);
-			return null;
-		} catch (ClassNotFoundException e) {
-			Logger.logError("Can't load robot database", e);
+		} catch (Throwable t) {
+			Logger.logError("Can't load robot database: "+ t.getMessage());
 			return null;
 		} finally {
 			FileUtil.cleanupStream(ois);

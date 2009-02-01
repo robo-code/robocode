@@ -37,15 +37,15 @@ public final class VersionManager implements IVersionManager {
 	final ISettingsManager settingsManager;
 	final boolean versionChanged;
 
-	public VersionManager(ISettingsManager settingsManager){
-		this.settingsManager=settingsManager;
-		if (settingsManager!=null){
+	public VersionManager(ISettingsManager settingsManager) {
+		this.settingsManager = settingsManager;
+		if (settingsManager != null) {
 			versionChanged = !settingsManager.getLastRunVersion().equals(getVersion());
-			if (versionChanged){
+			if (versionChanged) {
 				settingsManager.setLastRunVersion(getVersion());
 			}
-		} else{
-			versionChanged=false;			
+		} else {
+			versionChanged = false;			
 		}
 	}
 
@@ -104,7 +104,8 @@ public final class VersionManager implements IVersionManager {
 		}
 		return version;
 	}
-	public boolean isLastRunVersionChanged(){
+
+	public boolean isLastRunVersionChanged() {
 		return versionChanged;
 	}
 

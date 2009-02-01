@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public interface IItem {
+public interface IItem extends Comparable<Object> {
 	URL getFullUrl();
 	List<String> getFriendlyUrls();
 	IRepositoryRoot getRoot();

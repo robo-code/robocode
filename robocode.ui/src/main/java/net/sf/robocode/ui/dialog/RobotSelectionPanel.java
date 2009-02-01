@@ -579,7 +579,7 @@ public class RobotSelectionPanel extends WizardPanel {
 			public void run() {
 				try {
 					setBusyPointer(true);
-				    repositoryManager.refresh();
+					repositoryManager.refresh();
 
 					List<IRepositoryItem> robotList = repositoryManager.filterRepositoryItems(onlyShowSource,
 							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
