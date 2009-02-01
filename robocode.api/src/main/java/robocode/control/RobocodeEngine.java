@@ -47,9 +47,6 @@ import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 /**
@@ -233,7 +230,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		return ContainerBase.getComponent(IRepositoryManagerBase.class).getRobotSpecifications();
+		return ContainerBase.getComponent(IRepositoryManagerBase.class).getSpecifications();
 	}
 
 	/**
@@ -244,7 +241,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * Notice: If a specified robot cannot be found in the repository, it will
 	 * not be returned in the array of robots returned by this method.
 	 *
-	 * @param selectedRobotList a comma or space separated list of robots to
+	 * @param selectedRobots a comma or space separated list of robots to
 	 *                          return. The full class name must be used for
 	 *                          specifying the individual robot, e.g.
 	 *                          "sample.Corners, sample.Crazy"
@@ -255,28 +252,9 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #getLocalRepository()
 	 * @since 1.6.2
 	 */
-	public RobotSpecification[] getLocalRepository(String selectedRobotList) {
-		RobotSpecification[] repository = getLocalRepository();
-
-		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
-
-		for (RobotSpecification spec : repository) {
-			robotSpecMap.put(spec.getNameAndVersion(), spec);
-		}
-
-		String[] selectedRobots = selectedRobotList.split("[\\s,;]+");
-
-		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
-
-		RobotSpecification spec;
-
-		for (String robot : selectedRobots) {
-			spec = robotSpecMap.get(robot);
-			if (spec != null) {
-				selectedRobotSpecs.add(spec);
-			}
-		}
-		return selectedRobotSpecs.toArray(new RobotSpecification[selectedRobotSpecs.size()]);
+	public RobotSpecification[] getLocalRepository(String selectedRobots) {
+		final IRepositoryManagerBase repository = ContainerBase.getComponent(IRepositoryManagerBase.class);
+		return repository.loadSelectedRobots(selectedRobots);
 	}
 
 	/**

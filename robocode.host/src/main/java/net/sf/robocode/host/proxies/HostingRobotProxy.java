@@ -21,7 +21,7 @@ import net.sf.robocode.host.security.RobotThreadManager;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotRepositoryItem;
 import robocode.RobotStatus;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
@@ -41,7 +41,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected EventManager eventManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
-	private final IRobotFileSpecification robotSpecification;
+	private final IRobotRepositoryItem robotSpecification;
 	protected RobotClassLoader robotClassLoader;
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;
@@ -50,7 +50,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	private IThreadManager threadManager;
 	protected IBasicRobot robot;
 
-	HostingRobotProxy(IRobotFileSpecification robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;
@@ -63,11 +63,11 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		loadClassBattle();
 		String classDirectory = robotSpecification.getWritableDirectory();
-		String rootPackageDirectory = robotSpecification.getReadableDirectory();
-		String jar = robotSpecification.getJarFile() + robotSpecification.getRootPackage() + "/";
+		String readableDirectory = robotSpecification.getReadableDirectory();
+		String rootFile = robotSpecification.getRootFile() + robotSpecification.getRootPackage() + "/";
 
 		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(), classDirectory,
-				rootPackageDirectory, jar);
+				readableDirectory, rootFile);
 		robotFileSystemManager.initializeQuota();
 	}
 
@@ -176,7 +176,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	private void loadClassBattle() {
 		try {
-			robotClassLoader.loadRobotMainClass();
+			robotClassLoader.loadRobotMainClass(true);
 		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + statics.getName() + " : ");
 			println(e);
@@ -190,7 +190,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		try {
 			threadManager.setLoadingRobot(this);
-			robotClass = robotClassLoader.loadRobotMainClass();
+			robotClass = robotClassLoader.loadRobotMainClass(false);
 			if (robotClass == null) {
 				println("SYSTEM: Skipping robot: " + statics.getName());
 				return false;

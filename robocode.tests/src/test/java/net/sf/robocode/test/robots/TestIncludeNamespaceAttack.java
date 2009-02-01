@@ -26,6 +26,11 @@ public class TestIncludeNamespaceAttack extends RobotTestBed {
 	}
 
 	@Override
+	protected int getExpectedErrors() {
+		return 1;
+	}
+
+	@Override
 	public int getExpectedRobotCount(String list) {
 		return 1;
 	}

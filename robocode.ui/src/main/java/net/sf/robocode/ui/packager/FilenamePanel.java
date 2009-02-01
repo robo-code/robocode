@@ -26,7 +26,7 @@ package net.sf.robocode.ui.packager;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.ui.dialog.WizardPanel;
 
 import javax.swing.*;
@@ -93,7 +93,7 @@ public class FilenamePanel extends WizardPanel {
 				}
 			}
 			String jarName = "myrobots.jar";
-			List<INamedFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			List<IRepositoryItem> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null && selectedRobots.size() == 1) {
 				jarName = selectedRobots.get(0).getFullClassName() + "_"

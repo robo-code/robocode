@@ -44,14 +44,14 @@ public class RobotFileSystemManager {
 	private long maxQuota = 0;
 	private final String writableRootDirectory;
 	private final String readableRootDirectory;
-	private final String jarFile;
+	private final String dataDir;
 
-	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String writableRootDirectory, String readableRootDirectory, String jarFile) {
+	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String writableRootDirectory, String readableRootDirectory, String rootFile) {
 		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;
 		this.writableRootDirectory = writableRootDirectory;
 		this.readableRootDirectory = readableRootDirectory;
-		this.jarFile = jarFile + robotProxy.getStatics().getShortClassName() + ".data/";
+		this.dataDir = rootFile + robotProxy.getStatics().getShortClassName() + ".data/";
 	}
 
 	public void addStream(RobotFileOutputStream s) throws IOException {
@@ -128,7 +128,7 @@ public class RobotFileSystemManager {
 			InputStream is = null;
 			FileOutputStream fos = null;
 			try {
-				URL unUrl = new URL(jarFile + filename);
+				URL unUrl = new URL(dataDir + filename);
 				final URLConnection connection = unUrl.openConnection();
 				connection.setUseCaches(false);
 				is = connection.getInputStream();

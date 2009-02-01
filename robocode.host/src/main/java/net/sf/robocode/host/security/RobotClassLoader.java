@@ -29,6 +29,7 @@ package net.sf.robocode.host.security;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
+import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
@@ -62,7 +63,7 @@ import robocode.robotinterfaces.IBasicRobot;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobotClassLoader extends URLClassLoader {
+public class RobotClassLoader extends URLClassLoader implements IRobotClassLoader {
 	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private Field classesField = null;
 	private Class<?> robotClass;
@@ -211,7 +212,7 @@ public class RobotClassLoader extends URLClassLoader {
 		return referencedClasses;
 	}
 
-	public synchronized Class<?> loadRobotMainClass() throws ClassNotFoundException {
+	public synchronized Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException {
 		try {
 			if (robotClass == null) {
 				robotClass = loadClass(fullClassName, false);
@@ -220,18 +221,19 @@ public class RobotClassLoader extends URLClassLoader {
 					// that's not robot
 					return null;
 				}
+				if (resolve){
+					robotClass = loadClass(fullClassName, true);
 
-				robotClass = loadClass(fullClassName, false);
+					// itterate thru dependencies until we didn't found any new
+					HashSet<String> clone;
 
-				// itterate thru dependencies until we didn't found any new
-				HashSet<String> clone;
-
-				do {
-					clone = new HashSet<String>(referencedClasses);
-					for (String reference : clone) {
-						loadClass(reference, true);
-					}
-				} while (referencedClasses.size() != clone.size());
+					do {
+						clone = new HashSet<String>(referencedClasses);
+						for (String reference : clone) {
+							loadClass(reference, true);
+						}
+					} while (referencedClasses.size() != clone.size());
+				}
 			}
 		} catch (Throwable e) {
 			robotClass = null;

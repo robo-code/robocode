@@ -13,7 +13,7 @@ package net.sf.robocode.repository2.items;
 
 
 import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
 
@@ -23,17 +23,16 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Properties;
 import java.util.ArrayList;
-import java.io.InputStream;
-import java.io.IOException;
+import java.io.*;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TeamItem extends NamedItem implements INamedFileSpecification {
+public class TeamItem extends NamedItem implements IRepositoryItem {
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";
-	private final static String TEAM_AUTHOR_EMAIL = "team.author.email";
+	//private final static String TEAM_AUTHOR_EMAIL = "team.author.email";
 	private final static String TEAM_AUTHOR_WEBSITE = "team.author.website";
 	private final static String TEAM_VERSION = "team.version";
 	private final static String TEAM_WEBPAGE = "team.webpage";
@@ -41,7 +40,6 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 	private final static String TEAM_JAVA_SOURCE_INCLUDED = "team.java.source.included";
 	private final static String ROBOCODE_VERSION = "robocode.version";
 
-	private Properties properties = new Properties();
 	private String teamFullName;
 
 	public TeamItem(URL url, IRepositoryRoot root) {
@@ -60,6 +58,19 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 		isValid = true;
 	}
 
+	private void htmlUrlFromPropertiesUrl() {
+		try {
+			htmlUrl = new URL(url.toString().replaceAll("\\.team",".html"));
+			// test that html file exists
+			final URLConnection conn = htmlUrl.openConnection();
+			conn.setUseCaches(false);
+			conn.getInputStream().close();
+		} catch (IOException ignored) {
+			// doesn't exist
+			htmlUrl = null;
+		}
+	}
+
 	public List<String> getFriendlyUrls() {
 		final ArrayList<String> urls = new ArrayList<String>();
 		final String tUrl = url.toString();
@@ -67,7 +78,6 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 		urls.add(tUrl.substring(0, tUrl.lastIndexOf('.')));
 		urls.add(url.getFile());
 		urls.add(getFullClassName());
-		urls.add(getFullClassNameWithVersion());
 		urls.add(getUniqueFullClassNameWithVersion());
 		return urls;
 	}
@@ -94,6 +104,22 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 				FileUtil.cleanupStream(ios);
 			}
 		}
+	}
+
+	public URL getHtmlUrl(){
+		//lazy
+		if (htmlUrl==null){
+			htmlUrlFromPropertiesUrl();
+		}
+		return htmlUrl;
+	}
+
+	public URL getPropertiesUrl() {
+		return url;
+	}
+
+	public boolean isTeam() {
+		return true;
 	}
 
 	public String getFullClassName() {
@@ -134,6 +160,60 @@ public class TeamItem extends NamedItem implements INamedFileSpecification {
 
 	public String toString() {
 		return url.toString();
+	}
+
+	public void storeProperties(OutputStream os) throws IOException {
+		properties.store(os, "Robocode Robot Team");
+	}
+
+	public static void createOrUpdateTeam(File target, URL web, String desc, String author, String members, String teamVersion, String robocodeVersion) throws IOException {
+		FileOutputStream os = null;
+		try{
+			Properties team = loadTeamProps(target);
+
+			if (robocodeVersion!=null){
+				team.setProperty(ROBOCODE_VERSION, robocodeVersion);
+			}
+			if (web!=null){
+				team.setProperty(TEAM_WEBPAGE, web.toString());
+			}
+			if (desc!=null){
+				team.setProperty(TEAM_DESCRIPTION, desc);
+			}
+			if (author!=null){
+				team.setProperty(TEAM_AUTHOR_NAME, author);
+			}
+			if (members!=null){
+				team.setProperty(TEAM_MEMBERS, members);
+			}
+			if (teamVersion!=null){
+				team.setProperty(TEAM_VERSION, teamVersion);
+			}
+
+			os = new FileOutputStream(target);
+			team.store(os, "Robocode robot team");
+		}
+		finally {
+			FileUtil.cleanupStream(os);
+		}
+	}
+
+	private static Properties loadTeamProps(File target) {
+		Properties team=new Properties();
+		if (target.exists()){
+			FileInputStream fis=null;
+			try{
+				fis=new FileInputStream(target);
+				team.load(fis);
+			}
+			catch (Exception e){
+				Logger.logError(e);
+			}
+			finally {
+				FileUtil.cleanupStream(fis);
+			}
+		}
+		return team;
 	}
 
 }

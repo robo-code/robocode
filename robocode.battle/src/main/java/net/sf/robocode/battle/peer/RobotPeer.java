@@ -76,7 +76,7 @@ import net.sf.robocode.host.proxies.IHostingRobotProxy;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.*;
-import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
@@ -1459,7 +1459,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
 		// disable for next time
-		((IRobotFileSpecification) HiddenAccess.getFileSpecification(robotSpecification)).setValid(false);
+		((IRobotRepositoryItem) HiddenAccess.getFileSpecification(robotSpecification)).setValid(false);
 	}
 
 	public void updateEnergy(double delta) {

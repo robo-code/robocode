@@ -28,17 +28,12 @@
 package net.sf.robocode.ui.packager;
 
 
-import net.sf.robocode.host.security.RobotClassLoader;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.INamedFileSpecification;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository.IRobotFileSpecificationExt;
-import net.sf.robocode.repository.ITeamFileSpecificationExt;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.dialog.*;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
-import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.io.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,13 +43,6 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.Manifest;
-import java.util.zip.ZipException;
 
 
 /**
@@ -81,7 +69,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 	private StringWriter output;
 	private final IRepositoryManager repositoryManager;
 	private final IWindowManager windowManager;
-	private final IVersionManager versionManager;
 
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -93,9 +80,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 		}
 	}
 
-	public RobotPackager(IRepositoryManager repositoryManager, IWindowManager windowManager, IVersionManager versionManager) {
+	public RobotPackager(IRepositoryManager repositoryManager, IWindowManager windowManager) {
 		super(windowManager.getRobocodeFrame());
-		this.versionManager = versionManager;
 		this.repositoryManager = repositoryManager;
 		this.windowManager = windowManager;
 		initialize();
@@ -110,35 +96,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 			int count = in.read(buf, 0, 4096);
 
 			out.write(buf, 0, count);
-		}
-	}
-
-	public void finishButtonActionPerformed() {
-		String resultsString;
-
-		int rc = packageRobots();
-		ConsoleDialog d = new ConsoleDialog(windowManager.getRobocodeFrame(), "Packaging results", false);
-
-		if (rc < 8) {
-			outputSizeClass();
-		}
-
-		if (rc == 0) {
-			resultsString = "Robots Packaged Successfully.\n" + output.toString();
-		} else if (rc == 4) {
-			resultsString = "Robots Packaged, but with warnings.\n" + output.toString();
-		} else if (rc == 8) {
-			resultsString = "Robots Packaging failed.\n" + output.toString();
-		} else {
-			resultsString = "FATAL: Unknown return code " + rc + " from packager.\n" + output.toString();
-		}
-
-		d.setText(resultsString);
-		d.pack();
-		d.pack();
-		WindowUtil.packCenterShow(this, d);
-		if (rc < 8) {
-			dispose();
 		}
 	}
 
@@ -248,15 +205,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		setContentPane(getRobotPackagerContentPane());
 	}
 
-	private int packageRobots() {
-		repositoryManager.clearRobotList();
-		int rv = 0;
-
-		output = new StringWriter();
-		PrintWriter out = new PrintWriter(output);
-
-		out.println("Robot Packager");
-		List<INamedFileSpecification> robotSpecificationsList = repositoryManager.getRobotSpecificationsList();
+	public void finishButtonActionPerformed() {
 		String jarFilename = getFilenamePanel().getFilenameField().getText();
 		File f = new File(jarFilename);
 
@@ -266,460 +215,28 @@ public class RobotPackager extends JDialog implements WizardListener {
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
 			if (ok == JOptionPane.NO_OPTION || ok == JOptionPane.CANCEL_OPTION) {
-				out.println("Cancelled by user.");
-				return -1;
+				Logger.logMessage("Cancelled by user.");
 			}
-			out.println("Overwriting " + jarFilename);
+			Logger.logMessage("Overwriting " + jarFilename);
 		}
-		List<INamedFileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
 
-		// Create the jar file
-		Manifest manifest = new Manifest();
-
-		manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
-		StringBuilder robots = new StringBuilder();
-
-		for (int i = 0; i < selectedRobots.size(); i++) {
-			robots.append(selectedRobots.get(i).getFullClassName());
-			if (i < selectedRobots.size() - 1) {
-				robots.append(',');
-			}
-		}
-		manifest.getMainAttributes().put(new Attributes.Name("robots"), robots.toString());
-		NoDuplicateJarOutputStream jarout;
-
-		FileOutputStream fos = null;
-
-		try {
-			out.println("Creating Jar file: " + f.getName());
-
-			fos = new FileOutputStream(f);
-			jarout = new NoDuplicateJarOutputStream(fos);
-			jarout.setComment(versionManager.getVersion() + " - Robocode version");
-
-			for (INamedFileSpecification fileSpecification : selectedRobots) {
-				if (fileSpecification instanceof IRobotFileSpecificationExt) {
-					IRobotFileSpecificationExt robotFileSpecification = (IRobotFileSpecificationExt) fileSpecification;
-
-					if (robotFileSpecification.isDevelopmentVersion()) {
-						robotFileSpecification.setRobotDescription(
-								getPackagerOptionsPanel().getDescriptionArea().getText());
-						robotFileSpecification.setRobotJavaSourceIncluded(
-								getPackagerOptionsPanel().getIncludeSource().isSelected());
-						robotFileSpecification.setRobotAuthorName(getPackagerOptionsPanel().getAuthorField().getText());
-						URL u = null;
-						String w = getPackagerOptionsPanel().getWebpageField().getText();
-
-						if (w.length() > 0) {
-							try {
-								u = new URL(w);
-							} catch (MalformedURLException e) {
-								try {
-									u = new URL("http://" + w);
-									getPackagerOptionsPanel().getWebpageField().setText(u.toString());
-								} catch (MalformedURLException ignored) {}
-							}
-						}
-						robotFileSpecification.setRobotWebpage(u);
-						robotFileSpecification.setRobocodeVersion(versionManager.getVersion());
-
-						FileOutputStream fos2 = null;
-
-						try {
-							fos2 = new FileOutputStream(new File(robotFileSpecification.getPropertiesFileName()));
-							robotFileSpecification.store(fos2, "Robot Properties");
-						} catch (IOException e) {
-							rv = 4;
-							out.println("Unable to save properties: ");
-							e.printStackTrace(out);
-							out.println("Attempting to continue...");
-						} finally {
-							if (fos2 != null) {
-								try {
-									fos2.close();
-								} catch (IOException ignored) {}
-							}
-						}
-						// Create clone with version for jar
-						try {
-							robotFileSpecification = (IRobotFileSpecificationExt) robotFileSpecification.clone();
-						} catch (CloneNotSupportedException e) {
-							out.println(e);
-							return 8;
-						}
-						robotFileSpecification.setRobotVersion(getPackagerOptionsPanel().getVersionField().getText());
-						addRobotSpecification(out, jarout, robotFileSpecification);
-					} else {
-						out.println("You Cannot package a packaged robot!");
-					}
-				} else if (fileSpecification instanceof ITeamFileSpecificationExt) {
-					ITeamFileSpecificationExt teamSpecification = (ITeamFileSpecificationExt) fileSpecification;
-					URL u = null;
-					String w = getPackagerOptionsPanel().getWebpageField().getText();
-
-					if (w.length() > 0) {
-						try {
-							u = new URL(w);
-						} catch (MalformedURLException e) {
-							try {
-								u = new URL("http://" + w);
-								getPackagerOptionsPanel().getWebpageField().setText(u.toString());
-							} catch (MalformedURLException ignored) {}
-						}
-					}
-					teamSpecification.setTeamWebpage(u);
-					teamSpecification.setTeamDescription(getPackagerOptionsPanel().getDescriptionArea().getText());
-					teamSpecification.setTeamAuthorName(getPackagerOptionsPanel().getAuthorField().getText());
-					teamSpecification.setRobocodeVersion(versionManager.getVersion());
-
-					FileOutputStream fos2 = null;
-
-					try {
-						fos2 = new FileOutputStream(new File(teamSpecification.getPropertiesFileName()));
-						teamSpecification.store(fos2, "Team Properties");
-					} catch (IOException e) {
-						rv = 4;
-						out.println("Unable to save .team file: " + e);
-						out.println("Attempting to continue...");
-					} finally {
-						if (fos2 != null) {
-							try {
-								fos2.close();
-							} catch (IOException ignored) {}
-						}
-					}
-
-					try {
-						teamSpecification = (ITeamFileSpecificationExt) teamSpecification.clone();
-					} catch (CloneNotSupportedException e) {
-						out.println(e);
-						return 8;
-					}
-					teamSpecification.setTeamVersion(getPackagerOptionsPanel().getVersionField().getText());
-
-					StringTokenizer teamTokenizer = new StringTokenizer(teamSpecification.getMembers(), ",");
-					String bot;
-					String newMembers = "";
-
-					while (teamTokenizer.hasMoreTokens()) {
-						if (!(newMembers.length() == 0)) {
-							newMembers += ",";
-						}
-						bot = teamTokenizer.nextToken();
-						for (INamedFileSpecification currentFileSpecification : robotSpecificationsList) {
-							// Teams cannot include teams
-							if (currentFileSpecification instanceof ITeamFileSpecificationExt) {
-								continue;
-							}
-							if (currentFileSpecification.getUniqueFullClassNameWithVersion().equals(bot)) {
-								// Found team member
-								IRobotFileSpecificationExt current = (IRobotFileSpecificationExt) currentFileSpecification;
-
-								// Skip nonversioned packaged
-								if (!current.isDevelopmentVersion()
-										&& (current.getVersion() == null || current.getVersion().length() == 0)) {
-									continue;
-								}
-								if (current.isDevelopmentVersion()
-										&& (current.getVersion() == null || current.getVersion().length() == 0)) {
-									try {
-										current = (IRobotFileSpecificationExt) current.clone();
-									} catch (CloneNotSupportedException e) {
-										out.println(e);
-										return 8;
-									}
-									current.setRobotVersion(
-											"[" + getPackagerOptionsPanel().getVersionField().getText() + "]");
-								}
-								// Package this member
-								newMembers += addRobotSpecification(out, jarout, current);
-								break;
-							}
-						}
-					}
-					teamSpecification.setMembers(newMembers);
-					try {
-						try {
-							JarEntry entry = new JarEntry(
-									teamSpecification.getFullClassName().replace('.', '/') + ".team");
-
-							jarout.putNextEntry(entry);
-							teamSpecification.store(jarout, "Robocode Robot Team");
-							jarout.closeEntry();
-							out.println("Added: " + entry);
-						} catch (ZipException e) {
-							if (e.getMessage().indexOf("duplicate entry") < 0) {
-								throw e;
-							}
-							// ignore duplicate entry, fine, it's already there.
-						}
-					} catch (Throwable e) {
-						rv = 8;
-						out.println(e);
-					}
-				}
-			}
-			jarout.close();
-		} catch (IOException e) {
-			out.println(e);
-			return 8;
-		} finally {
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException ignored) {}
-			}
-		}
-		repositoryManager.clearRobotList();
-		out.println("Packaging complete.");
-		return rv;
-	}
-
-	private final Object threadMonitor = new Object();
-
-	public void outputSizeClass() {
-		// Codesize must be called within a safe thread to prevent security exception
-
-		Thread thread = new Thread() {
-			@Override
-			public void run() {
-				File jarFile = new File(getFilenamePanel().getFilenameField().getText());
-
-				codesize.Codesize.Item item = codesize.Codesize.processZipFile(jarFile);
-
-				int codesize = item.getCodeSize();
-
-				String weightClass;
-
-				if (codesize >= 1500) {
-					weightClass = "MegaBot  (codesize >= 1500 bytes)";
-				} else if (codesize > 750) {
-					weightClass = "MiniBot  (codesize < 1500 bytes)";
-				} else if (codesize > 250) {
-					weightClass = "MicroBot  (codesize < 750 bytes)";
-				} else {
-					weightClass = "NanoBot  (codesize < 250 bytes)";
-				}
-
-				StringBuffer out = output.getBuffer();
-
-				out.append("\n\n---- Codesize ----\n");
-				out.append("Codesize: ").append(codesize).append(" bytes\n");
-				out.append("Robot weight class: ").append(weightClass).append('\n');
-
-				synchronized (threadMonitor) {
-					threadMonitor.notify();
-				}
-			}
-		};
-
-		final IHostManager hostManager = net.sf.robocode.core.Container.getComponent(IHostManager.class);
-
-		hostManager.addSafeThread(thread);
-
-		thread.start();
-
-		synchronized (threadMonitor) {
+		String w = getPackagerOptionsPanel().getWebpageField().getText();
+		URL web = null;
+		if (w.length() > 0) {
 			try {
-				threadMonitor.wait();
-			} catch (InterruptedException e) {
-				// Immediately reasserts the exception by interrupting the caller thread itself
-				Thread.currentThread().interrupt();
-			}
-		}
-
-		hostManager.removeSafeThread(thread);
-	}
-
-	public String addRobotSpecification(PrintWriter out, NoDuplicateJarOutputStream jarout,
-			IRobotFileSpecificationExt robotFileSpecification) {
-		int rv = 0;
-
-		if (!robotFileSpecification.isDevelopmentVersion()) {
-			try {
-				/* TODO ZAMO
-				File inputJar = robotFileSpecification.getJarFile();
-
-				FileInputStream input = null;
-
+				web = new URL(w);
+			} catch (MalformedURLException e) {
 				try {
-					JarEntry entry = new JarEntry(inputJar.getName());
-
-					jarout.putNextEntry(entry);
-					input = new FileInputStream(inputJar);
-
-					copy(input, jarout);
-					jarout.closeEntry();
-					out.println("Added: " + entry);
-				} catch (ZipException e) {
-					if (e.getMessage().indexOf("duplicate entry") < 0) {
-						throw e;
-					}
-					// ignore duplicate entry, fine, it's already there.
-				} finally {
-					if (input != null) {
-						input.close();
-					}
-				}*/
-			} catch (Throwable e) {
-				rv = 8;
-				Logger.logError(e);
-				out.println(e);
+					web = new URL("http://" + w);
+					getPackagerOptionsPanel().getWebpageField().setText(web.toString());
+				} catch (MalformedURLException ignored) {}
 			}
-		} else {
-			addToJar(out, jarout, robotFileSpecification);
 		}
-		String name = robotFileSpecification.getName() + " " + robotFileSpecification.getVersion();
-
-		if (rv != 0) {
-			return null;
-		}
-		return name;
-	}
-
-	public void addToJar(PrintWriter out, NoDuplicateJarOutputStream jarout, IRobotFileSpecificationExt robotFileSpecification) {
-		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification.getRobotClassPath(),
-				robotFileSpecification.getFullClassName());
-
-		try {
-			classLoader.loadRobotMainClass();
-			Iterator<String> classes = classLoader.getReferencedClasses().iterator();
-			String rootDirectory = robotFileSpecification.getRootDir().toString();
-
-			// Save props:
-			try {
-				JarEntry entry = new JarEntry(
-						robotFileSpecification.getFullClassName().replace('.', '/') + ".properties");
-
-				jarout.putNextEntry(entry);
-				robotFileSpecification.store(jarout, "Robot Properties");
-				jarout.closeEntry();
-				out.println("Added: " + entry);
-			} catch (ZipException e) {
-				if (e.getMessage().indexOf("duplicate entry") < 0) {
-					throw e;
-				}
-				// ignore duplicate entry, fine, it's already there.
-			}
-
-			File html = new File(rootDirectory, robotFileSpecification.getFullClassName().replace('.', '/') + ".html");
-
-			if (html.exists()) {
-				FileInputStream input = null;
-
-				try {
-					JarEntry entry = new JarEntry(robotFileSpecification.getFullClassName().replace('.', '/') + ".html");
-
-					jarout.putNextEntry(entry);
-					input = new FileInputStream(html);
-
-					copy(input, jarout);
-					jarout.closeEntry();
-					out.println("Added: " + entry);
-				} catch (ZipException e) {
-					if (e.getMessage().indexOf("duplicate entry") < 0) {
-						throw e;
-					}
-					// ignore duplicate entry, fine, it's already there.
-				} finally {
-					if (input != null) {
-						input.close();
-					}
-				}
-			}
-			while (classes.hasNext()) {
-				String className = classes.next();
-
-				if (className.startsWith("java") || className.startsWith("robocode")) {
-					continue;
-				}
-
-				// Add source file if selected (not inner classes of course)
-				if (getPackagerOptionsPanel().getIncludeSource().isSelected()) {
-					if (className.indexOf("$") < 0) {
-						File javaFile = new File(rootDirectory, className.replace('.', File.separatorChar) + ".java");
-
-						if (javaFile.exists()) {
-							try {
-								JarEntry entry = new JarEntry(className.replace('.', '/') + ".java");
-
-								jarout.putNextEntry(entry);
-								FileInputStream input = new FileInputStream(javaFile);
-
-								copy(input, jarout);
-								jarout.closeEntry();
-								out.println("Added: " + entry);
-							} catch (ZipException e) {
-								if (e.getMessage().indexOf("duplicate entry") < 0) {
-									throw e;
-								}
-								// ignore duplicate entry, fine, it's already there.
-							}
-						} else {
-							out.println(className.replace('.', '/') + ".java does not exist.");
-						}
-					}
-				}
-				// Add class file
-				FileInputStream input = null;
-
-				try {
-					JarEntry entry = new JarEntry(className.replace('.', '/') + ".class");
-
-					jarout.putNextEntry(entry);
-
-					input = new FileInputStream(
-							new File(rootDirectory, className.replace('.', File.separatorChar) + ".class"));
-
-					copy(input, jarout);
-					jarout.closeEntry();
-					out.println("Added: " + entry);
-				} catch (ZipException e) {
-					if (e.getMessage().indexOf("duplicate entry") < 0) {
-						throw e;
-					}
-					// ignore duplicate entry, fine, it's already there.
-				} finally {
-					if (input != null) {
-						input.close();
-					}
-				}
-			}
-
-			File dataDirectory = new File(rootDirectory,
-					robotFileSpecification.getFullClassName().replace('.', '/') + ".data");
-
-			if (dataDirectory.exists()) {
-				File files[] = dataDirectory.listFiles();
-
-				for (File file : files) {
-					FileInputStream input = null;
-
-					try {
-						JarEntry entry = new JarEntry(
-								robotFileSpecification.getFullClassName().replace('.', '/') + ".data/" + file.getName());
-
-						jarout.putNextEntry(entry);
-
-						input = new FileInputStream(file);
-
-						copy(input, jarout);
-						jarout.closeEntry();
-						out.println("Added: " + entry);
-					} catch (ZipException e) {
-						if (e.getMessage().indexOf("duplicate entry") < 0) {
-							throw e;
-						}
-						// ignore duplicate entry, fine, it's already there.
-					} finally {
-						if (input != null) {
-							input.close();
-						}
-					}
-				}
-			}
-		} catch (Throwable e) {
-			out.println(e);
-		}
+		final String desc = getPackagerOptionsPanel().getDescriptionArea().getText();
+		final String autor = getPackagerOptionsPanel().getAuthorField().getText();
+		final String version = getPackagerOptionsPanel().getVersionField().getText();
+		final boolean source = getPackagerOptionsPanel().getIncludeSource().isSelected();
+		final java.util.List<IRepositoryItem> robots = getRobotSelectionPanel().getSelectedRobots();
+		repositoryManager.createPackage(f,web, desc, autor,version, source, robots);
 	}
 }

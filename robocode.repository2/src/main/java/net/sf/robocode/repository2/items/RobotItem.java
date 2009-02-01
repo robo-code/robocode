@@ -17,17 +17,19 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.host.IRobotClassLoader;
+import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.security.HiddenAccess;
 
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.File;
+import java.io.OutputStream;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -37,21 +39,22 @@ import java.lang.reflect.Method;
 
 import robocode.Droid;
 import robocode.Robot;
+import robocode.control.RobotSpecification;
 import robocode.robotinterfaces.*;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class RobotItem extends NamedItem implements IRobotFileSpecification {
+public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	// Allowed maximum length for a robot's full package name
 	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
 	// Allowed maximum length for a robot's short class name
 	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
-	private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
-	private final static String ROBOT_AUTHOR_WEBSITE = "robot.author.website";
+	//private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
+	//private final static String ROBOT_AUTHOR_WEBSITE = "robot.author.website";
 	private final static String ROBOT_JAVA_SOURCE_INCLUDED = "robot.java.source.included";
 	private final static String ROBOT_VERSION = "robot.version";
 	private final static String ROBOT_CLASSNAME = "robot.classname";
@@ -67,28 +70,57 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 	private boolean isDroid;
 
 	private URL propertiesUrl;
-	private Properties properties = new Properties();
 
-	public RobotItem(URL classUrl, URL propertiesUrl, IRepositoryRoot root) {
+	public RobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
 		super(classUrl, root);
-		this.propertiesUrl = propertiesUrl;
+		propertiesUrl = propUrl;
 		isValid = true;
 
-		if (url == null) {
-			loadProperties();
-			final String cn = properties.getProperty(ROBOT_CLASSNAME, null);
+		// trying to guess all correct file locations
+		propsUrlFromClassUrl();
+		classUrlFromProperties();
+		classUrlFromPropertiesUrl();
+		classNameFromClassUrl(root);
+		verifyName();
+	}
 
-			if (cn != null) {
-				try {
-					final String cUrl = root.getRootUrl().toString() + cn.replace('.', '/') + ".class";
+	/// -------------------------------------
+	/// url initialization
+	/// -------------------------------------
 
-					url = new URL(cUrl);
-				} catch (MalformedURLException e) {
-					Logger.logError(e);
+	private void propsUrlFromClassUrl() {
+		if (isValid && propertiesUrl == null && url != null) {
+			final String pUrl = url.toString().replaceAll("\\.class", ".properties");
+			try {
+				propertiesUrl=new URL(pUrl);
+			} catch (MalformedURLException e) {
+				Logger.logError(e);
+			}
+		}
+	}
+
+	private void classUrlFromProperties() {
+		if (isValid && url == null) {
+			if (!loadProperties()){
+				isValid=false;
+			} else{
+				final String cn = properties.getProperty(ROBOT_CLASSNAME, null);
+
+				if (cn != null) {
+					try {
+						final String cUrl = root.getRootUrl().toString() + cn.replace('.', '/') + ".class";
+
+						url = new URL(cUrl);
+					} catch (MalformedURLException e) {
+						Logger.logError(e);
+					}
 				}
 			}
 		}
-		if (url == null) {
+	}
+
+	private void classUrlFromPropertiesUrl() {
+		if (isValid && url == null) {
 			try {
 				final String pUrl = propertiesUrl.toString();
 				final String cUrl = pUrl.substring(0, pUrl.lastIndexOf('.')) + ".class";
@@ -98,7 +130,10 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 				Logger.logError(e);
 			}
 		}
-		if (getFullClassName() == null) {
+	}
+
+	private void classNameFromClassUrl(IRepositoryRoot root) {
+		if (isValid && getFullClassName() == null) {
 			String cUrl = url.toString();
 
 			cUrl = cUrl.substring(0, cUrl.lastIndexOf('.'));
@@ -108,12 +143,57 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 		}
 	}
 
+	private void htmlUrlFromPropertiesUrl() {
+		try {
+			htmlUrl = new URL(propertiesUrl.toString().replaceAll("\\.properties",".html"));
+			// test that html file exists
+			final URLConnection conn = htmlUrl.openConnection();
+			conn.setUseCaches(false);
+			conn.getInputStream().close();
+		} catch (IOException ignored) {
+			// doesn't exist
+			htmlUrl = null;
+		}
+	}
+
+	private void htmlUrlFromClassUrl() {
+		if (htmlUrl==null){
+			try {
+				htmlUrl = new URL(url.toString().replaceAll("\\.class",".html"));
+				// test that html file exists
+				final URLConnection conn = htmlUrl.openConnection();
+				conn.setUseCaches(false);
+				conn.getInputStream().close();
+			} catch (IOException ignored) {
+				// doesn't exist
+				htmlUrl = null;
+			}
+		}
+	}
+
+	/// -------------------------------------
+	/// public
+	/// -------------------------------------
+
+	public boolean isTeam() {
+		return false;
+	}
+
 	public void setClassUrl(URL classUrl) {
 		this.url = classUrl;
 	}
 
 	public void setPropertiesUrl(URL propertiesUrl) {
 		this.propertiesUrl = propertiesUrl;
+	}
+
+	public URL getHtmlUrl(){
+		//lazy
+		if (htmlUrl==null){
+			htmlUrlFromPropertiesUrl();
+			htmlUrlFromClassUrl();
+		}
+		return htmlUrl;
 	}
 
 	public URL getPropertiesUrl() {
@@ -132,30 +212,37 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 		}
 		final String cUrl = url.toString();
 
-		urls.add(cUrl.substring(0, cUrl.lastIndexOf('.')));
+		final String c = cUrl.substring(0, cUrl.lastIndexOf('.'));
+		urls.add(c);
 		urls.add(url.getFile());
 		urls.add(getFullClassName());
-		urls.add(getFullClassNameWithVersion());
 		urls.add(getUniqueFullClassNameWithVersion());
 		return urls;
 	}
 
 	public void update(long lastModified, boolean force) {
 		if (lastModified > this.lastModified || force) {
+			if (force) {
+				isValid = true;
+			}
 			this.lastModified = lastModified;
 			if (url == null) {
 				isValid = false;
 			}
 			if (!verifyName()) {
-				isValid = false;
 				return;
 			}
 			loadProperties();
-			loadClass();
+			loadClass(false);
 		}
 	}
 
-	private void loadProperties() {
+	public boolean validate(){
+		loadClass(true);
+		return isValid;
+	}
+
+	private boolean loadProperties() {
 		if (propertiesUrl != null) {
 			InputStream ios = null;
 			try {
@@ -163,23 +250,32 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 				con.setUseCaches(false);
 				ios = con.getInputStream();
 				properties.load(ios);
+				return true;
 			} catch (IOException e) {
-				isValid = false;
-				Logger.logError(e);
+				return false;
 			} finally {
 				FileUtil.cleanupStream(ios);
 			}
 		}
+		return false;
 	}
 
 	private boolean verifyName() {
 		String robotName = getFullClassName();
 		String shortClassName = getShortClassName();
 
-		return verifyRobotName(robotName, shortClassName);
+		final boolean valid = verifyRobotName(robotName, shortClassName);
+		if (!valid){
+			isValid = false;
+		}
+		return valid;
 	}
 
 	public static boolean verifyRobotName(String fullClassName, String shortClassName) {
+		if (fullClassName.contains("$")) {
+			return false;
+		}
+
 		int lIndex = fullClassName.indexOf(".");
 
 		if (lIndex > 0) {
@@ -210,11 +306,12 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 		return true;
 	}
 
-	private void loadClass() {
+	private void loadClass(boolean resolve) {
+		IRobotClassLoader loader = null;
 		try {
 			final IHostManager hostManager = net.sf.robocode.core.Container.getComponent(IHostManager.class);
-
-			Class<?> robotClass = hostManager.loadRobotClass(this);
+			loader = hostManager.createLoader(this);
+			Class<?> robotClass = loader.loadRobotMainClass(resolve);
 
 			if (robotClass == null || java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 				// this class is not robot
@@ -227,6 +324,11 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 		} catch (Throwable t) {
 			isValid = false;
 			logError(getFullClassName() + ": Got an error with this class: " + t.toString()); // just message here
+		}
+		finally {
+			if (loader!=null){
+				loader.cleanup();
+			}
 		}
 	}
 
@@ -303,6 +405,10 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 			}
 		}
 		return true;
+	}
+
+	public void storeProperties(OutputStream os) throws IOException {
+		properties.store(os, "Robocode Robot");
 	}
 
 	public boolean isDroid() {
@@ -383,6 +489,20 @@ public class RobotItem extends NamedItem implements IRobotFileSpecification {
 				: root.isPackage()
 					? root.getClassPathUrl().getFile() + "_" + File.separator + getFullPackage()
 					: root.getClassPathUrl().getFile() + getFullPackage();
+	}
+
+	public RobotSpecification createRobotSpecification(RobotSpecification battleRobotSpec, String teamName) {
+		RobotSpecification specification;
+
+		if (battleRobotSpec != null) {
+			specification = battleRobotSpec;
+		} else {
+			specification = createRobotSpecification();
+		}
+		if (teamName!=null){
+			HiddenAccess.setTeamName(specification, teamName);
+		}
+		return specification;
 	}
 
 	public String toString() {

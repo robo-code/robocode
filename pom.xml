@@ -23,7 +23,6 @@
         <module>robocode.roborumble</module>
         <module>robocode.tests</module>
         <module>robocode.installer</module>
-        <module>robocode.repository</module>
         <module>robocode.repository2</module>
         <module>robocode.content</module>
     </modules>

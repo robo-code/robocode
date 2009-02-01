@@ -14,7 +14,6 @@
     <orderEntry type="module" module-name="robocode.core" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
     <orderEntry type="module" module-name="robocode.host" exported="" />
-    <orderEntry type="module" module-name="robocode.repository" exported="" />
     <orderEntry type="module" module-name="robocode.repository2" exported="" />
   </component>
 </module>

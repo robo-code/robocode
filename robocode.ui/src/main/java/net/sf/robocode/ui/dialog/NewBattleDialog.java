@@ -24,7 +24,7 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
@@ -157,7 +157,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		return rulesTab;
 	}
 
-	public List<INamedFileSpecification> getSelectedRobots() {
+	public List<IRepositoryItem> getSelectedRobots() {
 		return getRobotSelectionPanel().getSelectedRobots();
 	}
 

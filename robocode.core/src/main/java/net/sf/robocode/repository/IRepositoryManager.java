@@ -15,7 +15,9 @@ package net.sf.robocode.repository;
 import robocode.control.RobotSpecification;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.net.URL;
 
 
 /**
@@ -32,14 +34,15 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	void loadRobotRepository();
 
-	List<INamedFileSpecification> getRobotSpecificationsList();
-	List<INamedFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage,
+	List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots);
-
-	boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum);
 
 	boolean verifyRobotName(String robotName, String shortClassName);
 	int extractJar(File jarFile);
 
-	INamedFileSpecification createTeam();
+	void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException;
+
+	void createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots);
+
+	RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots);
 }

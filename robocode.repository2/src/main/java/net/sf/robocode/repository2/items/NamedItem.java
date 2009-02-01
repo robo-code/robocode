@@ -14,9 +14,12 @@ package net.sf.robocode.repository2.items;
 
 import net.sf.robocode.repository2.root.IRepositoryRoot;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 
 import java.net.URL;
+import java.util.Properties;
+import java.io.OutputStream;
+import java.io.IOException;
 
 import robocode.control.RobotSpecification;
 
@@ -24,10 +27,15 @@ import robocode.control.RobotSpecification;
 /**
  * @author Pavel Savara (original)
  */
-public abstract class NamedItem extends BaseItem implements INamedFileSpecification {
+public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	public NamedItem(URL url, IRepositoryRoot root) {
 		super(url, root);
 	}
+
+	protected Properties properties = new Properties();
+	protected URL htmlUrl;
+
+	public abstract URL getPropertiesUrl();
 
 	public abstract String getFullClassName();
 
@@ -41,11 +49,19 @@ public abstract class NamedItem extends BaseItem implements INamedFileSpecificat
 
 	public abstract String getDescription();
 
+	public abstract URL getHtmlUrl();
+
+	public void storeHtml(OutputStream os) throws IOException {
+		if (htmlUrl!=null){
+			
+		}
+	}
+
 	public boolean isDevelopmentVersion() {
 		return root.isDevel();
 	}
 
-	public String getJarFile() {
+	public String getRootFile() {
 		return root.getRootUrl().toString();
 	}
 
@@ -65,6 +81,15 @@ public abstract class NamedItem extends BaseItem implements INamedFileSpecificat
 			return "";
 		}
 		return getFullClassName().substring(0, index);
+	}
+
+	public String getRelativePath() {
+		final int index = getFullClassName().lastIndexOf('.');
+
+		if (index == -1) {
+			return "";
+		}
+		return getFullClassName().substring(0, index).replace('.', '/');
 	}
 
 	public String getShortClassName() {

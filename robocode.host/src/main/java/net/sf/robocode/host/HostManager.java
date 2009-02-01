@@ -16,7 +16,7 @@ import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.control.RobotSpecification;
@@ -80,7 +80,7 @@ public class HostManager implements IHostManager {
 
 	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
 		IHostingRobotProxy robotProxy;
-		final IRobotFileSpecification specification = (IRobotFileSpecification) HiddenAccess.getFileSpecification(
+		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
 		if (specification.isTeamRobot()) {
@@ -100,13 +100,9 @@ public class HostManager implements IHostManager {
 	public void cleanup() {// TODO
 	}
 
-	public Class<?> loadRobotClass(IRobotFileSpecification robotFileSpecification) throws ClassNotFoundException {
-		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification.getRobotClassPath(),
-				robotFileSpecification.getFullClassName());
-
-		final Class<?> clazz = classLoader.loadRobotMainClass();
-		classLoader.cleanup();
-		return clazz;
+	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
+		return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(),
+				robotRepositoryItem.getFullClassName());
 	}
 
 	public void initSecurity() {

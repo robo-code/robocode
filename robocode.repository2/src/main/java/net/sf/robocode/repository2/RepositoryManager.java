@@ -13,18 +13,24 @@ package net.sf.robocode.repository2;
 
 
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.TeamItem;
+import net.sf.robocode.repository2.root.JarRoot;
+import net.sf.robocode.core.Container;
+import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.security.HiddenAccess;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import robocode.control.RobotSpecification;
 
@@ -34,7 +40,7 @@ import robocode.control.RobotSpecification;
  */
 public class RepositoryManager implements IRepositoryManager {
 
-	private ISettingsManager properties;
+	private final ISettingsManager properties;
 	private Database db;
 
 	public RepositoryManager(ISettingsManager properties) {
@@ -91,46 +97,96 @@ public class RepositoryManager implements IRepositoryManager {
 		db.update(getRobotsDirectory(), getDevelDirectories());
 	}
 
-	public List<INamedFileSpecification> getRobotSpecificationsList() {
-		return db.getRobotSpecificationsList();
+	public List<IRepositoryItem> getRobotSpecificationsList() {
+		return db.getAllSpecifications();
 	}
 
-	public RobotSpecification[] getRobotSpecifications() {
-		final List<INamedFileSpecification> list = db.getRobotSpecificationsList();
+	public RobotSpecification[] getSpecifications() {
+		final List<IRepositoryItem> list = db.getAllSpecifications();
 		List<RobotSpecification> res = new ArrayList<RobotSpecification>();
 
-		for (INamedFileSpecification s : list) {
+		for (IRepositoryItem s : list) {
 			res.add(s.createRobotSpecification());
 		}
 		return res.toArray(new RobotSpecification[res.size()]);
 	}
 
-	public List<INamedFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
-		final List<INamedFileSpecification> list = db.getRobotSpecificationsList();
-		List<INamedFileSpecification> res=new ArrayList<INamedFileSpecification>();
-		for(INamedFileSpecification item : list){
-			if (onlyWithSource && !item.getJavaSourceIncluded()){
-				continue;
+
+	/**
+	 * Expand teams, validate robots
+	 * @param selectedRobots, names of robots and teams, comma separated
+	 * @return robots in teams
+	 */
+	public RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots) {
+		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		int teamNum = 0;
+		for(RobotSpecification spec: selectedRobots){
+			IRepositoryItem item = (IRepositoryItem)HiddenAccess.getFileSpecification(spec);
+			if (item==null){
+				item = getRobot(spec.getNameAndVersion());
 			}
-			if (onlyWithPackage && item.getFullPackage() == null) {
-				continue;
-			}
-			if (onlyRobots && !(item instanceof RobotItem)){
-				continue;
-			}
-			if (onlyDevelopment && !item.isDevelopmentVersion()){
-				continue;
-			}
-			if (onlyNotDevelopment && item.isDevelopmentVersion()){
-				continue;
-			}
-			res.add(item);
+			loadItem(battlingRobotsList, spec, item, teamNum);
+			teamNum++;
 		}
-		return res;
+		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
 	}
 
-	public boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
-		return load(battlingRobotsList, bot, battleRobotSpec, String.format("%4d", teamNum), false);
+	/**
+	 * Expand teams, validate robots
+	 * @param selectedRobots, names of robots and teams, comma separated
+	 * @return robots in teams
+	 */
+	public RobotSpecification[] loadSelectedRobots(String selectedRobots) {
+		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
+		int teamNum = 0;
+		for(IRepositoryItem item: list){
+			loadItem(battlingRobotsList, null, item, teamNum);
+			teamNum++;
+		}
+		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
+	}
+
+	private void loadItem(List<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
+		String teamName = String.format("%4d", teamNum);
+		if (item!=null){
+			if (item.isTeam()) {
+				teamName = item.getFullClassNameWithVersion() + "[" + teamName + "]";
+				final List<RobotItem> members = db.expandTeam((TeamItem) item);
+				for (IRepositoryItem member : members) {
+					final RobotItem robot = (RobotItem) member;
+					if (robot.validate()) {
+						battlingRobotsList.add(robot.createRobotSpecification(null, teamName));
+					}
+				}
+			} else {
+				final RobotItem robot = (RobotItem) item;
+				if (robot.validate()) {
+					battlingRobotsList.add(robot.createRobotSpecification(spec, null));
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param selectedRobots, names of robots and teams, comma separated
+	 * @return robots and teams
+	 */
+	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
+		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
+		for(IRepositoryItem item: list){
+			battlingRobotsList.add(item.createRobotSpecification());
+		}
+		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
+	}
+
+	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
+		return db.getSelectedSpecifications(selectedRobots);
+	}
+
+	public List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
+		return db.filterSpecifications(onlyWithSource,onlyWithPackage,onlyRobots,onlyDevelopment,onlyNotDevelopment);
 	}
 
 	public boolean verifyRobotName(String robotName, String shortClassName) {
@@ -141,59 +197,29 @@ public class RepositoryManager implements IRepositoryManager {
 		return 0; // TODO ZAMO
 	}
 
-	public INamedFileSpecification createTeam() {
-		return null; // TODO ZAMO
+	public void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException {
+		final String ver = Container.getComponent(IVersionManager.class).getVersion();
+		TeamItem.createOrUpdateTeam(target, web, desc, author,members, teamVersion, ver);
+		reload(target.toURL().toString());
 	}
 
-	private boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
-		final INamedFileSpecification fileSpec = getRobot(bot);
-
-		if (fileSpec != null) {
-			if (fileSpec instanceof RobotItem) {
-				RobotSpecification specification;
-
-				if (!inTeam && battleRobotSpec != null) {
-					specification = battleRobotSpec;
-				} else {
-					specification = fileSpec.createRobotSpecification();
-				}
-				HiddenAccess.setTeamName(specification, inTeam ? teamName : null);
-				battlingRobotsList.add(specification);
-				return true;
-			} else if (fileSpec instanceof TeamItem) {
-				TeamItem currentTeam = (TeamItem) fileSpec;
-				String version = currentTeam.getVersion();
-
-				if (version == null) {
-					version = "";
-				}
-
-				final String newTeam = currentTeam.getFullClassName() + version + "[" + teamName + "]";
-				StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
-
-				while (teamTokenizer.hasMoreTokens()) {
-					final String botName = teamTokenizer.nextToken();
-					// first load from same classPath
-					String teamBot = currentTeam.getRoot().getRootUrl() + botName.replace('.', '/');
-
-					if (!load(battlingRobotsList, teamBot, battleRobotSpec, newTeam, true)) {
-						// try general search
-						load(battlingRobotsList, botName, battleRobotSpec, newTeam, true);
-					}
-				}
-				return true;
-			}
+	public void createPackage(File target, URL web, String desc, String author, String version,boolean source, List<IRepositoryItem> selectedRobots) {
+		try {
+			final List<RobotItem> robots = db.expandTeams(selectedRobots);
+			final List<TeamItem> teams = db.filterTeams(selectedRobots);
+			JarRoot.createPackage(target, source, robots, teams);
+			reload(target.toURL().toString());
+		} catch (MalformedURLException e) {
+			Logger.logError(e);
 		}
-		return false;
 	}
 
-	private INamedFileSpecification getRobot(String fullClassNameWithVersion) {
-		loadRobotRepository();
+	private IRepositoryItem getRobot(String fullClassNameWithVersion) {
 		final IItem item = db.getItem(fullClassNameWithVersion);
 
 		if (item == null || !item.isValid()) {
 			return null;
 		}
-		return (INamedFileSpecification) item;
+		return (IRepositoryItem) item;
 	}
 }

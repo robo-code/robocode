@@ -24,7 +24,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
@@ -153,8 +153,8 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		PrintWriter out = new PrintWriter(output);
 
 		out.println("Robot Extract");
-		List<INamedFileSpecification> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
-		INamedFileSpecification spec = selectedRobots.get(0);
+		List<IRepositoryItem> selectedRobots = getRobotSelectionPanel().getSelectedRobots();
+		IRepositoryItem spec = selectedRobots.get(0);
 
 		try {
 			WindowUtil.setStatusWriter(out);

@@ -70,15 +70,11 @@ import robocode.Event;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
-import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -129,27 +125,8 @@ public class BattleManager implements IBattleManager {
 	// Called when starting a new battle from GUI
 	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver) {
 		this.battleProperties = battleProperties;
-
-		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-
-		if (battleProperties.getSelectedRobots() != null) {
-			StringTokenizer tokenizer = new StringTokenizer(battleProperties.getSelectedRobots(), ",");
-
-			int num = 0;
-
-			while (tokenizer.hasMoreTokens()) {
-				String bot = tokenizer.nextToken();
-
-				boolean failed = loadRobot(battlingRobotsList, bot, null, num);
-
-				if (failed) {
-					return;
-				}
-				num++;
-			}
-		}
-
-		startNewBattleImpl(battlingRobotsList, waitTillOver);
+		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(battleProperties.getSelectedRobots());
+		startNewBattleImpl(robots, waitTillOver);
 	}
 
 	// Called from the RobocodeEngine
@@ -162,39 +139,11 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setNumRounds(spec.getNumRounds());
 		battleProperties.setSelectedRobots(spec.getRobots());
 
-		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-
-		int num = 0;
-
-		for (robocode.control.RobotSpecification battleRobotSpec : spec.getRobots()) {
-			if (battleRobotSpec == null) {
-				break;
-			}
-
-			String bot = battleRobotSpec.getNameAndVersion();
-			boolean failed = loadRobot(battlingRobotsList, bot, battleRobotSpec, num);
-
-			num++;
-
-			if (failed) {
-				return;
-			}
-		}
-		startNewBattleImpl(battlingRobotsList, waitTillOver);
+		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
+		startNewBattleImpl(robots, waitTillOver);
 	}
 
-	private boolean loadRobot(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
-		boolean found = repositoryManager.load(battlingRobotsList, bot, battleRobotSpec, teamNum);
-
-		if (!found) {
-			logError("Aborting battle, could not find robot: " + bot);
-			this.battleEventDispatcher.onBattleFinished(new BattleFinishedEvent(true));
-			return true;
-		}
-		return false;
-	}
-
-	private void startNewBattleImpl(List<RobotSpecification> battlingRobotsList, boolean waitTillOver) {
+	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver) {
 
 		if (battle != null && battle.isRunning()) {
 			battle.stop(true);

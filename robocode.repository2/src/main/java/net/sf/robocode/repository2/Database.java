@@ -16,15 +16,13 @@ import net.sf.robocode.repository2.root.IRepositoryRoot;
 import net.sf.robocode.repository2.root.ClassPathRoot;
 import net.sf.robocode.repository2.root.JarRoot;
 import net.sf.robocode.repository2.items.IItem;
+import net.sf.robocode.repository2.items.TeamItem;
+import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 import java.io.File;
 import java.io.FileFilter;
 
@@ -127,16 +125,120 @@ public class Database {
 		}
 	}
 
-	public List<INamedFileSpecification> getRobotSpecificationsList() {
-		final ArrayList<INamedFileSpecification> res = new ArrayList<INamedFileSpecification>();
+	public List<TeamItem> filterTeams(List<IRepositoryItem> selectedRobots){
+		List<TeamItem> result=new ArrayList<TeamItem>();
+		for(IRepositoryItem item : selectedRobots){
+			if (item.isTeam()){
+				result.add((TeamItem)item);
+			}
+		}
+		return result;
+	}
 
-		for (IItem i : items.values()) {
-			final INamedFileSpecification spec = (INamedFileSpecification) i;
+	public List<RobotItem> expandTeams(List<IRepositoryItem> selectedRobots){
+		List<RobotItem> result=new ArrayList<RobotItem>();
+		for(IRepositoryItem item : selectedRobots){
+			if (item.isTeam()){
+				result.addAll(expandTeam((TeamItem)item));
+			}
+			else{
+				result.add((RobotItem)item);
+			}
+		}
+		return result;
+	}
 
-			if (i.isValid() && !res.contains(spec)) {
+	public List<RobotItem> expandTeam(TeamItem team){
+		List<RobotItem> result=new ArrayList<RobotItem>();
+		StringTokenizer teamTokenizer = new StringTokenizer(team.getMembers(), ",");
+
+		while (teamTokenizer.hasMoreTokens()) {
+			final String botName = teamTokenizer.nextToken();
+
+			// first load from same classPath
+			String teamBot = team.getRoot().getRootUrl() + botName.replace('.', '/');
+			IItem res=getItem(teamBot);
+			if (res!=null && res instanceof RobotItem){
+				result.add((RobotItem)res);
+				continue;
+			}
+
+			// try general search
+			res=getItem(botName);
+			if (res!=null && res instanceof RobotItem){
+				result.add((RobotItem)res);
+				continue;
+			}
+
+			// no found
+			Logger.logError("Can't find robot: " + botName);
+		}
+		return result;
+	}
+
+	public List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment) {
+		final ArrayList<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+
+		for (IItem item : items.values()) {
+			final IRepositoryItem spec = (IRepositoryItem) item;
+			if (!item.isValid()) {
+				continue;
+			}
+			if (onlyWithSource && !spec.getJavaSourceIncluded()){
+				continue;
+			}
+			if (onlyWithPackage && spec.getFullPackage() == null) {
+				continue;
+			}
+			if (onlyRobots && !(item instanceof RobotItem)){
+				continue;
+			}
+			if (onlyDevelopment && !spec.isDevelopmentVersion()){
+				continue;
+			}
+			if (onlyNotDevelopment && spec.isDevelopmentVersion()){
+				continue;
+			}
+			if (res.contains(spec)){
+				continue;
+			}
+			res.add(spec);
+		}
+		return res;
+	}
+
+	public List<IRepositoryItem> getAllSpecifications() {
+		final ArrayList<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+
+		for (IItem item : items.values()) {
+			final IRepositoryItem spec = (IRepositoryItem) item;
+
+			if (item.isValid() && !res.contains(spec)) {
 				res.add(spec);
 			}
 		}
 		return res; 
+	}
+
+	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots){
+		List<IRepositoryItem> result=new ArrayList<IRepositoryItem>();
+		StringTokenizer tokenizer = new StringTokenizer(selectedRobots, ",");
+
+		while (tokenizer.hasMoreTokens()) {
+			String bot = tokenizer.nextToken();
+			final IItem item = getItem(bot);
+			if (item!=null){
+				if (item.isValid()){
+					result.add((IRepositoryItem)item);
+				} else{
+					Logger.logError("Can't load " + bot + ", because it is invalid robot or team.");
+				}
+			}
+			else{
+				Logger.logError("Can't find " + bot);
+			}
+		}
+		return result;
+
 	}
 }

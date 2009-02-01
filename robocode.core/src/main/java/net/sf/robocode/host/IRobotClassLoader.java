@@ -9,24 +9,15 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository2.items;
+package net.sf.robocode.host;
 
-
-import net.sf.robocode.repository2.root.IRepositoryRoot;
-
-import java.net.URL;
-import java.util.List;
-
+import java.util.Set;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IItem {
-	URL getFullUrl();
-	List<String> getFriendlyUrls();
-	IRepositoryRoot getRoot();
-	long getLastModified();
-
-	void update(long lastModified, boolean force);
-	boolean isValid();
+public interface IRobotClassLoader {
+	Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException;
+	Set<String> getReferencedClasses();
+	void cleanup();
 }

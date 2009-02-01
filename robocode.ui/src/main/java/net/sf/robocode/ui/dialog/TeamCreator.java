@@ -20,10 +20,8 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository.ITeamFileSpecificationExt;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
-import net.sf.robocode.version.IVersionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -66,13 +63,11 @@ public class TeamCreator extends JDialog implements WizardListener {
 		}
 	}
 
-	private final IVersionManager versionManager;
 	private final IRepositoryManager repositoryManager;
 
-	public TeamCreator(IWindowManager windowManager, IRepositoryManager repositoryManager, IVersionManager versionManager) {
+	public TeamCreator(IWindowManager windowManager, IRepositoryManager repositoryManager) {
 		super(windowManager.getRobocodeFrame());
 		this.repositoryManager = repositoryManager;
-		this.versionManager = versionManager;
 		initialize();
 	}
 
@@ -170,7 +165,6 @@ public class TeamCreator extends JDialog implements WizardListener {
 			}
 		}
 
-		ITeamFileSpecificationExt teamSpec = (ITeamFileSpecificationExt) repositoryManager.createTeam();
 		URL u = null;
 		String w = teamCreatorOptionsPanel.getWebpageField().getText();
 
@@ -184,25 +178,11 @@ public class TeamCreator extends JDialog implements WizardListener {
 				} catch (MalformedURLException ignored) {}
 			}
 		}
-		teamSpec.setTeamWebpage(u);
-		teamSpec.setTeamDescription(teamCreatorOptionsPanel.getDescriptionArea().getText());
-		teamSpec.setTeamAuthorName(teamCreatorOptionsPanel.getAuthorField().getText());
-		teamSpec.setMembers(robotSelectionPanel.getSelectedRobotsAsString());
-		teamSpec.setRobocodeVersion(versionManager.getVersion());
 
-		FileOutputStream out = null;
-
-		try {
-			out = new FileOutputStream(f);
-			teamSpec.store(out, "Robocode robot team");
-		} finally {
-			if (out != null) {
-				out.close();
-			}
-		}
-
-		repositoryManager.clearRobotList();
-
+		repositoryManager.createTeam(f, u
+				,teamCreatorOptionsPanel.getDescriptionArea().getText()
+				,teamCreatorOptionsPanel.getAuthorField().getText()
+				,robotSelectionPanel.getSelectedRobotsAsString(), null);
 		return 0;
 	}
 }

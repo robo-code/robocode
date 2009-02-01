@@ -14,15 +14,18 @@ package net.sf.robocode.repository;
 
 import robocode.control.RobotSpecification;
 
-import java.io.File;
 import java.net.URL;
+import java.io.OutputStream;
+import java.io.IOException;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface INamedFileSpecification {
+public interface IRepositoryItem {
 	boolean isValid();
+
+	boolean isTeam();
 
 	void setValid(boolean value);
 
@@ -36,9 +39,11 @@ public interface INamedFileSpecification {
 
 	boolean getJavaSourceIncluded();
 
-	String getJarFile();
+	String getRootFile();
 
 	URL getFullUrl();
+
+	URL getPropertiesUrl();
 
 	boolean isDevelopmentVersion();
 
@@ -46,6 +51,8 @@ public interface INamedFileSpecification {
 
 	String getFullPackage();
 	
+	String getRelativePath();
+
 	String getRootPackage();
 
 	String getFullClassNameWithVersion();
@@ -61,5 +68,7 @@ public interface INamedFileSpecification {
 	String getShortClassName();
 
 	RobotSpecification createRobotSpecification();
+	
+	void storeProperties(OutputStream os) throws IOException;
 
 }

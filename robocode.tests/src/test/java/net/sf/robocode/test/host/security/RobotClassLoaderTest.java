@@ -60,7 +60,7 @@ public class RobotClassLoaderTest {
 	@Test
 	public void robotAlowedMain() throws ClassNotFoundException {
 		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
-		final Class<?> c = cl.loadRobotMainClass();
+		final Class<?> c = cl.loadRobotMainClass(true);
 
 		Assert.assertEquals(cl, c.getClassLoader());
 	}
@@ -69,7 +69,7 @@ public class RobotClassLoaderTest {
 	public void robotBlockedBad() throws ClassNotFoundException {
 		RobotClassLoader cl = new RobotClassLoader(classPath, badRobot);
 
-		cl.loadRobotMainClass();
+		cl.loadRobotMainClass(true);
 	}
 
 	@Test(expected = ClassNotFoundException.class)
