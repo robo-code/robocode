@@ -99,7 +99,7 @@ public class EngineClassLoader extends URLClassLoader {
 		List<String> urls = new ArrayList<String>();
 		final String classPath = System.getProperty("robocode.class.path", null);
 
-		for (String path : classPath.split(";")) {
+		for (String path : classPath.split(File.pathSeparator)) {
 			String test = path.toLowerCase();
 
 			if (test.contains("robocode")) {
