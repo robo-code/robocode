@@ -14,9 +14,6 @@ package net.sf.robocode.repository2;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository2.root.ClassPathRoot;
-import net.sf.robocode.repository2.root.JarRoot;
 
 
 /**

@@ -12,16 +12,15 @@
 package net.sf.robocode.repository2.items;
 
 
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository2.root.IRepositoryRoot;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.repository.IRepositoryItem;
+import robocode.control.RobotSpecification;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
-import java.io.OutputStream;
-import java.io.IOException;
-
-import robocode.control.RobotSpecification;
 
 
 /**
@@ -52,9 +51,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	public abstract URL getHtmlUrl();
 
 	public void storeHtml(OutputStream os) throws IOException {
-		if (htmlUrl!=null){
-			
-		}
+		if (htmlUrl != null) {}
 	}
 
 	public boolean isDevelopmentVersion() {
@@ -68,6 +65,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	public String getRootPackage() {
 		int lIndex = getFullClassName().indexOf(".");
 		String rootPackage = null;
+
 		if (lIndex > 0) {
 			rootPackage = getFullClassName().substring(0, lIndex);
 		}

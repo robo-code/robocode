@@ -12,8 +12,8 @@
 package net.sf.robocode.peer;
 
 
-import java.nio.ByteBuffer;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 
 /**

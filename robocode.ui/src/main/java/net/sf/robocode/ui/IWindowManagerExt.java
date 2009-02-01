@@ -16,8 +16,6 @@ import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.BattleResultsTableModel;
 import robocode.control.events.BattleCompletedEvent;
 
-import javax.swing.*;
-
 
 /**
  * @author Pavel Savara (original)

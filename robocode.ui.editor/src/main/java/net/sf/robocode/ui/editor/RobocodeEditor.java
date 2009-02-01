@@ -617,8 +617,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		}
 	}
 
-	public void extractRobot() {
-		//TODO ZAMO windowManager.showRobotExtractor(this);
+	public void extractRobot() {// TODO ZAMO windowManager.showRobotExtractor(this);
 	}
 
 	public void run() {

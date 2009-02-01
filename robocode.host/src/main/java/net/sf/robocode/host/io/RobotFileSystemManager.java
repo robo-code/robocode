@@ -21,14 +21,14 @@ import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.io.FileUtil;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URLConnection;
 
 
 /**
@@ -124,35 +124,35 @@ public class RobotFileSystemManager {
 	public File getDataFile(String filename) {
 		final File parent = getWritableDirectory();
 		File file = new File(parent, filename);
+
 		if (!file.exists()) {
 			InputStream is = null;
 			FileOutputStream fos = null;
+
 			try {
 				URL unUrl = new URL(dataDir + filename);
 				final URLConnection connection = unUrl.openConnection();
+
 				connection.setUseCaches(false);
 				is = connection.getInputStream();
-				if (!parent.exists() && !parent.mkdirs()){
+				if (!parent.exists() && !parent.mkdirs()) {
 					return file;
 				}
 				fos = new FileOutputStream(file);
 
 				byte[] buf = new byte[1024];
 				int len;
+
 				while ((len = is.read(buf)) > 0) {
 					fos.write(buf, 0, len);
 				}
-			} catch (MalformedURLException ignore) {
-			} catch (IOException ignore) {
-			}
-			finally {
+			} catch (MalformedURLException ignore) {} catch (IOException ignore) {} finally {
 				FileUtil.cleanupStream(is);
 				FileUtil.cleanupStream(fos);
 			}
 		}
 		return file;
 	}
-
 
 	public void initializeQuota() {
 		File dataDirectory = getWritableDirectory();

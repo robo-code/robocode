@@ -12,31 +12,30 @@
 package net.sf.robocode.repository2.root;
 
 
+import net.sf.robocode.core.Container;
+import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.host.IRobotClassLoader;
+import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository2.Database;
 import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
-import net.sf.robocode.repository2.Database;
-import net.sf.robocode.io.Logger;
-import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.IRobotClassLoader;
-import net.sf.robocode.core.Container;
 import net.sf.robocode.version.IVersionManager;
 
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URLConnection;
 import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.FileOutputStream;
-import java.util.jar.JarInputStream;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Iterator;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
 
 /**
@@ -55,6 +54,7 @@ public class JarRoot implements IRepositoryRoot {
 		this.rootPath = rootPath;
 		try {
 			final String jUrl = "jar:" + rootPath.toURL().toString() + "!/";
+
 			jarUrl = new URL(jUrl);
 			url = rootPath.toURL();
 		} catch (MalformedURLException e) {
@@ -85,6 +85,7 @@ public class JarRoot implements IRepositoryRoot {
 
 		try {
 			final URLConnection con = url.openConnection();
+
 			con.setUseCaches(false);
 			is = con.getInputStream();
 			jarIS = new JarInputStream(is);
@@ -95,11 +96,9 @@ public class JarRoot implements IRepositoryRoot {
 				String name = entry.getName().toLowerCase();
 
 				if (!entry.isDirectory()) {
-					if (name.contains(".data/")){
-						//skip
-					}
-					else if (name.endsWith(".properties")) {
-						String pUrl = root +  entry.getName();
+					if (name.contains(".data/")) {// skip
+					} else if (name.endsWith(".properties")) {
+						String pUrl = root + entry.getName();
 
 						properties.add(new URL(pUrl));
 					} else if (name.endsWith(".team")) {
@@ -193,7 +192,7 @@ public class JarRoot implements IRepositoryRoot {
 		return false;
 	}
 
-	public boolean isPackage(){
+	public boolean isPackage() {
 		return true;
 	}
 
@@ -206,21 +205,24 @@ public class JarRoot implements IRepositoryRoot {
 		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
 		JarOutputStream jarout = null;
 		FileOutputStream fos = null;
-		try{
+
+		try {
 			fos = new FileOutputStream(target);
 			jarout = new JarOutputStream(fos);
 			jarout.setComment(rVersion + " - Robocode version");
 
-			for(TeamItem team : teams){
+			for (TeamItem team : teams) {
 				JarEntry jt = new JarEntry(team.getRelativePath() + '/' + team.getShortClassName() + ".team");
+
 				jarout.putNextEntry(jt);
 				team.storeProperties(jarout);
 				jarout.closeEntry();
 			}
 
-			for(RobotItem robot : robots){
+			for (RobotItem robot : robots) {
 				IRobotClassLoader loader = null;
 				JarEntry jt = new JarEntry(robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties");
+
 				jarout.putNextEntry(jt);
 				robot.storeProperties(jarout);
 				jarout.closeEntry();
@@ -244,24 +246,26 @@ public class JarRoot implements IRepositoryRoot {
 					continue;
 				}
 				String name = className.replace('.', '/');
+
 				if (source) {
-					//todo test exist
+					// todo test exist
 					JarEntry je = new JarEntry(name + ".java");
+
 					jarout.putNextEntry(je);
-					//TODO upload file
+					// TODO upload file
 					jarout.closeEntry();
 				}
-				//todo test exist
+				// todo test exist
 				JarEntry je = new JarEntry(name + ".class");
+
 				jarout.putNextEntry(je);
-				//TODO upload file
+				// TODO upload file
 				jarout.closeEntry();
 			}
 
 		} catch (ClassNotFoundException e) {
 			Logger.logError(e);
-		}
-		finally {
+		} finally {
 			loader.cleanup();
 		}
 	}

@@ -254,6 +254,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public RobotSpecification[] getLocalRepository(String selectedRobots) {
 		final IRepositoryManagerBase repository = ContainerBase.getComponent(IRepositoryManagerBase.class);
+
 		return repository.loadSelectedRobots(selectedRobots);
 	}
 

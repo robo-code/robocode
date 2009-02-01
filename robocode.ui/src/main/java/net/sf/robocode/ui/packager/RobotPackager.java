@@ -28,19 +28,25 @@
 package net.sf.robocode.ui.packager;
 
 
-import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository.IRepositoryItem;
-import net.sf.robocode.ui.IWindowManager;
-import net.sf.robocode.ui.dialog.*;
-import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.ui.dialog.RobotSelectionPanel;
+import net.sf.robocode.ui.dialog.WizardCardPanel;
+import net.sf.robocode.ui.dialog.WizardController;
+import net.sf.robocode.ui.dialog.WizardListener;
+import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -222,6 +228,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 		String w = getPackagerOptionsPanel().getWebpageField().getText();
 		URL web = null;
+
 		if (w.length() > 0) {
 			try {
 				web = new URL(w);
@@ -237,6 +244,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		final String version = getPackagerOptionsPanel().getVersionField().getText();
 		final boolean source = getPackagerOptionsPanel().getIncludeSource().isSelected();
 		final java.util.List<IRepositoryItem> robots = getRobotSelectionPanel().getSelectedRobots();
-		repositoryManager.createPackage(f,web, desc, autor,version, source, robots);
+
+		repositoryManager.createPackage(f, web, desc, autor, version, source, robots);
 	}
 }

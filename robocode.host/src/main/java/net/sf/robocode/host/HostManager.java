@@ -101,8 +101,7 @@ public class HostManager implements IHostManager {
 	}
 
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(),
-				robotRepositoryItem.getFullClassName());
+		return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
 	}
 
 	public void initSecurity() {

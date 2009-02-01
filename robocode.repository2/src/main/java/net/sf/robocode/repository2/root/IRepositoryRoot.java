@@ -15,8 +15,6 @@ package net.sf.robocode.repository2.root;
 import net.sf.robocode.repository2.items.IItem;
 
 import java.net.URL;
-import java.util.Dictionary;
-import java.io.InputStream;
 
 
 /**

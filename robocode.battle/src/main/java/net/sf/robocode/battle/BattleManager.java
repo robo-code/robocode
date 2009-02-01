@@ -126,6 +126,7 @@ public class BattleManager implements IBattleManager {
 	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver) {
 		this.battleProperties = battleProperties;
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(battleProperties.getSelectedRobots());
+
 		startNewBattleImpl(robots, waitTillOver);
 	}
 
@@ -140,6 +141,7 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setSelectedRobots(spec.getRobots());
 
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
+
 		startNewBattleImpl(robots, waitTillOver);
 	}
 

@@ -12,27 +12,28 @@
 package net.sf.robocode.repository2;
 
 
-import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository.IRepositoryItem;
-import net.sf.robocode.settings.ISettingsManager;
-import net.sf.robocode.settings.ISettingsListener;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository2.items.RobotItem;
+import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository2.items.IItem;
+import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
 import net.sf.robocode.repository2.root.JarRoot;
-import net.sf.robocode.core.Container;
-import net.sf.robocode.version.IVersionManager;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.settings.ISettingsListener;
+import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.version.IVersionManager;
+import robocode.control.RobotSpecification;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.net.URL;
 import java.net.MalformedURLException;
-
-import robocode.control.RobotSpecification;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 /**
@@ -111,7 +112,6 @@ public class RepositoryManager implements IRepositoryManager {
 		return res.toArray(new RobotSpecification[res.size()]);
 	}
 
-
 	/**
 	 * Expand teams, validate robots
 	 * @param selectedRobots, names of robots and teams, comma separated
@@ -120,9 +120,11 @@ public class RepositoryManager implements IRepositoryManager {
 	public RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots) {
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		int teamNum = 0;
-		for(RobotSpecification spec: selectedRobots){
-			IRepositoryItem item = (IRepositoryItem)HiddenAccess.getFileSpecification(spec);
-			if (item==null){
+
+		for (RobotSpecification spec: selectedRobots) {
+			IRepositoryItem item = (IRepositoryItem) HiddenAccess.getFileSpecification(spec);
+
+			if (item == null) {
 				item = getRobot(spec.getNameAndVersion());
 			}
 			loadItem(battlingRobotsList, spec, item, teamNum);
@@ -140,7 +142,8 @@ public class RepositoryManager implements IRepositoryManager {
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
 		int teamNum = 0;
-		for(IRepositoryItem item: list){
+
+		for (IRepositoryItem item: list) {
 			loadItem(battlingRobotsList, null, item, teamNum);
 			teamNum++;
 		}
@@ -149,18 +152,22 @@ public class RepositoryManager implements IRepositoryManager {
 
 	private void loadItem(List<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
 		String teamName = String.format("%4d", teamNum);
-		if (item!=null){
+
+		if (item != null) {
 			if (item.isTeam()) {
 				teamName = item.getFullClassNameWithVersion() + "[" + teamName + "]";
 				final List<RobotItem> members = db.expandTeam((TeamItem) item);
+
 				for (IRepositoryItem member : members) {
 					final RobotItem robot = (RobotItem) member;
+
 					if (robot.validate()) {
 						battlingRobotsList.add(robot.createRobotSpecification(null, teamName));
 					}
 				}
 			} else {
 				final RobotItem robot = (RobotItem) item;
+
 				if (robot.validate()) {
 					battlingRobotsList.add(robot.createRobotSpecification(spec, null));
 				}
@@ -175,7 +182,8 @@ public class RepositoryManager implements IRepositoryManager {
 	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
-		for(IRepositoryItem item: list){
+
+		for (IRepositoryItem item: list) {
 			battlingRobotsList.add(item.createRobotSpecification());
 		}
 		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
@@ -186,7 +194,7 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
-		return db.filterSpecifications(onlyWithSource,onlyWithPackage,onlyRobots,onlyDevelopment,onlyNotDevelopment);
+		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment);
 	}
 
 	public boolean verifyRobotName(String robotName, String shortClassName) {
@@ -199,14 +207,16 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException {
 		final String ver = Container.getComponent(IVersionManager.class).getVersion();
-		TeamItem.createOrUpdateTeam(target, web, desc, author,members, teamVersion, ver);
+
+		TeamItem.createOrUpdateTeam(target, web, desc, author, members, teamVersion, ver);
 		reload(target.toURL().toString());
 	}
 
-	public void createPackage(File target, URL web, String desc, String author, String version,boolean source, List<IRepositoryItem> selectedRobots) {
+	public void createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
 		try {
 			final List<RobotItem> robots = db.expandTeams(selectedRobots);
 			final List<TeamItem> teams = db.filterTeams(selectedRobots);
+
 			JarRoot.createPackage(target, source, robots, teams);
 			reload(target.toURL().toString());
 		} catch (MalformedURLException e) {

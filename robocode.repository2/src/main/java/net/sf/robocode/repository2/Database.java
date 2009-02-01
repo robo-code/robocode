@@ -12,19 +12,19 @@
 package net.sf.robocode.repository2;
 
 
-import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository2.root.ClassPathRoot;
-import net.sf.robocode.repository2.root.JarRoot;
-import net.sf.robocode.repository2.items.IItem;
-import net.sf.robocode.repository2.items.TeamItem;
-import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository2.items.IItem;
+import net.sf.robocode.repository2.items.RobotItem;
+import net.sf.robocode.repository2.items.TeamItem;
+import net.sf.robocode.repository2.root.ClassPathRoot;
+import net.sf.robocode.repository2.root.IRepositoryRoot;
+import net.sf.robocode.repository2.root.JarRoot;
 
-import java.net.MalformedURLException;
-import java.util.*;
 import java.io.File;
 import java.io.FileFilter;
+import java.net.MalformedURLException;
+import java.util.*;
 
 
 /**
@@ -112,44 +112,46 @@ public class Database {
 	}
 
 	public void moveOldItems(IRepositoryRoot root) {
-		List<Map.Entry<String, IItem>> move =new ArrayList<Map.Entry<String, IItem>>(); 
-		for(Map.Entry<String, IItem> entry : items.entrySet()){
-			if (entry.getValue().getRoot() == root){
+		List<Map.Entry<String, IItem>> move = new ArrayList<Map.Entry<String, IItem>>(); 
+
+		for (Map.Entry<String, IItem> entry : items.entrySet()) {
+			if (entry.getValue().getRoot() == root) {
 				move.add(entry);
 			}
 		}
 
-		for(Map.Entry<String, IItem> entry : move){
+		for (Map.Entry<String, IItem> entry : move) {
 			oldItems.put(entry.getKey(), entry.getValue());
 			items.remove(entry.getKey());
 		}
 	}
 
-	public List<TeamItem> filterTeams(List<IRepositoryItem> selectedRobots){
-		List<TeamItem> result=new ArrayList<TeamItem>();
-		for(IRepositoryItem item : selectedRobots){
-			if (item.isTeam()){
-				result.add((TeamItem)item);
+	public List<TeamItem> filterTeams(List<IRepositoryItem> selectedRobots) {
+		List<TeamItem> result = new ArrayList<TeamItem>();
+
+		for (IRepositoryItem item : selectedRobots) {
+			if (item.isTeam()) {
+				result.add((TeamItem) item);
 			}
 		}
 		return result;
 	}
 
-	public List<RobotItem> expandTeams(List<IRepositoryItem> selectedRobots){
-		List<RobotItem> result=new ArrayList<RobotItem>();
-		for(IRepositoryItem item : selectedRobots){
-			if (item.isTeam()){
-				result.addAll(expandTeam((TeamItem)item));
-			}
-			else{
-				result.add((RobotItem)item);
+	public List<RobotItem> expandTeams(List<IRepositoryItem> selectedRobots) {
+		List<RobotItem> result = new ArrayList<RobotItem>();
+
+		for (IRepositoryItem item : selectedRobots) {
+			if (item.isTeam()) {
+				result.addAll(expandTeam((TeamItem) item));
+			} else {
+				result.add((RobotItem) item);
 			}
 		}
 		return result;
 	}
 
-	public List<RobotItem> expandTeam(TeamItem team){
-		List<RobotItem> result=new ArrayList<RobotItem>();
+	public List<RobotItem> expandTeam(TeamItem team) {
+		List<RobotItem> result = new ArrayList<RobotItem>();
 		StringTokenizer teamTokenizer = new StringTokenizer(team.getMembers(), ",");
 
 		while (teamTokenizer.hasMoreTokens()) {
@@ -157,16 +159,17 @@ public class Database {
 
 			// first load from same classPath
 			String teamBot = team.getRoot().getRootUrl() + botName.replace('.', '/');
-			IItem res=getItem(teamBot);
-			if (res!=null && res instanceof RobotItem){
-				result.add((RobotItem)res);
+			IItem res = getItem(teamBot);
+
+			if (res != null && res instanceof RobotItem) {
+				result.add((RobotItem) res);
 				continue;
 			}
 
 			// try general search
-			res=getItem(botName);
-			if (res!=null && res instanceof RobotItem){
-				result.add((RobotItem)res);
+			res = getItem(botName);
+			if (res != null && res instanceof RobotItem) {
+				result.add((RobotItem) res);
 				continue;
 			}
 
@@ -181,25 +184,26 @@ public class Database {
 
 		for (IItem item : items.values()) {
 			final IRepositoryItem spec = (IRepositoryItem) item;
+
 			if (!item.isValid()) {
 				continue;
 			}
-			if (onlyWithSource && !spec.getJavaSourceIncluded()){
+			if (onlyWithSource && !spec.getJavaSourceIncluded()) {
 				continue;
 			}
 			if (onlyWithPackage && spec.getFullPackage() == null) {
 				continue;
 			}
-			if (onlyRobots && !(item instanceof RobotItem)){
+			if (onlyRobots && !(item instanceof RobotItem)) {
 				continue;
 			}
-			if (onlyDevelopment && !spec.isDevelopmentVersion()){
+			if (onlyDevelopment && !spec.isDevelopmentVersion()) {
 				continue;
 			}
-			if (onlyNotDevelopment && spec.isDevelopmentVersion()){
+			if (onlyNotDevelopment && spec.isDevelopmentVersion()) {
 				continue;
 			}
-			if (res.contains(spec)){
+			if (res.contains(spec)) {
 				continue;
 			}
 			res.add(spec);
@@ -220,21 +224,21 @@ public class Database {
 		return res; 
 	}
 
-	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots){
-		List<IRepositoryItem> result=new ArrayList<IRepositoryItem>();
+	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
+		List<IRepositoryItem> result = new ArrayList<IRepositoryItem>();
 		StringTokenizer tokenizer = new StringTokenizer(selectedRobots, ",");
 
 		while (tokenizer.hasMoreTokens()) {
 			String bot = tokenizer.nextToken();
 			final IItem item = getItem(bot);
-			if (item!=null){
-				if (item.isValid()){
-					result.add((IRepositoryItem)item);
-				} else{
+
+			if (item != null) {
+				if (item.isValid()) {
+					result.add((IRepositoryItem) item);
+				} else {
 					Logger.logError("Can't load " + bot + ", because it is invalid robot or team.");
 				}
-			}
-			else{
+			} else {
 				Logger.logError("Can't find " + bot);
 			}
 		}

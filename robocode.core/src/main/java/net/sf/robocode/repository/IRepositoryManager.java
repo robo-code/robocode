@@ -16,8 +16,8 @@ import robocode.control.RobotSpecification;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.net.URL;
+import java.util.List;
 
 
 /**

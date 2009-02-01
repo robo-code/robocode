@@ -30,11 +30,11 @@ package net.sf.robocode.host.security;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IRobotClassLoader;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
+import robocode.robotinterfaces.IBasicRobot;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -47,9 +47,8 @@ import java.security.CodeSource;
 import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.cert.Certificate;
-import java.util.*;
-
-import robocode.robotinterfaces.IBasicRobot;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -157,11 +156,12 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 		final URL url = findResource(path);
 		ByteBuffer result = null;
-		InputStream is =null;
+		InputStream is = null;
 
 		if (url != null) {
 			try {
 				final URLConnection connection = url.openConnection();
+
 				connection.setUseCaches(false);
 				is = connection.getInputStream();
 
@@ -221,7 +221,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 					// that's not robot
 					return null;
 				}
-				if (resolve){
+				if (resolve) {
 					robotClass = loadClass(fullClassName, true);
 
 					// itterate thru dependencies until we didn't found any new
@@ -246,12 +246,12 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	}
 
 	public void cleanup() {
-		referencedClasses=null;
+		referencedClasses = null;
 		// Set ClassLoader.class.classes to null to prevent memory leaks
 		if (classesField != null) {
 			try {
 				// don't do that Internal Error (44494354494F4E4152590E4350500100)
-				//classesField.setAccessible(true);
+				// classesField.setAccessible(true);
 				classesField.set(this, null);
 			} catch (IllegalArgumentException e) {// logError(e);
 			} catch (IllegalAccessException e) {// logError(e);

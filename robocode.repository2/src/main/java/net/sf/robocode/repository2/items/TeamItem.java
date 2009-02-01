@@ -12,18 +12,18 @@
 package net.sf.robocode.repository2.items;
 
 
-import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository.IRepositoryItem;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository2.root.IRepositoryRoot;
 
-import java.net.URL;
+import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.ArrayList;
-import java.io.*;
 
 
 /**
@@ -32,7 +32,7 @@ import java.io.*;
 public class TeamItem extends NamedItem implements IRepositoryItem {
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";
-	//private final static String TEAM_AUTHOR_EMAIL = "team.author.email";
+	// private final static String TEAM_AUTHOR_EMAIL = "team.author.email";
 	private final static String TEAM_AUTHOR_WEBSITE = "team.author.website";
 	private final static String TEAM_VERSION = "team.version";
 	private final static String TEAM_WEBPAGE = "team.webpage";
@@ -60,9 +60,10 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 
 	private void htmlUrlFromPropertiesUrl() {
 		try {
-			htmlUrl = new URL(url.toString().replaceAll("\\.team",".html"));
+			htmlUrl = new URL(url.toString().replaceAll("\\.team", ".html"));
 			// test that html file exists
 			final URLConnection conn = htmlUrl.openConnection();
+
 			conn.setUseCaches(false);
 			conn.getInputStream().close();
 		} catch (IOException ignored) {
@@ -95,6 +96,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 
 			try {
 				final URLConnection connection = url.openConnection();
+
 				connection.setUseCaches(false);
 				ios = connection.getInputStream();
 				properties.load(ios);
@@ -106,9 +108,9 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		}
 	}
 
-	public URL getHtmlUrl(){
-		//lazy
-		if (htmlUrl==null){
+	public URL getHtmlUrl() {
+		// lazy
+		if (htmlUrl == null) {
 			htmlUrlFromPropertiesUrl();
 		}
 		return htmlUrl;
@@ -168,48 +170,48 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 
 	public static void createOrUpdateTeam(File target, URL web, String desc, String author, String members, String teamVersion, String robocodeVersion) throws IOException {
 		FileOutputStream os = null;
-		try{
+
+		try {
 			Properties team = loadTeamProps(target);
 
-			if (robocodeVersion!=null){
+			if (robocodeVersion != null) {
 				team.setProperty(ROBOCODE_VERSION, robocodeVersion);
 			}
-			if (web!=null){
+			if (web != null) {
 				team.setProperty(TEAM_WEBPAGE, web.toString());
 			}
-			if (desc!=null){
+			if (desc != null) {
 				team.setProperty(TEAM_DESCRIPTION, desc);
 			}
-			if (author!=null){
+			if (author != null) {
 				team.setProperty(TEAM_AUTHOR_NAME, author);
 			}
-			if (members!=null){
+			if (members != null) {
 				team.setProperty(TEAM_MEMBERS, members);
 			}
-			if (teamVersion!=null){
+			if (teamVersion != null) {
 				team.setProperty(TEAM_VERSION, teamVersion);
 			}
 
 			os = new FileOutputStream(target);
 			team.store(os, "Robocode robot team");
-		}
-		finally {
+		} finally {
 			FileUtil.cleanupStream(os);
 		}
 	}
 
 	private static Properties loadTeamProps(File target) {
-		Properties team=new Properties();
-		if (target.exists()){
-			FileInputStream fis=null;
-			try{
-				fis=new FileInputStream(target);
+		Properties team = new Properties();
+
+		if (target.exists()) {
+			FileInputStream fis = null;
+
+			try {
+				fis = new FileInputStream(target);
 				team.load(fis);
-			}
-			catch (Exception e){
+			} catch (Exception e) {
 				Logger.logError(e);
-			}
-			finally {
+			} finally {
 				FileUtil.cleanupStream(fis);
 			}
 		}

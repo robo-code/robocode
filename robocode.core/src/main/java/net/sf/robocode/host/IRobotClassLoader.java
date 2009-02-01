@@ -11,7 +11,9 @@
  *******************************************************************************/
 package net.sf.robocode.host;
 
+
 import java.util.Set;
+
 
 /**
  * @author Pavel Savara (original)

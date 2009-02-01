@@ -13,10 +13,10 @@ package net.sf.robocode.settings;
 
 
 import java.awt.*;
-import java.util.Date;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileInputStream;
+import java.util.Date;
 
 
 /**

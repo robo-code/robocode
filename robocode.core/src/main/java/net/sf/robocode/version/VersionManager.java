@@ -12,10 +12,9 @@
 package net.sf.robocode.version;
 
 
+import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-
-import net.sf.robocode.io.FileUtil;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -110,8 +109,10 @@ public final class VersionManager implements IVersionManager {
 				versionString = UNKNOWN_VERSION;
 			} else {
 				final URLConnection connection = versionsUrl.openConnection();
+
 				connection.setUseCaches(false);
 				final InputStream is = connection.getInputStream();
+
 				in = new BufferedReader(new InputStreamReader(is));
 
 				versionString = in.readLine();

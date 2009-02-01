@@ -24,8 +24,8 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.settings.ISettingsListener;
+import net.sf.robocode.settings.ISettingsManager;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

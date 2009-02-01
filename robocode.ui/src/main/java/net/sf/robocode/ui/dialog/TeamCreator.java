@@ -179,10 +179,8 @@ public class TeamCreator extends JDialog implements WizardListener {
 			}
 		}
 
-		repositoryManager.createTeam(f, u
-				,teamCreatorOptionsPanel.getDescriptionArea().getText()
-				,teamCreatorOptionsPanel.getAuthorField().getText()
-				,robotSelectionPanel.getSelectedRobotsAsString(), null);
+		repositoryManager.createTeam(f, u, teamCreatorOptionsPanel.getDescriptionArea().getText(),
+				teamCreatorOptionsPanel.getAuthorField().getText(), robotSelectionPanel.getSelectedRobotsAsString(), null);
 		return 0;
 	}
 }

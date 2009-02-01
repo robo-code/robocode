@@ -91,14 +91,14 @@ import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import static java.lang.Math.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.nio.ByteBuffer;
-import java.io.IOException;
 
 
 /**

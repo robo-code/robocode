@@ -26,7 +26,6 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.repository.IRepositoryItem;
-import net.sf.robocode.repository.ITeamFileSpecificationExt;
 import net.sf.robocode.ui.util.ShortcutUtil;
 
 import javax.swing.*;
@@ -374,7 +373,7 @@ public class AvailableRobotsPanel extends JPanel {
 			if (useShortNames && value instanceof IRepositoryItem) {
 				IRepositoryItem fileSpecification = (IRepositoryItem) value;
 
-				if (fileSpecification instanceof ITeamFileSpecificationExt) {
+				if (fileSpecification.isTeam()) {
 					setText("Team: " + fileSpecification.getUniqueShortClassNameWithVersion());
 				} else {
 					setText(fileSpecification.getUniqueShortClassNameWithVersion());
@@ -382,7 +381,7 @@ public class AvailableRobotsPanel extends JPanel {
 			} else if (value instanceof IRepositoryItem) {
 				IRepositoryItem fileSpecification = (IRepositoryItem) value;
 
-				if (fileSpecification instanceof ITeamFileSpecificationExt) {
+				if (fileSpecification.isTeam()) {
 					setText("Team: " + fileSpecification.getUniqueFullClassNameWithVersion());
 				} else {
 					setText(fileSpecification.getUniqueFullClassNameWithVersion());

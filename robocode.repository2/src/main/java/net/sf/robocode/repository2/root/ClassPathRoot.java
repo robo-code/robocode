@@ -12,18 +12,17 @@
 package net.sf.robocode.repository2.root;
 
 
+import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository2.Database;
 import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
-import net.sf.robocode.repository2.Database;
-import net.sf.robocode.io.Logger;
-import net.sf.robocode.io.FileUtil;
 
-import java.net.URL;
-import java.net.MalformedURLException;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.FileFilter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -185,7 +184,7 @@ public class ClassPathRoot implements IRepositoryRoot {
 		return isDevel;
 	}
 
-	public boolean isPackage(){
+	public boolean isPackage() {
 		return false;
 	}
 
