@@ -73,7 +73,7 @@ public final class Container extends ContainerBase {
 		cache = new DefaultClassLoadingPicoContainer(engineLoader, new Caching(), null);
 		factory = new DefaultClassLoadingPicoContainer(engineLoader, new OptInCaching(), cache);
 		loadModule("net.sf.robocode.api", systemLoader);
-		for (String path : classPath.split(";")) {
+		for (String path : classPath.split(File.pathSeparator)) {
 			loadFromPath(path);
 		}
 

@@ -1,9 +1,10 @@
 Version 1.7 Beta 2
-(24-Jan-2009)
+(26-Jan-2009)
 ---------------
 
 = Bugfixes =
-* Bugfix [2527112] Ubuntu throws NullPointerException in main.
+* Bugfix [2527112] Ubuntu throws NullPointerException in main when trying to startup Robocode.
+* Bugfix [2528467] Installation fail on windows if directory contain space(s).
 
 = Changes =
 * Improved the version checking for new Robocode versions available for download.
