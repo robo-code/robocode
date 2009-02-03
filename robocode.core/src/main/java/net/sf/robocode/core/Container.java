@@ -187,6 +187,10 @@ public final class Container extends ContainerBase {
 		return cache.getComponent(tClass);
 	}
 
+	public static <T> java.util.List<T> getComponents(java.lang.Class<T> tClass) {
+		return cache.getComponents(tClass);
+	}
+
 	public static <T> T createComponent(java.lang.Class<T> tClass) {
 		return factory.as(Characteristics.NO_CACHE).getComponent(tClass);
 	}

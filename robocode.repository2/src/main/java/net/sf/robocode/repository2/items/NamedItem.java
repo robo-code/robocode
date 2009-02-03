@@ -75,6 +75,9 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public String getFullPackage() {
+		if (getFullClassName() == null) {
+			return null;
+		}
 		final int index = getFullClassName().lastIndexOf('.');
 
 		if (index == -1) {
@@ -208,12 +211,21 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 			}
 		}
 
-		// Ok, same package... compare class:
-		int cc = c1.compareToIgnoreCase(c2);
+		if (c1 == null && c2 != null) {
+			return 1;
+		}
+		if (c2 == null && c1 != null) {
+			return -1;
+		}
 
-		if (cc != 0) {
-			// Different classes, return
-			return cc;
+		if (c1!=null){
+			// Ok, same package... compare class:
+			int cc = c1.compareToIgnoreCase(c2);
+
+			if (cc != 0) {
+				// Different classes, return
+				return cc;
+			}
 		}
 
 		// Ok, same robot... compare version

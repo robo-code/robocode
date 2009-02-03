@@ -23,9 +23,11 @@ import net.sf.robocode.repository2.root.ClassPathRoot;
 import net.sf.robocode.repository2.root.IRepositoryRoot;
 import net.sf.robocode.repository2.root.JarRoot;
 import net.sf.robocode.repository2.root.BaseRoot;
+import net.sf.robocode.repository2.root.handlers.RootHandler;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 
@@ -42,76 +44,22 @@ public class Database {
 		this.manager = manager;
 	}
 
-	public boolean update(File robots, List<File> devDirs, boolean loadPackages) {
+	public boolean update(File robotsDir, List<File> devDirs) {
 		final int prev = items.size();
-		try {
-			Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
+		Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
 
-			// find directories
-			final List<File> dirs = new ArrayList<File>(devDirs);
-
-			dirs.add(robots);
-
-			// update directories
-			for (File dir : dirs) {
-				final String key = dir.toURL().toString();
-				IRepositoryRoot root = roots.get(key);
-
-				if (root == null) {
-					root = new ClassPathRoot(this, dir);
-				}else{
-					roots.remove(key);
-				}
-				root.update();
-				newroots.put(dir.toURL().toString(), root);
-			}
-
-			if (loadPackages) {
-				// find jar files
-				final File[] jars = robots.listFiles(new FileFilter() {
-					public boolean accept(File pathname) {
-						final String low = pathname.toString().toLowerCase();
-
-						return pathname.isFile() && (low.endsWith(".jar") || low.endsWith(".zip"));
-					}
-				});
-
-				// update jar files
-				for (File jar : jars) {
-					final String key = jar.toURL().toString();
-					IRepositoryRoot root = roots.get(key);
-
-					if (root == null) {
-						root = new JarRoot(this, jar);
-					}else{
-						roots.remove(key);
-					}
-
-					root.update();
-					newroots.put(jar.toURL().toString(), root);
-				}
-			} else {
-				@SuppressWarnings({"unchecked"})
-				final Hashtable<String, IRepositoryRoot> clone = (Hashtable<String, IRepositoryRoot>)roots.clone();
-				
-				for (IRepositoryRoot oldRoot : clone.values()) {
-					if (oldRoot.isPackage()) {
-						final String key = oldRoot.getRootUrl().toString();
-						newroots.put(key, oldRoot);
-						roots.remove(key);
-					}
-				}
-			}
-
-			//removed roots
-			for (IRepositoryRoot oldRoot : roots.values()) {
-				moveOldItems(oldRoot);
-			}
-			roots = newroots;
-			oldItems = new Hashtable<String, IItem>();
-		} catch (MalformedURLException e) {
-			Logger.logError(e);
+		RootHandler.visitDirectories(robotsDir, false, newroots, roots, this);
+		for(File dir : devDirs){
+			RootHandler.visitDirectories(dir, true, newroots, roots, this);
 		}
+
+		//removed roots
+		for (IRepositoryRoot oldRoot : roots.values()) {
+			moveOldItems(oldRoot);
+		}
+		roots = newroots;
+		oldItems = new Hashtable<String, IItem>();
+
 		System.gc();
 		return prev!=items.size();
 	}
@@ -123,19 +71,24 @@ public class Database {
 	}
 
 	public void addItem(IItem item) {
-		items.put(item.getFullUrl().toString(), item);
+		final URL url = item.getFullUrl();
+		if (url!=null){
+			items.put(url.toString(), item);
+		}
 		final List<String> friendlyUrls = item.getFriendlyUrls();
 
 		if (friendlyUrls != null) {
 			for (String friendly : friendlyUrls) {
-				final IItem conflict = items.get(friendly);
-				if (conflict!=null){
-					if (item.compareTo(conflict)>0){
-						//replace with highe version
+				if (friendly!=null){
+					final IItem conflict = items.get(friendly);
+					if (conflict!=null){
+						if (item.compareTo(conflict)>0){
+							//replace with highe version
+							items.put(friendly, item);
+						}
+					} else{
 						items.put(friendly, item);
 					}
-				} else{
-					items.put(friendly, item);
 				}
 			}
 		}

@@ -71,6 +71,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private boolean isDroid;
 
 	private boolean isExpectedRobot;
+	private boolean isClassURL;
+	private boolean isPropertiesURL;
 
 	private URL propertiesUrl;
 
@@ -78,13 +80,29 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		super(classUrl, root);
 		propertiesUrl = propUrl;
 		isValid = true;
+		isPropertiesURL=(propertiesUrl!=null);
+		isClassURL=(url!=null);
 
-		// trying to guess all correct file locations
+		init();
+	}
+
+	private void init() {
 		propsUrlFromClassUrl();
 		classUrlFromProperties();
 		classUrlFromPropertiesUrl();
 		classNameFromClassUrl(root);
-		verifyName(true);
+	}
+
+	public void setClassUrl(URL classUrl) {
+		this.url = classUrl;
+		isClassURL=(url!=null);
+		init();
+	}
+
+	public void setPropertiesUrl(URL propertiesUrl) {
+		this.propertiesUrl = propertiesUrl;
+		isPropertiesURL=(propertiesUrl!=null);
+		init();
 	}
 
 	// / -------------------------------------
@@ -92,11 +110,12 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	// / -------------------------------------
 
 	private void propsUrlFromClassUrl() {
-		if (isValid && propertiesUrl == null && url != null) {
+		if (propertiesUrl == null && isClassURL) {
 			final String pUrl = url.toString().replaceAll("\\.class", ".properties");
 
 			try {
 				propertiesUrl = new URL(pUrl);
+				loadProperties();
 			} catch (MalformedURLException e) {
 				Logger.logError(e);
 			}
@@ -104,7 +123,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	private void classUrlFromProperties() {
-		if (isValid && url == null) {
+		if (url==null && isPropertiesURL) {
 			if (!loadProperties()) {
 				isValid = false;
 			} else {
@@ -125,7 +144,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	private void classUrlFromPropertiesUrl() {
-		if (isValid && url == null) {
+		if (isPropertiesURL) {
 			try {
 				final String pUrl = propertiesUrl.toString();
 				final String cUrl = pUrl.substring(0, pUrl.lastIndexOf('.')) + ".class";
@@ -138,7 +157,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	private void classNameFromClassUrl(IRepositoryRoot root) {
-		if (isValid && getFullClassName() == null) {
+		if (getFullClassName() == null && isClassURL) {
 			String cUrl = url.toString();
 
 			cUrl = cUrl.substring(0, cUrl.lastIndexOf('.'));
@@ -150,12 +169,14 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	private void htmlUrlFromPropertiesUrl() {
 		try {
-			htmlUrl = new URL(propertiesUrl.toString().replaceAll("\\.properties", ".html"));
-			// test that html file exists
-			final URLConnection conn = htmlUrl.openConnection();
+			if (propertiesUrl!=null){
+				htmlUrl = new URL(propertiesUrl.toString().replaceAll("\\.properties", ".html"));
+				// test that html file exists
+				final URLConnection conn = htmlUrl.openConnection();
 
-			conn.setUseCaches(false);
-			conn.getInputStream().close();
+				conn.setUseCaches(false);
+				conn.getInputStream().close();
+			}
 		} catch (IOException ignored) {
 			// doesn't exist
 			htmlUrl = null;
@@ -165,12 +186,14 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private void htmlUrlFromClassUrl() {
 		if (htmlUrl == null) {
 			try {
-				htmlUrl = new URL(url.toString().replaceAll("\\.class", ".html"));
-				// test that html file exists
-				final URLConnection conn = htmlUrl.openConnection();
+				if (url!=null){
+					htmlUrl = new URL(url.toString().replaceAll("\\.class", ".html"));
+					// test that html file exists
+					final URLConnection conn = htmlUrl.openConnection();
 
-				conn.setUseCaches(false);
-				conn.getInputStream().close();
+					conn.setUseCaches(false);
+					conn.getInputStream().close();
+				}
 			} catch (IOException ignored) {
 				// doesn't exist
 				htmlUrl = null;
@@ -184,14 +207,6 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	public boolean isTeam() {
 		return false;
-	}
-
-	public void setClassUrl(URL classUrl) {
-		this.url = classUrl;
-	}
-
-	public void setPropertiesUrl(URL propertiesUrl) {
-		this.propertiesUrl = propertiesUrl;
 	}
 
 	public URL getHtmlUrl() {
@@ -212,19 +227,22 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 		if (propertiesUrl != null) {
 			final String pUrl = propertiesUrl.toString();
+			final String noType = pUrl.substring(0, pUrl.lastIndexOf('.'));
 
 			urls.add(pUrl);
-			urls.add(pUrl.substring(0, pUrl.lastIndexOf('.')));
+			urls.add(noType);
 			urls.add(propertiesUrl.getFile());
 		}
-		final String cUrl = url.toString();
-
-		final String c = cUrl.substring(0, cUrl.lastIndexOf('.'));
-
-		urls.add(c);
-		urls.add(url.getFile());
-		urls.add(getFullClassName());
-		urls.add(getUniqueFullClassNameWithVersion());
+		if (url!=null){
+			final String cUrl = url.toString();
+			final String noType = cUrl.substring(0, cUrl.lastIndexOf('.'));
+			urls.add(noType);
+			urls.add(url.getFile());
+		}
+		if (getFullClassName()!=null){
+			urls.add(getFullClassName());
+			urls.add(getUniqueFullClassNameWithVersion());
+		}
 		return urls;
 	}
 
@@ -233,12 +251,16 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			if (force) {
 				isValid = true;
 			}
+
+			// trying to guess all correct file locations
+			init();
+
 			this.lastModified = lastModified;
 			if (url == null) {
 				isValid = false;
 			}
 			loadProperties();
-			verifyName(false);
+			verifyName();
 			if (isValid) {
 				loadClass(false);
 			}
@@ -271,11 +293,11 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		return false;
 	}
 
-	private boolean verifyName(boolean silent) {
+	private boolean verifyName() {
 		String robotName = getFullClassName();
 		String shortClassName = getShortClassName();
 
-		final boolean valid = verifyRobotName(robotName, shortClassName, silent);
+		final boolean valid = verifyRobotName(robotName, shortClassName, isExpectedRobot);
 
 		if (!valid) {
 			isValid = false;

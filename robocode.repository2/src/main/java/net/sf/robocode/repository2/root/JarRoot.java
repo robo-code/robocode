@@ -18,6 +18,7 @@ import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository2.Database;
+import net.sf.robocode.repository2.items.handlers.ItemHandler;
 import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
@@ -29,7 +30,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -68,16 +68,17 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			db.moveOldItems(this);
 			this.lastModified = lm;
 
-			final ArrayList<URL> properties = new ArrayList<URL>();
-			final ArrayList<URL> classes = new ArrayList<URL>();
-			final ArrayList<URL> teams = new ArrayList<URL>();
 
-			visitItems(properties, classes, teams);
-			registerItems(properties, classes, teams, windowManager);
+			final ArrayList<IItem> items = new ArrayList<IItem>();
+
+			visitItems(items);
+			for (IItem item : items) {
+				item.update(lastModified, false);
+			}
 		}
 	}
 
-	private void visitItems(ArrayList<URL> properties, ArrayList<URL> classes, ArrayList<URL> teams) {
+	private void visitItems(ArrayList<IItem> items) {
 		final String root = jarUrl.toString();
 		InputStream is = null;
 		JarInputStream jarIS = null;
@@ -95,19 +96,16 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 				String name = entry.getName().toLowerCase();
 
 				if (!entry.isDirectory()) {
-					if (name.contains(".data/")) {// skip
-					} else if (name.endsWith(".properties")) {
-						String pUrl = root + entry.getName();
-
-						properties.add(new URL(pUrl));
-					} else if (name.endsWith(".team")) {
-						String tUrl = root + entry.getName();
-
-						teams.add(new URL(tUrl));
-					} else if (name.endsWith(".class")) {
-						String cUrl = root + entry.getName();
-
-						classes.add(new URL(cUrl));
+					if (!name.contains(".data/")) {
+						try {
+							String pUrl = root + entry.getName();
+							final IItem item = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, db);
+							if (item!=null){
+								items.add(item);
+							}
+						} catch (MalformedURLException e) {
+							Logger.logError(e);
+						}
 					}
 				}
 				entry = jarIS.getNextJarEntry();
@@ -117,62 +115,6 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		} finally {
 			FileUtil.cleanupStream(jarIS);
 			FileUtil.cleanupStream(is);
-		}
-	}
-
-	private void registerItems(ArrayList<URL> properties, ArrayList<URL> classes, ArrayList<URL> teams, IWindowManager windowManager) {
-		Hashtable<URL, RobotItem> robots = new Hashtable<URL, RobotItem>();
-		ArrayList<RobotItem> robotsList = new ArrayList<RobotItem>();
-
-		// properties
-		for (URL pUrl : properties) {
-			RobotItem item = (RobotItem) db.getOldItem(pUrl.toString());
-
-			if (item == null) {
-				item = new RobotItem(null, pUrl, this);
-			} else {
-				item.setPropertiesUrl(pUrl);
-			}
-			robots.put(item.getFullUrl(), item);
-			robots.put(pUrl, item);
-			robotsList.add(item);
-		}
-
-		// classes
-		for (URL cUrl : classes) {
-			RobotItem  item = (RobotItem) db.getOldItem(cUrl.toString());
-
-			if (item == null) {
-				item = robots.get(cUrl);
-			}
-			if (item == null) {
-				item = new RobotItem(cUrl, null, this);
-			} else {
-				item.setClassUrl(cUrl);
-			}
-			robots.put(item.getFullUrl(), item);
-			robotsList.add(item);
-		}
-
-		// now update robots
-		for (RobotItem robot : robotsList) {
-			if (robot.isValid()) {
-				setStatus(windowManager, "Updating robot: " + robot.getFullClassName());
-				robot.update(lastModified, false);
-			}
-			db.addItem(robot);
-		}
-
-		// teams
-		for (URL tUrl : teams) {
-			IItem item = db.getOldItem(tUrl.toString());
-
-			if (item == null) {
-				item = new TeamItem(tUrl, this);
-			}
-			setStatus(windowManager, "Updating team: " + ((TeamItem) item).getFullClassName());
-			item.update(lastModified, false);
-			db.addItem(item);
 		}
 	}
 

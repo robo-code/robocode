@@ -9,41 +9,32 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository2.items;
-
+package net.sf.robocode.repository2.items.handlers;
 
 import net.sf.robocode.repository2.root.IRepositoryRoot;
+import net.sf.robocode.repository2.Database;
+import net.sf.robocode.repository2.items.IItem;
+import net.sf.robocode.core.Container;
 
 import java.net.URL;
 import java.util.List;
 
-
 /**
  * @author Pavel Savara (original)
  */
-public class IgnoredItem extends BaseItem {
-	private static final long serialVersionUID = 1L;
+public abstract class ItemHandler {
+	public abstract IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db);
 
-	public IgnoredItem(URL url, IRepositoryRoot root) {
-		super(url, root);
-	}
-
-	public List<String> getFriendlyUrls() {
+	public static IItem registerItems(URL itemURL, IRepositoryRoot root, Database db) {
+		// walk thru all plugins, give them chance to accept a file
+		final List<ItemHandler> itemHandlerList = Container.getComponents(ItemHandler.class);
+		for (ItemHandler handler : itemHandlerList) {
+			final IItem item = handler.acceptItem(itemURL, root, db);
+			if (item != null) {
+				return item;
+			}
+		}
 		return null;
 	}
 
-	public void update(long lastModified, boolean force) {// no action
-	}
-
-	public boolean isValid() {
-		return false;
-	}
-
-	public String toString() {
-		return url.toString();
-	}
-
-	public int compareTo(Object o) {
-		return -1;
-	}
 }

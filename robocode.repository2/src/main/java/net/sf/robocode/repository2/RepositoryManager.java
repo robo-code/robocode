@@ -49,7 +49,7 @@ public class RepositoryManager implements IRepositoryManager {
 		properties.addPropertyListener(new ISettingsListener() {
 			public void settingChanged(String property) {
 				if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)) {
-					refresh(false, false);
+					refresh(false);
 				}
 			}
 		});
@@ -87,10 +87,10 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public void refresh() {
-		refresh(false, true);
+		refresh(false);
 	}
 
-	public void refresh(boolean forced, boolean refreshPackages) {
+	public void refresh(boolean forced) {
 		boolean save = false;
 
 		if (forced) {
@@ -106,7 +106,7 @@ public class RepositoryManager implements IRepositoryManager {
 				db = new Database(this);
 			}
 		}
-		if (db.update(getRobotsDirectory(), getDevelDirectories(), refreshPackages)) {
+		if (db.update(getRobotsDirectory(), getDevelDirectories())) {
 			save = true;
 		}
 		if (save) {
