@@ -44,6 +44,6 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException;
 
-	void createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots);
+	String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots);
 
 }

@@ -15,8 +15,6 @@ package net.sf.robocode.repository;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.IRepositoryItem;
-import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
@@ -84,7 +82,9 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public void refresh(String file) {
-		db.update(file, true);
+		if (!db.update(file, true)){
+			refresh(false);
+		}
 	}
 
 	public void refresh() {
@@ -239,16 +239,18 @@ public class RepositoryManager implements IRepositoryManager {
 		refresh(target.toURL().toString());
 	}
 
-	public void createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
+	public String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
 		checkDb();
 		try {
 			final List<RobotItem> robots = db.expandTeams(selectedRobots);
 			final List<TeamItem> teams = db.filterTeams(selectedRobots);
 
-			JarCreator.createPackage(target, source, robots, teams);
+			final String res = JarCreator.createPackage(target, source, robots, teams);
 			refresh(target.toURL().toString());
+			return res;
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
+			return e.getMessage();
 		}
 	}
 

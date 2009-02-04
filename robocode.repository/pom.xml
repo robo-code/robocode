@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.repository</artifactId>
     <version>${robocode.version}</version>
-    <name>Robocode New Repository</name>
+    <name>Robocode Repository</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -21,6 +21,11 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.core</artifactId>
             <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>codesize</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 </project>

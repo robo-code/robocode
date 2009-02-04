@@ -12,6 +12,7 @@
 package net.sf.robocode.repository.packager;
 
 
+import codesize.Codesize;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.IRobotClassLoader;
@@ -25,7 +26,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
@@ -36,11 +39,12 @@ import java.util.jar.Manifest;
  * @author Pavel Savara (original)
  */
 public class JarCreator {
-	public static void createPackage(File target, boolean source, List<RobotItem> robots, List<TeamItem> teams) {
+	public static String createPackage(File target, boolean source, List<RobotItem> robots, List<TeamItem> teams) {
 		final IHostManager host = Container.getComponent(IHostManager.class);
 		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
 		JarOutputStream jarout = null;
 		FileOutputStream fos = null;
+		Set<String> entries=new HashSet<String>();
 
 		try {
 			fos = new FileOutputStream(target);
@@ -48,20 +52,26 @@ public class JarCreator {
 			jarout.setComment(rVersion + " - Robocode version");
 
 			for (TeamItem team : teams) {
-				JarEntry jt = new JarEntry(team.getRelativePath() + '/' + team.getShortClassName() + ".team");
-
-				jarout.putNextEntry(jt);
-				team.storeProperties(jarout);
-				jarout.closeEntry();
+				final String teamEntry = team.getRelativePath() + '/' + team.getShortClassName() + ".team";
+				if (!entries.contains(teamEntry)){
+					entries.add(teamEntry);
+					JarEntry jt = new JarEntry(teamEntry);
+					jarout.putNextEntry(jt);
+					team.storeProperties(jarout);
+					jarout.closeEntry();
+				}
 			}
 
 			for (RobotItem robot : robots) {
-				JarEntry jt = new JarEntry(robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties");
-
-				jarout.putNextEntry(jt);
-				robot.storeProperties(jarout);
-				jarout.closeEntry();
-				packageClasses(source, host, jarout, robot);
+				final String proEntry = robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties";
+				if (!entries.contains(proEntry)){
+					entries.add(proEntry);
+					JarEntry jt = new JarEntry(proEntry);
+					jarout.putNextEntry(jt);
+					robot.storeProperties(jarout);
+					jarout.closeEntry();
+					packageClasses(source, host, jarout, robot, entries);
+				}
 			}
 		} catch (IOException e) {
 			Logger.logError(e);
@@ -69,6 +79,35 @@ public class JarCreator {
 			FileUtil.cleanupStream(jarout);
 			FileUtil.cleanupStream(fos);
 		}
+
+		StringBuilder sb=new StringBuilder();
+		for(String entry : entries){
+			sb.append(entry);
+			sb.append('\n');
+		}
+
+		codeSize(target, sb);
+
+		return sb.toString();
+	}
+
+	private static void codeSize(File target, StringBuilder sb) {
+		Codesize.Item item = Codesize.processZipFile(target);
+		int codesize = item.getCodeSize();
+		String weightClass;
+		if (codesize >= 1500) {
+			weightClass = "MegaBot  (codesize >= 1500 bytes)";
+		} else if (codesize > 750) {
+			weightClass = "MiniBot  (codesize < 1500 bytes)";
+		} else if (codesize > 250) {
+			weightClass = "MicroBot  (codesize < 750 bytes)";
+		} else {
+			weightClass = "NanoBot  (codesize < 250 bytes)";
+		}
+
+		sb.append("\n\n---- Codesize ----\n");
+		sb.append("Codesize: ").append(codesize).append(" bytes\n");
+		sb.append("Robot weight class: ").append(weightClass).append('\n');
 	}
 
 	private static Manifest createManifest(List<RobotItem> robots) {
@@ -88,7 +127,7 @@ public class JarCreator {
 		return manifest;
 	}
 
-	private static void packageClasses(boolean source, IHostManager host, JarOutputStream jarout, RobotItem robot) throws IOException {
+	private static void packageClasses(boolean source, IHostManager host, JarOutputStream jarout, RobotItem robot, Set<String> entries) throws IOException {
 		IRobotClassLoader loader = null;
 
 		try {
@@ -99,7 +138,7 @@ public class JarCreator {
 				if (!className.startsWith("java") && !className.startsWith("robocode")) {
 					String name = className.replace('.', '/');
 
-					packageClass(source, jarout, robot, name);
+					packageClass(source, jarout, robot, name, entries);
 				}
 			}
 
@@ -112,11 +151,12 @@ public class JarCreator {
 		}
 	}
 
-	private static void packageClass(boolean source, JarOutputStream jarout, RobotItem robot, String name) throws IOException {
-		if (source && !name.contains("$")) {
+	private static void packageClass(boolean source, JarOutputStream jarout, RobotItem robot, String name, Set<String> entries) throws IOException {
+		if (source && !name.contains("$") && !entries.contains(name + ".java")) {
 			File javaFile = new File(robot.getRootFile(), name + ".java");
 
 			if (javaFile.exists()) {
+				entries.add(name + ".java");
 				JarEntry je = new JarEntry(name + ".class");
 
 				jarout.putNextEntry(je);
@@ -126,7 +166,8 @@ public class JarCreator {
 		}
 		File classFile = new File(robot.getRoot().getRootPath(), name + ".class");
 
-		if (classFile.exists()) {
+		if (classFile.exists() && !entries.contains(name + ".class")) {
+			entries.add(name + ".class");
 			JarEntry je = new JarEntry(name + ".class");
 
 			jarout.putNextEntry(je);

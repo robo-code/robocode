@@ -13,7 +13,6 @@ package net.sf.robocode.repository;
 
 
 import net.sf.robocode.core.Container;
-import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository.items.handlers.ClassHandler;
 import net.sf.robocode.repository.items.handlers.PropertiesHandler;
 import net.sf.robocode.repository.items.handlers.TeamHandler;

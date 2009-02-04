@@ -86,6 +86,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 		return getFullClassName().substring(0, index);
 	}
 
+	// same as package but with slash
 	public String getRelativePath() {
 		final int index = getFullClassName().lastIndexOf('.');
 

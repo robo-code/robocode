@@ -14,8 +14,6 @@ package net.sf.robocode.repository;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.IRepositoryItem;
-import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
@@ -61,10 +59,14 @@ public class Database {
 		return prev != items.size();
 	}
 
-	public void update(String url, boolean force) {
+	public boolean update(String url, boolean force) {
 		final IItem item = items.get(url);
-
-		item.getRoot().update(item, force);
+		if (item!=null){
+			item.getRoot().update(item, force);
+			return true;
+		} else{
+			return false; 
+		}
 	}
 
 	public void addItem(IItem item) {
