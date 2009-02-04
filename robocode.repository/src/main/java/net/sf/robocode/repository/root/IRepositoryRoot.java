@@ -9,10 +9,10 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository2.root;
+package net.sf.robocode.repository.root;
 
 
-import net.sf.robocode.repository2.items.IItem;
+import net.sf.robocode.repository.items.IItem;
 
 import java.io.File;
 import java.net.URL;

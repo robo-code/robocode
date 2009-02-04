@@ -9,10 +9,10 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository2.root;
+package net.sf.robocode.repository.root;
 
 
-import net.sf.robocode.repository2.Database;
+import net.sf.robocode.repository.Database;
 
 import java.io.File;
 import java.io.Serializable;

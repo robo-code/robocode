@@ -9,16 +9,16 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository2;
+package net.sf.robocode.repository;
 
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository2.items.handlers.ClassHandler;
-import net.sf.robocode.repository2.items.handlers.PropertiesHandler;
-import net.sf.robocode.repository2.items.handlers.TeamHandler;
-import net.sf.robocode.repository2.root.handlers.ClassPathHandler;
-import net.sf.robocode.repository2.root.handlers.JarHandler;
+import net.sf.robocode.repository.items.handlers.ClassHandler;
+import net.sf.robocode.repository.items.handlers.PropertiesHandler;
+import net.sf.robocode.repository.items.handlers.TeamHandler;
+import net.sf.robocode.repository.root.handlers.ClassPathHandler;
+import net.sf.robocode.repository.root.handlers.JarHandler;
 
 
 /**

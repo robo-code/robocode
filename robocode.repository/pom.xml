@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.repository2</artifactId>
+    <artifactId>robocode.repository</artifactId>
     <version>${robocode.version}</version>
     <name>Robocode New Repository</name>
     <dependencies>

@@ -9,13 +9,13 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository2.items;
+package net.sf.robocode.repository.items;
 
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
-import net.sf.robocode.repository2.root.IRepositoryRoot;
+import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.io.*;
 import java.net.MalformedURLException;

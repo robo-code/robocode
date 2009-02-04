@@ -9,19 +9,19 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository2;
+package net.sf.robocode.repository;
 
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository2.items.IItem;
-import net.sf.robocode.repository2.items.RobotItem;
-import net.sf.robocode.repository2.items.TeamItem;
-import net.sf.robocode.repository2.root.BaseRoot;
-import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository2.root.handlers.RootHandler;
+import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.RobotItem;
+import net.sf.robocode.repository.items.TeamItem;
+import net.sf.robocode.repository.root.BaseRoot;
+import net.sf.robocode.repository.root.IRepositoryRoot;
+import net.sf.robocode.repository.root.handlers.RootHandler;
 
 import java.io.*;
 import java.net.URL;

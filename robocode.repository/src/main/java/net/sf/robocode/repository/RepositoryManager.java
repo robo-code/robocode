@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository2;
+package net.sf.robocode.repository;
 
 
 import net.sf.robocode.core.Container;
@@ -17,10 +17,10 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.repository2.items.IItem;
-import net.sf.robocode.repository2.items.RobotItem;
-import net.sf.robocode.repository2.items.TeamItem;
-import net.sf.robocode.repository2.packager.JarCreator;
+import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.RobotItem;
+import net.sf.robocode.repository.items.TeamItem;
+import net.sf.robocode.repository.packager.JarCreator;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;

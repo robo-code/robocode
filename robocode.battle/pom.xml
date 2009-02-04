@@ -27,5 +27,11 @@
             <artifactId>robocode.host</artifactId>
             <version>${robocode.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.repository</artifactId>
+            <version>${robocode.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 </project>
