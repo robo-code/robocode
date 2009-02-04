@@ -1,8 +1,0 @@
-<classpath>
-  <classpathentry kind="src" path="src/main/java"/>
-  <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-  <classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar"/>
-  <classpathentry kind="src" path="/robocode.api"/>
-  <classpathentry kind="src" path="/robocode.core"/>
-</classpath>
