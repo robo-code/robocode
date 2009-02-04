@@ -14,9 +14,9 @@ package net.sf.robocode.repository2.root;
 
 import net.sf.robocode.repository2.Database;
 
-import java.net.URL;
 import java.io.File;
 import java.io.Serializable;
+import java.net.URL;
 
 
 /**

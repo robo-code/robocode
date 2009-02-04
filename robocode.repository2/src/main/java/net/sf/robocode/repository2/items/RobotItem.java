@@ -80,8 +80,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		super(classUrl, root);
 		propertiesUrl = propUrl;
 		isValid = true;
-		isPropertiesURL=(propertiesUrl!=null);
-		isClassURL=(url!=null);
+		isPropertiesURL = (propertiesUrl != null);
+		isClassURL = (url != null);
 
 		init();
 	}
@@ -95,13 +95,13 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	public void setClassUrl(URL classUrl) {
 		this.url = classUrl;
-		isClassURL=(url!=null);
+		isClassURL = (url != null);
 		init();
 	}
 
 	public void setPropertiesUrl(URL propertiesUrl) {
 		this.propertiesUrl = propertiesUrl;
-		isPropertiesURL=(propertiesUrl!=null);
+		isPropertiesURL = (propertiesUrl != null);
 		init();
 	}
 
@@ -123,7 +123,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	private void classUrlFromProperties() {
-		if (url==null && isPropertiesURL) {
+		if (url == null && isPropertiesURL) {
 			if (!loadProperties()) {
 				isValid = false;
 			} else {
@@ -169,7 +169,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	private void htmlUrlFromPropertiesUrl() {
 		try {
-			if (propertiesUrl!=null){
+			if (propertiesUrl != null) {
 				htmlUrl = new URL(propertiesUrl.toString().replaceAll("\\.properties", ".html"));
 				// test that html file exists
 				final URLConnection conn = htmlUrl.openConnection();
@@ -186,7 +186,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private void htmlUrlFromClassUrl() {
 		if (htmlUrl == null) {
 			try {
-				if (url!=null){
+				if (url != null) {
 					htmlUrl = new URL(url.toString().replaceAll("\\.class", ".html"));
 					// test that html file exists
 					final URLConnection conn = htmlUrl.openConnection();
@@ -233,13 +233,14 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			urls.add(noType);
 			urls.add(propertiesUrl.getFile());
 		}
-		if (url!=null){
+		if (url != null) {
 			final String cUrl = url.toString();
 			final String noType = cUrl.substring(0, cUrl.lastIndexOf('.'));
+
 			urls.add(noType);
 			urls.add(url.getFile());
 		}
-		if (getFullClassName()!=null){
+		if (getFullClassName() != null) {
 			urls.add(getFullClassName());
 			urls.add(getUniqueFullClassNameWithVersion());
 		}

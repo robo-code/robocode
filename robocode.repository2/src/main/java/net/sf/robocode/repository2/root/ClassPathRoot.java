@@ -15,8 +15,8 @@ package net.sf.robocode.repository2.root;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository2.Database;
+import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.handlers.ItemHandler;
-import net.sf.robocode.repository2.items.*;
 import net.sf.robocode.ui.IWindowManager;
 
 import java.io.File;
@@ -54,21 +54,23 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		final ArrayList<Long> modified = new ArrayList<Long>();
 
 		visitDirectory(rootPath, items, modified);
-		for(int i=0;i<items.size();i++){
+		for (int i = 0; i < items.size(); i++) {
 			IItem item = items.get(i);
+
 			item.update(modified.get(i), false);
 		}
 	}
 
 	private void visitDirectory(File path, final ArrayList<IItem> items, final ArrayList<Long> modified) {
 		// find files
-		//noinspection ResultOfMethodCallIgnored
+		// noinspection ResultOfMethodCallIgnored
 		path.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
-				if (pathname.isFile()){
+				if (pathname.isFile()) {
 					try {
 						final IItem item = ItemHandler.registerItems(pathname.toURL(), ClassPathRoot.this, db);
-						if (item!=null){
+
+						if (item != null) {
 							items.add(item);
 							modified.add(pathname.lastModified());
 						}

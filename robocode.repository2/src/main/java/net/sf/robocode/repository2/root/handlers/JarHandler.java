@@ -11,15 +11,17 @@
  *******************************************************************************/
 package net.sf.robocode.repository2.root.handlers;
 
+
+import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository2.Database;
 import net.sf.robocode.repository2.root.IRepositoryRoot;
 import net.sf.robocode.repository2.root.JarRoot;
-import net.sf.robocode.repository2.Database;
-import net.sf.robocode.io.Logger;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.Hashtable;
 import java.net.MalformedURLException;
+import java.util.Hashtable;
+
 
 /**
  * @author Pavel Savara (original)

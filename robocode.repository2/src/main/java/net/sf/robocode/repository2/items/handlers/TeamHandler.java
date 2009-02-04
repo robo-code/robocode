@@ -11,33 +11,36 @@
  *******************************************************************************/
 package net.sf.robocode.repository2.items.handlers;
 
+
+import net.sf.robocode.repository2.Database;
 import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.TeamItem;
 import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository2.Database;
 
 import java.net.URL;
+
 
 /**
  * @author Pavel Savara (original)
  */
-public class TeamHandler extends ItemHandler{
+public class TeamHandler extends ItemHandler {
 	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
-			if (itemURL.toString().toLowerCase().endsWith(".team")){
-				return register(itemURL, root, db);
-			}
-			return null;
+		if (itemURL.toString().toLowerCase().endsWith(".team")) {
+			return register(itemURL, root, db);
 		}
+		return null;
+	}
 
-		private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-			TeamItem item = (TeamItem) db.getOldItem(itemURL.toString());
-			if (item == null){
-				item = (TeamItem) db.getItem(itemURL.toString());
-			}
-			if (item == null) {
-				item = new TeamItem(itemURL, root);
-			}
-			db.addItem(item);
-			return item;
+	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
+		TeamItem item = (TeamItem) db.getOldItem(itemURL.toString());
+
+		if (item == null) {
+			item = (TeamItem) db.getItem(itemURL.toString());
 		}
+		if (item == null) {
+			item = new TeamItem(itemURL, root);
+		}
+		db.addItem(item);
+		return item;
+	}
 }

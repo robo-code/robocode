@@ -96,7 +96,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public String getShortClassName() {
-		if (getFullClassName()==null){
+		if (getFullClassName() == null) {
 			return null;
 		}
 		final int index = getFullClassName().lastIndexOf('.');
@@ -221,7 +221,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 			return -1;
 		}
 
-		if (c1!=null){
+		if (c1 != null) {
 			// Ok, same package... compare class:
 			int cc = c1.compareToIgnoreCase(c2);
 

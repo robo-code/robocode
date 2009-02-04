@@ -11,14 +11,15 @@
  *******************************************************************************/
 package net.sf.robocode.repository2.root.handlers;
 
-import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository2.Database;
-import net.sf.robocode.repository2.items.IItem;
+
 import net.sf.robocode.core.Container;
+import net.sf.robocode.repository2.Database;
+import net.sf.robocode.repository2.root.IRepositoryRoot;
 
 import java.io.File;
 import java.util.Hashtable;
 import java.util.List;
+
 
 /**
  * @author Pavel Savara (original)
@@ -26,9 +27,10 @@ import java.util.List;
 public abstract class RootHandler {
 	public abstract void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db);
 
-	public static void visitDirectories(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db){
+	public static void visitDirectories(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db) {
 		// walk thru all plugins
 		final List<RootHandler> itemHandlerList = Container.getComponents(RootHandler.class);
+
 		for (RootHandler handler : itemHandlerList) {
 			handler.visitDirectory(dir, isDevel, newroots, roots, db);
 		}

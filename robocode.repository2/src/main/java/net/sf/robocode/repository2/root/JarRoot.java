@@ -62,7 +62,6 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			db.moveOldItems(this);
 			this.lastModified = lm;
 
-
 			final ArrayList<IItem> items = new ArrayList<IItem>();
 
 			visitItems(items);
@@ -94,7 +93,8 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 						try {
 							String pUrl = root + entry.getName();
 							final IItem item = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, db);
-							if (item!=null){
+
+							if (item != null) {
 								items.add(item);
 							}
 						} catch (MalformedURLException e) {

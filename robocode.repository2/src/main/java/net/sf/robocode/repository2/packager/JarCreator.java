@@ -11,24 +11,26 @@
  *******************************************************************************/
 package net.sf.robocode.repository2.packager;
 
-import net.sf.robocode.repository2.items.RobotItem;
-import net.sf.robocode.repository2.items.TeamItem;
+
+import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.IRobotClassLoader;
-import net.sf.robocode.core.Container;
-import net.sf.robocode.version.IVersionManager;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository2.items.RobotItem;
+import net.sf.robocode.repository2.items.TeamItem;
+import net.sf.robocode.version.IVersionManager;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileInputStream;
 import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
-import java.util.jar.JarEntry;
-import java.util.jar.Attributes;
+
 
 /**
  * @author Pavel Savara (original)
@@ -71,6 +73,7 @@ public class JarCreator {
 
 	private static Manifest createManifest(List<RobotItem> robots) {
 		Manifest manifest;
+
 		manifest = new Manifest();
 		manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
 		StringBuilder robotsString = new StringBuilder();
@@ -86,7 +89,8 @@ public class JarCreator {
 	}
 
 	private static void packageClasses(boolean source, IHostManager host, JarOutputStream jarout, RobotItem robot) throws IOException {
-		IRobotClassLoader loader =null;
+		IRobotClassLoader loader = null;
+
 		try {
 			loader = host.createLoader(robot);
 			loader.loadRobotMainClass(true);
@@ -94,6 +98,7 @@ public class JarCreator {
 			for (String className : loader.getReferencedClasses()) {
 				if (!className.startsWith("java") && !className.startsWith("robocode")) {
 					String name = className.replace('.', '/');
+
 					packageClass(source, jarout, robot, name);
 				}
 			}
@@ -101,7 +106,7 @@ public class JarCreator {
 		} catch (ClassNotFoundException e) {
 			Logger.logError(e);
 		} finally {
-			if (loader!=null){
+			if (loader != null) {
 				loader.cleanup();
 			}
 		}
@@ -109,17 +114,21 @@ public class JarCreator {
 
 	private static void packageClass(boolean source, JarOutputStream jarout, RobotItem robot, String name) throws IOException {
 		if (source && !name.contains("$")) {
-			File javaFile = new File(robot.getRootFile(), name +".java");
-			if (javaFile.exists()){
+			File javaFile = new File(robot.getRootFile(), name + ".java");
+
+			if (javaFile.exists()) {
 				JarEntry je = new JarEntry(name + ".class");
+
 				jarout.putNextEntry(je);
 				copy(javaFile, jarout);
 				jarout.closeEntry();
 			}
 		}
-		File classFile = new File(robot.getRoot().getRootPath(), name +".class");
-		if (classFile.exists()){
+		File classFile = new File(robot.getRoot().getRootPath(), name + ".class");
+
+		if (classFile.exists()) {
 			JarEntry je = new JarEntry(name + ".class");
+
 			jarout.putNextEntry(je);
 			copy(classFile, jarout);
 			jarout.closeEntry();
@@ -128,15 +137,17 @@ public class JarCreator {
 
 	private static void copy(File inFile, JarOutputStream out) throws IOException {
 		FileInputStream in = null;
+
 		try {
 			in = new FileInputStream(inFile);
 			final byte[] buf = new byte[4096];
+
 			while (in.available() > 0) {
 				int count = in.read(buf, 0, 4096);
+
 				out.write(buf, 0, count);
 			}
-		}
-		finally {
+		} finally {
 			FileUtil.cleanupStream(in);
 		}
 	}

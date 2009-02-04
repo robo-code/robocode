@@ -12,21 +12,18 @@
 package net.sf.robocode.repository2;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
-import net.sf.robocode.repository2.root.ClassPathRoot;
-import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository2.root.JarRoot;
 import net.sf.robocode.repository2.root.BaseRoot;
+import net.sf.robocode.repository2.root.IRepositoryRoot;
 import net.sf.robocode.repository2.root.handlers.RootHandler;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -49,11 +46,11 @@ public class Database {
 		Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
 
 		RootHandler.visitDirectories(robotsDir, false, newroots, roots, this);
-		for(File dir : devDirs){
+		for (File dir : devDirs) {
 			RootHandler.visitDirectories(dir, true, newroots, roots, this);
 		}
 
-		//removed roots
+		// removed roots
 		for (IRepositoryRoot oldRoot : roots.values()) {
 			moveOldItems(oldRoot);
 		}
@@ -61,7 +58,7 @@ public class Database {
 		oldItems = new Hashtable<String, IItem>();
 
 		System.gc();
-		return prev!=items.size();
+		return prev != items.size();
 	}
 
 	public void update(String url, boolean force) {
@@ -72,21 +69,23 @@ public class Database {
 
 	public void addItem(IItem item) {
 		final URL url = item.getFullUrl();
-		if (url!=null){
+
+		if (url != null) {
 			items.put(url.toString(), item);
 		}
 		final List<String> friendlyUrls = item.getFriendlyUrls();
 
 		if (friendlyUrls != null) {
 			for (String friendly : friendlyUrls) {
-				if (friendly!=null){
+				if (friendly != null) {
 					final IItem conflict = items.get(friendly);
-					if (conflict!=null){
-						if (item.compareTo(conflict)>0){
-							//replace with highe version
+
+					if (conflict != null) {
+						if (item.compareTo(conflict) > 0) {
+							// replace with highe version
 							items.put(friendly, item);
 						}
-					} else{
+					} else {
 						items.put(friendly, item);
 					}
 				}
@@ -208,7 +207,8 @@ public class Database {
 
 		for (IItem item : items.values()) {
 			final IRepositoryItem spec = (IRepositoryItem) item;
-			if (!item.isValid()){
+
+			if (!item.isValid()) {
 				continue;
 			}
 
@@ -255,9 +255,9 @@ public class Database {
 			uniqueroots.add(root);
 		}
 
-
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
+
 		try {
 			fos = new FileOutputStream(new File(manager.getRobotsDirectory(), "robot.database"));
 			oos = new ObjectOutputStream(fos);
@@ -271,7 +271,7 @@ public class Database {
 		}
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({ "unchecked"})
 	public static Database load(IRepositoryManager manager) {
 		List<IItem> uniqueitems;
 		List<IRepositoryRoot> uniqueroots;
@@ -280,24 +280,26 @@ public class Database {
 
 		try {
 			final File file = new File(manager.getRobotsDirectory(), "robot.database");
-			if (!file.exists()){
+
+			if (!file.exists()) {
 				return null;
 			}
 			fis = new FileInputStream(file);
 			ois = new ObjectInputStream(fis);
 			uniqueroots = (List<IRepositoryRoot>) ois.readObject();
 			uniqueitems = (List<IItem>) ois.readObject();
-			Database res=new Database(manager);
-			for(IRepositoryRoot root : uniqueroots){
-				((BaseRoot)root).setDatabase(res);
+			Database res = new Database(manager);
+
+			for (IRepositoryRoot root : uniqueroots) {
+				((BaseRoot) root).setDatabase(res);
 				res.roots.put(root.getRootPath().toURL().toString(), root);
 			}
-			for(IItem item : uniqueitems){
+			for (IItem item : uniqueitems) {
 				res.addItem(item);
 			}
 			return res;
 		} catch (Throwable t) {
-			Logger.logError("Can't load robot database: "+ t.getMessage());
+			Logger.logError("Can't load robot database: " + t.getMessage());
 			return null;
 		} finally {
 			FileUtil.cleanupStream(ois);

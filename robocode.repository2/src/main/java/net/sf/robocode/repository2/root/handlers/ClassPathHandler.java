@@ -11,19 +11,21 @@
  *******************************************************************************/
 package net.sf.robocode.repository2.root.handlers;
 
-import net.sf.robocode.repository2.root.IRepositoryRoot;
-import net.sf.robocode.repository2.root.ClassPathRoot;
-import net.sf.robocode.repository2.Database;
-import net.sf.robocode.io.Logger;
 
-import java.util.Hashtable;
+import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository2.Database;
+import net.sf.robocode.repository2.root.ClassPathRoot;
+import net.sf.robocode.repository2.root.IRepositoryRoot;
+
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.Hashtable;
+
 
 /**
  * @author Pavel Savara (original)
  */
-public class ClassPathHandler extends RootHandler{
+public class ClassPathHandler extends RootHandler {
 	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db) {
 		try {
 			final String key = dir.toURL().toString();
@@ -31,7 +33,7 @@ public class ClassPathHandler extends RootHandler{
 
 			if (root == null) {
 				root = new ClassPathRoot(db, dir);
-			}else{
+			} else {
 				roots.remove(key);
 			}
 			root.update();

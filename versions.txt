@@ -1,3 +1,10 @@
+Version 1.7.1 Beta 1
+
+= Changes =
+- reimplemented robot database so that it loads robots directly from.jar files. It is also extensible by new file types and package types. It is faster in most cases.
+- reimplemented jar packager, it puts manifest inside as well now
+
+
 Version 1.7 Beta 2
 (26-Jan-2009)
 ---------------
