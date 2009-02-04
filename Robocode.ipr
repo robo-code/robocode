@@ -348,7 +348,7 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/robocode.installer/robocode.installer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.repository2/robocode.repository2.iml" filepath="$PROJECT_DIR$/robocode.repository2/robocode.repository2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.repository/robocode.repository.iml" filepath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.sound/robocode.sound.iml" filepath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" />

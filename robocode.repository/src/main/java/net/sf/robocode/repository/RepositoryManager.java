@@ -168,7 +168,7 @@ public class RepositoryManager implements IRepositoryManager {
 		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
 	}
 
-	private void loadItem(List<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
+	private boolean loadItem(List<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
 		String teamName = String.format("%4d", teamNum);
 
 		if (item != null) {
@@ -188,9 +188,14 @@ public class RepositoryManager implements IRepositoryManager {
 
 				if (robot.validate()) {
 					battlingRobotsList.add(robot.createRobotSpecification(spec, null));
+				} else{
+					Logger.logError("Could not load robot: " + robot.getFullClassName());
+					return false;
 				}
 			}
+			return true;
 		}
+		return false;
 	}
 
 	/**

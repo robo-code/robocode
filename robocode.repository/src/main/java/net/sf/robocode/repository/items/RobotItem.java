@@ -129,8 +129,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			} else {
 				final String cn = properties.getProperty(ROBOT_CLASSNAME, null);
 
-				isExpectedRobot = true;
 				if (cn != null) {
+					isExpectedRobot = true;
 					try {
 						final String cUrl = root.getRootUrl().toString() + cn.replace('.', '/') + ".class";
 
@@ -138,6 +138,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 					} catch (MalformedURLException e) {
 						Logger.logError(e);
 					}
+				} else{
+					isValid = false;
 				}
 			}
 		}
@@ -366,7 +368,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 		} catch (Throwable t) {
 			isValid = false;
-			if (isExpectedRobot) {
+			if (isExpectedRobot || isClassURL) {
 				logError(getFullClassName() + ": Got an error with this class: " + t.toString()); // just message here
 			}
 		} finally {

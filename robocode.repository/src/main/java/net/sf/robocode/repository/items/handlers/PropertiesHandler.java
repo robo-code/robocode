@@ -28,7 +28,7 @@ public class PropertiesHandler extends ItemHandler {
 	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
 		final String name = itemURL.toString().toLowerCase();
 
-		if (name.endsWith(".properties") && !name.equals("robocode.properties")) {
+		if (name.endsWith(".properties") && !name.endsWith("robocode.properties")) {
 			return register(itemURL, root, db);
 		}
 		return null;
