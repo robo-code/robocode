@@ -71,7 +71,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 	private RobotSelectionPanel robotSelectionPanel;
 	private PackagerOptionsPanel packagerOptionsPanel;
 
-	public final byte[] buf = new byte[4096];
 	private StringWriter output;
 	private final IRepositoryManager repositoryManager;
 	private final IWindowManager windowManager;
@@ -95,14 +94,6 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	public void cancelButtonActionPerformed() {
 		dispose();
-	}
-
-	public void copy(FileInputStream in, NoDuplicateJarOutputStream out) throws IOException {
-		while (in.available() > 0) {
-			int count = in.read(buf, 0, 4096);
-
-			out.write(buf, 0, count);
-		}
 	}
 
 	/**

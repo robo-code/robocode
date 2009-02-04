@@ -96,6 +96,9 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public String getShortClassName() {
+		if (getFullClassName()==null){
+			return null;
+		}
 		final int index = getFullClassName().lastIndexOf('.');
 
 		if (index == -1) {

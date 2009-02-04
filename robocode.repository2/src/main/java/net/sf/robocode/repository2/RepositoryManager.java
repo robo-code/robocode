@@ -21,6 +21,7 @@ import net.sf.robocode.repository2.items.IItem;
 import net.sf.robocode.repository2.items.RobotItem;
 import net.sf.robocode.repository2.items.TeamItem;
 import net.sf.robocode.repository2.root.JarRoot;
+import net.sf.robocode.repository2.packager.JarCreator;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
@@ -239,7 +240,7 @@ public class RepositoryManager implements IRepositoryManager {
 			final List<RobotItem> robots = db.expandTeams(selectedRobots);
 			final List<TeamItem> teams = db.filterTeams(selectedRobots);
 
-			JarRoot.createPackage(target, source, robots, teams);
+			JarCreator.createPackage(target, source, robots, teams);
 			refresh(target.toURL().toString());
 		} catch (MalformedURLException e) {
 			Logger.logError(e);

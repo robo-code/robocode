@@ -12,28 +12,22 @@
 package net.sf.robocode.repository2.root;
 
 
-import net.sf.robocode.core.Container;
-import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository2.Database;
-import net.sf.robocode.repository2.items.handlers.ItemHandler;
 import net.sf.robocode.repository2.items.IItem;
-import net.sf.robocode.repository2.items.RobotItem;
-import net.sf.robocode.repository2.items.TeamItem;
-import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.repository2.items.handlers.ItemHandler;
 import net.sf.robocode.ui.IWindowManager;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import java.util.jar.JarOutputStream;
 
 
 /**
@@ -136,76 +130,6 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 
 	public boolean isPackage() {
 		return true;
-	}
-
-	public static void createPackage(File target, boolean source, List<RobotItem> robots, List<TeamItem> teams) {
-		final IHostManager host = Container.getComponent(IHostManager.class);
-		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
-		JarOutputStream jarout = null;
-		FileOutputStream fos = null;
-
-		try {
-			fos = new FileOutputStream(target);
-			jarout = new JarOutputStream(fos);
-			jarout.setComment(rVersion + " - Robocode version");
-
-			for (TeamItem team : teams) {
-				JarEntry jt = new JarEntry(team.getRelativePath() + '/' + team.getShortClassName() + ".team");
-
-				jarout.putNextEntry(jt);
-				team.storeProperties(jarout);
-				jarout.closeEntry();
-			}
-
-			for (RobotItem robot : robots) {
-				IRobotClassLoader loader = null;
-				JarEntry jt = new JarEntry(robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties");
-
-				jarout.putNextEntry(jt);
-				robot.storeProperties(jarout);
-				jarout.closeEntry();
-				packageClasses(source, host, jarout, robot, loader);
-			}
-		} catch (IOException e) {
-			Logger.logError(e);
-		} finally {
-			FileUtil.cleanupStream(jarout);
-			FileUtil.cleanupStream(fos);
-		}
-	}
-
-	private static void packageClasses(boolean source, IHostManager host, JarOutputStream jarout, RobotItem robot, IRobotClassLoader loader) throws IOException {
-		try {
-			loader = host.createLoader(robot);
-			loader.loadRobotMainClass(true);
-
-			for (String className : loader.getReferencedClasses()) {
-				if (className.startsWith("java") || className.startsWith("robocode") || className.contains("$")) {
-					continue;
-				}
-				String name = className.replace('.', '/');
-
-				if (source) {
-					// todo test exist
-					JarEntry je = new JarEntry(name + ".java");
-
-					jarout.putNextEntry(je);
-					// TODO upload file
-					jarout.closeEntry();
-				}
-				// todo test exist
-				JarEntry je = new JarEntry(name + ".class");
-
-				jarout.putNextEntry(je);
-				// TODO upload file
-				jarout.closeEntry();
-			}
-
-		} catch (ClassNotFoundException e) {
-			Logger.logError(e);
-		} finally {
-			loader.cleanup();
-		}
 	}
 
 	private void setStatus(IWindowManager windowManager, String message) {
