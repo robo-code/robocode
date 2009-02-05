@@ -89,7 +89,8 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 				String name = entry.getName().toLowerCase();
 
 				if (!entry.isDirectory()) {
-					if (!name.contains(".data/")) {
+					if (!name.contains(".data/")
+							&& !name.contains(".robotcache/")) {
 						try {
 							String pUrl = root + entry.getName();
 							final IItem item = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, db);

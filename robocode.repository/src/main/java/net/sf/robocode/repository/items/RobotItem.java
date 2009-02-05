@@ -530,11 +530,16 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	public String getWritableDirectory() {
-		return getRootPackage() == null
-				? null
-				: root.isPackage()
-						? root.getClassPathUrl().getFile() + "_" + File.separator + getFullPackage()
-						: root.getClassPathUrl().getFile() + getFullPackage();
+		if (getRootPackage() == null){
+			return null;
+		}
+		if (root.isPackage()){
+			String jarFile = root.getClassPathUrl().getFile();
+			jarFile = jarFile.substring(jarFile.lastIndexOf('/')+1, jarFile.length());
+			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getFullPackage();
+		}else{
+			return FileUtil.getCacheDir() + File.separator + getFullPackage();
+		}
 	}
 
 	public RobotSpecification createRobotSpecification(RobotSpecification battleRobotSpec, String teamName) {

@@ -231,6 +231,23 @@ public class FileUtil {
 		}
 	}
 
+	public static File getCacheDir() {
+		try {
+			File file;
+			String robotPath = System.getProperty("ROBOTPATH");
+
+			if (robotPath != null) {
+				file = new File(robotPath, "/.robotcache/").getCanonicalFile();
+			} else {
+				file = new File(cwd, "/robots/.robotcache/").getCanonicalFile();
+			}
+			return createDir(file);
+		} catch (IOException e) {
+			throw new Error(e);
+		}
+	}
+
+
 	/**
 	 * Returns the directory containing the battle files.
 	 *
