@@ -522,11 +522,16 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	public String getReadableDirectory() {
-		return getRootPackage() == null
-				? null
-				: root.isPackage()
-						? root.getClassPathUrl().getFile() + "_" + File.separator + getRootPackage()
-						: root.getClassPathUrl().getFile() + getRootPackage();
+		if (getRootPackage() == null){
+			return null;
+		}
+		if (root.isPackage()){
+			String jarFile = root.getClassPathUrl().getFile();
+			jarFile = jarFile.substring(jarFile.lastIndexOf('/')+1, jarFile.length());
+			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getRootPackage();
+		}else{
+			return FileUtil.getCacheDir() + File.separator + getRootPackage();
+		}
 	}
 
 	public String getWritableDirectory() {
