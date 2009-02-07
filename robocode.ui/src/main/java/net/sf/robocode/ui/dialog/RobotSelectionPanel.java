@@ -587,7 +587,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 					List<INamedFileSpecification> robotList = repositoryManager.getRobotSpecificationsList(
 							onlyShowSource, onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged,
-							ignoreTeamRobots);
+							false);
 
 					getAvailableRobotsPanel().setRobotList(robotList);
 					if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
