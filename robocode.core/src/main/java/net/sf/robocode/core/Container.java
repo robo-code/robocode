@@ -176,6 +176,13 @@ public final class Container extends ContainerBase {
 		return null;
 	}
 
+	public static void loadJars(String allowed) {
+		final URL[] jars = findJars(allowed);
+		for (URL jar : jars) {
+			((EngineClassLoader) engineLoader).addURL(jar);
+		}
+	}
+
 	public static URL[] findJars(String allowed) {
 		java.util.List<String> urls = new ArrayList<String>();
 		final String classPath = System.getProperty("robocode.class.path", null);

@@ -16,12 +16,13 @@
     <orderEntry type="module" module-name="robocode.samples" />
     <orderEntry type="module" module-name="robocode.scala.host" />
     <orderEntry type="module" module-name="robocode.scala.installer" />
-    <orderEntry type="module" module-name="robocode.scala.repository" />
     <orderEntry type="module" module-name="robocode.scala.samples" />
     <orderEntry type="module" module-name="robocode.sound" />
     <orderEntry type="module" module-name="robocode.tests" />
     <orderEntry type="module" module-name="robocode.ui" />
     <orderEntry type="module" module-name="robocode.ui.editor" />
+    <orderEntry type="module" module-name="robocode.bv3d.installer" />
+    <orderEntry type="module" module-name="robocode.bv3d.view" />
   </component>
 </module>
 

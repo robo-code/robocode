@@ -69,6 +69,8 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 	/** Index to which explosion image that must be rendered */
 	private int explosionImageIndex;
 
+	private int bulletId;
+
 	/**
 	 * Creates a snapshot of a bullet that must be filled out with data later.
 	 */
@@ -96,6 +98,15 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 
 		isExplosion = (bullet instanceof ExplosionPeer);
 		explosionImageIndex = bullet.getExplosionImageIndex();
+
+		bulletId = bullet.getBulletId();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getBulletId() {
+		return bulletId;
 	}
 
 	/**

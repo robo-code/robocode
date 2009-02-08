@@ -178,7 +178,7 @@
     <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="false" />
     <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.4" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
@@ -215,6 +215,7 @@
         <option value="$PROJECT_DIR$/robocode.core/pom.xml" />
         <option value="$PROJECT_DIR$/robocode.battle/pom.xml" />
         <option value="$PROJECT_DIR$/plugins/scala/pom.xml" />
+        <option value="$PROJECT_DIR$/plugins/battleview3d/pom.xml" />
       </list>
     </option>
   </component>
@@ -352,6 +353,10 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.iml" filepath="$PROJECT_DIR$/robocode.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/robocode.api/robocode.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.content/robocode.bv3d.content.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.content/robocode.bv3d.content.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.installer/robocode.bv3d.installer.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.installer/robocode.bv3d.installer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.view/robocode.bv3d.view.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.view/robocode.bv3d.view.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" />
@@ -498,6 +503,94 @@
         <root url="jar://C:/Program Files/Scala/src/scala-dbc-src.jar!/" />
         <root url="jar://C:/Program Files/Scala/src/scala-library-src.jar!/" />
         <root url="jar://C:/Program Files/Scala/src/scala-swing-src.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.java.dev.jogl:jogl:1.1.1-rc6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl/1.1.1-rc6/jogl-1.1.1-rc6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl/1.1.1-rc6/jogl-1.1.1-rc6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl/1.1.1-rc6/jogl-1.1.1-rc6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.java.dev.gluegen:gluegen-rt:1.0b05">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt/1.0b05/gluegen-rt-1.0b05.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt/1.0b05/gluegen-rt-1.0b05-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt/1.0b05/gluegen-rt-1.0b05-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.java.dev.jogl:jogl-windows-i586:1.1.1-rc6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-windows-i586/1.1.1-rc6/jogl-windows-i586-1.1.1-rc6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-windows-i586/1.1.1-rc6/jogl-windows-i586-1.1.1-rc6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-windows-i586/1.1.1-rc6/jogl-windows-i586-1.1.1-rc6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.java.dev.jogl:jogl-linux-i586:1.1.1-rc6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-linux-i586/1.1.1-rc6/jogl-linux-i586-1.1.1-rc6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-linux-i586/1.1.1-rc6/jogl-linux-i586-1.1.1-rc6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-linux-i586/1.1.1-rc6/jogl-linux-i586-1.1.1-rc6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.java.dev.jogl:jogl-macosx-universal:1.1.1-rc6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-macosx-universal/1.1.1-rc6/jogl-macosx-universal-1.1.1-rc6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-macosx-universal/1.1.1-rc6/jogl-macosx-universal-1.1.1-rc6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/jogl/jogl-macosx-universal/1.1.1-rc6/jogl-macosx-universal-1.1.1-rc6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.java.dev.gluegen:gluegen-rt-linux-i586:1.0b05">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-linux-i586/1.0b05/gluegen-rt-linux-i586-1.0b05.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-linux-i586/1.0b05/gluegen-rt-linux-i586-1.0b05-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-linux-i586/1.0b05/gluegen-rt-linux-i586-1.0b05-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.java.dev.gluegen:gluegen-rt-windows-i586:1.0b05">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-windows-i586/1.0b05/gluegen-rt-windows-i586-1.0b05.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-windows-i586/1.0b05/gluegen-rt-windows-i586-1.0b05-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-windows-i586/1.0b05/gluegen-rt-windows-i586-1.0b05-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.java.dev.gluegen:gluegen-rt-macosx-universal:1.0b05">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-macosx-universal/1.0b05/gluegen-rt-macosx-universal-1.0b05.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-macosx-universal/1.0b05/gluegen-rt-macosx-universal-1.0b05-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-macosx-universal/1.0b05/gluegen-rt-macosx-universal-1.0b05-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
