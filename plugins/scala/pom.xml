@@ -17,7 +17,6 @@
         <module>robocode.scala.content</module>
         <module>robocode.scala.host</module>
         <module>robocode.scala.installer</module>
-        <module>robocode.scala.repository</module>
         <module>robocode.scala.samples</module>
     </modules>
     <build>

@@ -178,7 +178,7 @@
     <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="false" />
     <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.4" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
@@ -360,9 +360,9 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.content/robocode.scala.content.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.content/robocode.scala.content.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.repository/robocode.scala.repository.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.repository/robocode.scala.repository.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.samples/robocode.scala.samples.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.samples/robocode.scala.samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.sound/robocode.sound.iml" filepath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" />

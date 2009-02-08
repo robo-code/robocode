@@ -1,5 +1,5 @@
 <assembly>
-    <id>scala-setup</id>
+    <id>setup</id>
     <formats>
         <format>dir</format>
         <format>jar</format>

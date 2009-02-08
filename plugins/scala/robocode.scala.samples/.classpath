@@ -1,0 +1,9 @@
+<classpath>
+  <classpathentry kind="src" path="src/main/resources" including="**/*.properties|**/*.team|**/*.html" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/main/scala"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="con" path="ch.epfl.lamp.sdt.launching.SCALA_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.api/1.7.1.Beta1/robocode.api-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3.jar" sourcepath="M2_REPO/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-sources.jar"/>
+</classpath>
