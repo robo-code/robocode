@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>robocode.host</name>
+  <name>robocode.repository</name>
   <comment/>
   <projects>
     <project>robocode.api</project>
