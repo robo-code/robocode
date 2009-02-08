@@ -27,6 +27,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.WrapFactory;
 import robocode.Robot;
+import robocode.robotinterfaces.IBasicRobot;
 
 /**
  * @author Pavel Savara (original)
@@ -50,7 +51,7 @@ public class JsRobotClassLoader extends RobotClassLoader{
 	@Override
 	public Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException{
 		try {
-			ScriptableObject.defineClass(scope, Robot.class);
+			//ScriptableObject.defineClass(scope, Robot.class);
 
 			String script = robotClassPath.toString() + fullClassName.replace('.', '/') + ".js";
 			URL sUrl=new URL(script);
@@ -60,7 +61,10 @@ public class JsRobotClassLoader extends RobotClassLoader{
 			cx.evaluateReader(scope, new InputStreamReader(is), script, 1, null);
 			final Object robot = scope.get("robot", scope);
 			if (robot == Scriptable.NOT_FOUND){
-				throw new ClassNotFoundException("Robot can't be found");
+				throw new ClassNotFoundException("robot variable was not set");
+			}
+			if (!(robot instanceof IBasicRobot)){
+				return null;
 			}
 			return robot.getClass();
 		} catch (Throwable e) {

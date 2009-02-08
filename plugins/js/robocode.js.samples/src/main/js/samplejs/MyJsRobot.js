@@ -9,27 +9,25 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-importPackage(robocode)
 
-function samplejs.MyJsRobot() {
-    this.inherits(robocode.Robot)
+if(!samplejs) var samplejs={};
+samplejs.MyJsRobot = {
 
-    this.run() = function() {
+    run: function() {
         while (true) {
             ahead(100); // Move ahead 100
             turnGunRight(360); // Spin gun around
             back(100); // Move back 100
             turnGunRight(360); // Spin gun around
         }
-    }
+    },
 
-    this.onScannedRobot = function(e) {
+    onScannedRobot : function(e) {
         fire(1);
-    }
+    },
 
-    this.onHitByBullet = function(e) {
+    onHitByBullet : function(e) {
         turnLeft(90 - e.getBearing());
     }
 }
-
-var roboct = new JavaAdapter(robocode.Robot ,samplejs.MyJsRobot()); 
+var robot = new JavaAdapter(Packages.robocode.Robot, samplejs.MyJsRobot);
