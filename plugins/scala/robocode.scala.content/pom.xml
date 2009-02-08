@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.scala.content</artifactId>
     <version>${robocode.version}</version>
-    <name>Static content</name>
+    <name>Scala static content</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>

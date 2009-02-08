@@ -12,7 +12,6 @@
         <moduleSet>
             <includes>
                 <include>net.sf.robocode:robocode.scala.host</include>
-                <include>net.sf.robocode:robocode.scala.repository</include>
             </includes>
             <binaries>
                 <excludes>
@@ -21,7 +20,6 @@
                     <exclude>net.sf.robocode:robocode.repository</exclude>
                     <exclude>net.sf.robocode:robocode.core</exclude>
                     <exclude>net.sf.robocode:codesize</exclude>
-                    <exclude>org.picocontainer:picocontainer</exclude>
                     <exclude>org.picocontainer:picocontainer</exclude>
                 </excludes>
                 <outputDirectory>libs</outputDirectory>

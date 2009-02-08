@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.scala.installer</artifactId>
     <version>${robocode.version}</version>
-    <name>Robocode Scala Installer</name>
+    <name>Scala installer</name>
     <build>
         <plugins>
             <plugin>

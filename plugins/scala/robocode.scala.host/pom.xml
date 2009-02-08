@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.scala.host</artifactId>
     <version>${robocode.version}</version>
-    <name>Robocode Scala Host</name>
+    <name>Scala host for Robocode</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>

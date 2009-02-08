@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.scala.samples</artifactId>
     <version>${robocode.version}</version>
-    <name>Robocode Scala Samples</name>
+    <name>Scala samples for Robocode</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>

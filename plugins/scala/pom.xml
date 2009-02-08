@@ -12,7 +12,7 @@
     <artifactId>robocode.scala</artifactId>
     <version>${robocode.version}</version>
     <packaging>pom</packaging>
-    <name>Robocode Scala</name>
+    <name>Scala for Robocode</name>
     <modules>
         <module>robocode.scala.content</module>
         <module>robocode.scala.host</module>
