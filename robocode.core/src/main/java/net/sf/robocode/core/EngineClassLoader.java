@@ -12,19 +12,13 @@
 package net.sf.robocode.core;
 
 
-import net.sf.robocode.io.Logger;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.io.File;
 
 
 /**
@@ -41,7 +35,11 @@ public class EngineClassLoader extends URLClassLoader {
 	}
 
 	public EngineClassLoader(ClassLoader parent) {
-		super(initRobotClassLoader(), parent);
+		super(Container.findJars(File.separator + "robocode."), parent);
+	}
+
+	public EngineClassLoader(URL[] urls, ClassLoader parent) {
+		super(urls, parent);
 	}
 
 	public synchronized void addURL(URL url) {
@@ -94,40 +92,4 @@ public class EngineClassLoader extends URLClassLoader {
 		}
 		return false;
 	}
-
-	private static URL[] initRobotClassLoader() {
-		List<String> urls = new ArrayList<String>();
-		final String classPath = System.getProperty("robocode.class.path", null);
-
-		for (String path : classPath.split(File.pathSeparator)) {
-			String test = path.toLowerCase();
-
-			if (test.contains(File.separator + "robocode.")) {
-				if (!test.contains("robocode.jar") && !test.contains("robocode.api")
-						) {
-					urls.add(path);
-				}
-			}
-		}
-		return convertUrls(urls);
-	}
-
-	private static URL[] convertUrls(List<String> surls) {
-		final URL[] urls = new URL[surls.size()];
-
-		for (int i = 0; i < surls.size(); i++) {
-			String url = surls.get(i);
-			File f = new File(url);
-
-			try {
-				urls[i] = f.getCanonicalFile().toURL();
-			} catch (MalformedURLException e) {
-				Logger.logError(e);
-			} catch (IOException e) {
-				Logger.logError(e);
-			}
-		}
-		return urls;
-	}
-
 }

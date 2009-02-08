@@ -99,7 +99,7 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 
 				byteStreamReader.reset();
 				RobocodeObjectInputStream objectStreamReader = new RobocodeObjectInputStream(byteStreamReader,
-						robotClassLoader);
+						(ClassLoader)robotClassLoader);
 				Serializable message = (Serializable) objectStreamReader.readObject();
 				final MessageEvent event = new MessageEvent(teamMessage.sender, message);
 

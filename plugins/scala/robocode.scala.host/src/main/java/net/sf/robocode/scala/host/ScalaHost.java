@@ -9,18 +9,19 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.host;
+package net.sf.robocode.scala.host;
 
-
-import java.util.Set;
-
+import net.sf.robocode.host.IHost;
+import net.sf.robocode.host.IRobotClassLoader;
+import net.sf.robocode.host.security.RobotClassLoader;
+import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.scala.host.security.ScalaRobotClassLoader;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotClassLoader {
-	Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException;
-	Set<String> getReferencedClasses();
-	void setRobotProxy(Object robotProxy);
-	void cleanup();
+public class ScalaHost implements IHost{
+	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
+		return new ScalaRobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
+	}
 }

@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
     <name>Robocode Scala</name>
     <modules>
+        <module>robocode.scala.content</module>
         <module>robocode.scala.host</module>
         <module>robocode.scala.installer</module>
         <module>robocode.scala.repository</module>

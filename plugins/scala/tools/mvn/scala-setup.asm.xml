@@ -69,10 +69,8 @@
                 </dependencySets>
             </binaries>
         </moduleSet>
-
-
-
     </moduleSets>
 </assembly>
+
 
 

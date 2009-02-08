@@ -74,10 +74,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
-		this(robotClassPath, robotFullClassName, null);
-	}
-	
-	public RobotClassLoader(URL robotClassPath, String robotFullClassName, IHostedThread robotProxy) {
 		super(new URL[] { robotClassPath}, Container.systemLoader);
 		prepareForCleanup();
 		fullClassName = robotFullClassName;
@@ -86,6 +82,10 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
 		} catch (MalformedURLException ignored) {}
+	}
+
+	public void setRobotProxy(Object robotProxy){
+		this.robotProxy=(IHostedThread)robotProxy;
 	}
 
 	public synchronized void addURL(URL url) {

@@ -42,8 +42,6 @@ public class AutoExtract implements ActionListener {
 	private boolean accepted;
 	private final String[] spinner = { "-", "\\", "|", "/"};
 	private String message = "";
-	private static final String osName = System.getProperty("os.name");
-	private static final double osVersion = doubleValue(System.getProperty("os.version"));
 	private static final String javaVersion = System.getProperty("java.version");
 
 	/**
@@ -51,27 +49,6 @@ public class AutoExtract implements ActionListener {
 	 */
 	public AutoExtract() {
 		super();
-	}
-
-	private static double doubleValue(String s) {
-		int p = s.indexOf(".");
-
-		if (p >= 0) {
-			p = s.indexOf(".", p + 1);
-		}
-		if (p >= 0) {
-			s = s.substring(0, p);
-		}
-
-		double d = 0.0;
-
-		try {
-			d = Double.parseDouble(s);
-		} catch (NumberFormatException e) {
-			e.printStackTrace(System.err);
-		}
-
-		return d;
 	}
 
 	private boolean acceptLicense() {
@@ -296,7 +273,7 @@ public class AutoExtract implements ActionListener {
 
 			while (!done) {
 				int rc = JOptionPane.showConfirmDialog(null,
-						"Robocode will be installed in:\n" + suggestedDir + "\nIs this ok?", "Installing Robocode",
+						"Robocode plugin will be installed in:\n" + suggestedDir + "\nIs this ok?", "Installing Robocode",
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (rc == JOptionPane.YES_OPTION) {
@@ -333,123 +310,12 @@ public class AutoExtract implements ActionListener {
 			}
 			boolean rv = extractor.extract(installDir);
 
-			if (rv) {
-				extractor.createShortcuts(installDir, "robocode.bat", "Robocode", "Robocode");
-			} else {
+			if (!rv) {
 				JOptionPane.showMessageDialog(null, extractor.message);
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Installation cancelled.");
 		}
 		System.exit(0);
-	}
-
-	private void createShortcuts(File installDir, String runnable, String folder, String name) {
-
-		if (osName.toLowerCase().indexOf("win") == 0) {
-			if (createWindowsShortcuts(installDir, runnable, folder, name)) {} else {
-				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
-						+ installDir.getAbsolutePath() + "\n" + "robocode.bat");
-			}
-		} else if (osName.toLowerCase().indexOf("mac") == 0) {
-			if (osVersion >= 10.1) {
-				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, browse to " + installDir + " then double-click robocode.jar\n");
-			} else {
-				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, enter the following at a command prompt:\n"
-						+ installDir.getAbsolutePath() + "/robocode.sh");
-			}
-		} else {
-			JOptionPane.showMessageDialog(null,
-					message + "\n" + "To start Robocode, enter the following at a command prompt:\n"
-					+ installDir.getAbsolutePath() + "/robocode.sh");
-		}
-	}
-
-	private boolean createWindowsShortcuts(File installDir, String runnable, String folder, String name) {
-		int rc = JOptionPane.showConfirmDialog(null,
-				"Would you like to install a shortcut to Robocode in the Start menu? (Recommended)", "Create Shortcuts",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-		if (rc != JOptionPane.YES_OPTION) {
-			return false;
-		}
-
-		String command;
-
-		if (osName.indexOf("9") != -1) {
-			command = "command.com /c cscript.exe "; // /nologo
-		} else {
-			command = "cmd.exe /c cscript.exe ";
-		} // /nologo
-		try {
-			File shortcutMaker = new File(installDir, "makeshortcut.vbs");
-			PrintStream out = new PrintStream(new FileOutputStream(shortcutMaker));
-
-			out.println("WScript.Echo(\"Creating shortcuts...\")");
-			out.println("Set Shell = CreateObject (\"WScript.Shell\")");
-			out.println("Set fso = CreateObject(\"Scripting.FileSystemObject\")");
-			out.println("ProgramsPath = Shell.SpecialFolders(\"Programs\")");
-			out.println("if (not(fso.folderExists(ProgramsPath + \"\\\\" + folder + "\"))) Then");
-			out.println("	fso.CreateFolder(ProgramsPath + \"\\\\" + folder + "\")");
-			out.println("End If");
-			out.println("Set link = Shell.CreateShortcut(ProgramsPath + \"\\\\" + folder + "\\\\" + name + ".lnk\")");
-			out.println("link.Arguments = \"\"");
-			out.println("link.Description = \"" + name + "\"");
-			out.println("link.HotKey = \"\"");
-			out.println("link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + "robocode.ico,0\"");
-			out.println("link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + runnable + "\"");
-			out.println("link.WindowStyle = 1");
-			out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\"");
-			out.println("link.Save()");
-			out.println("DesktopPath = Shell.SpecialFolders(\"Desktop\")");
-			out.println("Set link = Shell.CreateShortcut(DesktopPath + \"\\\\" + name + ".lnk\")");
-			out.println("link.Arguments = \"\"");
-			out.println("link.Description = \"" + name + "\"");
-			out.println("link.HotKey = \"\"");
-			out.println("link.IconLocation = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + "robocode.ico,0\"");
-			out.println("link.TargetPath = \"" + escaped(installDir.getAbsolutePath()) + "\\\\" + runnable + "\"");
-			out.println("link.WindowStyle = 1");
-			out.println("link.WorkingDirectory = \"" + escaped(installDir.getAbsolutePath()) + "\"");
-			out.println("link.Save()");
-			out.println("WScript.Echo(\"Shortcuts created.\")");
-
-			out.close();
-
-			Process p = Runtime.getRuntime().exec(command + " makeshortcut.vbs", null, installDir);
-			int rv = p.waitFor();
-
-			if (rv != 0) {
-				System.out.println("Can't create shortcut " + shortcutMaker);
-				return false;
-			}
-			JOptionPane.showMessageDialog(null,
-					message + "\n" + "A Robocode program group has been added to your Start menu\n"
-					+ "A Robocode icon has been added to your desktop.");
-			if (!shortcutMaker.delete()) {
-				System.out.println("Can't delete " + shortcutMaker);
-			}
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace(System.err);
-		} catch (InterruptedException e) {
-			e.printStackTrace(System.err);
-		}
-
-		return false;
-	}
-
-	private String escaped(String s) {
-		String r = "";
-
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) == '\\') {
-				r += '\\';
-			}
-			r += s.charAt(i);
-		}
-		return r;
 	}
 }

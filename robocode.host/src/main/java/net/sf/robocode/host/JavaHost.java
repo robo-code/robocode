@@ -11,16 +11,16 @@
  *******************************************************************************/
 package net.sf.robocode.host;
 
-
-import java.util.Set;
-
+import net.sf.robocode.host.IHost;
+import net.sf.robocode.host.IRobotClassLoader;
+import net.sf.robocode.host.security.RobotClassLoader;
+import net.sf.robocode.repository.IRobotRepositoryItem;
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotClassLoader {
-	Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException;
-	Set<String> getReferencedClasses();
-	void setRobotProxy(Object robotProxy);
-	void cleanup();
+public class JavaHost implements IHost {
+	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
+		return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
+	}
 }

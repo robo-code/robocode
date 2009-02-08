@@ -82,6 +82,7 @@
                 <filtering>false</filtering>
                 <includes>
                     <include>**/*.java</include>
+                    <include>**/*.scala</include>
                 </includes>
             </resource>
             <resource>

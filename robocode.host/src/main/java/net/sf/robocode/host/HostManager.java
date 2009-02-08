@@ -19,6 +19,7 @@ import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.core.Container;
 import robocode.control.RobotSpecification;
 
 import java.io.InputStream;
@@ -101,7 +102,8 @@ public class HostManager implements IHostManager {
 	}
 
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
+		final IHost host = (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
+		return host.createLoader(robotRepositoryItem);
 	}
 
 	public void initSecurity() {

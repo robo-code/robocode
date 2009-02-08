@@ -25,6 +25,8 @@ public interface IRobotRepositoryItem extends IRepositoryItem {
 
 	String getReadableDirectory();
 
+	String getRobotLanguage();
+
 	boolean isDroid();
 
 	boolean isTeamRobot();

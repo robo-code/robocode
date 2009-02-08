@@ -58,6 +58,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	// private final static String ROBOT_AUTHOR_WEBSITE = "robot.author.website";
 	private final static String ROBOT_JAVA_SOURCE_INCLUDED = "robot.java.source.included";
 	private final static String ROBOT_VERSION = "robot.version";
+	private final static String ROBOT_LANGUAGE = "robot.language";
 	private final static String ROBOT_CLASSNAME = "robot.classname";
 	private final static String ROBOT_WEBPAGE = "robot.webpage";
 	private final static String ROBOCODE_VERSION = "robocode.version";
@@ -503,6 +504,11 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	public String getAuthorName() {
 		return properties.getProperty(ROBOT_AUTHOR_NAME, null);
+	}
+
+	public String getRobotLanguage() {
+		final String lang = properties.getProperty(ROBOT_LANGUAGE, null);
+		return lang == null ? "java" : lang;
 	}
 
 	public URL getWebpage() {

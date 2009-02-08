@@ -13,6 +13,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="library" name="scala-2.7.3.final" level="application" />
+    <orderEntry type="library" name="scala-2.7.3.final" level="project" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="robocode.api" exported="" />

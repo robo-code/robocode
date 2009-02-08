@@ -16,7 +16,6 @@ import net.sf.robocode.host.*;
 import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.host.io.RobotOutputStream;
-import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.host.security.RobotThreadManager;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.ExecCommands;
@@ -42,7 +41,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
 	private final IRobotRepositoryItem robotSpecification;
-	protected RobotClassLoader robotClassLoader;
+	protected IRobotClassLoader robotClassLoader;
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;
 	protected final IRobotPeer peer;
@@ -55,8 +54,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		this.statics = statics;
 		this.hostManager = hostManager;
 		this.robotSpecification = robotSpecification;
-		this.robotClassLoader = new RobotClassLoader(robotSpecification.getRobotClassPath(),
-				robotSpecification.getFullClassName(), this);
+		robotClassLoader = hostManager.createLoader(robotSpecification);
+		robotClassLoader.setRobotProxy(this);
 
 		out = new RobotOutputStream();
 		robotThreadManager = new RobotThreadManager(this);
@@ -145,7 +144,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 	
 	public ClassLoader getRobotClassloader() {
-		return robotClassLoader;
+		return (ClassLoader)robotClassLoader;
 	}
 
 	// -----------
