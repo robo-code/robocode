@@ -6,27 +6,18 @@
         <artifactId>robocode.commonpom</artifactId>
         <groupId>net.sf.robocode</groupId>
         <version>SNAPSHOT</version>
-        <relativePath>tools/commonpom</relativePath>
+        <relativePath>../../tools/commonpom</relativePath>
     </parent>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode</artifactId>
     <version>${robocode.version}</version>
     <packaging>pom</packaging>
-    <name>Robocode</name>
+    <name>Robocode Scala</name>
     <modules>
-        <module>robocode.api</module>
-        <module>robocode.core</module>
-        <module>robocode.battle</module>
-        <module>robocode.host</module>
-        <module>robocode.ui</module>
-        <module>robocode.ui.editor</module>
-        <module>robocode.sound</module>
-        <module>robocode.samples</module>
-        <module>robocode.roborumble</module>
-        <module>robocode.tests</module>
-        <module>robocode.installer</module>
-        <module>robocode.repository</module>
-        <module>robocode.content</module>
+        <module>robocode.scala.host</module>
+        <module>robocode.scala.installer</module>
+        <module>robocode.scala.repository</module>
+        <module>robocode.scala.samples</module>
     </modules>
     <build>
         <plugins>
@@ -37,8 +28,7 @@
                     <finalName>${project.artifactId}-${project.version}</finalName>
                     <ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
                     <descriptors>
-                        <descriptor>tools/mvn/setup.asm.xml</descriptor>
-                        <descriptor>tools/mvn/src.asm.xml</descriptor>
+                        <descriptor>tools/mvn/scala-setup.asm.xml</descriptor>
                     </descriptors>
                     <archive>
                         <manifest>

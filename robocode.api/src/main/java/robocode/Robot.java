@@ -36,9 +36,6 @@ import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 
 
 /**
@@ -1479,57 +1476,57 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onKeyPressed(KeyEvent e) {}
+	public void onKeyPressed(java.awt.event.KeyEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onKeyReleased(KeyEvent e) {}
+	public void onKeyReleased(java.awt.event.KeyEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onKeyTyped(KeyEvent e) {}
+	public void onKeyTyped(java.awt.event.KeyEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseClicked(MouseEvent e) {}
+	public void onMouseClicked(java.awt.event.MouseEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseEntered(MouseEvent e) {}
+	public void onMouseEntered(java.awt.event.MouseEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseExited(MouseEvent e) {}
+	public void onMouseExited(java.awt.event.MouseEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMousePressed(MouseEvent e) {}
+	public void onMousePressed(java.awt.event.MouseEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseReleased(MouseEvent e) {}
+	public void onMouseReleased(java.awt.event.MouseEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseMoved(MouseEvent e) {}
+	public void onMouseMoved(java.awt.event.MouseEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseDragged(MouseEvent e) {}
+	public void onMouseDragged(java.awt.event.MouseEvent e) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void onMouseWheelMoved(MouseWheelEvent e) {}
+	public void onMouseWheelMoved(java.awt.event.MouseWheelEvent e) {}
 
 	/**
 	 * {@inheritDoc}

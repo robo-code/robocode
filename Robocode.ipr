@@ -50,6 +50,9 @@
       <entry name="?*.tld" />
     </wildcardResourcePatterns>
   </component>
+  <component name="CopyrightManager" default="">
+    <module2copyright />
+  </component>
   <component name="DependenciesAnalyzeManager">
     <option name="myForwardDirection" value="false" />
   </component>
@@ -211,6 +214,7 @@
         <option value="$PROJECT_DIR$/robocode.ui/pom.xml" />
         <option value="$PROJECT_DIR$/robocode.core/pom.xml" />
         <option value="$PROJECT_DIR$/robocode.battle/pom.xml" />
+        <option value="$PROJECT_DIR$/plugins/scala/pom.xml" />
       </list>
     </option>
   </component>
@@ -339,9 +343,14 @@
     <option name="projectName" value="Robocode" />
   </component>
   <component name="ProjectFileVersion" converted="true" />
+  <component name="ProjectKey">
+    <option name="state" value="https://robocode.svn.sourceforge.net/svnroot/robocode/robocode/branches/repository-workspace/Robocode.ipr" />
+  </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/tools/debugall/all.iml" filepath="$PROJECT_DIR$/tools/debugall/all.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.iml" filepath="$PROJECT_DIR$/robocode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode (net.sf.robocode) (2).iml" filepath="$PROJECT_DIR$/plugins/scala/robocode (net.sf.robocode) (2).iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/robocode.api/robocode.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" />
@@ -351,6 +360,10 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.repository/robocode.repository.iml" filepath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.repository/robocode.scala.repository.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.repository/robocode.scala.repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.samples/robocode.scala.samples.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.samples/robocode.scala.samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.sound/robocode.sound.iml" filepath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.ui/robocode.ui.iml" filepath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" />
@@ -387,6 +400,7 @@
   </component>
   <component name="SvnBranchConfigurationManager">
     <option name="myVersion" value="124" />
+    <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="svn" />
@@ -502,6 +516,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.scala-lang:scala-library:2.7.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
