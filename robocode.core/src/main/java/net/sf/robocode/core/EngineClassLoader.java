@@ -44,7 +44,7 @@ public class EngineClassLoader extends URLClassLoader {
 		super(initRobotClassLoader(), parent);
 	}
 
-	public void addURL(URL url) {
+	public synchronized void addURL(URL url) {
 		super.addURL(url);
 	}
 
@@ -102,7 +102,7 @@ public class EngineClassLoader extends URLClassLoader {
 		for (String path : classPath.split(File.pathSeparator)) {
 			String test = path.toLowerCase();
 
-			if (test.contains("robocode")) {
+			if (test.contains(File.separator + "robocode.")) {
 				if (!test.contains("robocode.jar") && !test.contains("robocode.api")
 						) {
 					urls.add(path);

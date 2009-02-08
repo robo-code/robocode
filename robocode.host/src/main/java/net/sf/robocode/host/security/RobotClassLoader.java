@@ -88,6 +88,10 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		} catch (MalformedURLException ignored) {}
 	}
 
+	public synchronized void addURL(URL url) {
+		super.addURL(url);
+	}
+
 	public synchronized Class<?> loadClass(String name, boolean resolve)
 		throws ClassNotFoundException {
 		if (name.startsWith("java.lang")) {
