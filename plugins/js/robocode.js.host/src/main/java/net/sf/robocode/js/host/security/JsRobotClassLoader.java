@@ -22,48 +22,43 @@ import java.net.URLConnection;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.WrapFactory;
+import org.mozilla.javascript.*;
 import robocode.Robot;
 import robocode.robotinterfaces.IBasicRobot;
 
 /**
  * @author Pavel Savara (original)
  */
-public class JsRobotClassLoader extends RobotClassLoader{
+public class JsRobotClassLoader extends RobotClassLoader {
+	ContextFactory fac;
 	Context cx;
 	Scriptable scope;
 
 	public JsRobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		super(robotClassPath, robotFullClassName);
-		for (URL jar : Container.findJars(File.separator + "js-")) {
-			super.addURL(jar);
-		}
-
-		cx=Context.enter();
-		//cx.setApplicationClassLoader(this);
-		cx.setWrapFactory(new PrimitiveWrapFactory());
-		scope = cx.initStandardObjects();
+		fac = new ContextFactory();
 	}
 
 	@Override
-	public Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException{
+	public Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException {
 		try {
-			//ScriptableObject.defineClass(scope, Robot.class);
+			cx = fac.enterContext();
+			cx.setApplicationClassLoader(this);
+			cx.setWrapFactory(new PrimitiveWrapFactory());
+			scope = cx.initStandardObjects();
 
 			String script = robotClassPath.toString() + fullClassName.replace('.', '/') + ".js";
-			URL sUrl=new URL(script);
+			URL sUrl = new URL(script);
 			final URLConnection conn = sUrl.openConnection();
 			conn.setUseCaches(false);
 			final InputStream is = conn.getInputStream();
 			cx.evaluateReader(scope, new InputStreamReader(is), script, 1, null);
-			final Object robot = scope.get("robot", scope);
-			if (robot == Scriptable.NOT_FOUND){
+			Object robot = scope.get("robot", scope);
+			if (robot == Scriptable.NOT_FOUND) {
 				throw new ClassNotFoundException("robot variable was not set");
 			}
-			if (!(robot instanceof IBasicRobot)){
+			robot=Context.jsToJava(robot, IBasicRobot.class);
+			if (!(robot instanceof IBasicRobot)) {
 				return null;
 			}
 			return robot.getClass();
@@ -77,7 +72,8 @@ public class JsRobotClassLoader extends RobotClassLoader{
 	public void cleanup() {
 		super.cleanup();
 		scope = null;
-		Context.exit();
+		cx = null;
+		fac = null;
 	}
 
 	class PrimitiveWrapFactory extends WrapFactory {
