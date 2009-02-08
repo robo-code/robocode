@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>robocode.commonpom</artifactId>
+        <artifactId>robocode</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>SNAPSHOT</version>
-        <relativePath>../../tools/commonpom</relativePath>
+        <version>${robocode.version}</version>
+        <relativePath>../../</relativePath>
     </parent>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode</artifactId>
+    <artifactId>robocode.scala</artifactId>
     <version>${robocode.version}</version>
     <packaging>pom</packaging>
     <name>Robocode Scala</name>

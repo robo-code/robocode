@@ -178,7 +178,7 @@
     <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="false" />
     <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.4" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
@@ -350,7 +350,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/tools/debugall/all.iml" filepath="$PROJECT_DIR$/tools/debugall/all.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.iml" filepath="$PROJECT_DIR$/robocode.iml" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode (net.sf.robocode) (2).iml" filepath="$PROJECT_DIR$/plugins/scala/robocode (net.sf.robocode) (2).iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/robocode.api/robocode.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" />
@@ -360,6 +359,7 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.repository/robocode.repository.iml" filepath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.repository/robocode.scala.repository.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.repository/robocode.scala.repository.iml" />
@@ -452,17 +452,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/codesize/1.1/codesize-1.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.picocontainer:picocontainer:1.3">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/1.3/picocontainer-1.3.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/1.3/picocontainer-1.3-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/1.3/picocontainer-1.3-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: org.picocontainer:picocontainer:2.6">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar!/" />
@@ -472,39 +461,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: plexus:plexus-compiler-jikes:1.3">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-compiler-jikes/1.3/plexus-compiler-jikes-1.3.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-compiler-jikes/1.3/plexus-compiler-jikes-1.3-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-compiler-jikes/1.3/plexus-compiler-jikes-1.3-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: plexus:plexus-container-default:1.0-alpha-2">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-container-default/1.0-alpha-2/plexus-container-default-1.0-alpha-2.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-container-default/1.0-alpha-2/plexus-container-default-1.0-alpha-2-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-container-default/1.0-alpha-2/plexus-container-default-1.0-alpha-2-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: plexus:plexus-compiler-api:1.3">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-compiler-api/1.3/plexus-compiler-api-1.3.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-compiler-api/1.3/plexus-compiler-api-1.3-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/plexus/plexus-compiler-api/1.3/plexus-compiler-api-1.3-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: junit:junit:4.5">

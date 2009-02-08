@@ -5,7 +5,7 @@
     <parent>
         <artifactId>robocode.commonpom</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>SNAPSHOT</version>
+        <version>${robocode.version}</version>
         <relativePath>tools/commonpom</relativePath>
     </parent>
     <groupId>net.sf.robocode</groupId>
