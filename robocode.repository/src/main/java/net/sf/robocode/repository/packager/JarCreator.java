@@ -131,7 +131,7 @@ public class JarCreator {
 		IRobotClassLoader loader = null;
 
 		try {
-			loader = host.createLoader(robot, robot.getRobotLanguage());
+			loader = host.createLoader(robot);
 			loader.loadRobotMainClass(true);
 
 			for (String className : loader.getReferencedClasses()) {
