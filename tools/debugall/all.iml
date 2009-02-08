@@ -23,6 +23,10 @@
     <orderEntry type="module" module-name="robocode.ui.editor" />
     <orderEntry type="module" module-name="robocode.bv3d.installer" />
     <orderEntry type="module" module-name="robocode.bv3d.view" />
+    <orderEntry type="module" module-name="robocode.js.host" />
+    <orderEntry type="module" module-name="robocode.js.installer" />
+    <orderEntry type="module" module-name="robocode.js.repository" />
+    <orderEntry type="module" module-name="robocode.js.samples" />
   </component>
 </module>
 

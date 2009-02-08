@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.net.URL;
 import java.net.MalformedURLException;
 
@@ -225,6 +226,16 @@ public final class Container extends ContainerBase {
 
 	public static <T> T getComponent(java.lang.Class<T> tClass) {
 		return cache.getComponent(tClass);
+	}
+
+	public static <T> T getComponent(java.lang.Class<T> tClass, String className) {
+		final List<T> list = cache.getComponents(tClass);
+		for(T component : list){
+			if (component.getClass().getName().endsWith(className)){
+				return component;
+			}
+		}
+		return null;
 	}
 
 	public static <T> java.util.List<T> getComponents(java.lang.Class<T> tClass) {

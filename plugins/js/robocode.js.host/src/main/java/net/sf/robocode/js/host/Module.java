@@ -9,23 +9,16 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.scala.host.security;
+package net.sf.robocode.js.host;
 
-import net.sf.robocode.host.security.RobotClassLoader;
-import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.core.Container;
-
-import java.net.URL;
-import java.io.File;
+import net.sf.robocode.host.JavaHost;
 
 /**
  * @author Pavel Savara (original)
  */
-public class ScalaRobotClassLoader extends RobotClassLoader{
-	public ScalaRobotClassLoader(URL robotClassPath, String robotFullClassName) {
-		super(robotClassPath, robotFullClassName);
-		for (URL jar : Container.findJars(File.separator + "scala-library-")){
-			super.addURL(jar);
-		}
+public class Module {
+	static {
+		Container.cache.addComponent("robocode.host.js", JsHost.class);
 	}
 }

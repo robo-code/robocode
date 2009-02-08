@@ -1,0 +1,75 @@
+<assembly>
+    <id>setup</id>
+    <formats>
+        <format>dir</format>
+        <format>jar</format>
+    </formats>
+    
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <moduleSets>
+
+        <!-- other libraries -->
+        <moduleSet>
+            <includes>
+                <include>net.sf.robocode:robocode.js.host</include>
+                <include>net.sf.robocode:robocode.js.repository</include>
+            </includes>
+            <binaries>
+                <excludes>
+                    <exclude>net.sf.robocode:robocode.api</exclude>
+                    <exclude>net.sf.robocode:robocode.host</exclude>
+                    <exclude>net.sf.robocode:robocode.repository</exclude>
+                    <exclude>net.sf.robocode:robocode.core</exclude>
+                    <exclude>net.sf.robocode:codesize</exclude>
+                    <exclude>org.picocontainer:picocontainer</exclude>
+                </excludes>
+                <outputDirectory>libs</outputDirectory>
+                <unpack>false</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- installer and static content -->
+        <moduleSet>
+            <includes>
+                <include>net.sf.robocode:robocode.js.installer</include>
+                <include>net.sf.robocode:robocode.js.content</include>
+            </includes>
+            <binaries>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+                <dependencySets>
+                    <!-- installer and static content -->
+                    <dependencySet>
+                        <excludes>
+                            <exclude>net.sf.robocode:robocode.js.samples</exclude>
+                        </excludes>
+                        <unpack>true</unpack>
+                        <unpackOptions>
+                            <excludes>
+                                <exclude>**/META-INF/**</exclude>
+                            </excludes>
+                        </unpackOptions>
+                    </dependencySet>
+
+                    <!-- sample robots -->
+                    <dependencySet>
+                        <excludes>
+                            <exclude>net.sf.robocode:robocode.js.content</exclude>
+                            <exclude>net.sf.robocode:robocode.js.installer</exclude>
+                        </excludes>
+                        <outputDirectory>robots</outputDirectory>
+                        <unpack>true</unpack>
+                        <unpackOptions>
+                            <excludes>
+                                <exclude>**/META-INF/**</exclude>
+                            </excludes>
+                        </unpackOptions>
+                    </dependencySet>
+                </dependencySets>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
+</assembly>
+
+
+

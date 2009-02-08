@@ -178,7 +178,7 @@
     <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="false" />
     <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
@@ -216,6 +216,7 @@
         <option value="$PROJECT_DIR$/robocode.battle/pom.xml" />
         <option value="$PROJECT_DIR$/plugins/scala/pom.xml" />
         <option value="$PROJECT_DIR$/plugins/battleview3d/pom.xml" />
+        <option value="$PROJECT_DIR$/plugins/js/pom.xml" />
       </list>
     </option>
   </component>
@@ -361,6 +362,12 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/robocode.installer/robocode.installer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.content/robocode.js.content.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.content/robocode.js.content.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.host/robocode.js.host.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.host/robocode.js.host.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.installer/robocode.js.installer.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.installer/robocode.js.installer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.repository/robocode.js.repository.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.repository/robocode.js.repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.samples/robocode.js.samples.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.samples/robocode.js.samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.repository/robocode.repository.iml" filepath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" />
@@ -591,6 +598,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-macosx-universal/1.0b05/gluegen-rt-macosx-universal-1.0b05-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: rhino:js:1.7R1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-sources.jar!/" />
       </SOURCES>
     </library>
   </component>

@@ -9,57 +9,41 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository.items.handlers;
+package net.sf.robocode.js.repository.items.handlers;
 
-
-import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.items.IItem;
-import net.sf.robocode.repository.items.RobotItem;
+import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.repository.root.IRepositoryRoot;
-import net.sf.robocode.core.Container;
+import net.sf.robocode.repository.Database;
+import net.sf.robocode.js.repository.items.JsRobotItem;
 
 import java.net.URL;
-
 
 /**
  * @author Pavel Savara (original)
  */
-public class PropertiesHandler extends ItemHandler {
-
+public class JsScriptHandler extends ItemHandler {
 	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
 		final String name = itemURL.toString().toLowerCase();
 
-		if (name.endsWith(".properties") && !name.endsWith("robocode.properties")) {
+		if (name.endsWith(".js")) {
 			return register(itemURL, root, db);
 		}
 		return null;
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		RobotItem item = (RobotItem) db.getOldItem(itemURL.toString());
+		JsRobotItem item = (JsRobotItem) db.getOldItem(itemURL.toString());
 
 		if (item == null) {
-			item = (RobotItem) db.getItem(itemURL.toString());
+			item = (JsRobotItem) db.getItem(itemURL.toString());
 		}
 		if (item == null) {
-			item = createItem(itemURL, root, db);
+			item = new JsRobotItem(itemURL, null, root);
 		} else {
-			item.setPropertiesUrl(itemURL);
+			item.setClassUrl(itemURL);
 		}
 		db.addItem(item);
 		return item;
-	}
-
-	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
-		final RobotItem robotItem = new RobotItem(null, itemURL, root);
-
-		final String lang = robotItem.getRobotLanguage();
-		if (!lang.equals("java")){
-			//dispatch to other robot types
-			String uplang = lang.substring(0, 1).toUpperCase() + lang.substring(1).toLowerCase();
-			final PropertiesHandler handler = Container.getComponent(PropertiesHandler.class, uplang + "PropertiesHandler");
-			return handler.createItem(itemURL, root, db);
-		}
-		return robotItem;
 	}
 }

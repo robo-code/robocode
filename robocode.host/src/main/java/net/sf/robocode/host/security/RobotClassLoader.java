@@ -66,10 +66,11 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private Field classesField = null;
 	private Class<?> robotClass;
-	private final String fullClassName;
+	protected final String fullClassName;
 	private PermissionCollection emptyPermissions;
 	private IHostedThread robotProxy;
 	private CodeSource codeSource;
+	protected URL robotClassPath;
 	private Set<String> referencedClasses = new HashSet<String>();
 	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
 
@@ -77,8 +78,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		super(new URL[] { robotClassPath}, Container.systemLoader);
 		prepareForCleanup();
 		fullClassName = robotFullClassName;
+		this.robotClassPath=robotClassPath;
 		emptyPermissions = new Permissions();
-		this.robotProxy = robotProxy;
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
 		} catch (MalformedURLException ignored) {}

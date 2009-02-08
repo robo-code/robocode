@@ -63,18 +63,19 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private final static String ROBOT_WEBPAGE = "robot.webpage";
 	private final static String ROBOCODE_VERSION = "robocode.version";
 
-	private boolean isJuniorRobot;
-	private boolean isStandardRobot;
-	private boolean isInteractiveRobot;
-	private boolean isPaintRobot;
-	private boolean isAdvancedRobot;
-	private boolean isTeamRobot;
-	private boolean isDroid;
+	protected boolean isJuniorRobot;
+	protected boolean isStandardRobot;
+	protected boolean isInteractiveRobot;
+	protected boolean isPaintRobot;
+	protected boolean isAdvancedRobot;
+	protected boolean isTeamRobot;
+	protected boolean isDroid;
 
 	private boolean isExpectedRobot;
 	private boolean isClassURL;
 	private boolean isPropertiesURL;
 
+	protected String extension;
 	private URL propertiesUrl;
 
 	public RobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
@@ -84,10 +85,11 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		isPropertiesURL = (propertiesUrl != null);
 		isClassURL = (url != null);
 
+		extension = ".class";
 		init();
 	}
 
-	private void init() {
+	protected void init() {
 		propsUrlFromClassUrl();
 		classUrlFromProperties();
 		classUrlFromPropertiesUrl();
@@ -112,7 +114,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	private void propsUrlFromClassUrl() {
 		if (propertiesUrl == null && isClassURL) {
-			final String pUrl = url.toString().replaceAll("\\.class", ".properties");
+			final String pUrl = url.toString().replaceAll("\\"+ extension, ".properties");
 
 			try {
 				propertiesUrl = new URL(pUrl);
@@ -133,7 +135,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				if (cn != null) {
 					isExpectedRobot = true;
 					try {
-						final String cUrl = root.getRootUrl().toString() + cn.replace('.', '/') + ".class";
+						final String cUrl = root.getRootUrl().toString() + cn.replace('.', '/') + extension;
 
 						url = new URL(cUrl);
 					} catch (MalformedURLException e) {
@@ -150,7 +152,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		if (isPropertiesURL) {
 			try {
 				final String pUrl = propertiesUrl.toString();
-				final String cUrl = pUrl.substring(0, pUrl.lastIndexOf('.')) + ".class";
+				final String cUrl = pUrl.substring(0, pUrl.lastIndexOf('.')) + extension;
 
 				url = new URL(cUrl);
 			} catch (MalformedURLException e) {
@@ -266,14 +268,18 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			loadProperties();
 			verifyName();
 			if (isValid) {
-				loadClass(false);
+				validateType(false);
 			}
 		}
 	}
 
+	protected void validateType(boolean resolve) {
+		loadClass(resolve);
+	}
+
 	// stronger than update
 	public boolean validate() {
-		loadClass(true);
+		validateType(true);
 		return isValid;
 	}
 

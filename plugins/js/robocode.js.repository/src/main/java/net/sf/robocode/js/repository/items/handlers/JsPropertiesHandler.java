@@ -9,23 +9,23 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.scala.host.security;
+package net.sf.robocode.js.repository.items.handlers;
 
-import net.sf.robocode.host.security.RobotClassLoader;
-import net.sf.robocode.host.IHostedThread;
-import net.sf.robocode.core.Container;
+import net.sf.robocode.repository.items.handlers.PropertiesHandler;
+import net.sf.robocode.repository.items.RobotItem;
+import net.sf.robocode.repository.root.IRepositoryRoot;
+import net.sf.robocode.repository.Database;
+import net.sf.robocode.js.repository.items.JsRobotItem;
 
 import java.net.URL;
-import java.io.File;
 
 /**
  * @author Pavel Savara (original)
  */
-public class ScalaRobotClassLoader extends RobotClassLoader{
-	public ScalaRobotClassLoader(URL robotClassPath, String robotFullClassName) {
-		super(robotClassPath, robotFullClassName);
-		for (URL jar : Container.findJars(File.separator + "scala-library-")){
-			super.addURL(jar);
-		}
+public class JsPropertiesHandler extends PropertiesHandler {
+
+	@Override
+	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
+		return new JsRobotItem(null, itemURL, root);
 	}
 }

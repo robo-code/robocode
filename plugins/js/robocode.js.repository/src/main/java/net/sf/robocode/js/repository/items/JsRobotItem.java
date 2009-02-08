@@ -9,23 +9,33 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.scala.host.security;
+package net.sf.robocode.js.repository.items;
 
-import net.sf.robocode.host.security.RobotClassLoader;
-import net.sf.robocode.host.IHostedThread;
-import net.sf.robocode.core.Container;
+import net.sf.robocode.repository.items.RobotItem;
+import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.net.URL;
-import java.io.File;
 
 /**
  * @author Pavel Savara (original)
  */
-public class ScalaRobotClassLoader extends RobotClassLoader{
-	public ScalaRobotClassLoader(URL robotClassPath, String robotFullClassName) {
-		super(robotClassPath, robotFullClassName);
-		for (URL jar : Container.findJars(File.separator + "scala-library-")){
-			super.addURL(jar);
-		}
+public class JsRobotItem extends RobotItem {
+	private static final long serialVersionUID = 1L;
+
+	public JsRobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
+		super(classUrl, propUrl, root);
 	}
+
+	@Override
+	protected void init() {
+		extension = ".js";
+		super.init();
+	}
+
+	@Override
+	protected void validateType(boolean resolve) {
+		isAdvancedRobot = true;
+		//TODO ?
+	}
+
 }
