@@ -1,0 +1,33 @@
+# Blender3D v245 OBJ PRO File: track.blend
+# www.blender3d.org
+
+[TextureBegin]
+t TexTrack
+ti track.png
+[TextureEnd]
+
+[MaterialBegin]
+m MatTrack
+mt TexTrack
+[MaterialEnd]
+
+[GroupBegin]
+g Track
+[ObjectBegin]
+o ObjTrack
+om MatTrack
+v 5.000000 -0.000000 7.499998
+v 5.000000 0.000000 -7.499999
+v -5.000000 0.000000 -7.499997
+v -4.999998 -0.000000 7.500001
+vt 0.000000 0.000000 0.0
+vt 0.667969 0.000000 0.0
+vt 0.667969 1.000000 0.0
+vt 0.000000 1.000000 0.0
+vn 0.000000 1.000000 -0.000000
+f 1/1/1 4/2/1 3/3/1 2/4/1
+c 0.000000 0.000000 0.000000
+[ObjectEnd]
+
+[GroupEnd]
+
