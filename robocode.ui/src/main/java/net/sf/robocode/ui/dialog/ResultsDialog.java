@@ -53,6 +53,8 @@ public class ResultsDialog extends BaseScoreDialog {
 		tableModel = new BattleResultsTableModel(results, numRounds);
 		initialize();
 		setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
+		setResultsData();
+		pack();
 		addCancelByEscapeKey();
 	}
 
