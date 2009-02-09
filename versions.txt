@@ -1,10 +1,17 @@
+Version 1.7
+(10-Feb-2009)
+---------------
+
+= Bugfixes =
+* Bug [2580555] Battle Results screen displaying old results.
+
 Version 1.7 Beta 2
 (26-Jan-2009)
 ---------------
 
 = Bugfixes =
-* Bugfix [2527112] Ubuntu throws NullPointerException in main when trying to startup Robocode.
-* Bugfix [2528467] Installation fail on windows if directory contain space(s).
+* Bug [2527112] Ubuntu throws NullPointerException in main when trying to startup Robocode.
+* Bug [2528467] Installation fail on windows if directory contain space(s).
 
 = Changes =
 * Improved the version checking for new Robocode versions available for download.
