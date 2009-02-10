@@ -94,7 +94,10 @@ abstract class FileSpecification implements Serializable, Cloneable {
 		}
 		newSpec.developmentVersion = developmentVersion;
 		newSpec.rootDir = rootDir;
-		newSpec.storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
+
+		if (repositoryManager != null) {
+			newSpec.storeJarFile(repositoryManager.getRobotsDirectory(), repositoryManager.getRobotCache());
+		}
 
 		return newSpec;
 	}
