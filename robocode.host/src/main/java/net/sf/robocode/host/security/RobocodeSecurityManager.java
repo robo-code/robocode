@@ -90,7 +90,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 						+ " from access to threadgroup: " + g.getName() + ".  You may only create 5 threads.";
 
 				robotProxy.println(message);
-				robotProxy.drainEnergy();
+				robotProxy.disable();
 				throw new AccessControlException(message);
 			}
 			return;

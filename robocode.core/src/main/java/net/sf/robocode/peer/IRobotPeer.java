@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public interface IRobotPeer {
 
-	void drainEnergy();
+	void disable();
 
 	void punishBadBehavior();
 

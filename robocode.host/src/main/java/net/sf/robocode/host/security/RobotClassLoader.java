@@ -92,19 +92,19 @@ public class RobotClassLoader extends URLClassLoader {
 		}
 		if (isSecutityOn) {
 			if (name.startsWith("net.sf.robocode")) {
-				final String message = "Robots are not alowed to reference robocode engine in net.sf.robocode package";
+				final String message = "Robots are not allowed to reference robocode engine in net.sf.robocode package";
 
 				notifyRobot(message);
 				throw new ClassNotFoundException(message);
 			}
 			if (name.startsWith("robocode.control")) {
-				final String message = "Robots are not alowed to reference robocode engine in robocode.control package";
+				final String message = "Robots are not allowed to reference robocode engine in robocode.control package";
 
 				notifyRobot(message);
 				throw new ClassNotFoundException(message);
 			}
 			if (name.startsWith("javax.swing")) {
-				final String message = "Robots are not alowed to reference javax.swing package";
+				final String message = "Robots are not allowed to reference javax.swing package";
 
 				notifyRobot(message);
 				throw new ClassNotFoundException(message);
@@ -187,7 +187,7 @@ public class RobotClassLoader extends URLClassLoader {
 	private void notifyRobot(String s) {
 		if (robotProxy != null) {
 			robotProxy.println(s);
-			robotProxy.drainEnergy();
+			robotProxy.disable();
 		}
 	}
 
@@ -211,7 +211,7 @@ public class RobotClassLoader extends URLClassLoader {
 		try {
 			if (robotClass == null) {
 				robotClass = loadClass(fullClassName, true);
-				// itterate thru dependencies until we didn't found any new
+				// iterate thru dependencies until we didn't found any new
 				HashSet<String> clone;
 
 				do {
@@ -225,7 +225,7 @@ public class RobotClassLoader extends URLClassLoader {
 			robotClass = null;
 			throw new ClassNotFoundException(
 					e.getMessage()
-							+ "\nRobots are not alowed to reference robocode engine in robocode.control or net.sf.robocode packages",
+							+ "\nRobots are not allowed to reference robocode engine in robocode.control or net.sf.robocode packages",
 							e); 
 		}
 		return robotClass;

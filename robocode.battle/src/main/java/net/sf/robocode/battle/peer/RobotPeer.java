@@ -178,7 +178,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// waiting for next tick
 	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
 	private final AtomicBoolean halt = new AtomicBoolean(false);
-	private boolean disableExec = false;
+	private boolean isDisabled;
 	private boolean isWinner;
 	private boolean inCollision;
 	private RobotState state;
@@ -475,7 +475,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public final ExecResults executeImpl(ExecCommands newCommands) {
 		validateCommands(newCommands);
 
-		if (!disableExec) {
+		if (!isDisabled) {
 			// from robot to battle
 			commands.set(new ExecCommands(newCommands, true));
 			printProxy(newCommands.getOutputText());
@@ -490,15 +490,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (battle.isAborted()) {
-			disableExec = true;
+			isDisabled = true;
 			throw new AbortedException();
 		}
 		if (isDead()) {
-			disableExec = true;
+			isDisabled = true;
 			throw new DeathException();
 		}
 		if (getHalt()) {
-			disableExec = true;
+			isDisabled = true;
 			if (isWinner) {
 				throw new WinException();
 			} else {
@@ -714,7 +714,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		gunHeat = 3;
 
 		setHalt(false);
-		disableExec = false;
+		isDisabled = false;
 
 		scan = false;
 
@@ -1451,8 +1451,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		isRunning.set(value);
 	}
 
-	public void drainEnergy() {
+	public void disable() {
 		setEnergy(0, true);
+		isDisabled = true;
 	}
 
 	public void punishBadBehavior() {
@@ -1463,7 +1464,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void updateEnergy(double delta) {
-		setEnergy(energy + delta, true);
+		if (!isDisabled) {
+			setEnergy(energy + delta, true);
+		}
 	}
 
 	private void setEnergy(double newEnergy, boolean resetInactiveTurnCount) {
