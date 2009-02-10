@@ -45,7 +45,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		isDevel = !(rootPath.equals(FileUtil.getRobotsDir()));
 	}
 
-	public void update() {
+	public void update(boolean updateInvalid) {
 		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
 
 		setStatus(windowManager, "Updating ClassPath: " + rootPath.toString());
@@ -57,7 +57,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		for (int i = 0; i < items.size(); i++) {
 			IItem item = items.get(i);
 
-			item.update(modified.get(i), false);
+			item.update(modified.get(i), updateInvalid);
 		}
 	}
 

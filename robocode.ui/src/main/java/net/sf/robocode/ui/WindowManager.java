@@ -330,7 +330,7 @@ public class WindowManager implements IWindowManagerExt {
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
-		repositoryManager.refresh(versionManager.isLastRunVersionChanged());
+		repositoryManager.reload(versionManager.isLastRunVersionChanged());
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 		imageManager.initialize();

@@ -12,18 +12,13 @@
 package net.sf.robocode.js.host.security;
 
 import net.sf.robocode.host.security.RobotClassLoader;
-import net.sf.robocode.host.IHostedThread;
-import net.sf.robocode.core.Container;
 import net.sf.robocode.io.Logger;
 
 import java.net.URL;
-import java.net.MalformedURLException;
 import java.net.URLConnection;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 
 import org.mozilla.javascript.*;
-import robocode.Robot;
 import robocode.robotinterfaces.IBasicRobot;
 
 /**
@@ -33,6 +28,7 @@ public class JsRobotClassLoader extends RobotClassLoader {
 	ContextFactory fac;
 	Context cx;
 	Scriptable scope;
+	IBasicRobot robotInstance;
 
 	public JsRobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		super(robotClassPath, robotFullClassName);
@@ -57,15 +53,22 @@ public class JsRobotClassLoader extends RobotClassLoader {
 			if (robot == Scriptable.NOT_FOUND) {
 				throw new ClassNotFoundException("robot variable was not set");
 			}
-			robot=Context.jsToJava(robot, IBasicRobot.class);
+			robot = Context.jsToJava(robot, IBasicRobot.class);
 			if (!(robot instanceof IBasicRobot)) {
 				return null;
 			}
-			return robot.getClass();
+			robotInstance = (IBasicRobot)robot;
+			robotClass = robot.getClass();
+			return robotClass;
 		} catch (Throwable e) {
 			Logger.logError(e);
 			throw new ClassNotFoundException(e.getMessage(), e);
 		}
+	}
+
+	public IBasicRobot createRobotInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		loadRobotMainClass(true);
+		return robotInstance;
 	}
 
 	@Override
@@ -78,7 +81,7 @@ public class JsRobotClassLoader extends RobotClassLoader {
 
 	class PrimitiveWrapFactory extends WrapFactory {
 		@Override
-		public Object wrap(org.mozilla.javascript.Context context, org.mozilla.javascript.Scriptable scriptable, java.lang.Object obj, java.lang.Class staticType) {
+		public Object wrap(Context context, Scriptable scope, Object obj, Class staticType) {
 			if (obj instanceof String || obj instanceof Number || obj instanceof Boolean) {
 				return obj;
 			} else if (obj instanceof Character) {
@@ -86,6 +89,16 @@ public class JsRobotClassLoader extends RobotClassLoader {
 				return new String(a);
 			}
 			return super.wrap(cx, scope, obj, staticType);
+		}
+
+		@Override
+		public org.mozilla.javascript.Scriptable wrapNewObject(Context context, Scriptable scope, Object obj) {
+			return super.wrapNewObject(context, scope, obj);
+		}
+
+		@Override
+		public Scriptable wrapAsJavaObject(Context context, Scriptable scope, Object obj, Class staticType) {
+			return super.wrapAsJavaObject(context, scope, obj, staticType);
 		}
 	}
 }

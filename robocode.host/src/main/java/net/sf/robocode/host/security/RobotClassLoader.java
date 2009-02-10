@@ -65,7 +65,7 @@ import java.util.Set;
 public class RobotClassLoader extends URLClassLoader implements IRobotClassLoader {
 	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private Field classesField = null;
-	private Class<?> robotClass;
+	protected Class<?> robotClass;
 	protected final String fullClassName;
 	private PermissionCollection emptyPermissions;
 	private IHostedThread robotProxy;
@@ -213,8 +213,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		return super.getPermissions(codesource);
 	}
 
-	public Set<String> getReferencedClasses() {
-		return referencedClasses;
+	public String[] getReferencedClasses() {
+		return referencedClasses.toArray(new String[referencedClasses.size()]);
 	}
 
 	public synchronized Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException {
@@ -250,6 +250,11 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			throw new ClassNotFoundException(e.getMessage(), e);
 		}
 		return robotClass;
+	}
+
+	public IBasicRobot createRobotInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		loadRobotMainClass(true);
+		return (IBasicRobot) robotClass.newInstance();
 	}
 
 	public void cleanup() {

@@ -22,7 +22,7 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public interface IRepositoryRoot {
-	void update();
+	void update(boolean updateInvalid);
 	void update(IItem item, boolean force);
 	boolean isChanged(IItem item);
 	URL getRootUrl();

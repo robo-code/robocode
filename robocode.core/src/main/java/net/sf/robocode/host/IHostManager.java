@@ -14,6 +14,7 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.RobotType;
 import robocode.control.RobotSpecification;
 
 import java.io.PrintStream;
@@ -41,4 +42,8 @@ public interface IHostManager {
 	void cleanup();
 
 	IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem);
+
+	String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem);
+
+	RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message);
 }

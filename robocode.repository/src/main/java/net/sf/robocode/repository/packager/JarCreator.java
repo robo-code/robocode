@@ -15,7 +15,6 @@ package net.sf.robocode.repository.packager;
 import codesize.Codesize;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.items.RobotItem;
@@ -128,25 +127,11 @@ public class JarCreator {
 	}
 
 	private static void packageClasses(boolean source, IHostManager host, JarOutputStream jarout, RobotItem robot, Set<String> entries) throws IOException {
-		IRobotClassLoader loader = null;
+		for (String className : host.getReferencedClasses(robot)) {
+			if (!className.startsWith("java") && !className.startsWith("robocode")) {
+				String name = className.replace('.', '/');
 
-		try {
-			loader = host.createLoader(robot);
-			loader.loadRobotMainClass(true);
-
-			for (String className : loader.getReferencedClasses()) {
-				if (!className.startsWith("java") && !className.startsWith("robocode")) {
-					String name = className.replace('.', '/');
-
-					packageClass(source, jarout, robot, name, entries);
-				}
-			}
-
-		} catch (ClassNotFoundException e) {
-			Logger.logError(e);
-		} finally {
-			if (loader != null) {
-				loader.cleanup();
+				packageClass(source, jarout, robot, name, entries);
 			}
 		}
 	}

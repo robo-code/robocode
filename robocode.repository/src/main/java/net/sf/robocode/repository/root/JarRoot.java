@@ -52,7 +52,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	public void update() {
+	public void update(boolean updateInvalid) {
 		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
 
 		setStatus(windowManager, "Updating .jar: " + rootPath.toString());
@@ -66,7 +66,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 
 			visitItems(items);
 			for (IItem item : items) {
-				item.update(lastModified, false);
+				item.update(lastModified, updateInvalid);
 			}
 		}
 	}

@@ -30,8 +30,9 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	void refresh(String file);
 
-	void refresh();
-	void refresh(boolean forced);
+	boolean refresh();
+	boolean refresh(boolean updateInvalid);
+	void reload(boolean forced);
 
 	List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots);

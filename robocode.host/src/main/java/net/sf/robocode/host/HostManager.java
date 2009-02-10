@@ -17,6 +17,7 @@ import net.sf.robocode.host.security.*;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.RobotType;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.core.Container;
@@ -25,7 +26,6 @@ import robocode.control.RobotSpecification;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.security.AccessControlException;
-
 
 /**
  * @author Pavel Savara (original)
@@ -104,6 +104,29 @@ public class HostManager implements IHostManager {
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
 		final IHost host = (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
 		return host.createLoader(robotRepositoryItem);
+	}
+
+	public String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem) {
+		IRobotClassLoader loader = null;
+
+		try {
+			loader = createLoader(robotRepositoryItem);
+			loader.loadRobotMainClass(true);
+			return loader.getReferencedClasses();
+
+		} catch (ClassNotFoundException e) {
+			Logger.logError(e);
+			return new String[0]; 
+		} finally {
+			if (loader != null) {
+				loader.cleanup();
+			}
+		}
+	}
+
+	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message){
+		final IHost host = (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
+		return host.getRobotType(robotRepositoryItem, resolve, message);
 	}
 
 	public void initSecurity() {

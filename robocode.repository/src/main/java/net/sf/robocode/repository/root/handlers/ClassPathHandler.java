@@ -26,7 +26,7 @@ import java.util.Hashtable;
  * @author Pavel Savara (original)
  */
 public class ClassPathHandler extends RootHandler {
-	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db) {
+	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
 		try {
 			final String key = dir.toURL().toString();
 			IRepositoryRoot root = roots.get(key);
@@ -36,7 +36,7 @@ public class ClassPathHandler extends RootHandler {
 			} else {
 				roots.remove(key);
 			}
-			root.update();
+			root.update(updateInvalid);
 			newroots.put(dir.toURL().toString(), root);
 		} catch (MalformedURLException e) {
 			Logger.logError(e);

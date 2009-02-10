@@ -48,7 +48,7 @@ public class RepositoryManager implements IRepositoryManager {
 		properties.addPropertyListener(new ISettingsListener() {
 			public void settingChanged(String property) {
 				if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)) {
-					refresh(false);
+					reload(false);
 				}
 			}
 		});
@@ -83,23 +83,28 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public void refresh(String file) {
 		if (!db.update(file, true)){
-			refresh(false);
+			refresh(true);
 		}
 	}
 
-	public void refresh() {
-		refresh(false);
+	public boolean refresh() {
+		return refresh(false);
 	}
 
-	public void refresh(boolean forced) {
-		boolean save = false;
+	public boolean refresh(boolean updateInvalid) {
+		if (db.update(getRobotsDirectory(), getDevelDirectories(), updateInvalid)) {
+			setStatus("Saving robot database");
+			db.save();
+			return true;
+		}
+		return false;
+	}
 
+	public void reload(boolean forced) {
 		if (forced) {
 			db = new Database(this);
-			save = true;
 			Logger.logMessage("Rebuilding robot database.");
 		} else if (db == null) {
-			save = true;
 			setStatus("Reading robot database");
 			db = Database.load(this);
 			if (db == null) {
@@ -107,18 +112,11 @@ public class RepositoryManager implements IRepositoryManager {
 				db = new Database(this);
 			}
 		}
-		if (db.update(getRobotsDirectory(), getDevelDirectories())) {
-			save = true;
-		}
-		if (save) {
-			setStatus("Saving robot database");
-			db.save();
-		}
 		setStatus("");
 	}
 
 	public RobotSpecification[] getSpecifications() {
-		checkDb();
+		checkDbExists();
 		final List<IRepositoryItem> list = db.getAllSpecifications();
 		List<RobotSpecification> res = new ArrayList<RobotSpecification>();
 
@@ -134,7 +132,7 @@ public class RepositoryManager implements IRepositoryManager {
 	 * @return robots in teams
 	 */
 	public RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots) {
-		checkDb();
+		checkDbExists();
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		int teamNum = 0;
 
@@ -156,7 +154,7 @@ public class RepositoryManager implements IRepositoryManager {
 	 * @return robots in teams
 	 */
 	public RobotSpecification[] loadSelectedRobots(String selectedRobots) {
-		checkDb();
+		checkDbExists();
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
 		int teamNum = 0;
@@ -203,7 +201,7 @@ public class RepositoryManager implements IRepositoryManager {
 	 * @return robots and teams
 	 */
 	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
-		checkDb();
+		checkDbExists();
 		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
 
@@ -214,12 +212,12 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
-		checkDb();
+		checkDbExists();
 		return db.getSelectedSpecifications(selectedRobots);
 	}
 
 	public List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
-		checkDb();
+		checkDbExists();
 		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment);
 	}
 
@@ -232,7 +230,7 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException {
-		checkDb();
+		checkDbExists();
 		final String ver = Container.getComponent(IVersionManager.class).getVersion();
 
 		TeamItem.createOrUpdateTeam(target, web, desc, author, members, teamVersion, ver);
@@ -240,7 +238,7 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
-		checkDb();
+		checkDbExists();
 		try {
 			final List<RobotItem> robots = db.expandTeams(selectedRobots);
 			final List<TeamItem> teams = db.filterTeams(selectedRobots);
@@ -274,9 +272,9 @@ public class RepositoryManager implements IRepositoryManager {
 		}
 	}
 
-	private void checkDb() {
+	private void checkDbExists() {
 		if (db == null) {
-			refresh();
+			reload(false);
 		}
 	}
 }

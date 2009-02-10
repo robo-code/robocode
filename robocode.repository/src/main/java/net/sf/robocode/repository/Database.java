@@ -39,13 +39,13 @@ public class Database {
 		this.manager = manager;
 	}
 
-	public boolean update(File robotsDir, List<File> devDirs) {
+	public boolean update(File robotsDir, List<File> devDirs, boolean updateInvalid) {
 		final int prev = items.size();
 		Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
 
-		RootHandler.visitDirectories(robotsDir, false, newroots, roots, this);
+		RootHandler.visitDirectories(robotsDir, false, newroots, roots, this, updateInvalid);
 		for (File dir : devDirs) {
-			RootHandler.visitDirectories(dir, true, newroots, roots, this);
+			RootHandler.visitDirectories(dir, true, newroots, roots, this, updateInvalid);
 		}
 
 		// removed roots

@@ -25,14 +25,14 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public abstract class RootHandler {
-	public abstract void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db);
+	public abstract void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid);
 
-	public static void visitDirectories(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db) {
+	public static void visitDirectories(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
 		// walk thru all plugins
 		final List<RootHandler> itemHandlerList = Container.getComponents(RootHandler.class);
 
 		for (RootHandler handler : itemHandlerList) {
-			handler.visitDirectory(dir, isDevel, newroots, roots, db);
+			handler.visitDirectory(dir, isDevel, newroots, roots, db, updateInvalid);
 		}
 	}
 }

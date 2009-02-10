@@ -370,7 +370,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			Container.getComponent(IBattleManager.class).addListener(listener);
 		}
 		Container.getComponent(ICpuManager.class).getCpuConstant();
-		Container.getComponent(IRepositoryManager.class).refresh(versionManager.isLastRunVersionChanged());
+		Container.getComponent(IRepositoryManager.class).reload(versionManager.isLastRunVersionChanged());
 	}
 
 }

@@ -185,16 +185,13 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	private boolean loadRobotRound() {
 		robot = null;
-		Class<?> robotClass;
-
 		try {
 			threadManager.setLoadingRobot(this);
-			robotClass = robotClassLoader.loadRobotMainClass(false);
-			if (robotClass == null) {
+			robot = robotClassLoader.createRobotInstance();
+			if (robot == null) {
 				println("SYSTEM: Skipping robot: " + statics.getName());
 				return false;
 			}
-			robot = (IBasicRobot) robotClass.newInstance();
 			robot.setOut(out);
 			robot.setPeer((IBasicRobotPeer) this);
 			eventManager.setRobot(robot);

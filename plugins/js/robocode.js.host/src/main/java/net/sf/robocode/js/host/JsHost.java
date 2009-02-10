@@ -11,16 +11,15 @@
  *******************************************************************************/
 package net.sf.robocode.js.host;
 
-import net.sf.robocode.host.IHost;
 import net.sf.robocode.host.IRobotClassLoader;
-import net.sf.robocode.host.security.RobotClassLoader;
+import net.sf.robocode.host.JavaHost;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.js.host.security.JsRobotClassLoader;
 
 /**
  * @author Pavel Savara (original)
  */
-public class JsHost implements IHost{
+public class JsHost extends JavaHost {
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
 		return new JsRobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
 	}

@@ -12,10 +12,13 @@
 package net.sf.robocode.host;
 
 import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.RobotType;
+import robocode.robotinterfaces.IBasicRobot;
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IHost {
 	IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem);
+	RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message);
 }

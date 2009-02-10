@@ -31,11 +31,4 @@ public class JsRobotItem extends RobotItem {
 		extension = ".js";
 		super.init();
 	}
-
-	@Override
-	protected void validateType(boolean resolve) {
-		isAdvancedRobot = true;
-		//TODO ?
-	}
-
 }

@@ -27,7 +27,7 @@ import java.util.Hashtable;
  * @author Pavel Savara (original)
  */
 public class JarHandler extends RootHandler {
-	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db) {
+	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
 		try {
 			if (!isDevel) {
 				// find jar files
@@ -50,7 +50,7 @@ public class JarHandler extends RootHandler {
 						roots.remove(key);
 					}
 
-					root.update();
+					root.update(updateInvalid);
 					newroots.put(jar.toURL().toString(), root);
 				}
 
