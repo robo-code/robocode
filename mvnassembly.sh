@@ -1,7 +1,10 @@
 #!/bin/bash
 
-if [ -f ./tools/lib/maven-*-uber.jar ]; then
-   ./tools/bin/mvn.sh package assembly:assembly -Dmaven.test.skip=true
-else
-   ./tools/loadTools.sh
+dp0=${0%/*}
+
+if [ ! -f $dp0/tools/lib/maven-*-uber.jar ]; then
+   $dp0/tools/loadTools.sh
 fi
+
+./mvn.sh package assembly:assembly -Dmaven.test.skip=true
+
