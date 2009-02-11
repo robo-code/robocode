@@ -5,6 +5,7 @@ Version 1.7
 = Bugfixes =
 * Bug [2580555] Battle Results screen displaying old results. The results where not updated on the Battle Results windows between battles.
 * Bug [2585586] Robot disabled by any other than loosing energy can recover. Robots disabled due to bad behaviour could regain energy by hitting another robot by a bullet after it had been disabled. Now this is only possible when the robot has disabled itself by using all its energy, but can recover by hitting an enemy, which is allowed.
+* Bug [2585615] Team Battle. Robots like abc.Shadow 3.83, davidalves.Phoenix 1.02, and kawigi.micro.Shiz 1.1, kawigi.micro.ShizPair 1.1 caused a NullPointerException and would not show up on the battle window.
 
 Version 1.7 Beta 2
 (26-Jan-2009)
