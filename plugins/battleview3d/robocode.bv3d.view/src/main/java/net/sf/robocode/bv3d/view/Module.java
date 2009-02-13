@@ -11,7 +11,9 @@
  *******************************************************************************/
 package net.sf.robocode.bv3d.view;
 
+
 import net.sf.robocode.core.Container;
+
 
 /**
  * @author Pavel Savara (original)
@@ -20,6 +22,6 @@ public class Module {
 	static {
 		Container.loadJars("gluegen-rt");
 		Container.loadJars("jogl");
-		//TODO register new battleview
+		// TODO register new battleview
 	}
 }

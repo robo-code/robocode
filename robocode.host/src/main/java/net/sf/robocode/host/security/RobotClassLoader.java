@@ -78,15 +78,15 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		super(new URL[] { robotClassPath}, Container.systemLoader);
 		prepareForCleanup();
 		fullClassName = robotFullClassName;
-		this.robotClassPath=robotClassPath;
+		this.robotClassPath = robotClassPath;
 		emptyPermissions = new Permissions();
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
 		} catch (MalformedURLException ignored) {}
 	}
 
-	public void setRobotProxy(Object robotProxy){
-		this.robotProxy=(IHostedThread)robotProxy;
+	public void setRobotProxy(Object robotProxy) {
+		this.robotProxy = (IHostedThread) robotProxy;
 	}
 
 	public synchronized void addURL(URL url) {

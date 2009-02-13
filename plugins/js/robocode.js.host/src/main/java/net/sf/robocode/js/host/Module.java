@@ -11,8 +11,10 @@
  *******************************************************************************/
 package net.sf.robocode.js.host;
 
+
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.JavaHost;
+
 
 /**
  * @author Pavel Savara (original)

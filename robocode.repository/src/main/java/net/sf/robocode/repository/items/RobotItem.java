@@ -100,7 +100,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	private void propsUrlFromClassUrl() {
 		if (propertiesUrl == null && isClassURL) {
-			final String pUrl = url.toString().replaceAll("\\"+ extension, ".properties");
+			final String pUrl = url.toString().replaceAll("\\" + extension, ".properties");
 
 			try {
 				propertiesUrl = new URL(pUrl);
@@ -127,7 +127,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 					} catch (MalformedURLException e) {
 						Logger.logError(e);
 					}
-				} else{
+				} else {
 					isValid = false;
 				}
 			}
@@ -261,6 +261,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	protected void validateType(boolean resolve) {
 		final IHostManager hostManager = Container.getComponent(IHostManager.class);
+
 		robotType = hostManager.getRobotType(this, resolve, isExpectedRobot || isClassURL);
 		if (!robotType.isValid()) {
 			isValid = false;
@@ -400,6 +401,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	public String getRobotLanguage() {
 		final String lang = properties.getProperty(ROBOT_LANGUAGE, null);
+
 		return lang == null ? "java" : lang;
 	}
 
@@ -420,27 +422,29 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	public String getReadableDirectory() {
-		if (getRootPackage() == null){
+		if (getRootPackage() == null) {
 			return null;
 		}
-		if (root.isPackage()){
+		if (root.isPackage()) {
 			String jarFile = root.getClassPathUrl().getFile();
-			jarFile = jarFile.substring(jarFile.lastIndexOf('/')+1, jarFile.length());
+
+			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
 			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getRootPackage();
-		}else{
+		} else {
 			return FileUtil.getCacheDir() + File.separator + getRootPackage();
 		}
 	}
 
 	public String getWritableDirectory() {
-		if (getRootPackage() == null){
+		if (getRootPackage() == null) {
 			return null;
 		}
-		if (root.isPackage()){
+		if (root.isPackage()) {
 			String jarFile = root.getClassPathUrl().getFile();
-			jarFile = jarFile.substring(jarFile.lastIndexOf('/')+1, jarFile.length());
+
+			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
 			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getFullPackage();
-		}else{
+		} else {
 			return FileUtil.getCacheDir() + File.separator + getFullPackage();
 		}
 	}

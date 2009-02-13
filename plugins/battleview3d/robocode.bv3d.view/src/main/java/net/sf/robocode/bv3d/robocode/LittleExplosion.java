@@ -9,7 +9,9 @@
 
 package net.sf.robocode.bv3d.robocode;
 
+
 import net.sf.robocode.bv3d.math.Vertex3f;
+
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -19,8 +21,8 @@ import net.sf.robocode.bv3d.math.Vertex3f;
 
 public class LittleExplosion extends Explosion {
 
-	public LittleExplosion( float x, float z ) {
-		super( 80, 5, 5, 0.8f, 20, 10, 3f, new Vertex3f(0,1,0) );
+	public LittleExplosion(float x, float z) {
+		super(80, 5, 5, 0.8f, 20, 10, 3f, new Vertex3f(0, 1, 0));
 		this.setTranslate(x, 16, z);
 	}
 

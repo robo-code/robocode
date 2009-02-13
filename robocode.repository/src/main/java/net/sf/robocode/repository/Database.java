@@ -61,10 +61,11 @@ public class Database {
 
 	public boolean update(String url, boolean force) {
 		final IItem item = items.get(url);
-		if (item!=null){
+
+		if (item != null) {
 			item.getRoot().update(item, force);
 			return true;
-		} else{
+		} else {
 			return false; 
 		}
 	}

@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.robocode;
 
+
 import net.sf.robocode.bv3d.math.Vertex3f;
 
 
@@ -20,8 +21,8 @@ import net.sf.robocode.bv3d.math.Vertex3f;
 
 public class BigExplosion extends Explosion {
 
-	public BigExplosion( float x, float z ) {
-		super( 1500, 32, 7, 0.8f, 40, 40, 0.6f, new Vertex3f(0,1,0) );
+	public BigExplosion(float x, float z) {
+		super(1500, 32, 7, 0.8f, 40, 40, 0.6f, new Vertex3f(0, 1, 0));
 		this.setTranslate(x, 10, z);
 
 	}

@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.robocode;
 
+
 import net.sf.robocode.bv3d.scenegraph.TransformationNode;
 
 
@@ -21,7 +22,7 @@ import net.sf.robocode.bv3d.scenegraph.TransformationNode;
 public class TankHead extends TransformationNode {
 	
 	@Override
-	public String getName(){
+	public String getName() {
 		return parent.getName();
 	}
 

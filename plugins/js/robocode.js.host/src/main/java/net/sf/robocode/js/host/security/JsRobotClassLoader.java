@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.sf.robocode.js.host.security;
 
+
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
 
@@ -20,6 +21,7 @@ import java.io.*;
 
 import org.mozilla.javascript.*;
 import robocode.robotinterfaces.IBasicRobot;
+
 
 /**
  * @author Pavel Savara (original)
@@ -46,10 +48,13 @@ public class JsRobotClassLoader extends RobotClassLoader {
 			String script = robotClassPath.toString() + fullClassName.replace('.', '/') + ".js";
 			URL sUrl = new URL(script);
 			final URLConnection conn = sUrl.openConnection();
+
 			conn.setUseCaches(false);
 			final InputStream is = conn.getInputStream();
+
 			cx.evaluateReader(scope, new InputStreamReader(is), script, 1, null);
 			Object robot = scope.get("robot", scope);
+
 			if (robot == Scriptable.NOT_FOUND) {
 				throw new ClassNotFoundException("robot variable was not set");
 			}
@@ -57,7 +62,7 @@ public class JsRobotClassLoader extends RobotClassLoader {
 			if (!(robot instanceof IBasicRobot)) {
 				return null;
 			}
-			robotInstance = (IBasicRobot)robot;
+			robotInstance = (IBasicRobot) robot;
 			robotClass = robot.getClass();
 			return robotClass;
 		} catch (Throwable e) {
@@ -85,7 +90,8 @@ public class JsRobotClassLoader extends RobotClassLoader {
 			if (obj instanceof String || obj instanceof Number || obj instanceof Boolean) {
 				return obj;
 			} else if (obj instanceof Character) {
-				char[] a = {(Character) obj};
+				char[] a = { (Character) obj};
+
 				return new String(a);
 			}
 			return super.wrap(cx, scope, obj, staticType);

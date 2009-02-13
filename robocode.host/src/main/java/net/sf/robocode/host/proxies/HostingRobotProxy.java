@@ -144,7 +144,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 	
 	public ClassLoader getRobotClassloader() {
-		return (ClassLoader)robotClassLoader;
+		return (ClassLoader) robotClassLoader;
 	}
 
 	// -----------

@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d;
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -21,6 +22,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
 
 /**
  * 
@@ -35,7 +37,6 @@ public class MainFrame extends JFrame {
 	private JLabel statusBar, pimodsLogo;
 	private GLCanvas glCanvas;
 
-
 	public MainFrame() {
 		super();
 		setIconImage(new ImageIcon("misc/icon.png").getImage());
@@ -43,7 +44,7 @@ public class MainFrame extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		setBounds(0, 0, 600, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setIconImage( new ImageIcon("misc/logo_pimods.jpg") );
+		// setIconImage( new ImageIcon("misc/logo_pimods.jpg") );
 
 		statusBar = new JLabel();
 		statusBar.setBorder(new EmptyBorder(1, 3, 1, 3));
@@ -52,25 +53,25 @@ public class MainFrame extends JFrame {
 		
 		pimodsLogo = new JLabel();
 		
-		pimodsLogo.setIcon( new ImageIcon("misc/logo_pimods.jpg") );
+		pimodsLogo.setIcon(new ImageIcon("misc/logo_pimods.jpg"));
 		pimodsLogo.setForeground(Color.CYAN);
 		pimodsLogo.setFocusable(false);
 		pimodsLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		pimodsLogo.setOpaque(true);
 		pimodsLogo.setBackground(Color.BLACK);
-//		pimodsLogo.setText("Pimods 4 Robocode - Pixel Instrument Moving Objects in a Delimited Space");
+		// pimodsLogo.setText("Pimods 4 Robocode - Pixel Instrument Moving Objects in a Delimited Space");
 		getContentPane().add(pimodsLogo, BorderLayout.CENTER);
 	}
 	
-	public void setGlCanvas( GLCanvas glc){
+	public void setGlCanvas(GLCanvas glc) {
 		this.glCanvas = glc;
-		getContentPane().remove( pimodsLogo );
-		getContentPane().add( glCanvas, BorderLayout.CENTER );
-		this.setVisible( true );
+		getContentPane().remove(pimodsLogo);
+		getContentPane().add(glCanvas, BorderLayout.CENTER);
+		this.setVisible(true);
 	}
 	
-	public void displayMessageInStatusbar( String message ){
-		statusBar.setText( message );
+	public void displayMessageInStatusbar(String message) {
+		statusBar.setText(message);
 	}
 
 }

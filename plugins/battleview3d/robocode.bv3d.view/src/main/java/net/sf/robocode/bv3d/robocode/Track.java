@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.robocode;
 
+
 import net.sf.robocode.bv3d.model.LoadModel;
 import net.sf.robocode.bv3d.model.Model;
 import net.sf.robocode.bv3d.scenegraph.Ageing;
@@ -27,7 +28,7 @@ import java.awt.Color;
  */
 
 public class Track extends TransformationNode implements Ageing {
-	public static final Model model = LoadModel.getModelFromFile( "track.pobj" );
+	public static final Model model = LoadModel.getModelFromFile("track.pobj");
 	private static final TextureIndexLink texture = new TextureIndexLink();
 	private static final DisplayListIndexLink displayList = new DisplayListIndexLink();
 	private static float mx = model.getDimension().x;
@@ -39,54 +40,55 @@ public class Track extends TransformationNode implements Ageing {
 	private int creationTime;
 	private ModelView mvTrack;
 
-	
-	public Track( int time, float x, float z, float angle ) {
-		this.mvTrack = new ModelView( model, "Track", displayList, texture );
-		this.addDrawable( this.mvTrack );
+	public Track(int time, float x, float z, float angle) {
+		this.mvTrack = new ModelView(model, "Track", displayList, texture);
+		this.addDrawable(this.mvTrack);
 		this.creationTime = time;
 		this.ttl = LIFETIME;
 		
-		float yax = 0.5f*(LIFETIME +((float)Math.random())) / LIFETIME;
+		float yax = 0.5f * (LIFETIME + ((float) Math.random())) / LIFETIME;
 		
-		
-		this.setTranslate(x, 0.1f+yax, z);
+		this.setTranslate(x, 0.1f + yax, z);
 		this.setRotate(angle, 0, 1, 0);
 		// Scaling		
-		float scaling =  PIXEL4TRACK / mx;
+		float scaling = PIXEL4TRACK / mx;
+
 		this.setScale(scaling, scaling, scaling);
 	}
 	
-	public int getCreationTime(){
+	public int getCreationTime() {
 		return creationTime;
 	}
 	
-	public boolean heartBeat(){
+	public boolean heartBeat() {
 		boolean alive = true;
 		
 		this.ttl--;
-		if( this.ttl <= 0)
+		if (this.ttl <= 0) {
 			alive = false;
-		this.setTy( this.getTy() - 0.5f/LIFETIME );
-		if( alive )
-			this.mvTrack.setColor( new Color( 1, 1, 1, ( float )ttl / LIFETIME ) );
-		
-		return( alive );
-	}
-	
-/*	@Override
-	public void draw(GL gl){
-		if( ttl > 0 ){
-			gl.glColor4f(1, 1, 1, (float)ttl/LIFETIME);
-			super.draw(gl);
-			gl.glColor4f(1, 1, 1, 1);
 		}
-	}
-*/
-	public static void setTexture( int[][] t ) {
-		texture.setTextureIndexLink( t );
+		this.setTy(this.getTy() - 0.5f / LIFETIME);
+		if (alive) {
+			this.mvTrack.setColor(new Color(1, 1, 1, (float) ttl / LIFETIME));
+		}
+		
+		return(alive);
 	}
 	
-	public static void setDisplayList( int[] grpIndex ) {
-		displayList.setDisplayListIndex( grpIndex );
+	/* @Override
+	 public void draw(GL gl){
+	 if( ttl > 0 ){
+	 gl.glColor4f(1, 1, 1, (float)ttl/LIFETIME);
+	 super.draw(gl);
+	 gl.glColor4f(1, 1, 1, 1);
+	 }
+	 }
+	 */
+	public static void setTexture(int[][] t) {
+		texture.setTextureIndexLink(t);
+	}
+	
+	public static void setDisplayList(int[] grpIndex) {
+		displayList.setDisplayListIndex(grpIndex);
 	}
 }

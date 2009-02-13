@@ -10,7 +10,7 @@
 package net.sf.robocode.bv3d.scenegraph;
 
 
-//import com.sun.opengl.util.texture.Texture;
+// import com.sun.opengl.util.texture.Texture;
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -21,18 +21,17 @@ package net.sf.robocode.bv3d.scenegraph;
 public class TextureIndexLink {
 	private int[][] textureIndexLink;
 
-	public TextureIndexLink() {
-	}
+	public TextureIndexLink() {}
 
-	public TextureIndexLink( int[][] textureIndexLink ) {
+	public TextureIndexLink(int[][] textureIndexLink) {
 		this.textureIndexLink = textureIndexLink;
 	}
 
-	public void setTextureIndexLink( int[][] textureIndexLink ) {
+	public void setTextureIndexLink(int[][] textureIndexLink) {
 		this.textureIndexLink = textureIndexLink;
 	}
 
 	public int[][] getTextureIndexLink() {
-		return( this.textureIndexLink );
+		return(this.textureIndexLink);
 	}
 }

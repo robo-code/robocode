@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.model;
 
+
 /**
  * @author Marco Della Vedova - pixelinstrument.net
  * @author Matteo Foppiano - pixelinstrument.net
@@ -19,31 +20,30 @@ public class ModelTexture {
 	private String name;
 	private String image;
 
-	public ModelTexture() {
-	}
+	public ModelTexture() {}
 
-	public ModelTexture( String name ) {
+	public ModelTexture(String name) {
 		this.name = name;
 	}
 
-	public ModelTexture( String name, String image ) {
+	public ModelTexture(String name, String image) {
 		this.name = name;
-		this.setImage( image );
+		this.setImage(image);
 	}
 
-	public void setName( String name ) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setImage( String image ) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
 	public String getName() {
-		return( this.name );
+		return(this.name);
 	}
 
 	public String getImage() {
-		return( this.image );
+		return(this.image);
 	}
 }

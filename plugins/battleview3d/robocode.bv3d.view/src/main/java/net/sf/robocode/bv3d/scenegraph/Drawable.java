@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.scenegraph;
 
+
 import javax.media.opengl.GL;
 
 
@@ -20,7 +21,7 @@ import javax.media.opengl.GL;
 
 public interface Drawable {
 	
-	public void draw( GL gl );
+	public void draw(GL gl);
 	
 	/**
 	 * Why is not used?
@@ -28,5 +29,5 @@ public interface Drawable {
 	 * is not useful.
 	 * @param gl
 	 */
-//	public void init( GL gl );
+	// public void init( GL gl );
 }

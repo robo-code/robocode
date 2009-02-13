@@ -179,6 +179,7 @@ public final class Container extends ContainerBase {
 
 	public static void loadJars(String allowed) {
 		final URL[] jars = findJars(allowed);
+
 		for (URL jar : jars) {
 			((EngineClassLoader) engineLoader).addURL(jar);
 		}
@@ -219,7 +220,6 @@ public final class Container extends ContainerBase {
 		return urls;
 	}
 
-
 	protected <T> T getBaseComponent(final Class<T> tClass) {
 		return cache.getComponent(tClass);
 	}
@@ -230,8 +230,9 @@ public final class Container extends ContainerBase {
 
 	public static <T> T getComponent(java.lang.Class<T> tClass, String className) {
 		final List<T> list = cache.getComponents(tClass);
-		for(T component : list){
-			if (component.getClass().getName().endsWith(className)){
+
+		for (T component : list) {
+			if (component.getClass().getName().endsWith(className)) {
 				return component;
 			}
 		}

@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d;
 
+
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -20,6 +21,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+
 /**
  * 
  * @author Marco Della Vedova - pixelinstrument.net
@@ -27,33 +29,33 @@ import org.xml.sax.SAXException;
  */
 public abstract class DirectAnimator extends Animator {
 
-//	private int port = 4444;
-//	protected boolean diplayConfigInfo;
-//	private BufferedReader in;
-////	private PrintWriter out;
+	// private int port = 4444;
+	// protected boolean diplayConfigInfo;
+	// private BufferedReader in;
+	// //	private PrintWriter out;
 	
 	private DataStore ds;
 	
-	
-	public DirectAnimator( MVCManager manager, DataStore ds ) {
-		super( manager );
+	public DirectAnimator(MVCManager manager, DataStore ds) {
+		super(manager);
 		this.ds = ds;
-//		diplayConfigInfo = false;
+		// diplayConfigInfo = false;
 	}
 	
-	
-
-	protected void setup(){}
+	protected void setup() {}
 	
 	/**
 	 * Each time this method is called, it reads a expected XML-formed line from the Socket, and passed it at the {@link DirectAnimator#processXMLNode(Node)}
 	 */
-	protected void updateScene(){
+	protected void updateScene() {
 		String data;
-		if( (data=ds.getData()) != null ){
+
+		if ((data = ds.getData()) != null) {
 			Document XMLDoc = null;
+
 			try {
-				XMLDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader( data )));
+				XMLDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+						new InputSource(new StringReader(data)));
 			} catch (SAXException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -62,8 +64,9 @@ public abstract class DirectAnimator extends Animator {
 				e.printStackTrace();
 			}
 			Node el = XMLDoc.getFirstChild();
-//			System.out.println(el.toString());
-			processXMLNode( el );
+
+			// System.out.println(el.toString());
+			processXMLNode(el);
 		}
 	}
 	
@@ -71,6 +74,6 @@ public abstract class DirectAnimator extends Animator {
 	 * This method must implement the real process-logic for each XML-formed-text read.
 	 * @param el The XML-formed-text read, dressed like a Node.
 	 */
-	protected abstract void processXMLNode( Node el );
+	protected abstract void processXMLNode(Node el);
 
 }

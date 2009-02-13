@@ -9,7 +9,9 @@
 
 package net.sf.robocode.bv3d.robocode;
 
+
 import net.sf.robocode.bv3d.math.Vertex3f;
+
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -19,10 +21,10 @@ import net.sf.robocode.bv3d.math.Vertex3f;
 
 public class BulletWake extends Explosion {
 
-	public BulletWake( float oldX, float oldZ, float newX, float newZ ) {
+	public BulletWake(float oldX, float oldZ, float newX, float newZ) {
 		
-		super( 30, 1, 4, 0.8f, 10, 5, 0.6f, new Vertex3f(newX-oldX, 0 ,newZ-oldZ) );
-		this.setTranslate( newX, 16, newZ );
+		super(30, 1, 4, 0.8f, 10, 5, 0.6f, new Vertex3f(newX - oldX, 0, newZ - oldZ));
+		this.setTranslate(newX, 16, newZ);
 	}
 	
 }

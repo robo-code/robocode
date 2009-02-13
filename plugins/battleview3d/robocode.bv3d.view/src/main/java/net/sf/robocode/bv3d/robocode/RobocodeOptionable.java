@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.robocode;
 
+
 /**
  * The options that can be selected in the RobocodeAnimator
  * 
@@ -17,11 +18,12 @@ package net.sf.robocode.bv3d.robocode;
  */
 
 public interface RobocodeOptionable {
+
 	/**
 	 * @param tt <code>true</code> if you want enable tracks, <code>false</code> if you want stop to see tracks and delete existing tracks
 	 * @see Track
 	 */
-	public void setTankTrackEnable( boolean tt );
+	public void setTankTrackEnable(boolean tt);
 	
 	/**
 	 * @return <code>true</code> if tracks are enabled
@@ -34,7 +36,7 @@ public interface RobocodeOptionable {
 	 * @see BigExplosion 
 	 * @see LittleExplosion
 	 */
-	public void setExplosionEnable( boolean exp );
+	public void setExplosionEnable(boolean exp);
 	
 	/**
 	 * @return <code>true</code> if explosions are enabled
@@ -47,7 +49,7 @@ public interface RobocodeOptionable {
 	 * @param bw <code>true</code> if you want enable wakes, <code>false</code> if you want stop to see wakes and delete existing wakes
 	 * @see BulletWake 
 	 */
-	public void setBulletWakeEnable( boolean bw );
+	public void setBulletWakeEnable(boolean bw);
 	
 	/**
 	 * @return <code>true</code> if bullet wakes are enabled

@@ -11,10 +11,12 @@
  *******************************************************************************/
 package net.sf.robocode.js.repository;
 
+
 import net.sf.robocode.core.Container;
 import net.sf.robocode.js.repository.items.handlers.JsScriptHandler;
 import net.sf.robocode.js.repository.items.handlers.JsPropertiesHandler;
 import net.sf.robocode.js.repository.items.JsRobotItem;
+
 
 /**
  * @author Pavel Savara (original)

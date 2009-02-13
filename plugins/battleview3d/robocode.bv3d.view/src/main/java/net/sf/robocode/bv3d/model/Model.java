@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.model;
 
+
 import java.util.ArrayList;
 import net.sf.robocode.bv3d.math.Vertex3f;
 
@@ -26,66 +27,70 @@ public class Model {
 	private ModelGroup group[];
 	private ModelMaterial material[];
 	
-	public Model() {
-	}
+	public Model() {}
 	
-	public void setGroups( ArrayList g ) {
+	public void setGroups(ArrayList g) {
 		this.group = new ModelGroup[g.size()];
-		//System.out.println( "--> # of groups: " + g.size() );
-		for( int i=0; i<group.length; i++ )
-			this.group[i] = ( ModelGroup ) g.get( i );
+		// System.out.println( "--> # of groups: " + g.size() );
+		for (int i = 0; i < group.length; i++) {
+			this.group[i] = (ModelGroup) g.get(i);
+		}
 	}
 	
-	public void setVertex( ArrayList v ) {
+	public void setVertex(ArrayList v) {
 		this.vertex = new Vertex3f[v.size()];
-		for( int i=0; i<this.vertex.length; i++ )
-			this.vertex[i] = ( Vertex3f ) v.get( i );
+		for (int i = 0; i < this.vertex.length; i++) {
+			this.vertex[i] = (Vertex3f) v.get(i);
+		}
 	}
 	
-	public void setNormals( ArrayList n ) {
+	public void setNormals(ArrayList n) {
 		this.normal = new Vertex3f[n.size()];
-		for( int i=0; i<this.normal.length; i++ )
-			this.normal[i] = ( Vertex3f ) n.get( i );
+		for (int i = 0; i < this.normal.length; i++) {
+			this.normal[i] = (Vertex3f) n.get(i);
+		}
 	}
 	
-	public void setUV( ArrayList uv ) {
+	public void setUV(ArrayList uv) {
 		this.uv = new Vertex3f[uv.size()];
-		for( int i=0; i<this.uv.length; i++ )
-			this.uv[i] = ( Vertex3f ) uv.get( i );
+		for (int i = 0; i < this.uv.length; i++) {
+			this.uv[i] = (Vertex3f) uv.get(i);
+		}
 	}
 
-	public void setMaterials( ArrayList m ) {
+	public void setMaterials(ArrayList m) {
 		this.material = new ModelMaterial[m.size()];
-		for( int i=0; i<this.material.length; i++ )
-			this.material[i] = ( ModelMaterial ) m.get( i );
+		for (int i = 0; i < this.material.length; i++) {
+			this.material[i] = (ModelMaterial) m.get(i);
+		}
 	}
 	
 	public Vertex3f[] getVertex() {
-		return( this.vertex );
+		return(this.vertex);
 	}
 	
 	public Vertex3f[] getNormals() {
-		return( this.normal );
+		return(this.normal);
 	}
 	
 	public Vertex3f[] getUV() {
-		return( this.uv );
+		return(this.uv);
 	}
 
-	public ModelMaterial getMaterial( int m ) {
-		return( this.material[m] );
+	public ModelMaterial getMaterial(int m) {
+		return(this.material[m]);
 	}
 
 	public int getNumberOfMaterials() {
-		return( this.material.length );
+		return(this.material.length);
 	}
 	
 	public int getNumberOfGroups() {
-		return( this.group.length );
+		return(this.group.length);
 	}
 	
-	public ModelGroup getGroup( int i ) {
-		return( this.group[i] );
+	public ModelGroup getGroup(int i) {
+		return(this.group[i]);
 	}
 
 	public Vertex3f getDimension() {
@@ -96,66 +101,72 @@ public class Model {
 		minX = maxX = this.vertex[0].x;
 		minY = maxY = this.vertex[0].y;
 		minZ = maxZ = this.vertex[0].z;
-		for( int i=1; i<this.vertex.length; i++ ) {
-			if( this.vertex[i].x < minX )
+		for (int i = 1; i < this.vertex.length; i++) {
+			if (this.vertex[i].x < minX) {
 				minX = this.vertex[i].x;
-			else if( this.vertex[i].x > maxX )
+			} else if (this.vertex[i].x > maxX) {
 				maxX = this.vertex[i].x;
+			}
 
-			if( this.vertex[i].y < minY )
+			if (this.vertex[i].y < minY) {
 				minY = this.vertex[i].y;
-			else if( this.vertex[i].y > maxY )
+			} else if (this.vertex[i].y > maxY) {
 				maxY = this.vertex[i].y;
+			}
 
-			if( this.vertex[i].z < minZ )
+			if (this.vertex[i].z < minZ) {
 				minZ = this.vertex[i].z;
-			else if( this.vertex[i].z > maxZ )
+			} else if (this.vertex[i].z > maxZ) {
 				maxZ = this.vertex[i].z;
+			}
 		}
 		
-		return( new Vertex3f( maxX-minX, maxY-minY, maxZ-minZ ) );
+		return(new Vertex3f(maxX - minX, maxY - minY, maxZ - minZ));
 	}
 
 	public float getDimensionX() {
 		float minX, maxX;
 
 		minX = maxX = this.vertex[0].x;
-		for( int i=1; i<this.vertex.length; i++ ) {
-			if( this.vertex[i].x < minX )
+		for (int i = 1; i < this.vertex.length; i++) {
+			if (this.vertex[i].x < minX) {
 				minX = this.vertex[i].x;
-			else if( this.vertex[i].x > maxX )
+			} else if (this.vertex[i].x > maxX) {
 				maxX = this.vertex[i].x;
+			}
 		}
 		
-		return( maxX-minX );
+		return(maxX - minX);
 	}
 
 	public float getDimensionY() {
 		float minY, maxY;
 
 		minY = maxY = this.vertex[0].y;
-		for( int i=1; i<this.vertex.length; i++ ) {
-			if( this.vertex[i].y < minY )
+		for (int i = 1; i < this.vertex.length; i++) {
+			if (this.vertex[i].y < minY) {
 				minY = this.vertex[i].y;
-			else if( this.vertex[i].y > maxY )
+			} else if (this.vertex[i].y > maxY) {
 				maxY = this.vertex[i].y;
+			}
 		}
 		
-		return( maxY-minY );
+		return(maxY - minY);
 	}
 
 	public float getDimensionZ() {
 		float minZ, maxZ;
 
 		minZ = maxZ = this.vertex[0].z;
-		for( int i=1; i<this.vertex.length; i++ ) {
-			if( this.vertex[i].z < minZ )
+		for (int i = 1; i < this.vertex.length; i++) {
+			if (this.vertex[i].z < minZ) {
 				minZ = this.vertex[i].z;
-			else if( this.vertex[i].z > maxZ )
+			} else if (this.vertex[i].z > maxZ) {
 				maxZ = this.vertex[i].z;
+			}
 		}
 		
-		return( maxZ-minZ );
+		return(maxZ - minZ);
 	}
 
 }

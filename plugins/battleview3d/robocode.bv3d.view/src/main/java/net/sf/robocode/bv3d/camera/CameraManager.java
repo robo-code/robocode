@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.camera;
 
+
 import javax.media.opengl.glu.GLU;
 import net.sf.robocode.bv3d.math.Vertex3f;
 import net.sf.robocode.bv3d.scenegraph.TransformationNode;
@@ -29,63 +30,71 @@ public class CameraManager {
 
 	public CameraManager() {
 		this.camera = new Camera();
-		this.setAnchor( CAMERAANCHOR_CONTROLLER );
+		this.setAnchor(CAMERAANCHOR_CONTROLLER);
 	}
 
-	public void refresh( GLU glu ) {
-		if( this.cameraAnchor != null )
-			cameraAnchor.refresh( glu );
-	}
-
-	public void setAnchor( int type ) {
-		switch( type ) {
-			case CAMERAANCHOR_CONTROLLER:
-				this.cameraAnchor = new CameraAnchorController( this.camera );
-				break;
-			case CAMERAANCHOR_FOLLOWER:
-				this.cameraAnchor = new CameraAnchorFollower( this.camera );
-				break;
-			case CAMERAANCHOR_TRACK:
-				this.cameraAnchor = new CameraAnchorTrack( this.camera );
-				break;
+	public void refresh(GLU glu) {
+		if (this.cameraAnchor != null) {
+			cameraAnchor.refresh(glu);
 		}
 	}
 
-	public void tryToSetDirection( float x, float y ) {
-		if( this.cameraAnchor.toString().equals( "CameraAnchorController" ) )
-			( ( CameraAnchorController ) this.cameraAnchor ).setDirection( x, y );
+	public void setAnchor(int type) {
+		switch (type) {
+		case CAMERAANCHOR_CONTROLLER:
+			this.cameraAnchor = new CameraAnchorController(this.camera);
+			break;
+
+		case CAMERAANCHOR_FOLLOWER:
+			this.cameraAnchor = new CameraAnchorFollower(this.camera);
+			break;
+
+		case CAMERAANCHOR_TRACK:
+			this.cameraAnchor = new CameraAnchorTrack(this.camera);
+			break;
+		}
 	}
 
-	public void tryToSetMove( float x, float y, float z ) {
-		if( this.cameraAnchor.toString().equals( "CameraAnchorController" ) )
-			( ( CameraAnchorController ) this.cameraAnchor ).setMove( x, y, z );
+	public void tryToSetDirection(float x, float y) {
+		if (this.cameraAnchor.toString().equals("CameraAnchorController")) {
+			((CameraAnchorController) this.cameraAnchor).setDirection(x, y);
+		}
 	}
 
-	public void tryToSetCameraDimension( float w, float h ) {
-		if( this.cameraAnchor.toString().equals( "CameraAnchorController" ) )
-			( ( CameraAnchorController ) this.cameraAnchor ).setDimension( w, h );
+	public void tryToSetMove(float x, float y, float z) {
+		if (this.cameraAnchor.toString().equals("CameraAnchorController")) {
+			((CameraAnchorController) this.cameraAnchor).setMove(x, y, z);
+		}
 	}
 
-	public void tryToSetFollowedNode( TransformationNode fn ) {
-		if( this.cameraAnchor.toString().equals( "CameraAnchorFollower" ) )
-			( ( CameraAnchorFollower ) this.cameraAnchor ).setFollowedNode( fn );
+	public void tryToSetCameraDimension(float w, float h) {
+		if (this.cameraAnchor.toString().equals("CameraAnchorController")) {
+			((CameraAnchorController) this.cameraAnchor).setDimension(w, h);
+		}
 	}
 
-	public void tryToSetCameraTrack( CameraTrack ct ) {
-		if( this.cameraAnchor.toString().equals( "CameraAnchorTrack" ) )
-			( ( CameraAnchorTrack ) this.cameraAnchor ).setCameraTrack( ct );
+	public void tryToSetFollowedNode(TransformationNode fn) {
+		if (this.cameraAnchor.toString().equals("CameraAnchorFollower")) {
+			((CameraAnchorFollower) this.cameraAnchor).setFollowedNode(fn);
+		}
+	}
+
+	public void tryToSetCameraTrack(CameraTrack ct) {
+		if (this.cameraAnchor.toString().equals("CameraAnchorTrack")) {
+			((CameraAnchorTrack) this.cameraAnchor).setCameraTrack(ct);
+		}
 	}
 
 	public Vertex3f getCameraPosition() {
-		return( this.camera.getEye() );
+		return(this.camera.getEye());
 	}
 
 	public Vertex3f getCameraView() {
-		return( this.camera.getView() );
+		return(this.camera.getView());
 	}
 	
 	public Vertex3f getCameraUp() {
-		return( this.camera.getUp() );
+		return(this.camera.getUp());
 	}
 
 }

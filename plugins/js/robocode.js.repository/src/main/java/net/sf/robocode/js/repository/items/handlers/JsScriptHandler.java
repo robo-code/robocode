@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.sf.robocode.js.repository.items.handlers;
 
+
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.repository.root.IRepositoryRoot;
@@ -18,6 +19,7 @@ import net.sf.robocode.repository.Database;
 import net.sf.robocode.js.repository.items.JsRobotItem;
 
 import java.net.URL;
+
 
 /**
  * @author Pavel Savara (original)

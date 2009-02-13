@@ -9,7 +9,9 @@
 
 package net.sf.robocode.bv3d.model;
 
+
 import java.util.ArrayList;
+
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -21,37 +23,37 @@ public class ModelMaterial {
 	private String name;
 	private ModelTexture texture[];
 
-	public ModelMaterial() {
-	}
+	public ModelMaterial() {}
 
-	public ModelMaterial( String name ) {
+	public ModelMaterial(String name) {
 		this.name = name;
 	}
 
-	public ModelMaterial( String name, ArrayList t ) {
+	public ModelMaterial(String name, ArrayList t) {
 		this.name = name;
-		this.setTextures( t );
+		this.setTextures(t);
 	}
 
-	public void setName( String name ) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setTextures( ArrayList t ) {
+	public void setTextures(ArrayList t) {
 		this.texture = new ModelTexture[t.size()];
-		for( int i=0; i<this.texture.length; i++ )
-			this.texture[i] = ( ModelTexture ) t.get( i );
+		for (int i = 0; i < this.texture.length; i++) {
+			this.texture[i] = (ModelTexture) t.get(i);
+		}
 	}
 
 	public String getName() {
-		return( this.name );
+		return(this.name);
 	}
 
 	public int getNumberOfTextures() {
-		return( this.texture.length );
+		return(this.texture.length);
 	}
 
-	public ModelTexture getTexture( int i ) {
-		return( this.texture[i] );
+	public ModelTexture getTexture(int i) {
+		return(this.texture[i]);
 	}
 }

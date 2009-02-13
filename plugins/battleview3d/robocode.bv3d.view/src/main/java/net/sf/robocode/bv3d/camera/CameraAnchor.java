@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.camera;
 
+
 import javax.media.opengl.glu.GLU;
 
 
@@ -21,14 +22,13 @@ import javax.media.opengl.glu.GLU;
 public abstract class CameraAnchor {
 	protected Camera camera;
 
-	public CameraAnchor( Camera camera ) {
+	public CameraAnchor(Camera camera) {
 		this.camera = camera;
 	}
 
-	public void refresh( GLU glu ) {
-	}
+	public void refresh(GLU glu) {}
 
 	public String toString() {
-		return( "CameraAnchor" );
+		return("CameraAnchor");
 	}
 }

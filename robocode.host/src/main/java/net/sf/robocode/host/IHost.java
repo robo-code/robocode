@@ -11,9 +11,11 @@
  *******************************************************************************/
 package net.sf.robocode.host;
 
+
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
 import robocode.robotinterfaces.IBasicRobot;
+
 
 /**
  * @author Pavel Savara (original)

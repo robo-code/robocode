@@ -11,15 +11,17 @@
  *******************************************************************************/
 package net.sf.robocode.scala.host;
 
+
 import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.host.JavaHost;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.scala.host.security.ScalaRobotClassLoader;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public class ScalaHost extends JavaHost{
+public class ScalaHost extends JavaHost {
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
 		return new ScalaRobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
 	}

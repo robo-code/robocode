@@ -154,6 +154,7 @@ public class HiddenAccess {
 		if (files != null) {
 			for (File file : files) {
 				final String name = file.toString().toLowerCase();
+
 				if (name.contains("robocode.core")) {
 					foundCore = true;
 					urls.add(file.toURL());

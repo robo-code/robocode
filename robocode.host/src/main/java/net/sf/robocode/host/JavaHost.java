@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.sf.robocode.host;
 
+
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
@@ -25,6 +26,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.*;
 import java.security.AccessControlException;
 import java.lang.reflect.Method;
+
 
 /**
  * @author Pavel Savara (original)
@@ -60,13 +62,13 @@ public class JavaHost implements IHost {
 	}
 
 	private RobotType checkInterfaces(Class<?> robotClass, IRobotRepositoryItem robotRepositoryItem) {
-		boolean isJuniorRobot =false;
-		boolean isStandardRobot=false;
-		boolean isInteractiveRobot=false;
-		boolean isPaintRobot=false;
-		boolean isAdvancedRobot=false;
-		boolean isTeamRobot=false;
-		boolean isDroid=false;
+		boolean isJuniorRobot = false;
+		boolean isStandardRobot = false;
+		boolean isInteractiveRobot = false;
+		boolean isPaintRobot = false;
+		boolean isAdvancedRobot = false;
+		boolean isTeamRobot = false;
+		boolean isDroid = false;
 
 		if (Droid.class.isAssignableFrom(robotClass)) {
 			isDroid = true;
@@ -115,7 +117,8 @@ public class JavaHost implements IHost {
 			isJuniorRobot = true;
 			if (isAdvancedRobot) {
 				throw new AccessControlException(
-						robotRepositoryItem.getFullClassName() + ": Junior robot should not implement IAdvancedRobot interface.");
+						robotRepositoryItem.getFullClassName()
+								+ ": Junior robot should not implement IAdvancedRobot interface.");
 			}
 		}
 
@@ -124,7 +127,8 @@ public class JavaHost implements IHost {
 				isStandardRobot = true;
 			}
 		}
-		return new RobotType(isJuniorRobot, isStandardRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot, isTeamRobot, isDroid);
+		return new RobotType(isJuniorRobot, isStandardRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot,
+				isTeamRobot, isDroid);
 	}
 
 	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class<?>... parameterTypes) {

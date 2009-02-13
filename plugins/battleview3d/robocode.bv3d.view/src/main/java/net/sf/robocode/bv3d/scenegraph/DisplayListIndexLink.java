@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.scenegraph;
 
+
 /**
  * @author Marco Della Vedova - pixelinstrument.net
  * @author Matteo Foppiano - pixelinstrument.net
@@ -18,25 +19,25 @@ package net.sf.robocode.bv3d.scenegraph;
 public class DisplayListIndexLink {
 	private int[] groupIndex;
 
-	public DisplayListIndexLink() {
-	}
+	public DisplayListIndexLink() {}
 	
-	public DisplayListIndexLink( int[] gi ) {
+	public DisplayListIndexLink(int[] gi) {
 		this.groupIndex = gi;
 	}
 	
-	public void setDisplayListIndex( int[] gi ) {
+	public void setDisplayListIndex(int[] gi) {
 		this.groupIndex = gi;
 	}
 	
 	public int[] getIndexes() {
-		return( this.groupIndex );
+		return(this.groupIndex);
 	}
 	
-	public int getGroupIndex( int g ) {
-		if( g >= this.groupIndex.length )
-			return( 0 );
-		return( this.groupIndex[g] );
+	public int getGroupIndex(int g) {
+		if (g >= this.groupIndex.length) {
+			return(0);
+		}
+		return(this.groupIndex[g]);
 	}
 	
 }

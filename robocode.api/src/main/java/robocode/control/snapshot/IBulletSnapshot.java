@@ -104,6 +104,6 @@ public interface IBulletSnapshot {
 	 */
 	int getExplosionImageIndex();
 
-	//TODO DOC
+	// TODO DOC
 	int getBulletId();
 }

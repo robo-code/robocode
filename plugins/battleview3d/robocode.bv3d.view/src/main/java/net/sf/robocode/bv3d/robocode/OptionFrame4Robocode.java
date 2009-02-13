@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.robocode;
 
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import net.sf.robocode.bv3d.OptionFrame;
+
 
 /**
  * @author Marco Della Vedova - pixelinstrument.net
@@ -29,27 +31,27 @@ public class OptionFrame4Robocode extends OptionFrame {
 	
 	private JToggleButton tankTrackToggleButton, explosionToggleButton, bullettWakeToggleButton;
 	
-	
-	public OptionFrame4Robocode( MVCManager4Robocode manager ) {
-		super( manager );
+	public OptionFrame4Robocode(MVCManager4Robocode manager) {
+		super(manager);
 		final JPanel panelRobocode = new JPanel();
 		final FlowLayout flowLayout_1 = new FlowLayout();
+
 		flowLayout_1.setAlignment(FlowLayout.LEFT);
 		panelRobocode.setLayout(flowLayout_1);
 		tabbedPane.addTab("Robocode", null, panelRobocode, null);
 
 		tankTrackToggleButton = new JToggleButton();
-		tankTrackToggleButton.addActionListener( new XActionListener() );
+		tankTrackToggleButton.addActionListener(new XActionListener());
 		tankTrackToggleButton.setText("Tank track");
 		panelRobocode.add(tankTrackToggleButton);
 		
 		explosionToggleButton = new JToggleButton();
-		explosionToggleButton.addActionListener( new XActionListener() );
+		explosionToggleButton.addActionListener(new XActionListener());
 		explosionToggleButton.setText("Explosion");
 		panelRobocode.add(explosionToggleButton);
 		
 		bullettWakeToggleButton = new JToggleButton();
-		bullettWakeToggleButton.addActionListener( new XActionListener() );
+		bullettWakeToggleButton.addActionListener(new XActionListener());
 		bullettWakeToggleButton.setText("Bullet wake");
 		panelRobocode.add(bullettWakeToggleButton);
 	}
@@ -57,23 +59,22 @@ public class OptionFrame4Robocode extends OptionFrame {
 	@Override
 	public void setup() {
 		super.setup();
-		tankTrackToggleButton.setSelected( ((MVCManager4Robocode)manager).isTankTrackEnable() );
-		explosionToggleButton.setSelected( ((MVCManager4Robocode)manager).isExplosionEnable() );
-		bullettWakeToggleButton.setSelected( ((MVCManager4Robocode)manager).isBulletWakeEnable() );
+		tankTrackToggleButton.setSelected(((MVCManager4Robocode) manager).isTankTrackEnable());
+		explosionToggleButton.setSelected(((MVCManager4Robocode) manager).isExplosionEnable());
+		bullettWakeToggleButton.setSelected(((MVCManager4Robocode) manager).isBulletWakeEnable());
 	}
 	
 	private class XActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
-			if( source == tankTrackToggleButton ){
-				((MVCManager4Robocode)manager).setTankTrackEnable( tankTrackToggleButton.isSelected() );
-			}
-			else if( source == explosionToggleButton ){
-				((MVCManager4Robocode)manager).setExplosionEnable( explosionToggleButton.isSelected() );
-			}
-			else if( source == bullettWakeToggleButton ){
-				((MVCManager4Robocode)manager).setBulletWakeEnable( bullettWakeToggleButton.isSelected() );
+
+			if (source == tankTrackToggleButton) {
+				((MVCManager4Robocode) manager).setTankTrackEnable(tankTrackToggleButton.isSelected());
+			} else if (source == explosionToggleButton) {
+				((MVCManager4Robocode) manager).setExplosionEnable(explosionToggleButton.isSelected());
+			} else if (source == bullettWakeToggleButton) {
+				((MVCManager4Robocode) manager).setBulletWakeEnable(bullettWakeToggleButton.isSelected());
 			}
 		}
 	}

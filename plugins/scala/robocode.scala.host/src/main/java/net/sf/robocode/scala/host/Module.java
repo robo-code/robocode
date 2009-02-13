@@ -11,8 +11,10 @@
  *******************************************************************************/
 package net.sf.robocode.scala.host;
 
+
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.JavaHost;
+
 
 /**
  * @author Pavel Savara (original)

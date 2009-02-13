@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +28,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+
 /**
  * This is a special Animator that run in a Server-mode.
  * During the {@link NetXMLAnimator#setup()} method it waits a connection on a port specified in {@link NetXMLAnimator#PORT}.
@@ -42,16 +44,15 @@ public abstract class NetXMLAnimator extends Animator {
 	private int port = 4444;
 	protected boolean diplayConfigInfo;
 	private BufferedReader in;
-//	private PrintWriter out;
+	// private PrintWriter out;
 	private ServerSocket serverSocket;
 	
-	
-	public NetXMLAnimator( MVCManager manager ) {
-		super( manager );
+	public NetXMLAnimator(MVCManager manager) {
+		super(manager);
 		diplayConfigInfo = false;
 	}
 	
-	public NetXMLAnimator( MVCManager manager, int portNumber ){
+	public NetXMLAnimator(MVCManager manager, int portNumber) {
 		this(manager);
 		this.port = portNumber;
 	}
@@ -60,57 +61,59 @@ public abstract class NetXMLAnimator extends Animator {
 	 * This method blocks the execution until receives a connection on port specified in {@link NetXMLAnimator#PORT}.
 	 * Socket is configured.
 	 */
-	protected void setup(){
-        try {
-            serverSocket = new ServerSocket( port );
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: "+port);
-            System.exit(1);
-        }
+	protected void setup() {
+		try {
+			serverSocket = new ServerSocket(port);
+		} catch (IOException e) {
+			System.err.println("Could not listen on port: " + port);
+			System.exit(1);
+		}
 
-        Socket clientSocket = null;
-        try {
-        	super.displayMessage( "Waiting for the client..." );
-        	if( this.diplayConfigInfo )
-        		displayConfigInfo();
-            clientSocket = serverSocket.accept();
-        } catch (IOException e) {
-            System.err.println("Accept failed.");
-            System.exit(1);
-        }
-        try{
-//        out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(
-				new InputStreamReader(
-				clientSocket.getInputStream()));
-        }catch( Exception e ){
-        	System.err.println("Cannot create PrintWriter and BufferedReader");
-        }
+		Socket clientSocket = null;
+
+		try {
+			super.displayMessage("Waiting for the client...");
+			if (this.diplayConfigInfo) {
+				displayConfigInfo();
+			}
+			clientSocket = serverSocket.accept();
+		} catch (IOException e) {
+			System.err.println("Accept failed.");
+			System.exit(1);
+		}
+		try {
+			// out = new PrintWriter(clientSocket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		} catch (Exception e) {
+			System.err.println("Cannot create PrintWriter and BufferedReader");
+		}
 	}
 	
 	/**
 	 * Each time this method is called, it reads a expected XML-formed line from the Socket, and passed it at the {@link NetXMLAnimator#processXMLNode(Node)}
 	 */
-	protected void updateScene(){
-		try{
-			String inputLine=null;
-			if(!serverSocket.isClosed()){
+	protected void updateScene() {
+		try {
+			String inputLine = null;
+
+			if (!serverSocket.isClosed()) {
 				inputLine = in.readLine();
 			}
-			if( inputLine!=null ){
-				Document XMLDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader( inputLine )));
+			if (inputLine != null) {
+				Document XMLDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+						new InputSource(new StringReader(inputLine)));
 				Node el = XMLDoc.getFirstChild();
-				processXMLNode( el );
+
+				processXMLNode(el);
 			}
-		} catch ( SocketException e ) {
+		} catch (SocketException e) {
 			displayAlert("Il client ha chiuso la connessione,\nl'applicazione verra` chiusa", "Chiusura connessione");
 			System.exit(1);
-		}
-//		catch (Exception e) {
-//			System.err.println("Exception in update() of NetXMLAnimator.\n "+e.getClass()+" - "+e.getMessage());
-//		}
-//        outputLine = kkp.processInput(inputLine);
-//        out.println(outputLine);
+		} // catch (Exception e) {
+		// System.err.println("Exception in update() of NetXMLAnimator.\n "+e.getClass()+" - "+e.getMessage());
+		// }
+		// outputLine = kkp.processInput(inputLine);
+		// out.println(outputLine);
 		catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -124,14 +127,16 @@ public abstract class NetXMLAnimator extends Animator {
 	 * This method must implement the real process-logic for each XML-formed-text read.
 	 * @param el The XML-formed-text read, dressed like a Node.
 	 */
-	protected abstract void processXMLNode( Node el );
+	protected abstract void processXMLNode(Node el);
 	
-	protected void displayConfigInfo() throws UnknownHostException{
+	protected void displayConfigInfo() throws UnknownHostException {
 		String message = "Client must be configured to connect to:\n\n";
-		message += "IP: " + InetAddress.getLocalHost()+"\n";
+
+		message += "IP: " + InetAddress.getLocalHost() + "\n";
 		message += "PORT: " + port;
 		String title = "Client configuration";
-		super.displayAlert( message, title );
+
+		super.displayAlert(message, title);
 	}
 
 }

@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.security.AccessControlException;
 
+
 /**
  * @author Pavel Savara (original)
  */
@@ -102,7 +103,9 @@ public class HostManager implements IHostManager {
 	}
 
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		final IHost host = (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
+		final IHost host = (IHost) Container.cache.getComponent(
+				"robocode.host." + robotRepositoryItem.getRobotLanguage());
+
 		return host.createLoader(robotRepositoryItem);
 	}
 
@@ -124,8 +127,10 @@ public class HostManager implements IHostManager {
 		}
 	}
 
-	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message){
-		final IHost host = (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
+	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message) {
+		final IHost host = (IHost) Container.cache.getComponent(
+				"robocode.host." + robotRepositoryItem.getRobotLanguage());
+
 		return host.getRobotType(robotRepositoryItem, resolve, message);
 	}
 

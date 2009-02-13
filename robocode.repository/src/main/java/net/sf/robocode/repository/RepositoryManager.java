@@ -82,7 +82,7 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public void refresh(String file) {
-		if (!db.update(file, true)){
+		if (!db.update(file, true)) {
 			refresh(true);
 		}
 	}
@@ -186,7 +186,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 				if (robot.validate()) {
 					battlingRobotsList.add(robot.createRobotSpecification(spec, null));
-				} else{
+				} else {
 					Logger.logError("Could not load robot: " + robot.getFullClassName());
 					return false;
 				}
@@ -244,6 +244,7 @@ public class RepositoryManager implements IRepositoryManager {
 			final List<TeamItem> teams = db.filterTeams(selectedRobots);
 
 			final String res = JarCreator.createPackage(target, source, robots, teams);
+
 			refresh(target.toURL().toString());
 			return res;
 		} catch (MalformedURLException e) {

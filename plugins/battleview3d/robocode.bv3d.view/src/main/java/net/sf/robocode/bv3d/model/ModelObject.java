@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.model;
 
+
 import java.util.ArrayList;
 import net.sf.robocode.bv3d.math.Vertex3f;
 
@@ -25,66 +26,66 @@ public class ModelObject {
 	private int materialIndex;
 	private ModelFace face[];
 	
-	public ModelObject() {
+	public ModelObject() {}
+	
+	public ModelObject(String n) {
+		this.name = n;
 	}
 	
-	public ModelObject( String n ) {
+	public ModelObject(String n, ArrayList f) {
 		this.name = n;
-	}
-	
-	public ModelObject( String n, ArrayList f ) {
-		this.name = n;
-		this.setFaces( f );
+		this.setFaces(f);
 	}
 
-	public void setName( String n ) {
+	public void setName(String n) {
 		this.name = n;
 	}
 
-	public void setCenter( Vertex3f v ) {
+	public void setCenter(Vertex3f v) {
 		this.center = v;
 	}
 
-	public void setMaterialIndex( int n ) {
+	public void setMaterialIndex(int n) {
 		this.materialIndex = n;
 	}
 	
-	public void setFaces( ArrayList f ) {
+	public void setFaces(ArrayList f) {
 		this.face = new ModelFace[f.size()];
-		for( int i=0; i<this.face.length; i++ )
-			this.face[i] = ( ModelFace ) f.get( i );
+		for (int i = 0; i < this.face.length; i++) {
+			this.face[i] = (ModelFace) f.get(i);
+		}
 	}
 	
 	public String getName() {
-		return( this.name );
+		return(this.name);
 	}
 
 	public Vertex3f getCenter() {
-		return( this.center );
+		return(this.center);
 	}
 
 	public float getCenterX() {
-		return( this.center.x );
+		return(this.center.x);
 	}
 
 	public float getCenterY() {
-		return( this.center.y );
+		return(this.center.y);
 	}
 
 	public float getCenterZ() {
-		return( this.center.z );
+		return(this.center.z);
 	}
 
 	public int getMaterialIndex() {
-		return( this.materialIndex );
+		return(this.materialIndex);
 	}
 	
 	public int getNumberOfFaces() {
-		return( this.face.length );
+		return(this.face.length);
 	}
 	
-	public ModelFace getFace( int i ) {
-		return( this.face[i] );
+	public ModelFace getFace(int i) {
+		return(this.face[i]);
 	}
 	
 }

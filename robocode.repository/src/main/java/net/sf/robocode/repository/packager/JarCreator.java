@@ -43,7 +43,7 @@ public class JarCreator {
 		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
 		JarOutputStream jarout = null;
 		FileOutputStream fos = null;
-		Set<String> entries=new HashSet<String>();
+		Set<String> entries = new HashSet<String>();
 
 		try {
 			fos = new FileOutputStream(target);
@@ -52,9 +52,11 @@ public class JarCreator {
 
 			for (TeamItem team : teams) {
 				final String teamEntry = team.getRelativePath() + '/' + team.getShortClassName() + ".team";
-				if (!entries.contains(teamEntry)){
+
+				if (!entries.contains(teamEntry)) {
 					entries.add(teamEntry);
 					JarEntry jt = new JarEntry(teamEntry);
+
 					jarout.putNextEntry(jt);
 					team.storeProperties(jarout);
 					jarout.closeEntry();
@@ -63,9 +65,11 @@ public class JarCreator {
 
 			for (RobotItem robot : robots) {
 				final String proEntry = robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties";
-				if (!entries.contains(proEntry)){
+
+				if (!entries.contains(proEntry)) {
 					entries.add(proEntry);
 					JarEntry jt = new JarEntry(proEntry);
+
 					jarout.putNextEntry(jt);
 					robot.storeProperties(jarout);
 					jarout.closeEntry();
@@ -79,8 +83,9 @@ public class JarCreator {
 			FileUtil.cleanupStream(fos);
 		}
 
-		StringBuilder sb=new StringBuilder();
-		for(String entry : entries){
+		StringBuilder sb = new StringBuilder();
+
+		for (String entry : entries) {
 			sb.append(entry);
 			sb.append('\n');
 		}
@@ -94,6 +99,7 @@ public class JarCreator {
 		Codesize.Item item = Codesize.processZipFile(target);
 		int codesize = item.getCodeSize();
 		String weightClass;
+
 		if (codesize >= 1500) {
 			weightClass = "MegaBot  (codesize >= 1500 bytes)";
 		} else if (codesize > 750) {

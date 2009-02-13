@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d;
 
+
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -18,6 +19,7 @@ import net.sf.robocode.bv3d.camera.CameraManager;
 import net.sf.robocode.bv3d.math.Vertex3f;
 import net.sf.robocode.bv3d.scenegraph.Drawable;
 import net.sf.robocode.bv3d.scenegraph.TransformationNode;
+
 
 /**
  * Scene contains the TransormationNode tree, Lights and Cameras.
@@ -43,8 +45,7 @@ public class Scene implements Drawable {
 	/** <i>Frontals</i> are TransformationNode that must be displayed always in the direction of the camera */
 	public ArrayList<TransformationNode> listOfFrontal;
 	
-	
-	public Scene( MVCManager manager ){
+	public Scene(MVCManager manager) {
 		this.manager = manager;
 		this.root = new TransformationNode();
 		this.cameraManager = new CameraManager();
@@ -55,8 +56,8 @@ public class Scene implements Drawable {
 	public void draw(GL gl) {
 		updateFrontals();
 
-		cameraManager.refresh( new GLU() );
-		root.draw( gl );
+		cameraManager.refresh(new GLU());
+		root.draw(gl);
 	}
 
 	public TransformationNode getRoot() {
@@ -67,11 +68,11 @@ public class Scene implements Drawable {
 		this.root = root;
 	}
 	
-	public void removeDrawable( Drawable d){
-		root.removeDescendant( d);
+	public void removeDrawable(Drawable d) {
+		root.removeDescendant(d);
 	}
 	
-	public void clear(){
+	public void clear() {
 		this.root = new TransformationNode();
 		this.cameraManager = new CameraManager();
 		listOfFollowed = new ArrayList<TransformationNode>();
@@ -79,66 +80,71 @@ public class Scene implements Drawable {
 		followed = null;
 	}
 
-	public CameraManager getCameraManager(){
-		return( cameraManager );
+	public CameraManager getCameraManager() {
+		return(cameraManager);
 	}
 
-	public void setCameraManager( CameraManager cm ){
+	public void setCameraManager(CameraManager cm) {
 		this.cameraManager = cm;
 	}
 	
-	public int nextCameraFollowedIndex(){
+	public int nextCameraFollowedIndex() {
 		int i = 0;
-		if( followed != null )
-			i = ( listOfFollowed.indexOf( followed )+1 ) % listOfFollowed.size();
-//		followed = listOfFollowed.get( i );
+
+		if (followed != null) {
+			i = (listOfFollowed.indexOf(followed) + 1) % listOfFollowed.size();
+		}
+		// followed = listOfFollowed.get( i );
 		return i;
 	}
 	
-	public TransformationNode setCameraFollower( int selectedIndex ) {
+	public TransformationNode setCameraFollower(int selectedIndex) {
 		TransformationNode tn = null;
-		if( listOfFollowed.size() > selectedIndex ){
-			tn = listOfFollowed.get( selectedIndex );
+
+		if (listOfFollowed.size() > selectedIndex) {
+			tn = listOfFollowed.get(selectedIndex);
 			followed = tn;
 		}
 		return tn;
 	}
 	
-	public ArrayList<TransformationNode> getListOfFollowed(){
+	public ArrayList<TransformationNode> getListOfFollowed() {
 		return listOfFollowed;
 	}
 	
 	// TODO togliere se rimane inutilizzato :)
-	public void detachFollower(){
+	public void detachFollower() {
 		followed = null;
 	}
 
-	private void updateFrontals(){
-		for( TransformationNode tn : listOfFrontal ){
+	private void updateFrontals() {
+		for (TransformationNode tn : listOfFrontal) {
 			// TODO da estendere su tutti gli assi e calcolare alpha nel modo generale
 			Vertex3f a = tn.getAbsolutePosition();
-			Vertex3f pi = tn.getTotalTransformation( new Vertex3f(1,0,0) );
-			pi.sub( a );
+			Vertex3f pi = tn.getTotalTransformation(new Vertex3f(1, 0, 0));
+
+			pi.sub(a);
 			pi.normalize();
-//			float alpha2 = (float)( Math.atan2(pi.z,pi.x)*180/Math.PI );
-//			float alpha2 = (float)( Math.atan2(pi.z,pi.x) );
+			// float alpha2 = (float)( Math.atan2(pi.z,pi.x)*180/Math.PI );
+			// float alpha2 = (float)( Math.atan2(pi.z,pi.x) );
 			float alpha = tn.parent.getRalpha();
-//			if(Math.abs(alpha2-alpha) < 1) System.out.println("OK angoli frontali!");
-//			System.out.println( alpha+" - "+alpha2);
+			// if(Math.abs(alpha2-alpha) < 1) System.out.println("OK angoli frontali!");
+			// System.out.println( alpha+" - "+alpha2);
 			
 			float beta = 0;
 			Vertex3f vc = cameraManager.getCameraPosition();
-			vc.sub( a );
-			if( vc.getLength()>0 ){
+
+			vc.sub(a);
+			if (vc.getLength() > 0) {
 				vc.normalize();
-				beta = (float)(Math.atan2( vc.x, vc.z )*180/Math.PI);
+				beta = (float) (Math.atan2(vc.x, vc.z) * 180 / Math.PI);
 			}
-			tn.setRotate(-alpha+beta, 0, 1, 0);
-//			System.out.println(alpha+"+"+beta);
+			tn.setRotate(-alpha + beta, 0, 1, 0);
+			// System.out.println(alpha+"+"+beta);
 		}
 	}
 	
-	protected void notifyFollowersModification(){
+	protected void notifyFollowersModification() {
 		manager.followersModification();
 	}
 

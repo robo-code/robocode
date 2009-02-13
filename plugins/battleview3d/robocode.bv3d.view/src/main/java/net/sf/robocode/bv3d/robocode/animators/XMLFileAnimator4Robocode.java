@@ -9,13 +9,14 @@
 
 package net.sf.robocode.bv3d.robocode.animators;
 
+
 import java.io.FileReader;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-//import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+// import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 import net.sf.robocode.bv3d.MVCManager;
 
@@ -36,24 +37,23 @@ public class XMLFileAnimator4Robocode extends NetXMLAnimator4Robocode {
 	private Node settings;
 	private Node turn;
 	
-
-	public XMLFileAnimator4Robocode( MVCManager manager, String xmlFile ) {
+	public XMLFileAnimator4Robocode(MVCManager manager, String xmlFile) {
 		super(manager);
-		this.setFPS( manager.DESIRED_FPS );
+		this.setFPS(manager.DESIRED_FPS);
 		
-//		DOMParser parser = new DOMParser();
-		try{
-			FileReader fr = new FileReader( xmlFile );
-		    InputSource source = new InputSource(fr);
-//		    parser.parse(source);
-		    fr.close();
-		}catch(Exception e){
-		}
-//	    doc = parser.getDocument();
-	    createBattle();
+		// DOMParser parser = new DOMParser();
+		try {
+			FileReader fr = new FileReader(xmlFile);
+			InputSource source = new InputSource(fr);
+
+			// parser.parse(source);
+			fr.close();
+		} catch (Exception e) {}
+		// doc = parser.getDocument();
+		createBattle();
 	}
 	
-	private void createBattle(){
+	private void createBattle() {
 		battle = doc.getFirstChild();
 		settings = battle.getFirstChild();
 		round = battle.getLastChild();
@@ -62,15 +62,17 @@ public class XMLFileAnimator4Robocode extends NetXMLAnimator4Robocode {
 	
 	@Override
 	protected void setup() {
-		processXMLNode( settings );
+		processXMLNode(settings);
 		super.displayMessage("New battle is now displaying");
 	}
 	
 	@Override
-	public void updateScene(){
+	public void updateScene() {
 		turn = turn.getNextSibling();
-		processXMLNode( turn );
-		if( turn.getNextSibling()==null) this.updateCondition=false;
+		processXMLNode(turn);
+		if (turn.getNextSibling() == null) {
+			this.updateCondition = false;
+		}
 	}
 
 }

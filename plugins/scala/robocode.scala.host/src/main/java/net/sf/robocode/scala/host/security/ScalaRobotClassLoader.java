@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.sf.robocode.scala.host.security;
 
+
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.core.Container;
@@ -18,13 +19,14 @@ import net.sf.robocode.core.Container;
 import java.net.URL;
 import java.io.File;
 
+
 /**
  * @author Pavel Savara (original)
  */
-public class ScalaRobotClassLoader extends RobotClassLoader{
+public class ScalaRobotClassLoader extends RobotClassLoader {
 	public ScalaRobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		super(robotClassPath, robotFullClassName);
-		for (URL jar : Container.findJars(File.separator + "scala-library-")){
+		for (URL jar : Container.findJars(File.separator + "scala-library-")) {
 			super.addURL(jar);
 		}
 	}

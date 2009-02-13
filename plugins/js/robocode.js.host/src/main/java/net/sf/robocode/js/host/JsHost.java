@@ -11,10 +11,12 @@
  *******************************************************************************/
 package net.sf.robocode.js.host;
 
+
 import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.host.JavaHost;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.js.host.security.JsRobotClassLoader;
+
 
 /**
  * @author Pavel Savara (original)

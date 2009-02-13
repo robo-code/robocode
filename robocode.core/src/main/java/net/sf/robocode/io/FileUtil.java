@@ -247,7 +247,6 @@ public class FileUtil {
 		}
 	}
 
-
 	/**
 	 * Returns the directory containing the battle files.
 	 *

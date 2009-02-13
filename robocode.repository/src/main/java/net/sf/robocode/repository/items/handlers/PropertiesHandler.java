@@ -54,10 +54,13 @@ public class PropertiesHandler extends ItemHandler {
 		final RobotItem robotItem = new RobotItem(null, itemURL, root);
 
 		final String lang = robotItem.getRobotLanguage();
-		if (!lang.equals("java")){
-			//dispatch to other robot types
+
+		if (!lang.equals("java")) {
+			// dispatch to other robot types
 			String uplang = lang.substring(0, 1).toUpperCase() + lang.substring(1).toLowerCase();
-			final PropertiesHandler handler = Container.getComponent(PropertiesHandler.class, uplang + "PropertiesHandler");
+			final PropertiesHandler handler = Container.getComponent(PropertiesHandler.class,
+					uplang + "PropertiesHandler");
+
 			return handler.createItem(itemURL, root, db);
 		}
 		return robotItem;

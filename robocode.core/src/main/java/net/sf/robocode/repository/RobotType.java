@@ -13,7 +13,9 @@
  */
 package net.sf.robocode.repository;
 
+
 import java.io.Serializable;
+
 
 public class RobotType implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -41,7 +43,7 @@ public class RobotType implements Serializable {
 			boolean isAdvancedRobot,
 			boolean isTeamRobot,
 			boolean isDroid
-	) {
+			) {
 		this.code = 0;
 		if (isJuniorRobot) {
 			code += JUNIOR.getCode();
@@ -70,7 +72,7 @@ public class RobotType implements Serializable {
 		return code;
 	}
 
-	public boolean isValid(){
+	public boolean isValid() {
 		return isJuniorRobot() || isStandardRobot() || isAdvancedRobot();
 	}
 

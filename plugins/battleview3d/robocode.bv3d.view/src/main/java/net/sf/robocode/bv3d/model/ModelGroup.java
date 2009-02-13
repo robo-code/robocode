@@ -9,6 +9,7 @@
 
 package net.sf.robocode.bv3d.model;
 
+
 import java.awt.Color;
 import java.util.ArrayList;
 import net.sf.robocode.bv3d.math.Vertex3f;
@@ -26,64 +27,63 @@ public class ModelGroup {
 	private Color color;
 	private ModelObject object[];
 	
-	public ModelGroup() {
+	public ModelGroup() {}
+	
+	public ModelGroup(String n) {
+		this.name = n;
 	}
 	
-	public ModelGroup( String n ) {
-		this.name = n;
-	}
-	
-	public ModelGroup( String n, ArrayList o ) {
+	public ModelGroup(String n, ArrayList o) {
 		this.name = n;
 		this.object = new ModelObject[o.size()];
-		this.setObjects( o );
+		this.setObjects(o);
 	}
 
-	public void setName( String n ) {
+	public void setName(String n) {
 		this.name = n;
 	}
 
-	public void setObjects( ArrayList o ) {
+	public void setObjects(ArrayList o) {
 		this.object = new ModelObject[o.size()];
-		for( int i=0; i<this.object.length; i++ )
-			this.object[i] = ( ModelObject ) o.get( i );
+		for (int i = 0; i < this.object.length; i++) {
+			this.object[i] = (ModelObject) o.get(i);
+		}
 
 		this.center = new Vertex3f();
-		for( int i=0; i<this.object.length; i++ )
-			this.center.add( this.object[i].getCenter() );
+		for (int i = 0; i < this.object.length; i++) {
+			this.center.add(this.object[i].getCenter());
+		}
 
-		this.center.mul( 1.0f/this.object.length );
+		this.center.mul(1.0f / this.object.length);
 	}
 	
 	public String getName() {
-		return( this.name );
+		return(this.name);
 	}
 	
 	public int getNumberOfObjects() {
-		return( this.object.length );
+		return(this.object.length);
 	}
 	
-	public ModelObject getObject( int i ) {
-		return( this.object[i] );
+	public ModelObject getObject(int i) {
+		return(this.object[i]);
 	}
 
 	public Vertex3f getCenter() {
-		return( this.center );
+		return(this.center);
 	}
 
 	public float getCenterX() {
-		return( this.center.x );
+		return(this.center.x);
 	}
 	
 	public float getCenterY() {
-		return( this.center.y );
+		return(this.center.y);
 	}
 
 	public float getCenterZ() {
-		return( this.center.z );
+		return(this.center.z);
 	}
 
-
 }
-
 
