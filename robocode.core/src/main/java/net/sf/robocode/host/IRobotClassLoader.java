@@ -14,10 +14,6 @@ package net.sf.robocode.host;
 
 import robocode.robotinterfaces.IBasicRobot;
 
-import java.util.Set;
-
-import net.sf.robocode.repository.IRobotRepositoryItem;
-
 
 /**
  * @author Pavel Savara (original)

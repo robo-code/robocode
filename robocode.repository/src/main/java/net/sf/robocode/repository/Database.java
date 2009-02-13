@@ -295,7 +295,7 @@ public class Database {
 
 			for (IRepositoryRoot root : uniqueroots) {
 				((BaseRoot) root).setDatabase(res);
-				res.roots.put(root.getRootPath().toURL().toString(), root);
+				res.roots.put(root.getRootPath().toURI().toString(), root);
 			}
 			for (IItem item : uniqueitems) {
 				res.addItem(item);

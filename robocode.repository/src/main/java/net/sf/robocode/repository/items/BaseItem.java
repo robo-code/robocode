@@ -22,6 +22,8 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public abstract class BaseItem implements IItem, Serializable {
+	private static final long serialVersionUID = 1L;
+
 	protected URL url;
 	protected IRepositoryRoot root;
 	protected long lastModified;

@@ -23,6 +23,8 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public abstract class BaseRoot implements Serializable, IRepositoryRoot {
+	private static final long serialVersionUID = 1L;
+
 	protected transient Database db;
 	protected URL url;
 	protected File rootPath;

@@ -310,14 +310,14 @@ public class RobocodeSecurityPolicy extends Policy {
 			IRepositoryManager repositoryManager = Container.getComponent(IRepositoryManager.class);
 
 			if (repositoryManager != null) {
-				robots.add(repositoryManager.getRobotsDirectory().toURL().toString());
+				robots.add(repositoryManager.getRobotsDirectory().toURI().toString());
 				for (File devel : repositoryManager.getDevelDirectories()) {
-					robots.add(devel.toURL().toString());
+					robots.add(devel.toURI().toString());
 				}
 			}
 
 			while (tokenizer.hasMoreTokens()) {
-				String u = new File(tokenizer.nextToken()).getCanonicalFile().toURL().toString();
+				String u = new File(tokenizer.nextToken()).getCanonicalFile().toURI().toString();
 
 				if (robots.contains(u)) {
 					if (!untrustedCodeUrls.contains(u)) {

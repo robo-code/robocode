@@ -36,7 +36,7 @@ public class RobotClassLoaderTest {
 	@BeforeClass
 	public static void init() throws IOException {
 		HiddenAccess.initContainer();
-		classPath = new File("target/classes").getCanonicalFile().toURL();
+		classPath = new File("target/classes").getCanonicalFile().toURI().toURL();
 	}
 
 	@Test

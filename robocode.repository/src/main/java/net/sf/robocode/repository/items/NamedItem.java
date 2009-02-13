@@ -28,6 +28,8 @@ import java.util.StringTokenizer;
  * @author Pavel Savara (original)
  */
 public abstract class NamedItem extends BaseItem implements IRepositoryItem {
+	private static final long serialVersionUID = 1L;
+
 	public NamedItem(URL url, IRepositoryRoot root) {
 		super(url, root);
 	}

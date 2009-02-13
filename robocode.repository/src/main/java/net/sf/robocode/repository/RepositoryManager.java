@@ -28,7 +28,6 @@ import robocode.control.RobotSpecification;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -234,23 +233,18 @@ public class RepositoryManager implements IRepositoryManager {
 		final String ver = Container.getComponent(IVersionManager.class).getVersion();
 
 		TeamItem.createOrUpdateTeam(target, web, desc, author, members, teamVersion, ver);
-		refresh(target.toURL().toString());
+		refresh(target.toURI().toString());
 	}
 
 	public String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
 		checkDbExists();
-		try {
-			final List<RobotItem> robots = db.expandTeams(selectedRobots);
-			final List<TeamItem> teams = db.filterTeams(selectedRobots);
+		final List<RobotItem> robots = db.expandTeams(selectedRobots);
+		final List<TeamItem> teams = db.filterTeams(selectedRobots);
 
-			final String res = JarCreator.createPackage(target, source, robots, teams);
+		final String res = JarCreator.createPackage(target, source, robots, teams);
 
-			refresh(target.toURL().toString());
-			return res;
-		} catch (MalformedURLException e) {
-			Logger.logError(e);
-			return e.getMessage();
-		}
+		refresh(target.toURI().toString());
+		return res;
 	}
 
 	private IRepositoryItem getRobot(String fullClassNameWithVersion) {

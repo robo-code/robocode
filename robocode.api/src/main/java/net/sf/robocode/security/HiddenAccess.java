@@ -157,10 +157,10 @@ public class HiddenAccess {
 
 				if (name.contains("robocode.core")) {
 					foundCore = true;
-					urls.add(file.toURL());
+					urls.add(file.toURI().toURL());
 				}
 				if (name.contains("picocontainer")) {
-					urls.add(file.toURL());
+					urls.add(file.toURI().toURL());
 				}
 				classPath.append(File.pathSeparator);
 				classPath.append(file.toString());

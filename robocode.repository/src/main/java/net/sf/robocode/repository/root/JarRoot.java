@@ -43,10 +43,10 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	public JarRoot(Database db, File rootPath) {
 		super(db, rootPath);
 		try {
-			final String jUrl = "jar:" + rootPath.toURL().toString() + "!/";
+			final String jUrl = "jar:" + rootPath.toURI().toString() + "!/";
 
 			jarUrl = new URL(jUrl);
-			url = rootPath.toURL();
+			url = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}

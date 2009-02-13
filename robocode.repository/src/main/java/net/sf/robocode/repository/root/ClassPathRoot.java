@@ -37,7 +37,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	public ClassPathRoot(Database db, File rootPath) {
 		super(db, rootPath);
 		try {
-			url = rootPath.toURL();
+			url = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
@@ -68,7 +68,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 			public boolean accept(File pathname) {
 				if (pathname.isFile()) {
 					try {
-						final IItem item = ItemHandler.registerItems(pathname.toURL(), ClassPathRoot.this, db);
+						final IItem item = ItemHandler.registerItems(pathname.toURI().toURL(), ClassPathRoot.this, db);
 
 						if (item != null) {
 							items.add(item);

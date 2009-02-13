@@ -210,7 +210,7 @@ public final class Container extends ContainerBase {
 			File f = new File(url);
 
 			try {
-				urls[i] = f.getCanonicalFile().toURL();
+				urls[i] = f.getCanonicalFile().toURI().toURL();
 			} catch (MalformedURLException e) {
 				Logger.logError(e);
 			} catch (IOException e) {
