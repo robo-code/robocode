@@ -111,6 +111,7 @@ public class RepositoryManager implements IRepositoryManager {
 				db = new Database(this);
 			}
 		}
+		refresh(true);
 		setStatus("");
 	}
 
