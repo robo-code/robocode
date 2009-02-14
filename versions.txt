@@ -1,17 +1,19 @@
-Version 1.7.1 Beta 1
+Version 1.7
+(11-Feb-2009)
+---------------
 
-= Changes =
-- reimplemented robot database so that it loads robots directly from.jar files. It is also extensible by new file types and package types. It is faster in most cases.
-- reimplemented jar packager, it puts manifest inside as well now
-
+= Bugfixes =
+* Bug [2580555] Battle Results screen displaying old results. The results where not updated on the Battle Results windows between battles.
+* Bug [2585586] Robot disabled by any other than loosing energy can recover. Robots disabled due to bad behaviour could regain energy by hitting another robot by a bullet after it had been disabled. Now this is only possible when the robot has disabled itself by using all its energy, but can recover by hitting an enemy, which is allowed.
+* Bug [2585615] Team Battle. Robots like abc.Shadow 3.83, davidalves.Phoenix 1.02, and kawigi.micro.Shiz 1.1, kawigi.micro.ShizPair 1.1 caused a NullPointerException and would not show up on the battle window.
 
 Version 1.7 Beta 2
 (26-Jan-2009)
 ---------------
 
 = Bugfixes =
-* Bugfix [2527112] Ubuntu throws NullPointerException in main when trying to startup Robocode.
-* Bugfix [2528467] Installation fail on windows if directory contain space(s).
+* Bug [2527112] Ubuntu throws NullPointerException in main when trying to startup Robocode.
+* Bug [2528467] Installation fail on windows if directory contain space(s).
 
 = Changes =
 * Improved the version checking for new Robocode versions available for download.
