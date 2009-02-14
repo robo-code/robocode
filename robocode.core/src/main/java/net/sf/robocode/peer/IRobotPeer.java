@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
  */
 public interface IRobotPeer {
 
-	void drainEnergy();
+	void disable();
 
 	void punishBadBehavior();
 

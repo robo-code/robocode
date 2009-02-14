@@ -82,7 +82,7 @@ public class EngineClassLoader extends URLClassLoader {
 				return false;
 			}
 			// try to find it in engine's classpath
-			final String path = name.replace('.', '/').concat(".class");
+			final String path = name.replace('.', File.separatorChar).concat(".class");
 
 			return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
 				public Boolean run() {

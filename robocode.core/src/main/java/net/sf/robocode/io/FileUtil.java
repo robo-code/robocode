@@ -158,7 +158,7 @@ public class FileUtil {
 						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
 							deleteDir(file);
 							if (file.exists() && !file.delete()) {
-								Logger.logError("Can't delete" + file);
+								Logger.logError("Can't delete: " + file);
 							}
 						} else {
 							Logger.logMessage("Warning: " + file + " may be a symlink.  Ignoring.");
@@ -168,7 +168,7 @@ public class FileUtil {
 					}
 				} else {
 					if (file.exists() && !file.delete()) {
-						Logger.logError("Can't delete" + file);
+						Logger.logError("Can't delete: " + file);
 					}
 				}
 			}

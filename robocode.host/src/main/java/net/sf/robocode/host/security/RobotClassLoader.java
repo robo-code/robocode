@@ -35,6 +35,7 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.robotinterfaces.IBasicRobot;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -157,7 +158,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	// we need to call defineClass to be able to set codeSource to untrustedLocation  
 	private ByteBuffer findLocalResource(String name) {
 		// try to find it in robot's classpath
-		String path = name.replace('.', '/') + ".class";
+		String path = name.replace('.', File.separatorChar).concat(".class");
 
 		final URL url = findResource(path);
 		ByteBuffer result = null;
@@ -202,7 +203,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	private void notifyRobot(String s) {
 		if (robotProxy != null) {
 			robotProxy.println(s);
-			robotProxy.drainEnergy();
+			robotProxy.disable();
 		}
 	}
 

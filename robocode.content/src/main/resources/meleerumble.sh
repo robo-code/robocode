@@ -1,2 +1,5 @@
-#!/bin/bash
-java -Xmx256M -Dsun.io.useCanonCaches=false -cp libs/robocode.jar:libs/codesize-1.1.jar:libs/roborumble.jar roborumble.RoboRumbleAtHome ./roborumble/meleerumble.txt
+#!/bin/sh
+pwd=`pwd`
+cd ${0%/*}
+java -Xmx256M -Dsun.io.useCanonCaches=false -cp libs/*: roborumble.RoboRumbleAtHome ./roborumble/meleerumble.txt
+cd $pwd

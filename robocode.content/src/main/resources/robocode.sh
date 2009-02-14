@@ -1,8 +1,5 @@
 #!/bin/sh
-olddir=`pwd` 
-robohome=`dirname $0` 
-echo "Using robohome $robohome" 
-cd "$robohome" 
-java -Xmx512M -Dsun.io.useCanonCaches=false -cp libs/robocode.jar:libs/codesize-1.1.jar:libs/cachecleaner.jar robocode.Robocode $*
-echo "Goodbye!" 
-cd "$olddir"
+pwd=`pwd`
+cd ${0%/*}
+java -Xmx512M -Dsun.io.useCanonCaches=false -cp ./libs/*: robocode.Robocode $*
+cd $pwd
