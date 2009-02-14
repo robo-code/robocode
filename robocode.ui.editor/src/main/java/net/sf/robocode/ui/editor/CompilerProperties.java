@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import net.sf.robocode.io.FileUtil;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -27,10 +29,10 @@ public class CompilerProperties {
 	public final static String COMPILER_CLASSPATH = "compiler.classpath";
 	public final static String ROBOCODE_VERSION = "robocode.version";
 
-	private String compilerBinary = null;
-	private String compilerOptions = null;
-	private String compilerClasspath = null;
-	private String robocodeVersion = null;
+	private String compilerBinary;
+	private String compilerOptions;
+	private String compilerClasspath;
+	private String robocodeVersion;
 
 	private final Properties props = new Properties();
 
@@ -59,7 +61,7 @@ public class CompilerProperties {
 		if (compilerClasspath == null) {
 			setCompilerClasspath("");
 		}
-		return compilerClasspath;
+		return FileUtil.quoteFileName(compilerClasspath);
 	}
 
 	/**

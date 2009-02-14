@@ -1,3 +1,11 @@
+Version 1.7.0.1
+(14-Feb-2009)
+---------------
+
+= Bugfixes =
+* Bug [2596947] Fix needed to Robocode.bat: Some users experienced problems with starting Robocode. Hence, all startup batch and shell files for Windows, Linux, Mac OS X etc. have been corrected.
+* Bug [2597046] Compiler classpath not quoted: When running Robocode in a folder with spaces, the compiler classpath was not quoted. Hence, the compiler would not work.
+
 Version 1.7
 (11-Feb-2009)
 ---------------
