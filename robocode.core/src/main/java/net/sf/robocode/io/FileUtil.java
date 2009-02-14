@@ -96,7 +96,7 @@ public class FileUtil {
 	 * @return a quoted version of the specified filename
 	 */
 	public static String quoteFileName(String filename) {
-		if (filename.startsWith("\"") || filename.endsWith("\"")) {
+		if (filename.startsWith("\"") && filename.endsWith("\"")) {
 			return filename;
 		}
 		if (System.getProperty("os.name").toLowerCase().startsWith("windows") && filename.startsWith("file://")) {
