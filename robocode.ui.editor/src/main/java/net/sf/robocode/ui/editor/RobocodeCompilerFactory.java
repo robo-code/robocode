@@ -43,8 +43,9 @@ import java.util.jar.JarInputStream;
  */
 public class RobocodeCompilerFactory {
 
-	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator
-			+ "libs/robocode.jar" + File.pathSeparator + FileUtil.getRobotsDir();
+	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "libs"
+			+ File.separator + "robocode.jar" + File.pathSeparator
+			+ FileUtil.quoteFileName(FileUtil.getRobotsDir().toString());
 
 	private static CompilerProperties compilerProperties;
 	private static boolean compilerInstalling;

@@ -17,8 +17,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import net.sf.robocode.io.FileUtil;
-
 
 /**
  * @author Mathew A. Nelson (original)
@@ -61,7 +59,7 @@ public class CompilerProperties {
 		if (compilerClasspath == null) {
 			setCompilerClasspath("");
 		}
-		return FileUtil.quoteFileName(compilerClasspath);
+		return compilerClasspath;
 	}
 
 	/**

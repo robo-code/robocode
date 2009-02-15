@@ -8,6 +8,13 @@ Version 1.7.1 Alpha
 = New features =
 - Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine
 
+Version 1.7.0.2
+(16-Feb-2009)
+---------------
+
+= Bugfix =
+* The fix for "Bug [2597046] Compiler classpath not quoted" backfired, as the entire text field in the window with the compiler properties would now be quoted. Hence, the compiler would not be able to compile, and it was not possible to cheage the compiler preferences from the GUI.
+
 Version 1.7.0.1
 (14-Feb-2009)
 ---------------
