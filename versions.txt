@@ -1,3 +1,13 @@
+Version 1.7.1 Alpha
+(xx-xx-2009)
+---------------
+
+= Changes =
+- The robot repository was updated
+
+= New features =
+- Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine
+
 Version 1.7.0.1
 (14-Feb-2009)
 ---------------

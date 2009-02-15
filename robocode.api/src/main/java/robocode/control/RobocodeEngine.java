@@ -40,6 +40,7 @@ package robocode.control;
 import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.gui.IWindowManagerBase;
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.repository.IRepositoryManagerBase;
@@ -47,7 +48,6 @@ import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 
 import java.io.File;
-
 
 /**
  * The RobocodeEngine is the old interface provided for external applications
@@ -208,6 +208,28 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public String getVersion() {
 		return ContainerBase.getComponent(IVersionManagerBase.class).getVersion();
+	}
+
+	/**
+	 * Returns the current working directory.
+	 *
+	 * @return a File for the current working directory.
+	 *
+	 * @since 1.7.1
+	 */
+	public static File getCurrentWorkingDir() {
+		return FileUtil.getCwd();
+	}
+
+	/**
+	 * Returns the directory containing the robots.
+	 *
+	 * @return a File that is the directory containing the robots.
+	 *
+	 * @since 1.7.1
+	 */
+	public static File getRobotsDir() {
+		return FileUtil.getRobotsDir();
 	}
 
 	/**
