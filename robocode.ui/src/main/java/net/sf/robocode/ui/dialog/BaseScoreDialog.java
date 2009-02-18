@@ -37,13 +37,13 @@ public abstract class BaseScoreDialog extends JDialog {
 	protected Dimension tableSize;
 
 	public BaseScoreDialog(IWindowManager windowManager, boolean modal) {
-		super(windowManager.getRobocodeFrame(), modal);
+		// In order to prevent the dialog from hiding, null must be given as 'owner' parameter
+		super(windowManager != null ? windowManager.getRobocodeFrame() : null, modal);
 		this.windowManager = (IWindowManagerExt) windowManager;
 	}
 
 	protected void initialize() {
 		addComponentListener(eventHandler);
-		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		setContentPane(getDialogContentPane());
 	}
 

@@ -49,6 +49,7 @@ import robocode.control.events.*;
 
 import java.io.File;
 
+
 /**
  * The RobocodeEngine is the old interface provided for external applications
  * in order to let these applications run battles within the Robocode application,

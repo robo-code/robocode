@@ -21,6 +21,7 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.battle.BattleRankingTableModel;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
@@ -52,9 +53,11 @@ public class RankingDialog extends BaseScoreDialog {
 	private ITurnSnapshot lastSnapshot;
 	private int lastRows;
 	private final MenuBar menu;
+	private final IWindowManager windowManager;
 
-	public RankingDialog(IWindowManager windowManager, MenuBar menu) {
-		super(windowManager, false);
+	public RankingDialog(IWindowManager windowManager, ISettingsManager settingsManager, MenuBar menu) {
+		super(settingsManager.getOptionsCommonDontHideRankings() ? null : windowManager, false);
+		this.windowManager = windowManager;
 		battleObserver = new BattleObserver();
 		timerTask = new Timer(1000 / 2, new TimerTask());
 		snapshot = new AtomicReference<ITurnSnapshot>();

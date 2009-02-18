@@ -59,7 +59,6 @@ public class WindowManager implements IWindowManagerExt {
 	private final AwtBattleAdaptor awtAdaptor;
 	private RobotPackager robotPackager;
 	// private RobotExtractor robotExtractor;
-	private RankingDialog rankingDialog;
 	private final ISettingsManager properties;
 	private final IImageManager imageManager;
 	private final IBattleManager battleManager;
@@ -69,7 +68,9 @@ public class WindowManager implements IWindowManagerExt {
 	private IRobotDialogManager robotDialogManager;
 	private RobocodeFrame robocodeFrame;
 	private boolean isGUIEnabled = true;
-	private boolean slave = false;
+	private boolean isSlave;
+	private boolean centerRankings = true;
+	private boolean oldRankingHideState = true;
 
 	public WindowManager(ISettingsManager properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager, IVersionManager versionManager) {
 		this.properties = properties;
@@ -108,11 +109,11 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void setSlave(boolean value) {
-		slave = value;
+		isSlave = value;
 	}
 
 	public boolean isSlave() {
-		return slave;
+		return isSlave;
 	}
 
 	public ITurnSnapshot getLastSnapshot() {
@@ -151,7 +152,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showAboutBox() {
-		packCenterShow(net.sf.robocode.core.Container.getComponent(AboutBox.class), true);
+		packCenterShow(Container.getComponent(AboutBox.class), true);
 	}
 
 	public String showBattleOpenDialog(final String defExt, final String name) {
@@ -276,20 +277,32 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showRankingDialog(boolean visible) {
-		if (rankingDialog == null) {
-			rankingDialog = Container.getComponent(RankingDialog.class);
-			if (visible) {
-				packCenterShow(rankingDialog, true);
-			} else {
-				rankingDialog.dispose();
-			}
-		} else {
-			if (visible) {
-				packCenterShow(rankingDialog, false);
-			} else {
-				rankingDialog.dispose();
-			}
+		boolean currentRankingHideState = properties.getOptionsCommonDontHideRankings();
+
+		// Check if the Ranking hide states has changed
+		if (currentRankingHideState != oldRankingHideState) {
+			// Remove current visible RankingDialog, if it is there
+			Container.getComponent(RankingDialog.class).dispose();
+
+			// Replace old RankingDialog, as the owner window must be replaced from the constructor
+			Container.cache.removeComponent(RankingDialog.class);
+			Container.cache.addComponent(RankingDialog.class);
+
+			// Reset flag for centering the dialog the first time it is shown
+			centerRankings = true;
 		}
+
+		RankingDialog rankingDialog = Container.getComponent(RankingDialog.class);
+
+		if (visible) {
+			packCenterShow(rankingDialog, centerRankings);
+			centerRankings = false; // only center the first time Rankings are shown
+		} else {
+			rankingDialog.dispose();
+		}
+
+		// Save current Ranking hide state
+		oldRankingHideState = currentRankingHideState;
 	}
 
 	public void showRobocodeEditor() {
