@@ -15,8 +15,8 @@
 package net.sf.robocode.host.proxies;
 
 
-import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotRepositoryItem;

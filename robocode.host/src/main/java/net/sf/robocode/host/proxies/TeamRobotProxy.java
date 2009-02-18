@@ -13,8 +13,8 @@
 package net.sf.robocode.host.proxies;
 
 
-import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
+import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.serialization.RobocodeObjectInputStream;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.peer.TeamMessage;
