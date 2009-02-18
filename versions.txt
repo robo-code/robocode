@@ -7,7 +7,7 @@ Version 1.7.1 Alpha
 
 = New features =
 - Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine
-- Request [2446276] Ranking Panel should be visible when Robocode is minimized. This feature has added implemented and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
+- Request [2446276] Ranking Panel should be visible when Robocode is minimized. This feature has been added and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
 
 Version 1.7.0.2
 (16-Feb-2009)
