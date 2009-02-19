@@ -749,8 +749,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void startRound(long waitTime) {
 		synchronized (isSleeping) {
 			try {
-				Logger.logMessage(".", false);
-
 				currentCommands = new ExecCommands();
 				int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
 				RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading,
@@ -1231,7 +1229,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 		}
 		if (Double.isNaN(bodyHeading)) {
-			Logger.realErr.println("HOW IS HEADING NAN HERE");
+			Logger.logger.error("HOW IS HEADING NAN HERE");
 		}
 	}
 

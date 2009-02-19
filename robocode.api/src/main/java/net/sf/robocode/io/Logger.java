@@ -15,12 +15,12 @@
 package net.sf.robocode.io;
 
 
-import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;
 import robocode.control.events.IBattleListener;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 
@@ -31,18 +31,11 @@ import java.io.PrintStream;
  * @author Mathew A. Nelson (original)
  */
 public class Logger {
-	public static final PrintStream realOut = System.out;
-	public static final PrintStream realErr = System.err;
-
+	public static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("Robocode");
 	private static IBattleListener logListener;
-	private final static StringBuffer logBuffer = new StringBuffer();
 
 	public static void setLogListener(IBattleListener logListener) {
 		Logger.logListener = logListener;
-	}
-
-	public static void logMessage(String s) {
-		logMessage(s, true);
 	}
 
 	public static void logMessage(Throwable e) {
@@ -61,35 +54,27 @@ public class Logger {
 		logError(toStackTraceString(t));
 	}
 
-	public static void logMessage(String s, boolean newline) {
+	public static void logMessage(String message) {
 		if (logListener == null) {
-			if (newline) {
-				realOut.println(s);
-			} else {
-				realOut.print(s);
-				realOut.flush();
-			}
+			logger.info(message);
 		} else {
-			synchronized (logBuffer) {
-				if (!HiddenAccess.isSafeThread()) {
-					// we just queue it, to not let unsafe thread travel thru system
-					logBuffer.append(s);
-					logBuffer.append("\n");
-				} else if (newline) {
-					logListener.onBattleMessage(new BattleMessageEvent(logBuffer + s));
-					logBuffer.setLength(0);
-				} else {
-					logBuffer.append(s);
-				}
-			}
+			logListener.onBattleMessage(new BattleMessageEvent(message));
 		}
 	}
 
-	public static void logError(String s) {
+	public static void logWarning(String message) {
 		if (logListener == null) {
-			realErr.println(s);
+			logger.warn(message);
 		} else {
-			logListener.onBattleError(new BattleErrorEvent(s));
+			logListener.onBattleMessage(new BattleMessageEvent(message));
+		}
+	}
+
+	public static void logError(String message) {
+		if (logListener == null) {
+			logger.error(message);
+		} else {
+			logListener.onBattleError(new BattleErrorEvent(message));
 		}
 	}
 

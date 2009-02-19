@@ -295,7 +295,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		FileOutputStream fos = null;
 
 		if (setup.resultsFilename == null) {
-			out = Logger.realOut;
+			out = System.out;
 		} else {
 			File f = new File(setup.resultsFilename);
 
@@ -339,12 +339,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 		@Override
 		public void onBattleMessage(BattleMessageEvent event) {
-			Logger.realOut.println(event.getMessage());
+			Logger.logger.info(event.getMessage());
 		}
 
 		@Override
 		public void onBattleError(BattleErrorEvent event) {
-			Logger.realErr.println(event.getError());
+			Logger.logger.error(event.getError());
 		}
 	}
 

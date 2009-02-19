@@ -245,7 +245,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	protected void preloadRound() {
 		logMessage("----------------------");
-		Logger.logMessage("Round " + (roundNum + 1) + " initializing..", false);
+		logMessage("Round " + (roundNum + 1) + " initializing...");
 	}
 
 	protected void initializeRound() {

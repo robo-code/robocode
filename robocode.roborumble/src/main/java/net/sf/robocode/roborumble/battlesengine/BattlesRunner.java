@@ -250,7 +250,7 @@ public class BattlesRunner {
 
 		@Override
 		public void onBattleError(final BattleErrorEvent event) {
-			Logger.realErr.println(event.getError());
+			Logger.logger.error(event.getError());
 		}
 
 		@Override

@@ -48,14 +48,14 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		engine = new RobocodeEngine(new BattleAdaptor() {
 			public void onBattleMessage(BattleMessageEvent event) {
 				if (isDumpingMessages) {
-					Logger.realOut.println(event.getMessage());
+					Logger.logger.info(event.getMessage());
 				}
 				messages++;
 			}
 
 			public void onBattleError(BattleErrorEvent event) {
 				if (isDumpingErrors) {
-					Logger.realErr.println(event.getError());
+					Logger.logger.error(event.getError());
 				}
 				errors++;
 			}
@@ -75,23 +75,27 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {
-			Logger.realOut.println("turn " + event.getTurnSnapshot().getTurn());
+			Logger.logger.info("turn " + event.getTurnSnapshot().getTurn());
 		}
+
+		StringBuffer logBuffer = new StringBuffer("");
+
 		for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
 			if (isDumpingPositions) {
-				Logger.realOut.print(robot.getVeryShortName());
-				Logger.realOut.print(" X:");
-				Logger.realOut.print(robot.getX());
-				Logger.realOut.print(" Y:");
-				Logger.realOut.print(robot.getY());
-				Logger.realOut.print(" V:");
-				Logger.realOut.print(robot.getVelocity());
-				Logger.realOut.println();
+				logBuffer.append(robot.getVeryShortName());
+				logBuffer.append(" X:");
+				logBuffer.append(robot.getX());
+				logBuffer.append(" Y:");
+				logBuffer.append(robot.getY());
+				logBuffer.append(" V:");
+				logBuffer.append(robot.getVelocity());
+				logBuffer.append('\n');
 			}
 			if (isDumpingOutput) {
-				Logger.realOut.print(robot.getOutputStreamSnapshot());
+				logBuffer.append(robot.getOutputStreamSnapshot());
 			}
 		}
+		Logger.logger.info(logBuffer.toString());
 	}
 
 	public void onBattleStarted(BattleStartedEvent event) {

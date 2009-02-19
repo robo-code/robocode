@@ -42,12 +42,14 @@ public final class CacheCleaner {
 		deleteFile("robots/.robotcache");
 		deleteFile("robots/robot.database");
 
-		Logger.logMessage("Creating roborumble/temp... ", false);
+		String msg = "Creating roborumble/temp... ";
+
 		if (new File("roborumble/temp").mkdir()) {
-			Logger.logMessage("done.");
+			msg += "done.";
 		} else {
-			Logger.logMessage("failed.");
+			msg += "failed.";
 		}
+		Logger.logMessage(msg);
 
 		System.out.print("Rebuilding robot database... ");
 

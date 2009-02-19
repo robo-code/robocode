@@ -37,7 +37,7 @@ package net.sf.robocode.settings;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.*;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -160,7 +160,7 @@ public class SettingsManager implements ISettingsManager {
 			in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 			this.load(in);
 		} catch (FileNotFoundException e) {
-			logError("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
+			logWarning("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
 		} catch (IOException e) {
 			logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 		} finally {

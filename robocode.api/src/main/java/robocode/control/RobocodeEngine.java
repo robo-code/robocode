@@ -351,26 +351,24 @@ public class RobocodeEngine implements IRobocodeEngine {
 
 		int numGroups = currentGroup.enumerate(groups, true);
 
+		StringBuffer logBuffer = new StringBuffer("");
+
 		for (int i = 0; i < numGroups; i++) {
 			currentGroup = groups[i];
-			if (currentGroup.isDaemon()) {
-				Logger.realOut.print("  ");
-			} else {
-				Logger.realOut.print("* ");
-			}
-			Logger.realOut.println("In group: " + currentGroup.getName());
+
+			String prefix = currentGroup.isDaemon() ? " " : "*";
+
+			logBuffer.append(prefix + " In group: " + currentGroup.getName() + '\n');
 			int numThreads = currentGroup.enumerate(threads);
 
 			for (int j = 0; j < numThreads; j++) {
-				if (threads[j].isDaemon()) {
-					Logger.realOut.print("  ");
-				} else {
-					Logger.realOut.print("* ");
-				}
-				Logger.realOut.println(threads[j].getName());
+				prefix = threads[j].isDaemon() ? " " : "*";
+
+				logBuffer.append(prefix + threads[j].getName() + '\n');
 			}
-			Logger.realOut.println("---------------");
+			logBuffer.append("---------------" + '\n');
 		}
+		Logger.logger.info(logBuffer.toString());
 	}
 
 	/**

@@ -4,7 +4,10 @@
   <classpathentry kind="src" path="src/test/java" output="target/test-classes"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.15/log4j-1.2.15.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar"/>
   <classpathentry kind="src" path="/robocode.api"/>
   <classpathentry kind="src" path="/robocode.battle"/>

@@ -60,8 +60,7 @@ import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.*;
 import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
@@ -295,7 +294,7 @@ public class BattleManager implements IBattleManager {
 			in = new FileInputStream(getBattleFilename());
 			res.load(in);
 		} catch (FileNotFoundException e) {
-			logError("No file " + battleFilename + " found, using defaults.");
+			logWarning("No file " + battleFilename + " found, using defaults");
 		} catch (IOException e) {
 			logError("IO Exception reading " + getBattleFilename() + ": " + e);
 		} finally {

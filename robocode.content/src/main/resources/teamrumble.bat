@@ -1,1 +1,1 @@
-java -Xmx128M -Dsun.io.useCanonCaches=false -cp libs/*; roborumble.RoboRumbleAtHome ./roborumble/teamrumble.txt
+java -Xmx128M -Dsun.io.useCanonCaches=false -cp libs/*;config roborumble.RoboRumbleAtHome ./roborumble/teamrumble.txt
