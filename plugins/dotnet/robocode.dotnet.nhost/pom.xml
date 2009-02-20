@@ -15,8 +15,7 @@
     <dependencies>
     </dependencies>
     <build>
-        <sourceDirectory>src/main/cs</sourceDirectory>
-        <testSourceDirectory>src/test/cs</testSourceDirectory>
+        <sourceDirectory>src</sourceDirectory>
         <plugins>
 			<plugin>
 				<groupId>org.sonatype.nmaven.plugins</groupId>

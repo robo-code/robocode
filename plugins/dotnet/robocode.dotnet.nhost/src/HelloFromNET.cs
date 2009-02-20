@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace robocode.dotnet.nhost
 {
-    [Guid("3823a63d-5891-3b4f-A460-DB0FB847075C")]
+    [Guid("32C3FEAE-65FC-4001-853A-E116F84C024A")]
     [ProgId("Robocode.HelloFromNET2")]
     public class HelloFromNET
     {
