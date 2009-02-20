@@ -292,7 +292,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification) {
 		this.battleSpecification = battleSpecification;
-		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, false);
+		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, false, false);
 	}
 
 	/**
@@ -308,7 +308,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification, boolean waitTillOver) {
 		this.battleSpecification = battleSpecification;
-		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, waitTillOver);
+		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, waitTillOver, false);
 	}
 
 	/**

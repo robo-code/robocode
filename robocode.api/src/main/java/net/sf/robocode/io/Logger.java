@@ -20,7 +20,6 @@ import robocode.control.events.BattleMessageEvent;
 import robocode.control.events.IBattleListener;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 
 

@@ -14,7 +14,6 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
@@ -25,7 +24,6 @@ import robocode.control.RobotSpecification;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.security.AccessControlException;
 
 
 /**
@@ -80,58 +78,26 @@ public class HostManager implements IHostManager {
 		return threadManager.getRobotOutputStream();
 	}
 
-	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
-		IHostingRobotProxy robotProxy;
-		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
-				robotSpecification);
-
-		if (specification.isTeamRobot()) {
-			robotProxy = new TeamRobotProxy(specification, this, peer, statics);
-		} else if (specification.isAdvancedRobot()) {
-			robotProxy = new AdvancedRobotProxy(specification, this, peer, statics);
-		} else if (specification.isStandardRobot()) {
-			robotProxy = new StandardRobotProxy(specification, this, peer, statics);
-		} else if (specification.isJuniorRobot()) {
-			robotProxy = new JuniorRobotProxy(specification, this, peer, statics);
-		} else {
-			throw new AccessControlException("Unknown robot type");
-		}
-		return robotProxy;
-	}
-
 	public void cleanup() {// TODO
 	}
 
-	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		final IHost host = (IHost) Container.cache.getComponent(
-				"robocode.host." + robotRepositoryItem.getRobotLanguage());
-
-		return host.createLoader(robotRepositoryItem);
-	}
-
 	public String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem) {
-		IRobotClassLoader loader = null;
-
-		try {
-			loader = createLoader(robotRepositoryItem);
-			loader.loadRobotMainClass(true);
-			return loader.getReferencedClasses();
-
-		} catch (ClassNotFoundException e) {
-			Logger.logError(e);
-			return new String[0]; 
-		} finally {
-			if (loader != null) {
-				loader.cleanup();
-			}
-		}
+		return getHost(robotRepositoryItem).getReferencedClasses(robotRepositoryItem);
 	}
 
 	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message) {
-		final IHost host = (IHost) Container.cache.getComponent(
-				"robocode.host." + robotRepositoryItem.getRobotLanguage());
+		return getHost(robotRepositoryItem).getRobotType(robotRepositoryItem, resolve, message);
+	}
 
-		return host.getRobotType(robotRepositoryItem, resolve, message);
+	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
+		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+				robotSpecification);
+
+		return getHost(specification).createRobotProxy(this, robotSpecification, statics, peer);
+	}
+
+	private IHost getHost(IRobotRepositoryItem robotRepositoryItem) {
+		return (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
 	}
 
 	public void initSecurity() {

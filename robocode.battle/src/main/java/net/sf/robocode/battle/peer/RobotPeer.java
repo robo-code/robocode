@@ -749,6 +749,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void startRound(long waitTime) {
 		synchronized (isSleeping) {
 			try {
+				System.out.print('.');
+
 				currentCommands = new ExecCommands();
 				int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
 				RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading,

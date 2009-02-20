@@ -12,15 +12,16 @@
 package net.sf.robocode.host.proxies;
 
 
-import net.sf.robocode.host.*;
 import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.host.io.RobotOutputStream;
 import net.sf.robocode.host.security.RobotThreadManager;
+import net.sf.robocode.host.*;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.core.Container;
 import robocode.RobotStatus;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
@@ -54,7 +55,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		this.statics = statics;
 		this.hostManager = hostManager;
 		this.robotSpecification = robotSpecification;
-		robotClassLoader = hostManager.createLoader(robotSpecification);
+
+		robotClassLoader = getHost(robotSpecification).createLoader(robotSpecification);
 		robotClassLoader.setRobotProxy(this);
 
 		out = new RobotOutputStream();
@@ -68,6 +70,10 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(), classDirectory,
 				readableDirectory, rootFile);
 		robotFileSystemManager.initializeQuota();
+	}
+
+	private JavaHost getHost(IRobotRepositoryItem robotSpecification) {
+		return (JavaHost) Container.cache.getComponent("robocode.host." + robotSpecification.getRobotLanguage());
 	}
 
 	public void cleanup() {

@@ -75,6 +75,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 		boolean minimize;
 		boolean exitOnComplete;
 		String battleFilename;
+		String recordFilename;
+		String recordXmlFilename;
 		String replayFilename;
 		String resultsFilename;
 		int tps;
@@ -141,6 +143,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 				}
 			}
 
+			final boolean enableCLIRecording = (setup.recordFilename != null || setup.recordXmlFilename != null);
+			
 			// Note: At this point the GUI should be opened (if enabled) before starting the battle from a battle file
 			if (setup.battleFilename != null) {
 				if (setup.replayFilename != null) {
@@ -152,13 +156,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 				battleManager.setBattleFilename(setup.battleFilename);
 				if (new File(setup.battleFilename).exists()) {
-					battleManager.startNewBattle(battleManager.loadBattleProperties(), false);
+					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, enableCLIRecording);
 				} else {
 					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
 					System.exit(8);
 				}
 			} else if (setup.replayFilename != null) {
-
 				setup.exitOnComplete = true;
 
 				recordManager.loadRecord(setup.replayFilename, BattleRecordFormat.BINARY_ZIP);
@@ -206,6 +209,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 				i++;
 			} else if (args[i].equals("-battle") && (i < args.length + 1)) {
 				setup.battleFilename = args[i + 1];
+				i++;
+			} else if (args[i].equals("-record") && (i < args.length + 1)) {
+				setup.recordFilename = args[i + 1];
+				i++;
+			} else if (args[i].equals("-recordXml") && (i < args.length + 1)) {
+				setup.recordXmlFilename = args[i + 1];
 				i++;
 			} else if (args[i].equals("-replay") && (i < args.length + 1)) {
 				setup.replayFilename = args[i + 1];
@@ -264,17 +273,21 @@ public final class RobocodeMain extends RobocodeMainBase {
 	}
 
 	private void printUsage() {
-		Logger.logMessage(
-				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
-						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
-						+ "  -cwd <path>             Change the current working directory\n"
-						+ "  -battle <battle file>   Run the battle specified in a battle file\n"
-						+ "  -replay <record file>   Replay the specified battle record\n"
-						+ "  -results <file>         Save results to the specified text file\n"
-						+ "  -tps <tps>              Set the TPS (Turns Per Second) to use. TPS must be > 0\n"
-						+ "  -minimize               Run minimized when Robocode starts\n"
-						+ "  -nodisplay              Run with the display / GUI disabled\n"
-						+ "  -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
+		System.out.print(
+				"Usage: robocode [-?] [-help] [-cwd path] [-battle filename [-results filename]\n"
+						+ "                [-record filename] [-recordXML filename] [-replay filename]\n"
+						+ "                [-tps tps] [-minimize] [-nodisplay] [-nosound]\n\n" + "where options include:\n"
+						+ "  -? or -help                Prints out the command line usage of Robocode\n"
+						+ "  -cwd <path>                Change the current working directory\n"
+						+ "  -battle <battle file>      Run the battle specified in a battle file\n"
+						+ "  -results <results file>    Save results to the specified text file\n"
+						+ "  -record <bin record file>  Record the battle into the specified file as binary\n"
+						+ "  -recordXML <xml rec file>  Record the battle into the specified file as XML\n"
+						+ "  -replay <record file>      Replay the specified battle record\n"
+						+ "  -tps <tps>                 Set the TPS > 0 (Turns Per Second)\n"
+						+ "  -minimize                  Run minimized when Robocode starts\n"
+						+ "  -nodisplay                 Run with the display / GUI disabled\n"
+						+ "  -nosound                   Run with sound disabled\n\n" + "Java Properties include:\n"
 						+ "  -DWORKINGDIRECTORY=<path>  Set the working directory\n"
 						+ "  -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
 						+ "  -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
@@ -335,6 +348,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 			if (!isReplay) {
 				printResultsData(event);
 			}
+			if (setup.recordFilename != null) {
+				recordManager.saveRecord(setup.recordFilename, BattleRecordFormat.BINARY_ZIP);
+			}
+			if (setup.recordXmlFilename != null) {
+				recordManager.saveRecord(setup.recordXmlFilename, BattleRecordFormat.XML);
+			}
 		}
 
 		@Override
@@ -372,5 +391,4 @@ public final class RobocodeMain extends RobocodeMainBase {
 		Container.getComponent(ICpuManager.class).getCpuConstant();
 		Container.getComponent(IRepositoryManager.class).reload(versionManager.isLastRunVersionChanged());
 	}
-
 }

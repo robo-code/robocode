@@ -13,11 +13,16 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.host.security.RobotClassLoader;
+import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
 import static net.sf.robocode.io.Logger.logError;
+import net.sf.robocode.io.Logger;
+import net.sf.robocode.peer.IRobotPeer;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.Droid;
 import robocode.Robot;
+import robocode.control.RobotSpecification;
 import robocode.robotinterfaces.*;
 
 import java.awt.event.KeyEvent;
@@ -34,6 +39,43 @@ import java.lang.reflect.Method;
 public class JavaHost implements IHost {
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
 		return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
+	}
+
+	public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
+		IHostingRobotProxy robotProxy;
+		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+				robotSpecification);
+
+		if (specification.isTeamRobot()) {
+			robotProxy = new TeamRobotProxy(specification, hostManager, peer, statics);
+		} else if (specification.isAdvancedRobot()) {
+			robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, statics);
+		} else if (specification.isStandardRobot()) {
+			robotProxy = new StandardRobotProxy(specification, hostManager, peer, statics);
+		} else if (specification.isJuniorRobot()) {
+			robotProxy = new JuniorRobotProxy(specification, hostManager, peer, statics);
+		} else {
+			throw new AccessControlException("Unknown robot type");
+		}
+		return robotProxy;
+	}
+
+	public String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem) {
+		IRobotClassLoader loader = null;
+
+		try {
+			loader = createLoader(robotRepositoryItem);
+			loader.loadRobotMainClass(true);
+			return loader.getReferencedClasses();
+
+		} catch (ClassNotFoundException e) {
+			Logger.logError(e);
+			return new String[0];
+		} finally {
+			if (loader != null) {
+				loader.cleanup();
+			}
+		}
 	}
 
 	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message) {

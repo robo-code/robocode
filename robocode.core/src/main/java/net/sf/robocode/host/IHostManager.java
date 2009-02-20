@@ -41,8 +41,6 @@ public interface IHostManager {
 
 	void cleanup();
 
-	IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem);
-
 	String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem);
 
 	RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message);
