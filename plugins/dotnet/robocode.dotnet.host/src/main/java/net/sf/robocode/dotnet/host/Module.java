@@ -13,7 +13,6 @@ package net.sf.robocode.dotnet.host;
 
 
 import net.sf.robocode.core.Container;
-import net.sf.robocode.host.JavaHost;
 
 
 /**
