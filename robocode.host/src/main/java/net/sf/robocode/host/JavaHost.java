@@ -43,7 +43,8 @@ public class JavaHost implements IHost {
 
 	public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
 		IHostingRobotProxy robotProxy;
-		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(robotSpecification);
+		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+				robotSpecification);
 
 		if (specification.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(specification, hostManager, peer, statics);

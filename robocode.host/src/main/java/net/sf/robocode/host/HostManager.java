@@ -91,13 +91,14 @@ public class HostManager implements IHostManager {
 	}
 
 	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
-		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(robotSpecification);
-		return getHost(specification).createRobotProxy(this, robotSpecification,  statics, peer);
+		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+				robotSpecification);
+
+		return getHost(specification).createRobotProxy(this, robotSpecification, statics, peer);
 	}
 
 	private IHost getHost(IRobotRepositoryItem robotRepositoryItem) {
-		return (IHost) Container.cache.getComponent(
-				"robocode.host." + robotRepositoryItem.getRobotLanguage());
+		return (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
 	}
 
 	public void initSecurity() {

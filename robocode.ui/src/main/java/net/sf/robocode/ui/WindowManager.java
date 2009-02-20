@@ -586,7 +586,7 @@ public class WindowManager implements IWindowManagerExt {
 			boolean origShowResults = properties.getOptionsCommonShowResults();
 
 			properties.setOptionsCommonShowResults(false);
-			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
+			battleManager.startNewBattle(battleManager.loadBattleProperties(), true, false);
 			battleManager.setDefaultBattleProperties();
 			properties.setOptionsCommonShowResults(origShowResults);
 			robocodeFrame.afterIntroBattle();

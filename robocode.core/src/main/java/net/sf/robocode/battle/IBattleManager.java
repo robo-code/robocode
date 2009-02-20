@@ -55,7 +55,7 @@ public interface IBattleManager extends IBattleManagerBase {
 	 */
 	void sendInteractiveEvent(Event event);
 
-	void startNewBattle(BattleProperties battleProperties, boolean waitTillOver);
+	void startNewBattle(BattleProperties battleProperties, boolean waitTillOver, boolean enableCLIRecording);
 
 	void nextTurn();
 

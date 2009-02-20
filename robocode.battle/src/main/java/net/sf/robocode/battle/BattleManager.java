@@ -123,15 +123,15 @@ public class BattleManager implements IBattleManager {
 	}
 
 	// Called when starting a new battle from GUI
-	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver) {
+	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver, boolean enableCLIRecording) {
 		this.battleProperties = battleProperties;
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(battleProperties.getSelectedRobots());
 
-		startNewBattleImpl(robots, waitTillOver);
+		startNewBattleImpl(robots, waitTillOver, enableCLIRecording);
 	}
 
 	// Called from the RobocodeEngine
-	public void startNewBattle(BattleSpecification spec, boolean waitTillOver) {
+	public void startNewBattle(BattleSpecification spec, boolean waitTillOver, boolean enableCLIRecording) {
 		battleProperties = new BattleProperties();
 		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
 		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -142,10 +142,10 @@ public class BattleManager implements IBattleManager {
 
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
 
-		startNewBattleImpl(robots, waitTillOver);
+		startNewBattleImpl(robots, waitTillOver, enableCLIRecording);
 	}
 
-	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver) {
+	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording) {
 
 		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
@@ -153,8 +153,9 @@ public class BattleManager implements IBattleManager {
 
 		logMessage("Preparing battle...");
 
-		final boolean recording = properties.getOptionsCommonEnableReplayRecording()
-				&& System.getProperty("TESTING", "none").equals("none");
+		final boolean recording = (properties.getOptionsCommonEnableReplayRecording()
+				&& System.getProperty("TESTING", "none").equals("none"))
+						|| enableCLIRecording;
 
 		if (recording) {
 			recordManager.attachRecorder(battleEventDispatcher);
@@ -345,7 +346,7 @@ public class BattleManager implements IBattleManager {
 
 	public synchronized void restart() {
 		// Start new battle. The old battle is automatically stopped
-		startNewBattle(battleProperties, false);
+		startNewBattle(battleProperties, false, false);
 	}
 
 	public synchronized void replay() {
