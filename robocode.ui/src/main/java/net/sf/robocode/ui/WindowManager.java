@@ -33,8 +33,8 @@ import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.battle.AwtBattleAdaptor;
 import net.sf.robocode.ui.dialog.*;
-import net.sf.robocode.ui.editor.IRobocodeEditor;
 import net.sf.robocode.ui.packager.RobotPackager;
+import net.sf.robocode.ui.editor.IRobocodeEditor;
 import net.sf.robocode.version.IVersionManager;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.IBattleListener;
@@ -60,7 +60,6 @@ public class WindowManager implements IWindowManagerExt {
 	private RobotPackager robotPackager;
 	// private RobotExtractor robotExtractor;
 	private final ISettingsManager properties;
-	private final IImageManager imageManager;
 	private final IBattleManager battleManager;
 	private final ICpuManager cpuManager;
 	private final IRepositoryManager repositoryManager;
@@ -77,7 +76,6 @@ public class WindowManager implements IWindowManagerExt {
 		this.battleManager = battleManager;
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
-		this.imageManager = imageManager;
 		this.versionManager = versionManager;
 		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
@@ -90,6 +88,8 @@ public class WindowManager implements IWindowManagerExt {
 				}
 			}
 		});
+
+		imageManager.initialize(); // Make sure this one is initialized so all images are available
 	}
 
 	public synchronized void addBattleListener(IBattleListener listener) {
@@ -346,7 +346,6 @@ public class WindowManager implements IWindowManagerExt {
 		repositoryManager.reload(versionManager.isLastRunVersionChanged());
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
-		imageManager.initialize();
 		cpuManager.getCpuConstant();
 
 		WindowUtil.setStatus("");
