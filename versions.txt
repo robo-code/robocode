@@ -1,3 +1,10 @@
+Version 1.7.0.3
+(20-Feb-2009)
+---------------
+
+= Bugfix =
+* Bug [2618169] NullPointerException when using -battle option from the cmd-line: When starting Robocode on a battle file by using the -battle option when the GUI was enabled caused a NullPointerException and the game would not start.
+
 Version 1.7.0.2
 (16-Feb-2009)
 ---------------

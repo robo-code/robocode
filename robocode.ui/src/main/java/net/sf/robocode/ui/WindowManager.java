@@ -60,7 +60,6 @@ public class WindowManager implements IWindowManagerExt {
 	private RobotExtractor robotExtractor;
 	private RankingDialog rankingDialog;
 	private final ISettingsManager properties;
-	private final IImageManager imageManager;
 	private final IBattleManager battleManager;
 	private final ICpuManager cpuManager;
 	private final IRepositoryManager repositoryManager;
@@ -74,7 +73,6 @@ public class WindowManager implements IWindowManagerExt {
 		this.battleManager = battleManager;
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
-		this.imageManager = imageManager;
 		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have
@@ -86,6 +84,8 @@ public class WindowManager implements IWindowManagerExt {
 				}
 			}
 		});
+
+		imageManager.initialize(); // Make sure this one is initialized so all images are available
 	}
 
 	public synchronized void addBattleListener(IBattleListener listener) {
@@ -329,7 +329,6 @@ public class WindowManager implements IWindowManagerExt {
 		repositoryManager.loadRobotRepository();
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
-		imageManager.initialize();
 		cpuManager.getCpuConstant();
 
 		WindowUtil.setStatus("");
