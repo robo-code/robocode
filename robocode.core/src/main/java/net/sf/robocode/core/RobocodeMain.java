@@ -267,17 +267,19 @@ public final class RobocodeMain extends RobocodeMainBase {
 	}
 
 	private void printUsage() {
-		Logger.logMessage(
-				"Usage: robocode [-cwd path] [-battle filename [-results filename] [-tps tps]\n"
-						+ "                [-minimize] [-nodisplay] [-nosound]]\n" + "\n" + "where options include:\n"
-						+ "  -cwd <path>             Change the current working directory\n"
-						+ "  -battle <battle file>   Run the battle specified in a battle file\n"
-						+ "  -replay <record file>   Replay the specified battle record\n"
-						+ "  -results <file>         Save results to the specified text file\n"
-						+ "  -tps <tps>              Set the TPS (Turns Per Second) to use. TPS must be > 0\n"
-						+ "  -minimize               Run minimized when Robocode starts\n"
-						+ "  -nodisplay              Run with the display / GUI disabled\n"
-						+ "  -nosound                Run with sound disabled\n" + "\n" + "properties include:\n"
+		System.out.print(
+				"Usage: robocode [-?] [-help] [-cwd path] [-battle filename [-results filename]\n"
+						+ "                [-replay filename] [-tps tps] [-minimize] [-nodisplay]\n"
+						+ "                [-nosound]\n\n" + "where options include:\n"
+						+ "  -? or -help                Prints out the command line usage of Robocode\n"
+						+ "  -cwd <path>                Change the current working directory\n"
+						+ "  -battle <battle file>      Run the battle specified in a battle file\n"
+						+ "  -results <results file>    Save results to the specified text file\n"
+						+ "  -replay <record file>      Replay the specified battle record\n"
+						+ "  -tps <tps>                 Set the TPS > 0 (Turns Per Second)\n"
+						+ "  -minimize                  Run minimized when Robocode starts\n"
+						+ "  -nodisplay                 Run with the display / GUI disabled\n"
+						+ "  -nosound                   Run with sound disabled\n\n" + "Java Properties include:\n"
 						+ "  -DWORKINGDIRECTORY=<path>  Set the working directory\n"
 						+ "  -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
 						+ "  -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
