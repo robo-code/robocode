@@ -222,14 +222,6 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	/**
-	 * Called when the battle view is resized
-	 */
-	private void battleViewResized() {
-		battleView.validate();
-		battleView.setInitialized(false);
-	}
-
-	/**
 	 * Rather than use a layout manager for the battleview panel, we just
 	 * calculate the proper aspect ratio and set the battleview's size. We could
 	 * use a layout manager if someone wants to write one...
@@ -719,9 +711,6 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		public void componentResized(ComponentEvent e) {
-			if (e.getSource() == battleView) {
-				battleViewResized();
-			}
 			if (e.getSource() == getBattleViewPanel()) {
 				battleViewPanelResized();
 			}

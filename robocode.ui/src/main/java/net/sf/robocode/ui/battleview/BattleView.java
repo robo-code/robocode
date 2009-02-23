@@ -37,6 +37,8 @@ import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -119,10 +121,17 @@ public class BattleView extends Canvas {
 				loadDisplayOptions();
 				if (property.startsWith("robocode.options.rendering")) {
 					initialized = false;
+					validate();
 				}
 			}
 		});
 
+		addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				initialized = false;
+				validate();
+			}
+		});
 	}
 
 	@Override
@@ -628,10 +637,6 @@ public class BattleView extends Canvas {
 		g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
 	}
 
-	public void setInitialized(boolean initialized) {
-		this.initialized = initialized;
-	}
-
 	private class BattleObserver extends BattleAdaptor {
 		public BattleObserver(IWindowManager windowManager) {
 			windowManager.addBattleListener(this);
@@ -641,9 +646,12 @@ public class BattleView extends Canvas {
 		public void onBattleStarted(BattleStartedEvent event) {
 			battleField = new BattleField(event.getBattleRules().getBattlefieldWidth(),
 					event.getBattleRules().getBattlefieldHeight());
+
+			initialized = false;
 			setVisible(true);
-			setInitialized(false);
+
 			super.onBattleStarted(event);
+
 			robotGraphics = new IGraphicsProxy[event.getRobotsCount()];
 		}
 
