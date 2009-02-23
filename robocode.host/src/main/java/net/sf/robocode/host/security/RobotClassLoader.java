@@ -35,7 +35,6 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.robotinterfaces.IBasicRobot;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -44,9 +43,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.nio.ByteBuffer;
-import java.security.CodeSource;
-import java.security.PermissionCollection;
-import java.security.Permissions;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.util.HashSet;
 import java.util.Set;
@@ -94,31 +91,14 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		super.addURL(url);
 	}
 
-	public synchronized Class<?> loadClass(String name, boolean resolve)
+	public synchronized Class<?> loadClass(final String name, boolean resolve)
 		throws ClassNotFoundException {
 		if (name.startsWith("java.lang")) {
 			// we always delegate java.lang stuff to parent loader
 			return super.loadClass(name, resolve);
 		}
 		if (isSecutityOn) {
-			if (name.startsWith("net.sf.robocode")) {
-				final String message = "Robots are not alowed to reference robocode engine in net.sf.robocode package";
-
-				notifyRobot(message);
-				throw new ClassNotFoundException(message);
-			}
-			if (name.startsWith("robocode.control")) {
-				final String message = "Robots are not alowed to reference robocode engine in robocode.control package";
-
-				notifyRobot(message);
-				throw new ClassNotFoundException(message);
-			}
-			if (name.startsWith("javax.swing")) {
-				final String message = "Robots are not alowed to reference javax.swing package";
-
-				notifyRobot(message);
-				throw new ClassNotFoundException(message);
-			}
+			testPackages(name);
 
 			if (!name.startsWith("robocode")) {
 				final Class<?> result = loadRobotClassLocaly(name, resolve);
@@ -133,8 +113,38 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		// it is robot API
 		// or java class
 		// or security is off
-		// so we delegate to parrent classloader
-		return super.loadClass(name, resolve);
+		// so we delegate to parent classloader
+
+		try {
+			return AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
+				public Class<?> run() throws ClassNotFoundException {
+					return getParent().loadClass(name);
+				}
+			});
+		} catch (PrivilegedActionException e) {
+			throw (ClassNotFoundException) e.getException();
+		}
+	}
+
+	private void testPackages(String name) throws ClassNotFoundException {
+		if (name.startsWith("net.sf.robocode")) {
+			final String message = "Robots are not alowed to reference robocode engine in net.sf.robocode package";
+
+			notifyRobot(message);
+			throw new ClassNotFoundException(message);
+		}
+		if (name.startsWith("robocode.control")) {
+			final String message = "Robots are not alowed to reference robocode engine in robocode.control package";
+
+			notifyRobot(message);
+			throw new ClassNotFoundException(message);
+		}
+		if (name.startsWith("javax.swing")) {
+			final String message = "Robots are not alowed to reference javax.swing package";
+
+			notifyRobot(message);
+			throw new ClassNotFoundException(message);
+		}
 	}
 
 	private Class<?> loadRobotClassLocaly(String name, boolean resolve) throws ClassNotFoundException {
@@ -158,7 +168,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	// we need to call defineClass to be able to set codeSource to untrustedLocation  
 	private ByteBuffer findLocalResource(String name) {
 		// try to find it in robot's classpath
-		String path = name.replace('.', File.separatorChar).concat(".class");
+		String path = name.replace('.', '/').concat(".class");
 
 		final URL url = findResource(path);
 		ByteBuffer result = null;
@@ -239,6 +249,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 					do {
 						clone = new HashSet<String>(referencedClasses);
 						for (String reference : clone) {
+							testPackages(reference);
 							if (!reference.startsWith("java.") && !reference.startsWith("robocode.")) {
 								loadClass(reference, true);
 							}
