@@ -58,6 +58,7 @@ import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.io.BattleListenerLogAppender;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.recording.IRecordManager;
@@ -112,7 +113,8 @@ public class BattleManager implements IBattleManager {
 		this.cpuManager = cpuManager;
 		this.hostManager = hostManager;
 		this.battleEventDispatcher = battleEventDispatcher;
-		// Logger.setLogListener(battleEventDispatcher); // FIXME: Logger.setLogListener
+
+		BattleListenerLogAppender.setLogListener(battleEventDispatcher);
 	}
 
 	public synchronized void cleanup() {
@@ -218,7 +220,7 @@ public class BattleManager implements IBattleManager {
 			battle.stop(true);
 		}
 
-		// Logger.setLogListener(battleEventDispatcher); // FIXME: Logger.setLogListener
+		BattleListenerLogAppender.setLogListener(battleEventDispatcher);
 
 		recordManager.detachRecorder();
 		battle = Container.createComponent(BattlePlayer.class);
