@@ -73,8 +73,6 @@ import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.host.events.EventQueue;
 import net.sf.robocode.host.proxies.IHostingRobotProxy;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
@@ -100,6 +98,8 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * RobotPeer is an object that deals with game mechanics and rules, and makes
@@ -114,6 +114,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Pavel Savara (contributor)
  */
 public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
+	private final static transient Logger logger = Logger.getLogger(RobotPeer.class);
 
 	public static final int
 			WIDTH = 40,
@@ -634,7 +635,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 
-					logMessage("Wait for " + getName() + " interrupted.");
+					logger.warn("Wait for " + getName() + " interrupted");
 				}
 			}
 		}
@@ -766,14 +767,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					isSleeping.wait(waitTime / 1000000, (int) (waitTime % 1000000));
 				}
 			} catch (InterruptedException e) {
-				logMessage("Wait for " + getName() + " interrupted.");
+				logger.warn("Wait for " + getName() + " interrupted");
 
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
 			}
 		}
 		if (!(isSleeping() || battle.isDebugging())) {
-			logMessage("\n" + getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
+			logger.error("\n" + getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 		}
 	}
 
@@ -1231,7 +1232,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 		}
 		if (Double.isNaN(bodyHeading)) {
-			Logger.logger.error("HOW IS HEADING NAN HERE");
+			logger.error("HOW IS HEADING NAN HERE?");
 		}
 	}
 

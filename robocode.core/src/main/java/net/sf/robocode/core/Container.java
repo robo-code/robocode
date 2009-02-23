@@ -12,7 +12,7 @@
 package net.sf.robocode.core;
 
 
-import net.sf.robocode.io.Logger;
+import org.apache.log4j.Logger;
 import org.picocontainer.Characteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
@@ -41,12 +41,14 @@ import java.net.MalformedURLException;
  *
  * Dependency injection
  * We use PicoContainer as IoC vehicle. We configure it by loading Module class in every .jar or classpath we can find on system classPath
- * 1) Container.cache is containing sigletons
+ * 1) Container.cache is containing singletons
  * 2) Container.factory will create always new instance of component 
  *
  * @author Pavel Savara (original)
  */
 public final class Container extends ContainerBase {
+	private final static transient Logger logger = Logger.getLogger(Container.class);
+
 	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private static final String classPath = System.getProperties().getProperty("robocode.class.path", null);
 
@@ -76,8 +78,8 @@ public final class Container extends ContainerBase {
 		}
 
 		if (known.size() < 2) {
-			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size());
-			Logger.logError("ClassPath : " + classPath);
+			logger.error("Main modules not loaded, something went wrong. We have only " + known.size());
+			logger.error("ClassPath : " + classPath);
 			throw new Error("Main modules not loaded");
 		}
 	}
@@ -104,7 +106,7 @@ public final class Container extends ContainerBase {
 					// load other .jar files in location
 					final File dir = new File(path.substring(0, i));
 
-					Logger.logMessage("Loading plugins from " + dir.toString());
+					logger.info("Loading plugins from " + dir.toString());
 					loadJars(dir);
 				} else {
 					String name = getModuleName(path);
@@ -115,7 +117,7 @@ public final class Container extends ContainerBase {
 				}
 			}
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e);
 		}
 	}
 
@@ -140,15 +142,15 @@ public final class Container extends ContainerBase {
 			Class<?> modClass = loader.loadClass(module + ".Module");
 
 			modClass.newInstance();
-			Logger.logMessage("Loaded " + module);
+			logger.info("Loaded " + module);
 			known.add(module);
 			return true;
 		} catch (ClassNotFoundException ignore) {// it is not our module ?
 			// Logger.logMessage("Can't load " + module);
 		} catch (IllegalAccessException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (InstantiationException e) {
-			Logger.logError(e);
+			logger.error(e);
 		}
 		return false;
 	}
@@ -212,9 +214,9 @@ public final class Container extends ContainerBase {
 			try {
 				urls[i] = f.getCanonicalFile().toURI().toURL();
 			} catch (MalformedURLException e) {
-				Logger.logError(e);
+				logger.error(e);
 			} catch (IOException e) {
-				Logger.logError(e);
+				logger.error(e);
 			}
 		}
 		return urls;

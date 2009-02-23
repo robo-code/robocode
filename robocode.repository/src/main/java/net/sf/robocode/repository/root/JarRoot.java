@@ -13,7 +13,6 @@ package net.sf.robocode.repository.root;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
@@ -29,6 +28,8 @@ import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Represents one .jar file
@@ -36,6 +37,8 @@ import java.util.jar.JarInputStream;
  */
 public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
+
+	private final static transient Logger logger = Logger.getLogger(JarRoot.class);
 
 	private URL jarUrl;
 	private long lastModified;
@@ -48,7 +51,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			jarUrl = new URL(jUrl);
 			url = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
-			Logger.logError(e);
+			logger.error(e);
 		}
 	}
 
@@ -98,14 +101,14 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 								items.add(item);
 							}
 						} catch (MalformedURLException e) {
-							Logger.logError(e);
+							logger.error(e);
 						}
 					}
 				}
 				entry = jarIS.getNextJarEntry();
 			}
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} finally {
 			FileUtil.cleanupStream(jarIS);
 			FileUtil.cleanupStream(is);

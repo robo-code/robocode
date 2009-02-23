@@ -26,8 +26,9 @@
 package net.sf.robocode.host;
 
 
+import org.apache.log4j.Logger;
+
 import net.sf.robocode.core.Container;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 
@@ -39,6 +40,8 @@ import net.sf.robocode.ui.IWindowManager;
  * @author Pavel Savara (contributor)
  */
 public class CpuManager implements ICpuManager {
+	private final static transient Logger logger = Logger.getLogger(CpuManager.class);
+
 	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
 	private final static int TEST_PERIOD_MILLIS = 5000;
 
@@ -63,8 +66,7 @@ public class CpuManager implements ICpuManager {
 		setStatus("Estimating CPU speed, please wait...");
 
 		setCpuConstant();
-		Logger.logMessage(
-				"Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system.");
+		logger.info("Each robot will be allowed a maximum of " + cpuConstant + " nanoseconds per turn on this system");
 
 		properties.setCpuConstant(cpuConstant);
 		properties.saveProperties();
@@ -87,7 +89,7 @@ public class CpuManager implements ICpuManager {
 
 		// to cheat optimizer, almost never happen
 		if (d == 0.0) {
-			Logger.logMessage("bingo!");
+			logger.trace("bingo!");
 		}
 
 		cpuConstant = Math.max(1, (long) (1000000.0 * APPROXIMATE_CYCLES_ALLOWED * TEST_PERIOD_MILLIS / count));
@@ -100,5 +102,4 @@ public class CpuManager implements ICpuManager {
 			windowManager.setStatus(message);
 		}
 	}
-
 }

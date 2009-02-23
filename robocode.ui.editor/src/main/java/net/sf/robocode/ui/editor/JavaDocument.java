@@ -18,11 +18,11 @@
 package net.sf.robocode.ui.editor;
 
 
-import net.sf.robocode.io.Logger;
-
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.*;
 import javax.swing.undo.UndoManager;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -31,6 +31,8 @@ import javax.swing.undo.UndoManager;
  */
 @SuppressWarnings("serial")
 public class JavaDocument extends PlainDocument {
+	private final static transient Logger logger = Logger.getLogger(JavaDocument.class);
+
 	private UndoHandler undoHandler;
 	private boolean needsRedraw;
 	private EditWindow editWindow;
@@ -116,7 +118,7 @@ public class JavaDocument extends PlainDocument {
 			Element changedElements[] = deltas.getChildrenAdded();
 
 			if (changedElements == null || changedElements.length == 0) {
-				Logger.logError("Unknown insert even, 0 children added.");
+				logger.error("Unknown insert even, 0 children added");
 			} else {
 				for (Element element : changedElements) {
 					processMultilineComments(element, true);
@@ -158,7 +160,7 @@ public class JavaDocument extends PlainDocument {
 		try {
 			elementText = getText(startOffset, endOffset - startOffset);
 		} catch (BadLocationException e) {
-			Logger.logError("Error processing updates: ", e);
+			logger.error("Error processing updates: ", e);
 			return;
 		}
 		boolean followingLineComment,

@@ -12,9 +12,10 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobotTestBed;
+
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import javax.swing.*;
@@ -24,6 +25,8 @@ import javax.swing.*;
  * @author Pavel Savara (original)
  */
 public class TestAwtAttack extends RobotTestBed {
+	private final static transient Logger logger = Logger.getLogger(TestAwtAttack.class);
+
 	// in case: boolean messagedAttack;
 	boolean messagedBreakthru;
 
@@ -73,7 +76,7 @@ public class TestAwtAttack extends RobotTestBed {
 
 		Runnable doCheck = new Runnable() {
 			public void run() {
-				Logger.logMessage("works still!!!");
+				logger.info("works still!!!");
 			}
 		};
 

@@ -104,7 +104,6 @@ import net.sf.robocode.battle.peer.TeamPeer;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
@@ -121,6 +120,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * The {@code Battle} class is used for controlling a battle.
@@ -135,6 +136,7 @@ import java.util.regex.Pattern;
  * @author Pavel Savara (contributor)
  */
 public final class Battle extends BaseBattle {
+	private final static transient Logger logger = Logger.getLogger(Battle.class);
 
 	private final IHostManager hostManager;
 	private final long cpuConstant;
@@ -446,7 +448,7 @@ public final class Battle extends BaseBattle {
 			robotPeer.getRobotStatistics().initialize();
 			robotPeer.startRound(waitTime);
 		}
-		Logger.logMessage("");
+		logger.info("");
 
 		final ITurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
 

@@ -13,7 +13,6 @@ package net.sf.robocode.repository;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
@@ -25,11 +24,15 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class Database {
+	private final static transient Logger logger = Logger.getLogger(Database.class);
+
 	private Hashtable<String, IRepositoryRoot> roots = new Hashtable<String, IRepositoryRoot>();
 	private Hashtable<String, IItem> items = new Hashtable<String, IItem>();
 	private Hashtable<String, IItem> oldItems = new Hashtable<String, IItem>();
@@ -167,7 +170,7 @@ public class Database {
 			}
 
 			// no found
-			Logger.logError("Can't find robot: " + botName);
+			logger.error("Can't find robot: " + botName);
 		}
 		return result;
 	}
@@ -234,10 +237,10 @@ public class Database {
 				if (item.isValid()) {
 					result.add((IRepositoryItem) item);
 				} else {
-					Logger.logError("Can't load " + bot + ", because it is invalid robot or team.");
+					logger.error("Can't load " + bot + ", because it is invalid robot or team");
 				}
 			} else {
-				Logger.logError("Can't find " + bot);
+				logger.error("Can't find " + bot);
 			}
 		}
 		return result;
@@ -267,7 +270,7 @@ public class Database {
 			oos.writeObject(uniqueroots);
 			oos.writeObject(uniqueitems);
 		} catch (IOException e) {
-			Logger.logError("Can't save robot database", e);
+			logger.error("Can't save robot database", e);
 		} finally {
 			FileUtil.cleanupStream(oos);
 			FileUtil.cleanupStream(fos);
@@ -302,7 +305,7 @@ public class Database {
 			}
 			return res;
 		} catch (Throwable t) {
-			Logger.logError("Can't load robot database: " + t.getMessage());
+			logger.error("Can't load robot database: " + t.getMessage());
 			return null;
 		} finally {
 			FileUtil.cleanupStream(ois);

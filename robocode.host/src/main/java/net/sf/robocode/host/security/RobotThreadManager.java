@@ -27,9 +27,6 @@ package net.sf.robocode.host.security;
 
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.LoggingThreadGroup;
 import robocode.exception.RobotException;
 
@@ -38,12 +35,16 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class RobotThreadManager {
+	private final static transient Logger logger = Logger.getLogger(RobotThreadManager.class);
+
 	private final IHostedThread robotProxy;
 	private Thread runThread;
 	private LoggingThreadGroup runThreadGroup;
@@ -61,10 +62,10 @@ public class RobotThreadManager {
 					runThreadGroup.destroy();
 				}
 			} else {
-				Logger.logError("Warning, could not destroy " + runThread.getName());
+				logger.warn("Warning, could not destroy " + runThread.getName());
 			}
 		} catch (Exception e) {
-			Logger.logError("Warning, could not destroy " + runThreadGroup.getName(), e);
+			logger.warn("Warning, could not destroy " + runThreadGroup.getName(), e);
 		}
 	}
 
@@ -103,7 +104,7 @@ public class RobotThreadManager {
 			runThread.setContextClassLoader(this.robotProxy.getRobotClassloader());
 			runThread.start();
 		} catch (Exception e) {
-			logError("Exception starting thread: ", e);
+			logger.error("Exception starting thread: ", e);
 		}
 	}
 
@@ -133,10 +134,10 @@ public class RobotThreadManager {
 
 		if (stop) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
+				logger.error("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
 				return forceStop();
 			} else {
-				logError(
+				logger.error(
 						"Robot " + robotProxy.getStatics().getName()
 						+ " is still running.  Not stopping it because security is off.");
 			}
@@ -183,9 +184,9 @@ public class RobotThreadManager {
 			if (t.isAlive()) {
 				// noinspection deprecation
 				// t.suspend();
-				logError("Warning!  Unable to stop thread: " + runThread.getName());
+				logger.warn("Warning!  Unable to stop thread: " + runThread.getName());
 			} else {
-				logMessage(robotProxy.getStatics().getName() + " has been stopped.");
+				logger.info(robotProxy.getStatics().getName() + " has been stopped");
 			}
 			return 1;
 		}
@@ -211,7 +212,7 @@ public class RobotThreadManager {
 			try {
 				t.setPriority(Thread.MIN_PRIORITY);
 			} catch (NullPointerException e) {
-				logError("Sometimes this occurs in the Java core?!", e);
+				logger.error("Sometimes this occurs in the Java core?!", e);
 			}
 			t.interrupt();
 			try {
@@ -226,7 +227,7 @@ public class RobotThreadManager {
 	private void waitForStop(Thread thread) {
 		for (int j = 0; j < 100 && thread.isAlive(); j++) {
 			if (j == 50) {
-				logError(
+				logger.error(
 						"Waiting for robot " + robotProxy.getStatics().getName() + " to stop thread " + thread.getName());
 			}
 			try {

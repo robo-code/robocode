@@ -31,8 +31,6 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.io.File;
@@ -51,6 +49,8 @@ import java.security.cert.Certificate;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * This classloader is used by robots. It isolates classes which belong to robot and load them localy.
@@ -64,6 +64,8 @@ import java.util.Set;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobotClassLoader extends URLClassLoader implements IRobotClassLoader {
+	private final static transient Logger logger = Logger.getLogger(RobotClassLoader.class);
+
 	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private Field classesField = null;
 	protected Class<?> robotClass;
@@ -191,7 +193,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 				}while (!done);
 
 			} catch (IOException e) {
-				Logger.logError(e);
+				logger.error(e);
 				return null;
 			} finally {
 				FileUtil.cleanupStream(is);
@@ -286,7 +288,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		}
 
 		if (classesField == null) {
-			logError("RobotClassLoader: Failed to find classes field in: " + this);
+			logger.error("RobotClassLoader: Failed to find classes field in: " + this);
 		}
 	}
 }

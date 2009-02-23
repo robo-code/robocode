@@ -13,7 +13,6 @@ package net.sf.robocode.repository.root;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
@@ -24,6 +23,8 @@ import java.io.FileFilter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Represents on classpath of robots
@@ -32,6 +33,8 @@ import java.util.ArrayList;
 public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
+	private final static transient Logger logger = Logger.getLogger(ClassPathRoot.class);
+
 	boolean isDevel = false;
 
 	public ClassPathRoot(Database db, File rootPath) {
@@ -39,7 +42,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		try {
 			url = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
-			Logger.logError(e);
+			logger.error(e);
 		}
 
 		isDevel = !(rootPath.equals(FileUtil.getRobotsDir()));
@@ -75,7 +78,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 							modified.add(pathname.lastModified());
 						}
 					} catch (MalformedURLException e) {
-						Logger.logError(e);
+						logger.error(e);
 						return false;
 					}
 				}

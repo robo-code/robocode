@@ -23,14 +23,14 @@ package net.sf.robocode.ui.editor;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.ui.dialog.ConsoleDialog;
 import net.sf.robocode.ui.dialog.WindowUtil;
 import net.sf.robocode.version.IVersionManager;
 
 import javax.swing.*;
+
+import org.apache.log4j.Logger;
+
 import java.awt.*;
 import java.io.*;
 import java.util.jar.JarEntry;
@@ -42,6 +42,7 @@ import java.util.jar.JarInputStream;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeCompilerFactory {
+	private final static transient Logger logger = Logger.getLogger(RobocodeCompilerFactory.class);
 
 	private final static String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "libs"
 			+ File.separator + "robocode.jar" + File.pathSeparator
@@ -68,7 +69,7 @@ public class RobocodeCompilerFactory {
 				return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
 						getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
 			}
-			logError("Unable to create compiler.");
+			logger.error("Unable to create compiler");
 			return null;
 		}
 		return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
@@ -116,7 +117,7 @@ public class RobocodeCompilerFactory {
 					File dir = new File(dest, entry.getName());
 
 					if (!dir.exists() && !dir.mkdirs()) {
-						Logger.logError("Can't create " + dir);
+						logger.error("Can't create: " + dir);
 					}
 				} else {
 					status.setText(entryName + " " + SPINNER[spin++]);
@@ -124,7 +125,7 @@ public class RobocodeCompilerFactory {
 					File parentDirectory = new File(out.getParent());
 
 					if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
-						Logger.logError("Can't create " + parentDirectory);
+						logger.error("Can't create: " + parentDirectory);
 					}
 
 					int index = 0;
@@ -179,13 +180,13 @@ public class RobocodeCompilerFactory {
 				in = new FileInputStream(file);
 				compilerProperties.load(in);
 				if (compilerProperties.getRobocodeVersion() == null) {
-					logMessage("Setting up new compiler");
+					logger.info("Setting up new compiler");
 					compilerProperties.setCompilerBinary("");
 				}
 			} catch (FileNotFoundException e) {
-				logMessage("Compiler configuration file was not found. A new one will be created.");
+				logger.info("Compiler configuration file was not found. A new one will be created.");
 			} catch (IOException e) {
-				logError("IO Exception reading " + file, e);
+				logger.error("IO Exception reading " + file, e);
 			} finally {
 				if (in != null) {
 					try {
@@ -395,7 +396,7 @@ public class RobocodeCompilerFactory {
 		try {
 			String command = "./compilers/buildJikes.sh";
 
-			logMessage(command);
+			logger.info(command);
 
 			ProcessBuilder pb = new ProcessBuilder(command);
 
@@ -432,7 +433,7 @@ public class RobocodeCompilerFactory {
 
 	public static void saveCompilerProperties() {
 		if (compilerProperties == null) {
-			logError("Cannot save null compiler properties");
+			logger.error("Cannot save null compiler properties");
 			return;
 		}
 		FileOutputStream out = null;
@@ -442,7 +443,7 @@ public class RobocodeCompilerFactory {
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} finally {
 			if (out != null) {
 				try {
@@ -471,7 +472,7 @@ public class RobocodeCompilerFactory {
 			javacOk = (p.exitValue() == 0);
 
 		} catch (IOException e) {
-			logError(e);
+			logger.error(e);
 
 		} catch (InterruptedException e) {
 			// Immediately reasserts the exception by interrupting the caller thread itself
@@ -507,7 +508,7 @@ public class RobocodeCompilerFactory {
 			jikesOk = (p.exitValue() == 0);
 
 		} catch (IOException e) {
-			logError(e);
+			logger.error(e);
 
 		} catch (InterruptedException e) {
 			// Immediately reasserts the exception by interrupting the caller thread itself

@@ -12,8 +12,6 @@
 package net.sf.robocode.ui.gfx;
 
 
-import net.sf.robocode.io.Logger;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,6 +20,8 @@ import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Class used for utilizing images.
@@ -29,6 +29,7 @@ import java.net.URL;
  * @author Flemming N. Larsen (original)
  */
 public class ImageUtil {
+	private final static transient Logger logger = Logger.getLogger(ImageUtil.class);
 
 	/**
 	 * Returns an image resource.
@@ -40,7 +41,7 @@ public class ImageUtil {
 		URL url = ImageUtil.class.getResource(filename);
 
 		if (url == null) {
-			Logger.logError("Could not load image because of invalid filename: " + filename);
+			logger.error("Could not load image because of invalid filename: " + filename);
 			return null;
 		}
 
@@ -50,12 +51,12 @@ public class ImageUtil {
 			if (result == null) {
 				final String message = "Could not load image: " + filename;
 
-				Logger.logError(message);
+				logger.error(message);
 				throw new Error();
 			}
 			return result;
 		} catch (IOException e) {
-			Logger.logError("Could not load image: " + filename);
+			logger.error("Could not load image: " + filename);
 			return null;
 		}
 

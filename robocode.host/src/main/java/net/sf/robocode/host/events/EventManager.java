@@ -50,6 +50,8 @@ import robocode.robotinterfaces.IBasicRobot;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -60,6 +62,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Pavel Savara (contributor)
  */
 public class EventManager implements IEventManager {
+	private final static transient Logger logger = Logger.getLogger(EventManager.class);
+
 	private BasicRobotProxy robotProxy;
 	private final static int MAX_PRIORITY = 100;
 	public final static int MAX_EVENT_STACK = 2;
@@ -103,9 +107,9 @@ public class EventManager implements IEventManager {
 	private void addImpl(Event e) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
-				System.out.println(
+				logger.error(
 						"Not adding to " + robotProxy.getStatics().getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE
-						+ " events in queue.");
+						+ " events in queue");
 				return;
 			}
 			eventQueue.add(e);

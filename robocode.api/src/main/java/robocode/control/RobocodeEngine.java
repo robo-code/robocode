@@ -41,13 +41,14 @@ import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.gui.IWindowManagerBase;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.repository.IRepositoryManagerBase;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 
 import java.io.File;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -71,6 +72,7 @@ import java.io.File;
  * @author Pavel Savara (contributor)
  */
 public class RobocodeEngine implements IRobocodeEngine {
+	private final static transient Logger logger = Logger.getLogger(RobocodeEngine.class);
 
 	private BattleObserver battleObserver;
 	private BattleSpecification battleSpecification;
@@ -351,24 +353,24 @@ public class RobocodeEngine implements IRobocodeEngine {
 
 		int numGroups = currentGroup.enumerate(groups, true);
 
-		StringBuffer logBuffer = new StringBuffer("");
+		StringBuffer strBuf = new StringBuffer("");
 
 		for (int i = 0; i < numGroups; i++) {
 			currentGroup = groups[i];
 
 			String prefix = currentGroup.isDaemon() ? " " : "*";
 
-			logBuffer.append(prefix + " In group: " + currentGroup.getName() + '\n');
+			strBuf.append(prefix + " In group: " + currentGroup.getName() + '\n');
 			int numThreads = currentGroup.enumerate(threads);
 
 			for (int j = 0; j < numThreads; j++) {
 				prefix = threads[j].isDaemon() ? " " : "*";
 
-				logBuffer.append(prefix + threads[j].getName() + '\n');
+				strBuf.append(prefix + threads[j].getName() + '\n');
 			}
-			logBuffer.append("---------------" + '\n');
+			strBuf.append("---------------");
 		}
-		Logger.logger.info(logBuffer.toString());
+		System.out.println(strBuf.toString());
 	}
 
 	/**

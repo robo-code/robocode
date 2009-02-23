@@ -28,6 +28,8 @@ import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Flemming N. Larsen (original)
@@ -35,6 +37,9 @@ import java.util.Map;
  */
 @SuppressWarnings({ "deprecation"})
 public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
+
+	private final static transient Logger logger = Logger.getLogger(Graphics2DSerialized.class);
+
 	final Method[] methods = Method.class.getEnumConstants();
 
 	private enum Method {
@@ -1805,7 +1810,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private void notSupportedWarn() {
-		System.out.println("We are sorry. Operation is not supported in Robocode.");
+		logger.error("The operation is not supported in Robocode");
 	}
 
 	// --------------------------------------------------------------------------

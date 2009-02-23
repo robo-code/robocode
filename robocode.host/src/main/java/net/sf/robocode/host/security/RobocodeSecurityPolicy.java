@@ -25,7 +25,6 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.host.io.RobotFileSystemManager;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import java.io.File;
@@ -35,6 +34,8 @@ import java.net.MalformedURLException;
 import java.security.*;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -42,6 +43,8 @@ import java.util.*;
  * @author Robert D. Maupin (contributor)
  */
 public class RobocodeSecurityPolicy extends Policy {
+	private final static transient Logger logger = Logger.getLogger(RobocodeSecurityPolicy.class);
+
 	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private static final boolean isFileReadSecutityOff = System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals(
 			"true");
@@ -144,7 +147,7 @@ public class RobocodeSecurityPolicy extends Policy {
 		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
 		if (robotProxy == null) {
-			Logger.logError("Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
+			logger.error("Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
 			return false;
 		}
 
@@ -152,7 +155,7 @@ public class RobocodeSecurityPolicy extends Policy {
 		if (perm instanceof java.awt.AWTPermission) {
 			final String message = "Preventing " + robotProxy.getStatics().getName() + " from access to AWT: " + perm;
 
-			Logger.logError(message);
+			logger.error(message);
 			robotProxy.disable();
 
 			// this is hack, because security exception is not enough
@@ -186,7 +189,7 @@ public class RobocodeSecurityPolicy extends Policy {
 		}
 
 		// Permission denied.
-		Logger.logError("Preventing " + robotProxy.getStatics().getName() + " from access: " + perm);
+		logger.error("Preventing " + robotProxy.getStatics().getName() + " from access: " + perm);
 		robotProxy.disable();
 
 		return false;
@@ -197,7 +200,7 @@ public class RobocodeSecurityPolicy extends Policy {
 			if (allowedPackages.contains(packageName)) {
 				return true;
 			}
-			Logger.logError(
+			logger.error(
 					"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "
 					+ packageName);
 			robotProxy.disable();
@@ -326,9 +329,9 @@ public class RobocodeSecurityPolicy extends Policy {
 				}
 			}
 		} catch (MalformedURLException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e);
 		}
 	}
 }

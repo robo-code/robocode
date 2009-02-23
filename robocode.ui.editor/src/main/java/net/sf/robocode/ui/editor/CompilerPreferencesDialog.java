@@ -21,14 +21,16 @@ package net.sf.robocode.ui.editor;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -38,6 +40,7 @@ import java.io.IOException;
  */
 @SuppressWarnings("serial")
 public class CompilerPreferencesDialog extends JDialog {
+	private final static transient Logger logger = Logger.getLogger(CompilerPreferencesDialog.class);
 
 	private JButton cancelButton;
 	private JTextField compilerBinaryField;
@@ -161,7 +164,7 @@ public class CompilerPreferencesDialog extends JDialog {
 
 	public void saveCompilerProperties() {
 		if (compilerProperties == null) {
-			Logger.logError("Cannot save null compiler properties");
+			logger.error("Cannot save null compiler properties");
 			return;
 		}
 		FileOutputStream out = null;
@@ -171,7 +174,7 @@ public class CompilerPreferencesDialog extends JDialog {
 
 			compilerProperties.store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} finally {
 			if (out != null) {
 				try {

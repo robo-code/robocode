@@ -13,7 +13,6 @@ package net.sf.robocode.repository.items;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
@@ -25,12 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class TeamItem extends NamedItem implements IRepositoryItem {
 	private static final long serialVersionUID = 1L;
+
+	private final static transient Logger logger = Logger.getLogger(TeamItem.class);
 
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";
@@ -103,7 +106,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 				ios = connection.getInputStream();
 				properties.load(ios);
 			} catch (IOException e) {
-				Logger.logError(e);
+				logger.error(e);
 			} finally {
 				FileUtil.cleanupStream(ios);
 			}
@@ -212,7 +215,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 				fis = new FileInputStream(target);
 				team.load(fis);
 			} catch (Exception e) {
-				Logger.logError(e);
+				logger.error(e);
 			} finally {
 				FileUtil.cleanupStream(fis);
 			}

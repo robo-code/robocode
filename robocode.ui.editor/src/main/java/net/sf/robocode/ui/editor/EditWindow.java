@@ -21,7 +21,6 @@
 package net.sf.robocode.ui.editor;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import javax.swing.*;
@@ -30,11 +29,14 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileFilter;
+
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.StringTokenizer;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -44,6 +46,7 @@ import java.util.StringTokenizer;
  */
 @SuppressWarnings("serial")
 public class EditWindow extends JInternalFrame implements CaretListener {
+	private final static transient Logger logger = Logger.getLogger(EditWindow.class);
 
 	private String fileName;
 	private String robotName;
@@ -127,7 +130,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			setContentPane(getEditWindowContentPane());
 			editor.addToWindowMenu(this);
 		} catch (Throwable e) {
-			Logger.logError(e);
+			logger.error(e);
 		}
 	}
 
@@ -248,7 +251,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 					}
 				}
 			} catch (IOException e) {
-				Logger.logError("Unable to check reasonable filename: ", e);
+				logger.error("Unable to check reasonable filename: ", e);
 			}
 		}
 
@@ -323,7 +326,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 
 			if (ok == JOptionPane.YES_OPTION) {
 				if (!f.exists() && !f.mkdirs()) {
-					Logger.logError("Can't create" + f);
+					logger.error("Can't create: " + f);
 				}
 				f = new File(saveDir);
 			}

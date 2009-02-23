@@ -36,8 +36,6 @@ package net.sf.robocode.settings;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.*;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -48,6 +46,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -56,6 +56,8 @@ import java.util.List;
  */
 // TODO ZAMO, refactor, split by modules
 public class SettingsManager implements ISettingsManager {
+	private final static transient Logger logger = Logger.getLogger(SettingsManager.class);
+
 	// Default SFX files
 	private final static String
 			DEFAULT_FILE_GUNSHOT_SFX = "/net/sf/robocode/sound/sounds/zap.wav",
@@ -160,9 +162,9 @@ public class SettingsManager implements ISettingsManager {
 			in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 			this.load(in);
 		} catch (FileNotFoundException e) {
-			logWarning("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
+			logger.warn("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
 		} catch (IOException e) {
-			logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+			logger.error("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 		} finally {
 			if (in != null) {
 				// noinspection EmptyCatchBlock
@@ -181,7 +183,7 @@ public class SettingsManager implements ISettingsManager {
 
 			this.store(out, "Robocode Properties");
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} finally {
 			if (out != null) {
 				// noinspection EmptyCatchBlock
@@ -1005,7 +1007,7 @@ public class SettingsManager implements ISettingsManager {
 		try {
 			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
 		} catch (Exception e) {
-			Logger.logMessage("Initializing version check date.");
+			logger.info("Initializing version check date");
 			setVersionChecked(new Date());
 		}
 
@@ -1043,7 +1045,7 @@ public class SettingsManager implements ISettingsManager {
 			try {
 				listener.settingChanged(name);
 			} catch (Exception e) {
-				Logger.logError(e);
+				logger.error(e);
 			}
 		}
 	}

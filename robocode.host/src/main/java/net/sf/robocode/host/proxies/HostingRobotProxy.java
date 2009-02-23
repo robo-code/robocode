@@ -17,7 +17,6 @@ import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.host.io.RobotOutputStream;
 import net.sf.robocode.host.security.RobotThreadManager;
 import net.sf.robocode.host.*;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
@@ -33,11 +32,16 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
+	
+	private final static transient Logger logger = Logger.getLogger(HostingRobotProxy.class);
+
 	protected EventManager eventManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
@@ -206,23 +210,20 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			println("SYSTEM: Is your constructor marked public?");
 			println(e);
 			robot = null;
-			logMessage(e);
+			logger.error(e);
 			return false;
 		} catch (Throwable e) {
 			println("SYSTEM: An error occurred during initialization of " + statics.getName());
 			println("SYSTEM: " + e);
 			println(e);
 			robot = null;
-			logMessage(e);
+			logger.error(e);
 			return false;
 		} finally {
 			threadManager.setLoadingRobot(null);
 		}
 		return true;
 	}
-
-	// /
-
 
 	protected abstract void executeImpl();
 
@@ -269,18 +270,18 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 					msg = ": " + msg;
 				}
 				println("SYSTEM: Robot disabled" + msg);
-				logMessage(statics.getName() + "Robot disabled");
+				logger.error(statics.getName() + "Robot disabled");
 			} catch (Exception e) {
 				disable();
 				println(e);
-				logMessage(statics.getName() + ": Exception: " + e); // without stack here
+				logger.error(statics.getName() + ": Exception: " + e); // without stack here
 			} catch (Throwable t) {
 				disable();
 				if (t instanceof ThreadDeath) {
-					logMessage(statics.getName() + " stopped successfully.");
+					logger.info(statics.getName() + " stopped successfully.");
 				} else {
 					println(t);
-					logMessage(statics.getName() + ": Throwable: " + t); // without stack here
+					logger.error(statics.getName() + ": Throwable: " + t); // without stack here
 				}
 			} finally {
 				waitForBattleEndImpl();

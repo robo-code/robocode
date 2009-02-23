@@ -12,8 +12,9 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.RobotTestBed;
+
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,6 +25,7 @@ import java.io.File;
  * @author Pavel Savara (original)
  */
 public class TestFileWrite extends RobotTestBed {
+	private final static transient Logger logger = Logger.getLogger(TestFileWrite.class);
 
 	@Test
 	public void run() {
@@ -40,7 +42,7 @@ public class TestFileWrite extends RobotTestBed {
 	protected void runSetup() {
 		if (file.exists()) {
 			if (!file.delete()) {
-				Logger.logError("Can't delete" + file);
+				logger.error("Can't delete: " + file);
 			}
 		}
 	}
@@ -49,7 +51,7 @@ public class TestFileWrite extends RobotTestBed {
 	protected void runTeardown() {
 		Assert.assertTrue(file.exists());
 		if (!file.delete()) {
-			Logger.logError("Can't delete" + file);
+			logger.error("Can't delete: " + file);
 		}
 	}
 }

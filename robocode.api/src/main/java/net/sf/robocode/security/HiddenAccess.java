@@ -13,7 +13,6 @@ package net.sf.robocode.security;
 
 
 import net.sf.robocode.core.ContainerBase;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotStatics;
 import robocode.BattleRules;
 import robocode.Bullet;
@@ -34,12 +33,16 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Helpers for accessing hidden methods on events
  * @author Pavel Savara (original)
  */
 public class HiddenAccess {
+	private final static transient Logger logger = Logger.getLogger(HiddenAccess.class);
+
 	private static IHiddenEventHelper eventHelper;
 	private static IHiddenBulletHelper bulletHelper;
 	private static IHiddenSpecificationHelper specificationHelper;
@@ -101,25 +104,24 @@ public class HiddenAccess {
 
 			initialized = true;
 		} catch (NoSuchMethodException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (InvocationTargetException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (IllegalAccessException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (ClassNotFoundException e) {
-			Logger.logError(e);
+			logger.error(e);
 			if (!foundCore) {
-				System.out.println("Can't find robocode.core-1.x.jar module near to robocode.jar");
-				System.out.println("ClassPath: " + System.getProperty("robocode.class.path", null));
+				logger.fatal("Can't find robocode.core-1.x.jar module near to robocode.jar");
+				logger.fatal("ClassPath: " + System.getProperty("robocode.class.path", null));
 			}
 			System.exit(-1);
 		} catch (MalformedURLException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (Error e) {
-			Logger.logError(e);
+			logger.fatal(e);
 			throw e;
 		}
-
 	}
 
 	private static ClassLoader getClassLoader() throws MalformedURLException {
@@ -239,10 +241,10 @@ public class HiddenAccess {
 		try {
 			initContainerRe.invoke(null, robocodeHome, listener);
 		} catch (IllegalAccessException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (InvocationTargetException e) {
-			Logger.logError(e.getCause());
-			Logger.logError(e);
+			logger.error(e.getCause());
+			logger.error(e);
 		}
 	}
 
@@ -251,10 +253,10 @@ public class HiddenAccess {
 		try {
 			initContainer.invoke(null);
 		} catch (IllegalAccessException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (InvocationTargetException e) {
-			Logger.logError(e.getCause());
-			Logger.logError(e);
+			logger.error(e.getCause());
+			logger.error(e);
 		}
 	}
 
@@ -263,10 +265,10 @@ public class HiddenAccess {
 		try {
 			cleanup.invoke(null);
 		} catch (IllegalAccessException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (InvocationTargetException e) {
-			Logger.logError(e.getCause());
-			Logger.logError(e);
+			logger.error(e.getCause());
+			logger.error(e);
 		}
 	}
 
@@ -275,10 +277,10 @@ public class HiddenAccess {
 		try {
 			robocodeMain.invoke(null, (Object) args);
 		} catch (IllegalAccessException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (InvocationTargetException e) {
-			Logger.logError(e.getCause());
-			Logger.logError(e);
+			logger.error(e.getCause());
+			logger.error(e);
 		}
 	}
 

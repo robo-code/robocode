@@ -34,7 +34,6 @@ import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
@@ -49,6 +48,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Robocode - A programming game involving battling AI tanks.<br>
@@ -60,6 +61,7 @@ import java.io.PrintStream;
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public final class RobocodeMain extends RobocodeMainBase {
+	private final static transient Logger logger = Logger.getLogger(RobocodeMain.class);
 
 	private final Setup setup;
 	private final BattleObserver battleObserver = new BattleObserver();
@@ -175,7 +177,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				}
 			}
 		} catch (Throwable e) {
-			Logger.logError(e);
+			logger.error(e);
 		}
 	}
 
@@ -187,10 +189,10 @@ public final class RobocodeMain extends RobocodeMainBase {
 				+ "Robots have access to their IRobotPeer interfaces.\n" + "You should only run robots which you trust!";
 
 		if (System.getProperty("NOSECURITY", "false").equals("true")) {
-			Logger.logMessage(nosecMessage);
+			logger.info(nosecMessage);
 		}
 		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-			Logger.logMessage(exMessage);
+			logger.info(exMessage);
 		}
 		if (windowManager != null) {
 			if (System.getProperty("NOSECURITY", "false").equals("true")) {
@@ -225,7 +227,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else if (args[i].equals("-tps") && (i < args.length + 1)) {
 				setup.tps = Integer.parseInt(args[i + 1]);
 				if (setup.tps < 1) {
-					Logger.logError("tps must be > 0");
+					logger.error("tps must be > 0");
 					System.exit(8);
 				}
 				i++;
@@ -247,7 +249,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				printUsage();
 				System.exit(0);
 			} else {
-				Logger.logError("Not understood: " + args[i]);
+				logger.error("Not understood: " + args[i]);
 				printUsage();
 				System.exit(8);
 			}
@@ -316,7 +318,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				fos = new FileOutputStream(f);
 				out = new PrintStream(fos);
 			} catch (IOException e) {
-				Logger.logError(e);
+				logger.error(e);
 			}
 		}
 
@@ -354,16 +356,6 @@ public final class RobocodeMain extends RobocodeMainBase {
 			if (setup.recordXmlFilename != null) {
 				recordManager.saveRecord(setup.recordXmlFilename, BattleRecordFormat.XML);
 			}
-		}
-
-		@Override
-		public void onBattleMessage(BattleMessageEvent event) {
-			Logger.logger.info(event.getMessage());
-		}
-
-		@Override
-		public void onBattleError(BattleErrorEvent event) {
-			Logger.logger.error(event.getError());
 		}
 	}
 

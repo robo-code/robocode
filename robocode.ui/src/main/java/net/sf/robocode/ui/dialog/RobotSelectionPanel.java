@@ -31,7 +31,6 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
@@ -42,6 +41,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import org.apache.log4j.Logger;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
@@ -57,6 +59,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @SuppressWarnings("serial")
 public class RobotSelectionPanel extends WizardPanel {
+	private final static transient Logger logger = Logger.getLogger(RobotSelectionPanel.class);
 
 	private AvailableRobotsPanel availableRobotsPanel;
 
@@ -629,7 +632,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 			tokenizer = new StringTokenizer(selectedRobotsString, ",");
 			if (robotList == null) {
-				Logger.logError("Cannot add robots to a null robots list!");
+				logger.error("Cannot add robots to a null robots list!");
 				return;
 			}
 			this.selectedRobots.clear();

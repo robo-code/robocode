@@ -18,9 +18,9 @@
 package net.sf.robocode.io;
 
 
-import static net.sf.robocode.io.Logger.logError;
-
 import java.io.*;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -30,6 +30,7 @@ import java.io.*;
  * @author Flemming N. Larsen (contributor)
  */
 public class FileUtil {
+	private final static transient Logger logger = Logger.getLogger(FileUtil.class);
 
 	// Current working directory
 	private static File cwd;
@@ -158,17 +159,17 @@ public class FileUtil {
 						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
 							deleteDir(file);
 							if (file.exists() && !file.delete()) {
-								Logger.logError("Can't delete: " + file);
+								logger.error("Can't delete: " + file);
 							}
 						} else {
-							Logger.logMessage("Warning: " + file + " may be a symlink.  Ignoring.");
+							logger.warn("Warning: " + file + " may be a symlink - ignoring");
 						}
 					} catch (IOException e) {
-						Logger.logMessage("Warning: Cannot determine canonical file for " + file + " - ignoring.");
+						logger.warn("Warning: Cannot determine canonical file for '" + file + "' - ignoring");
 					}
 				} else {
 					if (file.exists() && !file.delete()) {
-						Logger.logError("Can't delete: " + file);
+						logger.error("Can't delete: " + file);
 					}
 				}
 			}
@@ -186,7 +187,7 @@ public class FileUtil {
 	public static File createDir(File dir) {
 		if (dir != null && !dir.exists()) {
 			if (!dir.mkdir()) {
-				Logger.logError("Can't create" + dir);
+				logger.error("Can't create: " + dir);
 			}
 		}
 		return dir;
@@ -298,14 +299,14 @@ public class FileUtil {
 			try {
 				((Flushable) stream).flush();
 			} catch (IOException e) {
-				logError(e);
+				logger.error(e);
 			}
 		}
 		if (stream instanceof Closeable) {
 			try {
 				((Closeable) stream).close();
 			} catch (IOException e) {
-				logError(e);
+				logger.error(e);
 			}
 		}
 	}

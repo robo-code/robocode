@@ -13,8 +13,9 @@
 package net.sf.robocode.test.helpers;
 
 
-import net.sf.robocode.io.Logger;
 import static org.hamcrest.CoreMatchers.is;
+
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +31,8 @@ import java.util.Random;
  * @author Pavel Savara (original)
  */
 public abstract class RobotTestBed extends BattleAdaptor {
+	private final static transient Logger logger = Logger.getLogger(RobotTestBed.class);
+
 	protected static final IRobocodeEngine engine;
 	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected static int errors = 0;
@@ -48,14 +51,14 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		engine = new RobocodeEngine(new BattleAdaptor() {
 			public void onBattleMessage(BattleMessageEvent event) {
 				if (isDumpingMessages) {
-					Logger.logger.info(event.getMessage());
+					logger.info(event.getMessage());
 				}
 				messages++;
 			}
 
 			public void onBattleError(BattleErrorEvent event) {
 				if (isDumpingErrors) {
-					Logger.logger.error(event.getError());
+					logger.error(event.getError());
 				}
 				errors++;
 			}
@@ -75,7 +78,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {
-			Logger.logger.info("turn " + event.getTurnSnapshot().getTurn());
+			logger.info("turn " + event.getTurnSnapshot().getTurn());
 		}
 
 		StringBuffer logBuffer = new StringBuffer("");
@@ -95,7 +98,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 				logBuffer.append(robot.getOutputStreamSnapshot());
 			}
 		}
-		Logger.logger.info(logBuffer.toString());
+		logger.info(logBuffer.toString());
 	}
 
 	public void onBattleStarted(BattleStartedEvent event) {

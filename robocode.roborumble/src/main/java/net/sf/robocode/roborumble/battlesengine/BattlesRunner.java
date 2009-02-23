@@ -24,7 +24,6 @@
 package net.sf.robocode.roborumble.battlesengine;
 
 
-import net.sf.robocode.io.Logger;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 import robocode.control.*;
 import robocode.control.events.BattleAdaptor;
@@ -250,7 +249,7 @@ public class BattlesRunner {
 
 		@Override
 		public void onBattleError(final BattleErrorEvent event) {
-			Logger.logger.error(event.getError());
+			System.err.println(event.getError());
 		}
 
 		@Override

@@ -26,7 +26,6 @@ package net.sf.robocode.ui.editor;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.BrowserManager;
 import net.sf.robocode.ui.IWindowManager;
@@ -36,6 +35,9 @@ import net.sf.robocode.ui.gfx.ImageUtil;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.Document;
+
+import org.apache.log4j.Logger;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -48,6 +50,8 @@ import java.io.*;
  */
 @SuppressWarnings("serial")
 public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor {
+	private final static transient Logger logger = Logger.getLogger(RobocodeEditor.class);
+
 	private JPanel robocodeEditorContentPane;
 
 	private RobocodeEditorMenuBar robocodeEditorMenuBar;
@@ -543,7 +547,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			// 2nd time for bug in some JREs
 			robocodeEditor.setVisible(true);
 		} catch (Throwable e) {
-			Logger.logError("Exception in RoboCodeEditor.main", e);
+			logger.error("Exception in RoboCodeEditor.main", e);
 		}
 	}
 
@@ -606,7 +610,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 				addPlaceShowFocus(editWindow);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, e.toString());
-				Logger.logError(e);
+				logger.error(e);
 			} finally {
 				if (fileReader != null) {
 					try {

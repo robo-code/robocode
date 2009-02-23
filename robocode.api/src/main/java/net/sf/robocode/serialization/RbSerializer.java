@@ -13,7 +13,6 @@ package net.sf.robocode.serialization;
 
 
 import net.sf.robocode.core.ContainerBase;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.Event;
@@ -27,11 +26,15 @@ import java.nio.charset.*;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public final class RbSerializer {
+	private final static transient Logger logger = Logger.getLogger(RbSerializer.class);
+
 	public final static int SIZEOF_TYPEINFO = 1;
 	public final static int SIZEOF_BYTE = 1;
 	public final static int SIZEOF_BOOL = 1;
@@ -466,11 +469,11 @@ public final class RbSerializer {
 				classToType.put(realClass, type);
 			}
 		} catch (NoSuchMethodException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (InvocationTargetException e) {
-			Logger.logError(e);
+			logger.error(e);
 		} catch (IllegalAccessException e) {
-			Logger.logError(e);
+			logger.error(e);
 		}
 	}
 
@@ -499,7 +502,7 @@ public final class RbSerializer {
 
 			return rbs.deserialize(in);
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e);
 			return null;
 		}
 	}

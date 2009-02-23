@@ -15,7 +15,6 @@ package net.sf.robocode.ui.battle;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.RobotSnapshot;
-import net.sf.robocode.io.Logger;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -27,11 +26,15 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public final class AwtBattleAdaptor extends BattleAdaptor {
+	private final static transient Logger logger = Logger.getLogger(AwtBattleAdaptor.class);
+
 	private final IBattleManager battleManager;
 	private final BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
 	private final BattleObserver observer;
@@ -154,7 +157,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 				}
 			}
 		} catch (Throwable t) {
-			Logger.logError(t);
+			logger.error(t);
 		}
 	}
 

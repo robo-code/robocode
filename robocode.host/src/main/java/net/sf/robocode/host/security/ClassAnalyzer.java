@@ -19,8 +19,6 @@
 package net.sf.robocode.host.security;
 
 
-import net.sf.robocode.io.Logger;
-
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -29,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -36,6 +36,8 @@ import java.util.Set;
  * @author Robert D. Maupin (contributor)
  */
 public class ClassAnalyzer {
+	private final static transient Logger logger = Logger.getLogger(ClassAnalyzer.class);
+
 	private final static byte CONSTANT_Class = 7;
 	private final static byte CONSTANT_Fieldref = 9;
 	private final static byte CONSTANT_Methodref = 10;
@@ -90,7 +92,7 @@ public class ClassAnalyzer {
 			long magic = in.readInt();
 
 			if (magic != 0xCAFEBABE) {
-				Logger.logError("Not a class file!");
+				logger.error("Not a class file!");
 				return;
 			}
 			in.readUnsignedShort(); // minor version

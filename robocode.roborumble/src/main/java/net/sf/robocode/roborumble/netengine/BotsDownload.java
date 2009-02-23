@@ -24,7 +24,6 @@
 package net.sf.robocode.roborumble.netengine;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.roborumble.battlesengine.CompetitionsSelector;
 import static net.sf.robocode.roborumble.netengine.FileTransfer.DownloadStatus;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
@@ -131,25 +130,25 @@ public class BotsDownload {
 		if (generalbotsfile.length() != 0) {
 			file = new File(generalbotsfile);
 			if (file.exists() && !file.delete()) {
-				Logger.logError("Can't delete file");
+				System.err.println("Can't delete file");
 			}
 		}
 		if (minibotsfile.length() != 0) {
 			file = new File(minibotsfile);
 			if (file.exists() && !file.delete()) {
-				Logger.logError("Can't delete file");
+				System.err.println("Can't delete file");
 			}
 		}
 		if (microbotsfile.length() != 0) {
 			file = new File(microbotsfile);
 			if (file.exists() && !file.delete()) {
-				Logger.logError("Can't delete file");
+				System.err.println("Can't delete file");
 			}
 		}
 		if (nanobotsfile.length() != 0) {
 			file = new File(nanobotsfile);
 			if (file.exists() && !file.delete()) {
-				Logger.logError("Can't delete file");
+				System.err.println("Can't delete file");
 			}
 		}
 		// download new ones
@@ -210,7 +209,7 @@ public class BotsDownload {
 			final File dir = new File(participantsfile).getParentFile();
 
 			if (!dir.exists() && !dir.mkdirs()) {
-				Logger.logError("Can't create " + dir);
+				System.err.println("Can't create " + dir);
 			}
 
 			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(participantsfile)), false);
@@ -434,7 +433,7 @@ public class BotsDownload {
 			final File dir = new File(file).getParentFile();
 
 			if (!dir.exists() && !dir.mkdirs()) {
-				Logger.logError("Can't create " + dir);
+				System.err.println("Can't create " + dir);
 			}
 
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);

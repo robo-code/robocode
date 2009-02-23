@@ -25,7 +25,6 @@ package net.sf.robocode.ui.packager;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.ui.dialog.WizardPanel;
 
@@ -42,6 +41,8 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -50,6 +51,8 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class FilenamePanel extends WizardPanel {
+	private final static transient Logger logger = Logger.getLogger(FilenamePanel.class);
+
 	private final RobotPackager robotPackager;
 
 	private final EventHandler eventHandler = new EventHandler();
@@ -89,7 +92,7 @@ public class FilenamePanel extends WizardPanel {
 
 			if (!outgoingFile.exists()) {
 				if (!outgoingFile.mkdirs()) {
-					Logger.logError("Can't create" + outgoingFile);
+					logger.error("Can't create: " + outgoingFile);
 				}
 			}
 			String jarName = "myrobots.jar";

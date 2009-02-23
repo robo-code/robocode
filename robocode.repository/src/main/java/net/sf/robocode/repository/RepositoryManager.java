@@ -14,7 +14,6 @@ package net.sf.robocode.repository;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
@@ -33,11 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class RepositoryManager implements IRepositoryManager {
+	private final static transient Logger logger = Logger.getLogger(RepositoryManager.class);
 
 	private final ISettingsManager properties;
 	private Database db;
@@ -102,7 +104,7 @@ public class RepositoryManager implements IRepositoryManager {
 	public void reload(boolean forced) {
 		if (forced) {
 			db = new Database(this);
-			Logger.logMessage("Rebuilding robot database.");
+			logger.info("Rebuilding robot database.");
 		} else if (db == null) {
 			setStatus("Reading robot database");
 			db = Database.load(this);
@@ -187,7 +189,7 @@ public class RepositoryManager implements IRepositoryManager {
 				if (robot.validate()) {
 					battlingRobotsList.add(robot.createRobotSpecification(spec, null));
 				} else {
-					Logger.logError("Could not load robot: " + robot.getFullClassName());
+					logger.error("Could not load robot: " + robot.getFullClassName());
 					return false;
 				}
 			}
@@ -264,7 +266,7 @@ public class RepositoryManager implements IRepositoryManager {
 			windowManager.setStatus(message);
 		}
 		if (message.length() > 0) {
-			Logger.logMessage(message);
+			logger.info(message);
 		}
 	}
 

@@ -12,18 +12,20 @@
 package net.sf.robocode.security;
 
 
-import net.sf.robocode.io.Logger;
+import org.apache.log4j.Logger;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class LoggingThreadGroup extends ThreadGroup {
+	private final static transient Logger logger = Logger.getLogger(LoggingThreadGroup.class);
+
 	public LoggingThreadGroup(String name) {
 		super(name);
 	}
 
 	public void uncaughtException(Thread t, Throwable e) {
-		Logger.logError("UncaughtException on thread " + t.getClass(), e);
+		logger.error("UncaughtException on thread " + t.getClass(), e);
 	}
 }

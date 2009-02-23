@@ -13,8 +13,6 @@ package net.sf.robocode.repository.items;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
 import net.sf.robocode.repository.root.IRepositoryRoot;
@@ -33,12 +31,16 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private static final long serialVersionUID = 1L;
+
+	private final static transient Logger logger = Logger.getLogger(RobotItem.class);
 
 	// Allowed maximum length for a robot's full package name
 	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
@@ -106,7 +108,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				propertiesUrl = new URL(pUrl);
 				loadProperties();
 			} catch (MalformedURLException e) {
-				Logger.logError(e);
+				logger.error(e);
 			}
 		}
 	}
@@ -125,7 +127,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 						url = new URL(cUrl);
 					} catch (MalformedURLException e) {
-						Logger.logError(e);
+						logger.error(e);
 					}
 				} else {
 					isValid = false;
@@ -142,7 +144,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 				url = new URL(cUrl);
 			} catch (MalformedURLException e) {
-				Logger.logError(e);
+				logger.error(e);
 			}
 		}
 	}
@@ -318,7 +320,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
 				if (!silent) {
-					logError("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
+					logger.error("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
 				}
 				return false;
 			}
@@ -328,7 +330,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
 
 				if (!silent) {
-					logError(message);
+					logger.error(message);
 				}
 				return false;
 			}
@@ -339,7 +341,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 					+ " characters maximum please.";
 
 			if (!silent) {
-				logError(message);
+				logger.error(message);
 			}
 			return false;
 		}

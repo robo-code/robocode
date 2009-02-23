@@ -12,7 +12,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlWriter;
 import net.sf.robocode.ui.IWindowManager;
@@ -28,11 +27,15 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class BattleDialog extends JFrame {
+	private final static transient Logger logger = Logger.getLogger(BattleDialog.class);
+
 	private static final long serialVersionUID = 1L;
 
 	private final BattleObserver battleObserver = new BattleObserver();
@@ -201,7 +204,7 @@ public class BattleDialog extends JFrame {
 					((IXmlSerializable) lastSnapshot).writeXml(xmlWriter, null);
 					writer.close();
 				} catch (IOException e) {
-					Logger.logError(e);
+					logger.error(e);
 				}
 				getTurnScrollPane().setText(writer.toString());
 			} else {
