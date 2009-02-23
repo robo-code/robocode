@@ -1459,8 +1459,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void punishBadBehavior() {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
-		// disable for next time
-		((IRobotRepositoryItem) HiddenAccess.getFileSpecification(robotSpecification)).setValid(false);
+		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(robotSpecification);
+		// disable for next time, just if is not developed here
+		if (!repositoryItem.isDevelopmentVersion()){
+			repositoryItem.setValid(false);
+		}
 	}
 
 	public void updateEnergy(double delta) {

@@ -3,7 +3,11 @@ Version 1.7.1 Alpha
 ---------------
 
 = Changes =
-- The robot repository has been updated
+- The robot repository has been updated. It is no longer extracting .jar files. It also remembers last timestamp on file so detection of the changes is really fast. Only data files are extracted now. Data files for non-packed robots were moved to .robotcache as well.
+
+= Bugfix =
+* Bug [2626148] - bots referencing robocode.robocodeGL broken. We are now not following refrences to robocode packages
+* Bug [2626164] - don't ever punish robots in devel directories by removing from repository
 
 = New features =
 - Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine
