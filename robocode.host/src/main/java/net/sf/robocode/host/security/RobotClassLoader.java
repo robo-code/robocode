@@ -71,6 +71,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	protected URL robotClassPath;
 	private Set<String> referencedClasses = new HashSet<String>();
 	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
+	private ClassLoader parent;
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		super(new URL[] { robotClassPath}, Container.systemLoader);
@@ -78,6 +79,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		fullClassName = robotFullClassName;
 		this.robotClassPath = robotClassPath;
 		emptyPermissions = new Permissions();
+		parent = getParent();
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
 		} catch (MalformedURLException ignored) {}
@@ -114,16 +116,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		// or java class
 		// or security is off
 		// so we delegate to parent classloader
-
-		try {
-			return AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
-				public Class<?> run() throws ClassNotFoundException {
-					return getParent().loadClass(name);
-				}
-			});
-		} catch (PrivilegedActionException e) {
-			throw (ClassNotFoundException) e.getException();
-		}
+		return parent.loadClass(name);
 	}
 
 	private void testPackages(String name) throws ClassNotFoundException {
