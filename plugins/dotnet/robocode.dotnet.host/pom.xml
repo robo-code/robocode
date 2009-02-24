@@ -14,6 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.nhost</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
             <version>${robocode.version}</version>
         </dependency>

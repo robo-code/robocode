@@ -2,9 +2,6 @@ Version 1.7.1 Alpha
 (xx-xx-2009)
 ---------------
 
-= Changes =
-- The robot repository has been updated. It is no longer extracting .jar files. It also remembers last timestamp on file so detection of the changes is really fast. Only data files are extracted now. Data files for non-packed robots were moved to .robotcache as well.
-
 = Bugfix =
 * Bug [2626148] - bots referencing robocode.robocodeGL broken. We are now not following refrences to robocode packages
 * Bug [2626164] - don't ever punish robots in devel directories by removing from repository
@@ -13,6 +10,16 @@ Version 1.7.1 Alpha
 - Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine
 - Request [2446276] Ranking Panel should be visible when Robocode is minimized. This feature has been added and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
 - Request [2467545] Command Line option for saving a battle record file. Two new command line options have been added for Robocode, i.e. -record <filename> and -recordXML <filename>. The -record option records the battle as a binary and zipped battle record. Here I propose that the specified filename should is something like record.br. The -recordXML does the same as the -record option, but saves the battle record as an XML file. Here I suggest that you use a filename like record.br.xml.
+
+= Internal Changes =
+- The robot repository has been updated. It is no longer extracting .jar files. 
+- It also remembers last timestamp on file so detection of the changes is really fast. Only data files are extracted now. 
+- Data files for non-packed robots were moved to .robotcache as well.
+- VersionManager now could say if the Robocode version was upgraded since last run
+- blocking security issue with relative path in getDataFile metod
+- improved security in RobotClassLoader
+- reimplemented RobotPackager
+- BulletSnapshot has now method getBulletId which gives identity of bullet for UI
 
 Version 1.7.0.3
 (20-Feb-2009)
