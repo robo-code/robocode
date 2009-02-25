@@ -136,8 +136,11 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 							for (int i = 0; i < robots.length; i++) {
 								RobotSnapshot robot = (RobotSnapshot) robots[i];
 
-								robot.setOutputStreamSnapshot(outCache[i].toString());
-								outCache[i].setLength(0);
+								final StringBuilder cache = outCache[i];
+								if (cache.length() > 0) {
+									robot.setOutputStreamSnapshot(cache.toString());
+									outCache[i].setLength(0);
+								}
 							}
 						}
 					}
@@ -200,10 +203,12 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 			synchronized (snapshot) {
 				for (int i = 0; i < robots.length; i++) {
-					IRobotSnapshot robot = robots[i];
+					RobotSnapshot robot = (RobotSnapshot) robots[i];
 
-					if (robot.getOutputStreamSnapshot() != null && robot.getOutputStreamSnapshot().length() != 0) {
-						outCache[i].append(robot.getOutputStreamSnapshot());
+					final String text = robot.getOutputStreamSnapshot();
+					if (text != null && text.length() != 0) {
+						outCache[i].append(text);
+						robot.setOutputStreamSnapshot(null);
 					}
 				}
 			}
