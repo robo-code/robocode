@@ -32,10 +32,10 @@ public class DotNetHost implements IHost {
 	}
 
 	public String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem) {
-		return new String[0];  //TODO ZAMO
+		return new String[0]; // TODO ZAMO
 	}
 
 	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message) {
-		return null;  //TODO ZAMO
+		return null; // TODO ZAMO
 	}
 }
