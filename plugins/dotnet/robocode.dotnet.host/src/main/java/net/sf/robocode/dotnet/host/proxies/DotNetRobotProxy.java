@@ -27,7 +27,7 @@ public class DotNetRobotProxy implements IHostedThread, IHostingRobotProxy {
 		//TODO ZAMO
 	}
 
-	public void disable() {
+	public void drainEnergy() {
 		//TODO ZAMO
 	}
 

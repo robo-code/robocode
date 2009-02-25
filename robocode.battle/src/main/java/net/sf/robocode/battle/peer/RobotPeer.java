@@ -178,7 +178,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// waiting for next tick
 	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
 	private final AtomicBoolean halt = new AtomicBoolean(false);
-	private boolean isDisabled;
+	private boolean isExecFinishedAndDisabled;
 	private boolean isWinner;
 	private boolean inCollision;
 	private RobotState state;
@@ -475,7 +475,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public final ExecResults executeImpl(ExecCommands newCommands) {
 		validateCommands(newCommands);
 
-		if (!isDisabled) {
+		if (!isExecFinishedAndDisabled) {
 			// from robot to battle
 			commands.set(new ExecCommands(newCommands, true));
 			printProxy(newCommands.getOutputText());
@@ -490,15 +490,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (battle.isAborted()) {
-			isDisabled = true;
+			isExecFinishedAndDisabled = true;
 			throw new AbortedException();
 		}
 		if (isDead()) {
-			isDisabled = true;
+			isExecFinishedAndDisabled = true;
 			throw new DeathException();
 		}
 		if (getHalt()) {
-			isDisabled = true;
+			isExecFinishedAndDisabled = true;
 			if (isWinner) {
 				throw new WinException();
 			} else {
@@ -714,7 +714,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		gunHeat = 3;
 
 		setHalt(false);
-		isDisabled = false;
+		isExecFinishedAndDisabled = false;
 
 		scan = false;
 
@@ -1451,9 +1451,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		isRunning.set(value);
 	}
 
-	public void disable() {
+	public void drainEnergy() {
 		setEnergy(0, true);
-		isDisabled = true;
 	}
 
 	public void punishBadBehavior() {
@@ -1467,7 +1466,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void updateEnergy(double delta) {
-		if (!isDisabled) {
+		if (!isExecFinishedAndDisabled || delta < 0) {
 			setEnergy(energy + delta, true);
 		}
 	}

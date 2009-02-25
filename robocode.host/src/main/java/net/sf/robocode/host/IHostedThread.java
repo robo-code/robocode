@@ -22,7 +22,7 @@ import net.sf.robocode.host.io.RobotOutputStream;
 public interface IHostedThread extends Runnable {
 	void println(String s);
 
-	void disable();
+	void drainEnergy();
 
 	RobotStatics getStatics();
 

@@ -48,7 +48,7 @@ public class TestFileAttack extends RobotTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "sample.SittingDuck,tested.robots.FileAttack";
+		return "sample.Fire,tested.robots.FileAttack";
 	}
 
 	@Override

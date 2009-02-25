@@ -185,7 +185,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + statics.getName() + " : ");
 			println(e);
-			disable();
+			drainEnergy();
 		}
 	}
 
@@ -232,7 +232,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		peer.setRunning(true);
 
 		if (!robotSpecification.isValid() || !loadRobotRound()) {
-			disable();
+			drainEnergy();
 			peer.punishBadBehavior();
 			waitForBattleEndImpl();
 		} else {
@@ -260,7 +260,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			} catch (DeathException e) {
 				println("SYSTEM: " + statics.getName() + " has died");
 			} catch (DisabledException e) {
-				disable();
+				drainEnergy();
 				String msg = e.getMessage();
 
 				if (msg == null) {
@@ -271,11 +271,11 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				println("SYSTEM: Robot disabled" + msg);
 				logMessage(statics.getName() + "Robot disabled");
 			} catch (Exception e) {
-				disable();
+				drainEnergy();
 				println(e);
 				logMessage(statics.getName() + ": Exception: " + e); // without stack here
 			} catch (Throwable t) {
-				disable();
+				drainEnergy();
 				if (t instanceof ThreadDeath) {
 					logMessage(statics.getName() + " stopped successfully.");
 				} else {
@@ -296,7 +296,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	protected abstract void waitForBattleEndImpl();
 
-	public void disable() {
-		peer.disable();
+	public void drainEnergy() {
+		peer.drainEnergy();
 	}
 }

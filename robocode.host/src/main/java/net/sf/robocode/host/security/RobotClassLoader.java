@@ -161,6 +161,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	// we need to call defineClass to be able to set codeSource to untrustedLocation  
 	private ByteBuffer findLocalResource(String name) {
 		// try to find it in robot's classpath
+		// this is URL, don't change to File.pathSeparator 
 		String path = name.replace('.', '/').concat(".class");
 
 		final URL url = findResource(path);
@@ -206,7 +207,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	private void notifyRobot(String s) {
 		if (robotProxy != null) {
 			robotProxy.println(s);
-			robotProxy.disable();
+			robotProxy.drainEnergy();
 		}
 	}
 
