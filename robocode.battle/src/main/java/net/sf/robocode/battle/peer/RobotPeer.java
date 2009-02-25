@@ -179,6 +179,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
 	private final AtomicBoolean halt = new AtomicBoolean(false);
 	private boolean isExecFinishedAndDisabled;
+	private boolean isEnergyDrained;
 	private boolean isWinner;
 	private boolean inCollision;
 	private RobotState state;
@@ -715,6 +716,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		setHalt(false);
 		isExecFinishedAndDisabled = false;
+		isEnergyDrained = false;
 
 		scan = false;
 
@@ -1453,20 +1455,23 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public void drainEnergy() {
 		setEnergy(0, true);
+		isEnergyDrained = true;
 	}
 
 	public void punishBadBehavior() {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
-		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(robotSpecification);
+		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+				robotSpecification);
+
 		// disable for next time, just if is not developed here
-		if (!repositoryItem.isDevelopmentVersion()){
+		if (!repositoryItem.isDevelopmentVersion()) {
 			repositoryItem.setValid(false);
 		}
 	}
 
 	public void updateEnergy(double delta) {
-		if (!isExecFinishedAndDisabled || delta < 0) {
+		if ((!isExecFinishedAndDisabled && !isEnergyDrained) || delta < 0) {
 			setEnergy(energy + delta, true);
 		}
 	}
