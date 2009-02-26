@@ -32,8 +32,8 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.recording.IRecordManager;
-import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.ui.*;
 import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
@@ -219,14 +219,6 @@ public class RobocodeFrame extends JFrame {
 					"It is highly recommended that you always download the latest version.  You may get it at " + INSTALL_URL,
 					"Update when you can!", JOptionPane.INFORMATION_MESSAGE);
 		}
-	}
-
-	/**
-	 * Called when the battle view is resized
-	 */
-	private void battleViewResized() {
-		battleView.validate();
-		battleView.setInitialized(false);
 	}
 
 	/**
@@ -719,9 +711,6 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		public void componentResized(ComponentEvent e) {
-			if (e.getSource() == battleView) {
-				battleViewResized();
-			}
 			if (e.getSource() == getBattleViewPanel()) {
 				battleViewPanelResized();
 			}
