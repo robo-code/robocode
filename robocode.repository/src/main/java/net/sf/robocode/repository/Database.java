@@ -172,7 +172,7 @@ public class Database {
 		return result;
 	}
 
-	public List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment) {
+	public List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean onlyInJar) {
 		final ArrayList<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
 
 		for (IItem item : items.values()) {
@@ -185,6 +185,9 @@ public class Database {
 				continue;
 			}
 			if (onlyWithPackage && spec.getFullPackage() == null) {
+				continue;
+			}
+			if (onlyInJar && !spec.isInJar()) {
 				continue;
 			}
 			if (onlyRobots && !(item instanceof RobotItem)) {

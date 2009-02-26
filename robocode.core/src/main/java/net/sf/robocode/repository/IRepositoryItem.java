@@ -27,6 +27,8 @@ public interface IRepositoryItem extends Comparable<Object> {
 
 	boolean isTeam();
 
+	boolean isInJar();
+
 	void setValid(boolean value);
 
 	String getVersion();

@@ -28,6 +28,7 @@ public interface IRepositoryRoot {
 	URL getRootUrl();
 	File getRootPath();
 	URL getClassPathUrl();
-	boolean isPackage();
+	boolean isJar();
 	boolean isDevel();
+	void extractJar();
 }

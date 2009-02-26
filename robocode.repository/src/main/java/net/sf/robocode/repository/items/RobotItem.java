@@ -425,7 +425,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		if (getRootPackage() == null) {
 			return null;
 		}
-		if (root.isPackage()) {
+		if (root.isJar()) {
 			String jarFile = root.getClassPathUrl().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
@@ -439,13 +439,13 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		if (getRootPackage() == null) {
 			return null;
 		}
-		if (root.isPackage()) {
+		if (root.isJar()) {
 			String jarFile = root.getClassPathUrl().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getFullPackage();
+			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getFullPackage().replace('.', File.separatorChar);
 		} else {
-			return FileUtil.getCacheDir() + File.separator + getFullPackage();
+			return FileUtil.getCacheDir() + File.separator + getFullPackage().replace('.', File.separatorChar);
 		}
 	}
 

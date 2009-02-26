@@ -18,6 +18,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
+import net.sf.robocode.repository.items.BaseItem;
 import net.sf.robocode.repository.packager.JarCreator;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsListener;
@@ -216,17 +217,21 @@ public class RepositoryManager implements IRepositoryManager {
 		return db.getSelectedSpecifications(selectedRobots);
 	}
 
-	public List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
+	public List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
 		checkDbExists();
-		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment);
+		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment, onlyInJar);
 	}
 
 	public boolean verifyRobotName(String robotName, String shortClassName) {
 		return RobotItem.verifyRobotName(robotName, shortClassName, true);
 	}
 
-	public int extractJar(File jarFile) {
-		return 0; // TODO ZAMO
+	public int extractJar(IRepositoryItem item) {
+		if (!item.isInJar()){
+			return -2;
+		}
+		((BaseItem)item).getRoot().extractJar();
+		return 0; 
 	}
 
 	public void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException {

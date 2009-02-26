@@ -111,7 +111,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		return isDevel;
 	}
 
-	public boolean isPackage() {
+	public boolean isJar() {
 		return false;
 	}
 

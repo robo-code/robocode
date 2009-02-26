@@ -85,7 +85,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean onlyShowWithPackage;
 	private boolean onlyShowRobots;
 	private boolean onlyShowDevelopment;
-	private boolean onlyShowPackaged;
+	private boolean onlyShowInJar;
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
 	private final List<IRepositoryItem> selectedRobots = new CopyOnWriteArrayList<IRepositoryItem>();
@@ -103,7 +103,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	public void setup(int minRobots, int maxRobots,
 			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
-			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowPackaged, boolean ignoreTeamRobots,
+			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowInJar, boolean ignoreTeamRobots,
 			String preSelectedRobots) {
 		this.showNumRoundsPanel = showNumRoundsPanel;
 		this.minRobots = minRobots;
@@ -113,7 +113,8 @@ public class RobotSelectionPanel extends WizardPanel {
 		this.onlyShowWithPackage = onlyShowWithPackage;
 		this.onlyShowRobots = onlyShowRobots;
 		this.onlyShowDevelopment = onlyShowDevelopment;
-		this.onlyShowPackaged = onlyShowPackaged;
+		this.onlyShowInJar = onlyShowInJar;
+
 		this.ignoreTeamRobots = ignoreTeamRobots;
 		this.preSelectedRobots = preSelectedRobots;
 		initialize();
@@ -582,7 +583,7 @@ public class RobotSelectionPanel extends WizardPanel {
 					repositoryManager.refresh(withClear);
 
 					List<IRepositoryItem> robotList = repositoryManager.filterRepositoryItems(onlyShowSource,
-							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, onlyShowPackaged, ignoreTeamRobots);
+							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, false, ignoreTeamRobots, onlyShowInJar);
 
 					getAvailableRobotsPanel().setRobotList(robotList);
 					if (preSelectedRobots != null && preSelectedRobots.length() > 0) {

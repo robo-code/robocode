@@ -43,6 +43,10 @@ public abstract class BaseItem implements IItem, Serializable {
 		return root;
 	}
 
+	public boolean isInJar() {
+		return root.isJar();
+	}
+
 	public long getLastModified() {
 		return lastModified;
 	}
@@ -54,5 +58,5 @@ public abstract class BaseItem implements IItem, Serializable {
 	public void setValid(boolean value) {
 		isValid = value;
 	}
-	
+
 }

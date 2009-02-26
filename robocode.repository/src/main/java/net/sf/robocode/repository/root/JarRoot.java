@@ -22,13 +22,13 @@ import net.sf.robocode.ui.IWindowManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-
 
 /**
  * Represents one .jar file
@@ -128,8 +128,65 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		return false;
 	}
 
-	public boolean isPackage() {
+	public boolean isJar() {
 		return true;
+	}
+
+	public void extractJar(){
+		File dest = FileUtil.getRobotsDir();
+		InputStream is = null;
+		JarInputStream jarIS = null;
+
+		try {
+			final URLConnection con = url.openConnection();
+
+			con.setUseCaches(false);
+			is = con.getInputStream();
+			jarIS = new JarInputStream(is);
+
+			JarEntry entry = jarIS.getNextJarEntry();
+
+			while (entry != null) {
+				if (entry.isDirectory()) {
+					File dir = new File(dest, entry.getName());
+
+					if (!dir.exists() && !dir.mkdirs()) {
+						System.out.println("Can't create dir " + dir);
+					}
+				}else{
+					extractFile(dest, jarIS, entry);
+				}
+				entry = jarIS.getNextJarEntry();
+			}
+		} catch (IOException e) {
+			Logger.logError(e);
+		} finally {
+			FileUtil.cleanupStream(jarIS);
+			FileUtil.cleanupStream(is);
+		}
+	}
+
+	private void extractFile(File dest, JarInputStream jarIS, JarEntry entry) throws IOException {
+		File out = new File(dest, entry.getName());
+		File parentDirectory = new File(out.getParent());
+
+		if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
+			System.out.println("Can't create dir " + parentDirectory);
+		}
+		FileOutputStream fos = null;
+		byte buf[] = new byte[2048];
+		try {
+			fos = new FileOutputStream(out);
+
+			int num;
+
+			while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+				fos.write(buf, 0, num);
+			}
+		}
+		finally {
+			FileUtil.cleanupStream(fos);
+		}
 	}
 
 	private void setStatus(IWindowManager windowManager, String message) {

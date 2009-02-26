@@ -16,6 +16,8 @@ import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.BattleResultsTableModel;
 import robocode.control.events.BattleCompletedEvent;
 
+import javax.swing.*;
+
 
 /**
  * @author Pavel Savara (original)
@@ -55,7 +57,7 @@ public interface IWindowManagerExt extends IWindowManager {
 
 	void showRobotPackager();
 
-	// TODO ? void showRobotExtractor(JFrame owner);
+	void showRobotExtractor(JFrame owner);
 
 	void showNewBattleDialog(BattleProperties battleProperties);
 

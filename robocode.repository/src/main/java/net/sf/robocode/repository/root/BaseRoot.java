@@ -14,9 +14,12 @@ package net.sf.robocode.repository.root;
 
 import net.sf.robocode.repository.Database;
 
+import javax.management.InvalidApplicationException;
 import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 /**
@@ -53,4 +56,9 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	public String toString() {
 		return url.toString();
 	}
+
+	public void extractJar(){
+		throw new NotImplementedException();
+	}
+
 }
