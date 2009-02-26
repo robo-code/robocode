@@ -210,7 +210,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
 		robotProxy = (IHostingRobotProxy) hostManager.createRobotProxy(robotSpecification, statics, this);
-
 	}
 
 	public void println(String s) {
@@ -729,12 +728,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		skippedTurns = 0;
 
 		status = new AtomicReference<RobotStatus>();
-		commands = new AtomicReference<ExecCommands>(new ExecCommands());
 		readoutEvents();
 		readoutTeamMessages();
 		readoutBullets();
 		battleText.setLength(0);
 		proxyText.setLength(0);
+
+		// Prepare new execution commands, but copy the colors from the last commands.
+		// Bugfix [2628217] - Robot Colors don't stick between rounds.
+		ExecCommands newExecCommands = new ExecCommands();
+
+		newExecCommands.copyColors(commands.get());
+		commands = new AtomicReference<ExecCommands>(newExecCommands);
 	}
 
 	private boolean validSpot(List<RobotPeer> robots) {
@@ -753,7 +758,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			try {
 				Logger.logMessage(".", false);
 
-				currentCommands = new ExecCommands();
+				ExecCommands newExecCommands = new ExecCommands();
+
+				// Copy the colors from the last commands.
+				// Bugfix [2628217] - Robot Colors don't stick between rounds.
+				newExecCommands.copyColors(commands.get());
+
+				currentCommands = newExecCommands;
 				int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
 				RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading,
 						velocity, currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),

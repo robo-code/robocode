@@ -10,6 +10,7 @@ Version 1.7.1 Alpha
 * Bug [2643395] - development robots cause problems with data files
 * Bug [2628346] - A battleview size exceed 800x600 filled with black. Some of the battlefield could be hidden behind a black border when the battle view was resized.
 * Bug [2618169] - NullPointerException when using -battle option from the cmd-line.
+* Bug [2628217] - Robot Colors don't stick between rounds.
 * The command line usage of Robocode was not printed out at all when using the -? or -help option.
 
 = New features =
