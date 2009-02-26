@@ -119,7 +119,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public String getUniqueFullClassNameWithVersion() {
-		if (getFullClassNameWithVersion().equals(getFullClassName())) {
+		if (getVersion() == null) {
 			return getFullClassName();
 		} else {
 			if (!isDevelopmentVersion()) {
@@ -131,7 +131,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public String getUniqueShortClassNameWithVersion() {
-		if (getShortClassName().equals(getShortClassNameWithVersion())) {
+		if (getVersion() == null) {
 			return getShortClassName();
 		} else {
 			if (!isDevelopmentVersion()) {
@@ -143,7 +143,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public String getUniqueVeryShortClassNameWithVersion() {
-		if (getVeryShortClassName().equals(getVeryShortClassNameWithVersion())) {
+		if (getVersion() == null) {
 			return getVeryShortClassName();
 		} else {
 			if (!isDevelopmentVersion()) {

@@ -52,11 +52,11 @@ public final class RobotStatics implements IRobotStatics {
 		if (duplicate >= 0) {
 			String countString = " (" + (duplicate + 1) + ')';
 
-			name = specification.getUniqueFullClassNameWithVersion() + countString;
+			name = specification.getFullClassNameWithVersion() + countString;
 			shortName = specification.getUniqueShortClassNameWithVersion() + countString;
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion() + countString;
 		} else {
-			name = specification.getUniqueFullClassNameWithVersion();
+			name = specification.getFullClassNameWithVersion();
 			shortName = specification.getUniqueShortClassNameWithVersion();
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion();
 		}
