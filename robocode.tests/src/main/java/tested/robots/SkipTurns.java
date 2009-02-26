@@ -65,17 +65,18 @@ public class SkipTurns extends AdvancedRobot {
 	}
 
 	private final Object w = new Object();
+
 	private void slowResponse() {
 
 		synchronized (w) {
 			try {
 				if (skipped > 3) {
-					w.wait(1000);
+					w.wait(3000);
 				} else {
-					w.wait(100);
+					w.wait(150);
 				}
 			} catch (InterruptedException e) {
-				// eat interupt
+				// eat interrupt
 				e.printStackTrace(out);
 			}
 		}
