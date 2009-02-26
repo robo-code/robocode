@@ -95,8 +95,10 @@ public class RepositoryManager implements IRepositoryManager {
 		if (db.update(getRobotsDirectory(), getDevelDirectories(), updateInvalid)) {
 			setStatus("Saving robot database");
 			db.save();
+			setStatus("");
 			return true;
 		}
+		setStatus("");
 		return false;
 	}
 
