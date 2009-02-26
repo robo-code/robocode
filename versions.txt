@@ -6,6 +6,7 @@ Version 1.7.1 Alpha
 * Bug [2626148] - bots referencing robocode.robocodeGL broken. We are now not following refrences to robocode packages
 * Bug [2626164] - don't ever punish robots in devel directories by removing from repository
 * Bug [2634807], [2632874] - Robot console was wrongly synchronized with battle
+* Bug [2634123] - Robot packager can be activated once per running
 
 = New features =
 - Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine

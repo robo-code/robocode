@@ -321,7 +321,7 @@ public class WindowManager implements IWindowManagerExt {
 			robotPackager = null;
 		}
 
-		robotPackager = net.sf.robocode.core.Container.getComponent(RobotPackager.class);
+		robotPackager = net.sf.robocode.core.Container.factory.getComponent(RobotPackager.class);
 		WindowUtil.packCenterShow(robotPackager);
 	}
 
