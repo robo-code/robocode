@@ -1806,7 +1806,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private void notSupportedWarn() {
-		Logger.logError("We are sorry. Operation is not supported in Robocode.");
+		Logger.printlnToRobotsConsole("We are sorry. Operation is not supported in Robocode.");
 	}
 
 	// --------------------------------------------------------------------------
