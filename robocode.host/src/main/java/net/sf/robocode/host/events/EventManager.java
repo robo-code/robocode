@@ -103,7 +103,7 @@ public class EventManager implements IEventManager {
 	private void addImpl(Event e) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
-				System.out.println(
+				robotProxy.println(
 						"Not adding to " + robotProxy.getStatics().getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE
 						+ " events in queue.");
 				return;
@@ -594,7 +594,7 @@ public class EventManager implements IEventManager {
 			return;
 		}
 		if (HiddenAccess.isCriticalEvent(event)) {
-			System.out.println("SYSTEM: You may not change the priority of system event. setPriority ignored.");
+			robotProxy.println("SYSTEM: You may not change the priority of system event. setPriority ignored.");
 		}
 
 		HiddenAccess.setEventPriority(event, priority);

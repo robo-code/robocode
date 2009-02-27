@@ -151,7 +151,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 					File dir = new File(dest, entry.getName());
 
 					if (!dir.exists() && !dir.mkdirs()) {
-						System.out.println("Can't create dir " + dir);
+						Logger.logError("Can't create dir " + dir);
 					}
 				}else{
 					extractFile(dest, jarIS, entry);
@@ -171,7 +171,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		File parentDirectory = new File(out.getParent());
 
 		if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
-			System.out.println("Can't create dir " + parentDirectory);
+			Logger.logError("Can't create dir " + parentDirectory);
 		}
 		FileOutputStream fos = null;
 		byte buf[] = new byte[2048];
