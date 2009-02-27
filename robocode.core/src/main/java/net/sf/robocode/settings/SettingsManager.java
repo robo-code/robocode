@@ -1075,9 +1075,12 @@ public class SettingsManager implements ISettingsManager {
 
 		@Override
 		public synchronized Object setProperty(String key, String value) {
+			final String old = super.getProperty(key, null);
+			boolean notify = !(old.equals(value));
 			final Object res = super.setProperty(key, value);
-
-			notifyPropertyChanged(key);
+			if (notify) {
+				notifyPropertyChanged(key);
+			}
 			return res;
 		}
 	}
