@@ -249,7 +249,7 @@ public class RepositoryManager implements IRepositoryManager {
 		final List<RobotItem> robots = db.expandTeams(selectedRobots);
 		final List<TeamItem> teams = db.filterTeams(selectedRobots);
 
-		final String res = JarCreator.createPackage(target, source, robots, teams);
+		final String res = JarCreator.createPackage(target, source, robots, teams, web, desc, author, version);
 
 		refresh(target.toURI().toString());
 		return res;

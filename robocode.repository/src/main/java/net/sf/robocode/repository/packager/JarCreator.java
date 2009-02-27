@@ -32,13 +32,14 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
+import java.net.URL;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class JarCreator {
-	public static String createPackage(File target, boolean source, List<RobotItem> robots, List<TeamItem> teams) {
+	public static String createPackage(File target, boolean source, List<RobotItem> robots, List<TeamItem> teams, URL web, String desc, String author, String version) {
 		final IHostManager host = Container.getComponent(IHostManager.class);
 		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
 		JarOutputStream jarout = null;
@@ -58,7 +59,7 @@ public class JarCreator {
 					JarEntry jt = new JarEntry(teamEntry);
 
 					jarout.putNextEntry(jt);
-					team.storeProperties(jarout);
+					team.storeProperties(jarout, web, desc, author, version);
 					jarout.closeEntry();
 				}
 			}
@@ -71,7 +72,7 @@ public class JarCreator {
 					JarEntry jt = new JarEntry(proEntry);
 
 					jarout.putNextEntry(jt);
-					robot.storeProperties(jarout);
+					robot.storeProperties(jarout, web, desc, author, version);
 					jarout.closeEntry();
 					packageClasses(source, host, jarout, robot, entries);
 				}
@@ -144,11 +145,11 @@ public class JarCreator {
 
 	private static void packageClass(boolean source, JarOutputStream jarout, RobotItem robot, String name, Set<String> entries) throws IOException {
 		if (source && !name.contains("$") && !entries.contains(name + ".java")) {
-			File javaFile = new File(robot.getRootFile(), name + ".java");
+			File javaFile = new File(robot.getRoot().getRootPath(), name + ".java");
 
 			if (javaFile.exists()) {
 				entries.add(name + ".java");
-				JarEntry je = new JarEntry(name + ".class");
+				JarEntry je = new JarEntry(name + ".java");
 
 				jarout.putNextEntry(je);
 				copy(javaFile, jarout);

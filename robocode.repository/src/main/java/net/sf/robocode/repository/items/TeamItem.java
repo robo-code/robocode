@@ -16,6 +16,8 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
+import net.sf.robocode.core.Container;
+import net.sf.robocode.version.IVersionManager;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -168,6 +170,25 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 
 	public void storeProperties(OutputStream os) throws IOException {
 		properties.store(os, "Robocode Robot Team");
+	}
+
+	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
+		Properties copy = (Properties) properties.clone();
+		if (version!=null){
+			copy.setProperty(TEAM_VERSION, version);
+		}
+		if (desc!=null){
+			copy.setProperty(TEAM_DESCRIPTION, desc);
+		}
+		if (author!=null){
+			copy.setProperty(TEAM_AUTHOR_NAME, author);
+		}
+		if (web!=null){
+			copy.setProperty(TEAM_WEBPAGE, web.toString());
+		}
+		final IVersionManager vm = Container.getComponent(IVersionManager.class);
+		copy.setProperty(ROBOCODE_VERSION, vm.getVersion());
+		copy.store(os, "Robocode Robot");
 	}
 
 	public static void createOrUpdateTeam(File target, URL web, String desc, String author, String members, String teamVersion, String robocodeVersion) throws IOException {

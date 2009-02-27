@@ -21,6 +21,7 @@ import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.version.IVersionManager;
 import robocode.control.RobotSpecification;
 
 import java.io.File;
@@ -32,6 +33,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -60,6 +62,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private boolean isExpectedRobot;
 	private boolean isClassURL;
 	private boolean isPropertiesURL;
+	private boolean isPropertiesLoaded;
 
 	protected String extension;
 	private URL propertiesUrl;
@@ -235,6 +238,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			urls.add(getFullClassName());
 			urls.add(getUniqueFullClassNameWithVersion());
 		}
+		if (root.isJar()){
+			urls.add(root.getRootUrl().toString());
+		}
 		return urls;
 	}
 
@@ -253,6 +259,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			}
 			loadProperties();
 			verifyName();
+			if (root.isJar() && !isPropertiesLoaded){
+				isValid=false;
+			}
 			if (isValid) {
 				validateType(false);
 			}
@@ -284,6 +293,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				con.setUseCaches(false);
 				ios = con.getInputStream();
 				properties.load(ios);
+				isPropertiesLoaded=true;
 				return true;
 			} catch (IOException e) {
 				return false;
@@ -307,7 +317,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	public static boolean verifyRobotName(String fullClassName, String shortClassName, boolean silent) {
-		if (fullClassName.contains("$")) {
+		if (fullClassName == null || fullClassName.length() == 0 || fullClassName.contains("$")) {
 			return false;
 		}
 
@@ -349,6 +359,25 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	public void storeProperties(OutputStream os) throws IOException {
 		properties.store(os, "Robocode Robot");
+	}
+
+	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
+		Properties copy = (Properties) properties.clone();
+		if (version!=null){
+			copy.setProperty(ROBOT_VERSION, version);
+		}
+		if (desc!=null){
+			copy.setProperty(ROBOT_DESCRIPTION, desc);
+		}
+		if (author!=null){
+			copy.setProperty(ROBOT_AUTHOR_NAME, author);
+		}
+		if (web!=null){
+			copy.setProperty(ROBOT_WEBPAGE, web.toString());
+		}
+		final IVersionManager vm = Container.getComponent(IVersionManager.class);
+		copy.setProperty(ROBOCODE_VERSION, vm.getVersion());
+		copy.store(os, "Robocode Robot");
 	}
 
 	public boolean isDroid() {
