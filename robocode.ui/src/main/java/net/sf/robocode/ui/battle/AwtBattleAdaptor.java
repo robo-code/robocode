@@ -183,7 +183,7 @@ public final class AwtBattleAdaptor {
 			if (isPaused.get()) {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						battleEventDispatcher.onTurnEnded(event);
+						repaintTask(false, true);
 					}
 				});
 			}
