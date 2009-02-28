@@ -212,6 +212,9 @@ public class BattleManager implements IBattleManager {
 	}
 
 	private void replayBattle() {
+		if (!recordManager.hasRecord()) {
+			return;
+		}
 		logMessage("Preparing replay...");
 		if (battle != null && battle.isRunning()) {
 			battle.stop(true);

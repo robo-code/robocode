@@ -15,6 +15,7 @@ package net.sf.robocode.recording;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
@@ -50,7 +51,7 @@ public class RecordManager implements IRecordManager {
 	private BufferedInputStream bufferedReadStream;
 	private ObjectInputStream objectReadStream;
 
-	public RecordManager(ISettingsManager properties) {
+	public RecordManager() {
 		recorder = new BattleRecorder(this);
 	}
 
@@ -120,8 +121,14 @@ public class RecordManager implements IRecordManager {
 			objectReadStream = new ObjectInputStream(bufferedReadStream);
 		} catch (FileNotFoundException e) {
 			logError(e);
+			fileReadStream = null;
+			bufferedReadStream = null;
+			objectReadStream = null;
 		} catch (IOException e) {
 			logError(e);
+			fileReadStream = null;
+			bufferedReadStream = null;
+			objectReadStream = null;
 		}
 	}
 
@@ -199,7 +206,12 @@ public class RecordManager implements IRecordManager {
 			createTempFile();
 			recordInfo = null;
 		} catch (ClassNotFoundException e) {
-			logError(e);
+			if (e.getMessage().contains("robocode.recording.BattleRecordInfo")){
+				Logger.logMessage("Sorry, backward compatibility with record from version 1.6 is not provided.");
+			}
+			else{
+				logError(e);
+			}
 			createTempFile();
 			recordInfo = null;
 		} finally {
