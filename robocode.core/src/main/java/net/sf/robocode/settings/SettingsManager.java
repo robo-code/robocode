@@ -1076,7 +1076,7 @@ public class SettingsManager implements ISettingsManager {
 		@Override
 		public synchronized Object setProperty(String key, String value) {
 			final String old = super.getProperty(key, null);
-			boolean notify = !(old.equals(value));
+			boolean notify = (old == null && value != null) || (old != null && !old.equals(value));
 			final Object res = super.setProperty(key, value);
 			if (notify) {
 				notifyPropertyChanged(key);

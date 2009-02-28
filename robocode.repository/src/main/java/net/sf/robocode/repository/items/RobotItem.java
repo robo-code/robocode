@@ -258,12 +258,14 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				isValid = false;
 			}
 			loadProperties();
-			verifyName();
 			if (root.isJar() && !isPropertiesLoaded){
 				isValid=false;
 			}
 			if (isValid) {
 				validateType(false);
+			}
+			if (isValid) {
+				verifyName();
 			}
 		}
 	}
