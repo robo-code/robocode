@@ -207,8 +207,10 @@ public final class AwtBattleAdaptor {
 			snapshot.set(null);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					repaintTask(true, true);
 					synchronized (snapshot) {
+						if (outCache!=null){
+							repaintTask(true, true);
+						}
 						outCache = new StringBuilder[event.getRobotsCount()];
 						for (int i = 0; i < event.getRobotsCount(); i++) {
 							outCache[i] = new StringBuilder(1024);
