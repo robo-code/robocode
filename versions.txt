@@ -1,21 +1,23 @@
-Version 1.7.1 Alpha
-(xx-xx-2009)
+Version 1.7.1 Beta
+(01-Mar-2009)
 ---------------
 
+With this release we give BIG thanks to Nat Pavasant who have put in great effort in testing and finding as many bugs in Robocode as possible. He has been a great help with testing especially RoboRumble@Home functionality.
+
 = Bugfix =
-* Bug [2626148] - bots referencing robocode.robocodeGL broken. We are now not following refrences to robocode packages
-* Bug [2626164] - don't ever punish robots in devel directories by removing from repository
-* Bug [2634807], [2632874] - Robot console was wrongly synchronized with battle
-* Bug [2634123] - Robot packager can be activated once per running
-* Bug [2643395] - development robots cause problems with data files
-* Bug [2628346] - A battleview size exceed 800x600 filled with black. Some of the battlefield could be hidden behind a black border when the battle view was resized.
+* Bug [2626148] - Bots referencing robocode.robocodeGL broken. Now, we are now not following refrences to robocode packages.
+* Bug [2626164] - Don't ever punish robots in devel directories by removing from repository.
+* Bug [2634807], [2632874] - Robot console was wrongly synchronized with battle.
+* Bug [2634123] - Robot packager can be activated once per running.
+* Bug [2643395] - Development robots cause problems with data files.
+* Bug [2628346] - A battleview size exceed 800x600 filled with black.
 * Bug [2618169] - NullPointerException when using -battle option from the cmd-line.
 * Bug [2628217] - Robot Colors don't stick between rounds.
 * Bug [2649954] - Open battle menu dialog is not loading robots.
 * The command line usage of Robocode was not printed out at all when using the -? or -help option.
 
 = New features =
-* Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine
+* Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine.
 * Request [2446276] Ranking Panel should be visible when Robocode is minimized. This feature has been added and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
 * Request [2467545] Command Line option for saving a battle record file. Two new command line options have been added for Robocode, i.e. -record <filename> and -recordXML <filename>. The -record option records the battle as a binary and zipped battle record. Here I propose that the specified filename should is something like record.br. The -recordXML does the same as the -record option, but saves the battle record as an XML file. Here I suggest that you use a filename like record.br.xml.
 
