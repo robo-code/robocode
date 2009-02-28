@@ -105,7 +105,7 @@ public class Logger {
 		return baos.toString();
 	}
 
-	public static void printlnToRobotsConsole(String s){
+	public static void printlnToRobotsConsole(String s) {
 		// this will get redirected to robot's console
 		System.out.println(s);
 	}

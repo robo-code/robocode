@@ -174,19 +174,21 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 
 	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
 		Properties copy = (Properties) properties.clone();
-		if (version!=null){
+
+		if (version != null) {
 			copy.setProperty(TEAM_VERSION, version);
 		}
-		if (desc!=null){
+		if (desc != null) {
 			copy.setProperty(TEAM_DESCRIPTION, desc);
 		}
-		if (author!=null){
+		if (author != null) {
 			copy.setProperty(TEAM_AUTHOR_NAME, author);
 		}
-		if (web!=null){
+		if (web != null) {
 			copy.setProperty(TEAM_WEBPAGE, web.toString());
 		}
 		final IVersionManager vm = Container.getComponent(IVersionManager.class);
+
 		copy.setProperty(ROBOCODE_VERSION, vm.getVersion());
 		copy.store(os, "Robocode Robot");
 	}

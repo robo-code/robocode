@@ -221,7 +221,8 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
 		checkDbExists();
-		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment, onlyInJar);
+		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment,
+				onlyInJar);
 	}
 
 	public boolean verifyRobotName(String robotName, String shortClassName) {
@@ -229,10 +230,10 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public int extractJar(IRepositoryItem item) {
-		if (!item.isInJar()){
+		if (!item.isInJar()) {
 			return -2;
 		}
-		((BaseItem)item).getRoot().extractJar();
+		((BaseItem) item).getRoot().extractJar();
 		return 0; 
 	}
 

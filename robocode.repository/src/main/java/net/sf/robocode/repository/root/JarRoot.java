@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
+
 /**
  * Represents one .jar file
  * @author Pavel Savara (original)
@@ -132,7 +133,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		return true;
 	}
 
-	public void extractJar(){
+	public void extractJar() {
 		JarExtractor.extractJar(url);
 	}
 

@@ -62,7 +62,7 @@ public class TestFileAttack extends RobotTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Didn't seen preventing read" , messagedRead);
+		Assert.assertTrue("Didn't seen preventing read", messagedRead);
 		Assert.assertTrue("Didn't seen preventing write", messagedWrite);
 		Assert.assertFalse("Found attack file", new File("C:\\Robocode.attack").exists());
 	}

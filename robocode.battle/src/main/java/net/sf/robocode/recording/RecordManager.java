@@ -20,7 +20,6 @@ import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
-import net.sf.robocode.settings.ISettingsManager;
 import robocode.BattleResults;
 import robocode.BattleRules;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -206,10 +205,9 @@ public class RecordManager implements IRecordManager {
 			createTempFile();
 			recordInfo = null;
 		} catch (ClassNotFoundException e) {
-			if (e.getMessage().contains("robocode.recording.BattleRecordInfo")){
+			if (e.getMessage().contains("robocode.recording.BattleRecordInfo")) {
 				Logger.logMessage("Sorry, backward compatibility with record from version 1.6 is not provided.");
-			}
-			else{
+			} else {
 				logError(e);
 			}
 			createTempFile();

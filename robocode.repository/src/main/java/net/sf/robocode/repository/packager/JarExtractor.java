@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.sf.robocode.repository.packager;
 
+
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.ui.IWindowManager;
 
 import java.io.File;
 import java.io.InputStream;
@@ -24,11 +24,12 @@ import java.util.jar.JarEntry;
 import java.net.URLConnection;
 import java.net.URL;
 
+
 /**
  * @author Pavel Savara (original)
  */
 public class JarExtractor {
-	public static void extractJar(URL url){
+	public static void extractJar(URL url) {
 		File dest = FileUtil.getRobotsDir();
 		InputStream is = null;
 		JarInputStream jarIS = null;
@@ -49,7 +50,7 @@ public class JarExtractor {
 					if (!dir.exists() && !dir.mkdirs()) {
 						Logger.logError("Can't create dir " + dir);
 					}
-				}else{
+				} else {
 					extractFile(dest, jarIS, entry);
 				}
 				entry = jarIS.getNextJarEntry();
@@ -71,6 +72,7 @@ public class JarExtractor {
 		}
 		FileOutputStream fos = null;
 		byte buf[] = new byte[2048];
+
 		try {
 			fos = new FileOutputStream(out);
 
@@ -79,8 +81,7 @@ public class JarExtractor {
 			while ((num = jarIS.read(buf, 0, 2048)) != -1) {
 				fos.write(buf, 0, num);
 			}
-		}
-		finally {
+		} finally {
 			FileUtil.cleanupStream(fos);
 		}
 	}

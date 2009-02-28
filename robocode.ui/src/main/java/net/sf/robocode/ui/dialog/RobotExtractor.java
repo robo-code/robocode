@@ -80,7 +80,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 		initialize();
 	}
 
-	public void update(){
+	public void update() {
 		getRobotSelectionPanel().refreshRobotList(false);
 	}
 

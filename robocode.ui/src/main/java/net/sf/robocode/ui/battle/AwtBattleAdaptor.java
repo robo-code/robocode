@@ -101,6 +101,7 @@ public final class AwtBattleAdaptor {
 								RobotSnapshot robot = (RobotSnapshot) robots[i];
 
 								final StringBuilder cache = outCache[i];
+
 								if (cache.length() > 0) {
 									robot.setOutputStreamSnapshot(cache.toString());
 									outCache[i].setLength(0);
@@ -169,6 +170,7 @@ public final class AwtBattleAdaptor {
 				RobotSnapshot robot = (RobotSnapshot) robots[i];
 				final int r = i;
 				final String text = robot.getOutputStreamSnapshot();
+
 				if (text != null && text.length() != 0) {
 					robot.setOutputStreamSnapshot(null);
 					EventQueue.invokeLater(new Runnable() {
@@ -208,7 +210,7 @@ public final class AwtBattleAdaptor {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					synchronized (snapshot) {
-						if (outCache!=null){
+						if (outCache != null) {
 							repaintTask(true, true);
 						}
 						outCache = new StringBuilder[event.getRobotsCount()];

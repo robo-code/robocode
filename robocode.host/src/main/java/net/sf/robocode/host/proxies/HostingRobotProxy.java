@@ -65,10 +65,10 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		loadClassBattle();
 		String writableDirectory = robotSpecification.getWritableDirectory();
 		String readableDirectory = robotSpecification.getReadableDirectory();
-		String rootFile = robotSpecification.getRootFile() + robotSpecification.getFullPackage().replace('.','/') + "/";
+		String rootFile = robotSpecification.getRootFile() + robotSpecification.getFullPackage().replace('.', '/') + "/";
 
-		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(), writableDirectory,
-				readableDirectory, rootFile);
+		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
+				writableDirectory, readableDirectory, rootFile);
 		robotFileSystemManager.initializeQuota();
 	}
 

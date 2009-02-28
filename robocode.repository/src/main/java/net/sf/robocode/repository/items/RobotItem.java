@@ -238,7 +238,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			urls.add(getFullClassName());
 			urls.add(getUniqueFullClassNameWithVersion());
 		}
-		if (root.isJar()){
+		if (root.isJar()) {
 			urls.add(root.getRootUrl().toString());
 		}
 		return urls;
@@ -258,8 +258,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				isValid = false;
 			}
 			loadProperties();
-			if (root.isJar() && !isPropertiesLoaded){
-				isValid=false;
+			if (root.isJar() && !isPropertiesLoaded) {
+				isValid = false;
 			}
 			if (isValid) {
 				validateType(false);
@@ -295,7 +295,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				con.setUseCaches(false);
 				ios = con.getInputStream();
 				properties.load(ios);
-				isPropertiesLoaded=true;
+				isPropertiesLoaded = true;
 				return true;
 			} catch (IOException e) {
 				return false;
@@ -365,19 +365,21 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
 		Properties copy = (Properties) properties.clone();
-		if (version!=null){
+
+		if (version != null) {
 			copy.setProperty(ROBOT_VERSION, version);
 		}
-		if (desc!=null){
+		if (desc != null) {
 			copy.setProperty(ROBOT_DESCRIPTION, desc);
 		}
-		if (author!=null){
+		if (author != null) {
 			copy.setProperty(ROBOT_AUTHOR_NAME, author);
 		}
-		if (web!=null){
+		if (web != null) {
 			copy.setProperty(ROBOT_WEBPAGE, web.toString());
 		}
 		final IVersionManager vm = Container.getComponent(IVersionManager.class);
+
 		copy.setProperty(ROBOCODE_VERSION, vm.getVersion());
 		copy.store(os, "Robocode Robot");
 	}
@@ -474,7 +476,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			String jarFile = root.getClassPathUrl().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getFullPackage().replace('.', File.separatorChar);
+			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator
+					+ getFullPackage().replace('.', File.separatorChar);
 		} else {
 			return FileUtil.getCacheDir() + File.separator + getFullPackage().replace('.', File.separatorChar);
 		}

@@ -1078,6 +1078,7 @@ public class SettingsManager implements ISettingsManager {
 			final String old = super.getProperty(key, null);
 			boolean notify = (old == null && value != null) || (old != null && !old.equals(value));
 			final Object res = super.setProperty(key, value);
+
 			if (notify) {
 				notifyPropertyChanged(key);
 			}
