@@ -213,7 +213,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else if (args[i].equals("-record") && (i < args.length + 1)) {
 				setup.recordFilename = args[i + 1];
 				i++;
-			} else if (args[i].equals("-recordXml") && (i < args.length + 1)) {
+			} else if (args[i].equals("-recordXML") && (i < args.length + 1)) {
 				setup.recordXmlFilename = args[i + 1];
 				i++;
 			} else if (args[i].equals("-replay") && (i < args.length + 1)) {
