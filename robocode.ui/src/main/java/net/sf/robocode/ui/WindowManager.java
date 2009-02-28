@@ -358,7 +358,7 @@ public class WindowManager implements IWindowManagerExt {
 			battleManager.pauseBattle();
 			final NewBattleDialog battleDialog = Container.getComponent(NewBattleDialog.class);
 
-			battleDialog.setup(battleManager.getBattleProperties());
+			battleDialog.setup(battleProperties);
 			WindowUtil.packCenterShow(getRobocodeFrame(), battleDialog);
 		} finally {
 			battleManager.resumeBattle();

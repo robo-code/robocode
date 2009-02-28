@@ -74,6 +74,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	public void setup(BattleProperties battleProperties) {
 		this.battleProperties = battleProperties;
+		robotSelectionPanel = null;
 		initialize();
 	}
 

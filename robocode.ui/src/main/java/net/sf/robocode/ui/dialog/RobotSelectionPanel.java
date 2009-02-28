@@ -31,7 +31,6 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
@@ -45,8 +44,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
 
 
 /**
@@ -88,7 +86,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean onlyShowInJar;
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
-	private final List<IRepositoryItem> selectedRobots = new CopyOnWriteArrayList<IRepositoryItem>();
+	private final List<IRepositoryItem> selectedRobots = new ArrayList<IRepositoryItem>();
 	private boolean showNumRoundsPanel;
 	private final ISettingsManager properties;
 	private final IBattleManager battleManager;
@@ -587,7 +585,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 					getAvailableRobotsPanel().setRobotList(robotList);
 					if (preSelectedRobots != null && preSelectedRobots.length() > 0) {
-						setSelectedRobots(robotList, preSelectedRobots);
+						setSelectedRobots(preSelectedRobots);
 						preSelectedRobots = null;
 					}
 				} finally {
@@ -624,26 +622,9 @@ public class RobotSelectionPanel extends WizardPanel {
 		getNumRoundsTextField().setText("" + numRounds);
 	}
 
-	private void setSelectedRobots(List<IRepositoryItem> robotList, String selectedRobotsString) {
+	private void setSelectedRobots(String selectedRobotsString) {
 		if (selectedRobotsString != null) {
-			StringTokenizer tokenizer;
-
-			tokenizer = new StringTokenizer(selectedRobotsString, ",");
-			if (robotList == null) {
-				Logger.logError("Cannot add robots to a null robots list!");
-				return;
-			}
-			this.selectedRobots.clear();
-			while (tokenizer.hasMoreTokens()) {
-				String bot = tokenizer.nextToken();
-
-				for (IRepositoryItem selected : robotList) {
-					if (selected.getUniqueFullClassNameWithVersion().equals(bot)) {
-						this.selectedRobots.add(selected);
-						break;
-					}
-				}
-			}
+			this.selectedRobots.addAll(repositoryManager.getSelectedSpecifications(selectedRobotsString));
 		}
 		((SelectedRobotsModel) getSelectedRobotsList().getModel()).changed();
 		fireStateChanged();

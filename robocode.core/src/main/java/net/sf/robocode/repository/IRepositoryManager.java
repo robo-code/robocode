@@ -39,6 +39,8 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots);
 
+	List<IRepositoryItem> getSelectedSpecifications(String selectedRobots);
+
 	boolean verifyRobotName(String robotName, String shortClassName);
 
 	int extractJar(IRepositoryItem item);
