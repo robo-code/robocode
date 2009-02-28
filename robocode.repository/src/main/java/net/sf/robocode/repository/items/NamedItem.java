@@ -180,7 +180,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}	
 
 	public RobotSpecification createRobotSpecification() {
-		return HiddenAccess.createSpecification(this, getFullClassNameWithVersion(), getAuthorName(),
+		return HiddenAccess.createSpecification(this, getFullClassName(), getAuthorName(),
 				(getWebpage() != null) ? getWebpage().toString() : null, getVersion(), getRobocodeVersion(),
 				root.getRootUrl().toString(), getFullClassName(), getDescription());
 	}
