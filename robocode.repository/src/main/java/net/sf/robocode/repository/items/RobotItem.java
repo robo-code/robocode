@@ -464,7 +464,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
 			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getRootPackage();
 		} else {
-			return FileUtil.getCacheDir() + File.separator + getRootPackage();
+			return root.getClassPathUrl().getFile() + getRootPackage();
 		}
 	}
 

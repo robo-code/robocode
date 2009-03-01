@@ -278,6 +278,10 @@ public class RobocodeSecurityPolicy extends Policy {
 					+ ": Robots that are not in a package may not read any files.");
 			return false;
 		}
+		// If this is a writtable file, return.
+		if (fileSystemManager.isWritable(filePermission.getName())) {
+			return true;
+		}
 		// If this is a readable file, return.
 		if (fileSystemManager.isReadable(filePermission.getName())) {
 			return true;

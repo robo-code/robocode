@@ -101,17 +101,17 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		}
 		if (isSecutityOn) {
 			testPackages(name);
+		}
+		if (!name.startsWith("robocode")) {
+			final Class<?> result = loadRobotClassLocaly(name, resolve);
 
-			if (!name.startsWith("robocode")) {
-				final Class<?> result = loadRobotClassLocaly(name, resolve);
-
-				if (result != null) {
-					// yes, it is in robot's classpath
-					// we loaded it localy
-					return result;
-				}
+			if (result != null) {
+				// yes, it is in robot's classpath
+				// we loaded it localy
+				return result;
 			}
 		}
+		
 		// it is robot API
 		// or java class
 		// or security is off
