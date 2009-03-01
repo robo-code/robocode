@@ -331,6 +331,7 @@ public class AutoExtract implements ActionListener {
 					System.exit(0);
 				}
 			}
+			deleteOldLibs(installDir);
 			boolean rv = extractor.extract(installDir);
 
 			if (rv) {
@@ -342,6 +343,24 @@ public class AutoExtract implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Installation cancelled.");
 		}
 		System.exit(0);
+	}
+
+	private static void deleteOldLibs(File installDir) {
+		File libs = new File(installDir, "libs");
+		if (libs.exists()){
+			final File[] del = libs.listFiles(new FilenameFilter() {
+
+				public boolean accept(File dir, String name) {
+					String test = name.toLowerCase();
+					return test.endsWith(".jar");
+				}
+			});
+			for(File d : del){
+				if (!d.delete()){
+					System.out.println("Can't delete " + d);
+				}
+			}
+		}
 	}
 
 	private void createShortcuts(File installDir, String runnable, String folder, String name) {
