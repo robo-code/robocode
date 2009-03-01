@@ -4,6 +4,11 @@ Version 1.7.1 Beta
 
 With this release we give BIG thanks to Nat Pavasant who have put in great effort in testing and finding as many bugs in Robocode as possible. He has been a great help with testing especially RoboRumble@Home functionality.
 
+Currently, there is one known issue, which will be fixed with the next Beta or in the final release of version 1.7.1. This is critical for e.g. the TeamRumble, so please notice the known issue below.
+
+= Known issue =
+* With this version Robocode cannot handle team packages containing robot .jar files, i.e. robot packages.
+
 = Bugfix =
 * Bug [2626148] - Bots referencing robocode.robocodeGL broken. Now, we are now not following refrences to robocode packages.
 * Bug [2626164] - Don't ever punish robots in devel directories by removing from repository.
