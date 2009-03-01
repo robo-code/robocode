@@ -21,6 +21,9 @@ With this release we give BIG thanks to Nat Pavasant who have put in great effor
 * Request [2446276] Ranking Panel should be visible when Robocode is minimized. This feature has been added and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
 * Request [2467545] Command Line option for saving a battle record file. Two new command line options have been added for Robocode, i.e. -record <filename> and -recordXML <filename>. The -record option records the battle as a binary and zipped battle record. Here I propose that the specified filename should is something like record.br. The -recordXML does the same as the -record option, but saves the battle record as an XML file. Here I suggest that you use a filename like record.br.xml.
 
+= RoboRumble changes =
+* Changed the link for http://rumble.fervir.com/rumble into http://darkcanuck.net/rumble as the RoboRumble server fervir is down and with unstable ranking. The current ranking at Darkcanuck's server is alive. Almost all clients are point to Darkcanuck's now. Hence, it is updated now.
+
 = Internal Changes =
 * The robot repository has been updated. It is no longer extracting .jar files.
 * It also remembers last timestamp on file so detection of the changes is really fast. Only data files are extracted now.

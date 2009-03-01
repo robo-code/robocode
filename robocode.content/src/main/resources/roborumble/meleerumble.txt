@@ -130,7 +130,7 @@ PARTICIPANTSFILE=./roborumble/files/participmelee.txt
 
 STARTAG=pre
 
-UPDATEBOTSURL=http://rumble.fervir.com/rumble/RemoveOldParticipant
+UPDATEBOTSURL=http://darkcanuck.net/rumble/RemoveOldParticipant
 
 #-------------------------------------------------------------------------------
 # Properties to control the way battles are run 
@@ -190,7 +190,7 @@ PRIORITYBATTLESFILE=./roborumble/temp/prioritymelee.txt
 #           File containing the number of battles fought by the robots, which is
 #           returned by the server when results are uploaded to the server.
 
-RESULTSURL=http://rumble.fervir.com/rumble/UploadedResults
+RESULTSURL=http://darkcanuck.net/rumble/UploadedResults
 
 BATTLESNUMFILE=./roborumble/temp/meleebattlesnumber.txt
 
@@ -236,7 +236,7 @@ CODESIZEFILE=./roborumble/files/codesizemelee.txt
 # RATINGS.NANOBOTS:
 #           File name for the rating file of the Melee NanoRumble.
 
-RATINGS.URL=http://rumble.fervir.com/rumble/RatingsFile
+RATINGS.URL=http://darkcanuck.net/rumble/RatingsFile
 
 RATINGS.GENERAL=./roborumble/temp/ratings_m_roborumble.txt
 RATINGS.MINIBOTS=./roborumble/temp/ratings_m_minirumble.txt
