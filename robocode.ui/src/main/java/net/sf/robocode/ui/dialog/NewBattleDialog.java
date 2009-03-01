@@ -171,7 +171,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		setContentPane(getNewBattleDialogContentPane());
 		addCancelByEscapeKey();
 
-		battleProperties.setNumRounds(properties.getNumberOfRounds());
 		processBattleProperties();
 	}
 
@@ -254,7 +253,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		getBattleFieldTab().setBattleFieldWidth(battleProperties.getBattlefieldWidth());
 		getBattleFieldTab().setBattleFieldHeight(battleProperties.getBattlefieldHeight());
 		getRobotSelectionPanel().setNumRounds(battleProperties.getNumRounds());
-
 		getRulesTab().setGunCoolingRate(battleProperties.getGunCoolingRate());
 		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
 	}
