@@ -34,7 +34,7 @@ public class TestFileWrite extends RobotTestBed {
 		return "sample.Walls,sample.SittingDuck";
 	}
 
-	final File file = new File("../robocode.samples/target/classes/sample/SittingDuck.data/count.dat");
+	final File file = new File("target/classes/.robotcache/sample/SittingDuck.data/count.dat");
 
 	@Override
 	protected void runSetup() {

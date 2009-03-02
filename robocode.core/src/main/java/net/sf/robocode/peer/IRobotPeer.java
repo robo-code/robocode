@@ -12,8 +12,8 @@
 package net.sf.robocode.peer;
 
 
-import java.nio.ByteBuffer;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public interface IRobotPeer {
 
-	void disable();
+	void drainEnergy();
 
 	void punishBadBehavior();
 

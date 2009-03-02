@@ -40,6 +40,7 @@ package robocode.control;
 import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.gui.IWindowManagerBase;
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.repository.IRepositoryManagerBase;
@@ -47,9 +48,6 @@ import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 /**
@@ -214,6 +212,28 @@ public class RobocodeEngine implements IRobocodeEngine {
 	}
 
 	/**
+	 * Returns the current working directory.
+	 *
+	 * @return a File for the current working directory.
+	 *
+	 * @since 1.7.1
+	 */
+	public static File getCurrentWorkingDir() {
+		return FileUtil.getCwd();
+	}
+
+	/**
+	 * Returns the directory containing the robots.
+	 *
+	 * @return a File that is the directory containing the robots.
+	 *
+	 * @since 1.7.1
+	 */
+	public static File getRobotsDir() {
+		return FileUtil.getRobotsDir();
+	}
+
+	/**
 	 * Shows or hides the Robocode window.
 	 *
 	 * @param visible {@code true} if the Robocode window must be set visible;
@@ -233,7 +253,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		return ContainerBase.getComponent(IRepositoryManagerBase.class).getRobotSpecifications();
+		return ContainerBase.getComponent(IRepositoryManagerBase.class).getSpecifications();
 	}
 
 	/**
@@ -244,7 +264,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * Notice: If a specified robot cannot be found in the repository, it will
 	 * not be returned in the array of robots returned by this method.
 	 *
-	 * @param selectedRobotList a comma or space separated list of robots to
+	 * @param selectedRobots a comma or space separated list of robots to
 	 *                          return. The full class name must be used for
 	 *                          specifying the individual robot, e.g.
 	 *                          "sample.Corners, sample.Crazy"
@@ -255,28 +275,10 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #getLocalRepository()
 	 * @since 1.6.2
 	 */
-	public RobotSpecification[] getLocalRepository(String selectedRobotList) {
-		RobotSpecification[] repository = getLocalRepository();
+	public RobotSpecification[] getLocalRepository(String selectedRobots) {
+		final IRepositoryManagerBase repository = ContainerBase.getComponent(IRepositoryManagerBase.class);
 
-		HashMap<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>();
-
-		for (RobotSpecification spec : repository) {
-			robotSpecMap.put(spec.getNameAndVersion(), spec);
-		}
-
-		String[] selectedRobots = selectedRobotList.split("[\\s,;]+");
-
-		List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
-
-		RobotSpecification spec;
-
-		for (String robot : selectedRobots) {
-			spec = robotSpecMap.get(robot);
-			if (spec != null) {
-				selectedRobotSpecs.add(spec);
-			}
-		}
-		return selectedRobotSpecs.toArray(new RobotSpecification[selectedRobotSpecs.size()]);
+		return repository.loadSelectedRobots(selectedRobots);
 	}
 
 	/**
@@ -290,7 +292,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification) {
 		this.battleSpecification = battleSpecification;
-		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, false);
+		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, false, false);
 	}
 
 	/**
@@ -306,7 +308,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 */
 	public void runBattle(BattleSpecification battleSpecification, boolean waitTillOver) {
 		this.battleSpecification = battleSpecification;
-		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, waitTillOver);
+		ContainerBase.getComponent(IBattleManagerBase.class).startNewBattle(battleSpecification, waitTillOver, false);
 	}
 
 	/**

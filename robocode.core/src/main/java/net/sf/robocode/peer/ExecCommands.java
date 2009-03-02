@@ -76,13 +76,9 @@ public final class ExecCommands implements Serializable {
 		isAdjustRadarForGunTurn = origin.isAdjustRadarForGunTurn;
 		isAdjustRadarForBodyTurn = origin.isAdjustRadarForBodyTurn;
 		isAdjustRadarForBodyTurnSet = origin.isAdjustRadarForBodyTurnSet;
-		bodyColor = origin.bodyColor;
-		gunColor = origin.gunColor;
-		radarColor = origin.radarColor;
-		bulletColor = origin.bulletColor;
-		scanColor = origin.scanColor;
 		maxTurnRate = origin.maxTurnRate;
 		maxVelocity = origin.maxVelocity;
+		copyColors(origin);
 		if (fromRobot) {
 			debugProperties = origin.debugProperties; 
 			bullets = origin.bullets;
@@ -92,6 +88,16 @@ public final class ExecCommands implements Serializable {
 			outputText = origin.outputText;
 			teamMessages = origin.teamMessages;
 			isTryingToPaint = origin.isTryingToPaint; 
+		}
+	}
+
+	public void copyColors(ExecCommands origin) {
+		if (origin != null) {
+			bodyColor = origin.bodyColor;
+			gunColor = origin.gunColor;
+			radarColor = origin.radarColor;
+			bulletColor = origin.bulletColor;
+			scanColor = origin.scanColor;
 		}
 	}
 

@@ -35,6 +35,7 @@ import net.sf.robocode.ui.battle.AwtBattleAdaptor;
 import net.sf.robocode.ui.dialog.*;
 import net.sf.robocode.ui.packager.RobotPackager;
 import net.sf.robocode.ui.editor.IRobocodeEditor;
+import net.sf.robocode.version.IVersionManager;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.IBattleListener;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -58,21 +59,24 @@ public class WindowManager implements IWindowManagerExt {
 	private final AwtBattleAdaptor awtAdaptor;
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
-	private RankingDialog rankingDialog;
 	private final ISettingsManager properties;
 	private final IBattleManager battleManager;
 	private final ICpuManager cpuManager;
 	private final IRepositoryManager repositoryManager;
+	private final IVersionManager versionManager;
 	private IRobotDialogManager robotDialogManager;
 	private RobocodeFrame robocodeFrame;
 	private boolean isGUIEnabled = true;
-	private boolean slave = false;
+	private boolean isSlave;
+	private boolean centerRankings = true;
+	private boolean oldRankingHideState = true;
 
-	public WindowManager(ISettingsManager properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager) {
+	public WindowManager(ISettingsManager properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager, IVersionManager versionManager) {
 		this.properties = properties;
 		this.battleManager = battleManager;
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
+		this.versionManager = versionManager;
 		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have
@@ -105,11 +109,11 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void setSlave(boolean value) {
-		slave = value;
+		isSlave = value;
 	}
 
 	public boolean isSlave() {
-		return slave;
+		return isSlave;
 	}
 
 	public ITurnSnapshot getLastSnapshot() {
@@ -148,7 +152,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showAboutBox() {
-		packCenterShow(net.sf.robocode.core.Container.getComponent(AboutBox.class), true);
+		packCenterShow(Container.getComponent(AboutBox.class), true);
 	}
 
 	public String showBattleOpenDialog(final String defExt, final String name) {
@@ -273,20 +277,32 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showRankingDialog(boolean visible) {
-		if (rankingDialog == null) {
-			rankingDialog = Container.getComponent(RankingDialog.class);
-			if (visible) {
-				packCenterShow(rankingDialog, true);
-			} else {
-				rankingDialog.dispose();
-			}
-		} else {
-			if (visible) {
-				packCenterShow(rankingDialog, false);
-			} else {
-				rankingDialog.dispose();
-			}
+		boolean currentRankingHideState = properties.getOptionsCommonDontHideRankings();
+
+		// Check if the Ranking hide states has changed
+		if (currentRankingHideState != oldRankingHideState) {
+			// Remove current visible RankingDialog, if it is there
+			Container.getComponent(RankingDialog.class).dispose();
+
+			// Replace old RankingDialog, as the owner window must be replaced from the constructor
+			Container.cache.removeComponent(RankingDialog.class);
+			Container.cache.addComponent(RankingDialog.class);
+
+			// Reset flag for centering the dialog the first time it is shown
+			centerRankings = true;
 		}
+
+		RankingDialog rankingDialog = Container.getComponent(RankingDialog.class);
+
+		if (visible) {
+			packCenterShow(rankingDialog, centerRankings);
+			centerRankings = false; // only center the first time Rankings are shown
+		} else {
+			rankingDialog.dispose();
+		}
+
+		// Save current Ranking hide state
+		oldRankingHideState = currentRankingHideState;
 	}
 
 	public void showRobocodeEditor() {
@@ -305,7 +321,7 @@ public class WindowManager implements IWindowManagerExt {
 			robotPackager = null;
 		}
 
-		robotPackager = net.sf.robocode.core.Container.getComponent(RobotPackager.class);
+		robotPackager = net.sf.robocode.core.Container.factory.getComponent(RobotPackager.class);
 		WindowUtil.packCenterShow(robotPackager);
 	}
 
@@ -326,7 +342,7 @@ public class WindowManager implements IWindowManagerExt {
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 
-		repositoryManager.loadRobotRepository();
+		repositoryManager.reload(versionManager.isLastRunVersionChanged());
 
 		WindowUtil.setStatusLabel(splashScreen.getSplashLabel());
 		cpuManager.getCpuConstant();
@@ -340,9 +356,9 @@ public class WindowManager implements IWindowManagerExt {
 	public void showNewBattleDialog(BattleProperties battleProperties) {
 		try {
 			battleManager.pauseBattle();
-			final NewBattleDialog battleDialog = Container.getComponent(NewBattleDialog.class);
+			final NewBattleDialog battleDialog = Container.createComponent(NewBattleDialog.class);
 
-			battleDialog.setup(battleManager.getBattleProperties());
+			battleDialog.setup(battleProperties);
 			WindowUtil.packCenterShow(getRobocodeFrame(), battleDialog);
 		} finally {
 			battleManager.resumeBattle();
@@ -428,7 +444,7 @@ public class WindowManager implements IWindowManagerExt {
 					== JOptionPane.OK_OPTION) {
 				try {
 					FileUtil.copy(inputFile, outputFile);
-					repositoryManager.clearRobotList();
+					repositoryManager.refresh();
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Robot imported successfully.");
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(getRobocodeFrame(), "Import failed: " + e);
@@ -569,7 +585,7 @@ public class WindowManager implements IWindowManagerExt {
 			boolean origShowResults = properties.getOptionsCommonShowResults();
 
 			properties.setOptionsCommonShowResults(false);
-			battleManager.startNewBattle(battleManager.loadBattleProperties(), true);
+			battleManager.startNewBattle(battleManager.loadBattleProperties(), true, false);
 			battleManager.setDefaultBattleProperties();
 			properties.setOptionsCommonShowResults(origShowResults);
 			robocodeFrame.afterIntroBattle();

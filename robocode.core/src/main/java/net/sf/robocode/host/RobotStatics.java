@@ -13,7 +13,7 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.peer.IRobotStatics;
-import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.BattleRules;
 import robocode.control.RobotSpecification;
@@ -44,7 +44,7 @@ public final class RobotStatics implements IRobotStatics {
 	private final int contestantIndex;
 
 	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, String teamName, List<String> teamMembers, int index, int contestantIndex) {
-		IRobotFileSpecification specification = ((IRobotFileSpecification) HiddenAccess.getFileSpecification(
+		IRobotRepositoryItem specification = ((IRobotRepositoryItem) HiddenAccess.getFileSpecification(
 				robotSpecification));
 
 		shortClassName = specification.getShortClassName();
@@ -52,11 +52,11 @@ public final class RobotStatics implements IRobotStatics {
 		if (duplicate >= 0) {
 			String countString = " (" + (duplicate + 1) + ')';
 
-			name = specification.getUniqueFullClassNameWithVersion() + countString;
+			name = specification.getFullClassNameWithVersion() + countString;
 			shortName = specification.getUniqueShortClassNameWithVersion() + countString;
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion() + countString;
 		} else {
-			name = specification.getUniqueFullClassNameWithVersion();
+			name = specification.getFullClassNameWithVersion();
 			shortName = specification.getUniqueShortClassNameWithVersion();
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion();
 		}

@@ -12,6 +12,7 @@
 package net.sf.robocode.robotpaint;
 
 
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.serialization.RbSerializer;
 
 import java.awt.*;
@@ -1805,7 +1806,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private void notSupportedWarn() {
-		System.out.println("We are sorry. Operation is not supported in Robocode.");
+		Logger.printlnToRobotsConsole("We are sorry. Operation is not supported in Robocode.");
 	}
 
 	// --------------------------------------------------------------------------

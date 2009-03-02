@@ -29,22 +29,24 @@ package net.sf.robocode.host.security;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
+import net.sf.robocode.host.IRobotClassLoader;
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
+import robocode.robotinterfaces.IBasicRobot;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.nio.ByteBuffer;
-import java.security.CodeSource;
-import java.security.PermissionCollection;
-import java.security.Permissions;
+import java.security.*;
 import java.security.cert.Certificate;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -58,73 +60,84 @@ import java.util.*;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-public class RobotClassLoader extends URLClassLoader {
+public class RobotClassLoader extends URLClassLoader implements IRobotClassLoader {
 	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private Field classesField = null;
-	private Class<?> robotClass;
-	private final String fullClassName;
+	protected Class<?> robotClass;
+	protected final String fullClassName;
 	private PermissionCollection emptyPermissions;
 	private IHostedThread robotProxy;
 	private CodeSource codeSource;
+	protected URL robotClassPath;
 	private Set<String> referencedClasses = new HashSet<String>();
 	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
+	private ClassLoader parent;
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
-		this(robotClassPath, robotFullClassName, null);
-	}
-	
-	public RobotClassLoader(URL robotClassPath, String robotFullClassName, IHostedThread robotProxy) {
 		super(new URL[] { robotClassPath}, Container.systemLoader);
 		prepareForCleanup();
 		fullClassName = robotFullClassName;
+		this.robotClassPath = robotClassPath;
 		emptyPermissions = new Permissions();
-		this.robotProxy = robotProxy;
+		parent = getParent();
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
 		} catch (MalformedURLException ignored) {}
 	}
 
-	public synchronized Class<?> loadClass(String name, boolean resolve)
+	public void setRobotProxy(Object robotProxy) {
+		this.robotProxy = (IHostedThread) robotProxy;
+	}
+
+	public synchronized void addURL(URL url) {
+		super.addURL(url);
+	}
+
+	public synchronized Class<?> loadClass(final String name, boolean resolve)
 		throws ClassNotFoundException {
 		if (name.startsWith("java.lang")) {
 			// we always delegate java.lang stuff to parent loader
 			return super.loadClass(name, resolve);
 		}
 		if (isSecutityOn) {
-			if (name.startsWith("net.sf.robocode")) {
-				final String message = "Robots are not allowed to reference robocode engine in net.sf.robocode package";
+			testPackages(name);
+		}
+		if (!name.startsWith("robocode")) {
+			final Class<?> result = loadRobotClassLocaly(name, resolve);
 
-				notifyRobot(message);
-				throw new ClassNotFoundException(message);
-			}
-			if (name.startsWith("robocode.control")) {
-				final String message = "Robots are not allowed to reference robocode engine in robocode.control package";
-
-				notifyRobot(message);
-				throw new ClassNotFoundException(message);
-			}
-			if (name.startsWith("javax.swing")) {
-				final String message = "Robots are not allowed to reference javax.swing package";
-
-				notifyRobot(message);
-				throw new ClassNotFoundException(message);
-			}
-
-			if (!name.startsWith("robocode")) {
-				final Class<?> result = loadRobotClassLocaly(name, resolve);
-
-				if (result != null) {
-					// yes, it is in robot's classpath
-					// we loaded it localy
-					return result;
-				}
+			if (result != null) {
+				// yes, it is in robot's classpath
+				// we loaded it localy
+				return result;
 			}
 		}
+		
 		// it is robot API
 		// or java class
 		// or security is off
-		// so we delegate to parrent classloader
-		return super.loadClass(name, resolve);
+		// so we delegate to parent classloader
+		return parent.loadClass(name);
+	}
+
+	private void testPackages(String name) throws ClassNotFoundException {
+		if (name.startsWith("net.sf.robocode")) {
+			final String message = "Robots are not alowed to reference robocode engine in net.sf.robocode package";
+
+			notifyRobot(message);
+			throw new ClassNotFoundException(message);
+		}
+		if (name.startsWith("robocode.control")) {
+			final String message = "Robots are not alowed to reference robocode engine in robocode.control package";
+
+			notifyRobot(message);
+			throw new ClassNotFoundException(message);
+		}
+		if (name.startsWith("javax.swing")) {
+			final String message = "Robots are not alowed to reference javax.swing package";
+
+			notifyRobot(message);
+			throw new ClassNotFoundException(message);
+		}
 	}
 
 	private Class<?> loadRobotClassLocaly(String name, boolean resolve) throws ClassNotFoundException {
@@ -148,14 +161,19 @@ public class RobotClassLoader extends URLClassLoader {
 	// we need to call defineClass to be able to set codeSource to untrustedLocation  
 	private ByteBuffer findLocalResource(String name) {
 		// try to find it in robot's classpath
-		String path = name.replace('.', File.separatorChar).concat(".class");
+		// this is URL, don't change to File.pathSeparator 
+		String path = name.replace('.', '/').concat(".class");
 
 		final URL url = findResource(path);
 		ByteBuffer result = null;
+		InputStream is = null;
 
 		if (url != null) {
 			try {
-				final InputStream is = url.openStream();
+				final URLConnection connection = url.openConnection();
+
+				connection.setUseCaches(false);
+				is = connection.getInputStream();
 
 				result = ByteBuffer.allocate(1024 * 8);
 				boolean done = false;
@@ -179,6 +197,8 @@ public class RobotClassLoader extends URLClassLoader {
 			} catch (IOException e) {
 				Logger.logError(e);
 				return null;
+			} finally {
+				FileUtil.cleanupStream(is);
 			}
 		}
 		return result;
@@ -187,7 +207,7 @@ public class RobotClassLoader extends URLClassLoader {
 	private void notifyRobot(String s) {
 		if (robotProxy != null) {
 			robotProxy.println(s);
-			robotProxy.disable();
+			robotProxy.drainEnergy();
 		}
 	}
 
@@ -198,40 +218,53 @@ public class RobotClassLoader extends URLClassLoader {
 		return super.getPermissions(codesource);
 	}
 
-	public String getUid() {
-		// TODO ZAMO
-		return null;
+	public String[] getReferencedClasses() {
+		return referencedClasses.toArray(new String[referencedClasses.size()]);
 	}
 
-	public Set<String> getReferencedClasses() {
-		return referencedClasses;
-	}
-
-	public synchronized Class<?> loadRobotMainClass() throws ClassNotFoundException {
+	public synchronized Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException {
 		try {
 			if (robotClass == null) {
-				robotClass = loadClass(fullClassName, true);
-				// iterate thru dependencies until we didn't found any new
-				HashSet<String> clone;
+				robotClass = loadClass(fullClassName, false);
 
-				do {
-					clone = new HashSet<String>(referencedClasses);
-					for (String reference : clone) {
-						loadClass(reference, true);
-					}
-				} while (referencedClasses.size() != clone.size());
+				if (!IBasicRobot.class.isAssignableFrom(robotClass)) {
+					// that's not robot
+					return null;
+				}
+				if (resolve) {
+					robotClass = loadClass(fullClassName, true);
+
+					// resolve methods to see more referenced classes
+					robotClass.getMethods();
+
+					// itterate thru dependencies until we didn't found any new
+					HashSet<String> clone;
+
+					do {
+						clone = new HashSet<String>(referencedClasses);
+						for (String reference : clone) {
+							testPackages(reference);
+							if (!reference.startsWith("java.") && !reference.startsWith("robocode.")) {
+								loadClass(reference, true);
+							}
+						}
+					} while (referencedClasses.size() != clone.size());
+				}
 			}
 		} catch (Throwable e) {
 			robotClass = null;
-			throw new ClassNotFoundException(
-					e.getMessage()
-							+ "\nRobots are not allowed to reference robocode engine in robocode.control or net.sf.robocode packages",
-							e); 
+			throw new ClassNotFoundException(e.getMessage(), e);
 		}
 		return robotClass;
 	}
 
+	public IBasicRobot createRobotInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		loadRobotMainClass(true);
+		return (IBasicRobot) robotClass.newInstance();
+	}
+
 	public void cleanup() {
+		referencedClasses = null;
 		// Set ClassLoader.class.classes to null to prevent memory leaks
 		if (classesField != null) {
 			try {

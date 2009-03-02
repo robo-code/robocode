@@ -109,8 +109,8 @@ public class HiddenAccess {
 		} catch (ClassNotFoundException e) {
 			Logger.logError(e);
 			if (!foundCore) {
-				System.out.println("Can't find robocode.core-1.x.jar module near to robocode.jar");
-				System.out.println("ClassPath: " + System.getProperty("robocode.class.path", null));
+				Logger.logError("Can't find robocode.core-1.x.jar module near to robocode.jar");
+				Logger.logError("ClassPath: " + System.getProperty("robocode.class.path", null));
 			}
 			System.exit(-1);
 		} catch (MalformedURLException e) {
@@ -153,10 +153,15 @@ public class HiddenAccess {
 
 		if (files != null) {
 			for (File file : files) {
-				if (file.toString().toLowerCase().contains("robocode.core")) {
+				final String name = file.toString().toLowerCase();
+
+				if (name.contains("robocode.core")) {
 					foundCore = true;
+					urls.add(file.toURI().toURL());
 				}
-				urls.add(file.toURL());
+				if (name.contains("picocontainer")) {
+					urls.add(file.toURI().toURL());
+				}
 				classPath.append(File.pathSeparator);
 				classPath.append(file.toString());
 			}

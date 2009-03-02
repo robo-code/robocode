@@ -24,7 +24,7 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
@@ -74,6 +74,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 
 	public void setup(BattleProperties battleProperties) {
 		this.battleProperties = battleProperties;
+		robotSelectionPanel = null;
 		initialize();
 	}
 
@@ -101,7 +102,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 				return;
 			}
 		}
-		battleProperties.setSelectedRobots(robotSelectionPanel.getSelectedRobotsAsString());
+		battleProperties.setSelectedRobots(getRobotSelectionPanel().getSelectedRobotsAsString());
 		battleProperties.setBattlefieldWidth(getBattleFieldTab().getBattleFieldWidth());
 		battleProperties.setBattlefieldHeight(getBattleFieldTab().getBattleFieldHeight());
 		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());
@@ -112,7 +113,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		dispose();
 
 		// Start new battle after the dialog has been disposed and hence has called resumeBattle()
-		battleManager.startNewBattle(battleProperties, false);
+		battleManager.startNewBattle(battleProperties, false, false);
 	}
 
 	/**
@@ -157,7 +158,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		return rulesTab;
 	}
 
-	public List<INamedFileSpecification> getSelectedRobots() {
+	public List<IRepositoryItem> getSelectedRobots() {
 		return getRobotSelectionPanel().getSelectedRobots();
 	}
 
@@ -170,7 +171,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		setContentPane(getNewBattleDialogContentPane());
 		addCancelByEscapeKey();
 
-		battleProperties.setNumRounds(properties.getNumberOfRounds());
 		processBattleProperties();
 	}
 
@@ -253,7 +253,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		getBattleFieldTab().setBattleFieldWidth(battleProperties.getBattlefieldWidth());
 		getBattleFieldTab().setBattleFieldHeight(battleProperties.getBattlefieldHeight());
 		getRobotSelectionPanel().setNumRounds(battleProperties.getNumRounds());
-
 		getRulesTab().setGunCoolingRate(battleProperties.getGunCoolingRate());
 		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
 	}

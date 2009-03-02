@@ -26,6 +26,11 @@ public class TestNames extends RobotTestBed {
 	}
 
 	@Override
+	protected int getExpectedErrors() {
+		return 4;
+	}
+
+	@Override
 	public int getExpectedRobotCount(String list) {
 		return 2;
 	}

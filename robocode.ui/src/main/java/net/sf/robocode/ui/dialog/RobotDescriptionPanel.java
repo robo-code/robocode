@@ -16,7 +16,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.ui.BrowserManager;
 
 import javax.swing.*;
@@ -41,7 +41,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JButton detailsButton;
 	private JLabel robocodeVersionLabel;
 	private JLabel filePathLabel;
-	private INamedFileSpecification currentRobotSpecification;
+	private IRepositoryItem currentRobotSpecification;
 
 	private final static String BLANK_STRING = "                                                                        ";
 
@@ -165,7 +165,7 @@ public class RobotDescriptionPanel extends JPanel {
 		add(p, BorderLayout.EAST);
 	}
 
-	public void showDescription(INamedFileSpecification robotSpecification) {
+	public void showDescription(IRepositoryItem robotSpecification) {
 		this.currentRobotSpecification = robotSpecification;
 		if (robotSpecification == null) {
 			getRobotNameLabel().setText(" ");
@@ -188,10 +188,12 @@ public class RobotDescriptionPanel extends JPanel {
 				name += " by " + s;
 			}
 			getRobotNameLabel().setText(name);
-			if (robotSpecification.getJarFile() != null) {
-				getFilePathLabel().setText(robotSpecification.getJarFile().getPath());
+			final URL url = robotSpecification.getFullUrl();
+
+			if (url != null) {
+				getFilePathLabel().setText(url.toString());
 			} else {
-				getFilePathLabel().setText(robotSpecification.getFilePath());
+				getFilePathLabel().setText("");
 			}
 
 			String desc = robotSpecification.getDescription();

@@ -27,6 +27,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 	private JPanel optionsPanel;
 
 	private JCheckBox showResultsCheckBox;
+	private JCheckBox dontHideRankingsCheckBox;
 	private JCheckBox appendWhenSavingResultsCheckBox;
 	private JCheckBox enableReplayRecordingCheckBox;
 
@@ -50,6 +51,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 			optionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Common"));
 			optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 			optionsPanel.add(getShowResultsCheckBox());
+			optionsPanel.add(getDontHideRankingsCheckBox());
 			optionsPanel.add(getAppendWhenSavingResultsCheckBox());
 			optionsPanel.add(new JLabel(" "));
 			optionsPanel.add(getEnableReplayRecordingCheckBox());
@@ -64,6 +66,15 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 			showResultsCheckBox.setDisplayedMnemonicIndex(1);
 		}
 		return showResultsCheckBox;
+	}
+
+	private JCheckBox getDontHideRankingsCheckBox() {
+		if (dontHideRankingsCheckBox == null) {
+			dontHideRankingsCheckBox = new JCheckBox("Don't hide current rankings when main window is minimized");
+			dontHideRankingsCheckBox.setMnemonic('t');
+			dontHideRankingsCheckBox.setDisplayedMnemonicIndex(4);
+		}
+		return dontHideRankingsCheckBox;
 	}
 
 	private JCheckBox getAppendWhenSavingResultsCheckBox() {
@@ -84,6 +95,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 
 	private void loadPreferences(ISettingsManager robocodeProperties) {
 		getShowResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonShowResults());
+		getDontHideRankingsCheckBox().setSelected(robocodeProperties.getOptionsCommonDontHideRankings());
 		getAppendWhenSavingResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonAppendWhenSavingResults());
 		getEnableReplayRecordingCheckBox().setSelected(robocodeProperties.getOptionsCommonEnableReplayRecording());
 	}
@@ -92,6 +104,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		ISettingsManager props = properties;
 
 		props.setOptionsCommonShowResults(getShowResultsCheckBox().isSelected());
+		props.setOptionsCommonDontHideRankings(getDontHideRankingsCheckBox().isSelected());
 		props.setOptionsCommonAppendWhenSavingResults(getAppendWhenSavingResultsCheckBox().isSelected());
 		props.setOptionsCommonEnableReplayRecording(getEnableReplayRecordingCheckBox().isSelected());
 

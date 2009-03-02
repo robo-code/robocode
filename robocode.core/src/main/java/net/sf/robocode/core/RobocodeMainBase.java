@@ -14,11 +14,10 @@ package net.sf.robocode.core;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.security.LoggingThreadGroup;
+import robocode.control.events.IBattleListener;
 
 import java.io.File;
 import java.io.IOException;
-
-import robocode.control.events.IBattleListener;
 
 
 /**

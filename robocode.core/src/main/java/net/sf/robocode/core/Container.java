@@ -23,8 +23,10 @@ import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 
 /**
@@ -57,11 +59,7 @@ public final class Container extends ContainerBase {
 	static {
 		instance = new Container();
 		systemLoader = Container.class.getClassLoader();
-		if (isSecutityOn) {
-			engineLoader = new EngineClassLoader(systemLoader);
-		} else {
-			engineLoader = systemLoader;
-		}
+		engineLoader = new EngineClassLoader(systemLoader);
 		final Thread currentThread = Thread.currentThread();
 
 		currentThread.setContextClassLoader(engineLoader);
@@ -179,12 +177,70 @@ public final class Container extends ContainerBase {
 		return null;
 	}
 
+	public static void loadJars(String allowed) {
+		final URL[] jars = findJars(allowed);
+
+		for (URL jar : jars) {
+			((EngineClassLoader) engineLoader).addURL(jar);
+		}
+	}
+
+	public static URL[] findJars(String allowed) {
+		java.util.List<String> urls = new ArrayList<String>();
+		final String classPath = System.getProperty("robocode.class.path", null);
+
+		for (String path : classPath.split(File.pathSeparator)) {
+			String test = path.toLowerCase();
+
+			if (test.contains(allowed)) {
+				if (!test.contains("robocode.jar") && !test.contains("robocode.api")
+						) {
+					urls.add(path);
+				}
+			}
+		}
+		return convertUrls(urls);
+	}
+
+	private static URL[] convertUrls(java.util.List<String> surls) {
+		final URL[] urls = new URL[surls.size()];
+
+		for (int i = 0; i < surls.size(); i++) {
+			String url = surls.get(i);
+			File f = new File(url);
+
+			try {
+				urls[i] = f.getCanonicalFile().toURI().toURL();
+			} catch (MalformedURLException e) {
+				Logger.logError(e);
+			} catch (IOException e) {
+				Logger.logError(e);
+			}
+		}
+		return urls;
+	}
+
 	protected <T> T getBaseComponent(final Class<T> tClass) {
 		return cache.getComponent(tClass);
 	}
 
 	public static <T> T getComponent(java.lang.Class<T> tClass) {
 		return cache.getComponent(tClass);
+	}
+
+	public static <T> T getComponent(java.lang.Class<T> tClass, String className) {
+		final List<T> list = cache.getComponents(tClass);
+
+		for (T component : list) {
+			if (component.getClass().getName().endsWith(className)) {
+				return component;
+			}
+		}
+		return null;
+	}
+
+	public static <T> java.util.List<T> getComponents(java.lang.Class<T> tClass) {
+		return cache.getComponents(tClass);
 	}
 
 	public static <T> T createComponent(java.lang.Class<T> tClass) {

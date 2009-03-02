@@ -76,7 +76,7 @@ import net.sf.robocode.host.proxies.IHostingRobotProxy;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.*;
-import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
@@ -91,14 +91,14 @@ import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import static java.lang.Math.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.nio.ByteBuffer;
-import java.io.IOException;
 
 
 /**
@@ -178,7 +178,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// waiting for next tick
 	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
 	private final AtomicBoolean halt = new AtomicBoolean(false);
-	private boolean isDisabled;
+	private boolean isExecFinishedAndDisabled;
+	private boolean isEnergyDrained;
 	private boolean isWinner;
 	private boolean inCollision;
 	private RobotState state;
@@ -209,7 +210,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 
 		robotProxy = (IHostingRobotProxy) hostManager.createRobotProxy(robotSpecification, statics, this);
-
 	}
 
 	public void println(String s) {
@@ -475,7 +475,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public final ExecResults executeImpl(ExecCommands newCommands) {
 		validateCommands(newCommands);
 
-		if (!isDisabled) {
+		if (!isExecFinishedAndDisabled) {
 			// from robot to battle
 			commands.set(new ExecCommands(newCommands, true));
 			printProxy(newCommands.getOutputText());
@@ -490,15 +490,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (battle.isAborted()) {
-			isDisabled = true;
+			isExecFinishedAndDisabled = true;
 			throw new AbortedException();
 		}
 		if (isDead()) {
-			isDisabled = true;
+			isExecFinishedAndDisabled = true;
 			throw new DeathException();
 		}
 		if (getHalt()) {
-			isDisabled = true;
+			isExecFinishedAndDisabled = true;
 			if (isWinner) {
 				throw new WinException();
 			} else {
@@ -714,7 +714,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		gunHeat = 3;
 
 		setHalt(false);
-		isDisabled = false;
+		isExecFinishedAndDisabled = false;
+		isEnergyDrained = false;
 
 		scan = false;
 
@@ -727,12 +728,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		skippedTurns = 0;
 
 		status = new AtomicReference<RobotStatus>();
-		commands = new AtomicReference<ExecCommands>(new ExecCommands());
 		readoutEvents();
 		readoutTeamMessages();
 		readoutBullets();
 		battleText.setLength(0);
 		proxyText.setLength(0);
+
+		// Prepare new execution commands, but copy the colors from the last commands.
+		// Bugfix [2628217] - Robot Colors don't stick between rounds.
+		ExecCommands newExecCommands = new ExecCommands();
+
+		newExecCommands.copyColors(commands.get());
+		commands = new AtomicReference<ExecCommands>(newExecCommands);
 	}
 
 	private boolean validSpot(List<RobotPeer> robots) {
@@ -751,7 +758,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			try {
 				Logger.logMessage(".", false);
 
-				currentCommands = new ExecCommands();
+				ExecCommands newExecCommands = new ExecCommands();
+
+				// Copy the colors from the last commands.
+				// Bugfix [2628217] - Robot Colors don't stick between rounds.
+				newExecCommands.copyColors(commands.get());
+
+				currentCommands = newExecCommands;
 				int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
 				RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading,
 						velocity, currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
@@ -1451,20 +1464,25 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		isRunning.set(value);
 	}
 
-	public void disable() {
+	public void drainEnergy() {
 		setEnergy(0, true);
-		isDisabled = true;
+		isEnergyDrained = true;
 	}
 
 	public void punishBadBehavior() {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
-		// disable for next time
-		((IRobotFileSpecification) HiddenAccess.getFileSpecification(robotSpecification)).setValid(false);
+		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+				robotSpecification);
+
+		// disable for next time, just if is not developed here
+		if (!repositoryItem.isDevelopmentVersion()) {
+			repositoryItem.setValid(false);
+		}
 	}
 
 	public void updateEnergy(double delta) {
-		if (!isDisabled) {
+		if ((!isExecFinishedAndDisabled && !isEnergyDrained) || delta < 0) {
 			setEnergy(energy + delta, true);
 		}
 	}

@@ -153,7 +153,7 @@ public class RobocodeSecurityPolicy extends Policy {
 			final String message = "Preventing " + robotProxy.getStatics().getName() + " from access to AWT: " + perm;
 
 			Logger.logError(message);
-			robotProxy.disable();
+			robotProxy.drainEnergy();
 
 			// this is hack, because security exception is not enough
 			throw new ThreadDeath();
@@ -187,7 +187,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 		// Permission denied.
 		Logger.logError("Preventing " + robotProxy.getStatics().getName() + " from access: " + perm);
-		robotProxy.disable();
+		robotProxy.drainEnergy();
 
 		return false;
 	}
@@ -200,7 +200,7 @@ public class RobocodeSecurityPolicy extends Policy {
 			Logger.logError(
 					"Preventing " + Thread.currentThread().getName() + " from access to the internal Robocode pakage: "
 					+ packageName);
-			robotProxy.disable();
+			robotProxy.drainEnergy();
 			return false;
 		}
 		return true;
@@ -209,7 +209,7 @@ public class RobocodeSecurityPolicy extends Policy {
 	private boolean impliesRobotFileDelete(IHostedThread robotProxy, RobotFileSystemManager fileSystemManager, FilePermission filePermission) {
 		// If there is no writable directory, deny access
 		if (fileSystemManager.getWritableDirectory() == null) {
-			robotProxy.disable();
+			robotProxy.drainEnergy();
 			robotProxy.println(
 					"Preventing " + robotProxy.getStatics().getName() + " from access: " + filePermission
 					+ ": Robots that are not in a package may not delete any files.");
@@ -225,7 +225,7 @@ public class RobocodeSecurityPolicy extends Policy {
 			return true;
 		} // Not a writable directory.
 
-		robotProxy.disable();
+		robotProxy.drainEnergy();
 		robotProxy.println(
 				"Preventing " + robotProxy.getStatics().getName() + " from access: " + filePermission
 				+ ": You may only delete files in your own data directory. ");
@@ -235,7 +235,7 @@ public class RobocodeSecurityPolicy extends Policy {
 	private boolean impliesRobotFileWrite(IHostedThread robotProxy, RobotFileSystemManager fileSystemManager, FilePermission filePermission) {
 		// There isn't one.  Deny access.
 		if (!threadManager.checkRobotFileStream()) {
-			robotProxy.disable();
+			robotProxy.drainEnergy();
 			robotProxy.println(
 					"Preventing " + robotProxy.getStatics().getName() + " from access: " + filePermission
 					+ ": You must use a RobocodeOutputStream.");
@@ -244,7 +244,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 		// If there is no writable directory, deny access
 		if (fileSystemManager.getWritableDirectory() == null) {
-			robotProxy.disable();
+			robotProxy.drainEnergy();
 
 			robotProxy.println(
 					"Preventing " + robotProxy.getStatics().getName() + " from access: " + filePermission
@@ -261,7 +261,7 @@ public class RobocodeSecurityPolicy extends Policy {
 			return true;
 		} // Not a writable directory.
 
-		robotProxy.disable();
+		robotProxy.drainEnergy();
 		robotProxy.println("I would allow access to: " + fileSystemManager.getWritableDirectory());
 		robotProxy.println(
 				"Preventing " + robotProxy.getStatics().getName() + " from access: " + filePermission
@@ -272,17 +272,21 @@ public class RobocodeSecurityPolicy extends Policy {
 	private boolean impliesRobotFileRead(IHostedThread robotProxy, RobotFileSystemManager fileSystemManager, FilePermission filePermission) {
 		// If there is no readable directory, deny access.
 		if (fileSystemManager.getReadableDirectory() == null) {
-			robotProxy.disable();
+			robotProxy.drainEnergy();
 			robotProxy.println(
 					"Preventing " + robotProxy.getStatics().getName() + " from access: " + filePermission
 					+ ": Robots that are not in a package may not read any files.");
 			return false;
 		}
+		// If this is a writtable file, return.
+		if (fileSystemManager.isWritable(filePermission.getName())) {
+			return true;
+		}
 		// If this is a readable file, return.
 		if (fileSystemManager.isReadable(filePermission.getName())) {
 			return true;
 		} // Else disable robot
-		robotProxy.disable();
+		robotProxy.drainEnergy();
 		robotProxy.println(
 				"Preventing " + robotProxy.getStatics().getName() + " from access: " + filePermission
 				+ ": You may only read files in your own root package directory. ");
@@ -291,6 +295,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	@Override
 	public void refresh() {
+		// TODO call reload when robot devel directories are changed in settings
 		initUrls();
 		parentPolicy.refresh();
 	}
@@ -302,19 +307,21 @@ public class RobocodeSecurityPolicy extends Policy {
 		String classPath = System.getProperty("robocode.class.path");
 		StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator);
 
+		// TODO load URLs from new repository roots, don't forget about all robot .jar files 
+		// TODO or check it directly against repository ?
 		try {
 			final List<String> robots = new ArrayList<String>();
 			IRepositoryManager repositoryManager = Container.getComponent(IRepositoryManager.class);
 
 			if (repositoryManager != null) {
-				robots.add(repositoryManager.getRobotsDirectory().toURL().toString());
+				robots.add(repositoryManager.getRobotsDirectory().toURI().toString());
 				for (File devel : repositoryManager.getDevelDirectories()) {
-					robots.add(devel.toURL().toString());
+					robots.add(devel.toURI().toString());
 				}
 			}
 
 			while (tokenizer.hasMoreTokens()) {
-				String u = new File(tokenizer.nextToken()).getCanonicalFile().toURL().toString();
+				String u = new File(tokenizer.nextToken()).getCanonicalFile().toURI().toString();
 
 				if (robots.contains(u)) {
 					if (!untrustedCodeUrls.contains(u)) {

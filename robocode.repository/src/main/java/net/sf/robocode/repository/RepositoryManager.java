@@ -1,299 +1,65 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Replaced FileSpecificationVector with plain Vector
- *     - Updated to use methods from WindowUtil, FileTypeFilter, FileUtil, Logger,
- *       which replaces methods that have been (re)moved from the Utils class
- *     - Changed to use FileUtil.getRobotsDir()
- *     - Replaced multiple catch'es with a single catch in
- *       getSpecificationsInDirectory()
- *     - Minor optimizations
- *     - Added missing close() on FileInputStream
- *     - Changed updateRobotDatabase() to take the new JuniorRobot class into
- *       account
- *     - Bugfix: Ignore robots that reside in the .robotcache dir when the
- *       robot.database is updated by updateRobotDatabase()
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     - Changed so that the robot repository only adds .jar files from the root
- *       of the robots folder and not from sub folders of the robots folder
  *     Pavel Savara
- *     - Re-work of robot interfaces
- *     - detection of type of robot by overriden methods
+ *     - Initial implementation
  *******************************************************************************/
 package net.sf.robocode.repository;
 
 
 import net.sf.robocode.core.Container;
-import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
+import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.RobotItem;
+import net.sf.robocode.repository.items.TeamItem;
+import net.sf.robocode.repository.items.BaseItem;
+import net.sf.robocode.repository.packager.JarCreator;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.settings.ISettingsListener;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.version.IVersionManager;
 import robocode.control.RobotSpecification;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
 
 /**
- * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
- * @author Robert D. Maupin (contributor)
- * @author Pavel Savara (contributor)
+ * @author Pavel Savara (original)
  */
-public final class RepositoryManager implements IRepositoryManager {
-	// Allowed maximum length for a robot's full package name
-	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
-	// Allowed maximum length for a robot's short class name
-	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
-
-	private FileSpecificationDatabase robotDatabase;
-
-	private File robotsDirectory;
-	private File robotCache;
-
-	private Repository repository;
-
-	private final List<FileSpecification> updatedJarList = Collections.synchronizedList(
-			new ArrayList<FileSpecification>());
-	private boolean write;
+public class RepositoryManager implements IRepositoryManager {
 
 	private final ISettingsManager properties;
-	private final IHostManager hostManager;
+	private Database db;
 
-	public RepositoryManager(ISettingsManager properties, IHostManager hostManager) {
-		this.hostManager = hostManager;
+	public RepositoryManager(ISettingsManager properties) {
 		this.properties = properties;
-
 		properties.addPropertyListener(new ISettingsListener() {
 			public void settingChanged(String property) {
 				if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)) {
-					clearRobotList();
+					reload(false);
 				}
 			}
 		});
 	}
 
-	public File getRobotCache() {
-		if (robotCache == null) {
-			File oldRobotCache = new File(getRobotsDirectory(), "robotcache");
-			File newRobotCache = new File(getRobotsDirectory(), ".robotcache");
+	// ------------------------------------------
+	// interfaces
+	// ------------------------------------------
 
-			if (oldRobotCache.exists()) {
-				if (!oldRobotCache.renameTo(newRobotCache)) {
-					Logger.logError("Can't move " + newRobotCache.toString());
-				}
-			}
-
-			robotCache = newRobotCache;
-
-			if (!robotCache.exists()) {
-				if (!robotCache.mkdirs()) {
-					Logger.logError("Can't create " + robotCache.toString());
-				}
-				File readme = new File(robotCache, "README");
-
-				try {
-					PrintStream out = new PrintStream(new FileOutputStream(readme));
-
-					out.println("WARNING!");
-					out.println("Do not edit files in this directory.");
-					out.println("Any changes you make here may be lost.");
-					out.println("If you want to make changes to these robots,");
-					out.println("then copy the files into your robots directory");
-					out.println("and make the changes there.");
-					out.close();
-				} catch (IOException ignored) {}
-			}
-
-		}
-		return robotCache;
-	}
-
-	private FileSpecificationDatabase getRobotDatabase() {
-		if (robotDatabase == null) {
-			setStatus("Reading robot database");
-			robotDatabase = new FileSpecificationDatabase();
-			try {
-				robotDatabase.load(new File(getRobotsDirectory(), "robot.database"));
-			} catch (FileNotFoundException e) {
-				logMessage("Building robot database.");
-			} catch (IOException e) {
-				logMessage("Rebuilding robot database.");
-			} catch (ClassNotFoundException e) {
-				logMessage("Rebuilding robot database.");
-			}
-		}
-		return robotDatabase;
-	}
-
-	private void setStatus(String message) {
-		IWindowManager windowManager = Container.getComponent(IWindowManager.class);
-
-		if (windowManager != null) {
-			windowManager.setStatus(message);
-		}
-	}
-
-	public void loadRobotRepository() {
-		// Don't reload the repository
-		// If we want to do that, set repository to null by calling clearRobotList().
-		if (repository != null) {
-			return;
-		}
-
-		setStatus("Refreshing robot database");
-
-		updatedJarList.clear();
-		this.write = false;
-
-		// Future...
-		// Remove any deleted jars from robotcache
-
-		repository = new Repository();
-
-		// Clean up cache -- delete nonexistent jar directories
-		cleanupCache();
-		setStatus("Cleaning up robot database");
-		cleanupDatabase();
-
-		String externalRobotsPath = properties.getOptionsDevelopmentPath(); {
-			StringTokenizer tokenizer = new StringTokenizer(externalRobotsPath, File.pathSeparator);
-
-			while (tokenizer.hasMoreTokens()) {
-				String tok = tokenizer.nextToken();
-				File f = new File(tok);
-
-				if (!f.equals(getRobotsDirectory()) && !f.equals(getRobotCache())
-						&& !f.equals(getRobotsDirectory().getParentFile())) {
-					getSpecificationsInDirectory(f, f, "", true);
-				}
-			}
-		}
-		updatedJarList.clear();
-
-		File f = getRobotsDirectory();
-
-		setStatus("Reading: " + f.getName());
-		if (f.exists() && f.isDirectory()) { // it better be!
-			getSpecificationsInDirectory(f, f, "", true);
-		}
-
-		// This loop should not be changed to an for-each loop as the updated jar list
-		// gets updated (jars are added) by the methods called in this loop, which can
-		// cause a ConcurrentModificationException!
-		// noinspection ForLoopReplaceableByForEach
-		for (int i = 0; i < updatedJarList.size(); i++) {
-			JarFileSpecification updatedJar = (JarFileSpecification) updatedJarList.get(i);
-
-			try {
-				updatedJar.processJar(getRobotCache(), getRobotsDirectory(), updatedJarList);
-				getRobotDatabase().put(updatedJar.getFilePath(), updatedJar);
-				updateRobotDatabase(updatedJar);
-			} catch (Throwable t) {
-				logError(t);
-			}
-			write = true;
-		}
-		updatedJarList.clear();
-
-		f = getRobotCache();
-		setStatus("Reading: " + getRobotCache());
-		if (f.exists() && f.isDirectory()) { // it better be!
-			getSpecificationsInDirectory(f, f, "", false);
-		}
-
-		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
-
-		if (write) {
-			setStatus("Saving robot database");
-			saveRobotDatabase();
-		}
-
-		setStatus("Adding robots to repository");
-
-		for (FileSpecification fs : fileSpecificationList) {
-			if (fs instanceof INamedFileSpecification) {
-				repository.add((NamedFileSpecification) fs);
-			}
-		}
-
-		setStatus("Sorting repository");
-		repository.sortRobotSpecifications();
-		setStatus("");
-	}
-
-	private void cleanupCache() {
-		File dir = getRobotCache();
-		File files[] = dir.listFiles();
-
-		if (files != null) {
-			for (File file : files) {
-				if (file.isDirectory() && file.getName().lastIndexOf(".jar_") == file.getName().length() - 5
-						|| file.isDirectory() && file.getName().lastIndexOf(".zip_") == file.getName().length() - 5
-						|| file.isDirectory() && file.getName().lastIndexOf(".jar") == file.getName().length() - 4) {
-					File f = new File(getRobotsDirectory(), file.getName().substring(0, file.getName().length() - 1));
-
-					// startsWith robocode added in 0.99.5 to fix bug with people
-					// downloading robocode-setup.jar to the robots dir
-					if (f.exists() && !f.getName().startsWith("robocode")) {
-						continue;
-					}
-					setStatus("Cleaning up cache: Removing " + file);
-					FileUtil.deleteDir(file);
-				}
-			}
-		}
-	}
-
-	private void cleanupDatabase() {
-		List<File> develDirectories = getDevelDirectories();
-		List<FileSpecification> fileSpecificationList = getRobotDatabase().getFileSpecifications();
-
-		for (FileSpecification fs : fileSpecificationList) {
-			if (fs.exists()) {
-				File rootDir = fs.getRootDir();
-
-				if (rootDir == null) {
-					logError("Warning, null root directory: " + fs.getFilePath());
-					continue;
-				}
-
-				if (!fs.isDevelopmentVersion()) {
-					continue;
-				}
-				if (rootDir.equals(getRobotsDirectory())) {
-					continue;
-				}
-				if (develDirectories.contains(rootDir)) {
-					continue;
-				}
-
-				// This one is from the developmentPath; make sure that path still exists.
-				getRobotDatabase().remove(fs.getFilePath());
-				write = true;
-			} else {
-				getRobotDatabase().remove(fs.getFilePath());
-				write = true;
-			}
-		}
+	public File getRobotsDirectory() {
+		return FileUtil.getRobotsDir();
 	}
 
 	public List<File> getDevelDirectories() {
@@ -315,362 +81,204 @@ public final class RepositoryManager implements IRepositoryManager {
 		return develDirectories;
 	}
 
-	public File getRobotsDirectory() {
-		if (robotsDirectory == null) {
-			robotsDirectory = FileUtil.getRobotsDir();
+	public void refresh(String file) {
+		if (!db.update(file, true)) {
+			refresh(true);
 		}
-		return robotsDirectory;
 	}
 
-	public void clearRobotList() {
-		repository = null;
+	public boolean refresh() {
+		return refresh(false);
 	}
 
-	public void reload(String file) {
-		clearRobotList();
-		// TODO above line is just dummy implementation
-		// TODO implement smarter way, so that just the single robot is loaded or re-loaded
+	public boolean refresh(boolean updateInvalid) {
+		if (db.update(getRobotsDirectory(), getDevelDirectories(), updateInvalid)) {
+			setStatus("Saving robot database");
+			db.save();
+			setStatus("");
+			return true;
+		}
+		setStatus("");
+		return false;
 	}
 
-	private List<FileSpecification> getSpecificationsInDirectory(File rootDir, File dir, String prefix, boolean isDevelopmentDirectory) {
-		List<FileSpecification> robotList = Collections.synchronizedList(new ArrayList<FileSpecification>());
-
-		try {
-			rootDir = rootDir.getCanonicalFile();
-		} catch (IOException e) {
-			Logger.logError(e);
-			return robotList; 
-		}
-
-		// Order is important?
-		String fileTypes[] = {
-			".class", ".jar", ".team", ".jar.zip"
-		};
-		File files[] = dir.listFiles(new FileTypeFilter(fileTypes));
-
-		if (files == null) {
-			logError("Warning:  Unable to read directory " + dir);
-			return robotList;
-		}
-
-		for (File file : files) {
-			String fileName = file.getName();
-
-			if (file.isDirectory()) {
-				if (prefix.length() == 0) {
-					int jidx = fileName.lastIndexOf(".jar_");
-
-					if (jidx > 0 && jidx == fileName.length() - 5) {
-						robotList.addAll(getSpecificationsInDirectory(file, file, "", isDevelopmentDirectory));
-					} else {
-						jidx = fileName.lastIndexOf(".zip_");
-						if (jidx > 0 && jidx == fileName.length() - 5) {
-							robotList.addAll(getSpecificationsInDirectory(file, file, "", isDevelopmentDirectory));
-						} else {
-							robotList.addAll(
-									getSpecificationsInDirectory(rootDir, file, prefix + fileName + ".",
-									isDevelopmentDirectory));
-						}
-					}
-				} else {
-					int odidx = fileName.indexOf("data.");
-
-					if (odidx == 0) {
-						renameOldDataDir(dir, file);
-						continue;
-					}
-
-					int didx = fileName.lastIndexOf(".data");
-
-					if (didx > 0 && didx == fileName.length() - 5) {
-						continue;
-					} // Don't process .data dirs
-					robotList.addAll(
-							getSpecificationsInDirectory(rootDir, file, prefix + fileName + ".", isDevelopmentDirectory));
-				}
-			} else if (fileName.indexOf("$") < 0 && fileName.indexOf("robocode") != 0) {
-				FileSpecification cachedSpecification = getRobotDatabase().get(file.getPath());
-				FileSpecification fileSpecification;
-
-				// if cachedSpecification is null, then this is a new file
-				if (cachedSpecification != null
-						&& cachedSpecification.isSameFile(file.getPath(), file.length(), file.lastModified())) {
-					// this file is unchanged
-					fileSpecification = cachedSpecification;
-				} else {
-					fileSpecification = FileSpecification.createSpecification(this, file, rootDir, prefix,
-							isDevelopmentDirectory);
-					updateRobotDatabase(fileSpecification);
-					write = true;
-					if (fileSpecification instanceof JarFileSpecification) {
-
-						if (fileSpecification.getRootDir().equals(getRobotsDirectory())) {
-							// this file is changed
-							updatedJarList.add(fileSpecification);
-						}
-					}
-				}
-				if (fileSpecification.isValid()) {
-					robotList.add(fileSpecification);
-				}
+	public void reload(boolean forced) {
+		if (forced) {
+			db = new Database(this);
+			Logger.logMessage("Rebuilding robot database.");
+		} else if (db == null) {
+			setStatus("Reading robot database");
+			db = Database.load(this);
+			if (db == null) {
+				setStatus("Building robot database");
+				db = new Database(this);
 			}
 		}
-		return robotList;
+		refresh(true);
+		setStatus("");
 	}
 
-	private void saveRobotDatabase() {
-		if (robotDatabase == null) {
-			logError("Cannot save a null robot database.");
-			return;
+	public RobotSpecification[] getSpecifications() {
+		checkDbExists();
+		final List<IRepositoryItem> list = db.getAllSpecifications();
+		List<RobotSpecification> res = new ArrayList<RobotSpecification>();
+
+		for (IRepositoryItem s : list) {
+			res.add(s.createRobotSpecification());
 		}
-		try {
-			robotDatabase.store(new File(getRobotsDirectory(), "robot.database"));
-		} catch (IOException e) {
-			logError("IO Exception writing robot database: ", e);
-		}
+		return res.toArray(new RobotSpecification[res.size()]);
 	}
 
-	private void updateRobotDatabase(FileSpecification fileSpecification) {
-		// Ignore files located in the robot cache
-		String name = fileSpecification.getName();
+	/**
+	 * Expand teams, validate robots
+	 * @param selectedRobots, names of robots and teams, comma separated
+	 * @return robots in teams
+	 */
+	public RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots) {
+		checkDbExists();
+		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		int teamNum = 0;
 
-		if (name == null || name.startsWith(".robotcache.")) {
-			return;
-		}
+		for (RobotSpecification spec: selectedRobots) {
+			IRepositoryItem item = (IRepositoryItem) HiddenAccess.getFileSpecification(spec);
 
-		String key = fileSpecification.getFilePath();
-
-		if (fileSpecification instanceof RobotFileSpecification) {
-			RobotFileSpecification robotFileSpecification = (RobotFileSpecification) fileSpecification;
-
-			if (robotFileSpecification.isValid() && robotFileSpecification.verifyRobotName()
-					&& robotFileSpecification.update(hostManager)) {
-				updateNoDuplicates(robotFileSpecification);
-			} else {
-				robotFileSpecification.setValid(false);
-				getRobotDatabase().put(key, new ClassSpecification(robotFileSpecification));
-				getRobotDatabase().put(key, robotFileSpecification);
+			if (item == null) {
+				item = getRobot(spec.getNameAndVersion());
 			}
-		} else if (fileSpecification instanceof JarFileSpecification) {
-			getRobotDatabase().put(key, fileSpecification);
-		} else if (fileSpecification instanceof TeamFileSpecification) {
-			updateNoDuplicates((TeamFileSpecification) fileSpecification);
-		} else if (fileSpecification instanceof ClassSpecification) {
-			getRobotDatabase().put(key, fileSpecification);
-		} else {
-			Logger.logMessage("Update robot database not possible for type " + fileSpecification.getFileType());
+			loadItem(battlingRobotsList, spec, item, teamNum);
+			teamNum++;
 		}
+		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
 	}
 
-	private void updateNoDuplicates(NamedFileSpecification spec) {
-		String key = spec.getFilePath();
+	/**
+	 * Expand teams, validate robots
+	 * @param selectedRobots, names of robots and teams, comma separated
+	 * @return robots in teams
+	 */
+	public RobotSpecification[] loadSelectedRobots(String selectedRobots) {
+		checkDbExists();
+		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
+		int teamNum = 0;
 
-		setStatus("Updating database: " + spec.getName());
-		if (!spec.isDevelopmentVersion()
-				&& getRobotDatabase().contains(spec.getFullClassName(), spec.getVersion(), false)) {
-			FileSpecification existingSpec = getRobotDatabase().get(spec.getFullClassName(), spec.getVersion(), false);
+		for (IRepositoryItem item: list) {
+			loadItem(battlingRobotsList, null, item, teamNum);
+			teamNum++;
+		}
+		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
+	}
 
-			if (existingSpec == null) {
-				getRobotDatabase().put(key, spec);
-			} else if (!existingSpec.getUid().equals(spec.getUid())) {
-				if (existingSpec.getFilePath().equals(spec.getFilePath())) {
-					getRobotDatabase().put(key, spec);
-				} else // if (duplicatePrompt)
-				{
-					File existingSource = existingSpec.getJarFile(); // getRobotsDirectory(),getRobotCache());
-					File newSource = spec.getJarFile(); // getRobotsDirectory(),getRobotCache());
+	private boolean loadItem(List<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
+		String teamName = String.format("%4d", teamNum);
 
-					if (existingSource != null && newSource != null) {
-						long t1 = existingSource.lastModified();
-						long t2 = newSource.lastModified();
+		if (item != null) {
+			if (item.isTeam()) {
+				teamName = item.getFullClassNameWithVersion() + "[" + teamName + "]";
+				final List<RobotItem> members = db.expandTeam((TeamItem) item);
 
-						if (t1 > t2) {
-							if (!existingSource.renameTo(new File(existingSource.getPath() + ".invalid"))) {
-								Logger.logError("Can't move " + existingSource.toString());
-							}
-							getRobotDatabase().remove(existingSpec.getFilePath());
-							getRobotDatabase().put(key, spec);
-							conflictLog(
-									"Renaming " + existingSource + " to invalid, as it contains a robot " + spec.getName()
-									+ " which conflicts with the same robot in " + newSource);
-						} else {
-							if (!newSource.renameTo(new File(newSource.getPath() + ".invalid"))) {
-								Logger.logError("Can't move " + newSource.toString());
-							}
-							conflictLog(
-									"Renaming " + newSource + " to invalid, as it contains a robot " + spec.getName()
-									+ " which conflicts with the same robot in " + existingSource);
-						}
+				for (IRepositoryItem member : members) {
+					final RobotItem robot = (RobotItem) member;
+
+					if (robot.validate()) {
+						battlingRobotsList.add(robot.createRobotSpecification(null, teamName));
 					}
 				}
 			} else {
-				spec.setDuplicate(true);
-				getRobotDatabase().put(key, spec);
-			}
-		} else {
-			getRobotDatabase().put(key, spec);
-		}
-	}
+				final RobotItem robot = (RobotItem) item;
 
-	private void conflictLog(String s) {
-		logError(s);
-
-		File f = new File(FileUtil.getCwd(), "conflict.logError");
-		FileWriter writer = null;
-		BufferedWriter out = null;
-
-		try {
-			writer = new FileWriter(f.getPath(), true);
-			out = new BufferedWriter(writer);
-			out.write(s + "\n");
-		} catch (IOException e) {
-			logError("Warning:  Could not write to conflict.logError");
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException ignored) {}
-			}
-			if (writer != null) {
-				try {
-					writer.close();
-				} catch (IOException ignored) {}
-			}
-		}
-	}
-
-	private void renameOldDataDir(File dir, File f) {
-		String name = f.getName();
-		String botName = name.substring(name.indexOf(".") + 1);
-		File newFile = new File(dir, botName + ".data");
-
-		if (!newFile.exists()) {
-			File oldFile = new File(dir, name);
-
-			logError("Renaming " + oldFile.getName() + " to " + newFile.getName());
-			if (!oldFile.renameTo(newFile)) {
-				Logger.logError("Can't move " + oldFile.toString());
-			}
-		}
-	}
-
-	public List<INamedFileSpecification> getRobotSpecificationsList() {
-		loadRobotRepository();
-		return repository.getRobotSpecificationsList(false, false, false, false, false, false);
-	}
-
-	public List<INamedFileSpecification> getRobotSpecificationsList(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots) {
-		loadRobotRepository();
-		return repository.getRobotSpecificationsList(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment,
-				onlyNotDevelopment, ignoreTeamRobots);
-	}
-
-	public RobotSpecification[] getRobotSpecifications() {
-		List<INamedFileSpecification> list = getRobotSpecificationsList();
-		RobotSpecification robotSpecs[] = new RobotSpecification[list.size()];
-
-		for (int i = 0; i < robotSpecs.length; i++) {
-			final INamedFileSpecification specification = list.get(i);
-
-			if (specification.isValid()) {
-				robotSpecs[i] = specification.createRobotSpecification();
-			}
-		}
-		return robotSpecs;
-	}
-
-	private FileSpecification getRobot(String fullClassNameWithVersion) {
-		loadRobotRepository();
-		return repository.get(fullClassNameWithVersion);
-	}
-
-	public boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, int teamNum) {
-		return load(battlingRobotsList, bot, battleRobotSpec, String.format("%4d", teamNum), false);
-	}
-
-	private boolean load(List<RobotSpecification> battlingRobotsList, String bot, RobotSpecification battleRobotSpec, String teamName, boolean inTeam) {
-		final FileSpecification fileSpec = getRobot(bot);
-
-		if (fileSpec != null) {
-			if (fileSpec instanceof RobotFileSpecification) {
-				RobotSpecification specification;
-
-				if (!inTeam && battleRobotSpec != null) {
-					specification = battleRobotSpec;
+				if (robot.validate()) {
+					battlingRobotsList.add(robot.createRobotSpecification(spec, null));
 				} else {
-					specification = fileSpec.createRobotSpecification();
+					Logger.logError("Could not load robot: " + robot.getFullClassName());
+					return false;
 				}
-				HiddenAccess.setTeamName(specification, inTeam ? teamName : null);
-				battlingRobotsList.add(specification);
-				return true;
-			} else if (fileSpec instanceof TeamFileSpecification) {
-				TeamFileSpecification currentTeam = (TeamFileSpecification) fileSpec;
-				String version = currentTeam.getVersion();
-
-				if (version == null) {
-					version = "";
-				}
-
-				final String newTeam = currentTeam.getName() + version + "[" + teamName + "]";
-				StringTokenizer teamTokenizer = new StringTokenizer(currentTeam.getMembers(), ",");
-
-				while (teamTokenizer.hasMoreTokens()) {
-					final String botName = teamTokenizer.nextToken();
-					// first load from same classPath
-					String teamBot = currentTeam.getRootDir() + File.separator + botName;
-
-					if (!load(battlingRobotsList, teamBot, battleRobotSpec, newTeam, true)) {
-						// try general search
-						load(battlingRobotsList, botName, battleRobotSpec, newTeam, true);
-					}
-				}
-				return true;
 			}
+			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * @param selectedRobots, names of robots and teams, comma separated
+	 * @return robots and teams
+	 */
+	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
+		checkDbExists();
+		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
+
+		for (IRepositoryItem item: list) {
+			battlingRobotsList.add(item.createRobotSpecification());
+		}
+		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
+	}
+
+	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
+		checkDbExists();
+		return db.getSelectedSpecifications(selectedRobots);
+	}
+
+	public List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
+		checkDbExists();
+		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment,
+				onlyInJar);
+	}
+
 	public boolean verifyRobotName(String robotName, String shortClassName) {
-		return verifyRobotNameStatic(robotName, shortClassName);
+		return RobotItem.verifyRobotName(robotName, shortClassName, true);
 	}
 
-	public int extractJar(File f) {
-		return JarFileSpecification.extractJar(f, getRobotsDirectory(), "Extracting to " + getRobotsDirectory(), null,
-				true, false);
-	}
-
-	public static boolean verifyRobotNameStatic(String robotName, String shortClassName) {
-		int lIndex = robotName.indexOf(".");
-
-		if (lIndex > 0) {
-			String rootPackage = robotName.substring(0, lIndex);
-
-			if (rootPackage.equalsIgnoreCase("robocode")) {
-				logError("Robot " + robotName + " ignored.  You cannot use package " + rootPackage);
-				return false;
-			}
-
-			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				final String message = "Robot " + robotName + " has package name too long.  "
-						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
-
-				logError(message);
-				return false;
-			}
+	public int extractJar(IRepositoryItem item) {
+		if (!item.isInJar()) {
+			return -2;
 		}
-
-		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-			final String message = "Robot " + robotName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
-					+ " characters maximum please.";
-
-			logError(message);
-			return false;
-		}
-
-		return true;
+		((BaseItem) item).getRoot().extractJar();
+		return 0; 
 	}
 
-	public ITeamFileSpecificationExt createTeam() {
-		return new TeamFileSpecification();
+	public void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException {
+		checkDbExists();
+		final String ver = Container.getComponent(IVersionManager.class).getVersion();
+
+		TeamItem.createOrUpdateTeam(target, web, desc, author, members, teamVersion, ver);
+		refresh(target.toURI().toString());
+	}
+
+	public String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
+		checkDbExists();
+		final List<RobotItem> robots = db.expandTeams(selectedRobots);
+		final List<TeamItem> teams = db.filterTeams(selectedRobots);
+
+		final String res = JarCreator.createPackage(target, source, robots, teams, web, desc, author, version);
+
+		refresh(target.toURI().toString());
+		return res;
+	}
+
+	private IRepositoryItem getRobot(String fullClassNameWithVersion) {
+		final IItem item = db.getItem(fullClassNameWithVersion);
+
+		if (item == null || !item.isValid()) {
+			return null;
+		}
+		return (IRepositoryItem) item;
+	}
+
+	private void setStatus(String message) {
+		IWindowManager windowManager = Container.getComponent(IWindowManager.class);
+
+		if (windowManager != null) {
+			windowManager.setStatus(message);
+		}
+		if (message.length() > 0) {
+			Logger.logMessage(message);
+		}
+	}
+
+	private void checkDbExists() {
+		if (db == null) {
+			reload(false);
+		}
 	}
 }

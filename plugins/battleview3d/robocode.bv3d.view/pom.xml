@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>robocode.bv3d</artifactId>
+        <groupId>net.sf.robocode</groupId>
+        <version>${robocode.version}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sf.robocode</groupId>
+    <artifactId>robocode.bv3d.view</artifactId>
+    <version>${robocode.version}</version>
+    <name>3D Battle View for Robocode</name>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.ui</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jogl</groupId>
+            <artifactId>jogl</artifactId>
+            <version>1.1.1-rc6</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jogl</groupId>
+            <artifactId>jogl-windows-i586</artifactId>
+            <version>1.1.1-rc6</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jogl</groupId>
+            <artifactId> jogl-linux-i586</artifactId>
+            <version>1.1.1-rc6</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jogl</groupId>
+            <artifactId>jogl-macosx-universal</artifactId>
+            <version>1.1.1-rc6</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.gluegen</groupId>
+            <artifactId>gluegen-rt</artifactId>
+            <version>1.0b05</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.gluegen</groupId>
+            <artifactId>gluegen-rt-linux-i586</artifactId>
+            <version>1.0b05</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.gluegen</groupId>
+            <artifactId>gluegen-rt-windows-i586</artifactId>
+            <version>1.0b05</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.gluegen</groupId>
+            <artifactId> gluegen-rt-macosx-universal</artifactId>
+            <version>1.0b05</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,47 @@
+# Blender3D v245 OBJ PRO File: particle1-sparkle.blend
+# www.blender3d.org
+
+[TextureBegin]
+t TexParticle
+ti particle1-sparkle.jpg
+[TextureEnd]
+
+[MaterialBegin]
+m MatParticle
+mt TexParticle
+[MaterialEnd]
+
+[GroupBegin]
+g Particle
+[ObjectBegin]
+o ObjParticle
+om MatParticle
+v 0.707107 -0.000000 0.707107
+v 0.258819 0.000000 -0.965926
+v -0.965926 -0.000000 0.258819
+v 0.000000 1.000000 0.000000
+vt 0.136294 0.527864 0.0
+vt 0.000000 0.000000 0.0
+vt 0.408882 0.175955 0.0
+vt 0.408882 0.175955 0.0
+vt 0.681470 0.527864 0.0
+vt 0.136294 0.527864 0.0
+vt 0.408882 0.175955 0.0
+vt 0.817764 0.000000 0.0
+vt 0.681470 0.527864 0.0
+vt 0.408882 1.000000 0.0
+vt 0.136294 0.527864 0.0
+vt 0.681470 0.527864 0.0
+vn 0.863950 0.447214 0.231495
+vn -0.632456 0.447214 0.632455
+vn -0.231495 0.447214 -0.863950
+vn -0.000000 -1.000000 0.000000
+f 2/1/1 1/2/1 4/3/1
+f 4/4/2 3/5/2 2/6/2
+f 4/7/3 1/8/3 3/9/3
+f 1/10/4 2/11/4 3/12/4
+c 0.000000 0.000000 0.000000
+[ObjectEnd]
+
+[GroupEnd]
+

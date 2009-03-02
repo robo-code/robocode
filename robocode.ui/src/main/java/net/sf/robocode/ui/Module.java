@@ -32,12 +32,10 @@ public class Module {
 		Container.cache.addComponent(IRobotDialogManager.class, RobotDialogManager.class);
 		Container.cache.addComponent(IWindowManagerExt.class, WindowManager.class);
 		Container.cache.addComponent(InteractiveHandler.class);
-		Container.cache.addComponent(NewBattleDialog.class);
 		Container.cache.addComponent(PreferencesDialog.class);
 		Container.cache.addComponent(RankingDialog.class);
 		Container.cache.addComponent(RcSplashScreen.class);
 		Container.cache.addComponent(ResultsDialog.class);
-		Container.cache.addComponent(RobotPackager.class);
 		Container.cache.addComponent(MenuBar.class);
 		Container.cache.addComponent(TeamCreator.class);
 		Container.cache.addComponent(RobocodeFrame.class);
@@ -46,5 +44,7 @@ public class Module {
 		Container.factory.addComponent(RobotSelectionPanel.class);
 		Container.factory.addComponent(RobotDialog.class);
 		Container.factory.addComponent(RobotButton.class);
+		Container.factory.addComponent(RobotPackager.class);
+		Container.factory.addComponent(NewBattleDialog.class);
 	}
 }

@@ -12,16 +12,16 @@
 package net.sf.robocode.host.proxies;
 
 
-import net.sf.robocode.host.*;
 import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.host.io.RobotOutputStream;
-import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.host.security.RobotThreadManager;
+import net.sf.robocode.host.*;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.core.Container;
 import robocode.RobotStatus;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
@@ -41,8 +41,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected EventManager eventManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
-	private final IRobotFileSpecification robotSpecification;
-	protected RobotClassLoader robotClassLoader;
+	private final IRobotRepositoryItem robotSpecification;
+	protected IRobotClassLoader robotClassLoader;
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;
 	protected final IRobotPeer peer;
@@ -50,24 +50,30 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	private IThreadManager threadManager;
 	protected IBasicRobot robot;
 
-	HostingRobotProxy(IRobotFileSpecification robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;
 		this.robotSpecification = robotSpecification;
-		this.robotClassLoader = new RobotClassLoader(robotSpecification.getRobotClassPath(),
-				robotSpecification.getFullClassName(), this);
+
+		robotClassLoader = getHost(robotSpecification).createLoader(robotSpecification);
+		robotClassLoader.setRobotProxy(this);
 
 		out = new RobotOutputStream();
 		robotThreadManager = new RobotThreadManager(this);
 
 		loadClassBattle();
-		String classDirectory = robotSpecification.getRobotPackageDirectory();
-		String rootPackageDirectory = robotSpecification.getRootPackageDirectory();
+		String writableDirectory = robotSpecification.getWritableDirectory();
+		String readableDirectory = robotSpecification.getReadableDirectory();
+		String rootFile = robotSpecification.getRootFile() + robotSpecification.getFullPackage().replace('.', '/') + "/";
 
-		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(), classDirectory,
-				rootPackageDirectory);
+		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
+				writableDirectory, readableDirectory, rootFile);
 		robotFileSystemManager.initializeQuota();
+	}
+
+	private JavaHost getHost(IRobotRepositoryItem robotSpecification) {
+		return (JavaHost) Container.cache.getComponent("robocode.host." + robotSpecification.getRobotLanguage());
 	}
 
 	public void cleanup() {
@@ -144,7 +150,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 	
 	public ClassLoader getRobotClassloader() {
-		return robotClassLoader;
+		return (ClassLoader) robotClassLoader;
 	}
 
 	// -----------
@@ -175,26 +181,23 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	private void loadClassBattle() {
 		try {
-			robotClassLoader.loadRobotMainClass();
+			robotClassLoader.loadRobotMainClass(true);
 		} catch (Throwable e) {
 			println("SYSTEM: Could not load " + statics.getName() + " : ");
 			println(e);
-			disable();
+			drainEnergy();
 		}
 	}
 
 	private boolean loadRobotRound() {
 		robot = null;
-		Class<?> robotClass;
-
 		try {
 			threadManager.setLoadingRobot(this);
-			robotClass = robotClassLoader.loadRobotMainClass();
-			if (robotClass == null) {
+			robot = robotClassLoader.createRobotInstance();
+			if (robot == null) {
 				println("SYSTEM: Skipping robot: " + statics.getName());
 				return false;
 			}
-			robot = (IBasicRobot) robotClass.newInstance();
 			robot.setOut(out);
 			robot.setPeer((IBasicRobotPeer) this);
 			eventManager.setRobot(robot);
@@ -229,7 +232,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		peer.setRunning(true);
 
 		if (!robotSpecification.isValid() || !loadRobotRound()) {
-			disable();
+			drainEnergy();
 			peer.punishBadBehavior();
 			waitForBattleEndImpl();
 		} else {
@@ -257,7 +260,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			} catch (DeathException e) {
 				println("SYSTEM: " + statics.getName() + " has died");
 			} catch (DisabledException e) {
-				disable();
+				drainEnergy();
 				String msg = e.getMessage();
 
 				if (msg == null) {
@@ -268,11 +271,11 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				println("SYSTEM: Robot disabled" + msg);
 				logMessage(statics.getName() + "Robot disabled");
 			} catch (Exception e) {
-				disable();
+				drainEnergy();
 				println(e);
 				logMessage(statics.getName() + ": Exception: " + e); // without stack here
 			} catch (Throwable t) {
-				disable();
+				drainEnergy();
 				if (t instanceof ThreadDeath) {
 					logMessage(statics.getName() + " stopped successfully.");
 				} else {
@@ -293,7 +296,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	protected abstract void waitForBattleEndImpl();
 
-	public void disable() {
-		peer.disable();
+	public void drainEnergy() {
+		peer.drainEnergy();
 	}
 }

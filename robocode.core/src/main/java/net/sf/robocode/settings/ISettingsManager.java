@@ -13,10 +13,10 @@ package net.sf.robocode.settings;
 
 
 import java.awt.*;
-import java.util.Date;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileInputStream;
+import java.util.Date;
 
 
 /**
@@ -472,6 +472,20 @@ public interface ISettingsManager {
 	boolean getOptionsCommonShowResults();
 
 	/**
+	 * Gets the optionsCommonDontHideRankings
+	 *
+	 * @return Returns a boolean
+	 */
+	boolean getOptionsCommonDontHideRankings();
+
+	/**
+	 * Sets the optionsCommonDontHideRankings.
+	 *
+	 * @param dontHide true when the Rankings must not be hidden; false otherwise
+	 */
+	void setOptionsCommonDontHideRankings(boolean dontHide);
+
+	/**
 	 * Sets the optionsCommonAppendWhenSavingResults.
 	 *
 	 * @param enable The optionsCommonAppendWhenSavingResults to set
@@ -558,6 +572,7 @@ public interface ISettingsManager {
 			OPTIONS_SOUND_ENABLEMIXERPAN = "robocode.options.sound.enableMixerPan",
 
 			OPTIONS_COMMON_SHOW_RESULTS = "robocode.options.common.showResults",
+			OPTIONS_COMMON_DONT_HIDE_RANKINGS = "robocode.options.common.dontHideRankings",
 			OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS = "robocode.options.common.appendWhenSavingResults",
 			OPTIONS_COMMON_ENABLE_REPLAY_RECORDING = "robocode.options.common.enableReplayRecording",
 

@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * @author Pavel Savara (original)
  */
-public final class AwtBattleAdaptor extends BattleAdaptor {
+public final class AwtBattleAdaptor {
 	private final IBattleManager battleManager;
 	private final BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
 	private final BattleObserver observer;
@@ -53,14 +53,12 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 		observer = new BattleObserver();
 		battleManager.addListener(observer);
-		battleEventDispatcher.addListener(this);
 	}
 
 	protected void finalize() throws Throwable {
 		try {
 			timerTask.stop();
 			battleManager.removeListener(observer);
-			battleEventDispatcher.removeListener(this);
 		} finally {
 			super.finalize();
 		}
@@ -72,40 +70,6 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 	public synchronized void removeListener(IBattleListener listener) {
 		battleEventDispatcher.removeListener(listener);
-	}
-
-	@Override
-	public void onBattleStarted(BattleStartedEvent event) {
-		repaintTask(true, false);
-		timerTask.start();
-	}
-
-	@Override
-	public void onBattleFinished(BattleFinishedEvent event) {
-		timerTask.stop();
-		repaintTask(true, true);
-	}
-
-	@Override
-	public void onBattleResumed(BattleResumedEvent event) {
-		if (isRunning.get()) {
-			timerTask.start();
-		}
-	}
-
-	@Override
-	public void onBattlePaused(BattlePausedEvent event) {
-		timerTask.stop();
-	}
-
-	@Override
-	public void onRoundStarted(RoundStartedEvent event) {
-		repaintTask(true, false);
-	}
-
-	@Override
-	public void onRoundEnded(RoundEndedEvent event) {
-		repaintTask(true, true);
 	}
 
 	public ITurnSnapshot getLastSnapshot() {
@@ -136,8 +100,12 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 							for (int i = 0; i < robots.length; i++) {
 								RobotSnapshot robot = (RobotSnapshot) robots[i];
 
-								robot.setOutputStreamSnapshot(outCache[i].toString());
-								outCache[i].setLength(0);
+								final StringBuilder cache = outCache[i];
+
+								if (cache.length() > 0) {
+									robot.setOutputStreamSnapshot(cache.toString());
+									outCache[i].setLength(0);
+								}
 							}
 						}
 					}
@@ -198,19 +166,26 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 
 			final IRobotSnapshot[] robots = event.getTurnSnapshot().getRobots();
 
-			synchronized (snapshot) {
-				for (int i = 0; i < robots.length; i++) {
-					IRobotSnapshot robot = robots[i];
+			for (int i = 0; i < robots.length; i++) {
+				RobotSnapshot robot = (RobotSnapshot) robots[i];
+				final int r = i;
+				final String text = robot.getOutputStreamSnapshot();
 
-					if (robot.getOutputStreamSnapshot() != null && robot.getOutputStreamSnapshot().length() != 0) {
-						outCache[i].append(robot.getOutputStreamSnapshot());
-					}
+				if (text != null && text.length() != 0) {
+					robot.setOutputStreamSnapshot(null);
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							synchronized (snapshot) {
+								outCache[r].append(text);
+							}
+						}
+					});
 				}
 			}
 			if (isPaused.get()) {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						battleEventDispatcher.onTurnEnded(event);
+						repaintTask(false, true);
 					}
 				});
 			}
@@ -221,6 +196,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 			snapshot.set(event.getStartSnapshot());
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					repaintTask(true, false);
 					battleEventDispatcher.onRoundStarted(event);
 				}
 			});
@@ -231,15 +207,20 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 			isRunning.set(true);
 			isPaused.set(false);
 			snapshot.set(null);
-			synchronized (snapshot) {
-				outCache = new StringBuilder[event.getRobotsCount()];
-				for (int i = 0; i < event.getRobotsCount(); i++) {
-					outCache[i] = new StringBuilder(1024);
-				}
-			}
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					synchronized (snapshot) {
+						if (outCache != null) {
+							repaintTask(true, true);
+						}
+						outCache = new StringBuilder[event.getRobotsCount()];
+						for (int i = 0; i < event.getRobotsCount(); i++) {
+							outCache[i] = new StringBuilder(1024);
+						}
+					}
 					battleEventDispatcher.onBattleStarted(event);
+					repaintTask(true, false);
+					timerTask.start();
 				}
 			});
 		}
@@ -251,6 +232,8 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 			snapshot.set(null);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					timerTask.stop();
+					repaintTask(true, true);
 					battleEventDispatcher.onBattleFinished(event);
 				}
 			});
@@ -270,6 +253,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 			isPaused.set(true);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					timerTask.stop();
 					battleEventDispatcher.onBattlePaused(event);
 				}
 			});
@@ -281,6 +265,9 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					battleEventDispatcher.onBattleResumed(event);
+					if (isRunning.get()) {
+						timerTask.start();
+					}
 				}
 			});
 		}
@@ -289,6 +276,7 @@ public final class AwtBattleAdaptor extends BattleAdaptor {
 		public void onRoundEnded(final RoundEndedEvent event) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					repaintTask(true, true);
 					battleEventDispatcher.onRoundEnded(event);
 				}
 			});

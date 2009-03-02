@@ -113,6 +113,7 @@ public class SettingsManager implements ISettingsManager {
 	private boolean
 			optionsCommonShowResults = true,
 			optionsCommonAppendWhenSavingResults = true,
+			optionsCommonDontHideRankings = true,
 			optionsCommonEnableReplayRecording = false;
 
 	// Team Options
@@ -890,6 +891,25 @@ public class SettingsManager implements ISettingsManager {
 	}
 
 	/**
+	 * Gets the optionsCommonDontHideRankings.
+	 *
+	 * @return Returns a boolean
+	 */
+	public boolean getOptionsCommonDontHideRankings() {
+		return optionsCommonDontHideRankings;
+	}
+
+	/**
+	 * Sets the optionsCommonDontHideRankings.
+	 *
+	 * @param enable The optionsCommonShowResults to set
+	 */
+	public void setOptionsCommonDontHideRankings(boolean enable) {
+		this.optionsCommonDontHideRankings = enable;
+		props.setProperty(OPTIONS_COMMON_DONT_HIDE_RANKINGS, "" + enable);
+	}
+
+	/**
 	 * Gets the optionsCommonEnableReplayRecording
 	 *
 	 * @return Returns a boolean
@@ -961,6 +981,7 @@ public class SettingsManager implements ISettingsManager {
 		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true"));
 		optionsCommonAppendWhenSavingResults = Boolean.valueOf(
 				props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true"));
+		optionsCommonDontHideRankings = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_DONT_HIDE_RANKINGS, "true"));
 		optionsCommonEnableReplayRecording = Boolean.valueOf(
 				props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "false"));
 
@@ -1054,11 +1075,14 @@ public class SettingsManager implements ISettingsManager {
 
 		@Override
 		public synchronized Object setProperty(String key, String value) {
+			final String old = super.getProperty(key, null);
+			boolean notify = (old == null && value != null) || (old != null && !old.equals(value));
 			final Object res = super.setProperty(key, value);
 
-			notifyPropertyChanged(key);
+			if (notify) {
+				notifyPropertyChanged(key);
+			}
 			return res;
 		}
-
 	}
 }

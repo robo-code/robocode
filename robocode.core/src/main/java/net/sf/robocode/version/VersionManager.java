@@ -12,10 +12,10 @@
 package net.sf.robocode.version;
 
 
+import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
-
-import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.settings.ISettingsManager;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -34,6 +34,20 @@ public final class VersionManager implements IVersionManager {
 	private static final String UNKNOWN_VERSION = "unknown";
 
 	private static Version version;
+	final ISettingsManager settingsManager;
+	final boolean versionChanged;
+
+	public VersionManager(ISettingsManager settingsManager) {
+		this.settingsManager = settingsManager;
+		if (settingsManager != null) {
+			versionChanged = !settingsManager.getLastRunVersion().equals(getVersion());
+			if (versionChanged) {
+				settingsManager.setLastRunVersion(getVersion());
+			}
+		} else {
+			versionChanged = false;			
+		}
+	}
 
 	public String checkForNewVersion() {
 		String newVersLine = null;
@@ -91,6 +105,10 @@ public final class VersionManager implements IVersionManager {
 		return version;
 	}
 
+	public boolean isLastRunVersionChanged() {
+		return versionChanged;
+	}
+
 	public int getVersionAsInt() {
 		Version v = getVersionInstance();
 
@@ -109,7 +127,12 @@ public final class VersionManager implements IVersionManager {
 				logMessage("The URL for the versions.txt was not found");
 				versionString = UNKNOWN_VERSION;
 			} else {
-				in = new BufferedReader(new InputStreamReader(versionsUrl.openStream()));
+				final URLConnection connection = versionsUrl.openConnection();
+
+				connection.setUseCaches(false);
+				final InputStream is = connection.getInputStream();
+
+				in = new BufferedReader(new InputStreamReader(is));
 
 				versionString = in.readLine();
 				while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {

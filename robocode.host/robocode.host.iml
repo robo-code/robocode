@@ -13,7 +13,6 @@
     <orderEntry type="module" module-name="robocode.api" exported="" />
     <orderEntry type="module" module-name="robocode.core" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
-    <orderEntry type="module" module-name="robocode.repository" exported="" />
     <orderEntry type="library" name="Maven: junit:junit:4.5" level="project" />
   </component>
 </module>

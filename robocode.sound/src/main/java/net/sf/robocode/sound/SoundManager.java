@@ -29,8 +29,8 @@ package net.sf.robocode.sound;
 
 
 import net.sf.robocode.battle.IBattleManager;
-import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.settings.ISettingsListener;
+import net.sf.robocode.settings.ISettingsManager;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;

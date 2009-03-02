@@ -14,6 +14,7 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.security.ThreadManager;
+import net.sf.robocode.host.JavaHost;
 
 
 /**
@@ -24,5 +25,6 @@ public class Module {
 		Container.cache.addComponent(IHostManager.class, HostManager.class);
 		Container.cache.addComponent(ICpuManager.class, CpuManager.class);
 		Container.cache.addComponent(IThreadManager.class, ThreadManager.class);
+		Container.cache.addComponent("robocode.host.java", JavaHost.class);
 	}
 }

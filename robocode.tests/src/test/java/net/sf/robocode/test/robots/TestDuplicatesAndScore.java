@@ -39,7 +39,7 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 
 	@Override
 	public int getExpectedRobotCount(String list) {
-		return 4;
+		return 8;
 	}
 
 	@Override

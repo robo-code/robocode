@@ -21,7 +21,7 @@ import org.junit.Test;
  */
 public class VersionTest {
 
-	final IVersionManager versionManager = new VersionManager();
+	final IVersionManager versionManager = new VersionManager(null);
 
 	@Test
 	public void same() {

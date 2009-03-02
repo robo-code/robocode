@@ -1,0 +1,22 @@
+<classpath>
+  <classpathentry kind="src" path="src/main/java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/gluegen/gluegen-rt/1.0b05/gluegen-rt-1.0b05.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/gluegen/gluegen-rt-linux-i586/1.0b05/gluegen-rt-linux-i586-1.0b05.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/gluegen/gluegen-rt-macosx-universal/1.0b05/gluegen-rt-macosx-universal-1.0b05.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/gluegen/gluegen-rt-windows-i586/1.0b05/gluegen-rt-windows-i586-1.0b05.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/jogl/jogl/1.1.1-rc6/jogl-1.1.1-rc6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/jogl/jogl-linux-i586/1.1.1-rc6/jogl-linux-i586-1.1.1-rc6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/jogl/jogl-macosx-universal/1.1.1-rc6/jogl-macosx-universal-1.1.1-rc6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/jogl/jogl-windows-i586/1.1.1-rc6/jogl-windows-i586-1.1.1-rc6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.api/1.7.1.Beta1/robocode.api-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.battle/1.7.1.Beta1/robocode.battle-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.core/1.7.1.Beta1/robocode.core-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.host/1.7.1.Beta1/robocode.host-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.repository/1.7.1.Beta1/robocode.repository-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.sound/1.7.1.Beta1/robocode.sound-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.ui/1.7.1.Beta1/robocode.ui-1.7.1.Beta1.jar"/>
+</classpath>

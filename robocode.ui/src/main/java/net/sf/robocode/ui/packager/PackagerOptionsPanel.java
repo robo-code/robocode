@@ -20,7 +20,7 @@
 package net.sf.robocode.ui.packager;
 
 
-import net.sf.robocode.repository.INamedFileSpecification;
+import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.ui.dialog.WizardPanel;
 import net.sf.robocode.ui.util.LimitedDocument;
 
@@ -74,11 +74,11 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			List<INamedFileSpecification> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			List<IRepositoryItem> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			if (selectedRobots != null) {
 				if (selectedRobots.size() == 1) {
-					INamedFileSpecification fileSpecification = selectedRobots.get(0);
+					IRepositoryItem fileSpecification = selectedRobots.get(0);
 					String v = fileSpecification.getVersion();
 
 					if (v == null || v.length() == 0) {

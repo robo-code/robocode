@@ -33,6 +33,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 
 /**
@@ -144,10 +146,15 @@ public class ThreadManager implements IThreadManager {
 
 		if (!dir.exists()) {
 			robotProxy.println("SYSTEM: Creating a data directory for you.");
-			outputStreamThreads.add(c);
-			if (!dir.exists() && !dir.mkdirs()) {
-				syserr.println("Can't create dir " + dir.toString());
-			}
+			AccessController.doPrivileged(new PrivilegedAction<Object>() {
+				public Object run() {
+					outputStreamThreads.add(c);
+					if (!dir.exists() && !dir.mkdirs()) {
+						syserr.println("Can't create dir " + dir.toString());
+					}
+					return null;
+				}
+			});
 		}
 
 		final RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();

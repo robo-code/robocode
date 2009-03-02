@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="robocode.api" />
+    <orderEntry type="module" module-name="robocode.battle" />
+    <orderEntry type="module" module-name="robocode.content" />
+    <orderEntry type="module" module-name="robocode.core" />
+    <orderEntry type="module" module-name="robocode.host" />
+    <orderEntry type="module" module-name="robocode.installer" />
+    <orderEntry type="module" module-name="robocode.repository" />
+    <orderEntry type="module" module-name="robocode.roborumble" />
+    <orderEntry type="module" module-name="robocode.samples" />
+    <orderEntry type="module" module-name="robocode.scala.host" />
+    <orderEntry type="module" module-name="robocode.scala.installer" />
+    <orderEntry type="module" module-name="robocode.scala.samples" />
+    <orderEntry type="module" module-name="robocode.sound" />
+    <orderEntry type="module" module-name="robocode.tests" />
+    <orderEntry type="module" module-name="robocode.ui" />
+    <orderEntry type="module" module-name="robocode.ui.editor" />
+    <orderEntry type="module" module-name="robocode.bv3d.installer" />
+    <orderEntry type="module" module-name="robocode.bv3d.view" />
+    <orderEntry type="module" module-name="robocode.js.host" />
+    <orderEntry type="module" module-name="robocode.js.installer" />
+    <orderEntry type="module" module-name="robocode.js.repository" />
+    <orderEntry type="module" module-name="robocode.js.samples" />
+  </component>
+</module>
+

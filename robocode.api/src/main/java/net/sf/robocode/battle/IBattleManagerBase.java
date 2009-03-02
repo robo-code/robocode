@@ -28,6 +28,6 @@ public interface IBattleManagerBase {
 
 	void stop(boolean waitTillEnd);
 
-	void startNewBattle(BattleSpecification spec, boolean waitTillOver);
+	void startNewBattle(BattleSpecification spec, boolean waitTillOver, boolean enableCLIRecording);
 
 }

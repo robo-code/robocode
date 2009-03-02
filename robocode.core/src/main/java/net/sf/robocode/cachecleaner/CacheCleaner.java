@@ -49,18 +49,17 @@ public final class CacheCleaner {
 			Logger.logMessage("failed.");
 		}
 
-		System.out.print("Rebuilding robot database... ");
+		Logger.logMessage("Rebuilding robot database... ");
 
 		final IRepositoryManager repositoryManager = Container.getComponent(IRepositoryManager.class);
 
-		repositoryManager.clearRobotList();
-		repositoryManager.loadRobotRepository();
+		repositoryManager.reload(true);
 
 		Logger.logMessage("done.");
 	}
 
 	private static void deleteFile(String filename) {
-		System.out.print("Deleting " + filename + "... ");
+		Logger.logMessage("Deleting " + filename + "... ");
 		try {
 			recursivelyDelete(new File(filename));
 			Logger.logMessage("done.");

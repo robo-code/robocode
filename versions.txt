@@ -1,11 +1,44 @@
-Version 1.7.0.3
-(20-Feb-2009)
+Version 1.7.1 Beta
+(01-Mar-2009)
 ---------------
 
+With this release we give BIG thanks to Nat Pavasant who have put in great effort in testing and finding as many bugs in Robocode as possible. He has been a great help with testing especially RoboRumble@Home functionality.
+
+Currently, there is one known issue, which will be fixed with the next Beta or in the final release of version 1.7.1. This is critical for e.g. the TeamRumble, so please notice the known issue below.
+
+= Known issue =
+* With this version Robocode cannot handle team packages containing robot .jar files, i.e. robot packages.
+
 = Bugfix =
-* Bug [2618169] NullPointerException when using -battle option from the cmd-line: When starting Robocode on a battle file by using the -battle option when the GUI was enabled caused a NullPointerException and the game would not start.
-* CLI usage: The command line usage of Robocode was not printed out at all when using the -? or -help option.
-* Bug [2628346] A battleview size exceed 800x600 filled with black. Some of the battlefield could be hidden behind a black border when the battle view was resized.
+* Bug [2626148] - Bots referencing robocode.robocodeGL broken. Now, we are now not following refrences to robocode packages.
+* Bug [2626164] - Don't ever punish robots in devel directories by removing from repository.
+* Bug [2634807], [2632874] - Robot console was wrongly synchronized with battle.
+* Bug [2634123] - Robot packager can be activated once per running.
+* Bug [2643395] - Development robots cause problems with data files.
+* Bug [2628346] - A battleview size exceed 800x600 filled with black.
+* Bug [2618169] - NullPointerException when using -battle option from the cmd-line.
+* Bug [2628217] - Robot Colors don't stick between rounds.
+* Bug [2649954] - Open battle menu dialog is not loading robots.
+* The command line usage of Robocode was not printed out at all when using the -? or -help option.
+
+= New features =
+* Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine.
+* Request [2446276] - Ranking Panel should be visible when Robocode is minimized. This feature has been added and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
+* Request [2467545] - Command Line option for saving a battle record file. Two new command line options have been added for Robocode, i.e. -record <filename> and -recordXML <filename>. The -record option records the battle as a binary and zipped battle record. Here I propose that the specified filename should is something like record.br. The -recordXML does the same as the -record option, but saves the battle record as an XML file. Here I suggest that you use a filename like record.br.xml.
+* Request [1749483] - Speedup time required for rebuilding robot database.
+
+= RoboRumble changes =
+* Changed the link for http://rumble.fervir.com/rumble into http://darkcanuck.net/rumble as the RoboRumble server fervir is down and with unstable ranking. The current ranking at Darkcanuck's server is alive. Almost all clients are point to Darkcanuck's now. Hence, it is updated now.
+
+= Internal Changes =
+* The robot repository has been updated. It is no longer extracting .jar files.
+* It also remembers last timestamp on file so detection of the changes is really fast. Only data files are extracted now.
+* Data files for non-packed robots were moved to .robotcache as well.
+* VersionManager is now able to detect if the Robocode version was upgraded since last run.
+* Blocking security issue with relative path in getDataFile() method.
+* Improved security in RobotClassLoader.
+* Reimplemented RobotPackager.
+* BulletSnapshot has now method getBulletId which gives identity of bullet for UI.
 
 Version 1.7.0.2
 (16-Feb-2009)

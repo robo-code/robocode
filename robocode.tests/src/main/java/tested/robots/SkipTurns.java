@@ -73,7 +73,7 @@ public class SkipTurns extends AdvancedRobot {
 				if (skipped > 3) {
 					w.wait(3000);
 				} else {
-					w.wait(150);
+					w.wait(130);
 				}
 			} catch (InterruptedException e) {
 				// eat interrupt

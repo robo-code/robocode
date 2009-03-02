@@ -14,8 +14,8 @@ package net.sf.robocode.core;
 
 import net.sf.robocode.peer.*;
 import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.settings.SettingsManager;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.settings.SettingsManager;
 import net.sf.robocode.version.IVersionManager;
 import net.sf.robocode.version.VersionManager;
 

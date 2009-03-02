@@ -24,10 +24,10 @@ import net.sf.robocode.io.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.nio.ByteBuffer;
 
 
 /**

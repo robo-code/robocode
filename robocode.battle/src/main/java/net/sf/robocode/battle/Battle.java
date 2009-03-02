@@ -105,7 +105,7 @@ import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.IRobotFileSpecification;
+import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.*;
@@ -172,17 +172,17 @@ public final class Battle extends BaseBattle {
 		this.cpuConstant = cpuManager.getCpuConstant();
 	}
 
-	public void setup(List<RobotSpecification> battlingRobotsList, BattleProperties battleProperties, boolean paused) {
+	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProperties, boolean paused) {
 		isPaused = paused;
 		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
 				battleProperties.getInactivityTime());
-		robotsCount = battlingRobotsList.size();
+		robotsCount = battlingRobotsList.length;
 		computeInitialPositions(battleProperties.getInitialPositions());
 		createPeers(battlingRobotsList);
 	}
 
-	private void createPeers(List<RobotSpecification> battlingRobotsList) {
+	private void createPeers(RobotSpecification[] battlingRobotsList) {
 		// create teams
 		Hashtable<String, Integer> countedNames = new Hashtable<String, Integer>();
 		List<String> teams = new ArrayList<String>();
@@ -191,7 +191,7 @@ public final class Battle extends BaseBattle {
 
 		// count duplicate robots, enumerate teams, enumerate team members
 		for (RobotSpecification specification : battlingRobotsList) {
-			final String name = ((IRobotFileSpecification) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
+			final String name = ((IRobotRepositoryItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
 
 			if (countedNames.containsKey(name)) {
 				int value = countedNames.get(name);
@@ -237,9 +237,9 @@ public final class Battle extends BaseBattle {
 		}
 
 		// name robots
-		for (int i = battlingRobotsList.size() - 1; i >= 0; i--) {
-			RobotSpecification specification = battlingRobotsList.get(i);
-			String name = ((IRobotFileSpecification) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
+		for (int i = battlingRobotsList.length - 1; i >= 0; i--) {
+			RobotSpecification specification = battlingRobotsList[i];
+			String name = ((IRobotRepositoryItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
 			Integer order = countedNames.get(name);
 			int duplicate = -1;
 
@@ -265,8 +265,8 @@ public final class Battle extends BaseBattle {
 		Hashtable<String, TeamPeer> namedTeams = new Hashtable<String, TeamPeer>();
 
 		// create robots
-		for (int i = 0; i < battlingRobotsList.size(); i++) {
-			RobotSpecification specification = battlingRobotsList.get(i);
+		for (int i = 0; i < battlingRobotsList.length; i++) {
+			RobotSpecification specification = battlingRobotsList[i];
 			TeamPeer team = null;
 
 			String teamFullName = HiddenAccess.getRobotTeamName(specification);

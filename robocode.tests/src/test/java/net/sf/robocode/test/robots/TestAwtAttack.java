@@ -59,6 +59,11 @@ public class TestAwtAttack extends RobotTestBed {
 	}
 
 	@Override
+	protected int getExpectedErrors() {
+		return 2;
+	}
+
+	@Override
 	public int getExpectedRobotCount(String list) {
 		return 1;
 	}

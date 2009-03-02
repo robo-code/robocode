@@ -143,7 +143,7 @@ public class BattlesRunner {
 					dumpResults(outtxt, lastResults, param[param.length - 1], melee);
 				}
 			} else {
-				System.err.println("Skipping battle because can't load robots");
+				System.err.println("Skipping battle because can't load robots: " + enemies);
 			}
 			index++;
 		}

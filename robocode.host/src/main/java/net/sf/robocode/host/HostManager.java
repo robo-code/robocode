@@ -16,15 +16,15 @@ import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotFileSpecification;
-import net.sf.robocode.repository.IRobotFileSpecificationExt;
+import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.RobotType;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.core.Container;
 import robocode.control.RobotSpecification;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.security.AccessControlException;
 
 
 /**
@@ -79,36 +79,26 @@ public class HostManager implements IHostManager {
 		return threadManager.getRobotOutputStream();
 	}
 
-	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
-		IHostingRobotProxy robotProxy;
-		final IRobotFileSpecification specification = (IRobotFileSpecification) HiddenAccess.getFileSpecification(
-				robotSpecification);
-
-		if (specification.isTeamRobot()) {
-			robotProxy = new TeamRobotProxy(specification, this, peer, statics);
-		} else if (specification.isAdvancedRobot()) {
-			robotProxy = new AdvancedRobotProxy(specification, this, peer, statics);
-		} else if (specification.isStandardRobot()) {
-			robotProxy = new StandardRobotProxy(specification, this, peer, statics);
-		} else if (specification.isJuniorRobot()) {
-			robotProxy = new JuniorRobotProxy(specification, this, peer, statics);
-		} else {
-			throw new AccessControlException("Unknown robot type");
-		}
-		return robotProxy;
-	}
-
 	public void cleanup() {// TODO
 	}
 
-	public Class<?> loadRobotClass(IRobotFileSpecification robotFileSpecification) throws ClassNotFoundException {
-		RobotClassLoader classLoader = new RobotClassLoader(robotFileSpecification.getRobotClassPath(),
-				robotFileSpecification.getFullClassName());
+	public String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem) {
+		return getHost(robotRepositoryItem).getReferencedClasses(robotRepositoryItem);
+	}
 
-		Class<?> robotClass = classLoader.loadRobotMainClass();
+	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message) {
+		return getHost(robotRepositoryItem).getRobotType(robotRepositoryItem, resolve, message);
+	}
 
-		((IRobotFileSpecificationExt) robotFileSpecification).setUid(classLoader.getUid());
-		return robotClass;
+	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
+		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+				robotSpecification);
+
+		return getHost(specification).createRobotProxy(this, robotSpecification, statics, peer);
+	}
+
+	private IHost getHost(IRobotRepositoryItem robotRepositoryItem) {
+		return (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
 	}
 
 	public void initSecurity() {
