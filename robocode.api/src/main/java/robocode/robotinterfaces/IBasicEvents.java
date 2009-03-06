@@ -94,7 +94,7 @@ public interface IBasicEvents {
 	 * <p/>
 	 * Example:
 	 * <pre>
-	 *   public void onBulletHit(BulletMissedEvent event) {
+	 *   public void onBulletMissed(BulletMissedEvent event) {
 	 *       out.println("Drat, I missed.");
 	 *   }
 	 * </pre>

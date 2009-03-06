@@ -4,7 +4,7 @@ Version 1.7.1 Beta 2
 
 = Bugfixes =
 * Bug [2658090] - Typing to find bot no longer works.
-
+* Bug [2666598] - API: Typo in Documentation onBulletMissed(BulletMissedEvent).
 
 Version 1.7.1 Beta
 (01-Mar-2009)
