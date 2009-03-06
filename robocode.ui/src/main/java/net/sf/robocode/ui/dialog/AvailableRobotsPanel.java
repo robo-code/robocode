@@ -62,8 +62,6 @@ public class AvailableRobotsPanel extends JPanel {
 
 	private JScrollPane availablePackagesScrollPane;
 
-	private RobotNameCellRenderer robotNamesCellRenderer;
-
 	private final RobotSelectionPanel robotSelectionPanel;
 
 	private final String title;
@@ -87,6 +85,7 @@ public class AvailableRobotsPanel extends JPanel {
 		JPanel top = new JPanel();
 
 		top.setLayout(new GridLayout(1, 2));
+
 		JPanel a = new JPanel();
 
 		a.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Packages"));
@@ -94,6 +93,7 @@ public class AvailableRobotsPanel extends JPanel {
 		a.add(getAvailablePackagesScrollPane());
 		a.setPreferredSize(new Dimension(120, 100));
 		top.add(a);
+
 		JPanel b = new JPanel();
 
 		b.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Robots"));
@@ -101,6 +101,7 @@ public class AvailableRobotsPanel extends JPanel {
 		b.add(getAvailableRobotsScrollPane());
 		b.setPreferredSize(new Dimension(120, 100));
 		top.add(b);
+
 		add(top, BorderLayout.CENTER);
 
 		JLabel refreshLabel = new JLabel("Press " + ShortcutUtil.getModifierKeyText() + "+R to refresh");
@@ -136,8 +137,6 @@ public class AvailableRobotsPanel extends JPanel {
 			availableRobotsList = new JList();
 			availableRobotsList.setModel(new AvailableRobotsModel());
 			availableRobotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-			robotNamesCellRenderer = new RobotNameCellRenderer();
-			availableRobotsList.setCellRenderer(robotNamesCellRenderer);
 			MouseListener mouseListener = new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -214,33 +213,33 @@ public class AvailableRobotsPanel extends JPanel {
 	private void availablePackagesListSelectionChanged() {
 		int sel[] = getAvailablePackagesList().getSelectedIndices();
 
+		boolean useShortName = false;
+
 		availableRobots.clear();
 		if (sel.length == 1) {
-			robotNamesCellRenderer.setUseShortNames(true);
+			useShortName = true;
 			getAvailablePackagesList().scrollRectToVisible(getAvailablePackagesList().getCellBounds(sel[0], sel[0]));
-		} else {
-			robotNamesCellRenderer.setUseShortNames(false);
 		}
 
 		for (int element : sel) {
 			String selectedPackage = availablePackages.get(element);
 
 			if (selectedPackage.equals("(All)")) {
-				robotNamesCellRenderer.setUseShortNames(false);
+				useShortName = false;
 				availableRobots.clear();
-				for (IRepositoryItem aRobotList : robotList) {
-					availableRobots.add(aRobotList);
+				for (IRepositoryItem robotItem : robotList) {
+					robotItem.setUseShortName(false);
+					availableRobots.add(robotItem);
 				}
 				break;
 			}
 			// Single package.
-			for (IRepositoryItem robotSpecification : robotList) {
-				if (robotSpecification.getFullPackage() == null) {
-					if (selectedPackage.equals("(No package)")) {
-						availableRobots.add(robotSpecification);
-					}
-				} else if (robotSpecification.getFullPackage().equals(selectedPackage)) {
-					availableRobots.add(robotSpecification);
+			for (IRepositoryItem robotItem : robotList) {
+				robotItem.setUseShortName(useShortName);
+
+				if ((robotItem.getFullPackage() == null && selectedPackage.equals("(No package)"))
+						|| robotItem.getFullPackage().equals(selectedPackage)) {
+					availableRobots.add(robotItem);
 				}
 			}
 		}
@@ -344,54 +343,6 @@ public class AvailableRobotsPanel extends JPanel {
 
 		public IRepositoryItem getElementAt(int which) {
 			return availableRobots.get(which);
-		}
-	}
-
-
-	private static class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
-		private boolean useShortNames = false;
-
-		public RobotNameCellRenderer() {
-			setOpaque(true);
-		}
-
-		public void setUseShortNames(boolean useShortNames) {
-			this.useShortNames = useShortNames;
-		}
-
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
-			setComponentOrientation(list.getComponentOrientation());
-
-			if (isSelected) {
-				setBackground(list.getSelectionBackground());
-				setForeground(list.getSelectionForeground());
-			} else {
-				setBackground(list.getBackground());
-				setForeground(list.getForeground());
-			}
-			if (useShortNames && value instanceof IRepositoryItem) {
-				IRepositoryItem fileSpecification = (IRepositoryItem) value;
-
-				if (fileSpecification.isTeam()) {
-					setText("Team: " + fileSpecification.getUniqueShortClassNameWithVersion());
-				} else {
-					setText(fileSpecification.getUniqueShortClassNameWithVersion());
-				}
-			} else if (value instanceof IRepositoryItem) {
-				IRepositoryItem fileSpecification = (IRepositoryItem) value;
-
-				if (fileSpecification.isTeam()) {
-					setText("Team: " + fileSpecification.getUniqueFullClassNameWithVersion());
-				} else {
-					setText(fileSpecification.getUniqueFullClassNameWithVersion());
-				}
-			} else {
-				setText(value.toString());
-			}
-			setEnabled(list.isEnabled());
-			setFont(list.getFont());
-			return this;
 		}
 	}
 }

@@ -164,10 +164,6 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		return properties.getProperty(ROBOCODE_VERSION, null);
 	}
 
-	public String toString() {
-		return url.toString();
-	}
-
 	public void storeProperties(OutputStream os) throws IOException {
 		properties.store(os, "Robocode Robot Team");
 	}
@@ -243,4 +239,8 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		return team;
 	}
 
+	// Used writing the team name in JList. Is used for keyboard typing in JList to find robot. Bugfix for [2658090]
+	public String toString() {
+		return "Team: " + super.toString();
+	}
 }

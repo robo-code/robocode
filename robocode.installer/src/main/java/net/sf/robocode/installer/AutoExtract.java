@@ -347,16 +347,19 @@ public class AutoExtract implements ActionListener {
 
 	private static void deleteOldLibs(File installDir) {
 		File libs = new File(installDir, "libs");
-		if (libs.exists()){
+
+		if (libs.exists()) {
 			final File[] del = libs.listFiles(new FilenameFilter() {
 
 				public boolean accept(File dir, String name) {
 					String test = name.toLowerCase();
+
 					return test.endsWith(".jar");
 				}
 			});
-			for(File d : del){
-				if (!d.delete()){
+
+			for (File d : del) {
+				if (!d.delete()) {
 					System.out.println("Can't delete " + d);
 				}
 			}

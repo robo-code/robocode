@@ -1,3 +1,11 @@
+Version 1.7.1 Beta 2
+(06-Mar-2009)
+---------------
+
+= Bugfixes =
+* Bug [2658090] - Typing to find bot no longer works.
+
+
 Version 1.7.1 Beta
 (01-Mar-2009)
 ---------------
@@ -9,7 +17,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 = Known issue =
 * With this version Robocode cannot handle team packages containing robot .jar files, i.e. robot packages.
 
-= Bugfix =
+= Bugfixes =
 * Bug [2626148] - Bots referencing robocode.robocodeGL broken. Now, we are now not following refrences to robocode packages.
 * Bug [2626164] - Don't ever punish robots in devel directories by removing from repository.
 * Bug [2634807], [2632874] - Robot console was wrongly synchronized with battle.
