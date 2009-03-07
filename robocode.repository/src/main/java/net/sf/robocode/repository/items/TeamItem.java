@@ -59,7 +59,9 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		} else {
 			teamFullName = tUrl.substring(rootLen).replace('/', '.').replace('\\', '.');
 		}
-		isValid = true;
+		if (loadProperties()) {
+			isValid = true;
+		}
 	}
 
 	private void htmlUrlFromPropertiesUrl() {
@@ -94,7 +96,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		}
 	}
 
-	private void loadProperties() {
+	private boolean loadProperties() {
 		if (url != null) {
 			InputStream ios = null;
 
@@ -104,12 +106,14 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 				connection.setUseCaches(false);
 				ios = connection.getInputStream();
 				properties.load(ios);
+				return true;
 			} catch (IOException e) {
 				Logger.logError(e);
 			} finally {
 				FileUtil.cleanupStream(ios);
 			}
 		}
+		return false;
 	}
 
 	public URL getHtmlUrl() {

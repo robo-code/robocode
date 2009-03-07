@@ -17,6 +17,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.packager.JarExtractor;
 import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.ui.IWindowManager;
 
@@ -39,14 +40,15 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
 	private URL jarUrl;
+	private String jarNoSeparator;
 	private long lastModified;
 
 	public JarRoot(Database db, File rootPath) {
 		super(db, rootPath);
 		try {
-			final String jUrl = "jar:" + rootPath.toURI().toString() + "!/";
+			jarNoSeparator = "jar:" + rootPath.toURI().toString();
 
-			jarUrl = new URL(jUrl);
+			jarUrl = new URL(jarNoSeparator + "!/");
 			url = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
@@ -73,7 +75,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IItem> items) {
-		final String root = jarUrl.toString();
+		final String root = jarNoSeparator;
 		InputStream is = null;
 		JarInputStream jarIS = null;
 
@@ -83,33 +85,49 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			con.setUseCaches(false);
 			is = con.getInputStream();
 			jarIS = new JarInputStream(is);
-
-			JarEntry entry = jarIS.getNextJarEntry();
-
-			while (entry != null) {
-				String name = entry.getName().toLowerCase();
-
-				if (!entry.isDirectory()) {
-					if (!name.contains(".data/") && !name.contains(".robotcache/")) {
-						try {
-							String pUrl = root + entry.getName();
-							final IItem item = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, db);
-
-							if (item != null) {
-								items.add(item);
-							}
-						} catch (MalformedURLException e) {
-							Logger.logError(e);
-						}
-					}
-				}
-				entry = jarIS.getNextJarEntry();
-			}
+			readJarStream(items, root, jarIS);
 		} catch (IOException e) {
 			Logger.logError(e);
 		} finally {
 			FileUtil.cleanupStream(jarIS);
 			FileUtil.cleanupStream(is);
+		}
+	}
+
+	private void readJarStream(ArrayList<IItem> items, String root, JarInputStream jarIS) throws IOException {
+		JarEntry entry = jarIS.getNextJarEntry();
+
+		while (entry != null) {
+			String name = entry.getName().toLowerCase();
+
+			if (!entry.isDirectory()) {
+				if (!name.contains(".data/") && !name.contains(".robotcache/")) {
+					if (name.endsWith(".jar")) {
+						JarInputStream inner = new JarInputStream(jarIS);
+
+						readJarStream(items, "jar:jar" + root + "†/" + entry.getName(), inner);
+					} else {
+						createItem(items, new URL(root + "!/"), entry);
+					}
+				}
+			}
+			entry = jarIS.getNextJarEntry();
+		}
+	}
+
+	private void createItem(ArrayList<IItem> items, URL root, JarEntry entry) {
+		try {
+			String pUrl = root.toString() + entry.getName();
+			final IItem item = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, db);
+
+			if (item != null) {
+				if (item instanceof RobotItem) {
+					((RobotItem) item).setClassPathURL(root);
+				}
+				items.add(item);
+			}
+		} catch (MalformedURLException e) {
+			Logger.logError(e);
 		}
 	}
 

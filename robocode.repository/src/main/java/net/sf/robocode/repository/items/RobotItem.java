@@ -66,6 +66,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	protected String extension;
 	private URL propertiesUrl;
+	private URL classPathUrl;
 
 	public RobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
 		super(classUrl, root);
@@ -73,7 +74,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		isValid = true;
 		isPropertiesURL = (propertiesUrl != null);
 		isClassURL = (url != null);
-
+		classPathUrl = root.getClassPathUrl();
 		extension = ".class";
 		init();
 	}
@@ -95,6 +96,10 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		this.propertiesUrl = propertiesUrl;
 		isPropertiesURL = (propertiesUrl != null);
 		init();
+	}
+
+	public void setClassPathURL(URL classPathUrl) {
+		this.classPathUrl = classPathUrl;
 	}
 
 	// / -------------------------------------
@@ -413,7 +418,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	public URL getRobotClassPath() {
-		return root.getClassPathUrl();
+		return classPathUrl;
 	}
 
 	public String getFullClassName() {

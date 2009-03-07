@@ -14,6 +14,7 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
+import net.sf.robocode.host.jarjar.JarJarURLConnection;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
@@ -102,6 +103,7 @@ public class HostManager implements IHostManager {
 	}
 
 	public void initSecurity() {
+		JarJarURLConnection.register();
 		new RobocodeSecurityPolicy(threadManager);
 		new RobocodeSecurityManager(threadManager);
 	}

@@ -5,6 +5,7 @@ Version 1.7.1 Beta 2
 = Bugfixes =
 * Bug [2658090] - Typing to find bot no longer works.
 * Bug [2666598] - API: Typo in Documentation onBulletMissed(BulletMissedEvent).
+* Fixed the problem with loading team robots from nested .jar files
 
 Version 1.7.1 Beta
 (01-Mar-2009)
