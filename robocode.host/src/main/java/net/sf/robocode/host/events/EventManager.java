@@ -95,8 +95,8 @@ public class EventManager implements IEventManager {
 	public void add(Event e) {
 		if (!HiddenAccess.isCriticalEvent(e)) {
 			HiddenAccess.setEventPriority(e, getEventPriority(e.getClass().getName()));
-			HiddenAccess.setEventTime(e, getTime());
 		}
+		HiddenAccess.setEventTime(e, getTime());
 		addImpl(e);
 	}
 

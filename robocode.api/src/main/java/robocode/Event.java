@@ -24,6 +24,7 @@ package robocode;
 
 import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.security.IHiddenEventHelper;
+import net.sf.robocode.io.Logger;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
@@ -41,6 +42,7 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// time is valid only after adding to event manager on proxy side, we do not update it on Battle side
+	private transient boolean addedToQueue;
 	private long time;
 	private int priority;
 
@@ -120,13 +122,17 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 */
 	// this method is invisible on RobotAPI
 	final void setPriority(int newPriority) {
+		if (addedToQueue) {
+			Logger.printlnToRobotsConsole("SYSTEM: After the event was added to queue, priority can't be changed.");
+			return;
+		}
 		if (newPriority < 0) {
-			System.out.println("SYSTEM: Priority must be between 0 and 99");
-			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 0");
+			Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
+			Logger.printlnToRobotsConsole("SYSTEM: Priority for " + this.getClass().getName() + " will be 0");
 			newPriority = 0;
 		} else if (newPriority > 99) {
-			System.out.println("SYSTEM: Priority must be between 0 and 99");
-			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 99");
+			Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
+			Logger.printlnToRobotsConsole("SYSTEM: Priority for " + this.getClass().getName() + " will be 99");
 			newPriority = 99;
 		}
 		priority = newPriority;
@@ -138,8 +144,26 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 * @param time the time when this event occurred. 
 	 */
 	// this method is invisible on RobotAPI
-	private void setTime(long time) {
-		this.time = time;
+	private void setTimeHidden(long time) {
+		// we do not replace time which is set by robot to the future 
+		if (this.time < time) {
+			this.time = time;
+		}
+		addedToQueue = true;
+	}
+
+	/**
+	 * Could be caled by robot to assign the time to events which are not managed by game.
+	 * If the event is added into EventQueue, the time could be overriden
+	 *
+	 * @param newTime the time this event occurred
+	 */
+	public void setTime(long newTime) {
+		if (!addedToQueue){
+			time = newTime;
+		} else{
+			Logger.printlnToRobotsConsole("SYSTEM: After the event was added to queue, time can't be changed.");
+		}
 	}
 
 	/**
@@ -194,7 +218,7 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	private static class HiddenEventHelper implements IHiddenEventHelper {
 
 		public void setTime(Event event, long newTime) {
-			event.setTime(newTime);
+			event.setTimeHidden(newTime);
 		}
 
 		public void setDefaultPriority(Event event) {
