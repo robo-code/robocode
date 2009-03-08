@@ -16,20 +16,22 @@ import org.junit.Test;
 import org.junit.Assert;
 
 import java.net.URL;
-import java.net.MalformedURLException;
 import java.net.URLConnection;
+import java.net.URLClassLoader;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 
 /**
  * @author Pavel Savara (original)
  */
 public class JarJarTest {
+	static {
+		JarJarURLConnection.register();
+	}
+
 	@Test
 	public void run() throws IOException {
-		JarJarURLConnection.register();
 
 		String clas = "Hello.class";
 		String inner = "Inner.jar";
@@ -51,5 +53,19 @@ public class JarJarTest {
 		Assert.assertFalse(isr.ready());
 		isr.close();
 		inputStream.close();
+	}
+
+	@Test
+	public void runClassLoader() throws IOException, ClassNotFoundException {
+		String clas = "tested.robots.Ahead";
+		String inner = "Inner.jar";
+		String outer = "file:src/test/resources/Outer.jar";
+		final String msepar = "†/";
+		final String separ = "!/";
+		final String root = "jar:jarjar:" + outer + msepar + inner + separ;
+		URL u = new URL(root);
+
+		ClassLoader ucl = new URLClassLoader(new URL[]{u});
+		ucl.loadClass(clas);
 	}
 }
