@@ -31,9 +31,6 @@ public interface IRepositoryItem extends Comparable<Object> {
 
 	void setValid(boolean value);
 
-	// Used for keyboard typing in JList to find robot. Bugfix for [2658090]
-	void setUseShortName(boolean value);
-
 	String getVersion();
 
 	String getDescription();

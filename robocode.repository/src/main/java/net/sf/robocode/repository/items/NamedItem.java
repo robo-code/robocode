@@ -30,8 +30,6 @@ import java.util.StringTokenizer;
 public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	private static final long serialVersionUID = 1L;
 
-	private boolean useShortNames;
-
 	public NamedItem(URL url, IRepositoryRoot root) {
 		super(url, root);
 	}
@@ -286,15 +284,5 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 			return -1;
 		}
 		return 0;
-	}
-
-	// Used by toString() for keyboard typing in JList to find robot. Bugfix for [2658090]
-	public final void setUseShortName(boolean value) {
-		useShortNames = value;
-	}
-
-	// Used writing the robot name in JList. Is used for keyboard typing in JList to find robot. Bugfix for [2658090]
-	public String toString() {
-		return useShortNames ? getUniqueShortClassNameWithVersion() : getUniqueFullClassNameWithVersion();
 	}
 }

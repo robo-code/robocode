@@ -116,8 +116,7 @@ public class URLJarCollector {
 					if (!urlToClean.contains(url)) {
 						urlToClean.add(url);
 					}
-				} catch (IllegalAccessException ignore) {
-				}
+				} catch (IllegalAccessException ignore) {}
 			}
 		}
 	}

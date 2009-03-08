@@ -499,4 +499,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		}
 		return specification;
 	}
+
+	public String toString() {
+		return url.toString();
+	}
 }

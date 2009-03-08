@@ -28,6 +28,8 @@ package net.sf.robocode.ui.dialog;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.ui.util.ShortcutUtil;
 
+import robocode.control.RobotSpecification;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -35,6 +37,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -199,7 +204,7 @@ public class AvailableRobotsPanel extends JPanel {
 					availablePackages.add("(No package)");
 
 					for (IRepositoryItem robotSpec : robotList) {
-						availableRobots.add(robotSpec);
+						availableRobots.add(new ItemWrapper(robotSpec));
 					}
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().setSelectedIndex(0);
@@ -228,18 +233,22 @@ public class AvailableRobotsPanel extends JPanel {
 				useShortName = false;
 				availableRobots.clear();
 				for (IRepositoryItem robotItem : robotList) {
-					robotItem.setUseShortName(false);
-					availableRobots.add(robotItem);
+					ItemWrapper itemWrapper = new ItemWrapper(robotItem);
+
+					itemWrapper.setUseShortName(false);
+					availableRobots.add(itemWrapper);
 				}
 				break;
 			}
 			// Single package.
 			for (IRepositoryItem robotItem : robotList) {
-				robotItem.setUseShortName(useShortName);
+				ItemWrapper itemWrapper = new ItemWrapper(robotItem);
+
+				itemWrapper.setUseShortName(useShortName);
 
 				if ((robotItem.getFullPackage() == null && selectedPackage.equals("(No package)"))
 						|| robotItem.getFullPackage().equals(selectedPackage)) {
-					availableRobots.add(robotItem);
+					availableRobots.add(itemWrapper);
 				}
 			}
 		}
@@ -343,6 +352,137 @@ public class AvailableRobotsPanel extends JPanel {
 
 		public IRepositoryItem getElementAt(int which) {
 			return availableRobots.get(which);
+		}
+	}
+
+
+	private class ItemWrapper implements IRepositoryItem {
+
+		private final IRepositoryItem item;
+
+		private transient boolean useShortNames;
+
+		public ItemWrapper(IRepositoryItem item) {
+			this.item = item;
+		}
+
+		public boolean isValid() {
+			return item.isValid();
+		}
+
+		public boolean isTeam() {
+			return item.isTeam();
+		}
+
+		public boolean isInJar() {
+			return item.isInJar();
+		}
+
+		public void setValid(boolean value) {
+			item.setValid(value);
+		}
+
+		public String getVersion() {
+			return item.getVersion();
+		}
+
+		public String getDescription() {
+			return item.getDescription();
+		}
+
+		public String getAuthorName() {
+			return item.getAuthorName();
+		}
+
+		public URL getWebpage() {
+			return item.getWebpage();
+		}
+
+		public boolean getJavaSourceIncluded() {
+			return item.getJavaSourceIncluded();
+		}
+
+		public String getRootFile() {
+			return item.getRootFile();			
+		}
+
+		public URL getFullUrl() {
+			return item.getFullUrl();
+		}
+
+		public URL getPropertiesUrl() {
+			return item.getPropertiesUrl();
+		}
+
+		public boolean isDevelopmentVersion() {
+			return item.isDevelopmentVersion();
+		}
+
+		public String getRobocodeVersion() {
+			return item.getRobocodeVersion();
+		}
+
+		public String getFullPackage() {
+			return item.getFullPackage();
+		}
+		
+		public String getRelativePath() {
+			return item.getRelativePath();
+		}
+
+		public String getRootPackage() {
+			return item.getRootPackage();
+		}
+
+		public String getFullClassNameWithVersion() {
+			return item.getFullClassNameWithVersion();
+		}
+
+		public String getUniqueFullClassNameWithVersion() {
+			return item.getUniqueFullClassNameWithVersion();
+		}
+
+		public String getUniqueShortClassNameWithVersion() {
+			return item.getUniqueShortClassNameWithVersion();
+		}
+
+		public String getUniqueVeryShortClassNameWithVersion() {
+			return item.getUniqueVeryShortClassNameWithVersion();
+		}
+
+		public String getFullClassName() {
+			return item.getFullClassName();
+		}
+
+		public String getShortClassName() {
+			return item.getShortClassName();
+		}
+
+		public RobotSpecification createRobotSpecification() {
+			return item.createRobotSpecification();
+		}
+
+		public void storeProperties(OutputStream os) throws IOException {
+			item.storeProperties(os);
+		}
+
+		public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
+			item.storeProperties(os, web, desc, author, version);
+		}
+
+		public int compareTo(Object o) {
+			return item.compareTo(o);
+		}
+
+		// Used by toString() for keyboard typing in JList to find robot. Bugfix for [2658090]
+		public void setUseShortName(boolean value) {
+			useShortNames = value;
+		}
+
+		// Used writing the robot name in JList. Is used for keyboard typing in JList to find robot. Bugfix for [2658090]
+		public String toString() {
+			return (isTeam() ? "Team: " : "")
+					+ (useShortNames ? getUniqueShortClassNameWithVersion() : getUniqueFullClassNameWithVersion());
 		}
 	}
 }
