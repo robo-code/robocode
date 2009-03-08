@@ -14,6 +14,7 @@ package net.sf.robocode.battle;
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.URLJarCollector;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.settings.ISettingsManager;
@@ -149,6 +150,8 @@ public abstract class BaseBattle implements IBattle, Runnable {
 			pendingCommands.clear();
 			// don't pendingCommands = null;
 		}
+		URLJarCollector.enableGc(true);
+		URLJarCollector.gc();
 	}
 
 	public void waitTillStarted() {
@@ -226,6 +229,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	protected void initializeBattle() {
+		URLJarCollector.enableGc(false);
 		roundNum = 0;
 
 		// Notify that the battle is now running

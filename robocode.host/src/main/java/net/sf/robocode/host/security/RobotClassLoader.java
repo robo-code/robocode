@@ -32,6 +32,7 @@ import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.URLJarCollector;
 import static net.sf.robocode.io.Logger.logError;
 import robocode.robotinterfaces.IBasicRobot;
 
@@ -170,9 +171,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 		if (url != null) {
 			try {
-				final URLConnection connection = url.openConnection();
+				final URLConnection connection = URLJarCollector.openConnection(url);
 
-				connection.setUseCaches(false);
 				is = connection.getInputStream();
 
 				result = ByteBuffer.allocate(1024 * 8);

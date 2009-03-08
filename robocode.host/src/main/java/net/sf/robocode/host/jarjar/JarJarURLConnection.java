@@ -40,6 +40,8 @@
 package net.sf.robocode.host.jarjar;
 
 
+import net.sf.robocode.io.URLJarCollector;
+
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.*;
@@ -57,7 +59,7 @@ public class JarJarURLConnection extends URLConnection {
 		final String file = url.getFile();
 		URL inner = new URL(file);
 
-		connection = inner.openConnection();
+		connection = URLJarCollector.openConnection(inner);
 	}
 
 	public void connect() throws IOException {

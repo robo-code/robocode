@@ -14,6 +14,7 @@ package net.sf.robocode.repository.items;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.core.Container;
@@ -68,9 +69,8 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		try {
 			htmlUrl = new URL(url.toString().replaceAll("\\.team", ".html"));
 			// test that html file exists
-			final URLConnection conn = htmlUrl.openConnection();
+			final URLConnection conn = URLJarCollector.openConnection(htmlUrl);
 
-			conn.setUseCaches(false);
 			conn.getInputStream().close();
 		} catch (IOException ignored) {
 			// doesn't exist
@@ -101,10 +101,10 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 			InputStream ios = null;
 
 			try {
-				final URLConnection connection = url.openConnection();
+				final URLConnection connection = URLJarCollector.openConnection(url);
 
-				connection.setUseCaches(false);
 				ios = connection.getInputStream();
+				
 				properties.load(ios);
 				return true;
 			} catch (IOException e) {

@@ -8,6 +8,9 @@ Version 1.7.1 Beta 2
 * Fixed the problem with loading team robots from nested .jar files
 * Bug [2658167] - Put back setTime() method of Event, the security is now handled other way, not by hiding the field
 
+= Changes =
+- On SUN's JVM enabled caching of .jar files opened thru URLConnection. Solved problem with closing such files by implementing URLJarCollector.
+
 Version 1.7.1 Beta
 (01-Mar-2009)
 ---------------

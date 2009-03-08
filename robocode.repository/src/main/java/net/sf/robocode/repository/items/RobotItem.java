@@ -14,6 +14,7 @@ package net.sf.robocode.repository.items;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.URLJarCollector;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
@@ -171,9 +172,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			if (propertiesUrl != null) {
 				htmlUrl = new URL(propertiesUrl.toString().replaceAll("\\.properties", ".html"));
 				// test that html file exists
-				final URLConnection conn = htmlUrl.openConnection();
+				final URLConnection conn = URLJarCollector.openConnection(htmlUrl);
 
-				conn.setUseCaches(false);
 				conn.getInputStream().close();
 			}
 		} catch (IOException ignored) {
@@ -188,9 +188,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				if (url != null) {
 					htmlUrl = new URL(url.toString().replaceAll("\\.class", ".html"));
 					// test that html file exists
-					final URLConnection conn = htmlUrl.openConnection();
+					final URLConnection conn = URLJarCollector.openConnection(htmlUrl);
 
-					conn.setUseCaches(false);
 					conn.getInputStream().close();
 				}
 			} catch (IOException ignored) {
@@ -295,9 +294,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			InputStream ios = null;
 
 			try {
-				URLConnection con = propertiesUrl.openConnection();
+				URLConnection con = URLJarCollector.openConnection(propertiesUrl);
 
-				con.setUseCaches(false);
 				ios = con.getInputStream();
 				properties.load(ios);
 				isPropertiesLoaded = true;

@@ -166,9 +166,9 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 * @param newTime the time this event occurred
 	 */
 	public void setTime(long newTime) {
-		if (!addedToQueue){
+		if (!addedToQueue) {
 			time = newTime;
-		} else{
+		} else {
 			Logger.printlnToRobotsConsole("SYSTEM: After the event was added to queue, time can't be changed.");
 		}
 	}

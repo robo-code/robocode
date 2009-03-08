@@ -22,6 +22,9 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import net.sf.robocode.io.URLJarCollector;
+
+
 /**
  * @author Pavel Savara (original)
  */
@@ -40,7 +43,7 @@ public class JarJarTest {
 		final String separ = "!/";
 		final String msepar = "†/";
 		URL u = new URL("jar:jarjar:" + outer + msepar + inner + separ + clas);
-		final URLConnection urlConnection = u.openConnection();
+		final URLConnection urlConnection = URLJarCollector.openConnection(u);
 		final InputStream inputStream = urlConnection.getInputStream();
 		InputStreamReader isr = new InputStreamReader(inputStream);
 		char[] c = new char[4];
@@ -65,7 +68,8 @@ public class JarJarTest {
 		final String root = "jar:jarjar:" + outer + msepar + inner + separ;
 		URL u = new URL(root);
 
-		ClassLoader ucl = new URLClassLoader(new URL[]{u});
+		ClassLoader ucl = new URLClassLoader(new URL[] { u});
+
 		ucl.loadClass(clas);
 	}
 }

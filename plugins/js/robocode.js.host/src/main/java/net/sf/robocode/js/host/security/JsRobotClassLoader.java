@@ -14,6 +14,7 @@ package net.sf.robocode.js.host.security;
 
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.URLJarCollector;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -47,9 +48,7 @@ public class JsRobotClassLoader extends RobotClassLoader {
 
 			String script = robotClassPath.toString() + fullClassName.replace('.', '/') + ".js";
 			URL sUrl = new URL(script);
-			final URLConnection conn = sUrl.openConnection();
-
-			conn.setUseCaches(false);
+			final URLConnection conn = URLJarCollector.openConnection(sUrl);
 			final InputStream is = conn.getInputStream();
 
 			cx.evaluateReader(scope, new InputStreamReader(is), script, 1, null);

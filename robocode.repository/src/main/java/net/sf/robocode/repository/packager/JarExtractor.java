@@ -14,6 +14,7 @@ package net.sf.robocode.repository.packager;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.URLJarCollector;
 
 import java.io.File;
 import java.io.InputStream;
@@ -35,9 +36,8 @@ public class JarExtractor {
 		JarInputStream jarIS = null;
 
 		try {
-			final URLConnection con = url.openConnection();
+			final URLConnection con = URLJarCollector.openConnection(url);
 
-			con.setUseCaches(false);
 			is = con.getInputStream();
 			jarIS = new JarInputStream(is);
 
