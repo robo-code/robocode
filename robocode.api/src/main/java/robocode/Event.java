@@ -116,12 +116,19 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	}
 
 	/**
-	 * Sets the priority of this event, which must be between 0 and 99.
+	 * Called by the game to set the priority of an event to the priority your
+	 * robot specified for this type of event (or the default priority).
+	 * <p/>
+	 * An event priority is a value from 0 - 99. The higher value, the higher
+	 * priority. The default priority is 80.
 	 *
-	 * @param newPriority the new priority of this event.
+	 * Could be caled by robot on events which are not managed by game.
+	 * If the event is added into EventQueue, the time will be overriden
+	 * 
+	 * @param newPriority the new priority of this event
+	 * @see AdvancedRobot#setEventPriority(String, int)
 	 */
-	// this method is invisible on RobotAPI
-	final void setPriority(int newPriority) {
+	public final void setPriority(int newPriority) {
 		if (addedToQueue) {
 			Logger.printlnToRobotsConsole("SYSTEM: After the event was added to queue, priority can't be changed.");
 			return;
