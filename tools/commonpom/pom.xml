@@ -101,7 +101,7 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
-                    <encoding>UTF-8</encoding>
+                    <encoding>8859_1</encoding>
                     <optimize>true</optimize>
                 </configuration>
             </plugin>

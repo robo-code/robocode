@@ -20,6 +20,7 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                    <encoding>8859_1</encoding>
                 </configuration>
             </plugin>
             <plugin>
