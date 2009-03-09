@@ -31,8 +31,8 @@ import java.io.IOException;
  */
 public class URLJarCollector {
 	static Object factory;
-	static HashMap fileCache;
-	static HashMap urlCache;
+	static HashMap<?, ?> fileCache;
+	static HashMap<?, ?> urlCache;
 	static Field jarFileURL;
 	static boolean sunJVM;
 	static boolean enabled;
@@ -53,13 +53,13 @@ public class URLJarCollector {
 			final Field fileCacheF = jarFactory.getDeclaredField("fileCache");
 
 			fileCacheF.setAccessible(true);
-			fileCache = (HashMap) fileCacheF.get(null);
+			fileCache = (HashMap<?, ?>) fileCacheF.get(null);
 			fileCacheF.setAccessible(false);
 
 			final Field urlCacheF = jarFactory.getDeclaredField("urlCache");
 
 			urlCacheF.setAccessible(true);
-			urlCache = (HashMap) urlCacheF.get(null);
+			urlCache = (HashMap<?, ?>) urlCacheF.get(null);
 			urlCacheF.setAccessible(false);
 
 			final Class<?> jarURLConnection = ClassLoader.getSystemClassLoader().loadClass(

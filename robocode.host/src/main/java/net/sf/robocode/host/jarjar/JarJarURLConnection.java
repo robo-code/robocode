@@ -152,6 +152,7 @@ public class JarJarURLConnection extends URLConnection {
 
 		@SuppressWarnings({ "UnusedAssignment", "UnusedDeclaration"})
 		private String parseAbsoluteSpec(String spec) {
+			@SuppressWarnings("unused")
 			URL url = null;
 			int index = -1;
 
