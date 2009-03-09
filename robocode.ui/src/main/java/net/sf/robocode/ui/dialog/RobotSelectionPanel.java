@@ -86,7 +86,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean onlyShowInJar;
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
-	private final List<IRepositoryItem> selectedRobots = new ArrayList<IRepositoryItem>();
+	private final List<AvailableRobotsPanel.ItemWrapper> selectedRobots = new ArrayList<AvailableRobotsPanel.ItemWrapper>();
 	private boolean showNumRoundsPanel;
 	private final ISettingsManager properties;
 	private final IBattleManager battleManager;
@@ -145,7 +145,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		JList selectedList = getSelectedRobotsList();
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) selectedList.getModel();
 
-		for (IRepositoryItem selected : availableRobotsPanel.getAvailableRobots()) {
+		for (AvailableRobotsPanel.ItemWrapper selected : availableRobotsPanel.getAvailableRobots()) {
 			selectedRobots.add(selected);
 		}
 
@@ -163,10 +163,10 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private void addButtonActionPerformed() {
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) getSelectedRobotsList().getModel();
-		List<IRepositoryItem> moves = availableRobotsPanel.getSelectedRobots();
+		List<AvailableRobotsPanel.ItemWrapper> moves = availableRobotsPanel.getSelectedRobots();
 
-		for (IRepositoryItem move : moves) {
-			selectedRobots.add(move);
+		for (AvailableRobotsPanel.ItemWrapper move : moves) {
+			selectedRobots.add(new AvailableRobotsPanel.ItemWrapper(move.getItem()));
 		}
 
 		selectedModel.changed();
@@ -264,13 +264,17 @@ public class RobotSelectionPanel extends WizardPanel {
 			if (i != 0) {
 				sb.append(',');
 			}
-			sb.append(selectedRobots.get(i).getUniqueFullClassNameWithVersion());
+			sb.append(selectedRobots.get(i).getItem().getUniqueFullClassNameWithVersion());
 		}
 		return sb.toString();
 	}
 
 	public List<IRepositoryItem> getSelectedRobots() {
-		return selectedRobots;
+		List<IRepositoryItem> res=new ArrayList<IRepositoryItem>();
+		for(AvailableRobotsPanel.ItemWrapper item : selectedRobots){
+			res.add(item.getItem());
+		}
+		return res;
 	}
 
 	private JList getSelectedRobotsList() {
@@ -278,10 +282,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			selectedRobotsList = new JList();
 			selectedRobotsList.setModel(new SelectedRobotsModel());
 			selectedRobotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-			RobotNameCellRenderer robotNamesCellRenderer = new RobotNameCellRenderer();
-
-			selectedRobotsList.setCellRenderer(robotNamesCellRenderer);
 			MouseListener mouseListener = new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -361,57 +361,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			showInstructions();
 		}
 	}
-
-	private static class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
-		private boolean useShortNames;
-
-		public RobotNameCellRenderer() {
-			setOpaque(true);
-		}
-
-		public void setUseShortNames(boolean useShortNames) {
-			this.useShortNames = useShortNames;
-		}
-
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
-			setComponentOrientation(list.getComponentOrientation());
-
-			if (isSelected) {
-				setBackground(list.getSelectionBackground());
-				setForeground(list.getSelectionForeground());
-			} else {
-				setBackground(list.getBackground());
-				setForeground(list.getForeground());
-			}
-
-			if (useShortNames && value instanceof IRepositoryItem) {
-				IRepositoryItem robotSpecification = (IRepositoryItem) value;
-
-				if (robotSpecification.isTeam()) {
-					setText("Team: " + robotSpecification.getUniqueShortClassNameWithVersion());
-				} else {
-					setText(robotSpecification.getUniqueShortClassNameWithVersion());
-				}
-			} else if (value instanceof IRepositoryItem) {
-				IRepositoryItem robotSpecification = (IRepositoryItem) value;
-
-				if (robotSpecification.isTeam()) {
-					setText("Team: " + robotSpecification.getUniqueFullClassNameWithVersion());
-				} else {
-					setText(robotSpecification.getUniqueFullClassNameWithVersion());
-				}
-			} else {
-				setText("??" + value.toString());
-			}
-
-			setEnabled(list.isEnabled());
-			setFont(list.getFont());
-
-			return this;
-		}
-	}
-
 
 	class SelectedRobotsModel extends AbstractListModel {
 		public void changed() {
@@ -609,8 +558,8 @@ public class RobotSelectionPanel extends WizardPanel {
 
 		if (sel.length == 1) {
 			availableRobotsPanel.clearSelection();
-			IRepositoryItem robotSpecification = (IRepositoryItem) getSelectedRobotsList().getModel().getElementAt(
-					sel[0]);
+			IRepositoryItem robotSpecification = ((AvailableRobotsPanel.ItemWrapper) getSelectedRobotsList().getModel().getElementAt(
+					sel[0])).getItem();
 
 			showDescription(robotSpecification);
 		} else {
@@ -624,7 +573,9 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private void setSelectedRobots(String selectedRobotsString) {
 		if (selectedRobotsString != null) {
-			this.selectedRobots.addAll(repositoryManager.getSelectedSpecifications(selectedRobotsString));
+			for (IRepositoryItem item: repositoryManager.getSelectedSpecifications(selectedRobotsString)){
+				this.selectedRobots.add(new AvailableRobotsPanel.ItemWrapper(item));
+			}
 		}
 		((SelectedRobotsModel) getSelectedRobotsList().getModel()).changed();
 		fireStateChanged();

@@ -28,8 +28,6 @@ package net.sf.robocode.ui.dialog;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.ui.util.ShortcutUtil;
 
-import robocode.control.RobotSpecification;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -37,9 +35,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -53,7 +48,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SuppressWarnings("serial")
 public class AvailableRobotsPanel extends JPanel {
 
-	private final List<IRepositoryItem> availableRobots = new CopyOnWriteArrayList<IRepositoryItem>();
+	private final List<ItemWrapper> availableRobots = new CopyOnWriteArrayList<ItemWrapper>();
 	private List<IRepositoryItem> robotList = new CopyOnWriteArrayList<IRepositoryItem>();
 	private final List<String> availablePackages = new CopyOnWriteArrayList<String>();
 
@@ -115,7 +110,7 @@ public class AvailableRobotsPanel extends JPanel {
 		add(refreshLabel, BorderLayout.SOUTH);
 	}
 
-	public List<IRepositoryItem> getAvailableRobots() {
+	public List<ItemWrapper> getAvailableRobots() {
 		return availableRobots;
 	}
 
@@ -123,8 +118,8 @@ public class AvailableRobotsPanel extends JPanel {
 		return robotList;
 	}
 
-	public List<IRepositoryItem> getSelectedRobots() {
-		List<IRepositoryItem> selected = new ArrayList<IRepositoryItem>();
+	public List<ItemWrapper> getSelectedRobots() {
+		List<ItemWrapper> selected = new ArrayList<ItemWrapper>();
 
 		for (int i : getAvailableRobotsList().getSelectedIndices()) {
 			selected.add(availableRobots.get(i));
@@ -235,7 +230,7 @@ public class AvailableRobotsPanel extends JPanel {
 				for (IRepositoryItem robotItem : robotList) {
 					ItemWrapper itemWrapper = new ItemWrapper(robotItem);
 
-					itemWrapper.setUseShortName(false);
+					itemWrapper.setUseShortName(useShortName);
 					availableRobots.add(itemWrapper);
 				}
 				break;
@@ -266,8 +261,7 @@ public class AvailableRobotsPanel extends JPanel {
 			if (actionList != null) {
 				actionList.clearSelection();
 			}
-			IRepositoryItem robotSpecification = (IRepositoryItem) getAvailableRobotsList().getModel().getElementAt(
-					sel[0]);
+			IRepositoryItem robotSpecification = ((ItemWrapper)getAvailableRobotsList().getModel().getElementAt(sel[0])).getItem();
 
 			if (robotSelectionPanel != null) {
 				robotSelectionPanel.showDescription(robotSpecification);
@@ -350,13 +344,16 @@ public class AvailableRobotsPanel extends JPanel {
 			return availableRobots.size();
 		}
 
-		public IRepositoryItem getElementAt(int which) {
+		public ItemWrapper getElementAt(int which) {
 			return availableRobots.get(which);
 		}
 	}
 
 
-	private class ItemWrapper implements IRepositoryItem {
+	/**
+	 * Is there because of keyboard navigation is tied to toString() mehtod
+	 */
+	public static class ItemWrapper {
 
 		private final IRepositoryItem item;
 
@@ -366,108 +363,8 @@ public class AvailableRobotsPanel extends JPanel {
 			this.item = item;
 		}
 
-		public boolean isValid() {
-			return item.isValid();
-		}
-
-		public boolean isTeam() {
-			return item.isTeam();
-		}
-
-		public boolean isInJar() {
-			return item.isInJar();
-		}
-
-		public void setValid(boolean value) {
-			item.setValid(value);
-		}
-
-		public String getVersion() {
-			return item.getVersion();
-		}
-
-		public String getDescription() {
-			return item.getDescription();
-		}
-
-		public String getAuthorName() {
-			return item.getAuthorName();
-		}
-
-		public URL getWebpage() {
-			return item.getWebpage();
-		}
-
-		public boolean getJavaSourceIncluded() {
-			return item.getJavaSourceIncluded();
-		}
-
-		public String getRootFile() {
-			return item.getRootFile();			
-		}
-
-		public URL getFullUrl() {
-			return item.getFullUrl();
-		}
-
-		public URL getPropertiesUrl() {
-			return item.getPropertiesUrl();
-		}
-
-		public boolean isDevelopmentVersion() {
-			return item.isDevelopmentVersion();
-		}
-
-		public String getRobocodeVersion() {
-			return item.getRobocodeVersion();
-		}
-
-		public String getFullPackage() {
-			return item.getFullPackage();
-		}
-		
-		public String getRelativePath() {
-			return item.getRelativePath();
-		}
-
-		public String getRootPackage() {
-			return item.getRootPackage();
-		}
-
-		public String getFullClassNameWithVersion() {
-			return item.getFullClassNameWithVersion();
-		}
-
-		public String getUniqueFullClassNameWithVersion() {
-			return item.getUniqueFullClassNameWithVersion();
-		}
-
-		public String getUniqueShortClassNameWithVersion() {
-			return item.getUniqueShortClassNameWithVersion();
-		}
-
-		public String getUniqueVeryShortClassNameWithVersion() {
-			return item.getUniqueVeryShortClassNameWithVersion();
-		}
-
-		public String getFullClassName() {
-			return item.getFullClassName();
-		}
-
-		public String getShortClassName() {
-			return item.getShortClassName();
-		}
-
-		public RobotSpecification createRobotSpecification() {
-			return item.createRobotSpecification();
-		}
-
-		public void storeProperties(OutputStream os) throws IOException {
-			item.storeProperties(os);
-		}
-
-		public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
-			item.storeProperties(os, web, desc, author, version);
+		public IRepositoryItem getItem() {
+			return item;
 		}
 
 		public int compareTo(Object o) {
@@ -481,8 +378,8 @@ public class AvailableRobotsPanel extends JPanel {
 
 		// Used writing the robot name in JList. Is used for keyboard typing in JList to find robot. Bugfix for [2658090]
 		public String toString() {
-			return (isTeam() ? "Team: " : "")
-					+ (useShortNames ? getUniqueShortClassNameWithVersion() : getUniqueFullClassNameWithVersion());
+			return (item.isTeam() ? "Team: " : "")
+					+ (useShortNames ? item.getUniqueShortClassNameWithVersion() : item.getUniqueFullClassNameWithVersion());
 		}
 	}
 }
