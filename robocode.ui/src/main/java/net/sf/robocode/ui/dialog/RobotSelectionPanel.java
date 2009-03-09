@@ -270,8 +270,9 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	public List<IRepositoryItem> getSelectedRobots() {
-		List<IRepositoryItem> res=new ArrayList<IRepositoryItem>();
-		for(AvailableRobotsPanel.ItemWrapper item : selectedRobots){
+		List<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+
+		for (AvailableRobotsPanel.ItemWrapper item : selectedRobots) {
 			res.add(item.getItem());
 		}
 		return res;
@@ -558,8 +559,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 		if (sel.length == 1) {
 			availableRobotsPanel.clearSelection();
-			IRepositoryItem robotSpecification = ((AvailableRobotsPanel.ItemWrapper) getSelectedRobotsList().getModel().getElementAt(
-					sel[0])).getItem();
+			IRepositoryItem robotSpecification = ((AvailableRobotsPanel.ItemWrapper) getSelectedRobotsList().getModel().getElementAt(sel[0])).getItem();
 
 			showDescription(robotSpecification);
 		} else {
@@ -573,7 +573,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private void setSelectedRobots(String selectedRobotsString) {
 		if (selectedRobotsString != null) {
-			for (IRepositoryItem item: repositoryManager.getSelectedSpecifications(selectedRobotsString)){
+			for (IRepositoryItem item: repositoryManager.getSelectedSpecifications(selectedRobotsString)) {
 				this.selectedRobots.add(new AvailableRobotsPanel.ItemWrapper(item));
 			}
 		}

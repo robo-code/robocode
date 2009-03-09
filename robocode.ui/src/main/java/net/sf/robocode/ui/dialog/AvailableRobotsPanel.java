@@ -261,7 +261,7 @@ public class AvailableRobotsPanel extends JPanel {
 			if (actionList != null) {
 				actionList.clearSelection();
 			}
-			IRepositoryItem robotSpecification = ((ItemWrapper)getAvailableRobotsList().getModel().getElementAt(sel[0])).getItem();
+			IRepositoryItem robotSpecification = ((ItemWrapper) getAvailableRobotsList().getModel().getElementAt(sel[0])).getItem();
 
 			if (robotSelectionPanel != null) {
 				robotSelectionPanel.showDescription(robotSpecification);

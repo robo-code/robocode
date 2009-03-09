@@ -139,7 +139,7 @@ public class BattlesRunner {
 
 				lastResults = null;
 				engine.runBattle(specification, true);
-				if (lastResults != null) {
+				if (lastResults != null && lastResults.length > 1) {
 					dumpResults(outtxt, lastResults, param[param.length - 1], melee);
 				}
 			} else {
