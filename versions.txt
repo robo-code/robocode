@@ -1,14 +1,15 @@
 Version 1.7.1 Beta 2
-(06-Mar-2009)
+(10-Mar-2009)
 ---------------
 
 = Bugfixes =
 * Bug [2658090] - Typing to find bot no longer works.
 * Bug [2666598] - API: Typo in Documentation onBulletMissed(BulletMissedEvent).
-* Fixed the problem with loading team robots from nested .jar files
 * Bug [2658167] - Put back setTime() method of Event, the security is now handled other way, not by hiding the field
+* Fixed the problem with loading team robots from nested .jar files.
+* On Ubuntu (Linux) the "Default window size" did not work properly.
 
-= Changes =
+= Internal Changes =
 - On SUN's JVM enabled caching of .jar files opened thru URLConnection. Solved problem with closing such files by implementing URLJarCollector.
 
 Version 1.7.1 Beta

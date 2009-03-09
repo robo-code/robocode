@@ -857,7 +857,10 @@ public class MenuBar extends JMenuBar {
 	}
 
 	private void optionsFitWindowActionPerformed() {
-		WindowUtil.fitWindow(windowManager.getRobocodeFrame());
+		JFrame robocodeFrame = windowManager.getRobocodeFrame();
+
+		robocodeFrame.setSize(robocodeFrame.getPreferredSize());
+		WindowUtil.fitWindow(robocodeFrame);
 	}
 
 	private void optionsShowRankingActionPerformed() {
