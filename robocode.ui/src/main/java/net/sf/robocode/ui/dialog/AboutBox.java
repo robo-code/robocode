@@ -52,11 +52,10 @@ public final class AboutBox extends JDialog {
 	private final static String TAG_JAVA_VENDOR = "<java:vendor>";
 
 	// HTML template containing text for the AboutBox
-	private final static String HTML_TEMPLATE = "<head><style type=\"text/css\">p, td {font-family: sans-serif;"
-			+ "font-size: 10px}</style></head>" + "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT
-			+ "\"><table><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
-			+ "\"></td><td><table width=\"100%\"><tr><td width=\"100%\"><b>Robocode</b><br><br>"
-			+ "&copy;&nbsp;Copyright 2001, 2008<br>Mathew A. Nelson and Robocode contributors</td>" + "<td><b>Version: "
+	private final static String HTML_TEMPLATE = "<head><style type=\"text/css\">p, td {font-family: sans-serif; font-size: 10px}</style></head>"
+			+ "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT + "\"><table><tr><td valign=\"top\"><img src=\""
+			+ TAG_ROBOCODE_ICON_SRC + "\"></td><td><table width=\"100%\"><tr><td width=\"70%\"><b>Robocode</b><br><br>"
+			+ "&copy;&nbsp;Copyright 2001, 2009<br>Mathew A. Nelson and Robocode contributors</td><td><b>Version: "
 			+ TAG_ROBOCODE_VERSION
 			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">robocode.sourceforge.net</a><br>&nbsp;</td></tr></table><center><br>"
 			+ "<b>Original Author</b><br>Designed and programmed by Mathew A. Nelson<br>Graphics by Garett S. Hourihan<br><br>"
@@ -143,7 +142,7 @@ public final class AboutBox extends JDialog {
 
 	private JEditorPane getMainPanel() {
 		if (mainPanel == null) {
-			mainPanel = new JEditorPane("text/html", getHtmlText());
+			mainPanel = new JEditorPane("text/html; charset=ISO-8859-1", getHtmlText());
 			mainPanel.setBackground(BG_COLOR);
 			mainPanel.setEditable(false);
 			mainPanel.addHyperlinkListener(hyperlinkHandler);
