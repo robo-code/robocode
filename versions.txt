@@ -1,5 +1,5 @@
 Version 1.7.1 Beta 2
-(10-Mar-2009)
+(11-Mar-2009)
 ---------------
 
 = Bugfixes =
@@ -10,7 +10,7 @@ Version 1.7.1 Beta 2
 * On Ubuntu (Linux) the "Default window size" did not work properly.
 
 = Internal Changes =
-- On SUN's JVM enabled caching of .jar files opened thru URLConnection. Solved problem with closing such files by implementing URLJarCollector.
+* On SUN's JVM enabled caching of .jar files opened thru URLConnection. Solved problem with closing such files by implementing URLJarCollector.
 
 Version 1.7.1 Beta
 (01-Mar-2009)
