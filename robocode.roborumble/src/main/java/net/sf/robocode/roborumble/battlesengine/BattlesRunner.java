@@ -52,10 +52,9 @@ public class BattlesRunner {
 	private final String outfile;
 	private final String user;
 	private String game;
-	private final Map<String, RobotSpecification> robotSpecMap = new HashMap<String, RobotSpecification>(500);
 	private RobotResults[] lastResults;
-	private BattleObserver battleObserver;
-	public static String version; 
+	private IRobocodeEngine engine;
+	public static String version;
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
@@ -78,21 +77,12 @@ public class BattlesRunner {
 	}
 
 	private void initialize() {
-		IRobocodeEngine engine = new RobocodeEngine();
-		RobotSpecification[] repository = engine.getLocalRepository();
-
-		for (RobotSpecification spec : repository) {
-			robotSpecMap.put(spec.getNameAndVersion(), spec);
-		}
-
-		battleObserver = new BattleObserver();
+		engine = new RobocodeEngine();
+		engine.addBattleListener(new BattleObserver());
 	}
 
 	public void runBattlesImpl(boolean melee) {
 		// Initialize objects
-		IRobocodeEngine engine = new RobocodeEngine();
-
-		engine.addBattleListener(battleObserver);
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
 		BattleSpecification battle = new BattleSpecification(numrounds, field, (new RobotSpecification[2]));
 
@@ -121,19 +111,9 @@ public class BattlesRunner {
 
 			System.out.println("Fighting battle " + (index) + " ... " + enemies);
 
-			String[] selectedRobots = enemies.split(",");
-			List<RobotSpecification> selectedRobotSpecs = new ArrayList<RobotSpecification>();
+			final RobotSpecification[] robotsList = engine.getLocalRepository(enemies);
 
-			for (String robot : selectedRobots) {
-				RobotSpecification spec = robotSpecMap.get(robot);
-
-				if (spec != null) {
-					selectedRobotSpecs.add(spec);
-				}
-			}
-			final RobotSpecification[] robotsList = selectedRobotSpecs.toArray(new RobotSpecification[1]);
-
-			if (robotsList.length >= 2) {
+			if (robotsList.length > 1 && !robotsList[0].getTeamId().equals(robotsList[robotsList.length - 1].getTeamId())) {
 				final BattleSpecification specification = new BattleSpecification(battle.getNumRounds(),
 						battle.getBattlefield(), robotsList);
 
@@ -148,12 +128,10 @@ public class BattlesRunner {
 			index++;
 		}
 
-		engine.removeBattleListener(battleObserver);
 		version = engine.getVersion();
 
 		// close
 		outtxt.close();
-		engine.close();
 	}
 
 	private String getEnemies(boolean melee, String[] param) {

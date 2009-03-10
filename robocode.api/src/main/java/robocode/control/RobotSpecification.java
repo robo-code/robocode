@@ -154,6 +154,13 @@ public class RobotSpecification implements java.io.Serializable {
 		return author;
 	}
 
+	/**
+	 * @return id of the team in current battle
+	 */
+	public String getTeamId(){
+		return teamName;
+	}
+
 	static IHiddenSpecificationHelper createHiddenHelper() {
 		return new HiddenHelper();
 	}
