@@ -15,6 +15,7 @@ package net.sf.robocode.repository.root;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
+import net.sf.robocode.io.JarJar;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.packager.JarExtractor;
 import net.sf.robocode.repository.items.IItem;
@@ -105,7 +106,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 					if (name.endsWith(".jar")) {
 						JarInputStream inner = new JarInputStream(jarIS);
 
-						readJarStream(items, "jar:jar" + root + "†/" + entry.getName(), inner);
+						readJarStream(items, "jar:jar" + root + JarJar.SEPARATOR + entry.getName(), inner);
 					} else {
 						createItem(items, new URL(root + "!/"), entry);
 					}

@@ -41,6 +41,7 @@ package net.sf.robocode.host.jarjar;
 
 
 import net.sf.robocode.io.URLJarCollector;
+import net.sf.robocode.io.JarJar;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -89,7 +90,6 @@ public class JarJarURLConnection extends URLConnection {
 
 
 	public static class JarJarURLStreamHandler extends URLStreamHandler {
-		// separator = "†/";
 
 		protected URLConnection openConnection(URL u) throws IOException {
 			return new JarJarURLConnection(u);
@@ -98,7 +98,7 @@ public class JarJarURLConnection extends URLConnection {
 		private int indexOfBangSlash(String spec) {
 			int indexOfBang = spec.length();
 
-			while ((indexOfBang = spec.lastIndexOf('†', indexOfBang)) != -1) {
+			while ((indexOfBang = spec.lastIndexOf(JarJar.SEPARATOR_CHAR, indexOfBang)) != -1) {
 				if ((indexOfBang != (spec.length() - 1)) && (spec.charAt(indexOfBang + 1) == '/')) {
 					return indexOfBang + 1;
 				} else {
@@ -146,7 +146,7 @@ public class JarJarURLConnection extends URLConnection {
 
 				file = toBangSlash + afterBangSlash;
 			}
-			file = file != null ? "jar:" + file.replaceFirst("†/", "!/") : null;
+			file = file != null ? "jar:" + file.replaceFirst(JarJar.SEPARATOR, "!/") : null;
 			setURL(url, "jarjar", "", -1, file, ref);
 		}
 
@@ -158,7 +158,7 @@ public class JarJarURLConnection extends URLConnection {
 
 			// check for !/
 			if ((index = indexOfBangSlash(spec)) == -1) {
-				throw new NullPointerException("no †/ in spec");
+				throw new NullPointerException("no " + JarJar.SEPARATOR + " in spec");
 			}
 			// test the inner URL
 			try {
@@ -179,7 +179,7 @@ public class JarJarURLConnection extends URLConnection {
 				int bangSlash = indexOfBangSlash(ctxFile);
 
 				if (bangSlash == -1) {
-					throw new NullPointerException("malformed " + "context url:" + url + ": no †/");
+					throw new NullPointerException("malformed " + "context url:" + url + ": no "+ JarJar.SEPARATOR);
 				}
 				ctxFile = ctxFile.substring(0, bangSlash);
 			}

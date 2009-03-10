@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import net.sf.robocode.io.URLJarCollector;
+import net.sf.robocode.io.JarJar;
 
 
 /**
@@ -41,8 +42,7 @@ public class JarJarTest {
 		String outer = "file:src/test/resources/Outer.jar";
 
 		final String separ = "!/";
-		final String msepar = "†/";
-		URL u = new URL("jar:jarjar:" + outer + msepar + inner + separ + clas);
+		URL u = new URL("jar:jarjar:" + outer + JarJar.SEPARATOR + inner + separ + clas);
 		final URLConnection urlConnection = URLJarCollector.openConnection(u);
 		final InputStream inputStream = urlConnection.getInputStream();
 		InputStreamReader isr = new InputStreamReader(inputStream);
