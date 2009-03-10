@@ -146,7 +146,7 @@ public class JarJarURLConnection extends URLConnection {
 
 				file = toBangSlash + afterBangSlash;
 			}
-			file = file != null ? "jar:" + file.replaceFirst(JarJar.SEPARATOR, "!/") : null;
+			file = file != null ? "jar:" + file.replaceFirst("\\" + JarJar.SEPARATOR, "!/") : null;
 			setURL(url, "jarjar", "", -1, file, ref);
 		}
 
