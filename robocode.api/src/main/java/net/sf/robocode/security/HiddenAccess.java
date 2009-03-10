@@ -26,11 +26,13 @@ import robocode.robotinterfaces.IBasicRobot;
 import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -127,18 +129,22 @@ public class HiddenAccess {
 		// otherwise we rely on that they are already on classpath
 		StringBuilder classPath = new StringBuilder(System.getProperty("java.class.path", null));
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
-		final String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		try {
+			path = URLDecoder.decode(path, "UCS2");
+		} catch (UnsupportedEncodingException e) {
+			path = new File(".", "libs/robocode.jar").toString();
+		}
 		final int i = path.lastIndexOf("robocode.jar");
 
 		if (i > 0) {
-			loader = createClassLoader(classPath, loader, path, i);
+			loader = createClassLoader(classPath, loader, path.substring(0, i));
 		}
 		System.setProperty("robocode.class.path", classPath.toString());
 		return loader;
 	}
 
-	private static ClassLoader createClassLoader(StringBuilder classPath, ClassLoader loader, String path, int i) throws MalformedURLException {
-		final String dir = path.substring(0, i);
+	private static ClassLoader createClassLoader(StringBuilder classPath, ClassLoader loader, String dir) throws MalformedURLException {
 
 		File dirf = new File(dir);
 		ArrayList<URL> urls = new ArrayList<URL>();
@@ -160,6 +166,9 @@ public class HiddenAccess {
 					urls.add(file.toURI().toURL());
 				}
 				if (name.contains("picocontainer")) {
+					urls.add(file.toURI().toURL());
+				}
+				if (name.contains("codesize")) {
 					urls.add(file.toURI().toURL());
 				}
 				classPath.append(File.pathSeparator);
