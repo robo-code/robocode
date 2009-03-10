@@ -63,9 +63,8 @@ public class JarJarTest {
 		String clas = "tested.robots.Ahead";
 		String inner = "Inner.jar";
 		String outer = "file:src/test/resources/Outer.jar";
-		final String msepar = "†/";
 		final String separ = "!/";
-		final String root = "jar:jarjar:" + outer + msepar + inner + separ;
+		final String root = "jar:jarjar:" + outer + JarJar.SEPARATOR + inner + separ;
 		URL u = new URL(root);
 
 		ClassLoader ucl = new URLClassLoader(new URL[] { u});
