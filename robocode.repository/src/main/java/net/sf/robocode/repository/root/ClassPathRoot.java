@@ -32,8 +32,6 @@ import java.util.ArrayList;
 public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	boolean isDevel = false;
-
 	public ClassPathRoot(Database db, File rootPath) {
 		super(db, rootPath);
 		try {
@@ -41,8 +39,6 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
-
-		isDevel = !(rootPath.equals(FileUtil.getRobotsDir()));
 	}
 
 	public void update(boolean updateInvalid) {
@@ -108,7 +104,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	public boolean isDevel() {
-		return isDevel;
+		return true;
 	}
 
 	public boolean isJar() {

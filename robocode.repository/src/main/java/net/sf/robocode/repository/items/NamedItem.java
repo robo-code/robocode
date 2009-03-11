@@ -59,7 +59,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public boolean isDevelopmentVersion() {
-		return root.isDevel();
+		return (!getFullClassName().startsWith("sample")) && root.isDevel();
 	}
 
 	public String getRootFile() {
