@@ -13,7 +13,8 @@
   <taskdef name="jacobe" classname="com.tiobe.jacobe.JacobeTask" classpath="jacobe.jar"/>
   
   <target name="jacobe">
-  	<beautify dir="${basedir}/../../"/>
+  	<beautify dir="${basedir}/../../robocode.*"/>
+  	<beautify dir="${basedir}/../../plugins"/>
   </target>
 
   <macrodef name="beautify">
