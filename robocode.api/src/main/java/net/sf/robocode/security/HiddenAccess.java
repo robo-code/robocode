@@ -130,6 +130,7 @@ public class HiddenAccess {
 		StringBuilder classPath = new StringBuilder(System.getProperty("java.class.path", null));
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+
 		try {
 			path = URLDecoder.decode(path, "UCS2");
 		} catch (UnsupportedEncodingException e) {

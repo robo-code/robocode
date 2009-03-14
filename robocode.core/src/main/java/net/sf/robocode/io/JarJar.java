@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.sf.robocode.io;
 
+
 /**
  * @author Pavel Savara (original)
  */

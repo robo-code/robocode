@@ -33,7 +33,7 @@ import java.net.MalformedURLException;
  * Root of loaders.
  *
  * we have three types of classLoaders.
- * 1) System classloader. Is loaded by default and is parent of loaders below. It contains this container class. All content of robot.api module. All general java stuff.
+ * 1) System class loader. Is loaded by default and is parent of loaders below. It contains this container class. All content of robot.api module. All general java stuff.
  * 2) EngineClassLoader. Is used as isolation of all other robocode modules from system classloader. Anything loaded by engine is loaded there. We use single instance of this loader.
  * 3) RobotClassLoader. Is used by robots. It will load every class on robot's private classPath. It blocks malicious attempts of references to robocode engine classes. We use multiple instances of this loader.
  * - communication between classes from different classloaders must be done using interfaces or data types from system classLoader
@@ -41,7 +41,7 @@ import java.net.MalformedURLException;
  *
  * Dependency injection
  * We use PicoContainer as IoC vehicle. We configure it by loading Module class in every .jar or classpath we can find on system classPath
- * 1) Container.cache is containing sigletons
+ * 1) Container.cache is containing singletons
  * 2) Container.factory will create always new instance of component 
  *
  * @author Pavel Savara (original)

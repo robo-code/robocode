@@ -306,6 +306,9 @@ public class RobocodeCompilerFactory {
 			rv = true;
 		}
 		if (!javacOk && !jikesOk) {
+			final String MESSAGE_BOX_HELP_TEXT = "\n\nPlease consult the console window for errors.\n"
+					+ "For help with this, please post to the discussion at:\n" + "http://robocode.sourceforge.net/forum";
+			
 			console.append("\nExtracting Jikes...\n");
 			if (noExtract || extract(new File(FileUtil.getCwd(), jikesJar), new File("."))) {
 				if (!noExtract) {
@@ -313,8 +316,8 @@ public class RobocodeCompilerFactory {
 				}
 				if (mustBuildJikes) {
 					if (JOptionPane.showConfirmDialog(editor,
-							"Robocode is now going to build Jikes for you.\nThis will take a while... got get a cup of coffee!\n",
-							"Java time", JOptionPane.OK_CANCEL_OPTION)
+							"Robocode is now going to build Jikes for you.\nThis will take a while...\n", "Java time",
+							JOptionPane.OK_CANCEL_OPTION)
 							== JOptionPane.OK_OPTION) {
 						if (makeJikes(console, jikesBinary + " -classpath " + getJavaLib())) {
 							compilerBinary = jikesBinary;
@@ -329,10 +332,7 @@ public class RobocodeCompilerFactory {
 							rv = true;
 						} else {
 							JOptionPane.showMessageDialog(editor,
-									"Robocode was unable to build and test Jikes.\n"
-									+ "Please consult the console window for errors.\n"
-									+ "For help with this, please post to the discussion at:\n" + "http://robocode.net/forum",
-									"Error",
+									"Robocode was unable to build and test Jikes." + MESSAGE_BOX_HELP_TEXT, "Error",
 									JOptionPane.ERROR_MESSAGE);
 							compilerOptions = "-deprecation -g";
 							getCompilerProperties().setCompilerOptions(compilerOptions);
@@ -349,30 +349,26 @@ public class RobocodeCompilerFactory {
 					getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
 					if (testJikes(console, jikesBinary + " -classpath " + getJavaLib())) {
 						saveCompilerProperties();
-						console.append("\nCongratulations!  Compiler set up successfully.\n");
+						console.append("\nCongratulations! Jikes set up successfully.\n");
 						console.append("Click OK to continue.\n");
 						console.scrollToBottom();
 						rv = true;
 					} else {
 						JOptionPane.showMessageDialog(editor,
-								"Robocode was unable to successfully compile with Jikes\n"
-								+ "Please consult the console window for errors.\n"
-								+ "For help with this, please post to the discussion at:\n"
-								+ "http://robocode.sourceforge.net/forum",
-								"Error",
+								"Robocode was unable to successfully compile with Jikes." + MESSAGE_BOX_HELP_TEXT, "Error",
 								JOptionPane.ERROR_MESSAGE);
 						saveCompilerProperties();
 						rv = false;
 					}
 				}
 			} else {
-				console.append("Unable to extract Jikes.\n");
-				console.append("Unable to determine compiler for this sytem.\n");
+				console.append("\nUnable to set up a compiler for Robocode.\n");
+				console.append("javac could not be detected and Jikes could not be\n");
+				console.append("extracted and set up as an alternative to javac.\n");
+
 				console.scrollToBottom();
 				JOptionPane.showMessageDialog(editor,
-						"Robocode was unable to extract Jikes." + "Please consult the console window for errors.\n"
-						+ "For help with this, please post to the discussion at:\n" + "http://robocode.sourceforge.net/forum",
-						"Error",
+						"Robocode was unable set up a compiler for Robocode." + MESSAGE_BOX_HELP_TEXT, "Error",
 						JOptionPane.ERROR_MESSAGE);
 				compilerOptions = "-deprecation -g";
 				getCompilerProperties().setCompilerOptions(compilerOptions);

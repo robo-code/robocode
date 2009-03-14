@@ -146,7 +146,7 @@ public class ConsoleDialog extends JDialog {
 
 	private void initialize() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setSize(426, 240);
+		setSize(500, 400);
 		setContentPane(getConsoleDialogContentPane());
 		setJMenuBar(getConsoleDialogMenuBar());
 	}

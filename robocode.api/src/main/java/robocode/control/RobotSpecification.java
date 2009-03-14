@@ -157,7 +157,7 @@ public class RobotSpecification implements java.io.Serializable {
 	/**
 	 * @return id of the team in current battle
 	 */
-	public String getTeamId(){
+	public String getTeamId() {
 		return teamName;
 	}
 

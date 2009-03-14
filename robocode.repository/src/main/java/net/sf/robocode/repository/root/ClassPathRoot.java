@@ -12,7 +12,6 @@
 package net.sf.robocode.repository.root;
 
 
-import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.items.IItem;

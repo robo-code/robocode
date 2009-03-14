@@ -1,0 +1,23 @@
+<project name="Launch Dir Builder" default="build">
+	
+	<property name="launch-dir" location="${basedir}/robocode.api/target/launch"/>
+
+	<target name="build">
+		<!-- Make new launch dir -->
+		<mkdir dir="${launch-dir}"/>
+
+		<!-- Copy all resources into launch dir -->
+		<copy todir="${launch-dir}">
+			<fileset dir="${basedir}/robocode.content/src/main/resources"/>
+		</copy>
+
+		<!-- Copy required versions.txt into launch dir -->
+		<copy todir="${launch-dir}" file="${basedir}/versions.txt"/>
+	</target>
+
+	<target name="clean">
+		<!-- Delete launch dir -->
+		<delete dir="${launch-dir}"/>
+	</target>
+
+</project>
