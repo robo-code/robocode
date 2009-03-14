@@ -1,3 +1,10 @@
+Version 1.7.1
+(15-MAr-2009)
+---------------
+
+= Bugfixes =
+* Bug [2643448] - Editor UNDO does delete the line when no undo left.
+
 Version 1.7.1 Beta 2
 (11-Mar-2009)
 ---------------

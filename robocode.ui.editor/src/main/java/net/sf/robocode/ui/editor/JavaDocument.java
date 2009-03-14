@@ -314,6 +314,12 @@ public class JavaDocument extends PlainDocument {
 	}
 
 	public void setEditing(boolean editing) {
+		// This check is a bugfix for [2643448] - Editor UNDO does delete the line when no undo left.
+		// All undo edits are discarded, when the editor is going from not editing to editing.
+		if (editing && !this.editing) {
+			getUndoHandler().discardAllEdits();
+		}
+
 		this.editing = editing;
 	}
 
