@@ -220,15 +220,13 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showVersionsTxt() {
-		showInBrowser(
-				"file://" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
-				+ "versions.txt");
+		showInBrowser("file://" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + File.separator + "versions.txt");
 	}
 
 	public void showHelpApi() {
 		showInBrowser(
-				"file://" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + System.getProperty("file.separator")
-				+ "javadoc" + System.getProperty("file.separator") + "index.html");
+				"file://" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + File.separator + "javadoc" + File.separator
+				+ "index.html");
 	}
 
 	public void showFaq() {

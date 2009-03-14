@@ -658,8 +658,8 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 	}
 
 	public void showHelpApi() {
-		String helpurl = "file:" + new File(FileUtil.getCwd(), "").getAbsoluteFile() // System.getProperty("user.dir")
-				+ System.getProperty("file.separator") + "javadoc" + System.getProperty("file.separator") + "index.html";
+		String helpurl = "file:" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + File.separator + "javadoc"
+				+ File.separator + "index.html";
 
 		try {
 			BrowserManager.openURL(helpurl);

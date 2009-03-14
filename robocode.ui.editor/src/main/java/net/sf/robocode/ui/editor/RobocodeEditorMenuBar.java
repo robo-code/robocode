@@ -52,78 +52,57 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem fileSaveAsMenuItem;
 	private JMenuItem fileExitMenuItem;
 
-	class EventHandler implements ActionListener {
+	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == RobocodeEditorMenuBar.this.getFileNewRobotMenuItem()) {
+			final Object source = e.getSource();
+			
+			if (source == RobocodeEditorMenuBar.this.getFileNewRobotMenuItem()) {
 				fileNewRobotActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getFileNewJavaFileMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getFileNewJavaFileMenuItem()) {
 				fileNewJavaFileActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getFileOpenMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getFileOpenMenuItem()) {
 				fileOpenActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getFileExtractMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getFileExtractMenuItem()) {
 				fileExtractActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getFileSaveMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getFileSaveMenuItem()) {
 				fileSaveActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getFileSaveAsMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getFileSaveAsMenuItem()) {
 				fileSaveAsActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getFileExitMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getFileExitMenuItem()) {
 				fileExitActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getCompilerCompileMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getCompilerCompileMenuItem()) {
 				compilerCompileActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getCompilerOptionsPreferencesMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getCompilerOptionsPreferencesMenuItem()) {
 				compilerOptionsPreferencesActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getCompilerOptionsResetCompilerMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getCompilerOptionsResetCompilerMenuItem()) {
 				compilerOptionsResetCompilerActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getHelpRobocodeApiMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getHelpRobocodeApiMenuItem()) {
 				helpRobocodeApiActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditUndoMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditUndoMenuItem()) {
 				editUndoActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditRedoMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditRedoMenuItem()) {
 				editRedoActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditCutMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditCutMenuItem()) {
 				editCutActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditCopyMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditCopyMenuItem()) {
 				editCopyActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditPasteMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditPasteMenuItem()) {
 				editPasteActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditDeleteMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditDeleteMenuItem()) {
 				editDeleteActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditSelectAllMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditSelectAllMenuItem()) {
 				editSelectAllActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditFindMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditFindMenuItem()) {
 				editFindActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditFindNextMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditFindNextMenuItem()) {
 				editFindNextActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getEditReplaceMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getEditReplaceMenuItem()) {
 				editReplaceActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getWindowCloseMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getWindowCloseMenuItem()) {
 				windowCloseActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getWindowCloseAllMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getWindowCloseAllMenuItem()) {
 				windowCloseAllActionPerformed();
-			}
-			if (e.getSource() == RobocodeEditorMenuBar.this.getWindowWindowsDialogMenuItem()) {
+			} else if (source == RobocodeEditorMenuBar.this.getWindowWindowsDialogMenuItem()) {
 				windowMoreWindowsActionPerformed();
 			}
 		}

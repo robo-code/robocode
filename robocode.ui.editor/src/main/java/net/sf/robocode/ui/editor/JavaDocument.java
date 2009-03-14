@@ -31,6 +31,10 @@ import javax.swing.undo.UndoManager;
  */
 @SuppressWarnings("serial")
 public class JavaDocument extends PlainDocument {
+	private static final String IN_COMMENT = "inComment";
+	private static final String ENDS_COMMENT = "endsComment";
+	private static final String STARTS_COMMENT = "startsComment";
+
 	private UndoHandler undoHandler;
 	private boolean needsRedraw;
 	private EditWindow editWindow;
@@ -170,7 +174,7 @@ public class JavaDocument extends PlainDocument {
 		// have ended "still in a comment"
 		MutableAttributeSet a = (MutableAttributeSet) element.getAttributes();
 
-		if (a.isDefined("inComment")) {
+		if (a.isDefined(IN_COMMENT)) {
 			previousLineComment = true;
 		} // we don't have a comment flag, so check the last line.
 		// note:  This should only happen on new lines!
@@ -180,9 +184,9 @@ public class JavaDocument extends PlainDocument {
 			if (lastElementIndex >= 0) {
 				AbstractElement lastElement = (AbstractElement) getDefaultRootElement().getElement(lastElementIndex);
 
-				if (!lastElement.isDefined("endsComment") && lastElement.isDefined("inComment")
-						|| lastElement.isDefined("startsComment")) {
-					a.addAttribute("inComment", "inComment");
+				if (!lastElement.isDefined(ENDS_COMMENT) && lastElement.isDefined(IN_COMMENT)
+						|| lastElement.isDefined(STARTS_COMMENT)) {
+					a.addAttribute(IN_COMMENT, IN_COMMENT);
 					previousLineComment = true;
 				}
 			}
@@ -190,19 +194,19 @@ public class JavaDocument extends PlainDocument {
 		followingLineComment = previousLineComment;
 
 		int cIndex = elementText.indexOf("//");
-		int eIndex, sIndex;
+		int sIndex, eIndex;
 
 		if (cIndex >= 0) {
-			eIndex = elementText.lastIndexOf("*/", cIndex);
 			sIndex = elementText.lastIndexOf("/*", cIndex);
+			eIndex = elementText.lastIndexOf("*/", cIndex);
 		} else {
-			eIndex = elementText.lastIndexOf("*/");
 			sIndex = elementText.lastIndexOf("/*");
+			eIndex = elementText.lastIndexOf("*/");
 		}
 		if (eIndex > sIndex) {
 			followingLineComment = false;
-			endsComment = true;
 			startsComment = false;
+			endsComment = true;
 		} else if (sIndex > eIndex) {
 			followingLineComment = true;
 			startsComment = true;
@@ -212,21 +216,20 @@ public class JavaDocument extends PlainDocument {
 		if (followingLineComment) {
 			// We started the comment
 			if (startsComment) {
-				if (!a.isDefined("startsComment")) {
+				if (!a.isDefined(STARTS_COMMENT)) {
 					// mark line startsComment
-					a.addAttribute("startsComment", "startsComment");
+					a.addAttribute(STARTS_COMMENT, STARTS_COMMENT);
 					// make sure next line(s) are marked inComment, until an endComment line
 					setFollowingLinesCommentFlag(startOffset, true);
 				}
-			} else if (a.isDefined("startsComment")) {
-				a.removeAttribute("startsComment");
+			} else if (a.isDefined(STARTS_COMMENT)) {
+				a.removeAttribute(STARTS_COMMENT);
 			}
 			// If we used to end the comment but no longer do, fix that...
-			if (a.isDefined("endsComment")) {
+			if (a.isDefined(ENDS_COMMENT)) {
 				// unmark line as endsComment
-				a.removeAttribute("endsComment");
+				a.removeAttribute(ENDS_COMMENT);
 				// make sure next line(s) are marked inComment, until a endsComment line
-
 				setFollowingLinesCommentFlag(startOffset, true);
 			} // For cut & paste we need to check anyway.
 			else if (isDeltas) {
@@ -234,22 +237,21 @@ public class JavaDocument extends PlainDocument {
 			}
 		} // Else following lines are NOT comments
 		else {
-			// setFollowingLinesCommentFlag(startOffset,false);
 			// We ended the comment
 			if (endsComment) {
-				if (!a.isDefined("endsComment")) {
+				if (!a.isDefined(ENDS_COMMENT)) {
 					// mark line endsComment
-					a.addAttribute("endsComment", "endsComment");
+					a.addAttribute(ENDS_COMMENT, ENDS_COMMENT);
 					// Make sure next line(s) are marked !inComment, until a startComment line
 					setFollowingLinesCommentFlag(startOffset, false);
 				}
-			} else if (a.isDefined("endsComment")) {
-				a.removeAttribute("endsComment");
+			} else if (a.isDefined(ENDS_COMMENT)) {
+				a.removeAttribute(ENDS_COMMENT);
 			}
 			// If we used to start a comment, but no longer do, fix that...
-			if (a.isDefined("startsComment")) {
+			if (a.isDefined(STARTS_COMMENT)) {
 				// mark line startsComment
-				a.removeAttribute("startsComment");
+				a.removeAttribute(STARTS_COMMENT);
 				// make sure next line(s) are marked !inComment, until an endComment line
 				setFollowingLinesCommentFlag(startOffset, false);
 			} // For cut & paste we need to check anyway.
@@ -264,9 +266,8 @@ public class JavaDocument extends PlainDocument {
 	}
 
 	public void setFollowingLinesCommentFlag(int offset, boolean commentFlag) {
-		int elementIndex = getDefaultRootElement().getElementIndex(offset);
+		int elementIndex = getDefaultRootElement().getElementIndex(offset) + 1;
 
-		elementIndex++;
 		boolean done = false;
 
 		while (!done) {
@@ -279,23 +280,23 @@ public class JavaDocument extends PlainDocument {
 				MutableAttributeSet a = (MutableAttributeSet) e.getAttributes();
 
 				if (commentFlag) {
-					if (a.isDefined("inComment")) {
+					if (a.isDefined(IN_COMMENT)) {
 						done = true;
 					} else {
-						a.addAttribute("inComment", "inComment");
+						a.addAttribute(IN_COMMENT, IN_COMMENT);
 						needsRedraw = true;
 					}
-					if (a.isDefined("endsComment")) {
+					if (a.isDefined(ENDS_COMMENT)) {
 						done = true;
 					}
 				} else {
-					if (!a.isDefined("inComment")) {
+					if (!a.isDefined(IN_COMMENT)) {
 						done = true;
 					} else {
-						a.removeAttribute("inComment");
+						a.removeAttribute(IN_COMMENT);
 						needsRedraw = true;
 					}
-					if (a.isDefined("startsComment")) {
+					if (a.isDefined(STARTS_COMMENT)) {
 						done = true;
 					}
 				}
@@ -334,8 +335,11 @@ public class JavaDocument extends PlainDocument {
 	public void undo() {
 		if (getUndoHandler().canUndo()) {
 			writeLock();
-			getUndoHandler().undo();
-			writeUnlock();
+			try {
+				getUndoHandler().undo();
+			} finally {
+				writeUnlock();
+			}
 			needsRedraw = true;
 		}
 	}
@@ -346,8 +350,11 @@ public class JavaDocument extends PlainDocument {
 	public void redo() {
 		if (getUndoHandler().canRedo()) {
 			writeLock();
-			getUndoHandler().redo();
-			writeUnlock();
+			try {
+				getUndoHandler().redo();
+			} finally {
+				writeUnlock();
+			}
 			needsRedraw = true;
 		}
 	}
