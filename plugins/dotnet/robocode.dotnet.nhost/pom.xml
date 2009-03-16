@@ -10,10 +10,13 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.nhost</artifactId>
     <version>${robocode.nversion}</version>
-    <name>.NET nhost for Robocode</name>
     <packaging>dotnet:library</packaging>
-    <dependencies>
-    </dependencies>
+    <name>.NET nhost for Robocode</name>
+	<description>.NET nhost for Robocode</description>
+	<organization>
+		<name>Robocode</name>
+		<url>http://robocode.sf.net</url>
+	</organization>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
