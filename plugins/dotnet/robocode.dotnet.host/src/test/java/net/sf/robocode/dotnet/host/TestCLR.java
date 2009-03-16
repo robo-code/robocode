@@ -26,6 +26,7 @@ public class TestCLR {
 
 	@Test
 	public void test1() {
+		/*
 		System.setProperty(LibraryLoader.JACOB_DLL_PATH,
 				"d:/OpenSource/Jacob/bin/jacob-1.14.3/" + LibraryLoader.getPreferredDLLName() + ".dll");
 		// System.setProperty("com.jacob.debug", "true");
@@ -39,6 +40,6 @@ public class TestCLR {
 		hello.invoke("Main");
 		// hello.invoke("Main2");
 
-		ComThread.Release();
+		ComThread.Release();*/
 	}
 }

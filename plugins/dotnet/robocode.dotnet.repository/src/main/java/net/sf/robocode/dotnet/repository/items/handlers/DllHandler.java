@@ -28,7 +28,7 @@ public class DllHandler extends ItemHandler {
 	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
 		final String name = itemURL.toString().toLowerCase();
 
-		if (name.endsWith(".dotnet")) {
+		if (name.endsWith(".dll")) {
 			return register(itemURL, root, db);
 		}
 		return null;

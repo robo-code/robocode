@@ -8,9 +8,10 @@ namespace robocode.dotnet.nhost
     [ProgId("Robocode.HelloFromNET2")]
     public class HelloFromNET
     {
-        public void Main()
+
+        public void Main3()
         {
-            System.Console.WriteLine("DOTNET!");
+            Console.WriteLine("DOTNET!");
         }
 
         public void Main2()
@@ -18,5 +19,4 @@ namespace robocode.dotnet.nhost
             MessageBox.Show("DOTNET!");
         }
     }
-
 }

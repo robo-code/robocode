@@ -9,8 +9,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.nhost</artifactId>
-    <version>${robocode.version}</version>
-    <name>.NET host for Robocode</name>
+    <version>${robocode.nversion}</version>
+    <name>.NET nhost for Robocode</name>
     <packaging>dotnet:library</packaging>
     <dependencies>
     </dependencies>
@@ -21,6 +21,10 @@
 				<groupId>org.sonatype.nmaven.plugins</groupId>
 				<artifactId>maven-dotnet-compiler-plugin</artifactId>
 				<extensions>true</extensions>
+				<version>0.17robocode</version>
+				<configuration>
+		          <aditionalOptions>/unsafe</aditionalOptions>
+		        </configuration>
 			</plugin>
 	    </plugins>
     </build>

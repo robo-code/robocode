@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{674AED55-B9EC-4C7D-8E0B-1B2481C578B2}</ProjectGuid>
+    <ProjectGuid>{80857B97-6397-487B-A9F5-B07026DCBB66}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>robocode.dotnet.nhost</RootNamespace>
-    <AssemblyName>robocode.dotnet.nhost-1.7.1.1</AssemblyName>
+    <RootNamespace>robocode.dotnet.samples</RootNamespace>
+    <AssemblyName>robocode.dotnet.samples-1.7.1.1</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RegisterForComInterop>false</RegisterForComInterop>
+    <RegisterForComInterop>true</RegisterForComInterop>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -42,19 +42,14 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="jni\JNI.cs" />
-    <Compile Include="jni\StructuresDummy.cs" />
-    <Compile Include="jni\JavaVM.cs" />
-    <Compile Include="jni\JNIEnv.cs" />
-    <Compile Include="jni\JNIInvokeInterface.cs" />
-    <Compile Include="jni\JNINativeInterface.cs" />
-    <Compile Include="jni\Util.cs" />
-    <Compile Include="DotnetMain.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HelloFromNET.cs" />
-    <Compile Include="jni\Structures.cs" />
   </ItemGroup>
   <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MyCsRobot.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MyCsRobot.properties" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -30,7 +30,7 @@ public class DotNetRobotItem extends RobotItem {
 
 	@Override
 	protected void init() {
-		extension = ".dotnet";
+		extension = ".dll";
 		super.init();
 	}
 }

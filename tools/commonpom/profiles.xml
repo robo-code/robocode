@@ -7,6 +7,7 @@
         </activation>
         <properties>
             <robocode.version>1.7.1.Beta2</robocode.version>
+            <robocode.nversion>1.7.1.0</robocode.nversion>
         </properties>
     </profile>
 </profiles>
