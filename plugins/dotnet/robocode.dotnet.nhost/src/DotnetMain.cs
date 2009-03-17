@@ -1,12 +1,15 @@
 ﻿using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
+using osadkowski.exportdllattribute;
 using robocode.dotnet.nhost.jni;
 
 namespace robocode.dotnet.nhost
 {
     public class DotnetMain
     {
+        [ExportDll("dotnetmain", CallingConvention.StdCall)]
         public static void Main()
         {
             Directory.SetCurrentDirectory(@"c:\Program Files\Java\jre1.6.0_07\bin\client\");

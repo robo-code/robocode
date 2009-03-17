@@ -38,6 +38,11 @@
             <name>Scala-tools Maven2 Repository</name>
             <url>http://scala-tools.org/repo-releases</url>
         </pluginRepository>
+        <pluginRepository>
+            <id>atlassian</id>
+            <name>Atlassian Maven2 Repository</name>
+            <url>https://m2proxy.atlassian.com/repository/public/</url>
+        </pluginRepository>
     </pluginRepositories>
     <distributionManagement>
         <downloadUrl>http://robocode.sourceforge.net/maven2</downloadUrl>

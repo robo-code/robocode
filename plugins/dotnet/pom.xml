@@ -20,6 +20,8 @@
         <module>robocode.dotnet.repository</module>
         <module>robocode.dotnet.installer</module>
         <module>robocode.dotnet.samples</module>
+        <module>osadkowski.exportdll</module>
+        <module>osadkowski.exportdllattribute</module>
     </modules>
     <build>
         <plugins>
