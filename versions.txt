@@ -8,6 +8,7 @@ Version 1.7.1
 
 = Changes =
 * Improved the layout of the Find/Replace dialog for the Robocode editor.
+* The New Battle dialog is now larger per default.
 
 Version 1.7.1 Beta 2
 (11-Mar-2009)

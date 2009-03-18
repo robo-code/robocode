@@ -79,7 +79,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JLabel getDescriptionLabel(int index) {
 		if (descriptionLabel[index] == null) {
 			descriptionLabel[index] = new JLabel();
-			descriptionLabel[index].setFont(new Font("Monospaced", Font.PLAIN, 10));
+			descriptionLabel[index].setFont(new Font("Monospaced", Font.PLAIN, 12));
 			descriptionLabel[index].setHorizontalAlignment(SwingConstants.LEFT);
 			descriptionLabel[index].setText(BLANK_STRING);
 		}
