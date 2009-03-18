@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EAF9A4CD-0965-44C3-8570-09063E4D5E79}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>osadkowski.exportdllattribute</RootNamespace>
-    <AssemblyName>osadkowski.exportdllattribute</AssemblyName>
+    <RootNamespace>selvin.exportdllattribute</RootNamespace>
+    <AssemblyName>selvin.exportdllattribute</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>

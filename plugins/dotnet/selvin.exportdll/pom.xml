@@ -8,14 +8,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>osadkowski.exportdll</artifactId>
+    <artifactId>selvin.exportdll</artifactId>
     <version>${robocode.nversion}</version>
     <packaging>dotnet:exe</packaging>
     <name>Dll Export helper tool - build time</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>osadkowski.exportdllattribute</artifactId>
+            <artifactId>selvin.exportdllattribute</artifactId>
             <version>${robocode.nversion}</version>
 		    <type>dotnet:library</type>
         </dependency>
@@ -29,7 +29,7 @@
 				<extensions>true</extensions>
 				<version>0.17robocode</version>
 				<configuration>
-		          <aditionalOptions>/main:osadkowski.exportdll.Program /nowarn:1591</aditionalOptions>
+		          <aditionalOptions>/main:selvin.exportdll.Program /nowarn:1591</aditionalOptions>
 		        </configuration>
 			</plugin>
 	    </plugins>

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
-using osadkowski.exportdllattribute;
+using selvin.exportdllattribute;
 using robocode.dotnet.nhost.jni;
 
 namespace robocode.dotnet.nhost

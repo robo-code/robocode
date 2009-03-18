@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>osadkowski.exportdllattribute</artifactId>
+    <artifactId>selvin.exportdllattribute</artifactId>
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
     <name>Dll Export helper tool - build time</name>

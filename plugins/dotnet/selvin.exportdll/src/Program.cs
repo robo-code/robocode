@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using osadkowski.exportdllattribute;
+using selvin.exportdllattribute;
 
-namespace osadkowski.exportdll
+namespace selvin.exportdll
 {
     internal enum ParserState
     {
@@ -149,7 +149,7 @@ namespace osadkowski.exportdll
                                     addilne = false;
                                     classdeclaration = trimedline;
                                 }
-                                else if (trimedline.StartsWith(".assembly extern 'osadkowski.exportdllattribute"))
+                                else if (trimedline.StartsWith(".assembly extern 'selvin.exportdllattribute"))
                                 {
                                     addilne = false;
                                     state = ParserState.DeleteExportDependency;
@@ -248,7 +248,7 @@ namespace osadkowski.exportdll
                                 }
                                 break;
                             case ParserState.MethodProperties:
-                                if (trimedline.StartsWith(".custom instance void ['osadkowski.exportdllattribute"))
+                                if (trimedline.StartsWith(".custom instance void ['selvin.exportdllattribute"))
                                 {
                                     addilne = false;
                                     state = ParserState.DeleteExportAttribute;

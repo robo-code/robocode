@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace osadkowski.exportdllattribute
+namespace selvin.exportdllattribute
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class ExportDllAttribute : Attribute

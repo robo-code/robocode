@@ -20,14 +20,14 @@
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>osadkowski.exportdllattribute</artifactId>
+            <artifactId>selvin.exportdllattribute</artifactId>
             <version>${robocode.nversion}</version>
 		    <type>dotnet:library</type>
 		    <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>osadkowski.exportdll</artifactId>
+            <artifactId>selvin.exportdll</artifactId>
             <version>${robocode.nversion}</version>
 		    <type>dotnet:exe</type>
 		    <scope>provided</scope>
@@ -53,12 +53,12 @@
 		            <phase>process-classes</phase>
 		            <configuration>
 		              <tasks>
-		               <resolveArtifact property="exportdll" groupId="net.sf.robocode" artifactId="osadkowski.exportdll" version="${robocode.nversion}" type="dotnet:exe"/>
-		               <resolveArtifact property="exportdllattribute" groupId="net.sf.robocode" artifactId="osadkowski.exportdllattribute" version="${robocode.nversion}" type="dotnet:library"/>
+		               <resolveArtifact property="exportdll" groupId="net.sf.robocode" artifactId="selvin.exportdll" version="${robocode.nversion}" type="dotnet:exe"/>
+		               <resolveArtifact property="exportdllattribute" groupId="net.sf.robocode" artifactId="selvin.exportdllattribute" version="${robocode.nversion}" type="dotnet:library"/>
 		               <copy file="${exportdll}" todir="target/tool"/>
 		               <copy file="${exportdllattribute}" todir="target/tool"/>
 						<exec executable="cmd.exe" dir="target">
-							<arg value="/c tool\osadkowski.exportdll-${robocode.nversion}.exe robocode.dotnet.nhost-${robocode.nversion}.dll"/>
+							<arg value="/c tool\selvin.exportdll-${robocode.nversion}.exe robocode.dotnet.nhost-${robocode.nversion}.dll"/>
 						</exec>
 		              </tasks>
 		            </configuration>

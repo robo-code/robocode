@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robocode.dotnet.nhost", "ro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robocode.dotnet.samples", "robocode.dotnet.samples\src\robocode.dotnet.samples.csproj", "{80857B97-6397-487B-A9F5-B07026DCBB66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osadkowski.exportdllattribute", "osadkowski.exportdllattribute\src\osadkowski.exportdllattribute.csproj", "{EAF9A4CD-0965-44C3-8570-09063E4D5E79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "selvin.exportdllattribute", "selvin.exportdllattribute\src\selvin.exportdllattribute.csproj", "{EAF9A4CD-0965-44C3-8570-09063E4D5E79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osadkowski.exportdll", "osadkowski.exportdll\src\osadkowski.exportdll.csproj", "{30D2C100-1E4A-4CA4-B0BC-AEEA5BE5DADB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "selvin.exportdll", "selvin.exportdll\src\selvin.exportdll.csproj", "{30D2C100-1E4A-4CA4-B0BC-AEEA5BE5DADB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
