@@ -42,4 +42,9 @@ public class TestCLR {
 
 		ComThread.Release();*/
 	}
+
+	@Test
+	public void test2() {
+
+	}
 }
