@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,11 +9,12 @@
  *     Matthew Reeder
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Minor optimizations
+ *     - Rewriten
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
 
+import static javax.swing.GroupLayout.Alignment.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -28,12 +29,12 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("serial")
 public class FindReplaceDialog extends JDialog implements ActionListener {
-	private JTextField findField;
-	private JTextField replaceField;
+	private JTextField findTextField;
+	private JTextField replaceTextField;
 	private JButton findNextButton;
+	private JButton replaceFindButton;
 	private JButton replaceButton;
 	private JButton replaceAllButton;
-	private JButton toggleReplaceButton;
 	private JButton closeButton;
 	private JCheckBox caseSensitiveCheckBox;
 	private JCheckBox wholeWordCheckBox;
@@ -43,107 +44,100 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 	private JLabel findLabel;
 	private JLabel replaceLabel;
 	private boolean initLoc;
-	private final RobocodeEditor window;
+	private final RobocodeEditor editor;
 
-	public FindReplaceDialog(RobocodeEditor parentFrame) {
-		super(parentFrame, false);
-		window = parentFrame;
-		JPanel bigPanel = new JPanel();
+	public FindReplaceDialog(RobocodeEditor owner) {
+		super(owner, false);
+		editor = owner;
 
-		bigPanel.setLayout(new BoxLayout(bigPanel, BoxLayout.X_AXIS));
-		JPanel leftPanel = new JPanel();
+		GroupLayout layout = new GroupLayout(getContentPane());
 
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		JPanel findReplacePanel = new JPanel();
+		getContentPane().setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
 
-		findReplacePanel.setLayout(new BoxLayout(findReplacePanel, BoxLayout.X_AXIS));
-		JPanel labelsPanel = new JPanel();
-
-		labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.Y_AXIS));
-		labelsPanel.add(getFindLabel());
-		labelsPanel.add(getReplaceLabel());
-		findReplacePanel.add(labelsPanel);
-		JPanel fieldsPanel = new JPanel();
-
-		fieldsPanel.setLayout(new BoxLayout(fieldsPanel, BoxLayout.Y_AXIS));
-		fieldsPanel.add(getFindField());
-		fieldsPanel.add(getReplaceField());
-		findReplacePanel.add(fieldsPanel);
-		leftPanel.add(findReplacePanel);
 		JPanel optionsPanel = new JPanel();
 
-		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.X_AXIS));
-		JPanel checkboxPanel = new JPanel();
+		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+		optionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Options"));
+		optionsPanel.add(getCaseSensitiveCheckBox());
+		optionsPanel.add(getWholeWordCheckBox());
+		optionsPanel.setAlignmentY(TOP_ALIGNMENT);
 
-		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.Y_AXIS));
-		checkboxPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Options"));
-		checkboxPanel.add(getCaseSensitiveCheckBox());
-		checkboxPanel.add(getWholeWordCheckBox());
-		checkboxPanel.setAlignmentY(TOP_ALIGNMENT);
-		optionsPanel.add(checkboxPanel);
-		JPanel radioPanel = new JPanel();
+		JPanel usePanel = new JPanel();
 
-		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
-		radioPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Use:"));
-		radioPanel.add(getLiteralButton());
-		radioPanel.add(getWildCardsButton());
-		radioPanel.add(getRegexButton());
-		radioPanel.setAlignmentY(TOP_ALIGNMENT);
+		usePanel.setLayout(new BoxLayout(usePanel, BoxLayout.Y_AXIS));
+		usePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Use"));
+		usePanel.add(getLiteralButton());
+		usePanel.add(getWildCardsButton());
+		usePanel.add(getRegexButton());
+		usePanel.setAlignmentY(TOP_ALIGNMENT);
+
 		ButtonGroup buttonGroup = new ButtonGroup();
 
 		buttonGroup.add(getLiteralButton());
 		buttonGroup.add(getWildCardsButton());
 		buttonGroup.add(getRegexButton());
-		optionsPanel.add(radioPanel);
-		leftPanel.add(optionsPanel);
-		leftPanel.setAlignmentY(TOP_ALIGNMENT);
-		bigPanel.add(leftPanel);
-		JPanel buttonPanel = new JPanel();
 
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-		buttonPanel.add(getFindNextButton());
-		buttonPanel.add(getToggleReplaceButton());
-		buttonPanel.add(getReplaceButton());
-		buttonPanel.add(getReplaceAllButton());
-		buttonPanel.add(getCloseButton());
-		buttonPanel.setAlignmentY(TOP_ALIGNMENT);
-		bigPanel.add(buttonPanel);
-		setContentPane(bigPanel);
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup().addGroup(layout.createParallelGroup(LEADING).addGroup(layout.createSequentialGroup().addComponent(getFindLabel()).addComponent(getFindTextField())).addGroup(layout.createSequentialGroup().addComponent(getReplaceLabel()).addComponent(getReplaceTextField())).addGroup(layout.createSequentialGroup().addComponent(optionsPanel).addComponent(usePanel))).addGroup(
+						layout.createParallelGroup(LEADING).addComponent(getFindNextButton()).addComponent(getReplaceFindButton()).addComponent(getReplaceButton()).addComponent(getReplaceAllButton()).addComponent(
+								getCloseButton())));
+
+		layout.linkSize(SwingConstants.HORIZONTAL, getFindLabel(), getReplaceLabel());
+		layout.linkSize(SwingConstants.HORIZONTAL, getFindNextButton(), getReplaceFindButton(), getReplaceButton(),
+				getReplaceAllButton(), getCloseButton());
+
+		layout.setVerticalGroup(
+				layout.createSequentialGroup().addGroup(layout.createParallelGroup(BASELINE).addComponent(getFindLabel()).addComponent(getFindTextField()).addComponent(getFindNextButton())).addGroup(layout.createParallelGroup(BASELINE).addComponent(getReplaceLabel()).addComponent(getReplaceTextField()).addComponent(getReplaceButton())).addGroup(
+						layout.createParallelGroup(BASELINE).addComponent(optionsPanel).addComponent(usePanel).addGroup(
+								layout.createSequentialGroup().addComponent(getReplaceFindButton()).addComponent(getReplaceAllButton()).addComponent(
+										getCloseButton()))));
+
+		pack();
+		setResizable(false);
 	}
 
 	public void showDialog(boolean showReplace) {
 		getReplaceLabel().setVisible(showReplace);
-		getReplaceField().setVisible(showReplace);
+		getReplaceTextField().setVisible(showReplace);
 		getReplaceButton().setVisible(showReplace);
 		getReplaceAllButton().setVisible(showReplace);
 		if (showReplace) {
 			setTitle("Replace");
 			getRootPane().setDefaultButton(getReplaceButton());
-			getToggleReplaceButton().setText("Find...");
-			getToggleReplaceButton().setMnemonic('d');
-			getToggleReplaceButton().setDisplayedMnemonicIndex(3);
+			getReplaceFindButton().setText("Find...");
+			getReplaceFindButton().setMnemonic('d');
+			getReplaceFindButton().setDisplayedMnemonicIndex(3);
 		} else {
 			setTitle("Find");
 			getRootPane().setDefaultButton(getFindNextButton());
-			getToggleReplaceButton().setText("Replace...");
-			getToggleReplaceButton().setMnemonic('R');
+			getReplaceFindButton().setText("Replace...");
+			getReplaceFindButton().setMnemonic('R');
+			getReplaceFindButton().setDisplayedMnemonicIndex(0);
 		}
+		
 		pack();
-		if (!initLoc) {
-			Rectangle bounds = window.getBounds();
+
+		if (!initLoc && editor != null) {
+			Rectangle bounds = editor.getBounds();
 			Dimension size = getSize();
 
 			setLocation((int) (bounds.getX() + (bounds.getWidth() - size.getWidth()) / 2),
 					(int) (bounds.getY() + (bounds.getHeight() - size.getHeight()) / 2));
 			initLoc = true;
 		}
+
+		// Bugfix [2664844] - Editor: Find (set cursor position)
+		getFindTextField().requestFocus();
+
 		setVisible(true);
 	}
 
 	public JLabel getFindLabel() {
 		if (findLabel == null) {
 			findLabel = new JLabel();
-			findLabel.setText(" Find:");
+			findLabel.setText("Find:");
 			findLabel.setDisplayedMnemonicIndex(3);
 		}
 		return findLabel;
@@ -152,28 +146,28 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 	public JLabel getReplaceLabel() {
 		if (replaceLabel == null) {
 			replaceLabel = new JLabel();
-			replaceLabel.setText(" Replace:");
+			replaceLabel.setText("Replace:");
 			replaceLabel.setDisplayedMnemonicIndex(3);
 		}
 		return replaceLabel;
 	}
 
-	public JTextField getFindField() {
-		if (findField == null) {
-			findField = new JTextField();
-			findField.setFocusAccelerator('n');
-			findField.addActionListener(this);
+	public JTextField getFindTextField() {
+		if (findTextField == null) {
+			findTextField = new JTextField();
+			findTextField.setFocusAccelerator('n');
+			findTextField.addActionListener(this);
 		}
-		return findField;
+		return findTextField;
 	}
 
-	public JTextField getReplaceField() {
-		if (replaceField == null) {
-			replaceField = new JTextField();
-			replaceField.setFocusAccelerator('p');
-			replaceField.addActionListener(this);
+	public JTextField getReplaceTextField() {
+		if (replaceTextField == null) {
+			replaceTextField = new JTextField();
+			replaceTextField.setFocusAccelerator('p');
+			replaceTextField.addActionListener(this);
 		}
-		return replaceField;
+		return replaceTextField;
 	}
 
 	public JButton getFindNextButton() {
@@ -185,6 +179,15 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			findNextButton.addActionListener(this);
 		}
 		return findNextButton;
+	}
+
+	public JButton getReplaceFindButton() {
+		if (replaceFindButton == null) {
+			replaceFindButton = new JButton("Replace...");
+			replaceFindButton.setMnemonic('R');
+			replaceFindButton.addActionListener(this);
+		}
+		return replaceFindButton;
 	}
 
 	public JButton getReplaceButton() {
@@ -209,20 +212,11 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 		return replaceAllButton;
 	}
 
-	public JButton getToggleReplaceButton() {
-		if (toggleReplaceButton == null) {
-			toggleReplaceButton = new JButton();
-			toggleReplaceButton.addActionListener(this);
-		}
-		return toggleReplaceButton;
-	}
-
 	public JButton getCloseButton() {
 		if (closeButton == null) {
 			closeButton = new JButton();
 			closeButton.setText("Close");
-			closeButton.setMnemonic('e');
-			closeButton.setDisplayedMnemonicIndex(4);
+			closeButton.setMnemonic('C');
 			closeButton.addActionListener(this);
 		}
 		return closeButton;
@@ -232,7 +226,8 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 		if (caseSensitiveCheckBox == null) {
 			caseSensitiveCheckBox = new JCheckBox();
 			caseSensitiveCheckBox.setText("Case Sensitive");
-			caseSensitiveCheckBox.setMnemonic('C');
+			caseSensitiveCheckBox.setMnemonic('v');
+			caseSensitiveCheckBox.setDisplayedMnemonicIndex(12);
 			caseSensitiveCheckBox.addActionListener(this);
 		}
 		return caseSensitiveCheckBox;
@@ -241,7 +236,7 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 	public JCheckBox getWholeWordCheckBox() {
 		if (wholeWordCheckBox == null) {
 			wholeWordCheckBox = new JCheckBox();
-			wholeWordCheckBox.setText("Whole Word");
+			wholeWordCheckBox.setText("Whole Words Only");
 			wholeWordCheckBox.setMnemonic('W');
 			wholeWordCheckBox.addActionListener(this);
 		}
@@ -293,7 +288,7 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 			doReplaceAll();
 		} else if (source == getCloseButton()) {
 			setVisible(false);
-		} else if (source == getToggleReplaceButton()) {
+		} else if (source == getReplaceFindButton()) {
 			showDialog(!getReplaceButton().isVisible());
 		} else if (source instanceof JTextField) {
 			getRootPane().getDefaultButton().doClick();
@@ -301,7 +296,7 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 	}
 
 	private Pattern getCurrentPattern() {
-		String pattern = getFindField().getText();
+		String pattern = getFindTextField().getText();
 		int flags = Pattern.DOTALL;
 
 		if (!getRegexButton().isSelected()) {
@@ -331,9 +326,9 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 	}
 
 	public void findNext() {
-		EditWindow currentWindow = window.getActiveWindow();
+		EditWindow currentWindow = editor.getActiveWindow();
 
-		if (currentWindow == null || getFindField().getText().length() == 0) {
+		if (currentWindow == null || getFindTextField().getText().length() == 0) {
 			// launch error dialog?
 			return;
 		}
@@ -346,20 +341,17 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 		Matcher m = p.matcher(text);
 		int index = editorPane.getSelectionEnd();
 
-		if (!m.find(index)) {
-			if (!m.find()) {
-				// No match found
-				return;
-			}
+		if (!(m.find(index) || m.find())) {
+			return;
 		}
 		editorPane.setSelectionStart(m.start());
 		editorPane.setSelectionEnd(m.end());
 	}
 
 	public void doReplacement() {
-		EditWindow currentWindow = window.getActiveWindow();
+		EditWindow currentWindow = editor.getActiveWindow();
 
-		if (currentWindow == null || getFindField().getText().length() == 0) {
+		if (currentWindow == null || getFindTextField().getText().length() == 0) {
 			// launch error dialog?
 			return;
 		}
@@ -373,7 +365,7 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 		Matcher m = getCurrentPattern().matcher(text);
 
 		if (m.matches()) {
-			String replacement = getReplaceField().getText();
+			String replacement = getReplaceTextField().getText();
 
 			if (getRegexButton().isSelected()) {
 				replacement = m.replaceFirst(replacement);
@@ -383,16 +375,16 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 	}
 
 	public void doReplaceAll() {
-		EditWindow currentWindow = window.getActiveWindow();
+		EditWindow currentWindow = editor.getActiveWindow();
 
-		if (currentWindow == null || getFindField().getText().length() == 0) {
+		if (currentWindow == null || getFindTextField().getText().length() == 0) {
 			// launch error dialog?
 			return;
 		}
 		JEditorPane editorPane = currentWindow.getEditorPane();
 		String text = editorPane.getText();
 
-		String replacement = getReplaceField().getText();
+		String replacement = getReplaceTextField().getText();
 
 		editorPane.setText(getCurrentPattern().matcher(text).replaceAll(replacement));
 	}
