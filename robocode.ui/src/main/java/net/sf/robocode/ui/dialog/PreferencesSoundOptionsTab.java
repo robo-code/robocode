@@ -58,11 +58,10 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 	}
 
 	private void initialize() {
-		setLayout(new GridLayout(1, 3));
+		setLayout(new GridLayout(1, 2));
 
 		add(getSoundOptionsPanel());
 		add(getMixerOptionsPanel());
-		add(new JPanel());
 
 		loadPreferences(properties);
 	}
@@ -88,8 +87,7 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 			soundOptionsPanel.add(getEnableWallCollisionCheckBox(), c);
 			soundOptionsPanel.add(getEnableRobotCollisionCheckBox(), c);
 
-			soundOptionsPanel.add(new JLabel(" "), c);
-
+			c.insets = new Insets(10, 0, 0, 10);
 			c.gridwidth = 1;
 			c.fill = 0;
 			c.weighty = 1;
@@ -192,25 +190,24 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 			c.fill = GridBagConstraints.NONE;
 			c.weightx = 1;
 
-			c.insets = new Insets(3, 3, 3, 3);
+			c.insets = new Insets(8, 4, 0, 0);
 			mixerOptionsPanel.add(new JLabel("Select mixer:"), c);
 
 			c.gridy = 1;
 			mixerOptionsPanel.add(getMixerComboBox(), c);
 
-			c.insets = new Insets(3, 3, 15, 3);
 			c.gridy = 2;
 			mixerOptionsPanel.add(getMixerDefaultButton(), c);
 
-			c.insets = new Insets(3, 3, 3, 3);
+			c.insets = new Insets(16, 4, 0, 0);
 			c.gridy = 3;
 			mixerOptionsPanel.add(new JLabel("Enable mixer features:"), c);
 
-			c.insets = new Insets(0, 0, 0, 0);
-
+			c.insets = new Insets(6, 0, 0, 0);
 			c.gridy = 4;
 			mixerOptionsPanel.add(getEnableMixerVolumeCheckBox(), c);
 
+			c.insets = new Insets(0, 0, 0, 0);
 			c.gridy = 5;
 			mixerOptionsPanel.add(getEnableMixerPanCheckBox(), c);
 
@@ -323,9 +320,9 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 			Object src = e.getSource();
 
 			if (src == enableAllSoundsButton) {
-				enableAllSoundsButtonActionPerformed();
+				setAllSoundsButtonsEnabled(true);
 			} else if (src == disableAllSoundsButton) {
-				disableAllSoundsButtonActionPerformed();
+				setAllSoundsButtonsEnabled(false);
 			} else if (src == mixerComboBox) {
 				mixerComboBoxActionPerformed();
 			} else if (src == mixerDefaultButton) {
@@ -334,22 +331,13 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		}
 	}
 
-	private void enableAllSoundsButtonActionPerformed() {
-		enableSoundCheckBox.setSelected(true);
-		enableGunshotCheckBox.setSelected(true);
-		enableBulletHitCheckBox.setSelected(true);
-		enableRobotDeathCheckBox.setSelected(true);
-		enableWallCollisionCheckBox.setSelected(true);
-		enableRobotCollisionCheckBox.setSelected(true);
-	}
-
-	private void disableAllSoundsButtonActionPerformed() {
-		enableSoundCheckBox.setSelected(false);
-		enableGunshotCheckBox.setSelected(false);
-		enableBulletHitCheckBox.setSelected(false);
-		enableRobotDeathCheckBox.setSelected(false);
-		enableWallCollisionCheckBox.setSelected(false);
-		enableRobotCollisionCheckBox.setSelected(false);
+	private void setAllSoundsButtonsEnabled(boolean enabled) {
+		enableSoundCheckBox.setSelected(enabled);
+		enableGunshotCheckBox.setSelected(enabled);
+		enableBulletHitCheckBox.setSelected(enabled);
+		enableRobotDeathCheckBox.setSelected(enabled);
+		enableWallCollisionCheckBox.setSelected(enabled);
+		enableRobotCollisionCheckBox.setSelected(enabled);
 	}
 
 	private void mixerComboBoxActionPerformed() {
@@ -395,10 +383,8 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 				if (!"Unknown Vendor".equals(mi.getVendor())) {
 					text += " by " + mi.getVendor();
 				}
-
 				setText(text);
 			}
-
 			return component;
 		}
 	}

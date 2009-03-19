@@ -9,7 +9,7 @@ Version 1.7.1
 = Changes =
 * Improved the layout of the Find/Replace dialog for the Robocode editor.
 * The New Battle dialog is now larger per default.
-* The layout of the View Options tab in the Preferences has been improved, and an error dialog is shown when the input field for the desired TPS is out of range.
+* The layout of the View Options and Sound Options tab in the Preferences has been improved. In addition, an error dialog is shown when the input field for the desired TPS is out of range.
 
 Version 1.7.1 Beta 2
 (11-Mar-2009)
