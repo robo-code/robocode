@@ -28,8 +28,7 @@ import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,14 +75,14 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	private final ISettingsManager properties;
 
-	private class EventHandler implements ActionListener, DocumentListener {
+	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
 
 			if (src == enableAllViewOptionsButton) {
-				enableAllViewOptionsButtonActionPerformed();
+				setAllViewOptionsButtonsEnabled(true);
 			} else if (src == disableAllViewOptionsButton) {
-				disableAllViewOptionsButtonActionPerformed();
+				setAllViewOptionsButtonsEnabled(false);
 			} else if (src == defaultViewOptionsButton) {
 				defaultViewOptionsButtonActionPerformed();
 			} else if (src == defaultTpsButton) {
@@ -96,18 +95,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 				maxTpsButtonActionPerformed();
 			}
 		}
-
-		public void changedUpdate(DocumentEvent e) {
-			PreferencesViewOptionsTab.this.desiredTpsTextFieldStateChanged();
-		}
-
-		public void insertUpdate(DocumentEvent e) {
-			PreferencesViewOptionsTab.this.desiredTpsTextFieldStateChanged();
-		}
-
-		public void removeUpdate(DocumentEvent e) {
-			PreferencesViewOptionsTab.this.desiredTpsTextFieldStateChanged();
-		}
 	}
 
 	public PreferencesViewOptionsTab(ISettingsManager properties) {
@@ -117,43 +104,17 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	}
 
 	private void defaultViewOptionsButtonActionPerformed() {
-		enableAllViewOptionsButtonActionPerformed();
+		setAllViewOptionsButtonsEnabled(true);
 		getVisibleScanArcsCheckBox().setSelected(false);
 	}
 
-	private void enableAllViewOptionsButtonActionPerformed() {
-		getVisibleRobotEnergyCheckBox().setSelected(true);
-		getVisibleRobotNameCheckBox().setSelected(true);
-		getVisibleScanArcsCheckBox().setSelected(true);
-		getVisibleExplosionsCheckBox().setSelected(true);
-		getVisibleGroundCheckBox().setSelected(true);
-		getVisibleExplosionDebrisCheckBox().setSelected(true);
-	}
-
-	private void disableAllViewOptionsButtonActionPerformed() {
-		getVisibleRobotEnergyCheckBox().setSelected(false);
-		getVisibleRobotNameCheckBox().setSelected(false);
-		getVisibleScanArcsCheckBox().setSelected(false);
-		getVisibleExplosionsCheckBox().setSelected(false);
-		getVisibleGroundCheckBox().setSelected(false);
-		getVisibleExplosionDebrisCheckBox().setSelected(false);
-	}
-
-	private void desiredTpsTextFieldStateChanged() {
-		fireStateChanged();
-		try {
-			int tps = Integer.parseInt(getDesiredTpsTextField().getText());
-			String s = "" + tps;
-
-			if (tps < MIN_TPS) {
-				s = "Too low, must be at least " + MIN_TPS;
-			} else if (tps > MAX_TPS) {
-				s = "Too high, max is " + MAX_TPS;
-			}
-			getDesiredTpsLabel().setText("Desired TPS: " + s);
-		} catch (NumberFormatException e) {
-			getDesiredTpsLabel().setText("Desired TPS: ???");
-		}
+	private void setAllViewOptionsButtonsEnabled(boolean enabled) {
+		getVisibleRobotEnergyCheckBox().setSelected(enabled);
+		getVisibleRobotNameCheckBox().setSelected(enabled);
+		getVisibleScanArcsCheckBox().setSelected(enabled);
+		getVisibleExplosionsCheckBox().setSelected(enabled);
+		getVisibleGroundCheckBox().setSelected(enabled);
+		getVisibleExplosionDebrisCheckBox().setSelected(enabled);
 	}
 
 	private void maxTpsButtonActionPerformed() {
@@ -204,7 +165,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	private JLabel getDesiredTpsLabel() {
 		if (desiredTpsLabel == null) {
-			desiredTpsLabel = new JLabel("Desired TPS: ");
+			desiredTpsLabel = new JLabel("Desired TPS (" + MIN_TPS + '-' + MAX_TPS + "): ");
 		}
 		return desiredTpsLabel;
 	}
@@ -213,7 +174,32 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		if (desiredTpsTextField == null) {
 			desiredTpsTextField = new JTextField();
 			desiredTpsTextField.setColumns(5);
-			desiredTpsTextField.getDocument().addDocumentListener(eventHandler);
+			desiredTpsTextField.setInputVerifier(
+					new InputVerifier() {
+				@Override
+				public boolean verify(JComponent c) {			
+					String text = desiredTpsTextField.getText();
+					
+					int inputTps;
+
+					try {
+						inputTps = new Integer(text);
+					} catch (NumberFormatException e) {
+						inputTps = -1;
+					}
+					return inputTps >= MIN_TPS && inputTps <= MAX_TPS;
+				}
+				
+				public boolean shouldYieldFocus(JComponent input) {
+					if (verify(input)) {
+						return true;
+					}
+					JOptionPane.showMessageDialog(null,
+							"The specified value for 'Desired TPS' (" + MIN_TPS + '-' + MAX_TPS + ") is invalid.",
+							"Invalid input", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			});
 		}
 		return desiredTpsTextField;
 	}
@@ -284,28 +270,17 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			tpsOptionsPanel.add(getDisplayTpsCheckBox(), c);
 			tpsOptionsPanel.add(getDisplayFpsCheckBox(), c);
-			tpsOptionsPanel.add(new JLabel(" "), c);
-			tpsOptionsPanel.add(getDesiredTpsLabel(), c);
 
-			getDesiredTpsLabel().setHorizontalAlignment(SwingConstants.CENTER);
+			JPanel tpsPanel = new JPanel();
 
-			JPanel p = new JPanel();
-			JPanel q = new JPanel();
+			tpsPanel.add(getDesiredTpsLabel());
+			tpsPanel.add(getDesiredTpsTextField());
 
-			q.setLayout(new GridLayout(1, 3));
-
-			p.add(q);
-
-			p.add(getDesiredTpsTextField());
-			q = new JPanel();
-			p.add(q);
-
-			c.gridwidth = GridBagConstraints.REMAINDER;
-			tpsOptionsPanel.add(p, c);
-			tpsOptionsPanel.add(new JLabel(" "), c);
+			c.insets = new Insets(10, 0, 0, 10);
+			c.fill = 0;
+			tpsOptionsPanel.add(tpsPanel, c);	
 
 			c.gridwidth = 1;
-			c.fill = 0;
 			c.weighty = 1;
 			c.weightx = 0;
 			tpsOptionsPanel.add(getMinTpsButton(), c);
@@ -335,15 +310,14 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			visibleOptionsPanel.add(getVisibleExplosionsCheckBox(), c);
 			visibleOptionsPanel.add(getVisibleGroundCheckBox(), c);
 			visibleOptionsPanel.add(getVisibleExplosionDebrisCheckBox(), c);
-			visibleOptionsPanel.add(new JLabel(" "), c);
 
+			c.insets = new Insets(10, 0, 0, 10);
 			c.gridwidth = 1;
 			c.fill = 0;
 			c.weighty = 1;
 			c.weightx = 0;
 			visibleOptionsPanel.add(getEnableAllViewOptionsButton(), c);
 			visibleOptionsPanel.add(getDisableAllViewOptionsButton(), c);
-			visibleOptionsPanel.add(new JLabel("     "), c);
 			visibleOptionsPanel.add(getDefaultViewOptionsButton(), c);
 		}
 		return visibleOptionsPanel;
@@ -452,14 +426,9 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		try {
 			int tps = Integer.parseInt(getDesiredTpsTextField().getText());
 
-			if (tps < MIN_TPS) {
-				return false;
-			} else if (tps > MAX_TPS) {
-				return false;
-			}
+			return (tps >= MIN_TPS && tps <= MAX_TPS);
 		} catch (Exception e) {
 			return false;
 		}
-		return true;
 	}
 }
