@@ -8,12 +8,9 @@ namespace selvin.exportdllattribute
     [AttributeUsage(AttributeTargets.Method)]
     public class ExportDllAttribute : Attribute
     {
-        public ExportDllAttribute(string exportName)
-            : this(exportName, System.Runtime.InteropServices.CallingConvention.StdCall)
-        {
-        }
-
         private static readonly Dictionary<CallingConvention, string> dic = new Dictionary<CallingConvention, string>();
+        private readonly string m_CallingConvention;
+        private readonly string m_ExportName;
 
         static ExportDllAttribute()
         {
@@ -24,20 +21,21 @@ namespace selvin.exportdllattribute
             dic[System.Runtime.InteropServices.CallingConvention.Winapi] = typeof (CallConvStdcall).FullName;
         }
 
+        public ExportDllAttribute(string exportName)
+            : this(exportName, System.Runtime.InteropServices.CallingConvention.StdCall)
+        {
+        }
+
         public ExportDllAttribute(string exportName, CallingConvention CallingConvention)
         {
             m_ExportName = exportName;
             m_CallingConvention = dic[CallingConvention];
         }
 
-        private readonly string m_ExportName;
-
         public string ExportName
         {
             get { return m_ExportName; }
         }
-
-        private readonly string m_CallingConvention;
 
         public string CallingConvention
         {

@@ -17,6 +17,7 @@ import com.jacob.com.ComThread;
 import com.jacob.com.LibraryLoader;
 import com.jacob.com.JacobObject;
 import com.jacob.activeX.ActiveXComponent;
+import net.sf.robocode.dotnet.host.bridge.DotNetBridge;
 
 
 /**
@@ -45,6 +46,7 @@ public class TestCLR {
 
 	@Test
 	public void test2() {
-
+		DotNetBridge b=new DotNetBridge();
+		b.main();
 	}
 }

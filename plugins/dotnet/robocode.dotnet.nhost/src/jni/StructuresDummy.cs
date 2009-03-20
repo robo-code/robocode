@@ -1,94 +1,95 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 namespace robocode.dotnet.nhost.jni
 {
-    public enum __enative_startup_state
+    public enum _enative_startup_state
     {
     }
 
-    public enum _ACL_INFORMATION_CLASS
+    public enum ACL_INFORMATION_CLASS
     {
     }
 
-    public enum _ACTIVATION_CONTEXT_INFO_CLASS
+    public enum ACTIVATION_CONTEXT_INFO_CLASS
     {
     }
 
-    public enum _AUDIT_EVENT_TYPE
+    public enum AUDIT_EVENT_TYPE
     {
     }
 
-    public enum _CM_ERROR_CONTROL_TYPE
+    public enum CM_ERROR_CONTROL_TYPE
     {
     }
 
-    public enum _CM_SERVICE_LOAD_TYPE
+    public enum CM_SERVICE_LOAD_TYPE
     {
     }
 
-    public enum _CM_SERVICE_NODE_TYPE
+    public enum CM_SERVICE_NODE_TYPE
     {
     }
 
-    public enum _COMPUTER_NAME_FORMAT
+    public enum COMPUTER_NAME_FORMAT
     {
     }
 
-    public enum _DEVICE_POWER_STATE
+    public enum DEVICE_POWER_STATE
     {
     }
 
-    public enum _ENLISTMENT_INFORMATION_CLASS
+    public enum ENLISTMENT_INFORMATION_CLASS
     {
     }
 
-    public enum _EXCEPTION_DISPOSITION
+    public enum EXCEPTION_DISPOSITION
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 8), NativeCppClass]
-    public struct _EXCEPTION_POINTERS
+    public struct EXCEPTION_POINTERS
     {
     }
 
-    public enum _FINDEX_INFO_LEVELS
+    public enum FINDEX_INFO_LEVELS
     {
     }
 
-    public enum _FINDEX_SEARCH_OPS
+    public enum FINDEX_SEARCH_OPS
     {
     }
 
-    public enum _GET_FILEEX_INFO_LEVELS
+    public enum GET_FILEEX_INFO_LEVELS
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 0x10), NativeCppClass, UnsafeValueType]
-    public struct _GUID
+    public struct GUID
     {
     }
 
-    public enum _HEAP_INFORMATION_CLASS
+    public enum HEAP_INFORMATION_CLASS
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 0x20), NativeCppClass]
-    public struct _iobuf
+    public struct iobuf
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jarray
+    public struct jarray
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jbooleanArray
+    public struct jbooleanArray
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jbyteArray
+    public struct jbyteArray
     {
     }
 
@@ -98,168 +99,173 @@ namespace robocode.dotnet.nhost.jni
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jdoubleArray
+    public struct jdoubleArray
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jfloatArray
+    public struct jfloatArray
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jcharArray
+    public struct jcharArray
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jintArray
+    public struct jintArray
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jlongArray
+    public struct jlongArray
     {
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct _jmethodID
+    public struct jmethodID
+    {
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct jfieldID
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jobject
+    public struct jobject
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jobjectArray
+    public struct jobjectArray
     {
     }
 
-    public enum _JOBOBJECTINFOCLASS
-    {
-    }
-
-    [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jshortArray
+    public enum JOBOBJECTINFOCLASS
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jstring
+    public struct jshortArray
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct _jthrowable
+    public struct jstring
     {
     }
 
-    public enum _KTMOBJECT_TYPE
+    [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
+    public struct jthrowable
+    {
+    }
+
+    public enum KTMOBJECT_TYPE
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 8), NativeCppClass]
-    public struct _ldiv_t
+    public struct ldiv_t
     {
     }
 
-    public enum _LOGICAL_PROCESSOR_RELATIONSHIP
+    public enum LOGICAL_PROCESSOR_RELATIONSHIP
     {
     }
 
-    public enum _MANDATORY_LEVEL
+    public enum MANDATORY_LEVEL
     {
     }
 
-    public enum _MEMORY_RESOURCE_NOTIFICATION_TYPE
+    public enum MEMORY_RESOURCE_NOTIFICATION_TYPE
     {
     }
 
-    public enum _PROC_THREAD_ATTRIBUTE_NUM
+    public enum PROC_THREAD_ATTRIBUTE_NUM
     {
     }
 
-    public enum _PROCESSOR_CACHE_TYPE
+    public enum PROCESSOR_CACHE_TYPE
     {
     }
 
-    public enum _PS_RATE_PHASE
+    public enum PS_RATE_PHASE
     {
     }
 
-    public enum _RESOURCEMANAGER_INFORMATION_CLASS
+    public enum RESOURCEMANAGER_INFORMATION_CLASS
     {
     }
 
-    public enum _SC_ACTION_TYPE
+    public enum SC_ACTION_TYPE
     {
     }
 
-    public enum _SC_ENUM_TYPE
+    public enum SC_ENUM_TYPE
     {
     }
 
-    public enum _SC_STATUS_TYPE
+    public enum SC_STATUS_TYPE
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 12), NativeCppClass]
-    public struct _SECURITY_ATTRIBUTES
+    public struct SECURITY_ATTRIBUTES
     {
     }
 
-    public enum _SECURITY_IMPERSONATION_LEVEL
+    public enum SECURITY_IMPERSONATION_LEVEL
     {
     }
 
-    public enum _SID_NAME_USE
+    public enum SID_NAME_USE
     {
     }
 
-    public enum _STREAM_INFO_LEVELS
+    public enum STREAM_INFO_LEVELS
     {
     }
 
-    public enum _SYSTEM_POWER_STATE
+    public enum SYSTEM_POWER_STATE
     {
     }
 
-    public enum _TAPE_DRIVE_PROBLEM_TYPE
+    public enum TAPE_DRIVE_PROBLEM_TYPE
     {
     }
 
-    public enum _TOKEN_ELEVATION_TYPE
+    public enum TOKEN_ELEVATION_TYPE
     {
     }
 
-    public enum _TOKEN_INFORMATION_CLASS
+    public enum TOKEN_INFORMATION_CLASS
     {
     }
 
-    public enum _TOKEN_TYPE
+    public enum TOKEN_TYPE
     {
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 0x20), NativeCppClass]
-    public struct _TP_CALLBACK_ENVIRON
+    public struct TP_CALLBACK_ENVIRON
     {
     }
 
-    public enum _TRANSACTION_INFORMATION_CLASS
+    public enum TRANSACTION_INFORMATION_CLASS
     {
     }
 
-    public enum _TRANSACTION_OUTCOME
+    public enum TRANSACTION_OUTCOME
     {
     }
 
-    public enum _TRANSACTION_STATE
+    public enum TRANSACTION_STATE
     {
     }
 
-    public enum _TRANSACTIONMANAGER_INFORMATION_CLASS
+    public enum TRANSACTIONMANAGER_INFORMATION_CLASS
     {
     }
 
@@ -303,11 +309,6 @@ namespace robocode.dotnet.nhost.jni
 
     [StructLayout(LayoutKind.Sequential, Size = 12), NativeCppClass]
     public struct JNINativeMethod
-    {
-    }
-
-    [StructLayout(LayoutKind.Explicit, Size = 8), NativeCppClass]
-    public struct jvalue
     {
     }
 
@@ -356,5 +357,4 @@ namespace robocode.dotnet.nhost.jni
     public struct tm
     {
     }
-    
 }

@@ -50,19 +50,15 @@
     <Compile Include="jni\JNINativeInterface.cs" />
     <Compile Include="jni\Util.cs" />
     <Compile Include="DotnetMain.cs" />
-    <Compile Include="HelloFromNET.cs" />
     <Compile Include="jni\Structures.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\selvin.exportdllattribute\src\selvin.exportdllattribute.csproj">
+    <ProjectReference Include="..\..\selvin.exportdllattribute\src\osadkowski.exportdllattribute.csproj">
       <Project>{EAF9A4CD-0965-44C3-8570-09063E4D5E79}</Project>
-      <Name>selvin.exportdllattribute</Name>
+      <Name>osadkowski.exportdllattribute</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

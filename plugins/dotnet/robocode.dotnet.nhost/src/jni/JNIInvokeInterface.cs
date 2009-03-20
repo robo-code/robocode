@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -17,18 +16,5 @@ namespace robocode.dotnet.nhost.jni
         public IntPtr DetachCurrentThread;
         public IntPtr GetEnv;
         public IntPtr AttachCurrentThreadAsDaemon;
-        
-        /*
-
-    jint (JNICALL *DestroyJavaVM)(JavaVM *vm);
-
-    jint (JNICALL *AttachCurrentThread)(JavaVM *vm, void **penv, void *args);
-
-    jint (JNICALL *DetachCurrentThread)(JavaVM *vm);
-
-    jint (JNICALL *GetEnv)(JavaVM *vm, void **penv, jint version);
-
-    jint (JNICALL *AttachCurrentThreadAsDaemon)(JavaVM *vm, void **penv, void *args);
-     */
     }
 }

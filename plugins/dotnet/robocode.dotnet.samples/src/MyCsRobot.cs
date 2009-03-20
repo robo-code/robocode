@@ -11,8 +11,9 @@
  *******************************************************************************/
 //TODO
 
-public class MyCsRobot 
+public class MyCsRobot
 {
-	public static void Main(){
-	}
+    public static void Main()
+    {
+    }
 }

@@ -1,16 +1,25 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
-using selvin.exportdllattribute;
 using robocode.dotnet.nhost.jni;
+using selvin.exportdllattribute;
 
 namespace robocode.dotnet.nhost
 {
-    public class DotnetMain
+    public unsafe class DotnetMain
     {
-        [ExportDll("dotnetmain", CallingConvention.StdCall)]
-        public static void Main()
+        [ExportDll("Java_net_sf_robocode_dotnet_host_bridge_DotNetBridge_main", CallingConvention.StdCall)]
+        public static void main(JNIEnv.Real* env, jobject* obj)
+        {
+            JNIEnv envi = (*env).Wrap();
+            Console.WriteLine(".NET hello" + envi.GetVersion());
+            envi.CallVoidMethod(obj, "talkBack", "()V");
+            envi.CallVoidMethod(obj, "talkBackInt", "(I)V", new jvalue(1));
+        }
+
+        public static void Test()
         {
             Directory.SetCurrentDirectory(@"c:\Program Files\Java\jre1.6.0_07\bin\client\");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
@@ -31,5 +40,4 @@ namespace robocode.dotnet.nhost
     //TestObject testObject = new TestObject();
     //GCHandle gcHandle = GCHandle.Alloc(testObject,
     //GCHandleType.Pinned);
-
 }
