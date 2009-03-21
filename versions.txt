@@ -1,5 +1,5 @@
 Version 1.7.1
-(19-Mar-2009)
+(21-Mar-2009)
 ---------------
 
 = Bugfixes =
@@ -8,7 +8,6 @@ Version 1.7.1
 * Bug [2699018] - roborumble.sh and teamrumble.sh are broken
 
 = Changes =
-* Improved the layout of the Find/Replace dialog for the Robocode editor.
 * The New Battle dialog is now larger per default.
 * The layout of the View Options and Sound Options tab in the Preferences has been improved. In addition, an error dialog is shown when the input field for the desired TPS is out of range.
 
