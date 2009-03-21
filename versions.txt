@@ -1,13 +1,14 @@
 Version 1.7.1
-(19-Mar-2009)
+(21-Mar-2009)
 ---------------
 
 = Bugfixes =
 * Bug [2643448] - Editor UNDO does delete the line when no undo left.
 * Bug [2664844] - Editor: Find/replace dialog (set cursor position).
+* Bug [2699018] - roborumble.sh and teamrumble.sh are broken
+* Bug [2699028] - NullPointerException in BattlesRunner.runBattlesImpl
 
 = Changes =
-* Improved the layout of the Find/Replace dialog for the Robocode editor.
 * The New Battle dialog is now larger per default.
 * The layout of the View Options and Sound Options tab in the Preferences has been improved. In addition, an error dialog is shown when the input field for the desired TPS is out of range.
 

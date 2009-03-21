@@ -113,15 +113,18 @@ public class BattlesRunner {
 
 			final RobotSpecification[] robotsList = engine.getLocalRepository(enemies);
 
-			if (robotsList.length > 1
-					&& !robotsList[0].getTeamId().equals(robotsList[robotsList.length - 1].getTeamId())) {
-				final BattleSpecification specification = new BattleSpecification(battle.getNumRounds(),
-						battle.getBattlefield(), robotsList);
+			final String team0 = robotsList[0].getTeamId();
+			if (robotsList.length > 1) {
+				final String teamLast = robotsList[robotsList.length - 1].getTeamId();
+				if (team0 == null || !team0.equals(teamLast)) {
+					final BattleSpecification specification = new BattleSpecification(battle.getNumRounds(),
+							battle.getBattlefield(), robotsList);
 
-				lastResults = null;
-				engine.runBattle(specification, true);
-				if (lastResults != null && lastResults.length > 1) {
-					dumpResults(outtxt, lastResults, param[param.length - 1], melee);
+					lastResults = null;
+					engine.runBattle(specification, true);
+					if (lastResults != null && lastResults.length > 1) {
+						dumpResults(outtxt, lastResults, param[param.length - 1], melee);
+					}
 				}
 			} else {
 				System.err.println("Skipping battle because can't load robots: " + enemies);
