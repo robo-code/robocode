@@ -6,6 +6,7 @@ Version 1.7.1
 * Bug [2643448] - Editor UNDO does delete the line when no undo left.
 * Bug [2664844] - Editor: Find/replace dialog (set cursor position).
 * Bug [2699018] - roborumble.sh and teamrumble.sh are broken
+* Bug [2699028] - NullPointerException in BattlesRunner.runBattlesImpl
 
 = Changes =
 * The New Battle dialog is now larger per default.
