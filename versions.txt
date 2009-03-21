@@ -5,6 +5,7 @@ Version 1.7.1
 = Bugfixes =
 * Bug [2643448] - Editor UNDO does delete the line when no undo left.
 * Bug [2664844] - Editor: Find/replace dialog (set cursor position).
+* Bug [2699018] - roborumble.sh and teamrumble.sh are broken
 
 = Changes =
 * Improved the layout of the Find/Replace dialog for the Robocode editor.
