@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7E0900D3-6E8F-46EB-86DB-AA767AA90B84}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>robocode</RootNamespace>
+    <AssemblyName>robocode.dotnet.napi</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\target\</OutputPath>
+    <IntermediateOutputPath>..\target\obj\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\target\</OutputPath>
+    <IntermediateOutputPath>..\target\obj\</IntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Charsets, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Charsets.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Corba, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Corba.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Jdbc, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Jdbc.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Management, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Misc, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Misc.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Security, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.SwingAWT, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.SwingAWT.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Text, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Util, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.OpenJDK.XML.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime.JNI, Version=0.39.3363.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ikvm\IKVM.Runtime.JNI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdvancedRobot.cs" />
+    <Compile Include="BattleEndedEvent.cs" />
+    <Compile Include="BattleResults.cs" />
+    <Compile Include="BattleRules.cs" />
+    <Compile Include="Bullet.cs" />
+    <Compile Include="BulletHitBulletEvent.cs" />
+    <Compile Include="BulletHitEvent.cs" />
+    <Compile Include="BulletMissedEvent.cs" />
+    <Compile Include="Condition.cs" />
+    <Compile Include="control\BattlefieldSpecification.cs" />
+    <Compile Include="control\BattleSpecification.cs" />
+    <Compile Include="control\events\BattleAdaptor.cs" />
+    <Compile Include="control\events\BattleCompletedEvent.cs" />
+    <Compile Include="control\events\BattleErrorEvent.cs" />
+    <Compile Include="control\events\BattleEvent.cs" />
+    <Compile Include="control\events\BattleFinishedEvent.cs" />
+    <Compile Include="control\events\BattleMessageEvent.cs" />
+    <Compile Include="control\events\BattlePausedEvent.cs" />
+    <Compile Include="control\events\BattleResumedEvent.cs" />
+    <Compile Include="control\events\BattleStartedEvent.cs" />
+    <Compile Include="control\events\IBattleListener.cs" />
+    <Compile Include="control\events\RoundEndedEvent.cs" />
+    <Compile Include="control\events\RoundStartedEvent.cs" />
+    <Compile Include="control\events\TurnEndedEvent.cs" />
+    <Compile Include="control\events\TurnStartedEvent.cs" />
+    <Compile Include="control\IRobocodeEngine.cs" />
+    <Compile Include="control\RandomFactory.cs" />
+    <Compile Include="control\RobocodeEngine.cs" />
+    <Compile Include="control\RobocodeListener.cs" />
+    <Compile Include="control\RobotResults.cs" />
+    <Compile Include="control\RobotSpecification.cs" />
+    <Compile Include="control\snapshot\BulletState.cs" />
+    <Compile Include="control\snapshot\IBulletSnapshot.cs" />
+    <Compile Include="control\snapshot\IDebugProperty.cs" />
+    <Compile Include="control\snapshot\IRobotSnapshot.cs" />
+    <Compile Include="control\snapshot\IScoreSnapshot.cs" />
+    <Compile Include="control\snapshot\ITurnSnapshot.cs" />
+    <Compile Include="control\snapshot\RobotState.cs" />
+    <Compile Include="CustomEvent.cs" />
+    <Compile Include="DeathEvent.cs" />
+    <Compile Include="Droid.cs" />
+    <Compile Include="Event.cs" />
+    <Compile Include="exception\AbortedException.cs" />
+    <Compile Include="exception\DeathException.cs" />
+    <Compile Include="exception\DisabledException.cs" />
+    <Compile Include="exception\EventInterruptedException.cs" />
+    <Compile Include="exception\RobotException.cs" />
+    <Compile Include="exception\WinException.cs" />
+    <Compile Include="GunTurnCompleteCondition.cs" />
+    <Compile Include="HitByBulletEvent.cs" />
+    <Compile Include="HitRobotEvent.cs" />
+    <Compile Include="HitWallEvent.cs" />
+    <Compile Include="JuniorRobot.cs" />
+    <Compile Include="KeyEvent.cs" />
+    <Compile Include="KeyPressedEvent.cs" />
+    <Compile Include="KeyReleasedEvent.cs" />
+    <Compile Include="KeyTypedEvent.cs" />
+    <Compile Include="MessageEvent.cs" />
+    <Compile Include="MouseClickedEvent.cs" />
+    <Compile Include="MouseDraggedEvent.cs" />
+    <Compile Include="MouseEnteredEvent.cs" />
+    <Compile Include="MouseEvent.cs" />
+    <Compile Include="MouseExitedEvent.cs" />
+    <Compile Include="MouseMovedEvent.cs" />
+    <Compile Include="MousePressedEvent.cs" />
+    <Compile Include="MouseReleasedEvent.cs" />
+    <Compile Include="MouseWheelMovedEvent.cs" />
+    <Compile Include="MoveCompleteCondition.cs" />
+    <Compile Include="net\sf\robocode\api\Module.cs" />
+    <Compile Include="net\sf\robocode\battle\IBattleManagerBase.cs" />
+    <Compile Include="net\sf\robocode\core\ContainerBase.cs" />
+    <Compile Include="net\sf\robocode\gui\IWindowManagerBase.cs" />
+    <Compile Include="net\sf\robocode\io\FileUtil.cs" />
+    <Compile Include="net\sf\robocode\io\Logger.cs" />
+    <Compile Include="net\sf\robocode\manager\IVersionManagerBase.cs" />
+    <Compile Include="net\sf\robocode\peer\IRobotStatics.cs" />
+    <Compile Include="net\sf\robocode\repository\IRepositoryManagerBase.cs" />
+    <Compile Include="net\sf\robocode\security\HiddenAccess.cs" />
+    <Compile Include="net\sf\robocode\security\IHiddenBulletHelper.cs" />
+    <Compile Include="net\sf\robocode\security\IHiddenEventHelper.cs" />
+    <Compile Include="net\sf\robocode\security\IHiddenRulesHelper.cs" />
+    <Compile Include="net\sf\robocode\security\IHiddenSpecificationHelper.cs" />
+    <Compile Include="net\sf\robocode\security\IHiddenStatusHelper.cs" />
+    <Compile Include="net\sf\robocode\security\IThreadManagerBase.cs" />
+    <Compile Include="net\sf\robocode\security\SafeComponent.cs" />
+    <Compile Include="net\sf\robocode\serialization\ISerializableHelper.cs" />
+    <Compile Include="net\sf\robocode\serialization\RbSerializer.cs" />
+    <Compile Include="PaintEvent.cs" />
+    <Compile Include="RadarTurnCompleteCondition.cs" />
+    <Compile Include="Robocode.cs" />
+    <Compile Include="RobocodeFileOutputStream.cs" />
+    <Compile Include="RobocodeFileWriter.cs" />
+    <Compile Include="Robot.cs" />
+    <Compile Include="RobotDeathEvent.cs" />
+    <Compile Include="robotinterfaces\IAdvancedEvents.cs" />
+    <Compile Include="robotinterfaces\IAdvancedRobot.cs" />
+    <Compile Include="robotinterfaces\IBasicEvents.cs" />
+    <Compile Include="robotinterfaces\IBasicEvents2.cs" />
+    <Compile Include="robotinterfaces\IBasicRobot.cs" />
+    <Compile Include="robotinterfaces\IInteractiveEvents.cs" />
+    <Compile Include="robotinterfaces\IInteractiveRobot.cs" />
+    <Compile Include="robotinterfaces\IJuniorRobot.cs" />
+    <Compile Include="robotinterfaces\IPaintEvents.cs" />
+    <Compile Include="robotinterfaces\IPaintRobot.cs" />
+    <Compile Include="robotinterfaces\ITeamEvents.cs" />
+    <Compile Include="robotinterfaces\ITeamRobot.cs" />
+    <Compile Include="robotinterfaces\peer\IAdvancedRobotPeer.cs" />
+    <Compile Include="robotinterfaces\peer\IBasicRobotPeer.cs" />
+    <Compile Include="robotinterfaces\peer\IJuniorRobotPeer.cs" />
+    <Compile Include="robotinterfaces\peer\IStandardRobotPeer.cs" />
+    <Compile Include="robotinterfaces\peer\ITeamRobotPeer.cs" />
+    <Compile Include="RobotStatus.cs" />
+    <Compile Include="Rules.cs" />
+    <Compile Include="ScannedRobotEvent.cs" />
+    <Compile Include="SkippedTurnEvent.cs" />
+    <Compile Include="StatusEvent.cs" />
+    <Compile Include="TeamRobot.cs" />
+    <Compile Include="TurnCompleteCondition.cs" />
+    <Compile Include="util\Utils.cs" />
+    <Compile Include="WinEvent.cs" />
+    <Compile Include="_AdvancedRadiansRobot.cs" />
+    <Compile Include="_AdvancedRobot.cs" />
+    <Compile Include="_Robot.cs" />
+    <Compile Include="_RobotBase.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

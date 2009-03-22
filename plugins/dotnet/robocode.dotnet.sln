@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "selvin.exportdllattribute",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "selvin.exportdll", "selvin.exportdll\src\selvin.exportdll.csproj", "{30D2C100-1E4A-4CA4-B0BC-AEEA5BE5DADB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robocode.dotnet.napi", "robocode.dotnet.napi\src\robocode.dotnet.napi.csproj", "{7E0900D3-6E8F-46EB-86DB-AA767AA90B84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{30D2C100-1E4A-4CA4-B0BC-AEEA5BE5DADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30D2C100-1E4A-4CA4-B0BC-AEEA5BE5DADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30D2C100-1E4A-4CA4-B0BC-AEEA5BE5DADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E0900D3-6E8F-46EB-86DB-AA767AA90B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E0900D3-6E8F-46EB-86DB-AA767AA90B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E0900D3-6E8F-46EB-86DB-AA767AA90B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E0900D3-6E8F-46EB-86DB-AA767AA90B84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
