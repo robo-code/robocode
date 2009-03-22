@@ -50,7 +50,7 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\selvin.exportdllattribute\src\osadkowski.exportdllattribute.csproj">
+    <ProjectReference Include="..\..\selvin.exportdllattribute\src\selvin.exportdllattribute.csproj">
       <Project>{EAF9A4CD-0965-44C3-8570-09063E4D5E79}</Project>
       <Name>selvin.exportdllattribute</Name>
     </ProjectReference>

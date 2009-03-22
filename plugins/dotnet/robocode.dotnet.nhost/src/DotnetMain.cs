@@ -11,7 +11,7 @@ namespace robocode.dotnet.nhost
     public unsafe class DotnetMain
     {
         [ExportDll("Java_net_sf_robocode_dotnet_host_bridge_DotNetBridge_main", CallingConvention.StdCall)]
-        public static void main(JNIEnv.Real* env, jobject* obj)
+        public static void main(JNIEnv.Native* env, jobject* obj)
         {
             JNIEnv envi = (*env).Wrap();
             Console.WriteLine(".NET hello" + envi.GetVersion());

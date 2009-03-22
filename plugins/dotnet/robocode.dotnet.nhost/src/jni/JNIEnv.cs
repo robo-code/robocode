@@ -7,33 +7,39 @@ namespace robocode.dotnet.nhost.jni
     {
         #region private members and delegates
 
-        private readonly Real* real;
-        private Real.CallVoidMethodA callVoidMethodA;
-        private Real.FindClass findClass;
+        private readonly Native* native;
+        private Native.CallVoidMethodA callVoidMethodA;
+        private Native.FindClass findClass;
         private JNINativeInterface functions;
-        private Real.GetFieldID getFieldID;
-        private Real.GetMethodID getMethodID;
-        private Real.GetObjectClass getObjectClass;
-        private Real.GetVersion getVersion;
+        private Native.GetFieldID getFieldID;
+        private Native.GetMethodID getMethodID;
+        private Native.GetObjectClass getObjectClass;
+        private Native.GetVersion getVersion;
 
-        private Real.RegisterNatives registerNatives;
+        private Native.NewDirectByteBuffer newDirectByteBuffer;
+        private Native.GetDirectBufferAddress getDirectBufferAddress;
+        private Native.GetDirectBufferCapacity getDirectBufferCapacity;
 
-        internal JNIEnv(Real* real)
+
+        private Native.RegisterNatives registerNatives;
+
+        internal JNIEnv(Native* native)
         {
-            this.real = real;
-            functions = *(*real).functions;
+            this.native = native;
+            functions = *(*native).functions;
         }
 
-        #endregion 
+        #endregion
 
         #region JNI methods
+
         public int GetVersion()
         {
             if (getVersion == null)
             {
                 Util.GetDelegateForFunctionPointer(functions.GetVersion, ref getVersion);
             }
-            return getVersion(real);
+            return getVersion(native);
         }
 
         public jclass* FindClass(string name)
@@ -42,7 +48,7 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.FindClass, ref findClass);
             }
-            return findClass.Invoke(real, name);
+            return findClass.Invoke(native, name);
         }
 
         public jclass* GetObjectClass(jobject* obj)
@@ -51,7 +57,7 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.GetObjectClass, ref getObjectClass);
             }
-            return getObjectClass.Invoke(real, obj);
+            return getObjectClass.Invoke(native, obj);
         }
 
         public jmethodID* GetMethodID(jclass* clazz, string name, string sig)
@@ -60,7 +66,7 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.GetMethodID, ref getMethodID);
             }
-            return getMethodID.Invoke(real, clazz, name, sig);
+            return getMethodID.Invoke(native, clazz, name, sig);
         }
 
         public jfieldID* GetFieldID(jclass* clazz, string name, string sig)
@@ -69,7 +75,7 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.GetFieldID, ref getFieldID);
             }
-            return getFieldID.Invoke(real, clazz, name, sig);
+            return getFieldID.Invoke(native, clazz, name, sig);
         }
 
         public JNIResult RegisterNatives(jclass* clazz, JNINativeMethod* methods, int nMethods)
@@ -78,8 +84,36 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.RegisterNatives, ref registerNatives);
             }
-            return registerNatives.Invoke(real, clazz, methods, nMethods);
+            return registerNatives.Invoke(native, clazz, methods, nMethods);
         }
+
+        public jobject* NewDirectByteBuffer(void* address, long capacity)
+        {
+            if (newDirectByteBuffer == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.NewDirectByteBuffer, ref newDirectByteBuffer);
+            }
+            return newDirectByteBuffer.Invoke(native, address, capacity);
+        }
+
+        public void* GetDirectBufferAddress(jobject* buf)
+        {
+            if (getDirectBufferAddress == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.GetDirectBufferAddress, ref getDirectBufferAddress);
+            }
+            return getDirectBufferAddress.Invoke(native, buf);
+        }
+
+        public long GetDirectBufferCapacity(jobject* buf)
+        {
+            if (getDirectBufferCapacity == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.GetDirectBufferCapacity, ref getDirectBufferCapacity);
+            }
+            return getDirectBufferCapacity.Invoke(native, buf);
+        }
+
 
         public JNIResult CallVoidMethodA(jobject* obj, jmethodID* methodID, params jvalue[] args)
         {
@@ -87,7 +121,7 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.CallVoidMethodA, ref callVoidMethodA);
             }
-            return callVoidMethodA(real, obj, methodID, args);
+            return callVoidMethodA(native, obj, methodID, args);
         }
 
         #endregion
@@ -110,52 +144,62 @@ namespace robocode.dotnet.nhost.jni
 
         #endregion
 
-        #region Nested type: Real
+        #region Nested type
 
         [StructLayout(LayoutKind.Sequential, Size = 4), NativeCppClass]
-        public struct Real
+        public struct Native
         {
             public JNINativeInterface* functions;
 
             public JNIEnv Wrap()
             {
-                fixed (Real* real1 = &this)
+                fixed (Native* real1 = &this)
                 {
                     return new JNIEnv(real1);
                 }
             }
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate int GetVersion(Real* thiz);
+            public delegate int GetVersion(Native* thiz);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate JNIResult GetJavaVM(Real* thiz, out JavaVM.Real* vm);
+            public delegate JNIResult GetJavaVM(Native* thiz, out JavaVM.Native* vm);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate jclass* FindClass(Real* thiz, [MarshalAs(UnmanagedType.LPStr)] string name);
+            public delegate jclass* FindClass(Native* thiz, [MarshalAs(UnmanagedType.LPStr)] string name);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate jclass* GetObjectClass(Real* thiz, jobject* obj);
+            public delegate jclass* GetObjectClass(Native* thiz, jobject* obj);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate jmethodID* GetMethodID(
-                Real* thiz, jclass* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
+                Native* thiz, jclass* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
                 [MarshalAs(UnmanagedType.LPStr)] string sig);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate jfieldID* GetFieldID(
-                Real* thiz, jclass* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
+                Native* thiz, jclass* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
                 [MarshalAs(UnmanagedType.LPStr)] string sig);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate JNIResult CallVoidMethodA(
-                Real* thiz, jobject* obj, jmethodID* methodID, params jvalue[] args);
+                Native* thiz, jobject* obj, jmethodID* methodID, params jvalue[] args);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate JNIResult RegisterNatives(Real* thiz, jclass* clazz, JNINativeMethod* methods, int nMethods);
+            public delegate JNIResult RegisterNatives(
+                Native* thiz, jclass* clazz, JNINativeMethod* methods, int nMethods);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate JNIResult UnregisterNatives(Real* thiz, jclass* clazz);
+            public delegate JNIResult UnregisterNatives(Native* thiz, jclass* clazz);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate jobject* NewDirectByteBuffer(Native* thiz, void* address, long capacity);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate void* GetDirectBufferAddress(Native* thiz, jobject* buf);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate long GetDirectBufferCapacity(Native* thiz, jobject* buf);
         }
 
         #endregion
@@ -1194,15 +1238,6 @@ namespace robocode.dotnet.nhost.jni
 	return functions->ExceptionCheck(this);
     }
 
-    jobject* NewDirectByteBuffer(void* address, jlong capacity) {
-        return functions->NewDirectByteBuffer(this, address, capacity);
-    }
-    void* GetDirectBufferAddress(jobject* buf) {
-        return functions->GetDirectBufferAddress(this, buf);
-    }
-    jlong GetDirectBufferCapacity(jobject* buf) {
-        return functions->GetDirectBufferCapacity(this, buf);
-    }
          
          */
     }

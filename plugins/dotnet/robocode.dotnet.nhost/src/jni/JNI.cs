@@ -12,8 +12,8 @@ namespace robocode.dotnet.nhost.jni
 
         public static JNIResult JNI_CreateJavaVM(out JavaVM pvm, out JNIEnv penv)
         {
-            JavaVM.Real* vm;
-            JNIEnv.Real* env;
+            JavaVM.Native* vm;
+            JNIEnv.Native* env;
 
             JNIResult result = Dll.JNI_CreateJavaVM(out vm, out env, null);
             if (result == JNIResult.JNI_OK)
@@ -30,11 +30,11 @@ namespace robocode.dotnet.nhost.jni
         private static class Dll
         {
             [DllImport("jvm.dll", CallingConvention = CallingConvention.StdCall)]
-            public static extern JNIResult JNI_CreateJavaVM(out JavaVM.Real* pvm, out JNIEnv.Real* penv,
+            public static extern JNIResult JNI_CreateJavaVM(out JavaVM.Native* pvm, out JNIEnv.Native* penv,
                                                             JavaVMInitArgs* args);
 
             [DllImport("jvm.dll", CallingConvention = CallingConvention.StdCall)]
-            public static extern JNIResult JNI_GetCreatedJavaVMs(JavaVM.Real** vm, int size, int* size2);
+            public static extern JNIResult JNI_GetCreatedJavaVMs(JavaVM.Native** vm, int size, int* size2);
         }
 
         #endregion

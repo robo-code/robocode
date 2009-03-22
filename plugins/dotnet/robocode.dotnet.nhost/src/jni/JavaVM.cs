@@ -5,19 +5,19 @@ namespace robocode.dotnet.nhost.jni
 {
     public unsafe class JavaVM
     {
-        private readonly Real* real;
-        private Real.AttachCurrentThread attachCurrentThread;
-        private Real.AttachCurrentThreadAsDaemon attachCurrentThreadAsDaemon;
-        private Real.DestroyJavaVM destroyJavaVM;
-        private Real.DetachCurrentThread detachCurrentThread;
+        private readonly Native* native;
+        private Native.AttachCurrentThread attachCurrentThread;
+        private Native.AttachCurrentThreadAsDaemon attachCurrentThreadAsDaemon;
+        private Native.DestroyJavaVM destroyJavaVM;
+        private Native.DetachCurrentThread detachCurrentThread;
         private JNIInvokeInterface functions;
-        private Real.GetEnv getEnv;
+        private Native.GetEnv getEnv;
 
 
-        internal JavaVM(Real* real)
+        internal JavaVM(Native* native)
         {
-            this.real = real;
-            functions = *(*real).functions;
+            this.native = native;
+            functions = *(*native).functions;
         }
 
         public JNIResult AttachCurrentThread(out JNIEnv penv, JavaVMInitArgs* args)
@@ -26,8 +26,8 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.AttachCurrentThread, ref attachCurrentThread);
             }
-            JNIEnv.Real* env;
-            JNIResult result = attachCurrentThread.Invoke(real, out env, args);
+            JNIEnv.Native* env;
+            JNIResult result = attachCurrentThread.Invoke(native, out env, args);
             penv = new JNIEnv(env);
             return result;
         }
@@ -39,8 +39,8 @@ namespace robocode.dotnet.nhost.jni
                 Util.GetDelegateForFunctionPointer(functions.AttachCurrentThreadAsDaemon,
                                                    ref attachCurrentThreadAsDaemon);
             }
-            JNIEnv.Real* env;
-            JNIResult result = attachCurrentThreadAsDaemon.Invoke(real, out env, args);
+            JNIEnv.Native* env;
+            JNIResult result = attachCurrentThreadAsDaemon.Invoke(native, out env, args);
             penv = new JNIEnv(env);
             return result;
         }
@@ -51,7 +51,7 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.DestroyJavaVM, ref destroyJavaVM);
             }
-            return destroyJavaVM.Invoke(real);
+            return destroyJavaVM.Invoke(native);
         }
 
         public JNIResult DetachCurrentThread()
@@ -60,7 +60,7 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.DetachCurrentThread, ref detachCurrentThread);
             }
-            return detachCurrentThread.Invoke(real);
+            return detachCurrentThread.Invoke(native);
         }
 
         public JNIResult GetEnv(out JNIEnv penv, int version)
@@ -69,34 +69,34 @@ namespace robocode.dotnet.nhost.jni
             {
                 Util.GetDelegateForFunctionPointer(functions.GetEnv, ref getEnv);
             }
-            JNIEnv.Real* env;
-            JNIResult result = getEnv.Invoke(real, out env, version);
+            JNIEnv.Native* env;
+            JNIResult result = getEnv.Invoke(native, out env, version);
             penv = new JNIEnv(env);
             return result;
         }
 
-        #region Nested type: Real
+        #region Nested type
 
         [StructLayout(LayoutKind.Sequential, Size = 4), NativeCppClass]
-        public struct Real
+        public struct Native
         {
             public JNIInvokeInterface* functions;
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate JNIResult AttachCurrentThread(Real* thiz, out JNIEnv.Real* penv, JavaVMInitArgs* args);
+            public delegate JNIResult AttachCurrentThread(Native* thiz, out JNIEnv.Native* penv, JavaVMInitArgs* args);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate JNIResult AttachCurrentThreadAsDaemon(
-                Real* thiz, out JNIEnv.Real* penv, JavaVMInitArgs* args);
+                Native* thiz, out JNIEnv.Native* penv, JavaVMInitArgs* args);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate JNIResult DestroyJavaVM(Real* thiz);
+            public delegate JNIResult DestroyJavaVM(Native* thiz);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate JNIResult DetachCurrentThread(Real* thiz);
+            public delegate JNIResult DetachCurrentThread(Native* thiz);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate JNIResult GetEnv(Real* thiz, out JNIEnv.Real* penv, int version);
+            public delegate JNIResult GetEnv(Native* thiz, out JNIEnv.Native* penv, int version);
         }
 
         #endregion
