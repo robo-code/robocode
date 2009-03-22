@@ -8,6 +8,7 @@
     <fileSets>
         <fileSet>
             <excludes>
+                <exclude>plugins/**</exclude>
                 <exclude>**/*.iws</exclude>
                 <exclude>**/*.bak</exclude>
                 <exclude>**/Thumbs.db</exclude>
