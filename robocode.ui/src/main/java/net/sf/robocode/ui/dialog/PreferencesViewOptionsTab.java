@@ -28,7 +28,8 @@ import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
 
 import javax.swing.*;
-
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -75,7 +76,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 	private final ISettingsManager properties;
 
-	private class EventHandler implements ActionListener {
+	private class EventHandler implements ActionListener, DocumentListener {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
 
@@ -95,6 +96,18 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 				maxTpsButtonActionPerformed();
 			}
 		}
+
+		public void changedUpdate(DocumentEvent e) {
+			fireStateChanged();
+		}
+
+		public void insertUpdate(DocumentEvent e) {
+			fireStateChanged();
+		}
+
+		public void removeUpdate(DocumentEvent e) {
+			fireStateChanged();
+		}
 	}
 
 	public PreferencesViewOptionsTab(ISettingsManager properties) {
@@ -106,6 +119,9 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private void defaultViewOptionsButtonActionPerformed() {
 		setAllViewOptionsButtonsEnabled(true);
 		getVisibleScanArcsCheckBox().setSelected(false);
+		getVisibleExplosionsCheckBox().setSelected(false);
+		getVisibleGroundCheckBox().setSelected(false);
+		getVisibleExplosionDebrisCheckBox().setSelected(false);
 	}
 
 	private void setAllViewOptionsButtonsEnabled(boolean enabled) {
@@ -174,6 +190,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		if (desiredTpsTextField == null) {
 			desiredTpsTextField = new JTextField();
 			desiredTpsTextField.setColumns(5);
+			desiredTpsTextField.getDocument().addDocumentListener(eventHandler);
+
 			desiredTpsTextField.setInputVerifier(
 					new InputVerifier() {
 				@Override
