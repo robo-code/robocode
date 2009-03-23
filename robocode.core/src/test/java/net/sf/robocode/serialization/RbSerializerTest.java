@@ -72,12 +72,14 @@ public class RbSerializerTest {
 		ec.getBullets().add(new BulletCommand(1.0, true, 0.9354, 11));
 		ec.getBullets().add(new BulletCommand(1.0, false, 0.9454, 12));
 		ec.getBullets().add(new BulletCommand(1.0, true, 0.9554, -128));
+		ec.setDebugProperty("test", "testData");
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
 		RbSerializer rbs = new RbSerializer();
 
 		rbs.serialize(out, RbSerializer.ExecCommands_TYPE, ec);
-		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+		final byte[] buf = out.toByteArray();
+		ByteArrayInputStream in = new ByteArrayInputStream(buf);
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
 		assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
@@ -85,6 +87,7 @@ public class RbSerializerTest {
 		Assert.assertEquals(ec2.getBullets().get(1).isFireAssistValid(), false);
 		Assert.assertEquals(ec2.getBullets().get(2).isFireAssistValid(), true);
 		Assert.assertEquals(ec2.getBullets().get(2).getBulletId(), -128);
+		Assert.assertEquals(ec2.getDebugProperties().get(0).getValue(), "testData");
 	}
 
 	@Test

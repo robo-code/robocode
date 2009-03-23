@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace robocode.dotnet.nhost.jni
@@ -11,14 +11,14 @@ namespace robocode.dotnet.nhost.jni
         private Native.CallVoidMethodA callVoidMethodA;
         private Native.FindClass findClass;
         private JNINativeInterface functions;
+        private Native.GetDirectBufferAddress getDirectBufferAddress;
+        private Native.GetDirectBufferCapacity getDirectBufferCapacity;
         private Native.GetFieldID getFieldID;
         private Native.GetMethodID getMethodID;
         private Native.GetObjectClass getObjectClass;
         private Native.GetVersion getVersion;
 
         private Native.NewDirectByteBuffer newDirectByteBuffer;
-        private Native.GetDirectBufferAddress getDirectBufferAddress;
-        private Native.GetDirectBufferCapacity getDirectBufferCapacity;
 
 
         private Native.RegisterNatives registerNatives;

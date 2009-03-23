@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.*;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -96,6 +97,7 @@ public final class RbSerializer {
 		encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
 		// throw away forst bom
 		ByteBuffer buffer = ByteBuffer.allocate(8);
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
 
 		encoder.encode(CharBuffer.wrap("BOM"), buffer, false);
 
@@ -109,6 +111,7 @@ public final class RbSerializer {
 
 		// header
 		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT);
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
 
 		buffer.putInt(byteOrder);
 		buffer.putInt(currentVersion);
@@ -117,6 +120,7 @@ public final class RbSerializer {
 
 		// body
 		buffer = ByteBuffer.allocate(length);
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
 		serialize(buffer, type, object);
 		if (buffer.remaining() != 0) {
 			throw new IOException("Serialization failed: bad size"); 
@@ -129,6 +133,7 @@ public final class RbSerializer {
 
 		// header
 		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
 
 		buffer.putInt(byteOrder);
 		buffer.putInt(currentVersion);
@@ -145,6 +150,7 @@ public final class RbSerializer {
 	public Object deserialize(InputStream source) throws IOException {
 		// header
 		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT );
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
 
 		fillBuffer(source, buffer);
 		buffer.flip();
@@ -161,6 +167,7 @@ public final class RbSerializer {
 
 		// body
 		buffer = ByteBuffer.allocate(length);
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
 		fillBuffer(source, buffer);
 		buffer.flip();
 		final Object res = deserializeAny(buffer);
@@ -443,6 +450,7 @@ public final class RbSerializer {
 
 	private ByteBuffer encode(String data) {
 		final ByteBuffer slice = ByteBuffer.allocate(data.length() * 3);
+		slice.order(ByteOrder.LITTLE_ENDIAN);
 
 		encoder.encode(CharBuffer.wrap(data), slice, false);
 		slice.flip();

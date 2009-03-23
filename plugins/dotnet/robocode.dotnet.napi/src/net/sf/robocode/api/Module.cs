@@ -34,5 +34,9 @@ namespace net.sf.robocode.api
             RbSerializer.register(typeof (MouseReleasedEvent), 0x35);
             RbSerializer.register(typeof (MouseWheelMovedEvent), 0x36);
         }
+
+        public static void Init()
+        {
+        }
     }
 }

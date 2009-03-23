@@ -25,6 +25,7 @@ import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
 import java.util.Map;
@@ -152,6 +153,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		Graphics2DSerialized gfxProxyCopy = new Graphics2DSerialized();
 
 		gfxProxyCopy.calls = ByteBuffer.allocate(2048);
+		calls.order(ByteOrder.LITTLE_ENDIAN);
 		calls.put(calls);
 		gfxProxyCopy.transform = transform;
 		gfxProxyCopy.composite = copyOf(composite);
@@ -954,6 +956,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	public void setPaintingEnabled(boolean value) {
 		if (value && !isPaintingEnabled) {
 			calls = ByteBuffer.allocate(24 * 1024);
+			calls.order(ByteOrder.LITTLE_ENDIAN);
 		}
 		isPaintingEnabled = value;
 	}

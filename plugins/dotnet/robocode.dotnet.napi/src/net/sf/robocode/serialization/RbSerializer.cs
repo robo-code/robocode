@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using net.sf.robocode.core;
 using net.sf.robocode.io;
-using net.sf.robocode.manager;
 using net.sf.robocode.security;
 using robocode;
 
@@ -13,6 +11,7 @@ namespace net.sf.robocode.serialization
 {
     public class RbSerializer
     {
+        private const uint byteOrder = 0xC0DEDEA1;
         private static readonly Encoding charset;
         private static readonly Dictionary<Type, byte> classToType = new Dictionary<Type, byte>();
         private static readonly ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
@@ -46,9 +45,6 @@ namespace net.sf.robocode.serialization
         public static byte RobotDeathEvent_TYPE = 39;
         public static byte RobotStatus_TYPE = 6;
         public static byte ScannedRobotEvent_TYPE = 41;
-        public static byte SkippedTurnEvent_TYPE = 40;
-        public static byte TeamMessage_TYPE = 3;
-        public static byte WinEvent_TYPE = 37;
 
         public static int SIZEOF_BOOL = 1;
         public static int SIZEOF_BYTE = 1;
@@ -57,8 +53,10 @@ namespace net.sf.robocode.serialization
         public static int SIZEOF_INT = 4;
         public static int SIZEOF_LONG = 8;
         public static int SIZEOF_TYPEINFO = 1;
-        public static byte TERMINATOR_TYPE = 0xff; //TODO check
-        private const uint byteOrder = 0xC0DEDEA1;
+        public static byte SkippedTurnEvent_TYPE = 40;
+        public static byte TeamMessage_TYPE = 3;
+        public static byte TERMINATOR_TYPE = 0x80;
+        public static byte WinEvent_TYPE = 37;
 
         private readonly int currentVersion;
         private readonly Decoder decoder;
@@ -72,11 +70,8 @@ namespace net.sf.robocode.serialization
 
         public RbSerializer()
         {
-            currentVersion = ContainerBase.getComponent<IVersionManagerBase>().getVersionAsInt();
+            currentVersion = 0x01070200; //TODO ContainerBase.getComponent<IVersionManagerBase>().getVersionAsInt();
             encoder = charset.GetEncoder();
-
-            //TODO encoder.encode(CharBuffer.wrap("BOM"), buffer, false);
-
             decoder = charset.GetDecoder();
         }
 
@@ -188,7 +183,10 @@ namespace net.sf.robocode.serialization
             }
             else
             {
-                //TODO bw.Write(data);
+                var bytesData = new byte[data.Length*3];
+                int bytes = encoder.GetBytes(data.ToCharArray(), 0, data.Length, bytesData, 0, false);
+                bw.Write(bytes);
+                bw.Write(bytesData, 0, bytes);
             }
         }
 
@@ -321,8 +319,10 @@ namespace net.sf.robocode.serialization
                 return null;
             }
 
-            //TODO decoder.decode(slice).toString();
-            return "";
+            byte[] readBytes = br.ReadBytes(bytes);
+            var chars = new char[bytes*3];
+            int len = decoder.GetChars(readBytes, 0, bytes, chars, 0, false);
+            return new string(chars, 0, len);
         }
 
         public byte[] deserializeBytes(BinaryReader br)
@@ -465,7 +465,9 @@ namespace net.sf.robocode.serialization
             {
                 if (realClass != null)
                 {
-                    MethodInfo method = realClass.GetMethod("createHiddenSerializer");
+                    MethodInfo[] methods = realClass.GetMethods();
+                    MethodInfo method = realClass.GetMethod("createHiddenSerializer",
+                                                            BindingFlags.Static | BindingFlags.NonPublic);
                     var helper = (ISerializableHelper) method.Invoke(null, null);
 
                     typeToHelper[type] = helper;
