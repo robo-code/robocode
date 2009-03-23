@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2008 Albert Pï¿½rez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Albert Pérez
+ *     Albert Pï¿½rez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
@@ -46,7 +46,7 @@ import java.util.zip.ZipEntry;
  * Manages the download operations (participants and JAR files).
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert Pï¿½rez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class BotsDownload {
@@ -193,12 +193,20 @@ public class BotsDownload {
 			in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
 
 			for (String str; (str = in.readLine()) != null;) {
-				if (str.indexOf(begin) != -1) {
+				if (str.indexOf(begin) >= 0) {
 					arebots = true;
-				} else if (str.indexOf(end) != -1) {
+				} else if (str.indexOf(end) >= 0) {
 					arebots = false;
 				} else if (arebots) {
-					String name = str.substring(0, str.indexOf(","));
+					int commaIndex = str.indexOf(",");
+					
+					String name;
+
+					if (commaIndex >= 0) {
+						name = str.substring(0, commaIndex);
+					} else {
+						name = str;
+					}
 
 					if (!isExcluded(name)) {
 						bots.add(str);
