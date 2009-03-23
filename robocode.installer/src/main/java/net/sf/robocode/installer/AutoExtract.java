@@ -21,6 +21,7 @@ package net.sf.robocode.installer;
 
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -207,7 +208,7 @@ public class AutoExtract implements ActionListener {
 						File dir = new File(dest, entry.getName());
 
 						if (!dir.exists() && !dir.mkdirs()) {
-							System.out.println("Can't create dir " + dir);
+							System.err.println("Can't create dir: " + dir);
 						}
 					}
 				} else {
@@ -218,7 +219,7 @@ public class AutoExtract implements ActionListener {
 						File parentDirectory = new File(out.getParent());
 
 						if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
-							System.out.println("Can't create dir " + parentDirectory);
+							System.err.println("Can't create dir: " + parentDirectory);
 						}
 						fos = new FileOutputStream(out);
 
@@ -324,7 +325,7 @@ public class AutoExtract implements ActionListener {
 
 				if (rc == JOptionPane.YES_OPTION) {
 					if (!installDir.exists() && !installDir.mkdirs()) {
-						System.out.println("Can't create dir " + installDir);
+						System.err.println("Can't create dir: " + installDir);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Installation cancelled.");
@@ -332,6 +333,9 @@ public class AutoExtract implements ActionListener {
 				}
 			}
 			deleteOldLibs(installDir);
+			
+			deleteDir(new File(installDir, ".robotcache"));
+
 			boolean rv = extractor.extract(installDir);
 
 			if (rv) {
@@ -360,10 +364,44 @@ public class AutoExtract implements ActionListener {
 
 			for (File d : del) {
 				if (!d.delete()) {
-					System.out.println("Can't delete " + d);
+					System.err.println("Can't delete: " + d);
 				}
 			}
 		}
+	}
+
+	public static boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			for (File file : dir.listFiles()) {
+				if (file.isDirectory()) {
+					// Skip directories ending with ".data" 
+					if (file.getName().endsWith(".data")) {
+						continue;
+					}
+					try {
+						// Test for symlink and ignore.
+						// Robocode won't create one, but just in case a user does...
+						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
+							deleteDir(file);
+							if (file.exists() && !file.delete()) {
+								System.err.println("Can't delete: " + file);
+							}
+						} else {
+							System.out.println("Warning: " + file + " may be a symlink. It has been ignored");
+						}
+					} catch (IOException e) {
+						System.out.println(
+								"Warning: Cannot determine canonical file for " + file + ". It has been ignored");
+					}
+				} else {
+					if (file.exists() && !file.delete()) {
+						System.err.println("Can't delete: " + file);
+					}
+				}
+			}
+			return dir.delete();
+		}
+		return false;
 	}
 
 	private void createShortcuts(File installDir, String runnable, String folder, String name) {
@@ -444,14 +482,14 @@ public class AutoExtract implements ActionListener {
 			int rv = p.waitFor();
 
 			if (rv != 0) {
-				System.out.println("Can't create shortcut " + shortcutMaker);
+				System.err.println("Can't create shortcut: " + shortcutMaker);
 				return false;
 			}
 			JOptionPane.showMessageDialog(null,
 					message + "\n" + "A Robocode program group has been added to your Start menu\n"
 					+ "A Robocode icon has been added to your desktop.");
 			if (!shortcutMaker.delete()) {
-				System.out.println("Can't delete " + shortcutMaker);
+				System.err.println("Can't delete: " + shortcutMaker);
 			}
 			return true;
 		} catch (IOException e) {

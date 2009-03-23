@@ -44,6 +44,9 @@ public class CustomEvent extends Event {
 	 */
 	public CustomEvent(Condition condition) {
 		this.condition = condition;
+		if (condition!=null){
+			setPriority(condition.getPriority());
+		}
 	}
 
 	/**

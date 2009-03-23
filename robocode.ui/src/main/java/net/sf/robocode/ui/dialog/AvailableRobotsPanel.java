@@ -62,6 +62,8 @@ public class AvailableRobotsPanel extends JPanel {
 
 	private JScrollPane availablePackagesScrollPane;
 
+	private RobotNameCellRenderer robotNameCellRenderer;
+
 	private final RobotSelectionPanel robotSelectionPanel;
 
 	private final String title;
@@ -137,6 +139,9 @@ public class AvailableRobotsPanel extends JPanel {
 			availableRobotsList = new JList();
 			availableRobotsList.setModel(new AvailableRobotsModel());
 			availableRobotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+			availableRobotsList.setCellRenderer(getRobotNameCellRenderer());
+
 			MouseListener mouseListener = new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -228,22 +233,18 @@ public class AvailableRobotsPanel extends JPanel {
 				useShortName = false;
 				availableRobots.clear();
 				for (IRepositoryItem robotItem : robotList) {
-					ItemWrapper itemWrapper = new ItemWrapper(robotItem);
-
-					itemWrapper.setUseShortName(useShortName);
-					availableRobots.add(itemWrapper);
+					getRobotNameCellRenderer().setUseShortName(useShortName);
+					availableRobots.add(new ItemWrapper(robotItem));
 				}
 				break;
 			}
 			// Single package.
 			for (IRepositoryItem robotItem : robotList) {
-				ItemWrapper itemWrapper = new ItemWrapper(robotItem);
-
-				itemWrapper.setUseShortName(useShortName);
+				getRobotNameCellRenderer().setUseShortName(useShortName);
 
 				if ((robotItem.getFullPackage() == null && selectedPackage.equals("(No package)"))
 						|| robotItem.getFullPackage().equals(selectedPackage)) {
-					availableRobots.add(itemWrapper);
+					availableRobots.add(new ItemWrapper(robotItem));
 				}
 			}
 		}
@@ -306,6 +307,13 @@ public class AvailableRobotsPanel extends JPanel {
 		return availablePackagesScrollPane;
 	}
 
+	private RobotNameCellRenderer getRobotNameCellRenderer() {
+		if (robotNameCellRenderer == null) {
+			robotNameCellRenderer = new RobotNameCellRenderer();
+		}
+		return robotNameCellRenderer;
+	}
+	
 	private class EventHandler implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			if (e.getValueIsAdjusting()) {
@@ -351,13 +359,10 @@ public class AvailableRobotsPanel extends JPanel {
 
 
 	/**
-	 * Is there because of keyboard navigation is tied to toString() mehtod
+	 * Is there because of keyboard navigation is tied to toString() method
 	 */
 	public static class ItemWrapper {
-
 		private final IRepositoryItem item;
-
-		private transient boolean useShortNames;
 
 		public ItemWrapper(IRepositoryItem item) {
 			this.item = item;
@@ -367,19 +372,58 @@ public class AvailableRobotsPanel extends JPanel {
 			return item;
 		}
 
-		public int compareTo(Object o) {
-			return item.compareTo(o);
-		}
-
-		// Used by toString() for keyboard typing in JList to find robot. Bugfix for [2658090]
-		public void setUseShortName(boolean value) {
-			useShortNames = value;
-		}
-
 		// Used writing the robot name in JList. Is used for keyboard typing in JList to find robot. Bugfix for [2658090]
 		public String toString() {
-			return (item.isTeam() ? "Team: " : "")
-					+ (useShortNames ? item.getUniqueShortClassNameWithVersion() : item.getUniqueFullClassNameWithVersion());
+			return item.getUniqueShortClassNameWithVersion();
+		}
+	}
+
+
+	/**
+	 * RobotNameCellRender, which renders the list cells with "Team: " prefix, and with or without package names.
+	 * This is cheating, as the ItemWrapper.toString() delivers the string used for keyboard navigation etc.
+	 */
+	private static class RobotNameCellRenderer extends JLabel implements ListCellRenderer {
+		private boolean useShortName = false;
+
+		public RobotNameCellRenderer() {
+			setOpaque(true);
+		}
+
+		public void setUseShortName(boolean useShortNames) {
+			this.useShortName = useShortNames;
+		}
+
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+			setComponentOrientation(list.getComponentOrientation());
+
+			if (isSelected) {
+				setBackground(list.getSelectionBackground());
+				setForeground(list.getSelectionForeground());
+			} else {
+				setBackground(list.getBackground());
+				setForeground(list.getForeground());
+			}
+
+			String text;
+
+			if (value instanceof ItemWrapper) {
+				IRepositoryItem item = ((ItemWrapper) value).getItem();
+
+				text = (item.isTeam() ? "Team: " : "");
+				text += useShortName
+						? item.getUniqueShortClassNameWithVersion()
+						: item.getUniqueFullClassNameWithVersion();
+			} else {
+				text = value.toString();
+			}
+			setText(text);
+
+			setEnabled(list.isEnabled());
+			setFont(list.getFont());
+
+			return this;
 		}
 	}
 }
