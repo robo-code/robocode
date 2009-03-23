@@ -1,9 +1,7 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -12,12 +10,12 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 10;
         private const long serialVersionUID = 1L;
-        private double bearing;
-        private double distance;
-        private double energy;
-        private double heading;
-        private string name;
-        private double velocity;
+        private readonly double bearing;
+        private readonly double distance;
+        private readonly double energy;
+        private readonly double heading;
+        private readonly string name;
+        private readonly double velocity;
 
         public ScannedRobotEvent(string name, double energy, double bearing, double distance, double heading,
                                  double velocity)
@@ -60,16 +58,16 @@ namespace robocode
             return event1.velocity;
         }
 
-        public override int CompareTo(object @event)
+        public override int CompareTo(object evnt)
         {
-            int num = base.CompareTo(@event);
+            int num = base.CompareTo(evnt);
             if (num != 0)
             {
                 return num;
             }
-            if (@event is ScannedRobotEvent)
+            if (evnt is ScannedRobotEvent)
             {
-                return (int)(getDistance() - ((ScannedRobotEvent) @event).getDistance());
+                return (int) (getDistance() - ((ScannedRobotEvent) evnt).getDistance());
             }
             return 0;
         }
@@ -90,7 +88,7 @@ namespace robocode
 
         public double getBearing()
         {
-            return ((bearing*180.0)/3.1415926535897931);
+            return ((bearing*180.0)/Math.PI);
         }
 
         public double getBearingRadians()
@@ -115,7 +113,7 @@ namespace robocode
 
         public double getHeading()
         {
-            return ((heading*180.0)/3.1415926535897931);
+            return ((heading*180.0)/Math.PI);
         }
 
         public double getHeadingRadians()
@@ -152,25 +150,25 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                string name = serializer1.deserializeString(buffer1);
-                double energy = buffer1.getDouble();
-                double heading = buffer1.getDouble();
-                double bearing = buffer1.getDouble();
-                double distance = buffer1.getDouble();
-                return new ScannedRobotEvent(name, energy, bearing, distance, heading, buffer1.getDouble());
+                string name = serializer.deserializeString(br);
+                double energy = br.ReadDouble();
+                double heading = br.ReadDouble();
+                double bearing = br.ReadDouble();
+                double distance = br.ReadDouble();
+                return new ScannedRobotEvent(name, energy, bearing, distance, heading, br.ReadDouble());
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var event2 = (ScannedRobotEvent) obj1;
-                serializer1.serialize(buffer1, access100(event2));
-                serializer1.serialize(buffer1, access200(event2));
-                serializer1.serialize(buffer1, access300(event2));
-                serializer1.serialize(buffer1, access400(event2));
-                serializer1.serialize(buffer1, access500(event2));
-                serializer1.serialize(buffer1, access600(event2));
+                var event2 = (ScannedRobotEvent) obj;
+                serializer.serialize(bw, access100(event2));
+                serializer.serialize(bw, access200(event2));
+                serializer.serialize(bw, access300(event2));
+                serializer.serialize(bw, access400(event2));
+                serializer.serialize(bw, access500(event2));
+                serializer.serialize(bw, access600(event2));
             }
 
             public int sizeOf(RbSerializer serializer1, object obj1)

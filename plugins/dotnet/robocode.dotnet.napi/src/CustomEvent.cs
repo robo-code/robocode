@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 
@@ -10,7 +8,7 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 80;
         private const long serialVersionUID = 1L;
-        private Condition condition;
+        private readonly Condition condition;
 
         public CustomEvent(Condition condition)
         {

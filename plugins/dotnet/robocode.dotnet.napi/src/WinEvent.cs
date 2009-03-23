@@ -1,8 +1,6 @@
-using System.Drawing;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -46,7 +44,6 @@ namespace robocode
             return true;
         }
 
-
         #region Nested type: SerializableHelper
 
         internal sealed class SerializableHelper : ISerializableHelper
@@ -61,16 +58,16 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
                 return new WinEvent();
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object @object)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
             }
 
-            public int sizeOf(RbSerializer serializer, object @object)
+            public int sizeOf(RbSerializer serializer, object obj)
             {
                 return 1;
             }

@@ -2,10 +2,10 @@ namespace robocode
 {
     public abstract class KeyEvent : Event
     {
+        private readonly int id;
         private readonly char keyChar;
         private readonly int keyCode;
         private readonly int keyLocation;
-        private readonly int id;
         private readonly int modifiers;
         private readonly long when;
 

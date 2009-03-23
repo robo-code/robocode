@@ -1,4 +1,3 @@
-
 namespace robocode.robotinterfaces
 {
     public interface IInteractiveRobot : IBasicRobot

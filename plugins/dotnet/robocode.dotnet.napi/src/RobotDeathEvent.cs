@@ -1,8 +1,7 @@
 using System;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -11,7 +10,7 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 70;
         private const long serialVersionUID = 1L;
-        private string robotName;
+        private readonly string robotName;
 
         public RobotDeathEvent(string robotName)
         {
@@ -71,15 +70,15 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer1, BinaryReader br)
             {
-                return new RobotDeathEvent(serializer1.deserializeString(buffer1));
+                return new RobotDeathEvent(serializer1.deserializeString(br));
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var event2 = (RobotDeathEvent) obj1;
-                serializer1.serialize(buffer1, access100(event2));
+                var event2 = (RobotDeathEvent) obj;
+                serializer.serialize(bw, access100(event2));
             }
 
             public int sizeOf(RbSerializer serializer1, object obj1)

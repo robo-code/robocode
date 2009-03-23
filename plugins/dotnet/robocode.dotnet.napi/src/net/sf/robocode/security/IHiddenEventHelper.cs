@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using net.sf.robocode.peer;
 using robocode;
 using robocode.robotinterfaces;
-using Event=robocode.Event;
 
 namespace net.sf.robocode.security
 {

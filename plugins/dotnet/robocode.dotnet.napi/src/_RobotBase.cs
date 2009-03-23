@@ -1,6 +1,5 @@
-using System;
-using System.Text;
 using System.IO;
+using System.Text;
 using robocode.exception;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
@@ -11,17 +10,15 @@ namespace robocode
     {
         private TextWriter @out;
 
-        public TextWriter Out
-        {
-            get
-            {
-                return @out;
-            }
-        }
         internal IBasicRobotPeer peer;
 
         internal _RobotBase()
         {
+        }
+
+        public TextWriter Out
+        {
+            get { return @out; }
         }
 
         #region IBasicRobot Members
@@ -42,7 +39,7 @@ namespace robocode
 
         #endregion
 
-        #region Runnable Members
+        #region IRunnable Members
 
         public abstract void run();
 
@@ -50,8 +47,8 @@ namespace robocode
 
         internal static void uninitializedException()
         {
-            StringBuilder sb = new StringBuilder();
-            string str = "TODO methodname";//TODO System.Threading.CompressedStack.Capture().
+            var sb = new StringBuilder();
+            string str = "TODO methodname"; //TODO System.Threading.CompressedStack.Capture().
             throw new RobotException(
                 sb.Append("You cannot call the ").Append(str).Append(
                     "() method before your run() method is called, or you are using a Robot object that the game doesn't know about.")

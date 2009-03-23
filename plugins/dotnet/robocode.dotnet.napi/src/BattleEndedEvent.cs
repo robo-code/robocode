@@ -1,7 +1,6 @@
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -10,8 +9,8 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 100;
         private const long serialVersionUID = 1L;
-        private bool aborted;
-        private BattleResults results;
+        private readonly bool aborted;
+        private readonly BattleResults results;
 
         public BattleEndedEvent(bool aborted, BattleResults results)
         {
@@ -28,7 +27,7 @@ namespace robocode
         {
             if (robot1 != null)
             {
-                IBasicEvents2 listener = robot1.getBasicEventListener() as IBasicEvents2;
+                var listener = robot1.getBasicEventListener() as IBasicEvents2;
                 if (listener != null)
                 {
                     listener.onBattleEnded(this);
@@ -66,7 +65,6 @@ namespace robocode
             return true;
         }
 
-        
         #region Nested type: SerializableHelper
 
         internal sealed class SerializableHelper : ISerializableHelper
@@ -81,17 +79,17 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                return new BattleEndedEvent(serializer1.deserializeBoolean(buffer1),
-                                            (BattleResults) serializer1.deserializeAny(buffer1));
+                return new BattleEndedEvent(serializer.deserializeBoolean(br),
+                                            (BattleResults) serializer.deserializeAny(br));
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var event2 = (BattleEndedEvent) obj1;
-                serializer1.serialize(buffer1, event2.aborted);
-                serializer1.serialize(buffer1, 8, event2.results);
+                var event2 = (BattleEndedEvent) obj;
+                serializer.serialize(bw, event2.aborted);
+                serializer.serialize(bw, 8, event2.results);
             }
 
             public int sizeOf(RbSerializer serializer1, object obj1)

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 

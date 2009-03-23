@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -12,23 +10,13 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 0x37;
         private const long serialVersionUID = 1L;
+        private readonly Bullet hitBullet;
         private Bullet bullet;
-        private Bullet hitBullet;
 
         public BulletHitBulletEvent(Bullet bullet, Bullet hitBullet)
         {
             this.bullet = bullet;
             this.hitBullet = hitBullet;
-        }
-
-        internal static Bullet access100(BulletHitBulletEvent event1)
-        {
-            return event1.hitBullet;
-        }
-
-        internal static Bullet access200(BulletHitBulletEvent event1)
-        {
-            return event1.bullet;
         }
 
         internal static ISerializableHelper createHiddenSerializer()
@@ -84,23 +72,23 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                var bullet = new Bullet(0f, 0f, 0f, 0f, null, null, false, buffer1.getInt());
-                return new BulletHitBulletEvent(bullet, (Bullet) serializer1.deserializeAny(buffer1));
+                var bullet = new Bullet(0f, 0f, 0f, 0f, null, null, false, br.ReadInt32());
+                return new BulletHitBulletEvent(bullet, (Bullet) serializer.deserializeAny(br));
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var event2 = (BulletHitBulletEvent) obj1;
-                serializer1.serialize(buffer1, access200(event2).getBulletId());
-                serializer1.serialize(buffer1, 9, access100(event2));
+                var res = (BulletHitBulletEvent) obj;
+                serializer.serialize(bw, res.bullet.getBulletId());
+                serializer.serialize(bw, 9, res.hitBullet);
             }
 
             public int sizeOf(RbSerializer serializer1, object obj1)
             {
                 var event2 = (BulletHitBulletEvent) obj1;
-                return (5 + serializer1.sizeOf(9, access100(event2)));
+                return (5 + serializer1.sizeOf(9, event2.hitBullet));
             }
 
             #endregion

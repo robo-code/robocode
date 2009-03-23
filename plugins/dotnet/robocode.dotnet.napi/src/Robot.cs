@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
@@ -11,41 +12,41 @@ namespace robocode
         public const int HEIGHT = 40;
         public const int WIDTH = 40;
 
-        #region IBasicEvents Members
+        #region IBasicEvents2 Members
 
-        public virtual void onBulletHit(BulletHitEvent @event)
+        public virtual void onBulletHit(BulletHitEvent evnt)
         {
         }
 
-        public virtual void onBulletHitBullet(BulletHitBulletEvent @event)
+        public virtual void onBulletHitBullet(BulletHitBulletEvent evnt)
         {
         }
 
-        public virtual void onBulletMissed(BulletMissedEvent @event)
+        public virtual void onBulletMissed(BulletMissedEvent evnt)
         {
         }
 
-        public virtual void onDeath(DeathEvent @event)
+        public virtual void onDeath(DeathEvent evnt)
         {
         }
 
-        public virtual void onHitByBullet(HitByBulletEvent @event)
+        public virtual void onHitByBullet(HitByBulletEvent evnt)
         {
         }
 
-        public virtual void onHitRobot(HitRobotEvent @event)
+        public virtual void onHitRobot(HitRobotEvent evnt)
         {
         }
 
-        public virtual void onHitWall(HitWallEvent @event)
+        public virtual void onHitWall(HitWallEvent evnt)
         {
         }
 
-        public virtual void onRobotDeath(RobotDeathEvent @event)
+        public virtual void onRobotDeath(RobotDeathEvent evnt)
         {
         }
 
-        public virtual void onScannedRobot(ScannedRobotEvent @event)
+        public virtual void onScannedRobot(ScannedRobotEvent evnt)
         {
         }
 
@@ -53,30 +54,12 @@ namespace robocode
         {
         }
 
-        public virtual void onWin(WinEvent @event)
+        public virtual void onWin(WinEvent evnt)
         {
         }
 
-        #endregion
-
-        #region IBasicEvents2 Members
-
-        public virtual void onBattleEnded(BattleEndedEvent @event)
+        public virtual void onBattleEnded(BattleEndedEvent evnt)
         {
-        }
-
-        #endregion
-
-        #region IBasicRobot Members
-
-        public override sealed IBasicEvents getBasicEventListener()
-        {
-            return this;
-        }
-
-        public override sealed IRunnable getRobotRunnable()
-        {
-            return this;
         }
 
         #endregion
@@ -130,6 +113,16 @@ namespace robocode
         #endregion
 
         #region IInteractiveRobot Members
+
+        public override sealed IBasicEvents getBasicEventListener()
+        {
+            return this;
+        }
+
+        public override sealed IRunnable getRobotRunnable()
+        {
+            return this;
+        }
 
         public IInteractiveEvents getInteractiveEventListener()
         {
@@ -268,7 +261,7 @@ namespace robocode
         {
             if (base.peer != null)
             {
-                return ((base.peer.getGunHeading()*180.0)/3.1415926535897931);
+                return ((base.peer.getGunHeading()*180.0)/Math.PI);
             }
             uninitializedException();
             return 0f;
@@ -291,7 +284,7 @@ namespace robocode
                 uninitializedException();
                 return 0f;
             }
-            double num = (180.0*base.peer.getBodyHeading())/3.1415926535897931;
+            double num = (180.0*base.peer.getBodyHeading())/Math.PI;
             while (true)
             {
                 if (num >= 0f)
@@ -350,7 +343,7 @@ namespace robocode
         {
             if (base.peer != null)
             {
-                return ((base.peer.getRadarHeading()*180.0)/3.1415926535897931);
+                return ((base.peer.getRadarHeading()*180.0)/Math.PI);
             }
             uninitializedException();
             return 0f;

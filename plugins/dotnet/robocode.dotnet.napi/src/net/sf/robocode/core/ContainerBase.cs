@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace net.sf.robocode.core
 {
@@ -16,7 +15,7 @@ namespace net.sf.robocode.core
 
         public static T getComponent<T>() where T : class
         {
-            return (T)getComponentImpl(typeof(T));
+            return (T) getComponentImpl(typeof (T));
         }
     }
 }

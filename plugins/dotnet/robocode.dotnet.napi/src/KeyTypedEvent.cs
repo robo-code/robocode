@@ -1,8 +1,6 @@
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
-using net.sf.robocode.security;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -44,7 +42,6 @@ namespace robocode
             return 0x2e;
         }
 
- 
         #region Nested type: SerializableHelper
 
         internal sealed class SerializableHelper : ISerializableHelper
@@ -59,26 +56,26 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                char keyChar = buffer1.getChar();
-                int keyCode = buffer1.getInt();
-                int keyLocation = buffer1.getInt();
-                int id = buffer1.getInt();
-                int modifiers = buffer1.getInt();
-                long when = buffer1.getLong();
+                char keyChar = br.ReadChar();
+                int keyCode = br.ReadInt32();
+                int keyLocation = br.ReadInt32();
+                int id = br.ReadInt32();
+                int modifiers = br.ReadInt32();
+                long when = br.ReadInt64();
                 return new KeyTypedEvent(keyChar, keyCode, keyLocation, id, modifiers, when);
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                KeyEvent event3 = ((KeyTypedEvent) obj1);
-                serializer1.serialize(buffer1, event3.KeyChar);
-                serializer1.serialize(buffer1, event3.KeyCode);
-                serializer1.serialize(buffer1, event3.KeyLocation);
-                serializer1.serialize(buffer1, event3.Id);
-                serializer1.serialize(buffer1, event3.Modifiers);
-                serializer1.serialize(buffer1, event3.When);
+                KeyEvent event3 = ((KeyTypedEvent) obj);
+                serializer.serialize(bw, event3.KeyChar);
+                serializer.serialize(bw, event3.KeyCode);
+                serializer.serialize(bw, event3.KeyLocation);
+                serializer.serialize(bw, event3.Id);
+                serializer.serialize(bw, event3.Modifiers);
+                serializer.serialize(bw, event3.When);
             }
 
             public int sizeOf(RbSerializer serializer, object o)

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 
@@ -9,8 +8,8 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 0x4b;
         private const long serialVersionUID = 1L;
+        private readonly string sender;
         private object message;
-        private string sender;
 
         public MessageEvent(string sender, object message)
         {

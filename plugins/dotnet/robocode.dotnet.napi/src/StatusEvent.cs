@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 
@@ -9,7 +8,7 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 0x63;
         private const long serialVersionUID = 1L;
-        private RobotStatus status;
+        private readonly RobotStatus status;
 
         public StatusEvent(RobotStatus status)
         {

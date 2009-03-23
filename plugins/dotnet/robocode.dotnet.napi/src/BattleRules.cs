@@ -5,11 +5,11 @@ namespace robocode
     public sealed class BattleRules
     {
         private const long serialVersionUID = 1L;
-        private int battlefieldHeight;
-        private int battlefieldWidth;
-        private double gunCoolingRate;
-        private long inactivityTime;
-        private int numRounds;
+        private readonly int battlefieldHeight;
+        private readonly int battlefieldWidth;
+        private readonly double gunCoolingRate;
+        private readonly long inactivityTime;
+        private readonly int numRounds;
 
         private BattleRules(int num1, int num2, int num3, double num4, long num5)
         {

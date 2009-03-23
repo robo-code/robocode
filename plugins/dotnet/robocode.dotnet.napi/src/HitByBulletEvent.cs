@@ -1,8 +1,7 @@
 using System;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -11,8 +10,8 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 20;
         private const long serialVersionUID = 1L;
-        private double bearing;
-        private Bullet bullet;
+        private readonly double bearing;
+        private readonly Bullet bullet;
 
         public HitByBulletEvent(double bearing, Bullet bullet)
         {
@@ -46,7 +45,7 @@ namespace robocode
 
         public double getBearing()
         {
-            return ((bearing*180.0)/3.1415926535897931);
+            return ((bearing*180.0)/Math.PI);
         }
 
         public double getBearingRadians()
@@ -113,17 +112,17 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                var bullet = (Bullet) serializer1.deserializeAny(buffer1);
-                return new HitByBulletEvent(buffer1.getDouble(), bullet);
+                var bullet = (Bullet) serializer.deserializeAny(br);
+                return new HitByBulletEvent(br.ReadDouble(), bullet);
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var event2 = (HitByBulletEvent) obj1;
-                serializer1.serialize(buffer1, 9, access100(event2));
-                serializer1.serialize(buffer1, access200(event2));
+                var event2 = (HitByBulletEvent) obj;
+                serializer.serialize(bw, 9, access100(event2));
+                serializer.serialize(bw, access200(event2));
             }
 
             public int sizeOf(RbSerializer serializer1, object obj1)

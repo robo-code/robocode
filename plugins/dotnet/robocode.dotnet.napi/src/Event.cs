@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using System.Text;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
@@ -19,6 +14,31 @@ namespace robocode
         [NonSerialized] private bool addedToQueue;
         private int priority;
         private long time;
+
+        #region IComparable Members
+
+        public virtual int CompareTo(object obj)
+        {
+            var evt = obj as Event;
+            if (evt == null)
+            {
+                return -1;
+            }
+
+            var num = (int) (time - evt.time);
+            if (num != 0)
+            {
+                return num;
+            }
+            int num2 = evt.getPriority() - getPriority();
+            if (num2 != 0)
+            {
+                return num2;
+            }
+            return 0;
+        }
+
+        #endregion
 
         internal static void access100(Event event1, long num1)
         {
@@ -70,7 +90,8 @@ namespace robocode
                 {
                     Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
                     Logger.printlnToRobotsConsole(
-                        new StringBuilder().Append("SYSTEM: Priority for ").Append(GetType().Name).Append(" will be 0").ToString());
+                        new StringBuilder().Append("SYSTEM: Priority for ").Append(GetType().Name).Append(" will be 0").
+                            ToString());
                     newPriority = 0;
                 }
                 else if (newPriority > 0x63)
@@ -109,7 +130,7 @@ namespace robocode
         internal virtual void updateBullets(Dictionary<int, Bullet> h)
         {
         }
-        
+
         #region Nested type: HiddenEventHelper
 
         internal sealed class HiddenEventHelper : IHiddenEventHelper
@@ -163,26 +184,5 @@ namespace robocode
         }
 
         #endregion
-
-        public virtual int CompareTo(object obj)
-        {
-            Event evt = obj as Event;
-            if (evt==null)
-            {
-                return -1;
-            }
-
-            var num = (int)(time - evt.time);
-            if (num != 0)
-            {
-                return num;
-            }
-            int num2 = evt.getPriority() - getPriority();
-            if (num2 != 0)
-            {
-                return num2;
-            }
-            return 0;
-        }
     }
 }

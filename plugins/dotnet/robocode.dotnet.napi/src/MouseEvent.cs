@@ -2,13 +2,13 @@ namespace robocode
 {
     public abstract class MouseEvent : Event
     {
-        private int button;
-        private int clickCount;
-        private int x;
-        private int y;
-        private int id;
-        private int modifiers;
-        private long when;
+        private readonly int button;
+        private readonly int clickCount;
+        private readonly int id;
+        private readonly int modifiers;
+        private readonly long when;
+        private readonly int x;
+        private readonly int y;
 
         public MouseEvent(int id, long when, int modifiers, int x, int y, int clickCount, int button)
         {

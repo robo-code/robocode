@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using robocode.util;
@@ -317,24 +316,24 @@ namespace robocode
             public void onHitByBullet(HitByBulletEvent event1)
             {
                 double angle = this0.peer.getBodyHeading() + event1.getBearingRadians();
-                this0.hitByBulletAngle = (int)(Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                this0.hitByBulletBearing = (int)(event1.getBearing() + 0.5);
+                this0.hitByBulletAngle = (int) (Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+                this0.hitByBulletBearing = (int) (event1.getBearing() + 0.5);
                 this0.onHitByBullet();
             }
 
             public void onHitRobot(HitRobotEvent event1)
             {
                 double angle = this0.peer.getBodyHeading() + event1.getBearingRadians();
-                this0.hitRobotAngle = (int)(Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                this0.hitRobotBearing = (int)(event1.getBearing() + 0.5);
+                this0.hitRobotAngle = (int) (Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+                this0.hitRobotBearing = (int) (event1.getBearing() + 0.5);
                 this0.onHitRobot();
             }
 
             public void onHitWall(HitWallEvent event1)
             {
                 double angle = this0.peer.getBodyHeading() + event1.getBearingRadians();
-                this0.hitWallAngle = (int)(Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                this0.hitWallBearing = (int)(event1.getBearing() + 0.5);
+                this0.hitWallAngle = (int) (Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+                this0.hitWallBearing = (int) (event1.getBearing() + 0.5);
                 this0.onHitWall();
             }
 
@@ -345,15 +344,16 @@ namespace robocode
 
             public void onScannedRobot(ScannedRobotEvent event1)
             {
-                this0.scannedDistance = (int)(event1.getDistance() + 0.5);
-                this0.scannedEnergy = Math.Max(1, (int)(event1.getEnergy() + 0.5));
+                this0.scannedDistance = (int) (event1.getDistance() + 0.5);
+                this0.scannedEnergy = Math.Max(1, (int) (event1.getEnergy() + 0.5));
                 this0.scannedAngle =
-                    (int)(
-                        Utils.toDegrees(
-                            Utils.normalAbsoluteAngle(this0.peer.getBodyHeading() + event1.getBearingRadians())) + 0.5);
-                this0.scannedBearing = (int)(event1.getBearing() + 0.5);
-                this0.scannedHeading = (int)(event1.getHeading() + 0.5);
-                this0.scannedVelocity = (int)(event1.getVelocity() + 0.5);
+                    (int) (
+                              Utils.toDegrees(
+                                  Utils.normalAbsoluteAngle(this0.peer.getBodyHeading() + event1.getBearingRadians())) +
+                              0.5);
+                this0.scannedBearing = (int) (event1.getBearing() + 0.5);
+                this0.scannedHeading = (int) (event1.getHeading() + 0.5);
+                this0.scannedVelocity = (int) (event1.getVelocity() + 0.5);
                 this0.onScannedRobot();
             }
 
@@ -361,14 +361,15 @@ namespace robocode
             {
                 RobotStatus status = event1.getStatus();
                 this0.others = this0.peer.getOthers();
-                this0.energy = Math.Max(1, (int)(status.getEnergy() + 0.5));
-                this0.robotX = (int)(status.getX() + 0.5);
-                this0.robotY = (int)(status.getY() + 0.5);
-                this0.heading = (int)(Utils.toDegrees(status.getHeading()) + 0.5);
-                this0.gunHeading = (int)(Utils.toDegrees(status.getGunHeading()) + 0.5);
+                this0.energy = Math.Max(1, (int) (status.getEnergy() + 0.5));
+                this0.robotX = (int) (status.getX() + 0.5);
+                this0.robotY = (int) (status.getY() + 0.5);
+                this0.heading = (int) (Utils.toDegrees(status.getHeading()) + 0.5);
+                this0.gunHeading = (int) (Utils.toDegrees(status.getGunHeading()) + 0.5);
                 this0.gunBearing =
-                    (int)(
-                        Utils.toDegrees(Utils.normalRelativeAngle(status.getGunHeading() - status.getHeading())) + 0.5);
+                    (int) (
+                              Utils.toDegrees(Utils.normalRelativeAngle(status.getGunHeading() - status.getHeading())) +
+                              0.5);
                 this0.gunReady = status.getGunHeat() <= 0f;
                 if (((juniorFirePower > 0f) && this0.gunReady) &&
                     ((this0.peer.getGunTurnRemaining() == 0f) && (this0.peer.setFire(juniorFirePower) != null)))
@@ -384,12 +385,12 @@ namespace robocode
 
             #endregion
 
-            #region Runnable Members
+            #region IRunnable Members
 
             public void run()
             {
-                this0.fieldWidth = (int)(this0.peer.getBattleFieldWidth() + 0.5);
-                this0.fieldHeight = (int)(this0.peer.getBattleFieldHeight() + 0.5);
+                this0.fieldWidth = (int) (this0.peer.getBattleFieldWidth() + 0.5);
+                this0.fieldHeight = (int) (this0.peer.getBattleFieldHeight() + 0.5);
                 while (true)
                 {
                     this0.run();

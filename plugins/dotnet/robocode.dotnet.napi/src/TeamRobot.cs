@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 
@@ -10,7 +8,7 @@ namespace robocode
     {
         #region ITeamEvents Members
 
-        public virtual void onMessageReceived(MessageEvent @event)
+        public virtual void onMessageReceived(MessageEvent evnt)
         {
         }
 

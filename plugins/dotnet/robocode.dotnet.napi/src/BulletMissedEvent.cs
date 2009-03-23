@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -57,7 +56,6 @@ namespace robocode
             bullet = (Bullet) hashtable1[bullet.getBulletId()];
         }
 
-
         #region Nested type: SerializableHelper
 
         internal sealed class SerializableHelper : ISerializableHelper
@@ -72,15 +70,15 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                return new BulletMissedEvent(new Bullet(0f, 0f, 0f, 0f, null, null, false, buffer1.getInt()));
+                return new BulletMissedEvent(new Bullet(0f, 0f, 0f, 0f, null, null, false, br.ReadInt32()));
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var event2 = (BulletMissedEvent) obj1;
-                serializer1.serialize(buffer1, access100(event2).getBulletId());
+                var event2 = (BulletMissedEvent) obj;
+                serializer.serialize(bw, access100(event2).getBulletId());
             }
 
             public int sizeOf(RbSerializer serializer, object obj)

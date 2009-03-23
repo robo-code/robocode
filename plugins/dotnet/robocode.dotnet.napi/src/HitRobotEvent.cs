@@ -1,9 +1,7 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -12,10 +10,10 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 40;
         private const long serialVersionUID = 1L;
-        private bool atFault;
-        private double bearing;
-        private double energy;
-        private string robotName;
+        private readonly bool atFault;
+        private readonly double bearing;
+        private readonly double energy;
+        private readonly string robotName;
 
         public HitRobotEvent(string name, double bearing, double energy, bool atFault)
         {
@@ -45,17 +43,17 @@ namespace robocode
             return event1.atFault;
         }
 
-        public override int CompareTo(object @event)
+        public override int CompareTo(object evnt)
         {
-            int num = base.CompareTo(@event);
+            int num = base.CompareTo(evnt);
             if (num != 0)
             {
                 return num;
             }
-            if (@event is HitRobotEvent)
+            if (evnt is HitRobotEvent)
             {
                 int num2 = !isMyFault() ? 0 : -1;
-                int num3 = !((HitRobotEvent) @event).isMyFault() ? 0 : -1;
+                int num3 = !((HitRobotEvent) evnt).isMyFault() ? 0 : -1;
                 return (num2 - num3);
             }
             return 0;
@@ -77,7 +75,7 @@ namespace robocode
 
         public double getBearing()
         {
-            return ((bearing*180.0)/3.1415926535897931);
+            return ((bearing*180.0)/Math.PI);
         }
 
         public double getBearingDegrees()
@@ -129,21 +127,21 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                string name = serializer1.deserializeString(buffer1);
-                double bearing = buffer1.getDouble();
-                double energy = buffer1.getDouble();
-                return new HitRobotEvent(name, bearing, energy, serializer1.deserializeBoolean(buffer1));
+                string name = serializer.deserializeString(br);
+                double bearing = br.ReadDouble();
+                double energy = br.ReadDouble();
+                return new HitRobotEvent(name, bearing, energy, serializer.deserializeBoolean(br));
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var event2 = (HitRobotEvent) obj1;
-                serializer1.serialize(buffer1, access100(event2));
-                serializer1.serialize(buffer1, access200(event2));
-                serializer1.serialize(buffer1, access300(event2));
-                serializer1.serialize(buffer1, access400(event2));
+                var event2 = (HitRobotEvent) obj;
+                serializer.serialize(bw, access100(event2));
+                serializer.serialize(bw, access200(event2));
+                serializer.serialize(bw, access300(event2));
+                serializer.serialize(bw, access400(event2));
             }
 
             public int sizeOf(RbSerializer serializer1, object obj1)

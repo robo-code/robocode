@@ -1,4 +1,3 @@
-
 namespace robocode.robotinterfaces.peer
 {
     public interface IJuniorRobotPeer : IBasicRobotPeer

@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using net.sf.robocode.core;
 using net.sf.robocode.peer;
 using robocode;
 using robocode.robotinterfaces;
-using Event=robocode.Event;
 
 namespace net.sf.robocode.security
 {
@@ -30,9 +28,9 @@ namespace net.sf.robocode.security
             eventHelper.setPriority(e, newPriority);
         }
 
-        public static void dispatch(Event @event, IBasicRobot robot, IRobotStatics statics, IGraphics graphics)
+        public static void dispatch(Event evnt, IBasicRobot robot, IRobotStatics statics, IGraphics graphics)
         {
-            eventHelper.dispatch(@event,
+            eventHelper.dispatch(evnt,
                                  robot,
                                  statics,
                                  graphics)

@@ -1,8 +1,6 @@
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
-using net.sf.robocode.security;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -58,29 +56,29 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                int button = buffer1.getInt();
-                int clickCount = buffer1.getInt();
-                int x = buffer1.getInt();
-                int y = buffer1.getInt();
-                int id = buffer1.getInt();
-                int modifiers = buffer1.getInt();
-                long when = buffer1.getLong();
+                int button = br.ReadInt32();
+                int clickCount = br.ReadInt32();
+                int x = br.ReadInt32();
+                int y = br.ReadInt32();
+                int id = br.ReadInt32();
+                int modifiers = br.ReadInt32();
+                long when = br.ReadInt64();
                 return
-                    new MouseClickedEvent(id, when,modifiers, x, y, clickCount, button);
+                    new MouseClickedEvent(id, when, modifiers, x, y, clickCount, button);
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                MouseEvent event3 = ((MouseClickedEvent) obj1);
-                serializer1.serialize(buffer1, event3.Button);
-                serializer1.serialize(buffer1, event3.ClickCount);
-                serializer1.serialize(buffer1, event3.X);
-                serializer1.serialize(buffer1, event3.Y);
-                serializer1.serialize(buffer1, event3.Id);
-                serializer1.serialize(buffer1, event3.Modifiers);
-                serializer1.serialize(buffer1, event3.When);
+                MouseEvent event3 = ((MouseClickedEvent) obj);
+                serializer.serialize(bw, event3.Button);
+                serializer.serialize(bw, event3.ClickCount);
+                serializer.serialize(bw, event3.X);
+                serializer.serialize(bw, event3.Y);
+                serializer.serialize(bw, event3.Id);
+                serializer.serialize(bw, event3.Modifiers);
+                serializer.serialize(bw, event3.When);
             }
 
             public int sizeOf(RbSerializer serializer, object ob)

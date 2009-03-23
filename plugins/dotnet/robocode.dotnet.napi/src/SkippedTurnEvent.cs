@@ -1,7 +1,6 @@
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -13,7 +12,7 @@ namespace robocode
 
         internal static ISerializableHelper createHiddenSerializer()
         {
-            return new SerializableHelper(null);
+            return new SerializableHelper();
         }
 
         internal override void dispatch(IBasicRobot robot1, IRobotStatics statics1, IGraphics graphics2D)
@@ -48,27 +47,18 @@ namespace robocode
             return true;
         }
 
-
         #region Nested type: SerializableHelper
 
         internal sealed class SerializableHelper : ISerializableHelper
         {
-            private SerializableHelper()
-            {
-            }
-
-            internal SerializableHelper(SkippedTurnEvent a1) : this()
-            {
-            }
-
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
                 return new SkippedTurnEvent();
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
             }
 

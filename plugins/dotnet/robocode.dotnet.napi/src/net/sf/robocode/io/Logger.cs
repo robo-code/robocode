@@ -3,15 +3,14 @@ using System.IO;
 using System.Text;
 using net.sf.robocode.security;
 using robocode.net.sf.robocode.io;
-using Exception=System.Exception;
 
 namespace net.sf.robocode.io
 {
     public class Logger
     {
-        public static readonly TextWriter realOut = Console.Out;
+        private static readonly StringBuilder logBuffer = new StringBuilder();
         public static readonly TextWriter realErr = Console.Error;
-        private readonly static StringBuilder logBuffer = new StringBuilder();
+        public static readonly TextWriter realOut = Console.Out;
 
         private static ILogger logListener;
 
@@ -35,7 +34,7 @@ namespace net.sf.robocode.io
         public static void logError(string message, Exception t)
         {
             var builder = new StringBuilder();
-            builder.Append(message); 
+            builder.Append(message);
             builder.Append(":\n");
             builder.Append(toStackTraceString(t));
             logError(builder.ToString());
@@ -79,13 +78,12 @@ namespace net.sf.robocode.io
                 {
                     logBuffer.Append(s);
                     logListener.logMessage(logBuffer.ToString());
-                    logBuffer.Length= 0;
+                    logBuffer.Length = 0;
                 }
                 else
                 {
                     logBuffer.Append(s);
                 }
-                
             }
         }
 

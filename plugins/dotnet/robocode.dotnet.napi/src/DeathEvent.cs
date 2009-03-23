@@ -1,7 +1,6 @@
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -59,12 +58,12 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
                 return new DeathEvent();
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object o)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object o)
             {
             }
 

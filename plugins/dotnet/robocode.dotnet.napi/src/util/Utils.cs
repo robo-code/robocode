@@ -2,7 +2,7 @@ using System;
 
 namespace robocode.util
 {
-    public class Utils 
+    public class Utils
     {
         public const double NEAR_DELTA = 1E-05;
         private const double PI_OVER_TWO = Math.PI/2;
@@ -15,13 +15,13 @@ namespace robocode.util
 
         public static double toRadians(double angdeg)
         {
-            return ((angdeg / 180.0) * Math.PI);
+            return ((angdeg/180.0)*Math.PI);
         }
 
 
         public static double toDegrees(double angrad)
         {
-            return ((angrad * 180.0) / Math.PI);
+            return ((angrad*180.0)/Math.PI);
         }
 
         public static Random getRandom()

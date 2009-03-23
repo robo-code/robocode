@@ -1,8 +1,6 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 
 namespace robocode
 {
@@ -40,13 +38,13 @@ namespace robocode
             this.thirds = thirds;
         }
 
-        #region Comparable Members
+        #region IComparable Members
 
         int IComparable.CompareTo(object obj1)
         {
             if (obj1 is BattleResults)
             {
-                return score.CompareTo(((BattleResults)obj1).score);
+                return score.CompareTo(((BattleResults) obj1).score);
             }
             return -1;
         }
@@ -60,12 +58,12 @@ namespace robocode
 
         public virtual int getBulletDamage()
         {
-            return (int)(bulletDamage + 0.5);
+            return (int) (bulletDamage + 0.5);
         }
 
         public virtual int getBulletDamageBonus()
         {
-            return (int)(bulletDamageBonus + 0.5);
+            return (int) (bulletDamageBonus + 0.5);
         }
 
         public virtual int getFirsts()
@@ -75,17 +73,17 @@ namespace robocode
 
         public virtual int getLastSurvivorBonus()
         {
-            return (int)(lastSurvivorBonus + 0.5);
+            return (int) (lastSurvivorBonus + 0.5);
         }
 
         public virtual int getRamDamage()
         {
-            return (int)(ramDamage + 0.5);
+            return (int) (ramDamage + 0.5);
         }
 
         public virtual int getRamDamageBonus()
         {
-            return (int)(ramDamageBonus + 0.5);
+            return (int) (ramDamageBonus + 0.5);
         }
 
         public virtual int getRank()
@@ -95,7 +93,7 @@ namespace robocode
 
         public virtual int getScore()
         {
-            return (int)(score + 0.5);
+            return (int) (score + 0.5);
         }
 
         public virtual int getSeconds()
@@ -105,7 +103,7 @@ namespace robocode
 
         public virtual int getSurvival()
         {
-            return (int)(survival + 0.5);
+            return (int) (survival + 0.5);
         }
 
         public virtual string getTeamLeaderName()
@@ -139,38 +137,38 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                string teamLeaderName = serializer1.deserializeString(buffer1);
-                int rank = buffer1.getInt();
-                double score = buffer1.getDouble();
-                double survival = buffer1.getDouble();
-                double lastSurvivorBonus = buffer1.getDouble();
-                double bulletDamage = buffer1.getDouble();
-                double bulletDamageBonus = buffer1.getDouble();
-                double ramDamage = buffer1.getDouble();
-                double ramDamageBonus = buffer1.getDouble();
-                int firsts = buffer1.getInt();
-                int seconds = buffer1.getInt();
+                string teamLeaderName = serializer.deserializeString(br);
+                int rank = br.ReadInt32();
+                double score = br.ReadDouble();
+                double survival = br.ReadDouble();
+                double lastSurvivorBonus = br.ReadDouble();
+                double bulletDamage = br.ReadDouble();
+                double bulletDamageBonus = br.ReadDouble();
+                double ramDamage = br.ReadDouble();
+                double ramDamageBonus = br.ReadDouble();
+                int firsts = br.ReadInt32();
+                int seconds = br.ReadInt32();
                 return new BattleResults(teamLeaderName, rank, score, survival, lastSurvivorBonus, bulletDamage,
-                                         bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, buffer1.getInt());
+                                         bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, br.ReadInt32());
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var results = (BattleResults) obj1;
-                serializer1.serialize(buffer1, results.teamLeaderName);
-                serializer1.serialize(buffer1, results.rank);
-                serializer1.serialize(buffer1, results.score);
-                serializer1.serialize(buffer1, results.survival);
-                serializer1.serialize(buffer1, results.lastSurvivorBonus);
-                serializer1.serialize(buffer1, results.bulletDamage);
-                serializer1.serialize(buffer1, results.bulletDamageBonus);
-                serializer1.serialize(buffer1, results.ramDamage);
-                serializer1.serialize(buffer1, results.ramDamageBonus);
-                serializer1.serialize(buffer1, results.firsts);
-                serializer1.serialize(buffer1, results.seconds);
-                serializer1.serialize(buffer1, results.thirds);
+                var results = (BattleResults) obj;
+                serializer.serialize(bw, results.teamLeaderName);
+                serializer.serialize(bw, results.rank);
+                serializer.serialize(bw, results.score);
+                serializer.serialize(bw, results.survival);
+                serializer.serialize(bw, results.lastSurvivorBonus);
+                serializer.serialize(bw, results.bulletDamage);
+                serializer.serialize(bw, results.bulletDamageBonus);
+                serializer.serialize(bw, results.ramDamage);
+                serializer.serialize(bw, results.ramDamageBonus);
+                serializer.serialize(bw, results.firsts);
+                serializer.serialize(bw, results.seconds);
+                serializer.serialize(bw, results.thirds);
             }
 
             public int sizeOf(RbSerializer serializer1, object obj1)

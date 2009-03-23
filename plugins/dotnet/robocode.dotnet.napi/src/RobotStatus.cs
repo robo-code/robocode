@@ -1,30 +1,29 @@
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.util;
 
 namespace robocode
 {
-    public sealed class RobotStatus 
+    public sealed class RobotStatus
     {
         private const long serialVersionUID = 1L;
-        private double bodyHeading;
-        private double bodyTurnRemaining;
-        private double distanceRemaining;
-        private double energy;
-        private double gunHeading;
-        private double gunHeat;
-        private double gunTurnRemaining;
-        private int numRounds;
-        private int others;
-        private double radarHeading;
-        private double radarTurnRemaining;
-        private int roundNum;
-        private long time;
-        private double velocity;
-        private double x;
-        private double y;
+        private readonly double bodyHeading;
+        private readonly double bodyTurnRemaining;
+        private readonly double distanceRemaining;
+        private readonly double energy;
+        private readonly double gunHeading;
+        private readonly double gunHeat;
+        private readonly double gunTurnRemaining;
+        private readonly int numRounds;
+        private readonly int others;
+        private readonly double radarHeading;
+        private readonly double radarTurnRemaining;
+        private readonly int roundNum;
+        private readonly long time;
+        private readonly double velocity;
+        private readonly double x;
+        private readonly double y;
 
         private RobotStatus(double num1, double num2, double num3, double num4, double num5, double num6, double num8,
                             double num7, double num9, double num10, double num11, double num12, int num13, int num14,
@@ -269,46 +268,46 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                double num = buffer1.getDouble();
-                double num2 = buffer1.getDouble();
-                double num3 = buffer1.getDouble();
-                double num4 = buffer1.getDouble();
-                double num5 = buffer1.getDouble();
-                double num6 = buffer1.getDouble();
-                double num7 = buffer1.getDouble();
-                double num8 = buffer1.getDouble();
-                double num9 = buffer1.getDouble();
-                double num10 = buffer1.getDouble();
-                double num11 = buffer1.getDouble();
-                double num12 = buffer1.getDouble();
-                int num13 = buffer1.getInt();
-                int num14 = buffer1.getInt();
-                int num15 = buffer1.getInt();
+                double num = br.ReadDouble();
+                double num2 = br.ReadDouble();
+                double num3 = br.ReadDouble();
+                double num4 = br.ReadDouble();
+                double num5 = br.ReadDouble();
+                double num6 = br.ReadDouble();
+                double num7 = br.ReadDouble();
+                double num8 = br.ReadDouble();
+                double num9 = br.ReadDouble();
+                double num10 = br.ReadDouble();
+                double num11 = br.ReadDouble();
+                double num12 = br.ReadDouble();
+                int num13 = br.ReadInt32();
+                int num14 = br.ReadInt32();
+                int num15 = br.ReadInt32();
                 return new RobotStatus(num, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13,
-                                       num14, num15, buffer1.getLong());
+                                       num14, num15, br.ReadInt64());
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var status = (RobotStatus) obj1;
-                serializer1.serialize(buffer1, access100(status));
-                serializer1.serialize(buffer1, access200(status));
-                serializer1.serialize(buffer1, access300(status));
-                serializer1.serialize(buffer1, access400(status));
-                serializer1.serialize(buffer1, access500(status));
-                serializer1.serialize(buffer1, access600(status));
-                serializer1.serialize(buffer1, access700(status));
-                serializer1.serialize(buffer1, access800(status));
-                serializer1.serialize(buffer1, access900(status));
-                serializer1.serialize(buffer1, access1000(status));
-                serializer1.serialize(buffer1, access1100(status));
-                serializer1.serialize(buffer1, access1200(status));
-                serializer1.serialize(buffer1, access1300(status));
-                serializer1.serialize(buffer1, access1400(status));
-                serializer1.serialize(buffer1, access1500(status));
-                serializer1.serialize(buffer1, access1600(status));
+                var status = (RobotStatus) obj;
+                serializer.serialize(bw, access100(status));
+                serializer.serialize(bw, access200(status));
+                serializer.serialize(bw, access300(status));
+                serializer.serialize(bw, access400(status));
+                serializer.serialize(bw, access500(status));
+                serializer.serialize(bw, access600(status));
+                serializer.serialize(bw, access700(status));
+                serializer.serialize(bw, access800(status));
+                serializer.serialize(bw, access900(status));
+                serializer.serialize(bw, access1000(status));
+                serializer.serialize(bw, access1100(status));
+                serializer.serialize(bw, access1200(status));
+                serializer.serialize(bw, access1300(status));
+                serializer.serialize(bw, access1400(status));
+                serializer.serialize(bw, access1500(status));
+                serializer.serialize(bw, access1600(status));
             }
 
             public int sizeOf(RbSerializer serializer, object obj)

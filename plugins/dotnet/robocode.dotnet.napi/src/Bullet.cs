@@ -1,19 +1,17 @@
-using System;
-using System.Runtime.CompilerServices;
+using System.IO;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
-using robocode.net.sf.robocode.serialization;
 using robocode.util;
 
 namespace robocode
 {
-    public class Bullet 
+    public class Bullet
     {
         private readonly int bulletId;
         private readonly double headingRadians;
-        private bool isActive;
         private readonly string ownerName;
         private readonly double power;
+        private bool isActive;
         private string victimName;
         private double x;
         private double y;
@@ -162,28 +160,28 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
+            public object deserialize(RbSerializer serializer, BinaryReader br)
             {
-                double heading = buffer1.getDouble();
-                double x = buffer1.getDouble();
-                double y = buffer1.getDouble();
-                double power = buffer1.getDouble();
-                string ownerName = serializer1.deserializeString(buffer1);
-                string victimName = serializer1.deserializeString(buffer1);
-                return new Bullet(heading, x, y, power, ownerName, victimName, serializer1.deserializeBoolean(buffer1),
-                                  -1);
+                double heading = br.ReadDouble();
+                double x = br.ReadDouble();
+                double y = br.ReadDouble();
+                double power = br.ReadDouble();
+                string ownerName = serializer.deserializeString(br);
+                string victimName = serializer.deserializeString(br);
+                bool active = serializer.deserializeBoolean(br);
+                return new Bullet(heading, x, y, power, ownerName, victimName, active, -1);
             }
 
-            public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
+            public void serialize(RbSerializer serializer, BinaryWriter bw, object obj)
             {
-                var bullet = (Bullet) obj1;
-                serializer1.serialize(buffer1, access400(bullet));
-                serializer1.serialize(buffer1, access500(bullet));
-                serializer1.serialize(buffer1, access600(bullet));
-                serializer1.serialize(buffer1, access700(bullet));
-                serializer1.serialize(buffer1, access200(bullet));
-                serializer1.serialize(buffer1, access300(bullet));
-                serializer1.serialize(buffer1, access800(bullet));
+                var bullet = (Bullet) obj;
+                serializer.serialize(bw, access400(bullet));
+                serializer.serialize(bw, access500(bullet));
+                serializer.serialize(bw, access600(bullet));
+                serializer.serialize(bw, access700(bullet));
+                serializer.serialize(bw, access200(bullet));
+                serializer.serialize(bw, access300(bullet));
+                serializer.serialize(bw, access800(bullet));
             }
 
             public int sizeOf(RbSerializer serializer1, object obj1)

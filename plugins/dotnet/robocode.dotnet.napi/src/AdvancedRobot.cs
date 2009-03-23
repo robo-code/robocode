@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using robocode.util;
@@ -11,11 +10,11 @@ namespace robocode
     {
         #region IAdvancedEvents Members
 
-        public virtual void onCustomEvent(CustomEvent @event)
+        public virtual void onCustomEvent(CustomEvent evnt)
         {
         }
 
-        public virtual void onSkippedTurn(SkippedTurnEvent @event)
+        public virtual void onSkippedTurn(SkippedTurnEvent evnt)
         {
         }
 
@@ -281,7 +280,7 @@ namespace robocode
             return false;
         }
 
-        public override void onDeath(DeathEvent @event)
+        public override void onDeath(DeathEvent evnt)
         {
         }
 
@@ -713,7 +712,5 @@ namespace robocode
                 uninitializedException();
             }
         }
-
-
     }
 }

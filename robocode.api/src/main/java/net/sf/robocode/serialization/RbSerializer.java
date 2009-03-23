@@ -272,7 +272,7 @@ public final class RbSerializer {
 		} else {
 			buffer.putInt(data.length);
 			for (float aData : data) {
-				buffer.putFloat(aData);
+				buffer.putDouble((double)aData);
 			}
 		}
 	}
@@ -367,7 +367,7 @@ public final class RbSerializer {
 		float[] res = new float[len];
 
 		for (int i = 0; i < len; i++) {
-			res[i] = buffer.getFloat();
+			res[i] = (float) buffer.getDouble();
 		}
 		return res;
 	}
@@ -410,10 +410,6 @@ public final class RbSerializer {
 
 	public int deserializeInt(ByteBuffer buffer) {
 		return buffer.getInt();
-	}
-
-	public Float deserializeFloat(ByteBuffer buffer) {
-		return buffer.getFloat();
 	}
 
 	public double deserializeDouble(ByteBuffer buffer) {

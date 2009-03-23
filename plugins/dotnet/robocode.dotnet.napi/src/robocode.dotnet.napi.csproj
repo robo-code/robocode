@@ -99,7 +99,6 @@
     <Compile Include="net\sf\robocode\security\IHiddenRulesHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenStatusHelper.cs" />
     <Compile Include="net\sf\robocode\security\IThreadManagerBase.cs" />
-    <Compile Include="net\sf\robocode\serialization\ByteBuffer.cs" />
     <Compile Include="net\sf\robocode\serialization\ISerializableHelper.cs" />
     <Compile Include="net\sf\robocode\serialization\RbSerializer.cs" />
     <Compile Include="PaintEvent.cs" />
