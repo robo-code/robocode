@@ -1,15 +1,12 @@
+using System;
+using System.Drawing;
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using IKVM.Runtime;
-using java.awt;
-using java.lang;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using robocode.util;
 
 namespace robocode
 {
-    [Implements(new[] {"robocode.robotinterfaces.IJuniorRobot"})]
     public class JuniorRobot : _RobotBase, IBasicRobot, IJuniorRobot
     {
         public const int black = 0;
@@ -48,21 +45,18 @@ namespace robocode
 
         #region IBasicRobot Members
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x225)]
         public override sealed IBasicEvents getBasicEventListener()
         {
             return getEventHandler();
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x22e)]
-        public override sealed Runnable getRobotRunnable()
+        public override sealed IRunnable getRobotRunnable()
         {
             return getEventHandler();
         }
 
         #endregion
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0x4a, 0x6b, 0x92, 0x85})]
         public virtual void ahead(int distance)
         {
             if (base.peer != null)
@@ -75,19 +69,17 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 90, 0x68})]
         public virtual void back(int distance)
         {
             ahead(-distance);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0x69, 0x6b, 0x9f, 0x15, 0x85})]
         public virtual void bearGunTo(int angle)
         {
             if (base.peer != null)
             {
                 base.peer.turnGun(
-                    Utils.normalRelativeAngle((base.peer.getBodyHeading() + Math.toRadians(angle)) -
+                    Utils.normalRelativeAngle((base.peer.getBodyHeading() + Utils.toRadians(angle)) -
                                               base.peer.getGunHeading()));
             }
             else
@@ -96,7 +88,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0x76, 0x6b, 0x90, 0x85})]
         public virtual void doNothing()
         {
             if (base.peer != null)
@@ -109,8 +100,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0xa1, 0x84, 0x67, 0x81, 0x6b, 0x69, 0x2b, 0xcb, 0x85})]
         public virtual void doNothing(int turns)
         {
             if (turns > 0)
@@ -129,13 +118,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0x98, 0x6b})]
         public virtual void fire()
         {
             fire(1f);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0xa5, 0x6b, 110, 0x90, 0x85})]
         public virtual void fire(double power)
         {
             if (base.peer != null)
@@ -149,7 +136,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0xff, 0x6b, 0x8d})]
         private InnerEventHandler getEventHandler()
         {
             if (innerEventHandler == null)
@@ -179,14 +165,13 @@ namespace robocode
         {
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 5, 0x6b, 0x76, 0x76, 0x9b, 0x85})]
         public virtual void setColors(int bodyColor, int gunColor, int radarColor)
         {
             if (base.peer != null)
             {
-                base.peer.setBodyColor(new Color(bodyColor));
-                base.peer.setGunColor(new Color(gunColor));
-                base.peer.setRadarColor(new Color(radarColor));
+                base.peer.setBodyColor(Color.FromArgb(bodyColor));
+                base.peer.setGunColor(Color.FromArgb(gunColor));
+                base.peer.setRadarColor(Color.FromArgb(radarColor));
             }
             else
             {
@@ -194,17 +179,15 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0xa2, 0x1a, 0x6b, 0x76, 0x76, 0x76, 0x77, 0x9c, 0x85})]
         public virtual void setColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor)
         {
             if (base.peer != null)
             {
-                base.peer.setBodyColor(new Color(bodyColor));
-                base.peer.setGunColor(new Color(gunColor));
-                base.peer.setRadarColor(new Color(radarColor));
-                base.peer.setBulletColor(new Color(bulletColor));
-                base.peer.setScanColor(new Color(scanArcColor));
+                base.peer.setBodyColor(Color.FromArgb(bodyColor));
+                base.peer.setGunColor(Color.FromArgb(gunColor));
+                base.peer.setRadarColor(Color.FromArgb(radarColor));
+                base.peer.setBulletColor(Color.FromArgb(bulletColor));
+                base.peer.setScanColor(Color.FromArgb(scanArcColor));
             }
             else
             {
@@ -212,18 +195,16 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x3b, 0x69})]
         public virtual void turnAheadLeft(int distance, int degrees)
         {
             turnAheadRight(distance, -degrees);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x54, 0x6b, 0x9e, 0x85})]
         public virtual void turnAheadRight(int distance, int degrees)
         {
             if (base.peer != null)
             {
-                ((IJuniorRobotPeer) base.peer).turnAndMove(distance, Math.toRadians(degrees));
+                ((IJuniorRobotPeer) base.peer).turnAndMove(distance, Utils.toRadians(degrees));
             }
             else
             {
@@ -231,30 +212,26 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x71, 0x69})]
         public virtual void turnBackLeft(int distance, int degrees)
         {
             turnAheadRight(-distance, degrees);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x8a, 0x6a})]
         public virtual void turnBackRight(int distance, int degrees)
         {
             turnAheadRight(-distance, -degrees);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x98, 0x68})]
         public virtual void turnGunLeft(int degrees)
         {
             turnGunRight(-degrees);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0xa6, 0x6b, 0x97, 0x85})]
         public virtual void turnGunRight(int degrees)
         {
             if (base.peer != null)
             {
-                base.peer.turnGun(Math.toRadians(degrees));
+                base.peer.turnGun(Utils.toRadians(degrees));
             }
             else
             {
@@ -262,12 +239,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0xba, 0x6b, 0x9f, 9, 0x85})]
         public virtual void turnGunTo(int angle)
         {
             if (base.peer != null)
             {
-                base.peer.turnGun(Utils.normalRelativeAngle(Math.toRadians(angle) - base.peer.getGunHeading()));
+                base.peer.turnGun(Utils.normalRelativeAngle(Utils.toRadians(angle) - base.peer.getGunHeading()));
             }
             else
             {
@@ -275,18 +251,16 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0xce, 0x68})]
         public virtual void turnLeft(int degrees)
         {
             turnRight(-degrees);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0xde, 0x6b, 0x97, 0x85})]
         public virtual void turnRight(int degrees)
         {
             if (base.peer != null)
             {
-                base.peer.turnBody(Math.toRadians(degrees));
+                base.peer.turnBody(Utils.toRadians(degrees));
             }
             else
             {
@@ -294,12 +268,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0xf4, 0x6b, 0x9f, 9, 0x85})]
         public virtual void turnTo(int angle)
         {
             if (base.peer != null)
             {
-                base.peer.turnBody(Utils.normalRelativeAngle(Math.toRadians(angle) - base.peer.getBodyHeading()));
+                base.peer.turnBody(Utils.normalRelativeAngle(Utils.toRadians(angle) - base.peer.getBodyHeading()));
             }
             else
             {
@@ -307,39 +280,18 @@ namespace robocode
             }
         }
 
-        #region Nested type: a1
-
-        [SourceFile("JuniorRobot.java"), EnclosingMethod("robocode.JuniorRobot", null, null),
-         InnerClass(null, Modifiers.Synthetic | Modifiers.Static),
-         Modifiers(Modifiers.Synthetic | Modifiers.Synchronized)]
-        internal sealed class a1 : Object
-        {
-            /* private scope */
-
-            private a1()
-            {
-                throw null;
-            }
-        }
-
-        #endregion
-
         #region Nested type: InnerEventHandler
 
-        [SourceFile("JuniorRobot.java"), InnerClass(null, Modifiers.Private | Modifiers.Final),
-         Implements(new[] {"robocode.robotinterfaces.IBasicEvents", "java.lang.Runnable"})]
-        internal sealed class InnerEventHandler : Object, IBasicEvents, Runnable
+        internal sealed class InnerEventHandler : IBasicEvents, IRunnable
         {
             private double juniorFirePower;
-            [Modifiers(Modifiers.Synthetic | Modifiers.Final)] internal JuniorRobot this0;
+            internal JuniorRobot this0;
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 60)]
             private InnerEventHandler(JuniorRobot robot1)
             {
                 this0 = robot1;
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), Modifiers(Modifiers.Synthetic), LineNumberTable((ushort) 60)]
             internal InnerEventHandler(JuniorRobot robot1, JuniorRobot a1) : this(robot1)
             {
             }
@@ -362,73 +314,61 @@ namespace robocode
             {
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x17, 0x99, 0x7f, 6, 0x7f, 1, 0x6b})]
             public void onHitByBullet(HitByBulletEvent event1)
             {
                 double angle = this0.peer.getBodyHeading() + event1.getBearingRadians();
-                this0.hitByBulletAngle = ByteCodeHelper.d2i(Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                this0.hitByBulletBearing = ByteCodeHelper.d2i(event1.getBearing() + 0.5);
+                this0.hitByBulletAngle = (int)(Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+                this0.hitByBulletBearing = (int)(event1.getBearing() + 0.5);
                 this0.onHitByBullet();
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x1f, 0x99, 0x7f, 6, 0x7f, 1, 0x6b})]
             public void onHitRobot(HitRobotEvent event1)
             {
                 double angle = this0.peer.getBodyHeading() + event1.getBearingRadians();
-                this0.hitRobotAngle = ByteCodeHelper.d2i(Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                this0.hitRobotBearing = ByteCodeHelper.d2i(event1.getBearing() + 0.5);
+                this0.hitRobotAngle = (int)(Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+                this0.hitRobotBearing = (int)(event1.getBearing() + 0.5);
                 this0.onHitRobot();
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x27, 0x99, 0x7f, 6, 0x7f, 1, 0x6b})]
             public void onHitWall(HitWallEvent event1)
             {
                 double angle = this0.peer.getBodyHeading() + event1.getBearingRadians();
-                this0.hitWallAngle = ByteCodeHelper.d2i(Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                this0.hitWallBearing = ByteCodeHelper.d2i(event1.getBearing() + 0.5);
+                this0.hitWallAngle = (int)(Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+                this0.hitWallBearing = (int)(event1.getBearing() + 0.5);
                 this0.onHitWall();
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x2f, 0x7b})]
             public void onRobotDeath(RobotDeathEvent e)
             {
                 this0.others = this0.peer.getOthers();
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(new byte[] {0x33, 0x7f, 1, 0x7f, 7, 0xbf, 0x1c, 0x7f, 1, 0x7f, 1, 0x9f, 1, 0x6b})]
             public void onScannedRobot(ScannedRobotEvent event1)
             {
-                this0.scannedDistance = ByteCodeHelper.d2i(event1.getDistance() + 0.5);
-                this0.scannedEnergy = Math.max(1, ByteCodeHelper.d2i(event1.getEnergy() + 0.5));
+                this0.scannedDistance = (int)(event1.getDistance() + 0.5);
+                this0.scannedEnergy = Math.Max(1, (int)(event1.getEnergy() + 0.5));
                 this0.scannedAngle =
-                    ByteCodeHelper.d2i(
-                        Math.toDegrees(
+                    (int)(
+                        Utils.toDegrees(
                             Utils.normalAbsoluteAngle(this0.peer.getBodyHeading() + event1.getBearingRadians())) + 0.5);
-                this0.scannedBearing = ByteCodeHelper.d2i(event1.getBearing() + 0.5);
-                this0.scannedHeading = ByteCodeHelper.d2i(event1.getHeading() + 0.5);
-                this0.scannedVelocity = ByteCodeHelper.d2i(event1.getVelocity() + 0.5);
+                this0.scannedBearing = (int)(event1.getBearing() + 0.5);
+                this0.scannedHeading = (int)(event1.getHeading() + 0.5);
+                this0.scannedVelocity = (int)(event1.getVelocity() + 0.5);
                 this0.onScannedRobot();
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[]
-                                                                           {
-                                                                               0x40, 0x87, 0x7b, 0x7f, 7, 0x7f, 1, 0x7f,
-                                                                               1, 0x7f, 6, 0x7f, 6, 0x7f, 0x12, 0xbf,
-                                                                               3, 0x7f, 0x1b, 0x7b, 0x6c, 0xac
-                                                                           })]
             public void onStatus(StatusEvent event1)
             {
                 RobotStatus status = event1.getStatus();
                 this0.others = this0.peer.getOthers();
-                this0.energy = Math.max(1, ByteCodeHelper.d2i(status.getEnergy() + 0.5));
-                this0.robotX = ByteCodeHelper.d2i(status.getX() + 0.5);
-                this0.robotY = ByteCodeHelper.d2i(status.getY() + 0.5);
-                this0.heading = ByteCodeHelper.d2i(Math.toDegrees(status.getHeading()) + 0.5);
-                this0.gunHeading = ByteCodeHelper.d2i(Math.toDegrees(status.getGunHeading()) + 0.5);
+                this0.energy = Math.Max(1, (int)(status.getEnergy() + 0.5));
+                this0.robotX = (int)(status.getX() + 0.5);
+                this0.robotY = (int)(status.getY() + 0.5);
+                this0.heading = (int)(Utils.toDegrees(status.getHeading()) + 0.5);
+                this0.gunHeading = (int)(Utils.toDegrees(status.getGunHeading()) + 0.5);
                 this0.gunBearing =
-                    ByteCodeHelper.d2i(
-                        Math.toDegrees(Utils.normalRelativeAngle(status.getGunHeading() - status.getHeading())) + 0.5);
+                    (int)(
+                        Utils.toDegrees(Utils.normalRelativeAngle(status.getGunHeading() - status.getHeading())) + 0.5);
                 this0.gunReady = status.getGunHeat() <= 0f;
                 if (((juniorFirePower > 0f) && this0.gunReady) &&
                     ((this0.peer.getGunTurnRemaining() == 0f) && (this0.peer.setFire(juniorFirePower) != null)))
@@ -446,11 +386,10 @@ namespace robocode
 
             #region Runnable Members
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x57, 0x7f, 11, 0xdf, 11})]
             public void run()
             {
-                this0.fieldWidth = ByteCodeHelper.d2i(this0.peer.getBattleFieldWidth() + 0.5);
-                this0.fieldHeight = ByteCodeHelper.d2i(this0.peer.getBattleFieldHeight() + 0.5);
+                this0.fieldWidth = (int)(this0.peer.getBattleFieldWidth() + 0.5);
+                this0.fieldHeight = (int)(this0.peer.getBattleFieldHeight() + 0.5);
                 while (true)
                 {
                     this0.run();
@@ -459,7 +398,6 @@ namespace robocode
 
             #endregion
 
-            [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 60)]
             internal static double access002(InnerEventHandler handler1, double num1)
             {
                 double num = num1;

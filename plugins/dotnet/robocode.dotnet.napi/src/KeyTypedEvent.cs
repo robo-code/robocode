@@ -1,11 +1,8 @@
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.awt;
-using java.lang;
-using java.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
+using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -15,26 +12,24 @@ namespace robocode
         private const int DEFAULT_PRIORITY = 0x62;
         private const long serialVersionUID = 1L;
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9f, 190, 0x67})]
-        public KeyTypedEvent(java.awt.@event.KeyEvent source) : base(source)
+        public KeyTypedEvent(char keyChar, int keyCode, int keyLocation, int id, int modifiers, long when)
+            : base(keyChar, keyCode, keyLocation, id, modifiers, when)
         {
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x52)]
         internal static ISerializableHelper createHiddenSerializer()
         {
             return new SerializableHelper(null);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {14, 0x6b, 140, 0x66, 0xac})]
-        internal override sealed void dispatch(IBasicRobot robot1, IRobotStatics statics1, Graphics2D graphics2D)
+        internal override sealed void dispatch(IBasicRobot robot1, IRobotStatics statics1, IGraphics graphics2D)
         {
             if (statics1.isInteractiveRobot())
             {
                 IInteractiveEvents events = ((IInteractiveRobot) robot1).getInteractiveEventListener();
                 if (events != null)
                 {
-                    events.onKeyTyped(base.getSourceEvent());
+                    events.onKeyTyped(this);
                 }
             }
         }
@@ -49,67 +44,41 @@ namespace robocode
             return 0x2e;
         }
 
-        #region Nested type: a1
-
-        [Modifiers(Modifiers.Synthetic | Modifiers.Synchronized), SourceFile("KeyTypedEvent.java"),
-         InnerClass(null, Modifiers.Synthetic | Modifiers.Static), EnclosingMethod("robocode.KeyTypedEvent", null, null)
-        ]
-        internal sealed class a1 : Object
-        {
-            /* private scope */
-
-            private a1()
-            {
-                throw null;
-            }
-        }
-
-        #endregion
-
+ 
         #region Nested type: SerializableHelper
 
-        [InnerClass(null, Modifiers.Static | Modifiers.Private), SourceFile("KeyTypedEvent.java"),
-         Implements(new[] {"net.sf.robocode.serialization.ISerializableHelper"})]
-        internal sealed class SerializableHelper : Object, ISerializableHelper
+        internal sealed class SerializableHelper : ISerializableHelper
         {
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x55)]
             private SerializableHelper()
             {
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), Modifiers(Modifiers.Synthetic), LineNumberTable((ushort) 0x55)]
             internal SerializableHelper(KeyTypedEvent a1) : this()
             {
             }
 
             #region ISerializableHelper Members
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(new byte[] {0x37, 0x67, 0x67, 0x67, 0x67, 0x68, 0x88})]
             public object deserialize(RbSerializer serializer, ByteBuffer buffer1)
             {
-                int num = buffer1.getChar();
+                char keyChar = buffer1.getChar();
                 int keyCode = buffer1.getInt();
                 int keyLocation = buffer1.getInt();
                 int id = buffer1.getInt();
                 int modifiers = buffer1.getInt();
                 long when = buffer1.getLong();
-                return
-                    new KeyTypedEvent(new java.awt.@event.KeyEvent(SafeComponent.getSafeEventComponent(), id, when,
-                                                                   modifiers, keyCode, (char) num, keyLocation));
+                return new KeyTypedEvent(keyChar, keyCode, keyLocation, id, modifiers, when);
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(new byte[] {0x2b, 0x67, 0x87, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d})]
             public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
             {
-                java.awt.@event.KeyEvent event3 = ((KeyTypedEvent) obj1).getSourceEvent();
-                serializer1.serialize(buffer1, event3.getKeyChar());
-                serializer1.serialize(buffer1, event3.getKeyCode());
-                serializer1.serialize(buffer1, event3.getKeyLocation());
-                serializer1.serialize(buffer1, event3.getID());
-                serializer1.serialize(buffer1, event3.getModifiersEx());
-                serializer1.serialize(buffer1, event3.getWhen());
+                KeyEvent event3 = ((KeyTypedEvent) obj1);
+                serializer1.serialize(buffer1, event3.KeyChar);
+                serializer1.serialize(buffer1, event3.KeyCode);
+                serializer1.serialize(buffer1, event3.KeyLocation);
+                serializer1.serialize(buffer1, event3.Id);
+                serializer1.serialize(buffer1, event3.Modifiers);
+                serializer1.serialize(buffer1, event3.When);
             }
 
             public int sizeOf(RbSerializer serializer, object o)

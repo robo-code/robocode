@@ -1,8 +1,6 @@
-using IKVM.Attributes;
 
 namespace robocode.robotinterfaces.peer
 {
-    [Implements(new[] {"robocode.robotinterfaces.peer.IBasicRobotPeer"})]
     public interface IStandardRobotPeer : IBasicRobotPeer
     {
         void rescan();

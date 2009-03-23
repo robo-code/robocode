@@ -1,14 +1,19 @@
-using java.io;
-using java.lang;
+using System;
+using System.IO;
 using robocode.robotinterfaces.peer;
 
 namespace robocode.robotinterfaces
 {
+    public interface IRunnable
+    {
+        void run();
+    }
+
     public interface IBasicRobot
     {
         IBasicEvents getBasicEventListener();
-        Runnable getRobotRunnable();
-        void setOut(PrintStream ps);
+        IRunnable getRobotRunnable();
+        void setOut(TextWriter ps);
         void setPeer(IBasicRobotPeer ibrp);
     }
 }

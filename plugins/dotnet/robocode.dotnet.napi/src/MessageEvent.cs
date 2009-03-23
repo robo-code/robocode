@@ -1,8 +1,5 @@
+using System;
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.awt;
-using java.io;
-using java.lang;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 
@@ -12,14 +9,13 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = 0x4b;
         private const long serialVersionUID = 1L;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private Serializable message;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private string sender;
+        private object message;
+        private string sender;
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9f, 0x83, 0x8b, 0x68, 0x67, 0x77})]
-        public MessageEvent(string sender, Serializable message)
+        public MessageEvent(string sender, object message)
         {
-            Serializable serializable2;
-            Serializable serializable = message;
+            object serializable2;
+            object serializable = message;
             this.sender = sender;
             /*object obj2 = serializable.__<ref>;
             object obj3 = obj2;
@@ -27,8 +23,7 @@ namespace robocode
             this.message = serializable2;*/
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x20, 0x6b, 140, 0x66, 0xa7})]
-        internal override sealed void dispatch(IBasicRobot robot1, IRobotStatics statics1, Graphics2D graphics2D)
+        internal override sealed void dispatch(IBasicRobot robot1, IRobotStatics statics1, IGraphics graphics2D)
         {
             if (statics1.isTeamRobot())
             {
@@ -57,10 +52,9 @@ namespace robocode
             return sender;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x60)]
         internal override byte getSerializationType()
         {
-            throw new Error("Serialization of event type not supported");
+            throw new Exception("Serialization of event type not supported");
         }
     }
 }

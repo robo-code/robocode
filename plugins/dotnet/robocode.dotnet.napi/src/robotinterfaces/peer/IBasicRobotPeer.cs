@@ -1,4 +1,5 @@
-using java.awt;
+
+using System.Drawing;
 
 namespace robocode.robotinterfaces.peer
 {
@@ -13,7 +14,7 @@ namespace robocode.robotinterfaces.peer
         void getCall();
         double getDistanceRemaining();
         double getEnergy();
-        Graphics2D getGraphics();
+        IGraphics getGraphics();
         double getGunCoolingRate();
         double getGunHeading();
         double getGunHeat();

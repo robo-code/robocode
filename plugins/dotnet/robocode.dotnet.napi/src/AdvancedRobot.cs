@@ -1,24 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.io;
-using java.lang;
-using java.util;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
-using Math=java.lang.Math;
+using robocode.util;
 
 namespace robocode
 {
-    [Implements(new[] {"robocode.robotinterfaces.IAdvancedRobot", "robocode.robotinterfaces.IAdvancedEvents"})]
-    public class AdvancedRobot : _AdvancedRadiansRobot, IBasicRobot, IAdvancedRobot, IAdvancedEvents
+    public class AdvancedRobot : Robot, IAdvancedRobot, IAdvancedEvents
     {
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x37)]
-        public AdvancedRobot()
-        {
-            GC.KeepAlive(this);
-        }
-
         #region IAdvancedEvents Members
 
         public virtual void onCustomEvent(CustomEvent @event)
@@ -40,12 +30,11 @@ namespace robocode
 
         #endregion
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 110, 0x66, 0x90, 0x6b, 150, 0x85})]
         public virtual void addCustomEvent(Condition condition)
         {
             if (condition == null)
             {
-                throw new NullPointerException("the condition cannot be null");
+                throw new NullReferenceException("the condition cannot be null");
             }
             if (base.peer != null)
             {
@@ -57,7 +46,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0xa6, 0x6b, 0x95, 0x85})]
         public virtual void clearAllEvents()
         {
             if (base.peer != null)
@@ -70,7 +58,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0xc2, 0x6b, 0x90, 0x85})]
         public virtual void execute()
         {
             if (base.peer != null)
@@ -83,56 +70,47 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0xe3, 0x6b, 0x98, 0x65}),
-         Signature("()Ljava/util/Vector<Lrobocode/Event;>;")]
-        public virtual Vector getAllEvents()
+        public virtual List<Event> getAllEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getAllEvents());
+                return ((IAdvancedRobotPeer) base.peer).getAllEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), Signature("()Ljava/util/Vector<Lrobocode/BulletHitBulletEvent;>;"),
-         LineNumberTable(new byte[] {0xa1, 0xfd, 0x6b, 0x98, 0x65})]
-        public virtual Vector getBulletHitBulletEvents()
+        public virtual List<BulletHitBulletEvent> getBulletHitBulletEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getBulletHitBulletEvents());
+                return ((IAdvancedRobotPeer) base.peer).getBulletHitBulletEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x16, 0x6b, 0x98, 0x65}),
-         Signature("()Ljava/util/Vector<Lrobocode/BulletHitEvent;>;")]
-        public virtual Vector getBulletHitEvents()
+        public virtual List<BulletHitEvent> getBulletHitEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getBulletHitEvents());
+                return ((IAdvancedRobotPeer) base.peer).getBulletHitEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), Signature("()Ljava/util/Vector<Lrobocode/BulletMissedEvent;>;"),
-         LineNumberTable(new byte[] {0xa2, 0x30, 0x6b, 0x98, 0x65})]
-        public virtual Vector getBulletMissedEvents()
+        public virtual List<BulletMissedEvent> getBulletMissedEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getBulletMissedEvents());
+                return ((IAdvancedRobotPeer) base.peer).getBulletMissedEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x45, 0x6b, 0x93, 0x65})]
-        public virtual File getDataDirectory()
+        public virtual string getDataDirectory()
         {
             if (base.peer != null)
             {
@@ -142,8 +120,7 @@ namespace robocode
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x60, 0x6b, 0x94, 0x65})]
-        public virtual File getDataFile(string filename)
+        public virtual string getDataFile(string filename)
         {
             if (base.peer != null)
             {
@@ -153,7 +130,6 @@ namespace robocode
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x70, 0x6b, 0x93, 0x65})]
         public virtual long getDataQuotaAvailable()
         {
             if (base.peer != null)
@@ -164,7 +140,6 @@ namespace robocode
             return 0L;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x1a, 0x6b, 0x8e, 0x65})]
         public virtual double getDistanceRemaining()
         {
             if (base.peer != null)
@@ -175,7 +150,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x9b, 0x6b, 0x94, 0x65})]
         public virtual int getEventPriority(string eventClass)
         {
             if (base.peer != null)
@@ -186,148 +160,97 @@ namespace robocode
             return 0;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x65b)]
-        public override double getGunHeadingRadians()
-        {
-            return base.getGunHeadingRadians();
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x4a, 0x6b, 0x93, 0x65})]
         public virtual double getGunTurnRemaining()
         {
             if (base.peer != null)
             {
-                return Math.toDegrees(base.peer.getGunTurnRemaining());
+                return Utils.toDegrees(base.peer.getGunTurnRemaining());
             }
             uninitializedException();
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x7c7)]
-        public override double getGunTurnRemainingRadians()
-        {
-            return base.getGunTurnRemainingRadians();
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x5aa)]
-        public override double getHeadingRadians()
-        {
-            return base.getHeadingRadians();
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0xb5, 0x6b, 0x98, 0x65}),
-         Signature("()Ljava/util/Vector<Lrobocode/HitByBulletEvent;>;")]
-        public virtual Vector getHitByBulletEvents()
+        public virtual List<HitByBulletEvent> getHitByBulletEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getHitByBulletEvents());
+                return ((IAdvancedRobotPeer) base.peer).getHitByBulletEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), Signature("()Ljava/util/Vector<Lrobocode/HitRobotEvent;>;"),
-         LineNumberTable(new byte[] {0xa2, 0xce, 0x6b, 0x98, 0x65})]
-        public virtual Vector getHitRobotEvents()
+        public virtual List<HitRobotEvent> getHitRobotEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getHitRobotEvents());
+                return ((IAdvancedRobotPeer) base.peer).getHitRobotEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0xe7, 0x6b, 0x98, 0x65}),
-         Signature("()Ljava/util/Vector<Lrobocode/HitWallEvent;>;")]
-        public virtual Vector getHitWallEvents()
+        public virtual List<HitWallEvent> getHitWallEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getHitWallEvents());
+                return ((IAdvancedRobotPeer) base.peer).getHitWallEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x66b)]
-        public override double getRadarHeadingRadians()
-        {
-            return base.getRadarHeadingRadians();
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x62, 0x6b, 0x93, 0x65})]
         public virtual double getRadarTurnRemaining()
         {
             if (base.peer != null)
             {
-                return Math.toDegrees(base.peer.getRadarTurnRemaining());
+                return Utils.toDegrees(base.peer.getRadarTurnRemaining());
             }
             uninitializedException();
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x7d9)]
-        public override double getRadarTurnRemainingRadians()
-        {
-            return base.getRadarTurnRemainingRadians();
-        }
 
-        [MethodImpl(MethodImplOptions.NoInlining), Signature("()Ljava/util/Vector<Lrobocode/RobotDeathEvent;>;"),
-         LineNumberTable(new byte[] {0xa3, 0, 0x6b, 0x98, 0x65})]
-        public virtual Vector getRobotDeathEvents()
+        public virtual List<RobotDeathEvent> getRobotDeathEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getRobotDeathEvents());
+                return ((IAdvancedRobotPeer) base.peer).getRobotDeathEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0x1a, 0x6b, 0x98, 0x65}),
-         Signature("()Ljava/util/Vector<Lrobocode/ScannedRobotEvent;>;")]
-        public virtual Vector getScannedRobotEvents()
+        public virtual List<ScannedRobotEvent> getScannedRobotEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getScannedRobotEvents());
+                return ((IAdvancedRobotPeer) base.peer).getScannedRobotEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0x33, 0x6b, 0x98, 0x65}),
-         Signature("()Ljava/util/Vector<Lrobocode/StatusEvent;>;")]
-        public virtual Vector getStatusEvents()
+        public virtual List<StatusEvent> getStatusEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((IAdvancedRobotPeer) base.peer).getStatusEvents());
+                return ((IAdvancedRobotPeer) base.peer).getStatusEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {50, 0x6b, 0x93, 0x65})]
         public virtual double getTurnRemaining()
         {
             if (base.peer != null)
             {
-                return Math.toDegrees(base.peer.getBodyTurnRemaining());
+                return Utils.toDegrees(base.peer.getBodyTurnRemaining());
             }
             uninitializedException();
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x7eb)]
-        public override double getTurnRemainingRadians()
-        {
-            return base.getTurnRemainingRadians();
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0x4a, 0x6b, 0x93, 0x65})]
         public virtual bool isAdjustGunForRobotTurn()
         {
             if (base.peer != null)
@@ -338,7 +261,6 @@ namespace robocode
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 120, 0x6b, 0x93, 0x65})]
         public virtual bool isAdjustRadarForGunTurn()
         {
             if (base.peer != null)
@@ -349,7 +271,6 @@ namespace robocode
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0x61, 0x6b, 0x93, 0x65})]
         public virtual bool isAdjustRadarForRobotTurn()
         {
             if (base.peer != null)
@@ -364,12 +285,11 @@ namespace robocode
         {
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 150, 0x66, 0x90, 0x6b, 150, 0x85})]
         public virtual void removeCustomEvent(Condition condition)
         {
             if (condition == null)
             {
-                throw new NullPointerException("the condition cannot be null");
+                throw new NullReferenceException("the condition cannot be null");
             }
             if (base.peer != null)
             {
@@ -381,7 +301,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0x4e, 0x6b, 0x97, 0x85})]
         public virtual void setAhead(double distance)
         {
             if (base.peer != null)
@@ -394,7 +313,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0x7a, 0x6b, 0x98, 0x85})]
         public virtual void setBack(double distance)
         {
             if (base.peer != null)
@@ -407,7 +325,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0xb5, 0x6b, 0x97, 0x85})]
         public virtual void setEventPriority(string eventClass, int priority)
         {
             if (base.peer != null)
@@ -420,7 +337,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 11, 0x6b, 0x93, 0x85})]
         public virtual void setFire(double power)
         {
             if (base.peer != null)
@@ -433,7 +349,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0x4e, 0x6b, 0x90, 0x65})]
         public virtual Bullet setFireBullet(double power)
         {
             if (base.peer != null)
@@ -444,8 +359,7 @@ namespace robocode
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9e, 0x7c, 0x43, 0x6b, 150, 0x85})]
-        public override void setInterruptible(bool interruptible)
+        public void setInterruptible(bool interruptible)
         {
             if (base.peer != null)
             {
@@ -457,7 +371,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0xea, 0x6b, 0x97, 0x85})]
         public virtual void setMaxTurnRate(double newMaxTurnRate)
         {
             if (base.peer != null)
@@ -470,7 +383,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0xfe, 0x6b, 0x97, 0x85})]
         public virtual void setMaxVelocity(double newMaxVelocity)
         {
             if (base.peer != null)
@@ -483,7 +395,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 20, 0x6b, 0x95, 0x85})]
         public virtual void setResume()
         {
             if (base.peer != null)
@@ -496,13 +407,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0x2d, 0x67})]
         public virtual void setStop()
         {
             setStop(false);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9e, 0x61, 0x43, 0x6b, 150, 0x85})]
         public virtual void setStop(bool overwrite)
         {
             if (base.peer != null)
@@ -515,12 +424,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0x70, 0x6b, 0x9d, 0x85})]
         public virtual void setTurnGunLeft(double degrees)
         {
             if (base.peer != null)
             {
-                ((IAdvancedRobotPeer) base.peer).setTurnGun(-Math.toRadians(degrees));
+                ((IAdvancedRobotPeer) base.peer).setTurnGun(-Utils.toRadians(degrees));
             }
             else
             {
@@ -528,18 +436,12 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa6, 0x23, 0x68})]
-        public override void setTurnGunLeftRadians(double radians)
-        {
-            base.setTurnGunLeftRadians(radians);
-        }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0x9e, 0x6b, 0x9c, 0x85})]
         public virtual void setTurnGunRight(double degrees)
         {
             if (base.peer != null)
             {
-                ((IAdvancedRobotPeer) base.peer).setTurnGun(Math.toRadians(degrees));
+                ((IAdvancedRobotPeer) base.peer).setTurnGun(Utils.toRadians(degrees));
             }
             else
             {
@@ -547,18 +449,12 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa6, 0x4d, 0x68})]
-        public override void setTurnGunRightRadians(double radians)
-        {
-            base.setTurnGunRightRadians(radians);
-        }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0xa7, 0x6b, 0x9d, 0x85})]
         public virtual void setTurnLeft(double degrees)
         {
             if (base.peer != null)
             {
-                ((IAdvancedRobotPeer) base.peer).setTurnBody(-Math.toRadians(degrees));
+                ((IAdvancedRobotPeer) base.peer).setTurnBody(-Utils.toRadians(degrees));
             }
             else
             {
@@ -566,18 +462,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 0x61, 0x68})]
-        public override void setTurnLeftRadians(double radians)
-        {
-            base.setTurnLeftRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0xcd, 0x6b, 0x9d, 0x85})]
         public virtual void setTurnRadarLeft(double degrees)
         {
             if (base.peer != null)
             {
-                ((IAdvancedRobotPeer) base.peer).setTurnRadar(-Math.toRadians(degrees));
+                ((IAdvancedRobotPeer) base.peer).setTurnRadar(-Utils.toRadians(degrees));
             }
             else
             {
@@ -585,18 +474,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa6, 120, 0x68})]
-        public override void setTurnRadarLeftRadians(double radians)
-        {
-            base.setTurnRadarLeftRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0xfc, 0x6b, 0x9c, 0x85})]
         public virtual void setTurnRadarRight(double degrees)
         {
             if (base.peer != null)
             {
-                ((IAdvancedRobotPeer) base.peer).setTurnRadar(Math.toRadians(degrees));
+                ((IAdvancedRobotPeer) base.peer).setTurnRadar(Utils.toRadians(degrees));
             }
             else
             {
@@ -604,18 +486,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa6, 0xa3, 0x68})]
-        public override void setTurnRadarRightRadians(double radians)
-        {
-            base.setTurnRadarRightRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0xd4, 0x6b, 0x9c, 0x85})]
         public virtual void setTurnRight(double degrees)
         {
             if (base.peer != null)
             {
-                ((IAdvancedRobotPeer) base.peer).setTurnBody(Math.toRadians(degrees));
+                ((IAdvancedRobotPeer) base.peer).setTurnBody(Utils.toRadians(degrees));
             }
             else
             {
@@ -623,49 +498,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 0x8a, 0x68})]
-        public override void setTurnRightRadians(double radians)
-        {
-            base.setTurnRightRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa6, 0xcb, 0x68})]
-        public override void turnGunLeftRadians(double radians)
-        {
-            base.turnGunLeftRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa6, 0xf2, 0x68})]
-        public override void turnGunRightRadians(double radians)
-        {
-            base.turnGunRightRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 0xb2, 0x68})]
-        public override void turnLeftRadians(double radians)
-        {
-            base.turnLeftRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa7, 0x1b, 0x68})]
-        public override void turnRadarLeftRadians(double radians)
-        {
-            base.turnRadarLeftRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa7, 0x43, 0x68})]
-        public override void turnRadarRightRadians(double radians)
-        {
-            base.turnRadarRightRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 0xd9, 0x68})]
-        public override void turnRightRadians(double radians)
-        {
-            base.turnRightRadians(radians);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 0x10, 0x6b, 150, 0x85})]
         public virtual void waitFor(Condition condition)
         {
             if (base.peer != null)
@@ -677,5 +509,211 @@ namespace robocode
                 uninitializedException();
             }
         }
+
+        public virtual double getGunHeadingRadians()
+        {
+            if (base.peer != null)
+            {
+                return base.peer.getGunHeading();
+            }
+            uninitializedException();
+            return 0f;
+        }
+
+        public virtual double getGunTurnRemainingRadians()
+        {
+            if (base.peer != null)
+            {
+                return base.peer.getGunTurnRemaining();
+            }
+            uninitializedException();
+            return 0f;
+        }
+
+        public virtual double getHeadingRadians()
+        {
+            if (base.peer != null)
+            {
+                return base.peer.getBodyHeading();
+            }
+            uninitializedException();
+            return 0f;
+        }
+
+        public virtual double getRadarHeadingRadians()
+        {
+            if (base.peer != null)
+            {
+                return base.peer.getRadarHeading();
+            }
+            uninitializedException();
+            return 0f;
+        }
+
+        public virtual double getRadarTurnRemainingRadians()
+        {
+            if (base.peer != null)
+            {
+                return base.peer.getRadarTurnRemaining();
+            }
+            uninitializedException();
+            return 0f;
+        }
+
+        public virtual double getTurnRemainingRadians()
+        {
+            if (base.peer != null)
+            {
+                return base.peer.getBodyTurnRemaining();
+            }
+            uninitializedException();
+            return 0f;
+        }
+
+        public virtual void setTurnGunLeftRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                ((IAdvancedRobotPeer) base.peer).setTurnGun(-radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void setTurnGunRightRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                ((IAdvancedRobotPeer) base.peer).setTurnGun(radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void setTurnLeftRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                ((IAdvancedRobotPeer) base.peer).setTurnBody(-radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void setTurnRadarLeftRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                ((IAdvancedRobotPeer) base.peer).setTurnRadar(-radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void setTurnRadarRightRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                ((IAdvancedRobotPeer) base.peer).setTurnRadar(radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void setTurnRightRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                ((IAdvancedRobotPeer) base.peer).setTurnBody(radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void turnGunLeftRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                base.peer.turnGun(-radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void turnGunRightRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                base.peer.turnGun(radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void turnLeftRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                base.peer.turnBody(-radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void turnRadarLeftRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                ((IAdvancedRobotPeer) base.peer).turnRadar(-radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void turnRadarRightRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                ((IAdvancedRobotPeer) base.peer).turnRadar(radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+        public virtual void turnRightRadians(double radians)
+        {
+            if (base.peer != null)
+            {
+                base.peer.turnBody(radians);
+            }
+            else
+            {
+                uninitializedException();
+            }
+        }
+
+
     }
 }

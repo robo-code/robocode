@@ -1,22 +1,59 @@
-using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-
 namespace robocode
 {
     public abstract class MouseEvent : Event
     {
-        private const long serialVersionUID = 1L;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private java.awt.@event.MouseEvent source;
+        private int button;
+        private int clickCount;
+        private int x;
+        private int y;
+        private int id;
+        private int modifiers;
+        private long when;
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9f, 0xae, 0x68, 0x67})]
-        public MouseEvent(java.awt.@event.MouseEvent source)
+        public MouseEvent(int id, long when, int modifiers, int x, int y, int clickCount, int button)
         {
-            this.source = source;
+            this.button = button;
+            this.clickCount = clickCount;
+            this.x = x;
+            this.y = y;
+            this.id = id;
+            this.modifiers = modifiers;
+            this.when = when;
         }
 
-        public virtual java.awt.@event.MouseEvent getSourceEvent()
+        public int Button
         {
-            return source;
+            get { return button; }
+        }
+
+        public int ClickCount
+        {
+            get { return clickCount; }
+        }
+
+        public int X
+        {
+            get { return x; }
+        }
+
+        public int Y
+        {
+            get { return y; }
+        }
+
+        public int Id
+        {
+            get { return id; }
+        }
+
+        public int Modifiers
+        {
+            get { return modifiers; }
+        }
+
+        public long When
+        {
+            get { return when; }
         }
     }
 }

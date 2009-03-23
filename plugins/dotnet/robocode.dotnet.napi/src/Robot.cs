@@ -1,33 +1,15 @@
-using System;
-using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.awt;
-using java.awt.@event;
-using java.lang;
+using System.Drawing;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
-using Math=java.lang.Math;
+using robocode.util;
 
 namespace robocode
 {
-    [Implements(
-        new[]
-            {
-                "robocode.robotinterfaces.IInteractiveRobot", "robocode.robotinterfaces.IPaintRobot",
-                "robocode.robotinterfaces.IBasicEvents2", "robocode.robotinterfaces.IInteractiveEvents",
-                "robocode.robotinterfaces.IPaintEvents"
-            })]
-    public class Robot : _Robot, IBasicRobot, IInteractiveRobot, IPaintRobot, IBasicEvents, IBasicEvents2,
+    public class Robot : _RobotBase, IInteractiveRobot, IPaintRobot, IBasicEvents2,
                          IInteractiveEvents, IPaintEvents
     {
-        private const int HEIGHT = 40;
-        private const int WIDTH = 40;
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x4e)]
-        public Robot()
-        {
-            GC.KeepAlive(this);
-        }
+        public const int HEIGHT = 40;
+        public const int WIDTH = 40;
 
         #region IBasicEvents Members
 
@@ -92,7 +74,7 @@ namespace robocode
             return this;
         }
 
-        public override sealed Runnable getRobotRunnable()
+        public override sealed IRunnable getRobotRunnable()
         {
             return this;
         }
@@ -101,47 +83,47 @@ namespace robocode
 
         #region IInteractiveEvents Members
 
-        public virtual void onKeyPressed(java.awt.@event.KeyEvent e)
+        public virtual void onKeyPressed(KeyEvent e)
         {
         }
 
-        public virtual void onKeyReleased(java.awt.@event.KeyEvent e)
+        public virtual void onKeyReleased(KeyEvent e)
         {
         }
 
-        public virtual void onKeyTyped(java.awt.@event.KeyEvent e)
+        public virtual void onKeyTyped(KeyEvent e)
         {
         }
 
-        public virtual void onMouseClicked(java.awt.@event.MouseEvent e)
+        public virtual void onMouseClicked(MouseEvent e)
         {
         }
 
-        public virtual void onMouseDragged(java.awt.@event.MouseEvent e)
+        public virtual void onMouseDragged(MouseEvent e)
         {
         }
 
-        public virtual void onMouseEntered(java.awt.@event.MouseEvent e)
+        public virtual void onMouseEntered(MouseEvent e)
         {
         }
 
-        public virtual void onMouseExited(java.awt.@event.MouseEvent e)
+        public virtual void onMouseExited(MouseEvent e)
         {
         }
 
-        public virtual void onMouseMoved(java.awt.@event.MouseEvent e)
+        public virtual void onMouseMoved(MouseEvent e)
         {
         }
 
-        public virtual void onMousePressed(java.awt.@event.MouseEvent e)
+        public virtual void onMousePressed(MouseEvent e)
         {
         }
 
-        public virtual void onMouseReleased(java.awt.@event.MouseEvent e)
+        public virtual void onMouseReleased(MouseEvent e)
         {
         }
 
-        public virtual void onMouseWheelMoved(MouseWheelEvent e)
+        public virtual void onMouseWheelMoved(MouseWheelMovedEvent e)
         {
         }
 
@@ -158,7 +140,7 @@ namespace robocode
 
         #region IPaintEvents Members
 
-        public virtual void onPaint(Graphics2D g)
+        public virtual void onPaint(IGraphics g)
         {
         }
 
@@ -173,7 +155,6 @@ namespace robocode
 
         #endregion
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x59, 0x6b, 0x92, 0x85})]
         public virtual void ahead(double distance)
         {
             if (base.peer != null)
@@ -186,7 +167,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x7e, 0x6b, 0x93, 0x85})]
         public virtual void back(double distance)
         {
             if (base.peer != null)
@@ -199,7 +179,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0x20, 0x6b, 0x90, 0x85})]
         public virtual void doNothing()
         {
             if (base.peer != null)
@@ -212,7 +191,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 90, 0x6b, 110, 0x90, 0x85})]
         public virtual void fire(double power)
         {
             if (base.peer != null)
@@ -226,7 +204,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0x95, 0x6b, 0x90, 0x65})]
         public virtual Bullet fireBullet(double power)
         {
             if (base.peer != null)
@@ -237,7 +214,6 @@ namespace robocode
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0x58, 0x6b, 0x8e, 0x65})]
         public virtual double getBattleFieldHeight()
         {
             if (base.peer != null)
@@ -248,7 +224,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0x4b, 0x6b, 0x8e, 0x65})]
         public virtual double getBattleFieldWidth()
         {
             if (base.peer != null)
@@ -259,7 +234,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 0x16, 0x6b, 0x8e, 0x65})]
         public virtual double getEnergy()
         {
             if (base.peer != null)
@@ -270,8 +244,7 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 50, 0x6b, 0x8e, 0x65})]
-        public virtual Graphics2D getGraphics()
+        public virtual IGraphics getGraphics()
         {
             if (base.peer != null)
             {
@@ -281,7 +254,6 @@ namespace robocode
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0xa9, 0x6b, 0x8e, 0x65})]
         public virtual double getGunCoolingRate()
         {
             if (base.peer != null)
@@ -292,7 +264,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0xbc, 0x6b, 0x9f, 1, 0x65})]
         public virtual double getGunHeading()
         {
             if (base.peer != null)
@@ -303,7 +274,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0xd5, 0x6b, 0x8e, 0x65})]
         public virtual double getGunHeat()
         {
             if (base.peer != null)
@@ -314,8 +284,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {160, 0x6b, 0x6b, 0x9f, 2, 0x6b, 0x8f, 0x6f, 0x8f, 130, 0x65})]
         public virtual double getHeading()
         {
             if (base.peer == null)
@@ -339,7 +307,6 @@ namespace robocode
             return num;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0x81, 0x6b, 0x85})]
         public virtual double getHeight()
         {
             if (base.peer == null)
@@ -349,7 +316,6 @@ namespace robocode
             return 40.0;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0x9a, 0x6b, 0x8e, 0x65})]
         public virtual string getName()
         {
             if (base.peer != null)
@@ -360,7 +326,6 @@ namespace robocode
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0xe3, 0x6b, 0x8e, 0x65})]
         public virtual int getNumRounds()
         {
             if (base.peer != null)
@@ -371,7 +336,6 @@ namespace robocode
             return 0;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 240, 0x6b, 0x8e, 0x65})]
         public virtual int getOthers()
         {
             if (base.peer != null)
@@ -382,7 +346,6 @@ namespace robocode
             return 0;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 3, 0x6b, 0x9f, 1, 0x65})]
         public virtual double getRadarHeading()
         {
             if (base.peer != null)
@@ -393,7 +356,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x12, 0x6b, 0x8e, 0x65})]
         public virtual int getRoundNum()
         {
             if (base.peer != null)
@@ -404,7 +366,6 @@ namespace robocode
             return 0;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x24, 0x6b, 0x8e, 0x65})]
         public virtual long getTime()
         {
             if (base.peer != null)
@@ -415,7 +376,6 @@ namespace robocode
             return 0L;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x35, 0x6b, 0x8e, 0x65})]
         public virtual double getVelocity()
         {
             if (base.peer != null)
@@ -426,7 +386,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0x8e, 0x6b, 0x85})]
         public virtual double getWidth()
         {
             if (base.peer == null)
@@ -436,7 +395,6 @@ namespace robocode
             return 40.0;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0xa9, 0x6b, 0x8e, 0x65})]
         public virtual double getX()
         {
             if (base.peer != null)
@@ -447,7 +405,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0xb8, 0x6b, 0x8e, 0x65})]
         public virtual double getY()
         {
             if (base.peer != null)
@@ -458,7 +415,6 @@ namespace robocode
             return 0f;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0x71, 0x6b, 0x95, 0x85})]
         public virtual void resume()
         {
             if (base.peer != null)
@@ -475,7 +431,6 @@ namespace robocode
         {
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa2, 0x8a, 0x6b, 0x95, 0x85})]
         public virtual void scan()
         {
             if (base.peer != null)
@@ -488,7 +443,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9e, 0xc4, 0x43, 0x6b, 150, 0x85})]
         public virtual void setAdjustGunForRobotTurn(bool independent)
         {
             if (base.peer != null)
@@ -501,7 +455,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9e, 0xaf, 0x63, 0x6b, 150, 0x85})]
         public virtual void setAdjustRadarForGunTurn(bool independent)
         {
             if (base.peer != null)
@@ -514,7 +467,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9e, 0xba, 0x83, 0x6b, 150, 0x85})]
         public virtual void setAdjustRadarForRobotTurn(bool independent)
         {
             if (base.peer != null)
@@ -527,8 +479,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0xa3, 0x89, 0x6b, 0x6c, 0x6c, 0x6c, 0x6c, 0x91, 0x85})]
         public virtual void setAllColors(Color color)
         {
             if (base.peer != null)
@@ -545,7 +495,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0xb1, 0x6b, 0x91, 0x85})]
         public virtual void setBodyColor(Color color)
         {
             if (base.peer != null)
@@ -558,7 +507,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0x1d, 0x6b, 0x91, 0x85})]
         public virtual void setBulletColor(Color color)
         {
             if (base.peer != null)
@@ -571,8 +519,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0xa3, 0x31, 0x6b, 0x6c, 0x6c, 0x91, 0x85})]
         public virtual void setColors(Color bodyColor, Color gunColor, Color radarColor)
         {
             if (base.peer != null)
@@ -587,8 +533,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0xa3, 0x5e, 0x6b, 0x6c, 0x6c, 0x6c, 0x6d, 0x92, 0x85})]
         public virtual void setColors(Color bodyColor, Color gunColor, Color radarColor, Color bulletColor,
                                       Color scanArcColor)
         {
@@ -606,7 +550,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 70, 0x6b, 0x6d, 0x83, 0x65})]
         public virtual void setDebugProperty(string key, string value)
         {
             if (base.peer != null)
@@ -619,7 +562,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0xd5, 0x6b, 0x91, 0x85})]
         public virtual void setGunColor(Color color)
         {
             if (base.peer != null)
@@ -632,7 +574,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa3, 0xf9, 0x6b, 0x91, 0x85})]
         public virtual void setRadarColor(Color color)
         {
             if (base.peer != null)
@@ -645,7 +586,6 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0x41, 0x6b, 0x91, 0x85})]
         public virtual void setScanColor(Color color)
         {
             if (base.peer != null)
@@ -658,13 +598,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0x53, 0x67})]
         public virtual void stop()
         {
             stop(false);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9e, 90, 0xa3, 0x6b, 150, 0x85})]
         public virtual void stop(bool overwrite)
         {
             if (base.peer != null)
@@ -677,12 +615,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0x97, 0x6b, 0x98, 0x85})]
         public virtual void turnGunLeft(double degrees)
         {
             if (base.peer != null)
             {
-                base.peer.turnGun(-Math.toRadians(degrees));
+                base.peer.turnGun(-Utils.toRadians(degrees));
             }
             else
             {
@@ -690,12 +627,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0xbc, 0x6b, 0x97, 0x85})]
         public virtual void turnGunRight(double degrees)
         {
             if (base.peer != null)
             {
-                base.peer.turnGun(Math.toRadians(degrees));
+                base.peer.turnGun(Utils.toRadians(degrees));
             }
             else
             {
@@ -703,12 +639,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0xee, 0x6b, 0x98, 0x85})]
         public virtual void turnLeft(double degrees)
         {
             if (base.peer != null)
             {
-                base.peer.turnBody(-Math.toRadians(degrees));
+                base.peer.turnBody(-Utils.toRadians(degrees));
             }
             else
             {
@@ -716,12 +651,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa4, 0xe3, 0x6b, 0x9d, 0x85})]
         public virtual void turnRadarLeft(double degrees)
         {
             if (base.peer != null)
             {
-                ((IStandardRobotPeer) base.peer).turnRadar(-Math.toRadians(degrees));
+                ((IStandardRobotPeer) base.peer).turnRadar(-Utils.toRadians(degrees));
             }
             else
             {
@@ -729,12 +663,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa5, 9, 0x6b, 0x9c, 0x85})]
         public virtual void turnRadarRight(double degrees)
         {
             if (base.peer != null)
             {
-                ((IStandardRobotPeer) base.peer).turnRadar(Math.toRadians(degrees));
+                ((IStandardRobotPeer) base.peer).turnRadar(Utils.toRadians(degrees));
             }
             else
             {
@@ -742,12 +675,11 @@ namespace robocode
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0xa1, 0x12, 0x6b, 0x97, 0x85})]
         public virtual void turnRight(double degrees)
         {
             if (base.peer != null)
             {
-                base.peer.turnBody(Math.toRadians(degrees));
+                base.peer.turnBody(Utils.toRadians(degrees));
             }
             else
             {

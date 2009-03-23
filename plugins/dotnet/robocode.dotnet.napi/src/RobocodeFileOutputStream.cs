@@ -3,7 +3,7 @@ namespace robocode
     /*public class RobocodeFileOutputStream : OutputStream
     {
         private string fileName;
-        private readonly FileOutputStream @out;
+        private readonly FileOutputStream @Out;
 
         [MethodImpl(MethodImplOptions.NoInlining), Throws(new[] {"java.io.IOException"}),
          LineNumberTable(new byte[] {6, 0x6c})]
@@ -36,21 +36,21 @@ namespace robocode
                 Throwable.__<suppressFillInStackTrace>();
                 throw new RobotException("ThreadManager cannot be null!");
             }
-            @out = base2.createRobotFileStream(fileName, (bool) num);
+            @Out = base2.createRobotFileStream(fileName, (bool) num);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x38, 0x6b}),
          Throws(new[] {"java.io.IOException"})]
         public override sealed void close()
         {
-            @out.close();
+            @Out.close();
         }
 
         [MethodImpl(MethodImplOptions.NoInlining), Throws(new[] {"java.io.IOException"}),
          LineNumberTable(new byte[] {0x43, 0x6b})]
         public override sealed void flush()
         {
-            @out.flush();
+            @Out.flush();
         }
 
         public string getName()
@@ -62,21 +62,21 @@ namespace robocode
          LineNumberTable(new byte[] {0x58, 0x6c})]
         public override sealed void write(byte[] b)
         {
-            @out.write(b);
+            @Out.write(b);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining), Throws(new[] {"java.io.IOException"}),
          LineNumberTable(new byte[] {0x70, 0x6c})]
         public override sealed void write(int b)
         {
-            @out.write(b);
+            @Out.write(b);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {100, 110}),
          Throws(new[] {"java.io.IOException"})]
         public override sealed void write(byte[] b, int off, int len)
         {
-            @out.write(b, off, len);
+            @Out.write(b, off, len);
         }
     }*/
 }

@@ -1,10 +1,10 @@
+using System;
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.lang;
+using robocode.util;
 
 namespace robocode
 {
-    public sealed class Rules : Object
+    public sealed class Rules
     {
         public const double ACCELERATION = 1.0;
         public const double DECELERATION = 2.0;
@@ -21,26 +21,19 @@ namespace robocode
         public const double ROBOT_HIT_BONUS = 1.2;
         public const double ROBOT_HIT_DAMAGE = 0.6;
 
-        [Modifiers(Modifiers.Static | Modifiers.Public | Modifiers.Final)] public static double GUN_TURN_RATE_RADIANS =
-            Math.toRadians(20.0);
+        public static double GUN_TURN_RATE_RADIANS =
+            Utils.toRadians(20.0);
 
-        [Modifiers(Modifiers.Static | Modifiers.Public | Modifiers.Final)] public static double MAX_TURN_RATE_RADIANS =
-            Math.toRadians(10.0);
+        public static double MAX_TURN_RATE_RADIANS =
+            Utils.toRadians(10.0);
 
-        [Modifiers(Modifiers.Static | Modifiers.Public | Modifiers.Final)] public static double RADAR_TURN_RATE_RADIANS
-            = Math.toRadians(45.0);
+        public static double RADAR_TURN_RATE_RADIANS
+            = Utils.toRadians(45.0);
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x20)]
         private Rules()
         {
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void __<clinit>()
-        {
-        }
-
-        [LineNumberTable(new byte[] {160, 0x4e, 0x8e, 0x6c, 150})]
         public static double getBulletDamage(double bulletPower)
         {
             double num = 4.0*bulletPower;
@@ -71,16 +64,14 @@ namespace robocode
             return (10.0 - (0.75*velocity));
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xab)]
         public static double getTurnRateRadians(double velocity)
         {
-            return Math.toRadians(getTurnRate(velocity));
+            return Utils.toRadians(getTurnRate(velocity));
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xb6)]
         public static double getWallHitDamage(double velocity)
         {
-            return Math.max((Math.abs(velocity)/2.0) - 1f, 0f);
+            return Math.Max((Math.Abs(velocity)/2.0) - 1f, 0f);
         }
     }
 }

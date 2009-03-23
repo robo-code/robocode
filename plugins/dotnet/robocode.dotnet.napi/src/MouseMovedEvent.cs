@@ -1,11 +1,8 @@
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.awt;
-using java.lang;
-using java.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
+using robocode.net.sf.robocode.serialization;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -15,26 +12,24 @@ namespace robocode
         private const int DEFAULT_PRIORITY = 0x62;
         private const long serialVersionUID = 1L;
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {3, 0x67})]
-        public MouseMovedEvent(java.awt.@event.MouseEvent source) : base(source)
+        public MouseMovedEvent(int id, long when, int modifiers, int x, int y, int clickCount, int button)
+            : base(id, when, modifiers, x, y, clickCount, button)
         {
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x57)]
         internal static ISerializableHelper createHiddenSerializer()
         {
             return new SerializableHelper(null);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x13, 0x6b, 140, 0x66, 0xac})]
-        internal override sealed void dispatch(IBasicRobot robot1, IRobotStatics statics1, Graphics2D graphics2D)
+        internal override sealed void dispatch(IBasicRobot robot1, IRobotStatics statics1, IGraphics graphics2D)
         {
             if (statics1.isInteractiveRobot())
             {
                 IInteractiveEvents events = ((IInteractiveRobot) robot1).getInteractiveEventListener();
                 if (events != null)
                 {
-                    events.onMouseMoved(base.getSourceEvent());
+                    events.onMouseMoved(this);
                 }
             }
         }
@@ -49,43 +44,20 @@ namespace robocode
             return 0x33;
         }
 
-        #region Nested type: a1
-
-        [EnclosingMethod("robocode.MouseMovedEvent", null, null), SourceFile("MouseMovedEvent.java"),
-         Modifiers(Modifiers.Synthetic | Modifiers.Synchronized),
-         InnerClass(null, Modifiers.Synthetic | Modifiers.Static)]
-        internal sealed class a1 : Object
-        {
-            /* private scope */
-
-            private a1()
-            {
-                throw null;
-            }
-        }
-
-        #endregion
-
         #region Nested type: SerializableHelper
 
-        [SourceFile("MouseMovedEvent.java"), Implements(new[] {"net.sf.robocode.serialization.ISerializableHelper"}),
-         InnerClass(null, Modifiers.Static | Modifiers.Private)]
-        internal sealed class SerializableHelper : Object, ISerializableHelper
+        internal sealed class SerializableHelper : ISerializableHelper
         {
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 90)]
             private SerializableHelper()
             {
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 90), Modifiers(Modifiers.Synthetic)]
             internal SerializableHelper(MouseMovedEvent a1) : this()
             {
             }
 
             #region ISerializableHelper Members
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(new byte[] {60, 0x67, 0x67, 0x67, 0x67, 0x68, 0x68, 0x88})]
             public object deserialize(RbSerializer serializer, ByteBuffer buffer1)
             {
                 int button = buffer1.getInt();
@@ -95,23 +67,19 @@ namespace robocode
                 int id = buffer1.getInt();
                 int modifiers = buffer1.getInt();
                 long when = buffer1.getLong();
-                return
-                    new MouseMovedEvent(new java.awt.@event.MouseEvent(SafeComponent.getSafeEventComponent(), id, when,
-                                                                       modifiers, x, y, clickCount, false, button));
+                return new MouseMovedEvent(id, when,modifiers, x, y, clickCount, button);
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(new byte[] {0x2f, 0x67, 0x87, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d})]
             public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
             {
-                java.awt.@event.MouseEvent event3 = ((MouseMovedEvent) obj1).getSourceEvent();
-                serializer1.serialize(buffer1, event3.getButton());
-                serializer1.serialize(buffer1, event3.getClickCount());
-                serializer1.serialize(buffer1, event3.getX());
-                serializer1.serialize(buffer1, event3.getY());
-                serializer1.serialize(buffer1, event3.getID());
-                serializer1.serialize(buffer1, event3.getModifiersEx());
-                serializer1.serialize(buffer1, event3.getWhen());
+                MouseEvent event3 = ((MouseMovedEvent) obj1);
+                serializer1.serialize(buffer1, event3.Button);
+                serializer1.serialize(buffer1, event3.ClickCount);
+                serializer1.serialize(buffer1, event3.X);
+                serializer1.serialize(buffer1, event3.Y);
+                serializer1.serialize(buffer1, event3.Id);
+                serializer1.serialize(buffer1, event3.Modifiers);
+                serializer1.serialize(buffer1, event3.When);
             }
 
             public int sizeOf(RbSerializer serializer, object obj)

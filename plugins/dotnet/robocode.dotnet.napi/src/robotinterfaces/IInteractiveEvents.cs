@@ -1,19 +1,17 @@
-using java.awt.@event;
-
 namespace robocode.robotinterfaces
 {
     public interface IInteractiveEvents
     {
-        void onKeyPressed(java.awt.@event.KeyEvent ke);
-        void onKeyReleased(java.awt.@event.KeyEvent ke);
-        void onKeyTyped(java.awt.@event.KeyEvent ke);
-        void onMouseClicked(java.awt.@event.MouseEvent me);
-        void onMouseDragged(java.awt.@event.MouseEvent me);
-        void onMouseEntered(java.awt.@event.MouseEvent me);
-        void onMouseExited(java.awt.@event.MouseEvent me);
-        void onMouseMoved(java.awt.@event.MouseEvent me);
-        void onMousePressed(java.awt.@event.MouseEvent me);
-        void onMouseReleased(java.awt.@event.MouseEvent me);
-        void onMouseWheelMoved(MouseWheelEvent mwe);
+        void onKeyPressed(KeyEvent ke);
+        void onKeyReleased(KeyEvent ke);
+        void onKeyTyped(KeyEvent ke);
+        void onMouseClicked(MouseEvent me);
+        void onMouseDragged(MouseEvent me);
+        void onMouseEntered(MouseEvent me);
+        void onMouseExited(MouseEvent me);
+        void onMouseMoved(MouseEvent me);
+        void onMousePressed(MouseEvent me);
+        void onMouseReleased(MouseEvent me);
+        void onMouseWheelMoved(MouseWheelMovedEvent mwe);
     }
 }

@@ -1,20 +1,12 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using IKVM.Runtime;
-using java.io;
-using java.lang;
-using java.nio;
 using net.sf.robocode.serialization;
-using Double=java.lang.Double;
-using Object=java.lang.Object;
+using robocode.net.sf.robocode.serialization;
 
 namespace robocode
 {
-    [Implements(new[] {"java.io.Serializable", "java.lang.Comparable"}),
-     Signature("Ljava/lang/Object;Ljava/io/Serializable;Ljava/lang/Comparable<Lrobocode/BattleResults;>;")]
-    public class BattleResults : Object, Comparable, Serializable.__Interface
+    public class BattleResults : Object, IComparable
     {
         protected internal const long serialVersionUID = 1L;
         protected internal double bulletDamage;
@@ -30,9 +22,6 @@ namespace robocode
         protected internal string teamLeaderName;
         protected internal int thirds;
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0x1b, 0x68, 0x67, 0x67, 0x69, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x68, 0x68, 0x68}
-             )]
         public BattleResults(string teamLeaderName, int rank, double score, double survival, double lastSurvivorBonus,
                              double bulletDamage, double bulletDamageBonus, double ramDamage, double ramDamageBonus,
                              int firsts, int seconds, int thirds)
@@ -53,29 +42,17 @@ namespace robocode
 
         #region Comparable Members
 
-        [HideFromJava]
         int IComparable.CompareTo(object obj1)
         {
-            return compareTo(obj1);
+            if (obj1 is BattleResults)
+            {
+                return score.CompareTo(((BattleResults)obj1).score);
+            }
+            return -1;
         }
 
         #endregion
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xcd)]
-        public virtual int compareTo(BattleResults o)
-        {
-            return Double.valueOf(score).compareTo(Double.valueOf(o.score));
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x20),
-         Modifiers(Modifiers.Synthetic | Modifiers.Public | Modifiers.Volatile),
-         EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual int compareTo(object x0)
-        {
-            return compareTo((BattleResults) x0);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xd1)]
         internal static ISerializableHelper createHiddenSerializer()
         {
             return new SerializableHelper(null);
@@ -83,12 +60,12 @@ namespace robocode
 
         public virtual int getBulletDamage()
         {
-            return ByteCodeHelper.d2i(bulletDamage + 0.5);
+            return (int)(bulletDamage + 0.5);
         }
 
         public virtual int getBulletDamageBonus()
         {
-            return ByteCodeHelper.d2i(bulletDamageBonus + 0.5);
+            return (int)(bulletDamageBonus + 0.5);
         }
 
         public virtual int getFirsts()
@@ -98,17 +75,17 @@ namespace robocode
 
         public virtual int getLastSurvivorBonus()
         {
-            return ByteCodeHelper.d2i(lastSurvivorBonus + 0.5);
+            return (int)(lastSurvivorBonus + 0.5);
         }
 
         public virtual int getRamDamage()
         {
-            return ByteCodeHelper.d2i(ramDamage + 0.5);
+            return (int)(ramDamage + 0.5);
         }
 
         public virtual int getRamDamageBonus()
         {
-            return ByteCodeHelper.d2i(ramDamageBonus + 0.5);
+            return (int)(ramDamageBonus + 0.5);
         }
 
         public virtual int getRank()
@@ -118,7 +95,7 @@ namespace robocode
 
         public virtual int getScore()
         {
-            return ByteCodeHelper.d2i(score + 0.5);
+            return (int)(score + 0.5);
         }
 
         public virtual int getSeconds()
@@ -128,7 +105,7 @@ namespace robocode
 
         public virtual int getSurvival()
         {
-            return ByteCodeHelper.d2i(survival + 0.5);
+            return (int)(survival + 0.5);
         }
 
         public virtual string getTeamLeaderName()
@@ -148,43 +125,20 @@ namespace robocode
             return serializable;
         }*/
 
-        #region Nested type: a1
-
-        [EnclosingMethod("robocode.BattleResults", null, null), InnerClass(null, Modifiers.Synthetic | Modifiers.Static)
-        , Modifiers(Modifiers.Synthetic | Modifiers.Synchronized), SourceFile("BattleResults.java")]
-        internal sealed class a1 : Object
-        {
-            /* private scope */
-
-            private a1()
-            {
-                throw null;
-            }
-        }
-
-        #endregion
-
         #region Nested type: SerializableHelper
 
-        [Implements(new[] {"net.sf.robocode.serialization.ISerializableHelper"}), SourceFile("BattleResults.java"),
-         InnerClass(null, Modifiers.Static | Modifiers.Private)]
-        internal sealed class SerializableHelper : Object, ISerializableHelper
+        internal sealed class SerializableHelper : ISerializableHelper
         {
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xd4)]
             private SerializableHelper()
             {
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xd4), Modifiers(Modifiers.Synthetic)]
             internal SerializableHelper(BattleResults a1) : this()
             {
             }
 
             #region ISerializableHelper Members
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(
-                 new byte[] {160, 0x7c, 0x68, 0x67, 0x68, 0x68, 0x69, 0x69, 0x69, 0x69, 0x69, 0x68, 0x68, 0x88})]
             public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
             {
                 string teamLeaderName = serializer1.deserializeString(buffer1);
@@ -202,9 +156,6 @@ namespace robocode
                                          bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, buffer1.getInt());
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(
-                 new byte[] {160, 0x6b, 0x87, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d})]
             public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
             {
                 var results = (BattleResults) obj1;
@@ -222,7 +173,6 @@ namespace robocode
                 serializer1.serialize(buffer1, results.thirds);
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 100, 0x87})]
             public int sizeOf(RbSerializer serializer1, object obj1)
             {
                 var results = (BattleResults) obj1;

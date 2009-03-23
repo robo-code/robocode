@@ -1,49 +1,29 @@
-using IKVM.Attributes;
-using java.io;
-using java.util;
+
+using System.Collections.Generic;
 
 namespace robocode.robotinterfaces.peer
 {
-    [Implements(new[] {"robocode.robotinterfaces.peer.IStandardRobotPeer"})]
-    public interface IAdvancedRobotPeer : IBasicRobotPeer, IStandardRobotPeer
+    public interface IAdvancedRobotPeer : IStandardRobotPeer
     {
         void addCustomEvent(Condition c);
         void clearAllEvents();
 
-        [Signature("()Ljava/util/List<Lrobocode/Event;>;")]
-        List getAllEvents();
+        List<Event> getAllEvents();
+        List<BulletHitBulletEvent> getBulletHitBulletEvents();
+        List<BulletHitEvent> getBulletHitEvents();
+        List<BulletMissedEvent> getBulletMissedEvents();
 
-        [Signature("()Ljava/util/List<Lrobocode/BulletHitBulletEvent;>;")]
-        List getBulletHitBulletEvents();
-
-        [Signature("()Ljava/util/List<Lrobocode/BulletHitEvent;>;")]
-        List getBulletHitEvents();
-
-        [Signature("()Ljava/util/List<Lrobocode/BulletMissedEvent;>;")]
-        List getBulletMissedEvents();
-
-        File getDataDirectory();
-        File getDataFile(string str);
+        string getDataDirectory();
+        string getDataFile(string str);
         long getDataQuotaAvailable();
         int getEventPriority(string str);
 
-        [Signature("()Ljava/util/List<Lrobocode/HitByBulletEvent;>;")]
-        List getHitByBulletEvents();
-
-        [Signature("()Ljava/util/List<Lrobocode/HitRobotEvent;>;")]
-        List getHitRobotEvents();
-
-        [Signature("()Ljava/util/List<Lrobocode/HitWallEvent;>;")]
-        List getHitWallEvents();
-
-        [Signature("()Ljava/util/List<Lrobocode/RobotDeathEvent;>;")]
-        List getRobotDeathEvents();
-
-        [Signature("()Ljava/util/List<Lrobocode/ScannedRobotEvent;>;")]
-        List getScannedRobotEvents();
-
-        [Signature("()Ljava/util/List<Lrobocode/StatusEvent;>;")]
-        List getStatusEvents();
+        List<HitByBulletEvent> getHitByBulletEvents();
+        List<HitRobotEvent> getHitRobotEvents();
+        List<HitWallEvent> getHitWallEvents();
+        List<RobotDeathEvent> getRobotDeathEvents();
+        List<ScannedRobotEvent> getScannedRobotEvents();
+        List<StatusEvent> getStatusEvents();
 
         bool isAdjustGunForBodyTurn();
         bool isAdjustRadarForBodyTurn();

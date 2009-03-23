@@ -1,22 +1,23 @@
-using java.io;
-using java.lang;
-using java.lang.reflect;
-using java.nio;
-using java.nio.charset;
-using java.util;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using net.sf.robocode.core;
 using net.sf.robocode.io;
 using net.sf.robocode.manager;
 using net.sf.robocode.security;
 using robocode;
+using robocode.net.sf.robocode.serialization;
 
 namespace net.sf.robocode.serialization
 {
     public class RbSerializer
     {
         private static readonly int byteOrder = (int) byteOrderu;
-        private static readonly Charset charset;
-        private static readonly Hashtable classToType = new Hashtable();
+        private static readonly Encoding charset;
+        private static readonly Dictionary<Type, byte> classToType = new Dictionary<Type, byte>();
         private static readonly ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
         public static byte BattleEndedEvent_TYPE = 32;
         public static byte BattleResults_TYPE = 8;
@@ -62,32 +63,29 @@ namespace net.sf.robocode.serialization
         public static byte WinEvent_TYPE = 37;
 
         private readonly int currentVersion;
-        private readonly CharsetDecoder decoder;
-        private readonly CharsetEncoder encoder;
+        private readonly Decoder decoder;
+        private readonly Encoder encoder;
 
         static RbSerializer()
         {
-            charset = Charset.forName("UTF8"); // we will use it as UCS-2
+
+            charset = Encoding.UTF8; // we will use it as UCS-2
             register(null, TERMINATOR_TYPE); // reserved for end of (list) element
         }
 
         public RbSerializer()
         {
             currentVersion = ContainerBase.getComponent<IVersionManagerBase>().getVersionAsInt();
-            encoder = charset.newEncoder();
-            encoder.onMalformedInput(CodingErrorAction.REPORT);
-            encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+            encoder = charset.GetEncoder();
             // throw away forst bom
             ByteBuffer buffer = ByteBuffer.allocate(8);
 
-            encoder.encode(CharBuffer.wrap("BOM"), buffer, false);
+            //TODO encoder.encode(CharBuffer.wrap("BOM"), buffer, false);
 
-            decoder = charset.newDecoder();
-            decoder.onMalformedInput(CodingErrorAction.REPORT);
-            decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+            decoder = charset.GetDecoder();
         }
 
-        public void serialize(OutputStream target, byte type, object @object)
+        public void serialize(Stream target, byte type, object @object)
         {
             int length = sizeOf(type, @object);
 
@@ -97,7 +95,8 @@ namespace net.sf.robocode.serialization
             buffer.putInt(byteOrder);
             buffer.putInt(currentVersion);
             buffer.putInt(length);
-            target.write(buffer.array());
+            byte[] array = buffer.array();
+            target.Write(array, 0, array.Length);
 
             // body
             buffer = ByteBuffer.allocate(length);
@@ -106,7 +105,8 @@ namespace net.sf.robocode.serialization
             {
                 throw new IOException("Serialization failed: bad size");
             }
-            target.write(buffer.array());
+            array = buffer.array();
+            target.Write(array, 0, array.Length);
         }
 
         public ByteBuffer serialize(byte type, object @object)
@@ -129,7 +129,7 @@ namespace net.sf.robocode.serialization
             return buffer;
         }
 
-        public object deserialize(InputStream source)
+        public object deserialize(Stream source)
         {
             // header
             ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT);
@@ -361,14 +361,7 @@ namespace net.sf.robocode.serialization
             slice.limit(bytes);
             string res;
 
-            try
-            {
-                res = decoder.decode(slice).toString();
-            }
-            catch (CharacterCodingException e)
-            {
-                throw new Error("Bad character", e);
-            }
+            res = "";//TODO decoder.decode(slice).toString();
             buffer.position(buffer.position() + bytes);
             return res;
         }
@@ -506,7 +499,7 @@ namespace net.sf.robocode.serialization
 
             if (helper == null)
             {
-                throw new Error("Unknownd or unsupported data type");
+                throw new Exception("Unknownd or unsupported data type");
             }
             return helper;
         }
@@ -515,18 +508,18 @@ namespace net.sf.robocode.serialization
         {
             ByteBuffer slice = ByteBuffer.allocate(data.Length*3);
 
-            encoder.encode(CharBuffer.wrap(data), slice, false);
+            //TODO encoder.encode(CharBuffer.wrap(data), slice, false);
             slice.flip();
             return slice;
         }
 
-        private void fillBuffer(InputStream source, ByteBuffer buffer)
+        private void fillBuffer(Stream source, ByteBuffer buffer)
         {
             int res;
 
             do
             {
-                res = source.read(buffer.array(), buffer.position(), buffer.remaining());
+                res = source.Read(buffer.array(), buffer.position(), buffer.remaining());
                 if (res == -1)
                 {
                     throw new IOException("Unexpected EOF");
@@ -535,31 +528,20 @@ namespace net.sf.robocode.serialization
             } while (buffer.remaining() != 0);
         }
 
-        public static void register(Class realClass, byte type)
+        public static void register(Type realClass, byte type)
         {
             try
             {
                 if (realClass != null)
                 {
-                    Method method = realClass.getDeclaredMethod("createHiddenSerializer");
+                    MethodInfo method = realClass.GetMethod("createHiddenSerializer");
+                    var helper = (ISerializableHelper) method.Invoke(null, null);
 
-                    method.setAccessible(true);
-                    var helper = (ISerializableHelper) method.invoke(null);
-
-                    method.setAccessible(false);
                     typeToHelper[type] = helper;
-                    classToType.put(realClass, type);
+                    classToType.Add(realClass, type);
                 }
             }
-            catch (NoSuchMethodException e)
-            {
-                Logger.logError(e);
-            }
-            catch (InvocationTargetException e)
-            {
-                Logger.logError(e);
-            }
-            catch (IllegalAccessException e)
+            catch (Exception e)
             {
                 Logger.logError(e);
             }
@@ -568,7 +550,7 @@ namespace net.sf.robocode.serialization
         public static ByteBuffer serializeToBuffer(object src)
         {
             var rbs = new RbSerializer();
-            var type = (byte) classToType.get(src.GetType());
+            var type = (byte) classToType[src.GetType()];
 
             return rbs.serialize(type, src);
         }
@@ -581,23 +563,5 @@ namespace net.sf.robocode.serialization
             return (T) res;
         }
 
-        public static object deepCopy(byte type, Object src)
-        {
-            var @out = new ByteArrayOutputStream(1024);
-            var rbs = new RbSerializer();
-
-            try
-            {
-                rbs.serialize(@out, type, src);
-                var @in = new ByteArrayInputStream(@out.toByteArray());
-
-                return rbs.deserialize(@in);
-            }
-            catch (IOException e)
-            {
-                Logger.logError(e);
-                return null;
-            }
-        }
     }
 }

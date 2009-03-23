@@ -1,41 +1,31 @@
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.io;
-using java.lang;
-using java.nio;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
+using robocode.net.sf.robocode.serialization;
+using robocode.util;
 
 namespace robocode
 {
-    [Implements(new[] {"java.io.Serializable"})]
-    public sealed class RobotStatus : Object, Serializable.__Interface
+    public sealed class RobotStatus 
     {
         private const long serialVersionUID = 1L;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double bodyHeading;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double bodyTurnRemaining;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double distanceRemaining;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double energy;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double gunHeading;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double gunHeat;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double gunTurnRemaining;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private int numRounds;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private int others;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double radarHeading;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double radarTurnRemaining;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private int roundNum;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private long time;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double velocity;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double x;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double y;
+        private double bodyHeading;
+        private double bodyTurnRemaining;
+        private double distanceRemaining;
+        private double energy;
+        private double gunHeading;
+        private double gunHeat;
+        private double gunTurnRemaining;
+        private int numRounds;
+        private int others;
+        private double radarHeading;
+        private double radarTurnRemaining;
+        private int roundNum;
+        private long time;
+        private double velocity;
+        private double x;
+        private double y;
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[]
-                                                                       {
-                                                                           160, 0xd9, 0x68, 0x69, 0x69, 0x69, 0x6a, 0x6a
-                                                                           , 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a, 0x6a,
-                                                                           0x68,
-                                                                           0x68, 0x68, 0x68
-                                                                       })]
         private RobotStatus(double num1, double num2, double num3, double num4, double num5, double num6, double num8,
                             double num7, double num9, double num10, double num11, double num12, int num13, int num14,
                             int num15, long num16)
@@ -58,112 +48,86 @@ namespace robocode
             time = num16;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic)]
-        internal RobotStatus(double num1, double num2, double num3, double num4, double num5, double num6, double num7,
-                             double num8, double num9, double num10, double num11, double num12, int num13, int num14,
-                             int num15, long num16, a1 a)
-            : this(num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13, num14, num15, num16
-                )
-        {
-        }
-
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access100(RobotStatus status1)
         {
             return status1.energy;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access1000(RobotStatus status1)
         {
             return status1.gunTurnRemaining;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access1100(RobotStatus status1)
         {
             return status1.distanceRemaining;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access1200(RobotStatus status1)
         {
             return status1.gunHeat;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static int access1300(RobotStatus status1)
         {
             return status1.others;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static int access1400(RobotStatus status1)
         {
             return status1.roundNum;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 30)]
         internal static int access1500(RobotStatus status1)
         {
             return status1.numRounds;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 30)]
         internal static long access1600(RobotStatus status1)
         {
             return status1.time;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 30)]
         internal static double access200(RobotStatus status1)
         {
             return status1.x;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 30)]
         internal static double access300(RobotStatus status1)
         {
             return status1.y;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access400(RobotStatus status1)
         {
             return status1.bodyHeading;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 30)]
         internal static double access500(RobotStatus status1)
         {
             return status1.gunHeading;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access600(RobotStatus status1)
         {
             return status1.radarHeading;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access700(RobotStatus status1)
         {
             return status1.velocity;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access800(RobotStatus status1)
         {
             return status1.bodyTurnRemaining;
         }
 
-        [LineNumberTable((ushort) 30), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static double access900(RobotStatus status1)
         {
             return status1.radarTurnRemaining;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x15f)]
         internal static ISerializableHelper createHiddenSerializer()
         {
             return new SerializableHelper(null);
@@ -179,10 +143,9 @@ namespace robocode
             return energy;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 130)]
         public double getGunHeading()
         {
-            return Math.toDegrees(gunHeading);
+            return Utils.toDegrees(gunHeading);
         }
 
         public double getGunHeadingRadians()
@@ -195,10 +158,9 @@ namespace robocode
             return gunHeat;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xf7)]
         public double getGunTurnRemaining()
         {
-            return Math.toDegrees(gunTurnRemaining);
+            return Utils.toDegrees(gunTurnRemaining);
         }
 
         public double getGunTurnRemainingRadians()
@@ -206,10 +168,9 @@ namespace robocode
             return gunTurnRemaining;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x68)]
         public double getHeading()
         {
-            return Math.toDegrees(bodyHeading);
+            return Utils.toDegrees(bodyHeading);
         }
 
         public double getHeadingRadians()
@@ -227,10 +188,9 @@ namespace robocode
             return others;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x9c)]
         public double getRadarHeading()
         {
-            return Math.toDegrees(radarHeading);
+            return Utils.toDegrees(radarHeading);
         }
 
         public double getRadarHeadingRadians()
@@ -238,10 +198,9 @@ namespace robocode
             return radarHeading;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xdd)]
         public double getRadarTurnRemaining()
         {
-            return Math.toDegrees(radarTurnRemaining);
+            return Utils.toDegrees(radarTurnRemaining);
         }
 
         public double getRadarTurnRemainingRadians()
@@ -259,10 +218,9 @@ namespace robocode
             return time;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xc3)]
         public double getTurnRemaining()
         {
-            return Math.toDegrees(bodyTurnRemaining);
+            return Utils.toDegrees(bodyTurnRemaining);
         }
 
         public double getTurnRemainingRadians()
@@ -285,69 +243,32 @@ namespace robocode
             return y;
         }
 
-        /*public static implicit operator Serializable(RobotStatus status1)
-        {
-            Serializable serializable;
-            serializable.__<ref> = status1;
-            return serializable;
-        }*/
-
-        #region Nested type: a1
-
-        [SourceFile("RobotStatus.java"), Modifiers(Modifiers.Synthetic | Modifiers.Synchronized),
-         InnerClass(null, Modifiers.Synthetic | Modifiers.Static), EnclosingMethod("robocode.RobotStatus", null, null)]
-        internal sealed class a1 : Object
-        {
-            /* private scope */
-
-            private a1()
-            {
-                throw null;
-            }
-        }
-
-        #endregion
-
         #region Nested type: SerializableHelper
 
-        [InnerClass(null, Modifiers.Static | Modifiers.Private), SourceFile("RobotStatus.java"),
-         Implements(
-             new[] {"net.sf.robocode.serialization.ISerializableHelper", "net.sf.robocode.security.IHiddenStatusHelper"}
-             )]
-        internal sealed class SerializableHelper : Object, IHiddenStatusHelper, ISerializableHelper
+        internal sealed class SerializableHelper : IHiddenStatusHelper, ISerializableHelper
         {
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x162)]
             private SerializableHelper()
             {
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x162), Modifiers(Modifiers.Synthetic)]
             internal SerializableHelper(RobotStatus a1) : this()
             {
             }
 
             #region IHiddenStatusHelper Members
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x194)]
             public RobotStatus createStatus(double num1, double num2, double num3, double num4, double num5, double num6,
                                             double num7, double num8, double num9, double num10, double num11,
                                             double num12, int num13, int num14, int num15, long num16)
             {
                 return new RobotStatus(num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13,
-                                       num14, num15, num16, null);
+                                       num14, num15, num16);
             }
 
             #endregion
 
             #region ISerializableHelper Members
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[]
-                                                                           {
-                                                                               0xa1, 12, 0x68, 0x68, 0x68, 0x68, 0x69,
-                                                                               0x69, 0x69, 0x69, 0x69, 0x69, 0x69, 0x69,
-                                                                               0x68, 0x68,
-                                                                               0x68, 0x88
-                                                                           })]
             public object deserialize(RbSerializer serializer, ByteBuffer buffer1)
             {
                 double num = buffer1.getDouble();
@@ -366,16 +287,9 @@ namespace robocode
                 int num14 = buffer1.getInt();
                 int num15 = buffer1.getInt();
                 return new RobotStatus(num, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13,
-                                       num14, num15, buffer1.getLong(), null);
+                                       num14, num15, buffer1.getLong());
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[]
-                                                                           {
-                                                                               160, 0xf7, 0x87, 0x6d, 0x6d, 0x6d, 0x6d,
-                                                                               0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d,
-                                                                               0x6d, 0x6d,
-                                                                               0x6d, 0x6d, 0x6d
-                                                                           })]
             public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
             {
                 var status = (RobotStatus) obj1;

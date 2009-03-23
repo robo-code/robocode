@@ -1,9 +1,8 @@
-using java.awt;
-using java.util;
+using System.Collections;
+using System.Collections.Generic;
 using net.sf.robocode.core;
 using net.sf.robocode.peer;
 using robocode;
-using robocode.control;
 using robocode.robotinterfaces;
 using Event=robocode.Event;
 
@@ -14,7 +13,6 @@ namespace net.sf.robocode.security
         private static IHiddenBulletHelper bulletHelper;
         private static IHiddenEventHelper eventHelper;
         private static IHiddenRulesHelper rulesHelper;
-        private static IHiddenSpecificationHelper specificationHelper;
         private static IHiddenStatusHelper statusHelper;
 
         public static bool isCriticalEvent(Event e)
@@ -32,7 +30,7 @@ namespace net.sf.robocode.security
             eventHelper.setPriority(e, newPriority);
         }
 
-        public static void dispatch(Event @event, IBasicRobot robot, IRobotStatics statics, Graphics2D graphics)
+        public static void dispatch(Event @event, IBasicRobot robot, IRobotStatics statics, IGraphics graphics)
         {
             eventHelper.dispatch(@event,
                                  robot,
@@ -51,7 +49,7 @@ namespace net.sf.robocode.security
             return eventHelper.getSerializationType(e);
         }
 
-        public static void updateBullets(Event e, Hashtable bullets)
+        public static void updateBullets(Event e, Dictionary<int, Bullet> bullets)
         {
             eventHelper.updateBullets(e, bullets);
         }
@@ -59,29 +57,6 @@ namespace net.sf.robocode.security
         public static void update(Bullet bullet, double x, double y, string victimName, bool isActive)
         {
             bulletHelper.update(bullet, x, y, victimName, isActive);
-        }
-
-        public static RobotSpecification createSpecification(object fileSpecification, string name, string author,
-                                                             string webpage, string version, string robocodeVersion,
-                                                             string jarFile, string fullClassName, string description)
-        {
-            return specificationHelper.createSpecification(fileSpecification, name, author, webpage, version,
-                                                           robocodeVersion, jarFile, fullClassName, description);
-        }
-
-        public static object getFileSpecification(RobotSpecification specification)
-        {
-            return specificationHelper.getFileSpecification(specification);
-        }
-
-        public static string getRobotTeamName(RobotSpecification specification)
-        {
-            return specificationHelper.getTeamName(specification);
-        }
-
-        public static void setTeamName(RobotSpecification specification, string teamName)
-        {
-            specificationHelper.setTeamName(specification, teamName);
         }
 
         public static RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading,

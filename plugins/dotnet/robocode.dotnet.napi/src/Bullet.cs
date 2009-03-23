@@ -1,28 +1,23 @@
+using System;
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.io;
-using java.lang;
-using java.nio;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
+using robocode.net.sf.robocode.serialization;
+using robocode.util;
 
 namespace robocode
 {
-    [Implements(new[] {"java.io.Serializable"})]
-    public class Bullet : Object, Serializable.__Interface
+    public class Bullet 
     {
-        private const long serialVersionUID = 1L;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private int bulletId;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double headingRadians;
+        private readonly int bulletId;
+        private readonly double headingRadians;
         private bool isActive;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private string ownerName;
-        [Modifiers(Modifiers.Private | Modifiers.Final)] private double power;
+        private readonly string ownerName;
+        private readonly double power;
         private string victimName;
         private double x;
         private double y;
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0x9f, 0x7f, 0x63, 0x68, 0x69, 0x68, 0x69, 0x69, 0x6a, 0x68, 0x68, 0x67})]
         public Bullet(double heading, double x, double y, double power, string ownerName, string victimName,
                       bool isActive, int bulletId)
         {
@@ -36,62 +31,51 @@ namespace robocode
             this.isActive = isActive;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), Modifiers(Modifiers.Synthetic | Modifiers.Static),
-         LineNumberTable((ushort) 0x25)]
         internal static void access100(Bullet bullet1, double num1, double num2, string text1, bool flag1)
         {
             bullet1.update(num1, num2, text1, flag1);
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 0x25)]
         internal static string access200(Bullet bullet1)
         {
             return bullet1.ownerName;
         }
 
-        [LineNumberTable((ushort) 0x25), Modifiers(Modifiers.Synthetic | Modifiers.Static)]
         internal static string access300(Bullet bullet1)
         {
             return bullet1.victimName;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 0x25)]
         internal static double access400(Bullet bullet1)
         {
             return bullet1.headingRadians;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 0x25)]
         internal static double access500(Bullet bullet1)
         {
             return bullet1.x;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 0x25)]
         internal static double access600(Bullet bullet1)
         {
             return bullet1.y;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 0x25)]
         internal static double access700(Bullet bullet1)
         {
             return bullet1.power;
         }
 
-        [Modifiers(Modifiers.Synthetic | Modifiers.Static), LineNumberTable((ushort) 0x25)]
         internal static bool access800(Bullet bullet1)
         {
             return bullet1.isActive;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xc4)]
         internal static IHiddenBulletHelper createHiddenHelper()
         {
             return new HiddenBulletHelper(null);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xce)]
         internal static ISerializableHelper createHiddenSerializer()
         {
             return new HiddenBulletHelper(null);
@@ -102,10 +86,9 @@ namespace robocode
             return bulletId;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 80)]
         public virtual double getHeading()
         {
-            return Math.toDegrees(headingRadians);
+            return Utils.toDegrees(headingRadians);
         }
 
         public virtual double getHeadingRadians()
@@ -123,7 +106,6 @@ namespace robocode
             return power;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x7b)]
         public virtual double getVelocity()
         {
             return Rules.getBulletSpeed(power);
@@ -157,42 +139,20 @@ namespace robocode
             isActive = flag1;
         }
 
-        #region Nested type: a1
-
-        [Modifiers(Modifiers.Synthetic | Modifiers.Synchronized), SourceFile("Bullet.java"),
-         EnclosingMethod("robocode.Bullet", null, null), InnerClass(null, Modifiers.Synthetic | Modifiers.Static)]
-        internal sealed class a1 : Object
-        {
-            /* private scope */
-
-            private a1()
-            {
-                throw null;
-            }
-        }
-
-        #endregion
-
         #region Nested type: HiddenBulletHelper
 
-        [Implements(
-            new[] {"net.sf.robocode.security.IHiddenBulletHelper", "net.sf.robocode.serialization.ISerializableHelper"})
-        , SourceFile("Bullet.java"), InnerClass(null, Modifiers.Static | Modifiers.Private)]
-        internal sealed class HiddenBulletHelper : Object, IHiddenBulletHelper, ISerializableHelper
+        internal sealed class HiddenBulletHelper : IHiddenBulletHelper, ISerializableHelper
         {
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 210)]
             private HiddenBulletHelper()
             {
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), Modifiers(Modifiers.Synthetic), LineNumberTable((ushort) 210)]
             internal HiddenBulletHelper(Bullet a1) : this()
             {
             }
 
             #region IHiddenBulletHelper Members
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9f, 0x59, 0x63, 0x6d})]
             public void update(Bullet bullet1, double num1, double num2, string text1, bool flag1)
             {
                 access100(bullet1, num1, num2, text1, flag1);
@@ -202,8 +162,6 @@ namespace robocode
 
             #region ISerializableHelper Members
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(new byte[] {160, 0x7a, 0x68, 0x68, 0x68, 0x68, 0x69, 0x69, 0x89})]
             public object deserialize(RbSerializer serializer1, ByteBuffer buffer1)
             {
                 double heading = buffer1.getDouble();
@@ -216,8 +174,6 @@ namespace robocode
                                   -1);
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining),
-             LineNumberTable(new byte[] {160, 110, 0x87, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d, 0x6d})]
             public void serialize(RbSerializer serializer1, ByteBuffer buffer1, object obj1)
             {
                 var bullet = (Bullet) obj1;
@@ -230,7 +186,6 @@ namespace robocode
                 serializer1.serialize(buffer1, access800(bullet));
             }
 
-            [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {160, 0x67, 0x87})]
             public int sizeOf(RbSerializer serializer1, object obj1)
             {
                 var bullet = (Bullet) obj1;

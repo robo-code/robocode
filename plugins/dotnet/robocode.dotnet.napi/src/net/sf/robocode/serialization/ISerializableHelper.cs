@@ -1,4 +1,5 @@
-using java.nio;
+
+using robocode.net.sf.robocode.serialization;
 
 namespace net.sf.robocode.serialization
 {

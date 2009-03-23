@@ -1,22 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.io;
-using java.util;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 
 namespace robocode
 {
-    [Implements(new[] {"robocode.robotinterfaces.ITeamRobot", "robocode.robotinterfaces.ITeamEvents"})]
-    public class TeamRobot : AdvancedRobot, IBasicRobot, IAdvancedRobot, ITeamRobot, ITeamEvents
+    public class TeamRobot : AdvancedRobot, ITeamRobot, ITeamEvents
     {
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x2e)]
-        public TeamRobot()
-        {
-            GC.KeepAlive(this);
-        }
-
         #region ITeamEvents Members
 
         public virtual void onMessageReceived(MessageEvent @event)
@@ -34,9 +25,7 @@ namespace robocode
 
         #endregion
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9f, 0x7e, 0x8b, 0x6b, 0x9f, 7, 0x85}),
-         Throws(new[] {"java.io.IOException"})]
-        public virtual void broadcastMessage(Serializable message)
+        public virtual void broadcastMessage(object message)
         {
             /*Serializable serializable = message;
             object obj2 = serializable.__<ref>;
@@ -53,20 +42,17 @@ namespace robocode
             }*/
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x29, 0x6b, 0x98, 0x65}),
-         Signature("()Ljava/util/Vector<Lrobocode/MessageEvent;>;")]
-        public virtual Vector getMessageEvents()
+        public virtual List<MessageEvent> getMessageEvents()
         {
             if (base.peer != null)
             {
-                return new Vector(((ITeamRobotPeer) base.peer).getMessageEvents());
+                return ((ITeamRobotPeer) base.peer).getMessageEvents();
             }
             uninitializedException();
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x52, 0x6b, 0x93, 0x65})]
-        public virtual string[] getTeammates()
+        public virtual List<string> getTeammates()
         {
             if (base.peer != null)
             {
@@ -76,7 +62,6 @@ namespace robocode
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {110, 0x6b, 0x94, 0x65})]
         public virtual bool isTeammate(string name)
         {
             if (base.peer != null)
@@ -87,9 +72,7 @@ namespace robocode
             return false;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable(new byte[] {0x9f, 0x5f, 0x8b, 0x6b, 0x9f, 8, 0x85}),
-         Throws(new[] {"java.io.IOException"})]
-        public virtual void sendMessage(string name, Serializable message)
+        public virtual void sendMessage(string name, object message)
         {
             /*Serializable serializable = message;
             object obj2 = serializable.__<ref>;

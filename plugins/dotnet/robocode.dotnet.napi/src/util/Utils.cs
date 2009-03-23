@@ -1,44 +1,46 @@
-using System.Runtime.CompilerServices;
-using IKVM.Attributes;
-using java.lang;
-using java.util;
-using robocode.control;
+using System;
 
 namespace robocode.util
 {
-    public class Utils : Object
+    public class Utils 
     {
         public const double NEAR_DELTA = 1E-05;
-        private const double PI_OVER_TWO = 1.5707963267948966;
-        private const double THREE_PI_OVER_TWO = 4.71238898038469;
-        private const double TWO_PI = 6.2831853071795862;
+        private const double PI_OVER_TWO = Math.PI/2;
+        private const double THREE_PI_OVER_TWO = (Math.PI*3)/2;
+        private const double TWO_PI = Math.PI*2;
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0x2c)]
         private Utils()
         {
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 0xbd)]
+        public static double toRadians(double angdeg)
+        {
+            return ((angdeg / 180.0) * Math.PI);
+        }
+
+
+        public static double toDegrees(double angrad)
+        {
+            return ((angrad * 180.0) / Math.PI);
+        }
+
         public static Random getRandom()
         {
-            return RandomFactory.getRandom();
+            return null; //TODO RandomFactory.getRandom();
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining), LineNumberTable((ushort) 180)]
         public static bool isNear(double value1, double value2)
         {
-            return (Math.abs((value1 - value2)) < 1E-05);
+            return (Math.Abs((value1 - value2)) < 1E-05);
         }
 
-        [LineNumberTable((ushort) 0x37)]
         public static double normalAbsoluteAngle(double angle)
         {
-            double num1 = angle%6.2831853071795862;
+            double num1 = angle%TWO_PI;
             angle = num1;
-            return ((num1 < 0f) ? (angle + 6.2831853071795862) : angle);
+            return ((num1 < 0f) ? (angle + TWO_PI) : angle);
         }
 
-        [LineNumberTable((ushort) 0x43)]
         public static double normalAbsoluteAngleDegrees(double angle)
         {
             double num1 = angle%360.0;
@@ -46,44 +48,38 @@ namespace robocode.util
             return ((num1 < 0f) ? (angle + 360.0) : angle);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0x5e, 0x9f, 0x11, 0x75, 0x6a, 0x70, 0x71, 0x66, 0x75, 170, 0x75, 0x6a, 0x75, 0xa6})
-        ]
         public static double normalNearAbsoluteAngle(double angle)
         {
-            double num1 = angle%6.2831853071795862;
+            double num1 = angle%TWO_PI;
             angle = num1;
-            angle = (num1 < 0f) ? (angle + 6.2831853071795862) : angle;
-            if (isNear(angle, 3.1415926535897931))
+            angle = (num1 < 0f) ? (angle + TWO_PI) : angle;
+            if (isNear(angle, Math.PI))
             {
-                return 3.1415926535897931;
+                return Math.PI;
             }
-            if (angle < 3.1415926535897931)
+            if (angle < Math.PI)
             {
                 if (isNear(angle, 0f))
                 {
                     return 0f;
                 }
-                if (!isNear(angle, 1.5707963267948966))
+                if (!isNear(angle, PI_OVER_TWO))
                 {
                     return angle;
                 }
-                return 1.5707963267948966;
+                return PI_OVER_TWO;
             }
-            if (isNear(angle, 4.71238898038469))
+            if (isNear(angle, THREE_PI_OVER_TWO))
             {
-                return 4.71238898038469;
+                return THREE_PI_OVER_TWO;
             }
-            if (isNear(angle, 6.2831853071795862))
+            if (isNear(angle, TWO_PI))
             {
                 return 0f;
             }
             return angle;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining),
-         LineNumberTable(new byte[] {0x3b, 0x9f, 0x11, 0x75, 0x6a, 0x70, 0x71, 0x66, 0x75, 170, 0x75, 0x6a, 0x75, 0xa6})
-        ]
         public static double normalNearAbsoluteAngleDegrees(double angle)
         {
             double num1 = angle%360.0;
@@ -116,17 +112,15 @@ namespace robocode.util
             return angle;
         }
 
-        [LineNumberTable((ushort) 0x4f)]
         public static double normalRelativeAngle(double angle)
         {
-            double num1 = angle%6.2831853071795862;
+            double num1 = angle%TWO_PI;
             angle = num1;
             return ((num1 < 0f)
-                        ? ((angle < -3.1415926535897931) ? (angle + 6.2831853071795862) : angle)
-                        : ((angle >= 3.1415926535897931) ? (angle - 6.2831853071795862) : angle));
+                        ? ((angle < -Math.PI) ? (angle + TWO_PI) : angle)
+                        : ((angle >= Math.PI) ? (angle - TWO_PI) : angle));
         }
 
-        [LineNumberTable((ushort) 0x5b)]
         public static double normalRelativeAngleDegrees(double angle)
         {
             double num1 = angle%360.0;

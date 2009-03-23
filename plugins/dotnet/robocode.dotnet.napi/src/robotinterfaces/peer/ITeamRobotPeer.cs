@@ -1,22 +1,17 @@
-using IKVM.Attributes;
-using java.io;
-using java.util;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace robocode.robotinterfaces.peer
 {
-    [Implements(new[] {"robocode.robotinterfaces.peer.IAdvancedRobotPeer"})]
-    public interface ITeamRobotPeer : IBasicRobotPeer, IStandardRobotPeer, IAdvancedRobotPeer
+    public interface ITeamRobotPeer : IAdvancedRobotPeer
     {
-        [Throws(new[] {"java.io.IOException"})]
-        void broadcastMessage(Serializable s);
+        void broadcastMessage(ISerializable s);
 
-        [Signature("()Ljava/util/List<Lrobocode/MessageEvent;>;")]
-        List getMessageEvents();
+        List<MessageEvent> getMessageEvents();
 
-        string[] getTeammates();
+        List<string> getTeammates();
         bool isTeammate(string str);
 
-        [Throws(new[] {"java.io.IOException"})]
-        void sendMessage(string str, Serializable s);
+        void sendMessage(string str, ISerializable s);
     }
 }
