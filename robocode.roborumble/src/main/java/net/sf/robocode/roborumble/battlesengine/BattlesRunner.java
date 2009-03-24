@@ -114,8 +114,10 @@ public class BattlesRunner {
 			final RobotSpecification[] robotsList = engine.getLocalRepository(enemies);
 
 			final String team0 = robotsList[0].getTeamId();
+
 			if (robotsList.length > 1) {
 				final String teamLast = robotsList[robotsList.length - 1].getTeamId();
+
 				if (team0 == null || !team0.equals(teamLast)) {
 					final BattleSpecification specification = new BattleSpecification(battle.getNumRounds(),
 							battle.getBattlefield(), robotsList);

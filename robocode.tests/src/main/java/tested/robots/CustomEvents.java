@@ -11,10 +11,12 @@
  *******************************************************************************/
 package tested.robots;
 
+
 import robocode.AdvancedRobot;
 import robocode.Condition;
 import robocode.CustomEvent;
 import robocode.ScannedRobotEvent;
+
 
 /**
  * @author Pavel Savara (original)
@@ -34,7 +36,6 @@ public class CustomEvents extends AdvancedRobot {
 				return true;
 			}
 		});
-
 
 		addCustomEvent(new Condition("onLowEnergy98", 98) {
 			public boolean test() {

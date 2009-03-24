@@ -11,11 +11,13 @@
  *******************************************************************************/
 package net.sf.robocode.test.robots;
 
+
 import org.junit.Test;
 import net.sf.robocode.test.helpers.RobotTestBed;
 import net.sf.robocode.test.helpers.Assert;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
+
 
 /**
  * @author Pavel Savara (original)
@@ -27,29 +29,27 @@ public class TestCustomEvents extends RobotTestBed {
 		super.run();
 	}
 
-
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
 		IRobotSnapshot gh = event.getTurnSnapshot().getRobots()[1];
 
 		switch (event.getTurnSnapshot().getTurn()) {
-			case 130:
-				test(gh, "130 onTick99\n130 onTick30\n130 onScannedRobot10\n");
-				break;
-			case 1451:
-				test(gh, "1451 onTick99\n1451 onLowEnergy98\n1451 onTick30\n1451 onScannedRobot10");
-				break;
+		case 130:
+			test(gh, "130 onTick99\n130 onTick30\n130 onScannedRobot10\n");
+			break;
 
-			default:
-				break;
+		case 1451:
+			test(gh, "1451 onTick99\n1451 onLowEnergy98\n1451 onTick30\n1451 onScannedRobot10");
+			break;
+
+		default:
+			break;
 		}
 	}
 
-
 	private void test(IRobotSnapshot gh, String s) {
-		Assert.assertTrue(gh.getOutputStreamSnapshot() + " expected " + s,
-				gh.getOutputStreamSnapshot().contains(s));
+		Assert.assertTrue(gh.getOutputStreamSnapshot() + " expected " + s, gh.getOutputStreamSnapshot().contains(s));
 	}
 
 	@Override

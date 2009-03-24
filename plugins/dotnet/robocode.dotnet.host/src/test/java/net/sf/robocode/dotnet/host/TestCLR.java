@@ -26,27 +26,26 @@ import net.sf.robocode.dotnet.host.bridge.DotNetBridge;
 public class TestCLR {
 
 	@Test
-	public void test1() {
-		/*
-		System.setProperty(LibraryLoader.JACOB_DLL_PATH,
-				"d:/OpenSource/Jacob/bin/jacob-1.14.3/" + LibraryLoader.getPreferredDLLName() + ".dll");
-		// System.setProperty("com.jacob.debug", "true");
+	public void test1() {/*
+		 System.setProperty(LibraryLoader.JACOB_DLL_PATH,
+		 "d:/OpenSource/Jacob/bin/jacob-1.14.3/" + LibraryLoader.getPreferredDLLName() + ".dll");
+		 // System.setProperty("com.jacob.debug", "true");
 
-		// d:\Sf\RobocodeRep\plugins\dotnet\robocode.dotnet.nhost\target\robocode.dotnet.nhost-1.7.1.1.dll 
+		 // d:\Sf\RobocodeRep\plugins\dotnet\robocode.dotnet.nhost\target\robocode.dotnet.nhost-1.7.1.1.dll 
 
-		ComThread.InitMTA();
-		final ActiveXComponent hello = new ActiveXComponent("Robocode.HelloFromNET2");
+		 ComThread.InitMTA();
+		 final ActiveXComponent hello = new ActiveXComponent("Robocode.HelloFromNET2");
 
-		// final ActiveXComponent hello = ActiveXComponent.createNewInstance("Robocode.HelloFromNET2");
-		hello.invoke("Main");
-		// hello.invoke("Main2");
+		 // final ActiveXComponent hello = ActiveXComponent.createNewInstance("Robocode.HelloFromNET2");
+		 hello.invoke("Main");
+		 // hello.invoke("Main2");
 
-		ComThread.Release();*/
-	}
+		 ComThread.Release();*/}
 
 	@Test
 	public void test2() {
-		DotNetBridge b=new DotNetBridge();
+		DotNetBridge b = new DotNetBridge();
+
 		b.main();
 	}
 }

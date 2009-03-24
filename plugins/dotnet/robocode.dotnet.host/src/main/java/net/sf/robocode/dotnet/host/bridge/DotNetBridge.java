@@ -11,10 +11,12 @@
  *******************************************************************************/
 package net.sf.robocode.dotnet.host.bridge;
 
+
 import net.sf.robocode.io.Logger;
 
 import java.io.File;
 import java.io.IOException;
+
 
 /**
  * @author Pavel Savara (original)
@@ -24,9 +26,10 @@ public class DotNetBridge {
 
 	static {
 		final String name = System.mapLibraryName("robocode.dotnet.nhost-1.7.1.0");
-		//final String p = System.getProperty("java.library.path");
-		//System.loadLibrary("robocode.dotnet.nhost-1.7.1.0");
+		// final String p = System.getProperty("java.library.path");
+		// System.loadLibrary("robocode.dotnet.nhost-1.7.1.0");
 		File f = new File("../robocode.dotnet.nhost/target/", name);
+
 		try {
 			System.load(f.getCanonicalPath());
 		} catch (IOException e) {
@@ -34,14 +37,13 @@ public class DotNetBridge {
 		}
 	}
 
-	public DotNetBridge(){
-	}
+	public DotNetBridge() {}
 
-	public void talkBack(){
+	public void talkBack() {
 		System.out.println("We are called back!");
 	}
 	
-	public void talkBackInt(int a){
+	public void talkBackInt(int a) {
 		System.out.println("We are called back!" + a);
 	}
 }
