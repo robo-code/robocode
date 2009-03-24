@@ -334,7 +334,7 @@ public class AutoExtract implements ActionListener {
 			}
 			deleteOldLibs(installDir);
 			
-			deleteDir(new File(installDir, ".robotcache"));
+			deleteDir(new File(installDir, "robots/.robotcache"));
 
 			boolean rv = extractor.extract(installDir);
 
