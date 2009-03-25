@@ -7,7 +7,6 @@
  *
  * Contributors:
  *     Pavel Savara
- *     - Initial implementation
  *     - JarJarURLStreamHandler is just tweaked version of jar handler
  *       from OpenJDK, license below
  *******************************************************************************/
@@ -63,7 +62,7 @@ public class JarJarURLConnection extends URLConnection {
 		URL inner = new URL(file);
 
 		//this is same as
-		// connection = url.openConnection()
+		// connection = inner.openConnection()
 		// we just cache the connection in URLJarCollector 
 		// because we need to be able to close it to release jar files
 		connection = URLJarCollector.openConnection(inner);

@@ -125,6 +125,8 @@ public class RobotFileSystemManager {
 		final File parent = getWritableDirectory();
 		File file = new File(parent, filename);
 
+		//TODO the file is never replaced from jar or directory after it was created
+		//TODO it would be good to replace it when it have biger last modified timestamp
 		if (!file.exists()) {
 			InputStream is = null;
 			FileOutputStream fos = null;

@@ -47,6 +47,8 @@ public interface IRepositoryItem extends Comparable<Object> {
 
 	URL getPropertiesUrl();
 
+	long getLastModified();
+
 	boolean isDevelopmentVersion();
 
 	String getRobocodeVersion();
