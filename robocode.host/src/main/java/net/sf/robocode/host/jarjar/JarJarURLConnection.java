@@ -53,6 +53,8 @@ import java.net.*;
  */
 public class JarJarURLConnection extends URLConnection {
 	private URLConnection connection;
+	public final static char SEPARATOR_CHAR = JarJar.SEPARATOR_CHAR; // this is '^' now
+	public final static String SEPARATOR = SEPARATOR_CHAR + "/";
 
 	public JarJarURLConnection(URL url)
 		throws IOException {
@@ -60,6 +62,10 @@ public class JarJarURLConnection extends URLConnection {
 		final String file = url.getFile();
 		URL inner = new URL(file);
 
+		//this is same as
+		// connection = url.openConnection()
+		// we just cache the connection in URLJarCollector 
+		// because we need to be able to close it to release jar files
 		connection = URLJarCollector.openConnection(inner);
 	}
 
@@ -98,7 +104,7 @@ public class JarJarURLConnection extends URLConnection {
 		private int indexOfBangSlash(String spec) {
 			int indexOfBang = spec.length();
 
-			while ((indexOfBang = spec.lastIndexOf(JarJar.SEPARATOR_CHAR, indexOfBang)) != -1) {
+			while ((indexOfBang = spec.lastIndexOf(SEPARATOR_CHAR, indexOfBang)) != -1) {
 				if ((indexOfBang != (spec.length() - 1)) && (spec.charAt(indexOfBang + 1) == '/')) {
 					return indexOfBang + 1;
 				} else {
@@ -146,7 +152,7 @@ public class JarJarURLConnection extends URLConnection {
 
 				file = toBangSlash + afterBangSlash;
 			}
-			file = file != null ? "jar:" + file.replaceFirst("\\" + JarJar.SEPARATOR, "!/") : null;
+			file = file != null ? "jar:" + file.replaceFirst("\\" + SEPARATOR, "!/") : null;
 			setURL(url, "jarjar", "", -1, file, ref);
 		}
 
@@ -158,7 +164,7 @@ public class JarJarURLConnection extends URLConnection {
 
 			// check for !/
 			if ((index = indexOfBangSlash(spec)) == -1) {
-				throw new NullPointerException("no " + JarJar.SEPARATOR + " in spec");
+				throw new NullPointerException("no " + SEPARATOR + " in spec");
 			}
 			// test the inner URL
 			try {
@@ -179,7 +185,7 @@ public class JarJarURLConnection extends URLConnection {
 				int bangSlash = indexOfBangSlash(ctxFile);
 
 				if (bangSlash == -1) {
-					throw new NullPointerException("malformed " + "context url:" + url + ": no "+ JarJar.SEPARATOR);
+					throw new NullPointerException("malformed " + "context url:" + url + ": no "+ SEPARATOR);
 				}
 				ctxFile = ctxFile.substring(0, bangSlash);
 			}
