@@ -38,7 +38,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JLabel robotNameLabel;
 	private final JLabel[] descriptionLabel = new JLabel[3];
 	private JPanel descriptionPanel;
-	private JButton detailsButton;
+	private JButton webpageButton;
 	private JLabel robocodeVersionLabel;
 	private JLabel filePathLabel;
 	private IRepositoryItem currentRobotSpecification;
@@ -49,7 +49,7 @@ public class RobotDescriptionPanel extends JPanel {
 
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == getDetailsButton()) {
+			if (e.getSource() == getWebpageButton()) {
 				if (currentRobotSpecification != null) {
 					URL htmlFile = currentRobotSpecification.getWebpage();
 
@@ -99,15 +99,15 @@ public class RobotDescriptionPanel extends JPanel {
 		return descriptionPanel;
 	}
 
-	private JButton getDetailsButton() {
-		if (detailsButton == null) {
-			detailsButton = new JButton("Webpage");
-			detailsButton.setMnemonic('W');
-			detailsButton.setVisible(false);
-			detailsButton.setAlignmentY(Component.CENTER_ALIGNMENT);
-			detailsButton.addActionListener(eventHandler);
+	private JButton getWebpageButton() {
+		if (webpageButton == null) {
+			webpageButton = new JButton("Webpage");
+			webpageButton.setMnemonic('W');
+			webpageButton.setVisible(false);
+			webpageButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+			webpageButton.addActionListener(eventHandler);
 		}
-		return detailsButton;
+		return webpageButton;
 	}
 
 	private JLabel getRobocodeVersionLabel() {
@@ -127,42 +127,36 @@ public class RobotDescriptionPanel extends JPanel {
 	}
 
 	private void initialize() {
-		setLayout(new BorderLayout());
-		JPanel p = new JPanel();
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+		JPanel p = new JPanel();
 		p.setLayout(new BorderLayout());
 		p.add(getRobotNameLabel(), BorderLayout.CENTER);
 
 		JPanel q = new JPanel();
-
 		q.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		q.add(getRobocodeVersionLabel());
-
 		p.add(q, BorderLayout.EAST);
+
 		q = new JPanel();
 		q.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		p.add(q, BorderLayout.WEST);
-
-		add(p, BorderLayout.NORTH);
-
-		p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-		p.add(getDetailsButton());
-		add(p, BorderLayout.WEST);
+		add(p);
 
 		p = new JPanel();
 		p.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
-		p.add(getDescriptionPanel()); // ,BorderLayout.CENTER);
-		add(p, BorderLayout.CENTER);
+		p.add(getDescriptionPanel());
+		add(p);
+
+		p = new JPanel();
+		p.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
+		p.add(getWebpageButton());
+		add(p);
 
 		p = new JPanel();
 		p.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		p.add(getFilePathLabel());
-		add(p, BorderLayout.SOUTH);
-
-		p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS)); // new
-		add(p, BorderLayout.EAST);
+		add(p);
 	}
 
 	public void showDescription(IRepositoryItem robotSpecification) {
@@ -172,7 +166,7 @@ public class RobotDescriptionPanel extends JPanel {
 			for (int i = 0; i < 3; i++) {
 				getDescriptionLabel(i).setText(BLANK_STRING);
 			}
-			getDetailsButton().setVisible(false);
+			getWebpageButton().setVisible(false);
 			getRobocodeVersionLabel().setText(" ");
 			getFilePathLabel().setText(" ");
 		} else {
@@ -223,7 +217,7 @@ public class RobotDescriptionPanel extends JPanel {
 
 			URL u = robotSpecification.getWebpage();
 
-			getDetailsButton().setVisible(u != null && u.toString().length() > 0);
+			getWebpageButton().setVisible(u != null && u.toString().length() > 0);
 
 			String v = robotSpecification.getRobocodeVersion();
 
