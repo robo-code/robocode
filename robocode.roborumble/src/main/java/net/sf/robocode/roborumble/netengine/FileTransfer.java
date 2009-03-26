@@ -222,8 +222,7 @@ public class FileTransfer {
 				if (con != null) {
 					con.disconnect();
 				}
-			} catch (Throwable t) {
-				t.printStackTrace();
+			} catch (Throwable ignore) {// we expect this, right ?
 			}
 		}
 	}

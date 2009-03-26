@@ -70,21 +70,6 @@ public class RoboRumbleAtHome {
 		do {
 			System.out.println("Iteration number " + iterations);
 
-			// Upload results
-			if (uploads.equals("YES")) {
-				System.out.println("Uploading results ...");
-				ResultsUpload upload = new ResultsUpload(parameters);
-
-				// Uploads the results to the server
-				upload.start();
-
-				// Updates the number of battles from the info received from the server
-				System.out.println("Updating number of battles fought ...");
-				UpdateRatingFiles updater = new UpdateRatingFiles(parameters);
-
-				ratingsdownloaded = updater.updateRatings();
-			}
-
 			// Download data from Internet if downloads is YES and it has not been download for two hours
 			if (downloads.equals("YES")) {
 				BotsDownload download = new BotsDownload(parameters);
@@ -149,6 +134,13 @@ public class RoboRumbleAtHome {
 						engine.runBattlesImpl(false);
 					}
 				}
+			}
+
+			// Upload results
+			if (uploads.equals("YES")) {
+				ResultsUpload upload = new ResultsUpload(parameters, BattlesRunner.version, parameters);
+				// Uploads the results to the server
+				upload.start();
 			}
 
 			iterations++;
