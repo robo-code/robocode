@@ -1,3 +1,14 @@
+Version 1.7.2 Alpha
+(26-Mar-2009)
+---------------
+
+Thanks goes to Mauro Mombelli, who have contributed with the new parallel upload of results in RoboRumble. :-)
+
+= RoboRumble changes =
+* RoboRumble, TeamRumble, and MeleeRumble now supports parallel upload of results.
+* The RESULTSURL can now contain multiple URLs when the results must be uploaded for multiple servers, e.g. "http://some-server.net/upload, http://another-server.org/results"
+
+
 Version 1.7.1
 (24-Mar-2009)
 ---------------

@@ -17,6 +17,11 @@
  *     - Catch of entire Exception has been reduced to catch of IOException when
  *       only this exception is ever thrown
  *     - Added missing close() to streams
+ *     Mauro Mombelli
+ *     - Added multiple server for upload
+ *     - Now implements runnable (many changes on file output and delete)
+ *     - The senddata() method now don't produce console output
+ *     - Added writeToFile() method
  *******************************************************************************/
 package net.sf.robocode.roborumble.netengine;
 
@@ -37,13 +42,13 @@ import java.util.Vector;
  *
  * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Mauro Mombelli (contributor)
  */
-public class ResultsUpload {
+public class ResultsUpload extends Thread {
 
-	private final String client;
 	private final String resultsfile;
-	private final String resultsurl;
-	private final String tempdir;
+	private final String[] resultsurls;
+	private String tempdir;
 	private String game;
 	private final String user;
 	private final String sizesfile;
@@ -53,15 +58,14 @@ public class ResultsUpload {
 	private final CompetitionsSelector size;
 	private final String battlesnumfile;
 	private final String priority;
-	private final String teams;
-	private final String melee;
+	private String neterrfilepath;
 
-	public ResultsUpload(String propertiesfile, String clientVersion) {
+	public ResultsUpload(String propertiesfile) {
 		// Read parameters
 		Properties parameters = getProperties(propertiesfile);
 
 		resultsfile = parameters.getProperty("OUTPUT", "");
-		resultsurl = parameters.getProperty("RESULTSURL", "");
+		resultsurls = parameters.getProperty("RESULTSURL", "").split("[\\s,;]+");
 		tempdir = parameters.getProperty("TEMP", "");
 		user = parameters.getProperty("USER", "");
 		game = propertiesfile;
@@ -75,18 +79,19 @@ public class ResultsUpload {
 		minibots = parameters.getProperty("MINIBOTS", "");
 		microbots = parameters.getProperty("MICROBOTS", "");
 		nanobots = parameters.getProperty("NANOBOTS", "");
+
 		battlesnumfile = parameters.getProperty("BATTLESNUMFILE", "");
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
-		client = clientVersion;
-		teams = parameters.getProperty("TEAMS", "");
-		melee = parameters.getProperty("MELEE", "");
 
 		// Open competitions selector
 		size = new CompetitionsSelector(sizesfile, botsrepository);
 	}
 
-	public void uploadResults() {
+	public void run() {
+		uploadResults();
+	} 
 
+	public boolean uploadResults() {
 		boolean errorsfound = false;
 
 		// Read the results file
@@ -120,7 +125,7 @@ public class ResultsUpload {
 			}
 		} catch (IOException e) {
 			System.out.println("Can't open result file for upload");
-			return;
+			return false;
 		} finally {
 			if (br != null) {
 				try {
@@ -128,43 +133,68 @@ public class ResultsUpload {
 				} catch (IOException ignored) {}
 			}
 		}
+		
+		// Delete results file
+		if (new File(resultsfile).delete() == false) {
+			System.out.println("Unable to delete results file.");
+		}
 
-		// Open the temp file to put the unuploaded results
 		PrintStream outtxt;
 
 		try {
-			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(tempdir + "results.txt")), false);
+			// Open the temp file to put the unuploaded results
+			File filetempdir = new File(tempdir);
+			File filetempname = File.createTempFile("results", ".txt", filetempdir);
+
+			tempdir = filetempname.toString();
+			System.out.println("temp file: " + tempdir);
+			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(filetempname)), false);
+
+			// Open the file where to put the senddata() error/message
+			neterrfilepath = filetempdir.toString() + "neterr.txt";
+			System.out.println("error file: " + neterrfilepath);
+
 		} catch (IOException e) {
 			System.out.println("Not able to open output file ... Aborting");
 			System.out.println(e);
-			return;
+			return false;
 		}
 
 		// Open the file to put the battles number for each participant
-		PrintStream battlesnum;
+		int e = tryOutputFile(battlesnumfile);
 
-		try {
-			battlesnum = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesnumfile)), false);
-		} catch (IOException e) {
-			System.out.println("Not able to open battles number file ... Aborting");
-			System.out.println(e);
+		if (e != 0) {
+			switch (e) {
+			case 1:
+				System.out.println("ERROR: BATTLESNUMFILE seems a directory ...");
+				break;
 
-			outtxt.close();
-			return;
+			case 2:
+				System.out.println("ERROR: BATTLESNUMFILE seems protected ...");
+				break;
+
+			default:
+				System.out.println("Not able to open battlesnum file ... \nfile:" + priority + " error number: " + e);
+				break;
+			}
 		}
 
 		// Open the file to put the battles which have priority
-		PrintStream prioritybattles;
+		e = tryOutputFile(priority);
+		if (e != 0) {
+			switch (e) {
+			case 1:
+				System.out.println("ERROR: PRIORITYBATTLESFILE seems a directory ...");
+				break;
 
-		try {
-			prioritybattles = new PrintStream(new BufferedOutputStream(new FileOutputStream(priority)), false);
-		} catch (IOException e) {
-			System.out.println("Not able to open priorities file ... Aborting");
-			System.out.println(e);
+			case 2:
+				System.out.println("ERROR: PRIORITYBATTLESFILE seems protected ...");
+				break;
 
-			outtxt.close();
-			battlesnum.close();
-			return;
+			default:
+				System.out.println("Not able to open priorities file ... \nfile:" + priority + " error number: " + e);
+				break;
+			}
 		}
 
 		// Post the results
@@ -185,67 +215,87 @@ public class ResultsUpload {
 
 			// if the match mode was general, then send the results to all competitions (asuming codesize is used).
 			// if its not, then send results only to smaller size competitions
-			String data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee + "&"
-					+ "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&"
-					+ "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore=" + first[1] + "&" + "fbulletd="
-					+ first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0] + "&" + "sscore=" + second[1]
-					+ "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
+			String data = "version=1" + "&" + "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2]
+					+ "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
+					+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0]
+					+ "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
 
 			if (matchtype.equals("GENERAL") || matchtype.equals("SERVER")) {
-				errorsfound = errorsfound | senddata(game, data, outtxt, true, results, i, battlesnum, prioritybattles);
+				errorsfound = errorsfound | senddata(game, data, outtxt, true, results, i, priority);
 			}
 
 			if (sizesfile.length() != 0) { // upload also related competitions
 				if (minibots.length() != 0 && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 1500)) {
-					data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee
-							+ "&" + "game=" + minibots + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&"
-							+ "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
-							+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname="
-							+ second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival="
-							+ second[3];
-					errorsfound = errorsfound | senddata(minibots, data, outtxt, false, results, i, battlesnum, null);
+					data = "version=1" + "&" + "game=" + minibots + "&" + "rounds=" + header[1] + "&" + "field="
+							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
+							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
+							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
+							+ "ssurvival=" + second[3];
+					errorsfound = errorsfound | senddata(minibots, data, outtxt, false, results, i, null);
 				}
 				if (microbots.length() != 0 && !matchtype.equals("NANO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 750)) {
-					data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee
-							+ "&" + "game=" + microbots + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&"
-							+ "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
-							+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname="
-							+ second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival="
-							+ second[3];
-					errorsfound = errorsfound | senddata(microbots, data, outtxt, false, results, i, battlesnum, null);
+					data = "version=1" + "&" + "game=" + microbots + "&" + "rounds=" + header[1] + "&" + "field="
+							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
+							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
+							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
+							+ "ssurvival=" + second[3];
+					errorsfound = errorsfound | senddata(microbots, data, outtxt, false, results, i, null);
 				}
 				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
-					data = "version=1" + "&" + "client=" + client + "&" + "game=" + nanobots + "&" + "rounds="
-							+ header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&"
-							+ "fname=" + first[0] + "&" + "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&"
-							+ "fsurvival=" + first[3] + "&" + "sname=" + second[0] + "&" + "sscore=" + second[1] + "&"
-							+ "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
-					errorsfound = errorsfound | senddata(nanobots, data, outtxt, false, results, i, battlesnum, null);
+					data = "version=1" + "&" + "game=" + nanobots + "&" + "rounds=" + header[1] + "&" + "field="
+							+ header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&"
+							+ "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&"
+							+ "sname=" + second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&"
+							+ "ssurvival=" + second[3];
+					errorsfound = errorsfound | senddata(nanobots, data, outtxt, false, results, i, null);
 				}
 			}
 		}
 
-		// close files
+		// Close files
 		outtxt.close();
-		battlesnum.close();
-		prioritybattles.close();
 
-		// delete results file
-		File r = new File(resultsfile);
-		boolean b = r.delete();
-
-		if (!b) {
-			System.out.println("Unable to delete results file.");
-		}
-
-		// copy temp file into results file if there was some error
+		// Copy temp file into results file in append mode if there was some error
 		if (errorsfound) {
-			if (!FileTransfer.copy(tempdir + "results.txt", resultsfile)) {
+			if (!FileTransfer.copy(tempdir, resultsfile, true)) {
 				System.out.println("Error when copying results errors file.");
 			}
 		}
+
+		// delete temp file
+		new File(tempdir).delete();
+
+		System.out.println("Results upload complete");
+		return true;
+	}
+
+	private int tryOutputFile(String file) {
+		File tmp = new File(file);
+
+		if (tmp.isDirectory()) {
+			return 1;
+		}
+		if (!tmp.canWrite()) {
+			return 2;
+		}
+
+		return 0;
+	}
+
+	private boolean writeToFile(String file, String message, boolean append) {
+		try {
+			PrintStream outputStream = new PrintStream(new BufferedOutputStream(new FileOutputStream(file, append)));
+
+			outputStream.println(message);
+			outputStream.close();
+		} catch (IOException e) {
+			System.out.println("Not able to open file for output " + file + " append: " + append);
+			System.out.println(e);
+			return false;
+		}
+		return true;
 	}
 
 	private void saverror(PrintStream outtxt, String match, String bot1, String bot2, boolean saveonerror) {
@@ -254,10 +304,22 @@ public class ResultsUpload {
 			outtxt.println(bot1);
 			outtxt.println(bot2);
 		}
-		System.out.println("Unable to upload results " + match + " " + bot1 + " " + bot2);
+		writeToFile(neterrfilepath, "Unable to upload results " + match + " " + bot1 + " " + bot2, true);
 	}
 
-	private boolean senddata(String game, String data, PrintStream outtxt, boolean saveonerror, Vector<String> results, int i, PrintStream battlesnum, PrintStream prioritybattles) {
+	private boolean senddata(String game, String data, PrintStream outtxt, boolean saveonerror, Vector<String> results, int i, String priority) {
+		boolean errorfound = false;
+
+		for (int count = 0; count < resultsurls.length; count++) {
+			writeToFile(neterrfilepath, "Sending result to: " + resultsurls[count], true);
+			if (senddata(resultsurls[count], game, data, outtxt, saveonerror, results, i, priority) == false) {
+				errorfound = true;
+			}
+		}
+		return errorfound;
+	}
+
+	private boolean senddata(String resultsurl, String game, String data, PrintStream outtxt, boolean saveonerror, Vector<String> results, int i, String priority) {
 		boolean errorsfound = false;
 		PrintWriter wr = null;
 		BufferedReader rd = null;
@@ -281,10 +343,10 @@ public class ResultsUpload {
 			while ((line = rd.readLine()) != null) {
 				if (line.indexOf("OK") != -1) {
 					ok = true;
-					System.out.println(line);
+					writeToFile(neterrfilepath, line, true);
 				} else if (line.indexOf("<") != -1 && line.indexOf(">") != -1) {
-					// System.out.println(line);
-					// Save the number of battles for the bots into battlesnum !!!!!!!!!!!!!
+					writeToFile(neterrfilepath, line, true);
+					// Save the number of battles for the bots into battlesnumfile !!!!!!!!!!!!!
 					String bot1 = results.get(i * 3 + 1);
 
 					bot1 = bot1.substring(0, bot1.indexOf(","));
@@ -296,8 +358,8 @@ public class ResultsUpload {
 					String[] b = line.split(" ");
 
 					if (b.length == 2) {
-						battlesnum.println(game + "," + bot1 + "," + b[0]);
-						battlesnum.println(game + "," + bot2 + "," + b[1]);
+						writeToFile(battlesnumfile, game + "," + bot1 + "," + b[0], true);
+						writeToFile(battlesnumfile, game + "," + bot2 + "," + b[1], true);
 					}
 				} else if (line.indexOf("[") != -1 && line.indexOf("]") != -1) {
 					line = line.substring(1);
@@ -309,11 +371,11 @@ public class ResultsUpload {
 							+ items[1].substring(items[1].lastIndexOf("_") + 1);
 					String battle = bot1 + "," + bot2 + "," + "SERVER";
 
-					if (prioritybattles != null) {
-						prioritybattles.println(battle);
+					if (priority != null) {
+						writeToFile(priority, battle, true);
 					}
 				} else {
-					System.out.println(line);
+					writeToFile(neterrfilepath, line, true);
 				}
 			}
 			if (!ok) {
@@ -323,7 +385,7 @@ public class ResultsUpload {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println(e);
+			writeToFile(neterrfilepath, "ERROR: " + e, true);
 			if (saveonerror) {
 				errorsfound = true;
 			}
@@ -335,9 +397,10 @@ public class ResultsUpload {
 			if (rd != null) {
 				try {
 					rd.close();
-				} catch (IOException ignored) {}
+				} catch (IOException e) {}
 			}
 		}
+		writeToFile(neterrfilepath, "Data send.", true);
 		return errorsfound;
 	}
 }
