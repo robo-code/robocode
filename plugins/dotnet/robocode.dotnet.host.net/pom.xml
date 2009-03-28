@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.dotnet.nhost</artifactId>
+    <artifactId>robocode.dotnet.host.net</artifactId>
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
     <name>.NET nhost for Robocode</name>
@@ -58,7 +58,7 @@
 		               <copy file="${exportdll}" todir="target/tool"/>
 		               <copy file="${exportdllattribute}" todir="target/tool"/>
 						<exec executable="cmd.exe" dir="target">
-							<arg value="/c tool\selvin.exportdll-${robocode.nversion}.exe robocode.dotnet.nhost-${robocode.nversion}.dll"/>
+							<arg value="/c tool\selvin.exportdll-${robocode.nversion}.exe robocode.dotnet.host.net-${robocode.nversion}.dll"/>
 						</exec>
 		              </tasks>
 		            </configuration>

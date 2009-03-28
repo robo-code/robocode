@@ -10,7 +10,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="robocode.dotnet.host" exported="" />
-    <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
+    <orderEntry type="module" module-name="robocode.dotnet.host.net" exported="" />
     <orderEntry type="module" module-name="robocode.host" exported="" />
     <orderEntry type="module" module-name="robocode.core" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />

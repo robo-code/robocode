@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>robocode</RootNamespace>
-    <AssemblyName>robocode.dotnet.napi</AssemblyName>
+    <AssemblyName>robocode.dotnet.api.net</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>

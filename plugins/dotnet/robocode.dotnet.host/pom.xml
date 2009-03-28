@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.dotnet.nhost</artifactId>
+            <artifactId>robocode.dotnet.host.net</artifactId>
             <version>${robocode.nversion}</version>
 		    <type>dotnet:library</type>
         </dependency>

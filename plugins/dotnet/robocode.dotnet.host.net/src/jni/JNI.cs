@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace robocode.dotnet.nhost.jni
+namespace robocode.dotnet.host.net.jni
 {
     public static unsafe class JNI
     {

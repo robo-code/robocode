@@ -2,7 +2,7 @@
 using System.IO;
 using net.sf.robocode.serialization;
 
-namespace robocode.dotnet.ncore.peer
+namespace robocode.dotnet.core.net.peer
 {
     public class BulletStatus
     {

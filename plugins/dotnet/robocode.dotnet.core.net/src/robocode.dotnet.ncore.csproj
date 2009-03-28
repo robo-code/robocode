@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{674AED55-B9EC-4C7D-8E0B-1B2481C577B2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>robocode.dotnet.ncore</RootNamespace>
-    <AssemblyName>robocode.dotnet.ncore</AssemblyName>
+    <RootNamespace>robocode.dotnet.core.net</RootNamespace>
+    <AssemblyName>robocode.dotnet.core.net</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
@@ -55,9 +55,9 @@
     <Compile Include="peer\TeamMessage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\robocode.dotnet.napi\src\robocode.dotnet.napi.csproj">
+    <ProjectReference Include="..\..\robocode.dotnet.api.net\src\robocode.dotnet.api.net.csproj">
       <Project>{7E0900D3-6E8F-46EB-86DB-AA767AA90B84}</Project>
-      <Name>robocode.dotnet.napi</Name>
+      <Name>robocode.dotnet.api.net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace robocode.dotnet.nhost.jni
+namespace robocode.dotnet.host.net.jni
 {
     public enum JNIResult
     {

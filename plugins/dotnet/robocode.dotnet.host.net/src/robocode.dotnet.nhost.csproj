@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{674AED55-B9EC-4C7D-8E0B-1B2481C578B2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>robocode.dotnet.nhost</RootNamespace>
-    <AssemblyName>robocode.dotnet.nhost</AssemblyName>
+    <RootNamespace>robocode.dotnet.host.net</RootNamespace>
+    <AssemblyName>robocode.dotnet.host.net</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>

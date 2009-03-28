@@ -23,10 +23,10 @@ public class DotNetBridge {
 	public native void main();
 
 	static {
-		final String name = System.mapLibraryName("robocode.dotnet.nhost-1.7.1.0");
+		final String name = System.mapLibraryName("robocode.dotnet.host.net-1.7.1.0");
 		//final String p = System.getProperty("java.library.path");
-		//System.loadLibrary("robocode.dotnet.nhost-1.7.1.0");
-		File f = new File("../robocode.dotnet.nhost/target/", name);
+		//System.loadLibrary("robocode.dotnet.host.net-1.7.1.0");
+		File f = new File("../robocode.dotnet.host.net/target/", name);
 		try {
 			System.load(f.getCanonicalPath());
 		} catch (IOException e) {

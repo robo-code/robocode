@@ -3,10 +3,10 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
-using robocode.dotnet.nhost.jni;
+using robocode.dotnet.host.net.jni;
 using selvin.exportdllattribute;
 
-namespace robocode.dotnet.nhost
+namespace robocode.dotnet.host.net
 {
     public unsafe class DotnetMain
     {

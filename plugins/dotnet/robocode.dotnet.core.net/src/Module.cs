@@ -1,7 +1,7 @@
 ﻿using net.sf.robocode.serialization;
-using robocode.dotnet.ncore.peer;
+using robocode.dotnet.core.net.peer;
 
-namespace robocode.dotnet.ncore
+namespace robocode.dotnet.core.net
 {
     public class Module
     {

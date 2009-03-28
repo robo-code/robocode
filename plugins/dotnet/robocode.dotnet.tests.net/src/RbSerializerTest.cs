@@ -3,10 +3,10 @@ using System.IO;
 using net.sf.robocode.api;
 using net.sf.robocode.serialization;
 using NUnit.Framework;
-using robocode.dotnet.ncore.peer;
+using robocode.dotnet.core.net.peer;
 using robocode.util;
 
-namespace robocode.dotnet.ntests
+namespace robocode.dotnet.test.net
 {
     [TestFixture]
     public class RbSerializerTest
