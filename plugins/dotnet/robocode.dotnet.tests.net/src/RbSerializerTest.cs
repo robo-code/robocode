@@ -29,7 +29,7 @@ namespace robocode.dotnet.test.net
             ba = new byte[b.Length];
             Buffer.BlockCopy(b, 0, ba, 0, b.Length);
             Module.Init();
-            ncore.Module.Init();
+            core.net.Module.Init();
         }
 
         [Test]
