@@ -73,9 +73,12 @@ namespace net.sf.robocode.serialization
             currentVersion = 0x01070200; //TODO ContainerBase.getComponent<IVersionManagerBase>().getVersionAsInt();
             encoder = charset.GetEncoder();
             decoder = charset.GetDecoder();
+
+            var bytesData = new byte[8];
+            encoder.GetBytes("BOM".ToCharArray(), 0, "BOM".Length, bytesData, 0, false);
         }
 
-        public void serialize(Stream target, byte type, object obj)
+        public int serialize(Stream target, byte type, object obj)
         {
             long offset = target.Position;
             int length = sizeOf(type, obj);
@@ -87,11 +90,12 @@ namespace net.sf.robocode.serialization
             bw.Write(length);
 
             serialize(bw, type, obj);
-            if (bw.BaseStream.Position - offset != length)
+            if (bw.BaseStream.Position - offset != length+3*SIZEOF_INT)
             {
                 throw new IOException("Serialization failed: bad size");
             }
             bw.Flush();
+            return length + 3*SIZEOF_INT;
         }
 
         public object deserialize(Stream source)
@@ -159,7 +163,7 @@ namespace net.sf.robocode.serialization
         {
             ISerializableHelper helper = getHelper(type);
 
-            // FOR-DEBUG int expect = sizeOf(type, obj) + buffer.position();
+            // FOR-DEBUG long expect = sizeOf(type, obj) + bw.BaseStream.Position;
 
             if (obj != null)
             {
@@ -170,8 +174,9 @@ namespace net.sf.robocode.serialization
             {
                 bw.Write(TERMINATOR_TYPE);
             }
-            // FOR-DEBUG if (expect != buffer.position()) {
-            // FOR-DEBUG 	throw new Error("Bad size");
+            
+            // FOR-DEBUG if (expect != bw.BaseStream.Position) {
+            // FOR-DEBUG     throw new InvalidProgramException("Bad size");
             // FOR-DEBUG }
         }
 
@@ -333,10 +338,8 @@ namespace net.sf.robocode.serialization
             {
                 return null;
             }
-            var res = new byte[len];
 
-            br.ReadByte();
-            return res;
+            return br.ReadBytes(len);
         }
 
         public int[] deserializeIntegers(BinaryReader br)
@@ -429,8 +432,7 @@ namespace net.sf.robocode.serialization
 
         public int sizeOf(string data)
         {
-            int count = encoder.GetByteCount(data.ToCharArray(), 0, data.Length, false);
-            return (data == null) ? SIZEOF_INT : SIZEOF_INT + count;
+            return (data == null) ? SIZEOF_INT : SIZEOF_INT + encoder.GetByteCount(data.ToCharArray(), 0, data.Length, false);
         }
 
         public int sizeOf(byte[] data)
