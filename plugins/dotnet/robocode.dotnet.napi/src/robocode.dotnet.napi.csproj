@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedRobot.cs" />
+    <Compile Include="AuthorNameAttribute.cs" />
     <Compile Include="BattleEndedEvent.cs" />
     <Compile Include="BattleResults.cs" />
     <Compile Include="BattleRules.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Condition.cs" />
     <Compile Include="CustomEvent.cs" />
     <Compile Include="DeathEvent.cs" />
+    <Compile Include="DescriptionAttribute.cs" />
     <Compile Include="Droid.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="exception\AbortedException.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="Robocode.cs" />
     <Compile Include="RobocodeFileOutputStream.cs" />
     <Compile Include="RobocodeFileWriter.cs" />
+    <Compile Include="RobocodeVersionAttribute.cs" />
     <Compile Include="Robot.cs" />
     <Compile Include="RobotDeathEvent.cs" />
     <Compile Include="robotinterfaces\IAdvancedEvents.cs" />
@@ -125,10 +128,13 @@
     <Compile Include="robotinterfaces\peer\IJuniorRobotPeer.cs" />
     <Compile Include="robotinterfaces\peer\IStandardRobotPeer.cs" />
     <Compile Include="robotinterfaces\peer\ITeamRobotPeer.cs" />
+    <Compile Include="RobotLanguageAttribute.cs" />
+    <Compile Include="RobotNameAttribute.cs" />
     <Compile Include="RobotStatus.cs" />
     <Compile Include="Rules.cs" />
     <Compile Include="ScannedRobotEvent.cs" />
     <Compile Include="SkippedTurnEvent.cs" />
+    <Compile Include="SourceIncludedAttribute.cs" />
     <Compile Include="StatusEvent.cs" />
     <Compile Include="TeamRobot.cs" />
     <Compile Include="TurnCompleteCondition.cs" />

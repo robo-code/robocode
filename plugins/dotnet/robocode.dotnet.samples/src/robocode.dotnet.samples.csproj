@@ -39,17 +39,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyCsRobot.cs" />
+    <Compile Include="samplecs\MyCsRobot.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MyCsRobot.properties" />
+    <None Include="samplecs\MyCsRobot.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\robocode.dotnet.napi\src\robocode.dotnet.napi.csproj">
+      <Project>{7E0900D3-6E8F-46EB-86DB-AA767AA90B84}</Project>
+      <Name>robocode.dotnet.napi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
