@@ -12,8 +12,6 @@
  *     - Completely rewritten to be fully multi-threaded so that download is not
  *       blocked if a connection is hanging. In addition, this version of
  *       FileTransfer support sessions
- *     Mauro Mombelli
- *     - Added append flag to copy() method, which is set to false per default
  *******************************************************************************/
 package net.sf.robocode.roborumble.netengine;
 
@@ -27,7 +25,6 @@ import java.net.URL;
  * Utility class for downloading files from the net and copying files.
  *
  * @author Flemming N. Larsen (original)
- * @author Mauro Mombelli (contributor)
  */
 public class FileTransfer {
 
@@ -37,7 +34,6 @@ public class FileTransfer {
 	 * Represents the download status returned when downloading files.
 	 *
 	 * @author Flemming N. Larsen
-	 * @author Mauro Mombelli
 	 */
 	public enum DownloadStatus {
 		OK, // The download was succesful
@@ -498,19 +494,6 @@ public class FileTransfer {
 	 * @return true if the file was copied; false otherwise
 	 */
 	public static boolean copy(String src_file, String dest_file) {
-		return copy(src_file, dest_file, false);
-	}
-	
-	/**
-	 * Copies a file into another file.
-	 *
-	 * @param src_file  the filename of the source file to copy
-	 * @param dest_file the filename of the destination file to copy the file
-	 *                  into
-	 * @param append    true if file has to be append; false otherwise
-	 * @return true if the file was copied; false otherwise
-	 */
-	public static boolean copy(String src_file, String dest_file, boolean append) {
 		FileInputStream in = null;
 		FileOutputStream out = null;
 
@@ -521,7 +504,7 @@ public class FileTransfer {
 			final byte[] buf = new byte[4096];
 
 			in = new FileInputStream(src_file);
-			out = new FileOutputStream(dest_file, append);
+			out = new FileOutputStream(dest_file);
 
 			while (in.available() > 0) {
 				out.write(buf, 0, in.read(buf, 0, buf.length));

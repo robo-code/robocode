@@ -14,9 +14,6 @@
  *     - Bugfix: Roborumble "ITERATE" broken: When running RoboRumble with
  *       ITERATE=YES, DOWNLOAD=YES, and RUNONLY=SERVER, the ratings were only
  *       read once, not per iteration
- *     Mauro Mombelli
- *     - Move upload routine as first thing to launch
- *     - Launch upload routine as separate Thread
  *******************************************************************************/
 package roborumble;
 
@@ -37,7 +34,6 @@ import java.util.Properties;
  *
  * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
- * @author Mauro Mombelli (contributor)
  */
 public class RoboRumbleAtHome {
 
@@ -138,9 +134,17 @@ public class RoboRumbleAtHome {
 
 			// Upload results
 			if (uploads.equals("YES")) {
-				ResultsUpload upload = new ResultsUpload(parameters, BattlesRunner.version, parameters);
+				System.out.println("Uploading results ...");
+				ResultsUpload upload = new ResultsUpload(parameters, BattlesRunner.version);
+
 				// Uploads the results to the server
-				upload.start();
+				upload.uploadResults();
+
+				// Updates the number of battles from the info received from the server
+				System.out.println("Updating number of battles fought ...");
+				UpdateRatingFiles updater = new UpdateRatingFiles(parameters);
+
+				ratingsdownloaded = updater.updateRatings();
 			}
 
 			iterations++;

@@ -1,18 +1,9 @@
 Version 1.7.2 Alpha
-(26-Mar-2009)
+(30-Mar-2009)
 ---------------
-
-Thanks goes to Mauro Mombelli, who have contributed with the new parallel upload of results in RoboRumble, i.e. FR [2417236, 2417234, 2417241].
 
 = Bugfixes =
 * Bug [2711605] - Webpage button lay over robot description.
-
-= RoboRumble changes =
-* FR [2417236]: UploadResult as Thread, multiple upload server support.
-* FR [2417234]: Launch upload result in separate thread.
-* FR [2417241]: Added append option in copy method (fileTransfer class).
-* The RESULTSURL can now contain multiple URLs when the results must be uploaded for multiple servers, e.g. "http://some-server.net/upload, http://another-server.org/results"
-
 
 Version 1.7.1
 (24-Mar-2009)
