@@ -149,7 +149,7 @@ namespace selvin.exportdll
                                     addilne = false;
                                     classdeclaration = trimedline;
                                 }
-                                else if (trimedline.StartsWith(".assembly extern 'selvin.exportdllattribute"))
+                                else if (trimedline.StartsWith(".assembly extern selvin.exportdllattribute"))
                                 {
                                     addilne = false;
                                     state = ParserState.DeleteExportDependency;
@@ -248,7 +248,7 @@ namespace selvin.exportdll
                                 }
                                 break;
                             case ParserState.MethodProperties:
-                                if (trimedline.StartsWith(".custom instance void ['selvin.exportdllattribute"))
+                                if (trimedline.StartsWith(".custom instance void [selvin.exportdllattribute"))
                                 {
                                     addilne = false;
                                     state = ParserState.DeleteExportAttribute;

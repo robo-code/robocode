@@ -128,7 +128,7 @@ namespace net.sf.robocode.serialization
         public object deserialize(BinaryReader br)
         {
             long offset = br.BaseStream.Position;
-            int bo = br.ReadInt32();
+            uint bo = br.ReadUInt32();
             if (bo != byteOrder)
             {
                 throw new IOException("Different byte order is not supported");

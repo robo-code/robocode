@@ -52,8 +52,6 @@ namespace net.sf.robocode.io
 
         public static void logMessage(string s, bool newline)
         {
-            StringBuilder buffer;
-            Exception exception;
             if (logListener == null)
             {
                 if (newline)

@@ -42,23 +42,15 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="jni\JNI.cs" />
-    <Compile Include="jni\StructuresDummy.cs" />
-    <Compile Include="jni\JavaVM.cs" />
-    <Compile Include="jni\JNIEnv.cs" />
-    <Compile Include="jni\JNIInvokeInterface.cs" />
-    <Compile Include="jni\JNINativeInterface.cs" />
-    <Compile Include="jni\Util.cs" />
-    <Compile Include="DotnetMain.cs" />
-    <Compile Include="jni\Structures.cs" />
-  </ItemGroup>
-  <ItemGroup>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\selvin.exportdllattribute\src\selvin.exportdllattribute.csproj">
       <Project>{EAF9A4CD-0965-44C3-8570-09063E4D5E79}</Project>
       <Name>selvin.exportdllattribute</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="jni\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

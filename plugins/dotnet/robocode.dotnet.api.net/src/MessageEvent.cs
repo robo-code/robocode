@@ -13,16 +13,11 @@ namespace robocode
 
         public MessageEvent(string sender, object message)
         {
-            object serializable2;
-            object serializable = message;
             this.sender = sender;
-            /*object obj2 = serializable.__<ref>;
-            object obj3 = obj2;
-            serializable2.__<ref> = obj3;
-            this.message = serializable2;*/
+            this.message = message;
         }
 
-        internal override sealed void dispatch(IBasicRobot robot1, IRobotStatics statics1, IGraphics graphics2D)
+        internal override void dispatch(IBasicRobot robot1, IRobotStatics statics1, IGraphics graphics2D)
         {
             if (statics1.isTeamRobot())
             {
@@ -34,17 +29,15 @@ namespace robocode
             }
         }
 
-        internal override sealed int getDefaultPriority()
+        internal override int getDefaultPriority()
         {
             return 0x4b;
         }
 
-        /*public Serializable getMessage()
+        public object getMessage()
         {
-            Serializable serializable2;
-            serializable2.__<ref> = this.message.__<ref>;
-            return serializable2;
-        }*/
+            return message;
+        }
 
         public string getSender()
         {

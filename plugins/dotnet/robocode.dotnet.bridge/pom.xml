@@ -8,14 +8,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.dotnet.repository</artifactId>
+    <artifactId>robocode.dotnet.bridge</artifactId>
     <version>${robocode.version}</version>
-    <name>.NET repository for Robocode</name>
+    <name>.NET bridge for Robocode</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.repository</artifactId>
-            <version>${robocode.version}</version>
+            <artifactId>robocode.dotnet.bridge.net</artifactId>
+            <version>${robocode.nversion}</version>
+		    <type>dotnet:library</type>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.5</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

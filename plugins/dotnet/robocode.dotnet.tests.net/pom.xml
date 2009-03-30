@@ -8,11 +8,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.dotnet.host.net</artifactId>
+    <artifactId>robocode.dotnet.tests.net</artifactId>
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
-    <name>.NET host.net for Robocode</name>
-	<description>.NET host.net for Robocode</description>
+    <name>.NET tests.net for Robocode</name>
+	<description>.NET tests.net for Robocode</description>
 	<organization>
 		<name>Robocode</name>
 		<url>http://robocode.sf.net</url>
@@ -27,12 +27,6 @@
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.core.net</artifactId>
-            <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.dotnet.bridge.net</artifactId>
             <version>${robocode.nversion}</version>
 		    <type>dotnet:library</type>
         </dependency>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -15,11 +15,16 @@
     <name>.NET for Robocode</name>
     <modules>
         <module>robocode.dotnet.content</module>
+        <module>robocode.dotnet.api.net</module>
+        <module>robocode.dotnet.core.net</module>
+        <module>robocode.dotnet.bridge</module>
+        <module>robocode.dotnet.bridge.net</module>
         <module>robocode.dotnet.host</module>
         <module>robocode.dotnet.host.net</module>
         <module>robocode.dotnet.repository</module>
         <module>robocode.dotnet.installer</module>
-        <module>robocode.dotnet.samples</module>
+        <module>robocode.dotnet.samples.net</module>
+        <module>robocode.dotnet.tests.net</module>
         <module>selvin.exportdll</module>
         <module>selvin.exportdllattribute</module>
     </modules>
