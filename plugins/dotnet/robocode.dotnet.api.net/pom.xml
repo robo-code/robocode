@@ -12,25 +12,25 @@
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
     <name>.NET api.net for Robocode</name>
-	<description>.NET api.net for Robocode</description>
-	<organization>
-		<name>Robocode</name>
-		<url>http://robocode.sf.net</url>
-	</organization>
+    <description>.NET api.net for Robocode</description>
+    <organization>
+        <name>Robocode</name>
+        <url>http://robocode.sf.net</url>
+    </organization>
     <dependencies>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
-			<plugin>
-				<groupId>org.sonatype.nmaven.plugins</groupId>
-				<artifactId>maven-dotnet-compiler-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>0.17robocode</version>
-				<configuration>
-		          <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
-		        </configuration>
-			</plugin>
-	    </plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

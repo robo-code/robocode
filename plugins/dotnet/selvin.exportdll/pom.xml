@@ -17,21 +17,21 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>selvin.exportdllattribute</artifactId>
             <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
+            <type>dotnet:library</type>
         </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
-			<plugin>
-				<groupId>org.sonatype.nmaven.plugins</groupId>
-				<artifactId>maven-dotnet-compiler-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>0.17robocode</version>
-				<configuration>
-		          <aditionalOptions>/main:selvin.exportdll.Program /nowarn:1591</aditionalOptions>
-		        </configuration>
-			</plugin>
-	    </plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/main:selvin.exportdll.Program /nowarn:1591</aditionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

@@ -15,15 +15,15 @@
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
-			<plugin>
-				<groupId>org.sonatype.nmaven.plugins</groupId>
-				<artifactId>maven-dotnet-compiler-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>0.17robocode</version>
-				<configuration>
-		          <aditionalOptions>/nowarn:1591</aditionalOptions>
-		        </configuration>
-			</plugin>
-	    </plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/nowarn:1591</aditionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

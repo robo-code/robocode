@@ -12,43 +12,43 @@
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
     <name>.NET host.net for Robocode</name>
-	<description>.NET host.net for Robocode</description>
-	<organization>
-		<name>Robocode</name>
-		<url>http://robocode.sf.net</url>
-	</organization>
+    <description>.NET host.net for Robocode</description>
+    <organization>
+        <name>Robocode</name>
+        <url>http://robocode.sf.net</url>
+    </organization>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.api.net</artifactId>
             <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
+            <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.core.net</artifactId>
             <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
+            <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.bridge.net</artifactId>
             <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
+            <type>dotnet:library</type>
         </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
-			<plugin>
-				<groupId>org.sonatype.nmaven.plugins</groupId>
-				<artifactId>maven-dotnet-compiler-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>0.17robocode</version>
-				<configuration>
-		          <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
-		        </configuration>
-			</plugin>
-	    </plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

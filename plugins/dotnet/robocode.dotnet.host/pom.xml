@@ -16,18 +16,18 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.host.net</artifactId>
             <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
+            <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
             <version>${robocode.version}</version>
         </dependency>
-		<dependency>
-		    <groupId>net.sf.jacob-project</groupId>
-		    <artifactId>jacob</artifactId>
-		    <version>1.14.3</version>
-		</dependency> 
+        <dependency>
+            <groupId>net.sf.jacob-project</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.14.3</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

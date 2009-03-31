@@ -21,6 +21,10 @@ public class Bridge {
 				if (file.endsWith("classes/")){
 					path=file.substring(0,file.length()-8).replaceFirst("dotnet.bridge", "dotnet.bridge.net");
 				}
+				System.err.println(file);
+				if (file.contains(".jar")){
+					path=file.substring(0,file.length()-4).replaceFirst("dotnet.bridge", "dotnet.bridge.net")+".dll";
+				}
 
 				File p=new File(path);
 				final File[] files = p.listFiles(new FilenameFilter() {
@@ -31,6 +35,7 @@ public class Bridge {
 				System.load(files[0].getCanonicalPath());
 
 			} catch (IOException e) {
+				System.err.println(e);
 			}
 			loaded=true;
 		}

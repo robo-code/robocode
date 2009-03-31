@@ -35,6 +35,7 @@ namespace robocode.dotnet.test.net
         [Test]
         public void empty()
         {
+            //throw new ApplicationException();
             var ec = new ExecCommands();
 
             ec.setBodyTurnRemaining(150.123);

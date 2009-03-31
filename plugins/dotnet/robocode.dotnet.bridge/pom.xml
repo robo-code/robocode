@@ -16,7 +16,7 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.bridge.net</artifactId>
             <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
+            <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -25,4 +25,17 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

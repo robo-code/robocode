@@ -22,9 +22,9 @@
                     <artifactId>robocode.api</artifactId>
                 </exclusion>
                 <exclusion>
-					    <groupId>net.sf.jacob-project</groupId>
-					    <artifactId>jacob</artifactId>
-                    </exclusion>
+                    <groupId>net.sf.jacob-project</groupId>
+                    <artifactId>jacob</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>

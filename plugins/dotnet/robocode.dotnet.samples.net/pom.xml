@@ -15,20 +15,21 @@
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.repository</artifactId>
-            <version>${robocode.version}</version>
+            <artifactId>robocode.dotnet.api.net</artifactId>
+            <version>${robocode.nversion}</version>
+            <type>dotnet:library</type>
         </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
-			<plugin>
-				<groupId>org.sonatype.nmaven.plugins</groupId>
-				<artifactId>maven-dotnet-compiler-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>0.17robocode</version>
-			</plugin>
-	    </plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+            </plugin>
+        </plugins>
         <resources>
             <resource>
                 <directory>src</directory>
