@@ -25,6 +25,7 @@
         <module>robocode.dotnet.installer</module>
         <module>robocode.dotnet.samples.net</module>
         <module>robocode.dotnet.tests.net</module>
+        <module>robocode.dotnet.tests</module>
         <module>selvin.exportdll</module>
         <module>selvin.exportdllattribute</module>
     </modules>

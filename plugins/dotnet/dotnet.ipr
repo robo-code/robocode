@@ -221,6 +221,7 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.dotnet.installer/robocode.dotnet.installer.iml" filepath="$PROJECT_DIR$/robocode.dotnet.installer/robocode.dotnet.installer.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.dotnet.repository/robocode.dotnet.repository.iml" filepath="$PROJECT_DIR$/robocode.dotnet.repository/robocode.dotnet.repository.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.dotnet.samples.net/robocode.dotnet.samples.net.iml" filepath="$PROJECT_DIR$/robocode.dotnet.samples.net/robocode.dotnet.samples.net.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.dotnet.tests/robocode.dotnet.tests.iml" filepath="$PROJECT_DIR$/robocode.dotnet.tests/robocode.dotnet.tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.dotnet.tests.net/robocode.dotnet.tests.net.iml" filepath="$PROJECT_DIR$/robocode.dotnet.tests.net/robocode.dotnet.tests.net.iml" />
       <module fileurl="file://$PROJECT_DIR$/selvin.exportdll/selvin.exportdll.iml" filepath="$PROJECT_DIR$/selvin.exportdll/selvin.exportdll.iml" />
       <module fileurl="file://$PROJECT_DIR$/selvin.exportdllattribute/selvin.exportdllattribute.iml" filepath="$PROJECT_DIR$/selvin.exportdllattribute/selvin.exportdllattribute.iml" />
@@ -304,17 +305,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.host/1.7.2.Beta/robocode.host-1.7.2.Beta-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.jacob-project:jacob:1.14.3">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jacob-project/jacob/1.14.3/jacob-1.14.3.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jacob-project/jacob/1.14.3/jacob-1.14.3-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jacob-project/jacob/1.14.3/jacob-1.14.3-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: junit:junit:4.5">

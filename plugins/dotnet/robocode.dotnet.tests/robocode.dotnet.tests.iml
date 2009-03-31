@@ -3,6 +3,7 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
@@ -10,10 +11,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="robocode.dotnet.host.net" exported="" />
+    <orderEntry type="module" module-name="robocode.dotnet.tests.net" exported="" />
     <orderEntry type="module" module-name="robocode.dotnet.api.net" exported="" />
     <orderEntry type="module" module-name="robocode.dotnet.core.net" exported="" />
     <orderEntry type="module" module-name="robocode.dotnet.bridge.net" exported="" />
+    <orderEntry type="module" module-name="robocode.dotnet.bridge" exported="" />
     <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.host:1.7.2.Beta" level="project" />
     <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.api:1.7.2.Beta" level="project" />
     <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.core:1.7.2.Beta" level="project" />

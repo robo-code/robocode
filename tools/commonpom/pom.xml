@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -123,11 +123,37 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            <!--
+			<plugin>
+			   <groupId>org.apache.maven.plugins</groupId>
+			   <artifactId>maven-jar-plugin</artifactId>              
+			   <configuration>              
+			      <archive>
+			         <manifest>
+			            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+			            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+			         </manifest>
+			         <manifestEntries>
+			            <robocode.version>${robocode.version}</robocode.version>
+			            <robocode.nversion>${robocode.nversion}</robocode.nversion>
+			         </manifestEntries>
+			      </archive>
+			   </configuration>
+			</plugin>
+			-->
         </plugins>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/_svn/**</exclude>
+                    <exclude>**/.svn/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/filtered-resources</directory>
+                <filtering>true</filtering>
                 <excludes>
                     <exclude>**/_svn/**</exclude>
                     <exclude>**/.svn/**</exclude>

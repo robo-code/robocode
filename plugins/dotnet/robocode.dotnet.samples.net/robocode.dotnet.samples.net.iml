@@ -10,11 +10,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.repository:1.7.2.Beta" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.api:1.7.2.Beta" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.core:1.7.2.Beta" level="project" />
-    <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
+    <orderEntry type="module" module-name="robocode.dotnet.api.net" exported="" />
   </component>
 </module>
 

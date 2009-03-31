@@ -8,15 +8,20 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.dotnet.host</artifactId>
+    <artifactId>robocode.dotnet.tests</artifactId>
     <version>${robocode.version}</version>
-    <name>.NET host for Robocode</name>
+    <name>.NET tests for Robocode</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.dotnet.host.net</artifactId>
+            <artifactId>robocode.dotnet.tests.net</artifactId>
             <version>${robocode.nversion}</version>
             <type>dotnet:library</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.bridge</artifactId>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -30,4 +35,17 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

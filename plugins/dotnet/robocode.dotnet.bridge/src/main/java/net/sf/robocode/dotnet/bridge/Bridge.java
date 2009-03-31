@@ -2,7 +2,6 @@ package net.sf.robocode.dotnet.bridge;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.FilenameFilter;
 import java.security.CodeSource;
 
 public class Bridge {
@@ -17,27 +16,28 @@ public class Bridge {
 				final CodeSource source = Bridge.class.getProtectionDomain().getCodeSource();
 				final String file = source.getLocation().getFile();
 
-				String path = ".";
-				if (file.endsWith("classes/")){
-					path=file.substring(0,file.length()-8).replaceFirst("dotnet.bridge", "dotnet.bridge.net");
-				}
-				System.err.println(file);
-				if (file.contains(".jar")){
-					path=file.substring(0,file.length()-4).replaceFirst("dotnet.bridge", "dotnet.bridge.net")+".dll";
-				}
-
-				File p=new File(path);
-				final File[] files = p.listFiles(new FilenameFilter() {
-					public boolean accept(File dir, String name) {
-						return name.contains("dotnet.bridge.net") && name.endsWith(".dll");
+				File path;
+				if (file.endsWith("classes/")) {
+					final String base = file.substring(0, file.length() - 8).replaceAll("robocode.dotnet.bridge", "robocode.dotnet.bridge.net") + "robocode.dotnet.bridge.net";
+					path = new File(base + ".dll");
+					if (!path.exists()) {
+						path = new File(base + "-" + VersionReader.getNVersion() + ".dll");
 					}
-				});
-				System.load(files[0].getCanonicalPath());
+					if (!path.exists()) {
+						throw new Error("Can't find robocode.dotnet.bridge.net.*.dll");
+					}
+				} else if (file.contains(".jar")) {
+					final String base = file.substring(0, file.length() - 4).replaceAll("robocode.dotnet.bridge", "robocode.dotnet.bridge.net").replaceAll(VersionReader.getVersion(), VersionReader.getNVersion());
+					path = new File(base + ".dll");
+				} else {
+					throw new Error("Can't find robocode.dotnet.bridge.net.*.dll");
+				}
+				System.load(path.getCanonicalPath());
 
 			} catch (IOException e) {
-				System.err.println(e);
+				throw new Error("Can't find robocode.dotnet.bridge.net.*.dll");
 			}
-			loaded=true;
+			loaded = true;
 		}
 	}
 
@@ -45,10 +45,10 @@ public class Bridge {
 		load();
 	}
 
-	public void init(){
-		if (!initialized){
+	public void init() {
+		if (!initialized) {
 			initDotNet();
-			initialized=true;
+			initialized = true;
 		}
 	}
 
