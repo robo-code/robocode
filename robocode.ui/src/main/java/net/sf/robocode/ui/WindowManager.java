@@ -351,12 +351,12 @@ public class WindowManager implements IWindowManagerExt {
 		splashScreen.dispose();
 	}
 
-	public void showNewBattleDialog(BattleProperties battleProperties) {
+	public void showNewBattleDialog(BattleProperties battleProperties, boolean openBattle) {
 		try {
 			battleManager.pauseBattle();
 			final NewBattleDialog battleDialog = Container.createComponent(NewBattleDialog.class);
 
-			battleDialog.setup(battleProperties);
+			battleDialog.setup(battleProperties, openBattle);
 			WindowUtil.packCenterShow(getRobocodeFrame(), battleDialog);
 		} finally {
 			battleManager.resumeBattle();

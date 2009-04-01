@@ -130,10 +130,12 @@ public class RobotDescriptionPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		JPanel p = new JPanel();
+
 		p.setLayout(new BorderLayout());
 		p.add(getRobotNameLabel(), BorderLayout.CENTER);
 
 		JPanel q = new JPanel();
+
 		q.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		q.add(getRobocodeVersionLabel());
 		p.add(q, BorderLayout.EAST);

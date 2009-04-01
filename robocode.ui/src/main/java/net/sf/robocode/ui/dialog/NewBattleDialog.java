@@ -25,6 +25,7 @@ package net.sf.robocode.ui.dialog;
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
@@ -55,6 +56,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private NewBattleBattleFieldTab battleFieldTab;
 
 	private BattleProperties battleProperties;
+	private boolean isOpeningBattle;
 
 	private NewBattleRulesTab rulesTab;
 	private WizardController wizardController;
@@ -62,14 +64,17 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private RobotSelectionPanel robotSelectionPanel;
 
 	private final IBattleManager battleManager;
+	private final ISettingsManager settingsManager;
 
-	public NewBattleDialog(IWindowManager windowManager, IBattleManager battleManager) {
+	public NewBattleDialog(IWindowManager windowManager, IBattleManager battleManager, ISettingsManager settingsManager) {
 		super(windowManager.getRobocodeFrame(), true);
 		this.battleManager = battleManager;
+		this.settingsManager = settingsManager;
 	}
 
-	public void setup(BattleProperties battleProperties) {
+	public void setup(BattleProperties battleProperties, boolean openBattle) {
 		this.battleProperties = battleProperties;
+		this.isOpeningBattle = openBattle;
 		robotSelectionPanel = null;
 		initialize();
 	}
@@ -249,9 +254,14 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		}
 		getBattleFieldTab().setBattleFieldWidth(battleProperties.getBattlefieldWidth());
 		getBattleFieldTab().setBattleFieldHeight(battleProperties.getBattlefieldHeight());
-		getRobotSelectionPanel().setNumRounds(battleProperties.getNumRounds());
 		getRulesTab().setGunCoolingRate(battleProperties.getGunCoolingRate());
 		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
+
+		// When opening a battle, we use the 'number of rounds' from the battle properties.
+		// When starting a new battle, we use the 'number of rounds' from the settings manager instead.
+		int numRounds = isOpeningBattle ? battleProperties.getNumRounds() : settingsManager.getNumberOfRounds();
+
+		getRobotSelectionPanel().setNumRounds(numRounds);
 	}
 
 	private class EventHandler extends WindowAdapter implements ActionListener {

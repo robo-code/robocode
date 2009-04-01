@@ -59,7 +59,7 @@ public interface IWindowManagerExt extends IWindowManager {
 
 	void showRobotExtractor(JFrame owner);
 
-	void showNewBattleDialog(BattleProperties battleProperties);
+	void showNewBattleDialog(BattleProperties battleProperties, boolean openBattle);
 
 	boolean closeRobocodeEditor();
 

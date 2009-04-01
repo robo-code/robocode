@@ -30,7 +30,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
@@ -89,14 +88,13 @@ public class RobotSelectionPanel extends WizardPanel {
 	private final List<AvailableRobotsPanel.ItemWrapper> selectedRobots = new ArrayList<AvailableRobotsPanel.ItemWrapper>();
 	private boolean showNumRoundsPanel;
 	private final ISettingsManager properties;
-	private final IBattleManager battleManager;
 	private final IRepositoryManager repositoryManager;
+	private boolean nummerOfRoundSetByGame;
 
-	public RobotSelectionPanel(ISettingsManager properties, IBattleManager battleManager, IRepositoryManager repositoryManager) {
+	public RobotSelectionPanel(ISettingsManager properties, IRepositoryManager repositoryManager) {
 		super();
 		this.properties = properties;
 		this.repositoryManager = repositoryManager;
-		this.battleManager = battleManager;
 	}
 
 	public void setup(int minRobots, int maxRobots,
@@ -479,7 +477,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 			// Center in panel
 			numRoundsTextField.setAlignmentX((float) .5);
-			// Center text in textfield
+			// Center text in text field
 			numRoundsTextField.setHorizontalAlignment(SwingConstants.CENTER);
 
 			// Add document listener
@@ -496,15 +494,16 @@ public class RobotSelectionPanel extends WizardPanel {
 				}
 
 				private void handleChange() {
+					// Ignore the change if the 'number of rounds' was set by the game, not the user
+					if (nummerOfRoundSetByGame) {
+						return;
+					}
+					
+					// Here we assume that the user made the change
 					try {
 						int numRounds = Integer.parseInt(numRoundsTextField.getText());
 
-						battleManager.getBattleProperties().setNumRounds(numRounds);
-
-						if (numRounds != props.getNumberOfRounds()) {
-							props.setNumberOfRounds(numRounds);
-
-						}
+						props.setNumberOfRounds(numRounds); // Update the user settings
 					} catch (NumberFormatException ignored) {}
 				}
 			});
@@ -568,7 +567,13 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	public void setNumRounds(int numRounds) {
+		// Set flag that 'number of rounds' was set by the game, not user
+		nummerOfRoundSetByGame = true;
+
 		getNumRoundsTextField().setText("" + numRounds);
+
+		// Clear flag for 'number of rounds'
+		nummerOfRoundSetByGame = false;
 	}
 
 	private void setSelectedRobots(String selectedRobotsString) {
