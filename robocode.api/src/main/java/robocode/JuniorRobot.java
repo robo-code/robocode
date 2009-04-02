@@ -53,97 +53,6 @@ import static java.lang.Math.toRadians;
  */
 public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
-	/*
-	 * The JuniorRobot event handler, which implements the basic robot events,
-	 * JuniorRobot event, and Runnable.
-	 */
-	private final class InnerEventHandler implements IBasicEvents, Runnable {
-
-		private double juniorFirePower;
-
-		public void onBulletHit(BulletHitEvent event) {}
-
-		public void onBulletHitBullet(BulletHitBulletEvent event) {}
-
-		public void onBulletMissed(BulletMissedEvent event) {}
-
-		public void onDeath(DeathEvent event) {}
-
-		public void onHitByBullet(HitByBulletEvent event) {
-			double angle = peer.getBodyHeading() + event.getBearingRadians();
-
-			hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			hitByBulletBearing = (int) (event.getBearing() + 0.5);
-			JuniorRobot.this.onHitByBullet();
-		}
-
-		public void onHitRobot(HitRobotEvent event) {
-			double angle = peer.getBodyHeading() + event.getBearingRadians();
-
-			hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			hitRobotBearing = (int) (event.getBearing() + 0.5);
-			JuniorRobot.this.onHitRobot();
-		}
-
-		public void onHitWall(HitWallEvent event) {
-			double angle = peer.getBodyHeading() + event.getBearingRadians();
-
-			hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-			hitWallBearing = (int) (event.getBearing() + 0.5);
-			JuniorRobot.this.onHitWall();
-		}
-
-		public void onRobotDeath(RobotDeathEvent event) {
-			others = peer.getOthers();
-		}
-
-		public void onScannedRobot(ScannedRobotEvent event) {
-			scannedDistance = (int) (event.getDistance() + 0.5);
-			scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
-			scannedAngle = (int) (Math.toDegrees(
-					Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians()))
-							+ 0.5);
-			scannedBearing = (int) (event.getBearing() + 0.5);
-			scannedHeading = (int) (event.getHeading() + 0.5);
-			scannedVelocity = (int) (event.getVelocity() + 0.5);
-
-			JuniorRobot.this.onScannedRobot();
-		}
-
-		public void onStatus(StatusEvent e) {
-			final RobotStatus s = e.getStatus();
-
-			others = peer.getOthers();
-			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
-			robotX = (int) (s.getX() + 0.5);
-			robotY = (int) (s.getY() + 0.5);
-			heading = (int) (toDegrees(s.getHeading()) + 0.5);
-			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
-			gunBearing = (int) (toDegrees(Utils.normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
-			gunReady = (s.getGunHeat() <= 0);
-
-			// Auto fire
-			if (juniorFirePower > 0 && gunReady && (peer.getGunTurnRemaining() == 0)) {
-				if (peer.setFire(juniorFirePower) != null) {
-					gunReady = false;
-					juniorFirePower = 0;
-				}
-			}
-		}
-
-		public void onWin(WinEvent event) {}
-
-		public void run() {
-			fieldWidth = (int) (peer.getBattleFieldWidth() + 0.5);
-			fieldHeight = (int) (peer.getBattleFieldHeight() + 0.5);
-
-			// noinspection InfiniteLoopStatement
-			while (true) {
-				JuniorRobot.this.run();
-			}
-		}
-	}
-
 	/**
 	 * The color black (0x000000)
 	 */
@@ -882,5 +791,122 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			innerEventHandler = new InnerEventHandler();
 		}
 		return innerEventHandler;
+	}
+
+	/*
+	 * The JuniorRobot event handler, which implements the basic robot events,
+	 * JuniorRobot event, and Runnable.
+	 */
+	private final class InnerEventHandler implements IBasicEvents, Runnable {
+
+		private double juniorFirePower;
+		private long currentTurn;
+
+		public void onBulletHit(BulletHitEvent event) {}
+
+		public void onBulletHitBullet(BulletHitBulletEvent event) {}
+
+		public void onBulletMissed(BulletMissedEvent event) {}
+
+		public void onDeath(DeathEvent event) {}
+
+		public void onHitByBullet(HitByBulletEvent event) {
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
+
+			hitByBulletAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitByBulletBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitByBullet();
+		}
+
+		public void onHitRobot(HitRobotEvent event) {
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
+
+			hitRobotAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitRobotBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitRobot();
+		}
+
+		public void onHitWall(HitWallEvent event) {
+			double angle = peer.getBodyHeading() + event.getBearingRadians();
+
+			hitWallAngle = (int) (Math.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
+			hitWallBearing = (int) (event.getBearing() + 0.5);
+			JuniorRobot.this.onHitWall();
+		}
+
+		public void onRobotDeath(RobotDeathEvent event) {
+			others = peer.getOthers();
+		}
+
+		public void onScannedRobot(ScannedRobotEvent event) {
+			scannedDistance = (int) (event.getDistance() + 0.5);
+			scannedEnergy = Math.max(1, (int) (event.getEnergy() + 0.5));
+			scannedAngle = (int) (Math.toDegrees(
+					Utils.normalAbsoluteAngle(peer.getBodyHeading() + event.getBearingRadians()))
+							+ 0.5);
+			scannedBearing = (int) (event.getBearing() + 0.5);
+			scannedHeading = (int) (event.getHeading() + 0.5);
+			scannedVelocity = (int) (event.getVelocity() + 0.5);
+
+			JuniorRobot.this.onScannedRobot();
+		}
+
+		public void onStatus(StatusEvent e) {
+			final RobotStatus s = e.getStatus();
+
+			others = peer.getOthers();
+			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
+			robotX = (int) (s.getX() + 0.5);
+			robotY = (int) (s.getY() + 0.5);
+			heading = (int) (toDegrees(s.getHeading()) + 0.5);
+			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
+			gunBearing = (int) (toDegrees(Utils.normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
+			gunReady = (s.getGunHeat() <= 0);
+
+			currentTurn = e.getTime();
+
+			// Auto fire
+			if (juniorFirePower > 0 && gunReady && (peer.getGunTurnRemaining() == 0)) {
+				if (peer.setFire(juniorFirePower) != null) {
+					gunReady = false;
+					juniorFirePower = 0;
+				}
+			}
+
+			// Reset event data
+			scannedDistance = -1;
+			scannedAngle = -1;
+			scannedBearing = -1;
+			scannedVelocity = -99;
+			scannedHeading = -1;
+			scannedEnergy = -1;
+			hitByBulletAngle = -1;
+			hitByBulletBearing = -1;
+			hitRobotAngle = -1;
+			hitRobotBearing = -1;
+			hitWallAngle = -1;
+			hitWallBearing = -1;		
+		}
+
+		public void onWin(WinEvent event) {}
+
+		public void run() {
+			fieldWidth = (int) (peer.getBattleFieldWidth() + 0.5);
+			fieldHeight = (int) (peer.getBattleFieldHeight() + 0.5);
+
+			// noinspection InfiniteLoopStatement
+			while (true) {
+				long lastTurn = currentTurn; // Used for the rescan check
+
+				JuniorRobot.this.run(); // Run the code in the JuniorRobot
+
+				// Make sure that we rescan if the robot did not execute anything this turn.
+				// When the robot executes the currentTurn will automatically be increased by 1,
+				// So when the turn stays the same, the robot did not take any action this turn.
+				if (lastTurn == currentTurn) {
+					peer.rescan(); // Spend a turn on rescanning
+				}
+			}
+		}
 	}
 }

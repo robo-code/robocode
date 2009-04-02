@@ -1,10 +1,15 @@
 Version 1.7.2 Alpha
-(1-Apr-2009)
+(03-Apr-2009)
 ---------------
 
 = Bugfixes =
 * Bug [2711605] - Webpage button lay over robot description.
 * Bug [2723228] - Rounds number do not saved between run.
+* JuniorRobot: The event variables scannedXXX and hitXXX on the JuniorRobot was not reset to -1 (or -99) when nothing was scanned or hit.
+
+= Changes =
+* Req [2500129] - Prevent JuniorRobot to be unresponsive.
+* JuniorRobot will automatically scan for enemies when it is not moving.
 
 Version 1.7.1
 (24-Mar-2009)
@@ -60,9 +65,9 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 
 = New features =
 * Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine.
-* Request [2446276] - Ranking Panel should be visible when Robocode is minimized. This feature has been added and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
-* Request [2467545] - Command Line option for saving a battle record file. Two new command line options have been added for Robocode, i.e. -record <filename> and -recordXML <filename>. The -record option records the battle as a binary and zipped battle record. Here I propose that the specified filename should is something like record.br. The -recordXML does the same as the -record option, but saves the battle record as an XML file. Here I suggest that you use a filename like record.br.xml.
-* Request [1749483] - Speedup time required for rebuilding robot database.
+* Req [2446276] - Ranking Panel should be visible when Robocode is minimized. This feature has been added and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
+* Req [2467545] - Command Line option for saving a battle record file. Two new command line options have been added for Robocode, i.e. -record <filename> and -recordXML <filename>. The -record option records the battle as a binary and zipped battle record. Here I propose that the specified filename should is something like record.br. The -recordXML does the same as the -record option, but saves the battle record as an XML file. Here I suggest that you use a filename like record.br.xml.
+* Req [1749483] - Speedup time required for rebuilding robot database.
 
 = RoboRumble changes =
 * Changed the link for http://rumble.fervir.com/rumble into http://darkcanuck.net/rumble as the RoboRumble server fervir is down and with unstable ranking. The current ranking at Darkcanuck's server is alive. Almost all clients are point to Darkcanuck's now. Hence, it is updated now.
@@ -211,7 +216,7 @@ Version 1.6.2 Beta
 * Got rid of robot loader thread. Now Robocode is loading on robot's thread, where we got more security.
 * Introduced new interfaces for code components.
 * Robot threads have NORM_PRIORITY - 1, AWT UI have NORM_PRIORITY + 2.
-* Feature Request [2117285]: We now upload version of client with resuts from roborumble.
+* Feature Req [2117285]: We now upload version of client with resuts from roborumble.
 * Robots which are wrong behaving are removed from the robot repository and are not given another chance to run. This is for SkippedTurns, for unstopable robots and for robots with class loading troubles.
 * Changed the formatting of this versions.txt file in order to improve readability.
 
@@ -281,7 +286,7 @@ Version 1.6.1
 * Added getStatusEvents() to AdvancedRobot and IAdvancedRobotPeer, so a robot is now able to handle status events in the middle of an event handler.
 
 == New event ==
-* The new event BattleEndedEvent has been added, and will call the new event handler onBattleEnded() on the robots, when the battle is ended (Feature Request 1878233).
+* The new event BattleEndedEvent has been added, and will call the new event handler onBattleEnded() on the robots, when the battle is ended (Feature Req 1878233).
 * When reading the BattleEndedEvent it is possible to read out the results of the battle of the individual robot or team. In addition, it is possible to check if the battle was aborted by the game or user. The battle results will only be available if the battle is not aborted (where the results does not count).
 * The the onBattleEnded() event handler is provided through the new IBasicEvents2 class.
 
@@ -294,7 +299,7 @@ Version 1.6.1
 * Mouse and Keyboard events have been added as public classes as well.
 
 == Package name ==
-* The max. length of a robot's full package name has been extended from 16 to 32 characters (Feature Request 1954853).
+* The max. length of a robot's full package name has been extended from 16 to 32 characters (Feature Req 1954853).
 * The Robocode Repository is able to handle this (verified with Dan Lynn).
 
 == New TPS slider ==
@@ -1316,7 +1321,7 @@ The "Everything but teams and it took too long" release
 ---------------
 * setColors() now accepts any color (previously it had to be a default color)
 ** Only works in the first round
-** Only the first 16 robots in a battle will get their requested colors
+** Only the first 16 robots in a battle will get their Reqed colors
 * Robots may now extend or use classes that are not in their package
 ** This allows for utility classes, when they are in the robots tree
 ** If you do not wish others to extend your robot, declare your robot class final
@@ -1326,7 +1331,7 @@ The "Everything but teams and it took too long" release
 * You may now delete files in your data directory
 * Robocode will now always run at full speed when minimized
 * New Battle Dialog "Finish" button renamed to "Start Battle"
-* New Battle Dialog "Start Battle" button requests focus when enabled.
+* New Battle Dialog "Start Battle" button Reqs focus when enabled.
 * Robocode FAQ linked from help menu
 * Robocode now supports RoboLeague by Christian Schnell
 ** http://user.cs.tu-berlin.de/~lulli/roboleague/

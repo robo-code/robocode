@@ -14,10 +14,6 @@
 package robocode.robotinterfaces.peer;
 
 
-import robocode.ScannedRobotEvent;
-import robocode.robotinterfaces.IBasicEvents;
-
-
 /**
  * The standard robot peer for standard robot types like {@link robocode.Robot},
  * {@link robocode.AdvancedRobot}, and {@link robocode.TeamRobot}.
@@ -55,31 +51,6 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 * @see #stop(boolean)
 	 */
 	void resume();
-
-	/**
-	 * Rescan for other robots. This method is called automatically by the game,
-	 * as long as the robot is moving, turning its body, turning its gun, or
-	 * turning its radar.
-	 * <p/>
-	 * Rescan will cause {@link IBasicEvents#onScannedRobot(ScannedRobotEvent)
-	 * onScannedRobot(ScannedRobotEvent)} to be called if you see a robot.
-	 * <p/>
-	 * There are 2 reasons to call {@code rescan()} manually:
-	 * <ol>
-	 * <li>You want to scan after you stop moving.
-	 * <li>You want to interrupt the {@code onScannedRobot} event. This is more
-	 * likely. If you are in {@code onScannedRobot} and call {@code scan()},
-	 * and you still see a robot, then the system will interrupt your
-	 * {@code onScannedRobot} event immediately and start it from the top.
-	 * </ol>
-	 * <p/>
-	 * This call executes immediately.
-	 *
-	 * @see IBasicEvents#onScannedRobot(ScannedRobotEvent)
-	 *      onScannedRobot(ScannedRobotEvent)
-	 * @see ScannedRobotEvent
-	 */
-	void rescan();
 
 	/**
 	 * Immediately turns the robot's radar to the right or left by radians.

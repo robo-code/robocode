@@ -19,6 +19,7 @@ package robocode.robotinterfaces.peer;
 
 
 import robocode.*;
+import robocode.robotinterfaces.IBasicEvents;
 
 import java.awt.*;
 
@@ -688,4 +689,31 @@ public interface IBasicRobotPeer {
 	 * @since 1.6.2
 	 */
 	void setDebugProperty(String key, String value);
+
+	/**
+	 * Rescan for other robots. This method is called automatically by the game,
+	 * as long as the robot is moving, turning its body, turning its gun, or
+	 * turning its radar.
+	 * <p/>
+	 * Rescan will cause {@link IBasicEvents#onScannedRobot(ScannedRobotEvent)
+	 * onScannedRobot(ScannedRobotEvent)} to be called if you see a robot.
+	 * <p/>
+	 * There are 2 reasons to call {@code rescan()} manually:
+	 * <ol>
+	 * <li>You want to scan after you stop moving.
+	 * <li>You want to interrupt the {@code onScannedRobot} event. This is more
+	 * likely. If you are in {@code onScannedRobot} and call {@code scan()},
+	 * and you still see a robot, then the system will interrupt your
+	 * {@code onScannedRobot} event immediately and start it from the top.
+	 * </ol>
+	 * <p/>
+	 * This call executes immediately.
+	 *
+	 * @see IBasicEvents#onScannedRobot(ScannedRobotEvent)
+	 *      onScannedRobot(ScannedRobotEvent)
+	 * @see ScannedRobotEvent
+	 *
+	 * @since 1.7.2
+	 */
+	void rescan();
 }

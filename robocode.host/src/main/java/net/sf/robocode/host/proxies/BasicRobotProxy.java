@@ -303,6 +303,23 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		commands.setDebugProperty(key, value);
 	}
 
+	public void rescan() {
+		boolean reset = false;
+		boolean resetValue = false;
+
+		if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority()) {
+			reset = true;
+			resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());
+			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), true);
+		}
+
+		commands.setScan(true);
+		executeImpl();
+		if (reset) {
+			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), resetValue);
+		}
+	}
+	
 	// -----------
 	// implementations
 	// -----------

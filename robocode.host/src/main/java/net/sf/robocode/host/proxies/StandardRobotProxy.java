@@ -53,23 +53,6 @@ public class StandardRobotProxy extends BasicRobotProxy implements IStandardRobo
 		execute();
 	}
 
-	public void rescan() {
-		boolean reset = false;
-		boolean resetValue = false;
-
-		if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority()) {
-			reset = true;
-			resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());
-			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), true);
-		}
-
-		commands.setScan(true);
-		executeImpl();
-		if (reset) {
-			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), resetValue);
-		}
-	}
-
 	public void turnRadar(double radians) {
 		setTurnRadarImpl(radians);
 		do {
