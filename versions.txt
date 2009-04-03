@@ -5,6 +5,7 @@ Version 1.7.2 Alpha
 = Bugfixes =
 * Bug [2711605] - Webpage button lay over robot description.
 * Bug [2723228] - Rounds number do not saved between run.
+* Bug [2727667] - Not enough java memory allocated in launch scripts. The launch scripts for RoboRumble, MeleeRumble, and TeamRumble were changed to use up to 512 MB heap memory.
 * JuniorRobot: The event variables scannedXXX and hitXXX on the JuniorRobot was not reset to -1 (or -99) when nothing was scanned or hit.
 
 = Changes =
