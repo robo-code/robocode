@@ -144,8 +144,6 @@ public class BattlesRunner {
 		String enemies;
 
 		if (melee) {
-			enemies = param[0] + "," + param[1];
-		} else {
 			StringBuilder eb = new StringBuilder();
 
 			for (int i = 0; i < param.length - 1; i++) {
@@ -155,6 +153,8 @@ public class BattlesRunner {
 				eb.append(param[i]);
 			}
 			enemies = eb.toString();
+		} else {
+			enemies = param[0] + "," + param[1];
 		}
 		return enemies;
 	}
@@ -227,11 +227,6 @@ public class BattlesRunner {
 	}
 
 	class BattleObserver extends BattleAdaptor {
-		// @Override
-		// public void onBattleMessage(final BattleMessageEvent event) {
-		// SecurePrintStream.realOut.println(event.getMessage());
-		// }
-
 		@Override
 		public void onBattleError(final BattleErrorEvent event) {
 			Logger.realErr.println(event.getError());
