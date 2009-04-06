@@ -28,7 +28,7 @@ namespace robocode.dotnet.bridge.net.jni
         public int version;
         public int nOptions;
         public JavaVMOption* options;
-        public bool ignoreUnrecognized;
+        public byte ignoreUnrecognized;
     }
 
     [StructLayout(LayoutKind.Sequential), NativeCppClass]
@@ -36,17 +36,78 @@ namespace robocode.dotnet.bridge.net.jni
     {
         public int version;
         public IntPtr name; //char*
-        public jobject* group;
+        public JObject.Native* group;
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 8), NativeCppClass]
     public unsafe struct jvalue
     {
+        public jvalue(object o,JNIEnv env)
+        {
+            _bool = 0;
+            _byte = 0;
+            _char = 0;
+            _short = 0;
+            _int = 0;
+            _long = 0;
+            _float = 0;
+            _double = 0;
+            _object = null;
+            if (o is int)
+            {
+                _int = (int)o;
+            }
+            else if(o is bool)
+            {
+                _bool = ((bool) o) ? (byte) 1 : (byte) 0;
+            }
+            else if (o is byte)
+            {
+                _bool = ((byte) o);
+            }
+            else if (o is char)
+            {
+                _char = (short)((char)o);
+            }
+            else if (o is short)
+            {
+                _short = ((short)o);
+            }
+            else if (o is long)
+            {
+                _long = ((long)o);
+            }
+            else if (o is float)
+            {
+                _float = ((float)o);
+            }
+            else if (o is double)
+            {
+                _double = ((double)o);
+            }
+            else if (o is jvalue)
+            {
+                _double = ((jvalue) o)._double;
+            }
+            else if (o is JObject)
+            {
+                _object = ((JObject)o).native;
+            }
+            else if (o is string)
+            {
+                _object = env.NewString(((string) o));
+            } else
+            {
+                throw new ArgumentException("Conversion to java is not supported");
+            }
+            
+        }
+
         public jvalue(int i)
         {
-            _bool = false;
+            _bool = 0;
             _byte = 0;
-            _char = '\0';
+            _char = 0;
             _short = 0;
             _int = 0;
             _long = 0;
@@ -57,9 +118,9 @@ namespace robocode.dotnet.bridge.net.jni
             _int = i;
         }
 
-        [FieldOffset(0)] public bool _bool;
+        [FieldOffset(0)] public byte _bool;
         [FieldOffset(0)] public byte _byte;
-        [FieldOffset(0)] public char _char;
+        [FieldOffset(0)] public short _char;
         [FieldOffset(0)] public short _short;
         [FieldOffset(0)] public int _int;
         [FieldOffset(0)] public long _long;

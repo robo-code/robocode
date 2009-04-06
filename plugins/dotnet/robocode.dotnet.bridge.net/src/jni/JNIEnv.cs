@@ -1,5 +1,7 @@
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace robocode.dotnet.bridge.net.jni
 {
@@ -9,19 +11,25 @@ namespace robocode.dotnet.bridge.net.jni
 
         private readonly Native* native;
         private Native.CallVoidMethodA callVoidMethodA;
+        private Native.CallStaticVoidMethodA callStaticVoidMethodA;
+        private Native.CallObjectMethodA callObjectMethodA;
         private Native.FindClass findClass;
         private JNINativeInterface functions;
         private Native.GetDirectBufferAddress getDirectBufferAddress;
         private Native.GetDirectBufferCapacity getDirectBufferCapacity;
         private Native.GetFieldID getFieldID;
+        private Native.GetStaticFieldID getStaticFieldID;
         private Native.GetMethodID getMethodID;
+        private Native.GetStaticMethodID getStaticMethodID;
         private Native.GetObjectClass getObjectClass;
         private Native.GetVersion getVersion;
-
+        private Native.NewString newString;
+        private Native.GetObjectField getObjectField;
+        private Native.GetStaticObjectField getStaticObjectField;
         private Native.NewDirectByteBuffer newDirectByteBuffer;
-
-
         private Native.RegisterNatives registerNatives;
+        private Native.GetStringChars getStringChars;
+        private Native.ReleaseStringChars releaseStringChars;
 
         internal JNIEnv(Native* native)
         {
@@ -42,7 +50,7 @@ namespace robocode.dotnet.bridge.net.jni
             return getVersion(native);
         }
 
-        public jclass* FindClass(string name)
+        public JClass.Native* FindClass(string name)
         {
             if (findClass == null)
             {
@@ -51,25 +59,34 @@ namespace robocode.dotnet.bridge.net.jni
             return findClass.Invoke(native, name);
         }
 
-        public jclass* GetObjectClass(jobject* obj)
+        public JClass GetObjectClass(JObject obj)
         {
             if (getObjectClass == null)
             {
                 Util.GetDelegateForFunctionPointer(functions.GetObjectClass, ref getObjectClass);
             }
-            return getObjectClass.Invoke(native, obj);
+            return (*getObjectClass.Invoke(native, obj.native)).Wrap();
         }
 
-        public jmethodID* GetMethodID(jclass* clazz, string name, string sig)
+        public jmethodID* GetStaticMethodID(JClass.Native* clazz, string name, string sig)
+        {
+            if (getStaticMethodID == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.GetStaticMethodID, ref getStaticMethodID);
+            }
+            return getStaticMethodID.Invoke(native, clazz, name, sig);
+        }
+
+        public jmethodID* GetMethodID(JClass clazz, string name, string sig)
         {
             if (getMethodID == null)
             {
                 Util.GetDelegateForFunctionPointer(functions.GetMethodID, ref getMethodID);
             }
-            return getMethodID.Invoke(native, clazz, name, sig);
+            return getMethodID.Invoke(native, clazz.native, name, sig);
         }
 
-        public jfieldID* GetFieldID(jclass* clazz, string name, string sig)
+        public jfieldID* GetFieldID(JClass.Native* clazz, string name, string sig)
         {
             if (getFieldID == null)
             {
@@ -78,7 +95,16 @@ namespace robocode.dotnet.bridge.net.jni
             return getFieldID.Invoke(native, clazz, name, sig);
         }
 
-        public JNIResult RegisterNatives(jclass* clazz, JNINativeMethod* methods, int nMethods)
+        public jfieldID* GetStaticFieldID(JClass.Native* clazz, string name, string sig)
+        {
+            if (getStaticFieldID == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.GetStaticFieldID, ref getStaticFieldID);
+            }
+            return getStaticFieldID.Invoke(native, clazz, name, sig);
+        }
+
+        public JNIResult RegisterNatives(JClass.Native* clazz, JNINativeMethod* methods, int nMethods)
         {
             if (registerNatives == null)
             {
@@ -87,7 +113,7 @@ namespace robocode.dotnet.bridge.net.jni
             return registerNatives.Invoke(native, clazz, methods, nMethods);
         }
 
-        public jobject* NewDirectByteBuffer(void* address, long capacity)
+        public JObject.Native* NewDirectByteBuffer(void* address, long capacity)
         {
             if (newDirectByteBuffer == null)
             {
@@ -96,7 +122,7 @@ namespace robocode.dotnet.bridge.net.jni
             return newDirectByteBuffer.Invoke(native, address, capacity);
         }
 
-        public void* GetDirectBufferAddress(jobject* buf)
+        public void* GetDirectBufferAddress(JObject.Native* buf)
         {
             if (getDirectBufferAddress == null)
             {
@@ -105,7 +131,7 @@ namespace robocode.dotnet.bridge.net.jni
             return getDirectBufferAddress.Invoke(native, buf);
         }
 
-        public long GetDirectBufferCapacity(jobject* buf)
+        public long GetDirectBufferCapacity(JObject.Native* buf)
         {
             if (getDirectBufferCapacity == null)
             {
@@ -114,34 +140,267 @@ namespace robocode.dotnet.bridge.net.jni
             return getDirectBufferCapacity.Invoke(native, buf);
         }
 
+        public void CallStaticVoidMethodA(JClass.Native* obj, jmethodID* methodID, params jvalue[] args)
+        {
+            if (callStaticVoidMethodA == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.CallStaticVoidMethodA, ref callStaticVoidMethodA);
+            }
+            if (callStaticVoidMethodA(native, obj, methodID, args) != JNIResult.JNI_OK)
+            {
+                throw new ApplicationException();
+            }
+        }
 
-        public JNIResult CallVoidMethodA(jobject* obj, jmethodID* methodID, params jvalue[] args)
+        public void CallVoidMethodA(JObject.Native* obj, jmethodID* methodID, params jvalue[] args)
         {
             if (callVoidMethodA == null)
             {
                 Util.GetDelegateForFunctionPointer(functions.CallVoidMethodA, ref callVoidMethodA);
             }
-            return callVoidMethodA(native, obj, methodID, args);
+            if (callVoidMethodA(native, obj, methodID, args) != JNIResult.JNI_OK)
+            {
+                throw new ApplicationException();
+            }
         }
 
+        public JObject CallObjectMethodA(JObject.Native* obj, jmethodID* methodID, params jvalue[] args)
+        {
+            if (callVoidMethodA == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.CallObjectMethodA, ref callObjectMethodA);
+            }
+            return (*callObjectMethodA(native, obj, methodID, args)).Wrap();
+        }
+
+        public jstring* NewString(string unicode)
+        {
+            if (newString == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.NewString, ref newString);
+            }
+            return newString(native, Marshal.StringToHGlobalUni(unicode), unicode.Length);
+        }
+
+
+        public JObject.Native* GetObjectField(JObject.Native* obj, jfieldID* fieldID)
+        {
+            if (getObjectField == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.GetObjectField, ref getObjectField);
+            }
+            return getObjectField(native, obj, fieldID);
+        }
+
+        public JObject.Native* GetStaticObjectField(JClass.Native* clazz, jfieldID* fieldID)
+        {
+            if (getStaticObjectField == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.GetStaticObjectField, ref getStaticObjectField);
+            }
+            return getStaticObjectField(native, clazz, fieldID);
+        }
+
+        public IntPtr GetStringChars(jstring* str, byte* isCopy)
+        {
+            if (getStringChars == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.GetStringChars, ref getStringChars);
+            }
+            return getStringChars(native, str, isCopy);
+        }
+
+        public void ReleaseStringChars(jstring* str, IntPtr chars)
+        {
+            if (releaseStringChars == null)
+            {
+                Util.GetDelegateForFunctionPointer(functions.ReleaseStringChars, ref releaseStringChars);
+            }
+            releaseStringChars(native, str, chars);
+        }
+
+        
         #endregion
 
         #region Improved methods
 
-        public JNIResult CallVoidMethod(jobject* obj, string method, string sig, params jvalue[] args)
+        public JObject GetStaticObjectField(string type, string fieldID, string sig)
         {
-            jclass* objectClass = GetObjectClass(obj);
+            JClass.Native* objectClass = FindClass(type);
+            if (objectClass != null)
+            {
+                jfieldID* id = GetStaticFieldID(objectClass, fieldID, sig);
+                if (id != null)
+                {
+                    return (*GetStaticObjectField(objectClass, id)).Wrap();
+                }
+            }
+            throw new ArgumentException();
+        }
+
+        public void CallVoidMethod<T>(JObject obj, string method, T param1)
+        {
+            CallVoidMethod(obj, method, GetSignature(null, typeof(T)), ConverArgs(param1));
+        }
+
+        public void CallVoidMethod(JObject obj, string method, params object[] args)
+        {
+            CallVoidMethod(obj, method, GetSignature(null, args), ConverArgs(args));
+        }
+
+        public JObject CallObjectMethod(JObject obj, string method, params object[] args)
+        {
+            return CallObjectMethod(obj, method, GetSignature(null, args), ConverArgs(args));
+        }
+
+        public string CallStringMethod(JObject obj, string method, params object[] args)
+        {
+            JObject str = CallObjectMethod(obj, method, GetSignature(typeof(string), args), ConverArgs(args));
+            byte b = 0;
+            IntPtr chars = GetStringChars((jstring*) str.native, &b);
+            string result = Marshal.PtrToStringUni(chars);
+            ReleaseStringChars((jstring*)str.native, chars);
+            return result;
+        }
+
+        public string GetSignature(Type returnType, params object[] args)
+        {
+            StringBuilder sig = new StringBuilder();
+            sig.Append('(');
+            foreach (object o in args)
+            {
+                sig.Append(GetSignatureOne(o));
+            }
+            sig.Append(')');
+            sig.Append(GetSignatureOne(returnType));
+            return sig.ToString();
+        }
+
+        private string GetSignatureOne(object o)
+        {
+            StringBuilder sig=new StringBuilder();
+            Type t = o as Type;
+            if(o ==null)
+            {
+                sig.Append('V');
+            }
+            else if (o is int || t == typeof(int))
+            {
+                sig.Append('I');
+            }
+            else if (o is bool || t == typeof(bool))
+            {
+                sig.Append('Z');
+            }
+            else if (o is byte || t == typeof(byte))
+            {
+                sig.Append('B');
+            }
+            else if (o is char || t == typeof(char))
+            {
+                sig.Append('C');
+            }
+            else if (o is short || t == typeof(short))
+            {
+                sig.Append('S');
+            }
+            else if (o is long || t == typeof(long))
+            {
+                sig.Append('J');
+            }
+            else if (o is float || t == typeof(float))
+            {
+                sig.Append('F');
+            }
+            else if (o is double || t == typeof(double))
+            {
+                sig.Append('D');
+            }
+            else if (o is string || t == typeof(string))
+            {
+                sig.Append("Ljava/lang/String;");
+            }
+            else if (o is JObject)
+            {
+                sig.Append("L");
+                JObject j = o as JObject;
+                JClass jClass = j.GetClass(this);
+                string name = jClass.GetClassName(this).Replace(".", "/");
+                sig.Append(name);
+                sig.Append(";");
+            }
+            else
+            {
+                sig.Append('L');
+            }
+            return sig.ToString();
+        }
+
+        public jvalue[] ConverArgs(params object[] args)
+        {
+            var jargs = new jvalue[args.Length];
+            for (int i = 0; i < args.Length; i++)
+            {
+                jargs[i] = new jvalue(args[i], this);
+            }
+            return jargs;
+        }
+
+        public void CallStaticVoidMethod(string type, string method, string sig, params object[] args)
+        {
+            var jargs = new jvalue[args.Length];
+            for (int i = 0; i < args.Length; i++)
+            {
+                jargs[i] = new jvalue(args[i], this);
+            }
+            CallStaticVoidMethod(type, method, sig, jargs);
+        }
+
+        private void CallStaticVoidMethod(string type, string method, string sig, params jvalue[] args)
+        {
+            JClass.Native* objectClass = FindClass(type);
+            if (objectClass != null)
+            {
+                jmethodID* id = GetStaticMethodID(objectClass, method, sig);
+                if (id != null)
+                {
+                    CallStaticVoidMethodA(null, id, args);
+                    return;
+                }
+            }
+            throw new ArgumentException();
+        }
+
+        private void CallVoidMethod(JObject obj, string method, string sig, params jvalue[] args)
+        {
+            JClass objectClass = GetObjectClass(obj);
             if (objectClass != null)
             {
                 jmethodID* id = GetMethodID(objectClass, method, sig);
                 if (id != null)
                 {
-                    return CallVoidMethodA(obj, id, args);
+                    CallVoidMethodA(obj.native, id, args);
+                    return;
                 }
             }
-            return JNIResult.JNI_ERR;
+            throw new ArgumentException();
         }
 
+        private JObject CallObjectMethod(JObject obj, string method, string sig, params jvalue[] args)
+        {
+            JClass objectClass = GetObjectClass(obj);
+            if (objectClass != null)
+            {
+                jmethodID* id = GetMethodID(objectClass, method, sig);
+                if (id != null)
+                {
+                    return CallObjectMethodA(obj.native, id, args);
+                }
+            }
+            throw new ArgumentException();
+        }
+
+        
         #endregion
 
         #region Nested type
@@ -166,40 +425,76 @@ namespace robocode.dotnet.bridge.net.jni
             public delegate JNIResult GetJavaVM(Native* thiz, out JavaVM.Native* vm);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate jclass* FindClass(Native* thiz, [MarshalAs(UnmanagedType.LPStr)] string name);
+            public delegate JClass.Native* FindClass(Native* thiz, [MarshalAs(UnmanagedType.LPStr)] string name);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate jclass* GetObjectClass(Native* thiz, jobject* obj);
+            public delegate JClass.Native* GetObjectClass(Native* thiz, JObject.Native* obj);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate jmethodID* GetMethodID(
-                Native* thiz, jclass* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
+                Native* thiz, JClass.Native* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
+                [MarshalAs(UnmanagedType.LPStr)] string sig);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate jmethodID* GetStaticMethodID(
+                Native* thiz, JClass.Native* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
                 [MarshalAs(UnmanagedType.LPStr)] string sig);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate jfieldID* GetFieldID(
-                Native* thiz, jclass* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
+                Native* thiz, JClass.Native* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
+                [MarshalAs(UnmanagedType.LPStr)] string sig);
+
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate jfieldID* GetStaticFieldID(
+                Native* thiz, JClass.Native* clazz, [MarshalAs(UnmanagedType.LPStr)] string name,
                 [MarshalAs(UnmanagedType.LPStr)] string sig);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate JNIResult CallVoidMethodA(
-                Native* thiz, jobject* obj, jmethodID* methodID, params jvalue[] args);
+                Native* thiz, JObject.Native* obj, jmethodID* methodID, params jvalue[] args);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate JNIResult CallStaticVoidMethodA(
+                Native* thiz, JClass.Native* clazz, jmethodID* methodID, params jvalue[] args);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate JObject.Native* CallObjectMethodA(
+                Native* thiz, JObject.Native* obj, jmethodID* methodID, params jvalue[] args);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate JNIResult RegisterNatives(
-                Native* thiz, jclass* clazz, JNINativeMethod* methods, int nMethods);
+                Native* thiz, JClass.Native* clazz, JNINativeMethod* methods, int nMethods);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate JNIResult UnregisterNatives(Native* thiz, jclass* clazz);
+            public delegate JNIResult UnregisterNatives(Native* thiz, JClass.Native* clazz);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate jobject* NewDirectByteBuffer(Native* thiz, void* address, long capacity);
+            public delegate JObject.Native* NewDirectByteBuffer(Native* thiz, void* address, long capacity);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate void* GetDirectBufferAddress(Native* thiz, jobject* buf);
+            public delegate void* GetDirectBufferAddress(Native* thiz, JObject.Native* buf);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            public delegate long GetDirectBufferCapacity(Native* thiz, jobject* buf);
+            public delegate long GetDirectBufferCapacity(Native* thiz, JObject.Native* buf);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate jstring* NewString(Native* thiz, IntPtr unicode, int len);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate JObject.Native* GetObjectField(Native* thiz, JObject.Native* obj, jfieldID* fieldID);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate JObject.Native* GetStaticObjectField(Native* thiz, JClass.Native* clazz, jfieldID* fieldID);
+
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate IntPtr GetStringChars(Native* thiz, jstring* str, byte* isCopy);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate void ReleaseStringChars(Native* thiz, jstring* str, IntPtr chars);
+
         }
 
         #endregion
@@ -684,9 +979,6 @@ namespace robocode.dotnet.bridge.net.jni
         functions->CallNonvirtualVoidMethodA(this,obj,clazz,methodID,args);
     }
 
-    jobject* GetObjectField(jobject* obj, jfieldID fieldID) {
-        return functions->GetObjectField(this,obj,fieldID);
-    }
     jboolean GetBooleanField(jobject* obj, jfieldID fieldID) {
         return functions->GetBooleanField(this,obj,fieldID);
     }
@@ -746,11 +1038,6 @@ namespace robocode.dotnet.bridge.net.jni
     void SetDoubleField(jobject* obj, jfieldID fieldID,
 			jdouble val) {
         functions->SetDoubleField(this,obj,fieldID,val);
-    }
-
-    jmethodID GetStaticMethodID(jclass* clazz, const char *name,
-				const char *sig) {
-        return functions->GetStaticMethodID(this,clazz,name,sig);
     }
 
     jobject* CallStaticObjectMethod(jclass* clazz, jmethodID methodID,
@@ -930,13 +1217,6 @@ namespace robocode.dotnet.bridge.net.jni
         functions->CallStaticVoidMethodA(this,cls,methodID,args);
     }
 
-    jfieldID GetStaticFieldID(jclass* clazz, const char *name,
-			      const char *sig) {
-        return functions->GetStaticFieldID(this,clazz,name,sig);
-    }
-    jobject* GetStaticObjectField(jclass* clazz, jfieldID fieldID) {
-        return functions->GetStaticObjectField(this,clazz,fieldID);
-    }
     jboolean GetStaticBooleanField(jclass* clazz, jfieldID fieldID) {
         return functions->GetStaticBooleanField(this,clazz,fieldID);
     }
@@ -999,17 +1279,8 @@ namespace robocode.dotnet.bridge.net.jni
       functions->SetStaticDoubleField(this,clazz,fieldID,value);
     }
 
-    jstring NewString(const jchar *unicode, jsize len) {
-        return functions->NewString(this,unicode,len);
-    }
     jsize GetStringLength(jstring str) {
         return functions->GetStringLength(this,str);
-    }
-    const jchar *GetStringChars(jstring str, jboolean *isCopy) {
-        return functions->GetStringChars(this,str,isCopy);
-    }
-    void ReleaseStringChars(jstring str, const jchar *chars) {
-        functions->ReleaseStringChars(this,str,chars);
     }
 
     jstring NewStringUTF(const char *utf) {

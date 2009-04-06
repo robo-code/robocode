@@ -56,10 +56,12 @@
     <Compile Include="Bridge.cs" />
     <Compile Include="DotnetMain.cs" />
     <Compile Include="jni\JavaVM.cs" />
+    <Compile Include="jni\JClass.cs" />
     <Compile Include="jni\JNI.cs" />
     <Compile Include="jni\JNIEnv.cs" />
     <Compile Include="jni\JNIInvokeInterface.cs" />
     <Compile Include="jni\JNINativeInterface.cs" />
+    <Compile Include="jni\JObject.cs" />
     <Compile Include="jni\Structures.cs" />
     <Compile Include="jni\StructuresDummy.cs" />
     <Compile Include="jni\Util.cs" />

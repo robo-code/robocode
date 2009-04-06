@@ -94,11 +94,6 @@ namespace robocode.dotnet.bridge.net.jni
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct jclass
-    {
-    }
-
-    [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
     public struct jdoubleArray
     {
     }
@@ -130,11 +125,6 @@ namespace robocode.dotnet.bridge.net.jni
 
     [StructLayout(LayoutKind.Sequential)]
     public struct jfieldID
-    {
-    }
-
-    [StructLayout(LayoutKind.Sequential, Size = 1), NativeCppClass]
-    public struct jobject
     {
     }
 

@@ -13,7 +13,6 @@ namespace robocode.dotnet.bridge.net.jni
         private JNIInvokeInterface functions;
         private Native.GetEnv getEnv;
 
-
         internal JavaVM(Native* native)
         {
             this.native = native;
