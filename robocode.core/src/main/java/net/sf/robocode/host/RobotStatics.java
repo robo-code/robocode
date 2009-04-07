@@ -83,7 +83,7 @@ public final class RobotStatics implements IRobotStatics {
 			}
 			this.teamName = teamName;
 		} else {
-			teammates = new String[0];
+			teammates = null;
 			this.teamName = name;
 		}
 	}
@@ -141,7 +141,7 @@ public final class RobotStatics implements IRobotStatics {
 	}
 
 	public String[] getTeammates() {
-		return teammates.clone();
+		return teammates == null ? null : teammates.clone();
 	}
 
 	public String getTeamName() {

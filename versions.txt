@@ -3,6 +3,7 @@ Version 1.7.2 Alpha
 ---------------
 
 = Bugfixes =
+* Bug [2627698] - pe.SandboxDT_3.02 stoped working. We broken semantics of getTeammates() to return empty array when there is no team.
 * Bug [2711605] - Webpage button lay over robot description.
 * Bug [2723228] - Rounds number do not saved between run.
 * Bug [2727667] - Not enough java memory allocated in launch scripts. The launch scripts for RoboRumble and TeamRumble were changed so it is allowed to use up to 512 MB heap memory, and MeleeRumble is allowed to use up to 1024 MB.
