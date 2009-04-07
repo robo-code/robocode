@@ -26,6 +26,7 @@ import net.sf.robocode.ui.IWindowManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.EOFException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -87,8 +88,9 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			is = con.getInputStream();
 			jarIS = new JarInputStream(is);
 			readJarStream(items, root, jarIS);
-		} catch (IOException e) {
-			Logger.logError(e);
+
+		} catch (Exception e) {
+			Logger.logError(url + " is probably corrupted (" + e.getClass().getName() + " " + e.getMessage() + ")");
 		} finally {
 			FileUtil.cleanupStream(jarIS);
 			FileUtil.cleanupStream(is);

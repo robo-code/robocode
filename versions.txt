@@ -3,6 +3,7 @@ Version 1.7.2 Alpha
 ---------------
 
 = Bugfixes =
+* Bug [2740403] - EOFException during reposiotory rebuild. Exception is now reported simplified way.
 * Bug [2627698] - pe.SandboxDT_3.02 stoped working. We broken semantics of getTeammates() to return empty array when there is no team.
 * Bug [2711605] - Webpage button lay over robot description.
 * Bug [2723228] - Rounds number do not saved between run.
