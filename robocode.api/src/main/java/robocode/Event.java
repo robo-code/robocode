@@ -40,6 +40,7 @@ import java.util.Hashtable;
  */
 public abstract class Event implements Comparable<Event>, Serializable {
 	private static final long serialVersionUID = 1L;
+	private static final int DEFAULT_PRIORITY = 80;
 
 	// time is valid only after adding to event manager on proxy side, we do not update it on Battle side
 	private transient boolean addedToQueue;
@@ -122,8 +123,8 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 * An event priority is a value from 0 - 99. The higher value, the higher
 	 * priority. The default priority is 80.
 	 *
-	 * Could be caled by robot on events which are not managed by game.
-	 * If the event is added into EventQueue, the time will be overriden
+	 * Could be called by robot on events which are not managed by game.
+	 * If the event is added into EventQueue, the time will be overridden.
 	 * 
 	 * @param newPriority the new priority of this event
 	 * @see AdvancedRobot#setEventPriority(String, int)
@@ -181,7 +182,7 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 * @param graphics the graphics to dispatch to.
 	 */
 	// this method is invisible on RobotAPI
-	abstract void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics);
+	void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {}
 
 	/**
 	 * Returns the default priority of this event class.
@@ -189,7 +190,9 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 * @return the default priority of this event class.
 	 */
 	// this method is invisible on RobotAPI
-	abstract int getDefaultPriority();
+	int getDefaultPriority() {
+		return DEFAULT_PRIORITY;
+	}
 
 	/**
 	 * Checks if this event must be delivered event after timeout.
@@ -202,7 +205,9 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	}
 
 	// this method is invisible on RobotAPI
-	abstract byte getSerializationType();
+	byte getSerializationType() {
+		throw new Error("Serialization not supported on this event type");
+	}
 
 	/**
 	 * This method is replacing bullet on event with bullet instance which was passed to robot as result of fire command
