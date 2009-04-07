@@ -1,5 +1,5 @@
 Version 1.7.2 Alpha
-(03-Apr-2009)
+(07-Apr-2009)
 ---------------
 
 = Bugfixes =
@@ -7,6 +7,7 @@ Version 1.7.2 Alpha
 * Bug [2723228] - Rounds number do not saved between run.
 * Bug [2727667] - Not enough java memory allocated in launch scripts. The launch scripts for RoboRumble and TeamRumble were changed so it is allowed to use up to 512 MB heap memory, and MeleeRumble is allowed to use up to 1024 MB.
 * Bug [2727675] - Meleerumble using 2 bots instead of 10. Now the MELEEBOTS (number of robots that participate in a melee battle) works as expected.
+* Bug [2738985] - API: cannot subclass Event in 1.7.1.
 * JuniorRobot: The event variables scannedXXX and hitXXX on the JuniorRobot was not reset to -1 (or -99) when nothing was scanned or hit.
 
 = Changes =
