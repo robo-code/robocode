@@ -28,10 +28,14 @@ import java.nio.ByteBuffer;
  * A ScannedRobotEvent is sent to {@link Robot#onScannedRobot(ScannedRobotEvent)
  * onScannedRobot()} when you scan a robot.
  * You can use the information contained in this event to determine what to do.
+ * <p>
+ * <b>Note</b>: You should not inherit from this class in your own event class!
+ * The internal logic of this event class might change. Hence, your robot might
+ * not work in future Robocode versions, if you choose to inherit from this class.
  *
  * @author Mathew A. Nelson (original)
  */
-public final class ScannedRobotEvent extends Event {
+public class ScannedRobotEvent extends Event {
 	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 10;
 
@@ -41,6 +45,26 @@ public final class ScannedRobotEvent extends Event {
 	private final double bearing;
 	private final double distance;
 	private final double velocity;
+
+	/**
+	 * This constructor is only provided in order to preserve backwards compatibility with old robots that
+	 * inherits from this Event class. 
+	 * <p>
+	 * <b>Note</b>: You should not inherit from this class in your own event class!
+	 * The internal logic of this event class might change. Hence, your robot might
+	 * not work in future Robocode versions, if you choose to inherit from this class.
+	 *
+	 * @deprecated Use {@link #ScannedRobotEvent(String, double, double, double, double, double)} instead.
+	 */
+	public ScannedRobotEvent() {
+		super();
+		this.name = null;
+		this.energy = 0;
+		this.bearing = 0;
+		this.distance = 0;
+		this.heading = 0;
+		this.velocity = 0;
+	}
 
 	/**
 	 * Called by the game to create a new ScannedRobotEvent.
