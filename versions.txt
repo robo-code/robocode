@@ -1,16 +1,17 @@
 Version 1.7.1.1
-(09-Apr-2009)
+(9-Apr-2009)
 ---------------
 
 = Bugfixes =
-* Bug [2742891] - JarJar multi-registration. As well as RoboRumble not reusing same RobocodeEngine instance.
-* Bug [2740403] - EOFException during reposiotory rebuild. Exception is now reported in a simplified way.
 * Bug [2627698] - pe.SandboxDT_3.02 stoped working. We had broken semantics of getTeammates() to return empty array when there is no team.
 * Bug [2711605] - Webpage button lay over robot description.
 * Bug [2723228] - Rounds number was not saved between run.
-* Bug [2727667] - Not enough java memory allocated in launch scripts. The launch scripts for RoboRumble and TeamRumble were changed so it is allowed to use up to 512 MB heap memory, and MeleeRumble is allowed to use up to 1024 MB.
+* Bug [2727667] - Not enough java memory allocated in launch scripts. The launch scripts for RoboRumble and TeamRumble were changed so it is * Bug [2740403] - EOFException during reposiotory rebuild. Exception is now reported in a simplified way.
 * Bug [2727675] - Meleerumble using 2 bots instead of 10. Now the MELEEBOTS (number of robots that participate in a melee battle) works as expected.
+* Bug [2742891] - JarJar multi-registration. As well as RoboRumble not reusing same RobocodeEngine instance.
+allowed to use up to 512 MB heap memory, and MeleeRumble is allowed to use up to 1024 MB.
 * Bug [2738985] - API: cannot subclass Event in 1.7.1.
+* Bug [2738993] - Errors with some robot classes when rebuilding database.
 * Bug [2742554] - TeamRumble uploading result for Robot instead of team.
 * JuniorRobot: The event variables scannedXXX and hitXXX on the JuniorRobot was not reset to -1 (or -99) when nothing was scanned or hit.
 
