@@ -78,8 +78,8 @@ public class ResultsUpload {
 		battlesnumfile = parameters.getProperty("BATTLESNUMFILE", "");
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
 		client = clientVersion;
-		teams = parameters.getProperty("TEAMS", "");
-		melee = parameters.getProperty("MELEE", "");
+		teams = parameters.getProperty("TEAMS", "NOT");
+		melee = parameters.getProperty("MELEE", "NOT");
 
 		// Open competitions selector
 		size = new CompetitionsSelector(sizesfile, botsrepository);
@@ -183,7 +183,7 @@ public class ResultsUpload {
 				matchtype = header[5];
 			}
 
-			// if the match mode was general, then send the results to all competitions (asuming codesize is used).
+			// if the match mode was general, then send the results to all competitions (assuming codesize is used).
 			// if its not, then send results only to smaller size competitions
 			String data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee + "&"
 					+ "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&"

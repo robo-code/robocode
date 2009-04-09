@@ -203,9 +203,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
 		String teamName = team == null ? null : team.getName();
-		List<String> teamMmebers = team == null ? null : team.getMemberNames(); 
+		List<String> teamMembers = team == null ? null : team.getMemberNames(); 
 
-		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battleRules, teamName, teamMmebers, index,
+		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battleRules, teamName, teamMembers, index,
 				contestantIndex);
 		statistics = new RobotStatistics(this, battle.getRobotsCount());
 

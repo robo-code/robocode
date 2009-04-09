@@ -1,15 +1,16 @@
-Version 1.7.2 Alpha
-(07-Apr-2009)
+Version 1.7.1.1
+(09-Apr-2009)
 ---------------
 
 = Bugfixes =
-* Bug [2740403] - EOFException during reposiotory rebuild. Exception is now reported simplified way.
-* Bug [2627698] - pe.SandboxDT_3.02 stoped working. We broken semantics of getTeammates() to return empty array when there is no team.
+* Bug [2740403] - EOFException during reposiotory rebuild. Exception is now reported in a simplified way.
+* Bug [2627698] - pe.SandboxDT_3.02 stoped working. We had broken semantics of getTeammates() to return empty array when there is no team.
 * Bug [2711605] - Webpage button lay over robot description.
-* Bug [2723228] - Rounds number do not saved between run.
+* Bug [2723228] - Rounds number was not saved between run.
 * Bug [2727667] - Not enough java memory allocated in launch scripts. The launch scripts for RoboRumble and TeamRumble were changed so it is allowed to use up to 512 MB heap memory, and MeleeRumble is allowed to use up to 1024 MB.
 * Bug [2727675] - Meleerumble using 2 bots instead of 10. Now the MELEEBOTS (number of robots that participate in a melee battle) works as expected.
 * Bug [2738985] - API: cannot subclass Event in 1.7.1.
+* Bug [2742554] - TeamRumble uploading result for Robot instead of team.
 * JuniorRobot: The event variables scannedXXX and hitXXX on the JuniorRobot was not reset to -1 (or -99) when nothing was scanned or hit.
 
 = Changes =
@@ -504,11 +505,9 @@ The "Fair Play" release
 ---------------
 = Bugfixes =
 * Unfair play. Two robots with the same code (but different names) would get different scores instead of a 50-50 split
-* Robots listed before other robots in a battle would gain a minor benefit compared to the other robots, especially if they killed each other at the same time. Then the robot listed first would get a "half turn" advantage over the other robot
-* Now, the ordering does not matter anymore, as when ever the robots are checked one at a time in sequence, then they will be checked in random order
-* ConcurrentModificationException could still occur when called one of the getXXXEvent methods with an AdvancedRobot
-* Now all getXXXEvent methods like e.g. getAllEvents() are all synchronized directly with the internal event queue of the robot before reading out the events
-* Test Condition flag of a robot was not reset between rounds
+* Robots listed before other robots in a battle would gain a minor benefit compared to the other robots, especially if they killed each other at the same time. Then the robot listed first would get a "half turn" advantage over the other robot. Now, the ordering does not matter anymore, as when ever the robots are checked one at a time in sequence, then they will be checked in random order
+* ConcurrentModificationException could still occur when called one of the getXXXEvent methods with an AdvancedRobot. Now all getXXXEvent methods like e.g. getAllEvents() are all synchronized directly with the internal event queue of the robot before reading out the events
+* Test Condition flag of a robot was not reset between rounds.
 * If the robot thread was disabled while testing a condition for a custom event all following rounds will trigger a "robocode.exception.RobotException: You cannot take action inside Condition.test(). You should handleonCustomEvent instead."
 * Again, the title of Robocode was incorrectly showing round N+1 of N when a battle was ended
 * Memory leaks occurring during a round due to missing cleanup of bullets have been removed. Note that ALL bullets were actually cleaned up, when ending the battle (containing one or several rounds)

@@ -220,9 +220,23 @@ public class BattlesRunner {
 					"RESULT = " + results[0].getRobot().getNameAndVersion() + " wins, "
 					+ results[1].getRobot().getNameAndVersion() + " is second.");
 		} else {
+			RobotSpecification robotSpec = results[0].getRobot();
+
+			String nameAndVersion;
+
+			if (robotSpec.getTeamId() != null) {
+				nameAndVersion = robotSpec.getTeamId();
+				int splitIndex = nameAndVersion.indexOf('[');
+
+				if (splitIndex > 0) {
+					nameAndVersion = nameAndVersion.substring(0, splitIndex);
+				}
+			} else {
+				nameAndVersion = robotSpec.getNameAndVersion(); 
+			}
+
 			System.out.println(
-					"RESULT = " + results[0].getRobot().getNameAndVersion() + " wins " + results[0].getScore() + " to "
-					+ results[1].getScore());
+					"RESULT = " + nameAndVersion + " wins " + results[0].getScore() + " to " + results[1].getScore());
 		}
 	}
 

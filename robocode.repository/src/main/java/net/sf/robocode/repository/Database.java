@@ -65,9 +65,8 @@ public class Database {
 		if (item != null) {
 			item.getRoot().update(item, force);
 			return true;
-		} else {
-			return false; 
 		}
+		return false; 
 	}
 
 	public void addItem(IItem item) {
@@ -85,7 +84,7 @@ public class Database {
 
 					if (conflict != null) {
 						if (item.compareTo(conflict) > 0) {
-							// replace with highe version
+							// replace with higher version
 							items.put(friendly, item);
 						}
 					} else {

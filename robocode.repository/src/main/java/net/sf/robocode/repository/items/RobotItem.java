@@ -486,7 +486,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		}
 	}
 
-	public RobotSpecification createRobotSpecification(RobotSpecification battleRobotSpec, String teamName) {
+	public RobotSpecification createRobotSpecification(RobotSpecification battleRobotSpec, String teamId) {
 		RobotSpecification specification;
 
 		if (battleRobotSpec != null) {
@@ -494,8 +494,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		} else {
 			specification = createRobotSpecification();
 		}
-		if (teamName != null) {
-			HiddenAccess.setTeamName(specification, teamName);
+		if (teamId != null) {
+			HiddenAccess.setTeamId(specification, teamId);
 		}
 		return specification;
 	}

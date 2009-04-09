@@ -389,10 +389,10 @@ public class BotsDownload {
 		String bot = botname.substring(0, botname.indexOf(" "));
 
 		bot = bot.replace('.', '/');
-		if (!isteams.equals("YES")) {
-			bot += ".properties";
-		} else {
+		if (isteams.equals("YES")) {
 			bot += ".team";
+		} else {
+			bot += ".properties";
 		}
 
 		try {

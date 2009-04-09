@@ -174,11 +174,11 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	private boolean loadItem(List<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
-		String teamName = String.format("%4d", teamNum);
+		String teamId = String.format("%4d", teamNum);
 
 		if (item != null) {
 			if (item.isTeam()) {
-				teamName = item.getFullClassNameWithVersion() + "[" + teamName + "]";
+				teamId = item.getFullClassNameWithVersion() + "[" + teamId + "]";
 				final List<RobotItem> members = db.expandTeam((TeamItem) item);
 
 				for (IRepositoryItem member : members) {
@@ -194,7 +194,7 @@ public class RepositoryManager implements IRepositoryManager {
 					}
 
 					if (tested || robot.validate()) {
-						battlingRobotsList.add(robot.createRobotSpecification(null, teamName));
+						battlingRobotsList.add(robot.createRobotSpecification(null, teamId));
 					}
 				}
 			} else {

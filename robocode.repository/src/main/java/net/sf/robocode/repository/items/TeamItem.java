@@ -45,7 +45,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 	private final static String TEAM_JAVA_SOURCE_INCLUDED = "team.java.source.included";
 	private final static String ROBOCODE_VERSION = "robocode.version";
 
-	private String teamFullName;
+	private final String teamFullName;
 
 	public TeamItem(URL url, IRepositoryRoot root) {
 		super(url, root);

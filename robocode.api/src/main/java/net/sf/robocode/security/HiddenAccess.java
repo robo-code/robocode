@@ -224,7 +224,7 @@ public class HiddenAccess {
 		return specificationHelper.getTeamName(specification);
 	}
 
-	public static void setTeamName(RobotSpecification specification, String teamName) {
+	public static void setTeamId(RobotSpecification specification, String teamName) {
 		specificationHelper.setTeamName(specification, teamName);
 	}
 
