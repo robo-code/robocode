@@ -52,8 +52,8 @@ public class BattlesRunner {
 	private final String outfile;
 	private final String user;
 	private String game;
-	private RobotResults[] lastResults;
-	private IRobocodeEngine engine;
+	private static RobotResults[] lastResults;
+	private static IRobocodeEngine engine;
 	public static String version;
 
 	public BattlesRunner(String propertiesfile) {
@@ -77,8 +77,10 @@ public class BattlesRunner {
 	}
 
 	private void initialize() {
-		engine = new RobocodeEngine();
-		engine.addBattleListener(new BattleObserver());
+		if (engine==null){
+			engine = new RobocodeEngine();
+			engine.addBattleListener(new BattleObserver());
+		}
 	}
 
 	public void runBattlesImpl(boolean melee) {
@@ -113,9 +115,8 @@ public class BattlesRunner {
 
 			final RobotSpecification[] robotsList = engine.getLocalRepository(enemies);
 
-			final String team0 = robotsList[0].getTeamId();
-
 			if (robotsList.length > 1) {
+				final String team0 = robotsList[0].getTeamId();
 				final String teamLast = robotsList[robotsList.length - 1].getTeamId();
 
 				if (team0 == null || !team0.equals(teamLast)) {

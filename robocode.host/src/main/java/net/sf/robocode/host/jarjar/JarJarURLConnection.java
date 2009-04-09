@@ -54,9 +54,10 @@ public class JarJarURLConnection extends URLConnection {
 	private URLConnection connection;
 	public final static char SEPARATOR_CHAR = JarJar.SEPARATOR_CHAR; // this is '^' now
 	public final static String SEPARATOR = SEPARATOR_CHAR + "/";
+	private static boolean registered = false;
 
 	public JarJarURLConnection(URL url)
-		throws IOException {
+			throws IOException {
 		super(url);
 		final String file = url.getFile();
 		URL inner = new URL(file);
@@ -81,7 +82,10 @@ public class JarJarURLConnection extends URLConnection {
 	}
 
 	public static void register() {
-		URL.setURLStreamHandlerFactory(new JarJarURLStreamHandlerFactory());
+		if (!registered) {
+			URL.setURLStreamHandlerFactory(new JarJarURLStreamHandlerFactory());
+			registered = true;
+		}
 	}
 
 	public static class JarJarURLStreamHandlerFactory implements URLStreamHandlerFactory {
@@ -113,9 +117,9 @@ public class JarJarURLConnection extends URLConnection {
 			return -1;
 		}
 
-		@SuppressWarnings({ "deprecation"})
+		@SuppressWarnings({"deprecation"})
 		protected void parseURL(URL url, String spec,
-				int start, int limit) {
+								int start, int limit) {
 			String file = null;
 			String ref = null;
 			// first figure out if there is an anchor
@@ -155,7 +159,7 @@ public class JarJarURLConnection extends URLConnection {
 			setURL(url, "jarjar", "", -1, file, ref);
 		}
 
-		@SuppressWarnings({ "UnusedAssignment", "UnusedDeclaration"})
+		@SuppressWarnings({"UnusedAssignment", "UnusedDeclaration"})
 		private String parseAbsoluteSpec(String spec) {
 			@SuppressWarnings("unused")
 			URL url = null;
@@ -184,7 +188,7 @@ public class JarJarURLConnection extends URLConnection {
 				int bangSlash = indexOfBangSlash(ctxFile);
 
 				if (bangSlash == -1) {
-					throw new NullPointerException("malformed " + "context url:" + url + ": no "+ SEPARATOR);
+					throw new NullPointerException("malformed " + "context url:" + url + ": no " + SEPARATOR);
 				}
 				ctxFile = ctxFile.substring(0, bangSlash);
 			}

@@ -3,6 +3,7 @@ Version 1.7.1.1
 ---------------
 
 = Bugfixes =
+* Bug [2742891] - JarJar multi-registration. As well as RoboRumble not reusing same RobocodeEngine instance.
 * Bug [2740403] - EOFException during reposiotory rebuild. Exception is now reported in a simplified way.
 * Bug [2627698] - pe.SandboxDT_3.02 stoped working. We had broken semantics of getTeammates() to return empty array when there is no team.
 * Bug [2711605] - Webpage button lay over robot description.
