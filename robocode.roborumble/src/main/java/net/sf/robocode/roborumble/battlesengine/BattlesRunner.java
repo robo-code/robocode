@@ -77,7 +77,7 @@ public class BattlesRunner {
 	}
 
 	private void initialize() {
-		if (engine==null){
+		if (engine == null) {
 			engine = new RobocodeEngine();
 			engine.addBattleListener(new BattleObserver());
 		}
