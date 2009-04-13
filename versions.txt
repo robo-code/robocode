@@ -1,3 +1,10 @@
+Version 1.7.1.2 Alpha
+(14-Apr-2009)
+---------------
+
+= Bugfixes =
+* Bug [2740708] - Fair Play! With two identical robots in a battle against each other, the first robots was much more likely to win, which was not fair.
+
 Version 1.7.1.1
 (10-Apr-2009)
 ---------------

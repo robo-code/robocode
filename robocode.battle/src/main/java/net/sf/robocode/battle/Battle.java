@@ -608,10 +608,34 @@ public final class Battle extends BaseBattle {
 	 * This method was introduced as two equal robots like sample.RamFire got different scores even
 	 * though the code was exactly the same.
 	 *
-	 * @return a list of robots
+	 * @return a list of robot peers.
 	 */
 	private List<RobotPeer> getRobotsAtRandom() {
 		List<RobotPeer> shuffledList = new ArrayList<RobotPeer>(robots);
+
+		Collections.shuffle(shuffledList, RandomFactory.getRandom());
+		return shuffledList;
+	}
+
+	/**
+	 * Returns a list of all bullets in random order. This method is used to gain fair play in Robocode.
+	 *
+	 * @return a list of bullet peers.
+	 */
+	private List<BulletPeer> getBulletsAtRandom() {
+		List<BulletPeer> shuffledList = new ArrayList<BulletPeer>(bullets);
+
+		Collections.shuffle(shuffledList, RandomFactory.getRandom());
+		return shuffledList;
+	}
+
+	/**
+	 * Returns a list of all death robots in random order. This method is used to gain fair play in Robocode.
+	 *
+	 * @return a list of robot peers.
+	 */
+	private List<RobotPeer> getDeathRobotsAtRandom() {
+		List<RobotPeer> shuffledList = new ArrayList<RobotPeer>(deathRobots);
 
 		Collections.shuffle(shuffledList, RandomFactory.getRandom());
 		return shuffledList;
@@ -625,10 +649,10 @@ public final class Battle extends BaseBattle {
 	}
 
 	private void updateBullets() {
-		for (BulletPeer b : bullets) {
-			b.update(robots, bullets);
-			if (b.getState() == BulletState.INACTIVE) {
-				bullets.remove(b);
+		for (BulletPeer bullet : getBulletsAtRandom()) {
+			bullet.update(getRobotsAtRandom(), getBulletsAtRandom());
+			if (bullet.getState() == BulletState.INACTIVE) {
+				bullets.remove(bullet);
 			}
 		}
 	}
@@ -641,11 +665,11 @@ public final class Battle extends BaseBattle {
 		// Move all bots
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 
-			robotPeer.performMove(robots, zapEnergy);
+			robotPeer.performMove(getRobotsAtRandom(), zapEnergy);
 
 			// publish deaths to live robots
 			if (!robotPeer.isDead()) {
-				for (RobotPeer de : deathRobots) {
+				for (RobotPeer de : getDeathRobotsAtRandom()) {
 					robotPeer.addEvent(new RobotDeathEvent(de.getName()));
 					if (robotPeer.getTeamPeer() == null || robotPeer.getTeamPeer() != de.getTeamPeer()) {
 						robotPeer.getRobotStatistics().scoreSurvival();
@@ -656,14 +680,14 @@ public final class Battle extends BaseBattle {
 
 		// Scan after moved all
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
-			robotPeer.performScan(robots);
+			robotPeer.performScan(getRobotsAtRandom());
 		}
 	}
 
 	private void handleDeathRobots() {
 
 		// Compute scores for dead robots
-		for (RobotPeer robotPeer : deathRobots) {
+		for (RobotPeer robotPeer : getDeathRobotsAtRandom()) {
 			if (robotPeer.getTeamPeer() == null) {
 				robotPeer.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(robotPeer));
 			} else {
