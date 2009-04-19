@@ -148,6 +148,7 @@ public class Interactive extends AdvancedRobot {
 		case VK_DOWN:
 			// Arrow up and down keys: move direction = stand still
 			moveDirection = 0;
+			moveAmount = 0;
 			break;
 
 		case VK_RIGHT:
