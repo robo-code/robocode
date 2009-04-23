@@ -125,7 +125,7 @@ TEMP=./roborumble/temp/
 #           URL used for removing old participants, which is used for updating
 #           the participants file specified with the PARTICIPANTSFILE property.
 
-PARTICIPANTSURL=http://robowiki.net/cgi-bin/robowiki?RoboRumble/MeleeParticipants
+PARTICIPANTSURL=http://robowiki.net/w/index.php?title=RoboRumble/Participants/Melee
 PARTICIPANTSFILE=./roborumble/files/participmelee.txt
 
 STARTAG=pre

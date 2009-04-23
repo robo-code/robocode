@@ -1,9 +1,15 @@
 Version 1.7.1.2 Alpha
-(14-Apr-2009)
+(23-Apr-2009)
 ---------------
 
 = Bugfixes =
 * Bug [2740708] - Fair Play! With two identical robots in a battle against each other, the first robots was much more likely to win, which was not fair.
+
+= Changes for RoboRumble =
+* The participants URL for RoboRumble, MeleeRumble, and TeamRumble have been updated to use the participant lists from the new RoboWiki:
+** RoboRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants
+** MeleeRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants/Melee
+** TeamRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants/Teams
 
 Version 1.7.1.1
 (10-Apr-2009)
