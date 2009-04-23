@@ -230,11 +230,11 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showFaq() {
-		showInBrowser("http://robocode.sourceforge.net/help/robocode.faq.txt");
+		showInBrowser("http://robowiki.net/w/index.php?title=Robocode/FAQ");
 	}
 
 	public void showOnlineHelp() {
-		showInBrowser("http://robocode.sourceforge.net/help");
+		showInBrowser("http://robowiki.net");
 	}
 
 	public void showJavaDocumentation() {

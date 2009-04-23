@@ -1,5 +1,5 @@
 Version 1.7.1.2 Alpha
-(23-Apr-2009)
+(24-Apr-2009)
 ---------------
 
 = Bugfixes =
@@ -10,6 +10,9 @@ Version 1.7.1.2 Alpha
 ** RoboRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants
 ** MeleeRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants/Melee
 ** TeamRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants/Teams
+
+= Other changes =
+* Updated the Help menu to point at the new RoboWiki regarding the Online Help and FAQ.
 
 Version 1.7.1.1
 (10-Apr-2009)
