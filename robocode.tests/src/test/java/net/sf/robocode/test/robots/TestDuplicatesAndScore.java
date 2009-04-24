@@ -92,14 +92,14 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 		}
 
 		if (lastTurn == 1365) {
-			net.sf.robocode.test.helpers.Assert.assertNear(456.1227607, robots[0].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(401.8030122, robots[1].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(532.9771387, robots[0].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(388.3556443, robots[1].getX());
 			net.sf.robocode.test.helpers.Assert.assertNear(317.3362130, robots[2].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(685.9435204, robots[3].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(97.20308612, robots[4].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(593.8469274, robots[3].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(59.56220405, robots[4].getX());
 			net.sf.robocode.test.helpers.Assert.assertNear(734.4305396, robots[5].getX());
 			net.sf.robocode.test.helpers.Assert.assertNear(327.2578349, robots[6].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(523.5054202, robots[7].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(651.3497044, robots[7].getX());
 		}
 	}
 
@@ -128,34 +128,34 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 		Assert.assertThat(robots[6].getName(), is("sample.Fire (3)"));
 		Assert.assertThat(robots[7].getName(), is("sample.Crazy"));
 		Assert.assertThat(results[0].getTeamLeaderName(), is("tested.robots.TestTeam (2)"));
-		Assert.assertThat(results[1].getTeamLeaderName(), is("sample.Fire (1)"));
-		Assert.assertThat(results[2].getTeamLeaderName(), is("tested.robots.TestTeam (1)"));
-		Assert.assertThat(results[3].getTeamLeaderName(), is("sample.Crazy"));
+		Assert.assertThat(results[1].getTeamLeaderName(), is("tested.robots.TestTeam (1)"));
+		Assert.assertThat(results[2].getTeamLeaderName(), is("sample.Crazy"));
+		Assert.assertThat(results[3].getTeamLeaderName(), is("sample.Fire (1)"));
 
-		Assert.assertThat(results[0].getLastSurvivorBonus(), is(0));
-		Assert.assertThat(results[1].getLastSurvivorBonus(), is(70));
+		Assert.assertThat(results[0].getLastSurvivorBonus(), is(100));
+		Assert.assertThat(results[1].getLastSurvivorBonus(), is(0));
 		Assert.assertThat(results[2].getLastSurvivorBonus(), is(0));
 		Assert.assertThat(results[3].getLastSurvivorBonus(), is(0));
 
 		Assert.assertThat(results[0].getRamDamage(), is(0));
-		Assert.assertThat(results[1].getRamDamage(), is(1));
-		Assert.assertThat(results[2].getRamDamage(), is(6));
-		Assert.assertThat(results[3].getRamDamage(), is(11));
+		Assert.assertThat(results[1].getRamDamage(), is(6));
+		Assert.assertThat(results[2].getRamDamage(), is(13));
+		Assert.assertThat(results[3].getRamDamage(), is(1));
 
-		Assert.assertThat(results[0].getBulletDamageBonus(), is(83));
-		Assert.assertThat(results[1].getBulletDamageBonus(), is(19));
+		Assert.assertThat(results[0].getBulletDamageBonus(), is(45));
+		Assert.assertThat(results[1].getBulletDamageBonus(), is(0));
 		Assert.assertThat(results[2].getBulletDamageBonus(), is(0));
-		Assert.assertThat(results[3].getBulletDamageBonus(), is(0));
+		Assert.assertThat(results[3].getBulletDamageBonus(), is(1));
 
-		Assert.assertThat(results[0].getBulletDamage(), is(496));
-		Assert.assertThat(results[1].getBulletDamage(), is(216));
-		Assert.assertThat(results[2].getBulletDamage(), is(420));
-		Assert.assertThat(results[3].getBulletDamage(), is(136));
+		Assert.assertThat(results[0].getBulletDamage(), is(505));
+		Assert.assertThat(results[1].getBulletDamage(), is(390));
+		Assert.assertThat(results[2].getBulletDamage(), is(140));
+		Assert.assertThat(results[3].getBulletDamage(), is(167));
 
-		Assert.assertThat(results[1].getScore(), is(657));
-		Assert.assertThat(results[0].getScore(), is(979));
-		Assert.assertThat(results[2].getScore(), is(576));
-		Assert.assertThat(results[3].getScore(), is(347));
-		Assert.assertThat(lastTurn, is(1370));
+		Assert.assertThat(results[0].getScore(), is(1150));
+		Assert.assertThat(results[1].getScore(), is(546));
+		Assert.assertThat(results[2].getScore(), is(407));
+		Assert.assertThat(results[3].getScore(), is(370));
+		Assert.assertThat(lastTurn, is(1371));
 	}
 }
