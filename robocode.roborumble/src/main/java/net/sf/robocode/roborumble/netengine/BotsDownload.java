@@ -178,15 +178,28 @@ public class BotsDownload {
 		String end = "</" + tag + ">";
 		Vector<String> bots = new Vector<String>();
 		BufferedReader in = null;
+		HttpURLConnection urlc = null;
 
 		try {
 			URL url = new URL(participantsurl);
 
-			HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+			urlc = (HttpURLConnection) url.openConnection();
 
 			urlc.setRequestMethod("GET");
 			urlc.setDoInput(true);
 			urlc.connect();
+
+			// Check that if retrieved a HTTP_OK response.
+			// Bugfix [2779557] - Client tries to remove all participants.
+			if (urlc.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				System.out.print("Unable to retrieve participants list. Response is " + urlc.getResponseCode());
+				if (urlc.getResponseMessage() != null) {
+					System.out.print(": " + urlc.getResponseMessage());
+				}
+				System.out.println();
+				
+				return false; // Error
+			}
 
 			boolean arebots = false;
 
@@ -199,21 +212,21 @@ public class BotsDownload {
 					arebots = false;
 				} else if (arebots) {
 					int commaIndex = str.indexOf(",");
-					
-					String name;
 
-					if (commaIndex >= 0) {
-						name = str.substring(0, commaIndex);
-					} else {
-						name = str;
-					}
+					String name = (commaIndex >= 0) ? str.substring(0, commaIndex) : str;
 
 					if (!isExcluded(name)) {
 						bots.add(str);
 					}
 				}
 			}
-			urlc.disconnect();
+
+			// Prevent our local participants file to be overwritten, if the downloaded list is empty.
+			// Bugfix [2779557] - Client tries to remove all participants.
+			if (bots.size() == 0) {
+				System.out.println("The participants list is empty");
+				return false; // Error
+			}
 
 			final File dir = new File(participantsfile).getParentFile();
 
@@ -229,17 +242,20 @@ public class BotsDownload {
 			outtxt.close();
 
 		} catch (IOException e) {
-			System.out.println("Unable to retrieve participants list");
+			System.out.println("Unable to retrieve participants list:");
 			System.out.println(e);
-			return false;
+			return false; // Error
 		} finally {
 			if (in != null) {
 				try {
 					in.close();
 				} catch (IOException ignored) {}
 			}
+			if (urlc != null) {
+				urlc.disconnect();
+			}
 		}
-		return true;
+		return true; // Success
 	}
 
 	public void downloadMissingBots() {
