@@ -205,7 +205,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 		getCall();
 		commands.setIORobot();
 		if (filename.contains("..")) {
-			throw new AccessControlException("no relative path alowed");
+			throw new AccessControlException("no relative path allowed");
 		}
 
 		return AccessController.doPrivileged(new PrivilegedAction<File>() {

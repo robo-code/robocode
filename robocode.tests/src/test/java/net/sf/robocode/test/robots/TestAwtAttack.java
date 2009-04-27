@@ -40,7 +40,7 @@ public class TestAwtAttack extends RobotTestBed {
 	 if (out.contains("Hacked!!!")) {
 	 messagedBreakthru = true;
 	 }
-	 if (out.contains("Robots are not alowed to reference javax.swing package")) {
+	 if (out.contains("Robots are not allowed to reference javax.swing package")) {
 	 messagedAttack = true;
 	 }
 	 } */

@@ -122,19 +122,19 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 	private void testPackages(String name) throws ClassNotFoundException {
 		if (name.startsWith("net.sf.robocode")) {
-			final String message = "Robots are not alowed to reference robocode engine in net.sf.robocode package";
+			final String message = "Robots are not allowed to reference robocode engine in net.sf.robocode package";
 
 			notifyRobot(message);
 			throw new ClassNotFoundException(message);
 		}
 		if (name.startsWith("robocode.control")) {
-			final String message = "Robots are not alowed to reference robocode engine in robocode.control package";
+			final String message = "Robots are not allowed to reference robocode engine in robocode.control package";
 
 			notifyRobot(message);
 			throw new ClassNotFoundException(message);
 		}
 		if (name.startsWith("javax.swing")) {
-			final String message = "Robots are not alowed to reference javax.swing package";
+			final String message = "Robots are not allowed to reference javax.swing package";
 
 			notifyRobot(message);
 			throw new ClassNotFoundException(message);

@@ -40,7 +40,7 @@ public class RobotClassLoaderTest {
 	}
 
 	@Test
-	public void engineAlowed() throws ClassNotFoundException {
+	public void engineAllowed() throws ClassNotFoundException {
 		final ClassLoader engineLoader = new EngineClassLoader(ClassLoader.getSystemClassLoader());
 
 		engineLoader.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
@@ -50,7 +50,7 @@ public class RobotClassLoaderTest {
 	}
 
 	@Test
-	public void robotAlowed() throws ClassNotFoundException {
+	public void robotAllowed() throws ClassNotFoundException {
 		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
 		final Class<?> c = cl.loadClass("robocode.Robot", true);
 
@@ -58,7 +58,7 @@ public class RobotClassLoaderTest {
 	}
 
 	@Test
-	public void robotAlowedMain() throws ClassNotFoundException {
+	public void robotAllowedMain() throws ClassNotFoundException {
 		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
 		final Class<?> c = cl.loadRobotMainClass(true);
 
