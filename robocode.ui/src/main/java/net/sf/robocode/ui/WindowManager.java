@@ -234,7 +234,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showOnlineHelp() {
-		showInBrowser("http://robowiki.net");
+		showInBrowser("http://robowiki.net/w/index.php?title=Robocode/Getting_Started");
 	}
 
 	public void showJavaDocumentation() {

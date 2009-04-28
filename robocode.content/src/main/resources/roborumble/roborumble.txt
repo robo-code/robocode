@@ -122,7 +122,7 @@ TEMP=./roborumble/temp/
 #           URL used for removing old participants, which is used for updating
 #           the participants file specified with the PARTICIPANTSFILE property.
 
-PARTICIPANTSURL=http://robowiki.net/w/index.php?title=RoboRumble/Participants
+PARTICIPANTSURL=http://robowiki.net/w/index.php?title=RoboRumble/Participants&action=raw
 PARTICIPANTSFILE=./roborumble/files/particip1v1.txt
 
 STARTAG=pre
