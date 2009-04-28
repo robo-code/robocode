@@ -29,11 +29,11 @@ public class BattleSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private int battlefieldWidth = 800;
-	private int battlefieldHeight = 600;
-	private int numRounds = 10;
-	private double gunCoolingRate = 0.1;
-	private long inactivityTime = 450;
+	private final int battlefieldWidth;
+	private final int battlefieldHeight;
+	private final int numRounds;
+	private final double gunCoolingRate;
+	private final long inactivityTime;
 	private final RobotSpecification[] robots;
 
 	/**

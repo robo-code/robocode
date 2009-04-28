@@ -233,6 +233,10 @@ public class BattleProperties implements Serializable {
 		return initialPositions;
 	}
 
+	public void setInitialPositions(String initialPositions) {
+		this.initialPositions = initialPositions; 
+	}
+
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}

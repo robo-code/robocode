@@ -131,7 +131,7 @@ public class BattleManager implements IBattleManager {
 	}
 
 	// Called from the RobocodeEngine
-	public void startNewBattle(BattleSpecification spec, boolean waitTillOver, boolean enableCLIRecording) {
+	public void startNewBattle(BattleSpecification spec, String initialPositions, boolean waitTillOver, boolean enableCLIRecording) {
 		battleProperties = new BattleProperties();
 		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
 		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -139,6 +139,7 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setInactivityTime(spec.getInactivityTime());
 		battleProperties.setNumRounds(spec.getNumRounds());
 		battleProperties.setSelectedRobots(spec.getRobots());
+		battleProperties.setInitialPositions(initialPositions);
 
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
 

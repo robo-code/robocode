@@ -108,8 +108,12 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		return 1;
 	}
 
-	public int getExpectedRobotCount(String list) {
-		return list.split("[\\s,;]+").length;
+	public String getInitialPositions() {
+		return null;
+	}
+
+	public int getExpectedRobotCount(String robotList) {
+		return robotList.split("[\\s,;]+").length;
 	}
 
 	public boolean isDeterministic() {
@@ -141,7 +145,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	@Test
 	public void run() {
 		runSetup();
-		runBattle(getRobotNames(), getNumRounds());
+		runBattle(getRobotNames(), getNumRounds(), getInitialPositions());
 		runTeardown();
 		Assert.assertThat(errors, is(getExpectedErrors()));
 	}
@@ -154,13 +158,14 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	protected void runTeardown() {}
 
-	protected void runBattle(String list, int numRounds) {
-		final RobotSpecification[] robotSpecifications = engine.getLocalRepository(list);
+	protected void runBattle(String robotList, int numRounds, String initialPositions) {
+		final RobotSpecification[] robotSpecifications = engine.getLocalRepository(robotList);
 
-		if (getExpectedRobotCount(list) > 0) {
+		if (getExpectedRobotCount(robotList) > 0) {
 			Assert.assertNotNull("Robot were not loaded", robotSpecifications);
-			Assert.assertEquals("Robot were not loaded", getExpectedRobotCount(list), robotSpecifications.length);
-			engine.runBattle(new BattleSpecification(numRounds, battleFieldSpec, robotSpecifications), true);
+			Assert.assertEquals("Robot were not loaded", getExpectedRobotCount(robotList), robotSpecifications.length);
+			engine.runBattle(new BattleSpecification(numRounds, battleFieldSpec, robotSpecifications), initialPositions,
+					true);
 		}
 	}
 }
