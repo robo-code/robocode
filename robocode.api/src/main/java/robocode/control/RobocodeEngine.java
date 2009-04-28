@@ -316,7 +316,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 *                     participating robots.
 	 * @param initialPositions a comma or space separated list like: x1,y1,heading1,
 	 *        x2,y2,heading2, which are the coordinates and heading of robot #1 and #2.
-	 *        So e.g. 0,0,180, 50,80,270 means that robot #1 has position (0,0) and
+	 *        So e.g. (0,0,180), (50,80,270) means that robot #1 has position (0,0) and
 	 *        heading 180, and robot #2 has position (50,80) and heading 270.
 	 * @param waitTillOver will block caller till end of battle if set
 	 * @see #runBattle(BattleSpecification)

@@ -1,10 +1,10 @@
 Version 1.7.1.2 Alpha
-(24-Apr-2009)
+(28-Apr-2009)
 ---------------
 
 = Bugfixes =
 * Bug [2740708] - Fair Play! With two identical robots in a battle against each other, the first robots was much more likely to win, which was not fair.
-* Bug [2779557] - Client tries to remove all participants. When RoboRumble, TeamRumble, and/or MeleeRumble downloaded the participants list and did not receive a HTTP_OK or an empty list, the participants list was emptied. This caused problems with the RoboRumble server. Now the rumble will just exit with an error message.
+* Bug [2779557] - Client tries to remove all participants. When RoboRumble, TeamRumble, and/or MeleeRumble downloaded the participants list and did not receive a HTTP_OK or an empty list, the participants list was emptied. This caused problems with the RoboRumble server.
 
 = Changes for RoboRumble =
 * The participants URL for RoboRumble, MeleeRumble, and TeamRumble have been updated to use the participant lists from the new RoboWiki:
@@ -14,6 +14,7 @@ Version 1.7.1.2 Alpha
 
 = Other changes =
 * Updated the Help menu to point at the new RoboWiki regarding the Online Help and FAQ.
+* RobocodeEngine control class: Added additional runBattle() method where it is possible to specify the initial positions of the robots when starting a battle.
 
 Version 1.7.1.1
 (10-Apr-2009)
