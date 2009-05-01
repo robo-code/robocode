@@ -51,7 +51,7 @@ import java.io.File;
 
 
 /**
- * The RobocodeEngine is the old interface provided for external applications
+ * The RobocodeEngine is the interface provided for external applications
  * in order to let these applications run battles within the Robocode application,
  * and to get the results from these battles.
  * </p>
