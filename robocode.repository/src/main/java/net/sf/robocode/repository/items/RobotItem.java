@@ -65,6 +65,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private boolean isPropertiesURL;
 	private boolean isPropertiesLoaded;
 
+	private boolean alwaysUseCacheForData = System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals("true");
+
 	protected String extension;
 	private URL propertiesUrl;
 	private URL classPathUrl;
@@ -482,7 +484,14 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator
 					+ getFullPackage().replace('.', File.separatorChar);
 		} else {
-			return FileUtil.getCacheDir() + File.separator + getFullPackage().replace('.', File.separatorChar);
+			File vroot;
+			if (alwaysUseCacheForData) {
+				vroot = root.getRootPath();
+			} else {
+				vroot = FileUtil.getCacheDir();
+			}
+			// to cacheDir
+			return vroot + File.separator + getFullPackage().replace('.', File.separatorChar);
 		}
 	}
 
