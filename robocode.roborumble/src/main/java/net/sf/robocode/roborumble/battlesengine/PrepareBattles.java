@@ -17,6 +17,8 @@
  *     - Catch of entire Exception has been reduced to catch of IOException when
  *       only this exception is ever thrown
  *     - Added missing close() to buffered readers
+ *     Jerome Lavigne
+ *     - Added "smart battles" (priority robot pairs) for melee 
  *******************************************************************************/
 package net.sf.robocode.roborumble.battlesengine;
 
@@ -36,6 +38,7 @@ import java.util.Vector;
  *
  * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Jerome Lavigne (contributor)
  */
 public class PrepareBattles {
 
@@ -335,6 +338,7 @@ public class PrepareBattles {
 		Vector<String> prioritymini = new Vector<String>();
 		Vector<String> prioritymicro = new Vector<String>();
 		Vector<String> prioritynano = new Vector<String>();
+		Vector<String[]> prioritypairs = new Vector<String[]>();
 
 		// Read participants
 
@@ -390,6 +394,47 @@ public class PrepareBattles {
 			}
 		}
 
+		// Read priority battles
+
+		br = null;
+
+		try {
+			FileReader fr = new FileReader(priority);
+
+			br = new BufferedReader(fr);
+			String record;
+
+			while ((record = br.readLine()) != null) {
+				String[] items = record.split(",");
+
+				if (items.length == 3) {
+					// Check that competitors exist
+					String jar1 = items[0].replace(' ', '_') + ".jar";
+					boolean exists1 = (new File(botsrepository + jar1)).exists();
+					String jar2 = items[1].replace(' ', '_') + ".jar";
+					boolean exists2 = (new File(botsrepository + jar2)).exists();
+
+					// Add battles to prioritary battles vector
+					if (exists1 && exists2) {
+						prioritypairs.add(items);
+					}
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("Priority battles file not found ...  ");
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {}
+			}
+		}
+
+		// Delete priority battles (avoid duplication)
+		File r = new File(priority);
+
+		r.delete();
+
 		// Open battles file
 		PrintStream outtxt;
 
@@ -409,7 +454,11 @@ public class PrepareBattles {
 		while (count < numbattles && namesall.size() > meleebots) {
 			String[] bots = null;
 
-			if (priorityall.size() > 0 && namesall.size() >= meleebots) {
+			if (count < prioritypairs.size()) {
+				String[] prioritybots = prioritypairs.get(count);
+
+				bots = getMeleeBots(prioritybots[0], prioritybots[1], namesall, random);
+			} else if (priorityall.size() > 0 && namesall.size() >= meleebots) {
 				bots = getmeleebots(priorityall, namesall, random);
 			} else if (prioritymini.size() > 0 && namesmini.size() >= meleebots) {
 				bots = getmeleebots(prioritymini, namesmini, random);
@@ -441,6 +490,29 @@ public class PrepareBattles {
 
 		bots[0] = list1.get(rand.nextInt(list1.size()));
 		int count = 1;
+
+		while (count < meleebots) {
+			bots[count] = list2.get(rand.nextInt(list2.size()));
+			boolean exists = false;
+
+			for (int i = 0; i < count; i++) {
+				if (bots[i].equals(bots[count])) {
+					exists = true;
+				}
+			}
+			if (!exists) {
+				count++;
+			}
+		}
+		return bots;
+	}
+
+	private String[] getMeleeBots(String bot1, String bot2, Vector<String> list2, Random rand) {
+		String[] bots = new String[meleebots];
+
+		bots[0] = bot1;
+		bots[1] = bot2;
+		int count = 2;
 
 		while (count < meleebots) {
 			bots[count] = list2.get(rand.nextInt(list2.size()));

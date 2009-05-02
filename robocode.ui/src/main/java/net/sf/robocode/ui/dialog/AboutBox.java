@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import java.io.IOException;
 
 
 /**
- * The About box
+ * The About box.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -53,28 +53,33 @@ public final class AboutBox extends JDialog {
 
 	// HTML template containing text for the AboutBox
 	private final static String HTML_TEMPLATE = "<head><style type=\"text/css\">p, td {font-family: sans-serif; font-size: 10px}</style></head>"
-			+ "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT + "\"><table><tr><td valign=\"top\"><img src=\""
-			+ TAG_ROBOCODE_ICON_SRC + "\"></td><td><table width=\"100%\"><tr><td width=\"70%\"><b>Robocode</b><br><br>"
+			+ "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT
+			+ "\"><table width=\"600 px\"><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
+			+ "\"></td><td><table width=\"100%\"><tr><td width=\"70%\"><b>Robocode</b><br><br>"
 			+ "&copy;&nbsp;Copyright 2001, 2009<br>Mathew A. Nelson and Robocode contributors</td><td><b>Version: "
 			+ TAG_ROBOCODE_VERSION
 			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">robocode.sourceforge.net</a><br>&nbsp;</td></tr></table><center><br>"
-			+ "<b>Original Author</b><br>Designed and programmed by Mathew A. Nelson<br>Graphics by Garett S. Hourihan<br><br>"
-			+ "<b>Featuring RoboRumble@Home</b><br>Originally designed and programmed by Albert Pérez<br><br>"
-			+ "<b>Main Contributors:</b><br>Flemming N. Larsen (Robocode administrator, developer, integrator, lots of features),<br>"
-			+ "Pavel Savara (Robocode administrator, developer, integrator, robot interfaces, battle events, refactorings),<br><br>"
-			+ "<b>Other Contributors:</b><br>Cubic Creative (the design and ideas for the JuniorRobot class),<br>"
-			+ "Christian D. Schnell (for the Codesize utility),<br>"
-			+ "Luis Crespo (sound engine, single-step debugging, ranking panel),<br>"
-			+ "Matthew Reeder (editor enhancements, keyboard shortcuts, HyperThreading bugfixes),<br>"
-			+ "Titus Chen (bugfixes for robot teleportation, bad wall collision detection, team ranking,<br>"
-			+ "replay scores and robot color flickering),<br>"
-			+ "Robert D. Maupin (optimizations with collections and improved CPU constant benchmark),<br>"
-			+ "Ascander Jr (graphics for ground tiles),<br>" + "Stefan Westen (onPaint method from RobocodeSG),<br>"
-			+ "Nathaniel Troutman (fixing memory leaks due to circular references)<br>"
-			+ "Aaron Rotenberg (for the Robot Cache Cleaner utility),<br>"
-			+ "Julian Kent (nano precision timing of allowed robot time),<br>"
-			+ "Joachim Hofer (fixing problem with wrong results in RoboRumble),<br>"
-			+ "Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh (score % in results/rankings)<br><br>"
+			+ "<b>Original Author</b><br>Designed and programmed by <b><font color=\"green\">Mathew A. Nelson</font></b><br>"
+			+ "Graphics by <b><font color=\"green\">Garett S. Hourihan</font></b><br><br>"
+			+ "<b>Featuring RoboRumble@Home</b><br>Originally designed and programmed by <b><font color=\"green\">Albert Pérez</font></b><br><br>"
+			+ "<b>Main Contributors:</b><br><b><font color=\"green\">Flemming N. Larsen</font></b> (Robocode administrator, developer, integrator, lots of features),<br>"
+			+ "<b><font color=\"green\">Pavel Savara</font></b> (Robocode administrator, developer, integrator, robot interfaces, battle events, refactorings),<br><br>"
+			+ "<b>Other Contributors:</b><br>"
+			+ "<b><font color=\"green\">Cubic Creative</font></b> (the design and ideas for the JuniorRobot class), "
+			+ "<b><font color=\"green\">Christian D. Schnell</font></b> (for the Codesize utility), "
+			+ "<b><font color=\"green\">Luis Crespo</font></b> (sound engine, single-step debugging, ranking panel), "
+			+ "<b><font color=\"green\">Matthew Reeder</font></b> (editor enhancements, keyboard shortcuts, HyperThreading bugfixes), "
+			+ "<b><font color=\"green\">Titus Chen</font></b> (bugfixes for robot teleportation, bad wall collision detection, team ranking, "
+			+ "replay scores and robot color flickering), "
+			+ "<b><font color=\"green\">Robert D. Maupin</font></b> (optimizations with collections and improved CPU constant benchmark), "
+			+ "<b><font color=\"green\">Ascander Jr</font></b> (graphics for ground tiles), "
+			+ "<b><font color=\"green\">Stefan Westen</font></b> (onPaint method from RobocodeSG), "
+			+ "<b><font color=\"green\">Nathaniel Troutman</font></b> (fixing memory leaks due to circular references), "
+			+ "<b><font color=\"green\">Aaron Rotenberg</font></b> (for the Robot Cache Cleaner utility), "
+			+ "<b><font color=\"green\">Julian Kent</font></b> (nano precision timing of allowed robot time), "
+			+ "<b><font color=\"green\">Joachim Hofer</font></b> (fixing problem with wrong results in RoboRumble), "
+			+ "<b><font color=\"green\">Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh</font></b> (score % in results/rankings), "
+			+ "<b><font color=\"green\">Jerome Lavigne</font></b> (addition of \"Smart Battles\" to MeleeRumble)<br><br>"
 			+ "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
 			+ "</center></td></tr></table></body>";
 
