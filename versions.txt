@@ -1,5 +1,5 @@
 Version 1.7.1.2 Beta
-(03-May-2009)
+(04-May-2009)
 ---------------
 
 = Bugfixes =
@@ -7,6 +7,7 @@ Version 1.7.1.2 Beta
 * Bug [2779557] - Client tries to remove all participants. When RoboRumble, TeamRumble, and/or MeleeRumble downloaded the participants list and did not receive a HTTP_OK or an empty list, the participants list was emptied. This caused problems with the RoboRumble server.
 * Bug [2785448] - Wrong file path used for development bots. Added option -DALWAYSUSECACHEFORDATA for anyone who liked it better.
 * Bug [2785456] - Melee rumble doesn't use "smart battles" (aka. priority battles). Thanks goes to Jerome Lavigne aka. Darkcanuck for this fix.
+* Fixed several ArrayOutOfBoundsExceptions occuring when starting a battle with fewer robots than a battle just played with more robots.
 
 = Changes for RoboRumble =
 * The participants URL for RoboRumble, MeleeRumble, and TeamRumble have been updated to use the participant lists from the new RoboWiki:
