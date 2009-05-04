@@ -87,7 +87,6 @@ public final class AwtBattleAdaptor {
 				lastSnapshot = null;
 				battleEventDispatcher.onTurnEnded(new TurnEndedEvent(null));
 			} else {
-
 				if (lastSnapshot != current || !skipSameFrames || forceRepaint) {
 					lastSnapshot = current;
 
@@ -182,13 +181,13 @@ public final class AwtBattleAdaptor {
 					});
 				}
 			}
-			if (isPaused.get()) {
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						repaintTask(false, true);
-					}
-				});
-			}
+			// if (isPaused.get()) {
+			// EventQueue.invokeLater(new Runnable() {
+			// public void run() {
+			// repaintTask(false, true);
+			// }
+			// });
+			// }
 		}
 
 		@Override
@@ -210,9 +209,9 @@ public final class AwtBattleAdaptor {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					synchronized (snapshot) {
-						if (outCache != null) {
-							repaintTask(true, true);
-						}
+						// if (outCache != null) {
+						// repaintTask(true, true);
+						// }
 						outCache = new StringBuilder[event.getRobotsCount()];
 						for (int i = 0; i < event.getRobotsCount(); i++) {
 							outCache[i] = new StringBuilder(1024);
@@ -232,9 +231,9 @@ public final class AwtBattleAdaptor {
 			snapshot.set(null);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					timerTask.stop();
-					repaintTask(true, true);
 					battleEventDispatcher.onBattleFinished(event);
+					repaintTask(true, true);
+					timerTask.stop();
 				}
 			});
 		}
@@ -276,7 +275,7 @@ public final class AwtBattleAdaptor {
 		public void onRoundEnded(final RoundEndedEvent event) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					repaintTask(true, true);
+					// repaintTask(true, true);
 					battleEventDispatcher.onRoundEnded(event);
 				}
 			});
