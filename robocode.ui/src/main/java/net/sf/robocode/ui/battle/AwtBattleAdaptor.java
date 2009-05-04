@@ -87,6 +87,7 @@ public final class AwtBattleAdaptor {
 				lastSnapshot = null;
 				battleEventDispatcher.onTurnEnded(new TurnEndedEvent(null));
 			} else {
+
 				if (lastSnapshot != current || !skipSameFrames || forceRepaint) {
 					lastSnapshot = current;
 
@@ -99,13 +100,11 @@ public final class AwtBattleAdaptor {
 							for (int i = 0; i < robots.length; i++) {
 								RobotSnapshot robot = (RobotSnapshot) robots[i];
 
-								if (i < outCache.length) {
-									final StringBuilder cache = outCache[i];
+								final StringBuilder cache = outCache[i];
 
-									if (cache.length() > 0) {
-										robot.setOutputStreamSnapshot(cache.toString());
-										outCache[i].setLength(0);
-									}
+								if (cache.length() > 0) {
+									robot.setOutputStreamSnapshot(cache.toString());
+									outCache[i].setLength(0);
 								}
 							}
 						}
