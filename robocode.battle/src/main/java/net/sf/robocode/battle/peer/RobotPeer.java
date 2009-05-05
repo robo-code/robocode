@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -164,9 +164,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private double y;
 	private int skippedTurns;
 
-	private boolean slowingDown;
-	private int moveDirection;
-	private double acceleration;
 	private boolean scan;
 	private boolean turnedRadarWithGun; // last round
 
@@ -700,7 +697,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		setState(RobotState.ACTIVE);
 
 		isWinner = false;
-		acceleration = velocity = 0;
+		velocity = 0;
 
 		if (statics.isTeamLeader() && statics.isDroid()) {
 			energy = 220;
@@ -804,15 +801,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 
 		if (currentCommands.isMoved()) {
-			acceleration = 0;
-			if (currentCommands.getDistanceRemaining() == 0) {
-				moveDirection = 0;
-			} else if (currentCommands.getDistanceRemaining() > 0) {
-				moveDirection = 1;
-			} else {
-				moveDirection = -1;
-			}
-			slowingDown = false;
 			currentCommands.setMoved(false);
 		}
 	}
@@ -1097,7 +1085,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			currentCommands.setDistanceRemaining(0);
 			velocity = 0;
-			acceleration = 0;
 		}
 		if (hitWall) {
 			setState(RobotState.HIT_WALL);
@@ -1273,98 +1260,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	private void updateMovement() {
-		if (currentCommands.getDistanceRemaining() == 0 && velocity == 0) {
+		double distance = currentCommands.getDistanceRemaining();
+
+		if (distance == 0 && velocity == 0) {
 			return;
 		}
-
-		if (!slowingDown) {
-			// Set moveDir and slow down for move(0)
-			if (moveDirection == 0) {
-				// On move(0), we're always slowing down.
-				slowingDown = true;
-
-				// Pretend we were moving in the direction we're heading,
-				if (velocity > 0) {
-					moveDirection = 1;
-				} else if (velocity < 0) {
-					moveDirection = -1;
-				} else {
-					moveDirection = 0;
-				}
-			}
+		
+		if (Double.isNaN(distance)) {
+			distance = 0;
 		}
 
-		double desiredDistanceRemaining = currentCommands.getDistanceRemaining();
-
-		if (slowingDown) {
-			if (moveDirection == 1 && currentCommands.getDistanceRemaining() < 0) {
-				desiredDistanceRemaining = 0;
-			} else if (moveDirection == -1 && currentCommands.getDistanceRemaining() > 0) {
-				desiredDistanceRemaining = 0;
-			}
-		}
-		double slowDownVelocity = (int) ((sqrt(4 * abs(desiredDistanceRemaining) + 1) - 1));
-
-		if (moveDirection == -1) {
-			slowDownVelocity = -slowDownVelocity;
-		}
-
-		if (!slowingDown) {
-			// Calculate acceleration
-			if (moveDirection == 1) {
-				// Brake or accelerate
-				if (velocity < 0) {
-					acceleration = Rules.DECELERATION;
-				} else {
-					acceleration = Rules.ACCELERATION;
-				}
-
-				if (velocity + acceleration > slowDownVelocity) {
-					slowingDown = true;
-				}
-			} else if (moveDirection == -1) {
-				if (velocity > 0) {
-					acceleration = -Rules.DECELERATION;
-				} else {
-					acceleration = -Rules.ACCELERATION;
-				}
-
-				if (velocity + acceleration < slowDownVelocity) {
-					slowingDown = true;
-				}
-			}
-		}
-
-		if (slowingDown) {
-			// note:  if slowing down, velocity and distanceremaining have same sign
-			if (currentCommands.getDistanceRemaining() != 0 && abs(velocity) <= Rules.DECELERATION
-					&& abs(currentCommands.getDistanceRemaining()) <= Rules.DECELERATION) {
-				slowDownVelocity = currentCommands.getDistanceRemaining();
-			}
-
-			double perfectAccel = slowDownVelocity - velocity;
-
-			if (perfectAccel > Rules.DECELERATION) {
-				perfectAccel = Rules.DECELERATION;
-			} else if (perfectAccel < -Rules.DECELERATION) {
-				perfectAccel = -Rules.DECELERATION;
-			}
-
-			acceleration = perfectAccel;
-		}
-
-		// Calculate velocity
-		if (velocity > currentCommands.getMaxVelocity() || velocity < -currentCommands.getMaxVelocity()) {
-			acceleration = 0;
-		}
-
-		velocity += acceleration;
-		if (velocity > currentCommands.getMaxVelocity()) {
-			velocity -= min(Rules.DECELERATION, velocity - currentCommands.getMaxVelocity());
-		}
-		if (velocity < -currentCommands.getMaxVelocity()) {
-			velocity += min(Rules.DECELERATION, -velocity - currentCommands.getMaxVelocity());
-		}
+		velocity = getNewVelocity(velocity, distance);
 
 		double dx = velocity * sin(bodyHeading);
 		double dy = velocity * cos(bodyHeading);
@@ -1372,24 +1278,95 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		x += dx;
 		y += dy;
 
-		boolean updateBounds = false;
-
 		if (dx != 0 || dy != 0) {
-			updateBounds = true;
-		}
-
-		if (slowingDown && velocity == 0) {
-			currentCommands.setDistanceRemaining(0);
-			moveDirection = 0;
-			slowingDown = false;
-			acceleration = 0;
-		}
-
-		if (updateBounds) {
 			updateBoundingBox();
 		}
 
-		currentCommands.setDistanceRemaining(currentCommands.getDistanceRemaining() - velocity);
+		currentCommands.setDistanceRemaining(distance - velocity);
+	}
+
+	/**
+	 * Returns the new velocity based on the current velocity and distance to move.
+	 *
+	 * @param velocity the current velocity
+	 * @param distance the distance to move
+	 * @return the new velocity based on the current velocity and distance to move
+	 */
+	private double getNewVelocity(double velocity, double distance) {
+		// If the distance is negative, then change it to be positive and change the sign of the input velocity and the result
+		if (distance < 0) {
+			return -getNewVelocity(-velocity, -distance);
+		}
+
+		double newVelocity;
+
+		// Get the speed, which is always positive (because it is a scalar)
+		final double speed = Math.abs(velocity); 
+
+		// Check if we are decelerating
+		if (velocity < 0) {
+			// If the velocity is negative, we are decelerating
+			newVelocity = speed - Rules.DECELERATION;
+
+			// Check if we are going from deceleration into acceleration
+			if (newVelocity < 0) {
+				// If we have decelerated to velocity = 0, then the remaining time must be used for acceleration
+				double decelTime = speed / Rules.DECELERATION;
+				double accelTime = (1 - decelTime);
+
+				// New velocity (v) = d / t, where time = 1 (i.e. 1 turn). Hence, v = d / 1 => v = d 
+				newVelocity = Math.min(
+						Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * accelTime * accelTime, distance);
+
+				// Note: We change the sign here due to the sign check later when returning the result
+				velocity *= -1;
+			}
+		} else {
+			// Else, we are not decelerating. Perhaps we should decelerate? If not, we should accelerate instead
+
+			// Deceleration time (t) is calculated by: v = a * t => t = v / a
+			final double decelTime = speed / Rules.DECELERATION;
+
+			// Deceleration time (d) is calculated by: d = 1/2 a * t^2 + v0 * t + t
+			// Adding the extra 't' (in the end) is special for Robocode, and v0 is the starting velocity = 0
+			final double decelDist = 0.5 * Rules.DECELERATION * decelTime * decelTime + decelTime;
+
+			// Check if we should start decelerating
+			if (distance <= decelDist) {
+				// If the distance < max. deceleration distance, we must decelerate so we hit a distance = 0
+
+				// Calculate time left for deceleration to distance = 0
+				double time = distance / (decelTime + 1); // 1 is added here due to the extra 't' for Robocode
+
+				// New velocity (v) = a * t, i.e. deceleration * time, but not greater than the current speed
+
+				if (time <= 1) {
+					// When there is only one turn left (t <= 1), we set the speed to match the remaining distance
+					newVelocity = distance;
+				} else {
+					// New velocity (v) = a * t, i.e. deceleration * time
+					newVelocity = time * Rules.DECELERATION;
+
+					if (speed < newVelocity) {
+						// If the speed is less that the new velocity we just calculated, then use the old speed instead
+						newVelocity = speed;
+					} else if (speed - newVelocity > Rules.DECELERATION) {
+						// The deceleration must not exceed the max. deceleration.
+						// Hence, we limit the velocity to the speed minus the max. deceleration.
+						newVelocity = speed - Rules.DECELERATION;
+					}
+				}
+			} else {
+				// Else, we are accelerating
+				newVelocity = speed + Rules.ACCELERATION;
+			}
+		}
+
+		// 0 <= velocity <= max. velocity
+		newVelocity = Math.min(currentCommands.getMaxVelocity(), Math.abs(newVelocity));
+
+		// Return the new velocity with the correct sign. We have been working with the speed, which is always positive
+		return (velocity < 0) ? -newVelocity : newVelocity;
 	}
 
 	private void updateGunHeat() {

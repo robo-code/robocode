@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,8 +70,8 @@ public class TestPosition extends RobotTestBed {
 		}
 
 		if (lastTurn == 2000) {
-			Assert.assertNear(301.3823965, crazy.getX());
-			Assert.assertNear(316.1103866, crazy.getY());
+			Assert.assertNear(292.8929487, crazy.getX());
+			Assert.assertNear(313.3353355, crazy.getY());
 			Assert.assertNear(370.7450460, target.getX());
 			Assert.assertNear(492.5622427, target.getY());
 		}

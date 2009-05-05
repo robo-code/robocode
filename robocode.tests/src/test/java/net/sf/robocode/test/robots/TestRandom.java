@@ -43,15 +43,15 @@ public class TestRandom extends RobotTestBed {
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
 
-		Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 1223);
+		Assert.assertTrue(event.getTurnSnapshot().getTurn() <= 1241);
 		IRobotSnapshot fire = event.getTurnSnapshot().getRobots()[0];
 		IRobotSnapshot random = event.getTurnSnapshot().getRobots()[1];
 
-		if (event.getTurnSnapshot().getTurn() == 1223) {
-			Assert.assertNear(498.9405462, fire.getX());
-			Assert.assertNear(165.07893614917265, fire.getY());
-			Assert.assertNear(104.11480043566866, random.getX());
-			Assert.assertNear(582.0, random.getY());
+		if (event.getTurnSnapshot().getTurn() == 1241) {
+			Assert.assertNear(213.18621928, fire.getX());
+			Assert.assertNear(371.45706118, fire.getY());
+			Assert.assertNear(626.04496777, random.getX());
+			Assert.assertNear(413.85023608, random.getY());
 		}
 	}
 

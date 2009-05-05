@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -75,7 +75,7 @@ public class WatchBullets extends AdvancedRobot {
 	private void dump() {
 		if (bullet != null) {
 			out.println(
-					getTime() + "Bullet " + bullet.getX() + " " + bullet.getY() + " " + bullet.getHeading() + " "
+					getTime() + " " + bullet.getX() + " " + bullet.getY() + " " + bullet.getHeading() + " "
 					+ bullet.isActive());
 		}
 	}

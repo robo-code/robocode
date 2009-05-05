@@ -36,7 +36,7 @@ public class TestCustomEvents extends RobotTestBed {
 
 		switch (event.getTurnSnapshot().getTurn()) {
 		case 130:
-			test(gh, "130 onTick99\n130 onTick30\n130 onScannedRobot10\n");
+			test(gh, "130 onTick99\n130 onTick30");
 			break;
 
 		case 1451:
@@ -49,7 +49,8 @@ public class TestCustomEvents extends RobotTestBed {
 	}
 
 	private void test(IRobotSnapshot gh, String s) {
-		Assert.assertTrue(gh.getOutputStreamSnapshot() + " expected " + s, gh.getOutputStreamSnapshot().contains(s));
+		Assert.assertTrue("got: " + gh.getOutputStreamSnapshot() + ", expected: " + s,
+				gh.getOutputStreamSnapshot().contains(s));
 	}
 
 	@Override
