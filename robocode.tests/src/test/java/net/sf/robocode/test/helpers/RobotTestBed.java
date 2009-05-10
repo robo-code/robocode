@@ -23,6 +23,8 @@ import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.util.Utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 
@@ -34,6 +36,8 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected static int errors = 0;
 	protected static int messages = 0;
+	protected static String absolutePath;
+	
 	public static boolean isDumpingPositions = false;
 	public static boolean isDumpingTurns = false;
 	public static boolean isDumpingOutput = true;
@@ -60,6 +64,11 @@ public abstract class RobotTestBed extends BattleAdaptor {
 				errors++;
 			}
 		});
+		try {
+			absolutePath = new File("").getCanonicalPath();
+		} catch (IOException e) {
+			e.printStackTrace(Logger.realErr);
+		}
 	}
 
 	public RobotTestBed() {
