@@ -46,7 +46,6 @@ public final class AwtBattleAdaptor {
 	private ITurnSnapshot lastSnapshot;
 	private StringBuilder[] outCache;
 
-
 	public AwtBattleAdaptor(IBattleManager battleManager, int maxFps, boolean skipSameFrames) {
 		this.battleManager = battleManager;
 		snapshot = new AtomicReference<ITurnSnapshot>(null);
@@ -88,8 +87,8 @@ public final class AwtBattleAdaptor {
 		try {
 			ITurnSnapshot current = snapshot.get();
 
-			if (current == null) {//!isRunning.get() ||
-				//paint logo
+			if (current == null) { // !isRunning.get() ||
+				// paint logo
 				lastSnapshot = null;
 				battleEventDispatcher.onTurnEnded(new TurnEndedEvent(null));
 			} else {
@@ -162,13 +161,14 @@ public final class AwtBattleAdaptor {
 		}
 	}
 
+
 	// BattleObserver methods are always called by battle thread
 	// but everything inside invokeLater {} block in on AWT thread 
 	private class BattleObserver extends BattleAdaptor {
 
 		@Override
 		public void onTurnEnded(final TurnEndedEvent event) {
-			if (lastMajorEvent.get() == majorEvent.get()){
+			if (lastMajorEvent.get() == majorEvent.get()) {
 				// snapshot is updated out of order, but always within the same major event
 				snapshot.set(event.getTurnSnapshot());
 			}
@@ -202,7 +202,7 @@ public final class AwtBattleAdaptor {
 
 		@Override
 		public void onRoundStarted(final RoundStartedEvent event) {
-			if (lastMajorEvent.get() == majorEvent.get()){
+			if (lastMajorEvent.get() == majorEvent.get()) {
 				snapshot.set(event.getStartSnapshot());
 			}
 			majorEvent.incrementAndGet();
@@ -245,7 +245,7 @@ public final class AwtBattleAdaptor {
 					isRunning.set(false);
 					isPaused.set(false);
 					timerTask.stop();
-					//flush text cache
+					// flush text cache
 					awtOnTurnEnded(true, true);
 
 					battleEventDispatcher.onBattleFinished(event);
