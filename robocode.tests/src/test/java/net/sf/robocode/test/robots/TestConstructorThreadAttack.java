@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package net.sf.robocode.test.robots;
@@ -18,25 +18,15 @@ import robocode.control.events.TurnEndedEvent;
 
 
 /**
- * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
-public class TestThreadAttack extends RobotTestBed {
-	boolean messagedMax;
+public class TestConstructorThreadAttack extends RobotTestBed {
 	boolean messagedUnknown;
-
-	@Override
-	public String getRobotNames() {
-		return "tested.robots.ThreadAttack,sample.SittingDuck";
-	}
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
-
-		if (out.contains("You may only create 5 threads")) {
-			messagedMax = true;
-		}
 
 		if (out.contains("Preventing thread with unknown thread group from access")) {
 			messagedUnknown = true;
@@ -44,8 +34,12 @@ public class TestThreadAttack extends RobotTestBed {
 	}
 
 	@Override
+	public String getRobotNames() {
+		return "tested.robots.ConstructorThreadAttack,sample.Target";
+	}
+
+	@Override
 	protected void runTeardown() {
-		Assert.assertTrue(messagedMax);
 		Assert.assertTrue(messagedUnknown);
 	}
 }

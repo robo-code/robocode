@@ -6,36 +6,21 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package tested.robots;
 
 
-import robocode.AdvancedRobot;
-import robocode.ScannedRobotEvent;
-
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
- * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
-public class ThreadAttack extends AdvancedRobot {
+public class ConstructorThreadAttack extends robocode.AdvancedRobot {
 
-	@Override
-	public void run() {
-		// noinspection InfiniteLoopStatement
-		for (;;) {
-			turnLeft(100);
-			ahead(10);
-			turnLeft(100);
-			back(10);
-		}
-	}
-
-	@Override
-	public void onScannedRobot(ScannedRobotEvent event) {
+	public ConstructorThreadAttack() {
 		runAttack();
 		runAttack2();
 	}
@@ -74,7 +59,7 @@ public class ThreadAttack extends AdvancedRobot {
 		public synchronized void run() {
 			final int id = counter.incrementAndGet();
 
-			out.println("Running id:" + id);
+			System.out.println("Running id:" + id);
 
 			if (Thread.currentThread().getPriority() > 4) {
 				out.println("Priority attack");
@@ -84,7 +69,7 @@ public class ThreadAttack extends AdvancedRobot {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
-				out.println("Interrupted id:" + id);
+				System.out.println("Interrupted id:" + id);
 			}
 		}
 	}
