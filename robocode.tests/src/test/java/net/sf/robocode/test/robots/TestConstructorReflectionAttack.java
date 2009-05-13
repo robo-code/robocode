@@ -36,8 +36,8 @@ public class TestConstructorReflectionAttack extends RobotTestBed {
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
 		if (out.contains("access denied (java.lang.reflect.ReflectPermission")) {
-			messagedAccessDenied = true;	
-		}	
+			messagedAccessDenied = true;
+		}
 	}
 
 	@Override

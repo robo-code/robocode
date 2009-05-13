@@ -12,6 +12,8 @@
 package tested.robots;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.*;
 
 
@@ -20,7 +22,9 @@ import java.lang.reflect.*;
  */
 public class ConstructorReflectionAttack extends robocode.AdvancedRobot {
 
-	public ConstructorReflectionAttack() {
+	static ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+	static {
 		try {
 			Field field = System.class.getField("out");
 
@@ -32,7 +36,18 @@ public class ConstructorReflectionAttack extends robocode.AdvancedRobot {
 			method.invoke(obj, new Object[] { "Hello World" });
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			// The stack trace from the exception is redirected to a temporary buffer,
+			// which is read and written out to the robot's output in the run() method.
+
+			PrintStream ps = new PrintStream(baos);
+
+			e.printStackTrace(ps);
+			ps.flush();
 		}
+	}
+	
+	public void run() {
+		// Write out the buffered output
+		out.append(baos.toString());
 	}
 }

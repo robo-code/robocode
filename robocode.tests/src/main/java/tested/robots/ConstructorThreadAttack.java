@@ -59,8 +59,6 @@ public class ConstructorThreadAttack extends robocode.AdvancedRobot {
 		public synchronized void run() {
 			final int id = counter.incrementAndGet();
 
-			System.out.println("Running id:" + id);
-
 			if (Thread.currentThread().getPriority() > 4) {
 				out.println("Priority attack");
 			}
@@ -68,9 +66,7 @@ public class ConstructorThreadAttack extends robocode.AdvancedRobot {
 
 			try {
 				this.wait();
-			} catch (InterruptedException e) {
-				System.out.println("Interrupted id:" + id);
-			}
+			} catch (InterruptedException e) {}
 		}
 	}
 }

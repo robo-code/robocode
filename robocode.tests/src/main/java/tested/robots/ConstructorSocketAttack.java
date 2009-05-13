@@ -22,7 +22,9 @@ import java.net.*;
  */
 public class ConstructorSocketAttack extends AdvancedRobot {
 
-	public ConstructorSocketAttack() {
+	static ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+	static {
 		ServerSocket server = null;
 		Socket client = null;
 
@@ -36,7 +38,13 @@ public class ConstructorSocketAttack extends AdvancedRobot {
 			os.write(1);
 			is.read();
 		} catch (IOException e) {
-			e.printStackTrace(out);
+			// The stack trace from the exception is redirected to a temporary buffer,
+			// which is read and written out to the robot's output in the run() method.
+
+			PrintStream ps = new PrintStream(baos);
+
+			e.printStackTrace(ps);
+			ps.flush();
 		} finally {
 			if (server != null) {
 				try {
@@ -49,5 +57,10 @@ public class ConstructorSocketAttack extends AdvancedRobot {
 				} catch (IOException e) {}
 			}
 		}
+	}
+
+	public void run() {
+		// Write out the buffered output
+		out.append(baos.toString());
 	}
 }
