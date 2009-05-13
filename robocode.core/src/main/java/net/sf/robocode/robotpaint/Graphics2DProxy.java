@@ -23,6 +23,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
@@ -57,7 +58,6 @@ import java.util.List;
  * @author Flemming N. Larsen (original)
  * @since 1.6.1
  */
-@SuppressWarnings({ "deprecation"})
 public final class Graphics2DProxy extends Graphics2D implements java.io.Serializable, IGraphicsProxy {
 
 	private static final long serialVersionUID = 1L;
@@ -249,6 +249,9 @@ public final class Graphics2DProxy extends Graphics2D implements java.io.Seriali
 
 	@Override
 	public Font getFont() {
+		if (font == null) {
+			return new Font(null, Font.PLAIN, 12);
+		}
 		return font;
 	}
 
@@ -264,7 +267,7 @@ public final class Graphics2DProxy extends Graphics2D implements java.io.Seriali
 
 	@Override
 	public FontMetrics getFontMetrics(Font f) {
-		return new FontMetricsByFont(f);
+		return new FontMetricsByFont(f, getFontRenderContext());
 	}
 
 	@Override
@@ -847,12 +850,16 @@ public final class Graphics2DProxy extends Graphics2D implements java.io.Seriali
 	public FontRenderContext getFontRenderContext() {
 		RenderingHints hints = getRenderingHints();
 
-		boolean isAntiAliased = (hints.get(RenderingHints.KEY_TEXT_ANTIALIASING).equals(
-				RenderingHints.VALUE_FRACTIONALMETRICS_ON));
-		boolean usesFractionalMetrics = (hints.get(RenderingHints.KEY_FRACTIONALMETRICS).equals(
-				RenderingHints.VALUE_FRACTIONALMETRICS_ON));
+		if (hints == null) {
+			return new FontRenderContext(null, false, false);
+		} else {		
+			boolean isAntiAliased = RenderingHints.VALUE_FRACTIONALMETRICS_ON.equals(
+					hints.get(RenderingHints.KEY_TEXT_ANTIALIASING));
+			boolean usesFractionalMetrics = RenderingHints.VALUE_FRACTIONALMETRICS_ON.equals(
+					hints.get(RenderingHints.KEY_FRACTIONALMETRICS));
 
-		return new FontRenderContext(null, isAntiAliased, usesFractionalMetrics);
+			return new FontRenderContext(null, isAntiAliased, usesFractionalMetrics);
+		}
 	}
 
 	// --------------------------------------------------------------------------
@@ -1602,10 +1609,27 @@ public final class Graphics2DProxy extends Graphics2D implements java.io.Seriali
 	 * @author Flemming N. Larsen
 	 */
 	private class FontMetricsByFont extends FontMetrics {
-		private static final long serialVersionUID = 1L;
+		static final long serialVersionUID = 1L;
 
-		FontMetricsByFont(Font font) {
+		final FontRenderContext fontRenderContext;
+
+		FontMetricsByFont(Font font, FontRenderContext frc) {
 			super(font);
+			fontRenderContext = frc;
+		}
+
+		/**
+		 * Bugfix [2791007] - FontMetrics StackOverflowError.
+		 * More info here: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4257064
+		 */
+		@Override
+		public int charsWidth(char[] data, int off, int len) {
+			if (font == null) {
+				return 0;
+			}
+			Rectangle2D bounds = font.getStringBounds(data, off, off + len, fontRenderContext);
+
+			return (bounds != null) ? (int) (bounds.getWidth() + 0.5) : 0;
 		}
 	}
 
