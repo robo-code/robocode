@@ -1245,7 +1245,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private void processSetFont(Graphics2D g) {
 		// setFont(Font)
-		g.setFont(Font.getFont(serializer.deserializeString(calls)));
+		g.setFont(new Font(serializer.deserializeString(calls), calls.getInt(), calls.getInt()));
 	}
 
 	private void processClipRect(Graphics2D g) {
@@ -1766,8 +1766,10 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		calls.putInt(value.getRGB());
 	}
 
-	private void put(Font value) {
-		serializer.serialize(calls, value.getFontName());
+	private void put(Font font) {
+		serializer.serialize(calls, font.getFontName());
+		calls.putInt(font.getStyle());
+		calls.putInt(font.getSize());
 	}
 
 	// --------------------------------------------------------------------------
