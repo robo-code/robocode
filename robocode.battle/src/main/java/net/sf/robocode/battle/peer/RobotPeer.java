@@ -1303,8 +1303,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		// Get the speed, which is always positive (because it is a scalar)
 		final double speed = Math.abs(velocity); 
 
-		// Check if we are decelerating
-		if (velocity < 0) {
+		// Check if we are decelerating, i.e. if the velocity is negative.
+		// Note that if the speed is too high due to a new max. velocity, we must also decelerate.
+		if (velocity < 0 || speed > currentCommands.getMaxVelocity()) {
 			// If the velocity is negative, we are decelerating
 			newVelocity = speed - Rules.DECELERATION;
 
@@ -1322,7 +1323,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				velocity *= -1;
 			}
 		} else {
-			// Else, we are not decelerating. Perhaps we should decelerate? If not, we should accelerate instead
+			// Else, we are not decelerating, but might need to start doing so due to the remaining distance
 
 			// Deceleration time (t) is calculated by: v = a * t => t = v / a
 			final double decelTime = speed / Rules.DECELERATION;
@@ -1357,13 +1358,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					}
 				}
 			} else {
-				// Else, we are accelerating
-				newVelocity = speed + Rules.ACCELERATION;
+				// Else, we need to accelerate, but only to max. velocity
+				newVelocity = Math.min(speed + Rules.ACCELERATION, currentCommands.getMaxVelocity());
 			}
 		}
-
-		// 0 <= velocity <= max. velocity
-		newVelocity = Math.min(currentCommands.getMaxVelocity(), Math.abs(newVelocity));
 
 		// Return the new velocity with the correct sign. We have been working with the speed, which is always positive
 		return (velocity < 0) ? -newVelocity : newVelocity;
