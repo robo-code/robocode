@@ -12,6 +12,8 @@
 package net.sf.robocode.io;
 
 
+import net.sf.robocode.security.HiddenAccess;
+
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -36,7 +38,7 @@ public class BattleListenerLogAppender extends AppenderSkeleton {
 
 	@Override
 	protected void append(LoggingEvent logEvent) {
-		if (battleListener == null) {
+		if (battleListener == null || !HiddenAccess.isSafeThread()) { // Make sure only safe thread will pass here
 			return;
 		}
 
