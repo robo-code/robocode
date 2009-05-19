@@ -1315,9 +1315,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				double decelTime = speed / Rules.DECELERATION;
 				double accelTime = (1 - decelTime);
 
-				// New velocity (v) = d / t, where time = 1 (i.e. 1 turn). Hence, v = d / 1 => v = d 
-				newVelocity = Math.min(
-						Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * accelTime * accelTime, distance);
+				// New velocity (v) = d / t, where time = 1 (i.e. 1 turn). Hence, v = d / 1 => v = d
+				// However, the new velocity must be limited by the max. velocity
+				newVelocity = Math.min(currentCommands.getMaxVelocity(),
+						Math.min(Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * accelTime * accelTime,
+						distance));
 
 				// Note: We change the sign here due to the sign check later when returning the result
 				velocity *= -1;

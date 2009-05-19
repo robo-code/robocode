@@ -1,9 +1,10 @@
 Version 1.7.1.2
-(14-May-2009)
+(19-May-2009)
 ---------------
 = Bugfixes =
 * Bug [2791007] - FontMetrics StackOverflowError
 * Bug [2791010] - Graphics2D.setFont() has no effect
+* Bug [2793464] - setMaxVelocity(lower than current) + reverse direction bug
 * Fixed a bug introduced with the Beta version, where the speed would immediately drop to max. velocity when calling setMaxVelocity() - disregarding the acceleration and deceleration rules.
 
 Version 1.7.1.2 Beta
