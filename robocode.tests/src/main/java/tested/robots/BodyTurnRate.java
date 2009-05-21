@@ -59,6 +59,7 @@ public class BodyTurnRate extends robocode.AdvancedRobot {
 
 	private void executeAndDumpTurnRate() {
 		double lastHeading = getHeading();
+		double lastVelocity = getVelocity();
 
 		execute();
 
@@ -66,14 +67,14 @@ public class BodyTurnRate extends robocode.AdvancedRobot {
 
 		lastHeading = getHeading();
 
-		out.println(getTime() + ": " + turnRate);
+		out.println(getTime() + ": " + lastVelocity + ", " + turnRate);
 	}
 
 	private void stopMoving() {
 		setAhead(0);
 		setTurnLeft(0);
 		
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 6; i++) {
 			executeAndDumpTurnRate();
 		}
 	}
