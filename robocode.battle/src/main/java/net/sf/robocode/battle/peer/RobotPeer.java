@@ -1262,10 +1262,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private void updateMovement() {
 		double distance = currentCommands.getDistanceRemaining();
 
-		if (distance == 0 && velocity == 0) {
-			return;
-		}
-		
 		if (Double.isNaN(distance)) {
 			distance = 0;
 		}
@@ -1282,7 +1278,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			updateBoundingBox();
 		}
 
-		currentCommands.setDistanceRemaining(distance - velocity);
+		if (distance != 0) {
+			currentCommands.setDistanceRemaining(distance - velocity);
+		}
 	}
 
 	/**
@@ -1345,7 +1343,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 				if (time <= 1) {
 					// When there is only one turn left (t <= 1), we set the speed to match the remaining distance
-					newVelocity = distance;
+					newVelocity = Math.max(speed - Rules.DECELERATION, distance);
 				} else {
 					// New velocity (v) = a * t, i.e. deceleration * time
 					newVelocity = time * Rules.DECELERATION;
