@@ -12,9 +12,6 @@
 package tested.robots;
 
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-
 /**
  * @author Flemming N. Larsen (original)
  */
@@ -52,13 +49,9 @@ public class ConstructorThreadAttack extends robocode.AdvancedRobot {
 		}
 	}
 
-	private AtomicInteger counter = new AtomicInteger();
-
 	private class Attacker implements Runnable {
 
 		public synchronized void run() {
-			final int id = counter.incrementAndGet();
-
 			if (Thread.currentThread().getPriority() > 4) {
 				out.println("Priority attack");
 			}
