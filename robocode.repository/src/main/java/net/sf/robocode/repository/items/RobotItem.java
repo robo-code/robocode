@@ -486,7 +486,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		} else {
 			File vroot;
 
-			if (alwaysUseCacheForData) {
+			if (!alwaysUseCacheForData) {
 				vroot = root.getRootPath();
 			} else {
 				vroot = FileUtil.getCacheDir();
