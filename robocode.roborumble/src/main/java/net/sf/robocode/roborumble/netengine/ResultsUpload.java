@@ -185,11 +185,13 @@ public class ResultsUpload {
 
 			// if the match mode was general, then send the results to all competitions (assuming codesize is used).
 			// if its not, then send results only to smaller size competitions
-			String data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee + "&"
-					+ "game=" + game + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&"
-					+ "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore=" + first[1] + "&" + "fbulletd="
-					+ first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname=" + second[0] + "&" + "sscore=" + second[1]
-					+ "&" + "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
+
+			final String commonData = "&version=1" + "&client=" + client + "&teams=" + teams + "&melee=" + melee
+					+ "&rounds=" + header[1] + "&field=" + header[2] + "&user=" + user + "&time=" + header[4] + "&fname="
+					+ first[0] + "&fscore=" + first[1] + "&fbulletd=" + first[2] + "&fsurvival=" + first[3] + "&sname="
+					+ second[0] + "&sscore=" + second[1] + "&sbulletd=" + second[2] + "&ssurvival=" + second[3];
+
+			String data = "game=" + game + commonData;
 
 			if (matchtype.equals("GENERAL") || matchtype.equals("SERVER")) {
 				errorsfound = errorsfound | senddata(game, data, outtxt, true, results, i, battlesnum, prioritybattles);
@@ -198,30 +200,16 @@ public class ResultsUpload {
 			if (sizesfile.length() != 0) { // upload also related competitions
 				if (minibots.length() != 0 && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 1500)) {
-					data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee
-							+ "&" + "game=" + minibots + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&"
-							+ "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
-							+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname="
-							+ second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival="
-							+ second[3];
+					data = "game=" + minibots + commonData;
 					errorsfound = errorsfound | senddata(minibots, data, outtxt, false, results, i, battlesnum, null);
 				}
 				if (microbots.length() != 0 && !matchtype.equals("NANO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 750)) {
-					data = "version=1" + "&" + "client=" + client + "&" + "teams=" + teams + "&" + "melee=" + melee
-							+ "&" + "game=" + microbots + "&" + "rounds=" + header[1] + "&" + "field=" + header[2] + "&"
-							+ "user=" + user + "&" + "time=" + header[4] + "&" + "fname=" + first[0] + "&" + "fscore="
-							+ first[1] + "&" + "fbulletd=" + first[2] + "&" + "fsurvival=" + first[3] + "&" + "sname="
-							+ second[0] + "&" + "sscore=" + second[1] + "&" + "sbulletd=" + second[2] + "&" + "ssurvival="
-							+ second[3];
+					data = "game=" + microbots + commonData;
 					errorsfound = errorsfound | senddata(microbots, data, outtxt, false, results, i, battlesnum, null);
 				}
 				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
-					data = "version=1" + "&" + "client=" + client + "&" + "game=" + nanobots + "&" + "rounds="
-							+ header[1] + "&" + "field=" + header[2] + "&" + "user=" + user + "&" + "time=" + header[4] + "&"
-							+ "fname=" + first[0] + "&" + "fscore=" + first[1] + "&" + "fbulletd=" + first[2] + "&"
-							+ "fsurvival=" + first[3] + "&" + "sname=" + second[0] + "&" + "sscore=" + second[1] + "&"
-							+ "sbulletd=" + second[2] + "&" + "ssurvival=" + second[3];
+					data = "game=" + nanobots + commonData;
 					errorsfound = errorsfound | senddata(nanobots, data, outtxt, false, results, i, battlesnum, null);
 				}
 			}
