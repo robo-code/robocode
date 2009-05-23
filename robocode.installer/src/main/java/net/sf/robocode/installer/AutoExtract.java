@@ -415,7 +415,7 @@ public class AutoExtract implements ActionListener {
 		} else if (osName.toLowerCase().indexOf("mac") == 0) {
 			if (osVersion >= 10.1) {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, browse to " + installDir + " then double-click robocode.jar\n");
+						message + "\n" + "To start Robocode, browse to " + installDir + " then double-click robocode.sh\n");
 			} else {
 				JOptionPane.showMessageDialog(null,
 						message + "\n" + "To start Robocode, enter the following at a command prompt:\n"

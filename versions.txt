@@ -1,10 +1,12 @@
 Version 1.7.1.2
-(22-May-2009)
+(23-May-2009)
 ---------------
 = Bugfixes =
 * Bug [2791007] - FontMetrics StackOverflowError
 * Bug [2791010] - Graphics2D.setFont() has no effect
 * Bug [2793464] - setMaxVelocity(lower than current) + reverse direction bug
+* Bug [2785448] - Wrong file path used for development bots. Refixed.
+* Bug [2795854] - Installer says to run robocode.jar
 * Fixed three bugs introduced with the Beta version found using new test units:
 ** One bug where the speed would immediately drop to max. velocity when calling setMaxVelocity() - disregarding the acceleration and deceleration rules.
 ** Another bug where the turn rate was a bit wrong when moving back and turning left in the same time.
