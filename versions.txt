@@ -1,5 +1,5 @@
 Version 1.7.1.2
-(24-May-2009)
+(25-May-2009)
 ---------------
 = Bugfixes =
 * Bug [2791007] - FontMetrics StackOverflowError
