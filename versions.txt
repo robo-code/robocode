@@ -1,6 +1,14 @@
+Version 1.7.1.3 Beta
+(26-May-2009)
+---------------
+
+= Bugfixes =
+* AdvancedRobot.setMaxTurnRate() did not work properly since version 1.5.4
+
 Version 1.7.1.2
 (25-May-2009)
 ---------------
+
 = Bugfixes =
 * Bug [2791007] - FontMetrics StackOverflowError
 * Bug [2791010] - Graphics2D.setFont() has no effect
