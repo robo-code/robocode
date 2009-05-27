@@ -12,50 +12,37 @@
 
 package tested.robots;
 
+
 import robocode.RateControlRobot;
 
+
+/**
+ * @author Joshua Galecki (original)
+ */
 public class RateControl extends RateControlRobot {
 	@Override
 	public void run() {
-		for (int turnNumber = 0; turnNumber < 80; turnNumber ++)
-		{
-			if (turnNumber == 0)
-			{
+		for (int turnNumber = 0; turnNumber < 80; turnNumber++) {
+			if (turnNumber == 0) {
 				setTurnRate(4.5);
-			}
-			else if (turnNumber == 10)
-			{
+			} else if (turnNumber == 10) {
 				setTurnRate(-9);
-			}
-			else if (turnNumber == 20)
-			{
+			} else if (turnNumber == 20) {
 				setTurnRate(0);
 				setVelocityRate(2);
-			}
-			else if (turnNumber == 25)
-			{
+			} else if (turnNumber == 25) {
 				setVelocityRate(-8);
-			}
-			else if (turnNumber == 35)
-			{
+			} else if (turnNumber == 35) {
 				setVelocityRate(0);
 				setGunRotationRate(9);
-			}
-			else if (turnNumber == 45)
-			{
+			} else if (turnNumber == 45) {
 				setGunRotationRate(-4.5);
-			}
-			else if (turnNumber == 55)
-			{
+			} else if (turnNumber == 55) {
 				setGunRotationRate(0);
 				setRadarRotationRate(9);
-			}
-			else if (turnNumber == 65)
-			{
+			} else if (turnNumber == 65) {
 				setRadarRotationRate(-4.5);
-			}
-			else if (turnNumber == 75)
-			{
+			} else if (turnNumber == 75) {
 				setRadarRotationRate(0);				
 			}
 			execute();
