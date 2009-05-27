@@ -44,22 +44,22 @@ public class TestGunTurnRate extends RobotTestBed {
 		if (event.getTurnSnapshot().getTurn() == 16) {
 			final String out = buf.toString();
 
-			Assert.assertTrue(out.contains("1: 0.0, -20.0") | out.contains("1: 0.0, -19.9999999999"));
-			Assert.assertTrue(out.contains("2: 0.0, -20.0") | out.contains("2: 0.0, -19.9999999999"));
-			Assert.assertTrue(out.contains("3: 0.0, 20.0") | out.contains("3: 0.0, 19.9999999999"));
-			Assert.assertTrue(out.contains("4: 0.0, 20.0") | out.contains("4: 0.0, 19.9999999999"));
-			Assert.assertTrue(out.contains("5: 0.0, -25.0") | out.contains("5: 0.0, -24.9999999999"));
-			Assert.assertTrue(out.contains("6: 0.0, -25.0") | out.contains("6: 0.0, -24.9999999999"));
-			Assert.assertTrue(out.contains("7: 0.0, 25.0") | out.contains("7: 0.0, 24.9999999999"));
-			Assert.assertTrue(out.contains("8: 0.0, 25.0") | out.contains("8: 0.0, 24.9999999999"));
-			Assert.assertTrue(out.contains("9: 0.0, -30.0") | out.contains("9: 0.0, -29.9999999999"));
-			Assert.assertTrue(out.contains("10: 0.0, -30.0") | out.contains("10: 0.0, -29.9999999999"));
-			Assert.assertTrue(out.contains("11: 0.0, 30.0") | out.contains("11: 0.0, 29.9999999999"));
-			Assert.assertTrue(out.contains("12: 0.0, 30.0") | out.contains("12: 0.0, 29.9999999999"));
-			Assert.assertTrue(out.contains("13: 0.0, -10.0") | out.contains("13: 0.0, -9.9999999999"));
-			Assert.assertTrue(out.contains("14: 0.0, -10.0") | out.contains("14: 0.0, -9.9999999999"));
-			Assert.assertTrue(out.contains("15: 0.0, 10.0") | out.contains("15: 0.0, 9.9999999999"));
-			Assert.assertTrue(out.contains("16: 0.0, 10.0") | out.contains("16: 0.0, 9.9999999999"));
+			Assert.assertTrue(out.contains("1: -20.0") | out.contains("1: -19.9999999999"));
+			Assert.assertTrue(out.contains("2: -20.0") | out.contains("2: -19.9999999999"));
+			Assert.assertTrue(out.contains("3: 20.0") | out.contains("3: 19.9999999999"));
+			Assert.assertTrue(out.contains("4: 20.0") | out.contains("4: 19.9999999999"));
+			Assert.assertTrue(out.contains("5: -25.0") | out.contains("5: -24.9999999999"));
+			Assert.assertTrue(out.contains("6: -25.0") | out.contains("6: -24.9999999999"));
+			Assert.assertTrue(out.contains("7: 25.0") | out.contains("7: 24.9999999999"));
+			Assert.assertTrue(out.contains("8: 25.0") | out.contains("8: 24.9999999999"));
+			Assert.assertTrue(out.contains("9: -30.0") | out.contains("9: -29.9999999999"));
+			Assert.assertTrue(out.contains("10: -30.0") | out.contains("10: -29.9999999999"));
+			Assert.assertTrue(out.contains("11: 30.0") | out.contains("11: 29.9999999999"));
+			Assert.assertTrue(out.contains("12: 30.0") | out.contains("12: 29.9999999999"));
+			Assert.assertTrue(out.contains("13: -10.0") | out.contains("13: -9.9999999999"));
+			Assert.assertTrue(out.contains("14: -10.0") | out.contains("14: -9.9999999999"));
+			Assert.assertTrue(out.contains("15: 10.0") | out.contains("15: 9.9999999999"));
+			Assert.assertTrue(out.contains("16: 10.0") | out.contains("16: 9.9999999999"));
 		}
 	}
 }
