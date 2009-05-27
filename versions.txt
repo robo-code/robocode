@@ -5,6 +5,11 @@ Version 1.7.1.3 Beta
 = Bugfixes =
 * AdvancedRobot.setMaxTurnRate() did not work properly since version 1.5.4
 
+= New RateControlRobot =
+* New Robot API extension by Joshua Galecki
+* Many real robots are given commands in terms of rates ("move forward one meter per second"). In an attempt to allow more realistic robots, a RateControlRobot class has been created.
+* In this release we ask the community for feedback and we will announce it as stable in one of next major releases.
+
 Version 1.7.1.2
 (25-May-2009)
 ---------------
