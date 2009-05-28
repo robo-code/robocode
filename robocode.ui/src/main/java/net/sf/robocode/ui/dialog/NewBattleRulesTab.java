@@ -28,6 +28,8 @@ public class NewBattleRulesTab extends JPanel {
 	private JTextField gunCoolingRateField;
 	private JLabel inactivityTimeLabel;
 	private JTextField inactivityTimeField;
+	private JRadioButton apiExtensabilityRadioButton;
+	private JLabel apiExtensabilityLabel;
 
 	/**
 	 * NewBattleRulesTab constructor
@@ -37,6 +39,26 @@ public class NewBattleRulesTab extends JPanel {
 		initialize();
 	}
 
+	private JRadioButton getApiExtensibilityRadioButton()
+	{
+		if (apiExtensabilityRadioButton == null){
+			apiExtensabilityRadioButton = new JRadioButton();
+		}
+		return apiExtensabilityRadioButton;
+	}
+	
+	private JLabel getApiExtensabilityLabel()
+	{
+		if (apiExtensabilityLabel == null) {
+			apiExtensabilityLabel = new JLabel();
+			apiExtensabilityLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+			apiExtensabilityLabel.setText("Use API EX");
+			apiExtensabilityLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+			apiExtensabilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
+		return apiExtensabilityLabel;
+	}
+	
 	public double getGunCoolingRate() {
 		return Double.parseDouble(getGunCoolingRateField().getText());
 	}
@@ -111,6 +133,8 @@ public class NewBattleRulesTab extends JPanel {
 		j.add(getGunCoolingRateField(), getGunCoolingRateField().getName());
 		j.add(getInactivityTimeLabel(), getInactivityTimeLabel().getName());
 		j.add(getInactivityTimeField(), getInactivityTimeField().getName());
+		j.add(getApiExtensibilityRadioButton(), getApiExtensibilityRadioButton().getName());
+		j.add(getApiExtensabilityLabel(), getApiExtensabilityLabel().getName());
 		add(j);
 	}
 
