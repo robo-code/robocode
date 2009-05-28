@@ -308,9 +308,9 @@ public class RateControlRobot extends AdvancedRobot {
 	public void execute() {
 		setMaxVelocity(velocityRate);
 		if (velocityRate > 0) {
-			setAhead(100); // TODO: set this to Double.POSITIVE_INFITITE due to getRemainingDistance()?
+			setAhead(Double.POSITIVE_INFINITY);
 		} else if (velocityRate < 0) {
-			setBack(100); // TODO: set this to Double.POSITIVE_INFITITE due to getRemainingDistance()?
+			setBack(Double.POSITIVE_INFINITY);
 		} else {
 			setAhead(0);
 		}
