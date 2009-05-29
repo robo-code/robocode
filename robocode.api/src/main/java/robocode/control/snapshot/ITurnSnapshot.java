@@ -38,6 +38,8 @@ public interface ITurnSnapshot {
 	 */
 	IBulletSnapshot[] getBullets();
 
+	IRobjectSnapshot[] getRobjects();
+	
 	/**
 	 * Returns the current TPS (turns per second).
 	 *

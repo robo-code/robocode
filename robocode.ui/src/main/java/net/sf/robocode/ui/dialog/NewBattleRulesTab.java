@@ -47,12 +47,17 @@ public class NewBattleRulesTab extends JPanel {
 		return apiExtensabilityRadioButton;
 	}
 	
+	public boolean getUseClassicModule()
+	{
+		return apiExtensabilityRadioButton.isSelected();
+	}
+	
 	private JLabel getApiExtensabilityLabel()
 	{
 		if (apiExtensabilityLabel == null) {
 			apiExtensabilityLabel = new JLabel();
 			apiExtensabilityLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-			apiExtensabilityLabel.setText("Use API EX");
+			apiExtensabilityLabel.setText("Classic Robocode");
 			apiExtensabilityLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 			apiExtensabilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		}

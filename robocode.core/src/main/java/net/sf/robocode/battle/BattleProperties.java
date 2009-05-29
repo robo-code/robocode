@@ -51,8 +51,18 @@ public class BattleProperties implements Serializable {
 	private long inactivityTime = 450;
 	private String selectedRobots;
 	private String initialPositions;
-
+	private String moduleName; 
+	
 	private final Properties props = new Properties();
+
+	private boolean extended;
+	public void setExtended(boolean extended) {
+		this.extended = extended;
+	}
+
+	public boolean isExtended() {
+		return extended;
+	}
 
 	/**
 	 * Gets the battlefieldWidth.
@@ -122,7 +132,7 @@ public class BattleProperties implements Serializable {
 	 * @see Robot#getGunHeat()
 	 * @see Robot#fire(double)
 	 * @see Robot#fireBullet(double)
-	 * @see robocode.BattleRules#getGunCoolingRate()
+	 * @see net.sf.robocode.battle.BattleRules#getGunCoolingRate()
 	 */
 	public double getGunCoolingRate() {
 		return gunCoolingRate;
@@ -136,7 +146,7 @@ public class BattleProperties implements Serializable {
 	 * @see Robot#getGunHeat()
 	 * @see Robot#fire(double)
 	 * @see Robot#fireBullet(double)
-	 * @see robocode.BattleRules#getGunCoolingRate()
+	 * @see net.sf.robocode.battle.BattleRules#getGunCoolingRate()
 	 */
 	public void setGunCoolingRate(double gunCoolingRate) {
 		this.gunCoolingRate = gunCoolingRate;
@@ -156,7 +166,7 @@ public class BattleProperties implements Serializable {
 	 * So don't count on the inactivity time being 450 turns!
 	 *
 	 * @return the allowed inactivity time.
-	 * @see robocode.BattleRules#getInactivityTime()
+	 * @see net.sf.robocode.battle.BattleRules#getInactivityTime()
 	 * @see Robot#doNothing()
 	 * @see AdvancedRobot#execute()
 	 */
@@ -168,7 +178,7 @@ public class BattleProperties implements Serializable {
 	 * Sets the allowed inactivity time, where the robot is not taking any action, before will begin to be zapped.
 	 *
 	 * @param inactivityTime the new allowed inactivity time.
-	 * @see robocode.BattleRules#getInactivityTime()
+	 * @see net.sf.robocode.battle.BattleRules#getInactivityTime()
 	 * @see Robot#doNothing()
 	 * @see AdvancedRobot#execute()
 	 */
@@ -250,5 +260,13 @@ public class BattleProperties implements Serializable {
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	public String getModuleName() {
+		return moduleName;
 	}
 }

@@ -138,6 +138,8 @@ public final class Battle extends BaseBattle {
 
 	private final IHostManager hostManager;
 	private final long cpuConstant;
+	private ICustomRules customRules = null;
+	private IBattlefieldSetup battleSetup = null;
 
 	// Inactivity related items
 	private int inactiveTurnCount;
@@ -155,6 +157,9 @@ public final class Battle extends BaseBattle {
 	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
 	private final List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
 	private int activeRobots;
+	
+	//~
+	private List<Robject> robjects = new ArrayList<Robject>();
 
 	// Death events
 	private final List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
@@ -165,14 +170,22 @@ public final class Battle extends BaseBattle {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	public Battle(ISettingsManager properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) {
+	public Battle(ISettingsManager properties, IBattleManager battleManager, 
+			IHostManager hostManager, ICpuManager cpuManager, 
+			BattleEventDispatcher eventDispatcher) {
 		super(properties, battleManager, eventDispatcher);
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		this.hostManager = hostManager;
 		this.cpuConstant = cpuManager.getCpuConstant();
+		
+			
+		//hack... remove once di is established
+		customRules = new ClassicRules();
+		battleSetup = new CaptureTheFlagSetup();
 	}
 
-	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProperties, boolean paused) {
+	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProperties, 
+			boolean paused, ICustomRules customRules, IBattlefieldSetup battleSetup) {
 		isPaused = paused;
 		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
@@ -180,6 +193,25 @@ public final class Battle extends BaseBattle {
 		robotsCount = battlingRobotsList.length;
 		computeInitialPositions(battleProperties.getInitialPositions());
 		createPeers(battlingRobotsList);
+		if (customRules != null)
+		{
+			this.customRules = customRules;
+		}
+		else 
+		{
+			this.customRules = new ClassicRules();
+		}
+		if (battleSetup != null) 
+		{
+			this.battleSetup = battleSetup;
+		}
+		else
+		{
+			this.battleSetup = new ClassicSetup();
+		}
+
+		//call setup, rules here
+		robjects = this.battleSetup.setupObjects();
 	}
 
 	private void createPeers(RobotSpecification[] battlingRobotsList) {
@@ -487,7 +519,7 @@ public final class Battle extends BaseBattle {
 
 		handleDeathRobots();
 
-		if (isAborted() || oneTeamRemaining()) {
+		if (isAborted() || customRules.isGameOver(getActiveRobots(), robots)) {
 			shutdownTurn();
 		}
 
@@ -650,7 +682,7 @@ public final class Battle extends BaseBattle {
 
 	private void updateBullets() {
 		for (BulletPeer bullet : getBulletsAtRandom()) {
-			bullet.update(getRobotsAtRandom(), getBulletsAtRandom());
+			bullet.update(getRobotsAtRandom(), getBulletsAtRandom(), robjects);
 			if (bullet.getState() == BulletState.INACTIVE) {
 				bullets.remove(bullet);
 			}
@@ -912,6 +944,14 @@ public final class Battle extends BaseBattle {
 
 	public void sendInteractiveEvent(Event e) {
 		sendCommand(new SendInteractiveEventCommand(e));
+	}
+
+	public void setRoboObjects(List<Robject> roboObjects) {
+		this.robjects = roboObjects;
+	}
+
+	public List<Robject> getRobjects() {
+		return robjects;
 	}
 
 	private class KillRobotCommand extends RobotCommand {

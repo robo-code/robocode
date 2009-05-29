@@ -92,6 +92,8 @@ public class BattleManager implements IBattleManager {
 	private final ICpuManager cpuManager;
 	private final IRecordManager recordManager;
 	private final IRepositoryManager repositoryManager;
+	private ICustomRules customRules = null;
+	private IBattlefieldSetup battleSetup = null;
 
 	private volatile IBattle battle;
 	private BattleProperties battleProperties = new BattleProperties();
@@ -126,8 +128,10 @@ public class BattleManager implements IBattleManager {
 	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver, boolean enableCLIRecording) {
 		this.battleProperties = battleProperties;
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(battleProperties.getSelectedRobots());
-
-		startNewBattleImpl(robots, waitTillOver, enableCLIRecording);
+		customRules = ModuleFactory.getCustomRules(battleProperties.getModuleName());
+		battleSetup = ModuleFactory.getBattleSetup(battleProperties.getModuleName());
+		
+		startNewBattleImpl(robots, waitTillOver, enableCLIRecording, customRules, battleSetup);
 	}
 
 	// Called from the RobocodeEngine
@@ -140,13 +144,18 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setNumRounds(spec.getNumRounds());
 		battleProperties.setSelectedRobots(spec.getRobots());
 		battleProperties.setInitialPositions(initialPositions);
+		
+		//TODO: this needs to be extracted from this method.
+		battleProperties.setModuleName("New");
 
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
-
-		startNewBattleImpl(robots, waitTillOver, enableCLIRecording);
+		customRules = ModuleFactory.getCustomRules(battleProperties.getModuleName());
+		battleSetup = ModuleFactory.getBattleSetup(battleProperties.getModuleName());
+		
+		startNewBattleImpl(robots, waitTillOver, enableCLIRecording, customRules, battleSetup);
 	}
 
-	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording) {
+	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording, ICustomRules customRules, IBattlefieldSetup battleSetup) {
 
 		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
@@ -176,7 +185,7 @@ public class BattleManager implements IBattleManager {
 
 		Battle realBattle = Container.createComponent(Battle.class);
 
-		realBattle.setup(battlingRobotsList, battleProperties, isPaused());
+		realBattle.setup(battlingRobotsList, battleProperties, isPaused(), customRules, battleSetup);
 
 		if (recording) {
 			realBattle.setAllPaintRecorded(true);

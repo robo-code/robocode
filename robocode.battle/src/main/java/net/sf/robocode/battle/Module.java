@@ -27,6 +27,8 @@ public class Module {
 		Container.cache.addComponent(IBattleManager.class, BattleManager.class);
 		Container.cache.addComponent(BattleEventDispatcher.class);
 		Container.cache.addComponent(IRecordManager.class, RecordManager.class);
+		Container.cache.addComponent(ICustomRules.class, ClassicRules.class);
+		Container.cache.addComponent(IBattlefieldSetup.class, ClassicSetup.class);
 
 		Container.factory.addComponent(Battle.class);
 		Container.factory.addComponent(BattlePlayer.class);

@@ -20,7 +20,9 @@ import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
+import robocode.Robject;
 import robocode.control.snapshot.IBulletSnapshot;
+import robocode.control.snapshot.IRobjectSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -46,6 +48,9 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 
 	/** List of snapshots for the bullets that are currently on the battlefield */
 	private List<IBulletSnapshot> bullets;
+
+	/** List of snapshots for the objects that are currently on the battlefield */
+	private List<IRobjectSnapshot> objects;
 
 	/** Current TPS (turns per second) */
 	private int tps;
@@ -73,6 +78,7 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets, boolean readoutText) {
 		robots = new ArrayList<IRobotSnapshot>();
 		bullets = new ArrayList<IBulletSnapshot>();
+		objects = new ArrayList<IRobjectSnapshot>();
 
 		for (RobotPeer robotPeer : battleRobots) {
 			robots.add(new RobotSnapshot(robotPeer, readoutText));
@@ -82,6 +88,13 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 			bullets.add(new BulletSnapshot(bulletPeer));
 		}
 
+		if (battle.getRobjects() != null)
+		{
+			for (Robject robject : battle.getRobjects()) {
+				objects.add(new RobjectSnapshot(robject));
+			}
+		}
+		
 		tps = battle.getTPS();
 		turn = battle.getTime();
 		round = battle.getRoundNum();
@@ -106,6 +119,10 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		return bullets.toArray(new IBulletSnapshot[bullets.size()]);
 	}
 
+	public IRobjectSnapshot[] getRobjects() {
+		return objects.toArray(new IRobjectSnapshot[objects.size()]);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

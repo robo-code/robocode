@@ -109,6 +109,14 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());
 		battleProperties.setGunCoolingRate(getRulesTab().getGunCoolingRate());
 		battleProperties.setInactivityTime(getRulesTab().getInactivityTime());
+		if (!getRulesTab().getUseClassicModule())
+		{
+			battleProperties.setModuleName("New");
+		}
+		else
+		{
+			battleProperties.setModuleName("Classic");
+		}
 
 		// Dispose this dialog before starting the battle due to pause/resume battle state
 		dispose();

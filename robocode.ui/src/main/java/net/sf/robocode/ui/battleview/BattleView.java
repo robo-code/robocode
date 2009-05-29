@@ -33,6 +33,7 @@ import robocode.control.events.BattleStartedEvent;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.IBulletSnapshot;
+import robocode.control.snapshot.IRobjectSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 
@@ -314,6 +315,9 @@ public class BattleView extends Canvas {
 
 			// Draw robots
 			drawRobots(g, snapShot);
+			
+			// Draw objects
+			drawObjects(g, snapShot);
 		}
 
 		// Draw the border of the battlefield
@@ -434,6 +438,31 @@ public class BattleView extends Canvas {
 					radarRenderImage.paint(g);
 				}
 			}
+		}
+	}
+
+	private void drawObjects(Graphics2D g, ITurnSnapshot snapShot) {
+		double x, y;
+		AffineTransform at;
+		int battleFieldHeight = battleField.getHeight();
+
+		for (IRobjectSnapshot robjectSnapshot : snapShot.getRobjects()) {
+			x = robjectSnapshot.getX();
+			y = battleFieldHeight - robjectSnapshot.getY() - robjectSnapshot.getHeight();
+
+			at = AffineTransform.getTranslateInstance(x, y);
+
+			Area robjectArea = new Area(robjectSnapshot.getPaintRect()).createTransformedArea(at);
+			
+			if (robjectSnapshot.getType().equals("box"))
+			{
+				g.setColor(Color.BLACK);
+			}
+			else
+			{
+				g.setColor(Color.LIGHT_GRAY);
+			}
+			g.fill(robjectArea);
 		}
 	}
 

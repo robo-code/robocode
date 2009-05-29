@@ -220,6 +220,18 @@ public class BulletPeer {
 		}
 	}
 
+	private void checkObjectCollision(List<Robject> robjects) {
+		for (Robject robject : robjects)
+		{
+			if (robject.isBulletStopper() && robject.getBoundaryRect().contains(x, y))
+			{
+				//TODO: This might need a HIT_OBJECT
+				state = BulletState.HIT_WALL;
+				owner.addEvent(new BulletMissedEvent(createBullet()));
+			}
+		}
+	}
+
 	private void checkWallCollision() {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
@@ -308,7 +320,7 @@ public class BulletPeer {
 		state = newState;
 	}
 
-	public void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
+	public void update(List<RobotPeer> robots, List<BulletPeer> bullets, List<Robject> robjects) {
 		if (isActive()) {
 			updateMovement();
 			if (bullets != null) {
@@ -316,6 +328,9 @@ public class BulletPeer {
 			}
 			if (isActive()) {
 				checkRobotCollision(robots);
+			}
+			if (isActive()) {
+				checkObjectCollision(robjects);
 			}
 			if (isActive()) {
 				checkWallCollision();
@@ -326,6 +341,7 @@ public class BulletPeer {
 		updateBulletState();
 		owner.addBulletStatus(createStatus());
 	}
+
 
 	protected void updateBulletState() {
 		switch (state) {
