@@ -1297,10 +1297,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private void updateMovement() {
 		double distance = currentCommands.getDistanceRemaining();
 
-		if (distance == 0 && velocity == 0) {
-			return;
-		}
-		
 		if (Double.isNaN(distance)) {
 			distance = 0;
 		}
@@ -1317,7 +1313,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			updateBoundingBox();
 		}
 
-		currentCommands.setDistanceRemaining(distance - velocity);
+		if (distance != 0) {
+			currentCommands.setDistanceRemaining(distance - velocity);
+		}
 	}
 
 	/**
@@ -1338,8 +1336,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		// Get the speed, which is always positive (because it is a scalar)
 		final double speed = Math.abs(velocity); 
 
-		// Check if we are decelerating
-		if (velocity < 0) {
+		// Check if we are decelerating, i.e. if the velocity is negative.
+		// Note that if the speed is too high due to a new max. velocity, we must also decelerate.
+		if (velocity < 0 || speed > currentCommands.getMaxVelocity()) {
 			// If the velocity is negative, we are decelerating
 			newVelocity = speed - Rules.DECELERATION;
 
@@ -1349,15 +1348,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				double decelTime = speed / Rules.DECELERATION;
 				double accelTime = (1 - decelTime);
 
-				// New velocity (v) = d / t, where time = 1 (i.e. 1 turn). Hence, v = d / 1 => v = d 
-				newVelocity = Math.min(
-						Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * accelTime * accelTime, distance);
+				// New velocity (v) = d / t, where time = 1 (i.e. 1 turn). Hence, v = d / 1 => v = d
+				// However, the new velocity must be limited by the max. velocity
+				newVelocity = Math.min(currentCommands.getMaxVelocity(),
+						Math.min(Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * accelTime * accelTime,
+						distance));
 
 				// Note: We change the sign here due to the sign check later when returning the result
 				velocity *= -1;
 			}
 		} else {
-			// Else, we are not decelerating. Perhaps we should decelerate? If not, we should accelerate instead
+			// Else, we are not decelerating, but might need to start doing so due to the remaining distance
 
 			// Deceleration time (t) is calculated by: v = a * t => t = v / a
 			final double decelTime = speed / Rules.DECELERATION;
@@ -1377,7 +1378,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 				if (time <= 1) {
 					// When there is only one turn left (t <= 1), we set the speed to match the remaining distance
-					newVelocity = distance;
+					newVelocity = Math.max(speed - Rules.DECELERATION, distance);
 				} else {
 					// New velocity (v) = a * t, i.e. deceleration * time
 					newVelocity = time * Rules.DECELERATION;
@@ -1392,13 +1393,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					}
 				}
 			} else {
-				// Else, we are accelerating
-				newVelocity = speed + Rules.ACCELERATION;
+				// Else, we need to accelerate, but only to max. velocity
+				newVelocity = Math.min(speed + Rules.ACCELERATION, currentCommands.getMaxVelocity());
 			}
 		}
-
-		// 0 <= velocity <= max. velocity
-		newVelocity = Math.min(currentCommands.getMaxVelocity(), Math.abs(newVelocity));
 
 		// Return the new velocity with the correct sign. We have been working with the speed, which is always positive
 		return (velocity < 0) ? -newVelocity : newVelocity;

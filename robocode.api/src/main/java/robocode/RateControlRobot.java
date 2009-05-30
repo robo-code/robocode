@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,22 +9,23 @@
  *     Joshua Galecki
  *     - Initial implementation
  *******************************************************************************/
-
 package robocode;
+
+
+import static java.lang.Math.toRadians;
+
 
 /**
  * This robot class allows you to set a rate for each of the robot's movements.
  * 
  * @author Joshua Galecki
  * @since 1.7.1.3
- *
  */
-public class RateControlRobot extends AdvancedRobot
-{
-	private double velocityRate = 0;
-	private double turnRate = 0;			//stored as radians
-	private double gunRotationRate = 0;		//stored as radians
-	private double radarRotationRate = 0;	//stored as radians
+public class RateControlRobot extends AdvancedRobot {
+	private double velocityRate;
+	private double turnRate; // Radians per turn
+	private double gunRotationRate; // Radians per turn
+	private double radarRotationRate; // Radians per turn
 	
 	/**
 	 * Sets the speed the robot will move, in pixels per turn.
@@ -39,11 +40,11 @@ public class RateControlRobot extends AdvancedRobot
 	 * <pre>
 	 *   // Set the robot to move forward 2 pixels per turn
 	 *   setVelocityRate(2);
-	 * <p/>
+	 *
 	 *   // Set the robot to move backwards 8 pixels per turn
 	 *   // (overrides the previous order)
 	 *   setVelocityRate(-8);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setVelocityRate()
 	 *   execute();
@@ -56,7 +57,7 @@ public class RateControlRobot extends AdvancedRobot
 	}
 	
 	/**
-	 * Gets the speed the robot will move, in pixels per turn.
+	 * Returns the speed the robot will move, in pixels per turn.
 	 * 
 	 * @return The speed of the robot in pixels per turn
 	 */
@@ -77,29 +78,33 @@ public class RateControlRobot extends AdvancedRobot
 	 * <pre>
 	 *   // Set the robot to turn right 10 degrees per turn
 	 *   setTurnRate(10);
-	 * <p/>
+	 *
 	 *   // Set the robot to turn left 4 degrees per turn
 	 *   // (overrides the previous order)
 	 *   setTurnRate(-5);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRate()
 	 *   execute();
 	 * </pre>
-	 * 
+	 *
 	 * @param turnRate Angle of the clockwise rotation, in degrees.
+	 *
+	 * @see #getTurnRate()
 	 */
 	public void setTurnRate(double turnRate) {
-		this.turnRate = turnRate * Math.PI / 180;
+		this.turnRate = toRadians(turnRate);
 	}
 	
 	/**
 	 * Gets the robot's clockwise rotation per turn, in degrees.
-	 * 
+	 *
 	 * @return Angle of the clockwise rotation, in degrees.
+	 *
+	 * @see #setTurnRate(double)
 	 */
 	public double getTurnRate() {
-		return turnRate * 180 / Math.PI;
+		return toRadians(turnRate);
 	}
 	
 	/**
@@ -166,7 +171,7 @@ public class RateControlRobot extends AdvancedRobot
 	 * @param gunRotationRate Angle of the clockwise rotation, in degrees.
 	 */
 	public void setGunRotationRate(double gunRotationRate) {
-		this.gunRotationRate = gunRotationRate * Math.PI / 180;
+		this.gunRotationRate = toRadians(gunRotationRate);
 	}
 	
 	/**
@@ -175,7 +180,7 @@ public class RateControlRobot extends AdvancedRobot
 	 * @return Angle of the clockwise rotation, in degrees.
 	 */
 	public double getGunRotationRate() {
-		return gunRotationRate * 180 / Math.PI;
+		return toRadians(gunRotationRate);
 	}
 	
 	/**
@@ -242,7 +247,7 @@ public class RateControlRobot extends AdvancedRobot
 	 * @param radarRotationRate Angle of the clockwise rotation, in degrees.
 	 */
 	public void setRadarRotationRate(double radarRotationRate) {
-		this.radarRotationRate = radarRotationRate * Math.PI / 180;
+		this.radarRotationRate = toRadians(radarRotationRate);
 	}
 	
 	/**
@@ -251,7 +256,7 @@ public class RateControlRobot extends AdvancedRobot
 	 * @return Angle of the clockwise rotation, in degrees.
 	 */
 	public double getRadarRotationRate() {
-		return radarRotationRate * 180 / Math.PI;
+		return toRadians(radarRotationRate);
 	}
 	
 	/**
@@ -300,27 +305,20 @@ public class RateControlRobot extends AdvancedRobot
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute()
-	{
+	public void execute() {
 		setMaxVelocity(velocityRate);
-		if (velocityRate > 0)
-		{
-			setAhead(100);
-		}
-		else if (velocityRate < 0)
-		{
-			setBack(100);
-		}
-		else
-		{
+		if (velocityRate > 0) {
+			setAhead(Double.POSITIVE_INFINITY);
+		} else if (velocityRate < 0) {
+			setBack(Double.POSITIVE_INFINITY);
+		} else {
 			setAhead(0);
 		}
 
 		setTurnGunRightRadians(gunRotationRate); 			
 		setTurnRadarRightRadians(radarRotationRate); 
 		setTurnRightRadians(turnRate);
-		
+
 		super.execute();
 	}
-	
 }

@@ -71,6 +71,6 @@ public class GunTurnRate extends robocode.AdvancedRobot {
 
 		lastHeading = getGunHeading();
 
-		out.println(getTime() + ": " + getVelocity() + ", " + turnRate);
+		out.println(getTime() + ": " + turnRate);
 	}
 }
