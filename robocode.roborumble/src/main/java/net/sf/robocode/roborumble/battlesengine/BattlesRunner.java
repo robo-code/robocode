@@ -205,8 +205,8 @@ public class BattlesRunner {
 					final int pointsTwo = results[j].getScore();
 					final int bulletsOne = results[i].getBulletDamage();
 					final int bulletsTwo = results[j].getBulletDamage();
-					final int survivalOne = results[i].getSurvival();
-					final int survivalTwo = results[j].getSurvival();
+					final int survivalOne = results[i].getFirsts();
+					final int survivalTwo = results[j].getFirsts();
 
 					outtxt.println(
 							game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + ","
