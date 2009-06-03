@@ -1,5 +1,5 @@
 Version 1.7.1.3 Alpha 2
-(03-Jun-2009)
+(04-Jun-2009)
 ---------------
 
 = Bugfixes =
@@ -19,6 +19,9 @@ Version 1.7.1.3 Alpha 2
 ** johndoe.SomeRobot 1.0,http://somewhere.com/SomeRobot_1_0.jar
 ** johndoe.SomeRobot 1.0,321
 * Removed the info message "Trying to download <botname>" from the console output.
+
+= Other changes =
+* The Development Options has become more usable, as Ruben Moreno Montoliu has added a list of paths and buttons for adding and removing directories, full resizable.
 
 Version 1.7.1.2
 (25-May-2009)
