@@ -1,5 +1,5 @@
-Version 1.7.1.3 Beta
-(02-Jun-2009)
+Version 1.7.1.3 Alpha 2
+(03-Jun-2009)
 ---------------
 
 = Bugfixes =
@@ -10,6 +10,14 @@ Version 1.7.1.3 Beta
 * Joshua Galecki has provided a new robot type, the RateControlRobot, which is an extension of the AdvancedRobot.
 * The RateControlRobot class has been created in an attempt to allow more realistic robots. That is, many real/physical robots are given commands in terms of rates ("move forward one meter per second"). Hence, the RateControlRobot helps simulating a real robot.
 * With this release, we ask the community for feedback and we will announce it as stable in one of next major releases. So please report issues or change requests etc. for this new robot type.
+
+= Changes for RoboRumble =
+* Added validation of each of the participant lines of the participant list. If a participant line is invalid due to e.g. wrong format/syntax or bad URL, then an error message is written out and the participant is ignored.
+* The format of the lines in the participant lines is the same as usual.
+* Accepted lines must follow this format: <robot+version>,(<http-url>|<repository-id>), where <robot+version> must match the regular expression "[\\w\\.]+[ ][\\w\\.-]+", the <http-url> must be a HTTP URL pointing at the robot .jar file, and the <repository-id> must be a number. The <http-url> and <repository-id> are mutual exclusive.
+* Example of accepted lines:
+** johndoe.SomeRobot 1.0,http://somewhere.com/SomeRobot_1_0.jar
+** johndoe.SomeRobot 1.0,321
 
 Version 1.7.1.2
 (25-May-2009)
