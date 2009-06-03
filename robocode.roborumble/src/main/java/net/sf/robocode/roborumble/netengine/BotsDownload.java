@@ -370,8 +370,6 @@ public class BotsDownload {
 			url = id;
 		}
 
-		System.out.println("Trying to download " + botname);
-
 		DownloadStatus downloadStatus = FileTransfer.download(url, filed, sessionId);
 
 		if (downloadStatus == DownloadStatus.FILE_NOT_FOUND) {

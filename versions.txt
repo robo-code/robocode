@@ -18,6 +18,7 @@ Version 1.7.1.3 Alpha 2
 * Example of accepted lines:
 ** johndoe.SomeRobot 1.0,http://somewhere.com/SomeRobot_1_0.jar
 ** johndoe.SomeRobot 1.0,321
+* Removed the info message "Trying to download <botname>" from the console output.
 
 Version 1.7.1.2
 (25-May-2009)
