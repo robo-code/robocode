@@ -778,6 +778,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * When this is set, the gun will turn independent from the robot's turn,
 	 * i.e. the gun will compensate for the robot's body turn.
 	 * <p/>
+	 * Note: This method is additive until you reach the maximum the gun can
+	 * turn. The "adjust" is added to the amount you set for turning the robot,
+	 * then capped by the physics of the game. If you turn infinite, then the
+	 * adjust is ignored (and hence overridden).
+	 * <p/>
 	 * Example, assuming both the robot and gun start out facing up (0 degrees):
 	 * <pre>
 	 *   // Set gun to turn with the robot's turn
@@ -824,6 +829,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * set, the radar will turn independent from the robot's turn, i.e. the
 	 * radar will compensate for the robot's turn.
 	 * <p/>
+	 * Note: This method is additive until you reach the maximum the radar can
+	 * turn. The "adjust" is added to the amount you set for turning the robot,
+	 * then capped by the physics of the game. If you turn infinite, then the
+	 * adjust is ignored (and hence overridden).
+	 * <p/>
 	 * Example, assuming the robot, gun, and radar all start out facing up (0
 	 * degrees):
 	 * <pre>
@@ -863,6 +873,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * for this, you can call {@code setAdjustRadarForGunTurn(true)}. When this
 	 * is set, the radar will turn independent from the robot's turn, i.e. the
 	 * radar will compensate for the gun's turn.
+	 * <p/>
+	 * Note: This method is additive until you reach the maximum the radar can
+	 * turn. The "adjust" is added to the amount you set for turning the gun,
+	 * then capped by the physics of the game. If you turn infinite, then the
+	 * adjust is ignored (and hence overridden).
 	 * <p/>
 	 * Example, assuming both the gun and radar start out facing up (0 degrees):
 	 * <pre>
