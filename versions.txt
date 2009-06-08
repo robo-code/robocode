@@ -5,7 +5,7 @@ Version 1.7.1.3 Beta
 = Bugfixes =
 * AdvancedRobot.setMaxTurnRate() did not work properly since version 1.5.4
 * Bug [2799165] - Wrong survival scores sent by rumble client
-* Bug [2802227] - Funny behaviors with robot graphics/painting
+* Bug [2802227] - Funny behaviors with robot graphics/paintings
 
 = New RateControlRobot (Beta) =
 * Joshua Galecki has provided a new robot type, the RateControlRobot, which is an extension of the AdvancedRobot.
