@@ -128,11 +128,13 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Flag indicating if this proxy has been initialized
 	private transient boolean isInitialized;
 
-	// Flag indicating if this proxy has been initialized
+	// Flag indicating if painting is enabled
 	private transient boolean isPaintingEnabled;
 
+	// Byte buffer that works as a stack of method calls to this proxy
 	private ByteBuffer calls;
 
+	// Serializer for this proxy
 	private final RbSerializer serializer = new RbSerializer();
 
 	// FOR-DEBUG private Method lastRead;
@@ -151,7 +153,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		Graphics2DSerialized gfxProxyCopy = new Graphics2DSerialized();
 
 		gfxProxyCopy.calls = ByteBuffer.allocate(2048);
-		calls.put(calls);
 		gfxProxyCopy.transform = transform;
 		gfxProxyCopy.composite = copyOf(composite);
 		gfxProxyCopy.paint = paint;
@@ -162,6 +163,8 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		gfxProxyCopy.color = copyOf(color);
 		gfxProxyCopy.font = font;
 		gfxProxyCopy.isInitialized = isInitialized;
+
+		calls.put(calls);
 
 		return gfxProxyCopy;
 	}
@@ -957,11 +960,11 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Processing of queued method calls to a Graphics2D object
 	// --------------------------------------------------------------------------
 
-	public void setPaintingEnabled(boolean value) {
-		if (value && !isPaintingEnabled) {
+	public void setPaintingEnabled(boolean enabled) {
+		if (enabled && !isPaintingEnabled) {
 			calls = ByteBuffer.allocate(24 * 1024);
 		}
-		isPaintingEnabled = value;
+		isPaintingEnabled = enabled;
 	}
 
 	public void processTo(Graphics2D g) {
