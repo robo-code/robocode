@@ -33,6 +33,24 @@
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <exec executable="cmd.exe" dir="." failonerror="true">
+                                    <arg value="/c ..\tools\lib\jni4net.proxygen-0.1.0.0.exe src\robocode.proxygen.xml"/>
+                                </exec>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.sonatype.nmaven.plugins</groupId>
 				<artifactId>maven-dotnet-compiler-plugin</artifactId>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<jni4net-proxygen xmlns="http://jni4net.sf.net/toolConfig.xsd">
+  <TargetDirClr2Java>../robocode.dotnet.host/src/main/java</TargetDirClr2Java>
+  <TargetDirJava2Clr>target/build-sources/generated-sources</TargetDirJava2Clr>
+  <TargetDirJava2Native>target/build-sources/generated-sources</TargetDirJava2Native>
+  <SkipKnown>false</SkipKnown>
+  <ClassPath>../../robocode.dotnet.host/target/classes</ClassPath>
+  <ClassPath>../../../robocode.core/target/classes</ClassPath>
+  <ClassPath>../../../robocode.api/target/classes</ClassPath>
+  <ClassPath>../../../robocode.host/target/classes</ClassPath>
+
+  <!-- interfaces -->
+  <JavaClass>net.sf.robocode.host.IHost</JavaClass>
+  <JavaClass>net.sf.robocode.host.IHostManager</JavaClass>
+  <JavaClass>net.sf.robocode.repository.IRobotRepositoryItem</JavaClass>
+  <JavaClass>robocode.control.RobotSpecification</JavaClass>
+  <JavaClass>net.sf.robocode.peer.IRobotPeer</JavaClass>
+  <JavaClass>net.sf.robocode.host.RobotStatics</JavaClass>
+
+  <SkipJavaMethod ClassName="net.sf.robocode.repository.IRobotRepositoryItem" MethodName="compareTo" Signature="(Ljava/lang/Object;)I"/>
+
+</jni4net-proxygen>
