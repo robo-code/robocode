@@ -94,22 +94,22 @@ public class RoboRumbleAtHome {
 
 			// Create battles file (and delete old ones), and execute battles
 			if (executes.equals("YES")) {
+				final boolean isMelee = melee.equals("YES");
 
 				boolean ready;
 				PrepareBattles battles = new PrepareBattles(parameters);
 
-				if (melee.equals("YES")) {
+				if (isMelee) {
 					System.out.println("Preparing melee battles list ...");
 					ready = battles.createMeleeBattlesList();
 				} else {
-					System.out.println(
-							"Preparing battles list ... Using smart battles is "
-									+ (ratingsdownloaded && runonly.equals("SERVER")));
-					if (ratingsdownloaded && runonly.equals("SERVER")) {
-						// Create the smart lists
+					final boolean isSmartBattles = ratingsdownloaded && runonly.equals("SERVER");
+
+					if (isSmartBattles) {
+						System.out.print("Preparing battles list using smart battles...");
 						ready = battles.createSmartBattlesList();
 					} else {
-						// Create the normal lists
+						System.out.print("Preparing battles list...");
 						ready = battles.createBattlesList();
 					}
 				}
@@ -120,15 +120,15 @@ public class RoboRumbleAtHome {
 
 				// Execute battles
 				if (ready) {
-					BattlesRunner engine = new BattlesRunner(parameters);
-
-					if (melee.equals("YES")) {
+					if (isMelee) {
 						System.out.println("Executing melee battles ...");
-						engine.runBattlesImpl(true);
 					} else {
 						System.out.println("Executing battles ...");
-						engine.runBattlesImpl(false);
 					}
+
+					BattlesRunner engine = new BattlesRunner(parameters);
+
+					engine.runBattlesImpl(isMelee);
 				}
 			}
 
