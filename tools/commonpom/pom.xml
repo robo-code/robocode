@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -16,32 +16,12 @@
             <id>net.sf.robocode</id>
             <url>http://robocode.sourceforge.net/maven2</url>
         </repository>
-        <repository>
-            <id>scala-tools.org</id>
-            <name>Scala-tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </repository>
-        <repository>
-            <id>net.java</id>
-            <name>Sun Maven2 Repository</name>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
 	</repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>scala-tools.org-copy</id>
+            <id>net.sf.robocode</id>
             <name>Robocode copy of plugins</name>
             <url>http://robocode.sourceforge.net/maven2</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>scala-tools.org</id>
-            <name>Scala-tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>atlassian</id>
-            <name>Atlassian Maven2 Repository</name>
-            <url>https://m2proxy.atlassian.com/repository/public/</url>
         </pluginRepository>
     </pluginRepositories>
     <distributionManagement>
@@ -86,10 +66,6 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.4.3</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-scala-plugin</artifactId>
-                    <version>2.9.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-eclipse-plugin</artifactId>

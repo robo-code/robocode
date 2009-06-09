@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
@@ -14,20 +14,14 @@
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.dotnet.nhost</artifactId>
-            <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
             <version>${robocode.version}</version>
         </dependency>
-		<dependency>
-		    <groupId>net.sf.jacob-project</groupId>
-		    <artifactId>jacob</artifactId>
-		    <version>1.14.3</version>
-		</dependency> 
+        <dependency>
+            <groupId>net.sf.jni4net</groupId>
+            <artifactId>jni4net.mini.j</artifactId>
+            <version>0.1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

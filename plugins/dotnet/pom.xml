@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -20,10 +20,22 @@
         <module>robocode.dotnet.repository</module>
         <module>robocode.dotnet.installer</module>
         <module>robocode.dotnet.samples</module>
-        <module>selvin.exportdll</module>
-        <module>selvin.exportdllattribute</module>
     </modules>
     <build>
+        <pluginManagement>
+            <plugins>
+	            <plugin>
+	                <groupId>org.sonatype.nmaven.plugins</groupId>
+	                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+	                <version>0.17robocode</version>
+	            </plugin>                
+				<plugin>
+					<groupId>org.sonatype.nmaven.plugins</groupId>
+					<artifactId>maven-dotnet-test-plugin</artifactId>
+	                <version>0.17robocode</version>
+				</plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
