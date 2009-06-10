@@ -14,7 +14,6 @@ package robocode.control.snapshot;
 
 import java.awt.geom.Rectangle2D;
 
-import robocode.Robject;
 
 /**
  * This is an interface for a snapshot of a robject (Robot OBJECT)

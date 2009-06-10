@@ -19,7 +19,6 @@ import net.sf.robocode.core.Container;
  * @author Pavel Savara (original)
  */
 public class Module {
-	static {
-		Container.cache.addComponent("robocode.host.dotnet", DotNetHost.class);
+	static {// Container.cache.addComponent("robocode.host.dotnet", DotNetHost.class);
 	}
 }

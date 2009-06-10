@@ -79,10 +79,12 @@ public final class AboutBox extends JDialog {
 			+ "<b><font color=\"green\">Julian Kent</font></b> (nano precision timing of allowed robot time), "
 			+ "<b><font color=\"green\">Joachim Hofer</font></b> (fixing problem with wrong results in RoboRumble), "
 			+ "<b><font color=\"green\">Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh</font></b> (score % in results/rankings), "
-			+ "<b><font color=\"green\">Jerome Lavigne</font></b> (addition of \"Smart Battles\" to MeleeRumble)<br><br>"
+			+ "<b><font color=\"green\">Jerome Lavigne</font></b> (added \"Smart Battles\" to MeleeRumble), "
+			+ "<b><font color=\"green\">Ruben Moreno Montoliu</font></b> (added list paths with buttons to Developement Options), "
+			+ "<b><font color=\"green\">Joshua Galecki</font></b> (the implementation of the RateControlRobot)<br><br>"
 			+ "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
 			+ "</center></td></tr></table></body>";
-
+	
 	// Robocode version
 	private final String robocodeVersion;
 

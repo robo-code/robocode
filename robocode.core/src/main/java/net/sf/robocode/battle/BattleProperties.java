@@ -132,7 +132,7 @@ public class BattleProperties implements Serializable {
 	 * @see Robot#getGunHeat()
 	 * @see Robot#fire(double)
 	 * @see Robot#fireBullet(double)
-	 * @see net.sf.robocode.battle.BattleRules#getGunCoolingRate()
+	 * @see robocode.BattleRules#getGunCoolingRate()
 	 */
 	public double getGunCoolingRate() {
 		return gunCoolingRate;
@@ -146,7 +146,7 @@ public class BattleProperties implements Serializable {
 	 * @see Robot#getGunHeat()
 	 * @see Robot#fire(double)
 	 * @see Robot#fireBullet(double)
-	 * @see net.sf.robocode.battle.BattleRules#getGunCoolingRate()
+	 * @see robocode.BattleRules#getGunCoolingRate()
 	 */
 	public void setGunCoolingRate(double gunCoolingRate) {
 		this.gunCoolingRate = gunCoolingRate;
@@ -166,7 +166,7 @@ public class BattleProperties implements Serializable {
 	 * So don't count on the inactivity time being 450 turns!
 	 *
 	 * @return the allowed inactivity time.
-	 * @see net.sf.robocode.battle.BattleRules#getInactivityTime()
+	 * @see robocode.BattleRules#getInactivityTime()
 	 * @see Robot#doNothing()
 	 * @see AdvancedRobot#execute()
 	 */
@@ -178,7 +178,7 @@ public class BattleProperties implements Serializable {
 	 * Sets the allowed inactivity time, where the robot is not taking any action, before will begin to be zapped.
 	 *
 	 * @param inactivityTime the new allowed inactivity time.
-	 * @see net.sf.robocode.battle.BattleRules#getInactivityTime()
+	 * @see robocode.BattleRules#getInactivityTime()
 	 * @see Robot#doNothing()
 	 * @see AdvancedRobot#execute()
 	 */

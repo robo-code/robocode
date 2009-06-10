@@ -21,10 +21,6 @@
                     <groupId>net.sf.robocode</groupId>
                     <artifactId>robocode.api</artifactId>
                 </exclusion>
-                <exclusion>
-					    <groupId>net.sf.jacob-project</groupId>
-					    <artifactId>jacob</artifactId>
-                    </exclusion>
             </exclusions>
         </dependency>
     </dependencies>

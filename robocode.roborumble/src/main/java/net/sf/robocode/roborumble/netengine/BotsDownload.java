@@ -31,6 +31,7 @@ import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
@@ -189,7 +190,7 @@ public class BotsDownload {
 			urlc.setDoInput(true);
 			urlc.connect();
 
-			// Check that if retrieved a HTTP_OK response.
+			// Check that we received a HTTP_OK response code.
 			// Bugfix [2779557] - Client tries to remove all participants.
 			if (urlc.getResponseCode() != HttpURLConnection.HTTP_OK) {
 				System.out.print("Unable to retrieve participants list. Response is " + urlc.getResponseCode());
@@ -205,18 +206,19 @@ public class BotsDownload {
 
 			in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
 
-			for (String str; (str = in.readLine()) != null;) {
-				if (str.indexOf(begin) >= 0) {
+			for (String particiant; (particiant = in.readLine()) != null;) {
+
+				if (particiant.indexOf(begin) >= 0) {
 					arebots = true;
-				} else if (str.indexOf(end) >= 0) {
+				} else if (particiant.indexOf(end) >= 0) {
 					arebots = false;
 				} else if (arebots) {
-					int commaIndex = str.indexOf(",");
-
-					String name = (commaIndex >= 0) ? str.substring(0, commaIndex) : str;
-
-					if (!isExcluded(name)) {
-						bots.add(str);
+					if (isExcludedPartificant(particiant) == false && verifyParticipantFormat(particiant) == false) {
+						if (particiant.trim().length() > 0) {
+							System.out.println("Participant ignored due to invalid line: '" + particiant + '\'');
+						}
+					} else {
+						bots.add(particiant);
 					}
 				}
 			}
@@ -274,8 +276,8 @@ public class BotsDownload {
 
 			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") >= 0) {
-					String id = record.substring(record.indexOf(",") + 1);
-					String name = record.substring(0, record.indexOf(","));
+					String id = record.substring(record.indexOf(",") + 1).trim();
+					String name = record.substring(0, record.indexOf(",")).trim();
 					String jar = name.replace(' ', '_') + ".jar";
 
 					jars.add(jar);
@@ -367,8 +369,6 @@ public class BotsDownload {
 		} else {
 			url = id;
 		}
-
-		System.out.println("Trying to download " + botname);
 
 		DownloadStatus downloadStatus = FileTransfer.download(url, filed, sessionId);
 
@@ -611,7 +611,12 @@ public class BotsDownload {
 		}
 	}
 
-	// Check if a robot is excluded
+	// Checks if a participant must be excluded
+	private boolean isExcludedPartificant(String participant) {
+		return (excludes != null) ? isExcluded(participant.split("[,]")[0].trim()) : false;
+	}
+
+	// Checks if a robot name is in the exclude list
 	private boolean isExcluded(String bot) {
 		if (excludes == null) {
 			return false;
@@ -631,5 +636,29 @@ public class BotsDownload {
 
 		// Not excluded
 		return false;
+	}
+
+	// Checks if a participant format from the participant list is valid
+	private boolean verifyParticipantFormat(String participant) {
+		String[] split = participant.split("[,]");
+
+		boolean matches = false;
+	
+		if (split.length == 2) {
+			String robot = split[0].trim();
+			String link = split[1].trim();
+	
+			if (robot.matches("[\\w\\.]+[ ][\\w\\.-]+")) {
+				if (link.startsWith("http")) {
+					try {
+						new URL(link);
+						matches = true;
+					} catch (MalformedURLException e) {}
+				} else if (link.matches("[\\d]+")) {
+					matches = true;
+				}
+			}
+		}
+		return matches;
 	}
 }

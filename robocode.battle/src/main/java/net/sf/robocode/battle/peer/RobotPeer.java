@@ -71,7 +71,6 @@ package net.sf.robocode.battle.peer;
 
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BoundingRectangle;
-import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.events.EventManager;
@@ -94,7 +93,6 @@ import robocode.exception.WinException;
 import robocode.util.Utils;
 import static robocode.util.Utils.*;
 
-import java.awt.Point;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;

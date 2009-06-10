@@ -14,10 +14,10 @@
                 <exclude>**/Thumbs.db</exclude>
                 <exclude>**/~*</exclude>
                 <exclude>**/.*</exclude>
-                <exclude>**/.*</exclude>
                 <exclude>**/_svn/**</exclude>
                 <exclude>**/.svn/**</exclude>
                 <exclude>**/.metadata/**</exclude>
+                <exclude>**/bin/**</exclude>
                 <exclude>**/target/**</exclude>
                 <exclude>**/lib/**</exclude>
             </excludes>

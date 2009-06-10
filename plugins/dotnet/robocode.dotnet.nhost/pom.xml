@@ -20,22 +20,37 @@
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>selvin.exportdllattribute</artifactId>
-            <version>${robocode.nversion}</version>
-		    <type>dotnet:library</type>
-		    <scope>provided</scope>
+            <artifactId>robocode.dotnet.host</artifactId>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>selvin.exportdll</artifactId>
-            <version>${robocode.nversion}</version>
-		    <type>dotnet:exe</type>
-		    <scope>provided</scope>
+            <groupId>net.sf.jni4net</groupId>
+            <artifactId>jni4net.mini.n</artifactId>
+            <version>0.1.0.0</version>
+            <type>dotnet:library</type>
         </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <exec executable="cmd.exe" dir="." failonerror="true">
+                                    <arg value="/c ..\tools\lib\jni4net.proxygen-0.1.0.0.exe src\robocode.proxygen.xml"/>
+                                </exec>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.sonatype.nmaven.plugins</groupId>
 				<artifactId>maven-dotnet-compiler-plugin</artifactId>
@@ -45,30 +60,6 @@
 		          <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
 		        </configuration>
 			</plugin>
-		    <plugin>
-		        <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
-		        <artifactId>maven-antrun-extended-plugin</artifactId>
-		        <executions>
-		          <execution>
-		            <phase>process-classes</phase>
-		            <configuration>
-		              <tasks>
-		               <resolveArtifact property="exportdll" groupId="net.sf.robocode" artifactId="selvin.exportdll" version="${robocode.nversion}" type="dotnet:exe"/>
-		               <resolveArtifact property="exportdllattribute" groupId="net.sf.robocode" artifactId="selvin.exportdllattribute" version="${robocode.nversion}" type="dotnet:library"/>
-		               <copy file="${exportdll}" todir="target/tool"/>
-		               <copy file="${exportdllattribute}" todir="target/tool"/>
-						<exec executable="cmd.exe" dir="target">
-							<arg value="/c tool\selvin.exportdll-${robocode.nversion}.exe robocode.dotnet.nhost-${robocode.nversion}.dll"/>
-						</exec>
-		              </tasks>
-		            </configuration>
-		            <goals>
-		              <goal>run</goal>
-		            </goals>
-		          </execution>
-		        </executions>
-		      </plugin>
-
 	    </plugins>
     </build>
 </project>
