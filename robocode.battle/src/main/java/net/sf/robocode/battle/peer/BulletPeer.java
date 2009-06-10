@@ -41,6 +41,8 @@
  *       as the battleField variable was not intialized
  *     Pavel Savara
  *     - disconnected from Bullet, now we rather send BulletStatus to proxy side
+ *     Joshua Galecki
+ *     - Added obstacle collision  
  *******************************************************************************/
 package net.sf.robocode.battle.peer;
 
@@ -61,6 +63,7 @@ import java.util.List;
  * @author Luis Crespo (contributor)
  * @author Robert D. Maupin (contributor)
  * @author Titus Chen (constributor)
+ * @author Joshua Galecki (contributor)
  */
 public class BulletPeer {
 
@@ -225,9 +228,10 @@ public class BulletPeer {
 		{
 			if (robject.isBulletStopper() && robject.getBoundaryRect().contains(x, y))
 			{
-				//TODO: This might need a HIT_OBJECT
-				state = BulletState.HIT_WALL;
+				state = BulletState.HIT_OBJECT;
 				owner.addEvent(new BulletMissedEvent(createBullet()));
+				
+				robject.hitByBullet();
 			}
 		}
 	}
@@ -358,6 +362,7 @@ public class BulletPeer {
 			break;
 
 		case HIT_WALL:
+		case HIT_OBJECT:
 			state = BulletState.INACTIVE;
 			break;
 		}

@@ -92,6 +92,8 @@
  *     - Re-work of robot interfaces
  *     - Refactored large methods into several smaller methods
  *     - decomposed RobotPeer from RobotProxy, now sending messages beteen them
+ *     Joshua Galecki
+ *     - Added objects and extension framework
  *******************************************************************************/
 package net.sf.robocode.battle;
 
@@ -133,6 +135,7 @@ import java.util.regex.Pattern;
  * @author Nathaniel Troutman (contributor)
  * @author Julian Kent (contributor)
  * @author Pavel Savara (contributor)
+ * @author Joshua Galecki (contributor)
  */
 public final class Battle extends BaseBattle {
 
@@ -177,11 +180,6 @@ public final class Battle extends BaseBattle {
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		this.hostManager = hostManager;
 		this.cpuConstant = cpuManager.getCpuConstant();
-		
-			
-		//hack... remove once di is established
-		customRules = new ClassicRules();
-		battleSetup = new CaptureTheFlagSetup();
 	}
 
 	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProperties, 
@@ -191,8 +189,7 @@ public final class Battle extends BaseBattle {
 				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
 				battleProperties.getInactivityTime());
 		robotsCount = battlingRobotsList.length;
-		computeInitialPositions(battleProperties.getInitialPositions());
-		createPeers(battlingRobotsList);
+		
 		if (customRules != null)
 		{
 			this.customRules = customRules;
@@ -211,7 +208,12 @@ public final class Battle extends BaseBattle {
 		}
 
 		//call setup, rules here
-		robjects = this.battleSetup.setupObjects();
+		robjects = this.battleSetup.setupObjects(battleProperties.getBattlefieldWidth(), 
+				battleProperties.getBattlefieldHeight());
+		
+
+		computeInitialPositions(battleProperties.getInitialPositions());
+		createPeers(battlingRobotsList);
 	}
 
 	private void createPeers(RobotSpecification[] battlingRobotsList) {
@@ -519,7 +521,7 @@ public final class Battle extends BaseBattle {
 
 		handleDeathRobots();
 
-		if (isAborted() || customRules.isGameOver(getActiveRobots(), robots)) {
+		if (isAborted() || customRules.isGameOver(getActiveRobots(), robots, robjects)) {
 			shutdownTurn();
 		}
 
@@ -857,15 +859,29 @@ public final class Battle extends BaseBattle {
 		initialRobotPositions = new double[positions.size()][3];
 
 		String[] coords;
-		double x, y, heading;
+		double x = 0, y = 0, heading;
 
 		for (int i = 0; i < positions.size(); i++) {
 			coords = positions.get(i).split(",");
 
 			final Random random = RandomFactory.getRandom();
 
-			x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-			y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+			//The poor man's obstacle avoidance. TODO: improve
+			boolean collides = true;
+			while (collides)
+			{
+				x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+				y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+				
+				collides = false;
+				for (Robject robject : robjects)
+				{
+					if (robject.getBoundaryRect().contains(x, y))
+					{
+						collides = true;
+					}
+				}
+			}
 			heading = 2 * Math.PI * random.nextDouble();
 
 			int len = coords.length;

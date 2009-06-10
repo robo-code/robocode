@@ -8,6 +8,8 @@
  * Contributors:
  *     Flemming N. Larsen
  *     - Initial implementation
+ *     Joshua Galecki
+ *     - added a HIT_OBJECT state
  *******************************************************************************/
 package robocode.control.snapshot;
 
@@ -17,6 +19,7 @@ package robocode.control.snapshot;
  * hitting another bullet, hitting the wall, exploded, or inactive when it done an inactivated.
  *
  * @author Flemming N. Larsen (original)
+ * @author Joshua Galecki (contributor)
  * @since 1.6.2
  */
 public enum BulletState {
@@ -40,7 +43,10 @@ public enum BulletState {
 	EXPLODED(5),
 
 	/** The bullet is currently inactive. Hence, it is not active or visible on the battlefield. */
-	INACTIVE(6);
+	INACTIVE(6),
+	
+	/** The bullet has hit an object that stops bullets */
+	HIT_OBJECT(7);
 
 	private final int value;
 
@@ -92,7 +98,10 @@ public enum BulletState {
 
 		case 6:
 			return INACTIVE;
-
+		
+		case 7:
+			return HIT_OBJECT;
+			
 		default:
 			throw new IllegalArgumentException("unknown value");
 		}

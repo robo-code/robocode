@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ * 		Joshua Galecki
+ * 		-Initial implementation
+  *******************************************************************************/
+
 package net.sf.robocode.battle.snapshot;
 
 import java.awt.geom.Rectangle2D;
@@ -5,6 +17,12 @@ import java.awt.geom.Rectangle2D;
 import robocode.Robject;
 import robocode.control.snapshot.IRobjectSnapshot;
 
+/**
+ * This is class transmits information about a robject
+ * 
+ * @author Joshua Galecki (original)
+ *
+ */
 public class RobjectSnapshot implements IRobjectSnapshot {
 
 	private double x;
@@ -12,6 +30,7 @@ public class RobjectSnapshot implements IRobjectSnapshot {
 	private double width;
 	private double height;
 	private String type;
+	private boolean draw;
 
 	/**
 	 * {@inheritDoc}
@@ -56,10 +75,15 @@ public class RobjectSnapshot implements IRobjectSnapshot {
 		this.width = robject.getWidth();
 		this.height = robject.getHeight();
 		this.type = robject.getType();
+		this.draw = robject.shouldDraw();
 	}
 
 	public Rectangle2D getPaintRect() {
 		return new Rectangle2D.Double(0, 0, width, height);
+	}
+
+	public boolean shouldDraw() {
+		return draw;
 	}
 
 }

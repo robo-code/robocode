@@ -10,6 +10,7 @@
  * 		-Initial implementation
   *******************************************************************************/
 
+
 package net.sf.robocode.battle;
 
 import java.util.List;
@@ -19,13 +20,13 @@ import robocode.Robject;
 import net.sf.robocode.battle.peer.RobotPeer;
 
 /**
- * This interface will provide winning and losing conditions, scoring, and other rules
+ * This class is the base class for all extension rule sets.
  * 
  * @author Joshua Galecki (original)
  *
  */
-public interface ICustomRules {
-	boolean isGameOver(int activeRobots, List<RobotPeer> robots, List<Robject> robjects);
-
-	//TODO: put scoring in here later
+public abstract class CustomRules implements ICustomRules{
+	
+	public abstract boolean isGameOver(int activeRobots, List<RobotPeer> robots,
+			List<Robject> robjects);
 }

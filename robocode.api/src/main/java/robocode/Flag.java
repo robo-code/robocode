@@ -13,20 +13,46 @@
 package robocode;
 
 /**
- * This robject allows robots to see and shoot over it, btu they cannot pass through it.
+ * This is a flag for Capture the Flag
  * 
  * @author Joshua Galecki (original)
  *
  */
-public class Trench extends Robject{
+public class Flag extends Robject{
 
-	public Trench(String type, int x, int y, int width, int height) {
-		super(type, x, y, width, height, true, false, false,
+	private boolean held;
+	private Robot owner;
+	
+	public Flag(String type, int x, int y) {
+		super(type, x, y, 10, 10, false, false, false,
 				true, true);
+		held = false;
+		owner = null;
+	}
+
+	public void setHeld(boolean held) {
+		this.held = held;
+	}
+
+	public boolean isHeld() {
+		return held;
+	}
+
+	public void setOwner(Robot owner) {
+		this.owner = owner;
+	}
+
+	public Robot getOwner() {
+		return owner;
+	}
+
+	public void hitByRobot()
+	{
+		held = true;
 	}
 
 	@Override
 	public boolean shouldDraw() {
-		return true;
+		return !held;
 	}
 }

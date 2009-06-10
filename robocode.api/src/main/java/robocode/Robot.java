@@ -28,6 +28,8 @@
  *     Pavel Savara
  *     - Re-work of robot interfaces
  *     - Added getGraphics()
+ *     Joshua Galecki
+ *     - Added object events
  *******************************************************************************/
 package robocode;
 
@@ -57,6 +59,7 @@ import java.awt.*;
  * @author Matthew Reeder (contributor)
  * @author Stefan Westen (contributor)
  * @author Pavel Savara (contributor)
+ * @author Joshua Galecki (contributor)
  * @see <a target="_top" href="http://robocode.sourceforge.net">
  *      robocode.sourceforge.net</a>
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
@@ -728,6 +731,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 */
 	public void onScannedRobot(ScannedRobotEvent event) {}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onScannedObject(ScannedObjectEvent event) {}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1532,4 +1540,19 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@inheritDoc}
 	 */
 	public void onStatus(StatusEvent e) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onHitObstacle(HitObstacleEvent event) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onHitObject(HitObjectEvent event) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void ScannedObjectEvent(robocode.ScannedObjectEvent event) {}
 }

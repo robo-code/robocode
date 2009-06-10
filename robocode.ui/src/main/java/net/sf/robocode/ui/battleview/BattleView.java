@@ -12,6 +12,8 @@
  *     - Rewritten
  *     Pavel Savara
  *     - now driven by BattleObserver
+ *     Joshua Galecki
+ *     - added robject (Robot OBJECT) drawing
  *******************************************************************************/
 package net.sf.robocode.ui.battleview;
 
@@ -44,6 +46,8 @@ import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.*;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -51,6 +55,7 @@ import java.util.Random;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
+ * @author Joshua Galecki (contributor)
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
@@ -310,14 +315,17 @@ public class BattleView extends Canvas {
 		drawGround(g);
 
 		if (snapShot != null) {
+			// Draw objects below the scan arc layer
+			drawLowObjects(g, snapShot);
+			
 			// Draw scan arcs
 			drawScanArcs(g, snapShot);
 
 			// Draw robots
 			drawRobots(g, snapShot);
 			
-			// Draw objects
-			drawObjects(g, snapShot);
+			// Draw objects above the robot layer
+			drawHighObjects(g, snapShot);
 		}
 
 		// Draw the border of the battlefield
@@ -441,28 +449,57 @@ public class BattleView extends Canvas {
 		}
 	}
 
-	private void drawObjects(Graphics2D g, ITurnSnapshot snapShot) {
+	private void drawLowObjects(Graphics2D g, ITurnSnapshot snapShot) {
 		double x, y;
 		AffineTransform at;
 		int battleFieldHeight = battleField.getHeight();
 
 		for (IRobjectSnapshot robjectSnapshot : snapShot.getRobjects()) {
-			x = robjectSnapshot.getX();
-			y = battleFieldHeight - robjectSnapshot.getY() - robjectSnapshot.getHeight();
-
-			at = AffineTransform.getTranslateInstance(x, y);
-
-			Area robjectArea = new Area(robjectSnapshot.getPaintRect()).createTransformedArea(at);
-			
-			if (robjectSnapshot.getType().equals("box"))
+			if (robjectSnapshot.shouldDraw())
 			{
-				g.setColor(Color.BLACK);
+				x = robjectSnapshot.getX();
+				y = battleFieldHeight - robjectSnapshot.getY() - robjectSnapshot.getHeight();
+	
+				at = AffineTransform.getTranslateInstance(x, y);
+	
+				Area robjectArea = new Area(robjectSnapshot.getPaintRect()).createTransformedArea(at);
+				
+				if (robjectSnapshot.getType().equals("flag"))
+				{
+					g.setColor(Color.CYAN);
+					g.fill(robjectArea);
+				}
+				else
+				{
+					g.setColor(Color.LIGHT_GRAY);
+					g.fill(robjectArea);
+				}
 			}
-			else
+		}
+	}
+	
+	//TODO: make height of objects a property
+	private void drawHighObjects(Graphics2D g, ITurnSnapshot snapShot) {
+		double x, y;
+		AffineTransform at;
+		int battleFieldHeight = battleField.getHeight();
+
+		for (IRobjectSnapshot robjectSnapshot : snapShot.getRobjects()) {
+			if (robjectSnapshot.shouldDraw())
 			{
-				g.setColor(Color.LIGHT_GRAY);
+				x = robjectSnapshot.getX();
+				y = battleFieldHeight - robjectSnapshot.getY() - robjectSnapshot.getHeight();
+	
+				at = AffineTransform.getTranslateInstance(x, y);
+	
+				Area robjectArea = new Area(robjectSnapshot.getPaintRect()).createTransformedArea(at);
+				
+				if (robjectSnapshot.getType().equals("box"))
+				{
+					g.setColor(Color.BLACK);
+					g.fill(robjectArea);
+				}
 			}
-			g.fill(robjectArea);
 		}
 	}
 
@@ -624,26 +661,36 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawScanArc(Graphics2D g, IRobotSnapshot robotSnapshot) {
-		Arc2D.Double scanArc = (Arc2D.Double) ((RobotSnapshot) robotSnapshot).getScanArc();
-
-		if (scanArc == null) {
+		//Arc2D.Double scanArc = (Arc2D.Double) ((RobotSnapshot) robotSnapshot).getScanArc();
+		ArrayList<Arc2D> scanArcs = (ArrayList<Arc2D>) ((RobotSnapshot) robotSnapshot).getScanArc();
+		
+		if (scanArcs == null) {
 			return;
 		}
 
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
 
-		scanArc.setAngleStart((360 - scanArc.getAngleStart() - scanArc.getAngleExtent()) % 360);
-		scanArc.y = battleField.getHeight() - robotSnapshot.getY() - robocode.Rules.RADAR_SCAN_RADIUS;
+		for (Arc2D uncastArc : scanArcs)
+		{
+			
+			
+			Arc2D.Double scanArc = (Arc2D.Double)uncastArc;
+			
+			
+			scanArc.setAngleStart((360 - scanArc.getAngleStart() - scanArc.getAngleExtent()) % 360);
+			scanArc.y = battleField.getHeight() - robotSnapshot.getY() - scanArc.height / 2;
 
-		int scanColor = robotSnapshot.getScanColor();
-
-		g.setColor(new Color(scanColor, true));
-
-		if (abs(scanArc.getAngleExtent()) >= .5) {
-			g.fill(scanArc);
-		} else {
-			g.draw(scanArc);
+			int scanColor = robotSnapshot.getScanColor();
+	
+			g.setColor(new Color(scanColor, true));
+	
+			if (abs(scanArc.getAngleExtent()) >= .5) {
+				g.fill(scanArc);
+			} else {
+				g.draw(scanArc);
+			}
 		}
+		
 		g.setComposite(AlphaComposite.SrcOver);
 	}
 

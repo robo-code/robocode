@@ -4,9 +4,11 @@ import java.util.List;
 
 import robocode.Robject;
 
-public class ClassicSetup implements IBattlefieldSetup {
+public class ClassicSetup extends BattlefieldSetup {
 
-	public List<Robject> setupObjects() {
+	@Override
+	public List<Robject> setupObjects(int battlefieldWidth,
+			int battlefieldHeight) {
 		//give back no objects
 		return null;
 	}

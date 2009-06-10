@@ -10,6 +10,8 @@
  *     - Initial implementation
  *     Pavel Savara
  *     - Xml Serialization, refactoring
+ *     Joshua Galecki
+ *     - changed one scan arc to a list of scan arcs 
  *******************************************************************************/
 package net.sf.robocode.battle.snapshot;
 
@@ -27,6 +29,7 @@ import robocode.control.snapshot.RobotState;
 import java.awt.geom.Arc2D;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
 
@@ -37,6 +40,7 @@ import java.util.List;
  *
  * @author Flemming N. Larsen (original)
  * @author Pavel Savara (contributor)
+ * @author Joshua Galecki (contributor)
  * @since 1.6.1
  */
 public final class RobotSnapshot implements Serializable, IXmlSerializable, IRobotSnapshot {
@@ -110,7 +114,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	private boolean isSGPaintEnabled;
 
 	/** Snapshot of the scan arc */
-	private SerializableArc scanArc;
+	private List<SerializableArc> scanArcs;
 
 	/** Snapshot of the object with queued calls for Graphics object */
 	private Object graphicsCalls;
@@ -166,7 +170,18 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		isPaintEnabled = robot.isPaintEnabled();
 		isSGPaintEnabled = robot.isSGPaintEnabled();
 
-		scanArc = robot.getScanArc() != null ? new SerializableArc((Arc2D.Double) robot.getScanArc()) : null;
+		if (robot.getScanArcs() != null) 
+		{
+			scanArcs = new ArrayList<SerializableArc>();
+			for (Arc2D arc : robot.getScanArcs())
+			{
+				scanArcs.add(new SerializableArc((Arc2D.Double) arc));
+			}
+		}
+		else
+		{
+			scanArcs = null;
+		}
 
 		graphicsCalls = robot.getGraphicsCalls();
 
@@ -388,8 +403,18 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 *
 	 * @return the scan arc snapshot for the robot.
 	 */
-	public Arc2D getScanArc() {
-		return scanArc != null ? scanArc.create() : null;
+
+	public List<Arc2D> getScanArc() {
+		if (scanArcs != null)
+		{
+			ArrayList<Arc2D> createdScanArc = new ArrayList<Arc2D>();
+			for (SerializableArc arc : scanArcs)
+			{
+				createdScanArc.add(arc.create());
+			}
+			return createdScanArc;
+		}
+		return null;
 	}
 
 	/**

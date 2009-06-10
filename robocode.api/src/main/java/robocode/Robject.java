@@ -1,33 +1,52 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ * 		Joshua Galecki
+ * 		-Initial implementation
+  *******************************************************************************/
+
 package robocode;
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
-
-public class Robject {
+/**
+ * This class is the basic object used by the Robocode extensibility framework
+ * 
+ * @author Joshua Galecki (original)
+ *
+ */
+public abstract class Robject {
 
 	private int x;
 	private int y;
 	private int width;
 	private int height;
-	private String type;	//TODO: change to enum
-	private boolean tankStopper;
+	private String type;
+	private boolean robotStopper;
 	private boolean bulletStopper;
 	private boolean scanStopper;
 	
 	private boolean scannable;
+	private boolean robotConscious;
 	
 	public Robject(String type, int x, int y, int width, int height, boolean stopsTanks,
-			boolean stopsBullets, boolean stopsScans, boolean scannable)
+			boolean stopsBullets, boolean stopsScans, boolean scannable, boolean tankConscious)
 	{
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.type = type;
-		tankStopper = stopsTanks;
+		robotStopper = stopsTanks;
 		bulletStopper = stopsBullets;
 		scanStopper = stopsScans;
+		this.setRobotConscious(tankConscious);
 		this.scannable = scannable;
 	}
 
@@ -91,12 +110,29 @@ public class Robject {
 		return bulletStopper;
 	}
 
-	public void setTankStopper(boolean tankStopper) {
-		this.tankStopper = tankStopper;
+	public void setRobotStopper(boolean robotStopper) {
+		this.robotStopper = robotStopper;
 	}
 
-	public boolean isTankStopper() {
-		return tankStopper;
+	public boolean isRobotStopper() {
+		return robotStopper;
+	}
+
+	public void setRobotConscious(boolean robotConscious) {
+		this.robotConscious = robotConscious;
+	}
+
+	public boolean isRobotConscious() {
+		return robotConscious;
 	}
 	
+	public void hitByRobot() {
+		//do nothing by default
+	}
+	
+	public void hitByBullet() {
+		//do nothing by default
+	}
+	
+	public abstract boolean shouldDraw();
 }

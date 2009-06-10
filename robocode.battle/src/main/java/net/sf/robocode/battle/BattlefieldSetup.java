@@ -16,16 +16,29 @@ import java.util.List;
 
 import robocode.Robject;
 
-import net.sf.robocode.battle.peer.RobotPeer;
-
 /**
- * This interface will provide winning and losing conditions, scoring, and other rules
+ * This is the base class of any extension that modifies the battlefield
  * 
  * @author Joshua Galecki (original)
  *
  */
-public interface ICustomRules {
-	boolean isGameOver(int activeRobots, List<RobotPeer> robots, List<Robject> robjects);
+public abstract class BattlefieldSetup implements IBattlefieldSetup {
+	
+	public abstract List<Robject> setupObjects(int battlefieldWidth, int battlefieldHeight);
 
-	//TODO: put scoring in here later
+	public List<Robject> checkBoundaries(List<Robject> robjects, int battlefieldWidth, int battlefieldHeight)
+	{
+		for (Robject robject : robjects)
+		{
+			if (robject.getX() + robject.getWidth() > battlefieldWidth)
+			{
+				robject.setWidth(battlefieldWidth - robject.getX());
+			}
+			if (robject.getY() + robject.getHeight() > battlefieldHeight)
+			{
+				robject.setHeight(battlefieldHeight - robject.getY());
+			}
+		}
+		return robjects;
+	}
 }
