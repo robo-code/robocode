@@ -133,7 +133,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			notifyRobot(message);
 			throw new ClassNotFoundException(message);
 		}
-		if (name.startsWith("javax.swing")) {
+		if (isSecutityOn && name.startsWith("javax.swing")) {
 			final String message = "Robots are not allowed to reference javax.swing package";
 
 			notifyRobot(message);
