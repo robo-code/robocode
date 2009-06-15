@@ -1,12 +1,15 @@
 Version 1.7.1.3
-(14-Jun-2009)
+(15-Jun-2009)
+---------------
 = Bugfixes =
 * Bug [2805858] - Access denied javax.swing -DNOSECURITY=true
+
+= Changes =
+* The default font on the Graphics context when using onPaint(Graphics2D) or getGraphics() has been changed to the "Dialog" font.
 
 Version 1.7.1.3 Beta
 (08-Jun-2009)
 ---------------
-
 = Bugfixes =
 * AdvancedRobot.setMaxTurnRate() did not work properly since version 1.5.4
 * Bug [2799165] - Wrong survival scores sent by rumble client
@@ -33,7 +36,6 @@ Version 1.7.1.3 Beta
 Version 1.7.1.2
 (25-May-2009)
 ---------------
-
 = Bugfixes =
 * Bug [2791007] - FontMetrics StackOverflowError
 * Bug [2791010] - Graphics2D.setFont() has no effect
@@ -49,7 +51,6 @@ Version 1.7.1.2
 Version 1.7.1.2 Beta
 (08-May-2009)
 ---------------
-
 = Bugfixes =
 * Bug [2077512] - Bug in RobotPeer.updateMovement? Robocode was not moving 100% according to it's own rules. Now it is.
 * Bug [2740708] - Fair Play! With two identical robots in a battle against each other, the first robots was much more likely to win, which was not fair.
@@ -72,7 +73,6 @@ Version 1.7.1.2 Beta
 Version 1.7.1.1
 (10-Apr-2009)
 ---------------
-
 With this release we have focused on eliminating as many problems seen with RoboRumble as possible. Hence, this version should hopefully prove stable as the new RoboRumble client.
 
 = Bugfixes for RoboRumble =
@@ -97,7 +97,6 @@ With this release we have focused on eliminating as many problems seen with Robo
 Version 1.7.1
 (24-Mar-2009)
 ---------------
-
 = Bugfixes =
 * Bug [2643448] - Editor UNDO does delete the line when no is undo left.
 * Bug [2664844] - Editor: Find/replace dialog (set cursor position).
@@ -112,7 +111,6 @@ Version 1.7.1
 Version 1.7.1 Beta 2
 (11-Mar-2009)
 ---------------
-
 = Bugfixes =
 * Bug [2658090] - Typing to find bot no longer works.
 * Bug [2666598] - API: Typo in Documentation onBulletMissed(BulletMissedEvent).
@@ -126,7 +124,6 @@ Version 1.7.1 Beta 2
 Version 1.7.1 Beta
 (01-Mar-2009)
 ---------------
-
 With this release we give BIG thanks to Nat Pavasant who have put in great effort in testing and finding as many bugs in Robocode as possible. He has been a great help with testing especially RoboRumble@Home functionality.
 
 Currently, there is one known issue, which will be fixed with the next Beta or in the final release of version 1.7.1. This is critical for e.g. the TeamRumble, so please notice the known issue below.
@@ -168,14 +165,12 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 Version 1.7.0.2
 (16-Feb-2009)
 ---------------
-
 = Bugfix =
 * The fix for "Bug [2597046] Compiler classpath not quoted" backfired, as the entire text field in the window with the compiler properties would now be quoted. Hence, the compiler would not be able to compile, and it was not possible to cheage the compiler preferences from the GUI.
 
 Version 1.7.0.1
 (14-Feb-2009)
 ---------------
-
 = Bugfixes =
 * Bug [2596947] Fix needed to Robocode.bat: Some users experienced problems with starting Robocode. Hence, all startup batch and shell files for Windows, Linux, Mac OS X etc. have been corrected.
 * Bug [2597046] Compiler classpath not quoted: When running Robocode in a folder with spaces, the compiler classpath was not quoted. Hence, the compiler would not work.
@@ -183,7 +178,6 @@ Version 1.7.0.1
 Version 1.7
 (11-Feb-2009)
 ---------------
-
 = Bugfixes =
 * Bug [2580555] Battle Results screen displaying old results. The results where not updated on the Battle Results windows between battles.
 * Bug [2585586] Robot disabled by any other than loosing energy can recover. Robots disabled due to bad behaviour could regain energy by hitting another robot by a bullet after it had been disabled. Now this is only possible when the robot has disabled itself by using all its energy, but can recover by hitting an enemy, which is allowed.
@@ -192,7 +186,6 @@ Version 1.7
 Version 1.7 Beta 2
 (26-Jan-2009)
 ---------------
-
 = Bugfixes =
 * Bug [2527112] Ubuntu throws NullPointerException in main when trying to startup Robocode.
 * Bug [2528467] Installation fail on windows if directory contain space(s).
@@ -221,7 +214,6 @@ Version 1.7 Beta
 Version 1.6.2
 (04-Jan-2009)
 ---------------
-
 = Bugfixes =
 * Bug [2467536] Robot name was missing when replaying XML record.
 * Bug [2465580] Junior Robot turnAheadRight() bug. When a JuniorRobot was calling turnAheadRight(), turnAheadLeft(), turnBackRight(), or turnBackLeft() - the following exception occurred causing the robot to be terminated:  java.lang.ClassCastException: robocode.peer.proxies.StandardRobotProxy
@@ -230,7 +222,6 @@ Version 1.6.2
 Version 1.6.2 Beta 4
 (22-Dec-2008)
 ---------------
-
 = Bugfixes =
 * Fixed open battle dialog, which was not loading.
 * Fixed recorder NPE
@@ -240,7 +231,6 @@ Version 1.6.2 Beta 4
 Version 1.6.2 Beta 3
 (18-Dec-2008)
 ---------------
-
 = Changes =
 * Published new battle events and battle snapshots in the Control API, i.e. in the robocode.control package.
 * Added missing javadocs (HTML documentation) to public Robocode API classes.
