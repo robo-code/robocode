@@ -223,8 +223,8 @@ public class BulletPeer {
 		}
 	}
 
-	private void checkObjectCollision(List<Robject> robjects) {
-		for (Robject robject : robjects)
+	private void checkObjectCollision(List<RobjectPeer> robjects) {
+		for (RobjectPeer robject : robjects)
 		{
 			if (robject.isBulletStopper() && robject.getBoundaryRect().contains(x, y))
 			{
@@ -324,7 +324,7 @@ public class BulletPeer {
 		state = newState;
 	}
 
-	public void update(List<RobotPeer> robots, List<BulletPeer> bullets, List<Robject> robjects) {
+	public void update(List<RobotPeer> robots, List<BulletPeer> bullets, List<RobjectPeer> robjects) {
 		if (isActive()) {
 			updateMovement();
 			if (bullets != null) {

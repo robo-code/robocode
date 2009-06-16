@@ -14,9 +14,14 @@ package sample;
 
 
 import robocode.HitByBulletEvent;
+import robocode.HitObjectEvent;
+import robocode.HitObstacleEvent;
 import robocode.HitWallEvent;
 import robocode.RateControlRobot;
+import robocode.ScannedObjectEvent;
 import robocode.ScannedRobotEvent;
+import robocode.robotinterfaces.IObjectEvents;
+import robocode.robotinterfaces.IObjectRobot;
 
 
 /**
@@ -24,7 +29,7 @@ import robocode.ScannedRobotEvent;
  * 
  * @author Joshua Galecki
  */
-public class VelociRobot extends RateControlRobot {
+public class VelociRobot extends RateControlRobot implements IObjectEvents, IObjectRobot{
 
 	int turnCounter;
 	public void run() {
@@ -61,4 +66,25 @@ public class VelociRobot extends RateControlRobot {
 		// Move away from the wall
 		setVelocityRate(-1 * getVelocityRate());
 	}
+
+	public void onHitObject(HitObjectEvent e) {
+		
+	}
+
+	public void onHitObstacle(HitObstacleEvent e) {
+		
+	}
+
+	public void onScannedObject(ScannedObjectEvent e)
+	{
+		if (e.getObjectType().equals("flag"))
+		{
+			e.getBearing();
+		}
+	}
+	
+	public IObjectEvents getObjectEventListener() {
+		return this;
+	}
+	
 }

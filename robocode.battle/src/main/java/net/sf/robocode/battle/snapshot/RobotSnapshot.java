@@ -404,6 +404,11 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 * @return the scan arc snapshot for the robot.
 	 */
 
+//TODO: backwards compatbility
+//	public List<Arc2D> getScanArc() {
+//		return scanArc != null ? scanArc.create() : null;
+//	}
+
 	public List<Arc2D> getScanArc() {
 		if (scanArcs != null)
 		{

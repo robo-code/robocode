@@ -10,23 +10,17 @@
  *     - Initial implementation
  *     Flemming N. Larsen
  *     - Javadocs
- *     Joshua Galecki
- *     - Added object events
  *******************************************************************************/
 package robocode.robotinterfaces;
 
 
 import robocode.BattleEndedEvent;
-import robocode.HitObjectEvent;
-import robocode.HitObstacleEvent;
-import robocode.ScannedObjectEvent;
 
 
 /**
  * First extended version of the {@link IBasicEvents} interface.
  *
  * @author Pavel Savara (original)
- * @author Joshua Galecki (contributor)
  * @since 1.6.1
  */
 public interface IBasicEvents2 extends IBasicEvents {
@@ -49,22 +43,4 @@ public interface IBasicEvents2 extends IBasicEvents {
 	 * @see robocode.Event
 	 */
 	void onBattleEnded(BattleEndedEvent event);
-	
-	/**
-	 * This method is called if your robot hits an object it cannot pass through
-	 * @param event the HitObstacleEvent sent by the game
-	 */
-	void onHitObstacle(HitObstacleEvent event);
-	
-	/**
-	 * This method is called if your robot hits an object it can pass through
-	 * @param event the HitObjectEvent sent by the game
-	 */
-	void onHitObject(HitObjectEvent event);
-
-	/**
-	 * This method is called if your robot's radar scans an object
-	 * @param event the ScannedObjectEvent sent by the game
-	 */
-	void onScannedObject(ScannedObjectEvent event);
 }

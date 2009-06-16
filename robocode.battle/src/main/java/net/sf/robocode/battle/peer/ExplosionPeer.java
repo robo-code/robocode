@@ -28,10 +28,10 @@ package net.sf.robocode.battle.peer;
 
 
 import robocode.BattleRules;
-import robocode.Robject;
 import robocode.control.snapshot.BulletState;
 
 import java.util.List;
+
 
 
 
@@ -57,7 +57,7 @@ public class ExplosionPeer extends BulletPeer {
 	}
 
 	@Override
-	public void update(List<RobotPeer> robots, List<BulletPeer> bullets, List<Robject> robjects) {
+	public void update(List<RobotPeer> robots, List<BulletPeer> bullets, List<RobjectPeer> robjects) {
 		x = owner.getX();
 		y = owner.getY();
 

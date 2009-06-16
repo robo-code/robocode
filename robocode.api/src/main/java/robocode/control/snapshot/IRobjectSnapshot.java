@@ -42,4 +42,6 @@ public interface IRobjectSnapshot {
 	Rectangle2D getPaintRect();
 	
 	boolean shouldDraw();
+	
+	int getTeam();
 }

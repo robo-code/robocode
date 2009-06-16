@@ -10,35 +10,35 @@
  * 		-Initial implementation
   *******************************************************************************/
 
-
 package net.sf.robocode.battle;
 
-import java.util.List;
-
 import net.sf.robocode.battle.peer.RobjectPeer;
-import net.sf.robocode.battle.peer.RobotPeer;
+
 
 /**
- * This class is the base class for all extension rule sets.
+ * This is a robject that robots cannot pass, shoot, or see through.
  * 
  * @author Joshua Galecki (original)
  *
  */
-public abstract class CustomRules implements ICustomRules{
+public class Box extends RobjectPeer{
+	
+	boolean draw = true;
+	public void setDraw(boolean bool){
+		draw = bool;
+	}
+	
+	public Box(int x, int y, int width, int height)
+	{
+		super("box", x, y, width, height, true, true, true, true, true, false);
+	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract boolean isGameOver(int activeRobots, List<RobotPeer> robots,
-			List<RobjectPeer> robjects);
+	@Override
+	public boolean shouldDraw() {
+		return true;
+	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract void startRound(List<RobotPeer> robots, List<RobjectPeer> robjects);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract void updateTurn(List<RobotPeer> robots, List<RobjectPeer> robjects);
+	public void hitByBullet() {
+		draw = true;
+	}
 }

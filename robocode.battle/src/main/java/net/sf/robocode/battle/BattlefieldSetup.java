@@ -14,7 +14,7 @@ package net.sf.robocode.battle;
 
 import java.util.List;
 
-import robocode.Robject;
+import net.sf.robocode.battle.peer.RobjectPeer;
 
 /**
  * This is the base class of any extension that modifies the battlefield
@@ -23,12 +23,23 @@ import robocode.Robject;
  *
  */
 public abstract class BattlefieldSetup implements IBattlefieldSetup {
-	
-	public abstract List<Robject> setupObjects(int battlefieldWidth, int battlefieldHeight);
 
-	public List<Robject> checkBoundaries(List<Robject> robjects, int battlefieldWidth, int battlefieldHeight)
+	/**
+	 * {@inheritDoc}
+	 */
+	public abstract double[][] computeInitialPositions(String initialPositions, int battlefieldWidth, int battlefieldHeight);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public abstract List<RobjectPeer> setupObjects(int battlefieldWidth, int battlefieldHeight);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<RobjectPeer> checkBoundaries(List<RobjectPeer> robjects, int battlefieldWidth, int battlefieldHeight)
 	{
-		for (Robject robject : robjects)
+		for (RobjectPeer robject : robjects)
 		{
 			if (robject.getX() + robject.getWidth() > battlefieldWidth)
 			{

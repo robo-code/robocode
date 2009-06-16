@@ -754,6 +754,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	private boolean validSpot(List<RobotPeer> robots) {
+		for (RobjectPeer robject : battle.getRobjects())
+		{
+			if (robject.isRobotStopper() && robject.getBoundaryRect().intersects(getBoundingBox()))	{
+				return false;
+			}
+		}
 		for (RobotPeer otherRobot : robots) {
 			if (otherRobot != null && otherRobot != this) {
 				if (getBoundingBox().intersects(otherRobot.getBoundingBox())) {
@@ -1045,7 +1051,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		
 		for (int i = 0; i < battle.getRobjects().size(); i++)
 		{
-			Robject obj = battle.getRobjects().get(i);
+			RobjectPeer obj = battle.getRobjects().get(i);
 			if (obj.isRobotConscious() && boundingBox.intersects(obj.getBoundaryRect()))
 			{		
 				if (obj.isRobotStopper())
@@ -1084,7 +1090,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 						angle = normalRelativeAngle(Math.PI - bodyHeading);
 					}
 					
-					addEvent(new HitObstacleEvent(angle));
+					addEvent(new HitObstacleEvent(angle, obj.getType()));
 					
 	
 					// Update energy, but do not reset inactiveTurnCount
@@ -1099,7 +1105,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				{
 					addEvent(new HitObjectEvent(obj.getType()));
 				}
-				obj.hitByRobot();
+				obj.hitByRobot(this);
 			}
 		}
 	}
@@ -1508,14 +1514,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		occludedScan = new ArrayList<Arc2D>();
 		occludedScan = occludeScan(scanArc);
 
-		for (Robject robject : battle.getRobjects()) {
+		for (RobjectPeer robject : battle.getRobjects()) {
 			if (robject.isScannable() && intersects(occludedScan, robject.getBoundaryRect())) {
 				double dx = robject.getX() - x;
 				double dy = robject.getY() - y;
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 				ScannedObjectEvent event = new ScannedObjectEvent(robject.getType(),
-						normalRelativeAngle(angle - getBodyHeading()), dist);
+						normalRelativeAngle(angle - getBodyHeading()), dist, robject.isRobotStopper(),
+						robject.isBulletStopper(), robject.isScanStopper(), robject.isDynamic());
 				
 				addEvent(event);
 			}
@@ -1543,10 +1550,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * 
 	 * @param scanArc
 	 * @return
-	 */
-	
+	 */	
 	private List<Arc2D> occludeScan(Arc2D scanArc) {
-		List<Arc2D> arcList = new ArrayList<Arc2D>();
+		
+		List<Arc2D> arcList = new ArrayList<Arc2D>();		
 		Line2D firstScanLine = new Line2D.Double(new Point2D.Double(x, y), scanArc.getStartPoint());
 		Line2D secondScanLine = new Line2D.Double(new Point2D.Double(x, y), scanArc.getEndPoint());
 		List<ArcTriple> scanRangesList = new ArrayList<ArcTriple>();
@@ -1554,7 +1561,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		boolean scanIsClockwise = scanArc.getAngleExtent() > 0;
 		
 		//we only care about objects within the scan arc
-		for (Robject robject : battle.getRobjects())
+		for (RobjectPeer robject : battle.getRobjects())
 		{
 			if (intersects(scanArc, robject.getBoundaryRect()) && robject.isScanStopper())
 			{	
@@ -1660,7 +1667,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					intersectingSecondScan = (intersectionTwoLines(possibleLine, secondScanLine) != 
 						null ?	possibleLine : new Line2D.Double(c, b));
 				}
-				
 				
 				//If the object lies on the fringes of the scan arc, then one 
 				//of the points must be outside the original scan arc. Figure out
@@ -1965,23 +1971,35 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				else if (modAngleGreaterThan(startArc.StartAngle, searchingArc.StartAngle, scanIsClockwise) &&
 						modAngleGreaterThan(searchingArc.StartAngle + searchingArc.AngleExtension,
 							startArc.StartAngle + startArc.AngleExtension, scanIsClockwise) && 
-						startArc.Radius < searchingArc.Radius && startArc.AngleExtension >= .3)		 
+						startArc.Radius < searchingArc.Radius && Math.abs(startArc.AngleExtension) >= .3)	
+//				else if (modAngleGreaterThan(startArc.StartAngle, searchingArc.StartAngle, scanIsClockwise)) 
+//				{
+//					if 	(modAngleGreaterThan(searchingArc.StartAngle + searchingArc.AngleExtension,					
+//							startArc.StartAngle + startArc.AngleExtension, scanIsClockwise))
+//					{
+//						if (startArc.Radius < searchingArc.Radius)
+//						{
+//							if (Math.abs(startArc.AngleExtension) >= .3)
+//							{
 				{
-					if (scanRangesList.size() > 2 * battle.getRobjects().size())
-					{
-						//error-tolerance
-						break;
-					}
-					
-					double newStart = startArc.StartAngle + startArc.AngleExtension;
-					double newExtension = searchingArc.StartAngle + searchingArc.AngleExtension - 
-						startArc.StartAngle - startArc.AngleExtension;
-					ArcTriple newArc = new ArcTriple(newStart, newExtension, searchingArc.Radius);
-					scanRangesList.add(newArc);
-					searchingArc.AngleExtension = startArc.StartAngle - searchingArc.StartAngle;
-					arcIndex = -1; //will be 0 after outer loop starts again.
-					finishedSearch = true;
-					
+								if (scanRangesList.size() > 2 * battle.getRobjects().size())
+								{
+									//error-tolerance
+									break;
+								}
+								
+								double newStart = startArc.StartAngle + startArc.AngleExtension;
+								double newExtension = searchingArc.StartAngle + searchingArc.AngleExtension - 
+									startArc.StartAngle - startArc.AngleExtension;
+								ArcTriple newArc = new ArcTriple(newStart, newExtension, searchingArc.Radius);
+								scanRangesList.add(newArc);
+								searchingArc.AngleExtension = startArc.StartAngle - searchingArc.StartAngle;
+								arcIndex = -1; //will be 0 after outer loop starts again.
+								finishedSearch = true;
+								
+//							}
+//						}
+//					}
 				}
 			}
 		}
@@ -2158,7 +2176,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void updateEnergy(double delta) {
-		if ((!isExecFinishedAndDisabled && !isEnergyDrained) || delta < 0) {
+		if (!isExecFinishedAndDisabled && !isEnergyDrained) {
 			setEnergy(energy + delta, true);
 		}
 	}

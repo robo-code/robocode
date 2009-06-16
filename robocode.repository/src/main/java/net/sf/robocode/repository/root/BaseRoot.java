@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 /**
@@ -57,7 +57,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	}
 
 	public void extractJar() {
-		throw new NotImplementedException();
+//		throw new NotImplementedException();
 	}
 
 }

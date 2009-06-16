@@ -10,35 +10,25 @@
  * 		-Initial implementation
   *******************************************************************************/
 
-
 package net.sf.robocode.battle;
 
-import java.util.List;
-
 import net.sf.robocode.battle.peer.RobjectPeer;
-import net.sf.robocode.battle.peer.RobotPeer;
 
 /**
- * This class is the base class for all extension rule sets.
+ * This robject allows robots to see and shoot over it, but they cannot pass through it.
  * 
  * @author Joshua Galecki (original)
  *
  */
-public abstract class CustomRules implements ICustomRules{
+public class Trench extends RobjectPeer{
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract boolean isGameOver(int activeRobots, List<RobotPeer> robots,
-			List<RobjectPeer> robjects);
+	public Trench(int x, int y, int width, int height) {
+		super("pit", x, y, width, height, true, false, false,
+				true, true, false);
+	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract void startRound(List<RobotPeer> robots, List<RobjectPeer> robjects);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract void updateTurn(List<RobotPeer> robots, List<RobjectPeer> robjects);
+	@Override
+	public boolean shouldDraw() {
+		return true;
+	}
 }

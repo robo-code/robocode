@@ -38,6 +38,11 @@ public interface ITurnSnapshot {
 	 */
 	IBulletSnapshot[] getBullets();
 
+	/**
+	 * Returns a list of snapshots for the objects that are currently on the battlefield
+	 * 
+	 * @return a list of snapshots for the objects that are currently on the battlefield
+	 */
 	IRobjectSnapshot[] getRobjects();
 	
 	/**

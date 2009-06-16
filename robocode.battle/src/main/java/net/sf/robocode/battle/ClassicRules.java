@@ -14,8 +14,7 @@ package net.sf.robocode.battle;
 
 import java.util.List;
 
-import robocode.Robject;
-
+import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.battle.peer.TeamPeer;
 
@@ -27,8 +26,9 @@ import net.sf.robocode.battle.peer.TeamPeer;
  */
 public class ClassicRules extends CustomRules {
 
+	@Override
 	public boolean isGameOver(int activeRobots, List<RobotPeer> robots,
-			List<Robject> robjects) {
+			List<RobjectPeer> robjects) {
 		if (activeRobots <= 1) {
 			return true;
 		}
@@ -54,5 +54,13 @@ public class ClassicRules extends CustomRules {
 		return true;
 	}
 	
-	public ClassicRules(){}//TODO: needed?
+	@Override
+	public void startRound(List<RobotPeer> robots, List<RobjectPeer> robjects) {
+		// do nothing		
+	}
+
+	@Override
+	public void updateTurn(List<RobotPeer> robots, List<RobjectPeer> robjects) {
+		//do nothing		
+	}
 }

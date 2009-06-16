@@ -16,11 +16,11 @@ package net.sf.robocode.battle.snapshot;
 
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.peer.BulletPeer;
+import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
-import robocode.Robject;
 import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobjectSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
@@ -90,7 +90,7 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 
 		if (battle.getRobjects() != null)
 		{
-			for (Robject robject : battle.getRobjects()) {
+			for (RobjectPeer robject : battle.getRobjects()) {
 				objects.add(new RobjectSnapshot(robject));
 			}
 		}

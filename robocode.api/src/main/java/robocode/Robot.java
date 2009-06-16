@@ -1555,19 +1555,4 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@inheritDoc}
 	 */
 	public void onStatus(StatusEvent e) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onHitObstacle(HitObstacleEvent event) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onHitObject(HitObjectEvent event) {}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void ScannedObjectEvent(robocode.ScannedObjectEvent event) {}
 }

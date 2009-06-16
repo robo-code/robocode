@@ -14,7 +14,8 @@ package net.sf.robocode.battle.snapshot;
 
 import java.awt.geom.Rectangle2D;
 
-import robocode.Robject;
+import net.sf.robocode.battle.peer.RobjectPeer;
+
 import robocode.control.snapshot.IRobjectSnapshot;
 
 /**
@@ -31,6 +32,7 @@ public class RobjectSnapshot implements IRobjectSnapshot {
 	private double height;
 	private String type;
 	private boolean draw;
+	private int teamNumber;
 
 	/**
 	 * {@inheritDoc}
@@ -69,13 +71,14 @@ public class RobjectSnapshot implements IRobjectSnapshot {
 	
 	public RobjectSnapshot() {}
 
-	public RobjectSnapshot(Robject robject) {
+	public RobjectSnapshot(RobjectPeer robject) {
 		this.x = robject.getX();
 		this.y = robject.getY();
 		this.width = robject.getWidth();
 		this.height = robject.getHeight();
 		this.type = robject.getType();
 		this.draw = robject.shouldDraw();
+		this.teamNumber = robject.getTeam();
 	}
 
 	public Rectangle2D getPaintRect() {
@@ -86,4 +89,7 @@ public class RobjectSnapshot implements IRobjectSnapshot {
 		return draw;
 	}
 
+	public int getTeam() {
+		return teamNumber;
+	}
 }

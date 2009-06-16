@@ -15,8 +15,7 @@ package net.sf.robocode.battle;
 
 import java.util.List;
 
-import robocode.Robject;
-
+import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.battle.peer.TeamPeer;
 
@@ -27,44 +26,49 @@ import net.sf.robocode.battle.peer.TeamPeer;
  *
  */
 public class CaptureTheFlagRules extends CustomRules {
-	//not actually capture the flag rules as of yet
-		
-		public boolean isGameOver(int activeRobots, List<RobotPeer> robots, 
-				List<Robject> robjects) {
-			if (activeRobots <= 1) {
-				return true;
-			}
-
-			boolean found = false;
-			TeamPeer currentTeam = null;
-
-			for (RobotPeer currentRobot : robots) {
-				if (!currentRobot.isDead()) {
-					if (!found) {
-						found = true;
-						currentTeam = currentRobot.getTeamPeer();
-					} else {
-						if (currentTeam == null && currentRobot.getTeamPeer() == null) {
-							return false;
-						}
-						if (currentTeam != currentRobot.getTeamPeer()) {
-							return false;
-						}
-					}
-				}
-			}
+//not actually capture the flag rules as of yet
+	
+	public boolean isGameOver(int activeRobots, List<RobotPeer> robots, 
+			List<RobjectPeer> robjects) {
+		if (activeRobots <= 1) {
 			return true;
-			
-			/*
-			 * for (Robject robject : robjects)
+		}
+
+		for (RobjectPeer robject : robjects)
+		{
+			if (robject.getType().equals("flag"))
 			{
-				if (robject.getType().equals("flag"))
+				Flag flag = (Flag)robject;
+				for (RobjectPeer otherRobject : robjects)
 				{
-					Flag flag = (Flag)robject;
-					return flag.isHeld();				
-				}
+					if (otherRobject.getType().equals("base") &&
+							flag.getTeam() != otherRobject.getTeam() &&
+							otherRobject.getBoundaryRect().contains(flag.getBoundaryRect()))
+					{
+						flag.drop();
+						return true;
+					}
+				}			
 			}
-			return false;
-			 */
-		}	
+		}
+		return false;
+		
 	}
+
+	@Override
+	public void startRound(List<RobotPeer> robots, List<RobjectPeer> robjects) {
+		for (RobjectPeer robject : robjects)
+		{
+			robject.roundStarted();
+		}
+		
+	}
+
+	@Override
+	public void updateTurn(List<RobotPeer> robots, List<RobjectPeer> robjects) {
+		for (RobjectPeer robject : robjects)
+		{
+			robject.turnUpdate();
+		}
+	}	
+}

@@ -101,6 +101,7 @@ package net.sf.robocode.battle;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.ContestantPeer;
+import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.battle.peer.TeamPeer;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
@@ -162,7 +163,7 @@ public final class Battle extends BaseBattle {
 	private int activeRobots;
 	
 	//~
-	private List<Robject> robjects = new ArrayList<Robject>();
+	private List<RobjectPeer> robjects = new ArrayList<RobjectPeer>();
 
 	// Death events
 	private final List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
@@ -212,7 +213,8 @@ public final class Battle extends BaseBattle {
 				battleProperties.getBattlefieldHeight());
 		
 
-		computeInitialPositions(battleProperties.getInitialPositions());
+		initialRobotPositions = battleSetup.computeInitialPositions(battleProperties.getInitialPositions(),
+				battleProperties.getBattlefieldWidth(), battleProperties.getBattlefieldHeight());
 		createPeers(battlingRobotsList);
 	}
 
@@ -473,6 +475,8 @@ public final class Battle extends BaseBattle {
 		super.initializeRound();
 		inactiveTurnCount = 0;
 
+		// call custom rules round setup
+		customRules.startRound(robots, robjects);
 		// start robots
 		final long waitTime = Math.min(300 * cpuConstant, 10000000000L);
 
@@ -544,7 +548,7 @@ public final class Battle extends BaseBattle {
 						robotPeer.println("SYSTEM: game aborted.");
 					}
 				}
-			} else if (oneTeamRemaining()) {
+			} else if (customRules.isGameOver(activeRobots, robots, robjects)) {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
@@ -599,6 +603,7 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
+		customRules.updateTurn(robots, robjects);
 		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this, robots, bullets, true)));
 
 		super.finalizeTurn();
@@ -832,112 +837,6 @@ public final class Battle extends BaseBattle {
 		return count;
 	}
 
-	private void computeInitialPositions(String initialPositions) {
-		initialRobotPositions = null;
-
-		if (initialPositions == null || initialPositions.trim().length() == 0) {
-			return;
-		}
-
-		List<String> positions = new ArrayList<String>();
-
-		Pattern pattern = Pattern.compile("([^,(]*[(][^)]*[)])?[^,]*,?");
-		Matcher matcher = pattern.matcher(initialPositions);
-
-		while (matcher.find()) {
-			String pos = matcher.group();
-
-			if (pos.length() > 0) {
-				positions.add(pos);
-			}
-		}
-
-		if (positions.size() == 0) {
-			return;
-		}
-
-		initialRobotPositions = new double[positions.size()][3];
-
-		String[] coords;
-		double x = 0, y = 0, heading;
-
-		for (int i = 0; i < positions.size(); i++) {
-			coords = positions.get(i).split(",");
-
-			final Random random = RandomFactory.getRandom();
-
-			//The poor man's obstacle avoidance. TODO: improve
-			boolean collides = true;
-			while (collides)
-			{
-				x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-				y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
-				
-				collides = false;
-				for (Robject robject : robjects)
-				{
-					if (robject.getBoundaryRect().contains(x, y))
-					{
-						collides = true;
-					}
-				}
-			}
-			heading = 2 * Math.PI * random.nextDouble();
-
-			int len = coords.length;
-
-			if (len >= 1) {
-				// noinspection EmptyCatchBlock
-				try {
-					x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
-				} catch (NumberFormatException e) {}
-
-				if (len >= 2) {
-					// noinspection EmptyCatchBlock
-					try {
-						y = Double.parseDouble(coords[1].replaceAll("[\\D]", ""));
-					} catch (NumberFormatException e) {}
-
-					if (len >= 3) {
-						// noinspection EmptyCatchBlock
-						try {
-							heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[\\D]", "")));
-						} catch (NumberFormatException e) {}
-					}
-				}
-			}
-			initialRobotPositions[i][0] = x;
-			initialRobotPositions[i][1] = y;
-			initialRobotPositions[i][2] = heading;
-		}
-	}
-
-	private boolean oneTeamRemaining() {
-		if (getActiveRobots() <= 1) {
-			return true;
-		}
-
-		boolean found = false;
-		TeamPeer currentTeam = null;
-
-		for (RobotPeer currentRobot : robots) {
-			if (!currentRobot.isDead()) {
-				if (!found) {
-					found = true;
-					currentTeam = currentRobot.getTeamPeer();
-				} else {
-					if (currentTeam == null && currentRobot.getTeamPeer() == null) {
-						return false;
-					}
-					if (currentTeam != currentRobot.getTeamPeer()) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
-
 	// --------------------------------------------------------------------------
 	// Processing and maintaining robot and battle controls
 	// --------------------------------------------------------------------------
@@ -962,12 +861,16 @@ public final class Battle extends BaseBattle {
 		sendCommand(new SendInteractiveEventCommand(e));
 	}
 
-	public void setRoboObjects(List<Robject> roboObjects) {
-		this.robjects = roboObjects;
+	public void setRoboObjects(List<RobjectPeer> robjects) {
+		this.robjects = robjects;
 	}
 
-	public List<Robject> getRobjects() {
-		return robjects;
+	public List<RobjectPeer> getRobjects() {
+		if (robjects != null)
+		{
+			return robjects;
+		}
+		return new ArrayList<RobjectPeer>();
 	}
 
 	private class KillRobotCommand extends RobotCommand {

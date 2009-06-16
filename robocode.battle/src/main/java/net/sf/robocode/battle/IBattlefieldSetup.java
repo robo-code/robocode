@@ -14,7 +14,7 @@ package net.sf.robocode.battle;
 
 import java.util.List;
 
-import robocode.Robject;
+import net.sf.robocode.battle.peer.RobjectPeer;
 
 /**
  * This is an interface for an extension battlefield class
@@ -22,9 +22,55 @@ import robocode.Robject;
  * @author Joshua Galecki
  *
  */
-public interface IBattlefieldSetup {
+public interface IBattlefieldSetup 
+{
+
+	/**
+	 * Decides where each robot will start off. If there are more robots than starting
+	 * positions specified, the positions will be applied to the first robots and the rest
+	 * will be placed randomly.
+	 * To specify a position for the nth robot, returnedArray[n-1][0] specifies the x coordinate,
+	 * returnedArray[n-1][1] specifies the y coordinate, and returnedArray[n-1][2] specifies
+	 * the heading of the robot.
+	 * 
+	 * For example, to start the first robot at (10, 10) facing 90 degrees,
+	 * and the second robot at (100, 10) facing 0 degrees:
+	 *  double initialPosition = new double[2][2];
+	 *  
+	 *  initialPosition[0][0] = 10;
+	 *  initialPosition[0][1] = 10;
+	 *  initialPosition[0][2] = 90;
+	 *  initialPosition[1][0] = 100;
+	 *  initialPosition[1][1] = 10;
+	 *  initialPosition[1][2] = 0;
+	 *  
+	 *  return initialPosition;
+	 *  
+	 * @param initialPositions passed in by battleProperties. @see ClassicSetup for steps to deal with this.
+	 * @param battlefieldWidth width of the battlefield
+	 * @param battlefieldHeight height of the battlefield
+	 * @return an array containing the starting coordinates and heading of robots
+	 */
+	public double[][] computeInitialPositions(String initialPositions, int battlefieldWidth, int battlefieldHeight);
 	
-	public List<Robject> setupObjects(int battlefieldWidth, int battlefieldHeight);
+	/**
+	 * Sets up any objects on the battlefield. This although battlefieldWidth and battlefieldHieght
+	 * are included as parameters, any objects created are not automatically bound by these 
+	 * limits. You may call checkBoundaries() within this function to crop obstacles to these
+	 * boundaries.
+	 * 
+	 * @param battlefieldWidth width of the battlefield
+	 * @param battlefieldHeight height of the battlefield
+	 * @return a list of all objects on the battlefield
+	 */
+	public List<RobjectPeer> setupObjects(int battlefieldWidth, int battlefieldHeight);
 	
-	public List<Robject> checkBoundaries(List<Robject> robjects, int battlefieldWidth, int battlefieldHeight);
+	/**
+	 * Goes through the list of objects and trims off any part outside the given boundaries.
+	 * @param robjects the list of objects to be trimmed
+	 * @param battlefieldWidth the width of the battlefield
+	 * @param battlefieldHeight the height of the battlefield
+	 * @return a list of objects completely within the battlefield boundaries
+	 */
+	public List<RobjectPeer> checkBoundaries(List<RobjectPeer> robjects, int battlefieldWidth, int battlefieldHeight);
 }

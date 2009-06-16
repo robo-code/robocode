@@ -20,6 +20,7 @@ import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicEvents2;
 import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IObjectEvents;
 
 /**
  * This event is fired when your robot scans an object that can be scanned.
@@ -34,16 +35,25 @@ public class ScannedObjectEvent extends Event {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String objectType;
 	private double bearing;
 	private double distance;
+	private String objectType;
+	private boolean tankStopper;
+	private boolean bulletStopper;
+	private boolean scanStopper;
+	private boolean dynamic;
 
 	private final static int DEFAULT_PRIORITY = 20;
 	
-	public ScannedObjectEvent(String type, double bearing, double distance) {
-		objectType = type;
+	public ScannedObjectEvent(String type, double bearing, double distance, boolean tankStopper,
+			boolean bulletStopper, boolean scanStopper, boolean dynamic) {
+		this.objectType = type;
 		this.bearing = bearing;
 		this.distance = distance;
+		this.tankStopper = tankStopper;
+		this.bulletStopper = bulletStopper;
+		this.scanStopper = scanStopper;
+		this.dynamic = dynamic;
 	}
 
 	public double getDistance() {
@@ -53,11 +63,7 @@ public class ScannedObjectEvent extends Event {
 	public double getBearing() {
 		return bearing;
 	}
-
-	public void setObjectType(String objectType) {
-		this.objectType = objectType;
-	}
-
+	
 	public String getObjectType() {
 		return objectType;
 	}
@@ -68,6 +74,42 @@ public class ScannedObjectEvent extends Event {
 
 	public void setBearing(double bearing) {
 		this.bearing = bearing;
+	}
+	
+	public void setObjectType(String objectType) {
+		this.objectType = objectType;
+	}
+
+	public void setTankStopper(boolean tankStopper) {
+		this.tankStopper = tankStopper;
+	}
+
+	public boolean isTankStopper() {
+		return tankStopper;
+	}
+
+	public void setBulletStopper(boolean bulletStopper) {
+		this.bulletStopper = bulletStopper;
+	}
+
+	public boolean isBulletStopper() {
+		return bulletStopper;
+	}
+
+	public void setScanStopper(boolean scanStopper) {
+		this.scanStopper = scanStopper;
+	}
+
+	public boolean isScanStopper() {
+		return scanStopper;
+	}
+
+	public void setDynamic(boolean dynamic) {
+		this.dynamic = dynamic;
+	}
+
+	public boolean isDynamic() {
+		return dynamic;
 	}
 
 	/**
@@ -92,7 +134,7 @@ public class ScannedObjectEvent extends Event {
 	 */
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
-		IBasicEvents2 listener = (IBasicEvents2) robot.getBasicEventListener();
+		IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();
 
 		if (listener != null) {
 			listener.onScannedObject(this);
@@ -124,9 +166,12 @@ public class ScannedObjectEvent extends Event {
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+			String type = buffer.toString();
 			double bearing = buffer.getDouble();
+			double distance = buffer.getDouble();
+			//TODO: I'm unsure what needs to be done for serialization. For now, it will be faked
 
-			return new HitObstacleEvent(bearing);
+			return new ScannedObjectEvent(type, bearing, distance, false, false, false, false);
 		}
 	}
 }

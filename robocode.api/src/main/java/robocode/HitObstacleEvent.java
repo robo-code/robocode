@@ -20,6 +20,7 @@ import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicEvents2;
 import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IObjectEvents;
 
 /**
  * This event is fired off when your robot hits an object that
@@ -38,11 +39,20 @@ public final class HitObstacleEvent extends Event {
 
 	public static final int SIZEOF_TYPEINFO = 0;
 	private final double bearing;
+	private String obstacleType;
 	
-	public HitObstacleEvent(double bearing) {
+	public HitObstacleEvent(double bearing, String type) {
 		this.bearing = bearing;
+		setObstacleType(type);
 	}
 
+	public void setObstacleType(String obstacleType) {
+		this.obstacleType = obstacleType;
+	}
+
+	public String getObstacleType() {
+		return obstacleType;
+	}
 	/**
 	 * Returns the bearing to the object you hit, relative to your robot's
 	 * heading, in degrees (-180 <= getBearing() < 180)
@@ -85,7 +95,7 @@ public final class HitObstacleEvent extends Event {
 	 */
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
-		IBasicEvents2 listener = (IBasicEvents2) robot.getBasicEventListener();
+		IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();
 
 		if (listener != null) {
 			listener.onHitObstacle(this);
@@ -118,8 +128,9 @@ public final class HitObstacleEvent extends Event {
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
 			double bearing = buffer.getDouble();
-
-			return new HitObstacleEvent(bearing);
+			String type = buffer.toString();
+			
+			return new HitObstacleEvent(bearing, type);
 		}
 	}
 }

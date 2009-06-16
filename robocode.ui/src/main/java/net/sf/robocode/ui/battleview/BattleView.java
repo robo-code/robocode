@@ -466,9 +466,27 @@ public class BattleView extends Canvas {
 	
 				Area robjectArea = new Area(robjectSnapshot.getPaintRect()).createTransformedArea(at);
 				
-				if (robjectSnapshot.getType().equals("flag"))
+				if (robjectSnapshot.getType().equals("base"))
 				{
-					g.setColor(Color.CYAN);
+					if (robjectSnapshot.getTeam() == 1)
+					{
+						g.setColor(Color.CYAN);
+						g.draw(robjectArea);
+					}
+					else if (robjectSnapshot.getTeam() == 2)
+					{
+						g.setColor(Color.PINK);
+						g.draw(robjectArea);
+					}
+				}
+				else if (robjectSnapshot.getType().equals("energyPack"))
+				{
+					g.setColor(Color.RED);
+					g.fill(robjectArea);
+				}						
+				else if (robjectSnapshot.getType().equals("rubble"))
+				{
+					g.setColor(Color.DARK_GRAY);
 					g.fill(robjectArea);
 				}
 				else
@@ -496,7 +514,20 @@ public class BattleView extends Canvas {
 	
 				Area robjectArea = new Area(robjectSnapshot.getPaintRect()).createTransformedArea(at);
 				
-				if (robjectSnapshot.getType().equals("box"))
+				if (robjectSnapshot.getType().equals("flag"))
+				{
+					if (robjectSnapshot.getTeam() == 1)
+					{
+						g.setColor(Color.CYAN);
+						g.fill(robjectArea);
+					}
+					else if (robjectSnapshot.getTeam() == 2)
+					{
+						g.setColor(Color.PINK);
+						g.fill(robjectArea);
+					}
+				}
+				else if (robjectSnapshot.getType().equals("box"))
 				{
 					g.setColor(Color.BLACK);
 					g.fill(robjectArea);

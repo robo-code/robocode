@@ -14,8 +14,7 @@ package net.sf.robocode.battle;
 
 import java.util.List;
 
-import robocode.Robject;
-
+import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 
 /**
@@ -25,7 +24,11 @@ import net.sf.robocode.battle.peer.RobotPeer;
  *
  */
 public interface ICustomRules {
-	boolean isGameOver(int activeRobots, List<RobotPeer> robots, List<Robject> robjects);
+	
+	void startRound(List<RobotPeer> robots, List<RobjectPeer> robjects);
+	
+	boolean isGameOver(int activeRobots, List<RobotPeer> robots, List<RobjectPeer> robjects);
 
+	void updateTurn(List<RobotPeer> robots, List<RobjectPeer> robjects);
 	//TODO: put scoring in here later
 }

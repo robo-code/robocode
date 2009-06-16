@@ -20,6 +20,8 @@ import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicEvents2;
 import robocode.robotinterfaces.IBasicRobot;
+import robocode.robotinterfaces.IObjectEvents;
+import robocode.robotinterfaces.IObjectRobot;
 
 /**
  * This event is fired when the robot hits an object that does not
@@ -69,7 +71,7 @@ public final class HitObjectEvent extends Event {
 	 */
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
-		IBasicEvents2 listener = (IBasicEvents2) robot.getBasicEventListener();
+		IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();
 
 		if (listener != null) {
 			listener.onHitObject(this);
