@@ -66,10 +66,12 @@ public class WindowManager implements IWindowManagerExt {
 	private final IVersionManager versionManager;
 	private IRobotDialogManager robotDialogManager;
 	private RobocodeFrame robocodeFrame;
+
 	private boolean isGUIEnabled = true;
 	private boolean isSlave;
 	private boolean centerRankings = true;
 	private boolean oldRankingHideState = true;
+	private boolean showResults = true;
 
 	public WindowManager(ISettingsManager properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager, IVersionManager versionManager) {
 		this.properties = properties;
@@ -114,6 +116,14 @@ public class WindowManager implements IWindowManagerExt {
 
 	public boolean isSlave() {
 		return isSlave;
+	}
+
+	public boolean isShowResultsEnabled() {
+		return properties.getOptionsCommonShowResults() && showResults;
+	}
+
+	public void setEnableShowResults(boolean enable) {
+		showResults = enable;
 	}
 
 	public ITurnSnapshot getLastSnapshot() {
@@ -580,13 +590,16 @@ public class WindowManager implements IWindowManagerExt {
 			battleManager.setBattleFilename(intro.getPath());
 			battleManager.loadBattleProperties();
 
-			boolean origShowResults = properties.getOptionsCommonShowResults();
+			final boolean origShowResults = showResults; // save flag for showing the results
 
-			properties.setOptionsCommonShowResults(false);
-			battleManager.startNewBattle(battleManager.loadBattleProperties(), true, false);
-			battleManager.setDefaultBattleProperties();
-			properties.setOptionsCommonShowResults(origShowResults);
-			robocodeFrame.afterIntroBattle();
+			showResults = false;
+			try {
+				battleManager.startNewBattle(battleManager.loadBattleProperties(), true, false);
+				battleManager.setDefaultBattleProperties();
+				robocodeFrame.afterIntroBattle();
+			} finally {
+				showResults = origShowResults; // always restore the original flag for showing the results
+			}
 		}
 	}
 
@@ -601,7 +614,7 @@ public class WindowManager implements IWindowManagerExt {
 
 		if (isGUIEnabled()) {
 			showRobocodeFrame(visible, false);
-			properties.setOptionsCommonShowResults(visible);
+			showResults = visible;
 		}
 	}
 }

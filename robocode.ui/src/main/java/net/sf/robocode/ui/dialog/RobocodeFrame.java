@@ -979,7 +979,7 @@ public class RobocodeFrame extends JFrame {
 
 		@Override
 		public void onBattleCompleted(BattleCompletedEvent event) {
-			if (properties.getOptionsCommonShowResults()) {
+			if (windowManager.isShowResultsEnabled()) {
 				// show on ATW thread
 				ResultsTask resultTask = new ResultsTask(event);
 
