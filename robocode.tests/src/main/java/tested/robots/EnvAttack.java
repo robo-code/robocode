@@ -11,7 +11,9 @@
  *******************************************************************************/
 package tested.robots;
 
+
 import robocode.AdvancedRobot;
+
 
 /**
  * @author Pavel Savara (original)
@@ -20,11 +22,11 @@ public class EnvAttack extends AdvancedRobot {
 	@Override
 	public void run() {
 
-		//attack
+		// attack
 		System.setProperty("NOSECURITY", "true");
 
 		// noinspection InfiniteLoopStatement
-		for (; ;) {
+		for (;;) {
 			turnLeft(100);
 			ahead(10);
 			turnLeft(100);
