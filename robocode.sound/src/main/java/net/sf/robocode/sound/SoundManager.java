@@ -144,6 +144,9 @@ public class SoundManager implements ISoundManager {
 	 * @return the requested mixer, if found. Otherwise, it returns null.
 	 */
 	private Mixer findMixer(String mixerClassName) {
+		if (mixerClassName == null) {
+			return null;
+		}
 		for (Mixer.Info mi : AudioSystem.getMixerInfo()) {
 			Mixer m = AudioSystem.getMixer(mi);
 
