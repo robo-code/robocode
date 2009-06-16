@@ -18,8 +18,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 
 /**
  * @author Pavel Savara (original)
@@ -57,7 +55,6 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	}
 
 	public void extractJar() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
-
 }
