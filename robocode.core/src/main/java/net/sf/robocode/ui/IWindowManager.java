@@ -29,7 +29,11 @@ public interface IWindowManager extends IWindowManagerBase {
 
 	boolean isSlave();
 
-	void setSlave(boolean value);
+	boolean isShowResultsEnabled();
+
+	public void setEnableShowResults(boolean enable);
+
+	void setSlave(boolean slave);
 
 	void showRobocodeFrame(boolean visible, boolean iconified);
 
@@ -54,5 +58,4 @@ public interface IWindowManager extends IWindowManagerBase {
 	void setLookAndFeel();
 
 	void runIntroBattle();
-
 }

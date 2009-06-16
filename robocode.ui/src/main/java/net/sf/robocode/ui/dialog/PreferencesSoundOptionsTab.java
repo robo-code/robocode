@@ -294,9 +294,19 @@ public class PreferencesSoundOptionsTab extends WizardPanel {
 		props.setOptionsSoundEnableMixerVolume(getEnableMixerVolumeCheckBox().isSelected());
 		props.setOptionsSoundEnableMixerPan(getEnableMixerPanCheckBox().isSelected());
 
-		Mixer mixer = AudioSystem.getMixer((Mixer.Info) getMixerComboBox().getSelectedItem());
+		String mixerClassName = null;
+		Mixer.Info mixerInfo = (Mixer.Info) getMixerComboBox().getSelectedItem();
 
-		props.setOptionsSoundMixer(mixer.getClass().getSimpleName());
+		if (mixerInfo != null) {
+			Mixer mixer = AudioSystem.getMixer((Mixer.Info) getMixerComboBox().getSelectedItem());
+
+			if (mixer != null) {
+				mixerClassName = mixer.getClass().getSimpleName();
+			}
+		}
+		if (mixerClassName != null) {
+			props.setOptionsSoundMixer(mixerClassName);
+		}
 
 		properties.saveProperties();
 	}

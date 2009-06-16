@@ -17,7 +17,7 @@ import java.util.List;
 
 import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
-import net.sf.robocode.battle.peer.TeamPeer;
+
 
 /**
  * This class contains the rules for a Capture the Flag game

@@ -2,7 +2,6 @@ package net.sf.robocode.battle;
 
 import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
-import robocode.Robot;
 
 /**
  * This is a flag for capture the flag

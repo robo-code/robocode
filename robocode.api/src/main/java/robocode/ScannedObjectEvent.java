@@ -18,7 +18,6 @@ import java.nio.ByteBuffer;
 import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
-import robocode.robotinterfaces.IBasicEvents2;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IObjectEvents;
 
