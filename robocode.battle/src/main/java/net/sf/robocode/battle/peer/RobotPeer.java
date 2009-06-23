@@ -71,6 +71,8 @@ package net.sf.robocode.battle.peer;
 
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BoundingRectangle;
+import net.sf.robocode.battle.IContestantStatistics;
+import net.sf.robocode.battle.IRobotPeerBattle;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.events.EventManager;
@@ -135,7 +137,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private static final int maxSkippedTurnsWithIO = 240;
 
 	private Battle battle;
-	private RobotStatistics statistics;
+	private IContestantStatistics statistics;
 	private final TeamPeer teamPeer;
 	private final RobotSpecification robotSpecification;
 
@@ -192,7 +194,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private List<Arc2D> occludedScan = null;
 	private final BoundingRectangle boundingBox;
 
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, 
+			int duplicate, TeamPeer team, int index, int contestantIndex, IContestantStatistics stats) {
 		super();
 		if (team != null) {
 			team.add(this);
@@ -213,7 +216,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battleRules, teamName, teamMembers, index,
 				contestantIndex);
-		statistics = new RobotStatistics(this, battle.getRobotsCount());
+		statistics = stats.fakeConstructor(this, battle.getRobotsCount());
 
 		robotProxy = (IHostingRobotProxy) hostManager.createRobotProxy(robotSpecification, statics, this);
 	}
@@ -256,16 +259,20 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public RobotStatistics getRobotStatistics() {
+	public IContestantStatistics getRobotStatistics() {
 		return statistics;
 	}
 
-	public ContestantStatistics getStatistics() {
+	public IContestantStatistics getStatistics() {
 		return statistics;
 	}
 
 	public RobotSpecification getRobotSpecification() {
 		return robotSpecification;
+	}
+	
+	public Battle getBattle() {
+		return battle;
 	}
 
 	// -------------------
@@ -314,6 +321,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public int getContestIndex() {
 		return statics.getContestIndex();
+	}
+	
+	public IExtensionApi getExtensionApi()
+	{
+		return battle.getCustomRules().getExtensionApi();
 	}
 
 	// -------------------
@@ -384,7 +396,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return boundingBox;
 	}
 
-	//TODO: remove
+	//TODO: ensure backwards compatibility
 	public Arc2D getScanArc() {
 		return scanArc;
 	}
@@ -505,8 +517,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			throw new AbortedException();
 		}
 		if (isDead()) {
-			isExecFinishedAndDisabled = true;
-			throw new DeathException();
+			battle.getCustomRules().robotIsDead(this);
 		}
 		if (getHalt()) {
 			isExecFinishedAndDisabled = true;
@@ -1057,7 +1068,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				if (obj.isRobotStopper())
 				{
 					//move until the bounding box is clear of the object 
-					while (boundingBox.intersects(obj.getBoundaryRect()) && (movedx != 0 && movedy != 0))
+					while (boundingBox.intersects(obj.getBoundaryRect()) && (movedx != 0 || movedy != 0))
 					{
 						x -= movedx;
 						y -= movedy;
@@ -2195,42 +2206,29 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
+	public void setX(double x)
+	{
+		this.x = x;
+	}
+	
+	public void setY(double y)
+	{
+		this.y = y;
+	}
+	
 	public void setWinner(boolean newWinner) {
 		isWinner = newWinner;
 	}
 
 	public void kill() {
-		battle.resetInactiveTurnCount(10.0);
-		if (isAlive()) {
-			addEvent(new DeathEvent());
-			if (statics.isTeamLeader()) {
-				for (RobotPeer teammate : teamPeer) {
-					if (!(teammate.isDead() || teammate == this)) {
-						teammate.updateEnergy(-30);
-
-						BulletPeer sBullet = new BulletPeer(this, battleRules, -1);
-
-						sBullet.setState(BulletState.HIT_VICTIM);
-						sBullet.setX(teammate.x);
-						sBullet.setY(teammate.y);
-						sBullet.setVictim(teammate);
-						sBullet.setPower(4);
-						battle.addBullet(sBullet);
-					}
-				}
-			}
-			battle.registerDeathRobot(this);
-
-			// 'fake' bullet for explosion on self
-			final ExplosionPeer fake = new ExplosionPeer(this, battleRules);
-
-			battle.addBullet(fake);
-		}
-		updateEnergy(-energy);
-
-		setState(RobotState.DEAD);
+		battle.getCustomRules().robotKill(this);
 	}
 
+	public void setIsExecFinishedAndDisabled(boolean value)
+	{
+		isExecFinishedAndDisabled = value;
+	}
+	
 	public void waitForStop() {
 		robotProxy.waitForStopThread();
 	}
@@ -2295,8 +2293,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public int compareTo(ContestantPeer cp) {
-		double myScore = statistics.getTotalScore();
-		double hisScore = cp.getStatistics().getTotalScore();
+		double myScore = statistics.getCombinedScore();
+		double hisScore = cp.getStatistics().getCombinedScore();
 
 		if (statistics.isInRound()) {
 			myScore += statistics.getCurrentScore();

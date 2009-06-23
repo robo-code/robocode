@@ -15,6 +15,15 @@ package net.sf.robocode.battle;
 
 import java.util.List;
 
+import robocode.DeathEvent;
+import robocode.IExtensionApi;
+import robocode.control.snapshot.BulletState;
+import robocode.control.snapshot.RobotState;
+import robocode.exception.DeathException;
+
+import net.sf.robocode.battle.peer.BulletPeer;
+import net.sf.robocode.battle.peer.ClassicRobotStatistics;
+import net.sf.robocode.battle.peer.ExplosionPeer;
 import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 
@@ -26,6 +35,8 @@ import net.sf.robocode.battle.peer.RobotPeer;
  */
 public abstract class CustomRules implements ICustomRules{
 
+	IContestantStatistics statistics = null;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -41,4 +52,65 @@ public abstract class CustomRules implements ICustomRules{
 	 * {@inheritDoc}
 	 */
 	public abstract void updateTurn(List<RobotPeer> robots, List<RobjectPeer> robjects);
+	
+	public void robotKill(RobotPeer robot)
+	{
+		robot.getBattle().resetInactiveTurnCount(10.0);
+		if (robot.isAlive()) {
+			robot.addEvent(new DeathEvent());
+			if (robot.isTeamLeader()) {
+				for (RobotPeer teammate : robot.getTeamPeer()) {
+					if (!(teammate.isDead() || teammate == robot)) {
+						teammate.updateEnergy(-30);
+
+						BulletPeer sBullet = new BulletPeer(robot, robot.getBattle().getBattleRules(), -1);
+
+						sBullet.setState(BulletState.HIT_VICTIM);
+						sBullet.setX(teammate.getX());
+						sBullet.setY(teammate.getY());
+						sBullet.setVictim(teammate);
+						sBullet.setPower(4);
+						robot.getBattle().addBullet(sBullet);
+					}
+				}
+			}
+			robot.getBattle().registerDeathRobot(robot);
+
+			// 'fake' bullet for explosion on self
+			final ExplosionPeer fake = new ExplosionPeer(robot, robot.getBattle().getBattleRules());
+
+			robot.getBattle().addBullet(fake);
+		}
+		robot.updateEnergy(-robot.getEnergy());
+
+		robot.setState(RobotState.DEAD);
+	}
+	
+	public void robotIsDead(RobotPeer robot)
+	{
+		robot.setIsExecFinishedAndDisabled(true);
+		throw new DeathException();
+	}
+	
+	public int computeActiveRobots(List<RobotPeer> robots)
+	{
+		int ar = 0;
+
+		// Compute active robots
+		for (RobotPeer robotPeer : robots) {
+			if (!robotPeer.isDead()) {
+				ar++;
+			}
+		}
+		return ar;
+	}
+	
+	public IContestantStatistics getEmptyStatistics(){
+		return new ClassicRobotStatistics();
+	}
+	
+	public IExtensionApi getExtensionApi()
+	{
+		return null;
+	}
 }

@@ -82,7 +82,7 @@ public class RobocodeRunner {
 			// Print out the sorted results with the robot names
 			System.out.println("\n-- Battle results --");
 			for (BattleResults result : e.getSortedResults()) {
-				System.out.println("  " + result.getTeamLeaderName() + ": " + result.getScore());
+				System.out.println("  " + result.getTeamName() + ": " + result.getCombinedScore());
 			}
 		}
 

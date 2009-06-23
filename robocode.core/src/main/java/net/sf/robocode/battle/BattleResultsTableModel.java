@@ -36,7 +36,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -51,12 +53,27 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 	private String title;
 	private final BattleResults[] results;
 	private final int numRounds;
+	private List<String> columnNames;
 
 	// The sum of the scores gathered by the robots.
 	private final double totalScore;
 
 	public BattleResultsTableModel(BattleResults[] results, int numRounds) {
 		this.results = results;
+		columnNames = new ArrayList<String>();
+		columnNames.add("Rank");
+		columnNames.add("Robot Name");
+		columnNames.add("Total Score");
+		
+		if (results != null)
+		{
+			columnNames.addAll(results[0].getScoreNames());
+		}
+		
+		columnNames.add("1sts");
+		columnNames.add("2nds");
+		columnNames.add("3rds");
+		
 		this.numRounds = numRounds;
 		totalScore = countTotalScore();
 	}
@@ -71,7 +88,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		double totalScore = 0;
 
 		for (BattleResults result : results) {
-			totalScore += result.getScore();
+			totalScore += result.getCombinedScore();
 		}
 
 		return totalScore;
@@ -83,46 +100,11 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 	@Override
 	public String getColumnName(int col) {
-		switch (col) {
-		case 0:
-			return "Rank";
-
-		case 1:
-			return "Robot Name";
-
-		case 2:
-			return "    Total Score    ";
-
-		case 3:
-			return "Survival";
-
-		case 4:
-			return "Surv Bonus";
-
-		case 5:
-			return "Bullet Dmg";
-
-		case 6:
-			return "Bullet Bonus";
-
-		case 7:
-			return "Ram Dmg * 2";
-
-		case 8:
-			return "Ram Bonus";
-
-		case 9:
-			return " 1sts ";
-
-		case 10:
-			return " 2nds ";
-
-		case 11:
-			return " 3rds ";
-
-		default:
-			return "";
+		if (columnNames != null && col < columnNames.size())
+		{
+			return columnNames.get(col);
 		}
+		return "";
 	}
 
 	public int getRowCount() {
@@ -145,57 +127,49 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 		BattleResults statistics = results[row];
 
-		switch (col) {
-		case 0: {
-			int place = row + 1;
-
-			while (place < getRowCount() && statistics.getScore() == results[place].getScore()) {
-				place++;
+		if (col < columnNames.size())
+		{
+			if (col == 0)
+			{
+				int place = row + 1;
+	
+				while (place < getRowCount() && statistics.getCombinedScore() == results[place].getCombinedScore()) {
+					place++;
+				}
+				return getPlacementString(place);
 			}
-			return getPlacementString(place);
-		}
-
-		case 1:
-			return statistics.getTeamLeaderName();
-
-		case 2:
-			String percent = "";
-
-			if (totalScore != 0) {
-				percent = " (" + NumberFormat.getPercentInstance().format(statistics.getScore() / totalScore) + ")";
+			else if (col == 1)
+			{
+				return statistics.getTeamName();
 			}
-			return "" + (int) (statistics.getScore() + 0.5) + percent;
+			else if (col == 2)
+			{
+				String percent = "";
 
-		case 3:
-			return "" + (int) (statistics.getSurvival() + 0.5);
-
-		case 4:
-			return "" + (int) (statistics.getLastSurvivorBonus() + 0.5);
-
-		case 5:
-			return "" + (int) (statistics.getBulletDamage() + 0.5);
-
-		case 6:
-			return "" + (int) (statistics.getBulletDamageBonus() + 0.5);
-
-		case 7:
-			return "" + (int) (statistics.getRamDamage() + 0.5);
-
-		case 8:
-			return "" + (int) (statistics.getRamDamageBonus() + 0.5);
-
-		case 9:
-			return "" + statistics.getFirsts();
-
-		case 10:
-			return "" + statistics.getSeconds();
-
-		case 11:
-			return "" + statistics.getThirds();
-
-		default:
-			return "";
+				if (totalScore != 0) {
+					percent = " (" + NumberFormat.getPercentInstance().format(
+							statistics.getCombinedScore() / totalScore) + ")";
+				}
+				return "" + (int) (statistics.getCombinedScore() + 0.5) + percent;
+			}
+			else if (col == columnNames.size() - 3)
+			{
+				return "" + statistics.getFirsts();
+			}
+			else if (col == columnNames.size() - 2)
+			{
+				return "" + statistics.getSeconds();
+			}
+			else if (col == columnNames.size() - 1)
+			{
+				return "" + statistics.getThirds();
+			}
+			else
+			{
+				return "" + statistics.getScores().get(col - 3);
+			}
 		}
+		return "";
 	}
 
 	// Used for printing to the console only

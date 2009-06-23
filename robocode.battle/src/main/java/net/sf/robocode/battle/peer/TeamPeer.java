@@ -24,6 +24,8 @@ package net.sf.robocode.battle.peer;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.robocode.battle.IContestantStatistics;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -37,18 +39,18 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 	private final String name;
 	private final int contestIndex;
 	private RobotPeer teamLeader;
-	private final TeamStatistics teamStatistics;
+	private final IContestantStatistics teamStatistics;
 
 	public TeamPeer(String name, List<String> memberNames, int contestIndex) {
 		this.name = name;
 		this.contestIndex = contestIndex;
 		this.memberNames = memberNames;
-		this.teamStatistics = new TeamStatistics(this);
+		this.teamStatistics = new ClassicTeamStatistics(this);
 	}
 
 	public int compareTo(ContestantPeer cp) {
-		double myScore = teamStatistics.getTotalScore();
-		double hisScore = cp.getStatistics().getTotalScore();
+		double myScore = teamStatistics.getCombinedScore();
+		double hisScore = cp.getStatistics().getCombinedScore();
 
 		if (teamLeader != null && teamLeader.getRobotStatistics().isInRound()) {
 			myScore += teamStatistics.getCurrentScore();
@@ -63,7 +65,7 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		return 0;
 	}
 
-	public ContestantStatistics getStatistics() {
+	public IContestantStatistics getStatistics() {
 		return teamStatistics;
 	}
 

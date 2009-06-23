@@ -562,4 +562,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		return statics.getShortName() + "(" + (int) status.getEnergy() + ") X" + (int) status.getX() + " Y"
 				+ (int) status.getY();
 	}
+
+	
+	//TODO: what do we need here?
+	public IExtensionApi getExtensionApi() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

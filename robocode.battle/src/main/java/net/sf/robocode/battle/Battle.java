@@ -121,6 +121,8 @@ import robocode.control.snapshot.ITurnSnapshot;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -325,7 +327,8 @@ public final class Battle extends BaseBattle {
 				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team, robots.size(), cindex);
+			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, 
+					team, robots.size(), cindex, customRules.getEmptyStatistics());
 
 			robots.add(robotPeer);
 			if (team == null) {
@@ -333,13 +336,18 @@ public final class Battle extends BaseBattle {
 			}
 		}
 	}
-
+	
 	public void registerDeathRobot(RobotPeer r) {
 		deathRobots.add(r);
 	}
 
 	public BattleRules getBattleRules() {
 		return battleRules;
+	}
+
+	public ICustomRules getCustomRules()
+	{
+		return customRules;
 	}
 
 	public int getRobotsCount() {
@@ -463,8 +471,8 @@ public final class Battle extends BaseBattle {
 			}
 		}
 
-		computeActiveRobots();
-
+		activeRobots = customRules.computeActiveRobots(robots);
+		
 		hostManager.resetThreadManager();
 	}
 
@@ -473,7 +481,8 @@ public final class Battle extends BaseBattle {
 		super.initializeRound();
 		inactiveTurnCount = 0;
 
-		// call custom rules round setup
+		// call custom rules and battlefield round setups
+		battleSetup.startRound(robots, robjects);
 		customRules.startRound(robots, robjects);
 		// start robots
 		final long waitTime = Math.min(300 * cpuConstant, 10000000000L);
@@ -529,7 +538,7 @@ public final class Battle extends BaseBattle {
 
 		inactiveTurnCount++;
 
-		computeActiveRobots();
+		activeRobots = customRules.computeActiveRobots(robots);
 
 		publishStatuses();
 
@@ -749,18 +758,6 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer robotPeer : robots) {
 			robotPeer.publishStatus(currentTime);
 		}
-	}
-
-	private void computeActiveRobots() {
-		int ar = 0;
-
-		// Compute active robots
-		for (RobotPeer robotPeer : robots) {
-			if (!robotPeer.isDead()) {
-				ar++;
-			}
-		}
-		this.activeRobots = ar;
 	}
 
 	private void wakeupRobots() {

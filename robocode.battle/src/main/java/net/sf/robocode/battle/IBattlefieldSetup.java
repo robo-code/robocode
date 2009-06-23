@@ -15,6 +15,7 @@ package net.sf.robocode.battle;
 import java.util.List;
 
 import net.sf.robocode.battle.peer.RobjectPeer;
+import net.sf.robocode.battle.peer.RobotPeer;
 
 /**
  * This is an interface for an extension battlefield class
@@ -54,10 +55,10 @@ public interface IBattlefieldSetup
 	public double[][] computeInitialPositions(String initialPositions, int battlefieldWidth, int battlefieldHeight);
 	
 	/**
-	 * Sets up any objects on the battlefield. This although battlefieldWidth and battlefieldHieght
-	 * are included as parameters, any objects created are not automatically bound by these 
-	 * limits. You may call checkBoundaries() within this function to crop obstacles to these
-	 * boundaries.
+	 * Sets up any objects on the battlefield, at the beginning of the battle. Although 
+	 * battlefieldWidth and battlefieldHieght are included as parameters, any objects 
+	 * created are not automatically bound by these limits. You may call checkBoundaries() 
+	 * within this function to crop obstacles to these boundaries.
 	 * 
 	 * @param battlefieldWidth width of the battlefield
 	 * @param battlefieldHeight height of the battlefield
@@ -73,4 +74,11 @@ public interface IBattlefieldSetup
 	 * @return a list of objects completely within the battlefield boundaries
 	 */
 	public List<RobjectPeer> checkBoundaries(List<RobjectPeer> robjects, int battlefieldWidth, int battlefieldHeight);
+
+	/**
+	 * Called at the beginning of each round. This is a good place to reset any dynamic objects.
+	 * @param robots a list of all the robots in the battle
+	 * @param robjects a list of all the objects
+	 */
+	public void startRound(List<RobotPeer> robots, List<RobjectPeer> robjects);
 }

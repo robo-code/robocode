@@ -198,15 +198,15 @@ public class RobotButton extends JButton implements ActionListener {
 
 			maxScore = 0;
 			for (IScoreSnapshot team : scoreSnapshotList) {
-				if (maxScore < team.getCurrentScore()) {
-					maxScore = (int) team.getCurrentScore();
+				if (maxScore < team.getCurrentCombinedScore()) {
+					maxScore = (int) team.getCurrentCombinedScore();
 				}
 			}
 			if (maxScore == 0) {
 				maxScore = 1;
 			}
 
-			final int newScore = (int) scoreSnapshotList[contestIndex].getCurrentScore();
+			final int newScore = (int) scoreSnapshotList[contestIndex].getCurrentCombinedScore();
 			final int newEnergy = (int) robots[robotIndex].getEnergy();
 			boolean rep = (lastEnergy != newEnergy || lastScore != newScore);
 
@@ -220,14 +220,14 @@ public class RobotButton extends JButton implements ActionListener {
 		public void onBattleCompleted(final BattleCompletedEvent event) {
 			maxScore = 0;
 			for (BattleResults team : event.getIndexedResults()) {
-				if (maxScore < team.getScore()) {
-					maxScore = team.getScore();
+				if (maxScore < team.getCombinedScore()) {
+					maxScore = (int) team.getCombinedScore();
 				}
 			}
 			if (maxScore == 0) {
 				maxScore = 1;
 			}
-			lastScore = event.getIndexedResults()[contestIndex].getScore();
+			lastScore = (int) event.getIndexedResults()[contestIndex].getCombinedScore();
 			repaint();
 		}
 		

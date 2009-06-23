@@ -61,8 +61,8 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		totalSum = 0;
 
 		for (IScoreSnapshot score : scoreSnapshotList) {
-			currentSum += score.getCurrentScore();
-			totalSum += score.getTotalScore();
+			currentSum += score.getCurrentCombinedScore();
+			totalSum += score.getCombinedScore();
 		}
 	}
 
@@ -85,118 +85,92 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int col) {
-		switch (col) {
-		case 0:
-			return "Rank";
-
-		case 1:
-			return "Robot Name";
-
-		case 2:
-			return "          Total Score          ";
-
-		case 3:
-			return "     Survival     ";
-
-		case 4:
-			return "Surv Bonus";
-
-		case 5:
-			return "    Bullet Dmg    ";
-
-		case 6:
-			return " Bullet Bonus ";
-
-		case 7:
-			return "Ram Dmg * 2";
-
-		case 8:
-			return "Ram Bonus";
-
-		case 9:
-			return " 1sts ";
-
-		case 10:
-			return " 2nds ";
-
-		case 11:
-			return " 3rds ";
-
-		default:
-			return "";
+		if (col < 3)
+		{
+			if (col == 0)
+			{
+				return "Rank";
+			}
+			else if (col == 1)
+			{
+				return "Robot Name";
+			}
+			else 
+			{
+				return "          Total Score          ";
+			}
 		}
+		else if (scoreSnapshotList != null && scoreSnapshotList.length > 0 && 
+				col - 3 >= scoreSnapshotList[0].getScoreNames().size())
+		{
+			int size = scoreSnapshotList[0].getScoreNames().size();
+			if (col == size - 3)
+			{
+				return " 1sts ";
+			}
+			else if (col == size - 2)
+			{
+				return " 2nds ";
+			}
+			else if (col == size - 1)
+			{
+				return " 3rds ";
+			}
+		}
+		else if (scoreSnapshotList != null && scoreSnapshotList.length > 0)
+		{
+			return scoreSnapshotList[0].getScoreNames().get(col - 3);
+		}
+		return "";
 	}
 
 	public Object getValueAt(int row, int col) {
 
 		final IScoreSnapshot statistics = scoreSnapshotList[row];
 
-		switch (col) {
-		case 0:
-			return getPlacementString(row + 1);
+		int size = statistics.getTotalScores().size();
+		if (col < size + 6)
+		{
+			if (col == 0)
+			{
+				return getPlacementString(row + 1);
+			}
+			else if (col == 1)
+			{
+				return statistics.getName();
+			}
+			else if (col == 2)
+			{
+				final double current = statistics.getCurrentCombinedScore();
+				final double total = statistics.getCombinedScore();
 
-		case 1:
-			return statistics.getName();
+				return (int) (current + 0.5) + " / " + (int) (total + current + 0.5) + "  ("
+						+ (int) (current / currentSum * 100) + " / " + (int) ((total + current) / (totalSum + currentSum) * 100)
+						+ "%)";
+			}
+			else if (col == size - 3)
+			{
+				return "" + statistics.getTotalFirsts();
+			}
+			else if (col == size - 2)
+			{
+				return "" + statistics.getTotalSeconds();
+			}
+			else if (col == size - 1)
+			{
+				return "" + statistics.getTotalThirds();
+			}
+			else
+			{
+				final double current = statistics.getCurrentScores().get(col - 3);
+				final double total = statistics.getTotalScores().get(col - 3);
 
-		case 2: {
-			final double current = statistics.getCurrentScore();
-			final double total = statistics.getTotalScore();
-
-			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5) + "  ("
-					+ (int) (current / currentSum * 100) + " / " + (int) ((total + current) / (totalSum + currentSum) * 100)
-					+ "%)";
+				return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
+			}
 		}
-
-		case 3: {
-			final double current = statistics.getCurrentSurvivalScore();
-			final double total = statistics.getTotalSurvivalScore();
-
-			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
-		}
-
-		case 4:
-			return (int) (statistics.getTotalLastSurvivorBonus() + 0.5);
-
-		case 5: {
-			final double current = statistics.getCurrentBulletDamageScore();
-			final double total = statistics.getTotalBulletDamageScore();
-
-			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
-		}
-
-		case 6: {
-			final double current = statistics.getCurrentBulletKillBonus();
-			final double total = statistics.getTotalBulletKillBonus();
-
-			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
-		}
-
-		case 7: {
-			final double current = statistics.getCurrentRammingDamageScore();
-			final double total = statistics.getTotalRammingDamageScore();
-
-			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
-		}
-
-		case 8: {
-			final double current = statistics.getCurrentRammingKillBonus();
-			final double total = statistics.getTotalRammingKillBonus();
-
-			return (int) (current + 0.5) + " / " + (int) (total + current + 0.5);
-		}
-
-		case 9:
-			return "" + statistics.getTotalFirsts();
-
-		case 10:
-			return "" + statistics.getTotalSeconds();
-
-		case 11:
-			return "" + statistics.getTotalThirds();
-
-		default:
-			return "";
-		}
+		
+		return "";
+		
 	}
 
 	public static String getPlacementString(int i) {

@@ -52,11 +52,13 @@ public class TestScoring extends RobotTestBed {
 		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 			// Notice that the is no such thing as a 'current total last
 			// survivor bonus'
-			int currentScore = (int) (0.5 + score.getCurrentSurvivalScore() + score.getCurrentBulletDamageScore()
-					+ score.getCurrentBulletKillBonus() + score.getCurrentRammingDamageScore()
-					+ score.getCurrentRammingKillBonus() + score.getCurrentSurvivalBonus());
+			double currentScore = 0.5;
+			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++)
+			{
+				currentScore += score.getCurrentScores().get(scoreIndex);
+			}
 
-			Assert.assertThat(score.getName(), currentScore, is((int) (0.5 + score.getCurrentScore())));
+			Assert.assertThat(score.getName(), (int)currentScore, is((int) (0.5 + score.getCurrentCombinedScore())));
 		}
 	}
 
@@ -66,11 +68,13 @@ public class TestScoring extends RobotTestBed {
 
 		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 
-			int totalScore = (int) (0.5 + score.getTotalSurvivalScore() + score.getTotalLastSurvivorBonus()
-					+ score.getTotalBulletDamageScore() + score.getTotalBulletKillBonus() + score.getTotalRammingDamageScore()
-					+ score.getTotalRammingKillBonus());
+			double totalScore = (int) (0.5);
+			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++)
+			{
+				totalScore += score.getTotalScores().get(scoreIndex);
+			}
 
-			Assert.assertThat(score.getName(), totalScore, is((int) (0.5 + score.getTotalScore())));
+			Assert.assertThat(score.getName(), (int)totalScore, is((int) (0.5 + score.getCombinedScore())));
 		}
 	}
 
@@ -78,11 +82,13 @@ public class TestScoring extends RobotTestBed {
 	public void onBattleFinished(BattleFinishedEvent event) {
 		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 
-			int totalScore = (int) (0.5 + score.getTotalSurvivalScore() + score.getTotalLastSurvivorBonus()
-					+ score.getTotalBulletDamageScore() + score.getTotalBulletKillBonus() + score.getTotalRammingDamageScore()
-					+ score.getTotalRammingKillBonus());
+			double totalScore = (int) (0.5);
+			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++)
+			{
+				totalScore += score.getTotalScores().get(scoreIndex);
+			}
 
-			Assert.assertThat(totalScore, is((int) (0.5 + score.getTotalScore())));
+			Assert.assertThat(score.getName(), (int)totalScore, is((int) (0.5 + score.getCombinedScore())));
 		}
 	}
 }

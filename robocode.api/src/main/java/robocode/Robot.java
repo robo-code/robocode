@@ -208,6 +208,14 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		uninitializedException();
 		return 0; // never called
 	}
+	
+	public IExtensionApi getExtensionApi() {
+		if (peer != null) {
+			return peer.getExtensionApi();
+		}
+		uninitializedException();
+		return null;
+	}
 
 	/**
 	 * Returns the direction that the robot's body is facing, in degrees.

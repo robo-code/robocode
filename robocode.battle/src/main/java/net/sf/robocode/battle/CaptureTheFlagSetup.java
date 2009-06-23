@@ -16,10 +16,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import net.sf.robocode.battle.peer.RobjectPeer;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+
 
 import javax.xml.parsers.*;
 
@@ -64,7 +67,7 @@ public class CaptureTheFlagSetup extends BattlefieldSetup{
 						int y = Integer.parseInt(getTagValue("Y", element));
 						int width = Integer.parseInt(getTagValue("Width", element));
 						int height = Integer.parseInt(getTagValue("Height", element));
-						robjects.add(new Box(x, y, width, height));				
+						robjects.add(new BoxPeer(x, y, width, height));				
 					}
 					else if (type.equals("Trench"))
 					{
@@ -72,14 +75,14 @@ public class CaptureTheFlagSetup extends BattlefieldSetup{
 						int y = Integer.parseInt(getTagValue("Y", element));
 						int width = Integer.parseInt(getTagValue("Width", element));
 						int height = Integer.parseInt(getTagValue("Height", element));
-						robjects.add(new Trench(x, y, width, height));		
+						robjects.add(new TrenchPeer(x, y, width, height));		
 					}
 					else if (type.equals("Flag"))
 					{
 						int x = Integer.parseInt(getTagValue("X", element));
 						int y = Integer.parseInt(getTagValue("Y", element));
 						int teamNumber = Integer.parseInt(getTagValue("Team", element));
-						robjects.add(new Flag(x, y, teamNumber));
+						robjects.add(new FlagPeer(x, y, teamNumber));
 					}
 					else if (type.equals("Base"))
 					{
@@ -88,7 +91,7 @@ public class CaptureTheFlagSetup extends BattlefieldSetup{
 						int width = Integer.parseInt(getTagValue("Width", element));
 						int height = Integer.parseInt(getTagValue("Height", element));
 						int teamNumber = Integer.parseInt(getTagValue("Team", element));
-						robjects.add(new Base(x, y, width, height, teamNumber));	
+						robjects.add(new BasePeer(x, y, width, height, teamNumber));	
 					}
 					else if (type.equals("Rubble"))
 					{
@@ -96,13 +99,13 @@ public class CaptureTheFlagSetup extends BattlefieldSetup{
 						int y = Integer.parseInt(getTagValue("Y", element));
 						int width = Integer.parseInt(getTagValue("Width", element));
 						int height = Integer.parseInt(getTagValue("Height", element));
-						robjects.add(new Rubble(x, y, width, height));	
+						robjects.add(new RubblePeer(x, y, width, height));	
 					}
 					else if (type.equals("EnergyPack"))
 					{
 						int x = Integer.parseInt(getTagValue("X", element));
 						int y = Integer.parseInt(getTagValue("Y", element));
-						robjects.add(new EnergyPack(x, y));
+						robjects.add(new EnergyPackPeer(x, y));
 					}
 				}
 			}	

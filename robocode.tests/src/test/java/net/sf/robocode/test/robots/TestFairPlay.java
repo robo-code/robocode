@@ -56,8 +56,8 @@ public class TestFairPlay extends RobotTestBed {
 		final IScoreSnapshot score1 = scores[0];
 		final IScoreSnapshot score2 = scores[1];
 
-		double minTotal = Math.min(score1.getTotalScore(), score2.getTotalScore());
-		double maxTotal = Math.max(score1.getTotalScore(), score2.getTotalScore());
+		double minTotal = Math.min(score1.getCombinedScore(), score2.getCombinedScore());
+		double maxTotal = Math.max(score1.getCombinedScore(), score2.getCombinedScore());
 
 		Assert.assertTrue("The total scores should be almost the same", maxTotal / minTotal <= 1.02);
 

@@ -38,7 +38,7 @@ public abstract class RobjectPeer {
 	private boolean dynamic;
 	protected int teamNumber;
 	
-	public RobjectPeer(String type, int x, int y, int width, int height, boolean stopsRobots,
+	public RobjectPeer(String type, double x, double y, double width, double height, boolean stopsRobots,
 			boolean stopsBullets, boolean stopsScans, boolean scannable, boolean robotConscious,
 			boolean dynamic)
 	{

@@ -16,6 +16,9 @@
 package robocode.control;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import robocode.BattleResults;
 
 
@@ -63,8 +66,26 @@ public class RobotResults extends BattleResults {
 			int seconds,
 			int thirds
 			) {
-		super(teamLeaderName, rank, score, survival, lastSurvivorBonus, bulletDamage, bulletDamageBonus, ramDamage,
-				ramDamageBonus, firsts, seconds, thirds);
+		//TODO: this needs to change...
+		scoreNames.add("Survival");
+		scores.add(survival);
+		scoreNames.add("Last Survivor Bonus");
+		scores.add(lastSurvivorBonus);
+		scoreNames.add("Bullet Damage");
+		scores.add(bulletDamage);
+		scoreNames.add("Bullet Damage Bonus");
+		scores.add(bulletDamageBonus);
+		scoreNames.add("Ram Damage");
+		scores.add(ramDamage);
+		scoreNames.add("ramDamageBonus");
+		
+		teamName = teamLeaderName;
+		this.rank = rank;
+		combinedScore = (int) score;
+		this.firsts = firsts;
+		this.seconds = seconds;
+		this.thirds = thirds;
+		
 		this.robot = robot;
 	}
 
@@ -77,11 +98,10 @@ public class RobotResults extends BattleResults {
 	 */
 	public RobotResults(
 			RobotSpecification robot,
-			BattleResults results) {
-		super(results.getTeamLeaderName(), results.getRank(), results.getScore(), results.getSurvival(),
-				results.getLastSurvivorBonus(), results.getBulletDamage(), results.getBulletDamageBonus(),
-				results.getRamDamage(), results.getRamDamageBonus(), results.getFirsts(), results.getSeconds(),
-				results.getThirds());
+			BattleResults results) {		
+		super(results.getTeamName(), results.getRank(), results.getCombinedScore(), 
+				results.getScores(), results.getScoreNames(), results.getFirsts(), 
+				results.getSeconds(), results.getThirds());
 		this.robot = robot;
 	}
 

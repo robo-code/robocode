@@ -133,10 +133,17 @@ public class ScannedObjectEvent extends Event {
 	 */
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
-		IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();
-
-		if (listener != null) {
-			listener.onScannedObject(this);
+		try
+		{
+			IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();	
+		
+			if (listener != null) {
+				listener.onScannedObject(this);
+			}
+		}
+		catch (ClassCastException ex)
+		{
+			//The robot does not use objects, do nothing;
 		}
 	}
 

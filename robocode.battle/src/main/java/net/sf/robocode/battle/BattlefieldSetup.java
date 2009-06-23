@@ -15,6 +15,7 @@ package net.sf.robocode.battle;
 import java.util.List;
 
 import net.sf.robocode.battle.peer.RobjectPeer;
+import net.sf.robocode.battle.peer.RobotPeer;
 
 /**
  * This is the base class of any extension that modifies the battlefield
@@ -51,5 +52,16 @@ public abstract class BattlefieldSetup implements IBattlefieldSetup {
 			}
 		}
 		return robjects;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void startRound(List<RobotPeer> robots, List<RobjectPeer> robjects)
+	{
+		for (RobjectPeer robject : robjects)
+		{
+			robject.roundStarted();
+		}
 	}
 }

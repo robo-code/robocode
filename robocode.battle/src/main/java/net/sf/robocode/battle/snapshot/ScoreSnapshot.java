@@ -14,7 +14,7 @@
 package net.sf.robocode.battle.snapshot;
 
 
-import net.sf.robocode.battle.peer.RobotStatistics;
+import net.sf.robocode.battle.IContestantStatistics;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.XmlWriter;
@@ -23,6 +23,7 @@ import robocode.control.snapshot.IScoreSnapshot;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Dictionary;
+import java.util.List;
 
 
 /**
@@ -41,26 +42,20 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	private String name;
 
 	/** The total score */
-	private double totalScore;
+	private double combinedScore;
 
-	/** The total survival score */
-	private double totalSurvivalScore;
+	/** The list of totalled scores */
+	private List<Double> totalScores;
 
-	/** The total last survivor score */
-	private double totalLastSurvivorBonus;
-
-	/** The total bullet damage score */
-	private double totalBulletDamageScore;
-
-	/** The total bullet kill bonus */
-	private double totalBulletKillBonus;
-
-	/** The total ramming damage score */
-	private double totalRammingDamageScore;
-
-	/** The total ramming kill bonus */
-	private double totalRammingKillBonus;
-
+	/** The current score */
+	private double currentCombinedScore;
+	
+	/** The list of current scores */
+	private List<Double> currentScores;
+	
+	/** The list of score categories */
+	private List<String> scoreNames;
+	
 	/** The total number of first places */
 	private int totalFirsts;
 
@@ -70,27 +65,6 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	/** The total number of third places */
 	private int totalThirds;
 
-	/** The current score */
-	private double currentScore;
-
-	/** The current survival score */
-	private double currentSurvivalScore;
-
-	/** The current survival bonus */
-	private double currentSurvivalBonus;
-
-	/** The current bullet damage score */
-	private double currentBulletDamageScore;
-
-	/** The current bullet kill bonus */
-	private double currentBulletKillBonus;
-
-	/** The current ramming damage score */
-	private double currentRammingDamageScore;
-
-	/** The current ramming kill bonus */
-	private double currentRammingKillBonus;
-
 	/**
 	 * Creates a snapshot of a score that must be filled out with data later.
 	 */
@@ -99,28 +73,19 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	/**
 	 * Creates a snapshot of a score.
 	 *
-	 * @param score the contestant's score to take a snapshot of.
+	 * @param contestantStatistics the contestant's score to take a snapshot of.
 	 * @param contestantName the name of the contestant.
 	 */
-	public ScoreSnapshot(String contestantName, RobotStatistics score) {
+	public ScoreSnapshot(String contestantName, IContestantStatistics contestantStatistics) {
 		this.name = contestantName;
-		totalScore = score.getTotalScore();
-		totalSurvivalScore = score.getTotalSurvivalScore();
-		totalLastSurvivorBonus = score.getTotalLastSurvivorBonus();
-		totalBulletDamageScore = score.getTotalBulletDamageScore();
-		totalBulletKillBonus = score.getTotalBulletKillBonus();
-		totalRammingDamageScore = score.getTotalRammingDamageScore();
-		totalRammingKillBonus = score.getTotalRammingKillBonus();
-		totalFirsts = score.getTotalFirsts();
-		totalSeconds = score.getTotalSeconds();
-		totalThirds = score.getTotalThirds();
-		currentScore = score.getCurrentScore();
-		currentBulletDamageScore = score.getCurrentBulletDamageScore();
-		currentSurvivalScore = score.getCurrentSurvivalScore();
-		currentSurvivalBonus = score.getCurrentSurvivalBonus();
-		currentBulletKillBonus = score.getCurrentBulletKillBonus();
-		currentRammingDamageScore = score.getCurrentRammingDamageScore();
-		currentRammingKillBonus = score.getCurrentRammingKillBonus();
+		combinedScore = contestantStatistics.getCombinedScore();
+		totalScores = contestantStatistics.getTotalScores();
+		currentScores = contestantStatistics.getCurrentScores();
+		scoreNames = contestantStatistics.getScoreNames();
+		totalFirsts = contestantStatistics.getTotalFirsts();
+		totalSeconds = contestantStatistics.getTotalSeconds();
+		totalThirds = contestantStatistics.getTotalThirds();
+		currentCombinedScore = contestantStatistics.getCurrentScore();
 	}
 
 	/**
@@ -132,22 +97,34 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	 */
 	public ScoreSnapshot(String contestantName, IScoreSnapshot score1, IScoreSnapshot score2) {
 		this.name = contestantName;
-		totalScore = score1.getTotalScore() + score2.getTotalScore();
-		totalSurvivalScore = score1.getTotalSurvivalScore() + score2.getTotalSurvivalScore();
-		totalLastSurvivorBonus = score1.getTotalLastSurvivorBonus() + score2.getTotalLastSurvivorBonus();
-		totalBulletDamageScore = score1.getTotalBulletDamageScore() + score2.getTotalBulletDamageScore();
-		totalBulletKillBonus = score1.getTotalBulletKillBonus() + score2.getTotalBulletKillBonus();
-		totalRammingDamageScore = score1.getTotalRammingDamageScore() + score2.getTotalRammingDamageScore();
-		totalRammingKillBonus = score1.getTotalRammingKillBonus() + score2.getTotalRammingKillBonus();
+		combinedScore = score1.getCombinedScore() + score2.getCombinedScore();
+		for (int scoreIndex = 0; scoreIndex < score1.getTotalScores().size(); scoreIndex++)
+		{
+			if (totalScores.size() <= scoreIndex)
+			{
+				totalScores.add(score1.getTotalScores().get(scoreIndex) + 
+						score2.getTotalScores().get(scoreIndex));
+			}
+			else
+			{
+				totalScores.set(scoreIndex, score1.getTotalScores().get(scoreIndex) + 
+					score2.getTotalScores().get(scoreIndex));
+			}
+			if (currentScores.size() <= scoreIndex)
+			{
+				currentScores.add(score1.getCurrentScores().get(scoreIndex) + 
+					score2.getCurrentScores().get(scoreIndex));
+			}
+			else
+			{
+				currentScores.set(scoreIndex, score1.getCurrentScores().get(scoreIndex) + 
+					score2.getCurrentScores().get(scoreIndex));
+			}
+		}
 		totalFirsts = score1.getTotalFirsts() + score2.getTotalFirsts();
 		totalSeconds = score1.getTotalSeconds() + score2.getTotalSeconds();
 		totalThirds = score1.getTotalThirds() + score2.getTotalThirds();
-		currentScore = score1.getCurrentScore() + score2.getCurrentScore();
-		currentSurvivalScore = score1.getCurrentSurvivalScore() + score2.getCurrentSurvivalScore();
-		currentBulletDamageScore = score1.getCurrentBulletDamageScore() + score2.getCurrentBulletDamageScore();
-		currentBulletKillBonus = score1.getCurrentBulletKillBonus() + score2.getCurrentBulletKillBonus();
-		currentRammingDamageScore = score1.getCurrentRammingDamageScore() + score2.getCurrentRammingDamageScore();
-		currentRammingKillBonus = score1.getCurrentBulletKillBonus() + score2.getCurrentBulletKillBonus();
+		currentCombinedScore = score1.getCurrentCombinedScore() + score2.getCurrentCombinedScore();
 	}
 
 	/**
@@ -160,52 +137,31 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	/**
 	 * {@inheritDoc}
 	 */
-	public double getTotalScore() {
-		return totalScore;
+	public double getCombinedScore() {
+		return combinedScore;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public double getTotalSurvivalScore() {
-		return totalSurvivalScore;
+	public List<Double> getTotalScores() {
+		return totalScores;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public double getTotalLastSurvivorBonus() {
-		return totalLastSurvivorBonus;
+	public List<Double> getCurrentScores() {
+		return currentScores;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public double getTotalBulletDamageScore() {
-		return totalBulletDamageScore;
+	public List<String> getScoreNames() {
+		return scoreNames;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getTotalBulletKillBonus() {
-		return totalBulletKillBonus;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getTotalRammingDamageScore() {
-		return totalRammingDamageScore;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getTotalRammingKillBonus() {
-		return totalRammingKillBonus;
-	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -230,61 +186,19 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	/**
 	 * {@inheritDoc}
 	 */
-	public double getCurrentScore() {
-		return currentScore;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getCurrentSurvivalScore() {
-		return currentSurvivalScore;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getCurrentSurvivalBonus() {
-		return currentSurvivalBonus;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getCurrentBulletDamageScore() {
-		return currentBulletDamageScore;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getCurrentBulletKillBonus() {
-		return currentBulletKillBonus;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getCurrentRammingDamageScore() {
-		return currentRammingDamageScore;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double getCurrentRammingKillBonus() {
-		return currentRammingKillBonus;
+	public double getCurrentCombinedScore() {
+		return currentCombinedScore;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public int compareTo(IScoreSnapshot o) {
-		double myScore = getTotalScore();
-		double hisScore = o.getTotalScore();
+		double myScore = getCombinedScore();
+		double hisScore = o.getCombinedScore();
 
-		myScore += getCurrentScore();
-		hisScore += o.getCurrentScore();
+		myScore += getCurrentCombinedScore();
+		hisScore += o.getCurrentCombinedScore();
 
 		if (myScore < hisScore) {
 			return -1;
@@ -301,22 +215,19 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("score"); {
 			writer.writeAttribute("name", name);
-			writer.writeAttribute("totalScore", totalScore);
-			writer.writeAttribute("totalSurvivalScore", totalSurvivalScore);
-			writer.writeAttribute("totalLastSurvivorBonus", totalLastSurvivorBonus);
-			writer.writeAttribute("totalBulletDamageScore", totalBulletDamageScore);
-			writer.writeAttribute("totalBulletKillBonus", totalBulletKillBonus);
-			writer.writeAttribute("totalRammingDamageScore", totalRammingDamageScore);
-			writer.writeAttribute("totalRammingKillBonus", totalRammingKillBonus);
+			writer.writeAttribute("totalScore", combinedScore);
+			for (int scoreIndex = 0; scoreIndex < totalScores.size(); scoreIndex++)
+			{
+				writer.writeAttribute(scoreNames.get(scoreIndex), totalScores.get(scoreIndex));
+			}
 			writer.writeAttribute("totalFirsts", totalFirsts);
 			writer.writeAttribute("totalSeconds", totalSeconds);
 			writer.writeAttribute("totalThirds", totalThirds);
-			writer.writeAttribute("currentScore", currentScore);
-			writer.writeAttribute("currentSurvivalScore", currentSurvivalScore);
-			writer.writeAttribute("currentBulletDamageScore", currentBulletDamageScore);
-			writer.writeAttribute("currentBulletKillBonus", currentBulletKillBonus);
-			writer.writeAttribute("currentRammingDamageScore", currentRammingDamageScore);
-			writer.writeAttribute("currentRammingKillBonus", currentRammingKillBonus);
+			writer.writeAttribute("currentScore", currentCombinedScore);
+			for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++)
+			{
+				writer.writeAttribute(scoreNames.get(scoreIndex), currentScores.get(scoreIndex));
+			}
 			writer.writeAttribute("ver", serialVersionUID);
 
 		}
@@ -336,41 +247,20 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 						snapshot.name = value;
 					}
 				});
-				reader.expect("totalScore", new XmlReader.Attribute() {
+				reader.expect("combinedScore", new XmlReader.Attribute() {
 					public void read(String value) {
-						snapshot.totalScore = Double.parseDouble(value);
+						snapshot.combinedScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("totalSurvivalScore", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.totalSurvivalScore = Double.parseDouble(value);
-					}
-				});
-				reader.expect("totalLastSurvivorBonus", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.totalLastSurvivorBonus = Double.parseDouble(value);
-					}
-				});
-				reader.expect("totalBulletDamageScore", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.totalBulletDamageScore = Double.parseDouble(value);
-					}
-				});
-				reader.expect("totalBulletKillBonus", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.totalBulletKillBonus = Double.parseDouble(value);
-					}
-				});
-				reader.expect("totalRammingDamageScore", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.totalRammingDamageScore = Double.parseDouble(value);
-					}
-				});
-				reader.expect("totalRammingKillBonus", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.totalRammingKillBonus = Double.parseDouble(value);
-					}
-				});
+				for (int scoreIndex = 0; scoreIndex < totalScores.size(); scoreIndex++)
+				{
+					final int tempScoreIndex = scoreIndex;
+					reader.expect(scoreNames.get(scoreIndex), new XmlReader.Attribute() {
+						public void read(String value) {
+							snapshot.totalScores.set(tempScoreIndex, Double.parseDouble(value));
+						}
+					});
+				}
 				reader.expect("totalFirsts", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalFirsts = Integer.parseInt(value);
@@ -388,34 +278,19 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 				});
 				reader.expect("currentScore", new XmlReader.Attribute() {
 					public void read(String value) {
-						snapshot.currentScore = Double.parseDouble(value);
+						snapshot.currentCombinedScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("currentSurvivalScore", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.currentSurvivalScore = Double.parseDouble(value);
-					}
-				});
-				reader.expect("currentBulletDamageScore", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.currentBulletDamageScore = Double.parseDouble(value);
-					}
-				});
-				reader.expect("currentBulletKillBonus", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.currentBulletKillBonus = Double.parseDouble(value);
-					}
-				});
-				reader.expect("currentRammingDamageScore", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.currentRammingDamageScore = Double.parseDouble(value);
-					}
-				});
-				reader.expect("currentRammingKillBonus", new XmlReader.Attribute() {
-					public void read(String value) {
-						snapshot.currentRammingKillBonus = Double.parseDouble(value);
-					}
-				});
+
+				for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++)
+				{
+					final int tempScoreIndex = scoreIndex;
+					reader.expect(scoreNames.get(scoreIndex), new XmlReader.Attribute() {
+						public void read(String value) {
+							snapshot.currentScores.set(tempScoreIndex, Double.parseDouble(value));
+						}
+					});
+				}
 				return snapshot;
 			}
 		});

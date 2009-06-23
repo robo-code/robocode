@@ -171,27 +171,24 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		private static final long serialVersionUID = BattleResults.serialVersionUID;
 
 		public BattleResultsWrapper() {
-			super(null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			super(null, 0, 0, null, null, 0, 0, 0);
 		}
 
 		public BattleResultsWrapper(BattleResults results) {
-			super(results.getTeamLeaderName(), results.getRank(), results.getScore(), results.getSurvival(),
-					results.getLastSurvivorBonus(), results.getBulletDamage(), results.getBulletDamageBonus(),
-					results.getRamDamage(), results.getRamDamageBonus(), results.getFirsts(), results.getSeconds(),
-					results.getThirds());
+			super(results.getTeamName(), results.getRank(), results.getCombinedScore(), 
+					results.getScores(), results.getScoreNames(), results.getFirsts(), 
+					results.getSeconds(), results.getThirds());
 		}
 
 		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 			writer.startElement("result"); {
-				writer.writeAttribute("teamLeaderName", teamLeaderName);
+				writer.writeAttribute("teamLeaderName", teamName);
 				writer.writeAttribute("rank", rank);
-				writer.writeAttribute("score", score);
-				writer.writeAttribute("survival", survival);
-				writer.writeAttribute("lastSurvivorBonus", lastSurvivorBonus);
-				writer.writeAttribute("bulletDamage", bulletDamage);
-				writer.writeAttribute("bulletDamageBonus", bulletDamageBonus);
-				writer.writeAttribute("ramDamage", ramDamage);
-				writer.writeAttribute("ramDamageBonus", ramDamageBonus);
+				writer.writeAttribute("score", combinedScore);
+				for (int i = 0; i < scores.size(); i++)
+				{
+					writer.writeAttribute(scoreNames.get(i), scores.get(i));
+				}
 				writer.writeAttribute("firsts", firsts);
 				writer.writeAttribute("seconds", seconds);
 				writer.writeAttribute("thirds", thirds);
@@ -207,7 +204,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 
 					reader.expect("teamLeaderName", new XmlReader.Attribute() {
 						public void read(String value) {
-							rules.teamLeaderName = value;
+							rules.teamName = value;
 						}
 					});
 
@@ -218,37 +215,37 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 					});
 					reader.expect("score", new XmlReader.Attribute() {
 						public void read(String value) {
-							rules.score = Double.parseDouble(value);
+							rules.combinedScore = Double.parseDouble(value);
 						}
 					});
 					reader.expect("survival", new XmlReader.Attribute() {
 						public void read(String value) {
-							rules.survival = Double.parseDouble(value);
+							rules.scores.add(Double.parseDouble(value));
 						}
 					});
 					reader.expect("lastSurvivorBonus", new XmlReader.Attribute() {
 						public void read(String value) {
-							rules.lastSurvivorBonus = Double.parseDouble(value);
+							rules.scores.add(Double.parseDouble(value));
 						}
 					});
 					reader.expect("bulletDamage", new XmlReader.Attribute() {
 						public void read(String value) {
-							rules.bulletDamage = Double.parseDouble(value);
+							rules.scores.add(Double.parseDouble(value));
 						}
 					});
 					reader.expect("bulletDamageBonus", new XmlReader.Attribute() {
 						public void read(String value) {
-							rules.bulletDamageBonus = Double.parseDouble(value);
+							rules.scores.add(Double.parseDouble(value));
 						}
 					});
 					reader.expect("ramDamage", new XmlReader.Attribute() {
 						public void read(String value) {
-							rules.ramDamage = Double.parseDouble(value);
+							rules.scores.add(Double.parseDouble(value));
 						}
 					});
 					reader.expect("ramDamageBonus", new XmlReader.Attribute() {
 						public void read(String value) {
-							rules.ramDamageBonus = Double.parseDouble(value);
+							rules.scores.add(Double.parseDouble(value));
 						}
 					});
 					reader.expect("firsts", new XmlReader.Attribute() {

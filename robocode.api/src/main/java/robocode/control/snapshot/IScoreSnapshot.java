@@ -13,6 +13,8 @@
  *******************************************************************************/
 package robocode.control.snapshot;
 
+import java.util.List;
+
 
 /**
  * Interface of a score snapshot at a specific time instant in a battle.
@@ -36,50 +38,29 @@ public interface IScoreSnapshot extends Comparable<IScoreSnapshot> {
 	 *
 	 * @return the total score.
 	 */
-	double getTotalScore();
+	double getCombinedScore();
 
 	/**
-	 * Returns the total survival score.
+	 * Returns the list of totalled scores.
 	 *
-	 * @return the total survival score.
+	 * @return the list of totalled scores.
 	 */
-	double getTotalSurvivalScore();
+	List<Double> getTotalScores();
 
 	/**
-	 * Returns the total last survivor score.
+	 * Returns the list of current scores.
 	 *
-	 * @return the total last survivor score.
+	 * @return the list of current scores.
 	 */
-	double getTotalLastSurvivorBonus();
+	List<Double> getCurrentScores();
 
 	/**
-	 * Returns the total bullet damage score.
+	 * Returns the list of score categories.
 	 *
-	 * @return the total bullet damage score.
+	 * @return the list of score categories.
 	 */
-	double getTotalBulletDamageScore();
-
-	/**
-	 * Returns the total bullet kill bonus.
-	 *
-	 * @return the total bullet kill bonus.
-	 */
-	double getTotalBulletKillBonus();
-
-	/**
-	 * Returns the total ramming damage score.
-	 *
-	 * @return the total ramming damage score.
-	 */
-	double getTotalRammingDamageScore();
-
-	/**
-	 * Returns the total ramming kill bonus.
-	 *
-	 * @return the total ramming kill bonus.
-	 */
-	double getTotalRammingKillBonus();
-
+	List<String> getScoreNames();
+	
 	/**
 	 * Returns the total number of first places.
 	 *
@@ -106,47 +87,5 @@ public interface IScoreSnapshot extends Comparable<IScoreSnapshot> {
 	 *
 	 * @return the current score.
 	 */
-	double getCurrentScore();
-
-	/**
-	 * Returns the current survival score.
-	 *
-	 * @return the current survival score.
-	 */
-	double getCurrentSurvivalScore();
-
-	/**
-	 * Returns the current survival bonus.
-	 *
-	 * @return the current survival bonus.
-	 */
-	double getCurrentSurvivalBonus();
-
-	/**
-	 * Returns the current bullet damage score.
-	 *
-	 * @return the current bullet damage score.
-	 */
-	double getCurrentBulletDamageScore();
-
-	/**
-	 * Returns the current bullet kill bonus.
-	 *
-	 * @return the current bullet kill bonus.
-	 */
-	double getCurrentBulletKillBonus();
-
-	/**
-	 * Returns the current ramming damage score.
-	 *
-	 * @return the current ramming damage score.
-	 */
-	double getCurrentRammingDamageScore();
-
-	/**
-	 * Returns the current ramming kill bonus.
-	 *
-	 * @return the current ramming kill bonus.
-	 */
-	double getCurrentRammingKillBonus();
+	double getCurrentCombinedScore();
 }

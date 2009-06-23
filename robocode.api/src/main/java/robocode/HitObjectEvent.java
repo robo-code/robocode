@@ -69,10 +69,18 @@ public final class HitObjectEvent extends Event {
 	 */
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
-		IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();
+		try
+		{
+			IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();
+	
+			if (listener != null) {
+				listener.onHitObject(this);
+			}
 
-		if (listener != null) {
-			listener.onHitObject(this);
+		}
+		catch (ClassCastException ex)
+		{
+			//The robot does not use objects, do nothing;
 		}
 	}
 
