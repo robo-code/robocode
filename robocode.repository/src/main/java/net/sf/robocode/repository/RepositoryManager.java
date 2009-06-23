@@ -109,7 +109,7 @@ public class RepositoryManager implements IRepositoryManager {
 	public void reload(boolean forced) {
 		if (forced) {
 			db = new Database(this);
-			Logger.logMessage("Rebuilding robot database.");
+			Logger.logMessage("Rebuilding robot database...");
 		} else if (db == null) {
 			setStatus("Reading robot database");
 			db = Database.load(this);

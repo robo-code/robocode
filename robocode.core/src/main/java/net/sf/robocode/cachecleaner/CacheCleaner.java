@@ -16,6 +16,7 @@ package net.sf.robocode.cachecleaner;
 
 
 import net.sf.robocode.core.Container;
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 
@@ -38,33 +39,27 @@ public final class CacheCleaner {
 	}
 
 	public static void clean() {
-		deleteFile("roborumble/temp");
-		deleteFile("robots/.robotcache");
-		deleteFile("robots/robot.database");
+		File roborumbleTempFile = new File("roborumble/temp");
 
-		Logger.logMessage("Creating roborumble/temp... ", false);
-		if (new File("roborumble/temp").mkdir()) {
-			Logger.logMessage("done.");
-		} else {
-			Logger.logMessage("failed.");
-		}
+		deleteFile(roborumbleTempFile.getPath());
+		deleteFile(FileUtil.getRobotCacheDir().getPath());
+		deleteFile(FileUtil.getRobotDatabaseFile().getPath());
 
-		Logger.logMessage("Rebuilding robot database... ");
+		FileUtil.createDir(roborumbleTempFile);
 
 		final IRepositoryManager repositoryManager = Container.getComponent(IRepositoryManager.class);
 
 		repositoryManager.reload(true);
 
-		Logger.logMessage("done.");
+		Logger.logMessage("Cleaning done.");
 	}
 
 	private static void deleteFile(String filename) {
-		Logger.logMessage("Deleting " + filename + "... ");
+		Logger.logMessage("Deleting " + filename + "...");
 		try {
 			recursivelyDelete(new File(filename));
-			Logger.logMessage("done.");
 		} catch (IOException ex) {
-			Logger.logMessage("failed.");
+			Logger.logError(ex.getMessage());
 		}
 	}
 
@@ -78,7 +73,7 @@ public final class CacheCleaner {
 				}
 			}
 			if (!file.delete()) {
-				throw new IOException("Delete failed.");
+				throw new IOException("Failed deleting file: " + file.getPath());
 			}
 		}
 	}
