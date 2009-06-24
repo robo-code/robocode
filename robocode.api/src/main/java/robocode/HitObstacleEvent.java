@@ -26,26 +26,19 @@ import robocode.robotinterfaces.IObjectEvents;
  * halts the robot, like a wall would.
  * 
  * @author Joshua Galecki
- *
  */
 public final class HitObstacleEvent extends Event {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	
 	private final static int DEFAULT_PRIORITY = 39;
 
-	public static final int SIZEOF_TYPEINFO = 0;
-	private final double bearing;
-	private String obstacleType;
-	
-	public HitObstacleEvent(double bearing, String type) {
-		this.bearing = bearing;
-		setObstacleType(type);
-	}
+	static final int SIZEOF_TYPEINFO = 0;
 
-	public void setObstacleType(String obstacleType) {
+	private final double bearing;
+	private final String obstacleType;
+
+	public HitObstacleEvent(double bearing, String obstacleType) {
+		this.bearing = bearing;
 		this.obstacleType = obstacleType;
 	}
 

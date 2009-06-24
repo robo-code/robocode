@@ -26,19 +26,15 @@ import robocode.robotinterfaces.IObjectEvents;
  * stop the robot.
  * 
  * @author Joshua Galecki (original)
- *
  */
 public final class HitObjectEvent extends Event {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	
 	private final static int DEFAULT_PRIORITY = 39;
 
-	public static final int SIZEOF_TYPEINFO = 0;
+	private static final int SIZEOF_TYPEINFO = 0;
 	private final String type;
-	
+
 	public HitObjectEvent(String type) {
 		this.type = type;
 	}
