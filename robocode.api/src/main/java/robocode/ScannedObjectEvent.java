@@ -29,27 +29,26 @@ import robocode.robotinterfaces.IObjectEvents;
  */
 public class ScannedObjectEvent extends Event {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
-	private double bearing;
-	private double distance;
-	private String objectType;
-	private boolean tankStopper;
-	private boolean bulletStopper;
-	private boolean scanStopper;
-	private boolean dynamic;
-
 	private final static int DEFAULT_PRIORITY = 20;
 	
-	public ScannedObjectEvent(String type, double bearing, double distance, boolean tankStopper,
+	private final double bearing;
+	private final double distance;
+	private final String objectType;
+	private final boolean robotStopper;
+	private final boolean bulletStopper;
+	private final boolean scanStopper;
+	private final boolean dynamic;
+	
+	public ScannedObjectEvent(String type, double bearing, double distance, boolean robotStopper,
 			boolean bulletStopper, boolean scanStopper, boolean dynamic) {
+
+		super();
+
 		this.objectType = type;
 		this.bearing = bearing;
 		this.distance = distance;
-		this.tankStopper = tankStopper;
+		this.robotStopper = robotStopper;
 		this.bulletStopper = bulletStopper;
 		this.scanStopper = scanStopper;
 		this.dynamic = dynamic;
@@ -67,44 +66,16 @@ public class ScannedObjectEvent extends Event {
 		return objectType;
 	}
 
-	public void setDistance(double distance) {
-		this.distance = distance;
-	}
-
-	public void setBearing(double bearing) {
-		this.bearing = bearing;
-	}
-	
-	public void setObjectType(String objectType) {
-		this.objectType = objectType;
-	}
-
-	public void setTankStopper(boolean tankStopper) {
-		this.tankStopper = tankStopper;
-	}
-
 	public boolean isTankStopper() {
-		return tankStopper;
-	}
-
-	public void setBulletStopper(boolean bulletStopper) {
-		this.bulletStopper = bulletStopper;
+		return robotStopper;
 	}
 
 	public boolean isBulletStopper() {
 		return bulletStopper;
 	}
 
-	public void setScanStopper(boolean scanStopper) {
-		this.scanStopper = scanStopper;
-	}
-
 	public boolean isScanStopper() {
 		return scanStopper;
-	}
-
-	public void setDynamic(boolean dynamic) {
-		this.dynamic = dynamic;
 	}
 
 	public boolean isDynamic() {
@@ -117,7 +88,17 @@ public class ScannedObjectEvent extends Event {
 	@Override
 	public final int compareTo(Event event) {
 		final int res = super.compareTo(event);
-		return res;
+
+		if (res != 0) {
+			return res;
+		}
+		// Compare the distance, if the events are ScannedObjectEvent
+		// The shorter distance to the robot, the higher priority
+		if (event instanceof ScannedObjectEvent) {
+			return (int) (this.getDistance() - ((ScannedObjectEvent) event).getDistance());
+		}
+		// No difference found
+		return 0;
 	}
 
 	/**

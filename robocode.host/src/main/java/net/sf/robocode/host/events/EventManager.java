@@ -629,6 +629,7 @@ public class EventManager implements IEventManager {
 		registerNamedEvent(new SkippedTurnEvent());
 		registerNamedEvent(new StatusEvent(null));
 		registerNamedEvent(new WinEvent());
+		registerNamedEvent(new ScannedObjectEvent(null, 0, 0, false, false, false, false));
 
 		// same as any line above but for custom event
 		final DummyCustomEvent custom = new DummyCustomEvent();
