@@ -25,7 +25,7 @@ import net.sf.robocode.host.RobotStatics;
 public interface IRobotPeerBattle extends ContestantPeer {
 	void setSGPaintEnabled(boolean enabled);
 
-	RobotStatics getRobotStatistics();
+	//RobotStatics getRobotStatistics();
 
 	TeamPeer getTeamPeer();
 
