@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{674AED55-B9EC-4C7D-8E0B-1B2481C578B2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>robocode.dotnet.nhost</RootNamespace>
+    <AssemblyName>robocode.dotnet.nhost</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\target\</OutputPath>
+    <IntermediateOutputPath>..\target\obj\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\target\</OutputPath>
+    <IntermediateOutputPath>..\target\obj\</IntermediateOutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="jni4net.mini.n-0.1.0.0, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\lib\jni4net.mini.n-0.1.0.0.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\host\IHost.generated.cs">
+      <Link>generated\host\IHost.generated.cs</Link>
+    </Compile>
+    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\host\IHostManager.generated.cs">
+      <Link>generated\host\IHostManager.generated.cs</Link>
+    </Compile>
+    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\host\RobotStatics.generated.cs">
+      <Link>generated\host\RobotStatics.generated.cs</Link>
+    </Compile>
+    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\peer\IRobotPeer.generated.cs">
+      <Link>generated\peer\IRobotPeer.generated.cs</Link>
+    </Compile>
+    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\peer\IRobotStatics.generated.cs">
+      <Link>generated\peer\IRobotStatics.generated.cs</Link>
+    </Compile>
+    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\repository\IRepositoryItem.generated.cs">
+      <Link>generated\repository\IRepositoryItem.generated.cs</Link>
+    </Compile>
+    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs">
+      <Link>generated\repository\IRobotRepositoryItem.generated.cs</Link>
+    </Compile>
+    <Compile Include="..\target\build-sources\generated-sources\robocode\control\RobotSpecification.generated.cs">
+      <Link>generated\control\RobotSpecification.generated.cs</Link>
+    </Compile>
+    <Compile Include="host\DotnetHost.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

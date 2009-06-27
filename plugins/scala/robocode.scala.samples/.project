@@ -1,0 +1,14 @@
+<projectDescription>
+  <name>robocode.scala.samples</name>
+  <comment/>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>ch.epfl.lamp.sdt.core.scalabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>ch.epfl.lamp.sdt.core.scalanature</nature>
+  </natures>
+</projectDescription>

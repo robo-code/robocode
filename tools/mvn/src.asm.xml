@@ -1,0 +1,26 @@
+<assembly>
+    <id>src</id>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <excludes>
+                <exclude>plugins/**</exclude>
+                <exclude>**/*.iws</exclude>
+                <exclude>**/*.bak</exclude>
+                <exclude>**/Thumbs.db</exclude>
+                <exclude>**/~*</exclude>
+                <exclude>**/.*</exclude>
+                <exclude>**/_svn/**</exclude>
+                <exclude>**/.svn/**</exclude>
+                <exclude>**/.metadata/**</exclude>
+                <exclude>**/bin/**</exclude>
+                <exclude>**/target/**</exclude>
+                <exclude>**/lib/**</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+</assembly>

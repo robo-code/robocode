@@ -1,0 +1,10 @@
+<classpath>
+  <classpathentry kind="src" path="src/main/java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.api/1.7.1.Beta1/robocode.api-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.core/1.7.1.Beta1/robocode.core-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.host/1.7.1.Beta1/robocode.host-1.7.1.Beta1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3.jar" sourcepath="M2_REPO/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-sources.jar"/>
+</classpath>

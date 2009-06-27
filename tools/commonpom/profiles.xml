@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<profiles>
+    <profile>
+        <id>default</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <properties>
+            <robocode.version>1.7.1.3-Beta</robocode.version>
+            <robocode.nversion>1.7.1.3</robocode.nversion>
+        </properties>
+    </profile>
+</profiles>

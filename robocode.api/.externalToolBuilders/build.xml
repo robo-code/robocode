@@ -1,0 +1,26 @@
+<project name="Launch Dir Builder" default="build">
+	
+	<property name="launch-dir" location="${basedir}/robocode.api/target/launch"/>
+
+	<target name="build">
+		<!-- Make new launch dir + libs dir -->
+		<mkdir dir="${launch-dir}/libs"/>
+
+		<!-- Copy all resources into launch dir -->
+		<copy todir="${launch-dir}">
+			<fileset dir="${basedir}/robocode.content/src/main/resources"/>
+		</copy>
+
+		<!-- Copy required versions.txt into launch dir -->
+		<copy todir="${launch-dir}" file="${basedir}/versions.txt"/>
+
+		<!-- Create libs/robocode.jar file (for Robot Editor etc.) -->
+		<jar destfile="${launch-dir}/libs/robocode.jar" basedir="${basedir}/robocode.api/target/classes"/>
+	</target>
+
+	<target name="clean">
+		<!-- Delete launch dir -->
+		<delete dir="${launch-dir}"/>
+	</target>
+
+</project>

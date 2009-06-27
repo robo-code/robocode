@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!--  Apache Ant build script for code beautifying Robocode sources         -->
+<!-- ====================================================================== -->
+
+<project name="beautifier" default="jacobe">
+  <description>Apache Ant build script for code beautifying Robocode sources</description>
+
+  <!-- ====================================== -->
+  <!-- Jacobe Code Beautifying                -->
+  <!-- ====================================== -->
+  <taskdef name="jacobe" classname="com.tiobe.jacobe.JacobeTask" classpath="jacobe.jar"/>
+  
+  <target name="jacobe">
+  	<beautify dir="${basedir}/../../robocode.api"/>
+  	<beautify dir="${basedir}/../../robocode.battle"/>
+  	<beautify dir="${basedir}/../../robocode.content"/>
+  	<beautify dir="${basedir}/../../robocode.core"/>
+  	<beautify dir="${basedir}/../../robocode.host"/>
+  	<beautify dir="${basedir}/../../robocode.installer"/>
+  	<beautify dir="${basedir}/../../robocode.repository"/>
+  	<beautify dir="${basedir}/../../robocode.roborumble"/>
+  	<beautify dir="${basedir}/../../robocode.samples"/>
+  	<beautify dir="${basedir}/../../robocode.sound"/>
+  	<beautify dir="${basedir}/../../robocode.tests"/>
+  	<beautify dir="${basedir}/../../robocode.ui"/>
+  	<beautify dir="${basedir}/../../robocode.ui.editor"/>
+  	<beautify dir="${basedir}/../../plugins"/>
+  </target>
+
+  <macrodef name="beautify">
+    <attribute name="dir"/>
+    <sequential>
+      <jacobe input="@{dir}" cfg="${basedir}/robocode.cfg" overwrite="true" nobackup="true"/>
+    </sequential>
+  </macrodef>
+
+</project>

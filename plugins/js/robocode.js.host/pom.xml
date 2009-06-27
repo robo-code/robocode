@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>robocode.js</artifactId>
+        <groupId>net.sf.robocode</groupId>
+        <version>${robocode.version}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sf.robocode</groupId>
+    <artifactId>robocode.js.host</artifactId>
+    <version>${robocode.version}</version>
+    <name>Js host for Robocode</name>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.host</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+		<dependency>
+		    <groupId>rhino</groupId>
+		    <artifactId>js</artifactId>
+		    <version>1.7R1</version>
+		</dependency>
+    </dependencies>
+</project>

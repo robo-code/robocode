@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>robocode</artifactId>
+        <groupId>net.sf.robocode</groupId>
+        <version>${robocode.version}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sf.robocode</groupId>
+    <artifactId>robocode.api</artifactId>
+    <version>${robocode.version}</version>
+    <name>Robocode API</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <finalName>robocode</finalName>
+                    <archive>
+                        <manifest>
+                            <mainClass>robocode.Robocode</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <windowtitle>Robocode ${version} API</windowtitle>
+                    <docfilessubdirs>true</docfilessubdirs>
+                    <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
+                    <links>
+                        <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+                    </links>
+                    <use>false</use>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.4</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+                <configuration>
+                  <excludePackageNames>robocode.exception:net.sf.robocode.*</excludePackageNames>
+                  <doclet>com.sixlegs.misc.ExcludeDoclet</doclet>
+                  <docletArtifact>
+                    <groupId>com.sixlegs.misc</groupId>
+                    <artifactId>exclude-doclet</artifactId>
+                    <version>0.0.0</version>
+                  </docletArtifact>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+    <repositories>
+        <repository>
+            <id>com.sixlegs.misc.ExcludeDoclet</id>
+            <url>http://www2.caret.cam.ac.uk/maven2/</url>
+        </repository>
+    </repositories>
+</project>

@@ -1,0 +1,19 @@
+<projectDescription>
+  <name>robocode.roborumble</name>
+  <comment/>
+  <projects>
+    <project>robocode.api</project>
+    <project>robocode.battle</project>
+    <project>robocode.core</project>
+    <project>robocode.host</project>
+    <project>robocode.repository</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

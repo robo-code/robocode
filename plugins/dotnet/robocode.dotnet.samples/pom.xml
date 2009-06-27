@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>robocode.dotnet</artifactId>
+        <groupId>net.sf.robocode</groupId>
+        <version>${robocode.version}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sf.robocode</groupId>
+    <artifactId>robocode.dotnet.samples</artifactId>
+    <version>${robocode.nversion}</version>
+    <name>.NET samples for Robocode</name>
+    <packaging>dotnet:library</packaging>
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+			<plugin>
+				<groupId>org.sonatype.nmaven.plugins</groupId>
+				<artifactId>maven-dotnet-compiler-plugin</artifactId>
+				<extensions>true</extensions>
+				<version>0.17robocode</version>
+			</plugin>
+	    </plugins>
+        <resources>
+            <resource>
+                <directory>src</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.vb</include>
+                    <include>**/*.cs</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.team</include>
+                    <include>**/*.html</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
