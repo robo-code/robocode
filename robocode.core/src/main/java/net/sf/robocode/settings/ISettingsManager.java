@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -536,10 +537,15 @@ public interface ISettingsManager {
 	 * @param lastRunVersion The lastRunVersion to set
 	 */
 	void setLastRunVersion(String lastRunVersion);
+	
+	Locale getLocale();
+	
+	void setLocale(Locale locale);
 
 	void addPropertyListener(ISettingsListener listener);
 
 	void removePropertyListener(ISettingsListener propertyListener);
+	
 
 	public final static String
 			OPTIONS_VIEW_ROBOTNAMES = "robocode.options.view.robotNames",
@@ -596,5 +602,7 @@ public interface ISettingsManager {
 			CPU_CONSTANT = "robocode.cpu.constant",
 			LAST_RUN_VERSION = "robocode.version.lastrun",
 
-			NUMBER_OF_ROUNDS = "robocode.numberOfBattles";
+			NUMBER_OF_ROUNDS = "robocode.numberOfBattles",
+			
+			INTERFACE_LANGUAGE = "robocode.options.language";
 }

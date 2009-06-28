@@ -143,6 +143,9 @@ public class SettingsManager implements ISettingsManager {
 
 	// Number of Rounds
 	private int numberOfRounds = 10;
+	
+	// Locale
+	private Locale locale;
 
 	private final Properties props = new SortedProperties();
 
@@ -936,6 +939,16 @@ public class SettingsManager implements ISettingsManager {
 		this.numberOfRounds = Math.max(1, numberOfRounds);
 		props.setProperty(NUMBER_OF_ROUNDS, "" + this.numberOfRounds);
 	}
+	
+	// Localization
+	public Locale getLocale() {
+		return locale;
+	}
+	
+	public void setLocale(Locale locale) {
+		String localeText = locale.toString();
+		props.setProperty(INTERFACE_LANGUAGE, localeText);
+	}
 
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
@@ -1014,6 +1027,23 @@ public class SettingsManager implements ISettingsManager {
 		cpuConstant = Long.parseLong(props.getProperty(CPU_CONSTANT, "-1"));
 
 		numberOfRounds = Integer.parseInt(props.getProperty(NUMBER_OF_ROUNDS, "10"));
+		
+		// Localization
+		{
+			String localeString = props.getProperty(INTERFACE_LANGUAGE, "default");
+			if (localeString.equals("default")) {
+				locale = Locale.getDefault();
+			} else {
+				String[] localeStrings = localeString.split("_");
+				int size = localeStrings.length;
+				switch (size) {
+				case 1: locale = new Locale(localeStrings[0]); break;
+				case 2: locale = new Locale(localeStrings[0], localeStrings[1]); break;
+				case 3: locale = new Locale(localeStrings[0], localeStrings[1], localeStrings[3]); break;
+				default: locale = Locale.getDefault();
+				}
+			}
+		}
 	}
 
 	public String getLastRunVersion() {
