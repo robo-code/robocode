@@ -146,7 +146,8 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setInitialPositions(initialPositions);
 		
 		//TODO: this needs to be extracted from this method.
-		battleProperties.setModuleName("New");
+//		battleProperties.setModuleName("New");
+		battleProperties.setModuleName("Classic");
 
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
 		customRules = ModuleFactory.getCustomRules(battleProperties.getModuleName());

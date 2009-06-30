@@ -216,35 +216,33 @@ public class FileUtil {
 	 * @return a File that is the directory containing the robots
 	 */
 	public static File getRobotsDir() {
-		try {
-			File file;
-			String robotPath = System.getProperty("ROBOTPATH");
+		String robotPath = System.getProperty("ROBOTPATH");
+		File file;
 
-			if (robotPath != null) {
-				file = new File(robotPath).getCanonicalFile();
-			} else {
-				file = new File(cwd, "/robots").getCanonicalFile();
-			}
-			return createDir(file);
-		} catch (IOException e) {
-			throw new Error(e);
+		if (robotPath != null) {
+			file = new File(robotPath);
+		} else {
+			file = new File(cwd, "/robots");
 		}
+		return createDir(file);
 	}
 
-	public static File getCacheDir() {
-		try {
-			File file;
-			String robotPath = System.getProperty("ROBOTPATH");
+	/**
+	 * Returns the robot database file.
+	 *
+	 * @return a File that is the directory containing the robot cache.
+	 */
+	public static File getRobotDatabaseFile() {
+		return new File(getRobotsDir(), "/robot.database");
+	}
 
-			if (robotPath != null) {
-				file = new File(robotPath, "/.robotcache/").getCanonicalFile();
-			} else {
-				file = new File(cwd, "/robots/.robotcache/").getCanonicalFile();
-			}
-			return createDir(file);
-		} catch (IOException e) {
-			throw new Error(e);
-		}
+	/**
+	 * Returns the directory containing caches files of robots.
+	 *
+	 * @return a File that is the directory containing the robot cache.
+	 */
+	public static File getRobotCacheDir() {
+		return createDir(new File(getRobotsDir(), "/.robotcache/"));
 	}
 
 	/**
@@ -264,6 +262,16 @@ public class FileUtil {
 	 */
 	public static File getConfigDir() {
 		return createDir(new File(cwd, "/config"));
+	}
+
+	/**
+	 * Returns the directory containing maps.
+	 * If the directory does not exist, it will be created automatically.
+	 *
+	 * @return a File that is the directory containing maps.
+	 */
+	public static File getMapsDir() {
+		return createDir(new File(cwd, "/maps"));
 	}
 
 	/**
@@ -293,7 +301,15 @@ public class FileUtil {
 		return new File(getConfigDir(), "compiler.properties");
 	}
 
+	/**
+	 * Cleans up a stream by flushing it and closing it if it is not null.
+	 *
+	 * @param stream the stream to clean up.
+	 */
 	public static void cleanupStream(Object stream) {
+		if (stream == null) {
+			return;
+		}
 		if (stream instanceof Flushable) {
 			try {
 				((Flushable) stream).flush();
@@ -309,5 +325,4 @@ public class FileUtil {
 			}
 		}
 	}
-
 }

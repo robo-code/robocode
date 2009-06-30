@@ -19,6 +19,7 @@ import java.util.List;
 
 
 import net.sf.robocode.battle.peer.RobjectPeer;
+import net.sf.robocode.io.FileUtil;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -40,7 +41,7 @@ public class CaptureTheFlagSetup extends BattlefieldSetup{
 		
 		try 
 		{
-			File file = new File("E:\\Java\\robocode-workspace\\branch\\Map2.xml");
+			File file = new File(FileUtil.getMapsDir(), "Map2.xml");
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
@@ -137,7 +138,7 @@ public class CaptureTheFlagSetup extends BattlefieldSetup{
 		@Override
 		public double[][] computeInitialPositions(String initialPositions, int battlefieldWidth, int battlefieldHeight) {
 			double[][] initialRobotPositions = new double[2][3];
-			File file = new File("E:\\Java\\robocode-workspace\\branch\\Map2.xml");
+			File file = new File(FileUtil.getMapsDir(), "Map2.xml");
 			try
 			{
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

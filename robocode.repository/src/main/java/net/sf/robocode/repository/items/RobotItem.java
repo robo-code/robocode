@@ -467,7 +467,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			String jarFile = root.getClassPathUrl().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator + getRootPackage();
+			return FileUtil.getRobotCacheDir() + File.separator + jarFile + "_" + File.separator + getRootPackage();
 		} else {
 			return root.getClassPathUrl().getFile() + getRootPackage();
 		}
@@ -481,7 +481,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			String jarFile = root.getClassPathUrl().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			return FileUtil.getCacheDir() + File.separator + jarFile + "_" + File.separator
+			return FileUtil.getRobotCacheDir() + File.separator + jarFile + "_" + File.separator
 					+ getFullPackage().replace('.', File.separatorChar);
 		} else {
 			File vroot;
@@ -489,7 +489,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			if (!alwaysUseCacheForData) {
 				vroot = root.getRootPath();
 			} else {
-				vroot = FileUtil.getCacheDir();
+				vroot = FileUtil.getRobotCacheDir();
 			}
 			// to cacheDir
 			return vroot + File.separator + getFullPackage().replace('.', File.separatorChar);
