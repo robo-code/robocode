@@ -143,8 +143,8 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 		Assert.assertThat(results[2].getRamDamage(), is(11));
 		Assert.assertThat(results[3].getRamDamage(), is(0));
 
-		Assert.assertThat(results[0].getBulletDamageBonus(), is(46));
-		Assert.assertThat(results[1].getBulletDamageBonus(), is(3));
+		Assert.assertThat(results[0].getBulletDamageBonus(), is(113));
+		Assert.assertThat(results[1].getBulletDamageBonus(), is(17));
 		Assert.assertThat(results[2].getBulletDamageBonus(), is(0));
 		Assert.assertThat(results[3].getBulletDamageBonus(), is(0));
 
@@ -153,8 +153,8 @@ public class TestDuplicatesAndScore extends RobotTestBed {
 		Assert.assertThat(results[2].getBulletDamage(), is(108));
 		Assert.assertThat(results[3].getBulletDamage(), is(112));
 
-		Assert.assertThat(results[0].getScore(), is(1265));
-		Assert.assertThat(results[1].getScore(), is(725));
+		Assert.assertThat(results[0].getScore(), is(1333));
+		Assert.assertThat(results[1].getScore(), is(740));
 		Assert.assertThat(results[2].getScore(), is(269));
 		Assert.assertThat(results[3].getScore(), is(212));
 

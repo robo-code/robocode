@@ -956,9 +956,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private void checkRobotCollision(List<RobotPeer> robots) {
 		inCollision = false;
 
-		for (int i = 0; i < robots.size(); i++) {
-			RobotPeer otherRobot = robots.get(i);
-
+		for (RobotPeer otherRobot : robots) {
 			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead())
 					&& boundingBox.intersects(otherRobot.boundingBox)) {
 				// Bounce back
@@ -983,7 +981,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					boolean teamFire = (teamPeer != null && teamPeer == otherRobot.teamPeer);
 
 					if (!teamFire) {
-						statistics.scoreRammingDamage(i);
+						statistics.scoreRammingDamage(otherRobot.getName());
 					}
 
 					this.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
@@ -993,7 +991,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 						if (otherRobot.isAlive()) {
 							otherRobot.kill();
 							if (!teamFire) {
-								final double bonus = statistics.scoreRammingKill(i);
+								final double bonus = statistics.scoreRammingKill(otherRobot.getName());
 
 								if (bonus > 0) {
 									println(

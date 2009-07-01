@@ -1,7 +1,8 @@
 Version 1.7.1.3
-(16-Jun-2009)
+(30-Jun-2009)
 ---------------
 = Bugfixes =
+* Bug [2813513] - Bullet and Ram Damage Bonuses are wrong.
 * Bug [2805858] - Access denied javax.swing -DNOSECURITY=true
 * Sometimes the "Show results when battle(s) ends" in the Common Options was disabled when running the RobocodeEngine, even though the setting had been enabled earlier.
 * A NullPointerException occurred when closing the Preferences window, when no sound device is present in the system.
