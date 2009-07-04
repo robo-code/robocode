@@ -597,23 +597,22 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	}
 
 	/**
-	 * Class used for serializing an Arc2D.double. The purpose of this class is to overcome various serialization problems with Arc2D
-	 * to cope with bug in Java 6 (<a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6522514">Bug ID: 6522514</a>).
-	 * 
+	 * Class used for serializing an Arc2D.double.
+	 * The purpose of this class is to overcome various serialization problems with Arc2D to cope with bug in Java 6:
+	 * <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6522514">Bug ID: 6522514</a>.
+	 *
 	 * @author Pavel Savara
 	 */
 	private class SerializableArc implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		public double x;
-		public double y;
-		public double w;
-		public double h;
-		public double start;
-		public double extent;
-		public int type;
-
-		public SerializableArc() {}
+		public final double x;
+		public final double y;
+		public final double w;
+		public final double h;
+		public final double start;
+		public final double extent;
+		public final int type;
 
 		public SerializableArc(Arc2D.Double arc) {
 			x = arc.getX();
