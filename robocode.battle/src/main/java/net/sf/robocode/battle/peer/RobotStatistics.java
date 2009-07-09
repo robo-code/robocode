@@ -38,6 +38,8 @@
 //
 //
 //import robocode.BattleResults;
+//import java.util.Map;
+//import java.util.HashMap;
 //
 //
 ///**
@@ -48,7 +50,7 @@
 // * @author Robert D. Maupin (contributor)
 // * @author Nathaniel Troutman (contributor)
 // */
-//public class RobotStatistics extends ContestantStatistics {
+//public class RobotStatistics implements ContestantStatistics {
 //
 //	private final RobotPeer robotPeer;
 //	private int rank;
@@ -63,7 +65,7 @@
 //	private double rammingDamageScore;
 //	private double rammingKillBonus;
 //
-//	private double robotDamage[];
+//	private Map<String, Double> robotDamageMap;
 //
 //	private double totalScore;
 //	private double totalSurvivalScore;
@@ -86,7 +88,7 @@
 //	public RobotStatistics(RobotPeer robotPeer, int robots, BattleResults results) {
 //		this(robotPeer, robots);
 //
-//		totalScore = results.getCombinedScore();
+//		totalScore = results.getScore();
 //		totalSurvivalScore = results.getSurvival();
 //		totalLastSurvivorBonus = results.getLastSurvivorBonus();
 //		totalBulletDamageScore = results.getBulletDamage();
@@ -105,13 +107,12 @@
 //	public void initialize() {
 //		resetScores();
 //
-//		robotDamage = null;
-//
 //		isActive = true;
 //		isInRound = true;
 //	}
 //
 //	public void resetScores() {
+//		robotDamageMap = null;
 //		survivalScore = 0;
 //		lastSurvivorBonus = 0;
 //		bulletDamageScore = 0;
@@ -223,22 +224,23 @@
 //		}
 //	}
 //
-//	public void scoreBulletDamage(int robot, double damage) {
+//	public void scoreBulletDamage(String robot, double damage) {
 //		if (isActive) {
-//			getRobotDamage()[robot] += damage;
+//			incrementRobotDamage(robot, damage);
 //			bulletDamageScore += damage;
 //		}
 //	}
 //
-//	public double scoreBulletKill(int robot) {
+//	public double scoreBulletKill(String robot) {
 //		if (isActive) {
-//			double bonus = 0;
+//			double bonus;
 //
 //			if (robotPeer.getTeamPeer() == null) {
-//				bonus = getRobotDamage()[robot] * .2;
+//				bonus = getRobotDamage(robot) * 0.20;
 //			} else {
+//				bonus = 0;
 //				for (RobotPeer teammate : robotPeer.getTeamPeer()) {
-//					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .2;
+//					bonus += teammate.getRobotStatistics().getRobotDamage(robot) * 0.20;
 //				}
 //			}
 //
@@ -248,22 +250,23 @@
 //		return 0;
 //	}
 //
-//	public void scoreRammingDamage(int robot) {
+//	public void scoreRammingDamage(String robot) {
 //		if (isActive) {
-//			getRobotDamage()[robot] += robocode.Rules.ROBOT_HIT_DAMAGE;
+//			incrementRobotDamage(robot, robocode.Rules.ROBOT_HIT_DAMAGE);
 //			rammingDamageScore += robocode.Rules.ROBOT_HIT_BONUS;
 //		}
 //	}
 //
-//	public double scoreRammingKill(int robot) {
+//	public double scoreRammingKill(String robot) {
 //		if (isActive) {
-//			double bonus = 0;
+//			double bonus;
 //
 //			if (robotPeer.getTeamPeer() == null) {
-//				bonus = getRobotDamage()[robot] * .3;
+//				bonus = getRobotDamage(robot) * 0.30;
 //			} else {
+//				bonus = 0;
 //				for (RobotPeer teammate : robotPeer.getTeamPeer()) {
-//					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .3;
+//					bonus += teammate.getRobotStatistics().getRobotDamage(robot) * 0.30;
 //				}
 //			}
 //			rammingKillBonus += bonus;
@@ -307,11 +310,19 @@
 //				totalSeconds, totalThirds);
 //	}
 //
-//	private double[] getRobotDamage() {
-//		if (robotDamage == null) {
-//			robotDamage = new double[robots];
+//	private double getRobotDamage(String robot) {
+//		if (robotDamageMap == null) {
+//			robotDamageMap = new HashMap<String, Double>();
 //		}
-//		return robotDamage;
+//		Double damage = robotDamageMap.get(robot);
+//
+//		return (damage != null) ? damage : 0;
+//	}
+//
+//	private void incrementRobotDamage(String robot, double damage) {
+//		double newDamage = getRobotDamage(robot) + damage;
+//
+//		robotDamageMap.put(robot, newDamage);
 //	}
 //
 //	public void cleanup() {// Do nothing, for now
@@ -319,10 +330,5 @@
 //
 //	public boolean isInRound() {
 //		return isInRound;
-//	}
-//
-//	public IContestantStatistics fakeConstructor(RobotPeer peer, int robots) {
-//		// TODO Auto-generated method stub
-//		return null;
 //	}
 //}

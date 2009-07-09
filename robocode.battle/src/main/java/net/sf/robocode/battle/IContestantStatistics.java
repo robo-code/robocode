@@ -69,19 +69,17 @@ public interface IContestantStatistics {
 
 	public void scoreRobotDeath(int enemiesRemaining);
 	
-	public double scoreRammingKill(int robot);
+	public double scoreRammingKill(String robot);
 	
-	public void scoreRammingDamage(int robot);
+	public void scoreRammingDamage(String robot);
 	
-	public double scoreBulletKill(int robot);
+	public double scoreBulletKill(String robot);
 	
-	public void scoreBulletDamage(int robot, double damage);
+	public void scoreBulletDamage(String robot, double damage);
 	
 	public void scoreLastSurvivor();
 	
 	public void scoreSurvival();
-
-	public double[] getRobotDamage();
 
 	public void cleanup();
 }

@@ -16,8 +16,6 @@ import robocode.Event;
 
 import java.util.List;
 
-import net.sf.robocode.host.RobotStatics;
-
 
 /**
  * @author Pavel Savara (original)

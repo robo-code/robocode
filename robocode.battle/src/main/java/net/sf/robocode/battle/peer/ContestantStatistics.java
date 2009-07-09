@@ -41,7 +41,9 @@
 package net.sf.robocode.battle.peer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.robocode.battle.IContestantStatistics;
 
@@ -70,7 +72,7 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 	protected List<String> scoreNames;
 	protected List<Double> currentScores;
 
-	protected double robotDamage[];
+	protected Map<String, Double> robotDamageMap;
 
 	protected double combinedScore;
 	
@@ -143,13 +145,6 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 				scoreNames, totalFirsts, totalSeconds, totalThirds);
 	}
 	
-	public double[] getRobotDamage() {
-		if (robotDamage == null) {
-			robotDamage = new double[robots];
-		}
-		return robotDamage;
-	}
-
 	public List<String> getScoreNames() {
 		return scoreNames;
 	}
@@ -191,13 +186,13 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 	public void initialize() {
 		resetScores();
 
-		robotDamage = null;
-
 		isActive = true;
 		isInRound = true;
 	}
 
 	public void resetScores() {
+		robotDamageMap = null;
+
 		for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++)
 		{
 			currentScores.set(scoreIndex, 0.0);
@@ -211,5 +206,20 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 
 	public void setRank(int rank) {
 		this.rank = rank;
+	}
+
+	protected double getRobotDamage(String robot) {
+		if (robotDamageMap == null) {
+			robotDamageMap = new HashMap<String, Double>();
+		}
+		Double damage = robotDamageMap.get(robot);
+
+		return (damage != null) ? damage : 0;
+	}
+
+	protected void incrementRobotDamage(String robot, double damage) {
+		double newDamage = getRobotDamage(robot) + damage;
+
+		robotDamageMap.put(robot, newDamage);
 	}
 }

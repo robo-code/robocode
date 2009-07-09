@@ -87,10 +87,8 @@ import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
-import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
-import robocode.exception.DeathException;
 import robocode.exception.WinException;
 import robocode.util.Utils;
 import static robocode.util.Utils.*;
@@ -990,9 +988,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private void checkRobotCollision(List<RobotPeer> robots) {
 		inCollision = false;
 
-		for (int i = 0; i < robots.size(); i++) {
-			RobotPeer otherRobot = robots.get(i);
-
+		for (RobotPeer otherRobot : robots) {
 			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead())
 					&& boundingBox.intersects(otherRobot.boundingBox)) {
 				// Bounce back
@@ -1017,7 +1013,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					boolean teamFire = (teamPeer != null && teamPeer == otherRobot.teamPeer);
 
 					if (!teamFire) {
-						statistics.scoreRammingDamage(i);
+						statistics.scoreRammingDamage(otherRobot.getName());
 					}
 
 					this.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
@@ -1027,7 +1023,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 						if (otherRobot.isAlive()) {
 							otherRobot.kill();
 							if (!teamFire) {
-								final double bonus = statistics.scoreRammingKill(i);
+								final double bonus = statistics.scoreRammingKill(otherRobot.getName());
 
 								if (bonus > 0) {
 									println(
@@ -1366,10 +1362,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private void updateMovement() {
 		double distance = currentCommands.getDistanceRemaining();
 
-		if (distance == 0 && velocity == 0) {
-			return;
-		}
-		
 		if (Double.isNaN(distance)) {
 			distance = 0;
 		}
@@ -1385,7 +1377,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (dx != 0 || dy != 0) {
 			updateBoundingBox();
 		}
-		
+
 		if (distance != 0) {
 			currentCommands.setDistanceRemaining(distance - velocity);
 		}
@@ -1423,10 +1415,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 				// New velocity (v) = d / t, where time = 1 (i.e. 1 turn). Hence, v = d / 1 => v = d
 				// However, the new velocity must be limited by the max. velocity
-				newVelocity = Math.min(currentCommands.getMaxVelocity(), Math.min(
-						Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * 
-						accelTime * accelTime,  distance));
-								
+				newVelocity = Math.min(currentCommands.getMaxVelocity(),
+						Math.min(Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * accelTime * accelTime,
+						distance));
+
 				// Note: We change the sign here due to the sign check later when returning the result
 				velocity *= -1;
 			}
@@ -1470,9 +1462,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				newVelocity = Math.min(speed + Rules.ACCELERATION, currentCommands.getMaxVelocity());
 			}
 		}
-
-		// 0 <= velocity <= max. velocity
-		newVelocity = Math.min(currentCommands.getMaxVelocity(), Math.abs(newVelocity));
 
 		// Return the new velocity with the correct sign. We have been working with the speed, which is always positive
 		return (velocity < 0) ? -newVelocity : newVelocity;

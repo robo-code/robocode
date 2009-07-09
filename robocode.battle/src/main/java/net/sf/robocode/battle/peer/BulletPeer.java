@@ -152,37 +152,33 @@ public class BulletPeer {
 	}
 
 	private void checkRobotCollision(List<RobotPeer> robots) {
-		RobotPeer robotPeer;
-
-		for (int i = 0; i < robots.size(); i++) {
-			robotPeer = robots.get(i);
-
-			if (!(robotPeer == null || robotPeer == owner || robotPeer.isDead())
-					&& robotPeer.getBoundingBox().intersectsLine(boundingLine)) {
+		for (RobotPeer otherRobot : robots) {
+			if (!(otherRobot == null || otherRobot == owner || otherRobot.isDead())
+					&& otherRobot.getBoundingBox().intersectsLine(boundingLine)) {
 				double damage = Rules.getBulletDamage(power);
 
 				double score = damage;
 
-				if (score > robotPeer.getEnergy()) {
-					score = robotPeer.getEnergy();
+				if (score > otherRobot.getEnergy()) {
+					score = otherRobot.getEnergy();
 				}
-				robotPeer.updateEnergy(-damage);
+				otherRobot.updateEnergy(-damage);
 
-				boolean teamFire = (owner.getTeamPeer() != null && owner.getTeamPeer() == robotPeer.getTeamPeer());
+				boolean teamFire = (owner.getTeamPeer() != null && owner.getTeamPeer() == otherRobot.getTeamPeer());
 
 				if (!teamFire) {
-					owner.getRobotStatistics().scoreBulletDamage(i, score);
+					owner.getRobotStatistics().scoreBulletDamage(otherRobot.getName(), score);
 				}
 
-				if (robotPeer.getEnergy() <= 0) {
-					if (robotPeer.isAlive()) {
-						robotPeer.kill();
+				if (otherRobot.getEnergy() <= 0) {
+					if (otherRobot.isAlive()) {
+						otherRobot.kill();
 						if (!teamFire) {
-							final double bonus = owner.getRobotStatistics().scoreBulletKill(i);
+							final double bonus = owner.getRobotStatistics().scoreBulletKill(otherRobot.getName());
 
 							if (bonus > 0) {
 								owner.println(
-										"SYSTEM: Bonus for killing " + (robotPeer.getName() + ": " + (int) (bonus + .5)));
+										"SYSTEM: Bonus for killing " + (otherRobot.getName() + ": " + (int) (bonus + .5)));
 							}
 						}
 					}
@@ -190,21 +186,22 @@ public class BulletPeer {
 				owner.updateEnergy(Rules.getBulletHitBonus(power));
 
 				HitByBulletEvent event = new HitByBulletEvent(
-						robocode.util.Utils.normalRelativeAngle(heading + Math.PI - robotPeer.getBodyHeading()),
+						robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()),
 						createBullet());
 
-				robotPeer.addEvent(event);
+				otherRobot.addEvent(event);
 
 				state = BulletState.HIT_VICTIM;
-				final BulletHitEvent bhe = new BulletHitEvent(robotPeer.getName(), robotPeer.getEnergy(), createBullet());
+				final BulletHitEvent bhe = new BulletHitEvent(otherRobot.getName(), otherRobot.getEnergy(),
+						createBullet());
 
 				owner.addEvent(bhe);
 				frame = 0;
-				victim = robotPeer;
+				victim = otherRobot;
 
 				double newX, newY;
 
-				if (robotPeer.getBoundingBox().contains(lastX, lastY)) {
+				if (otherRobot.getBoundingBox().contains(lastX, lastY)) {
 					newX = lastX;
 					newY = lastY;
 
@@ -215,8 +212,8 @@ public class BulletPeer {
 					newY = y;
 				}
 
-				deltaX = newX - robotPeer.getX();
-				deltaY = newY - robotPeer.getY();
+				deltaX = newX - otherRobot.getX();
+				deltaY = newY - otherRobot.getY();
 
 				break;
 			}

@@ -20,7 +20,6 @@ package net.sf.robocode.battle.peer;
 
 
 import net.sf.robocode.battle.IContestantStatistics;
-import robocode.BattleResults;
 
 
 /**
@@ -31,7 +30,7 @@ import robocode.BattleResults;
 public class ClassicTeamStatistics extends ContestantStatistics {
 
 	private final TeamPeer teamPeer;
-	private int rank;
+//	private int rank;
 
 	public ClassicTeamStatistics(TeamPeer teamPeer) {
 		this.teamPeer = teamPeer;
@@ -197,43 +196,23 @@ public class ClassicTeamStatistics extends ContestantStatistics {
 		return new ClassicTeamStatistics(this.teamPeer, peer, robots);
 	}
 
-	public void scoreBulletDamage(int robot, double damage) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void scoreBulletDamage(String robot, double damage) {}
 
-	public double scoreBulletKill(int robot) {
-		// TODO Auto-generated method stub
+	public double scoreBulletKill(String robot) {
 		return 0;
 	}
 
-	public void scoreFirsts() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void scoreFirsts() {}
 
-	public void scoreLastSurvivor() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void scoreLastSurvivor() {}
 
-	public void scoreRammingDamage(int robot) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void scoreRammingDamage(String robot) {}
 
-	public double scoreRammingKill(int robot) {
-		// TODO Auto-generated method stub
+	public double scoreRammingKill(String robot) {
 		return 0;
 	}
 
-	public void scoreRobotDeath(int enemiesRemaining) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void scoreRobotDeath(int enemiesRemaining) {}
 
-	public void scoreSurvival() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void scoreSurvival() {}
 }

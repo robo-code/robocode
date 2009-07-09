@@ -486,10 +486,10 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		} else {
 			File vroot;
 
-			if (!alwaysUseCacheForData) {
-				vroot = root.getRootPath();
-			} else {
+			if (alwaysUseCacheForData) {
 				vroot = FileUtil.getRobotCacheDir();
+			} else {
+				vroot = root.getRootPath();
 			}
 			// to cacheDir
 			return vroot + File.separator + getFullPackage().replace('.', File.separatorChar);

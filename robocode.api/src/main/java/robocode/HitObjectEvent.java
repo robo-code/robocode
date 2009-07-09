@@ -94,13 +94,13 @@ public final class HitObjectEvent extends Event {
 
 	private static class SerializableHelper implements ISerializableHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
-			HitRobotEvent obj = (HitRobotEvent) object;
+//			HitRobotEvent obj = (HitRobotEvent) object;
 
 			return HitObjectEvent.SIZEOF_TYPEINFO ;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
-			HitObjectEvent obj = (HitObjectEvent) object;
+//			HitObjectEvent obj = (HitObjectEvent) object;
 
 		}
 

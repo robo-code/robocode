@@ -422,9 +422,10 @@ public class WindowManager implements IWindowManagerExt {
 
 		if (chooser.showDialog(getRobocodeFrame(), "Import") == JFileChooser.APPROVE_OPTION) {
 			File inputFile = chooser.getSelectedFile();
-			String fileName = chooser.getSelectedFile().getName();
-			int idx = fileName.lastIndexOf('.');
+			String fileName = inputFile.getName();
 			String extension = "";
+
+			int idx = fileName.lastIndexOf('.');
 
 			if (idx >= 0) {
 				extension = fileName.substring(idx);

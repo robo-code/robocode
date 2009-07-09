@@ -40,14 +40,14 @@ public class CaptureTheFlagStatistics extends ContestantStatistics{
 		return new CaptureTheFlagStatistics(peer, robots);
 	}
 
-	public void scoreBulletDamage(int robot, double damage) {
+	public void scoreBulletDamage(String robot, double damage) {
 		if (isActive) {
-			getRobotDamage()[robot] += damage / 5;
+			incrementRobotDamage(robot, damage / 5);
 			currentScores.set(bulletDamageScore, currentScores.get(bulletDamageScore) + damage);
 		}
 	}
 
-	public double scoreBulletKill(int robot) {
+	public double scoreBulletKill(String robot) {
 		if (isActive) {
 //			double bonus = 0;
 //
@@ -73,14 +73,14 @@ public class CaptureTheFlagStatistics extends ContestantStatistics{
 		// do nothing
 	}
 
-	public void scoreRammingDamage(int robot) {
+	public void scoreRammingDamage(String robot) {
 		if (isActive) {
-			getRobotDamage()[robot]++;
+			incrementRobotDamage(robot, 1);
 			currentScores.set(rammingDamageScore, currentScores.get(rammingDamageScore) + 1);
 		}
 	}
 
-	public double scoreRammingKill(int robot) {
+	public double scoreRammingKill(String robot) {
 		if (isActive) {
 			currentScores.set(killBonus, currentScores.get(killBonus) + 50);
 			return 50;

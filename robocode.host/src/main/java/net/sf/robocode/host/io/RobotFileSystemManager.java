@@ -20,15 +20,22 @@ package net.sf.robocode.host.io;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.io.FileUtil;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 
 /**
@@ -44,6 +51,7 @@ public class RobotFileSystemManager {
 	private long maxQuota = 0;
 	private final String writableRootDirectory;
 	private final String readableRootDirectory;
+	private final String rootFile;
 	private final String dataDir;
 
 	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String writableRootDirectory, String readableRootDirectory, String rootFile) {
@@ -51,7 +59,14 @@ public class RobotFileSystemManager {
 		this.maxQuota = maxQuota;
 		this.writableRootDirectory = writableRootDirectory;
 		this.readableRootDirectory = readableRootDirectory;
-		this.dataDir = rootFile + robotProxy.getStatics().getShortClassName() + ".data/";
+		this.rootFile = rootFile;
+
+		this.dataDir = robotProxy.getStatics().getFullClassName().replace('.', '/') + ".data/";
+	}
+
+	public void initialize() {
+		initializeQuota();
+		updateDataFiles();
 	}
 
 	public void addStream(RobotFileOutputStream s) throws IOException {
@@ -126,37 +141,34 @@ public class RobotFileSystemManager {
 		File file = new File(parent, filename);
 
 		// TODO the file is never replaced from jar or directory after it was created
-		// TODO it would be good to replace it when it have biger last modified timestamp
+		// TODO it would be good to replace it when it have bigger last modified time stamp
 		if (!file.exists()) {
+			if (!parent.exists() && !parent.mkdirs()) {
+				return file;
+			}
 			InputStream is = null;
-			FileOutputStream fos = null;
+			OutputStream os = null;
 
 			try {
-				URL unUrl = new URL(dataDir + filename);
+				URL unUrl = new URL(rootFile + dataDir + filename);
 				final URLConnection connection = unUrl.openConnection();
 
 				connection.setUseCaches(false);
+
 				is = connection.getInputStream();
-				if (!parent.exists() && !parent.mkdirs()) {
-					return file;
-				}
-				fos = new FileOutputStream(file);
+				os = new FileOutputStream(file);
 
-				byte[] buf = new byte[1024];
-				int len;
+				copyStream(is, os);
 
-				while ((len = is.read(buf)) > 0) {
-					fos.write(buf, 0, len);
-				}
 			} catch (MalformedURLException ignore) {} catch (IOException ignore) {} finally {
 				FileUtil.cleanupStream(is);
-				FileUtil.cleanupStream(fos);
+				FileUtil.cleanupStream(os);
 			}
 		}
 		return file;
 	}
 
-	public void initializeQuota() {
+	private void initializeQuota() {
 		File dataDirectory = getWritableDirectory();
 
 		if (dataDirectory == null) {
@@ -238,5 +250,66 @@ public class RobotFileSystemManager {
 		if (streams.contains(s)) {
 			streams.remove(s);
 		}
+	}
+
+	private void updateDataFiles() {
+		try {
+			if (rootFile.startsWith("jar:")) {
+				updateDataFilesFromJar();
+			}
+		} catch (IOException ignore) {
+			ignore.printStackTrace();
+		}
+	}
+
+	private void updateDataFilesFromJar() throws IOException {
+		URL url = new URL(rootFile);
+		JarURLConnection jarConnection = (JarURLConnection) url.openConnection();
+
+		jarConnection.setUseCaches(false);
+
+		JarFile jarFile = jarConnection.getJarFile();
+		
+		Enumeration<?> entries = jarFile.entries();
+
+		final File parent = getWritableDirectory();
+
+		parent.mkdirs();
+		
+		InputStream is = null;
+		OutputStream os = null;
+
+		while (entries.hasMoreElements()) {
+			JarEntry jarEntry = (JarEntry) entries.nextElement();
+
+			String filename = jarEntry.getName();
+			
+			if (filename.startsWith(dataDir)) {			
+				filename = filename.substring(dataDir.length());
+				
+				is = null;
+				os = null;
+				try {
+					is = jarFile.getInputStream(jarEntry);
+					os = new FileOutputStream(new File(parent, filename));
+					copyStream(is, os);
+				} finally {
+					FileUtil.cleanupStream(is);
+					FileUtil.cleanupStream(os);
+				}
+			}
+		}
+	}
+
+	private void copyStream(InputStream is, OutputStream os) throws IOException {
+		BufferedInputStream bis = new BufferedInputStream(is);
+		BufferedOutputStream bos = new BufferedOutputStream(os);
+
+		byte[] buf = new byte[8192];
+		int len;
+
+		while ((len = bis.read(buf)) > 0) {
+			bos.write(buf, 0, len);
+		}	
 	}
 }

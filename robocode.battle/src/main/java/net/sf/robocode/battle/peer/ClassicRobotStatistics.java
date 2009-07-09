@@ -13,12 +13,7 @@
 package net.sf.robocode.battle.peer;
 
 
-import java.util.List;
-
 import net.sf.robocode.battle.IContestantStatistics;
-
-
-import robocode.BattleResults;
 
 
 /**
@@ -93,22 +88,22 @@ public class ClassicRobotStatistics extends ContestantStatistics {
 		}
 	}
 
-	public void scoreBulletDamage(int robot, double damage) {
+	public void scoreBulletDamage(String robot, double damage) {
 		if (isActive) {
-			getRobotDamage()[robot] += damage;
+			incrementRobotDamage(robot, damage);
 			currentScores.set(bulletDamageScore, currentScores.get(bulletDamageScore) + damage);
 		}
 	}
 
-	public double scoreBulletKill(int robot) {
+	public double scoreBulletKill(String robot) {
 		if (isActive) {
 			double bonus = 0;
 
 			if (robotPeer.getTeamPeer() == null) {
-				bonus = getRobotDamage()[robot] * .2;
+				bonus = getRobotDamage(robot) * 0.20;
 			} else {
 				for (RobotPeer teammate : robotPeer.getTeamPeer()) {
-					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .2;
+					bonus += ((ContestantStatistics)teammate.getRobotStatistics()).getRobotDamage(robot) * 0.20;
 				}
 			}
 
@@ -118,23 +113,23 @@ public class ClassicRobotStatistics extends ContestantStatistics {
 		return 0;
 	}
 
-	public void scoreRammingDamage(int robot) {
+	public void scoreRammingDamage(String robot) {
 		if (isActive) {
-			getRobotDamage()[robot] += robocode.Rules.ROBOT_HIT_DAMAGE;
+			incrementRobotDamage(robot, robocode.Rules.ROBOT_HIT_DAMAGE);
 			currentScores.set(rammingDamageScore, currentScores.get(rammingDamageScore) + 
 					robocode.Rules.ROBOT_HIT_BONUS);
 		}
 	}
 
-	public double scoreRammingKill(int robot) {
+	public double scoreRammingKill(String robot) {
 		if (isActive) {
 			double bonus = 0;
 
 			if (robotPeer.getTeamPeer() == null) {
-				bonus = getRobotDamage()[robot] * .3;
+				bonus = getRobotDamage(robot) * 0.30;
 			} else {
 				for (RobotPeer teammate : robotPeer.getTeamPeer()) {
-					bonus += teammate.getRobotStatistics().getRobotDamage()[robot] * .3;
+					bonus += ((ContestantStatistics)teammate.getRobotStatistics()).getRobotDamage(robot) * 0.30;
 				}
 			}
 			currentScores.set(rammingKillBonus, currentScores.get(rammingKillBonus) + bonus);

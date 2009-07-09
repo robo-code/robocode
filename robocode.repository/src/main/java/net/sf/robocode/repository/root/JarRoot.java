@@ -105,9 +105,15 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			if (!entry.isDirectory()) {
 				if (!name.contains(".data/") && !name.contains(".robotcache/")) {
 					if (name.endsWith(".jar")) {
-						JarInputStream inner = new JarInputStream(jarIS);
+						JarInputStream inner = null;
 
-						readJarStream(items, "jar:jar" + root + JarJar.SEPARATOR + entry.getName(), inner);
+						try {
+							inner = new JarInputStream(jarIS);
+
+							readJarStream(items, "jar:jar" + root + JarJar.SEPARATOR + entry.getName(), inner);
+						} finally {
+							FileUtil.cleanupStream(inner);
+						}
 					} else {
 						createItem(items, new URL(root + "!/"), entry);
 					}
