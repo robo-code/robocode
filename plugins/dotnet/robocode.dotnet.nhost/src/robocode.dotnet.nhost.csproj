@@ -50,6 +50,16 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
+      <Link>generated\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\host\RobotStatics.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\peer\IRobotPeer.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs" />
+    <Compile Include="generated\robocode\control\RobotSpecification.generated.cs" />
     <Compile Include="host\DotnetHost.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,4 +72,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
+echo [assembly: System.Reflection.AssemblyVersion("0.0.0.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>

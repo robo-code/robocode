@@ -1,27 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using net.sf.robocode.host;
+using net.sf.robocode.host.proxies;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using robocode.control;
-using Object=java.lang.Object;
+using String=java.lang.String;
 
 namespace robocode.dotnet.nhost.host
 {
-    class DotnetHost : IHost
+    internal class DotnetHost : IHost
     {
-        public Object createRobotProxy(IHostManager managerPar0, RobotSpecification specificationPar1, RobotStatics staticsPar2, IRobotPeer peerPar3)
+        public IHostingRobotProxy createRobotProxy(IHostManager par0, RobotSpecification par1, RobotStatics par2,
+                                                   IRobotPeer par3)
         {
             throw new NotImplementedException();
         }
 
-        public Object[] getReferencedClasses(IRobotRepositoryItem itemPar0)
+        public String[] getReferencedClasses(IRobotRepositoryItem par0)
         {
             throw new NotImplementedException();
         }
 
-        public Object getRobotType(IRobotRepositoryItem itemPar0, bool booleanPar1, bool booleanPar2)
+        public object getRobotType(IRobotRepositoryItem par0, bool par1, bool par2)
         {
             throw new NotImplementedException();
         }

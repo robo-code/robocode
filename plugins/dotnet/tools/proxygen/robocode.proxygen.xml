@@ -10,9 +10,11 @@
   <AssemblyReference>tools\lib\jni4net.n-0.2.0.0.dll</AssemblyReference>
 
   <!-- interfaces -->
+  
   <JavaClass TypeName="robocode.control.RobotSpecification"/>
   <JavaClass TypeName="net.sf.robocode.host.IHost"/>
   <JavaClass TypeName="net.sf.robocode.host.IHostManager"/>
+  <JavaClass TypeName="net.sf.robocode.host.proxies.IHostingRobotProxy"/>
   <JavaClass TypeName="net.sf.robocode.repository.IRobotRepositoryItem"/>
   <JavaClass TypeName="net.sf.robocode.peer.IRobotPeer"/>
   <JavaClass TypeName="net.sf.robocode.host.RobotStatics"/>
