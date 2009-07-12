@@ -19,8 +19,8 @@
         </dependency>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
-            <artifactId>jni4net.mini.j</artifactId>
-            <version>0.1.0.0</version>
+            <artifactId>jni4net.j</artifactId>
+            <version>0.2.0.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

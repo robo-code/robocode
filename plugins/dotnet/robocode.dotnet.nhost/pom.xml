@@ -25,8 +25,8 @@
         </dependency>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
-            <artifactId>jni4net.mini.n</artifactId>
-            <version>0.1.0.0</version>
+            <artifactId>jni4net.n</artifactId>
+            <version>0.2.0.0</version>
             <type>dotnet:library</type>
         </dependency>
     </dependencies>

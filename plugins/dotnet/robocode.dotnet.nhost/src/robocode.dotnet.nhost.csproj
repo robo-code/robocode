@@ -38,9 +38,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="jni4net.mini.n-0.1.0.0, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="jni4net.n-0.2.0.0, Version=0.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\lib\jni4net.mini.n-0.1.0.0.dll</HintPath>
+      <HintPath>..\..\tools\lib\jni4net.n-0.2.0.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -50,31 +50,9 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\host\IHost.generated.cs">
-      <Link>generated\host\IHost.generated.cs</Link>
-    </Compile>
-    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\host\IHostManager.generated.cs">
-      <Link>generated\host\IHostManager.generated.cs</Link>
-    </Compile>
-    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\host\RobotStatics.generated.cs">
-      <Link>generated\host\RobotStatics.generated.cs</Link>
-    </Compile>
-    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\peer\IRobotPeer.generated.cs">
-      <Link>generated\peer\IRobotPeer.generated.cs</Link>
-    </Compile>
-    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\peer\IRobotStatics.generated.cs">
-      <Link>generated\peer\IRobotStatics.generated.cs</Link>
-    </Compile>
-    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\repository\IRepositoryItem.generated.cs">
-      <Link>generated\repository\IRepositoryItem.generated.cs</Link>
-    </Compile>
-    <Compile Include="..\target\build-sources\generated-sources\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs">
-      <Link>generated\repository\IRobotRepositoryItem.generated.cs</Link>
-    </Compile>
-    <Compile Include="..\target\build-sources\generated-sources\robocode\control\RobotSpecification.generated.cs">
-      <Link>generated\control\RobotSpecification.generated.cs</Link>
-    </Compile>
     <Compile Include="host\DotnetHost.cs" />
+  </ItemGroup>
+  <ItemGroup>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

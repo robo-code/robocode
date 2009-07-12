@@ -10,12 +10,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
     <orderEntry type="module" module-name="robocode.host" exported="" />
     <orderEntry type="module" module-name="robocode.api" exported="" />
     <orderEntry type="module" module-name="robocode.core" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.jacob-project:jacob:1.14.3" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.2.0.0" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.5" level="project" />
   </component>
 </module>
