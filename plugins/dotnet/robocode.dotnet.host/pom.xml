@@ -18,6 +18,11 @@
             <version>${robocode.version}</version>
         </dependency>
         <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.repository</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.j</artifactId>
             <version>0.2.0.0</version>
