@@ -86,11 +86,11 @@ namespace robocode
                 return RbSerializer.SIZEOF_TYPEINFO;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 return new DeathEvent();
             }

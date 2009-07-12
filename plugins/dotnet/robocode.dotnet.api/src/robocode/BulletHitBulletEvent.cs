@@ -118,7 +118,7 @@ namespace robocode
                        + serializer.sizeOf(RbSerializer.Bullet_TYPE, obj.hitBullet);
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (BulletHitBulletEvent) objec;
 
@@ -127,7 +127,7 @@ namespace robocode
                 serializer.serialize(buffer, RbSerializer.Bullet_TYPE, obj.hitBullet);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 var bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
                 var hitBullet = (Bullet) serializer.deserializeAny(buffer);

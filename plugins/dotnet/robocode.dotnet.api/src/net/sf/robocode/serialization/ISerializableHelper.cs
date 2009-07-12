@@ -19,8 +19,8 @@ namespace net.sf.robocode.serialization
     internal interface IISerializableHelper
     {
         int sizeOf(RbSerializer serializer, object obj);
-        void serialize(RbSerializer serializer, ByteBuffer buffer, object obj);
-        object deserialize(RbSerializer serializer, ByteBuffer buffer);
+        void serialize(RbSerializer serializer, IByteBuffer buffer, object obj);
+        object deserialize(RbSerializer serializer, IByteBuffer buffer);
     }
 }
 //happy

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
@@ -12,6 +12,14 @@
     <version>${robocode.nversion}</version>
     <name>.NET samples for Robocode</name>
     <packaging>dotnet:library</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.api</artifactId>
+            <version>${robocode.version}</version>
+            <type>dotnet:library</type>
+        </dependency>
+    </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>

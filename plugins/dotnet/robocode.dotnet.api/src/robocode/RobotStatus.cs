@@ -380,7 +380,7 @@ namespace robocode
                        + RbSerializer.SIZEOF_LONG;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (RobotStatus) objec;
 
@@ -402,7 +402,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.time);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 double energy = buffer.getDouble();
                 double x = buffer.getDouble();

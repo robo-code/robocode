@@ -231,7 +231,7 @@ namespace robocode
                 return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5*RbSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (ScannedRobotEvent) objec;
 
@@ -243,7 +243,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.velocity);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 string name = serializer.deserializestring(buffer);
                 double energy = buffer.getDouble();

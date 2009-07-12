@@ -114,7 +114,7 @@ namespace robocode
                 return RbSerializer.SIZEOF_TYPEINFO + 8*RbSerializer.SIZEOF_INT + RbSerializer.SIZEOF_LONG;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (MouseWheelMovedEvent) objec;
 
@@ -129,7 +129,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.getWhen());
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 int clickCount = buffer.getInt();
                 int x = buffer.getInt();

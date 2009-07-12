@@ -9,11 +9,16 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-//TODO
+using robocode;
 
-public class MyCsRobot
+public class MyCsRobot : Robot
 {
-    public static void Main()
+    public override void run()
     {
+        while (true)
+        {
+            ahead(100);
+            turnLeft(30);
+        }
     }
 }

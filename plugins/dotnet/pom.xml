@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
     <name>.NET for Robocode</name>
     <modules>
+        <module>robocode.dotnet.api</module>
         <module>robocode.dotnet.content</module>
         <module>robocode.dotnet.host</module>
         <module>robocode.dotnet.nhost</module>

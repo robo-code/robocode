@@ -94,14 +94,14 @@ namespace robocode
                 return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.robotName);
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (RobotDeathEvent) objec;
 
                 serializer.serialize(buffer, obj.robotName);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 string name = serializer.deserializestring(buffer);
 

@@ -230,7 +230,7 @@ namespace robocode
                        + 7*RbSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (BattleResults) objec;
 
@@ -248,7 +248,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.thirds);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 string teamLeaderName = serializer.deserializestring(buffer);
                 int rank = buffer.getInt();

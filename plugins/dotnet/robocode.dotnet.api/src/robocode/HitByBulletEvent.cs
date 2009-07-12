@@ -192,7 +192,7 @@ namespace robocode
                        + RbSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (HitByBulletEvent) objec;
 
@@ -200,7 +200,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.bearing);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 var bullet = (Bullet) serializer.deserializeAny(buffer);
                 double bearing = buffer.getDouble();

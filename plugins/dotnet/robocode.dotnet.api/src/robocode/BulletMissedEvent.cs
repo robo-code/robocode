@@ -103,14 +103,14 @@ namespace robocode
                 return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (BulletMissedEvent) objec;
 
                 serializer.serialize(buffer, obj.bullet.getBulletId());
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 var bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
 

@@ -131,7 +131,7 @@ namespace robocode
                        + serializer.sizeOf(RbSerializer.BattleResults_TYPE, obj.results);
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (BattleEndedEvent) objec;
 
@@ -139,7 +139,7 @@ namespace robocode
                 serializer.serialize(buffer, RbSerializer.BattleResults_TYPE, obj.results);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 bool aborted = serializer.deserializeBoolean(buffer);
                 var results = (BattleResults) serializer.deserializeAny(buffer);

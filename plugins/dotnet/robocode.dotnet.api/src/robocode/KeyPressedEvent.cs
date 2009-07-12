@@ -88,7 +88,7 @@ namespace robocode
                        RbSerializer.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
             {
                 var obj = (KeyPressedEvent) objec;
                 serializer.serialize(buffer, obj.getKeyChar());
@@ -99,7 +99,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.getWhen());
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 char keyChar = buffer.getChar();
                 int keyCode = buffer.getInt();

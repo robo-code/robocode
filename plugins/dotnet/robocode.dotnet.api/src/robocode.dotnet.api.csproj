@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>robocode</RootNamespace>
-    <AssemblyName>robocode.dotnet.api</AssemblyName>
+    <AssemblyName>robocode</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
@@ -56,7 +56,7 @@
     <Compile Include="net\sf\robocode\security\IHiddenEventHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenRulesHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenStatusHelper.cs" />
-    <Compile Include="net\sf\robocode\serialization\ByteBuffer.cs" />
+    <Compile Include="net\sf\robocode\serialization\IByteBuffer.cs" />
     <Compile Include="net\sf\robocode\serialization\ISerializableHelper.cs" />
     <Compile Include="net\sf\robocode\serialization\RbSerializer.cs" />
     <Compile Include="robocode\AdvancedRobot.cs" />
