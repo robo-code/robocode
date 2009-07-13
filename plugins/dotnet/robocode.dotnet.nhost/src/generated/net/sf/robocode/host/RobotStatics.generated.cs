@@ -51,23 +51,23 @@ namespace net.sf.robocode.host {
         
         internal static global::net.sf.jni4net.jni.MethodId _getIndex16;
         
-        internal static global::net.sf.jni4net.jni.MethodId _wait17;
+        internal static global::net.sf.jni4net.jni.MethodId _hashCode17;
         
-        internal static global::net.sf.jni4net.jni.MethodId _wait18;
+        internal static global::net.sf.jni4net.jni.MethodId _getClass18;
         
         internal static global::net.sf.jni4net.jni.MethodId _wait19;
         
-        internal static global::net.sf.jni4net.jni.MethodId _hashCode20;
+        internal static global::net.sf.jni4net.jni.MethodId _wait20;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getClass21;
+        internal static global::net.sf.jni4net.jni.MethodId _wait21;
         
         internal static global::net.sf.jni4net.jni.MethodId _equals22;
         
-        internal static global::net.sf.jni4net.jni.MethodId _toString23;
+        internal static global::net.sf.jni4net.jni.MethodId _notify23;
         
-        internal static global::net.sf.jni4net.jni.MethodId _notify24;
+        internal static global::net.sf.jni4net.jni.MethodId _notifyAll24;
         
-        internal static global::net.sf.jni4net.jni.MethodId _notifyAll25;
+        internal static global::net.sf.jni4net.jni.MethodId _toString25;
         
         internal static global::net.sf.jni4net.jni.MethodId @__ctor26;
         
@@ -108,15 +108,15 @@ namespace net.sf.robocode.host {
             global::net.sf.robocode.host.RobotStatics._getContestIndex14 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getContestIndex", "()I");
             global::net.sf.robocode.host.RobotStatics._getName15 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getName", "()Ljava/lang/String;");
             global::net.sf.robocode.host.RobotStatics._getIndex16 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getIndex", "()I");
-            global::net.sf.robocode.host.RobotStatics._wait17 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "wait", "()V");
-            global::net.sf.robocode.host.RobotStatics._wait18 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "wait", "(JI)V");
-            global::net.sf.robocode.host.RobotStatics._wait19 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "wait", "(J)V");
-            global::net.sf.robocode.host.RobotStatics._hashCode20 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "hashCode", "()I");
-            global::net.sf.robocode.host.RobotStatics._getClass21 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getClass", "()Ljava/lang/Class;");
+            global::net.sf.robocode.host.RobotStatics._hashCode17 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "hashCode", "()I");
+            global::net.sf.robocode.host.RobotStatics._getClass18 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getClass", "()Ljava/lang/Class;");
+            global::net.sf.robocode.host.RobotStatics._wait19 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "wait", "()V");
+            global::net.sf.robocode.host.RobotStatics._wait20 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "wait", "(JI)V");
+            global::net.sf.robocode.host.RobotStatics._wait21 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "wait", "(J)V");
             global::net.sf.robocode.host.RobotStatics._equals22 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "equals", "(Ljava/lang/Object;)Z");
-            global::net.sf.robocode.host.RobotStatics._toString23 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "toString", "()Ljava/lang/String;");
-            global::net.sf.robocode.host.RobotStatics._notify24 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "notify", "()V");
-            global::net.sf.robocode.host.RobotStatics._notifyAll25 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "notifyAll", "()V");
+            global::net.sf.robocode.host.RobotStatics._notify23 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "notify", "()V");
+            global::net.sf.robocode.host.RobotStatics._notifyAll24 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "notifyAll", "()V");
+            global::net.sf.robocode.host.RobotStatics._toString25 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "toString", "()Ljava/lang/String;");
             global::net.sf.robocode.host.RobotStatics.@__ctor26 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "<init>", "(Lrobocode/control/RobotSpecification;IZLrobocode/BattleRules;Ljava/lang/String;L" +
                     "java/util/List;II)V");
         }
@@ -202,7 +202,7 @@ namespace net.sf.robocode.host {
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()[Ljava/lang/String;")]
         public virtual java.lang.String[] getTeammates() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return ((java.lang.String[])(env.ConvertArrayToNet<java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getTeammates13))));
+            return ((java.lang.String[])(env.ConvertArrayToNet<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getTeammates13))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
@@ -223,34 +223,34 @@ namespace net.sf.robocode.host {
             return env.CallIntMethod(this, global::net.sf.robocode.host.RobotStatics._getIndex16);
         }
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
-        public void wait() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._wait17);
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(JI)V")]
-        public void wait(long par0, int par1) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._wait18, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
-        public void wait(long par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._wait19, new global::net.sf.jni4net.jni.Value(par0));
-        }
-        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
         public virtual int hashCode() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallIntMethod(this, global::net.sf.robocode.host.RobotStatics._hashCode20);
+            return env.CallIntMethod(this, global::net.sf.robocode.host.RobotStatics._hashCode17);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/Class;")]
         public global::java.lang.Class getClass() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.Class>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getClass21));
+            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.Class>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getClass18));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
+        public void wait() {
+            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
+            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._wait19);
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(JI)V")]
+        public void wait(long par0, int par1) {
+            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
+            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._wait20, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
+        public void wait(long par0) {
+            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
+            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._wait21, new global::net.sf.jni4net.jni.Value(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Object;)Z")]
@@ -259,22 +259,22 @@ namespace net.sf.robocode.host {
             return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._equals22, new global::net.sf.jni4net.jni.Value(par0));
         }
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
-        public virtual global::java.lang.String toString() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._toString23));
-        }
-        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public void notify() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._notify24);
+            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._notify23);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public void notifyAll() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._notifyAll25);
+            env.CallVoidMethod(this, global::net.sf.robocode.host.RobotStatics._notifyAll24);
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
+        public virtual global::java.lang.String toString() {
+            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
+            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._toString25));
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {

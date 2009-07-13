@@ -191,7 +191,7 @@ namespace net.sf.robocode.peer {
             global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
             try {
             global::net.sf.robocode.peer.IRobotPeer real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.peer.IRobotPeer>(__env, @__obj);
-            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.executeImplSerial(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.nio.ByteBuffer>(__env, par0)));
+            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.executeImplSerial(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.nio.ByteBuffer>(__env, par0)));
             }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
             return default(global::java.lang.Object.JavaPtr*);
         }
@@ -202,7 +202,7 @@ namespace net.sf.robocode.peer {
             global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
             try {
             global::net.sf.robocode.peer.IRobotPeer real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.peer.IRobotPeer>(__env, @__obj);
-            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.waitForBattleEndImplSerial(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.nio.ByteBuffer>(__env, par0)));
+            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.waitForBattleEndImplSerial(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.nio.ByteBuffer>(__env, par0)));
             }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
             return default(global::java.lang.Object.JavaPtr*);
         }

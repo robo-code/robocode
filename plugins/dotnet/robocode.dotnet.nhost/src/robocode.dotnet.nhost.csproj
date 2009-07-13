@@ -7,12 +7,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{674AED55-B9EC-4C7D-8E0B-1B2481C578B2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>robocode.dotnet.nhost</RootNamespace>
-    <AssemblyName>robocode.dotnet.nhost</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>net.sf.robocode.dotnet</RootNamespace>
+    <AssemblyName>robocode.dotnet.host-1.7.1.3</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\tools\keys\robocode.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,9 +45,6 @@
       <HintPath>..\..\tools\lib\jni4net.n-0.2.0.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -56,6 +55,7 @@
     <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
       <Link>generated\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="generated\net\sf\robocode\dotnet\host\DotnetHost.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs" />

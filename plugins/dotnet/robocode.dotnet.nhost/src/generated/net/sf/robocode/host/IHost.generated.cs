@@ -73,7 +73,7 @@ namespace net.sf.robocode.host {
         
         public java.lang.String[] getReferencedClasses(global::net.sf.robocode.repository.IRobotRepositoryItem par0) {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return ((java.lang.String[])(env.ConvertArrayToNet<java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.@__IHost._getReferencedClasses1, new global::net.sf.jni4net.jni.Value(par0)))));
+            return ((java.lang.String[])(env.ConvertArrayToNet<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.@__IHost._getReferencedClasses1, new global::net.sf.jni4net.jni.Value(par0)))));
         }
         
         public object getRobotType(global::net.sf.robocode.repository.IRobotRepositoryItem par0, bool par1, bool par2) {
@@ -99,7 +99,7 @@ namespace net.sf.robocode.host {
             global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
             try {
             global::net.sf.robocode.host.IHost real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHost>(__env, @__obj);
-            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.createRobotProxy(global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostManager>(__env, par0), global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::robocode.control.RobotSpecification>(__env, par1), global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.RobotStatics>(__env, par2), global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.peer.IRobotPeer>(__env, par3)));
+            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.createRobotProxy(global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostManager>(__env, par0), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::robocode.control.RobotSpecification>(__env, par1), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::net.sf.robocode.host.RobotStatics>(__env, par2), global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.peer.IRobotPeer>(__env, par3)));
             }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
             return default(global::java.lang.Object.JavaPtr*);
         }

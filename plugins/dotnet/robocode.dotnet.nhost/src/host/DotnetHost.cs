@@ -6,9 +6,9 @@ using net.sf.robocode.repository;
 using robocode.control;
 using String=java.lang.String;
 
-namespace robocode.dotnet.nhost.host
+namespace net.sf.robocode.dotnet.host
 {
-    internal class DotnetHost : IHost
+    public class DotnetHost : IHost
     {
         public IHostingRobotProxy createRobotProxy(IHostManager par0, RobotSpecification par1, RobotStatics par2,
                                                    IRobotPeer par3)

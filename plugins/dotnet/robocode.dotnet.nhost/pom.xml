@@ -37,6 +37,7 @@
         </dependency>
     </dependencies>
     <build>
+		<finalName>robocode.dotnet.host-${robocode.version}</finalName>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
 			<plugin>
@@ -45,7 +46,7 @@
 				<extensions>true</extensions>
 				<version>0.17robocode</version>
 				<configuration>
-		          <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
+		          <aditionalOptions>/unsafe /nowarn:1591 /keyfile:${basedir}/../tools/keys/robocode.snk</aditionalOptions>
 		        </configuration>
 			</plugin>
 	    </plugins>

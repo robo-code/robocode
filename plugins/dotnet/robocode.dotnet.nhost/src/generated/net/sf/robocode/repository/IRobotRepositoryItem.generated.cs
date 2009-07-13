@@ -877,7 +877,7 @@ namespace net.sf.robocode.repository {
             global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
             try {
             global::net.sf.robocode.repository.IRobotRepositoryItem real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.repository.IRobotRepositoryItem>(__env, @__obj);
-            real.storeProperties(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.io.OutputStream>(__env, par0), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.net.URL>(__env, par1), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.lang.String>(__env, par2), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.lang.String>(__env, par3), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.lang.String>(__env, par4));
+            real.storeProperties(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.io.OutputStream>(__env, par0), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.net.URL>(__env, par1), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.lang.String>(__env, par2), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.lang.String>(__env, par3), global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.lang.String>(__env, par4));
             }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
         }
         
@@ -887,7 +887,7 @@ namespace net.sf.robocode.repository {
             global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
             try {
             global::net.sf.robocode.repository.IRobotRepositoryItem real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.repository.IRobotRepositoryItem>(__env, @__obj);
-            real.storeProperties(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.io.OutputStream>(__env, par0));
+            real.storeProperties(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.io.OutputStream>(__env, par0));
             }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
         }
         
@@ -941,7 +941,7 @@ namespace net.sf.robocode.repository {
             global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
             try {
             global::net.sf.robocode.repository.IRobotRepositoryItem real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.repository.IRobotRepositoryItem>(__env, @__obj);
-            return real.compareTo(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<java.lang.Object>(__env, par0));
+            return real.compareTo(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.lang.Object>(__env, par0));
             }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
             return default(int);
         }

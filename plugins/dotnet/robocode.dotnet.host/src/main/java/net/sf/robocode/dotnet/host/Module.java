@@ -13,12 +13,28 @@ package net.sf.robocode.dotnet.host;
 
 
 import net.sf.robocode.core.Container;
+import net.sf.robocode.dotnet.repository.items.handlers.DotNetPropertiesHandler;
+import net.sf.robocode.dotnet.repository.items.handlers.DllHandler;
+import net.sf.jni4net.Bridge;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class Module {
-	static {// Container.cache.addComponent("robocode.host.dotnet", DotNetHost.class);
+	static {
+		try {
+			Bridge.verbose = true;
+			Bridge.init();
+			Bridge.LoadAndRegisterAssembly(new File("../jni4net.tested.n/target/jni4net.tested.n-" + Bridge.getNVersion() + ".dll").getAbsolutePath());
+			Container.cache.addComponent("csPropertiesHandler", DotNetPropertiesHandler.class);
+			Container.cache.addComponent("dllHandler", DllHandler.class);
+			Container.cache.addComponent("robocode.host.dotnet", DotnetHost.class);
+		} catch (Throwable e) {
+			throw new Error("Can't initialize .NET", e);
+		}
 	}
 }

@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>robocode.dotnet.samples</RootNamespace>
     <AssemblyName>robocode.dotnet.samples</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
@@ -39,9 +39,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -52,7 +49,9 @@
     <Compile Include="MyCsRobot.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MyCsRobot.properties" />
+    <None Include="MyCsRobot.properties">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">

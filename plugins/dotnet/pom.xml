@@ -21,6 +21,7 @@
         <module>robocode.dotnet.repository</module>
         <module>robocode.dotnet.installer</module>
         <module>robocode.dotnet.samples</module>
+        <module>robocode.dotnet.tests</module>
     </modules>
     <build>
         <pluginManagement>
