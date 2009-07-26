@@ -106,13 +106,13 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 							"If you are using an external IDE to develop robots, you may enter the classpath to those robots here."),
 							c);
 
-			c.fill = GridBagConstraints.NONE;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridwidth = 1;
 			c.gridy = 1;
 			c.insets = new Insets(3, 3, 3, 3);
 			optionsPanel.add(getAddButton(), c);
 
-			c.fill = GridBagConstraints.NONE;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridwidth = 1;
 			c.gridy = 2;
 			c.insets = new Insets(3, 3, 3, 3);
@@ -163,7 +163,8 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 
 	private void loadPreferences(ISettingsManager robocodeProperties) {
 		((DefaultListModel) getPathList().getModel()).clear();
-		StringTokenizer tokenizer = new StringTokenizer(robocodeProperties.getOptionsDevelopmentPath(), File.pathSeparator);
+		StringTokenizer tokenizer = new StringTokenizer(robocodeProperties.getOptionsDevelopmentPath(),
+				File.pathSeparator);
 
 		while (tokenizer.hasMoreTokens()) {
 			((DefaultListModel) getPathList().getModel()).addElement(tokenizer.nextToken());
