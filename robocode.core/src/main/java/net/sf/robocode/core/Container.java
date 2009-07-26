@@ -228,6 +228,10 @@ public final class Container extends ContainerBase {
 		return cache.getComponent(tClass);
 	}
 
+	public static <T> T getComponent(String name) {
+		return (T)cache.getComponent(name);
+	}
+
 	public static <T> T getComponent(java.lang.Class<T> tClass, String className) {
 		final List<T> list = cache.getComponents(tClass);
 

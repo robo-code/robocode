@@ -53,7 +53,7 @@ class __IHostManager extends system.Object implements net.sf.robocode.host.IHost
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;")
     public native java.lang.String[] getReferencedClasses(net.sf.robocode.repository.IRobotRepositoryItem par0);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)LSystem/Object;")
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;")
     public native net.sf.robocode.repository.RobotType getRobotType(net.sf.robocode.repository.IRobotRepositoryItem par0, boolean par1, boolean par2);
     
     @net.sf.jni4net.attributes.ClrMethod("()V")

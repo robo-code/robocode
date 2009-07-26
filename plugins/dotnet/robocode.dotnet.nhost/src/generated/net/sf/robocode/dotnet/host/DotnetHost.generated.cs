@@ -74,7 +74,7 @@ namespace net.sf.robocode.dotnet.host {
         
         private static global::java.lang.Object.JavaPtr* getRobotType2(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj, global::java.lang.Object.JavaPtr* par0, bool par1, bool par2) {
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;
-            // (Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)LSystem/Object;
+            // (Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;
             global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
             try {
             global::net.sf.robocode.dotnet.host.DotnetHost real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.dotnet.host.DotnetHost>(__env, @__obj);

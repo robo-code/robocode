@@ -33,4 +33,12 @@ public class DotNetRobotItem extends RobotItem {
 		extension = ".dll";
 		super.init();
 	}
+
+	@Override
+	public String getRobotLanguage() {
+		final String lang = properties.getProperty(ROBOT_LANGUAGE, null);
+
+		return lang == null ? "cs" : lang;
+	}
+
 }

@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -60,10 +61,13 @@
     <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\RobotStatics.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\io\Logger.generated.cs" />
     <Compile Include="generated\net\sf\robocode\peer\IRobotPeer.generated.cs" />
     <Compile Include="generated\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\repository\RobotType.generated.cs" />
     <Compile Include="generated\robocode\control\RobotSpecification.generated.cs" />
     <Compile Include="host\DotnetHost.cs" />
+    <Compile Include="host\RobotLoader.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

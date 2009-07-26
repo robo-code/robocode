@@ -5,14 +5,16 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{80857B97-6397-487B-A9F5-B07026DCBB66}</ProjectGuid>
+    <ProjectGuid>{B3487E2D-2737-4C04-AA71-B9A726B3F781}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>robocode.dotnet.samples</RootNamespace>
-    <AssemblyName>robocode.dotnet.samples-1.7.1.3</AssemblyName>
+    <RootNamespace>net.sf.robocode.dotnet</RootNamespace>
+    <AssemblyName>robocode.dotnet.tests-1.7.1.3</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\tools\keys\robocode.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,26 +40,40 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="jni4net.n-0.2.0.0, Version=0.2.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\lib\jni4net.n-0.2.0.0.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework-2.4.3.0, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\lib\nunit.framework-2.4.3.0.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="MyCsRobot.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="MyCsRobot.properties">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
       <Project>{7E0900D3-6E8F-48EB-86DB-AA767AA90B84}</Project>
       <Name>robocode.dotnet.api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\robocode.dotnet.nhost\src\robocode.dotnet.nhost.csproj">
+      <Project>{674AED55-B9EC-4C7D-8E0B-1B2481C578B2}</Project>
+      <Name>robocode.dotnet.nhost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\robocode.dotnet.samples\src\robocode.dotnet.samples.csproj">
+      <Project>{80857B97-6397-487B-A9F5-B07026DCBB66}</Project>
+      <Name>robocode.dotnet.samples</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyLoadTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -67,4 +83,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
+echo [assembly: System.Reflection.AssemblyVersion("0.0.0.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>

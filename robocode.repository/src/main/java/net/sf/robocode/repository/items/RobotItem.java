@@ -44,19 +44,19 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private static final long serialVersionUID = 1L;
 
 	// Allowed maximum length for a robot's full package name
-	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+	protected final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
 	// Allowed maximum length for a robot's short class name
-	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
-	private final static String ROBOT_DESCRIPTION = "robot.description";
-	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
-	// private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
-	// private final static String ROBOT_AUTHOR_WEBSITE = "robot.author.website";
-	private final static String ROBOT_JAVA_SOURCE_INCLUDED = "robot.java.source.included";
-	private final static String ROBOT_VERSION = "robot.version";
-	private final static String ROBOT_LANGUAGE = "robot.language";
-	private final static String ROBOT_CLASSNAME = "robot.classname";
-	private final static String ROBOT_WEBPAGE = "robot.webpage";
-	private final static String ROBOCODE_VERSION = "robocode.version";
+	protected final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
+	protected final static String ROBOT_DESCRIPTION = "robot.description";
+	protected final static String ROBOT_AUTHOR_NAME = "robot.author.name";
+	// protected final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
+	// protected final static String ROBOT_AUTHOR_WEBSITE = "robot.author.website";
+	protected final static String ROBOT_JAVA_SOURCE_INCLUDED = "robot.java.source.included";
+	protected final static String ROBOT_VERSION = "robot.version";
+	protected final static String ROBOT_LANGUAGE = "robot.language";
+	protected final static String ROBOT_CLASSNAME = "robot.classname";
+	protected final static String ROBOT_WEBPAGE = "robot.webpage";
+	protected final static String ROBOCODE_VERSION = "robocode.version";
 
 	RobotType robotType;
 

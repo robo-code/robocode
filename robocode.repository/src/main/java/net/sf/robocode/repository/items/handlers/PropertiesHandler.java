@@ -58,10 +58,9 @@ public class PropertiesHandler extends ItemHandler {
 		if (!lang.equals("java")) {
 			// dispatch to other robot types
 			String uplang = lang.substring(0, 1).toUpperCase() + lang.substring(1).toLowerCase();
-			final PropertiesHandler handler = Container.getComponent(PropertiesHandler.class,
-					uplang + "PropertiesHandler");
+			final PropertiesHandler handlerI = Container.getComponent(uplang + "PropertiesHandler");
 
-			return handler.createItem(itemURL, root, db);
+			return handlerI.createItem(itemURL, root, db);
 		}
 		return robotItem;
 	}

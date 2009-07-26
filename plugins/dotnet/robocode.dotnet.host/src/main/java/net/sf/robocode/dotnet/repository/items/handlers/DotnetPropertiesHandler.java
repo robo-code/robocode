@@ -24,7 +24,7 @@ import java.net.URL;
 /**
  * @author Pavel Savara (original)
  */
-public class DotNetPropertiesHandler extends PropertiesHandler {
+public class DotnetPropertiesHandler extends PropertiesHandler {
 
 	@Override
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {

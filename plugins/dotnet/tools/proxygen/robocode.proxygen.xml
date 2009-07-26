@@ -16,9 +16,12 @@
   <JavaClass TypeName="net.sf.robocode.host.IHost"/>
   <JavaClass TypeName="net.sf.robocode.host.IHostManager"/>
   <JavaClass TypeName="net.sf.robocode.host.proxies.IHostingRobotProxy"/>
-  <JavaClass TypeName="net.sf.robocode.repository.IRobotRepositoryItem"/>
-  <JavaClass TypeName="net.sf.robocode.peer.IRobotPeer"/>
   <JavaClass TypeName="net.sf.robocode.host.RobotStatics"/>
+  <JavaClass TypeName="net.sf.robocode.repository.IRobotRepositoryItem"/>
+  <JavaClass TypeName="net.sf.robocode.repository.RobotType"/>
+  <JavaClass TypeName="net.sf.robocode.peer.IRobotPeer"/>
+  <JavaClass TypeName="net.sf.robocode.io.Logger"/>
+  
 
   <ClrType TypeName="net.sf.robocode.dotnet.host.DotnetHost"/>
 
