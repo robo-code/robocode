@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.JarURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -136,7 +135,7 @@ public class RobotFileSystemManager {
 		}
 	}
 
-	public File getDataFile(String filename) {
+	public File getDataFile(String filename) throws IOException {
 		final File parent = getWritableDirectory();
 		File file = new File(parent, filename);
 
@@ -159,8 +158,7 @@ public class RobotFileSystemManager {
 				os = new FileOutputStream(file);
 
 				copyStream(is, os);
-
-			} catch (MalformedURLException ignore) {} catch (IOException ignore) {} finally {
+			} finally {
 				FileUtil.cleanupStream(is);
 				FileUtil.cleanupStream(os);
 			}
@@ -257,8 +255,8 @@ public class RobotFileSystemManager {
 			if (rootFile.startsWith("jar:")) {
 				updateDataFilesFromJar();
 			}
-		} catch (IOException ignore) {
-			ignore.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -310,6 +308,7 @@ public class RobotFileSystemManager {
 
 		while ((len = bis.read(buf)) > 0) {
 			bos.write(buf, 0, len);
-		}	
+		}
+		bos.flush();
 	}
 }
