@@ -80,12 +80,12 @@ namespace robocode
             return RbSerializer.RobotDeathEvent_TYPE;
         }
 
-        private static IISerializableHelper createHiddenSerializer()
+        private static ISerializableHelper createHiddenSerializer()
         {
-            return new ISerializableHelper();
+            return new SerializableHelper();
         }
 
-        private class ISerializableHelper : IISerializableHelper
+        private class SerializableHelper : ISerializableHelper
         {
             public int sizeOf(RbSerializer serializer, object objec)
             {
@@ -103,7 +103,7 @@ namespace robocode
 
             public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
-                string name = serializer.deserializestring(buffer);
+                string name = serializer.deserializeString(buffer);
 
                 return new RobotDeathEvent(name);
             }

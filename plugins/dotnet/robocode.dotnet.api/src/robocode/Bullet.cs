@@ -211,13 +211,13 @@ namespace robocode
         /// @return a hidden bullet helper.
         /// </summary>
         // this class is invisible on RobotAPI
-        private static IISerializableHelper createHiddenSerializer()
+        private static ISerializableHelper createHiddenSerializer()
         {
             return new HiddenBulletHelper();
         }
 
         // this class is invisible on RobotAPI
-        private class HiddenBulletHelper : IHiddenBulletHelper, IISerializableHelper
+        private class HiddenBulletHelper : IHiddenBulletHelper, ISerializableHelper
         {
             public void update(Bullet bullet, double x, double y, string victimName, bool isActive)
             {
@@ -251,8 +251,8 @@ namespace robocode
                 double x = buffer.getDouble();
                 double y = buffer.getDouble();
                 double power = buffer.getDouble();
-                string ownerName = serializer.deserializestring(buffer);
-                string victimName = serializer.deserializestring(buffer);
+                string ownerName = serializer.deserializeString(buffer);
+                string victimName = serializer.deserializeString(buffer);
                 bool isActive = serializer.deserializeBoolean(buffer);
 
                 return new Bullet(headingRadians, x, y, power, ownerName, victimName, isActive, -1);

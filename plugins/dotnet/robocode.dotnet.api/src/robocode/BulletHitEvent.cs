@@ -117,12 +117,12 @@ namespace robocode
             return RbSerializer.BulletHitEvent_TYPE;
         }
 
-        private static IISerializableHelper createHiddenSerializer()
+        private static ISerializableHelper createHiddenSerializer()
         {
-            return new ISerializableHelper();
+            return new SerializableHelper();
         }
 
-        private class ISerializableHelper : IISerializableHelper
+        private class SerializableHelper : ISerializableHelper
         {
             public int sizeOf(RbSerializer serializer, object objec)
             {
@@ -144,7 +144,7 @@ namespace robocode
             public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
                 var bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
-                string name = serializer.deserializestring(buffer);
+                string name = serializer.deserializeString(buffer);
                 double energy = buffer.getDouble();
 
                 return new BulletHitEvent(name, energy, bullet);

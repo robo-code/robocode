@@ -12,7 +12,6 @@
  *     - Javadocs
  *******************************************************************************/
 using System.IO;
-using robocode.robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 
 namespace robocode.robotinterfaces

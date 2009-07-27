@@ -33,7 +33,7 @@ namespace robocode
     /// @see MouseWheelMovedEvent
     /// @since 1.6.1
     /// </summary>
-    public sealed class MoudePressedEvent : MouseEvent
+    public sealed class MousePressedEvent : MouseEvent
     {
         private const int DEFAULT_PRIORITY = 98;
 
@@ -42,7 +42,7 @@ namespace robocode
         ///
         /// @param source the source mouse evnt originating from the AWT.
         /// </summary>
-        public MoudePressedEvent(int button, int clickCount, int x, int y, int id, int modifiersEx, long when)
+        public MousePressedEvent(int button, int clickCount, int x, int y, int id, int modifiersEx, long when)
             : base(button, clickCount, x, y, id, modifiersEx, when)
         {
         }
@@ -79,12 +79,12 @@ namespace robocode
             return RbSerializer.MouseDraggedEvent_TYPE;
         }
 
-        private static IISerializableHelper createHiddenSerializer()
+        private static ISerializableHelper createHiddenSerializer()
         {
-            return new ISerializableHelper();
+            return new SerializableHelper();
         }
 
-        private class ISerializableHelper : IISerializableHelper
+        private class SerializableHelper : ISerializableHelper
         {
             public int sizeOf(RbSerializer serializer, object objec)
             {
@@ -114,7 +114,7 @@ namespace robocode
                 int modifiersEx = buffer.getInt();
                 long when = buffer.getLong();
 
-                return new MoudePressedEvent(button, clickCount, x, y, id, modifiersEx, when);
+                return new MousePressedEvent(button, clickCount, x, y, id, modifiersEx, when);
             }
         }
     }

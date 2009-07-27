@@ -168,12 +168,12 @@ namespace robocode
             return RbSerializer.HitRobotEvent_TYPE;
         }
 
-        private static IISerializableHelper createHiddenSerializer()
+        private static ISerializableHelper createHiddenSerializer()
         {
-            return new ISerializableHelper();
+            return new SerializableHelper();
         }
 
-        private class ISerializableHelper : IISerializableHelper
+        private class SerializableHelper : ISerializableHelper
         {
             public int sizeOf(RbSerializer serializer, object objec)
             {
@@ -195,7 +195,7 @@ namespace robocode
 
             public object deserialize(RbSerializer serializer, IByteBuffer buffer)
             {
-                string robotName = serializer.deserializestring(buffer);
+                string robotName = serializer.deserializeString(buffer);
                 double bearing = buffer.getDouble();
                 double energy = buffer.getDouble();
                 bool atFault = serializer.deserializeBoolean(buffer);

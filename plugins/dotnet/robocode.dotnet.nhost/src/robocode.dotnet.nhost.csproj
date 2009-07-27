@@ -59,7 +59,9 @@
     <Compile Include="generated\net\sf\robocode\dotnet\host\DotnetHost.generated.cs" />
     <Compile Include="generated\net\sf\robocode\dotnet\repository\root\DllRootHelper.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\host\IHostedThread.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\host\io\RobotFileSystemManager.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\RobotStatics.generated.cs" />
     <Compile Include="generated\net\sf\robocode\io\Logger.generated.cs" />
@@ -68,7 +70,19 @@
     <Compile Include="generated\net\sf\robocode\repository\RobotType.generated.cs" />
     <Compile Include="generated\robocode\control\RobotSpecification.generated.cs" />
     <Compile Include="host\DotnetHost.cs" />
-    <Compile Include="host\RobotLoader.cs" />
+    <Compile Include="host\events\EventManager.cs" />
+    <Compile Include="host\events\EventQueue.cs" />
+    <Compile Include="host\proxies\BasicRobotProxy.cs" />
+    <Compile Include="host\proxies\HostingRobotProxy.cs" />
+    <Compile Include="host\RobotClassLoader.cs" />
+    <Compile Include="host\RobotStatics.cs" />
+    <Compile Include="host\security\RobotThreadManager.cs" />
+    <Compile Include="peer\BulletCommand.cs" />
+    <Compile Include="peer\BulletStatus.cs" />
+    <Compile Include="peer\DebugProperty.cs" />
+    <Compile Include="peer\ExecCommands.cs" />
+    <Compile Include="peer\ExecResults.cs" />
+    <Compile Include="peer\TeamMessage.cs" />
     <Compile Include="repository\root\DllRootHelper.cs" />
     <Compile Include="utils\Reflection.cs" />
   </ItemGroup>

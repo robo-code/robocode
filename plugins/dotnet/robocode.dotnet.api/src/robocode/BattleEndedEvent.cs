@@ -116,12 +116,12 @@ namespace robocode
             return RbSerializer.BattleEndedEvent_TYPE;
         }
 
-        private static IISerializableHelper createHiddenSerializer()
+        private static ISerializableHelper createHiddenSerializer()
         {
-            return new ISerializableHelper();
+            return new SerializableHelper();
         }
 
-        private class ISerializableHelper : IISerializableHelper
+        private class SerializableHelper : ISerializableHelper
         {
             public int sizeOf(RbSerializer serializer, object objec)
             {

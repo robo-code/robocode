@@ -1,4 +1,4 @@
-﻿namespace robocode.robocode.robotinterfaces
+﻿namespace robocode.robotinterfaces
 {
     public interface Runnable
     {

@@ -367,12 +367,12 @@ namespace robocode
             this.time = time;
         }
 
-        private static IISerializableHelper createHiddenSerializer()
+        private static ISerializableHelper createHiddenSerializer()
         {
-            return new ISerializableHelper();
+            return new SerializableHelper();
         }
 
-        private class ISerializableHelper : IISerializableHelper, IHiddenStatusHelper
+        private class SerializableHelper : ISerializableHelper, IHiddenStatusHelper
         {
             public int sizeOf(RbSerializer serializer, object objec)
             {

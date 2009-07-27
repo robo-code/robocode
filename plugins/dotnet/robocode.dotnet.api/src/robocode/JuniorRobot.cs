@@ -17,7 +17,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using robocode.exception;
-using robocode.robocode.robotinterfaces;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using robocode.util;

@@ -9,17 +9,18 @@ using System.Security.Policy;
 using net.sf.robocode.dotnet.utils;
 using net.sf.robocode.repository;
 using robocode;
+using robocode.robotinterfaces;
 using String=java.lang.String;
 
 namespace net.sf.robocode.dotnet.host
 {
-    internal class RobotLoader
+    internal class RobotClassLoader
     {
         private IRobotRepositoryItem item;
         private string readableDirectory;
         private string writableDirectory;
 
-        public RobotLoader(IRobotRepositoryItem item)
+        public RobotClassLoader(IRobotRepositoryItem item)
         {
             readableDirectory = Path.GetFullPath(item.getReadableDirectory());
             writableDirectory = Path.GetFullPath(item.getWritableDirectory());
@@ -33,6 +34,11 @@ namespace net.sf.robocode.dotnet.host
             Assembly assembly = Assembly.LoadFrom(file);
             Type type = assembly.GetType(item.getFullClassName(), true);
             return type;
+        }
+
+        public IBasicRobot CreateRobotInstance()
+        {
+            return null;//TODO
         }
 
         public void Cleanup()
@@ -60,7 +66,7 @@ namespace net.sf.robocode.dotnet.host
                 ads,
                 pset,
                 Reflection.GetStrongName(typeof(Robot).Assembly),
-                Reflection.GetStrongName(typeof(RobotLoader).Assembly)
+                Reflection.GetStrongName(typeof(RobotClassLoader).Assembly)
                 );
 
             string assemblyFile = Path.GetFullPath(item.getFullUrl().toURI().ToString().Substring("file:/".Length));

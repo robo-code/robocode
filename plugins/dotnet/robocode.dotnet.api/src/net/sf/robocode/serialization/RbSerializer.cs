@@ -25,7 +25,7 @@ namespace net.sf.robocode.serialization
     /// <summary>
     /// @author Pavel Savara (original)
     /// </summary>
-    internal sealed class RbSerializer
+    public sealed class RbSerializer
     {
         public static readonly int SIZEOF_TYPEINFO = 1;
         public static readonly int SIZEOF_BYTE = 1;
@@ -70,7 +70,7 @@ namespace net.sf.robocode.serialization
         public static readonly byte MouseReleasedEvent_TYPE = 53;
         public static readonly byte MouseWheelMovedEvent_TYPE = 54;
 
-        private static readonly IISerializableHelper[] typeToHelper = new IISerializableHelper[256];
+        private static readonly ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
         private static Dictionary<Type, byte> classToType = new Dictionary<Type, byte>();
         private static readonly Encoding charset;
         private readonly Encoder encoder;
@@ -214,7 +214,7 @@ namespace net.sf.robocode.serialization
 
         public void serialize(IByteBuffer buffer, byte type, object obj)
         {
-            IISerializableHelper helper = getHelper(type);
+            ISerializableHelper helper = getHelper(type);
 
             // FOR-DEBUG int expect = sizeOf(type, object) + buffer.position();
 
@@ -367,7 +367,7 @@ namespace net.sf.robocode.serialization
             return getHelper(type).deserialize(this, buffer);
         }
 
-        public string deserializestring(IByteBuffer buffer)
+        public string deserializeString(IByteBuffer buffer)
         {
             int bytes = buffer.getInt();
 
@@ -520,9 +520,9 @@ namespace net.sf.robocode.serialization
             return sizeOf(HiddenAccess.getSerializationType(evnt), evnt);
         }
 
-        private IISerializableHelper getHelper(byte type)
+        private ISerializableHelper getHelper(byte type)
         {
-            IISerializableHelper helper = typeToHelper[type];
+            ISerializableHelper helper = typeToHelper[type];
 
             if (helper == null)
             {
@@ -564,7 +564,7 @@ namespace net.sf.robocode.serialization
                 {
                     MethodInfo method = realClass.GetMethod("createHiddenSerializer");
 
-                    var helper = (IISerializableHelper) method.Invoke(null, null);
+                    var helper = (ISerializableHelper) method.Invoke(null, null);
 
                     typeToHelper[type] = helper;
                     classToType.Add(realClass, type);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Reflection;
 using net.sf.robocode.dotnet.utils;
@@ -29,11 +29,11 @@ namespace net.sf.robocode.dotnet.host
 
         public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, bool resolve, bool message)
         {
-            RobotLoader loader = null;
+            RobotClassLoader loader = null;
 
             try
             {
-                loader = new RobotLoader(robotRepositoryItem);
+                loader = new RobotClassLoader(robotRepositoryItem);
                 Type robotClass = loader.LoadRobotMainClass();
 
                 return Reflection.CheckInterfaces(robotClass);

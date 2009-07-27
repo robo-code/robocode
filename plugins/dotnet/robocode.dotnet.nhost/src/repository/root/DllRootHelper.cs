@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -62,7 +62,7 @@ namespace net.sf.robocode.dotnet.repository.root
                 ads,
                 pset,
                 Reflection.GetStrongName(typeof(Robot).Assembly),
-                Reflection.GetStrongName(typeof(RobotLoader).Assembly)
+                Reflection.GetStrongName(typeof(RobotClassLoader).Assembly)
                 );
         }
 
