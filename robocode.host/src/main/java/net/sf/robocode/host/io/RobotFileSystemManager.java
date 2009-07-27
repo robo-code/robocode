@@ -20,13 +20,7 @@ package net.sf.robocode.host.io;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.io.FileUtil;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -118,7 +112,7 @@ public class RobotFileSystemManager {
 			final String dir = readableRootDirectory;
 
 			return (dir == null) ? null : new File(dir).getCanonicalFile();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return null;
 		}
 	}
@@ -130,12 +124,12 @@ public class RobotFileSystemManager {
 			return (dir == null)
 					? null
 					: new File(writableRootDirectory, robotProxy.getStatics().getShortClassName() + ".data").getCanonicalFile();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return null;
 		}
 	}
 
-	public File getDataFile(String filename) throws IOException {
+	public File getDataFile(String filename) {
 		final File parent = getWritableDirectory();
 		File file = new File(parent, filename);
 
@@ -158,7 +152,7 @@ public class RobotFileSystemManager {
 				os = new FileOutputStream(file);
 
 				copyStream(is, os);
-			} finally {
+			} catch (IOException ignore) {} finally {
 				FileUtil.cleanupStream(is);
 				FileUtil.cleanupStream(os);
 			}
@@ -197,7 +191,7 @@ public class RobotFileSystemManager {
 
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return false;
 		}
 
@@ -234,7 +228,7 @@ public class RobotFileSystemManager {
 
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return false;
 		}
 
