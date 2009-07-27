@@ -13,8 +13,12 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.core.Container;
+import net.sf.robocode.core.EngineClassLoader;
 import net.sf.robocode.host.security.ThreadManager;
-import net.sf.robocode.host.JavaHost;
+import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.peer.IRobotPeer;
+import net.sf.robocode.peer.ExecResults;
 
 
 /**

@@ -17,8 +17,11 @@ import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.dotnet.repository.items.DotNetRobotItem;
+import net.sf.robocode.dotnet.repository.root.DllRoot;
+import net.sf.robocode.core.Container;
 
 import java.net.URL;
+import java.io.File;
 
 
 /**
@@ -28,6 +31,8 @@ public class DotnetPropertiesHandler extends PropertiesHandler {
 
 	@Override
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
-		return new DotNetRobotItem(null, itemURL, root);
+		final File file = new File(itemURL.toString().replace(".properties",".dll"));
+		final DotNetRobotItem item = new DotNetRobotItem(null, itemURL, new DllRoot(db, file));
+		return item;
 	}
 }

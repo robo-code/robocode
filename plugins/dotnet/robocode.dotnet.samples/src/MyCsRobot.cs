@@ -11,14 +11,17 @@
  *******************************************************************************/
 using robocode;
 
-public class MyCsRobot : Robot
+namespace samplecs
 {
-    public override void run()
+    public class MyCsRobot : Robot
     {
-        while (true)
+        public override void run()
         {
-            ahead(100);
-            turnLeft(30);
+            while (true)
+            {
+                ahead(100);
+                turnLeft(30);
+            }
         }
     }
 }

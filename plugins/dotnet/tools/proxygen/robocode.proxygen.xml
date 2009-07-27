@@ -24,5 +24,6 @@
   
 
   <ClrType TypeName="net.sf.robocode.dotnet.host.DotnetHost"/>
+  <ClrType TypeName="net.sf.robocode.dotnet.repository.root.DllRootHelper"/>
 
 </jni4net-proxygen>

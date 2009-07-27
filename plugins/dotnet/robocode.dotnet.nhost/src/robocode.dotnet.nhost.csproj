@@ -57,6 +57,7 @@
       <Link>generated\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="generated\net\sf\robocode\dotnet\host\DotnetHost.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\dotnet\repository\root\DllRootHelper.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs" />
@@ -68,6 +69,8 @@
     <Compile Include="generated\robocode\control\RobotSpecification.generated.cs" />
     <Compile Include="host\DotnetHost.cs" />
     <Compile Include="host\RobotLoader.cs" />
+    <Compile Include="repository\root\DllRootHelper.cs" />
+    <Compile Include="utils\Reflection.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

@@ -23,8 +23,8 @@ import java.net.URL;
 
 /**
  * @author Pavel Savara (original)
- */
-public class DllHandler extends ItemHandler {
+ * /
+public class DllItemHandler extends ItemHandler {
 	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
 		final String name = itemURL.toString().toLowerCase();
 
@@ -46,6 +46,8 @@ public class DllHandler extends ItemHandler {
 			item.setClassUrl(itemURL);
 		}
 		db.addItem(item);
+		item.getReadableDirectory();
 		return item;
 	}
 }
+*/

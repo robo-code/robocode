@@ -99,7 +99,8 @@ public class HostManager implements IHostManager {
 	}
 
 	private IHost getHost(IRobotRepositoryItem robotRepositoryItem) {
-		return (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
+		final Object host = Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
+		return (IHost) host;
 	}
 
 	public void initSecurity() {

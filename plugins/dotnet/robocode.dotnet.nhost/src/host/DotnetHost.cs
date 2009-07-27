@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Reflection;
+using net.sf.robocode.dotnet.utils;
 using net.sf.robocode.host;
 using net.sf.robocode.host.proxies;
 using net.sf.robocode.io;
@@ -35,12 +36,7 @@ namespace net.sf.robocode.dotnet.host
                 loader = new RobotLoader(robotRepositoryItem);
                 Type robotClass = loader.LoadRobotMainClass();
 
-                if (robotClass == null || robotClass.IsAbstract)
-                {
-                    // this class is not robot
-                    return RobotType.INVALID;
-                }
-                return checkInterfaces(robotClass, robotRepositoryItem);
+                return Reflection.CheckInterfaces(robotClass);
             }
             catch (Exception ex)
             {
@@ -60,109 +56,5 @@ namespace net.sf.robocode.dotnet.host
         }
 
 
-        private RobotType checkInterfaces(Type robotClass, IRobotRepositoryItem robotRepositoryItem)
-        {
-            bool isJuniorRobot = false;
-            bool isStandardRobot = false;
-            bool isInteractiveRobot = false;
-            bool isPaintRobot = false;
-            bool isAdvancedRobot = false;
-            bool isTeamRobot = false;
-            bool isDroid = false;
-
-            if (typeof (Droid).IsAssignableFrom(robotClass))
-            {
-                isDroid = true;
-            }
-
-            if (typeof (ITeamRobot).IsAssignableFrom(robotClass))
-            {
-                isTeamRobot = true;
-            }
-
-            if (typeof (IAdvancedRobot).IsAssignableFrom(robotClass))
-            {
-                isAdvancedRobot = true;
-            }
-
-            if (typeof (IInteractiveRobot).IsAssignableFrom(robotClass))
-            {
-                // in this case we make sure that robot don't waste time
-                if (checkMethodOverride(robotClass, typeof (Robot), "getInteractiveEventListener")
-                    || checkMethodOverride(robotClass, typeof (Robot), "onKeyPressed", typeof (KeyEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onKeyReleased", typeof (KeyEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onKeyTyped", typeof (KeyEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onMouseClicked", typeof (MouseEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onMouseEntered", typeof (MouseEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onMouseExited", typeof (MouseEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onMousePressed", typeof (MouseEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onMouseReleased", typeof (MouseEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onMouseMoved", typeof (MouseEvent))
-                    || checkMethodOverride(robotClass, typeof (Robot), "onMouseDragged", typeof (MouseEvent))
-                    ||
-                    checkMethodOverride(robotClass, typeof (Robot), "onMouseWheelMoved", typeof (MouseWheelMovedEvent))
-                    )
-                {
-                    isInteractiveRobot = true;
-                }
-            }
-
-            if (typeof (IPaintRobot).IsAssignableFrom(robotClass))
-            {
-                if (checkMethodOverride(robotClass, typeof (Robot), "getPaintEventListener")
-                    || checkMethodOverride(robotClass, typeof (Robot), "onPaint", typeof (Graphics))
-                    )
-                {
-                    isPaintRobot = true;
-                }
-            }
-
-            if (typeof (Robot).IsAssignableFrom(robotClass) && !isAdvancedRobot)
-            {
-                isStandardRobot = true;
-            }
-
-            if (typeof (IJuniorRobot).IsAssignableFrom(robotClass))
-            {
-                isJuniorRobot = true;
-                if (isAdvancedRobot)
-                {
-                    throw new AccessViolationException(robotRepositoryItem.getFullClassName()
-                                                       + ": Junior robot should not implement IAdvancedRobot interface.");
-                }
-            }
-
-            if (typeof (IBasicRobot).IsAssignableFrom(robotClass))
-            {
-                if (!(isAdvancedRobot || isJuniorRobot))
-                {
-                    isStandardRobot = true;
-                }
-            }
-            return new RobotType(isJuniorRobot, isStandardRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot,
-                                 isTeamRobot, isDroid);
-        }
-
-        private static bool checkMethodOverride(Type robotClass, Type knownBase, String name,
-                                                params Type[] parameterTypes)
-        {
-            if (knownBase.IsAssignableFrom(robotClass))
-            {
-                MethodInfo getInteractiveEventListener;
-
-                getInteractiveEventListener = robotClass.GetMethod(name, parameterTypes);
-                if (getInteractiveEventListener == null)
-                {
-                    return false;
-                }
-
-
-                if (getInteractiveEventListener.DeclaringType.Equals(knownBase))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
     }
 }
