@@ -1,11 +1,12 @@
 Version 1.7.1.4 Beta
-(27-Jul-2009)
+(31-Jul-2009)
 ---------------
 = Bugfixes =
 * Bug [2819387] - Team jar files reported as corrupted.
 * Bug [2809518] - Does not extract .properties files into bot data dir. This fix did not work properly as the file sizes were truncated to 0 bytes.
 * Bug [2820434] - NullPointerException when setting classpath directory.
 * Bug [2811621] - Invalid entry point in codesize-1.1.jar.
+* Bug [2828614] - Sometimes too few results for robots are displayed.
 
 Version 1.7.1.3
 (08-Jul-2009)
