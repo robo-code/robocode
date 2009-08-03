@@ -12,6 +12,7 @@
 package tested.robots;
 
 
+import robocode.DeathEvent;
 import robocode.RobotDeathEvent;
 import robocode.AdvancedRobot;
 
@@ -20,11 +21,12 @@ import robocode.AdvancedRobot;
  * @author Flemming N. Larsen (original)
  */
 public class RobotDeathEvents extends AdvancedRobot {
+	private boolean dead;
 	private long enemyCount;
 
 	public void run() {
 		enemyCount = getOthers();
-		while (true) {
+		while (!dead) {
 			if (enemyCount != getOthers()) {
 				throw new RuntimeException("enemyCount != getOthers()");
 			}
@@ -34,5 +36,9 @@ public class RobotDeathEvents extends AdvancedRobot {
 
 	public void onRobotDeath(RobotDeathEvent e) {
 		enemyCount--;
+	}
+
+	public void onDeath(DeathEvent e) {
+		dead = true;
 	}
 }
