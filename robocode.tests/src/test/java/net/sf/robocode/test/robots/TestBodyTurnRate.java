@@ -92,8 +92,12 @@ public class TestBodyTurnRate extends RobotTestBed {
 			Assert.assertTrue(out.contains("41: -6.0, 0.0") | out.contains("41: -6.0, -0.0"));
 			Assert.assertTrue(out.contains("42: -4.0, 0.0") | out.contains("42: -4.0, -0.0"));
 			Assert.assertTrue(out.contains("43: -2.0, 0.0") | out.contains("43: -2.0, -0.0"));
-			Assert.assertTrue(out.contains("44: -0.0, 0.0") | out.contains("44: -0.0, -0.0"));
-			Assert.assertTrue(out.contains("45: 0.0, 0.0") | out.contains("45: 0.0, -0.0"));
+			Assert.assertTrue(
+					out.contains("44: -0.0, 0.0") | out.contains("44: -0.0, -0.0") | out.contains("44: 0.0, 0.0")
+					| out.contains("44: 0.0, -0.0"));
+			Assert.assertTrue(
+					out.contains("45: -0.0, 0.0") | out.contains("45: -0.0, -0.0") | out.contains("45: 0.0, 0.0")
+					| out.contains("45: 0.0, -0.0"));
 
 			Assert.assertTrue(out.contains("46: 0.0, -10.0") | out.contains("46: 0.0, -9.9999999999"));
 			Assert.assertTrue(out.contains("47: -1.0, -9.25") | out.contains("47: -1.0, -9.2499999999"));
@@ -109,8 +113,12 @@ public class TestBodyTurnRate extends RobotTestBed {
 			Assert.assertTrue(out.contains("56: -6.0, 0.0") | out.contains("56: -6.0, -0.0"));
 			Assert.assertTrue(out.contains("57: -4.0, 0.0") | out.contains("57: -4.0, -0.0"));
 			Assert.assertTrue(out.contains("58: -2.0, 0.0") | out.contains("58: -2.0, -0.0"));
-			Assert.assertTrue(out.contains("59: -0.0, 0.0") | out.contains("59: -0.0, -0.0"));
-			Assert.assertTrue(out.contains("60: 0.0, 0.0") | out.contains("60: 0.0, -0.0"));
+			Assert.assertTrue(
+					out.contains("59: -0.0, 0.0") | out.contains("59: -0.0, -0.0") | out.contains("59: 0.0, 0.0")
+					| out.contains("59: 0.0, -0.0"));
+			Assert.assertTrue(
+					out.contains("60: -0.0, 0.0") | out.contains("60: -0.0, -0.0") | out.contains("60: 0.0, 0.0")
+					| out.contains("60: 0.0, -0.0"));
 		}
 	}
 }
