@@ -67,6 +67,7 @@ import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.Event;
+import robocode.IExtensionApi;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
@@ -75,6 +76,11 @@ import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -93,7 +99,6 @@ public class BattleManager implements IBattleManager {
 	private final IRecordManager recordManager;
 	private final IRepositoryManager repositoryManager;
 	private ICustomRules customRules = null;
-	private IBattlefieldSetup battleSetup = null;
 
 	private volatile IBattle battle;
 	private BattleProperties battleProperties = new BattleProperties();
@@ -128,10 +133,10 @@ public class BattleManager implements IBattleManager {
 	public void startNewBattle(BattleProperties battleProperties, boolean waitTillOver, boolean enableCLIRecording) {
 		this.battleProperties = battleProperties;
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(battleProperties.getSelectedRobots());
-		customRules = ModuleFactory.getCustomRules(battleProperties.getModuleName());
-		battleSetup = ModuleFactory.getBattleSetup(battleProperties.getModuleName());
+
+		customRules = getCustomRules();
 		
-		startNewBattleImpl(robots, waitTillOver, enableCLIRecording, customRules, battleSetup);
+		startNewBattleImpl(robots, waitTillOver, enableCLIRecording, customRules);
 	}
 
 	// Called from the RobocodeEngine
@@ -145,18 +150,14 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setSelectedRobots(spec.getRobots());
 		battleProperties.setInitialPositions(initialPositions);
 		
-		//TODO: this needs to be extracted from this method.
-//		battleProperties.setModuleName("New");
-		battleProperties.setModuleName("Classic");
-
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
-		customRules = ModuleFactory.getCustomRules(battleProperties.getModuleName());
-		battleSetup = ModuleFactory.getBattleSetup(battleProperties.getModuleName());
 		
-		startNewBattleImpl(robots, waitTillOver, enableCLIRecording, customRules, battleSetup);
+		customRules = getCustomRules();
+		
+		startNewBattleImpl(robots, waitTillOver, enableCLIRecording, customRules);
 	}
 
-	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording, ICustomRules customRules, IBattlefieldSetup battleSetup) {
+	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording, ICustomRules customRules) {
 
 		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
@@ -186,7 +187,7 @@ public class BattleManager implements IBattleManager {
 
 		Battle realBattle = Container.createComponent(Battle.class);
 
-		realBattle.setup(battlingRobotsList, battleProperties, isPaused(), customRules, battleSetup);
+		realBattle.setup(battlingRobotsList, battleProperties, isPaused(), customRules);
 
 		if (recording) {
 			realBattle.setAllPaintRecorded(true);
@@ -214,6 +215,51 @@ public class BattleManager implements IBattleManager {
 		if (waitTillOver) {
 			realBattle.waitTillOver();
 		}
+	}
+
+	/**
+	 * This function retrieves the extension information from external jars through 
+	 * battleProperties. The CustomRulesApi is also loaded at this point.
+	 * @return the custom rules to be used for the game
+	 */
+	private ICustomRules getCustomRules() {
+		try
+		{
+			//TODO: For convenience, I've hardcoded the extension package strings here.
+			//This should be cleaned later.
+			String extensionPackagename = "CTF.CaptureTheFlagRules";
+//			extensionPackagename = battleProperties.getExtensionPackage();
+			String extensionFilename = "ex.jar";
+//			extensionFilename = battleProperties.getExtensionFilename();
+			
+			File jarFile = new File(FileUtil.getExtensionsDir(), extensionFilename);
+			URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[] { jarFile.toURI().toURL() }, getClass().getClassLoader());
+			Class<?> unknownClass = Class.forName(extensionPackagename, true, urlClassLoader);
+			Class<?> loadingCustomRules = unknownClass.asSubclass(ICustomRules.class);
+			//Told to avoid Class.newInstance() -- http://stackoverflow.com/questions/194698/how-to-load-a-jar-file-at-runtime.
+			Constructor<?> ctor = loadingCustomRules.getConstructor();
+			return (ICustomRules) ctor.newInstance((Object[])null);
+			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		//if there are any exceptions, return normal rules
+		return new ClassicRules();
 	}
 
 	public void waitTillOver() {

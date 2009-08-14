@@ -161,4 +161,9 @@ public class ClassicRobotStatistics extends ContestantStatistics {
 			totalFirsts++;
 		}
 	}
+
+	@Override
+	protected String getTeamName() {
+		return robotPeer.getTeamName();
+	}
 }

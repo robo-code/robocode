@@ -27,6 +27,7 @@ import robocode.control.snapshot.IScoreSnapshot;
 import robocode.control.snapshot.RobotState;
 
 import java.awt.geom.Arc2D;
+import java.awt.geom.Area;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	private boolean isSGPaintEnabled;
 
 	/** Snapshot of the scan arc */
-	private List<SerializableArc> scanArcs;
+	private Area scanArc;
 
 	/** Snapshot of the object with queued calls for Graphics object */
 	private Object graphicsCalls;
@@ -170,17 +171,13 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		isPaintEnabled = robot.isPaintEnabled();
 		isSGPaintEnabled = robot.isSGPaintEnabled();
 
-		if (robot.getScanArcs() != null) 
+		if (robot.getScanArc() != null) 
 		{
-			scanArcs = new ArrayList<SerializableArc>();
-			for (Arc2D arc : robot.getScanArcs())
-			{
-				scanArcs.add(new SerializableArc((Arc2D.Double) arc));
-			}
+			scanArc = robot.getScanArea();
 		}
 		else
 		{
-			scanArcs = null;
+			scanArc = null;
 		}
 
 		graphicsCalls = robot.getGraphicsCalls();
@@ -409,15 +406,10 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 //		return scanArc != null ? scanArc.create() : null;
 //	}
 
-	public List<Arc2D> getScanArc() {
-		if (scanArcs != null)
+	public Area getScanArc() {
+		if (scanArc != null)
 		{
-			ArrayList<Arc2D> createdScanArc = new ArrayList<Arc2D>();
-			for (SerializableArc arc : scanArcs)
-			{
-				createdScanArc.add(arc.create());
-			}
-			return createdScanArc;
+			return scanArc;
 		}
 		return null;
 	}

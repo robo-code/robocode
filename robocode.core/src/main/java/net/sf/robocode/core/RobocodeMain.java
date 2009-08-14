@@ -79,6 +79,10 @@ public final class RobocodeMain extends RobocodeMainBase {
 		String recordXmlFilename;
 		String replayFilename;
 		String resultsFilename;
+		//TODO: The other string used to load extensions (extensionFilename) is not 
+		//implemented as command line arguments becuase the process of loading extensions 
+		//will likely change.
+		String extensionPackagename;
 		int tps;
 	}
 
@@ -127,6 +131,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			properties.setOptionsBattleDesiredTPS(setup.tps);
 
 			battleManager.addListener(battleObserver);
+			battleManager.getBattleProperties().setExtensionPackage(setup.extensionPackagename);
 
 			if (windowManager.isGUIEnabled()) {
 				if (!setup.minimize && setup.battleFilename == null && soundManager != null) {
@@ -210,6 +215,9 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else if (args[i].equals("-battle") && (i < args.length + 1)) {
 				setup.battleFilename = args[i + 1];
 				i++;
+			} else if (args[i].equals("-extension")&& (i < args.length + 1)) {
+				setup.extensionPackagename = args[i + 1];
+				i++;
 			} else if (args[i].equals("-record") && (i < args.length + 1)) {
 				setup.recordFilename = args[i + 1];
 				i++;
@@ -285,6 +293,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -recordXML <xml rec file>  Record the battle into the specified file as XML\n"
 						+ "  -replay <record file>      Replay the specified battle record\n"
 						+ "  -tps <tps>                 Set the TPS > 0 (Turns Per Second)\n"
+						+ "  -extension <extension>     Sets the pacakge of the custom rules to be used\n"
 						+ "  -minimize                  Run minimized when Robocode starts\n"
 						+ "  -nodisplay                 Run with the display / GUI disabled\n"
 						+ "  -nosound                   Run with sound disabled\n\n" + "Java Properties include:\n"

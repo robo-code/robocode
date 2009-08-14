@@ -54,30 +54,58 @@ public class ScannedObjectEvent extends Event {
 		this.dynamic = dynamic;
 	}
 
+	/**
+	 * Returns the distance to the closest scanned point of the object.
+	 * @return the distance to the closest scanned point of the object.
+	 */
 	public double getDistance() {
 		return distance;
 	}
-
+	
+	/**
+	 * Returns the angle to the closest scanned point of the object.
+	 * @return the angle to the closest scanned point of the object.
+	 */
 	public double getBearing() {
-		return bearing;
+		return bearing * 180 / Math.PI;
 	}
 	
+	/**
+	 * Returns a string with the object type.
+	 * @return a string with the object type.
+	 */
 	public String getObjectType() {
 		return objectType;
 	}
 
-	public boolean isTankStopper() {
+	/**
+	 * Returns whether the object will prevent robots from passing through.
+	 * @return whether the object will prevent robots from passing through.
+	 */
+	public boolean isRobotStopper() {
 		return robotStopper;
 	}
 
+	/**
+	 * Returns whether the object will prevent bullets from passing through.
+	 * @return whether the object will prevent bullets from passing through.
+	 */
 	public boolean isBulletStopper() {
 		return bulletStopper;
 	}
 
+	/**
+	 * Returns whether the object will prevent radar scans from passing through.
+	 * @return whether the object will prevent radar scans from passing through.
+	 */
 	public boolean isScanStopper() {
 		return scanStopper;
 	}
 
+	/**
+	 * Returns whether the object will ever change position.
+	 * @return whether the object will ever change position.
+	 */
 	public boolean isDynamic() {
 		return dynamic;
 	}

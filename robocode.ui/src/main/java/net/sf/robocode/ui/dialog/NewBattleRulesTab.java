@@ -28,8 +28,10 @@ public class NewBattleRulesTab extends JPanel {
 	private JTextField gunCoolingRateField;
 	private JLabel inactivityTimeLabel;
 	private JTextField inactivityTimeField;
-	private JRadioButton apiExtensabilityRadioButton;
-	private JLabel apiExtensabilityLabel;
+	private JLabel extensionPackageLabel;
+	private JTextField extensionPackageField;
+	private JLabel extensionFileLabel;
+	private JTextField extensionFileField;
 
 	/**
 	 * NewBattleRulesTab constructor
@@ -39,31 +41,56 @@ public class NewBattleRulesTab extends JPanel {
 		initialize();
 	}
 
-	private JRadioButton getApiExtensibilityRadioButton()
+	private JTextField getExtensionPackageField()
 	{
-		if (apiExtensabilityRadioButton == null){
-			apiExtensabilityRadioButton = new JRadioButton();
+		if (extensionPackageField == null){
+			extensionPackageField = new JTextField();
 		}
-		return apiExtensabilityRadioButton;
+		return extensionPackageField;
 	}
 	
-	public boolean getUseClassicModule()
+	private JLabel getExtensionPackageLabel()
 	{
-		return apiExtensabilityRadioButton.isSelected();
-	}
-	
-	private JLabel getApiExtensabilityLabel()
-	{
-		if (apiExtensabilityLabel == null) {
-			apiExtensabilityLabel = new JLabel();
-			apiExtensabilityLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-			apiExtensabilityLabel.setText("Classic Robocode");
-			apiExtensabilityLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-			apiExtensabilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		if (extensionPackageLabel == null) {
+			extensionPackageLabel = new JLabel();
+			extensionPackageLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+			extensionPackageLabel.setText("Custom rules package and class");
+			extensionPackageLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+			extensionPackageLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
-		return apiExtensabilityLabel;
+		return extensionPackageLabel;
 	}
 	
+	public String getExtensionPackage()
+	{
+		return extensionPackageField.getText();
+	}
+	
+	private JTextField getExtensionFileField()
+	{
+		if (extensionFileField == null){
+			extensionFileField = new JTextField();
+		}
+		return extensionFileField;
+	}
+	
+	private JLabel getExtensionFileLabel()
+	{
+		if (extensionFileLabel == null) {
+			extensionFileLabel = new JLabel();
+			extensionFileLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+			extensionFileLabel.setText("Custom rules file");
+			extensionFileLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+			extensionFileLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
+		return extensionFileLabel;
+	}
+	
+	public String getExtensionFile()
+	{
+		return extensionFileField.getText();
+	}
+		
 	public double getGunCoolingRate() {
 		return Double.parseDouble(getGunCoolingRateField().getText());
 	}
@@ -132,14 +159,16 @@ public class NewBattleRulesTab extends JPanel {
 	private void initialize() {
 		JPanel j = new JPanel();
 
-		j.setLayout(new GridLayout(4, 2, 5, 5));
+		j.setLayout(new GridLayout(6, 2, 5, 5));
 		j.setBorder(BorderFactory.createEtchedBorder());
 		j.add(getGunCoolingRateLabel(), getGunCoolingRateLabel().getName());
 		j.add(getGunCoolingRateField(), getGunCoolingRateField().getName());
 		j.add(getInactivityTimeLabel(), getInactivityTimeLabel().getName());
 		j.add(getInactivityTimeField(), getInactivityTimeField().getName());
-		j.add(getApiExtensibilityRadioButton(), getApiExtensibilityRadioButton().getName());
-		j.add(getApiExtensabilityLabel(), getApiExtensabilityLabel().getName());
+		j.add(getExtensionFileField(), getExtensionFileField().getName());
+		j.add(getExtensionFileLabel(), getExtensionFileLabel().getName());
+		j.add(getExtensionPackageField(), getExtensionPackageField().getName());
+		j.add(getExtensionPackageLabel(), getExtensionPackageLabel().getName());
 		add(j);
 	}
 

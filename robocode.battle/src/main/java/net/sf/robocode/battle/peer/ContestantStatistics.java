@@ -41,6 +41,7 @@
 package net.sf.robocode.battle.peer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,10 +142,16 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 	}
 
 	public BattleResults getFinalResults() {
-		return new BattleResults(robotPeer.getTeamName(), rank, (int)combinedScore, totalScores, 
+		return new BattleResults(getTeamName(), rank, (int)combinedScore, totalScores,		
 				scoreNames, totalFirsts, totalSeconds, totalThirds);
 	}
 	
+	protected abstract String getTeamName();
+
+	public Collection<Double> getRobotDamage() {
+		return robotDamageMap.values();
+	}
+
 	public List<String> getScoreNames() {
 		return scoreNames;
 	}

@@ -275,6 +275,16 @@ public class FileUtil {
 	}
 
 	/**
+	 * Returns the directory containing extension jars.
+	 * If the directory does not extist, it will be created automatically.
+	 * 
+	 * @return a File that is the directory containing extension jars
+	 */
+	public static File getExtensionsDir() {
+		return createDir(new File(cwd, "/extensions"));
+	}
+	
+	/**
 	 * Returns the Robocode configuration file.
 	 *
 	 * @return a File that is the Robocode configuration file.

@@ -60,6 +60,16 @@ public abstract class RobjectPeer {
 		return new Rectangle2D.Double(x, y, width, height);
 	}
 	
+	/**
+	 * Returns a rectangle slightly larger than the boundary rectangle. This will be used
+	 * with the scan intersection. If a normal-sized rectangle is used to trim the scan arc, 
+	 * the resulting scan arc may or may not intersect with the object 
+	 */
+	public Rectangle2D.Double getIntersectRect()
+	{
+		return new Rectangle2D.Double(x - 2, y - 2, width + 4, height + 4);
+	}
+	
 	public void setX(double x) {
 		this.x = x;
 	}

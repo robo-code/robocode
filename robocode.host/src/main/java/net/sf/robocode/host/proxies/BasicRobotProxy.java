@@ -564,9 +564,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	}
 
 	
-	//TODO: what do we need here?
 	public IExtensionApi getExtensionApi() {
-		// TODO Auto-generated method stub
-		return null;
+		return peer.getExtensionApi();
 	}
 }

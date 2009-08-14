@@ -699,38 +699,24 @@ public class BattleView extends Canvas {
 
 	private void drawScanArc(Graphics2D g, IRobotSnapshot robotSnapshot) {
 		//Arc2D.Double scanArc = (Arc2D.Double) ((RobotSnapshot) robotSnapshot).getScanArc();
-		ArrayList<Arc2D> scanArcs = (ArrayList<Arc2D>) ((RobotSnapshot) robotSnapshot).getScanArc();
+		Area scanArc = ((RobotSnapshot) robotSnapshot).getScanArc();
 		
-		if (scanArcs == null) {
+		if (scanArc == null) {
 			return;
 		}
 
-		final Composite savedComposite = g.getComposite();
-
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
-
-		for (Arc2D uncastArc : scanArcs)
-		{
-			
-			
-			Arc2D.Double scanArc = (Arc2D.Double)uncastArc;
-			
-			
-			scanArc.setAngleStart((360 - scanArc.getAngleStart() - scanArc.getAngleExtent()) % 360);
-			scanArc.y = battleField.getHeight() - robotSnapshot.getY() - scanArc.height / 2;
-
-			int scanColor = robotSnapshot.getScanColor();
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
 	
-			g.setColor(new Color(scanColor, true));
-	
-			if (abs(scanArc.getAngleExtent()) >= .5) {
-				g.fill(scanArc);
-			} else {
-				g.draw(scanArc);
-			}
-		}
+		int scanColor = robotSnapshot.getScanColor();
+		g.setColor(new Color(scanColor, true));
 		
-		g.setComposite(savedComposite);
+		double y = battleField.getHeight();
+		AffineTransform at = new AffineTransform(new double[] {1.0,0.0,0.0,-1.0,0.0,y});
+
+		scanArc.transform(at);
+		g.fill(scanArc);
+		
+		g.setComposite(AlphaComposite.SrcOver);
 	}
 
 	private void paintRobocodeLogo(Graphics2D g) {

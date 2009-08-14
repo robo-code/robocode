@@ -42,8 +42,10 @@ public class BattleProperties implements Serializable {
 			BATTLE_GUNCOOLINGRATE = "robocode.battle.gunCoolingRate",
 			BATTLE_RULES_INACTIVITYTIME = "robocode.battle.rules.inactivityTime",
 			BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots",
-			BATTLE_INITIAL_POSITIONS = "robocode.battle.initialPositions";
-
+			BATTLE_INITIAL_POSITIONS = "robocode.battle.initialPositions",
+			BATTLE_EXTENSION_FILENAME = "robocode.battle.extensionFile",
+			BATTLE_EXTENSION_PACKAGE = "robocode.battle.extensionPackage";
+	
 	private int battlefieldWidth = 800;
 	private int battlefieldHeight = 600;
 	private int numRounds = 10;
@@ -51,18 +53,10 @@ public class BattleProperties implements Serializable {
 	private long inactivityTime = 450;
 	private String selectedRobots;
 	private String initialPositions;
-	private String moduleName; 
+	private String extensionFilename = "";
+	private String extensionPackage = ""; 
 	
 	private final Properties props = new Properties();
-
-	private boolean extended;
-	public void setExtended(boolean extended) {
-		this.extended = extended;
-	}
-
-	public boolean isExtended() {
-		return extended;
-	}
 
 	/**
 	 * Gets the battlefieldWidth.
@@ -260,13 +254,31 @@ public class BattleProperties implements Serializable {
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
+		extensionFilename = props.getProperty(BATTLE_EXTENSION_FILENAME, "");
+		extensionPackage = props.getProperty(BATTLE_EXTENSION_PACKAGE, "");
 	}
 
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
+	public void setExtensionPackage(String extensionPackage) {
+		this.extensionPackage = extensionPackage;
 	}
 
-	public String getModuleName() {
-		return moduleName;
+	public String getExtensionPackage() {
+		if (extensionPackage == null)
+		{
+			return "";
+		}
+		return extensionPackage;
+	}
+	
+	public void setExtensionFilename(String extensionFilename) {
+		this.extensionFilename = extensionFilename;
+	}
+	
+	public String getExtensionFilename() {
+		if (extensionFilename == null)
+		{
+			return "";
+		}
+		return extensionFilename;
 	}
 }

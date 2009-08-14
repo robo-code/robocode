@@ -212,7 +212,15 @@ public class ClassicTeamStatistics extends ContestantStatistics {
 		return 0;
 	}
 
-	public void scoreRobotDeath(int enemiesRemaining) {}
+	public void scoreRobotDeath(int enemiesRemaining) {
+	}
 
-	public void scoreSurvival() {}
+	public void scoreSurvival() {
+		
+	}
+
+	@Override
+	protected String getTeamName() {
+		return robotPeer.getTeamName();
+	}
 }

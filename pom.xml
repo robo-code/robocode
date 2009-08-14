@@ -15,12 +15,14 @@
     <name>Robocode</name>
     <modules>
         <module>robocode.api</module>
-        <module>robocode.core</module>
+        <module>robocode.core</module>        
+        <module>robocode.extensionsApi</module>
         <module>robocode.battle</module>
         <module>robocode.host</module>
         <module>robocode.ui</module>
         <module>robocode.ui.editor</module>
         <module>robocode.sound</module>
+        <module>robocode.extensions</module>
         <module>robocode.samples</module>
         <module>robocode.roborumble</module>
         <module>robocode.tests</module>

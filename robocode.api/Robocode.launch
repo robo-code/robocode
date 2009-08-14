@@ -25,5 +25,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="robocode.Robocode"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="robocode.api"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DROBOTPATH=${workspace_loc:robocode.samples/target/classes}&#13;&#10;-Ddebug=true"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:robocode.api/target/launch}"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="E:\Java\robocode"/>
 </launchConfiguration>

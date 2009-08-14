@@ -141,7 +141,6 @@ public final class Battle extends BaseBattle {
 	private final IHostManager hostManager;
 	private final long cpuConstant;
 	private ICustomRules customRules = null;
-	private IBattlefieldSetup battleSetup = null;
 
 	// Inactivity related items
 	private int inactiveTurnCount;
@@ -182,7 +181,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProperties, 
-			boolean paused, ICustomRules customRules, IBattlefieldSetup battleSetup) {
+			boolean paused, ICustomRules customRules) {
 		isPaused = paused;
 		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
@@ -197,21 +196,12 @@ public final class Battle extends BaseBattle {
 		{
 			this.customRules = new ClassicRules();
 		}
-		if (battleSetup != null) 
-		{
-			this.battleSetup = battleSetup;
-		}
-		else
-		{
-			this.battleSetup = new ClassicSetup();
-		}
 
-		//call setup, rules here
-		robjects = this.battleSetup.setupObjects(battleProperties.getBattlefieldWidth(), 
+		robjects = this.customRules.setupObjects(battleProperties.getBattlefieldWidth(), 
 				battleProperties.getBattlefieldHeight());
 		
 
-		initialRobotPositions = battleSetup.computeInitialPositions(battleProperties.getInitialPositions(),
+		initialRobotPositions = customRules.computeInitialPositions(battleProperties.getInitialPositions(),
 				battleProperties.getBattlefieldWidth(), battleProperties.getBattlefieldHeight());
 		createPeers(battlingRobotsList);
 	}
@@ -383,7 +373,17 @@ public final class Battle extends BaseBattle {
 	public int getActiveRobots() {
 		return activeRobots;
 	}
+	
+	public List<ContestantPeer> getContestants()
+	{
+		return contestants;
+	}
 
+	public void setContestants(List<ContestantPeer> contestants)
+	{
+		this.contestants = contestants;
+	}
+	
 	@Override
 	public void cleanup() {
 
@@ -411,6 +411,8 @@ public final class Battle extends BaseBattle {
 	protected void initializeBattle() {
 		super.initializeBattle();
 
+		customRules.startBattle(this);
+		
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
 		if (parallelOn) {
 			// how could robots share CPUs ?
@@ -480,13 +482,17 @@ public final class Battle extends BaseBattle {
 		inactiveTurnCount = 0;
 
 		// call custom rules and battlefield round setups
-		battleSetup.startRound(robots, robjects);
-		customRules.startRound(robots, robjects);
+		customRules.startRound(this);
+		
 		// start robots
 		final long waitTime = Math.min(300 * cpuConstant, 10000000000L);
 
+		for (ContestantPeer contestant : contestants)
+		{
+			contestant.getStatistics().initialize();
+		}
+		
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
-			robotPeer.getRobotStatistics().initialize();
 			robotPeer.startRound(waitTime);
 		}
 		Logger.logMessage("");
@@ -500,9 +506,12 @@ public final class Battle extends BaseBattle {
 	protected void finalizeRound() {
 		super.finalizeRound();
 
+		for (ContestantPeer contestant : contestants) {
+			contestant.getStatistics().generateTotals();
+		}
+		
 		for (RobotPeer robotPeer : robots) {
 			robotPeer.waitForStop();
-			robotPeer.getRobotStatistics().generateTotals();
 		}
 
 		bullets.clear();
@@ -523,6 +532,8 @@ public final class Battle extends BaseBattle {
 		super.runTurn();
 
 		loadCommands();
+		
+		customRules.startTurn(this);
 
 		updateBullets();
 
@@ -554,6 +565,8 @@ public final class Battle extends BaseBattle {
 					}
 				}
 			} else if (customRules.isGameOver(activeRobots, robots, robjects)) {
+				customRules.finishRound(this);
+				
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
@@ -582,6 +595,8 @@ public final class Battle extends BaseBattle {
 
 		if (getEndTimer() == 1 && (isAborted() || isLastRound())) {
 
+			customRules.finishBattle(this);
+			
 			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
 
 			Collections.sort(orderedRobots);
@@ -608,7 +623,7 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		customRules.updateTurn(robots, robjects);
+		customRules.finishTurn(this);
 		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this, robots, bullets, true)));
 
 		super.finalizeTurn();
@@ -654,7 +669,7 @@ public final class Battle extends BaseBattle {
 	 *
 	 * @return a list of robot peers.
 	 */
-	private List<RobotPeer> getRobotsAtRandom() {
+	public List<RobotPeer> getRobotsAtRandom() {
 		List<RobotPeer> shuffledList = new ArrayList<RobotPeer>(robots);
 
 		Collections.shuffle(shuffledList, RandomFactory.getRandom());
@@ -666,7 +681,7 @@ public final class Battle extends BaseBattle {
 	 *
 	 * @return a list of bullet peers.
 	 */
-	private List<BulletPeer> getBulletsAtRandom() {
+	public List<BulletPeer> getBulletsAtRandom() {
 		List<BulletPeer> shuffledList = new ArrayList<BulletPeer>(bullets);
 
 		Collections.shuffle(shuffledList, RandomFactory.getRandom());

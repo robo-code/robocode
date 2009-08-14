@@ -87,13 +87,19 @@ import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
+import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
+import robocode.exception.DeathException;
 import robocode.exception.WinException;
 import robocode.util.Utils;
 import static robocode.util.Utils.*;
 
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Shape;
 import java.awt.geom.Arc2D;
+import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -136,7 +142,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	private Battle battle;
 	private IContestantStatistics statistics;
-	private final TeamPeer teamPeer;
+	private TeamPeer teamPeer;
 	private final RobotSpecification robotSpecification;
 
 	private IHostingRobotProxy robotProxy;
@@ -189,7 +195,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private boolean inCollision;
 	private RobotState state;
 	private final Arc2D scanArc;
-	private List<Arc2D> occludedScan = null;
+	private Area occludedScan = null;
 	private final BoundingRectangle boundingBox;
 
 	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, 
@@ -399,7 +405,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return scanArc;
 	}
 	
-	public List<Arc2D> getScanArcs() {
+	public Area getScanArea() {
 		return occludedScan;
 	}
 
@@ -1507,30 +1513,19 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		
 		scanArc.setArcByCenter(x, y, Rules.RADAR_SCAN_RADIUS,
 				180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
-//		Arc2D scanArc2 = new Arc2D.Double();
-//		scanArc2.setArcByCenter(x, y - Rules.RADAR_SCAN_RADIUS / 2, Rules.RADAR_SCAN_RADIUS / 2,
-//				180.0 * (addedAngle) / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
 
-		occludedScan = new ArrayList<Arc2D>();
-		occludedScan = occludeScan(scanArc);
+		occludedScan = (Area) calcScanArc(scanArc);
 
 		for (RobjectPeer robject : battle.getRobjects()) {
-			if (robject.isScannable() && intersects(occludedScan, robject.getBoundaryRect())) {
-				double dx = robject.getX() - x;
-				double dy = robject.getY() - y;
-				double angle = atan2(dx, dy);
-				double dist = Math.hypot(dx, dy);
-				ScannedObjectEvent event = new ScannedObjectEvent(robject.getType(),
-						normalRelativeAngle(angle - getBodyHeading()), dist, robject.isRobotStopper(),
-						robject.isBulletStopper(), robject.isScanStopper(), robject.isDynamic());
-				
+			if (robject.isScannable() && occludedScan.intersects(robject.getIntersectRect())) {
+				final ScannedObjectEvent event = createScannedObjectEvent(robject, occludedScan); 		
 				addEvent(event);
 			}
 		}
 		
 		for (RobotPeer otherRobot : robots) {
 			if (!(otherRobot == null || otherRobot == this || otherRobot.isDead())
-					&& intersects(occludedScan, otherRobot.boundingBox)) {
+					&& occludedScan.intersects(otherRobot.boundingBox)) {
 				double dx = otherRobot.x - x;
 				double dy = otherRobot.y - y;
 				double angle = atan2(dx, dy);
@@ -1546,599 +1541,215 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	/**
-	 * returns a list of scan arcs that are stopped at scan-stopping obstacles
+	 * This function will find the minimum distance between the scanning robot
+	 * and the area of the object being scanned as well as the corresponding angle.
+	 * It creates a new ScannedObjectEven;t and returns it.
 	 * 
-	 * @param scanArc
-	 * @return
-	 */	
-	private List<Arc2D> occludeScan(Arc2D scanArc) {
-		
-		List<Arc2D> arcList = new ArrayList<Arc2D>();		
-		Line2D firstScanLine = new Line2D.Double(new Point2D.Double(x, y), scanArc.getStartPoint());
-		Line2D secondScanLine = new Line2D.Double(new Point2D.Double(x, y), scanArc.getEndPoint());
-		List<ArcTriple> scanRangesList = new ArrayList<ArcTriple>();
-		boolean intersectsBothScanLines = false;
-		boolean scanIsClockwise = scanArc.getAngleExtent() > 0;
-		
-		//we only care about objects within the scan arc
-		for (RobjectPeer robject : battle.getRobjects())
-		{
-			if (intersects(scanArc, robject.getBoundaryRect()) && robject.isScanStopper())
-			{	
-				intersectsBothScanLines = false;
-				
-				//get the correct corners. If, for whatever reason, the robot is in the middle
-				//of a scan-stopping object, nothing will be returned.
-				Point2D a = null;
-				Point2D b = null;
-				
-				//get the closest corner of the two not in use. Used when one object 
-				//intersects a side of the scan arc.
-				Point2D c = null;
-				
-				//check if it is vertically aligned with the robot
-				if (x >= robject.getX() && x <= robject.getX() + robject.getWidth())
-				{
-					c = null;
-					if (y < robject.getY())
-					{
-						a = new Point2D.Double(robject.getX(), robject.getY());
-						b = new Point2D.Double(robject.getX() + robject.getWidth(), robject.getY());
-					}
-					else if (y > robject.getY() + robject.getHeight())
-					{
-						a = new Point2D.Double(robject.getX(), robject.getY() + robject.getHeight());
-						b = new Point2D.Double(robject.getX() + robject.getWidth(), 
-								robject.getY() + robject.getHeight());
-					}
-				}
-				//check if object is horizontally aligned with the robot
-				else if (y >= robject.getY() && y <= robject.getY() + robject.getHeight())
-				{
-					c = null;
-					if (x < robject.getX())
-					{
-						a = new Point2D.Double(robject.getX(), robject.getY());
-						b = new Point2D.Double(robject.getX(), robject.getY() + robject.getHeight());
-					}
-					else if (x > robject.getX() + robject.getWidth())
-					{
-						a = new Point2D.Double(robject.getX() + robject.getWidth(), robject.getY());
-						b = new Point2D.Double(robject.getX() + robject.getWidth(),
-								robject.getY() + robject.getHeight());
-					}
-				}
-				//The object is southeast of the robot
-				else if (x < robject.getX() && y > robject.getY() + robject.getHeight())
-				{
-					a = new Point2D.Double(robject.getX(), robject.getY());
-					b = new Point2D.Double(robject.getX() + robject.getWidth(),
-							robject.getY() + robject.getHeight());
-					c = new Point2D.Double(robject.getX(), robject.getY() + robject.getHeight());
-				}
-				//The object is northeast of the robot
-				else if (x < robject.getX() && y < robject.getY())
-				{
-					a = new Point2D.Double(robject.getX(), robject.getY() + robject.getHeight());
-					b = new Point2D.Double(robject.getX() + robject.getWidth(), robject.getY());
-					c = new Point2D.Double(robject.getX(), robject.getY());
-				}
-				//The object is northwest of the robot
-				else if (x > robject.getX() + robject.getWidth() && y < robject.getY())
-				{
-					a = new Point2D.Double(robject.getX(), robject.getY());
-					b = new Point2D.Double(robject.getX() + robject.getWidth(), 
-							robject.getY() + robject.getHeight());
-					c = new Point2D.Double(robject.getX() + robject.getWidth(), robject.getY());
-				}
-				//The object is southwest of the robot
-				else if (x > robject.getX() + robject.getWidth() &&
-						y > robject.getY() + robject.getHeight())
-				{
-					a = new Point2D.Double(robject.getX(), robject.getY() + robject.getHeight());
-					b = new Point2D.Double(robject.getX() + robject.getWidth(), robject.getY());
-					c = new Point2D.Double(robject.getX() + robject.getWidth(), 
-							robject.getY() + robject.getHeight());
-				}
-				if (a == null || b == null)
-				{
-					//We're inside a scan-stopping obstacle. Put in a short scan arc and leave.
-					arcList.clear();
-					Arc2D arc = new Arc2D.Double();
-					arc.setArcByCenter(x, y, 15, 5, 5, Arc2D.PIE);
-					arcList.add(arc);
-					return arcList;
-				}
-				
-
-				//In case the object intersects with the scan arc
-				Line2D intersectingFirstScan, intersectingSecondScan;
-				if (c == null)
-				{
-					//only one face of the object is visible.
-					intersectingSecondScan = intersectingFirstScan = new Line2D.Double(a, b);
-				}
-				else
-				{
-					//Two faces are visible(a,c and c,b), decide which one to use
-					Line2D possibleLine = new Line2D.Double(a, c);
-					intersectingFirstScan = (intersectionTwoLines(possibleLine, firstScanLine) != 
-						null ?	possibleLine : new Line2D.Double(c, b));
-					intersectingSecondScan = (intersectionTwoLines(possibleLine, secondScanLine) != 
-						null ?	possibleLine : new Line2D.Double(c, b));
-				}
-				
-				//If the object lies on the fringes of the scan arc, then one 
-				//of the points must be outside the original scan arc. Figure out
-				//a new point within the scan arc
-				if (robject.getBoundaryRect().intersectsLine(firstScanLine))
-				{
-					if (scanArc.contains(a) && scanArc.contains(b))
-					{
-						//Do nothing. The boundary line (firstScanLine) taken between 
-						//the center and the start point of the scanArc is not the
-						//actual boundary.
-					}
-					else if (!scanArc.contains(a))
-					{
-						a = intersectionTwoLines(firstScanLine, intersectingFirstScan);
-					}
-					else
-					{
-						b = intersectionTwoLines(firstScanLine, intersectingFirstScan);
-					}
-				}
-				if (robject.getBoundaryRect().intersectsLine(secondScanLine))
-				{
-					if (scanArc.contains(a) && scanArc.contains(b))
-					{
-						//Do nothing. The boundary line (secondScanLine) taken between 
-						//the center and the end point of the scanArc is not the
-						//exact actual boundary.
-					}
-					//'a' might have been set to the first scanArc line / object line intersection. 
-					//scanArc.contains would return false in this case
-					else if (!(scanArc.contains(a) || firstScanLine.ptSegDist(a) < 1))
-					{
-						a = intersectionTwoLines(secondScanLine, intersectingSecondScan);
-					}
-					else
-					{
-						b = intersectionTwoLines(secondScanLine, intersectingSecondScan);
-					}
-				}
-				if (a == b || a == c || b == c)
-				{
-					//Corner case: the scan just touches a corner of the object. 
-					//Ignore it.
-					continue;
-				}
-				if (!robject.getBoundaryRect().intersectsLine(firstScanLine) &&
-					!robject.getBoundaryRect().intersectsLine(secondScanLine) &&
-					!(scanArc.contains(a) && scanArc.contains(b)))
-				{
-					//This handles another literal corner case where the scan lines don't 
-					//intersect the object but the scan arc contains exactly one of our points. 
-					//Ignore this object.
-					continue;
-				}
-				if (firstScanLine.ptSegDist(a) < 1 && secondScanLine.ptSegDist(b) < 1)
-				{
-					//The object has both scan lines, set a flag
-					intersectsBothScanLines = true;
-				}
-				
-				//create an arcTriple, from points to robot
-				double maxRadius;
-				double startAngle = 0;
-				double extendAngle = 0;
-				double angleExtension = 0;
-				double adx = a.getX() - x;
-				double ady = a.getY() - y;
-				double bdx = b.getX() - x;
-				double bdy = b.getY() - y;
-				double angleA = Math.atan((ady) / (adx));
-				double angleB = Math.atan((bdy) / (bdx));
-				double radius1 = (ady) / Math.sin(angleA);
-				double radius2 = (bdy) / Math.sin(angleB);
-				maxRadius = (Math.abs(radius1) > Math.abs(radius2) ? radius1 : radius2);
-				
-				//Decide which point to start our arc at and which to extend to.
-				if (!intersectsBothScanLines)
-				{
-					if (Math.abs(adx - bdx) < Utils.NEAR_DELTA)
-					{
-						//both points are on a vertical line
-						if (adx < 0)
-						{
-							//line is to the left 
-							//the start point is the lower point if the scan is clockwise (angleExtent > 0)
-							//the start point is the higher point if the scan is counterclockwise (angleExtent < 0)
-							if ((ady < bdy && scanIsClockwise) || (ady > bdy && !scanIsClockwise))
-							{
-								startAngle = angleA;
-								extendAngle = angleB;
-							}
-							else
-							{
-								startAngle = angleB;
-								extendAngle = angleA;
-							}
-						}
-						else 
-						{
-							//line is to the right
-							//the start point is the higher point if the scan is clockwise (angleExtent > 0)
-							//the start point is the lower point if the scan is counterclockwise (angleExtent < 0)
-							if ((ady > bdy && scanIsClockwise) || (ady < bdy && !scanIsClockwise))
-							{
-								startAngle = angleA;
-								extendAngle = angleB;
-							}
-							else
-							{
-								startAngle = angleB;
-								extendAngle = angleA;
-							}
-						}	
-					}
-					else
-					{
-						//Both points are on a horizontal line, or we have scanned the 
-						//corner of the object. The same algorithm applies for both cases. 
-						if (ady > 0)
-						{
-							//points are above
-							//the start point is the leftmost point if the scan is clockwise (angleExtent > 0)
-							//the start point is the rightmost point if the scan is counterclockwise (angleExtent < 0)
-							if ((adx < bdx && scanIsClockwise) || (adx > bdx && !scanIsClockwise))
-							{
-								startAngle = angleA;
-								extendAngle = angleB;
-							}
-							else
-							{
-								startAngle = angleB;
-								extendAngle = angleA;
-							}
-						}
-						else 
-						{
-							//points are below
-							//the start point is the rightmost point if the scan is clockwise (angleExtent > 0)
-							//the start point is the leftmost point if the scan is counterclockwise (angleExtent < 0)
-							if ((adx > bdx && scanIsClockwise) || (adx < bdx && !scanIsClockwise))
-							{
-								startAngle = angleA;
-								extendAngle = angleB;
-							}
-							else 
-							{
-								startAngle = angleB;
-								extendAngle = angleA;
-							}
-						}
-					}
-					
-					//Figure out how long angleExtension should be
-					if (angleA * angleB < 0)
-					{
-						//Compensate for the (-pi/2 < x < pi/2) domain of tangent, which
-						//was used to get our angles. 
-						if (adx * bdx < 0)
-						{
-							angleExtension = Math.PI - (Math.abs(startAngle) + Math.abs(extendAngle));
-						}
-						else
-						{
-							angleExtension = Math.abs(startAngle) + Math.abs(extendAngle); 
-						}
-						
-					}
-					else
-					{
-						angleExtension = startAngle - extendAngle;
-					}
-				
-					//put start angle (obtained from tangent) in proper quadrant
-					if ((angleA == startAngle && adx < 0) ||(angleA != startAngle && bdx < 0)) 
-					{
-						startAngle = Math.PI - startAngle;
-					}
-					else 
-					{
-						startAngle *= -1;
-					}
-					
-					//get things to degrees
-					startAngle = startAngle * 180 / Math.PI;
-					if (startAngle < 0) startAngle += 360;
-					angleExtension = angleExtension * 180 / Math.PI;
-					
-					//bound by scanArc's boundaries
-					if (modAngleGreaterThan(scanArc.getAngleStart(), startAngle, scanIsClockwise))
-					{
-						angleExtension = startAngle + angleExtension - scanArc.getAngleStart();
-						startAngle = scanArc.getAngleStart();
-					}
-					if (modAngleGreaterThan(startAngle + angleExtension, scanArc.getAngleStart() +
-							scanArc.getAngleExtent(), scanIsClockwise) && 
-							startAngle + angleExtension != 0)
-					{
-						angleExtension = scanArc.getAngleStart() + scanArc.getAngleExtent() - startAngle;
-					}
-					if (angleExtension > 360)
-					{
-						angleExtension -= 360;
-					}
-				}	
-				else
-				{
-					//We've hit the same obstacle with both scan lines, make sure 
-					//this arc is wide enough.
-					//The measured distance between the two intersecting points would 
-					//sometimes not cover the entirity of the scan arc, especially
-					//when the robot was close to the object. This led to skinny
-					//full-range arcs that would pass through robjects.
-					angleExtension = scanArc.getAngleExtent();
-					startAngle = scanArc.getAngleStart();
-				}
-				
-				scanRangesList.add(new ArcTriple(startAngle, angleExtension, 
-						Math.abs(maxRadius)));
-			}
-		}
-			
-		scanRangesList.add(new ArcTriple(scanArc.getAngleStart(), 
-				scanArc.getAngleExtent(), scanArc.getHeight() / 2));
-		
-		//sort and trim
-		Collections.sort(scanRangesList);
-		for (int arcIndex = 0; arcIndex < scanRangesList.size(); arcIndex++)
-		{
-			boolean finishedSearch = false;
-			ArcTriple startArc = scanRangesList.get(arcIndex);
-			
-			//More inaccuracy handling. If the current arc is close to the original
-			//scan arc, expand it. In practice, I've found the difference could be
-			//as great as .25 of a degree 
-			if (Math.abs(startArc.StartAngle - scanArc.getAngleStart()) < .3)
-			{
-				startArc.StartAngle = scanArc.getAngleStart();
-			}
-			if (Math.abs(startArc.StartAngle + startArc.AngleExtension - 
-					(scanArc.getAngleStart() + scanArc.getAngleExtent())) < .3)
-			{
-				startArc.AngleExtension = -startArc.StartAngle + 
-					scanArc.getAngleExtent() + scanArc.getAngleStart();
-			}
-			
-			//compare this arc to other arcs
-			for (int searchIndex = 0; searchIndex < scanRangesList.size() &&
-				!finishedSearch; searchIndex++)
-			{
-				ArcTriple searchingArc = scanRangesList.get(searchIndex);
-				if (startArc.equals(searchingArc) || startArc.Radius > searchingArc.Radius)
-				{
-					continue;
-				}
-
-				//searchingArc starts and ends in the middle of startArc,
-				//and is a longer arc.
-				if (!modAngleGreaterThan(startArc.StartAngle, searchingArc.StartAngle, scanIsClockwise) &&
-					!modAngleGreaterThan(searchingArc.StartAngle + searchingArc.AngleExtension, 
-							startArc.StartAngle + startArc.AngleExtension, scanIsClockwise) &&
-					searchingArc.Radius >= startArc.Radius)
-				{
-					scanRangesList.remove(searchIndex);
-					if (searchIndex < arcIndex)
-					{
-						arcIndex--;
-					}
-					searchIndex--;
-					
-				}
-				//searchingArc starts before startArc, ends in the middle, and is longer. 
-				else if (modAngleGreaterThan(startArc.StartAngle, searchingArc.StartAngle, scanIsClockwise) &&
-						!modAngleGreaterThan(searchingArc.StartAngle + searchingArc.AngleExtension, 
-							startArc.StartAngle + startArc.AngleExtension, scanIsClockwise) &&
-						modAngleGreaterThan(searchingArc.StartAngle + searchingArc.AngleExtension,
-							startArc.StartAngle, scanIsClockwise) &&	
-						searchingArc.Radius >= startArc.Radius)
-				{
-					searchingArc.AngleExtension = startArc.StartAngle - searchingArc.StartAngle;
-				}
-				//searchingArc starts in the middle of startArc, ends after, and is longer.
-				else if (!modAngleGreaterThan(searchingArc.StartAngle, startArc.StartAngle + 
-							startArc.AngleExtension, scanIsClockwise) && 
-						!modAngleGreaterThan(startArc.StartAngle, searchingArc.StartAngle, scanIsClockwise) &&	
-						modAngleGreaterThan(searchingArc.StartAngle + searchingArc.AngleExtension, 
-							startArc.StartAngle + startArc.AngleExtension, scanIsClockwise) &&
-						searchingArc.Radius >= startArc.Radius)
-				{
-					searchingArc.AngleExtension -= (startArc.StartAngle + startArc.AngleExtension - 
-							searchingArc.StartAngle);
-					searchingArc.StartAngle = startArc.StartAngle + startArc.AngleExtension;
-				}
-			
-				//startArc is contained within searchingArc and has a shorter radius.
-				//SearchingArc must be split and this trimming restarted.
-				
-				//An angleExtension of .3 is necessary to prevent an infinite loop, where a 
-				//skinny arc would trim a sliver off a larger arc, then the larger arc would be
-				//close enough to scanArc on the next pass through that its angleExtension would
-				//be restored, restarting the cycle
-				else if (modAngleGreaterThan(startArc.StartAngle, searchingArc.StartAngle, scanIsClockwise) &&
-						modAngleGreaterThan(searchingArc.StartAngle + searchingArc.AngleExtension,
-							startArc.StartAngle + startArc.AngleExtension, scanIsClockwise) && 
-						startArc.Radius < searchingArc.Radius && Math.abs(startArc.AngleExtension) >= .3)	
-//				else if (modAngleGreaterThan(startArc.StartAngle, searchingArc.StartAngle, scanIsClockwise)) 
-//				{
-//					if 	(modAngleGreaterThan(searchingArc.StartAngle + searchingArc.AngleExtension,					
-//							startArc.StartAngle + startArc.AngleExtension, scanIsClockwise))
-//					{
-//						if (startArc.Radius < searchingArc.Radius)
-//						{
-//							if (Math.abs(startArc.AngleExtension) >= .3)
-//							{
-				{
-								if (scanRangesList.size() > 2 * battle.getRobjects().size())
-								{
-									//error-tolerance
-									break;
-								}
-								
-								double newStart = startArc.StartAngle + startArc.AngleExtension;
-								double newExtension = searchingArc.StartAngle + searchingArc.AngleExtension - 
-									startArc.StartAngle - startArc.AngleExtension;
-								ArcTriple newArc = new ArcTriple(newStart, newExtension, searchingArc.Radius);
-								scanRangesList.add(newArc);
-								searchingArc.AngleExtension = startArc.StartAngle - searchingArc.StartAngle;
-								arcIndex = -1; //will be 0 after outer loop starts again.
-								finishedSearch = true;
-								
-//							}
-//						}
-//					}
-				}
-			}
-		}
-		
-		//lose any arc that's too skinny. Due to various floating point approximations,
-		//some arcs might exist that shouldn't.
-		for (int arcIndex = 0; arcIndex < scanRangesList.size(); arcIndex++)
-		{
-			if (Math.abs(scanRangesList.get(arcIndex).AngleExtension) < .4)
-			{
-				scanRangesList.remove(arcIndex);
-				arcIndex--;
-			}
-		}
-		
-		//create arcs based off of scanRangesList
-		for (int arcIndex = 0; arcIndex < scanRangesList.size(); arcIndex++)
-		{
-			ArcTriple arcTrip = scanRangesList.get(arcIndex);
-			Arc2D.Double arc = new Arc2D.Double();
-			arc.setArcByCenter(x, y, arcTrip.Radius, arcTrip.StartAngle, 
-					arcTrip.AngleExtension, Arc2D.PIE);
-			arcList.add(arc);
-		}
-		
-		return arcList;
-	}
-	
-	//This is a struct-like class that contains holds arc information;
-	private class ArcTriple implements Comparable<ArcTriple>
-	{
-		public double StartAngle;
-		public double AngleExtension;
-		public double Radius;
-		//TODO: add endAngle for clarity?
-		
-		public ArcTriple(double startAngle, double angleExtension, double radius)
-		{
-			if (startAngle < 0) startAngle += 360;
-			StartAngle = startAngle;
-			AngleExtension = angleExtension;
-			Radius = radius;
-		}
-
-		public int compareTo(ArcTriple otherTriple) 
-		{
-			if (Math.abs(StartAngle - otherTriple.StartAngle) < Utils.NEAR_DELTA) return 0;
-			if (modAngleGreaterThan(StartAngle, otherTriple.StartAngle, AngleExtension > 0))
-			{
-				return 1;
-			}
-			return -1;
-		}
-	}
-	
-	/**
-	 * This function takes two angles (0 <= x < 360) and returns true if 
-	 * the first angle is greater than the second. A half-circle 
-	 * domain is used, so 5 > 355 returns true if clockwise is true.
-	 * If clockwise is false, 355 > 5 returns true
-	 * 
+	 * @param robject the object being scanned
+	 * @param scan the scan area
+	 * @return a ScannedObjectEvent
 	 */
-	private boolean modAngleGreaterThan(double firstAngle, double secondAngle, boolean clockwise)
-	{
-		if (Math.abs(firstAngle - secondAngle) > 180)
+	private ScannedObjectEvent createScannedObjectEvent(RobjectPeer robject, Area scan) {
+		//Find minimum distance to the scanned area of the object and the angle
+		double minDistance = Double.POSITIVE_INFINITY;
+		double angle = 0;
+		
+		//TODO: This will need some heavy optimization
+		//get intersection polygon between the robject and the scan arc
+		Area intersection = new Area(robject.getIntersectRect());
+		intersection.intersect(scan);
+		Rectangle2D box = intersection.getBounds2D();
+
+		//get points for each corner of the intersection box and 
+		//return the lowest distance to the robot
+		Point2D.Double currentLocation = new Point2D.Double(x, y);
+		//check if the robot is vertically or horizontally alligned
+		if (x >= box.getMinX() && x <= box.getMaxX())
 		{
-			if (clockwise)
+			if (y < box.getMinY())
 			{
-				return (firstAngle < secondAngle);
+				angle = 0;
+				minDistance = box.getMinY() - y;
 			}
 			else
 			{
-				return (firstAngle > secondAngle);
+				angle = Math.PI;
+				minDistance = y - box.getMaxY();
 			}
 		}
-		else
+		if (y >= box.getMinY() && y <= box.getMaxY())
 		{
-			if (clockwise)
+			if (minDistance < Double.POSITIVE_INFINITY)
 			{
-				return (firstAngle > secondAngle);
+				//We are inside the object
+				angle = 0;
+				minDistance = 0;
+			}
+			else if (x < box.getMinX())
+			{
+				angle = Math.PI / 2;
+				minDistance = box.getMinX() - x;
 			}
 			else
 			{
-				return (firstAngle < secondAngle);
+				angle = -Math.PI / 2 ;
+				minDistance = x - box.getMaxX();
 			}
 		}
-	}
-	
-	/**
-	 * Calculates a point on two intersecting lines, else returns null
-	 */
-	private Point2D.Double intersectionTwoLines(Line2D a, Line2D b)
-	{
-		//The following function returns the intersection of two lines, not line segments.
-		//So we need to check before returning
-		Point2D.Double point = intersectionTwoLines(a.getX1(), a.getY1(), a.getX2(), 
-			a.getY2(), b.getX1(), b.getY1(), b.getX2(), b.getY2());
 		
-		if ( a.ptSegDist(point) < .5 && b.ptSegDist(point) < .5)
+		for (int cornerIndex = 0; cornerIndex < 4; cornerIndex++)
 		{
-			return point;
+			double boxX = (cornerIndex < 2 ? box.getMinX() : box.getMaxX());
+			double boxY = (cornerIndex % 2 == 0 ? box.getMinY() : box.getMaxY());
+			double dx = boxX - x;
+			double dy = boxY - y;
+			
+			Point2D.Double corner = new Point2D.Double(boxX, boxY);
+			if (corner.distance(currentLocation) < minDistance)
+			{
+				//get absolute angle
+				angle = atan(dx/dy);
+				if (dx > 0 && dy < 0)
+				{
+					angle = Math.PI + angle; 
+				}
+				else if (dy < 0)
+				{
+					angle = angle - Math.PI;
+				}
+				
+				minDistance = corner.distance(currentLocation);
+			}
+		}	
+		
+		//adjust angle to robot's bearing and keep within (-pi < x <= pi)
+		angle -= bodyHeading;
+		if (angle < -Math.PI)
+		{
+			angle += Math.PI * 2;
 		}
-		return null;
-	}
-	
-	/**
-	 * Calculates a point on two intersecting lines, else returns null
-	 * 
-	 * Code by Alexander Hristov, released under LGPL
-	 * http://www.ahristov.com/tutorial/geometry-games/intersection-lines.html
-	 * 
-	 */
-	private Point2D.Double intersectionTwoLines(double x1, double y1, double x2,double y2, 
-			double x3, double y3, double x4, double y4)
-	{
-		double d = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
-		if (d == 0) return null;
-		  
-		double xi = ((x3-x4)*(x1*y2-y1*x2)-(x1-x2)*(x3*y4-y3*x4))/d;
-		double yi = ((y3-y4)*(x1*y2-y1*x2)-(y1-y2)*(x3*y4-y3*x4))/d;
-		    
-		return new Point2D.Double(xi,yi);
-	}
-	
-	private boolean intersects(Arc2D arc, Rectangle2D rect) {
-		return (rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
-			arc.getStartPoint().getY()))
-			|| arc.intersects(rect);
+		if (angle > Math.PI)
+		{
+			angle -= Math.PI * 2;
+		}
+		
+		return new ScannedObjectEvent(robject.getType(),
+			angle, minDistance, robject.isRobotStopper(),
+			robject.isBulletStopper(), robject.isScanStopper(), robject.isDynamic());
+
 	}
 
-	private boolean intersects(List<Arc2D> arcs, Rectangle2D rect) {
-		for (Arc2D arc : arcs)
-		{
-			if ((rect.intersectsLine(arc.getCenterX(), arc.getCenterY(), arc.getStartPoint().getX(),
-				arc.getStartPoint().getY()))
-				|| arc.intersects(rect))
-				return true;
+	private Shape calcScanArc(Arc2D arc) {
+		
+		Area area = new Area(arc);
+
+		for (RobjectPeer robject : battle.getRobjects()) {
+			if (robject.isScanStopper())
+			{
+				if (robject.getBoundaryRect().contains(x, y) || robject.getBoundaryRect().contains(x-1, y-1)) {
+					return new Area();
+				}
+				area.subtract(new Area(getRectWithShadowShape(robject.getBoundaryRect(), x, y)));
+			}
 		}
-		return false;
+		return area;
+	}
+
+	private Shape getRectWithShadowShape(final Rectangle2D rect, final double px, final double py) {
+		Polygon poly = new Polygon();
+
+		final double minX = rect.getMinX();
+		final double minY = rect.getMinY();
+		final double maxX = rect.getMaxX();
+		final double maxY = rect.getMaxY();
+
+		final boolean withinXboundary = (px >= minX && px <= maxX);
+		final boolean withinYboundary = (py >= minY && py <= maxY);
+		
+		if (withinXboundary) {
+			if (withinYboundary) {
+				poly.addPoint((int)(minX + 0.5), (int)(minY + 0.5));
+				poly.addPoint((int)(maxX + 0.5), (int)(minY + 0.5));
+				poly.addPoint((int)(maxX + 0.5), (int)(maxY + 0.5));
+				poly.addPoint((int)(minX + 0.5), (int)(maxY + 0.5));			
+
+			} else { // outside y boundary
+
+				final double y1 = (py <= minY) ? minY : maxY;
+
+				poly.addPoint((int)(minX + 0.5), (int)(y1 + 0.5));
+				poly.addPoint((int)(maxX + 0.5), (int)(y1 + 0.5));
+	
+				Point2D projection = new Point2D.Double();
+
+				calcProjectedPoint(px, py, maxX, y1, projection);
+				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+	
+				calcProjectedPoint(px, py, minX, y1, projection);
+				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+			}	
+		} else { // outside x boundary
+
+			final double x1 = (px <= minX) ? minX : maxX;
+
+			Point2D projection = new Point2D.Double();
+
+			if (withinYboundary) {
+
+				poly.addPoint((int)(x1 + 0.5), (int)(minY + 0.5));			
+				poly.addPoint((int)(x1 + 0.5), (int)(maxY + 0.5));
+		
+				calcProjectedPoint(px, py, x1, maxY, projection);
+				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+		
+				calcProjectedPoint(px, py, x1, minY, projection);
+				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+
+			} else { // outside y boundary too
+		
+				final double x2 = (px <= minX) ? maxX : minX;
+
+				double y1, y2;
+
+				if (py <= minY) {
+					y1 = minY;
+					y2 = maxY;
+				} else {
+					y1 = maxY;
+					y2 = minY;
+				}
+
+				poly.addPoint((int)(x1 + 0.5), (int)(y2 + 0.5));
+				poly.addPoint((int)(x1 + 0.5), (int)(y1 + 0.5));
+				poly.addPoint((int)(x2 + 0.5), (int)(y1 + 0.5));
+
+				calcProjectedPoint(px, py, x2, y1, projection);
+				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+
+				calcProjectedPoint(px, py, x1, y2, projection);
+				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));					
+			}		
+		}
+		return poly;
+	}
+
+	private void calcProjectedPoint(final double x1, final double y1, final double x2, final double y2, Point2D result) {
+		final double dx = x2 - x1;
+		final double dy = y2 - y1;
+
+		if (dx == 0) {
+			result.setLocation(x1, (dy >= 0) ? 10000 : -10000);
+		} else if (dy == 0) {
+			result.setLocation((dx >= 0) ? 10000 : -10000, y1);
+		} else {
+			if (Math.abs(dx) < Math.abs(dy)) {
+				double d = (dx >= 0) ? 10000 : -10000;
+				result.setLocation(x1 + d, y1 + d * dy / dx);
+			} else {
+				double d = (dy >= 0) ? 10000 : -10000;
+				result.setLocation(x1 + d * dx / dy, y1 + d);			
+			}
+		}
 	}
 
 	private void zap(double zapAmount) {
@@ -2195,6 +1806,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
+	//TODO: removed final modifier of teamPeer - consider side effects
+	public void setTeamPeer(TeamPeer teamPeer) { 
+		this.teamPeer = teamPeer;
+	}
+	
 	public void setX(double x)
 	{
 		this.x = x;
