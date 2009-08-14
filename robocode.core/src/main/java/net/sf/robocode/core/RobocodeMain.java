@@ -44,6 +44,7 @@ import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
 import robocode.control.events.*;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -203,6 +204,13 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 		setup.tps = properties.getOptionsBattleDesiredTPS();
 
+		// Initialize the system property so the AWT does not use headless mode meaning that the
+		// GUI (Awt and Swing) is enabled per default when running starting Robocode.
+		// It might be set to true later, if the -nodisplay option is set (in the setEnableGUI method).
+		// Read more about headless mode here:
+		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
+		System.setProperty("java.awt.headless", "false");
+
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-cwd") && (i < args.length + 1)) {
 				changeDirectory(args[i + 1]);
@@ -261,6 +269,13 @@ public final class RobocodeMain extends RobocodeMainBase {
 			System.err.println('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
 			System.exit(8);
 		}
+
+		// The Default Toolkit must be set as soon as we know if we are going to use headless mode or not.
+		// That is if the toolkit must be headless or not (GUI on/off). If we are running in headless mode
+		// from this point, a HeadlessException will be thrown if we access a AWT/Swing component.
+		// Read more about headless mode here:
+		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
+		Toolkit.getDefaultToolkit();
 	}
 
 	private void changeDirectory(String robocodeDir) {

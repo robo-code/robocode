@@ -270,6 +270,16 @@ public class RobotThreadManager {
 	}
 
 	public static boolean disposeAppContext(Object appContext) {
+		// This method should must not be used when the AWT is running in headless mode!
+		// Bugfix [2833271] IllegalThreadStateException with the AWT-Shutdown thread.
+		// Read more about headless mode here:
+		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
+
+		// This check makes sure we exit, if the AWT is running in headless mode
+		if (System.getProperty("java.awt.headless", "false").equals("true")) {
+			return false;
+		}
+
 		// same as AppContext.dispose();
 		try {
 			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.AppContext");

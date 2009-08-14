@@ -108,6 +108,11 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void setEnableGUI(boolean enable) {
 		isGUIEnabled = enable;
+
+		// Set the system property so the AWT headless mode.
+		// Read more about headless mode here:
+		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
+		System.setProperty("java.awt.headless", "" + !enable);
 	}
 
 	public void setSlave(boolean value) {

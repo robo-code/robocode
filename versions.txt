@@ -1,6 +1,7 @@
 Version 1.7.1.4 Beta
-(05-Aug-2009)
+(14-Aug-2009)
 ---------------
+
 = Bugfixes =
 * Bug [2828479] - Missed onRobotDeath events.
 * Bug [2819387] - Team jar files reported as corrupted.
@@ -8,6 +9,7 @@ Version 1.7.1.4 Beta
 * Bug [2828614] - Sometimes too few results for robots are displayed.
 * Bug [2820434] - NullPointerException when setting classpath directory.
 * Bug [2811621] - Invalid entry point in codesize-1.1.jar.
+* Bug [2833271] - IllegalThreadStateException occurring in RoboRumble.
 
 = Changes for RoboRumble =
 * Updated the PARTICIPANTSURL in the roborumble.txt, meleerumble.txt, and teamrumble.txt
