@@ -1,6 +1,7 @@
 Version 1.7.1.4 Beta
-(14-Aug-2009)
+(17-Aug-2009)
 ---------------
+This version is dedicated for the RoboRumble community where many issues seen with the RoboRumble client have been solved. Thank you for reporting as many known issues as possible, and also help out solving these - especially with the issue seen with the robot movement that had a big impact on the scores and rankings! :-)
 
 = Bugfixes =
 * Bug [2828479] - Missed onRobotDeath events.
@@ -10,6 +11,7 @@ Version 1.7.1.4 Beta
 * Bug [2820434] - NullPointerException when setting classpath directory.
 * Bug [2811621] - Invalid entry point in codesize-1.1.jar.
 * Bug [2833271] - IllegalThreadStateException occurring in RoboRumble.
+* The RateControlRobot (Beta) returned rates in radians instead of degrees with the methods: getTurnRate(), getGunRotationRate(), and getRadarRotationRate().
 
 = Changes for RoboRumble =
 * Updated the PARTICIPANTSURL in the roborumble.txt, meleerumble.txt, and teamrumble.txt
