@@ -13,33 +13,33 @@ namespace net.sf.robocode.host {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public unsafe partial class RobotStatics : global::java.lang.Object {
+    public unsafe partial class RobotStatics : global::java.lang.Object, global::net.sf.robocode.peer.IRobotStatics {
         
         internal static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _getTeamName0;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isDroid1;
+        internal static global::net.sf.jni4net.jni.MethodId _isJuniorRobot1;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isTeamRobot2;
+        internal static global::net.sf.jni4net.jni.MethodId _isInteractiveRobot2;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isAdvancedRobot3;
+        internal static global::net.sf.jni4net.jni.MethodId _isPaintRobot3;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isInteractiveRobot4;
+        internal static global::net.sf.jni4net.jni.MethodId _isAdvancedRobot4;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isPaintRobot5;
+        internal static global::net.sf.jni4net.jni.MethodId _isTeamRobot5;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isJuniorRobot6;
+        internal static global::net.sf.jni4net.jni.MethodId _isTeamLeader6;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getFullClassName7;
+        internal static global::net.sf.jni4net.jni.MethodId _isDroid7;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getShortClassName8;
+        internal static global::net.sf.jni4net.jni.MethodId _getShortName8;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isTeamLeader9;
+        internal static global::net.sf.jni4net.jni.MethodId _getVeryShortName9;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getShortName10;
+        internal static global::net.sf.jni4net.jni.MethodId _getFullClassName10;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getVeryShortName11;
+        internal static global::net.sf.jni4net.jni.MethodId _getShortClassName11;
         
         internal static global::net.sf.jni4net.jni.MethodId _getBattleRules12;
         
@@ -92,17 +92,17 @@ namespace net.sf.robocode.host {
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv env, java.lang.Class staticClass) {
             global::net.sf.robocode.host.RobotStatics.staticClass = staticClass;
             global::net.sf.robocode.host.RobotStatics._getTeamName0 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getTeamName", "()Ljava/lang/String;");
-            global::net.sf.robocode.host.RobotStatics._isDroid1 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isDroid", "()Z");
-            global::net.sf.robocode.host.RobotStatics._isTeamRobot2 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isTeamRobot", "()Z");
-            global::net.sf.robocode.host.RobotStatics._isAdvancedRobot3 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isAdvancedRobot", "()Z");
-            global::net.sf.robocode.host.RobotStatics._isInteractiveRobot4 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isInteractiveRobot", "()Z");
-            global::net.sf.robocode.host.RobotStatics._isPaintRobot5 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isPaintRobot", "()Z");
-            global::net.sf.robocode.host.RobotStatics._isJuniorRobot6 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isJuniorRobot", "()Z");
-            global::net.sf.robocode.host.RobotStatics._getFullClassName7 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getFullClassName", "()Ljava/lang/String;");
-            global::net.sf.robocode.host.RobotStatics._getShortClassName8 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getShortClassName", "()Ljava/lang/String;");
-            global::net.sf.robocode.host.RobotStatics._isTeamLeader9 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isTeamLeader", "()Z");
-            global::net.sf.robocode.host.RobotStatics._getShortName10 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getShortName", "()Ljava/lang/String;");
-            global::net.sf.robocode.host.RobotStatics._getVeryShortName11 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getVeryShortName", "()Ljava/lang/String;");
+            global::net.sf.robocode.host.RobotStatics._isJuniorRobot1 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isJuniorRobot", "()Z");
+            global::net.sf.robocode.host.RobotStatics._isInteractiveRobot2 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isInteractiveRobot", "()Z");
+            global::net.sf.robocode.host.RobotStatics._isPaintRobot3 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isPaintRobot", "()Z");
+            global::net.sf.robocode.host.RobotStatics._isAdvancedRobot4 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isAdvancedRobot", "()Z");
+            global::net.sf.robocode.host.RobotStatics._isTeamRobot5 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isTeamRobot", "()Z");
+            global::net.sf.robocode.host.RobotStatics._isTeamLeader6 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isTeamLeader", "()Z");
+            global::net.sf.robocode.host.RobotStatics._isDroid7 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "isDroid", "()Z");
+            global::net.sf.robocode.host.RobotStatics._getShortName8 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getShortName", "()Ljava/lang/String;");
+            global::net.sf.robocode.host.RobotStatics._getVeryShortName9 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getVeryShortName", "()Ljava/lang/String;");
+            global::net.sf.robocode.host.RobotStatics._getFullClassName10 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getFullClassName", "()Ljava/lang/String;");
+            global::net.sf.robocode.host.RobotStatics._getShortClassName11 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getShortClassName", "()Ljava/lang/String;");
             global::net.sf.robocode.host.RobotStatics._getBattleRules12 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getBattleRules", "()Lrobocode/BattleRules;");
             global::net.sf.robocode.host.RobotStatics._getTeammates13 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getTeammates", "()[Ljava/lang/String;");
             global::net.sf.robocode.host.RobotStatics._getContestIndex14 = env.GetMethodID(global::net.sf.robocode.host.RobotStatics.staticClass, "getContestIndex", "()I");
@@ -128,69 +128,69 @@ namespace net.sf.robocode.host {
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
-        public virtual bool isDroid() {
+        public virtual bool isJuniorRobot() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isDroid1);
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
-        public virtual bool isTeamRobot() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isTeamRobot2);
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
-        public virtual bool isAdvancedRobot() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isAdvancedRobot3);
+            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isJuniorRobot1);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isInteractiveRobot() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isInteractiveRobot4);
+            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isInteractiveRobot2);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isPaintRobot() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isPaintRobot5);
+            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isPaintRobot3);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
-        public virtual bool isJuniorRobot() {
+        public virtual bool isAdvancedRobot() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isJuniorRobot6);
+            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isAdvancedRobot4);
         }
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
-        public virtual global::java.lang.String getFullClassName() {
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
+        public virtual bool isTeamRobot() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getFullClassName7));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
-        public virtual global::java.lang.String getShortClassName() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getShortClassName8));
+            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isTeamRobot5);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isTeamLeader() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isTeamLeader9);
+            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isTeamLeader6);
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
+        public virtual bool isDroid() {
+            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
+            return env.CallBooleanMethod(this, global::net.sf.robocode.host.RobotStatics._isDroid7);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         public virtual global::java.lang.String getShortName() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getShortName10));
+            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getShortName8));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         public virtual global::java.lang.String getVeryShortName() {
             global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getVeryShortName11));
+            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getVeryShortName9));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
+        public virtual global::java.lang.String getFullClassName() {
+            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
+            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getFullClassName10));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
+        public virtual global::java.lang.String getShortClassName() {
+            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
+            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.RobotStatics._getShortClassName11));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()LSystem/Object;")]

@@ -50,7 +50,7 @@
     <Compile Include="net\sf\robocode\io\Logger.cs" />
     <Compile Include="net\sf\robocode\manager\IVersionManagerBase.cs" />
     <Compile Include="net\sf\robocode\peer\IRobotStatics.cs" />
-    <Compile Include="net\sf\robocode\security\HiddenAccess.cs" />
+    <Compile Include="net\sf\robocode\security\HiddenAccessN.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenBulletHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenEventHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenRulesHelper.cs" />

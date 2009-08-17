@@ -32,7 +32,7 @@ import java.util.Hashtable;
  */
 public class DllHandler extends RootHandler {
 	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
-		// find jar files
+		// find dll files
 		final File[] dlls = dir.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				final String low = pathname.toString().toLowerCase();

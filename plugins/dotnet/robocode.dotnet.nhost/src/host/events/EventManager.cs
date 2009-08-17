@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.security;
@@ -45,11 +45,11 @@ namespace net.sf.robocode.dotnet.host.events
 
         public void add(Event e)
         {
-            if (!HiddenAccess.isCriticalEvent(e))
+            if (!HiddenAccessN.isCriticalEvent(e))
             {
-                HiddenAccess.setEventPriority(e, getEventPriority(e.GetType().Name));
+                HiddenAccessN.setEventPriority(e, getEventPriority(e.GetType().Name));
             }
-            HiddenAccess.setEventTime(e, getTime());
+            HiddenAccessN.setEventTime(e, getTime());
             addImpl(e);
         }
 
@@ -439,7 +439,7 @@ namespace net.sf.robocode.dotnet.host.events
                 {
                     var evnt = new CustomEvent(customEvent);
 
-                    HiddenAccess.setEventTime(evnt, getTime());
+                    HiddenAccessN.setEventTime(evnt, getTime());
                     addImpl(evnt);
                 }
             }
@@ -510,9 +510,9 @@ namespace net.sf.robocode.dotnet.host.events
                 {
                     // skip too old events
                     if ((currentEvent.getTime() > getTime() - MAX_EVENT_STACK) ||
-                        HiddenAccess.isCriticalEvent(currentEvent))
+                        HiddenAccessN.isCriticalEvent(currentEvent))
                     {
-                        HiddenAccess.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
+                        HiddenAccessN.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
                     }
                 }
                 catch (Exception ex)
@@ -648,12 +648,12 @@ namespace net.sf.robocode.dotnet.host.events
                 robotProxy.println("SYSTEM: Unknown event class: " + eventClass);
                 return;
             }
-            if (HiddenAccess.isCriticalEvent(evnt))
+            if (HiddenAccessN.isCriticalEvent(evnt))
             {
                 robotProxy.println("SYSTEM: You may not change the priority of system event. setPriority ignored.");
             }
 
-            HiddenAccess.setEventPriority(evnt, priority);
+            HiddenAccessN.setEventPriority(evnt, priority);
         }
 
         private void registerNamedEvents()
@@ -698,9 +698,9 @@ namespace net.sf.robocode.dotnet.host.events
         {
             String name = e.GetType().Name;
 
-            if (!HiddenAccess.isCriticalEvent(e))
+            if (!HiddenAccessN.isCriticalEvent(e))
             {
-                HiddenAccess.setDefaultPriority(e);
+                HiddenAccessN.setDefaultPriority(e);
             }
             namedEvents.Add(name, e);
             namedEvents.Add(name.Substring(9), e);

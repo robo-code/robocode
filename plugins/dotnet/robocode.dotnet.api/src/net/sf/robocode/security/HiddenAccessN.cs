@@ -24,7 +24,7 @@ namespace net.sf.robocode.security
     /// Helpers for accessing hidden methods on events
     /// @author Pavel Savara (original)
     /// </summary>
-    public class HiddenAccess
+    public class HiddenAccessN
     {
         private static IHiddenEventHelper eventHelper;
         private static IHiddenBulletHelper bulletHelper;

@@ -15,9 +15,7 @@ package net.sf.robocode.dotnet.host;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.core.EngineClassLoader;
 import net.sf.robocode.dotnet.repository.items.handlers.DotnetPropertiesHandler;
-import net.sf.robocode.dotnet.repository.items.handlers.DllItemHandler;
 import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
-import net.sf.robocode.dotnet.repository.root.DllRoot;
 import net.sf.robocode.host.IHost;
 import net.sf.jni4net.Bridge;
 

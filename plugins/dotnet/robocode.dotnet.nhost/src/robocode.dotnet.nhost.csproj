@@ -68,12 +68,17 @@
     <Compile Include="generated\net\sf\robocode\peer\IRobotPeer.generated.cs" />
     <Compile Include="generated\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs" />
     <Compile Include="generated\net\sf\robocode\repository\RobotType.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\security\HiddenAccess.generated.cs" />
     <Compile Include="generated\robocode\control\RobotSpecification.generated.cs" />
     <Compile Include="host\DotnetHost.cs" />
     <Compile Include="host\events\EventManager.cs" />
     <Compile Include="host\events\EventQueue.cs" />
+    <Compile Include="host\proxies\AdvancedRobotProxy.cs" />
     <Compile Include="host\proxies\BasicRobotProxy.cs" />
     <Compile Include="host\proxies\HostingRobotProxy.cs" />
+    <Compile Include="host\proxies\JuniorRobotProxy.cs" />
+    <Compile Include="host\proxies\StandardRobotProxy.cs" />
+    <Compile Include="host\proxies\TeamRobotProxy.cs" />
     <Compile Include="host\RobotClassLoader.cs" />
     <Compile Include="host\RobotStatics.cs" />
     <Compile Include="host\security\RobotThreadManager.cs" />

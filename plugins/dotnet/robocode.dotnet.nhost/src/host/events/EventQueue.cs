@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using net.sf.robocode.security;
 using robocode;
 
@@ -18,7 +18,7 @@ namespace net.sf.robocode.dotnet.host.events
             {
                 Event e = this[i];
 
-                if (!HiddenAccess.isCriticalEvent(e))
+                if (!HiddenAccessN.isCriticalEvent(e))
                 {
                     RemoveAt(i--);
                 }
@@ -31,7 +31,7 @@ namespace net.sf.robocode.dotnet.host.events
             {
                 Event e = this[i];
 
-                if ((e.getTime() <= clearTime) && !HiddenAccess.isCriticalEvent(e))
+                if ((e.getTime() <= clearTime) && !HiddenAccessN.isCriticalEvent(e))
                 {
                     RemoveAt(i--);
                 }

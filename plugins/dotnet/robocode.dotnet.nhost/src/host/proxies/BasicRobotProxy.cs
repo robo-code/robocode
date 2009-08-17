@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -352,7 +352,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 		if (execResults.getEvents() != null) {
 			foreach (Event evnt in execResults.getEvents()) {
 				eventManager.add(evnt);
-				HiddenAccess.updateBullets(evnt, bullets);
+				HiddenAccessN.updateBullets(evnt, bullets);
 			}
 		}
 
@@ -361,7 +361,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 				Bullet bullet = bullets[s.bulletId];
 
 				if (bullet != null) {
-					HiddenAccess.update(bullet, s.x, s.y, s.victimName, s.isActive);
+					HiddenAccessN.update(bullet, s.x, s.y, s.victimName, s.isActive);
 					if (!s.isActive) {
 						bullets.Remove(s.bulletId);
 					}
@@ -433,7 +433,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 		this.commands = commands;
 	}
 
-	protected void loadTeamMessages(List<TeamMessage> teamMessages) {}
+	protected virtual void loadTeamMessages(List<TeamMessage> teamMessages) {}
 
 	protected double getEnergyImpl() {
 		return status.getEnergy() - firedEnergy;

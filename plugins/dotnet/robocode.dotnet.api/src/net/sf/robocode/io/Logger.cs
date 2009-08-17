@@ -81,7 +81,7 @@ namespace net.sf.robocode.io
             {
                 lock (logBuffer)
                 {
-                    if (!HiddenAccess.isSafeThread())
+                    if (!HiddenAccessN.isSafeThread())
                     {
                         // we just queue it, to not let unsafe thread travel thru system
                         logBuffer.Append(s);

@@ -21,6 +21,7 @@
     <orderEntry type="module" module-name="robocode.dotnet.nhost" />
     <orderEntry type="module" module-name="robocode.dotnet.samples" />
     <orderEntry type="module" module-name="robocode.dotnet.tests" />
+    <orderEntry type="module" module-name="robocode" />
   </component>
 </module>
 

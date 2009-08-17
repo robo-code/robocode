@@ -48,7 +48,7 @@ namespace robocode
     /// @see Droid
     /// @since 1.4
     /// </summary>
-    public class JuniorRobot : IJuniorRobot
+    public abstract class JuniorRobot : IJuniorRobot
     {
         internal IBasicRobotPeer peer;
         internal TextWriter _output;
