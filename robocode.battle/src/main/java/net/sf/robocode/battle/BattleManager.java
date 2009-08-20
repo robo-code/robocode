@@ -147,10 +147,7 @@ public class BattleManager implements IBattleManager {
 	}
 
 	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording) {
-
-		if (battle != null && battle.isRunning()) {
-			battle.stop(true);
-		}
+		stop(true);
 
 		logMessage("Preparing battle...");
 

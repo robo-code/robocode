@@ -146,7 +146,7 @@ public final class Battle extends BaseBattle {
 	// Turn skip related items
 	private boolean parallelOn;
 	static final int DEBUG_TURN_WAIT = 10 * 60 * 1000;
-	private int millisWait;
+	private long millisWait;
 	private int microWait;
 
 	// Objects in the battle
@@ -382,10 +382,10 @@ public final class Battle extends BaseBattle {
 			}
 			final long waitTime = (long) (cpuConstant * parallelConstant);
 
-			millisWait = (int) (waitTime / 1000000);
+			millisWait = waitTime / 1000000;
 			microWait = (int) (waitTime % 1000000);
 		} else {
-			millisWait = (int) (cpuConstant / 1000000);
+			millisWait = cpuConstant / 1000000;
 			microWait = (int) (cpuConstant % 1000000);
 		}
 		if (microWait == 0) {

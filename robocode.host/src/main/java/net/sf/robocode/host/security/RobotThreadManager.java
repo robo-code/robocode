@@ -48,6 +48,7 @@ public class RobotThreadManager {
 	private Thread runThread;
 	private LoggingThreadGroup runThreadGroup;
 	private Object awtForThreadGroup;
+	private IThreadManager threadManager;
 
 	public RobotThreadManager(IHostedThread robotProxy) {
 		this.robotProxy = robotProxy;
@@ -96,7 +97,10 @@ public class RobotThreadManager {
 
 	public void start(IThreadManager threadManager) {
 		try {
+			this.threadManager = threadManager;
+			
 			threadManager.addThreadGroup(runThreadGroup, robotProxy);
+
 			runThread = new Thread(runThreadGroup, robotProxy, robotProxy.getStatics().getName());
 			runThread.setDaemon(true);
 			runThread.setPriority(Thread.NORM_PRIORITY - 1);
@@ -111,12 +115,12 @@ public class RobotThreadManager {
 	 * @return true as peacefull stop
 	 */
 	public boolean waitForStop() {
-		boolean stop = false;
+		boolean isAlive = false;
 
 		if (runThread != null && runThread.isAlive()) {
 			runThread.interrupt();
 			waitForStop(runThread);
-			stop = runThread.isAlive();
+			isAlive = runThread.isAlive();
 		}
 
 		Thread[] threads = new Thread[100];
@@ -127,13 +131,15 @@ public class RobotThreadManager {
 			if (thread != null && thread != runThread && thread.isAlive()) {
 				thread.interrupt();
 				waitForStop(thread);
-				stop |= thread.isAlive();
+				isAlive |= thread.isAlive();
 			}
 		}
 
-		if (stop) {
+		if (isAlive) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
 				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
+
+				// Force the robot to stop
 				return forceStop();
 			} else {
 				logError(
@@ -146,7 +152,7 @@ public class RobotThreadManager {
 	}
 
 	/**
-	 * @return true as peacefull stop
+	 * @return true as peaceful stop
 	 */
 	public boolean forceStop() {
 		int res = stopSteps(runThread);
@@ -172,7 +178,7 @@ public class RobotThreadManager {
 
 	/**
 	 * @param t thread to stop
-	 * @return 0 as peacefull stop
+	 * @return 0 as peaceful stop
 	 */
 	private int stopSteps(Thread t) {
 		if (t != null && t.isAlive()) {
@@ -269,7 +275,7 @@ public class RobotThreadManager {
 		// end: same as SunToolkit.createNewAppContext();
 	}
 
-	public static boolean disposeAppContext(Object appContext) {
+	public boolean disposeAppContext(final Object appContext) {
 		// This method should must not be used when the AWT is running in headless mode!
 		// Bugfix [2833271] IllegalThreadStateException with the AWT-Shutdown thread.
 		// Read more about headless mode here:
@@ -285,11 +291,24 @@ public class RobotThreadManager {
 			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.AppContext");
 			final Method dispose = sunToolkit.getDeclaredMethod("dispose");
 
-			dispose.invoke(appContext);
+			// This is necessary here to prevent AccessControlException from the RobocodeSecurityManager's
+			// checkAccess(ThreadGroup) method when the dispose method takes a long time to run.
+			threadManager.addSafeThreadGroup(runThreadGroup);
+
+			// We run this in a thread, as invoking the AppContext.dispose() method sometimes takes several
+			// seconds, and thus causes the cleanup of a battle to hang, which is annoying when trying to restart
+			// a battle.
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						dispose.invoke(appContext);
+					} catch (Exception ignore) {}
+				}
+			}, "DisposeAppContext").start();
+
 			return true;
-		} catch (ClassNotFoundException ignore) {} catch (NoSuchMethodException ignore) {} catch (InvocationTargetException ignore) {} catch (IllegalAccessException ignore) {}
+		} catch (ClassNotFoundException ignore) {} catch (NoSuchMethodException ignore) {}
 		return false;
 		// end: same as AppContext.dispose();
 	}
-
 }

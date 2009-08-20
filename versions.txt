@@ -1,5 +1,5 @@
 Version 1.7.1.4 Beta
-(17-Aug-2009)
+(21-Aug-2009)
 ---------------
 This version is dedicated for the RoboRumble community where many issues seen with the RoboRumble client have been solved. Thank you for reporting as many known issues as possible, and also help out solving these - especially with the issue seen with the robot movement that had a big impact on the scores and rankings! :-)
 
@@ -11,6 +11,7 @@ This version is dedicated for the RoboRumble community where many issues seen wi
 * Bug [2820434] - NullPointerException when setting classpath directory.
 * Bug [2811621] - Invalid entry point in codesize-1.1.jar.
 * Bug [2833271] - IllegalThreadStateException occurring in RoboRumble.
+* Bug [2831201] - Robocode enters infinite loop with the Restart button.
 * The RateControlRobot (Beta) returned rates in radians instead of degrees with the methods: getTurnRate(), getGunRotationRate(), and getRadarRotationRate().
 
 = Changes for RoboRumble =

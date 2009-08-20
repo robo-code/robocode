@@ -613,7 +613,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void waitSleeping(int millisWait, int microWait) {
+	public void waitSleeping(long millisWait, int microWait) {
 		synchronized (isSleeping) {
 			// It's quite possible for simple robots to
 			// complete their processing before we get here,
@@ -621,7 +621,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			if (!isSleeping()) {
 				try {
-					for (int i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
+					for (long i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
 						isSleeping.wait(0, 999999);
 					}
 					if (!isSleeping()) {
