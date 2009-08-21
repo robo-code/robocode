@@ -30,8 +30,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.security.AccessController;
@@ -46,13 +44,15 @@ import java.security.PrivilegedAction;
 public class ThreadManager implements IThreadManager {
 
 	private final PrintStream syserr = System.err;
-	private final List<Thread> safeThreads = Collections.synchronizedList(new ArrayList<Thread>());
+
+	private final List<Thread> safeThreads = new CopyOnWriteArrayList<Thread>();
 	private final List<ThreadGroup> safeThreadGroups = new CopyOnWriteArrayList<ThreadGroup>();
-	private final List<ThreadGroup> groups = Collections.synchronizedList(new ArrayList<ThreadGroup>());
-	private final List<Thread> outputStreamThreads = Collections.synchronizedList(new ArrayList<Thread>());
+	private final List<ThreadGroup> groups = new CopyOnWriteArrayList<ThreadGroup>();
+	private final List<Thread> outputStreamThreads = new CopyOnWriteArrayList<Thread>();
+	private final List<IHostedThread> robots = new CopyOnWriteArrayList<IHostedThread>();
+
 	private Thread robotLoaderThread;
 	private IHostedThread loadingRobot;
-	private final List<IHostedThread> robots = Collections.synchronizedList(new ArrayList<IHostedThread>());
 
 	public ThreadManager() {}
 
@@ -230,5 +230,4 @@ public class ThreadManager implements IThreadManager {
 			stream.println(s);
 		}
 	}
-
 }
