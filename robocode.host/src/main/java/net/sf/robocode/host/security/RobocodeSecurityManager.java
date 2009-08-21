@@ -86,8 +86,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 		if (robotProxy != null) {
 			if (cg.activeCount() > 5) {
-				final String message = "Preventing " + c.getName()
-						+ " from access to threadgroup " + g.getName() + ".  You may only create 5 threads.";
+				final String message = "Preventing " + c.getName() + " from access to thread group " + g.getName()
+						+ ".  You may only create 5 threads.";
 
 				robotProxy.println(message);
 				robotProxy.drainEnergy();
@@ -96,7 +96,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
-		throw new AccessControlException("Preventing thread " + c.getName() + " with unknown thread group " + g.getName() + " from access");
+		throw new AccessControlException(
+				"Preventing thread " + c.getName() + " with unknown thread group " + g.getName() + " from access");
 	}
 
 	private boolean isSafeThread(Thread c) {

@@ -38,7 +38,7 @@ public class TestThreadAttack extends RobotTestBed {
 			messagedMax = true;
 		}
 
-		if (out.contains("Preventing thread with unknown thread group from access")) {
+		if (out.contains("Preventing thread Thread-") && out.contains("with unknown thread group MyAttack from access")) {
 			messagedUnknown = true;
 		}
 	}
