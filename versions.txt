@@ -1,5 +1,5 @@
 Version 1.7.1.4 Beta
-(21-Aug-2009)
+(26-Aug-2009)
 ---------------
 This version is dedicated for the RoboRumble@Home community where many issues seen with the RoboRumble client have been solved.
 Thank you all for reporting as many known issues as possible, and also help out solving these - especially with the issue seen with the robot movement that had a big impact on the scores and rankings! :-)
