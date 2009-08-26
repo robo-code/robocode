@@ -112,6 +112,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
+ * @author Patrick Cupka (contributor)
+ * @author Julian Kent (contributor)
+ * @author "Positive" (contributor)
  */
 public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
@@ -175,10 +178,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// waiting for next tick
 	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
 	private final AtomicBoolean halt = new AtomicBoolean(false);
+
 	private boolean isExecFinishedAndDisabled;
 	private boolean isEnergyDrained;
 	private boolean isWinner;
 	private boolean inCollision;
+	private boolean isOverDriving;
+
 	private RobotState state;
 	private final Arc2D scanArc;
 	private final BoundingRectangle boundingBox;
@@ -613,7 +619,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void waitSleeping(int millisWait, int microWait) {
+	public void waitSleeping(long millisWait, int microWait) {
 		synchronized (isSleeping) {
 			// It's quite possible for simple robots to
 			// complete their processing before we get here,
@@ -621,7 +627,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			if (!isSleeping()) {
 				try {
-					for (int i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
+					for (long i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
 						isSleeping.wait(0, 999999);
 					}
 					if (!isSleeping()) {
@@ -1257,6 +1263,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		radarHeading = normalAbsoluteAngle(radarHeading);
 	}
 
+	/**
+	 * Updates the robots movement.
+	 *
+	 * This is Nat Pavasants method described here:
+	 *   http://robowiki.net/wiki/User:Positive/Optimal_Velocity#Nat.27s_updateMovement
+	 */
 	private void updateMovement() {
 		double distance = currentCommands.getDistanceRemaining();
 
@@ -1266,19 +1278,41 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		velocity = getNewVelocity(velocity, distance);
 
-		double dx = velocity * sin(bodyHeading);
-		double dy = velocity * cos(bodyHeading);
+		// If we are over-driving our distance and we are now at velocity=0
+		// then we stopped.
+		if (isNear(velocity, 0) && isOverDriving) {
+			currentCommands.setDistanceRemaining(0);
+			distance = 0;
+			isOverDriving = false;
+		}
 
-		x += dx;
-		y += dy;
+		// If we are moving normally and the breaking distance is more
+		// than remaining distance, enabled the overdrive flag.
+		if (Math.signum(distance * velocity) != -1) {
+			if (getDistanceTraveledUntilStop(velocity) > Math.abs(distance)) {
+				isOverDriving = true;
+			} else {
+				isOverDriving = false;
+			}
+		}
 
-		if (dx != 0 || dy != 0) {
+		currentCommands.setDistanceRemaining(distance - velocity);
+
+		if (velocity != 0) {
+			x += velocity * sin(bodyHeading);
+			y += velocity * cos(bodyHeading);
 			updateBoundingBox();
 		}
+	}
 
-		if (distance != 0) {
-			currentCommands.setDistanceRemaining(distance - velocity);
+	private double getDistanceTraveledUntilStop(double velocity) {
+		double distance = 0;
+
+		velocity = Math.abs(velocity);
+		while (velocity > 0) {
+			distance += (velocity = getNewVelocity(velocity, 0));
 		}
+		return distance;
 	}
 
 	/**
@@ -1287,82 +1321,47 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * @param velocity the current velocity
 	 * @param distance the distance to move
 	 * @return the new velocity based on the current velocity and distance to move
+	 * 
+	 * This is Patrick Cupka (aka Voidious), Julian Kent (aka Skilgannon), and Positive's method described here:
+	 *   http://robowiki.net/wiki/User:Voidious/Optimal_Velocity#Hijack_2
 	 */
 	private double getNewVelocity(double velocity, double distance) {
-		// If the distance is negative, then change it to be positive and change the sign of the input velocity and the result
 		if (distance < 0) {
+			// If the distance is negative, then change it to be positive
+			// and change the sign of the input velocity and the result
 			return -getNewVelocity(-velocity, -distance);
 		}
 
-		double newVelocity;
+		final double goalVel;
 
-		// Get the speed, which is always positive (because it is a scalar)
-		final double speed = Math.abs(velocity); 
-
-		// Check if we are decelerating, i.e. if the velocity is negative.
-		// Note that if the speed is too high due to a new max. velocity, we must also decelerate.
-		if (velocity < 0 || speed > currentCommands.getMaxVelocity()) {
-			// If the velocity is negative, we are decelerating
-			newVelocity = speed - Rules.DECELERATION;
-
-			// Check if we are going from deceleration into acceleration
-			if (newVelocity < 0) {
-				// If we have decelerated to velocity = 0, then the remaining time must be used for acceleration
-				double decelTime = speed / Rules.DECELERATION;
-				double accelTime = (1 - decelTime);
-
-				// New velocity (v) = d / t, where time = 1 (i.e. 1 turn). Hence, v = d / 1 => v = d
-				// However, the new velocity must be limited by the max. velocity
-				newVelocity = Math.min(currentCommands.getMaxVelocity(),
-						Math.min(Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * accelTime * accelTime,
-						distance));
-
-				// Note: We change the sign here due to the sign check later when returning the result
-				velocity *= -1;
-			}
+		if (distance == Double.POSITIVE_INFINITY) {
+			goalVel = currentCommands.getMaxVelocity();
 		} else {
-			// Else, we are not decelerating, but might need to start doing so due to the remaining distance
-
-			// Deceleration time (t) is calculated by: v = a * t => t = v / a
-			final double decelTime = speed / Rules.DECELERATION;
-
-			// Deceleration time (d) is calculated by: d = 1/2 a * t^2 + v0 * t + t
-			// Adding the extra 't' (in the end) is special for Robocode, and v0 is the starting velocity = 0
-			final double decelDist = 0.5 * Rules.DECELERATION * decelTime * decelTime + decelTime;
-
-			// Check if we should start decelerating
-			if (distance <= decelDist) {
-				// If the distance < max. deceleration distance, we must decelerate so we hit a distance = 0
-
-				// Calculate time left for deceleration to distance = 0
-				double time = distance / (decelTime + 1); // 1 is added here due to the extra 't' for Robocode
-
-				// New velocity (v) = a * t, i.e. deceleration * time, but not greater than the current speed
-
-				if (time <= 1) {
-					// When there is only one turn left (t <= 1), we set the speed to match the remaining distance
-					newVelocity = Math.max(speed - Rules.DECELERATION, distance);
-				} else {
-					// New velocity (v) = a * t, i.e. deceleration * time
-					newVelocity = time * Rules.DECELERATION;
-
-					if (speed < newVelocity) {
-						// If the speed is less that the new velocity we just calculated, then use the old speed instead
-						newVelocity = speed;
-					} else if (speed - newVelocity > Rules.DECELERATION) {
-						// The deceleration must not exceed the max. deceleration.
-						// Hence, we limit the velocity to the speed minus the max. deceleration.
-						newVelocity = speed - Rules.DECELERATION;
-					}
-				}
-			} else {
-				// Else, we need to accelerate, but only to max. velocity
-				newVelocity = Math.min(speed + Rules.ACCELERATION, currentCommands.getMaxVelocity());
-			}
+			goalVel = Math.min(getMaxVelocity(distance), currentCommands.getMaxVelocity());
 		}
 
-		// Return the new velocity with the correct sign. We have been working with the speed, which is always positive
-		return (velocity < 0) ? -newVelocity : newVelocity;
+		if (velocity >= 0) {
+			return Math.max(velocity - Rules.DECELERATION, Math.min(goalVel, velocity + Rules.ACCELERATION));
+		}
+		// else
+		return Math.max(velocity - Rules.ACCELERATION, Math.min(goalVel, velocity + maxDecel(-velocity)));
+	}
+
+	final static double getMaxVelocity(double distance) {
+		final double decelTime = Math.max(1, Math.ceil(// sum of 0... decelTime, solving for decelTime using quadratic formula
+				(Math.sqrt((4 * 2 / Rules.DECELERATION) * distance + 1) - 1) / 2));
+
+		final double decelDist = (decelTime / 2.0) * (decelTime - 1) // sum of 0..(decelTime-1)
+				* Rules.DECELERATION;
+
+		return ((decelTime - 1) * Rules.DECELERATION) + ((distance - decelDist) / decelTime);
+	}
+
+	private static double maxDecel(double speed) {
+		double decelTime = speed / Rules.DECELERATION;
+		double accelTime = (1 - decelTime);
+
+		return Math.min(1, decelTime) * Rules.DECELERATION + Math.max(0, accelTime) * Rules.ACCELERATION;
 	}
 
 	private void updateGunHeat() {

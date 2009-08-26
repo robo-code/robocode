@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package net.sf.robocode.test.robots;
@@ -14,38 +14,33 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobotTestBed;
+
 import robocode.control.events.TurnEndedEvent;
 
 
 /**
- * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
-public class TestThreadAttack extends RobotTestBed {
-	boolean messagedMax;
-	boolean messagedUnknown;
+public class TestRobotDeathEvents extends RobotTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "tested.robots.ThreadAttack,sample.SittingDuck";
+		return "tested.robots.RobotDeathEvents,sample.Crazy,sample.Target,sample.Target,sample.Target";
+	}
+
+	@Override
+	public int getNumRounds() {
+		return 5;
 	}
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
+
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("You may only create 5 threads")) {
-			messagedMax = true;
-		}
-
-		if (out.contains("Preventing thread Thread-") && out.contains("with unknown thread group MyAttack from access")) {
-			messagedUnknown = true;
-		}
-	}
-
-	@Override
-	protected void runTeardown() {
-		Assert.assertTrue(messagedMax);
-		Assert.assertTrue(messagedUnknown);
+		if (out.contains("enemyCount != getOthers()")) {
+			Assert.fail("Robot is missing RobotDeathEvent");
+		}	
 	}
 }

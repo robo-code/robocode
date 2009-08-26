@@ -15,6 +15,7 @@ package robocode;
 
 
 import static java.lang.Math.toRadians;
+import static java.lang.Math.toDegrees;
 
 
 /**
@@ -151,7 +152,7 @@ public class RateControlRobot extends AdvancedRobot {
 	 * @see #setTurnRate(double)
 	 */
 	public double getTurnRate() {
-		return toRadians(turnRate);
+		return toDegrees(turnRate);
 	}
 	
 	/**
@@ -251,7 +252,7 @@ public class RateControlRobot extends AdvancedRobot {
 	 * @see #setGunRotationRate(double)
 	 */
 	public double getGunRotationRate() {
-		return toRadians(gunRotationRate);
+		return toDegrees(gunRotationRate);
 	}
 	
 	/**
@@ -351,7 +352,7 @@ public class RateControlRobot extends AdvancedRobot {
 	 * @see #setRadarRotationRate(double)
 	 */
 	public double getRadarRotationRate() {
-		return toRadians(radarRotationRate);
+		return toDegrees(radarRotationRate);
 	}
 	
 	/**

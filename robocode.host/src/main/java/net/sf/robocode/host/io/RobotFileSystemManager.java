@@ -20,15 +20,8 @@ package net.sf.robocode.host.io;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.io.FileUtil;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.JarURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -119,7 +112,7 @@ public class RobotFileSystemManager {
 			final String dir = readableRootDirectory;
 
 			return (dir == null) ? null : new File(dir).getCanonicalFile();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return null;
 		}
 	}
@@ -131,7 +124,7 @@ public class RobotFileSystemManager {
 			return (dir == null)
 					? null
 					: new File(writableRootDirectory, robotProxy.getStatics().getShortClassName() + ".data").getCanonicalFile();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return null;
 		}
 	}
@@ -159,8 +152,7 @@ public class RobotFileSystemManager {
 				os = new FileOutputStream(file);
 
 				copyStream(is, os);
-
-			} catch (MalformedURLException ignore) {} catch (IOException ignore) {} finally {
+			} catch (IOException ignore) {} finally {
 				FileUtil.cleanupStream(is);
 				FileUtil.cleanupStream(os);
 			}
@@ -199,7 +191,7 @@ public class RobotFileSystemManager {
 
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return false;
 		}
 
@@ -236,7 +228,7 @@ public class RobotFileSystemManager {
 
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			return false;
 		}
 
@@ -257,8 +249,8 @@ public class RobotFileSystemManager {
 			if (rootFile.startsWith("jar:")) {
 				updateDataFilesFromJar();
 			}
-		} catch (IOException ignore) {
-			ignore.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -310,6 +302,7 @@ public class RobotFileSystemManager {
 
 		while ((len = bis.read(buf)) > 0) {
 			bos.write(buf, 0, len);
-		}	
+		}
+		bos.flush();
 	}
 }

@@ -1,3 +1,26 @@
+Version 1.7.1.4 Beta
+(26-Aug-2009)
+---------------
+This version is dedicated for the RoboRumble@Home community where many issues seen with the RoboRumble client have been solved.
+Thank you all for reporting as many known issues as possible, and also help out solving these - especially with the issue seen with the robot movement that had a big impact on the scores and rankings! :-)
+
+A big thanks goes to Patrick Cupka ("Voidious"), Julian Kent ("Skilgannon"), "Positive" and Nat Pavasant ("Nat") for their combined work with developing and testing the new and improved robot movement regarding acceleration and deceleration rules (Bug [2828072]). :-)
+
+= Bugfixes =
+* Bug [2828072] - Accel/decel rules introduced in 1.7.1.3 causes trouble.
+* Bug [2828479] - Missed onRobotDeath events.
+* Bug [2819387] - Team jar files reported as corrupted.
+* Bug [2809518] - Does not extract .properties files into bot data dir. This fix did not work properly as the file sizes were truncated to 0 bytes.
+* Bug [2828614] - Sometimes too few results for robots are displayed.
+* Bug [2820434] - NullPointerException when setting classpath directory.
+* Bug [2811621] - Invalid entry point in codesize-1.1.jar.
+* Bug [2833271] - IllegalThreadStateException occurring in RoboRumble.
+* Bug [2831201] - Robocode enters infinite loop with the Restart button.
+* The RateControlRobot (Beta) returned rates in radians instead of degrees with the methods: getTurnRate(), getGunRotationRate(), and getRadarRotationRate().
+
+= Changes for RoboRumble =
+* Updated the PARTICIPANTSURL in the roborumble.txt, meleerumble.txt, and teamrumble.txt
+
 Version 1.7.1.3
 (08-Jul-2009)
 ---------------
@@ -6,8 +29,8 @@ Version 1.7.1.3
 * Bug [2809518] - Does not extract .properties files into bot data dir.
 * Bug [2805858] - Access denied javax.swing -DNOSECURITY=true
 * Sometimes the "Show results when battle(s) ends" in the Common Options was disabled when running the RobocodeEngine, even though the setting had been enabled earlier.
-* A NullPointerException occurred when closing the Preferences window, when no sound device is present in the system.
 * Bug [2811621] - Invalid entry point in codesize-1.1.jar.
+* A NullPointerException occurred when closing the Preferences window, when no sound device is present in the system.
 
 = Changes =
 * The default font on the Graphics context when using onPaint(Graphics2D) or getGraphics() has been changed to the "Dialog" font.

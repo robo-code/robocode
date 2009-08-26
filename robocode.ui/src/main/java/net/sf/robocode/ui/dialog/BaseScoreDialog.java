@@ -97,8 +97,6 @@ public abstract class BaseScoreDialog extends JDialog {
 			table.setColumnSelectionAllowed(true);
 			table.setRowSelectionAllowed(true);
 			table.getTableHeader().setReorderingAllowed(false);
-			setResultsData();
-			pack();
 		}
 		return table;
 	}

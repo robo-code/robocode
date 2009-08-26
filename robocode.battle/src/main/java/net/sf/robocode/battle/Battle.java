@@ -146,7 +146,7 @@ public final class Battle extends BaseBattle {
 	// Turn skip related items
 	private boolean parallelOn;
 	static final int DEBUG_TURN_WAIT = 10 * 60 * 1000;
-	private int millisWait;
+	private long millisWait;
 	private int microWait;
 
 	// Objects in the battle
@@ -382,10 +382,10 @@ public final class Battle extends BaseBattle {
 			}
 			final long waitTime = (long) (cpuConstant * parallelConstant);
 
-			millisWait = (int) (waitTime / 1000000);
+			millisWait = waitTime / 1000000;
 			microWait = (int) (waitTime % 1000000);
 		} else {
-			millisWait = (int) (cpuConstant / 1000000);
+			millisWait = cpuConstant / 1000000;
 			microWait = (int) (cpuConstant % 1000000);
 		}
 		if (microWait == 0) {
@@ -485,7 +485,7 @@ public final class Battle extends BaseBattle {
 
 		updateRobots();
 
-		handleDeathRobots();
+		handleDeadRobots();
 
 		if (isAborted() || oneTeamRemaining()) {
 			shutdownTurn();
@@ -664,18 +664,7 @@ public final class Battle extends BaseBattle {
 
 		// Move all bots
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
-
 			robotPeer.performMove(getRobotsAtRandom(), zapEnergy);
-
-			// publish deaths to live robots
-			if (!robotPeer.isDead()) {
-				for (RobotPeer de : getDeathRobotsAtRandom()) {
-					robotPeer.addEvent(new RobotDeathEvent(de.getName()));
-					if (robotPeer.getTeamPeer() == null || robotPeer.getTeamPeer() != de.getTeamPeer()) {
-						robotPeer.getRobotStatistics().scoreSurvival();
-					}
-				}
-			}
 		}
 
 		// Scan after moved all
@@ -684,23 +673,34 @@ public final class Battle extends BaseBattle {
 		}
 	}
 
-	private void handleDeathRobots() {
+	private void handleDeadRobots() {
 
-		// Compute scores for dead robots
-		for (RobotPeer robotPeer : getDeathRobotsAtRandom()) {
-			if (robotPeer.getTeamPeer() == null) {
-				robotPeer.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(robotPeer));
+		for (RobotPeer deadRobot : getDeathRobotsAtRandom()) {
+			// Compute scores for dead robots
+			if (deadRobot.getTeamPeer() == null) {
+				deadRobot.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(deadRobot));
 			} else {
 				boolean teammatesalive = false;
 
 				for (RobotPeer tm : robots) {
-					if (tm.getTeamPeer() == robotPeer.getTeamPeer() && (!tm.isDead())) {
+					if (tm.getTeamPeer() == deadRobot.getTeamPeer() && (!tm.isDead())) {
 						teammatesalive = true;
 						break;
 					}
 				}
 				if (!teammatesalive) {
-					robotPeer.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(robotPeer));
+					deadRobot.getRobotStatistics().scoreRobotDeath(getActiveContestantCount(deadRobot));
+				}
+			}
+
+			// Publish death to live robots
+			for (RobotPeer robotPeer : getRobotsAtRandom()) {
+				if (!robotPeer.isDead()) {
+					robotPeer.addEvent(new RobotDeathEvent(deadRobot.getName()));
+
+					if (robotPeer.getTeamPeer() == null || robotPeer.getTeamPeer() != deadRobot.getTeamPeer()) {
+						robotPeer.getRobotStatistics().scoreSurvival();
+					}
 				}
 			}
 		}

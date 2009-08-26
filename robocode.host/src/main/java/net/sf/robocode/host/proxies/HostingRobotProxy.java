@@ -226,7 +226,13 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected abstract void executeImpl();
 
 	public void run() {
-		robotThreadManager.initAWT();
+		// Only initialize AWT if we are not running in headless mode.
+		// Bugfix [2833271] IllegalThreadStateException with the AWT-Shutdown thread.
+		// Read more about headless mode here:
+		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
+		if (System.getProperty("java.awt.headless", "true").equals("false")) {
+			robotThreadManager.initAWT();
+		}
 
 		peer.setRunning(true);
 

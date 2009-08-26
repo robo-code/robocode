@@ -69,16 +69,16 @@ public class TestPosition extends RobotTestBed {
 			Assert.assertNear(350.7235444, target.getY());
 		}
 
-		if (lastTurn == 2000) {
-			Assert.assertNear(292.8929487, crazy.getX());
-			Assert.assertNear(313.3353355, crazy.getY());
-			Assert.assertNear(370.7450460, target.getX());
-			Assert.assertNear(492.5622427, target.getY());
+		if (lastTurn == 1700) {
+			Assert.assertNear(38.69810137, crazy.getX());
+			Assert.assertNear(214.9945902, crazy.getY());
+			Assert.assertNear(339.9178023, target.getX());
+			Assert.assertNear(455.7698379, target.getY());
 		}
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertThat(lastTurn, is(2076));
+		Assert.assertThat(lastTurn, is(1740));
 	}
 }

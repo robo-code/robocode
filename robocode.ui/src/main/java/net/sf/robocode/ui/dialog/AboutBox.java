@@ -55,13 +55,13 @@ public final class AboutBox extends JDialog {
 	private final static String HTML_TEMPLATE = "<head><style type=\"text/css\">p, td {font-family: sans-serif; font-size: 10px}</style></head>"
 			+ "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT
 			+ "\"><table width=\"600 px\"><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
-			+ "\"></td><td><table width=\"100%\"><tr><td width=\"70%\"><b>Robocode</b><br><br>"
-			+ "&copy;&nbsp;Copyright 2001, 2009<br>Mathew A. Nelson and Robocode contributors</td><td><b>Version: "
+			+ "\"></td><td><table width=\"100%\"><tr><td><b>Robocode</b><br><br>"
+			+ "&copy;&nbsp;Copyright 2001, 2009<br>Mathew A. Nelson and Robocode contributors</td><td align=\"right\"><b>Version: "
 			+ TAG_ROBOCODE_VERSION
-			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">robocode.sourceforge.net</a><br>&nbsp;</td></tr></table><center><br>"
+			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">Robocode Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"http://robowiki.net\">RoboWiki</a><br>&nbsp;</td></tr></table><center>"
 			+ "<b>Original Author</b><br>Designed and programmed by <b><font color=\"green\">Mathew A. Nelson</font></b><br>"
 			+ "Graphics by <b><font color=\"green\">Garett S. Hourihan</font></b><br><br>"
-			+ "<b>Featuring RoboRumble@Home</b><br>Originally designed and programmed by <b><font color=\"green\">Albert Pérez</font></b><br><br>"
+			+ "<b>Featuring the <a href=\"http://robowiki.net/wiki/RoboRumble\">RoboRumble@Home</a> client</b><br>Originally designed and programmed by <b><font color=\"green\">Albert Pérez</font></b><br><br>"
 			+ "<b>Main Contributors:</b><br><b><font color=\"green\">Flemming N. Larsen</font></b> (Robocode administrator, developer, integrator, lots of features),<br>"
 			+ "<b><font color=\"green\">Pavel Savara</font></b> (Robocode administrator, developer, integrator, robot interfaces, battle events, refactorings),<br><br>"
 			+ "<b>Other Contributors:</b><br>"
@@ -81,7 +81,8 @@ public final class AboutBox extends JDialog {
 			+ "<b><font color=\"green\">Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh</font></b> (score % in results/rankings), "
 			+ "<b><font color=\"green\">Jerome Lavigne</font></b> (added \"Smart Battles\" to MeleeRumble), "
 			+ "<b><font color=\"green\">Ruben Moreno Montoliu</font></b> (added list paths with buttons to Developement Options), "
-			+ "<b><font color=\"green\">Joshua Galecki</font></b> (the implementation of the RateControlRobot)<br><br>"
+			+ "<b><font color=\"green\">Joshua Galecki</font></b> (the implementation of the RateControlRobot), "
+			+ "<b><font color=\"green\">Patrick Cupka, Julian Kent, Nat Pavasant and \"Positive\"</font></b> (new robot movement method)<br><br>"
 			+ "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
 			+ "</center></td></tr></table></body>";
 	
