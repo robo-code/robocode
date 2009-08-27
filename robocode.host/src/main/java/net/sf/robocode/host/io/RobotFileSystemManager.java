@@ -275,10 +275,13 @@ public class RobotFileSystemManager {
 			JarEntry jarEntry = (JarEntry) entries.nextElement();
 
 			String filename = jarEntry.getName();
-			
+
 			if (filename.startsWith(dataDir)) {			
 				filename = filename.substring(dataDir.length());
-				
+				if (filename.length() == 0) { // Bugfix [2845608] - FileNotFoundException
+					continue;
+				}
+
 				is = null;
 				os = null;
 				try {

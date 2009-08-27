@@ -1,3 +1,9 @@
+Version 1.7.1.4
+(27-Aug-2009)
+---------------
+= Bugfixes =
+* Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init
+
 Version 1.7.1.4 Beta
 (26-Aug-2009)
 ---------------
