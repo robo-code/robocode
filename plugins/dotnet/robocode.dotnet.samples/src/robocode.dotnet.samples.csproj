@@ -46,6 +46,7 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="YourCsRobot.cs" />
     <Compile Include="MyCsRobot.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -27,13 +27,17 @@ namespace net.sf.robocode.dotnet.host
             this.item = item;
         }
 
-        public Type LoadRobotMainClass()
+        public RobotType LoadRobotMainClass()
         {
             string url = item.getFullUrl().ToString();
             string file = url.Substring("file:/".Length);
-            Assembly assembly = Assembly.LoadFrom(file);
-            Type type = assembly.GetType(item.getFullClassName(), true);
-            return type;
+            if (!File.Exists(file))
+            {
+                return null;
+            }
+
+            Type type=null;
+            return Reflection.CheckInterfaces(type);
         }
 
         public IBasicRobot CreateRobotInstance()
@@ -45,34 +49,5 @@ namespace net.sf.robocode.dotnet.host
         {
             
         }
-
-        private Assembly CreateDomain()
-        {
-            PermissionSet pset = new PermissionSet(PermissionState.None);
-            pset.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, readableDirectory));
-            pset.AddPermission(new FileIOPermission(FileIOPermissionAccess.Write, writableDirectory));
-            pset.AddPermission(new FileIOPermission(FileIOPermissionAccess.Append, writableDirectory));
-
-            AppDomainSetup ads = new AppDomainSetup();
-            ads.ApplicationBase = readableDirectory;
-
-            Evidence hostEvidence = new Evidence();
-            hostEvidence.AddHost(new Zone(SecurityZone.Untrusted));
-            hostEvidence.AddHost(new Url(item.getReadableDirectory()));
-
-            AppDomain sandbox = AppDomain.CreateDomain(
-                "Sandbox",
-                hostEvidence,
-                ads,
-                pset,
-                Reflection.GetStrongName(typeof(Robot).Assembly),
-                Reflection.GetStrongName(typeof(RobotClassLoader).Assembly)
-                );
-
-            string assemblyFile = Path.GetFullPath(item.getFullUrl().toURI().ToString().Substring("file:/".Length));
-            return sandbox.Load(assemblyFile);
-        }
-
-
     }
 }

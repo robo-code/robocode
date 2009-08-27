@@ -82,12 +82,15 @@
     <Compile Include="host\RobotClassLoader.cs" />
     <Compile Include="host\RobotStatics.cs" />
     <Compile Include="host\security\RobotThreadManager.cs" />
+    <Compile Include="host\seed\AppDomainSeed.cs" />
+    <Compile Include="host\seed\AppDomainShell.cs" />
     <Compile Include="peer\BulletCommand.cs" />
     <Compile Include="peer\BulletStatus.cs" />
     <Compile Include="peer\DebugProperty.cs" />
     <Compile Include="peer\ExecCommands.cs" />
     <Compile Include="peer\ExecResults.cs" />
     <Compile Include="peer\TeamMessage.cs" />
+    <Compile Include="repository\RobotType.cs" />
     <Compile Include="repository\root\DllRootHelper.cs" />
     <Compile Include="utils\Reflection.cs" />
   </ItemGroup>

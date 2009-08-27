@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
-using System.Text;
 using net.sf.robocode.repository;
 using robocode;
 using robocode.robotinterfaces;
@@ -57,7 +55,7 @@ namespace net.sf.robocode.dotnet.utils
             if (robotClass == null || robotClass.IsAbstract)
             {
                 // this class is not robot
-                return RobotType.INVALID;
+                return RobotType.Invalid;
             }
             bool isJuniorRobot = false;
             bool isStandardRobot = false;
@@ -138,7 +136,7 @@ namespace net.sf.robocode.dotnet.utils
             }
             if (!isAdvancedRobot && !isStandardRobot &&!isJuniorRobot)
             {
-                return RobotType.INVALID;
+                return RobotType.Invalid;
             }
 
             return new RobotType(isJuniorRobot, isStandardRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot,
