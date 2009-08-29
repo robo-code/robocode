@@ -71,12 +71,12 @@ namespace net.sf.robocode.dotnet.host.seed
         {
             domain.SetData("loadRobot", typeFullName);
             domain.DoCallBack(AppDomainSeed.GetRobotType);
-            RobotType type = (RobotType)domain.GetData("robotLoaded");
-            if (type==null)
+            var type = (int) domain.GetData("robotLoaded");
+            if (type == 0)
             {
                 return RobotType.Invalid;
             }
-            return type;
+            return new RobotType(type);
         }
 
 

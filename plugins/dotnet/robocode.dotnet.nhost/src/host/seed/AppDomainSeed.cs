@@ -65,7 +65,7 @@ namespace net.sf.robocode.dotnet.host.seed
             Type robotType = assembly.GetType(robotFullName, false);
             if (robotType != null)
             {
-                domain.SetData("robotLoaded", Reflection.CheckInterfaces(robotType));
+                domain.SetData("robotLoaded", Reflection.CheckInterfaces(robotType).getCode());
             }
         }
 

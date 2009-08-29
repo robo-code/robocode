@@ -5,6 +5,7 @@ using System.Text;
 using net.sf.jni4net;
 using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.dotnet.repository.root;
+using net.sf.robocode.repository;
 using NUnit.Framework;
 
 namespace net.sf.robocode.dotnet
@@ -37,7 +38,8 @@ namespace net.sf.robocode.dotnet
         {
             Directory.SetCurrentDirectory(@"D:\Sf\RobocodeN2\plugins\dotnet\robocode.dotnet.tests\");
             AppDomainShell shell=new AppDomainShell(@"D:/Sf/RobocodeN2/plugins/dotnet/robocode.dotnet.samples/target/MyCsRobot.dll");
-            shell.GetRobotType("samplecs.MyCsRobot");
+            RobotType type = shell.GetRobotType("samplecs.MyCsRobot");
+            Assert.AreEqual(RobotType.STANDARD, type);
         }
     
     }
