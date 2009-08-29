@@ -6,7 +6,8 @@ using robocode;
 
 namespace net.sf.robocode.dotnet.peer
 {
-    internal class ExecResults
+    [Serializable]
+    public class ExecResults
     {
         private const long serialVersionUID = 1L;
         private ExecCommands commands;

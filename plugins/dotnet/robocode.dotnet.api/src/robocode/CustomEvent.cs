@@ -27,6 +27,7 @@ namespace robocode
     /// @author Mathew A. Nelson (original)
     /// @see #getCondition()
     /// </summary>
+    [Serializable]
     public class CustomEvent : Event
     {
         private const int DEFAULT_PRIORITY = 80;

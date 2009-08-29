@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Updated Javadocs
  *******************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using java.nio;
@@ -26,6 +27,7 @@ namespace robocode
     ///
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [Serializable]
     public sealed class BulletHitEvent : Event
     {
         private const int DEFAULT_PRIORITY = 50;

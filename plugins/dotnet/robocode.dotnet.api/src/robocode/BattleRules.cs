@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Javadocs
  *******************************************************************************/
+using System;
 using net.sf.robocode.security;
 
 namespace robocode
@@ -27,6 +28,7 @@ namespace robocode
     /// @author Pavel Savara (original)
     /// @since 1.6.2
     /// </summary>
+    [Serializable]
     public sealed class BattleRules
     {
         private readonly int battlefieldWidth;

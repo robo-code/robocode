@@ -9,6 +9,7 @@
  *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
+using System;
 using java.nio;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
@@ -23,6 +24,7 @@ namespace robocode
     /// @author Flemming N. Larsen (original)
     /// @since 1.5
     /// </summary>
+    [Serializable]
     public sealed class RobotStatus
     {
         private readonly double energy;

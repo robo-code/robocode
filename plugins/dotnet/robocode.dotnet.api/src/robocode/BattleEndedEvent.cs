@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Javadocs
  *******************************************************************************/
+using System;
 using System.Drawing;
 using java.nio;
 using net.sf.robocode.peer;
@@ -30,6 +31,7 @@ namespace robocode
     /// @see Robot#onBattleEnded(BattleEndedEvent)
     /// @since 1.6.1
     /// </summary>
+    [Serializable]
     public sealed class BattleEndedEvent : Event
     {
         private static readonly int DEFAULT_PRIORITY = 100; // System evnt -> cannot be changed!;

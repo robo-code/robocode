@@ -6,6 +6,7 @@ using robocode;
 
 namespace net.sf.robocode.dotnet.peer
 {
+    [Serializable]
     public class ExecCommands
     {
         public const int defaultBodyColor = 0; //0xFF29298C;
@@ -40,6 +41,9 @@ namespace net.sf.robocode.dotnet.peer
         private List<BulletCommand> bullets = new List<BulletCommand>();
         private List<TeamMessage> teamMessages = new List<TeamMessage>();
         private List<DebugProperty> debugProperties = new List<DebugProperty>();
+        
+        //TODO
+        [NonSerialized]
         private Object graphicsCalls;
 
         public ExecCommands()

@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Updated Javadocs
  *******************************************************************************/
+using System;
 using java.nio;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
@@ -30,6 +31,7 @@ namespace robocode
     /// @see BulletMissedEvent
     /// @see BulletHitBulletEvent
     /// </summary>
+    [Serializable]
     public class Bullet
     {
         private readonly double headingRadians;

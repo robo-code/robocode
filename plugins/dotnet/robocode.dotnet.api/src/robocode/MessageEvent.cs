@@ -25,11 +25,13 @@ namespace robocode
     ///
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [Serializable]
     public sealed class MessageEvent : Event
     {
         private const int DEFAULT_PRIORITY = 75;
 
         private readonly string sender;
+        [NonSerialized] //TODO
         private readonly object message;
 
         /// <summary>

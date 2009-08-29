@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Javadocs
  *******************************************************************************/
+using System;
 using System.Drawing;
 using java.nio;
 using net.sf.robocode.peer;
@@ -33,6 +34,7 @@ namespace robocode
     /// @see MouseWheelMovedEvent
     /// @since 1.6.1
     /// </summary>
+    [Serializable]
     public sealed class MouseEnteredEvent : MouseEvent
     {
         private const int DEFAULT_PRIORITY = 98;

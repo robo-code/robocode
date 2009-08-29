@@ -11,6 +11,8 @@
  *     Flemming N. Larsen
  *     - Javadocs
  *******************************************************************************/
+using System;
+
 namespace robocode
 {
     /// <summary>
@@ -19,6 +21,7 @@ namespace robocode
     /// @author Pavel Savara (original)
     /// @since 1.6.1
     /// </summary>
+    [Serializable]
     public abstract class KeyEvent : Event
     {
         protected readonly char keyChar;

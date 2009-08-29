@@ -26,6 +26,7 @@ namespace robocode
     ///
     /// @author Flemming N. Larsen (original)
     /// </summary>
+    [Serializable]
     public sealed class PaintEvent : Event
     {
         private const int DEFAULT_PRIORITY = 5;

@@ -23,6 +23,7 @@ namespace robocode
     /// @author Flemming N. Larsen (original)
     /// @since 1.5
     /// </summary>
+    [Serializable]
     public sealed class StatusEvent : Event
     {
         private const int DEFAULT_PRIORITY = 99;

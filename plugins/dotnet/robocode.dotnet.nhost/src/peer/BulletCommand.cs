@@ -4,6 +4,7 @@ using net.sf.robocode.serialization;
 
 namespace net.sf.robocode.dotnet.peer
 {
+    [Serializable]
     public class BulletCommand
     {
         public BulletCommand(double power, bool fireAssistValid, double fireAssistAngle, int bulletId)

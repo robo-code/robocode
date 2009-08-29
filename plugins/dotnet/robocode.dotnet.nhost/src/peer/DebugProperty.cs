@@ -4,6 +4,7 @@ using net.sf.robocode.serialization;
 
 namespace net.sf.robocode.dotnet.peer
 {
+    [Serializable]
     public class DebugProperty
     {
         public DebugProperty()

@@ -27,6 +27,7 @@ namespace robocode
     ///
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [Serializable]
     public sealed class HitRobotEvent : Event
     {
         private const int DEFAULT_PRIORITY = 40;

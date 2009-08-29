@@ -26,6 +26,7 @@ namespace robocode
     /// @see Robot#onBattleEnded(BattleEndedEvent)
     /// @since 1.6.1
     /// </summary>
+    [Serializable]
     public class BattleResults : IComparable<BattleResults>
     {
         protected string teamLeaderName;

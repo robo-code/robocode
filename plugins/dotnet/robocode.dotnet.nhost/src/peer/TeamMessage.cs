@@ -4,6 +4,7 @@ using System.Text;
 
 namespace net.sf.robocode.dotnet.peer
 {
+    [Serializable]
     public class TeamMessage
     {
     }

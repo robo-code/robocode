@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Javadocs
  *******************************************************************************/
+using System;
 using System.Drawing;
 using java.nio;
 using net.sf.robocode.peer;
@@ -28,6 +29,7 @@ namespace robocode
     /// @see KeyReleasedEvent
     /// @since 1.6.1
     /// </summary>
+    [Serializable]
     public sealed class KeyTypedEvent : KeyEvent
     {
         private const int DEFAULT_PRIORITY = 98;

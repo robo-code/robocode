@@ -11,6 +11,7 @@
  *     Flemming N. Larsen
  *     - Updated Javadocs
  *******************************************************************************/
+using System;
 using System.Drawing;
 using java.nio;
 using net.sf.robocode.peer;
@@ -25,6 +26,7 @@ namespace robocode
     ///
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [Serializable]
     public sealed class DeathEvent : Event
     {
         private const int DEFAULT_PRIORITY = -1; // System evnt -> cannot be changed!;

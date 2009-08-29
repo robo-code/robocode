@@ -35,6 +35,7 @@ namespace robocode
     /// @author Mathew A. Nelson (original)
     /// @author Flemming N. Larsen (contributor)
     /// </summary>
+    [Serializable]
     public abstract class Event : IComparable<Event>
     {
         private const int DEFAULT_PRIORITY = 80;
