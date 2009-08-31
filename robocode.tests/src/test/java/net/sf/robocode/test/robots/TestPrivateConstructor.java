@@ -49,5 +49,10 @@ public class TestPrivateConstructor extends RobotTestBed {
 	protected void runTeardown() {
 		Assert.assertTrue(messaged);
 	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 1; // Security error must be reported as an error
+	}
 }
 

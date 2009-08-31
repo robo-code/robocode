@@ -34,6 +34,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,7 +54,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected final IHostManager hostManager;
 	private IThreadManager threadManager;
 	protected IBasicRobot robot;
-	private final Set<String> securityViolations = new HashSet<String>();
+	private final Set<String> securityViolations = Collections.synchronizedSet(new HashSet<String>());
 
 	HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
@@ -217,14 +218,13 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			println("SYSTEM: " + e);
 			println(e);
 			robot = null;
-			logMessage(e);
+			logError(e);
 			return false;
 		} finally {
 			threadManager.setLoadingRobot(null);
 		}
 		return true;
 	}
-
 
 	protected abstract void executeImpl();
 
@@ -312,10 +312,12 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		// Prevent unit tests of failing if multiple threads are calling this method in the same time.
 		// We only want the a specific type of security violation logged once so we only get one error
 		// per security violation.
-		if (securityViolations.contains(message)) {
-			return;
+		synchronized (securityViolations) {
+			if (securityViolations.contains(message)) {
+				return;
+			}
+			securityViolations.add(message);
 		}
-		securityViolations.add(message);
 
 		logError(message);
 		println("SYSTEM: " + message);
