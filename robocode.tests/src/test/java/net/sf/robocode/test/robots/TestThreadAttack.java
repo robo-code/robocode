@@ -48,4 +48,9 @@ public class TestThreadAttack extends RobotTestBed {
 		Assert.assertTrue(messagedMax);
 		Assert.assertTrue(messagedUnknown);
 	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 1; // Security error must be reported as an error
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -87,10 +87,9 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (robotProxy != null) {
 			if (cg.activeCount() > 5) {
 				final String message = "Preventing " + c.getName() + " from access to thread group " + g.getName()
-						+ ".  You may only create 5 threads.";
+						+ ". You may only create 5 threads.";
 
-				robotProxy.println(message);
-				robotProxy.drainEnergy();
+				robotProxy.punishSecurityViolation(message);
 				throw new AccessControlException(message);
 			}
 			return;

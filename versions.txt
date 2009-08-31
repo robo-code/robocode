@@ -1,8 +1,12 @@
 Version 1.7.1.4
-(27-Aug-2009)
+(31-Aug-2009)
 ---------------
 = Bugfixes =
 * Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init
+* Bug [2845612] - Can't load Katana 1.0 or DrussGT 1.3.1wilo
+
+= Changes =
+* The previous 1.7.x.x versions have been very strict so that robots that could not be loaded, started, skipped too many turns etc. would be disallowed to participate in battles. With the bugfix for bug [2845612] above this policy has been changed so robots are only "banned" if the cause a security violation. In addition, ALL security violations are always written out in both the main console and robot's console.
 
 Version 1.7.1.4 Beta
 (26-Aug-2009)

@@ -44,4 +44,9 @@ public class TestFileOutputStreamAttack extends RobotTestBed {
 	protected void runTeardown() {
 		Assert.assertTrue("FileOutputStream is not allowed", messagedAccessDenied);
 	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 1; // Security error must be reported as an error
+	}
 }
