@@ -12,9 +12,11 @@
 
 package robocode.robotinterfaces;
 
+
 import robocode.HitObjectEvent;
 import robocode.HitObstacleEvent;
 import robocode.ScannedObjectEvent;
+
 
 /**
  * An event interface for receiving object events with an

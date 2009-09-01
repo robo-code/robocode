@@ -22,7 +22,7 @@ import robocode.*;
 public class Module {
 	static {
 		RbSerializer.register(RobotStatus.class, RbSerializer.RobotStatus_TYPE);
-//		RbSerializer.register(BattleResults.class, RbSerializer.BattleResults_TYPE);
+		// RbSerializer.register(BattleResults.class, RbSerializer.BattleResults_TYPE);
 		RbSerializer.register(Bullet.class, RbSerializer.Bullet_TYPE);
 
 		// events

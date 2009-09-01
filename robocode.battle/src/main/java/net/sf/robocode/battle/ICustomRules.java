@@ -8,9 +8,10 @@
  * Contributors:
  * 		Joshua Galecki
  * 		-Initial implementation
-  *******************************************************************************/
+ *******************************************************************************/
 
 package net.sf.robocode.battle;
+
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import robocode.IExtensionApi;
 import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 
+
 /**
  * This interface will provide winning and losing conditions, scoring, and other rules
  * 
@@ -26,7 +28,6 @@ import net.sf.robocode.battle.peer.RobotPeer;
  *
  */
 public interface ICustomRules {
-
 
 	void startBattle(Battle battle);
 	

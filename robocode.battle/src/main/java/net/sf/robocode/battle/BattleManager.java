@@ -67,7 +67,6 @@ import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.Event;
-import robocode.IExtensionApi;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
@@ -158,10 +157,7 @@ public class BattleManager implements IBattleManager {
 	}
 
 	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording, ICustomRules customRules) {
-
-		if (battle != null && battle.isRunning()) {
-			battle.stop(true);
-		}
+		stop(true);
 
 		logMessage("Preparing battle...");
 
@@ -223,22 +219,23 @@ public class BattleManager implements IBattleManager {
 	 * @return the custom rules to be used for the game
 	 */
 	private ICustomRules getCustomRules() {
-		try
-		{
-			//TODO: For convenience, I've hardcoded the extension package strings here.
-			//This should be cleaned later.
+		try {
+			// TODO: For convenience, I've hardcoded the extension package strings here.
+			// This should be cleaned later.
 			String extensionPackagename = "CTF.CaptureTheFlagRules";
-//			extensionPackagename = battleProperties.getExtensionPackage();
+			// extensionPackagename = battleProperties.getExtensionPackage();
 			String extensionFilename = "ex.jar";
-//			extensionFilename = battleProperties.getExtensionFilename();
+			// extensionFilename = battleProperties.getExtensionFilename();
 			
 			File jarFile = new File(FileUtil.getExtensionsDir(), extensionFilename);
-			URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[] { jarFile.toURI().toURL() }, getClass().getClassLoader());
+			URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[] { jarFile.toURI().toURL() },
+					getClass().getClassLoader());
 			Class<?> unknownClass = Class.forName(extensionPackagename, true, urlClassLoader);
 			Class<?> loadingCustomRules = unknownClass.asSubclass(ICustomRules.class);
-			//Told to avoid Class.newInstance() -- http://stackoverflow.com/questions/194698/how-to-load-a-jar-file-at-runtime.
+			// Told to avoid Class.newInstance() -- http://stackoverflow.com/questions/194698/how-to-load-a-jar-file-at-runtime.
 			Constructor<?> ctor = loadingCustomRules.getConstructor();
-			return (ICustomRules) ctor.newInstance((Object[])null);
+
+			return (ICustomRules) ctor.newInstance((Object[]) null);
 			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -258,7 +255,7 @@ public class BattleManager implements IBattleManager {
 			e.printStackTrace();
 		}
 		
-		//if there are any exceptions, return normal rules
+		// if there are any exceptions, return normal rules
 		return new ClassicRules();
 	}
 

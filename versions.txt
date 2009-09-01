@@ -1,3 +1,39 @@
+Version 2.0.0 Alpha
+---------------
+
+Version 1.7.1.4
+(31-Aug-2009)
+---------------
+= Bugfixes =
+* Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init
+* Bug [2845612] - Can't load Katana 1.0 or DrussGT 1.3.1wilo
+
+= Changes =
+* The previous 1.7.x.x versions have been very strict so that robots that could not be loaded, started, skipped too many turns etc. would be disallowed to participate in battles. With the bugfix for bug [2845612] above this policy has been changed so robots are only "banned" if the cause a security violation or they could not be loaded or started (meaning that they are not able to run). In addition, ALL security violations are always written out in both the main console and robot's console. A message will be written out in the main console like "xxx has caused a security violation. This robot has been banned and will not be allowed to participate in battles".
+
+Version 1.7.1.4 Beta
+(26-Aug-2009)
+---------------
+This version is dedicated for the RoboRumble@Home community where many issues seen with the RoboRumble client have been solved.
+Thank you all for reporting as many known issues as possible, and also help out solving these - especially with the issue seen with the robot movement that had a big impact on the scores and rankings! :-)
+
+A big thanks goes to Patrick Cupka ("Voidious"), Julian Kent ("Skilgannon"), "Positive" and Nat Pavasant ("Nat") for their combined work with developing and testing the new and improved robot movement regarding acceleration and deceleration rules (Bug [2828072]). :-)
+
+= Bugfixes =
+* Bug [2828072] - Accel/decel rules introduced in 1.7.1.3 causes trouble.
+* Bug [2828479] - Missed onRobotDeath events.
+* Bug [2819387] - Team jar files reported as corrupted.
+* Bug [2809518] - Does not extract .properties files into bot data dir. This fix did not work properly as the file sizes were truncated to 0 bytes.
+* Bug [2828614] - Sometimes too few results for robots are displayed.
+* Bug [2820434] - NullPointerException when setting classpath directory.
+* Bug [2811621] - Invalid entry point in codesize-1.1.jar.
+* Bug [2833271] - IllegalThreadStateException occurring in RoboRumble.
+* Bug [2831201] - Robocode enters infinite loop with the Restart button.
+* The RateControlRobot (Beta) returned rates in radians instead of degrees with the methods: getTurnRate(), getGunRotationRate(), and getRadarRotationRate().
+
+= Changes for RoboRumble =
+* Updated the PARTICIPANTSURL in the roborumble.txt, meleerumble.txt, and teamrumble.txt
+
 Version 1.7.1.3
 (08-Jul-2009)
 ---------------

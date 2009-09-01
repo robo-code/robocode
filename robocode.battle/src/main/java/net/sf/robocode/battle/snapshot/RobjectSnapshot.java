@@ -8,15 +8,17 @@
  * Contributors:
  * 		Joshua Galecki
  * 		-Initial implementation
-  *******************************************************************************/
+ *******************************************************************************/
 
 package net.sf.robocode.battle.snapshot;
+
 
 import java.awt.geom.Rectangle2D;
 
 import net.sf.robocode.battle.peer.RobjectPeer;
 
 import robocode.control.snapshot.IRobjectSnapshot;
+
 
 /**
  * This is class transmits information about a robject

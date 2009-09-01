@@ -6,17 +6,18 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- * 		Joshua Galecki
- * 		-Initial implementation
+ *     Flemming N. Larsen
+ *     - Initial implementation
  *******************************************************************************/
-
-package net.sf.robocode.battle;
+package net.sf.robocode.peer;
 
 
 /**
- * Classic rules have no extensions. Old school Robocode.
- * 
- * @author Joshua Galecki (original)
- *
+ * @author Flemming N. Larsen (original)
  */
-public class ClassicRules extends CustomRules {}
+public enum BadBehavior {
+	CANNOT_START,
+	SKIPPED_TOO_MANY_TURNS,
+	UNSTOPPABLE,
+	SECURITY_VIOLATION
+}

@@ -203,9 +203,9 @@ public class BattlesRunner {
 					final String botTwo = results[j].getRobot().getNameAndVersion();
 					final int pointsOne = (int) results[i].getCombinedScore();
 					final int pointsTwo = (int) results[j].getCombinedScore();
-					//TODO: hack until I know what I'm doing with scoring
-					final int bulletsOne = 0;//results[i].getBulletDamage();
-					final int bulletsTwo = 0;//results[j].getBulletDamage();
+					// TODO: hack until I know what I'm doing with scoring
+					final int bulletsOne = 0; // results[i].getBulletDamage();
+					final int bulletsTwo = 0; // results[j].getBulletDamage();
 					final int survivalOne = results[i].getFirsts();
 					final int survivalTwo = results[j].getFirsts();
 
@@ -238,8 +238,8 @@ public class BattlesRunner {
 			}
 
 			System.out.println(
-					"RESULT = " + nameAndVersion + " wins " + results[0].getCombinedScore() +
-					" to " + results[1].getCombinedScore());
+					"RESULT = " + nameAndVersion + " wins " + results[0].getCombinedScore() + " to "
+					+ results[1].getCombinedScore());
 		}
 	}
 

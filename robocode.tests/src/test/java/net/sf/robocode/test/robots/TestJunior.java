@@ -51,7 +51,6 @@ public class TestJunior extends RobotTestBed {
 	}
 
 	private void test(String out, String in) {
-		//TODO: failing test, investigate
-		//Assert.assertTrue(in, out.contains(in));
+		Assert.assertTrue(in, out.contains(in));
 	}
 }

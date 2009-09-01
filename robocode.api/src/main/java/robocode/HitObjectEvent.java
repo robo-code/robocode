@@ -8,9 +8,10 @@
  * Contributors:
  * 		Joshua Galecki
  * 		-Initial implementation
-  *******************************************************************************/
+ *******************************************************************************/
 
 package robocode;
+
 
 import java.awt.Graphics2D;
 import java.nio.ByteBuffer;
@@ -20,6 +21,7 @@ import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IObjectEvents;
+
 
 /**
  * This event is fired when the robot hits an object that does not
@@ -39,7 +41,6 @@ public final class HitObjectEvent extends Event {
 		this.type = type;
 	}
 
-
 	/**
 	 * Returns a string with the object type.
 	 * @return a string with the object type.
@@ -54,6 +55,7 @@ public final class HitObjectEvent extends Event {
 	@Override
 	public final int compareTo(Event event) {
 		final int res = super.compareTo(event);
+
 		return res;
 	}
 
@@ -70,18 +72,14 @@ public final class HitObjectEvent extends Event {
 	 */
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
-		try
-		{
+		try {
 			IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();
 	
 			if (listener != null) {
 				listener.onHitObject(this);
 			}
 
-		}
-		catch (ClassCastException ex)
-		{
-			//The robot does not use objects, do nothing;
+		} catch (ClassCastException ex) {// The robot does not use objects, do nothing;
 		}
 	}
 
@@ -101,7 +99,7 @@ public final class HitObjectEvent extends Event {
 		public int sizeOf(RbSerializer serializer, Object object) {
 			HitRobotEvent obj = (HitRobotEvent) object;
 
-			return HitObjectEvent.SIZEOF_TYPEINFO ;
+			return HitObjectEvent.SIZEOF_TYPEINFO;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {

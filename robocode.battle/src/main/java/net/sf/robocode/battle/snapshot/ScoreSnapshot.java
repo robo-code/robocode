@@ -98,27 +98,18 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	public ScoreSnapshot(String contestantName, IScoreSnapshot score1, IScoreSnapshot score2) {
 		this.name = contestantName;
 		combinedScore = score1.getCombinedScore() + score2.getCombinedScore();
-		for (int scoreIndex = 0; scoreIndex < score1.getTotalScores().size(); scoreIndex++)
-		{
-			if (totalScores.size() <= scoreIndex)
-			{
-				totalScores.add(score1.getTotalScores().get(scoreIndex) + 
-						score2.getTotalScores().get(scoreIndex));
+		for (int scoreIndex = 0; scoreIndex < score1.getTotalScores().size(); scoreIndex++) {
+			if (totalScores.size() <= scoreIndex) {
+				totalScores.add(score1.getTotalScores().get(scoreIndex) + score2.getTotalScores().get(scoreIndex));
+			} else {
+				totalScores.set(scoreIndex,
+						score1.getTotalScores().get(scoreIndex) + score2.getTotalScores().get(scoreIndex));
 			}
-			else
-			{
-				totalScores.set(scoreIndex, score1.getTotalScores().get(scoreIndex) + 
-					score2.getTotalScores().get(scoreIndex));
-			}
-			if (currentScores.size() <= scoreIndex)
-			{
-				currentScores.add(score1.getCurrentScores().get(scoreIndex) + 
-					score2.getCurrentScores().get(scoreIndex));
-			}
-			else
-			{
-				currentScores.set(scoreIndex, score1.getCurrentScores().get(scoreIndex) + 
-					score2.getCurrentScores().get(scoreIndex));
+			if (currentScores.size() <= scoreIndex) {
+				currentScores.add(score1.getCurrentScores().get(scoreIndex) + score2.getCurrentScores().get(scoreIndex));
+			} else {
+				currentScores.set(scoreIndex,
+						score1.getCurrentScores().get(scoreIndex) + score2.getCurrentScores().get(scoreIndex));
 			}
 		}
 		totalFirsts = score1.getTotalFirsts() + score2.getTotalFirsts();
@@ -216,16 +207,14 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 		writer.startElement("score"); {
 			writer.writeAttribute("name", name);
 			writer.writeAttribute("totalScore", combinedScore);
-			for (int scoreIndex = 0; scoreIndex < totalScores.size(); scoreIndex++)
-			{
+			for (int scoreIndex = 0; scoreIndex < totalScores.size(); scoreIndex++) {
 				writer.writeAttribute(scoreNames.get(scoreIndex), totalScores.get(scoreIndex));
 			}
 			writer.writeAttribute("totalFirsts", totalFirsts);
 			writer.writeAttribute("totalSeconds", totalSeconds);
 			writer.writeAttribute("totalThirds", totalThirds);
 			writer.writeAttribute("currentScore", currentCombinedScore);
-			for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++)
-			{
+			for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++) {
 				writer.writeAttribute(scoreNames.get(scoreIndex), currentScores.get(scoreIndex));
 			}
 			writer.writeAttribute("ver", serialVersionUID);
@@ -252,9 +241,9 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 						snapshot.combinedScore = Double.parseDouble(value);
 					}
 				});
-				for (int scoreIndex = 0; scoreIndex < totalScores.size(); scoreIndex++)
-				{
+				for (int scoreIndex = 0; scoreIndex < totalScores.size(); scoreIndex++) {
 					final int tempScoreIndex = scoreIndex;
+
 					reader.expect(scoreNames.get(scoreIndex), new XmlReader.Attribute() {
 						public void read(String value) {
 							snapshot.totalScores.set(tempScoreIndex, Double.parseDouble(value));
@@ -282,9 +271,9 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 					}
 				});
 
-				for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++)
-				{
+				for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++) {
 					final int tempScoreIndex = scoreIndex;
+
 					reader.expect(scoreNames.get(scoreIndex), new XmlReader.Attribute() {
 						public void read(String value) {
 							snapshot.currentScores.set(tempScoreIndex, Double.parseDouble(value));

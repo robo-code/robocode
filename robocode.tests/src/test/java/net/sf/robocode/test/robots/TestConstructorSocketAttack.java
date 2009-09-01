@@ -53,6 +53,6 @@ public class TestConstructorSocketAttack extends RobotTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 1; // Security error must be reported as an error
+		return 2; // Security error must be reported as an error
 	}
 }

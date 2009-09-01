@@ -175,9 +175,8 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		}
 
 		public BattleResultsWrapper(BattleResults results) {
-			super(results.getTeamName(), results.getRank(), results.getCombinedScore(), 
-					results.getScores(), results.getScoreNames(), results.getFirsts(), 
-					results.getSeconds(), results.getThirds());
+			super(results.getTeamName(), results.getRank(), results.getCombinedScore(), results.getScores(),
+					results.getScoreNames(), results.getFirsts(), results.getSeconds(), results.getThirds());
 		}
 
 		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
@@ -185,8 +184,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 				writer.writeAttribute("teamLeaderName", teamName);
 				writer.writeAttribute("rank", rank);
 				writer.writeAttribute("score", combinedScore);
-				for (int i = 0; i < scores.size(); i++)
-				{
+				for (int i = 0; i < scores.size(); i++) {
 					writer.writeAttribute(scoreNames.get(i), scores.get(i));
 				}
 				writer.writeAttribute("firsts", firsts);

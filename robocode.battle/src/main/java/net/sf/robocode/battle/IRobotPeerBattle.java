@@ -27,8 +27,8 @@ import net.sf.robocode.battle.peer.TeamPeer;
 public interface IRobotPeerBattle extends ContestantPeer {
 	void setSGPaintEnabled(boolean enabled);
 
-	//TODO: remove, hopefully
-	//RobotStatistics getRobotStatistics();
+	// TODO: remove, hopefully
+	// RobotStatistics getRobotStatistics();
 
 	TeamPeer getTeamPeer();
 
@@ -58,7 +58,7 @@ public interface IRobotPeerBattle extends ContestantPeer {
 
 	void waitWakeup();
 
-	void waitSleeping(int millisWait, int microWait);
+	void waitSleeping(long millisWait, int microWait);
 
 	void waitForStop();
 

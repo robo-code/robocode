@@ -8,9 +8,10 @@
  * Contributors:
  * 		Joshua Galecki
  * 		-Initial implementation
-  *******************************************************************************/
+ *******************************************************************************/
 
 package robocode;
+
 
 import java.awt.Graphics2D;
 import java.nio.ByteBuffer;
@@ -20,6 +21,7 @@ import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IObjectEvents;
+
 
 /**
  * This event is fired off when your robot hits an object that
@@ -45,6 +47,7 @@ public final class HitObstacleEvent extends Event {
 	public String getObstacleType() {
 		return obstacleType;
 	}
+
 	/**
 	 * Returns the bearing to the object you hit, relative to your robot's
 	 * heading, in degrees (-180 <= getBearing() < 180)
@@ -71,6 +74,7 @@ public final class HitObstacleEvent extends Event {
 	@Override
 	public final int compareTo(Event event) {
 		final int res = super.compareTo(event);
+
 		return res;
 	}
 
@@ -87,18 +91,14 @@ public final class HitObstacleEvent extends Event {
 	 */
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
-		try
-		{
+		try {
 			IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();
 	
 			if (listener != null) {
 				listener.onHitObstacle(this);
 			}
 
-		}
-		catch (ClassCastException ex)
-		{
-			//The robot does not use objects, do nothing;
+		} catch (ClassCastException ex) {// The robot does not use objects, do nothing;
 		}
 	}
 
@@ -118,7 +118,7 @@ public final class HitObstacleEvent extends Event {
 		public int sizeOf(RbSerializer serializer, Object object) {
 			HitRobotEvent obj = (HitRobotEvent) object;
 
-			return HitObstacleEvent.SIZEOF_TYPEINFO ;
+			return HitObstacleEvent.SIZEOF_TYPEINFO;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {

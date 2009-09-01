@@ -45,10 +45,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.geom.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import static java.lang.Math.*;
-
-import java.util.ArrayList;
 import java.util.Random;
+import static java.lang.Math.*;
 
 
 /**
@@ -457,8 +455,7 @@ public class BattleView extends Canvas {
 		int battleFieldHeight = battleField.getHeight();
 
 		for (IRobjectSnapshot robjectSnapshot : snapShot.getRobjects()) {
-			if (robjectSnapshot.shouldDraw())
-			{
+			if (robjectSnapshot.shouldDraw()) {
 				x = robjectSnapshot.getX();
 				y = battleFieldHeight - robjectSnapshot.getY() - robjectSnapshot.getHeight();
 	
@@ -466,31 +463,21 @@ public class BattleView extends Canvas {
 	
 				Area robjectArea = new Area(robjectSnapshot.getPaintRect()).createTransformedArea(at);
 				
-				if (robjectSnapshot.getType().equals("base"))
-				{
-					if (robjectSnapshot.getTeam() == 1)
-					{
+				if (robjectSnapshot.getType().equals("base")) {
+					if (robjectSnapshot.getTeam() == 1) {
 						g.setColor(Color.CYAN);
 						g.draw(robjectArea);
-					}
-					else if (robjectSnapshot.getTeam() == 2)
-					{
+					} else if (robjectSnapshot.getTeam() == 2) {
 						g.setColor(Color.PINK);
 						g.draw(robjectArea);
 					}
-				}
-				else if (robjectSnapshot.getType().equals("energyPack"))
-				{
+				} else if (robjectSnapshot.getType().equals("energyPack")) {
 					g.setColor(Color.RED);
 					g.fill(robjectArea);
-				}						
-				else if (robjectSnapshot.getType().equals("rubble"))
-				{
+				} else if (robjectSnapshot.getType().equals("rubble")) {
 					g.setColor(Color.DARK_GRAY);
 					g.fill(robjectArea);
-				}
-				else
-				{
+				} else {
 					g.setColor(Color.LIGHT_GRAY);
 					g.fill(robjectArea);
 				}
@@ -498,15 +485,14 @@ public class BattleView extends Canvas {
 		}
 	}
 	
-	//TODO: make height of objects a property
+	// TODO: make height of objects a property
 	private void drawHighObjects(Graphics2D g, ITurnSnapshot snapShot) {
 		double x, y;
 		AffineTransform at;
 		int battleFieldHeight = battleField.getHeight();
 
 		for (IRobjectSnapshot robjectSnapshot : snapShot.getRobjects()) {
-			if (robjectSnapshot.shouldDraw())
-			{
+			if (robjectSnapshot.shouldDraw()) {
 				x = robjectSnapshot.getX();
 				y = battleFieldHeight - robjectSnapshot.getY() - robjectSnapshot.getHeight();
 	
@@ -514,21 +500,15 @@ public class BattleView extends Canvas {
 	
 				Area robjectArea = new Area(robjectSnapshot.getPaintRect()).createTransformedArea(at);
 				
-				if (robjectSnapshot.getType().equals("flag"))
-				{
-					if (robjectSnapshot.getTeam() == 1)
-					{
+				if (robjectSnapshot.getType().equals("flag")) {
+					if (robjectSnapshot.getTeam() == 1) {
 						g.setColor(Color.CYAN);
 						g.fill(robjectArea);
-					}
-					else if (robjectSnapshot.getTeam() == 2)
-					{
+					} else if (robjectSnapshot.getTeam() == 2) {
 						g.setColor(Color.PINK);
 						g.fill(robjectArea);
 					}
-				}
-				else if (robjectSnapshot.getType().equals("box"))
-				{
+				} else if (robjectSnapshot.getType().equals("box")) {
 					g.setColor(Color.BLACK);
 					g.fill(robjectArea);
 				}
@@ -698,7 +678,7 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawScanArc(Graphics2D g, IRobotSnapshot robotSnapshot) {
-		//Arc2D.Double scanArc = (Arc2D.Double) ((RobotSnapshot) robotSnapshot).getScanArc();
+		// Arc2D.Double scanArc = (Arc2D.Double) ((RobotSnapshot) robotSnapshot).getScanArc();
 		Area scanArc = ((RobotSnapshot) robotSnapshot).getScanArc();
 		
 		if (scanArc == null) {
@@ -708,10 +688,11 @@ public class BattleView extends Canvas {
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) .2));
 	
 		int scanColor = robotSnapshot.getScanColor();
+
 		g.setColor(new Color(scanColor, true));
 		
 		double y = battleField.getHeight();
-		AffineTransform at = new AffineTransform(new double[] {1.0,0.0,0.0,-1.0,0.0,y});
+		AffineTransform at = new AffineTransform(new double[] { 1.0, 0.0, 0.0, -1.0, 0.0, y});
 
 		scanArc.transform(at);
 		g.fill(scanArc);

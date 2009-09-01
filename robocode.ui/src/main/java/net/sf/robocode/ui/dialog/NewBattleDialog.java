@@ -109,8 +109,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());
 		battleProperties.setGunCoolingRate(getRulesTab().getGunCoolingRate());
 		battleProperties.setInactivityTime(getRulesTab().getInactivityTime());	
-		if (!getRulesTab().getExtensionPackage().equals("") && !getRulesTab().getExtensionFile().equals(""))
-		{
+		if (!getRulesTab().getExtensionPackage().equals("") && !getRulesTab().getExtensionFile().equals("")) {
 			battleProperties.setExtensionFilename(getRulesTab().getExtensionFile());
 			battleProperties.setExtensionPackage(getRulesTab().getExtensionPackage());	
 		}

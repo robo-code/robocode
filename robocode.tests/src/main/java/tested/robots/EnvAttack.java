@@ -9,33 +9,28 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.peer;
+package tested.robots;
 
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
-import robocode.IExtensionApi;
+import robocode.AdvancedRobot;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeer {
+public class EnvAttack extends AdvancedRobot {
+	@Override
+	public void run() {
 
-	void drainEnergy();
+		// attack
+		System.setProperty("NOSECURITY", "true");
 
-	void punishBadBehavior(BadBehavior badBehavior);
-
-	void setRunning(boolean value);
-
-	ExecResults waitForBattleEndImpl(ExecCommands newCommands);
-
-	ExecResults executeImpl(ExecCommands newCommands);
-
-	ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException;
-	
-	ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException;
-
-	IExtensionApi getExtensionApi();
+		// noinspection InfiniteLoopStatement
+		for (;;) {
+			turnLeft(100);
+			ahead(10);
+			turnLeft(100);
+			back(10);
+		}
+	}
 }

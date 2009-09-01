@@ -40,6 +40,7 @@
 
 package net.sf.robocode.battle.peer;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,6 +50,7 @@ import java.util.Map;
 import net.sf.robocode.battle.IContestantStatistics;
 
 import robocode.BattleResults;
+
 
 /**
  * The base class of robot statistics
@@ -61,7 +63,7 @@ import robocode.BattleResults;
  * @author Nathaniel Troutman (contributor)
  * @author Joshua Galecki (contributor)
  */
-public abstract class ContestantStatistics implements IContestantStatistics{
+public abstract class ContestantStatistics implements IContestantStatistics {
 
 	protected final RobotPeer robotPeer;
 	protected int rank;
@@ -114,18 +116,15 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 		resetScores();
 	}
 
-	public void cleanup() {} //do nothing for now.
+	public void cleanup() {} // do nothing for now.
 	
 	public void generateTotals() {
-		if (currentScores.size() != totalScores.size())
-		{
-			//something went wrong
+		if (currentScores.size() != totalScores.size()) {
+			// something went wrong
 			totalScores.get(1);
 		}
 		combinedScore = 0;
-		for (int scoreIndex = 0; scoreIndex < currentScores.size() &&
-			scoreIndex < totalScores.size(); scoreIndex++)
-		{
+		for (int scoreIndex = 0; scoreIndex < currentScores.size() && scoreIndex < totalScores.size(); scoreIndex++) {
 			totalScores.set(scoreIndex, totalScores.get(scoreIndex) + currentScores.get(scoreIndex));
 			combinedScore += totalScores.get(scoreIndex);
 		}
@@ -142,8 +141,8 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 	}
 
 	public BattleResults getFinalResults() {
-		return new BattleResults(getTeamName(), rank, (int)combinedScore, totalScores,		
-				scoreNames, totalFirsts, totalSeconds, totalThirds);
+		return new BattleResults(getTeamName(), rank, (int) combinedScore, totalScores, scoreNames, totalFirsts,
+				totalSeconds, totalThirds);
 	}
 	
 	protected abstract String getTeamName();
@@ -166,8 +165,8 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 
 	public double getCurrentCombinedScore() {
 		double scoreSum = 0;
-		for (double score : currentScores)
-		{
+
+		for (double score : currentScores) {
 			scoreSum += score;
 		}
 		
@@ -200,8 +199,7 @@ public abstract class ContestantStatistics implements IContestantStatistics{
 	public void resetScores() {
 		robotDamageMap = null;
 
-		for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++)
-		{
+		for (int scoreIndex = 0; scoreIndex < currentScores.size(); scoreIndex++) {
 			currentScores.set(scoreIndex, 0.0);
 		}
 	}

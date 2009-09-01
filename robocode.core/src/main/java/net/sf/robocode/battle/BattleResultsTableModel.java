@@ -65,8 +65,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		columnNames.add("Robot Name");
 		columnNames.add("Total Score");
 		
-		if (results != null)
-		{
+		if (results != null) {
 			columnNames.addAll(results[0].getScoreNames());
 		}
 		
@@ -100,8 +99,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 	@Override
 	public String getColumnName(int col) {
-		if (columnNames != null && col < columnNames.size())
-		{
+		if (columnNames != null && col < columnNames.size()) {
 			return columnNames.get(col);
 		}
 		return "";
@@ -127,45 +125,31 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 		BattleResults statistics = results[row];
 
-		if (col < columnNames.size())
-		{
-			if (col == 0)
-			{
+		if (col < columnNames.size()) {
+			if (col == 0) {
 				int place = row + 1;
 	
 				while (place < getRowCount() && statistics.getCombinedScore() == results[place].getCombinedScore()) {
 					place++;
 				}
 				return getPlacementString(place);
-			}
-			else if (col == 1)
-			{
+			} else if (col == 1) {
 				return statistics.getTeamName();
-			}
-			else if (col == 2)
-			{
+			} else if (col == 2) {
 				String percent = "";
 
 				if (totalScore != 0) {
-					percent = " (" + NumberFormat.getPercentInstance().format(
-							statistics.getCombinedScore() / totalScore) + ")";
+					percent = " ("
+							+ NumberFormat.getPercentInstance().format(statistics.getCombinedScore() / totalScore) + ")";
 				}
 				return "" + (int) (statistics.getCombinedScore() + 0.5) + percent;
-			}
-			else if (col == columnNames.size() - 3)
-			{
+			} else if (col == columnNames.size() - 3) {
 				return "" + statistics.getFirsts();
-			}
-			else if (col == columnNames.size() - 2)
-			{
+			} else if (col == columnNames.size() - 2) {
 				return "" + statistics.getSeconds();
-			}
-			else if (col == columnNames.size() - 1)
-			{
+			} else if (col == columnNames.size() - 1) {
 				return "" + statistics.getThirds();
-			}
-			else
-			{
+			} else {
 				return "" + statistics.getScores().get(col - 3);
 			}
 		}

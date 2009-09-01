@@ -23,7 +23,7 @@ import java.util.List;
 public interface IRobotPeerBattle extends ContestantPeer {
 	void setSGPaintEnabled(boolean enabled);
 
-	//RobotStatics getRobotStatistics();
+	// RobotStatics getRobotStatistics();
 
 	TeamPeer getTeamPeer();
 
@@ -53,7 +53,7 @@ public interface IRobotPeerBattle extends ContestantPeer {
 
 	void waitWakeup();
 
-	void waitSleeping(int millisWait, int microWait);
+	void waitSleeping(long millisWait, int microWait);
 
 	void waitForStop();
 

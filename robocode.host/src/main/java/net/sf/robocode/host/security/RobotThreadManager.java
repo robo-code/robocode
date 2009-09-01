@@ -34,9 +34,10 @@ import net.sf.robocode.security.LoggingThreadGroup;
 import robocode.exception.RobotException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -44,10 +45,12 @@ import java.security.PrivilegedAction;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobotThreadManager {
+
 	private final IHostedThread robotProxy;
 	private Thread runThread;
 	private LoggingThreadGroup runThreadGroup;
 	private Object awtForThreadGroup;
+	private final Map<Thread, Boolean> disposeAppContextThreadMap = new HashMap<Thread, Boolean>();
 
 	public RobotThreadManager(IHostedThread robotProxy) {
 		this.robotProxy = robotProxy;
@@ -97,6 +100,7 @@ public class RobotThreadManager {
 	public void start(IThreadManager threadManager) {
 		try {
 			threadManager.addThreadGroup(runThreadGroup, robotProxy);
+
 			runThread = new Thread(runThreadGroup, robotProxy, robotProxy.getStatics().getName());
 			runThread.setDaemon(true);
 			runThread.setPriority(Thread.NORM_PRIORITY - 1);
@@ -108,15 +112,15 @@ public class RobotThreadManager {
 	}
 
 	/**
-	 * @return true as peacefull stop
+	 * @return true as peaceful stop
 	 */
 	public boolean waitForStop() {
-		boolean stop = false;
+		boolean isAlive = false;
 
 		if (runThread != null && runThread.isAlive()) {
 			runThread.interrupt();
 			waitForStop(runThread);
-			stop = runThread.isAlive();
+			isAlive = runThread.isAlive();
 		}
 
 		Thread[] threads = new Thread[100];
@@ -127,13 +131,15 @@ public class RobotThreadManager {
 			if (thread != null && thread != runThread && thread.isAlive()) {
 				thread.interrupt();
 				waitForStop(thread);
-				stop |= thread.isAlive();
+				isAlive |= thread.isAlive();
 			}
 		}
 
-		if (stop) {
+		if (isAlive) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
 				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
+
+				// Force the robot to stop
 				return forceStop();
 			} else {
 				logError(
@@ -146,7 +152,7 @@ public class RobotThreadManager {
 	}
 
 	/**
-	 * @return true as peacefull stop
+	 * @return true as peaceful stop
 	 */
 	public boolean forceStop() {
 		int res = stopSteps(runThread);
@@ -172,7 +178,7 @@ public class RobotThreadManager {
 
 	/**
 	 * @param t thread to stop
-	 * @return 0 as peacefull stop
+	 * @return 0 as peaceful stop
 	 */
 	private int stopSteps(Thread t) {
 		if (t != null && t.isAlive()) {
@@ -246,16 +252,38 @@ public class RobotThreadManager {
 		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY - 1);
 	}
 
-	public static Object createNewAppContext() {
+	public Object createNewAppContext() {
+		// Add the current thread to our disposeAppContextThreadMap if it does not exit already
+		if (!disposeAppContextThreadMap.containsKey(Thread.currentThread())) {
+			disposeAppContextThreadMap.put(Thread.currentThread(), new Boolean(false));
+		}
+
 		// same as SunToolkit.createNewAppContext();
 		// we can't assume that we are always on Suns JVM, so we can't reference it directly
 		// why we call that ? Because SunToolkit is caching AWTQueue instance form main thread group and use it on robots threads
 		// and he is not asking us for checkAwtEventQueueAccess above
 		try {
 			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.SunToolkit");
-			final Method createNewAppContext = sunToolkit.getDeclaredMethod("createNewAppContext");
 
-			return createNewAppContext.invoke(null);
+			// We need to wait for the sun.awt.AppContext.dispose() to complete for the current thread before creating
+			// a new AppContext for it. Otherwise the AWT EventQueue fires events like WINDOW_CLOSE to our main window
+			// which closes the entire application due to a System.exit()
+
+			Boolean isDisposing = disposeAppContextThreadMap.get(Thread.currentThread());
+
+			synchronized (isDisposing) {
+				while (isDisposing) {
+					try {
+						isDisposing.wait();
+					} catch (InterruptedException e) {
+						return -1;
+					}
+				}
+			}	
+
+			// Call sun.awt.SunToolkit.createNewAppContext() to create a new AppContext for the current thread
+			return sunToolkit.getDeclaredMethod("createNewAppContext").invoke(null);
+
 		} catch (ClassNotFoundException e) {
 			// we are not on sun JVM
 			return -1;
@@ -269,17 +297,50 @@ public class RobotThreadManager {
 		// end: same as SunToolkit.createNewAppContext();
 	}
 
-	public static boolean disposeAppContext(Object appContext) {
+	public boolean disposeAppContext(final Object appContext) {
+		// This method should must not be used when the AWT is running in headless mode!
+		// Bugfix [2833271] IllegalThreadStateException with the AWT-Shutdown thread.
+		// Read more about headless mode here:
+		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
+
+		// This check makes sure we exit, if the AWT is running in headless mode
+		if (System.getProperty("java.awt.headless", "false").equals("true")) {
+			return false;
+		}
+
 		// same as AppContext.dispose();
 		try {
 			final Class<?> sunToolkit = ClassLoader.getSystemClassLoader().loadClass("sun.awt.AppContext");
-			final Method dispose = sunToolkit.getDeclaredMethod("dispose");
 
-			dispose.invoke(appContext);
+			// We run this in a thread, as invoking the AppContext.dispose() method sometimes takes several
+			// seconds, and thus causes the cleanup of a battle to hang, which is annoying when trying to restart
+			// a battle.
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						// Signal that the AppContext for the current thread is being disposed (start)
+						Boolean isDisposing = disposeAppContextThreadMap.get(Thread.currentThread());
+
+						synchronized (isDisposing) {
+							isDisposing = true;
+							isDisposing.notifyAll();
+						}
+
+						// Call sun.awt.AppContext.dispose(appContext) to dispose the AppContext for the current thread
+						sunToolkit.getDeclaredMethod("dispose").invoke(appContext);
+
+						// Signal that the AppContext for the current thread has been disposed (finish)
+						synchronized (isDisposing) {
+							isDisposing = false;
+							isDisposing.notifyAll();
+						}
+					} catch (Exception ignore) {}
+				}
+			}, "DisposeAppContext").start();
+
 			return true;
-		} catch (ClassNotFoundException ignore) {} catch (NoSuchMethodException ignore) {} catch (InvocationTargetException ignore) {} catch (IllegalAccessException ignore) {}
+		} catch (ClassNotFoundException ignore) {}
 		return false;
 		// end: same as AppContext.dispose();
 	}
-
 }

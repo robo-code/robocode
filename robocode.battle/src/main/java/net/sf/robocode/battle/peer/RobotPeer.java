@@ -87,27 +87,21 @@ import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
 import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
-import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
-import robocode.exception.DeathException;
 import robocode.exception.WinException;
-import robocode.util.Utils;
 import static robocode.util.Utils.*;
 
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import static java.lang.Math.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -125,6 +119,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Robert D. Maupin (contributor)
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
+ * @author Patrick Cupka (contributor)
+ * @author Julian Kent (contributor)
+ * @author "Positive" (contributor)
  * @author Joshua Galecki (contributor)
  */
 public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
@@ -189,10 +186,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// waiting for next tick
 	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
 	private final AtomicBoolean halt = new AtomicBoolean(false);
+
 	private boolean isExecFinishedAndDisabled;
 	private boolean isEnergyDrained;
 	private boolean isWinner;
 	private boolean inCollision;
+	private boolean isOverDriving;
+
 	private RobotState state;
 	private final Arc2D scanArc;
 	private Area occludedScan = null;
@@ -327,8 +327,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return statics.getContestIndex();
 	}
 	
-	public IExtensionApi getExtensionApi()
-	{
+	public IExtensionApi getExtensionApi() {
 		return battle.getCustomRules().getExtensionApi();
 	}
 
@@ -400,7 +399,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return boundingBox;
 	}
 
-	//TODO: ensure backwards compatibility
+	// TODO: ensure backwards compatibility
 	public Arc2D getScanArc() {
 		return scanArc;
 	}
@@ -642,7 +641,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void waitSleeping(int millisWait, int microWait) {
+	public void waitSleeping(long millisWait, int microWait) {
 		synchronized (isSleeping) {
 			// It's quite possible for simple robots to
 			// complete their processing before we get here,
@@ -650,7 +649,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			if (!isSleeping()) {
 				try {
-					for (int i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
+					for (long i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
 						isSleeping.wait(0, 999999);
 					}
 					if (!isSleeping()) {
@@ -684,7 +683,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
 				waitWakeupNoWait();
-				punishBadBehavior();
+				punishBadBehavior(BadBehavior.SKIPPED_TOO_MANY_TURNS);
 				robotProxy.forceStopThread();
 			}
 		}
@@ -769,9 +768,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	private boolean validSpot(List<RobotPeer> robots) {
-		for (RobjectPeer robject : battle.getRobjects())
-		{
-			if (robject.isRobotStopper() && robject.getBoundaryRect().intersects(getBoundingBox()))	{
+		for (RobjectPeer robject : battle.getRobjects()) {
+			if (robject.isRobotStopper() && robject.getBoundaryRect().intersects(getBoundingBox())) {
 				return false;
 			}
 		}
@@ -1054,58 +1052,46 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	private void checkObstacleCollisions() {
-		if (battle.getRobjects() == null)
+		if (battle.getRobjects() == null) {
 			return;
+		}
 		
 		double angle = 0;
 		
 		double movedx = velocity * sin(bodyHeading) / 16;
 		double movedy = velocity * cos(bodyHeading) / 16;
 		
-		for (int i = 0; i < battle.getRobjects().size(); i++)
-		{
+		for (int i = 0; i < battle.getRobjects().size(); i++) {
 			RobjectPeer obj = battle.getRobjects().get(i);
-			if (obj.isRobotConscious() && boundingBox.intersects(obj.getBoundaryRect()))
-			{		
-				if (obj.isRobotStopper())
-				{
-					//move until the bounding box is clear of the object 
-					while (boundingBox.intersects(obj.getBoundaryRect()) && (movedx != 0 || movedy != 0))
-					{
+
+			if (obj.isRobotConscious() && boundingBox.intersects(obj.getBoundaryRect())) {		
+				if (obj.isRobotStopper()) {
+					// move until the bounding box is clear of the object 
+					while (boundingBox.intersects(obj.getBoundaryRect()) && (movedx != 0 || movedy != 0)) {
 						x -= movedx;
 						y -= movedy;
 						
 						updateBoundingBox();
 					}
 					
-					//figure out which side of the object was hit, using the 
-					//updated, intersect-free boundingBox
-					if (boundingBox.x <= obj.getX() + obj.getWidth() && 
-							boundingBox.y + boundingBox.height < obj.getY())
-					{
-						//hit the bottom of the object
+					// figure out which side of the object was hit, using the 
+					// updated, intersect-free boundingBox
+					if (boundingBox.x <= obj.getX() + obj.getWidth() && boundingBox.y + boundingBox.height < obj.getY()) {
+						// hit the bottom of the object
 						angle = normalRelativeAngle(-bodyHeading);
-					}
-					else if (boundingBox.x < obj.getX() && 
-							boundingBox.y <= obj.getY() + obj.getHeight())
-					{
-						//hit left side of the object
+					} else if (boundingBox.x < obj.getX() && boundingBox.y <= obj.getY() + obj.getHeight()) {
+						// hit left side of the object
 						angle = normalRelativeAngle(Math.PI / 2 - bodyHeading);
-					}
-					else if (boundingBox.y < obj.getY() + obj.getHeight())
-					{
-						//hit right side of object
-						angle = normalRelativeAngle(Math.PI * 3/2 - bodyHeading);
-					}
-					else
-					{
-						//hit top of object
+					} else if (boundingBox.y < obj.getY() + obj.getHeight()) {
+						// hit right side of object
+						angle = normalRelativeAngle(Math.PI * 3 / 2 - bodyHeading);
+					} else {
+						// hit top of object
 						angle = normalRelativeAngle(Math.PI - bodyHeading);
 					}
 					
 					addEvent(new HitObstacleEvent(angle, obj.getType()));
 					
-	
 					// Update energy, but do not reset inactiveTurnCount
 					if (statics.isAdvancedRobot()) {
 						setEnergy(energy - Rules.getWallHitDamage(velocity), false);
@@ -1113,9 +1099,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					
 					currentCommands.setDistanceRemaining(0);
 					velocity = 0;
-				}
-				else
-				{
+				} else {
 					addEvent(new HitObjectEvent(obj.getType()));
 				}
 				obj.hitByRobot(this);
@@ -1365,6 +1349,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		radarHeading = normalAbsoluteAngle(radarHeading);
 	}
 
+	/**
+	 * Updates the robots movement.
+	 *
+	 * This is Nat Pavasants method described here:
+	 *   http://robowiki.net/wiki/User:Positive/Optimal_Velocity#Nat.27s_updateMovement
+	 */
 	private void updateMovement() {
 		double distance = currentCommands.getDistanceRemaining();
 
@@ -1374,19 +1364,41 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		velocity = getNewVelocity(velocity, distance);
 
-		double dx = velocity * sin(bodyHeading);
-		double dy = velocity * cos(bodyHeading);
+		// If we are over-driving our distance and we are now at velocity=0
+		// then we stopped.
+		if (isNear(velocity, 0) && isOverDriving) {
+			currentCommands.setDistanceRemaining(0);
+			distance = 0;
+			isOverDriving = false;
+		}
 
-		x += dx;
-		y += dy;
+		// If we are moving normally and the breaking distance is more
+		// than remaining distance, enabled the overdrive flag.
+		if (Math.signum(distance * velocity) != -1) {
+			if (getDistanceTraveledUntilStop(velocity) > Math.abs(distance)) {
+				isOverDriving = true;
+			} else {
+				isOverDriving = false;
+			}
+		}
 
-		if (dx != 0 || dy != 0) {
+		currentCommands.setDistanceRemaining(distance - velocity);
+
+		if (velocity != 0) {
+			x += velocity * sin(bodyHeading);
+			y += velocity * cos(bodyHeading);
 			updateBoundingBox();
 		}
+	}
 
-		if (distance != 0) {
-			currentCommands.setDistanceRemaining(distance - velocity);
+	private double getDistanceTraveledUntilStop(double velocity) {
+		double distance = 0;
+
+		velocity = Math.abs(velocity);
+		while (velocity > 0) {
+			distance += (velocity = getNewVelocity(velocity, 0));
 		}
+		return distance;
 	}
 
 	/**
@@ -1395,82 +1407,47 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * @param velocity the current velocity
 	 * @param distance the distance to move
 	 * @return the new velocity based on the current velocity and distance to move
+	 * 
+	 * This is Patrick Cupka (aka Voidious), Julian Kent (aka Skilgannon), and Positive's method described here:
+	 *   http://robowiki.net/wiki/User:Voidious/Optimal_Velocity#Hijack_2
 	 */
 	private double getNewVelocity(double velocity, double distance) {
-		// If the distance is negative, then change it to be positive and change the sign of the input velocity and the result
 		if (distance < 0) {
+			// If the distance is negative, then change it to be positive
+			// and change the sign of the input velocity and the result
 			return -getNewVelocity(-velocity, -distance);
 		}
 
-		double newVelocity;
+		final double goalVel;
 
-		// Get the speed, which is always positive (because it is a scalar)
-		final double speed = Math.abs(velocity); 
-
-		// Check if we are decelerating, i.e. if the velocity is negative.
-		// Note that if the speed is too high due to a new max. velocity, we must also decelerate.
-		if (velocity < 0 || speed > currentCommands.getMaxVelocity()) {
-			// If the velocity is negative, we are decelerating
-			newVelocity = speed - Rules.DECELERATION;
-
-			// Check if we are going from deceleration into acceleration
-			if (newVelocity < 0) {
-				// If we have decelerated to velocity = 0, then the remaining time must be used for acceleration
-				double decelTime = speed / Rules.DECELERATION;
-				double accelTime = (1 - decelTime);
-
-				// New velocity (v) = d / t, where time = 1 (i.e. 1 turn). Hence, v = d / 1 => v = d
-				// However, the new velocity must be limited by the max. velocity
-				newVelocity = Math.min(currentCommands.getMaxVelocity(),
-						Math.min(Rules.DECELERATION * decelTime * decelTime + Rules.ACCELERATION * accelTime * accelTime,
-						distance));
-
-				// Note: We change the sign here due to the sign check later when returning the result
-				velocity *= -1;
-			}
+		if (distance == Double.POSITIVE_INFINITY) {
+			goalVel = currentCommands.getMaxVelocity();
 		} else {
-			// Else, we are not decelerating, but might need to start doing so due to the remaining distance
-
-			// Deceleration time (t) is calculated by: v = a * t => t = v / a
-			final double decelTime = speed / Rules.DECELERATION;
-
-			// Deceleration time (d) is calculated by: d = 1/2 a * t^2 + v0 * t + t
-			// Adding the extra 't' (in the end) is special for Robocode, and v0 is the starting velocity = 0
-			final double decelDist = 0.5 * Rules.DECELERATION * decelTime * decelTime + decelTime;
-
-			// Check if we should start decelerating
-			if (distance <= decelDist) {
-				// If the distance < max. deceleration distance, we must decelerate so we hit a distance = 0
-
-				// Calculate time left for deceleration to distance = 0
-				double time = distance / (decelTime + 1); // 1 is added here due to the extra 't' for Robocode
-
-				// New velocity (v) = a * t, i.e. deceleration * time, but not greater than the current speed
-
-				if (time <= 1) {
-					// When there is only one turn left (t <= 1), we set the speed to match the remaining distance
-					newVelocity = Math.max(speed - Rules.DECELERATION, distance);
-				} else {
-					// New velocity (v) = a * t, i.e. deceleration * time
-					newVelocity = time * Rules.DECELERATION;
-
-					if (speed < newVelocity) {
-						// If the speed is less that the new velocity we just calculated, then use the old speed instead
-						newVelocity = speed;
-					} else if (speed - newVelocity > Rules.DECELERATION) {
-						// The deceleration must not exceed the max. deceleration.
-						// Hence, we limit the velocity to the speed minus the max. deceleration.
-						newVelocity = speed - Rules.DECELERATION;
-					}
-				}
-			} else {
-				// Else, we need to accelerate, but only to max. velocity
-				newVelocity = Math.min(speed + Rules.ACCELERATION, currentCommands.getMaxVelocity());
-			}
+			goalVel = Math.min(getMaxVelocity(distance), currentCommands.getMaxVelocity());
 		}
 
-		// Return the new velocity with the correct sign. We have been working with the speed, which is always positive
-		return (velocity < 0) ? -newVelocity : newVelocity;
+		if (velocity >= 0) {
+			return Math.max(velocity - Rules.DECELERATION, Math.min(goalVel, velocity + Rules.ACCELERATION));
+		}
+		// else
+		return Math.max(velocity - Rules.ACCELERATION, Math.min(goalVel, velocity + maxDecel(-velocity)));
+	}
+
+	final static double getMaxVelocity(double distance) {
+		final double decelTime = Math.max(1, Math.ceil(// sum of 0... decelTime, solving for decelTime using quadratic formula
+				(Math.sqrt((4 * 2 / Rules.DECELERATION) * distance + 1) - 1) / 2));
+
+		final double decelDist = (decelTime / 2.0) * (decelTime - 1) // sum of 0..(decelTime-1)
+				* Rules.DECELERATION;
+
+		return ((decelTime - 1) * Rules.DECELERATION) + ((distance - decelDist) / decelTime);
+	}
+
+	private static double maxDecel(double speed) {
+		double decelTime = speed / Rules.DECELERATION;
+		double accelTime = (1 - decelTime);
+
+		return Math.min(1, decelTime) * Rules.DECELERATION + Math.max(0, accelTime) * Rules.ACCELERATION;
 	}
 
 	private void updateGunHeat() {
@@ -1486,15 +1463,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 
 		double startAngle = lastRadarHeading;
-		double scanRadians = (getRadarHeading() - startAngle);
-		
+		double scanRadians = getRadarHeading() - startAngle;
+
 		// Check if we passed through 360
 		if (scanRadians < -PI) {
 			scanRadians = 2 * PI + scanRadians;
 		} else if (scanRadians > PI) {
 			scanRadians = scanRadians - 2 * PI;
 		}
-		
+
 		// In our coords, we are scanning clockwise, with +y up
 		// In java coords, we are scanning counterclockwise, with +y down
 		// All we need to do is adjust our angle by -90 for this to work.
@@ -1502,23 +1479,24 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		startAngle = normalAbsoluteAngle(startAngle);
 		
-		
-		//TODO: clean this up
+		// TODO: clean this up
 		double addedAngle = startAngle + scanRadians;
+
 		if (addedAngle < -PI) {
 			addedAngle = 2 * PI + addedAngle;
 		} else if (scanRadians > PI) {
 			addedAngle = addedAngle - 2 * PI;
 		}
 		
-		scanArc.setArcByCenter(x, y, Rules.RADAR_SCAN_RADIUS,
-				180.0 * startAngle / PI, 180.0 * scanRadians / PI, Arc2D.PIE);
+		scanArc.setArcByCenter(x, y, Rules.RADAR_SCAN_RADIUS, 180.0 * startAngle / PI, 180.0 * scanRadians / PI,
+				Arc2D.PIE);
 
 		occludedScan = (Area) calcScanArc(scanArc);
 
 		for (RobjectPeer robject : battle.getRobjects()) {
 			if (robject.isScannable() && occludedScan.intersects(robject.getIntersectRect())) {
 				final ScannedObjectEvent event = createScannedObjectEvent(robject, occludedScan); 		
+
 				addEvent(event);
 			}
 		}
@@ -1550,71 +1528,59 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * @return a ScannedObjectEvent
 	 */
 	private ScannedObjectEvent createScannedObjectEvent(RobjectPeer robject, Area scan) {
-		//Find minimum distance to the scanned area of the object and the angle
+		// Find minimum distance to the scanned area of the object and the angle
 		double minDistance = Double.POSITIVE_INFINITY;
 		double angle = 0;
 		
-		//TODO: This will need some heavy optimization
-		//get intersection polygon between the robject and the scan arc
+		// TODO: This will need some heavy optimization
+		// get intersection polygon between the robject and the scan arc
 		Area intersection = new Area(robject.getIntersectRect());
+
 		intersection.intersect(scan);
 		Rectangle2D box = intersection.getBounds2D();
 
-		//get points for each corner of the intersection box and 
-		//return the lowest distance to the robot
+		// get points for each corner of the intersection box and 
+		// return the lowest distance to the robot
 		Point2D.Double currentLocation = new Point2D.Double(x, y);
-		//check if the robot is vertically or horizontally alligned
-		if (x >= box.getMinX() && x <= box.getMaxX())
-		{
-			if (y < box.getMinY())
-			{
+
+		// check if the robot is vertically or horizontally alligned
+		if (x >= box.getMinX() && x <= box.getMaxX()) {
+			if (y < box.getMinY()) {
 				angle = 0;
 				minDistance = box.getMinY() - y;
-			}
-			else
-			{
+			} else {
 				angle = Math.PI;
 				minDistance = y - box.getMaxY();
 			}
 		}
-		if (y >= box.getMinY() && y <= box.getMaxY())
-		{
-			if (minDistance < Double.POSITIVE_INFINITY)
-			{
-				//We are inside the object
+		if (y >= box.getMinY() && y <= box.getMaxY()) {
+			if (minDistance < Double.POSITIVE_INFINITY) {
+				// We are inside the object
 				angle = 0;
 				minDistance = 0;
-			}
-			else if (x < box.getMinX())
-			{
+			} else if (x < box.getMinX()) {
 				angle = Math.PI / 2;
 				minDistance = box.getMinX() - x;
-			}
-			else
-			{
-				angle = -Math.PI / 2 ;
+			} else {
+				angle = -Math.PI / 2;
 				minDistance = x - box.getMaxX();
 			}
 		}
 		
-		for (int cornerIndex = 0; cornerIndex < 4; cornerIndex++)
-		{
+		for (int cornerIndex = 0; cornerIndex < 4; cornerIndex++) {
 			double boxX = (cornerIndex < 2 ? box.getMinX() : box.getMaxX());
 			double boxY = (cornerIndex % 2 == 0 ? box.getMinY() : box.getMaxY());
 			double dx = boxX - x;
 			double dy = boxY - y;
 			
 			Point2D.Double corner = new Point2D.Double(boxX, boxY);
-			if (corner.distance(currentLocation) < minDistance)
-			{
-				//get absolute angle
-				angle = atan(dx/dy);
-				if (dx > 0 && dy < 0)
-				{
+
+			if (corner.distance(currentLocation) < minDistance) {
+				// get absolute angle
+				angle = atan(dx / dy);
+				if (dx > 0 && dy < 0) {
 					angle = Math.PI + angle; 
-				}
-				else if (dy < 0)
-				{
+				} else if (dy < 0) {
 					angle = angle - Math.PI;
 				}
 				
@@ -1622,20 +1588,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 		}	
 		
-		//adjust angle to robot's bearing and keep within (-pi < x <= pi)
+		// adjust angle to robot's bearing and keep within (-pi < x <= pi)
 		angle -= bodyHeading;
-		if (angle < -Math.PI)
-		{
+		if (angle < -Math.PI) {
 			angle += Math.PI * 2;
 		}
-		if (angle > Math.PI)
-		{
+		if (angle > Math.PI) {
 			angle -= Math.PI * 2;
 		}
 		
-		return new ScannedObjectEvent(robject.getType(),
-			angle, minDistance, robject.isRobotStopper(),
-			robject.isBulletStopper(), robject.isScanStopper(), robject.isDynamic());
+		return new ScannedObjectEvent(robject.getType(), angle, minDistance, robject.isRobotStopper(),
+				robject.isBulletStopper(), robject.isScanStopper(), robject.isDynamic());
 
 	}
 
@@ -1644,9 +1607,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		Area area = new Area(arc);
 
 		for (RobjectPeer robject : battle.getRobjects()) {
-			if (robject.isScanStopper())
-			{
-				if (robject.getBoundaryRect().contains(x, y) || robject.getBoundaryRect().contains(x-1, y-1)) {
+			if (robject.isScanStopper()) {
+				if (robject.getBoundaryRect().contains(x, y) || robject.getBoundaryRect().contains(x - 1, y - 1)) {
 					return new Area();
 				}
 				area.subtract(new Area(getRectWithShadowShape(robject.getBoundaryRect(), x, y)));
@@ -1668,25 +1630,25 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		
 		if (withinXboundary) {
 			if (withinYboundary) {
-				poly.addPoint((int)(minX + 0.5), (int)(minY + 0.5));
-				poly.addPoint((int)(maxX + 0.5), (int)(minY + 0.5));
-				poly.addPoint((int)(maxX + 0.5), (int)(maxY + 0.5));
-				poly.addPoint((int)(minX + 0.5), (int)(maxY + 0.5));			
+				poly.addPoint((int) (minX + 0.5), (int) (minY + 0.5));
+				poly.addPoint((int) (maxX + 0.5), (int) (minY + 0.5));
+				poly.addPoint((int) (maxX + 0.5), (int) (maxY + 0.5));
+				poly.addPoint((int) (minX + 0.5), (int) (maxY + 0.5));			
 
 			} else { // outside y boundary
 
 				final double y1 = (py <= minY) ? minY : maxY;
 
-				poly.addPoint((int)(minX + 0.5), (int)(y1 + 0.5));
-				poly.addPoint((int)(maxX + 0.5), (int)(y1 + 0.5));
+				poly.addPoint((int) (minX + 0.5), (int) (y1 + 0.5));
+				poly.addPoint((int) (maxX + 0.5), (int) (y1 + 0.5));
 	
 				Point2D projection = new Point2D.Double();
 
 				calcProjectedPoint(px, py, maxX, y1, projection);
-				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+				poly.addPoint((int) (projection.getX() + 0.5), (int) (projection.getY() + 0.5));
 	
 				calcProjectedPoint(px, py, minX, y1, projection);
-				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+				poly.addPoint((int) (projection.getX() + 0.5), (int) (projection.getY() + 0.5));
 			}	
 		} else { // outside x boundary
 
@@ -1696,14 +1658,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			if (withinYboundary) {
 
-				poly.addPoint((int)(x1 + 0.5), (int)(minY + 0.5));			
-				poly.addPoint((int)(x1 + 0.5), (int)(maxY + 0.5));
+				poly.addPoint((int) (x1 + 0.5), (int) (minY + 0.5));			
+				poly.addPoint((int) (x1 + 0.5), (int) (maxY + 0.5));
 		
 				calcProjectedPoint(px, py, x1, maxY, projection);
-				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+				poly.addPoint((int) (projection.getX() + 0.5), (int) (projection.getY() + 0.5));
 		
 				calcProjectedPoint(px, py, x1, minY, projection);
-				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+				poly.addPoint((int) (projection.getX() + 0.5), (int) (projection.getY() + 0.5));
 
 			} else { // outside y boundary too
 		
@@ -1719,15 +1681,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					y2 = minY;
 				}
 
-				poly.addPoint((int)(x1 + 0.5), (int)(y2 + 0.5));
-				poly.addPoint((int)(x1 + 0.5), (int)(y1 + 0.5));
-				poly.addPoint((int)(x2 + 0.5), (int)(y1 + 0.5));
+				poly.addPoint((int) (x1 + 0.5), (int) (y2 + 0.5));
+				poly.addPoint((int) (x1 + 0.5), (int) (y1 + 0.5));
+				poly.addPoint((int) (x2 + 0.5), (int) (y1 + 0.5));
 
 				calcProjectedPoint(px, py, x2, y1, projection);
-				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));
+				poly.addPoint((int) (projection.getX() + 0.5), (int) (projection.getY() + 0.5));
 
 				calcProjectedPoint(px, py, x1, y2, projection);
-				poly.addPoint((int)(projection.getX() + 0.5), (int)(projection.getY() + 0.5));					
+				poly.addPoint((int) (projection.getX() + 0.5), (int) (projection.getY() + 0.5));					
 			}		
 		}
 		return poly;
@@ -1744,9 +1706,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		} else {
 			if (Math.abs(dx) < Math.abs(dy)) {
 				double d = (dx >= 0) ? 10000 : -10000;
+
 				result.setLocation(x1 + d, y1 + d * dy / dx);
 			} else {
 				double d = (dy >= 0) ? 10000 : -10000;
+
 				result.setLocation(x1 + d * dx / dy, y1 + d);			
 			}
 		}
@@ -1774,20 +1738,48 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		isEnergyDrained = true;
 	}
 
-	public void punishBadBehavior() {
+	public void punishBadBehavior(BadBehavior badBehavior) {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
+
 		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
-		// disable for next time, just if is not developed here
-		if (!repositoryItem.isDevelopmentVersion()) {
-			repositoryItem.setValid(false);
+		StringBuffer message = new StringBuffer(repositoryItem.getFullClassNameWithVersion()).append(' ');
+
+		boolean disableInRepository = false; // Per default, robots are not disabled in the repository
+
+		switch (badBehavior) {
+		case CANNOT_START:
+			message.append("could not be started or loaded.");
+			disableInRepository = true; // Disable in repository when it cannot be started anyways
+			break;
+
+		case UNSTOPPABLE:
+			message.append("cannot be stopped.");
+			break;
+
+		case SKIPPED_TOO_MANY_TURNS:
+			message.append("has skipped too many turns.");
+			break;
+
+		case SECURITY_VIOLATION:
+			message.append("has caused a security violation.");
+			disableInRepository = true; // No mercy here!
+			break;
 		}
+
+		if (disableInRepository) {
+			repositoryItem.setValid(false);			
+			message.append(" This ").append(repositoryItem.isTeam() ? "team" : "robot").append(
+					" has been banned and will not be allowed to participate in battles.");
+		}
+
+		logMessage(message.toString());
 	}
 
 	public void updateEnergy(double delta) {
-		if (!isExecFinishedAndDisabled && !isEnergyDrained) {
+		if ((!isExecFinishedAndDisabled && !isEnergyDrained) || delta < 0) {
 			setEnergy(energy + delta, true);
 		}
 	}
@@ -1806,18 +1798,16 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	//TODO: removed final modifier of teamPeer - consider side effects
+	// TODO: removed final modifier of teamPeer - consider side effects
 	public void setTeamPeer(TeamPeer teamPeer) { 
 		this.teamPeer = teamPeer;
 	}
 	
-	public void setX(double x)
-	{
+	public void setX(double x) {
 		this.x = x;
 	}
 	
-	public void setY(double y)
-	{
+	public void setY(double y) {
 		this.y = y;
 	}
 	
@@ -1829,8 +1819,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		battle.getCustomRules().robotKill(this);
 	}
 
-	public void setIsExecFinishedAndDisabled(boolean value)
-	{
+	public void setIsExecFinishedAndDisabled(boolean value) {
 		isExecFinishedAndDisabled = value;
 	}
 	

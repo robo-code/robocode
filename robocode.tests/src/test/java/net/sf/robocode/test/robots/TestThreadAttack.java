@@ -38,7 +38,7 @@ public class TestThreadAttack extends RobotTestBed {
 			messagedMax = true;
 		}
 
-		if (out.contains("Preventing thread with unknown thread group from access")) {
+		if (out.contains("Preventing thread Thread-") && out.contains("with unknown thread group MyAttack from access")) {
 			messagedUnknown = true;
 		}
 	}
@@ -47,5 +47,10 @@ public class TestThreadAttack extends RobotTestBed {
 	protected void runTeardown() {
 		Assert.assertTrue(messagedMax);
 		Assert.assertTrue(messagedUnknown);
+	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 1; // Security error must be reported as an error
 	}
 }

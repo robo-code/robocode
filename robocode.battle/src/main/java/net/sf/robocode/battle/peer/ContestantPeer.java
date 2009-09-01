@@ -13,6 +13,7 @@
  *******************************************************************************/
 package net.sf.robocode.battle.peer;
 
+
 import net.sf.robocode.battle.IContestantStatistics;
 
 

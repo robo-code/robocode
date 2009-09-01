@@ -1,6 +1,8 @@
 package robocode;
 
+
 import java.util.List;
+
 
 public interface IBattleResults extends java.io.Serializable, Comparable<IBattleResults> {
 	
@@ -14,7 +16,7 @@ public interface IBattleResults extends java.io.Serializable, Comparable<IBattle
 	int getSeconds();
 	int getThirds();
 	
-	//TODO: this might be bad form (variables in an interface)
-	//perhaps an abstract base class would be appropriate?
+	// TODO: this might be bad form (variables in an interface)
+	// perhaps an abstract base class would be appropriate?
 	int combinedScore = 0;
 }

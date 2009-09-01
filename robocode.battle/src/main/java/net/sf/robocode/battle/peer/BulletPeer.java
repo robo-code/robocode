@@ -221,10 +221,8 @@ public class BulletPeer {
 	}
 
 	private void checkObjectCollision(List<RobjectPeer> robjects) {
-		for (RobjectPeer robject : robjects)
-		{
-			if (robject.isBulletStopper() && robject.getBoundaryRect().contains(x, y))
-			{
+		for (RobjectPeer robject : robjects) {
+			if (robject.isBulletStopper() && robject.getBoundaryRect().contains(x, y)) {
 				state = BulletState.HIT_OBJECT;
 				owner.addEvent(new BulletMissedEvent(createBullet()));
 				
@@ -342,7 +340,6 @@ public class BulletPeer {
 		updateBulletState();
 		owner.addBulletStatus(createStatus());
 	}
-
 
 	protected void updateBulletState() {
 		switch (state) {

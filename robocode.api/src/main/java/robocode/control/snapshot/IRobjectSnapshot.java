@@ -8,9 +8,10 @@
  * Contributors:
  * 		Joshua Galecki
  * 		-Initial implementation
-  *******************************************************************************/
+ *******************************************************************************/
 
 package robocode.control.snapshot;
+
 
 import java.awt.geom.Rectangle2D;
 

@@ -53,13 +53,13 @@ public class TestScoring extends RobotTestBed {
 			// Notice that the is no such thing as a 'current total last
 			// survivor bonus'
 			double currentScore = 0.5;
-			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++)
-			{
+
+			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++) {
 				currentScore += score.getCurrentScores().get(scoreIndex);
 			}
 
-//			TODO: figure out how this test should work with updated scoring
-//			Assert.assertThat(score.getName(), (int)currentScore, is((int) (0.5 + score.getCurrentCombinedScore())));
+			// TODO: figure out how this test should work with updated scoring
+			// Assert.assertThat(score.getName(), (int)currentScore, is((int) (0.5 + score.getCurrentCombinedScore())));
 		}
 	}
 
@@ -70,12 +70,12 @@ public class TestScoring extends RobotTestBed {
 		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 
 			double totalScore = (int) (0.5);
-			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++)
-			{
+
+			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++) {
 				totalScore += score.getTotalScores().get(scoreIndex);
 			}
 
-//			Assert.assertThat(score.getName(), (int)totalScore, is((int) (0.5 + score.getCombinedScore())));
+			// Assert.assertThat(score.getName(), (int)totalScore, is((int) (0.5 + score.getCombinedScore())));
 		}
 	}
 
@@ -84,12 +84,12 @@ public class TestScoring extends RobotTestBed {
 		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 
 			double totalScore = (int) (0.5);
-			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++)
-			{
+
+			for (int scoreIndex = 0; scoreIndex < score.getCurrentScores().size(); scoreIndex++) {
 				totalScore += score.getTotalScores().get(scoreIndex);
 			}
 
-//			Assert.assertThat(score.getName(), (int)totalScore, is((int) (0.5 + score.getCombinedScore())));
+			// Assert.assertThat(score.getName(), (int)totalScore, is((int) (0.5 + score.getCombinedScore())));
 		}
 	}
 }

@@ -79,8 +79,7 @@ public class ClassicRobotStatistics extends ContestantStatistics {
 			if (robotPeer.getTeamPeer() != null) {
 				enemyCount -= (robotPeer.getTeamPeer().size() - 1);
 			}
-			currentScores.set(lastSurvivorBonus, currentScores.get(lastSurvivorBonus) +
-					10 * enemyCount);
+			currentScores.set(lastSurvivorBonus, currentScores.get(lastSurvivorBonus) + 10 * enemyCount);
 
 			if (robotPeer.getTeamPeer() == null || robotPeer.isTeamLeader()) {
 				totalFirsts++;
@@ -103,7 +102,7 @@ public class ClassicRobotStatistics extends ContestantStatistics {
 				bonus = getRobotDamage(robot) * 0.20;
 			} else {
 				for (RobotPeer teammate : robotPeer.getTeamPeer()) {
-					bonus += ((ContestantStatistics)teammate.getRobotStatistics()).getRobotDamage(robot) * 0.20;
+					bonus += ((ContestantStatistics) teammate.getRobotStatistics()).getRobotDamage(robot) * 0.20;
 				}
 			}
 
@@ -116,8 +115,7 @@ public class ClassicRobotStatistics extends ContestantStatistics {
 	public void scoreRammingDamage(String robot) {
 		if (isActive) {
 			incrementRobotDamage(robot, robocode.Rules.ROBOT_HIT_DAMAGE);
-			currentScores.set(rammingDamageScore, currentScores.get(rammingDamageScore) + 
-					robocode.Rules.ROBOT_HIT_BONUS);
+			currentScores.set(rammingDamageScore, currentScores.get(rammingDamageScore) + robocode.Rules.ROBOT_HIT_BONUS);
 		}
 	}
 
@@ -129,7 +127,7 @@ public class ClassicRobotStatistics extends ContestantStatistics {
 				bonus = getRobotDamage(robot) * 0.30;
 			} else {
 				for (RobotPeer teammate : robotPeer.getTeamPeer()) {
-					bonus += ((ContestantStatistics)teammate.getRobotStatistics()).getRobotDamage(robot) * 0.30;
+					bonus += ((ContestantStatistics) teammate.getRobotStatistics()).getRobotDamage(robot) * 0.30;
 				}
 			}
 			currentScores.set(rammingKillBonus, currentScores.get(rammingKillBonus) + bonus);

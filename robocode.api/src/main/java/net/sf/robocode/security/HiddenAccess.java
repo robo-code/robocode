@@ -283,7 +283,7 @@ public class HiddenAccess {
 	public static void robocodeMain(final String[] args) {
 		init();
 		try {
-			robocodeMain.invoke(null, (Object) args);
+			robocodeMain.invoke(null, (Object)args);
 		} catch (IllegalAccessException e) {
 			Logger.logError(e);
 		} catch (InvocationTargetException e) {

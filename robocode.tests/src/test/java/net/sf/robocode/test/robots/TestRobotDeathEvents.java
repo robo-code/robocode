@@ -12,21 +12,25 @@
 package net.sf.robocode.test.robots;
 
 
+import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobotTestBed;
-import org.junit.Assert;
+
 import robocode.control.events.TurnEndedEvent;
 
 
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestFileOutputStreamAttack extends RobotTestBed {
+public class TestRobotDeathEvents extends RobotTestBed {
 
-	private boolean messagedAccessDenied;
-	
 	@Override
 	public String getRobotNames() {
-		return "tested.robots.FileOutputStreamAttack,sample.Target";
+		return "tested.robots.RobotDeathEvents,sample.Crazy,sample.Target,sample.Target,sample.Target";
+	}
+
+	@Override
+	public int getNumRounds() {
+		return 5;
 	}
 
 	@Override
@@ -35,18 +39,8 @@ public class TestFileOutputStreamAttack extends RobotTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("access denied (java.io.FilePermission")) {
-			messagedAccessDenied = true;	
+		if (out.contains("enemyCount != getOthers()")) {
+			Assert.fail("Robot is missing RobotDeathEvent");
 		}	
-	}
-
-	@Override
-	protected void runTeardown() {
-		Assert.assertTrue("FileOutputStream is not allowed", messagedAccessDenied);
-	}
-
-	@Override
-	protected int getExpectedErrors() {
-		return 1; // Security error must be reported as an error
 	}
 }

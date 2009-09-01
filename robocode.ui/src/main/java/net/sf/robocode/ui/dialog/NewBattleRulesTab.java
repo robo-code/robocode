@@ -41,16 +41,14 @@ public class NewBattleRulesTab extends JPanel {
 		initialize();
 	}
 
-	private JTextField getExtensionPackageField()
-	{
-		if (extensionPackageField == null){
+	private JTextField getExtensionPackageField() {
+		if (extensionPackageField == null) {
 			extensionPackageField = new JTextField();
 		}
 		return extensionPackageField;
 	}
 	
-	private JLabel getExtensionPackageLabel()
-	{
+	private JLabel getExtensionPackageLabel() {
 		if (extensionPackageLabel == null) {
 			extensionPackageLabel = new JLabel();
 			extensionPackageLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -61,21 +59,18 @@ public class NewBattleRulesTab extends JPanel {
 		return extensionPackageLabel;
 	}
 	
-	public String getExtensionPackage()
-	{
+	public String getExtensionPackage() {
 		return extensionPackageField.getText();
 	}
 	
-	private JTextField getExtensionFileField()
-	{
-		if (extensionFileField == null){
+	private JTextField getExtensionFileField() {
+		if (extensionFileField == null) {
 			extensionFileField = new JTextField();
 		}
 		return extensionFileField;
 	}
 	
-	private JLabel getExtensionFileLabel()
-	{
+	private JLabel getExtensionFileLabel() {
 		if (extensionFileLabel == null) {
 			extensionFileLabel = new JLabel();
 			extensionFileLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -86,8 +81,7 @@ public class NewBattleRulesTab extends JPanel {
 		return extensionFileLabel;
 	}
 	
-	public String getExtensionFile()
-	{
+	public String getExtensionFile() {
 		return extensionFileField.getText();
 	}
 		

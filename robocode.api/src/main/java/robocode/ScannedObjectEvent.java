@@ -8,9 +8,10 @@
  * Contributors:
  * 		Joshua Galecki
  * 		-Initial implementation
-  *******************************************************************************/
+ *******************************************************************************/
 
 package robocode;
+
 
 import java.awt.Graphics2D;
 import java.nio.ByteBuffer;
@@ -20,6 +21,7 @@ import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.IObjectEvents;
+
 
 /**
  * This event is fired when your robot scans an object that can be scanned.
@@ -142,17 +144,13 @@ public class ScannedObjectEvent extends Event {
 	 */
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
-		try
-		{
+		try {
 			IObjectEvents listener = (IObjectEvents) robot.getBasicEventListener();	
 		
 			if (listener != null) {
 				listener.onScannedObject(this);
 			}
-		}
-		catch (ClassCastException ex)
-		{
-			//The robot does not use objects, do nothing;
+		} catch (ClassCastException ex) {// The robot does not use objects, do nothing;
 		}
 	}
 
@@ -170,21 +168,20 @@ public class ScannedObjectEvent extends Event {
 
 	private static class SerializableHelper implements ISerializableHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
-//			HitRobotEvent obj = (HitRobotEvent) object;
+			// HitRobotEvent obj = (HitRobotEvent) object;
 
-			return HitObstacleEvent.SIZEOF_TYPEINFO ;
+			return HitObstacleEvent.SIZEOF_TYPEINFO;
 		}
 
-		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
-//			HitObstacleEvent obj = (HitObstacleEvent) object;
-
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {// HitObstacleEvent obj = (HitObstacleEvent) object;
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
 			String type = buffer.toString();
 			double bearing = buffer.getDouble();
 			double distance = buffer.getDouble();
-			//TODO: I'm unsure what needs to be done for serialization. For now, it will be faked
+
+			// TODO: I'm unsure what needs to be done for serialization. For now, it will be faked
 
 			return new ScannedObjectEvent(type, bearing, distance, false, false, false, false);
 		}

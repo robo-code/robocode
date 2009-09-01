@@ -8,9 +8,10 @@
  * Contributors:
  * 		Joshua Galecki
  * 		-Initial implementation
-  *******************************************************************************/
+ *******************************************************************************/
 
 package net.sf.robocode.battle.peer;
+
 
 import java.awt.geom.Rectangle2D;
 
@@ -40,8 +41,7 @@ public abstract class RobjectPeer {
 	
 	public RobjectPeer(String type, double x, double y, double width, double height, boolean stopsRobots,
 			boolean stopsBullets, boolean stopsScans, boolean scannable, boolean robotConscious,
-			boolean dynamic)
-	{
+			boolean dynamic) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -55,8 +55,7 @@ public abstract class RobjectPeer {
 		this.setDynamic(dynamic);
 	}
 
-	public Rectangle2D.Double getBoundaryRect()
-	{
+	public Rectangle2D.Double getBoundaryRect() {
 		return new Rectangle2D.Double(x, y, width, height);
 	}
 	
@@ -65,38 +64,46 @@ public abstract class RobjectPeer {
 	 * with the scan intersection. If a normal-sized rectangle is used to trim the scan arc, 
 	 * the resulting scan arc may or may not intersect with the object 
 	 */
-	public Rectangle2D.Double getIntersectRect()
-	{
+	public Rectangle2D.Double getIntersectRect() {
 		return new Rectangle2D.Double(x - 2, y - 2, width + 4, height + 4);
 	}
 	
 	public void setX(double x) {
 		this.x = x;
 	}
+
 	public double getX() {
 		return x;
 	}
+
 	public void setY(double y) {
 		this.y = y;
 	}
+
 	public double getY() {
 		return y;
 	}
+
 	public void setWidth(double d) {
 		this.width = d;
 	}
+
 	public double getWidth() {
 		return width;
 	}
+
 	public void setHeight(double height) {
 		this.height = height;
 	}
+
 	public double getHeight() {
 		return height;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public String getType() {
 		return type;
 	}
@@ -141,7 +148,6 @@ public abstract class RobjectPeer {
 		return robotConscious;
 	}
 
-
 	public void setDynamic(boolean dynamic) {
 		this.dynamic = dynamic;
 	}
@@ -155,24 +161,20 @@ public abstract class RobjectPeer {
 	}
 	
 	public int getTeam() {
-		//by default, return 0 to indicate no team ownership
+		// by default, return 0 to indicate no team ownership
 		return 0;
 	}
 	
-	public void hitByRobot(RobotPeer robot) {
-		//do nothing by default
+	public void hitByRobot(RobotPeer robot) {// do nothing by default
 	}
 	
-	public void hitByBullet() {
-		//do nothing by default
+	public void hitByBullet() {// do nothing by default
 	}
 
-	public void roundStarted() {
-		//do nothing by default
+	public void roundStarted() {// do nothing by default
 	}
 	
-	public void turnUpdate() {
-		//do nothing by default
+	public void turnUpdate() {// do nothing by default
 	}
 	
 	public abstract boolean shouldDraw();

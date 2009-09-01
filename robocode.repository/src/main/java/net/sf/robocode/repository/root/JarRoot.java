@@ -109,10 +109,11 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 
 						try {
 							inner = new JarInputStream(jarIS);
-
 							readJarStream(items, "jar:jar" + root + JarJar.SEPARATOR + entry.getName(), inner);
 						} finally {
-							FileUtil.cleanupStream(inner);
+							if (inner != null) {
+								inner.closeEntry();								
+							}
 						}
 					} else {
 						createItem(items, new URL(root + "!/"), entry);

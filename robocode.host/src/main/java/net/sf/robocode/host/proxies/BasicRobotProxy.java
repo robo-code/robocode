@@ -563,7 +563,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 				+ (int) status.getY();
 	}
 
-	
 	public IExtensionApi getExtensionApi() {
 		return peer.getExtensionApi();
 	}

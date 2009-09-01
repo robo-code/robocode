@@ -67,4 +67,8 @@ public class TestFileAttack extends RobotTestBed {
 		Assert.assertFalse("Found attack file", new File("C:\\Robocode.attack").exists());
 	}
 
+	@Override
+	protected int getExpectedErrors() {
+		return 2; // Security error must be reported as an error
+	}
 }

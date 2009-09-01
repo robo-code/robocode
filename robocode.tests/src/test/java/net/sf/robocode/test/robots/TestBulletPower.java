@@ -57,8 +57,7 @@ public class TestBulletPower extends RobotTestBed {
 		}
 	}
 
-	private void test(IRobotSnapshot gh, String s) {
-		//TODO: failing test, investigate
-		//Assert.assertTrue(gh.getOutputStreamSnapshot() + " expected " + s, gh.getOutputStreamSnapshot().contains(s));
+	private void test(IRobotSnapshot gh, String s) {// TODO: failing test, investigate
+		// Assert.assertTrue(gh.getOutputStreamSnapshot() + " expected " + s, gh.getOutputStreamSnapshot().contains(s));
 	}
 }

@@ -263,8 +263,7 @@ public class BattleProperties implements Serializable {
 	}
 
 	public String getExtensionPackage() {
-		if (extensionPackage == null)
-		{
+		if (extensionPackage == null) {
 			return "";
 		}
 		return extensionPackage;
@@ -275,8 +274,7 @@ public class BattleProperties implements Serializable {
 	}
 	
 	public String getExtensionFilename() {
-		if (extensionFilename == null)
-		{
+		if (extensionFilename == null) {
 			return "";
 		}
 		return extensionFilename;

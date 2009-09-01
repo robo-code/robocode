@@ -33,8 +33,6 @@ import robocode.control.snapshot.BulletState;
 import java.util.List;
 
 
-
-
 /**
  * @author Mathew A. Nelson (original)
  * @author Luis Crespo (contributor)

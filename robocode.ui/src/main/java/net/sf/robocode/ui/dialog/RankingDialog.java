@@ -57,6 +57,9 @@ public class RankingDialog extends BaseScoreDialog {
 
 	public RankingDialog(IWindowManager windowManager, ISettingsManager settingsManager, MenuBar menu) {
 		super(settingsManager.getOptionsCommonDontHideRankings() ? null : windowManager, false);
+
+		initialize();
+
 		this.windowManager = windowManager;
 		battleObserver = new BattleObserver();
 		timerTask = new Timer(1000 / 2, new TimerTask());
@@ -64,7 +67,6 @@ public class RankingDialog extends BaseScoreDialog {
 		lastRows = 0;
 		tableModel = new BattleRankingTableModel();
 		this.menu = menu;
-		initialize();
 		setTitle("Ranking");
 	}
 
@@ -77,6 +79,8 @@ public class RankingDialog extends BaseScoreDialog {
 		final ITurnSnapshot current = snapshot.get();
 
 		if (lastSnapshot != current) {
+			setResultsData();
+
 			lastSnapshot = current;
 			tableModel.updateSource(lastSnapshot);
 			if (table.getModel().getRowCount() != lastRows) {

@@ -47,15 +47,19 @@ public class ResultsDialog extends BaseScoreDialog {
 	public ResultsDialog(IWindowManager manager) {
 		super(manager, true);
 		buttonEventHandler = new ButtonEventHandler();
+		initialize();
+		addCancelByEscapeKey();
 	}
 
 	public void setup(BattleResults[] results, int numRounds) {
 		tableModel = new BattleResultsTableModel(results, numRounds);
-		initialize();
 		setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
 		setResultsData();
-		pack();
-		addCancelByEscapeKey();
+
+		table.setPreferredSize(
+				new Dimension(table.getColumnModel().getTotalColumnWidth(),
+				table.getModel().getRowCount() * table.getRowHeight()));
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 	}
 
 	private void saveButtonActionPerformed() {

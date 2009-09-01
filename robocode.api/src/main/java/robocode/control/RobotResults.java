@@ -63,7 +63,7 @@ public class RobotResults extends BattleResults {
 			int seconds,
 			int thirds
 			) {
-		//TODO: this needs to change...
+		// TODO: this needs to change...
 		scoreNames.add("Survival");
 		scores.add(survival);
 		scoreNames.add("Last Survivor Bonus");
@@ -96,9 +96,8 @@ public class RobotResults extends BattleResults {
 	public RobotResults(
 			RobotSpecification robot,
 			BattleResults results) {		
-		super(results.getTeamName(), results.getRank(), results.getCombinedScore(), 
-				results.getScores(), results.getScoreNames(), results.getFirsts(), 
-				results.getSeconds(), results.getThirds());
+		super(results.getTeamName(), results.getRank(), results.getCombinedScore(), results.getScores(),
+				results.getScoreNames(), results.getFirsts(), results.getSeconds(), results.getThirds());
 		this.robot = robot;
 	}
 

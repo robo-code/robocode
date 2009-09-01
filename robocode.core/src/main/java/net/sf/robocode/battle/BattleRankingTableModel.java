@@ -85,40 +85,26 @@ public class BattleRankingTableModel extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int col) {
-		if (col < 3)
-		{
-			if (col == 0)
-			{
+		if (col < 3) {
+			if (col == 0) {
 				return "Rank";
-			}
-			else if (col == 1)
-			{
+			} else if (col == 1) {
 				return "Robot Name";
-			}
-			else 
-			{
+			} else {
 				return "          Total Score          ";
 			}
-		}
-		else if (scoreSnapshotList != null && scoreSnapshotList.length > 0 && 
-				col - 3 >= scoreSnapshotList[0].getScoreNames().size())
-		{
+		} else if (scoreSnapshotList != null && scoreSnapshotList.length > 0
+				&& col - 3 >= scoreSnapshotList[0].getScoreNames().size()) {
 			int size = scoreSnapshotList[0].getScoreNames().size();
-			if (col == size - 3)
-			{
+
+			if (col == size - 3) {
 				return " 1sts ";
-			}
-			else if (col == size - 2)
-			{
+			} else if (col == size - 2) {
 				return " 2nds ";
-			}
-			else if (col == size - 1)
-			{
+			} else if (col == size - 1) {
 				return " 3rds ";
 			}
-		}
-		else if (scoreSnapshotList != null && scoreSnapshotList.length > 0)
-		{
+		} else if (scoreSnapshotList != null && scoreSnapshotList.length > 0) {
 			return scoreSnapshotList[0].getScoreNames().get(col - 3);
 		}
 		return "";
@@ -129,39 +115,26 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		final IScoreSnapshot statistics = scoreSnapshotList[row];
 
 		int size = statistics.getTotalScores().size();
-		if (col < size + 6)
-		{
-			if (col == 0)
-			{
+
+		if (col < size + 6) {
+			if (col == 0) {
 				return getPlacementString(row + 1);
-			}
-			else if (col == 1)
-			{
+			} else if (col == 1) {
 				return statistics.getName();
-			}
-			else if (col == 2)
-			{
+			} else if (col == 2) {
 				final double current = statistics.getCurrentCombinedScore();
 				final double total = statistics.getCombinedScore();
 
 				return (int) (current + 0.5) + " / " + (int) (total + current + 0.5) + "  ("
-						+ (int) (current / currentSum * 100) + " / " + (int) ((total + current) / (totalSum + currentSum) * 100)
-						+ "%)";
-			}
-			else if (col == size - 3)
-			{
+						+ (int) (current / currentSum * 100) + " / "
+						+ (int) ((total + current) / (totalSum + currentSum) * 100) + "%)";
+			} else if (col == size - 3) {
 				return "" + statistics.getTotalFirsts();
-			}
-			else if (col == size - 2)
-			{
+			} else if (col == size - 2) {
 				return "" + statistics.getTotalSeconds();
-			}
-			else if (col == size - 1)
-			{
+			} else if (col == size - 1) {
 				return "" + statistics.getTotalThirds();
-			}
-			else
-			{
+			} else {
 				final double current = statistics.getCurrentScores().get(col - 3);
 				final double total = statistics.getTotalScores().get(col - 3);
 

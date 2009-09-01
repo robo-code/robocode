@@ -8,10 +8,10 @@
  * Contributors:
  * 		Joshua Galecki
  * 		-Initial implementation
-  *******************************************************************************/
-
+ *******************************************************************************/
 
 package net.sf.robocode.battle;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,7 @@ import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.battle.peer.TeamPeer;
 
+
 /**
  * This class is the base class for all extension rule sets. The default implementation
  * of these functions will be Classic Robocode rules.
@@ -40,7 +41,7 @@ import net.sf.robocode.battle.peer.TeamPeer;
  * @author Joshua Galecki (original)
  *
  */
-public abstract class CustomRules implements ICustomRules{
+public abstract class CustomRules implements ICustomRules {
 
 	IContestantStatistics statistics = null;
 	
@@ -48,8 +49,7 @@ public abstract class CustomRules implements ICustomRules{
 	 * {@inheritDoc}
 	 */
 	public boolean isGameOver(int activeRobots, List<RobotPeer> robots,
-			List<RobjectPeer> robjects)
-	{
+			List<RobjectPeer> robjects) {
 		if (activeRobots <= 1) {
 			return true;
 		}
@@ -78,18 +78,13 @@ public abstract class CustomRules implements ICustomRules{
 	/**
 	 * {@inheritDoc}
 	 */
-	public void startBattle(Battle battle)
-	{
-		
-	}
+	public void startBattle(Battle battle) {}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public void startRound(Battle battle)
-	{
-		for (RobjectPeer robject : battle.getRobjects())
-		{
+	public void startRound(Battle battle) {
+		for (RobjectPeer robject : battle.getRobjects()) {
 			robject.roundStarted();
 		}
 	}
@@ -97,18 +92,13 @@ public abstract class CustomRules implements ICustomRules{
 	/**
 	 * {@inheritDoc}
 	 */
-	public void startTurn(Battle battle)
-	{
-		
-	}
+	public void startTurn(Battle battle) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void finishTurn(Battle battle)
-	{
-		for (RobjectPeer robject : battle.getRobjects())
-		{
+	public void finishTurn(Battle battle) {
+		for (RobjectPeer robject : battle.getRobjects()) {
 			robject.turnUpdate();
 		}
 		
@@ -117,21 +107,14 @@ public abstract class CustomRules implements ICustomRules{
 	/**
 	 * {@inheritDoc}
 	 */
-	public void finishRound(Battle battle)
-	{
-		
-	}
+	public void finishRound(Battle battle) {}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void finishBattle(Battle battle)
-	{
-		
-	}
+	public void finishBattle(Battle battle) {}
 	
-	public void robotKill(RobotPeer robot)
-	{
+	public void robotKill(RobotPeer robot) {
 		robot.getBattle().resetInactiveTurnCount(10.0);
 		if (robot.isAlive()) {
 			robot.addEvent(new DeathEvent());
@@ -163,14 +146,12 @@ public abstract class CustomRules implements ICustomRules{
 		robot.setState(RobotState.DEAD);
 	}
 	
-	public void robotIsDead(RobotPeer robot)
-	{
+	public void robotIsDead(RobotPeer robot) {
 		robot.setIsExecFinishedAndDisabled(true);
 		throw new DeathException();
 	}
 	
-	public int computeActiveRobots(List<RobotPeer> robots)
-	{
+	public int computeActiveRobots(List<RobotPeer> robots) {
 		int ar = 0;
 
 		// Compute active robots
@@ -182,21 +163,19 @@ public abstract class CustomRules implements ICustomRules{
 		return ar;
 	}
 	
-	public IContestantStatistics getEmptyStatistics(){
+	public IContestantStatistics getEmptyStatistics() {
 		return new ClassicRobotStatistics();
 	}
 	
-	public IExtensionApi getExtensionApi()
-	{
+	public IExtensionApi getExtensionApi() {
 		return null;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public double[][] computeInitialPositions(String initialPositions, int battlefieldWidth, int battlefieldHeight)
-	{
-		double [][] initialRobotPositions = null;
+	public double[][] computeInitialPositions(String initialPositions, int battlefieldWidth, int battlefieldHeight) {
+		double[][] initialRobotPositions = null;
 
 		if (initialPositions == null || initialPositions.trim().length() == 0) {
 			return initialRobotPositions;
@@ -266,23 +245,20 @@ public abstract class CustomRules implements ICustomRules{
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<RobjectPeer> setupObjects(int battlefieldWidth,	int battlefieldHeight) {
+	public List<RobjectPeer> setupObjects(int battlefieldWidth, int battlefieldHeight) {
 		// return an empty list, we don't want any objects for classic mode
 		return new ArrayList<RobjectPeer>();
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<RobjectPeer> checkBoundaries(List<RobjectPeer> robjects, int battlefieldWidth, int battlefieldHeight)
-	{
-		for (RobjectPeer robject : robjects)
-		{
-			if (robject.getX() + robject.getWidth() > battlefieldWidth)
-			{
+	public List<RobjectPeer> checkBoundaries(List<RobjectPeer> robjects, int battlefieldWidth, int battlefieldHeight) {
+		for (RobjectPeer robject : robjects) {
+			if (robject.getX() + robject.getWidth() > battlefieldWidth) {
 				robject.setWidth(battlefieldWidth - robject.getX());
 			}
-			if (robject.getY() + robject.getHeight() > battlefieldHeight)
-			{
+			if (robject.getY() + robject.getHeight() > battlefieldHeight) {
 				robject.setHeight(battlefieldHeight - robject.getY());
 			}
 		}

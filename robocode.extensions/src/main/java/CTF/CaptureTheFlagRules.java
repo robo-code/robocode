@@ -15,7 +15,6 @@ package CTF;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,7 +47,6 @@ import net.sf.robocode.battle.peer.ExplosionPeer;
 import net.sf.robocode.battle.IContestantStatistics;
 import net.sf.robocode.battle.peer.RobjectPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
-import net.sf.robocode.battle.peer.TeamPeer;
 import net.sf.robocode.io.FileUtil;
 
 /**

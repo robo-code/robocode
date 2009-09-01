@@ -6,7 +6,7 @@
             <activeByDefault>true</activeByDefault>
         </activation>
         <properties>
-            <robocode.version>2.0.0.0 Alpha</robocode.version>
+            <robocode.version>2.0.0.0-Alpha</robocode.version>
             <robocode.nversion>2.0.0.0</robocode.nversion>
         </properties>
     </profile>

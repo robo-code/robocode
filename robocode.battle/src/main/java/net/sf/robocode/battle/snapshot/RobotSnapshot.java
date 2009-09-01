@@ -30,7 +30,6 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
 
@@ -171,12 +170,9 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		isPaintEnabled = robot.isPaintEnabled();
 		isSGPaintEnabled = robot.isSGPaintEnabled();
 
-		if (robot.getScanArc() != null) 
-		{
+		if (robot.getScanArc() != null) {
 			scanArc = robot.getScanArea();
-		}
-		else
-		{
+		} else {
 			scanArc = null;
 		}
 
@@ -401,14 +397,13 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 * @return the scan arc snapshot for the robot.
 	 */
 
-//TODO: backwards compatbility
-//	public List<Arc2D> getScanArc() {
-//		return scanArc != null ? scanArc.create() : null;
-//	}
+	// TODO: backwards compatbility
+	// public List<Arc2D> getScanArc() {
+	// return scanArc != null ? scanArc.create() : null;
+	// }
 
 	public Area getScanArc() {
-		if (scanArc != null)
-		{
+		if (scanArc != null) {
 			return scanArc;
 		}
 		return null;

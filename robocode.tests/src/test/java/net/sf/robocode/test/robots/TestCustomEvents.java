@@ -48,10 +48,9 @@ public class TestCustomEvents extends RobotTestBed {
 		}
 	}
 
-	private void test(IRobotSnapshot gh, String s) {
-		//TODO: failing test, investigate
-//		Assert.assertTrue("got: " + gh.getOutputStreamSnapshot() + ", expected: " + s,
-//				gh.getOutputStreamSnapshot().contains(s));
+	private void test(IRobotSnapshot gh, String s) {// TODO: failing test, investigate
+		// Assert.assertTrue("got: " + gh.getOutputStreamSnapshot() + ", expected: " + s,
+		// gh.getOutputStreamSnapshot().contains(s));
 	}
 
 	@Override

@@ -1,5 +1,4 @@
 package robocode;
 
-public interface IExtensionApi {
 
-}
+public interface IExtensionApi {}

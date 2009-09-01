@@ -14,15 +14,15 @@
  *     - Made into an interface, combined scores into lists
  *******************************************************************************/
 
-
 package robocode;
 
+
 import java.nio.ByteBuffer;
-import java.text.DecimalFormat;
 import java.util.List;
 
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
+
 
 /**
  * Contains the battle results returned by {@link BattleEndedEvent#getResults()}
@@ -51,12 +51,10 @@ public class BattleResults implements IBattleResults {
 	protected int seconds;
 	protected int thirds;
 	
-	public BattleResults() {
-	}
+	public BattleResults() {}
 	
 	public BattleResults(String teamName, int rank, double combinedScore, List<Double> scores,
-			List<String> scoreNames, int firsts, int seconds, int thirds)
-	{
+			List<String> scoreNames, int firsts, int seconds, int thirds) {
 		this.teamName = teamName;
 		this.rank = rank;
 		this.combinedScore = combinedScore;
@@ -71,16 +69,11 @@ public class BattleResults implements IBattleResults {
 	 * {@inheritDoc}
 	 */
 	public int compareTo(IBattleResults o) {
-		if (combinedScore == o.getCombinedScore())
-		{
+		if (combinedScore == o.getCombinedScore()) {
 			return 0;
-		}
-		else if (combinedScore > o.getCombinedScore())
-		{
+		} else if (combinedScore > o.getCombinedScore()) {
 			return 1; 
-		}
-		else
-		{
+		} else {
 			return -1;
 		}
 	}
@@ -91,8 +84,7 @@ public class BattleResults implements IBattleResults {
 	 *
 	 * @return the name of the team or the name of the robot.
 	 */
-	public String getTeamName()
-	{
+	public String getTeamName() {
 		return teamName;
 	}
 
@@ -101,8 +93,7 @@ public class BattleResults implements IBattleResults {
 	 *
 	 * @return the rank of this robot in the battle results.
 	 */
-	public int getRank()
-	{
+	public int getRank() {
 		return rank;
 	}
 
@@ -111,8 +102,7 @@ public class BattleResults implements IBattleResults {
 	 *
 	 * @return the total score of this robot in the battle.
 	 */
-	public double getCombinedScore()
-	{
+	public double getCombinedScore() {
 		return combinedScore;
 	}
 	
@@ -121,8 +111,7 @@ public class BattleResults implements IBattleResults {
 	 * 
 	 * @return a list of the scores of the robot.
 	 */
-	public List<Double> getScores()
-	{
+	public List<Double> getScores() {
 		return scores;
 	}
 	
@@ -131,8 +120,7 @@ public class BattleResults implements IBattleResults {
 	 * 
 	 * @return a list of the different categories of scores for the robot.
 	 */
-	public List<String> getScoreNames()
-	{
+	public List<String> getScoreNames() {
 		return scoreNames;
 	}
 
@@ -141,8 +129,7 @@ public class BattleResults implements IBattleResults {
 	 *
 	 * @return the number of rounds this robot placed first in the battle.
 	 */
-	public int getFirsts()
-	{
+	public int getFirsts() {
 		return firsts;
 	}
 
@@ -151,8 +138,7 @@ public class BattleResults implements IBattleResults {
 	 *
 	 * @return the number of rounds this robot placed second in the battle.
 	 */
-	public int getSeconds()
-	{
+	public int getSeconds() {
 		return seconds;
 	}
 	
@@ -161,8 +147,7 @@ public class BattleResults implements IBattleResults {
 	 *
 	 * @return the number of rounds this robot placed third in the battle.
 	 */
-	public int getThirds()
-	{
+	public int getThirds() {
 		return thirds;
 	}
 	
@@ -181,31 +166,30 @@ public class BattleResults implements IBattleResults {
 		public int sizeOf(RbSerializer serializer, Object object) {
 			BattleResults obj = (BattleResults) object;
 
-			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.getTeamName()) + 
-				4 *	RbSerializer.SIZEOF_INT	+ 7 * RbSerializer.SIZEOF_DOUBLE;
+			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.getTeamName()) + 4 * RbSerializer.SIZEOF_INT
+					+ 7 * RbSerializer.SIZEOF_DOUBLE;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
 			BattleResults obj = (BattleResults) object;
 
 			double scoresArray[] = new double[obj.getScores().size()];
-			for (int scoreIndex = 0; scoreIndex < obj.getScores().size(); scoreIndex++)
-			{
+
+			for (int scoreIndex = 0; scoreIndex < obj.getScores().size(); scoreIndex++) {
 				scoresArray[scoreIndex] = obj.getScores().get(scoreIndex);
 			}
 			
-			//TODO: test, ensure that a \n cannot be inserted into a score's name
+			// TODO: test, ensure that a \n cannot be inserted into a score's name
 			int namesLength = 0;
-			for (String name : obj.getScoreNames())
-			{
+
+			for (String name : obj.getScoreNames()) {
 				namesLength += name.length() + 1;
 			}
 			char nameArray[] = new char[namesLength];
 			int arrayIndex = 0;
-			for (String name : obj.getScoreNames())
-			{
-				for (int charIndex = 0; charIndex < name.length(); charIndex++)
-				{
+
+			for (String name : obj.getScoreNames()) {
+				for (int charIndex = 0; charIndex < name.length(); charIndex++) {
 					nameArray[arrayIndex] = name.charAt(charIndex);
 					arrayIndex++;
 				}
@@ -228,19 +212,19 @@ public class BattleResults implements IBattleResults {
 			int rank = buffer.getInt();
 			double score = buffer.getDouble();
 
-			//TODO: unserializing the buffer.
-//			double survival = buffer.getDouble();
-//			double lastSurvivorBonus = buffer.getDouble();
-//			double bulletDamage = buffer.getDouble();
-//			double bulletDamageBonus = buffer.getDouble();
-//			double ramDamage = buffer.getDouble();
-//			double ramDamageBonus = buffer.getDouble();
-//			int firsts = buffer.getInt();
-//			int seconds = buffer.getInt();
-//			int thirds = buffer.getInt();
-//
-//			return new BattleResults(teamLeaderName, rank, score, survival, lastSurvivorBonus, bulletDamage,
-//					bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, thirds);
+			// TODO: unserializing the buffer.
+			// double survival = buffer.getDouble();
+			// double lastSurvivorBonus = buffer.getDouble();
+			// double bulletDamage = buffer.getDouble();
+			// double bulletDamageBonus = buffer.getDouble();
+			// double ramDamage = buffer.getDouble();
+			// double ramDamageBonus = buffer.getDouble();
+			// int firsts = buffer.getInt();
+			// int seconds = buffer.getInt();
+			// int thirds = buffer.getInt();
+			//
+			// return new BattleResults(teamLeaderName, rank, score, survival, lastSurvivorBonus, bulletDamage,
+			// bulletDamageBonus, ramDamage, ramDamageBonus, firsts, seconds, thirds);
 			return new BattleResults(teamName, rank, score, null, null, 0, 0, 0);
 		}
 	}

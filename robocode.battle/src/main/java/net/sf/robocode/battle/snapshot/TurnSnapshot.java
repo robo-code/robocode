@@ -88,8 +88,7 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 			bullets.add(new BulletSnapshot(bulletPeer));
 		}
 
-		if (battle.getRobjects() != null)
-		{
+		if (battle.getRobjects() != null) {
 			for (RobjectPeer robject : battle.getRobjects()) {
 				objects.add(new RobjectSnapshot(robject));
 			}

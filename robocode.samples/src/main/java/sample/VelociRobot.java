@@ -29,7 +29,7 @@ import robocode.robotinterfaces.IObjectRobot;
  * 
  * @author Joshua Galecki
  */
-public class VelociRobot extends RateControlRobot implements IObjectEvents, IObjectRobot{
+public class VelociRobot extends RateControlRobot implements IObjectEvents, IObjectRobot {
 
 	int turnCounter;
 	public void run() {
@@ -67,18 +67,12 @@ public class VelociRobot extends RateControlRobot implements IObjectEvents, IObj
 		setVelocityRate(-1 * getVelocityRate());
 	}
 
-	public void onHitObject(HitObjectEvent e) {
-		
-	}
+	public void onHitObject(HitObjectEvent e) {}
 
-	public void onHitObstacle(HitObstacleEvent e) {
-		
-	}
+	public void onHitObstacle(HitObstacleEvent e) {}
 
-	public void onScannedObject(ScannedObjectEvent e)
-	{
-		if (e.getObjectType().equals("flag"))
-		{
+	public void onScannedObject(ScannedObjectEvent e) {
+		if (e.getObjectType().equals("flag")) {
 			e.getBearing();
 		}
 	}
