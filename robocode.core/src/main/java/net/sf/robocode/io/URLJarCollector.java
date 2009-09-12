@@ -102,6 +102,7 @@ public class URLJarCollector {
 			}
 			urlToClean.clear();
 			// dump();
+			System.gc();
 		}
 	}
 

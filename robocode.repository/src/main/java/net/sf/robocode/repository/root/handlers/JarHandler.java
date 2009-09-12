@@ -15,6 +15,7 @@ package net.sf.robocode.repository.root.handlers;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.JarRoot;
+import net.sf.robocode.io.URLJarCollector;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -49,6 +50,7 @@ public class JarHandler extends RootHandler {
 
 				root.update(updateInvalid);
 				newroots.put(jar.toURI().toString(), root);
+				URLJarCollector.gc();
 			}
 		}
 	}
