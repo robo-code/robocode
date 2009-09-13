@@ -234,7 +234,7 @@ public final class VersionManager implements IVersionManager {
 			
 			// Validate version format
 			if (!version.matches(
-					"\\s*[0-9]+\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?(\\s?(([aA]lpha)|([bB]eta))(\\s?[0-9])?)?\\s*")) {
+					"\\s*[0-9]+\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?(\\s?(([aA]lpha)|([bB]eta))(\\s?[0-9]+)?)?\\s*")) {
 				throw new IllegalArgumentException("The format of the version string is not a valid");
 			}
 			this.version = version;
