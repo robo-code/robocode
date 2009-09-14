@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
+import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
@@ -35,7 +36,11 @@ import java.util.Map;
  * @author Pavel Savara (original)
  */
 public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
-	final Method[] methods = Method.class.getEnumConstants();
+
+	private static final int INITIAL_BUFFER_SIZE = 2 * 1024;  
+	private static final int MAX_BUFFER_SIZE = 64 * 1024;  
+
+	private final Method[] methods = Method.class.getEnumConstants();
 
 	private enum Method {
 		TRANSLATE_INT, // translate(int, int)
@@ -138,7 +143,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	private final RbSerializer serializer = new RbSerializer();
 
 	// FOR-DEBUG private Method lastRead;
-	private int lastPos;
+	// FOR-DEBUG private int lastPos;
 
 	// --------------------------------------------------------------------------
 	// Overriding all methods from the extended Graphics class
@@ -152,7 +157,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	public Graphics create() {
 		Graphics2DSerialized gfxProxyCopy = new Graphics2DSerialized();
 
-		gfxProxyCopy.calls = ByteBuffer.allocate(2048);
+		gfxProxyCopy.calls = ByteBuffer.allocate(INITIAL_BUFFER_SIZE);
 		gfxProxyCopy.transform = transform;
 		gfxProxyCopy.composite = copyOf(composite);
 		gfxProxyCopy.paint = paint;
@@ -181,14 +186,22 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void translate(int x, int y) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.TRANSLATE_INT);
+				put(x);
+				put(y);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					translate(x, y); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getTransform()
 		this.transform.translate(x, y);
-
-		if (isPaintingEnabled) {
-			put(Method.TRANSLATE_INT);
-			put(x);
-			put(y);
-		}
 	}
 
 	@Override
@@ -198,27 +211,51 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void setColor(Color c) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_COLOR);
+				put(c);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setColor(c); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getColor()
 		this.color = c;
-
-		if (isPaintingEnabled) {
-			put(Method.SET_COLOR);
-			put(c);
-		}
 	}
 
 	@Override
 	public void setPaintMode() {
 		if (isPaintingEnabled) {
-			put(Method.SET_PAINT_MODE);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_PAINT_MODE);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setPaintMode(); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void setXORMode(Color c1) {
 		if (isPaintingEnabled) {
-			put(Method.SET_XOR_MODE);
-			put(c1);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_XOR_MODE);
+				put(c1);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setXORMode(c1); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
@@ -232,13 +269,21 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void setFont(Font font) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_FONT);
+				put(font);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setFont(font); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getFont()
 		this.font = font;
-
-		if (isPaintingEnabled) {
-			put(Method.SET_FONT);
-			put(font);
-		}
 	}
 
 	@Override
@@ -253,6 +298,22 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void clipRect(int x, int y, int width, int height) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.CLIP_RECT);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					clipRect(x, y, width, height); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getClip()
 
 		Area clipArea = new Area(clip);
@@ -261,28 +322,28 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		clipArea.intersect(clipRectArea);
 
 		this.clip = clipArea;
-
-		if (isPaintingEnabled) {
-			put(Method.CLIP_RECT);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-		}
 	}
 
 	@Override
 	public void setClip(int x, int y, int width, int height) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_CLIP);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setClip(x, y, width, height); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getClip()
 		this.clip = new Rectangle(x, y, width, height);
-
-		if (isPaintingEnabled) {
-			put(Method.SET_CLIP);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-		}
 	}
 
 	@Override
@@ -292,187 +353,315 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void setClip(Shape clip) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_CLIP_SHAPE);
+				put(clip);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setClip(clip); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getClip()
 		this.clip = clip;
-
-		if (isPaintingEnabled) {
-			put(Method.SET_CLIP_SHAPE);
-			put(clip);
-		}
 	}
 
 	@Override
 	public void copyArea(int x, int y, int width, int height, int dx, int dy) {
 		if (isPaintingEnabled) {
-			put(Method.COPY_AREA);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-			put(dx);
-			put(dy);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.COPY_AREA);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+				put(dx);
+				put(dy);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					copyArea(x, y, width, height, dx, dy); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawLine(int x1, int y1, int x2, int y2) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_LINE);
-			put(x1);
-			put(y1);
-			put(x2);
-			put(y2);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_LINE);
+				put(x1);
+				put(y1);
+				put(x2);
+				put(y2);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawLine(x1, y1, x2, y2); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void fillRect(int x, int y, int width, int height) {
 		if (isPaintingEnabled) {
-			put(Method.FILL_RECT);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.FILL_RECT);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					fillRect(x, y, width, height); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawRect(int x, int y, int width, int height) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_RECT);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_RECT);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawRect(x, y, width, height); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void clearRect(int x, int y, int width, int height) {
 		if (isPaintingEnabled) {
-			put(Method.CLEAR_RECT);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.CLEAR_RECT);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					clearRect(x, y, width, height); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_ROUND_RECT);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-			put(arcWidth);
-			put(arcHeight);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_ROUND_RECT);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+				put(arcWidth);
+				put(arcHeight);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawRoundRect(x, y, width, height, arcWidth, arcHeight); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 		if (isPaintingEnabled) {
-			put(Method.FILL_ROUND_RECT);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-			put(arcWidth);
-			put(arcHeight);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.FILL_ROUND_RECT);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+				put(arcWidth);
+				put(arcHeight);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					fillRoundRect(x, y, width, height, arcWidth, arcHeight); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void draw3DRect(int x, int y, int width, int height, boolean raised) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_3D_RECT);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-			put(raised);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_3D_RECT);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+				put(raised);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					draw3DRect(x, y, width, height, raised); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void fill3DRect(int x, int y, int width, int height, boolean raised) {
 		if (isPaintingEnabled) {
-			put(Method.FILL_3D_RECT);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-			put(raised);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.FILL_3D_RECT);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+				put(raised);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					fill3DRect(x, y, width, height, raised); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawOval(int x, int y, int width, int height) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_OVAL);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_OVAL);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawOval(x, y, width, height); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void fillOval(int x, int y, int width, int height) {
 		if (isPaintingEnabled) {
-			put(Method.FILL_OVAL);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.FILL_OVAL);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					fillOval(x, y, width, height); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_ARC);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-			put(startAngle);
-			put(arcAngle);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_ARC);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+				put(startAngle);
+				put(arcAngle);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawArc(x, y, width, height, startAngle, arcAngle); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 		if (isPaintingEnabled) {
-			put(Method.FILL_ARC);
-			put(x);
-			put(y);
-			put(width);
-			put(height);
-			put(startAngle);
-			put(arcAngle);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.FILL_ARC);
+				put(x);
+				put(y);
+				put(width);
+				put(height);
+				put(startAngle);
+				put(arcAngle);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					fillArc(x, y, width, height, startAngle, arcAngle); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawPolyline(int[] xPoints, int[] yPoints, int npoints) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_POLYLINE);
-			put(xPoints);
-			put(yPoints);
-			put(npoints);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_POLYLINE);
+				put(xPoints);
+				put(yPoints);
+				put(npoints);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawPolyline(xPoints, yPoints, npoints); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawPolygon(int[] xPoints, int[] yPoints, int npoints) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_POLYGON);
-			put(xPoints);
-			put(yPoints);
-			put(npoints);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_POLYGON);
+				put(xPoints);
+				put(yPoints);
+				put(npoints);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawPolygon(xPoints, yPoints, npoints); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
@@ -486,10 +675,18 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	@Override
 	public void fillPolygon(int[] xPoints, int[] yPoints, int npoints) {
 		if (isPaintingEnabled) {
-			put(Method.FILL_POLYGON);
-			put(xPoints);
-			put(yPoints);
-			put(npoints);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.FILL_POLYGON);
+				put(xPoints);
+				put(yPoints);
+				put(npoints);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					fillPolygon(xPoints, yPoints, npoints); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
@@ -506,45 +703,76 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			throw new NullPointerException("str is null"); // According to the specification!
 		}
 		if (isPaintingEnabled) {
-			put(Method.DRAW_STRING_INT);
-			put(str);
-			put(x);
-			put(y);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_STRING_INT);
+				put(str);
+				put(x);
+				put(y);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawString(str, x, y); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
 		if (isPaintingEnabled) {
-
-			put(Method.DRAW_STRING_ACI_INT);
-			put(iterator);
-			put(x);
-			put(y);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_STRING_ACI_INT);
+				put(iterator);
+				put(x);
+				put(y);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawString(iterator, x, y); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawChars(char[] data, int offset, int length, int x, int y) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_CHARS);
-			put(data);
-			put(offset);
-			put(length);
-			put(x);
-			put(y);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_CHARS);
+				put(data);
+				put(offset);
+				put(length);
+				put(x);
+				put(y);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawChars(data, offset, length, x, y); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawBytes(byte[] data, int offset, int length, int x, int y) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_BYTES);
-			put(data);
-			put(offset);
-			put(length);
-			put(x);
-			put(y);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_BYTES);
+				put(data);
+				put(offset);
+				put(length);
+				put(x);
+				put(y);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawBytes(data, offset, length, x, y); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
@@ -553,8 +781,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		if (isPaintingEnabled) {
 			notSupported();
 		}
-
-		return false; // as if if the image pixels are still changing (as the call is queued)
+		return false; // as if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
@@ -562,8 +789,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		if (isPaintingEnabled) {
 			notSupported();
 		}
-
-		return false; // as if if the image pixels are still changing (as the call is queued)
+		return false; // as if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
@@ -571,8 +797,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		if (isPaintingEnabled) {
 			notSupported();
 		}
-
-		return false; // as if if the image pixels are still changing (as the call is queued)
+		return false; // as if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
@@ -580,8 +805,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		if (isPaintingEnabled) {
 			notSupported();
 		}
-
-		return false; // as if if the image pixels are still changing (as the call is queued)
+		return false; // as if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
@@ -591,8 +815,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		if (isPaintingEnabled) {
 			notSupported();
 		}
-
-		return false; // as if if the image pixels are still changing (as the call is queued)
+		return false; // as if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
@@ -602,8 +825,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		if (isPaintingEnabled) {
 			notSupported();
 		}
-
-		return false; // as if if the image pixels are still changing (as the call is queued)
+		return false; // as if the image pixels are still changing (as the call is queued)
 	}
 
 	@Override
@@ -636,8 +858,16 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	@Override
 	public void draw(Shape s) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_SHAPE);
-			put(s);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_SHAPE);
+				put(s);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					draw(s); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
@@ -672,20 +902,36 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			throw new NullPointerException("str is null"); // According to the specification!
 		}
 		if (isPaintingEnabled) {
-			put(Method.DRAW_STRING_FLOAT);
-			put(str);
-			put(x);
-			put(y);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_STRING_FLOAT);
+				put(str);
+				put(x);
+				put(y);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawString(str, x, y); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
 	@Override
 	public void drawString(AttributedCharacterIterator iterator, float x, float y) {
 		if (isPaintingEnabled) {
-			put(Method.DRAW_STRING_ACI_FLOAT);
-			put(iterator);
-			put(x);
-			put(y);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.DRAW_STRING_ACI_FLOAT);
+				put(iterator);
+				put(x);
+				put(y);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					drawString(iterator, x, y); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
@@ -699,8 +945,16 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	@Override
 	public void fill(Shape s) {
 		if (isPaintingEnabled) {
-			put(Method.FILL_SHAPE);
-			put(s);
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.FILL_SHAPE);
+				put(s);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					fill(s); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
 		}
 	}
 
@@ -730,35 +984,59 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void setComposite(Composite comp) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_COMPOSITE);
+				put(comp);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setComposite(comp); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getComposite()
 		this.composite = comp;
-
-		if (isPaintingEnabled) {
-			put(Method.SET_COMPOSITE);
-			put(comp);
-		}
 	}
 
 	@Override
 	public void setPaint(Paint paint) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_PAINT);
+				put(paint);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setPaint(paint); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getPaint()
 		this.paint = paint;
-
-		if (isPaintingEnabled) {
-			put(Method.SET_PAINT);
-			put(paint);
-		}
 	}
 
 	@Override
 	public void setStroke(Stroke s) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_STROKE);
+				put(s);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setStroke(s); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getStroke()
 		this.stroke = s;
-
-		if (isPaintingEnabled) {
-			put(Method.SET_STROKE);
-			put(s);
-		}
 	}
 
 	@Override
@@ -791,6 +1069,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	public void addRenderingHints(Map<?, ?> hints) {
 		// for getRenderingHint() and getRenderingHints()
 		this.renderingHints.putAll(hints);
+
 		if (isPaintingEnabled) {
 			notSupportedWarn();
 		}
@@ -803,84 +1082,140 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void translate(double tx, double ty) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.TRANSLATE_DOUBLE);
+				put(tx);
+				put(ty);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					translate(tx, ty); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getTransform()
 		transform.translate(tx, ty);
-
-		if (isPaintingEnabled) {
-			put(Method.TRANSLATE_DOUBLE);
-			put(tx);
-			put(ty);
-		}
 	}
 
 	@Override
 	public void rotate(double theta) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.ROTATE);
+				put(theta);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					rotate(theta); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getTransform()
 		transform.rotate(theta);
-
-		if (isPaintingEnabled) {
-			put(Method.ROTATE);
-			put(theta);
-		}
 	}
 
 	@Override
 	public void rotate(double theta, double x, double y) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.ROTATE_XY);
+				put(theta);
+				put(x);
+				put(y);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					rotate(theta, x, y); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getTransform()
 		transform.rotate(theta, x, y);
-
-		if (isPaintingEnabled) {
-			put(Method.ROTATE_XY);
-			put(theta);
-			put(x);
-			put(y);
-		}
 	}
 
 	@Override
 	public void scale(double sx, double sy) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SCALE);
+				put(sx);
+				put(sy);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					scale(sx, sy); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getTransform()
 		transform.scale(sx, sy);
-
-		if (isPaintingEnabled) {
-			put(Method.SCALE);
-			put(sx);
-			put(sy);
-		}
 	}
 
 	@Override
 	public void shear(double shx, double shy) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SHEAR);
+				put(shx);
+				put(shy);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					shear(shx, shy); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getTransform()
 		transform.shear(shx, shy);
-
-		if (isPaintingEnabled) {
-			put(Method.SHEAR);
-			put(shx);
-			put(shy);
-		}
 	}
 
 	@Override
 	public void transform(AffineTransform Tx) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.TRANSFORM);
+				put(Tx);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					transform(Tx); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getTransform()
 		transform.concatenate(Tx);
-
-		if (isPaintingEnabled) {
-			put(Method.TRANSFORM);
-			put(Tx);
-		}
 	}
 
 	@Override
 	public void setTransform(AffineTransform Tx) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_TRANSFORM);
+				put(Tx);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setTransform(Tx); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getTransform()
 		this.transform = Tx;
-
-		if (isPaintingEnabled) {
-			put(Method.SET_TRANSFORM);
-			put(Tx);
-		}
 	}
 
 	@Override
@@ -900,13 +1235,21 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void setBackground(Color color) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.SET_BACKGROUND);
+				put(color);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					setBackground(color); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getBackground()
 		background = color;
-
-		if (isPaintingEnabled) {
-			put(Method.SET_BACKGROUND);
-			put(color);
-		}
 	}
 
 	@Override
@@ -921,6 +1264,19 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public void clip(Shape s) {
+		if (isPaintingEnabled) {
+			calls.mark(); // Mark for rollback
+			try {
+				put(Method.CLIP);
+				put(s);
+			} catch (BufferOverflowException e) {
+				if (recoverFromBufferOverflow()) {
+					clip(s); // Retry this method after reallocation
+					return; // Make sure we leave
+				}
+			}
+		}
+
 		// for getClip()
 		if (s == null) {
 			this.clip = null;
@@ -932,11 +1288,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			clipArea.intersect(shapeArea); // intersect current clip by the transformed shape
 
 			this.clip = clipArea;
-		}
-
-		if (isPaintingEnabled) {
-			put(Method.CLIP);
-			put(s);
 		}
 	}
 
@@ -962,7 +1313,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	public void setPaintingEnabled(boolean enabled) {
 		if (enabled && !isPaintingEnabled) {
-			calls = ByteBuffer.allocate(24 * 1024);
+			calls = ByteBuffer.allocate(INITIAL_BUFFER_SIZE);
 		}
 		isPaintingEnabled = enabled;
 	}
@@ -1003,13 +1354,27 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	public void processTo(Graphics2D g, Object graphicsCalls) {
 		calls.clear();
-		calls.put((byte[]) graphicsCalls);
+
+		calls.mark(); // Mark for rollback
+		try {
+			calls.put((byte[]) graphicsCalls);
+		} catch (BufferOverflowException e) {
+			calls.reset(); // Rollback buffer
+			if (reallocBuffer()) {
+				processTo(g, graphicsCalls);
+				return; // must exit here
+			}
+			calls.clear();
+		}
+
 		calls.flip();
 		while (calls.remaining() > 0) {
 			try {
 				processQueuedCall(g);
-			} catch (Throwable t) {
-				calls.position(lastPos - 4);
+			} catch (Exception e) {
+				e.printStackTrace();
+				// FOR-DEBUG } catch (Error e) {
+				// FOR-DEBUG 	calls.position(lastPos - 4);
 			}
 		}
 	}
@@ -1491,6 +1856,67 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 		notSupported();
 		return null;
+	}
+
+	/**
+	 * Reallocates the calls buffer by replacing it with a new one with doubled capacity
+	 * and copying the old one.
+	 *
+	 * @return {@code true} if the buffer was reallocated;
+	 *         {@code false} if the max. capacity has been reached meaning that the reallocation
+	 *         was not performed. 
+	 */
+	private boolean reallocBuffer() {
+		int bufferSize;
+
+		if (calls == null) {
+			// No buffer -> Use initial buffer size
+			bufferSize = INITIAL_BUFFER_SIZE;
+		} else {
+			// Otherwise, double up capacity
+			bufferSize = 2 * calls.capacity();
+		}
+
+		// Check if the max. buffer size has been reached
+		if (bufferSize > MAX_BUFFER_SIZE) {			
+			return false; // not reallocated!
+		}
+
+		// Allocate new buffer
+		ByteBuffer newBuffer = ByteBuffer.allocate(bufferSize);
+
+		if (calls != null) {
+			// Copy all bytes contained in the current buffer to the new buffer
+
+			byte[] copiedBytes = new byte[calls.position()];
+					
+			calls.clear();
+			calls.get(copiedBytes);
+
+			newBuffer.put(copiedBytes);
+		}
+
+		// Switch to the new buffer
+		calls = newBuffer;
+		
+		return true; // buffer was reallocated
+	}
+
+	private int unrecoveredBufferOverflowCount;
+
+	private boolean recoverFromBufferOverflow() {
+		calls.reset(); // Rollback buffer
+
+		boolean recovered = reallocBuffer(); 
+
+		if (!recovered) {
+			calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
+			
+			if (unrecoveredBufferOverflowCount++ % 500 == 0) { // Prevent spamming 
+				System.out.println("SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
+			}
+		}
+		return recovered;
 	}
 
 	private class DeserializePathIterator implements PathIterator {
