@@ -29,6 +29,10 @@ public final class IRobotPeer_ {
 @net.sf.jni4net.attributes.ClrProxy
 class __IRobotPeer extends system.Object implements net.sf.robocode.peer.IRobotPeer {
     
+    protected __IRobotPeer(net.sf.jni4net.inj.INJEnv __env, long __handle) {
+            super(__env, __handle);
+    }
+    
     @net.sf.jni4net.attributes.ClrMethod("()V")
     public native void drainEnergy();
     
@@ -38,10 +42,10 @@ class __IRobotPeer extends system.Object implements net.sf.robocode.peer.IRobotP
     @net.sf.jni4net.attributes.ClrMethod("(Z)V")
     public native void setRunning(boolean par0);
     
-    @net.sf.jni4net.attributes.ClrMethod("(LSystem/Object;)LSystem/Object;")
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;)Ljava/lang/Object;")
     public native net.sf.robocode.peer.ExecResults waitForBattleEndImpl(net.sf.robocode.peer.ExecCommands par0);
     
-    @net.sf.jni4net.attributes.ClrMethod("(LSystem/Object;)LSystem/Object;")
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;)Ljava/lang/Object;")
     public native net.sf.robocode.peer.ExecResults executeImpl(net.sf.robocode.peer.ExecCommands par0);
     
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/nio/ByteBuffer;)Ljava/nio/ByteBuffer;")

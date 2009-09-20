@@ -29,7 +29,11 @@ public final class IHostingRobotProxy_ {
 @net.sf.jni4net.attributes.ClrProxy
 class __IHostingRobotProxy extends system.Object implements net.sf.robocode.host.proxies.IHostingRobotProxy {
     
-    @net.sf.jni4net.attributes.ClrMethod("(LSystem/Object;LSystem/Object;)V")
+    protected __IHostingRobotProxy(net.sf.jni4net.inj.INJEnv __env, long __handle) {
+            super(__env, __handle);
+    }
+    
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;Ljava/lang/Object;)V")
     public native void startRound(net.sf.robocode.peer.ExecCommands par0, robocode.RobotStatus par1);
     
     @net.sf.jni4net.attributes.ClrMethod("()V")

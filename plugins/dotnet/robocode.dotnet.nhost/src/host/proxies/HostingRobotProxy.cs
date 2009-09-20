@@ -17,6 +17,7 @@ using robocode.exception;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using Exception=System.Exception;
+using Object=java.lang.Object;
 using Runnable=robocode.robotinterfaces.Runnable;
 using String=System.String;
 
@@ -109,7 +110,8 @@ namespace net.sf.robocode.dotnet.host.proxies
 		robotThreadManager.start();
 	}
 
-        public void startRound(object par0, object par1)
+
+        public void startRound(Object par0, Object par1)
         {
             //TODO
             throw new NotImplementedException();

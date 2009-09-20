@@ -15,8 +15,8 @@ public class DllRootHelper extends system.Object {
     //<generated-proxy>
     private static system.Type staticType;
     
-    protected DllRootHelper(net.sf.jni4net.inj.INJEnv env, int handle) {
-            super(env, handle);
+    protected DllRootHelper(net.sf.jni4net.inj.INJEnv __env, long __handle) {
+            super(__env, __handle);
     }
     
     @net.sf.jni4net.attributes.ClrConstructor("()V")
@@ -29,7 +29,7 @@ public class DllRootHelper extends system.Object {
     private native static void __ctorDllRootHelper0(net.sf.jni4net.inj.IClrProxy thiz);
     
     @net.sf.jni4net.attributes.ClrMethod("(LSystem/String;)[LSystem/String;")
-    public native final system.String[] findItems(java.lang.String dllPath);
+    public native final java.lang.String[] findItems(java.lang.String dllPath);
     
     public static system.Type typeof() {
         return net.sf.robocode.dotnet.repository.root.DllRootHelper.staticType;

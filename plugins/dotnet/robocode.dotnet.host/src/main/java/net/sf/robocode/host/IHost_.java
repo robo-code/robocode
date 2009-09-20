@@ -29,6 +29,10 @@ public final class IHost_ {
 @net.sf.jni4net.attributes.ClrProxy
 class __IHost extends system.Object implements net.sf.robocode.host.IHost {
     
+    protected __IHost(net.sf.jni4net.inj.INJEnv __env, long __handle) {
+            super(__env, __handle);
+    }
+    
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/host/IHostManager;Lrobocode/control/RobotSpecification;Lnet/sf/robocode/host/RobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Lnet/sf/robocode/host/proxies/IHostingRobotProxy;")
     public native net.sf.robocode.host.proxies.IHostingRobotProxy createRobotProxy(net.sf.robocode.host.IHostManager par0, robocode.control.RobotSpecification par1, net.sf.robocode.host.RobotStatics par2, net.sf.robocode.peer.IRobotPeer par3);
     

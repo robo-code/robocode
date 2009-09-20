@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
 using net.sf.jni4net;
+using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.dotnet.utils;
 using net.sf.robocode.repository;
 using robocode;
@@ -16,12 +17,21 @@ namespace net.sf.robocode.dotnet.host.seed
         private static readonly Assembly hostAssembly = typeof(AppDomainShell).Assembly;
         private static readonly Assembly jniAssembly = typeof(Bridge).Assembly;
         private AppDomain domain;
-        private readonly string tempDir;
-        private readonly string name;
-        private readonly string robotAssemblyFileName;
-        private readonly string robotAssemblyShadowFileName;
+        private string tempDir;
+        private string name;
+        private string robotAssemblyFileName;
+        private string robotAssemblyShadowFileName;
 
         public AppDomainShell(string dllName)
+        {
+            Init(dllName);
+        }
+
+        protected AppDomainShell()
+        {
+        }
+
+        protected void Init(string dllName)
         {
             robotAssemblyFileName = Path.GetFullPath(dllName);
             name = Path.GetFileNameWithoutExtension(robotAssemblyFileName);
@@ -55,8 +65,6 @@ namespace net.sf.robocode.dotnet.host.seed
             domainSetup.AppDomainInitializerArguments = new[] { robotAssemblyFileName, robotAssemblyShadowFileName };
 
             domain = AppDomain.CreateDomain(name, securityInfo, domainSetup, permissionSet, trustAssemblies);
-
-
         }
 
         public string[] FindRobots()
@@ -77,6 +85,15 @@ namespace net.sf.robocode.dotnet.host.seed
                 return RobotType.Invalid;
             }
             return new RobotType(type);
+        }
+
+
+        public void StartRound(ExecCommands commands, RobotStatus status, string typeFullName)
+        {
+            domain.SetData("loadRobot", typeFullName);
+            domain.SetData("commands", commands);
+            domain.SetData("status", status);
+            domain.DoCallBack(AppDomainSeed.StartRound);
         }
 
 

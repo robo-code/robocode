@@ -15,8 +15,8 @@ public class DotnetHost extends system.Object implements net.sf.robocode.host.IH
     //<generated-proxy>
     private static system.Type staticType;
     
-    protected DotnetHost(net.sf.jni4net.inj.INJEnv env, int handle) {
-            super(env, handle);
+    protected DotnetHost(net.sf.jni4net.inj.INJEnv __env, long __handle) {
+            super(__env, __handle);
     }
     
     @net.sf.jni4net.attributes.ClrConstructor("()V")

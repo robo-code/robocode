@@ -13,7 +13,7 @@ namespace net.sf.robocode.io {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public unsafe partial class Logger : global::java.lang.Object {
+    public partial class Logger : global::java.lang.Object {
         
         internal static global::java.lang.Class staticClass;
         
@@ -62,12 +62,12 @@ namespace net.sf.robocode.io {
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public Logger() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.NewObject(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger.@__ctor20, this);
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.NewObject(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger.@__ctor20, this);
         }
         
-        protected Logger(global::net.sf.jni4net.jni.JNIEnv env) : 
-                base(env) {
+        protected Logger(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+                base(@__env) {
         }
         
         public new static global::java.lang.Class _class {
@@ -79,156 +79,156 @@ namespace net.sf.robocode.io {
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("Ljava/io/PrintStream;")]
         public static global::java.io.PrintStream realOut {
             get {
-                global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return global::net.sf.jni4net.Bridge.ToCLR<global::java.io.PrintStream>(env.GetStaticObjectField(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._realOut18));
+                global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.PrintStream>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._realOut18));
             }
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("Ljava/io/PrintStream;")]
         public static global::java.io.PrintStream realErr {
             get {
-                global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return global::net.sf.jni4net.Bridge.ToCLR<global::java.io.PrintStream>(env.GetStaticObjectField(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._realErr19));
+                global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.PrintStream>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._realErr19));
             }
         }
         
-        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv env, java.lang.Class staticClass) {
-            global::net.sf.robocode.io.Logger.staticClass = staticClass;
-            global::net.sf.robocode.io.Logger._setLogListener0 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "setLogListener", "(Lrobocode/control/events/IBattleListener;)V");
-            global::net.sf.robocode.io.Logger._logMessage1 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logMessage", "(Ljava/lang/String;)V");
-            global::net.sf.robocode.io.Logger._logMessage2 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logMessage", "(Ljava/lang/Throwable;)V");
-            global::net.sf.robocode.io.Logger._logMessage3 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logMessage", "(Ljava/lang/String;Ljava/lang/Throwable;)V");
-            global::net.sf.robocode.io.Logger._logMessage4 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logMessage", "(Ljava/lang/String;Z)V");
-            global::net.sf.robocode.io.Logger._logError5 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logError", "(Ljava/lang/String;)V");
-            global::net.sf.robocode.io.Logger._logError6 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logError", "(Ljava/lang/String;Ljava/lang/Throwable;)V");
-            global::net.sf.robocode.io.Logger._logError7 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logError", "(Ljava/lang/Throwable;)V");
-            global::net.sf.robocode.io.Logger._printlnToRobotsConsole8 = env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "printlnToRobotsConsole", "(Ljava/lang/String;)V");
-            global::net.sf.robocode.io.Logger._hashCode9 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "hashCode", "()I");
-            global::net.sf.robocode.io.Logger._getClass10 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "getClass", "()Ljava/lang/Class;");
-            global::net.sf.robocode.io.Logger._wait11 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "wait", "()V");
-            global::net.sf.robocode.io.Logger._wait12 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "wait", "(JI)V");
-            global::net.sf.robocode.io.Logger._wait13 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "wait", "(J)V");
-            global::net.sf.robocode.io.Logger._equals14 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "equals", "(Ljava/lang/Object;)Z");
-            global::net.sf.robocode.io.Logger._notify15 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "notify", "()V");
-            global::net.sf.robocode.io.Logger._notifyAll16 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "notifyAll", "()V");
-            global::net.sf.robocode.io.Logger._toString17 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "toString", "()Ljava/lang/String;");
-            global::net.sf.robocode.io.Logger._realOut18 = env.GetStaticFieldID(global::net.sf.robocode.io.Logger.staticClass, "realOut", "Ljava/io/PrintStream;");
-            global::net.sf.robocode.io.Logger._realErr19 = env.GetStaticFieldID(global::net.sf.robocode.io.Logger.staticClass, "realErr", "Ljava/io/PrintStream;");
-            global::net.sf.robocode.io.Logger.@__ctor20 = env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "<init>", "()V");
+        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
+            global::net.sf.robocode.io.Logger.staticClass = @__class;
+            global::net.sf.robocode.io.Logger._setLogListener0 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "setLogListener", "(Lrobocode/control/events/IBattleListener;)V");
+            global::net.sf.robocode.io.Logger._logMessage1 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logMessage", "(Ljava/lang/String;)V");
+            global::net.sf.robocode.io.Logger._logMessage2 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logMessage", "(Ljava/lang/Throwable;)V");
+            global::net.sf.robocode.io.Logger._logMessage3 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logMessage", "(Ljava/lang/String;Ljava/lang/Throwable;)V");
+            global::net.sf.robocode.io.Logger._logMessage4 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logMessage", "(Ljava/lang/String;Z)V");
+            global::net.sf.robocode.io.Logger._logError5 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logError", "(Ljava/lang/String;)V");
+            global::net.sf.robocode.io.Logger._logError6 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logError", "(Ljava/lang/String;Ljava/lang/Throwable;)V");
+            global::net.sf.robocode.io.Logger._logError7 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "logError", "(Ljava/lang/Throwable;)V");
+            global::net.sf.robocode.io.Logger._printlnToRobotsConsole8 = @__env.GetStaticMethodID(global::net.sf.robocode.io.Logger.staticClass, "printlnToRobotsConsole", "(Ljava/lang/String;)V");
+            global::net.sf.robocode.io.Logger._hashCode9 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "hashCode", "()I");
+            global::net.sf.robocode.io.Logger._getClass10 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "getClass", "()Ljava/lang/Class;");
+            global::net.sf.robocode.io.Logger._wait11 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "wait", "()V");
+            global::net.sf.robocode.io.Logger._wait12 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "wait", "(JI)V");
+            global::net.sf.robocode.io.Logger._wait13 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "wait", "(J)V");
+            global::net.sf.robocode.io.Logger._equals14 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "equals", "(Ljava/lang/Object;)Z");
+            global::net.sf.robocode.io.Logger._notify15 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "notify", "()V");
+            global::net.sf.robocode.io.Logger._notifyAll16 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "notifyAll", "()V");
+            global::net.sf.robocode.io.Logger._toString17 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "toString", "()Ljava/lang/String;");
+            global::net.sf.robocode.io.Logger._realOut18 = @__env.GetStaticFieldID(global::net.sf.robocode.io.Logger.staticClass, "realOut", "Ljava/io/PrintStream;");
+            global::net.sf.robocode.io.Logger._realErr19 = @__env.GetStaticFieldID(global::net.sf.robocode.io.Logger.staticClass, "realErr", "Ljava/io/PrintStream;");
+            global::net.sf.robocode.io.Logger.@__ctor20 = @__env.GetMethodID(global::net.sf.robocode.io.Logger.staticClass, "<init>", "()V");
         }
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(LSystem/Object;)V")]
-        public static void setLogListener(object par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._setLogListener0, new global::net.sf.jni4net.jni.Value(par0));
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lrobocode/control/events/IBattleListener;)V")]
+        public static void setLogListener(global::java.lang.Object par0) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._setLogListener0, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)V")]
         public static void logMessage(global::java.lang.String par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logMessage1, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logMessage1, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Throwable;)V")]
         public static void logMessage(global::java.lang.Throwable par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logMessage2, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logMessage2, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Throwable>(@__env, par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;Ljava/lang/Throwable;)V")]
         public static void logMessage(global::java.lang.String par0, global::java.lang.Throwable par1) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logMessage3, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logMessage3, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Throwable>(@__env, par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;Z)V")]
         public static void logMessage(global::java.lang.String par0, bool par1) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logMessage4, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logMessage4, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)V")]
         public static void logError(global::java.lang.String par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logError5, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logError5, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;Ljava/lang/Throwable;)V")]
         public static void logError(global::java.lang.String par0, global::java.lang.Throwable par1) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logError6, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logError6, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Throwable>(@__env, par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Throwable;)V")]
         public static void logError(global::java.lang.Throwable par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logError7, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._logError7, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Throwable>(@__env, par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)V")]
         public static void printlnToRobotsConsole(global::java.lang.String par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._printlnToRobotsConsole8, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._printlnToRobotsConsole8, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
         public virtual int hashCode() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallIntMethod(this, global::net.sf.robocode.io.Logger._hashCode9);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.io.Logger._hashCode9)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/Class;")]
         public global::java.lang.Class getClass() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.Class>(env.CallObjectMethod(this, global::net.sf.robocode.io.Logger._getClass10));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpClass(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.io.Logger._getClass10));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public void wait() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._wait11);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._wait11);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(JI)V")]
         public void wait(long par0, int par1) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._wait12, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._wait12, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
         public void wait(long par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._wait13, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._wait13, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Object;)Z")]
         public virtual bool equals(global::java.lang.Object par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.io.Logger._equals14, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.io.Logger._equals14, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public void notify() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._notify15);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._notify15);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public void notifyAll() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._notifyAll16);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.io.Logger._notifyAll16);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         public virtual global::java.lang.String toString() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.io.Logger._toString17));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.io.Logger._toString17));
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
-            public global::net.sf.jni4net.jni.IJavaProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv env) {
-                return new global::net.sf.robocode.io.Logger(env);
+            public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
+                return new global::net.sf.robocode.io.Logger(@__env);
             }
         }
     }

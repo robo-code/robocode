@@ -29,6 +29,10 @@ public final class IHostedThread_ {
 @net.sf.jni4net.attributes.ClrProxy
 class __IHostedThread extends system.Object implements net.sf.robocode.host.IHostedThread {
     
+    protected __IHostedThread(net.sf.jni4net.inj.INJEnv __env, long __handle) {
+            super(__env, __handle);
+    }
+    
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/io/PrintStream;")
     public native net.sf.robocode.host.io.RobotOutputStream getOut();
     

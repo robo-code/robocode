@@ -13,25 +13,25 @@ namespace net.sf.robocode.host.io {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public unsafe partial class RobotFileSystemManager : global::java.lang.Object {
+    public partial class RobotFileSystemManager : global::java.lang.Object {
         
         internal static global::java.lang.Class staticClass;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getWritableDirectory0;
+        internal static global::net.sf.jni4net.jni.MethodId _addStream0;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getReadableDirectory1;
+        internal static global::net.sf.jni4net.jni.MethodId _adjustQuota1;
         
-        internal static global::net.sf.jni4net.jni.MethodId _addStream2;
+        internal static global::net.sf.jni4net.jni.MethodId _checkQuota2;
         
-        internal static global::net.sf.jni4net.jni.MethodId _adjustQuota3;
+        internal static global::net.sf.jni4net.jni.MethodId _checkQuota3;
         
-        internal static global::net.sf.jni4net.jni.MethodId _checkQuota4;
+        internal static global::net.sf.jni4net.jni.MethodId _getMaxQuota4;
         
-        internal static global::net.sf.jni4net.jni.MethodId _checkQuota5;
+        internal static global::net.sf.jni4net.jni.MethodId _getQuotaUsed5;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getMaxQuota6;
+        internal static global::net.sf.jni4net.jni.MethodId _getReadableDirectory6;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getQuotaUsed7;
+        internal static global::net.sf.jni4net.jni.MethodId _getWritableDirectory7;
         
         internal static global::net.sf.jni4net.jni.MethodId _getDataFile8;
         
@@ -67,12 +67,12 @@ namespace net.sf.robocode.host.io {
             "ang/String;)V")]
         public RobotFileSystemManager(global::net.sf.robocode.host.IHostedThread par0, long par1, global::java.lang.String par2, global::java.lang.String par3, global::java.lang.String par4) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
-            global::net.sf.jni4net.jni.JNIEnv env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            env.NewObject(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, global::net.sf.robocode.host.io.RobotFileSystemManager.@__ctor22, this, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1), new global::net.sf.jni4net.jni.Value(par2), new global::net.sf.jni4net.jni.Value(par3), new global::net.sf.jni4net.jni.Value(par4));
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            @__env.NewObject(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, global::net.sf.robocode.host.io.RobotFileSystemManager.@__ctor22, this, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::net.sf.robocode.host.IHostedThread>(@__env, par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par2), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par3), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par4));
         }
         
-        protected RobotFileSystemManager(global::net.sf.jni4net.jni.JNIEnv env) : 
-                base(env) {
+        protected RobotFileSystemManager(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+                base(@__env) {
         }
         
         public new static global::java.lang.Class _class {
@@ -81,170 +81,170 @@ namespace net.sf.robocode.host.io {
             }
         }
         
-        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv env, java.lang.Class staticClass) {
-            global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass = staticClass;
-            global::net.sf.robocode.host.io.RobotFileSystemManager._getWritableDirectory0 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getWritableDirectory", "()Ljava/io/File;");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._getReadableDirectory1 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getReadableDirectory", "()Ljava/io/File;");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._addStream2 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "addStream", "(Lnet/sf/robocode/host/io/RobotFileOutputStream;)V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._adjustQuota3 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "adjustQuota", "(J)V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._checkQuota4 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "checkQuota", "(J)V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._checkQuota5 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "checkQuota", "()V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._getMaxQuota6 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getMaxQuota", "()J");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._getQuotaUsed7 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getQuotaUsed", "()J");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._getDataFile8 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getDataFile", "(Ljava/lang/String;)Ljava/io/File;");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._isReadable9 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "isReadable", "(Ljava/lang/String;)Z");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._isWritable10 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "isWritable", "(Ljava/lang/String;)Z");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._removeStream11 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "removeStream", "(Lnet/sf/robocode/host/io/RobotFileOutputStream;)V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._initialize12 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "initialize", "()V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._hashCode13 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "hashCode", "()I");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._getClass14 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getClass", "()Ljava/lang/Class;");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._wait15 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "wait", "()V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._wait16 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "wait", "(JI)V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._wait17 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "wait", "(J)V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._equals18 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "equals", "(Ljava/lang/Object;)Z");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._notify19 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "notify", "()V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._notifyAll20 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "notifyAll", "()V");
-            global::net.sf.robocode.host.io.RobotFileSystemManager._toString21 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "toString", "()Ljava/lang/String;");
-            global::net.sf.robocode.host.io.RobotFileSystemManager.@__ctor22 = env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "<init>", "(Lnet/sf/robocode/host/IHostedThread;JLjava/lang/String;Ljava/lang/String;Ljava/l" +
+        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
+            global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass = @__class;
+            global::net.sf.robocode.host.io.RobotFileSystemManager._addStream0 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "addStream", "(Lnet/sf/robocode/host/io/RobotFileOutputStream;)V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._adjustQuota1 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "adjustQuota", "(J)V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._checkQuota2 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "checkQuota", "(J)V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._checkQuota3 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "checkQuota", "()V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._getMaxQuota4 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getMaxQuota", "()J");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._getQuotaUsed5 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getQuotaUsed", "()J");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._getReadableDirectory6 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getReadableDirectory", "()Ljava/io/File;");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._getWritableDirectory7 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getWritableDirectory", "()Ljava/io/File;");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._getDataFile8 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getDataFile", "(Ljava/lang/String;)Ljava/io/File;");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._isReadable9 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "isReadable", "(Ljava/lang/String;)Z");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._isWritable10 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "isWritable", "(Ljava/lang/String;)Z");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._removeStream11 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "removeStream", "(Lnet/sf/robocode/host/io/RobotFileOutputStream;)V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._initialize12 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "initialize", "()V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._hashCode13 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "hashCode", "()I");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._getClass14 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "getClass", "()Ljava/lang/Class;");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._wait15 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "wait", "()V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._wait16 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "wait", "(JI)V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._wait17 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "wait", "(J)V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._equals18 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "equals", "(Ljava/lang/Object;)Z");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._notify19 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "notify", "()V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._notifyAll20 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "notifyAll", "()V");
+            global::net.sf.robocode.host.io.RobotFileSystemManager._toString21 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "toString", "()Ljava/lang/String;");
+            global::net.sf.robocode.host.io.RobotFileSystemManager.@__ctor22 = @__env.GetMethodID(global::net.sf.robocode.host.io.RobotFileSystemManager.staticClass, "<init>", "(Lnet/sf/robocode/host/IHostedThread;JLjava/lang/String;Ljava/lang/String;Ljava/l" +
                     "ang/String;)V");
         }
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/io/File;")]
-        public virtual global::java.io.File getWritableDirectory() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.io.File>(env.CallObjectMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getWritableDirectory0));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/io/File;")]
-        public virtual global::java.io.File getReadableDirectory() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.io.File>(env.CallObjectMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getReadableDirectory1));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/io/OutputStream;)V")]
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/host/io/RobotFileOutputStream;)V")]
         public virtual void addStream(global::java.io.OutputStream par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._addStream2, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._addStream0, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
         public virtual void adjustQuota(long par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._adjustQuota3, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._adjustQuota1, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
         public virtual void checkQuota(long par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._checkQuota4, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._checkQuota2, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public virtual void checkQuota() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._checkQuota5);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._checkQuota3);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()J")]
         public virtual long getMaxQuota() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallLongMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getMaxQuota6);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((long)(@__env.CallLongMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getMaxQuota4)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()J")]
         public virtual long getQuotaUsed() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallLongMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getQuotaUsed7);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((long)(@__env.CallLongMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getQuotaUsed5)));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/io/File;")]
+        public virtual global::java.io.File getReadableDirectory() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.File>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getReadableDirectory6));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/io/File;")]
+        public virtual global::java.io.File getWritableDirectory() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.File>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getWritableDirectory7));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)Ljava/io/File;")]
         public virtual global::java.io.File getDataFile(global::java.lang.String par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.io.File>(env.CallObjectMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getDataFile8, new global::net.sf.jni4net.jni.Value(par0)));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.File>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getDataFile8, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)Z")]
         public virtual bool isReadable(global::java.lang.String par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._isReadable9, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._isReadable9, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)Z")]
         public virtual bool isWritable(global::java.lang.String par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._isWritable10, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._isWritable10, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
         }
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/io/OutputStream;)V")]
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/host/io/RobotFileOutputStream;)V")]
         public virtual void removeStream(global::java.io.OutputStream par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._removeStream11, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._removeStream11, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public virtual void initialize() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._initialize12);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._initialize12);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
         public virtual int hashCode() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallIntMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._hashCode13);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._hashCode13)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/Class;")]
         public global::java.lang.Class getClass() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.Class>(env.CallObjectMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getClass14));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpClass(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.io.RobotFileSystemManager._getClass14));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public void wait() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._wait15);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._wait15);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(JI)V")]
         public void wait(long par0, int par1) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._wait16, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._wait16, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
         public void wait(long par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._wait17, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._wait17, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Object;)Z")]
         public virtual bool equals(global::java.lang.Object par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return env.CallBooleanMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._equals18, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._equals18, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public void notify() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._notify19);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._notify19);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public void notifyAll() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._notifyAll20);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._notifyAll20);
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         public virtual global::java.lang.String toString() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.String>(env.CallObjectMethod(this, global::net.sf.robocode.host.io.RobotFileSystemManager._toString21));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.io.RobotFileSystemManager._toString21));
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
-            public global::net.sf.jni4net.jni.IJavaProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv env) {
-                return new global::net.sf.robocode.host.io.RobotFileSystemManager(env);
+            public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
+                return new global::net.sf.robocode.host.io.RobotFileSystemManager(@__env);
             }
         }
     }

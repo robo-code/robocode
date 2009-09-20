@@ -12,7 +12,7 @@ namespace net.sf.robocode.dotnet.repository.root {
     
     
     #region Component Designer generated code 
-    public unsafe partial class DllRootHelper_ {
+    public partial class DllRootHelper_ {
         
         public new static global::java.lang.Class _class {
             get {
@@ -23,53 +23,53 @@ namespace net.sf.robocode.dotnet.repository.root {
     #endregion
     
     #region Component Designer generated code 
-    [global::net.sf.jni4net.attributes.JavaProxyAttribute()]
+    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper))]
     [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper))]
-    internal sealed unsafe partial class @__DllRootHelper : global::java.lang.Object {
+    internal sealed partial class @__DllRootHelper : global::java.lang.Object {
         
         internal static global::java.lang.Class staticClass;
         
-        protected @__DllRootHelper(global::net.sf.jni4net.jni.JNIEnv env) : 
-                base(env) {
+        protected @__DllRootHelper(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+                base(@__env) {
         }
         
-        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv env, java.lang.Class staticClass) {
-            global::net.sf.robocode.dotnet.repository.root.@__DllRootHelper.staticClass = staticClass;
+        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
+            global::net.sf.robocode.dotnet.repository.root.@__DllRootHelper.staticClass = @__class;
         }
         
-        private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv env, global::java.lang.Class clazz) {
-            global::System.Type type = typeof(__DllRootHelper);
+        private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv @__env, global::java.lang.Class @__class) {
+            global::System.Type @__type = typeof(__DllRootHelper);
             global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> methods = new global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod>();
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "findItems", "findItems0", "(Ljava/lang/String;)[Lsystem/String;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "__ctorDllRootHelper0", "__ctorDllRootHelper0", "(Lnet/sf/jni4net/inj/IClrProxy;)V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "findItems", "findItems0", "(Ljava/lang/String;)[Ljava/lang/String;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "__ctorDllRootHelper0", "__ctorDllRootHelper0", "(Lnet/sf/jni4net/inj/IClrProxy;)V"));
             return methods;
         }
         
-        private static global::java.lang.Object.JavaPtr* findItems0(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj, global::java.lang.Object.JavaPtr* dllPath) {
-            // (Ljava/lang/String;)[Lsystem/String;
+        private static global::System.IntPtr findItems0(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr dllPath) {
+            // (Ljava/lang/String;)[Ljava/lang/String;
             // (LSystem/String;)[LSystem/String;
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.dotnet.repository.root.DllRootHelper real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.dotnet.repository.root.DllRootHelper>(__env, @__obj);
-            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.findItems(global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::System.String>(__env, dllPath)));
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
-            return default(global::java.lang.Object.JavaPtr*);
+            global::net.sf.robocode.dotnet.repository.root.DllRootHelper @__real = global::net.sf.jni4net.utils.Convertor.StrongJp2C<global::net.sf.robocode.dotnet.repository.root.DllRootHelper>(@__env, @__obj);
+            return global::net.sf.jni4net.utils.Convertor.ArrayStrongC2JString(@__env, @__real.findItems(global::net.sf.jni4net.utils.Convertor.StrongJ2CString(@__env, dllPath)));
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            return default(global::System.IntPtr);
         }
         
-        private static void @__ctorDllRootHelper0(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Class.JavaPtr* @__clazz, global::java.lang.Object.JavaPtr* @__obj) {
+        private static void @__ctorDllRootHelper0(global::System.IntPtr @__envp, global::System.IntPtr @__class, global::System.IntPtr @__obj) {
             // ()V
             // ()V
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.dotnet.repository.root.DllRootHelper real = new global::net.sf.robocode.dotnet.repository.root.DllRootHelper();
-            global::net.sf.jni4net.utils.ClrProxiesMap.InitProxy(__env, __obj, real);
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
+            global::net.sf.robocode.dotnet.repository.root.DllRootHelper @__real = new global::net.sf.robocode.dotnet.repository.root.DllRootHelper();
+            global::net.sf.jni4net.utils.Convertor.InitProxy(@__env, @__obj, @__real);
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
-            public global::net.sf.jni4net.jni.IJavaProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv env) {
-                return new global::net.sf.robocode.dotnet.repository.root.@__DllRootHelper(env);
+            public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
+                return new global::net.sf.robocode.dotnet.repository.root.@__DllRootHelper(@__env);
             }
         }
     }

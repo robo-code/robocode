@@ -15,7 +15,7 @@ namespace net.sf.robocode.host {
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
     public partial interface IHostedThread : global::java.lang.Runnable {
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/io/PrintStream;")]
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Lnet/sf/robocode/host/io/RobotOutputStream;")]
         global::java.io.PrintStream getOut();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
@@ -39,7 +39,7 @@ namespace net.sf.robocode.host {
     #endregion
     
     #region Component Designer generated code 
-    public unsafe partial class IHostedThread_ {
+    public partial class IHostedThread_ {
         
         public new static global::java.lang.Class _class {
             get {
@@ -50,9 +50,9 @@ namespace net.sf.robocode.host {
     #endregion
     
     #region Component Designer generated code 
-    [global::net.sf.jni4net.attributes.JavaProxyAttribute()]
+    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.host.IHostedThread))]
     [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.host.IHostedThread))]
-    internal sealed unsafe partial class @__IHostedThread : global::java.lang.Object, global::net.sf.robocode.host.IHostedThread {
+    internal sealed partial class @__IHostedThread : global::java.lang.Object, global::net.sf.robocode.host.IHostedThread {
         
         internal static global::java.lang.Class staticClass;
         
@@ -70,147 +70,147 @@ namespace net.sf.robocode.host {
         
         internal static global::net.sf.jni4net.jni.MethodId _run6;
         
-        protected @__IHostedThread(global::net.sf.jni4net.jni.JNIEnv env) : 
-                base(env) {
+        protected @__IHostedThread(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+                base(@__env) {
         }
         
-        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv env, java.lang.Class staticClass) {
-            global::net.sf.robocode.host.@__IHostedThread.staticClass = staticClass;
-            global::net.sf.robocode.host.@__IHostedThread._getOut0 = env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "getOut", "()Lnet/sf/robocode/host/io/RobotOutputStream;");
-            global::net.sf.robocode.host.@__IHostedThread._drainEnergy1 = env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "drainEnergy", "()V");
-            global::net.sf.robocode.host.@__IHostedThread._getStatics2 = env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "getStatics", "()Lnet/sf/robocode/host/RobotStatics;");
-            global::net.sf.robocode.host.@__IHostedThread._getRobotFileSystemManager3 = env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "getRobotFileSystemManager", "()Lnet/sf/robocode/host/io/RobotFileSystemManager;");
-            global::net.sf.robocode.host.@__IHostedThread._getRobotClassloader4 = env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "getRobotClassloader", "()Ljava/lang/ClassLoader;");
-            global::net.sf.robocode.host.@__IHostedThread._println5 = env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "println", "(Ljava/lang/String;)V");
-            global::net.sf.robocode.host.@__IHostedThread._run6 = env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "run", "()V");
+        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
+            global::net.sf.robocode.host.@__IHostedThread.staticClass = @__class;
+            global::net.sf.robocode.host.@__IHostedThread._getOut0 = @__env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "getOut", "()Lnet/sf/robocode/host/io/RobotOutputStream;");
+            global::net.sf.robocode.host.@__IHostedThread._drainEnergy1 = @__env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "drainEnergy", "()V");
+            global::net.sf.robocode.host.@__IHostedThread._getStatics2 = @__env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "getStatics", "()Lnet/sf/robocode/host/RobotStatics;");
+            global::net.sf.robocode.host.@__IHostedThread._getRobotFileSystemManager3 = @__env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "getRobotFileSystemManager", "()Lnet/sf/robocode/host/io/RobotFileSystemManager;");
+            global::net.sf.robocode.host.@__IHostedThread._getRobotClassloader4 = @__env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "getRobotClassloader", "()Ljava/lang/ClassLoader;");
+            global::net.sf.robocode.host.@__IHostedThread._println5 = @__env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "println", "(Ljava/lang/String;)V");
+            global::net.sf.robocode.host.@__IHostedThread._run6 = @__env.GetMethodID(global::net.sf.robocode.host.@__IHostedThread.staticClass, "run", "()V");
         }
         
         public global::java.io.PrintStream getOut() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.io.PrintStream>(env.CallObjectMethod(this, global::net.sf.robocode.host.@__IHostedThread._getOut0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.PrintStream>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.@__IHostedThread._getOut0));
         }
         
         public void drainEnergy() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.@__IHostedThread._drainEnergy1);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.@__IHostedThread._drainEnergy1);
         }
         
         public global::net.sf.robocode.host.RobotStatics getStatics() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::net.sf.robocode.host.RobotStatics>(env.CallObjectMethod(this, global::net.sf.robocode.host.@__IHostedThread._getStatics2));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.host.RobotStatics>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.@__IHostedThread._getStatics2));
         }
         
         public global::net.sf.robocode.host.io.RobotFileSystemManager getRobotFileSystemManager() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::net.sf.robocode.host.io.RobotFileSystemManager>(env.CallObjectMethod(this, global::net.sf.robocode.host.@__IHostedThread._getRobotFileSystemManager3));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.host.io.RobotFileSystemManager>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.@__IHostedThread._getRobotFileSystemManager3));
         }
         
         public global::java.lang.ClassLoader getRobotClassloader() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            return global::net.sf.jni4net.Bridge.ToCLR<global::java.lang.ClassLoader>(env.CallObjectMethod(this, global::net.sf.robocode.host.@__IHostedThread._getRobotClassloader4));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.ClassLoader>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.@__IHostedThread._getRobotClassloader4));
         }
         
         public void println(global::java.lang.String par0) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.@__IHostedThread._println5, new global::net.sf.jni4net.jni.Value(par0));
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.@__IHostedThread._println5, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         public void run() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.@__IHostedThread._run6);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.@__IHostedThread._run6);
         }
         
-        private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv env, global::java.lang.Class clazz) {
-            global::System.Type type = typeof(__IHostedThread);
+        private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv @__env, global::java.lang.Class @__class) {
+            global::System.Type @__type = typeof(__IHostedThread);
             global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> methods = new global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod>();
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "getOut", "getOut0", "()Lnet/sf/robocode/host/io/RobotOutputStream;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "drainEnergy", "drainEnergy1", "()V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "getStatics", "getStatics2", "()Lnet/sf/robocode/host/RobotStatics;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "getRobotFileSystemManager", "getRobotFileSystemManager3", "()Lnet/sf/robocode/host/io/RobotFileSystemManager;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "getRobotClassloader", "getRobotClassloader4", "()Ljava/lang/ClassLoader;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "println", "println5", "(Ljava/lang/String;)V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "run", "run6", "()V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getOut", "getOut0", "()Lnet/sf/robocode/host/io/RobotOutputStream;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "drainEnergy", "drainEnergy1", "()V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getStatics", "getStatics2", "()Lnet/sf/robocode/host/RobotStatics;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getRobotFileSystemManager", "getRobotFileSystemManager3", "()Lnet/sf/robocode/host/io/RobotFileSystemManager;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getRobotClassloader", "getRobotClassloader4", "()Ljava/lang/ClassLoader;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "println", "println5", "(Ljava/lang/String;)V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "run", "run6", "()V"));
             return methods;
         }
         
-        private static global::java.lang.Object.JavaPtr* getOut0(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static global::System.IntPtr getOut0(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()Lnet/sf/robocode/host/io/RobotOutputStream;
             // ()Ljava/io/PrintStream;
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.IHostedThread real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostedThread>(__env, @__obj);
-            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.getOut());
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
-            return default(global::java.lang.Object.JavaPtr*);
+            global::net.sf.robocode.host.IHostedThread @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostedThread>(@__env, @__obj);
+            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getOut());
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            return default(global::System.IntPtr);
         }
         
-        private static void drainEnergy1(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static void drainEnergy1(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()V
             // ()V
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.IHostedThread real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostedThread>(__env, @__obj);
-            real.drainEnergy();
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
+            global::net.sf.robocode.host.IHostedThread @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostedThread>(@__env, @__obj);
+            @__real.drainEnergy();
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         
-        private static global::java.lang.Object.JavaPtr* getStatics2(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static global::System.IntPtr getStatics2(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()Lnet/sf/robocode/host/RobotStatics;
             // ()Lnet/sf/robocode/host/RobotStatics;
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.IHostedThread real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostedThread>(__env, @__obj);
-            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.getStatics());
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
-            return default(global::java.lang.Object.JavaPtr*);
+            global::net.sf.robocode.host.IHostedThread @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostedThread>(@__env, @__obj);
+            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getStatics());
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            return default(global::System.IntPtr);
         }
         
-        private static global::java.lang.Object.JavaPtr* getRobotFileSystemManager3(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static global::System.IntPtr getRobotFileSystemManager3(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()Lnet/sf/robocode/host/io/RobotFileSystemManager;
             // ()Lnet/sf/robocode/host/io/RobotFileSystemManager;
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.IHostedThread real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostedThread>(__env, @__obj);
-            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.getRobotFileSystemManager());
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
-            return default(global::java.lang.Object.JavaPtr*);
+            global::net.sf.robocode.host.IHostedThread @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostedThread>(@__env, @__obj);
+            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getRobotFileSystemManager());
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            return default(global::System.IntPtr);
         }
         
-        private static global::java.lang.Object.JavaPtr* getRobotClassloader4(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static global::System.IntPtr getRobotClassloader4(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()Ljava/lang/ClassLoader;
             // ()Ljava/lang/ClassLoader;
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.IHostedThread real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostedThread>(__env, @__obj);
-            return global::net.sf.jni4net.utils.ClrProxiesMap.WrapClr(@__env, real.getRobotClassloader());
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
-            return default(global::java.lang.Object.JavaPtr*);
+            global::net.sf.robocode.host.IHostedThread @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostedThread>(@__env, @__obj);
+            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getRobotClassloader());
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            return default(global::System.IntPtr);
         }
         
-        private static void println5(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj, global::java.lang.Object.JavaPtr* par0) {
+        private static void println5(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0) {
             // (Ljava/lang/String;)V
             // (Ljava/lang/String;)V
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.IHostedThread real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostedThread>(__env, @__obj);
-            real.println(global::net.sf.jni4net.utils.JavaProxiesMap.Wrap<global::java.lang.String>(__env, par0));
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
+            global::net.sf.robocode.host.IHostedThread @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostedThread>(@__env, @__obj);
+            @__real.println(global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, par0));
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         
-        private static void run6(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static void run6(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()V
             // ()V
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.IHostedThread real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.IHostedThread>(__env, @__obj);
-            real.run();
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
+            global::net.sf.robocode.host.IHostedThread @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostedThread>(@__env, @__obj);
+            @__real.run();
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
-            public global::net.sf.jni4net.jni.IJavaProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv env) {
-                return new global::net.sf.robocode.host.@__IHostedThread(env);
+            public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
+                return new global::net.sf.robocode.host.@__IHostedThread(@__env);
             }
         }
     }

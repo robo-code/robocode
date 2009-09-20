@@ -2,10 +2,14 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using net.sf.jni4net;
+using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.dotnet.utils;
+using net.sf.robocode.host.proxies;
 using net.sf.robocode.repository;
+using net.sf.robocode.security;
 using robocode;
 
 namespace net.sf.robocode.dotnet.host.seed
@@ -24,9 +28,11 @@ namespace net.sf.robocode.dotnet.host.seed
                 robotAssemblyFileName = args[0];
                 robotAssemblyShadowFileName = args[1];
 
-                Bridge.Verbose = true;
-                Bridge.CreateJVM(@"-Djava.class.path=..\..\..\robocode.api\target\test-classes;..\..\..\robocode.api\target\classes;..\..\..\robocode.battle\target\test-classes;..\..\..\robocode.battle\target\classes;..\..\..\robocode.core\target\test-classes;..\..\..\robocode.core\target\classes;C:\Users\Zamboch\.m2\repository\org\picocontainer\picocontainer\2.6\picocontainer-2.6.jar;C:\Users\Zamboch\.m2\repository\junit\junit\4.5\junit-4.5.jar;..\..\..\robocode.host\target\test-classes;..\..\..\robocode.host\target\classes;..\..\..\robocode.repository\target\test-classes;..\..\..\robocode.repository\target\classes;C:\Users\Zamboch\.m2\repository\net\sf\robocode\codesize\1.1\codesize-1.1.jar;..\..\..\robocode.roborumble\target\test-classes;..\..\..\robocode.roborumble\target\classes;..\..\..\robocode.samples\target\test-classes;..\..\..\robocode.samples\target\classes;..\..\..\robocode.sound\target\test-classes;..\..\..\robocode.sound\target\classes;..\..\..\robocode.tests\target\test-classes;..\..\..\robocode.tests\target\classes;..\..\..\robocode.ui\target\test-classes;..\..\..\robocode.ui\target\classes;..\..\..\robocode.ui.editor\target\test-classes;..\..\..\robocode.ui.editor\target\classes;..\robocode.dotnet.api\target\test-classes;..\robocode.dotnet.api\target\classes;..\robocode.dotnet.host\target\test-classes;..\robocode.dotnet.host\target\classes;C:\Users\Zamboch\.m2\repository\net\sf\jni4net\jni4net.j\0.2.0.0\jni4net.j-0.2.0.0.jar;..\robocode.dotnet.nhost\target\test-classes;..\robocode.dotnet.nhost\target\classes;..\robocode.dotnet.samples\target\test-classes;..\robocode.dotnet.samples\target\classes;..\robocode.dotnet.tests\target\test-classes;..\robocode.dotnet.tests\target\classes");
-                Bridge.BindNative = false;
+                BridgeSetup setup=new BridgeSetup(false);
+                setup.Verbose = true;
+                setup.Debug = true;
+                setup.BindNative = false;
+                Bridge.CreateJVM(setup);
                 Bridge.LoadAndRegisterAssembly(typeof (AppDomainSeed).Assembly.Location);
             }
             catch(Exception ex)
@@ -69,8 +75,22 @@ namespace net.sf.robocode.dotnet.host.seed
             }
         }
 
-        public static void StartRound(ExecCommands commands, RobotStatus status)
+        public static void StartRound()
         {
+            ExecCommands commands = (ExecCommands)domain.GetData("commands");
+            RobotStatus status = (RobotStatus)domain.GetData("status");
+
+            var robotFullName = (string)domain.GetData("loadRobot");
+            Assembly assembly = Assembly.LoadFrom(robotAssemblyFileName);
+            Type robotType = assembly.GetType(robotFullName, false);
+            Thread robotThread = new Thread(RobotMain);
+            robotThread.Start(robotType);
+
+        }
+
+        static void RobotMain(object param)
+        {
+            Type robotType = (Type) param;
         }
 
         public static void ForceStopThread()
@@ -84,6 +104,34 @@ namespace net.sf.robocode.dotnet.host.seed
         public static void Cleanup()
         {
         }
+
+        /*private static IHostingRobotProxy CreateProxy()
+        {
+            IHostingRobotProxy robotProxy;
+            IRobotRepositoryItem specification = (IRobotRepositoryItem)HiddenAccess.getFileSpecification(robotSpecification);
+
+            if (specification.isTeamRobot())
+            {
+                robotProxy = new TeamRobotProxy(specification, hostManager, peer, statics);
+            }
+            else if (specification.isAdvancedRobot())
+            {
+                robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, statics);
+            }
+            else if (specification.isStandardRobot())
+            {
+                robotProxy = new StandardRobotProxy(specification, hostManager, peer, statics);
+            }
+            else if (specification.isJuniorRobot())
+            {
+                robotProxy = new JuniorRobotProxy(specification, hostManager, peer, statics);
+            }
+            else
+            {
+                throw new AccessViolationException("Unknown robot type");
+            }
+            return robotProxy;            
+        }*/
     }
 }
 
@@ -114,30 +162,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 }
             }
 
- * IHostingRobotProxy robotProxy;
-            IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(robotSpecification);
-
-            if (specification.isTeamRobot())
-            {
-                robotProxy = new TeamRobotProxy(specification, hostManager, peer, statics);
-            }
-            else if (specification.isAdvancedRobot())
-            {
-                robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, statics);
-            }
-            else if (specification.isStandardRobot())
-            {
-                robotProxy = new StandardRobotProxy(specification, hostManager, peer, statics);
-            }
-            else if (specification.isJuniorRobot())
-            {
-                robotProxy = new JuniorRobotProxy(specification, hostManager, peer, statics);
-            }
-            else
-            {
-                throw new AccessViolationException("Unknown robot type");
-            }
-            return robotProxy;
+ * 
 
  
   

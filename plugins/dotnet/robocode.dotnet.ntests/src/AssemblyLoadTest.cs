@@ -18,8 +18,44 @@ namespace net.sf.robocode.dotnet
         {
             Directory.SetCurrentDirectory(@"D:\Sf\RobocodeN\plugins\dotnet\robocode.dotnet.tests\");
             // -Xmx512M -Dsun.io.useCanonCaches=false 
-            Bridge.Verbose = true;
-            Bridge.CreateJVM(@"-Djava.class.path=..\..\..\robocode.api\target\test-classes;..\..\..\robocode.api\target\classes;..\..\..\robocode.battle\target\test-classes;..\..\..\robocode.battle\target\classes;..\..\..\robocode.core\target\test-classes;..\..\..\robocode.core\target\classes;C:\Users\Zamboch\.m2\repository\org\picocontainer\picocontainer\2.6\picocontainer-2.6.jar;C:\Users\Zamboch\.m2\repository\junit\junit\4.5\junit-4.5.jar;..\..\..\robocode.host\target\test-classes;..\..\..\robocode.host\target\classes;..\..\..\robocode.repository\target\test-classes;..\..\..\robocode.repository\target\classes;C:\Users\Zamboch\.m2\repository\net\sf\robocode\codesize\1.1\codesize-1.1.jar;..\..\..\robocode.roborumble\target\test-classes;..\..\..\robocode.roborumble\target\classes;..\..\..\robocode.samples\target\test-classes;..\..\..\robocode.samples\target\classes;..\..\..\robocode.sound\target\test-classes;..\..\..\robocode.sound\target\classes;..\..\..\robocode.tests\target\test-classes;..\..\..\robocode.tests\target\classes;..\..\..\robocode.ui\target\test-classes;..\..\..\robocode.ui\target\classes;..\..\..\robocode.ui.editor\target\test-classes;..\..\..\robocode.ui.editor\target\classes;..\robocode.dotnet.api\target\test-classes;..\robocode.dotnet.api\target\classes;..\robocode.dotnet.host\target\test-classes;..\robocode.dotnet.host\target\classes;C:\Users\Zamboch\.m2\repository\net\sf\jni4net\jni4net.j\0.2.0.0\jni4net.j-0.2.0.0.jar;..\robocode.dotnet.nhost\target\test-classes;..\robocode.dotnet.nhost\target\classes;..\robocode.dotnet.samples\target\test-classes;..\robocode.dotnet.samples\target\classes;..\robocode.dotnet.tests\target\test-classes;..\robocode.dotnet.tests\target\classes");
+            BridgeSetup setup=new BridgeSetup();
+            setup.AddClassPath(@"C:\Users\Zamboch\.m2\repository\org\picocontainer\picocontainer\2.6\picocontainer-2.6.jar");
+            setup.AddClassPath(@"C:\Users\Zamboch\.m2\repository\junit\junit\4.5\junit-4.5.jar");
+            setup.AddClassPath(@"C:\Users\Zamboch\.m2\repository\net\sf\robocode\codesize\1.1\codesize-1.1.jar");
+            setup.AddClassPath(@"..\..\..\robocode.api\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.api\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.battle\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.battle\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.core\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.core\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.host\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.host\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.repository\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.repository\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.roborumble\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.roborumble\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.samples\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.samples\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.sound\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.sound\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.tests\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.tests\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.ui\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.ui\target\classes");
+            setup.AddClassPath(@"..\..\..\robocode.ui.editor\target\test-classes");
+            setup.AddClassPath(@"..\..\..\robocode.ui.editor\target\classes");
+            setup.AddClassPath(@"..\robocode.dotnet.api\target\test-classes");
+            setup.AddClassPath(@"..\robocode.dotnet.api\target\classes");
+            setup.AddClassPath(@"..\robocode.dotnet.host\target\test-classes");
+            setup.AddClassPath(@"..\robocode.dotnet.host\target\classes");
+            setup.AddClassPath(@"..\robocode.dotnet.nhost\target\test-classes");
+            setup.AddClassPath(@"..\robocode.dotnet.nhost\target\classes");
+            setup.AddClassPath(@"..\robocode.dotnet.samples\target\test-classes");
+            setup.AddClassPath(@"..\robocode.dotnet.samples\target\classes");
+            setup.AddClassPath(@"..\robocode.dotnet.tests\target\test-classes");
+            setup.AddClassPath(@"..\robocode.dotnet.tests\target\classes");
+            setup.Verbose = true;
+            Bridge.CreateJVM(setup);
             // robocode.Robocode -battle D:\Sf\RobocodeN\target\robocode-1.7.1.3-setup\battles\ntest.battle
             Bridge.LoadAndRegisterAssembly(typeof(DllRootHelper).Assembly.Location);
         }

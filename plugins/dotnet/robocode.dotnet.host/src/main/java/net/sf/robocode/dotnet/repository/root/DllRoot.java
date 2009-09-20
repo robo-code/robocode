@@ -81,9 +81,8 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IItem> items) {
-		final system.String[] dllitems = helper.findItems(dllNoSeparator);
-		for (system.String item : dllitems) {
-			String url = item.toString();
+		final String[] dllitems = helper.findItems(dllNoSeparator);
+		for (String url : dllitems) {
 			createItem(items, dllUrl, url);
 		}
 	}

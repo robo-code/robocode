@@ -15,8 +15,8 @@ namespace net.sf.robocode.host.proxies {
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
     public partial interface IHostingRobotProxy {
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(LSystem/Object;LSystem/Object;)V")]
-        void startRound(object par0, object par1);
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V")]
+        void startRound(global::java.lang.Object par0, global::java.lang.Object par1);
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         void forceStopThread();
@@ -30,7 +30,7 @@ namespace net.sf.robocode.host.proxies {
     #endregion
     
     #region Component Designer generated code 
-    public unsafe partial class IHostingRobotProxy_ {
+    public partial class IHostingRobotProxy_ {
         
         public new static global::java.lang.Class _class {
             get {
@@ -41,9 +41,9 @@ namespace net.sf.robocode.host.proxies {
     #endregion
     
     #region Component Designer generated code 
-    [global::net.sf.jni4net.attributes.JavaProxyAttribute()]
+    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.host.proxies.IHostingRobotProxy))]
     [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.host.proxies.IHostingRobotProxy))]
-    internal sealed unsafe partial class @__IHostingRobotProxy : global::java.lang.Object, global::net.sf.robocode.host.proxies.IHostingRobotProxy {
+    internal sealed partial class @__IHostingRobotProxy : global::java.lang.Object, global::net.sf.robocode.host.proxies.IHostingRobotProxy {
         
         internal static global::java.lang.Class staticClass;
         
@@ -55,92 +55,92 @@ namespace net.sf.robocode.host.proxies {
         
         internal static global::net.sf.jni4net.jni.MethodId _cleanup3;
         
-        protected @__IHostingRobotProxy(global::net.sf.jni4net.jni.JNIEnv env) : 
-                base(env) {
+        protected @__IHostingRobotProxy(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+                base(@__env) {
         }
         
-        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv env, java.lang.Class staticClass) {
-            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass = staticClass;
-            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._startRound0 = env.GetMethodID(global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass, "startRound", "(Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V");
-            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._forceStopThread1 = env.GetMethodID(global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass, "forceStopThread", "()V");
-            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._waitForStopThread2 = env.GetMethodID(global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass, "waitForStopThread", "()V");
-            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._cleanup3 = env.GetMethodID(global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass, "cleanup", "()V");
+        private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
+            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass = @__class;
+            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._startRound0 = @__env.GetMethodID(global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass, "startRound", "(Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V");
+            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._forceStopThread1 = @__env.GetMethodID(global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass, "forceStopThread", "()V");
+            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._waitForStopThread2 = @__env.GetMethodID(global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass, "waitForStopThread", "()V");
+            global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._cleanup3 = @__env.GetMethodID(global::net.sf.robocode.host.proxies.@__IHostingRobotProxy.staticClass, "cleanup", "()V");
         }
         
-        public void startRound(object par0, object par1) {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._startRound0, new global::net.sf.jni4net.jni.Value(par0), new global::net.sf.jni4net.jni.Value(par1));
+        public void startRound(global::java.lang.Object par0, global::java.lang.Object par1) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._startRound0, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1));
         }
         
         public void forceStopThread() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._forceStopThread1);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._forceStopThread1);
         }
         
         public void waitForStopThread() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._waitForStopThread2);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._waitForStopThread2);
         }
         
         public void cleanup() {
-            global::net.sf.jni4net.jni.JNIEnv env = this.Env;
-            env.CallVoidMethod(this, global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._cleanup3);
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.host.proxies.@__IHostingRobotProxy._cleanup3);
         }
         
-        private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv env, global::java.lang.Class clazz) {
-            global::System.Type type = typeof(__IHostingRobotProxy);
+        private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv @__env, global::java.lang.Class @__class) {
+            global::System.Type @__type = typeof(__IHostingRobotProxy);
             global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> methods = new global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod>();
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "startRound", "startRound0", "(Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "forceStopThread", "forceStopThread1", "()V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "waitForStopThread", "waitForStopThread2", "()V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(type, "cleanup", "cleanup3", "()V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "startRound", "startRound0", "(Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "forceStopThread", "forceStopThread1", "()V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "waitForStopThread", "waitForStopThread2", "()V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "cleanup", "cleanup3", "()V"));
             return methods;
         }
         
-        private static void startRound0(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj, global::java.lang.Object.JavaPtr* par0, global::java.lang.Object.JavaPtr* par1) {
+        private static void startRound0(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0, global::System.IntPtr par1) {
             // (Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V
-            // (LSystem/Object;LSystem/Object;)V
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            // (Ljava/lang/Object;Ljava/lang/Object;)V
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.proxies.IHostingRobotProxy real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(__env, @__obj);
-            real.startRound(global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::System.Object>(__env, par0), global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::System.Object>(__env, par1));
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
+            global::net.sf.robocode.host.proxies.IHostingRobotProxy @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__obj);
+            @__real.startRound(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par0), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par1));
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         
-        private static void forceStopThread1(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static void forceStopThread1(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()V
             // ()V
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.proxies.IHostingRobotProxy real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(__env, @__obj);
-            real.forceStopThread();
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
+            global::net.sf.robocode.host.proxies.IHostingRobotProxy @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__obj);
+            @__real.forceStopThread();
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         
-        private static void waitForStopThread2(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static void waitForStopThread2(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()V
             // ()V
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.proxies.IHostingRobotProxy real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(__env, @__obj);
-            real.waitForStopThread();
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
+            global::net.sf.robocode.host.proxies.IHostingRobotProxy @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__obj);
+            @__real.waitForStopThread();
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         
-        private static void cleanup3(global::net.sf.jni4net.jni.JNIEnv.JavaPtr* @__envi, global::java.lang.Object.JavaPtr* @__obj) {
+        private static void cleanup3(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
             // ()V
             // ()V
-            global::net.sf.jni4net.jni.JNIEnv @__env = (*@__envi).Wrap();
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.host.proxies.IHostingRobotProxy real = global::net.sf.jni4net.utils.ClrProxiesMap.ToClr<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(__env, @__obj);
-            real.cleanup();
-            }catch (global::System.Exception ex){__env.ThrowExisting(ex);}
+            global::net.sf.robocode.host.proxies.IHostingRobotProxy @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__obj);
+            @__real.cleanup();
+            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
-            public global::net.sf.jni4net.jni.IJavaProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv env) {
-                return new global::net.sf.robocode.host.proxies.@__IHostingRobotProxy(env);
+            public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
+                return new global::net.sf.robocode.host.proxies.@__IHostingRobotProxy(@__env);
             }
         }
     }

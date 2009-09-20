@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<jni4net-proxygen xmlns="http://jni4net.sf.net/0.2.0.0/toolConfig.xsd">
+<jni4net-proxygen xmlns="http://jni4net.sf.net/0.3.0.0/toolConfig.xsd">
   <TargetDirJvm>robocode.dotnet.host/src/main/java</TargetDirJvm>
   <TargetDirClr>robocode.dotnet.nhost/src/generated</TargetDirClr>
   <ClassPath>robocode.dotnet.host/target/classes</ClassPath>
   <ClassPath>../../robocode.core/target/classes</ClassPath>
   <ClassPath>../../robocode.api/target/classes</ClassPath>
   <ClassPath>../../robocode.host/target/classes</ClassPath>
-  <ClassPath>tools\lib\jni4net.j-0.2.0.0.jar</ClassPath>
-  <AssemblyReference>tools\lib\jni4net.n-0.2.0.0.dll</AssemblyReference>
   <AssemblyReference>robocode.dotnet.nhost\target\robocode.dotnet.host-1.7.1.3.dll</AssemblyReference>
+  <!-- 
+  -->
 
   <!-- interfaces -->
   
@@ -25,6 +25,9 @@
   <JavaClass TypeName="net.sf.robocode.peer.IRobotPeer"/>
   <JavaClass TypeName="net.sf.robocode.io.Logger"/>
   
+<!-- 
+  <JavaClass TypeName="net.sf.robocode.peer.IRobotStatics"/>
+  -->
 
   <ClrType TypeName="net.sf.robocode.dotnet.host.DotnetHost"/>
   <ClrType TypeName="net.sf.robocode.dotnet.repository.root.DllRootHelper"/>

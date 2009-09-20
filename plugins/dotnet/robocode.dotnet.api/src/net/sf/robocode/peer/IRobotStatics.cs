@@ -11,18 +11,17 @@
  *******************************************************************************/
 namespace net.sf.robocode.peer
 {
+    /// <summary>
+    /// @author Pavel Savara (original)
+    /// </summary>
+    public interface IRobotStatics
+    {
+        bool isInteractiveRobot();
 
+        bool isPaintRobot();
 
-/// <summary>
-/// @author Pavel Savara (original)
-/// </summary>
-public interface IRobotStatics {
-	bool isInteractiveRobot();
+        bool isAdvancedRobot();
 
-	bool isPaintRobot();
-
-	bool isAdvancedRobot();
-
-	bool isTeamRobot();
-}
+        bool isTeamRobot();
+    }
 }
