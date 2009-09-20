@@ -136,6 +136,9 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Flag indicating if painting is enabled
 	private transient boolean isPaintingEnabled;
 
+	// Flag indicating if the buffer can grow without any limit
+	private transient boolean hasUnlimitedBuffer;
+
 	// Byte buffer that works as a stack of method calls to this proxy
 	private ByteBuffer calls;
 
@@ -1318,6 +1321,10 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		isPaintingEnabled = enabled;
 	}
 
+	public void setUnlimitedBuffer(boolean enabled) {
+		hasUnlimitedBuffer = enabled;
+	}
+
 	public void processTo(Graphics2D g) {
 		if (!isInitialized) {
 			// Make sure the transform is not null
@@ -1878,7 +1885,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 
 		// Check if the max. buffer size has been reached
-		if (bufferSize > MAX_BUFFER_SIZE) {			
+		if (!hasUnlimitedBuffer && bufferSize > MAX_BUFFER_SIZE) {			
 			return false; // not reallocated!
 		}
 
@@ -1913,7 +1920,8 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
 			
 			if (unrecoveredBufferOverflowCount++ % 500 == 0) { // Prevent spamming 
-				System.out.println("SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
+				System.out.println(
+						"SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
 			}
 		}
 		return recovered;

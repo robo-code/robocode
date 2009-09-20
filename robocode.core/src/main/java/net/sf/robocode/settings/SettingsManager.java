@@ -89,7 +89,8 @@ public class SettingsManager implements ISettingsManager {
 
 	private boolean
 			optionsRenderingBufferImages = true,
-			optionsRenderingForceBulletColor = false;
+			optionsRenderingForceBulletColor = false,
+			optionsRenderingUnlimitedRobotPaintingBuffer = false;
 
 	// Sound Options (Sound Effects)
 	private boolean
@@ -192,172 +193,82 @@ public class SettingsManager implements ISettingsManager {
 		}
 	}
 
-	/**
-	 * Gets the optionsViewRobotNames.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsViewRobotNames() {
 		return optionsViewRobotNames;
 	}
 
-	/**
-	 * Sets the optionsViewRobotNames.
-	 *
-	 * @param optionsViewRobotNames The optionsViewRobotNames to set
-	 */
 	public void setOptionsViewRobotNames(boolean optionsViewRobotNames) {
 		this.optionsViewRobotNames = optionsViewRobotNames;
 		props.setProperty(OPTIONS_VIEW_ROBOTNAMES, "" + optionsViewRobotNames);
 	}
 
-	/**
-	 * Gets the optionsViewScanArcs.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsViewScanArcs() {
 		return optionsViewScanArcs;
 	}
 
-	/**
-	 * Sets the optionsViewScanArcs.
-	 *
-	 * @param optionsViewScanArcs The optionsViewScanArcs to set
-	 */
 	public void setOptionsViewScanArcs(boolean optionsViewScanArcs) {
 		this.optionsViewScanArcs = optionsViewScanArcs;
 		props.setProperty(OPTIONS_VIEW_SCANARCS, "" + optionsViewScanArcs);
 	}
 
-	/**
-	 * Gets the optionsViewRobotEnergy.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsViewRobotEnergy() {
 		return optionsViewRobotEnergy;
 	}
 
-	/**
-	 * Sets the optionsViewRobotEnergy.
-	 *
-	 * @param optionsViewRobotEnergy The optionsViewRobotEnergy to set
-	 */
 	public void setOptionsViewRobotEnergy(boolean optionsViewRobotEnergy) {
 		this.optionsViewRobotEnergy = optionsViewRobotEnergy;
 		props.setProperty(OPTIONS_VIEW_ROBOTENERGY, "" + optionsViewRobotEnergy);
 	}
 
-	/**
-	 * Gets the optionsViewGround.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsViewGround() {
 		return optionsViewGround;
 	}
 
-	/**
-	 * Sets the optionsViewGround.
-	 *
-	 * @param optionsViewGround The optionsViewGround to set
-	 */
 	public void setOptionsViewGround(boolean optionsViewGround) {
 		this.optionsViewGround = optionsViewGround;
 		props.setProperty(OPTIONS_VIEW_GROUND, "" + optionsViewGround);
 	}
 
-	/**
-	 * Gets the optionsViewTPS.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsViewTPS() {
 		return optionsViewTPS;
 	}
 
-	/**
-	 * Sets the optionsViewTPS.
-	 *
-	 * @param optionsViewTPS The optionsViewTPS to set
-	 */
 	public void setOptionsViewTPS(boolean optionsViewTPS) {
 		this.optionsViewTPS = optionsViewTPS;
 		props.setProperty(OPTIONS_VIEW_TPS, "" + optionsViewTPS);
 	}
 
-	/**
-	 * Gets the optionsViewFPS.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsViewFPS() {
 		return optionsViewFPS;
 	}
 
-	/**
-	 * Sets the optionsViewFPS.
-	 *
-	 * @param optionsViewFPS The optionsViewFPS to set
-	 */
 	public void setOptionsViewFPS(boolean optionsViewFPS) {
 		this.optionsViewFPS = optionsViewFPS;
 		props.setProperty(OPTIONS_VIEW_FPS, "" + optionsViewFPS);
 	}
 
-	/**
-	 * Gets the optionsViewExplosions.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsViewExplosions() {
 		return optionsViewExplosions;
 	}
 
-	/**
-	 * Sets the optionsViewExplosions.
-	 *
-	 * @param optionsViewExplosions The optionsViewExplosions to set
-	 */
 	public void setOptionsViewExplosions(boolean optionsViewExplosions) {
 		this.optionsViewExplosions = optionsViewExplosions;
 		props.setProperty(OPTIONS_VIEW_EXPLOSIONS, "" + optionsViewExplosions);
 	}
 
-	/**
-	 * Gets the optionsViewExplosionDebris.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsViewExplosionDebris() {
 		return optionsViewExplosionDebris;
 	}
 
-	/**
-	 * Sets the optionsViewExplosionDebris.
-	 *
-	 * @param optionsViewExplosionDebris The optionsViewExplosionDebris to set
-	 */
 	public void setOptionsViewExplosionDebris(boolean optionsViewExplosionDebris) {
 		this.optionsViewExplosionDebris = optionsViewExplosionDebris;
 		props.setProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "" + optionsViewExplosionDebris);
 	}
 
-	/**
-	 * Gets the optionsRenderingAntialiasing.
-	 *
-	 * @return Returns an int
-	 */
 	public int getOptionsRenderingAntialiasing() {
 		return optionsRenderingAntialiasing;
 	}
 
-	/**
-	 * Sets the optionsRenderingAntialiasing.
-	 *
-	 * @param optionsRenderingAntialiasing The optionsRenderingAntialiasing to set
-	 */
 	public void setOptionsRenderingAntialiasing(int optionsRenderingAntialiasing) {
 		this.optionsRenderingAntialiasing = optionsRenderingAntialiasing;
 		props.setProperty(OPTIONS_RENDERING_ANTIALIASING, "" + optionsRenderingAntialiasing);
@@ -380,21 +291,10 @@ public class SettingsManager implements ISettingsManager {
 		renderingHints.put(RenderingHints.KEY_ANTIALIASING, value);
 	}
 
-	/**
-	 * Gets the optionsRenderingTextAntialiasing.
-	 *
-	 * @return Returns an int
-	 */
 	public int getOptionsRenderingTextAntialiasing() {
 		return optionsRenderingTextAntialiasing;
 	}
 
-	/**
-	 * Sets the optionsRenderingTextAntialiasing.
-	 *
-	 * @param optionsRenderingTextAntialiasing
-	 *         The optionsRenderingTextAntialiasing to set
-	 */
 	public void setOptionsRenderingTextAntialiasing(int optionsRenderingTextAntialiasing) {
 		this.optionsRenderingTextAntialiasing = optionsRenderingTextAntialiasing;
 		props.setProperty(OPTIONS_RENDERING_TEXT_ANTIALIASING, "" + optionsRenderingTextAntialiasing);
@@ -417,20 +317,10 @@ public class SettingsManager implements ISettingsManager {
 		renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, value);
 	}
 
-	/**
-	 * Gets the optionsRenderingMethod.
-	 *
-	 * @return Returns an int
-	 */
 	public int getOptionsRenderingMethod() {
 		return optionsRenderingMethod;
 	}
 
-	/**
-	 * Sets the optionsRenderingMethod.
-	 *
-	 * @param optionsRenderingMethod The optionsRenderingMethod to set
-	 */
 	public void setOptionsRenderingMethod(int optionsRenderingMethod) {
 		this.optionsRenderingMethod = optionsRenderingMethod;
 		props.setProperty(OPTIONS_RENDERING_METHOD, "" + optionsRenderingMethod);
@@ -453,260 +343,132 @@ public class SettingsManager implements ISettingsManager {
 		renderingHints.put(RenderingHints.KEY_RENDERING, value);
 	}
 
-	/**
-	 * Gets the combined rendering options as RenderingHints.
-	 *
-	 * @return Returns an RenderingHints value
-	 */
 	public RenderingHints getRenderingHints() {
 		return renderingHints;
 	}
 
-	/**
-	 * Gets the optionsRenderingNoBuffers
-	 *
-	 * @return Returns an int
-	 */
 	public int getOptionsRenderingNoBuffers() {
 		return optionsRenderingNoBuffers;
 	}
 
-	/**
-	 * Sets the optionsRenderingNoBuffers.
-	 *
-	 * @param optionsRenderingNoBuffers The optionsRenderingNoBuffers to set
-	 */
 	public void setOptionsRenderingNoBuffers(int optionsRenderingNoBuffers) {
 		this.optionsRenderingNoBuffers = optionsRenderingNoBuffers;
 		props.setProperty(OPTIONS_RENDERING_NO_BUFFERS, "" + optionsRenderingNoBuffers);
 	}
 
-	/**
-	 * Gets the optionsRenderingBufferImages
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsRenderingBufferImages() {
 		return optionsRenderingBufferImages;
 	}
 
-	/**
-	 * Sets the optionsRenderingBufferImages.
-	 *
-	 * @param optionsRenderingBufferImages The optionsRenderingBufferImages to set
-	 */
 	public void setOptionsRenderingBufferImages(boolean optionsRenderingBufferImages) {
 		this.optionsRenderingBufferImages = optionsRenderingBufferImages;
 		props.setProperty(OPTIONS_RENDERING_BUFFER_IMAGES, "" + optionsRenderingBufferImages);
 	}
 
-	/**
-	 * Gets the optionsRenderingForceBulletColor
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsRenderingForceBulletColor() {
 		return optionsRenderingForceBulletColor;
 	}
 
-	/**
-	 * Sets the optionsRenderingForceBulletColor.
-	 *
-	 * @param optionsRenderingForceBulletColor
-	 *         The optionsRenderingForceBulletColor to set
-	 */
 	public void setOptionsRenderingForceBulletColor(boolean optionsRenderingForceBulletColor) {
 		this.optionsRenderingForceBulletColor = optionsRenderingForceBulletColor;
 		props.setProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "" + optionsRenderingForceBulletColor);
 	}
 
-	/**
-	 * Gets the optionsBattleDesiredTPS.
-	 *
-	 * @return Returns a int
-	 */
+	public boolean getOptionsRenderingUnlimitedRobotPaintingBuffer() {
+		return optionsRenderingUnlimitedRobotPaintingBuffer;
+	}
+
+	public void setOptionsRenderingUnlimitedRobotPaintingBuffer(boolean optionsRenderingUnlimitedRobotPaintingBuffer) {
+		this.optionsRenderingUnlimitedRobotPaintingBuffer = optionsRenderingUnlimitedRobotPaintingBuffer;
+		props.setProperty(OPTIONS_RENDERING_UNLIMITED_ROBOT_PAINTING_BUFFER,
+				"" + optionsRenderingUnlimitedRobotPaintingBuffer);
+	}
+
 	public int getOptionsBattleDesiredTPS() {
 		return optionsBattleDesiredTPS;
 	}
 
-	/**
-	 * Sets the optionsBattleDesiredTPS.
-	 *
-	 * @param optionsBattleDesiredTPS The optionsBattleDesiredTPS to set
-	 */
 	public void setOptionsBattleDesiredTPS(int optionsBattleDesiredTPS) {
 		this.optionsBattleDesiredTPS = optionsBattleDesiredTPS;
 		props.setProperty(OPTIONS_BATTLE_DESIREDTPS, "" + optionsBattleDesiredTPS);
 	}
 
-	/**
-	 * Gets the optionsSoundEnableSound
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsSoundEnableSound() {
 		return optionsSoundEnableSound;
 	}
 
-	/**
-	 * Sets the optionsSoundEnableSound.
-	 *
-	 * @param optionsSoundEnableSound The optionsSoundEnableSound to set
-	 */
 	public void setOptionsSoundEnableSound(boolean optionsSoundEnableSound) {
 		this.optionsSoundEnableSound = optionsSoundEnableSound;
 		props.setProperty(OPTIONS_SOUND_ENABLESOUND, "" + optionsSoundEnableSound);
 	}
 
-	/**
-	 * Gets the optionsSoundEnableGunshot
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsSoundEnableGunshot() {
 		return optionsSoundEnableGunshot;
 	}
 
-	/**
-	 * Sets the optionsSoundEnableGunshot.
-	 *
-	 * @param optionsSoundEnableGunshot The optionsSoundEnableGunshot to set
-	 */
 	public void setOptionsSoundEnableGunshot(boolean optionsSoundEnableGunshot) {
 		this.optionsSoundEnableGunshot = optionsSoundEnableGunshot;
 		props.setProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "" + optionsSoundEnableGunshot);
 	}
 
-	/**
-	 * Gets the optionsSoundEnableBulletHit
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsSoundEnableBulletHit() {
 		return optionsSoundEnableBulletHit;
 	}
 
-	/**
-	 * Sets the optionsSoundEnableBulletHit.
-	 *
-	 * @param optionsSoundEnableBulletHit The optionsSoundEnableBulletHit to set
-	 */
 	public void setOptionsSoundEnableBulletHit(boolean optionsSoundEnableBulletHit) {
 		this.optionsSoundEnableBulletHit = optionsSoundEnableBulletHit;
 		props.setProperty(OPTIONS_SOUND_ENABLEBULLETHIT, "" + optionsSoundEnableBulletHit);
 	}
 
-	/**
-	 * Gets the optionsSoundEnableRobotDeath
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsSoundEnableRobotDeath() {
 		return optionsSoundEnableRobotDeath;
 	}
 
-	/**
-	 * Sets the optionsSoundEnableRobotDeath.
-	 *
-	 * @param optionsSoundEnableRobotDeath The optionsSoundEnableRobotDeath to set
-	 */
 	public void setOptionsSoundEnableRobotDeath(boolean optionsSoundEnableRobotDeath) {
 		this.optionsSoundEnableRobotDeath = optionsSoundEnableRobotDeath;
 		props.setProperty(OPTIONS_SOUND_ENABLEROBOTDEATH, "" + optionsSoundEnableRobotDeath);
 	}
 
-	/**
-	 * Gets the optionsSoundEnableWallCollision
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsSoundEnableWallCollision() {
 		return optionsSoundEnableWallCollision;
 	}
 
-	/**
-	 * Sets the optionsSoundEnableWallCollision.
-	 *
-	 * @param optionsSoundEnableWallCollision
-	 *         The optionsSoundEnableWallCollision to set
-	 */
 	public void setOptionsSoundEnableWallCollision(boolean optionsSoundEnableWallCollision) {
 		this.optionsSoundEnableWallCollision = optionsSoundEnableWallCollision;
 		props.setProperty(OPTIONS_SOUND_ENABLEWALLCOLLISION, "" + optionsSoundEnableWallCollision);
 	}
 
-	/**
-	 * Gets the optionsSoundEnableRobotCollision
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsSoundEnableRobotCollision() {
 		return optionsSoundEnableRobotCollision;
 	}
 
-	/**
-	 * Sets the optionsSoundEnableRobotCollision.
-	 *
-	 * @param optionsSoundEnableRobotCollision
-	 *         The optionsSoundEnableRobotCollision to set
-	 */
 	public void setOptionsSoundEnableRobotCollision(boolean optionsSoundEnableRobotCollision) {
 		this.optionsSoundEnableRobotCollision = optionsSoundEnableRobotCollision;
 		props.setProperty(OPTIONS_SOUND_ENABLEROBOTCOLLISION, "" + optionsSoundEnableRobotCollision);
 	}
 
-	/**
-	 * Gets the optionsSoundEnableMixerVolume
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsSoundEnableMixerVolume() {
 		return optionsSoundEnableMixerVolume;
 	}
 
-	/**
-	 * Sets the optionsSoundMixer
-	 *
-	 * @param optionsSoundMixer The optionsSoundMixer to set
-	 */
 	public void setOptionsSoundMixer(String optionsSoundMixer) {
 		this.optionsSoundMixer = optionsSoundMixer;
 		props.setProperty(OPTIONS_SOUND_MIXER, optionsSoundMixer);
 	}
 
-	/**
-	 * Gets the optionsSoundMixer
-	 *
-	 * @return Returns a String
-	 */
 	public String getOptionsSoundMixer() {
 		return optionsSoundMixer;
 	}
 
-	/**
-	 * Sets the optionsSoundEnableMixerVolume.
-	 *
-	 * @param optionsSoundEnableMixerVolume The optionsSoundEnableMixerVolume to set
-	 */
 	public void setOptionsSoundEnableMixerVolume(boolean optionsSoundEnableMixerVolume) {
 		this.optionsSoundEnableMixerVolume = optionsSoundEnableMixerVolume;
 		props.setProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "" + optionsSoundEnableMixerVolume);
 	}
 
-	/**
-	 * Gets the optionsSoundEnableMixerPan
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsSoundEnableMixerPan() {
 		return optionsSoundEnableMixerPan;
 	}
 
-	/**
-	 * Sets the optionsSoundEnableMixerPan.
-	 *
-	 * @param optionsSoundEnableMixerPan The optionsSoundEnableMixerPan to set
-	 */
 	public void setOptionsSoundEnableMixerPan(boolean optionsSoundEnableMixerPan) {
 		this.optionsSoundEnableMixerPan = optionsSoundEnableMixerPan;
 		props.setProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "" + optionsSoundEnableMixerPan);
@@ -757,172 +519,82 @@ public class SettingsManager implements ISettingsManager {
 		return fileWallCollisionSfx;
 	}
 
-	/**
-	 * Gets the versionChecked.
-	 *
-	 * @return Returns a String
-	 */
 	public Date getVersionChecked() {
 		return (versionChecked != null) ? (Date) versionChecked.clone() : null;
 	}
 
-	/**
-	 * Sets the versionChecked.
-	 *
-	 * @param versionChecked The versionChecked to set
-	 */
 	public void setVersionChecked(Date versionChecked) {
 		this.versionChecked = (versionChecked != null) ? (Date) versionChecked.clone() : null;
 		props.setProperty(VERSIONCHECKED, dateFormat.format(new Date()));
 	}
 
-	/**
-	 * Gets the robotFilesystemQuota.
-	 *
-	 * @return Returns a long
-	 */
 	public long getRobotFilesystemQuota() {
 		return robotFilesystemQuota;
 	}
 
-	/**
-	 * Sets the robotFilesystemQuota.
-	 *
-	 * @param robotFilesystemQuota The robotFilesystemQuota to set
-	 */
 	public void setRobotFilesystemQuota(long robotFilesystemQuota) {
 		this.robotFilesystemQuota = robotFilesystemQuota;
 		props.setProperty(ROBOT_FILESYSTEM_QUOTA, "" + robotFilesystemQuota);
 	}
 
-	/**
-	 * Gets the consoleQuota.
-	 *
-	 * @return Returns a long
-	 */
 	public long getConsoleQuota() {
 		return consoleQuota;
 	}
 
-	/**
-	 * Sets the consoleQuota.
-	 *
-	 * @param consoleQuota The consoleQuota to set
-	 */
 	public void setConsoleQuota(long consoleQuota) {
 		this.consoleQuota = consoleQuota;
 		props.setProperty(CONSOLE_QUOTA, "" + consoleQuota);
 	}
 
-	/**
-	 * Gets the cpuConstant.
-	 *
-	 * @return Returns a long
-	 */
 	public long getCpuConstant() {
 		return cpuConstant;
 	}
 
-	/**
-	 * Sets the cpuConstant.
-	 *
-	 * @param cpuConstant The cpuConstant to set
-	 */
 	public void setCpuConstant(long cpuConstant) {
 		this.cpuConstant = cpuConstant;
 		props.setProperty(CPU_CONSTANT, "" + cpuConstant);
 	}
 
-	/**
-	 * Gets the optionsDevelopmentPath
-	 *
-	 * @return Returns a String
-	 */
 	public String getOptionsDevelopmentPath() {
 		return optionsDevelopmentPath;
 	}
 
-	/**
-	 * Sets the optionsDevelopmentPath.
-	 *
-	 * @param optionsDevelopmentPath The optionsDevelopmentPath to set
-	 */
 	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
 		this.optionsDevelopmentPath = optionsDevelopmentPath;
 		props.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);
 	}
 
-	/**
-	 * Gets the optionsCommonShowResults
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsCommonShowResults() {
 		return optionsCommonShowResults;
 	}
 
-	/**
-	 * Sets the optionsCommonAppendWhenSavingResults.
-	 *
-	 * @param enable The optionsCommonAppendWhenSavingResults to set
-	 */
 	public void setOptionsCommonAppendWhenSavingResults(boolean enable) {
 		this.optionsCommonAppendWhenSavingResults = enable;
 		props.setProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "" + enable);
 	}
 
-	/**
-	 * Gets the optionsCommonAppendWhenSavingResults
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsCommonAppendWhenSavingResults() {
 		return optionsCommonAppendWhenSavingResults;
 	}
 
-	/**
-	 * Sets the optionsCommonShowResults.
-	 *
-	 * @param enable The optionsCommonShowResults to set
-	 */
 	public void setOptionsCommonShowResults(boolean enable) {
 		this.optionsCommonShowResults = enable;
 		props.setProperty(OPTIONS_COMMON_SHOW_RESULTS, "" + enable);
 	}
 
-	/**
-	 * Gets the optionsCommonDontHideRankings.
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsCommonDontHideRankings() {
 		return optionsCommonDontHideRankings;
 	}
 
-	/**
-	 * Sets the optionsCommonDontHideRankings.
-	 *
-	 * @param enable The optionsCommonShowResults to set
-	 */
 	public void setOptionsCommonDontHideRankings(boolean enable) {
 		this.optionsCommonDontHideRankings = enable;
 		props.setProperty(OPTIONS_COMMON_DONT_HIDE_RANKINGS, "" + enable);
 	}
 
-	/**
-	 * Gets the optionsCommonEnableReplayRecording
-	 *
-	 * @return Returns a boolean
-	 */
 	public boolean getOptionsCommonEnableReplayRecording() {
 		return optionsCommonEnableReplayRecording;
 	}
 
-	/**
-	 * Sets the optionsCommonEnableReplayRecording.
-	 *
-	 * @param enable The optionsCommonEnableReplayRecording to set
-	 */
 	public void setOptionsCommonEnableReplayRecording(boolean enable) {
 		this.optionsCommonEnableReplayRecording = enable;
 		props.setProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "" + enable);
@@ -964,6 +636,8 @@ public class SettingsManager implements ISettingsManager {
 		optionsRenderingBufferImages = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_BUFFER_IMAGES, "true"));
 		optionsRenderingForceBulletColor = Boolean.valueOf(
 				props.getProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "false"));
+		optionsRenderingUnlimitedRobotPaintingBuffer = Boolean.valueOf(
+				props.getProperty(OPTIONS_RENDERING_UNLIMITED_ROBOT_PAINTING_BUFFER, "false"));
 
 		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false"));
 		optionsSoundEnableGunshot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true"));
@@ -1020,11 +694,6 @@ public class SettingsManager implements ISettingsManager {
 		return lastRunVersion;
 	}
 
-	/**
-	 * Sets the lastRunVersion.
-	 *
-	 * @param lastRunVersion The lastRunVersion to set
-	 */
 	public void setLastRunVersion(String lastRunVersion) {
 		this.lastRunVersion = lastRunVersion;
 		props.setProperty(LAST_RUN_VERSION, "" + lastRunVersion);
