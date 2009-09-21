@@ -271,7 +271,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	@Override
 	public Font getFont() {
 		if (font == null) {
-			return new Font("Dialog", Font.PLAIN, 12);
+			return new Font("Dialog", Font.PLAIN, 11);
 		}
 		return font;
 	}
