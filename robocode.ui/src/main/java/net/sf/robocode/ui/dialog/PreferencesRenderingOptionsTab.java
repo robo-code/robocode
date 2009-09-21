@@ -39,7 +39,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JComboBox optionsRenderingNoBuffersComboBox;
 	private JCheckBox optionsRenderingBufferImagesCheckBox;
 	private JCheckBox optionsRenderingForceBulletColorCheckBox;
-	private JCheckBox optionsRenderingUnlimitedRobotPaintingBufferCheckBox;
 
 	private JButton predefinedPlaformDefaultButton;
 	private JButton predefinedSpeedButton;
@@ -158,7 +157,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 			otherSettingsPanel.setLayout(new BoxLayout(otherSettingsPanel, BoxLayout.Y_AXIS));
 			otherSettingsPanel.add(getOptionsRenderingBufferImagesCheckBox());
 			otherSettingsPanel.add(getOptionsRenderingForceBulletColorCheckBox());
-			otherSettingsPanel.add(getOptionsRenderingUnlimitedRobotPaintingBufferCheckBox());
 		}
 		return otherSettingsPanel;
 	}
@@ -235,15 +233,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return optionsRenderingBufferImagesCheckBox;
 	}
 
-	private JCheckBox getOptionsRenderingUnlimitedRobotPaintingBufferCheckBox() {
-		if (optionsRenderingUnlimitedRobotPaintingBufferCheckBox == null) {
-			optionsRenderingUnlimitedRobotPaintingBufferCheckBox = new JCheckBox("Unlimited robot painting buffer");
-			optionsRenderingUnlimitedRobotPaintingBufferCheckBox.setMnemonic('U');
-			optionsRenderingUnlimitedRobotPaintingBufferCheckBox.addActionListener(eventHandler);
-		}
-		return optionsRenderingUnlimitedRobotPaintingBufferCheckBox;
-	}
-
 	private JCheckBox getOptionsRenderingForceBulletColorCheckBox() {
 		if (optionsRenderingForceBulletColorCheckBox == null) {
 			optionsRenderingForceBulletColorCheckBox = new JCheckBox("Make all bullets white");
@@ -260,8 +249,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		getOptionsRenderingNoBuffersComboBox().setSelectedIndex(props.getOptionsRenderingNoBuffers() - 1);
 		getOptionsRenderingBufferImagesCheckBox().setSelected(props.getOptionsRenderingBufferImages());
 		getOptionsRenderingForceBulletColorCheckBox().setSelected(props.getOptionsRenderingForceBulletColor());
-		getOptionsRenderingUnlimitedRobotPaintingBufferCheckBox().setSelected(
-				props.getOptionsRenderingUnlimitedRobotPaintingBuffer());
 	}
 
 	public void storePreferences() {
@@ -273,8 +260,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		props.setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
 		props.setOptionsRenderingBufferImages(optionsRenderingBufferImagesCheckBox.isSelected());
 		props.setOptionsRenderingForceBulletColor(optionsRenderingForceBulletColorCheckBox.isSelected());
-		props.setOptionsRenderingUnlimitedRobotPaintingBuffer(
-				optionsRenderingUnlimitedRobotPaintingBufferCheckBox.isSelected());
 		properties.saveProperties();
 	}
 

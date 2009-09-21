@@ -136,8 +136,8 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Flag indicating if painting is enabled
 	private transient boolean isPaintingEnabled;
 
-	// Flag indicating if the buffer can grow without any limit
-	private transient boolean hasUnlimitedBuffer;
+	// Flag indicating if Robocode is in debugging mode. If so, an unlimited buffer is allowed
+	private final boolean isDebugging;
 
 	// Byte buffer that works as a stack of method calls to this proxy
 	private ByteBuffer calls;
@@ -148,6 +148,12 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// FOR-DEBUG private Method lastRead;
 	// FOR-DEBUG private int lastPos;
 
+
+	// The one and only constructor
+	public Graphics2DSerialized() {
+		isDebugging = System.getProperty("debug", "false").equals("true");
+	}
+	
 	// --------------------------------------------------------------------------
 	// Overriding all methods from the extended Graphics class
 	// --------------------------------------------------------------------------
@@ -1321,10 +1327,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		isPaintingEnabled = enabled;
 	}
 
-	public void setUnlimitedBuffer(boolean enabled) {
-		hasUnlimitedBuffer = enabled;
-	}
-
 	public void processTo(Graphics2D g) {
 		if (!isInitialized) {
 			// Make sure the transform is not null
@@ -1885,7 +1887,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 
 		// Check if the max. buffer size has been reached
-		if (!hasUnlimitedBuffer && bufferSize > MAX_BUFFER_SIZE) {			
+		if (!isDebugging && bufferSize > MAX_BUFFER_SIZE) {			
 			return false; // not reallocated!
 		}
 

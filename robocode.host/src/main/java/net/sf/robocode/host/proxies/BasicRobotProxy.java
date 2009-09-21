@@ -366,7 +366,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		updateStatus(execResults.getCommands(), execResults.getStatus());
 		graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
-		graphicsProxy.setUnlimitedBuffer(peer.hasUnlimitedPaintingBuffer());
 		firedEnergy = 0;
 		firedHeat = 0;
 

@@ -83,10 +83,6 @@ public interface ISettingsManager {
 
 	void setOptionsRenderingForceBulletColor(boolean optionsRenderingForceBulletColor);
 
-	boolean getOptionsRenderingUnlimitedRobotPaintingBuffer();
-
-	void setOptionsRenderingUnlimitedRobotPaintingBuffer(boolean optionsRenderingUnlimitedRobotPaintingBuffer);
-	
 	int getOptionsBattleDesiredTPS();
 
 	void setOptionsBattleDesiredTPS(int optionsBattleDesiredTPS);
@@ -219,7 +215,6 @@ public interface ISettingsManager {
 			OPTIONS_RENDERING_NO_BUFFERS = "robocode.options.rendering.noBuffers",
 			OPTIONS_RENDERING_BUFFER_IMAGES = "robocode.options.rendering.bufferImages",
 			OPTIONS_RENDERING_FORCE_BULLET_COLOR = "robocode.options.rendering.forceBulletColor",
-			OPTIONS_RENDERING_UNLIMITED_ROBOT_PAINTING_BUFFER = "robocode.options.rendering.unlimitedRobotPaintingBuffer",
 
 			OPTIONS_SOUND_ENABLESOUND = "robocode.options.sound.enableSound",
 			OPTIONS_SOUND_ENABLEGUNSHOT = "robocode.options.sound.enableGunshot",

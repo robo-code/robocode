@@ -89,8 +89,7 @@ public class SettingsManager implements ISettingsManager {
 
 	private boolean
 			optionsRenderingBufferImages = true,
-			optionsRenderingForceBulletColor = false,
-			optionsRenderingUnlimitedRobotPaintingBuffer = false;
+			optionsRenderingForceBulletColor = false;
 
 	// Sound Options (Sound Effects)
 	private boolean
@@ -374,16 +373,6 @@ public class SettingsManager implements ISettingsManager {
 		props.setProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "" + optionsRenderingForceBulletColor);
 	}
 
-	public boolean getOptionsRenderingUnlimitedRobotPaintingBuffer() {
-		return optionsRenderingUnlimitedRobotPaintingBuffer;
-	}
-
-	public void setOptionsRenderingUnlimitedRobotPaintingBuffer(boolean optionsRenderingUnlimitedRobotPaintingBuffer) {
-		this.optionsRenderingUnlimitedRobotPaintingBuffer = optionsRenderingUnlimitedRobotPaintingBuffer;
-		props.setProperty(OPTIONS_RENDERING_UNLIMITED_ROBOT_PAINTING_BUFFER,
-				"" + optionsRenderingUnlimitedRobotPaintingBuffer);
-	}
-
 	public int getOptionsBattleDesiredTPS() {
 		return optionsBattleDesiredTPS;
 	}
@@ -636,8 +625,6 @@ public class SettingsManager implements ISettingsManager {
 		optionsRenderingBufferImages = Boolean.valueOf(props.getProperty(OPTIONS_RENDERING_BUFFER_IMAGES, "true"));
 		optionsRenderingForceBulletColor = Boolean.valueOf(
 				props.getProperty(OPTIONS_RENDERING_FORCE_BULLET_COLOR, "false"));
-		optionsRenderingUnlimitedRobotPaintingBuffer = Boolean.valueOf(
-				props.getProperty(OPTIONS_RENDERING_UNLIMITED_ROBOT_PAINTING_BUFFER, "false"));
 
 		optionsSoundEnableSound = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLESOUND, "false"));
 		optionsSoundEnableGunshot = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEGUNSHOT, "true"));

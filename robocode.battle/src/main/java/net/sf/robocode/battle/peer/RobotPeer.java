@@ -189,9 +189,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final Arc2D scanArc;
 	private final BoundingRectangle boundingBox;
 
-	private boolean hasUnlimitedPaintingBuffer;
-
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex, boolean unlimitedPaintingBuffer) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();
 		if (team != null) {
 			team.add(this);
@@ -203,8 +201,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		teamPeer = team;
 		state = RobotState.ACTIVE;
 		battleRules = battle.getBattleRules();
-		
-		hasUnlimitedPaintingBuffer = unlimitedPaintingBuffer;
 
 		this.robotSpecification = robotSpecification;
 
@@ -345,10 +341,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return sgPaintEnabled;
 	}
 
-	public boolean hasUnlimitedPaintingBuffer() {
-		return hasUnlimitedPaintingBuffer;
-	}
-	
 	public RobotState getState() {
 		return state;
 	}

@@ -20,9 +20,6 @@ import java.awt.*;
  */
 public interface IGraphicsProxy {
 	void setPaintingEnabled(boolean enabled);
-
-	void setUnlimitedBuffer(boolean enabled);
-	
 	void processTo(Graphics2D g, Object graphicsCalls);
 
 	void processTo(Graphics2D g);

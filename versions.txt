@@ -1,5 +1,5 @@
 Version 1.7.1.4 Beta
-(14-Sep-2009)
+(21-Sep-2009)
 ---------------
 = Bugfixes =
 * Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init
@@ -20,7 +20,7 @@ Version 1.7.1.4 Beta
 1) It takes up a lot of memory as the painting operations are recorded in a buffer before being processed, and potentially this buffer must be recorded to a file (for replays). A robot is allowed to use up to a maximum of 64 KB per action. An average painting operation like e.g. fillRect(x, y, width, height) takes up 15 bytes, meaning that more 4000 painting operations should be possible, which is a lot.
 2) It takes a lot of CPU cycles to process the painting buffer to the display making the painting slow if the buffer is too large.
 
-* It is possible to remove the limit of the robots painting buffer from the GUI using a new option: Options -> Preferences -> Rendering Options -> Unlimited robot painting buffer.
+* It is possible to remove the limit of the robots painting buffer by using the command-line option: -Ddebug=true
 
 Version 1.7.1.4 Beta
 (26-Aug-2009)

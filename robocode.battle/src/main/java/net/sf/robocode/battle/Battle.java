@@ -291,8 +291,7 @@ public final class Battle extends BaseBattle {
 				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team, robots.size(), cindex,
-					properties.getOptionsRenderingUnlimitedRobotPaintingBuffer());
+			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team, robots.size(), cindex);
 
 			robots.add(robotPeer);
 			if (team == null) {

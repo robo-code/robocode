@@ -517,7 +517,6 @@ public class BattleView extends Canvas {
 		if (robotGraphics[robotIndex] == null) {
 			robotGraphics[robotIndex] = new Graphics2DSerialized();
 			robotGraphics[robotIndex].setPaintingEnabled(true);
-			robotGraphics[robotIndex].setUnlimitedBuffer(properties.getOptionsRenderingUnlimitedRobotPaintingBuffer());
 		}
 		return robotGraphics[robotIndex];
 	}

@@ -40,7 +40,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	private Thread battleThread;
 	IBattleManager battleManager;
 	protected final BattleEventDispatcher eventDispatcher;
-	protected final ISettingsManager properties;
+	private final ISettingsManager properties;
 
 	// rules
 	protected BattleRules battleRules;
