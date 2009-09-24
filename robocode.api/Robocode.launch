@@ -23,6 +23,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="robocode.Robocode"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-?"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="robocode.api"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DROBOTPATH=${workspace_loc:robocode.samples/target/classes}"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:robocode.api/target/launch}"/>
