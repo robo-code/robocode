@@ -156,10 +156,10 @@ public final class RobocodeMain extends RobocodeMainBase {
 				setup.exitOnComplete = true;
 
 				battleManager.setBattleFilename(setup.battleFilename);
-				if (new File(setup.battleFilename).exists()) {
+				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, enableCLIRecording);
 				} else {
-					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
+					System.err.println("The specified battle file '" + setup.battleFilename + "' was not found");
 					System.exit(8);
 				}
 			} else if (setup.replayFilename != null) {
@@ -170,8 +170,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				if (new File(setup.replayFilename).exists()) {
 					battleManager.replay();
 				} else {
-					System.err.println(
-							"The specified battle record file '" + setup.replayFilename + "' was not be found");
+					System.err.println("The specified battle record file '" + setup.replayFilename + "' was not found");
 					System.exit(8);
 				}
 			}
