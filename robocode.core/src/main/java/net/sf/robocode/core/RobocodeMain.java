@@ -307,11 +307,11 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
 						+ "  -DNOSECURITY=true|false    Enable/disable Robocode's security manager\n"
 						+ "  -Ddebug=true|false         Enable/disable debugging used for preventing\n"
-						+ "                             robot timeouts and skipped turns, and allows an"
+						+ "                             robot timeouts and skipped turns, and allows an\n"
 						+ "                             an unlimited painting buffer when debugging robots\n"
 						+ "  -DEXPERIMENTAL=true|false  Enable/disable access to peer in robot interfaces\n"
 						+ "  -DPARALLEL=true|false      Enable/disable parallel processing of robots turns\n"
-						+ "  -DRANDOMSEED=<long number> Set seed for deterministic behavior of random"
+						+ "  -DRANDOMSEED=<long number> Set seed for deterministic behavior of random\n"
 						+ "                             numbers\n");
 	}
 
