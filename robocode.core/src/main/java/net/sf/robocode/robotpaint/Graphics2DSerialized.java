@@ -30,6 +30,8 @@ import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
 import java.util.Map;
 
+import javax.swing.UIManager;
+
 
 /**
  * @author Flemming N. Larsen (original)
@@ -104,31 +106,31 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	// Needed for getTransform()
-	private transient AffineTransform transform;
+	private transient AffineTransform transform = new AffineTransform();
 
 	// Needed for getComposite()
-	private transient Composite composite;
+	private transient Composite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);
 
 	// Needed for getPaint()
-	private transient Paint paint;
+	private transient Paint paint = Color.BLACK;
 
 	// Needed for getStroke()
-	private transient Stroke stroke;
+	private transient Stroke stroke = new BasicStroke();
 
 	// Needed for getRenderingHint() and getRenderingHints()
 	private transient RenderingHints renderingHints;
 
 	// Needed for getBackground()
-	private transient Color background;
+	private transient Color background = UIManager.getColor("Button.background");
 
 	// Needed for getClip()
-	private transient Shape clip;
+	private transient Shape clip; // is null initially
 
 	// Needed for getColor()
-	private transient Color color;
+	private transient Color color = Color.BLACK;
 
 	// Needed for getFont()
-	private transient Font font;
+	private transient Font font = new Font("Dialog", Font.PLAIN, 11); // used for robot labels
 
 	// Flag indicating if this proxy has been initialized
 	private transient boolean isInitialized;
@@ -152,8 +154,16 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// The one and only constructor
 	public Graphics2DSerialized() {
 		isDebugging = System.getProperty("debug", "false").equals("true");
+
+		// Create a default RenderingHints object
+		renderingHints = new RenderingHints(null);
+		renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
+		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		renderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+		renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
+		renderingHints.put(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
 	}
-	
+
 	// --------------------------------------------------------------------------
 	// Overriding all methods from the extended Graphics class
 	// --------------------------------------------------------------------------
@@ -270,9 +280,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	@Override
 	public Font getFont() {
-		if (font == null) {
-			return new Font("Dialog", Font.PLAIN, 11);
-		}
 		return font;
 	}
 
