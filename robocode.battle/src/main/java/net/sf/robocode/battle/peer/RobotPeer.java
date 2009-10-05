@@ -1351,6 +1351,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final double decelTime = Math.max(1, Math.ceil(// sum of 0... decelTime, solving for decelTime using quadratic formula
 				(Math.sqrt((4 * 2 / Rules.DECELERATION) * distance + 1) - 1) / 2));
 
+		if (decelTime == Double.POSITIVE_INFINITY) {
+			return Rules.MAX_VELOCITY;
+		}
+
 		final double decelDist = (decelTime / 2.0) * (decelTime - 1) // sum of 0..(decelTime-1)
 				* Rules.DECELERATION;
 
