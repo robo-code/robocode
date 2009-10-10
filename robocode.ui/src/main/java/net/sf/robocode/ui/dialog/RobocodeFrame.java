@@ -37,6 +37,7 @@ import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.ui.*;
 import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
+import net.sf.robocode.ui.battleview.ScreenshotUtil;
 import net.sf.robocode.ui.gfx.ImageUtil;
 import net.sf.robocode.version.IVersionManager;
 import robocode.control.events.*;
@@ -120,7 +121,8 @@ public class RobocodeFrame extends JFrame {
 			IBattleManager battleManager,
 			IRecordManager recordManager,
 			InteractiveHandler interactiveHandler,
-			MenuBar menuBar, BattleView battleView
+			MenuBar menuBar,
+			BattleView battleView
 			) {
 		this.windowManager = (IWindowManagerExt) windowManager;
 		this.properties = properties;
@@ -129,9 +131,9 @@ public class RobocodeFrame extends JFrame {
 		this.battleManager = battleManager;
 		this.dialogManager = dialogManager;
 		this.recordManager = recordManager;
-		menuBar.setup(this);
 		this.battleView = battleView;
 		this.menuBar = menuBar;
+		menuBar.setup(this);
 		initialize();
 	}
 
@@ -198,6 +200,15 @@ public class RobocodeFrame extends JFrame {
 		return true;
 	}
 
+	public void takeScreenshot() {
+		setBusyPointer(true);
+		try {
+			ScreenshotUtil.saveScreenshot(battleView.getScreenshot(), "PNG", 1);
+		} finally {
+			setBusyPointer(false);
+		}
+	}
+	
 	private void showLatestVersion(String version) {
 		JOptionPane.showMessageDialog(this, "You have version " + version + ".  This is the latest version of Robocode.",
 				"No update available", JOptionPane.INFORMATION_MESSAGE);

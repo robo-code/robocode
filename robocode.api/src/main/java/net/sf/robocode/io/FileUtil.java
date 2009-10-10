@@ -265,6 +265,16 @@ public class FileUtil {
 	}
 
 	/**
+	 * Returns the directory containing the screen shot files.
+	 * If the directory does not exist, it will be created automatically.
+	 *
+	 * @return a File that is the directory containing screen shot files
+	 */
+	public static File getScreenshotsDir() {
+		return createDir(new File(cwd, "/screenshots"));
+	}
+
+	/**
 	 * Returns the Robocode configuration file.
 	 *
 	 * @return a File that is the Robocode configuration file.
