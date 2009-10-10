@@ -13,14 +13,14 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import robocode.control.events.TurnEndedEvent;
 
 
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestConstructorThreadAttack extends RobotTestBed {
+public class TestConstructorThreadAttack extends RobocodeTestBed {
 	boolean messagedUnknown;
 
 	@Override

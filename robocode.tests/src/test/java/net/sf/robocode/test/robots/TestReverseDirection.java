@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 
 import robocode.control.events.TurnEndedEvent;
 import robocode.util.Utils;
@@ -22,7 +22,7 @@ import robocode.util.Utils;
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestReverseDirection extends RobotTestBed {
+public class TestReverseDirection extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {

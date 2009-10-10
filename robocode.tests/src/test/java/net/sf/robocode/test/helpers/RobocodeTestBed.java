@@ -31,7 +31,7 @@ import java.util.Random;
 /**
  * @author Pavel Savara (original)
  */
-public abstract class RobotTestBed extends BattleAdaptor {
+public abstract class RobocodeTestBed extends BattleAdaptor {
 	protected static final IRobocodeEngine engine;
 	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected static int errors = 0;
@@ -71,7 +71,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		}
 	}
 
-	public RobotTestBed() {
+	public RobocodeTestBed() {
 		// silent when running in maven
 		if (System.getProperty("surefire.test.class.path", null) != null) {
 			isDumpingOutput = false;
@@ -82,7 +82,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		messages = 0;
 	}
 
-	public void onTurnEnded(TurnEndedEvent event) {
+    public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {
 			Logger.realOut.println("turn " + event.getTurnSnapshot().getTurn());
 		}

@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 import org.junit.Ignore;
 import robocode.control.events.TurnEndedEvent;
@@ -23,7 +23,7 @@ import robocode.control.events.TurnEndedEvent;
  * @author Pavel Savara (original)
  */
 @Ignore("is very timing sensitive test, so it usually fails on different machines, please run explicitly if you did something to security or timing")
-public class TestSkippedTurns extends RobotTestBed {
+public class TestSkippedTurns extends RobocodeTestBed {
 	boolean messagedBattle;
 	boolean messagedEvent;
 

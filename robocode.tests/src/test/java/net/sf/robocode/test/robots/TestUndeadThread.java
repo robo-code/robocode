@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 import org.junit.Ignore;
 import robocode.control.events.BattleErrorEvent;
@@ -23,7 +23,7 @@ import robocode.control.events.BattleErrorEvent;
  * @author Pavel Savara (original)
  */
 @Ignore("is very time consuming test, please run explicitly if you did something to security or timing")
-public class TestUndeadThread extends RobotTestBed {
+public class TestUndeadThread extends RobocodeTestBed {
 	boolean messagedStop;
 	boolean messagedForcing;
 

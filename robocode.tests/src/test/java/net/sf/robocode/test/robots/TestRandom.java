@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
@@ -24,7 +24,7 @@ import robocode.control.snapshot.IRobotSnapshot;
  *
  * @author Pavel Savara (original)
  */
-public class TestRandom extends RobotTestBed {
+public class TestRandom extends RobocodeTestBed {
 	@Test
 	public void run() {
 		super.run();

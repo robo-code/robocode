@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import junit.framework.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 
 import robocode.control.events.BattleFinishedEvent;
@@ -25,7 +25,7 @@ import robocode.control.snapshot.ITurnSnapshot;
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestFairPlay extends RobotTestBed {
+public class TestFairPlay extends RobocodeTestBed {
 
 	ITurnSnapshot lastTurnSnapshot;
 
