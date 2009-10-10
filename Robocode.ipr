@@ -395,6 +395,7 @@
       <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.api/robocode.testing.api.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.api/robocode.testing.api.iml" group="plugins.testing" />
       <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.content/robocode.testing.content.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.content/robocode.testing.content.iml" group="plugins.testing" />
       <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.installer/robocode.testing.installer.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.installer/robocode.testing.installer.iml" group="plugins.testing" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.samples/robocode.testing.samples.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.samples/robocode.testing.samples.iml" group="plugins.testing" />
       <module fileurl="file://$PROJECT_DIR$/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" group="main" />
       <module fileurl="file://$PROJECT_DIR$/robocode.ui/robocode.ui.iml" filepath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" group="main" />
       <module fileurl="file://$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" filepath="$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" group="main" />

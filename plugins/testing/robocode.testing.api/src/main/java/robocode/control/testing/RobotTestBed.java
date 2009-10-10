@@ -108,17 +108,20 @@ public abstract class RobotTestBed extends BattleAdaptor {
         // Set some system properties for use by the robocode engine.
         System.setProperty("EXPERIMENTAL", "true");
         System.setProperty("TESTING", "true");
+
         // Check that robocode.home is defined and points to a robocode installation.
         String robocodeHome = System.getProperty("robocode.home");
         if (robocodeHome == null) {
             throw new RuntimeException("System property robocode.home is not set.");
         }
+
         File robocodeJar = new File(new File(robocodeHome), "libs/robocode.jar");
         if (!robocodeJar.exists()) {
             throw new RuntimeException("robocode.jar not found. robocode.home: " + robocodeHome);
         }
+
         // Now create the robocode engine.
-        engine = new RobocodeEngine(new File(robocodeHome));
+        engine=new RobocodeEngine(new File(robocodeHome));
     }
 
     /**

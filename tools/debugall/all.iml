@@ -27,6 +27,7 @@
     <orderEntry type="module" module-name="robocode.js.installer" />
     <orderEntry type="module" module-name="robocode.js.repository" />
     <orderEntry type="module" module-name="robocode.js.samples" />
+    <orderEntry type="module" module-name="robocode.testing.samples" />
   </component>
 </module>
 

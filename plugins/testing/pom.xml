@@ -17,6 +17,7 @@
         <module>robocode.testing.api</module>
         <module>robocode.testing.content</module>
         <module>robocode.testing.installer</module>
+        <module>robocode.testing.samples</module>
     </modules>
     <build>
         <plugins>
