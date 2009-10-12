@@ -368,7 +368,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		properties.store(os, "Robocode Robot");
 	}
 
-	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
+	public void storeProperties(OutputStream os, URL web, String desc, String author, String version, boolean sourceIncluded) throws IOException {
 		Properties copy = (Properties) properties.clone();
 
 		if (version != null) {
@@ -383,6 +383,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		if (web != null) {
 			copy.setProperty(ROBOT_WEBPAGE, web.toString());
 		}
+		copy.setProperty(ROBOT_JAVA_SOURCE_INCLUDED, "" + sourceIncluded);
+		
 		final IVersionManager vm = Container.getComponent(IVersionManager.class);
 
 		copy.setProperty(ROBOCODE_VERSION, vm.getVersion());

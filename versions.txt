@@ -1,9 +1,10 @@
 Version 1.7.1.5 Beta
-(05-Oct-2009)
+(13-Oct-2009)
 ---------------
 = Bugfixes =
 * Bug [2871138] - Graphics2D.getTransform() throws NPE
 * Bug [2872781] - "Teleport" - occurs when robot's distance remaining is very large
+* Bug [2876395] - Source is not included, robot.java.source.included was not set
 
 Version 1.7.1.4
 (25-Sep-2009)

@@ -59,7 +59,7 @@ public class JarCreator {
 					JarEntry jt = new JarEntry(teamEntry);
 
 					jarout.putNextEntry(jt);
-					team.storeProperties(jarout, web, desc, author, version);
+					team.storeProperties(jarout, web, desc, author, version, source);
 					jarout.closeEntry();
 				}
 			}
@@ -72,7 +72,7 @@ public class JarCreator {
 					JarEntry jt = new JarEntry(proEntry);
 
 					jarout.putNextEntry(jt);
-					robot.storeProperties(jarout, web, desc, author, version);
+					robot.storeProperties(jarout, web, desc, author, version, source);
 					jarout.closeEntry();
 					packageClasses(source, host, jarout, robot, entries);
 				}
