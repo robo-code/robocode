@@ -1,5 +1,5 @@
 Version 1.7.1.5 Beta
-(13-Oct-2009)
+(14-Oct-2009)
 ---------------
 = Bugfixes =
 * Bug [2871138] - Graphics2D.getTransform() throws NPE
