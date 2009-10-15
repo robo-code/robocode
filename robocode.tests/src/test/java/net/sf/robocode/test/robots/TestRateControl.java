@@ -22,13 +22,13 @@ import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 
 
 /**
  * @author Joshua Galecki (original)
  */
-public class TestRateControl extends RobotTestBed {
+public class TestRateControl extends RobocodeTestBed {
 	int turnNumber;
 	double originalHeading;
 	double originalX;

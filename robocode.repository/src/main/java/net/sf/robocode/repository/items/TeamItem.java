@@ -176,7 +176,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		properties.store(os, "Robocode Robot Team");
 	}
 
-	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
+	public void storeProperties(OutputStream os, URL web, String desc, String author, String version, boolean sourceIncluded) throws IOException {
 		Properties copy = (Properties) properties.clone();
 
 		if (version != null) {

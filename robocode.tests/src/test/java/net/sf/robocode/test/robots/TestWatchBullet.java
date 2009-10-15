@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import junit.framework.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
@@ -22,7 +22,7 @@ import robocode.control.snapshot.IRobotSnapshot;
 /**
  * @author Pavel Savara (original)
  */
-public class TestWatchBullet extends RobotTestBed {
+public class TestWatchBullet extends RobocodeTestBed {
 	boolean messagedIdentity;
 
 	@Test

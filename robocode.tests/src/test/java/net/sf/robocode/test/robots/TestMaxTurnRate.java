@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 
 import robocode.control.events.TurnEndedEvent;
 
@@ -21,7 +21,7 @@ import robocode.control.events.TurnEndedEvent;
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestMaxTurnRate extends RobotTestBed {
+public class TestMaxTurnRate extends RobocodeTestBed {
 
 	StringBuffer buf = new StringBuffer();
 	

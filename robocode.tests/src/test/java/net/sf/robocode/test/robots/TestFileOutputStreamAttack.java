@@ -12,7 +12,7 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import robocode.control.events.TurnEndedEvent;
 
@@ -20,7 +20,7 @@ import robocode.control.events.TurnEndedEvent;
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestFileOutputStreamAttack extends RobotTestBed {
+public class TestFileOutputStreamAttack extends RobocodeTestBed {
 
 	private boolean messagedAccessDenied;
 	

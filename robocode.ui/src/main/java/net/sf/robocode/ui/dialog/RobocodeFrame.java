@@ -208,7 +208,7 @@ public class RobocodeFrame extends JFrame {
 			setBusyPointer(false);
 		}
 	}
-	
+
 	private void showLatestVersion(String version) {
 		JOptionPane.showMessageDialog(this, "You have version " + version + ".  This is the latest version of Robocode.",
 				"No update available", JOptionPane.INFORMATION_MESSAGE);

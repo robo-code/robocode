@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class TestFileWrite extends RobotTestBed {
+public class TestFileWrite extends RobocodeTestBed {
 
 	@Test
 	public void run() {

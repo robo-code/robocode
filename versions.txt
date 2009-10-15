@@ -5,10 +5,12 @@ Version 1.7.2 Alpha
 * Req [2342293] - Screenshot of battleview. Press Ctrl+T on Windows and Linux, and Command+T for Mac OS in order to take a screenshot of the battleview. The screenshot will be saved in the Robocode folder named "screenshots", and the filename will be a timestamp for when the screenshot was taken.
 
 Version 1.7.1.5 Beta
-(02-Oct-2009)
+(14-Oct-2009)
 ---------------
 = Bugfixes =
 * Bug [2871138] - Graphics2D.getTransform() throws NPE
+* Bug [2872781] - "Teleport" - occurs when robot's distance remaining is very large
+* Bug [2876395] - Source is not included, robot.java.source.included was not set
 
 Version 1.7.1.4
 (25-Sep-2009)

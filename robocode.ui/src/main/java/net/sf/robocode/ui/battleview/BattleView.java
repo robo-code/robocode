@@ -211,6 +211,7 @@ public class BattleView extends Canvas {
 			offscreenImage.flush();
 			offscreenImage = null;
 		}
+
 		offscreenImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
 		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 
