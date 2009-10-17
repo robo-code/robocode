@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import java.util.Random;
 /**
  * @author Pavel Savara (original)
  */
-public abstract class RobotTestBed extends BattleAdaptor {
+public abstract class RobocodeTestBed extends BattleAdaptor {
 	protected static final IRobocodeEngine engine;
 	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected static int errors = 0;
@@ -71,7 +71,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 		}
 	}
 
-	public RobotTestBed() {
+	public RobocodeTestBed() {
 		// silent when running in maven
 		if (System.getProperty("surefire.test.class.path", null) != null) {
 			isDumpingOutput = false;

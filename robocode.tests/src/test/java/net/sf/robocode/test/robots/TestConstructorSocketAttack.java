@@ -12,7 +12,7 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import robocode.control.events.TurnEndedEvent;
 
@@ -20,7 +20,7 @@ import robocode.control.events.TurnEndedEvent;
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestConstructorSocketAttack extends RobotTestBed {
+public class TestConstructorSocketAttack extends RobocodeTestBed {
 
 	private boolean messagedInitialization;
 	private boolean messagedAccessDenied;
@@ -53,6 +53,6 @@ public class TestConstructorSocketAttack extends RobotTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 1; // Security error must be reported as an error
+		return 2; // Security error must be reported as an error
 	}
 }

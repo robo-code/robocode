@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 
@@ -23,7 +23,7 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class TestFileAttack extends RobotTestBed {
+public class TestFileAttack extends RobocodeTestBed {
 	boolean messagedWrite;
 	boolean messagedRead;
 
@@ -67,4 +67,8 @@ public class TestFileAttack extends RobotTestBed {
 		Assert.assertFalse("Found attack file", new File("C:\\Robocode.attack").exists());
 	}
 
+	@Override
+	protected int getExpectedErrors() {
+		return 2; // Security error must be reported as an error
+	}
 }

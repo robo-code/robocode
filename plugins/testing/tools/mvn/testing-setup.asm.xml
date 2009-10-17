@@ -1,0 +1,89 @@
+<assembly>
+    <id>setup</id>
+    <formats>
+        <format>dir</format>
+        <format>jar</format>
+    </formats>
+    
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <moduleSets>
+        <!-- testing -->
+        <moduleSet>
+            <includes>
+                <include>net.sf.robocode:robocode.testing.api</include>
+            </includes>
+            <binaries>
+                <outputFileNameMapping>robocode.testing.${module.extension}</outputFileNameMapping>
+                <outputDirectory>libs</outputDirectory>
+                <unpack>false</unpack>
+                <dependencySets>
+                    <dependencySet>
+                        <excludes>
+                            <exclude>net.sf.robocode:robocode.testing.api</exclude>
+                            <exclude>net.sf.robocode:robocode.api</exclude>
+                        </excludes>
+                        <unpack>false</unpack>
+                    </dependencySet>
+                </dependencySets>
+            </binaries>
+        </moduleSet>
+
+        <!-- installer and static content -->
+        <moduleSet>
+            <includes>
+                <include>net.sf.robocode:robocode.testing.content</include>
+                <include>net.sf.robocode:robocode.testing.installer</include>
+            </includes>
+            <binaries>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+                <dependencySets>
+                    <!-- installer and static content -->
+                    <dependencySet>
+                        <excludes>
+                            <exclude>net.sf.robocode:robocode.testing.api</exclude>
+                            <exclude>net.sf.robocode:robocode.testing.samples</exclude>
+                            <exclude>net.sf.robocode:robocode.api</exclude>
+                            <exclude>net.sf.robocode:robocode.tests</exclude>
+                            <exclude>junit:junit</exclude>
+                        </excludes>
+                        <unpack>true</unpack>
+                        <unpackOptions>
+                            <excludes>
+                                <exclude>**/META-INF/**</exclude>
+                            </excludes>
+                        </unpackOptions>
+                    </dependencySet>
+
+                    <!-- samples -->
+                    <dependencySet>
+                        <excludes>
+                            <exclude>net.sf.robocode:robocode.testing.api</exclude>
+                            <exclude>net.sf.robocode:robocode.testing.content</exclude>
+                            <exclude>net.sf.robocode:robocode.api</exclude>
+                            <exclude>net.sf.robocode:robocode.tests</exclude>
+                            <exclude>junit:junit</exclude>
+                        </excludes>
+                        <outputDirectory>testing</outputDirectory>
+                        <unpack>true</unpack>
+                        <unpackOptions>
+                            <excludes>
+                                <exclude>**/META-INF/**</exclude>
+                                <exclude>**/*.class</exclude>
+                            </excludes>
+                        </unpackOptions>
+                    </dependencySet>
+                </dependencySets>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
+    <fileSets>
+        <fileSet>
+            <directory>/robocode.testing.api/target/site/apidocs</directory>
+            <outputDirectory>testing/javadoc</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
+
+
+

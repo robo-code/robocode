@@ -13,14 +13,14 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import robocode.control.events.TurnEndedEvent;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestThreadAttack extends RobotTestBed {
+public class TestThreadAttack extends RobocodeTestBed {
 	boolean messagedMax;
 	boolean messagedUnknown;
 
@@ -47,5 +47,10 @@ public class TestThreadAttack extends RobotTestBed {
 	protected void runTeardown() {
 		Assert.assertTrue(messagedMax);
 		Assert.assertTrue(messagedUnknown);
+	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 1; // Security error must be reported as an error
 	}
 }

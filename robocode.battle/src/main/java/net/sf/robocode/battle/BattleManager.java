@@ -233,21 +233,22 @@ public class BattleManager implements IBattleManager {
 	}
 
 	public String getBattleFilename() {
-		String filename = battleFilename;
-
-		if (filename != null) {
-			if (filename.indexOf(File.separatorChar) < 0) {
-				filename = FileUtil.getBattlesDir().getName() + File.separatorChar + filename;
-			}
-			if (!filename.endsWith(".battle")) {
-				filename += ".battle";
-			}
-		}
-		return filename;
+		return battleFilename;
 	}
 
 	public void setBattleFilename(String newBattleFilename) {
-		battleFilename = newBattleFilename;
+		if (newBattleFilename != null) {
+			battleFilename = newBattleFilename.replace((File.separatorChar == '/') ? '\\' : '/', File.separatorChar);
+
+			if (battleFilename.indexOf(File.separatorChar) < 0) {
+				try {
+					battleFilename = FileUtil.getBattlesDir().getCanonicalPath() + File.separatorChar + battleFilename;
+				} catch (IOException ignore) {}
+			}
+			if (!battleFilename.endsWith(".battle")) {
+				battleFilename += ".battle";
+			}
+		}
 	}
 
 	public String getBattlePath() {

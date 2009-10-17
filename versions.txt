@@ -1,3 +1,36 @@
+Version 1.7.1.5 Beta
+(14-Oct-2009)
+---------------
+= Bugfixes =
+* Bug [2871138] - Graphics2D.getTransform() throws NPE
+* Bug [2872781] - "Teleport" - occurs when robot's distance remaining is very large
+* Bug [2876395] - Source is not included, robot.java.source.included was not set
+
+Version 1.7.1.4
+(25-Sep-2009)
+---------------
+= Bugfixes =
+* Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init
+* Bug [2845612] - Can't load Katana 1.0 or DrussGT 1.3.1wilo
+* Bug [2854692] - Lockup on start if too many bots in robots dir
+* Bug [2852860] - IllegalArgumentException on painting in some robots
+* Fixed NullPointerException that could occur with the -battle command-line option
+
+= Changes =
+
+== Banning ==
+* The previous 1.7.x.x versions have been very strict so that robots that could not be loaded, started, skipped too many turns etc. would be disallowed to participate in battles. With the bugfix for bug [2845612] above this policy has been changed so robots are only "banned" if the cause a security violation or they could not be loaded or started (meaning that they are not able to run). In addition, ALL security violations are always written out in both the main console and robot's console. A message will be written out in the main console like "xxx has caused a security violation. This robot has been banned and will not be allowed to participate in battles".
+
+== Painting ==
+* With the bugfix for bug [2852860] a change was made so a robot will now receive this message in its console window, if it is painting too much between actions:
+"SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached."
+
+* Notice that a robot is not allowed to perform an unlimited amount of paint operations for two reasons:
+1) It takes up a lot of memory as the painting operations are recorded in a buffer before being processed, and potentially this buffer must be recorded to a file (for replays). A robot is allowed to use up to a maximum of 64 KB per action. An average painting operation like e.g. fillRect(x, y, width, height) takes up 15 bytes, meaning that more 4000 painting operations should be possible, which is a lot.
+2) It takes a lot of CPU cycles to process the painting buffer to the display making the painting slow if the buffer is too large.
+
+* It is possible to remove the limit of the robots painting buffer by using the command-line option: -Ddebug=true
+
 Version 1.7.1.4 Beta
 (26-Aug-2009)
 ---------------

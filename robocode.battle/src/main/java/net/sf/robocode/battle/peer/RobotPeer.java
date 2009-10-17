@@ -661,7 +661,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
 				waitWakeupNoWait();
-				punishBadBehavior();
+				punishBadBehavior(BadBehavior.SKIPPED_TOO_MANY_TURNS);
 				robotProxy.forceStopThread();
 			}
 		}
@@ -1351,6 +1351,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final double decelTime = Math.max(1, Math.ceil(// sum of 0... decelTime, solving for decelTime using quadratic formula
 				(Math.sqrt((4 * 2 / Rules.DECELERATION) * distance + 1) - 1) / 2));
 
+		if (decelTime == Double.POSITIVE_INFINITY) {
+			return Rules.MAX_VELOCITY;
+		}
+
 		final double decelDist = (decelTime / 2.0) * (decelTime - 1) // sum of 0..(decelTime-1)
 				* Rules.DECELERATION;
 
@@ -1441,16 +1445,44 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		isEnergyDrained = true;
 	}
 
-	public void punishBadBehavior() {
+	public void punishBadBehavior(BadBehavior badBehavior) {
 		setState(RobotState.DEAD);
 		statistics.setInactive();
+
 		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
-		// disable for next time, just if is not developed here
-		if (!repositoryItem.isDevelopmentVersion()) {
-			repositoryItem.setValid(false);
+		StringBuffer message = new StringBuffer(repositoryItem.getFullClassNameWithVersion()).append(' ');
+
+		boolean disableInRepository = false; // Per default, robots are not disabled in the repository
+
+		switch (badBehavior) {
+		case CANNOT_START:
+			message.append("could not be started or loaded.");
+			disableInRepository = true; // Disable in repository when it cannot be started anyways
+			break;
+
+		case UNSTOPPABLE:
+			message.append("cannot be stopped.");
+			break;
+
+		case SKIPPED_TOO_MANY_TURNS:
+			message.append("has skipped too many turns.");
+			break;
+
+		case SECURITY_VIOLATION:
+			message.append("has caused a security violation.");
+			disableInRepository = true; // No mercy here!
+			break;
 		}
+
+		if (disableInRepository) {
+			repositoryItem.setValid(false);			
+			message.append(" This ").append(repositoryItem.isTeam() ? "team" : "robot").append(
+					" has been banned and will not be allowed to participate in battles.");
+		}
+
+		logMessage(message.toString());
 	}
 
 	public void updateEnergy(double delta) {
@@ -1595,4 +1627,3 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				+ (isSleeping() ? " sleeping " : "") + (isRunning() ? " running" : "") + (getHalt() ? " halted" : "");
 	}
 }
-

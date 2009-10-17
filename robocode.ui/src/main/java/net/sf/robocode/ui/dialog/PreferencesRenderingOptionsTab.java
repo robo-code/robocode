@@ -38,7 +38,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JComboBox optionsRenderingMethodComboBox;
 	private JComboBox optionsRenderingNoBuffersComboBox;
 	private JCheckBox optionsRenderingBufferImagesCheckBox;
-	private JCheckBox optionsRendereringForceBulletColorCheckBox;
+	private JCheckBox optionsRenderingForceBulletColorCheckBox;
 
 	private JButton predefinedPlaformDefaultButton;
 	private JButton predefinedSpeedButton;
@@ -149,11 +149,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return predefinedSettingsPanel;
 	}
 
-	/**
-	 * Return the otherSettingsPanel
-	 *
-	 * @return JPanel
-	 */
 	private JPanel getOtherSettingsPanel() {
 		if (otherSettingsPanel == null) {
 			otherSettingsPanel = new JPanel();
@@ -161,7 +156,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Other settings"));
 			otherSettingsPanel.setLayout(new BoxLayout(otherSettingsPanel, BoxLayout.Y_AXIS));
 			otherSettingsPanel.add(getOptionsRenderingBufferImagesCheckBox());
-			otherSettingsPanel.add(getOptionsRendereringForceBulletColorCheckBox());
+			otherSettingsPanel.add(getOptionsRenderingForceBulletColorCheckBox());
 		}
 		return otherSettingsPanel;
 	}
@@ -228,11 +223,6 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return predefinedQualityButton;
 	}
 
-	/**
-	 * Return the optionsRenderingBufferImagesCheckBox
-	 *
-	 * @return JCheckBox
-	 */
 	private JCheckBox getOptionsRenderingBufferImagesCheckBox() {
 		if (optionsRenderingBufferImagesCheckBox == null) {
 			optionsRenderingBufferImagesCheckBox = new JCheckBox("Buffer images (uses memory)");
@@ -243,18 +233,13 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		return optionsRenderingBufferImagesCheckBox;
 	}
 
-	/**
-	 * Return the optionsRendereringForceBulletColorBox
-	 *
-	 * @return JCheckBox
-	 */
-	private JCheckBox getOptionsRendereringForceBulletColorCheckBox() {
-		if (optionsRendereringForceBulletColorCheckBox == null) {
-			optionsRendereringForceBulletColorCheckBox = new JCheckBox("Make all bullets white");
-			optionsRendereringForceBulletColorCheckBox.setMnemonic('M');
-			optionsRendereringForceBulletColorCheckBox.addActionListener(eventHandler);
+	private JCheckBox getOptionsRenderingForceBulletColorCheckBox() {
+		if (optionsRenderingForceBulletColorCheckBox == null) {
+			optionsRenderingForceBulletColorCheckBox = new JCheckBox("Make all bullets white");
+			optionsRenderingForceBulletColorCheckBox.setMnemonic('M');
+			optionsRenderingForceBulletColorCheckBox.addActionListener(eventHandler);
 		}
-		return optionsRendereringForceBulletColorCheckBox;
+		return optionsRenderingForceBulletColorCheckBox;
 	}
 
 	private void loadPreferences(ISettingsManager props) {
@@ -263,7 +248,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		getOptionsRenderingMethodComboBox().setSelectedIndex(props.getOptionsRenderingMethod());
 		getOptionsRenderingNoBuffersComboBox().setSelectedIndex(props.getOptionsRenderingNoBuffers() - 1);
 		getOptionsRenderingBufferImagesCheckBox().setSelected(props.getOptionsRenderingBufferImages());
-		getOptionsRendereringForceBulletColorCheckBox().setSelected(props.getOptionsRenderingForceBulletColor());
+		getOptionsRenderingForceBulletColorCheckBox().setSelected(props.getOptionsRenderingForceBulletColor());
 	}
 
 	public void storePreferences() {
@@ -274,7 +259,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 		props.setOptionsRenderingMethod(optionsRenderingMethodComboBox.getSelectedIndex());
 		props.setOptionsRenderingNoBuffers(optionsRenderingNoBuffersComboBox.getSelectedIndex() + 1);
 		props.setOptionsRenderingBufferImages(optionsRenderingBufferImagesCheckBox.isSelected());
-		props.setOptionsRenderingForceBulletColor(optionsRendereringForceBulletColorCheckBox.isSelected());
+		props.setOptionsRenderingForceBulletColor(optionsRenderingForceBulletColorCheckBox.isSelected());
 		properties.saveProperties();
 	}
 

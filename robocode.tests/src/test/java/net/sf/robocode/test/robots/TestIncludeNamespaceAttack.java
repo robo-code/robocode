@@ -12,14 +12,14 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestIncludeNamespaceAttack extends RobotTestBed {
+public class TestIncludeNamespaceAttack extends RobocodeTestBed {
 	@Test
 	public void run() {
 		super.run();

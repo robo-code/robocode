@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,9 @@ import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.host.io.RobotOutputStream;
 import net.sf.robocode.host.security.RobotThreadManager;
 import net.sf.robocode.host.*;
+import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
+import net.sf.robocode.peer.BadBehavior;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
@@ -32,6 +34,9 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -49,6 +54,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	protected final IHostManager hostManager;
 	private IThreadManager threadManager;
 	protected IBasicRobot robot;
+	private final Set<String> securityViolations = Collections.synchronizedSet(new HashSet<String>());
 
 	HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
@@ -166,14 +172,14 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	public void forceStopThread() {
 		if (!robotThreadManager.forceStop()) {
-			peer.punishBadBehavior();
+			peer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
 			peer.setRunning(false);
 		}
 	}
 
 	public void waitForStopThread() {
 		if (!robotThreadManager.waitForStop()) {
-			peer.punishBadBehavior();
+			peer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
 			peer.setRunning(false);
 		}
 	}
@@ -205,23 +211,20 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			println("SYSTEM: Is your constructor marked public?");
 			println(e);
 			robot = null;
-			logMessage(e);
+			logError(e);
 			return false;
 		} catch (Throwable e) {
 			println("SYSTEM: An error occurred during initialization of " + statics.getName());
 			println("SYSTEM: " + e);
 			println(e);
 			robot = null;
-			logMessage(e);
+			logError(e);
 			return false;
 		} finally {
 			threadManager.setLoadingRobot(null);
 		}
 		return true;
 	}
-
-	// /
-
 
 	protected abstract void executeImpl();
 
@@ -238,7 +241,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		if (!robotSpecification.isValid() || !loadRobotRound()) {
 			drainEnergy();
-			peer.punishBadBehavior();
+			peer.punishBadBehavior(BadBehavior.CANNOT_START);
 			waitForBattleEndImpl();
 		} else {
 			try {
@@ -303,5 +306,21 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	public void drainEnergy() {
 		peer.drainEnergy();
+	}
+
+	public void punishSecurityViolation(String message) {
+		// Prevent unit tests of failing if multiple threads are calling this method in the same time.
+		// We only want the a specific type of security violation logged once so we only get one error
+		// per security violation.
+		synchronized (securityViolations) {
+			if (securityViolations.contains(message)) {
+				return;
+			}
+			securityViolations.add(message);
+		}
+
+		logError(message);
+		println("SYSTEM: " + message);
+		peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
 	}
 }

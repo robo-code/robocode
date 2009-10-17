@@ -13,7 +13,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 
@@ -23,7 +23,7 @@ import robocode.control.events.TurnEndedEvent;
  *
  * @author Flemming N. Larsen (original)
  */
-public class TestInteruptibleEvent extends RobotTestBed {
+public class TestInteruptibleEvent extends RobocodeTestBed {
 	boolean messagedScanned;
 
 	@Test

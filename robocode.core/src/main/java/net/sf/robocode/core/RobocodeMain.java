@@ -156,10 +156,10 @@ public final class RobocodeMain extends RobocodeMainBase {
 				setup.exitOnComplete = true;
 
 				battleManager.setBattleFilename(setup.battleFilename);
-				if (new File(setup.battleFilename).exists()) {
+				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, enableCLIRecording);
 				} else {
-					System.err.println("The specified battle file '" + setup.battleFilename + "' was not be found");
+					System.err.println("The specified battle file '" + setup.battleFilename + "' was not found");
 					System.exit(8);
 				}
 			} else if (setup.replayFilename != null) {
@@ -170,8 +170,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				if (new File(setup.replayFilename).exists()) {
 					battleManager.replay();
 				} else {
-					System.err.println(
-							"The specified battle record file '" + setup.replayFilename + "' was not be found");
+					System.err.println("The specified battle record file '" + setup.replayFilename + "' was not found");
 					System.exit(8);
 				}
 			}
@@ -307,10 +306,13 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
 						+ "  -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
 						+ "  -DNOSECURITY=true|false    Enable/disable Robocode's security manager\n"
-						+ "  -Ddebug=true|false         Enable/disable debugging (to prevent timeouts)\n"
+						+ "  -Ddebug=true|false         Enable/disable debugging used for preventing\n"
+						+ "                             robot timeouts and skipped turns, and allows an\n"
+						+ "                             an unlimited painting buffer when debugging robots\n"
 						+ "  -DEXPERIMENTAL=true|false  Enable/disable access to peer in robot interfaces\n"
 						+ "  -DPARALLEL=true|false      Enable/disable parallel processing of robots turns\n"
-						+ "  -DRANDOMSEED=<long number> Set seed for deterministic behavior of Random numbers\n");
+						+ "  -DRANDOMSEED=<long number> Set seed for deterministic behavior of random\n"
+						+ "                             numbers\n");
 	}
 
 	private void printResultsData(BattleCompletedEvent event) {

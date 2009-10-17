@@ -1,0 +1,25 @@
+This is way how to test your robots with JUnit and Robocode.
+
+1) Look at robocode/testing/sample/TestWallBehavior.java 
+  - it's behavioral integration test, to proove that samples.Wall robot will visit all 4 corners of battlefield
+  - it's inherited from robocode.control.testing.RobotTestBed, which is part of robocode.testing extension
+  
+2) RobotTestBed - base class for tests
+  - provides setup of Robocode engine itself
+  - expects you to set Java system property robocode.home to path to your robocode installation. For example C:\Robocode
+  - supports setup of battle by overriding various virtual methods, among others
+    - getRobotNames() - allows you to specify coma separated list of robos for battle
+    - getNumRounds() - allows you to specify number of rounds for the battle
+    - for more see robocode/testing/javadoc/index.html
+  - implements IBattleListener interface of robocode and it's notified about battle events
+    - override onTurnEnded() method to be invoked after each turn, with snapshot of current battlefield
+    - override onBattleCompleted() method to be invoked after battle, with battle resutls and scores
+    - for more see robocode/testing/javadoc/index.html and robocode/javadoc/index.html
+    
+3) Build the unit test by starting robocode\testing\compile.cmd or do it in your IDE
+
+4) Run the test with JUnit by starting robocode\testing\test.cmd or do it in your IDE
+   - note that we pass -Drobocode.home Java property
+   
+5) watch the test result
+    

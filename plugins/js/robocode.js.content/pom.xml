@@ -22,8 +22,8 @@
                     <artifactId>robocode.api</artifactId>
                 </exclusion>
                 <exclusion>
-				    <groupId>rhino</groupId>
-				    <artifactId>js</artifactId>
+								    <groupId>rhino</groupId>
+								    <artifactId>js</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

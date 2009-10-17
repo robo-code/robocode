@@ -14,7 +14,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 
 import javax.swing.*;
 
@@ -22,7 +22,7 @@ import javax.swing.*;
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestConstructorAwtAttack extends RobotTestBed {
+public class TestConstructorAwtAttack extends RobocodeTestBed {
 	// in case: boolean messagedAttack;
 	boolean messagedBreakthru;
 

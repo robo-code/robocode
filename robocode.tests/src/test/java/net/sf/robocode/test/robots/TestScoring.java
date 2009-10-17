@@ -12,7 +12,7 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobotTestBed;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import robocode.control.events.BattleFinishedEvent;
@@ -29,7 +29,7 @@ import robocode.control.snapshot.ITurnSnapshot;
  * 
  * @author Flemming N. Larsen (original)
  */
-public class TestScoring extends RobotTestBed {
+public class TestScoring extends RobocodeTestBed {
 
 	ITurnSnapshot lastTurnSnapshot;
 

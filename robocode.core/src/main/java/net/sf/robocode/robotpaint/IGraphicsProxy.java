@@ -19,8 +19,7 @@ import java.awt.*;
  * @author Pavel Savara (original)
  */
 public interface IGraphicsProxy {
-	void setPaintingEnabled(boolean value);
-
+	void setPaintingEnabled(boolean enabled);
 	void processTo(Graphics2D g, Object graphicsCalls);
 
 	void processTo(Graphics2D g);
