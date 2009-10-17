@@ -18,7 +18,6 @@
         <module>robocode.dotnet.content</module>
         <module>robocode.dotnet.host</module>
         <module>robocode.dotnet.nhost</module>
-        <module>robocode.dotnet.repository</module>
         <module>robocode.dotnet.installer</module>
         <module>robocode.dotnet.samples</module>
         <module>robocode.dotnet.tests</module>

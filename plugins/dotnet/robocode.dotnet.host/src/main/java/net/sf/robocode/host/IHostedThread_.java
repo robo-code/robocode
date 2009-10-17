@@ -33,11 +33,17 @@ class __IHostedThread extends system.Object implements net.sf.robocode.host.IHos
             super(__env, __handle);
     }
     
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/String;)V")
+    public native void println(java.lang.String par0);
+    
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/io/PrintStream;")
     public native net.sf.robocode.host.io.RobotOutputStream getOut();
     
     @net.sf.jni4net.attributes.ClrMethod("()V")
     public native void drainEnergy();
+    
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/String;)V")
+    public native void punishSecurityViolation(java.lang.String par0);
     
     @net.sf.jni4net.attributes.ClrMethod("()Lnet/sf/robocode/host/RobotStatics;")
     public native net.sf.robocode.host.RobotStatics getStatics();
@@ -47,9 +53,6 @@ class __IHostedThread extends system.Object implements net.sf.robocode.host.IHos
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/ClassLoader;")
     public native java.lang.ClassLoader getRobotClassloader();
-    
-    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/String;)V")
-    public native void println(java.lang.String par0);
     
     @net.sf.jni4net.attributes.ClrMethod("()V")
     public native void run();

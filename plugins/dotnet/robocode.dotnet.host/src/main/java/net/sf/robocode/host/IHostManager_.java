@@ -33,6 +33,9 @@ class __IHostManager extends system.Object implements net.sf.robocode.host.IHost
             super(__env, __handle);
     }
     
+    @net.sf.jni4net.attributes.ClrMethod("()V")
+    public native void cleanup();
+    
     @net.sf.jni4net.attributes.ClrMethod("(Lrobocode/control/RobotSpecification;Lnet/sf/robocode/host/RobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Ljava/lang/Object;")
     public native java.lang.Object createRobotProxy(robocode.control.RobotSpecification par0, net.sf.robocode.host.RobotStatics par1, net.sf.robocode.peer.IRobotPeer par2);
     
@@ -59,8 +62,5 @@ class __IHostManager extends system.Object implements net.sf.robocode.host.IHost
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/io/PrintStream;")
     public native java.io.PrintStream getRobotOutputStream();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()V")
-    public native void cleanup();
 }
 //</generated-proxy>

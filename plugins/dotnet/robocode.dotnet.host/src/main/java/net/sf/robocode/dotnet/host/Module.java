@@ -36,7 +36,7 @@ public class Module {
 	private static void Init() {
 		try {
 
-			Bridge.verbose = true;
+			Bridge.setVerbose(true);
 			Bridge.init(new File("../robocode.dotnet.ntests/target/jni4net.n-0.2.0.0.dll").getAbsolutePath());
 			Bridge.setVerbose(true);
 			Bridge.LoadAndRegisterAssembly(new File("../robocode.dotnet.ntests/target/robocode.dotnet.host-1.7.1.3.dll").getAbsolutePath());

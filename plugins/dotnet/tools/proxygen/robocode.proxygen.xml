@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<jni4net-proxygen xmlns="http://jni4net.sf.net/0.3.0.0/toolConfig.xsd">
+<jni4net-proxygen xmlns="http://jni4net.sf.net/0.4.0.0/toolConfig.xsd">
   <TargetDirJvm>robocode.dotnet.host/src/main/java</TargetDirJvm>
   <TargetDirClr>robocode.dotnet.nhost/src/generated</TargetDirClr>
   <ClassPath>robocode.dotnet.host/target/classes</ClassPath>

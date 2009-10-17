@@ -33,6 +33,9 @@ class __IHostingRobotProxy extends system.Object implements net.sf.robocode.host
             super(__env, __handle);
     }
     
+    @net.sf.jni4net.attributes.ClrMethod("()V")
+    public native void cleanup();
+    
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;Ljava/lang/Object;)V")
     public native void startRound(net.sf.robocode.peer.ExecCommands par0, robocode.RobotStatus par1);
     
@@ -41,8 +44,5 @@ class __IHostingRobotProxy extends system.Object implements net.sf.robocode.host
     
     @net.sf.jni4net.attributes.ClrMethod("()V")
     public native void waitForStopThread();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()V")
-    public native void cleanup();
 }
 //</generated-proxy>

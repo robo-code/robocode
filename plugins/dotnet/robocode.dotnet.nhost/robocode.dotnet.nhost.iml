@@ -16,7 +16,7 @@
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
     <orderEntry type="module" module-name="robocode.repository" exported="" />
     <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.3.0.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.4.0.0" level="project" />
   </component>
 </module>
 
