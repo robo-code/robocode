@@ -22,8 +22,12 @@
   <JavaClass TypeName="net.sf.robocode.host.io.RobotFileSystemManager"/>
   <JavaClass TypeName="net.sf.robocode.repository.IRobotRepositoryItem"/>
   <JavaClass TypeName="net.sf.robocode.repository.RobotType"/>
+  <JavaClass TypeName="net.sf.robocode.peer.BadBehavior">
+	  <MethodModifier MethodName="values" Signature="()[Lnet/sf/robocode/peer/BadBehavior;" Skip="true"/>
+  </JavaClass>
   <JavaClass TypeName="net.sf.robocode.peer.IRobotPeer"/>
   <JavaClass TypeName="net.sf.robocode.io.Logger"/>
+  
   
 <!-- 
   <JavaClass TypeName="net.sf.robocode.peer.IRobotStatics"/>

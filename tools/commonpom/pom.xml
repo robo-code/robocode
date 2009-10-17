@@ -16,7 +16,7 @@
             <id>net.sf.robocode</id>
             <url>http://robocode.sourceforge.net/maven2</url>
         </repository>
-	</repositories>
+    </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>net.sf.robocode</id>

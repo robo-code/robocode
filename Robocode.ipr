@@ -276,6 +276,7 @@
       <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.content/robocode.bv3d.content.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.content/robocode.bv3d.content.iml" group="robocode.bv3d and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.installer/robocode.bv3d.installer.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.installer/robocode.bv3d.installer.iml" group="robocode.bv3d and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.view/robocode.bv3d.view.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.view/robocode.bv3d.view.iml" group="robocode.bv3d and modules" />
+      <module fileurl="file://$PROJECT_DIR$/tools/commonpom/robocode.commonpom.iml" filepath="$PROJECT_DIR$/tools/commonpom/robocode.commonpom.iml" />
       <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" group="robocode.dotnet and modules" />
@@ -500,6 +501,37 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.4.0.0/jni4net.j-0.4.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.sf.robocode:robocode.ui:1.7.3.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom.xml!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom.xml!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.sf.robocode:robocode.repository:1.7.3.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
       </SOURCES>
     </library>
   </component>

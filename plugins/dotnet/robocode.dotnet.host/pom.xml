@@ -9,8 +9,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.host</artifactId>
-    <version>${robocode.version}</version>
+    <version>${robocode.nversion}</version>
     <name>.NET host for Robocode</name>
+    <repositories>
+        <repository>
+            <id>net.sf.jni4net</id>
+            <url>http://jni4net.googlecode.com/svn/mvnrepo</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -26,6 +32,18 @@
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.j</artifactId>
             <version>0.4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jni4net</groupId>
+            <artifactId>jni4net.n.w32</artifactId>
+            <version>0.4.0.0</version>
+            <type>dotnet:library</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jni4net</groupId>
+            <artifactId>jni4net.n.w64</artifactId>
+            <version>0.4.0.0</version>
+            <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

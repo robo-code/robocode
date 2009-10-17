@@ -12,16 +12,22 @@
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
     <name>.NET nhost for Robocode</name>
-	<description>.NET nhost for Robocode</description>
-	<organization>
-		<name>Robocode</name>
-		<url>http://robocode.sf.net</url>
-	</organization>
+    <description>.NET nhost for Robocode</description>
+    <organization>
+        <name>Robocode</name>
+        <url>http://robocode.sf.net</url>
+    </organization>
+    <repositories>
+        <repository>
+            <id>net.sf.jni4net</id>
+            <url>http://jni4net.googlecode.com/svn/mvnrepo</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.host</artifactId>
-            <version>${robocode.version}</version>
+            <version>${robocode.nversion}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
@@ -32,23 +38,23 @@
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.api</artifactId>
-            <version>${robocode.version}</version>
+            <version>${robocode.nversion}</version>
             <type>dotnet:library</type>
         </dependency>
     </dependencies>
     <build>
-		<finalName>robocode.dotnet.host-${robocode.version}</finalName>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
-			<plugin>
-				<groupId>org.sonatype.nmaven.plugins</groupId>
-				<artifactId>maven-dotnet-compiler-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>0.17robocode</version>
-				<configuration>
-		          <aditionalOptions>/unsafe /nowarn:1591 /keyfile:${basedir}/../tools/keys/robocode.snk</aditionalOptions>
-		        </configuration>
-			</plugin>
-	    </plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/unsafe /nowarn:1591 /keyfile:${basedir}/../tools/keys/robocode.snk
+                    </aditionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

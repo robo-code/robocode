@@ -19,7 +19,7 @@ namespace net.sf.robocode.peer {
         void drainEnergy();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/peer/BadBehavior;)V")]
-        void punishBadBehavior(global::java.lang.Object par0);
+        void punishBadBehavior(global::net.sf.robocode.peer.BadBehavior par0);
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Z)V")]
         void setRunning(bool par0);
@@ -90,7 +90,7 @@ namespace net.sf.robocode.peer {
             @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._drainEnergy0);
         }
         
-        public void punishBadBehavior(global::java.lang.Object par0) {
+        public void punishBadBehavior(global::net.sf.robocode.peer.BadBehavior par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._punishBadBehavior1, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
@@ -145,11 +145,11 @@ namespace net.sf.robocode.peer {
         
         private static void punishBadBehavior1(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0) {
             // (Lnet/sf/robocode/peer/BadBehavior;)V
-            // (Ljava/lang/Object;)V
+            // (Lnet/sf/robocode/peer/BadBehavior;)V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
             global::net.sf.robocode.peer.IRobotPeer @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, @__obj);
-            @__real.punishBadBehavior(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par0));
+            @__real.punishBadBehavior(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, par0));
             }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
         }
         

@@ -37,11 +37,12 @@ public class Module {
 		try {
 
 			Bridge.setVerbose(true);
-			Bridge.init(new File("../robocode.dotnet.ntests/target/jni4net.n-0.2.0.0.dll").getAbsolutePath());
+            final File f = new File("../robocode.dotnet.tests/target/jni4net.n.w64-0.4.0.0.dll").getCanonicalFile();
+            Bridge.init(f.getPath());
 			Bridge.setVerbose(true);
-			Bridge.LoadAndRegisterAssembly(new File("../robocode.dotnet.ntests/target/robocode.dotnet.host-1.7.1.3.dll").getAbsolutePath());
-			//Bridge.LoadAndRegisterAssembly(new File("../robocode.dotnet.ntests/target/robocode.dotnet.tests-1.7.1.3.dll").getAbsolutePath());
-			
+            final File f2 = new File("../robocode.dotnet.tests/target/robocode.dotnet.nhost-1.7.3.0.dll").getCanonicalFile();
+            Bridge.LoadAndRegisterAssembly(f2.getPath());
+
 			Container.cache.addComponent("DllItemHandler", DllHandler.class);
 
 			//Container.cache.addComponent("dllHandler", DllItemHandler.class);

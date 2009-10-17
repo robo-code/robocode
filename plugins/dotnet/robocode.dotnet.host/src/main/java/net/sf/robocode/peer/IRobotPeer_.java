@@ -36,7 +36,7 @@ class __IRobotPeer extends system.Object implements net.sf.robocode.peer.IRobotP
     @net.sf.jni4net.attributes.ClrMethod("()V")
     public native void drainEnergy();
     
-    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;)V")
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/peer/BadBehavior;)V")
     public native void punishBadBehavior(net.sf.robocode.peer.BadBehavior par0);
     
     @net.sf.jni4net.attributes.ClrMethod("(Z)V")

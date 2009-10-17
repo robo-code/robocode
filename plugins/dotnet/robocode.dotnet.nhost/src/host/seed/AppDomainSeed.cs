@@ -50,6 +50,7 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 if (Reflection.CheckInterfaces(type)!=RobotType.Invalid)
                 {
+                    sb.Append("file://");
                     sb.Append(robotAssemblyFileName);
                     sb.Append("!/");
                     sb.Append(type.FullName);
