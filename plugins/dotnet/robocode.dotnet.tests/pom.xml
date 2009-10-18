@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.tests</artifactId>
     <version>${robocode.nversion}</version>
-    <name>.NET tests for Robocode</name>
+    <name>.NET Robocode tests</name>
     <repositories>
         <repository>
             <id>net.sf.jni4net</id>

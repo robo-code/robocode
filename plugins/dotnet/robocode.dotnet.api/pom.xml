@@ -11,7 +11,7 @@
     <artifactId>robocode.dotnet.api</artifactId>
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
-    <name>.NET Robot API for Robocode</name>
+    <name>.NET Robocode Robot API </name>
     <description>.NET Robot API for Robocode</description>
     <organization>
         <name>Robocode</name>

@@ -36,7 +36,7 @@ public class TestJump extends RobocodeTestBed {
 	}
 
 	public String getRobotNames() {
-		return "sample.Crazy,sample.Target";
+		return "samplecs.MyCsRobot,sample.Target";
 	}
 
 	@Override

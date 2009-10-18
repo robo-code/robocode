@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.installer</artifactId>
     <version>${robocode.nversion}</version>
-    <name>.Net installer</name>
+    <name>.NET Robcode installer</name>
     <build>
         <plugins>
             <plugin>

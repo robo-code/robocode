@@ -20,7 +20,7 @@ namespace net.sf.robocode.dotnet.host.seed
         private string tempDir;
         private string name;
         private string robotAssemblyFileName;
-        private string robotAssemblyShadowFileName;
+        private string robotShadow;
 
         public AppDomainShell(string dllName)
         {
@@ -36,13 +36,16 @@ namespace net.sf.robocode.dotnet.host.seed
             robotAssemblyFileName = Path.GetFullPath(dllName);
             name = Path.GetFileNameWithoutExtension(robotAssemblyFileName);
             tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            robotAssemblyShadowFileName = Path.Combine(tempDir, Path.GetFileName(robotAssemblyFileName));
+            robotShadow = Path.Combine(tempDir, Path.GetFileName(robotAssemblyFileName));
+            string robocodeShadow = Path.Combine(tempDir, Path.GetFileName(robocodeAssembly.Location));
+            string hostShadow = Path.Combine(tempDir, Path.GetFileName(hostAssembly.Location));
+            string jniShadow = Path.Combine(tempDir, Path.GetFileName(jniAssembly.Location));
 
             Directory.CreateDirectory(tempDir);
-            File.Copy(robotAssemblyFileName, robotAssemblyShadowFileName);
-            File.Copy(robocodeAssembly.Location, Path.Combine(tempDir, Path.GetFileName(robocodeAssembly.Location)));
-            File.Copy(hostAssembly.Location, Path.Combine(tempDir, Path.GetFileName(hostAssembly.Location)));
-            File.Copy(jniAssembly.Location, Path.Combine(tempDir, Path.GetFileName(jniAssembly.Location)));
+            File.Copy(robotAssemblyFileName, robotShadow);
+            File.Copy(robocodeAssembly.Location, robocodeShadow);
+            File.Copy(hostAssembly.Location, hostShadow);
+            File.Copy(jniAssembly.Location, jniShadow);
 
             var trustAssemblies = new[] { Reflection.GetStrongName(robocodeAssembly), Reflection.GetStrongName(hostAssembly), Reflection.GetStrongName(jniAssembly) };
             var domainSetup = new AppDomainSetup();
@@ -62,7 +65,7 @@ namespace net.sf.robocode.dotnet.host.seed
             //domainSetup.PrivateBinPath = tempDir;
 
             domainSetup.AppDomainInitializer = AppDomainSeed.Load;
-            domainSetup.AppDomainInitializerArguments = new[] { robotAssemblyFileName, robotAssemblyShadowFileName };
+            domainSetup.AppDomainInitializerArguments = new[] { robotAssemblyFileName, robotShadow };
 
             domain = AppDomain.CreateDomain(name, securityInfo, domainSetup, permissionSet, trustAssemblies);
         }

@@ -22,25 +22,27 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public class DotNetRobotItem extends RobotItem {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public DotNetRobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
-		super(classUrl, propUrl, root);
-	}
+    public DotNetRobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
+        super(classUrl, propUrl, root);
+    }
 
-	@Override
-	protected void init() {
-		extension = ".dll";
-		super.init();
-	}
+    @Override
+    protected void init() {
+        extension = ".dll";
+        if (properties.getProperty(ROBOT_CLASSNAME) == null && url != null) {
+            final String file = url.getFile();
+            final String clazz = file.substring(file.lastIndexOf("!/") + 2);
+            properties.setProperty(ROBOT_CLASSNAME, clazz);
+        }
+        isPropertiesLoaded=true;//TODO something real ?
+        isExpectedRobot=true;
+    }
 
-	@Override
-	public String getRobotLanguage() {
-		final String lang = properties.getProperty(ROBOT_LANGUAGE, null);
-
-		return lang == null ? "cs" : lang;
-	}
-
-
-
+    @Override
+    public String getRobotLanguage() {
+        final String lang = properties.getProperty(ROBOT_LANGUAGE, null);
+        return lang == null ? "cs" : lang;
+    }
 }

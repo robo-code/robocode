@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.samples</artifactId>
     <version>${robocode.nversion}</version>
-    <name>.NET samples for Robocode</name>
+    <name>.NET Robocode samples</name>
     <packaging>dotnet:library</packaging>
     <dependencies>
         <dependency>
@@ -23,13 +23,13 @@
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
-			<plugin>
-				<groupId>org.sonatype.nmaven.plugins</groupId>
-				<artifactId>maven-dotnet-compiler-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>0.17robocode</version>
-			</plugin>
-	    </plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+            </plugin>
+        </plugins>
         <resources>
             <resource>
                 <directory>src</directory>

@@ -1,5 +1,7 @@
 using System.IO;
 using java.lang;
+using net.sf.jni4net;
+using net.sf.jni4net.utils;
 using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.host;
 using net.sf.robocode.host.proxies;
@@ -17,7 +19,8 @@ namespace net.sf.robocode.dotnet.host
         public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification,
                                                    RobotStatics statics, IRobotPeer peer)
         {
-            var specification = (IRobotRepositoryItem)HiddenAccess.getFileSpecification(robotSpecification);
+            Object s = HiddenAccess.getFileSpecification(robotSpecification);
+            IRobotRepositoryItem specification = Bridge.Cast<IRobotRepositoryItem>(s);
             string file = GetDllFileName(specification);
             return new HostingShell(robotSpecification,hostManager,peer,statics, file);
         }
@@ -42,8 +45,8 @@ namespace net.sf.robocode.dotnet.host
 
         private string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
         {
-            string url = robotRepositoryItem.getFullUrl().ToString();
-            return url.Substring("file:/".Length);
+            string url = robotRepositoryItem.getRobotClassPath().getFile();
+            return url.Substring(1, url.LastIndexOf(".dll!/") + 3);
         }
 
         #endregion

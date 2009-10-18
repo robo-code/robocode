@@ -1,4 +1,5 @@
 ﻿using System;
+using net.sf.jni4net;
 using net.sf.robocode.host;
 using net.sf.robocode.host.proxies;
 using net.sf.robocode.peer;
@@ -18,7 +19,8 @@ namespace net.sf.robocode.dotnet.host.seed
         public HostingShell(RobotSpecification robotSpecification, IHostManager hostManager, IRobotPeer peer,
                                   RobotStatics statics, string dllFileName) 
         {
-            specification = (IRobotRepositoryItem)HiddenAccess.getFileSpecification(robotSpecification);
+            Object s = HiddenAccess.getFileSpecification(robotSpecification);
+            specification = Bridge.Cast<IRobotRepositoryItem>(s);
             this.hostManager = hostManager;
             this.peer = peer;
             this.statics = statics;
@@ -27,22 +29,19 @@ namespace net.sf.robocode.dotnet.host.seed
 
         public void startRound(Object par0, Object par1)
         {
-            throw new NotImplementedException();
         }
 
         public void forceStopThread()
         {
-            throw new NotImplementedException();
         }
 
         public void waitForStopThread()
         {
-            throw new NotImplementedException();
         }
 
         public void cleanup()
         {
-            throw new NotImplementedException();
+            Dispose();
         }
     }
 }

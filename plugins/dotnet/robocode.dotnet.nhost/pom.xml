@@ -11,7 +11,7 @@
     <artifactId>robocode.dotnet.nhost</artifactId>
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
-    <name>.NET nhost for Robocode</name>
+    <name>.NET Robocode nhost</name>
     <description>.NET nhost for Robocode</description>
     <organization>
         <name>Robocode</name>

@@ -10,7 +10,7 @@
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.content</artifactId>
     <version>${robocode.nversion}</version>
-    <name>.NET static content</name>
+    <name>.NET Robocode static content</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>

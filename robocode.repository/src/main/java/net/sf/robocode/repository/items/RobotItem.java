@@ -60,10 +60,10 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	RobotType robotType;
 
-	private boolean isExpectedRobot;
-	private boolean isClassURL;
-	private boolean isPropertiesURL;
-	private boolean isPropertiesLoaded;
+	protected boolean isExpectedRobot;
+	protected boolean isClassURL;
+	protected boolean isPropertiesURL;
+	protected boolean isPropertiesLoaded;
 
 	private boolean alwaysUseCacheForData = System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals("true");
 

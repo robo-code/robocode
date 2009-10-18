@@ -47,6 +47,9 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="net\sf\robocode\io\Logger.cs" />
     <Compile Include="net\sf\robocode\manager\IVersionManagerBase.cs" />
     <Compile Include="net\sf\robocode\peer\IRobotStatics.cs" />
@@ -138,4 +141,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.tests\target</PostBuildEvent>
+    <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
+echo [assembly: System.Reflection.AssemblyVersion("1.7.3.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -36,7 +36,7 @@ public class DllHandler extends RootHandler {
 		final File[] dlls = dir.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				final String low = pathname.toString().toLowerCase();
-				return pathname.isFile() && (low.endsWith(".dll"));
+				return pathname.isFile() && low.endsWith(".dll") && !low.endsWith("robocode.dll");
 			}
 		});
 

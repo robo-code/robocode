@@ -56,6 +56,8 @@
     <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
       <Link>generated\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="generated\net\sf\robocode\dotnet\host\DotnetHost.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\dotnet\repository\root\DllRootHelper.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHostedThread.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
@@ -104,10 +106,6 @@
       <Name>robocode.dotnet.api</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="generated\net\sf\robocode\dotnet\host\" />
-    <Folder Include="generated\net\sf\robocode\dotnet\repository\root\" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -118,7 +116,8 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
-echo [assembly: System.Reflection.AssemblyVersion("0.0.0.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+echo [assembly: System.Reflection.AssemblyVersion("1.7.3.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.tests\target</PostBuildEvent>
   </PropertyGroup>
 </Project>

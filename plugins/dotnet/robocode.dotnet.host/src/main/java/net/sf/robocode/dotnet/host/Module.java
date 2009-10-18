@@ -14,9 +14,12 @@ package net.sf.robocode.dotnet.host;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.core.EngineClassLoader;
+import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.dotnet.repository.items.handlers.DotnetPropertiesHandler;
 import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
 import net.sf.robocode.host.IHost;
+import net.sf.robocode.version.VersionManager;
+import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.jni4net.Bridge;
 
 import java.io.File;
@@ -36,12 +39,14 @@ public class Module {
 	private static void Init() {
 		try {
 
-			Bridge.setVerbose(true);
-            final File f = new File("../robocode.dotnet.tests/target/jni4net.n.w64-0.4.0.0.dll").getCanonicalFile();
-            Bridge.init(f.getPath());
-			Bridge.setVerbose(true);
-            final File f2 = new File("../robocode.dotnet.tests/target/robocode.dotnet.nhost-1.7.3.0.dll").getCanonicalFile();
-            Bridge.LoadAndRegisterAssembly(f2.getPath());
+            final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersion();
+
+            Bridge.setVerbose(true);
+            final String libsDir = "../robocode.dotnet.tests/target";
+            Bridge.init(libsDir);
+            final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
+            final String npath = new File(nhost).getCanonicalPath();
+            Bridge.LoadAndRegisterAssembly(npath);
 
 			Container.cache.addComponent("DllItemHandler", DllHandler.class);
 

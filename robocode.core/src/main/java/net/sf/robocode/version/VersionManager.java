@@ -157,7 +157,7 @@ public final class VersionManager implements IVersionManager {
 
 		if (versionString != null && !versionString.equals(UNKNOWN_VERSION)) {
 			try {
-				version = versionString.substring(7);
+				version = versionString.substring(8);
 			} catch (Exception ignore) {}
 		}
 		if (version.equals(UNKNOWN_VERSION)) {
