@@ -20,11 +20,11 @@
     <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
     <orderEntry type="module" module-name="robocode.repository" />
     <orderEntry type="library" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
+    <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
+    <orderEntry type="module" module-name="robocode.dotnet.api" exported="" />
     <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.4.0.0" level="project" />
     <orderEntry type="module" module-name="robocode.samples" />
     <orderEntry type="module" module-name="robocode.battle" />
-    <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
-    <orderEntry type="module" module-name="robocode.dotnet.api" exported="" />
   </component>
 </module>
 

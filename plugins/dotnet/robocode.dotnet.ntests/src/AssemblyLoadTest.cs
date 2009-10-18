@@ -16,12 +16,14 @@ namespace net.sf.robocode.dotnet
         [TestFixtureSetUp]
         public void initJVM()
         {
-            Directory.SetCurrentDirectory(@"D:\Sf\RobocodeN\plugins\dotnet\robocode.dotnet.tests\");
+            Directory.SetCurrentDirectory(@"..\..\robocode.dotnet.tests\");
             // -Xmx512M -Dsun.io.useCanonCaches=false 
-            BridgeSetup setup=new BridgeSetup();
+            BridgeSetup setup=new BridgeSetup(false);
+            setup.Verbose = true;
             setup.AddClassPath(@"C:\Users\Zamboch\.m2\repository\org\picocontainer\picocontainer\2.6\picocontainer-2.6.jar");
             setup.AddClassPath(@"C:\Users\Zamboch\.m2\repository\junit\junit\4.5\junit-4.5.jar");
             setup.AddClassPath(@"C:\Users\Zamboch\.m2\repository\net\sf\robocode\codesize\1.1\codesize-1.1.jar");
+            setup.AddClassPath(@"C:\Users\Zamboch\.m2\repository\net\sf\jni4net\jni4net.j\0.4.0.0\jni4net.j-0.4.0.0.jar");
             setup.AddClassPath(@"..\..\..\robocode.api\target\test-classes");
             setup.AddClassPath(@"..\..\..\robocode.api\target\classes");
             setup.AddClassPath(@"..\..\..\robocode.battle\target\test-classes");
@@ -54,7 +56,6 @@ namespace net.sf.robocode.dotnet
             setup.AddClassPath(@"..\robocode.dotnet.samples\target\classes");
             setup.AddClassPath(@"..\robocode.dotnet.tests\target\test-classes");
             setup.AddClassPath(@"..\robocode.dotnet.tests\target\classes");
-            setup.Verbose = true;
             Bridge.CreateJVM(setup);
             // robocode.Robocode -battle D:\Sf\RobocodeN\target\robocode-1.7.1.3-setup\battles\ntest.battle
             Bridge.LoadAndRegisterAssembly(typeof(DllRootHelper).Assembly.Location);
@@ -63,17 +64,15 @@ namespace net.sf.robocode.dotnet
         [Test]
         public void testDomain()
         {
-            Directory.SetCurrentDirectory(@"D:\Sf\RobocodeN2\plugins\dotnet\robocode.dotnet.tests\");
             var h = new DllRootHelper();
-            string[] strings = h.findItems(@"file:/D:/Sf/RobocodeN2/plugins/dotnet/robocode.dotnet.samples/target/MyCsRobot.dll");
+            string[] strings = h.findItems(@"file:/../robocode.dotnet.samples/target/robocode.dotnet.samples-1.7.3.0.dll");
             Assert.AreEqual(2, strings.Length);
         }
 
         [Test]
         public void testType()
         {
-            Directory.SetCurrentDirectory(@"D:\Sf\RobocodeN2\plugins\dotnet\robocode.dotnet.tests\");
-            AppDomainShell shell=new AppDomainShell(@"D:/Sf/RobocodeN2/plugins/dotnet/robocode.dotnet.samples/target/MyCsRobot.dll");
+            AppDomainShell shell = new AppDomainShell(@"../robocode.dotnet.samples/target/robocode.dotnet.samples-1.7.3.0.dll");
             RobotType type = shell.GetRobotType("samplecs.MyCsRobot");
             Assert.AreEqual(RobotType.STANDARD, type);
         }

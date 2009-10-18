@@ -20,6 +20,7 @@ import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
 import net.sf.robocode.host.IHost;
 import net.sf.robocode.version.VersionManager;
 import net.sf.robocode.manager.IVersionManagerBase;
+import net.sf.robocode.io.Logger;
 import net.sf.jni4net.Bridge;
 
 import java.io.File;
@@ -39,30 +40,37 @@ public class Module {
 	private static void Init() {
 		try {
 
+            String libsDir;
             final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersion();
 
-            Bridge.setVerbose(true);
-            final String libsDir = "../robocode.dotnet.tests/target";
-            Bridge.init(libsDir);
+            final java.security.CodeSource source = Module.class.getProtectionDomain().getCodeSource();
+            final File file = new File(source.getLocation().getFile()).getCanonicalFile();
+            if (file.getName().equals("classes")) {
+                libsDir=file.getParent();
+            } else if (file.getName().endsWith(".jar")) {
+                libsDir = file.getParent();
+            } else {
+                throw new Error("Can't find " + file);
+            }
+
             final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
-            final String npath = new File(nhost).getCanonicalPath();
-            Bridge.LoadAndRegisterAssembly(npath);
+
+            Bridge.setVerbose(true);
+            Bridge.init(new File(libsDir).getCanonicalPath());
+            Bridge.LoadAndRegisterAssembly(new File(nhost).getCanonicalPath());
 
 			Container.cache.addComponent("DllItemHandler", DllHandler.class);
-
-			//Container.cache.addComponent("dllHandler", DllItemHandler.class);
 			Container.cache.addComponent("CsPropertiesHandler", DotnetPropertiesHandler.class);
 			Container.cache.addComponent("VbPropertiesHandler", DotnetPropertiesHandler.class);
 			Container.cache.addComponent("DotnetPropertiesHandler", DotnetPropertiesHandler.class);
-
-			final ClassLoader loader = IHost.class.getClassLoader();
 
 			// .NET proxies
 			Container.cache.addComponent("robocode.host.cs", DotnetHost.class);
 			Container.cache.addComponent("robocode.host.vb", DotnetHost.class);
 			Container.cache.addComponent("robocode.host.dotnet", DotnetHost.class);
 		} catch (Throwable e) {
-			throw new Error("Can't initialize .NET", e);
+            Logger.logError(e);
+			throw new Error("Can't initialize .NET Robocode", e);
 		}
 	}
 }
