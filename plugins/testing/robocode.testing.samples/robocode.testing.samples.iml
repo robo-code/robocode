@@ -13,6 +13,7 @@
     <orderEntry type="module" module-name="robocode.testing.api" exported="" />
     <orderEntry type="library" exported="" name="Maven: junit:junit:4.5" level="project" />
     <orderEntry type="module" module-name="robocode.tests" />
+    <orderEntry type="module" module-name="robocode.tests.robots" />
   </component>
 </module>
 

@@ -13,6 +13,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="robocode.tests" exported="" />
     <orderEntry type="module" module-name="robocode.api" exported="" />
+    <orderEntry type="module" module-name="robocode.tests.robots" exported="" />
     <orderEntry type="library" exported="" name="Maven: junit:junit:4.5" level="project" />
     <orderEntry type="module" module-name="robocode.dotnet.host" exported="" />
     <orderEntry type="module" module-name="robocode.host" />
