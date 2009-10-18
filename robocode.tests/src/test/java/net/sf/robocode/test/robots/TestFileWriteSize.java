@@ -43,15 +43,15 @@ public class TestFileWriteSize extends RobocodeTestBed {
 			messagedDataQuota = true;	
 		}
 		
-		if (out.contains("Data directory: " + absolutePath + "\\target\\classes\\tested\\robots\\FileWriteSize.data")) {
+		if (out.contains("Data directory: " + robotsPath + "\\target\\classes\\tested\\robots\\FileWriteSize.data")) {
 			messagedDataDirectory = true;	
-		} else if (out.contains("Data directory: " + absolutePath + "/target/classes/tested/robots/FileWriteSize.data")) {
+		} else if (out.contains("Data directory: " + robotsPath + "/target/classes/tested/robots/FileWriteSize.data")) {
 			messagedDataDirectory = true;	
 		}
 
-		if (out.contains("Data file: " + absolutePath + "\\target\\classes\\tested\\robots\\FileWriteSize.data\\test")) {
+		if (out.contains("Data file: " + robotsPath + "\\target\\classes\\tested\\robots\\FileWriteSize.data\\test")) {
 			messagedDataFile = true;	
-		} else if (out.contains("Data files: " + absolutePath + "/target/classes/tested/robots/FileWriteSize.data/test")) {
+		} else if (out.contains("Data files: " + robotsPath + "/target/classes/tested/robots/FileWriteSize.data/test")) {
 			messagedDataFile = true;	
 		}
 		

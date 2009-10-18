@@ -36,7 +36,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected static int errors = 0;
 	protected static int messages = 0;
-	protected static String absolutePath;
+	protected static String robotsPath;
 	
 	public static boolean isDumpingPositions = false;
 	public static boolean isDumpingTurns = false;
@@ -44,11 +44,11 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	public static boolean isDumpingErrors = true;
 	public static boolean isDumpingMessages = true;
 
-	static {
+    static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
-		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
-		System.setProperty("ROBOTPATH", "target//classes");
+		System.setProperty("WORKINGDIRECTORY", "target/test-classes");
+		System.setProperty("ROBOTPATH", "../robocode.tests.robots/target/classes");
 		engine = new RobocodeEngine(new BattleAdaptor() {
 			public void onBattleMessage(BattleMessageEvent event) {
 				if (isDumpingMessages) {
@@ -65,7 +65,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 			}
 		});
 		try {
-			absolutePath = new File("").getCanonicalPath();
+			robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
 		} catch (IOException e) {
 			e.printStackTrace(Logger.realErr);
 		}
