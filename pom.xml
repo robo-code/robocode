@@ -23,6 +23,7 @@
         <module>robocode.sound</module>
         <module>robocode.samples</module>
         <module>robocode.roborumble</module>
+        <module>robocode.tests.robots</module>
         <module>robocode.tests</module>
         <module>robocode.installer</module>
         <module>robocode.repository</module>
