@@ -32,6 +32,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 setup.Verbose = true;
                 setup.Debug = true;
                 setup.BindNative = false;
+                setup.BindStatic = false;
                 Bridge.CreateJVM(setup);
                 Bridge.LoadAndRegisterAssembly(typeof (AppDomainSeed).Assembly.Location);
             }
