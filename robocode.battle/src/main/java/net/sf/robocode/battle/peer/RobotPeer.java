@@ -84,9 +84,9 @@ import robocode.control.RandomFactory;
 import robocode.control.RobotSpecification;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.RobotState;
-import robocode.exception.AbortedException;
-import robocode.exception.DeathException;
-import robocode.exception.WinException;
+import robocode.exception.AbortedError;
+import robocode.exception.DeathError;
+import robocode.exception.WinError;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
@@ -507,18 +507,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		// If we are stopping, yet the robot took action (in onWin or onDeath), stop now.
 		if (battle.isAborted()) {
 			isExecFinishedAndDisabled = true;
-			throw new AbortedException();
+			throw new AbortedError();
 		}
 		if (isDead()) {
 			isExecFinishedAndDisabled = true;
-			throw new DeathException();
+			throw new DeathError();
 		}
 		if (getHalt()) {
 			isExecFinishedAndDisabled = true;
 			if (isWinner) {
-				throw new WinException();
+				throw new WinError();
 			} else {
-				throw new AbortedException();
+				throw new AbortedError();
 			}
 		}
 

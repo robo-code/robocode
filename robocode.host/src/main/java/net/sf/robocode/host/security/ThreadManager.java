@@ -24,7 +24,7 @@ import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.host.io.RobotFileOutputStream;
 import net.sf.robocode.host.io.RobotFileSystemManager;
-import robocode.exception.RobotException;
+import robocode.exception.RobotError;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -140,7 +140,7 @@ public class ThreadManager implements IThreadManager {
 			return null;
 		}
 		if (!robotProxy.getStatics().isAdvancedRobot()) {
-			throw new RobotException("Only advanced robots could create files");
+			throw new RobotError("Only advanced robots could create files");
 		}
 		
 		final File dir = robotProxy.getRobotFileSystemManager().getWritableDirectory();

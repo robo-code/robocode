@@ -15,14 +15,14 @@ package robocode.exception;
 /**
  * @author Mathew A. Nelson (original)
  */
-public class WinException extends Error { // Must be error!
+public class DisabledError extends Error { // Must be error!
 	private static final long serialVersionUID = 1L;
 
-	public WinException() {
+	public DisabledError() {
 		super();
 	}
 
-	public WinException(String s) {
+	public DisabledError(String s) {
 		super(s);
 	}
 }

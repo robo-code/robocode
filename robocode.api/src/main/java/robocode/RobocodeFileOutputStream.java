@@ -20,7 +20,7 @@ package robocode;
 
 import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.security.IThreadManagerBase;
-import robocode.exception.RobotException;
+import robocode.exception.RobotError;
 
 import java.io.*;
 
@@ -64,7 +64,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream#FileOutputStream(FileDescriptor)
 	 */
 	public RobocodeFileOutputStream(FileDescriptor fdObj) {
-		throw new RobotException("Creating a RobocodeFileOutputStream with a FileDescriptor is not supported.");
+		throw new RobotError("Creating a RobocodeFileOutputStream with a FileDescriptor is not supported.");
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class RobocodeFileOutputStream extends OutputStream {
 		final IThreadManagerBase threadManager = ContainerBase.getComponent(IThreadManagerBase.class);
 
 		if (threadManager == null) {
-			throw new RobotException("ThreadManager cannot be null!");
+			throw new RobotError("ThreadManager cannot be null!");
 		}
 
 		out = threadManager.createRobotFileStream(fileName, append);

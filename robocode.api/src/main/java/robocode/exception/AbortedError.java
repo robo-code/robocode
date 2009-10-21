@@ -6,23 +6,26 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
+ *     Pavel Savara
+ *     - Initial implementation
  *******************************************************************************/
 package robocode.exception;
 
 
 /**
- * @author Mathew A. Nelson (original)
+ * @author Pavel Savara (original)
+ * @since 1.6.1
  */
-public class DisabledException extends Error { // Must be error!
+public class AbortedError extends Error { // Must be error!
+	// From viewpoint of the Robot, an Error is a JVM error:
+	// Robot died, their CPU exploded, the JVM for the robot's brain has an error.
 	private static final long serialVersionUID = 1L;
 
-	public DisabledException() {
+	public AbortedError() {
 		super();
 	}
 
-	public DisabledException(String s) {
-		super(s);
+	public AbortedError(String message) {
+		super(message);
 	}
 }

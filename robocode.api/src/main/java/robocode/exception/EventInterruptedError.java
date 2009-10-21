@@ -15,16 +15,16 @@ package robocode.exception;
 /**
  * @author Mathew A. Nelson (original)
  */
-public class DeathException extends Error { // Must be error!
-	// From viewpoint of the Robot, an Error is a JVM error:
-	// Robot died, their CPU exploded, the JVM for the robot's brain has an error.
+public class EventInterruptedError extends Error { // Must be error!
 	private static final long serialVersionUID = 1L;
 
-	public DeathException() {
-		super();
+	private int priority = Integer.MIN_VALUE;
+
+	public EventInterruptedError(int priority) {
+		this.priority = priority;
 	}
 
-	public DeathException(String message) {
-		super(message);
+	public int getPriority() {
+		return priority;
 	}
 }

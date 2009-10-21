@@ -15,14 +15,14 @@ package robocode.exception;
 /**
  * @author Mathew A. Nelson (original)
  */
-public class RobotException extends Error { // Must be error!
+public class RobotError extends Error { // Must be error!
 	private static final long serialVersionUID = 1L;
 
-	public RobotException() {
+	public RobotError() {
 		super();
 	}
 
-	public RobotException(String s) {
+	public RobotError(String s) {
 		super(s);
 	}
 }

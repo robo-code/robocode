@@ -31,7 +31,7 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.security.LoggingThreadGroup;
-import robocode.exception.RobotException;
+import robocode.exception.RobotError;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
@@ -93,7 +93,7 @@ public class RobotThreadManager {
 
 	public void checkRunThread() {
 		if (Thread.currentThread() != runThread) {
-			throw new RobotException("You cannot take action in this thread!");
+			throw new RobotError("You cannot take action in this thread!");
 		}
 	}
 

@@ -25,10 +25,10 @@ import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.core.Container;
 import robocode.RobotStatus;
-import robocode.exception.AbortedException;
-import robocode.exception.DeathException;
-import robocode.exception.DisabledException;
-import robocode.exception.WinException;
+import robocode.exception.AbortedError;
+import robocode.exception.DeathError;
+import robocode.exception.DisabledError;
+import robocode.exception.WinError;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
@@ -263,11 +263,11 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				for (;;) {
 					executeImpl();
 				}
-			} catch (WinException e) {// Do nothing
-			} catch (AbortedException e) {// Do nothing
-			} catch (DeathException e) {
+			} catch (WinError e) {// Do nothing
+			} catch (AbortedError e) {// Do nothing
+			} catch (DeathError e) {
 				println("SYSTEM: " + statics.getName() + " has died");
-			} catch (DisabledException e) {
+			} catch (DisabledError e) {
 				drainEnergy();
 				String msg = e.getMessage();
 

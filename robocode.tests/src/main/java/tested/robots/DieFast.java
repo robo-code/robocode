@@ -13,7 +13,7 @@ package tested.robots;
 
 
 import robocode.Robot;
-import robocode.exception.RobotException;
+import robocode.exception.RobotError;
 
 
 /**
@@ -21,6 +21,6 @@ import robocode.exception.RobotException;
  */
 public class DieFast extends Robot {
 	public void run() {
-		throw new RobotException();
+		throw new RobotError();
 	}
 }

@@ -44,7 +44,7 @@ package net.sf.robocode.host.events;
 import net.sf.robocode.host.proxies.BasicRobotProxy;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
-import robocode.exception.EventInterruptedException;
+import robocode.exception.EventInterruptedError;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.util.*;
@@ -444,7 +444,7 @@ public class EventManager implements IEventManager {
 
 					// We are already in an event handler, took action, and a new event was generated.
 					// So we want to break out of the old handler to process it here.
-					throw new EventInterruptedException(currentEvent.getPriority());
+					throw new EventInterruptedError(currentEvent.getPriority());
 				}
 				break;
 			}
@@ -460,7 +460,7 @@ public class EventManager implements IEventManager {
 
 				setInterruptible(currentTopEventPriority, false);
 
-			} catch (EventInterruptedException e) {
+			} catch (EventInterruptedError e) {
 				currentTopEvent = null;
 			} catch (RuntimeException e) {
 				currentTopEventPriority = oldTopEventPriority;

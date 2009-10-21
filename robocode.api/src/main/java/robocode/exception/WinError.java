@@ -6,26 +6,23 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
- *     - Initial implementation
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
  *******************************************************************************/
 package robocode.exception;
 
 
 /**
- * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Mathew A. Nelson (original)
  */
-public class AbortedException extends Error { // Must be error!
-	// From viewpoint of the Robot, an Error is a JVM error:
-	// Robot died, their CPU exploded, the JVM for the robot's brain has an error.
+public class WinError extends Error { // Must be error!
 	private static final long serialVersionUID = 1L;
 
-	public AbortedException() {
+	public WinError() {
 		super();
 	}
 
-	public AbortedException(String message) {
-		super(message);
+	public WinError(String s) {
+		super(s);
 	}
 }

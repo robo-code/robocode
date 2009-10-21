@@ -25,8 +25,8 @@ import net.sf.robocode.robotpaint.IGraphicsProxy;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.Event;
-import robocode.exception.DisabledException;
-import robocode.exception.RobotException;
+import robocode.exception.DisabledError;
+import robocode.exception.RobotError;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.util.Utils;
 
@@ -179,7 +179,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		if (res >= MAX_SET_CALL_COUNT) {
 			println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
-			throw new DisabledException("Too many calls to setXX methods");
+			throw new DisabledError("Too many calls to setXX methods");
 		}
 	}
 
@@ -188,7 +188,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		if (res >= MAX_GET_CALL_COUNT) {
 			println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
-			throw new DisabledException("Too many calls to getXX methods");
+			throw new DisabledError("Too many calls to getXX methods");
 		}
 	}
 
@@ -345,7 +345,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		// Entering tick
 		robotThreadManager.checkRunThread();
 		if (testingCondition) {
-			throw new RobotException(
+			throw new RobotError(
 					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
 		}
 

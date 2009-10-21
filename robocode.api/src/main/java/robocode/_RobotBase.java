@@ -14,7 +14,7 @@
 package robocode;
 
 
-import robocode.exception.RobotException;
+import robocode.exception.RobotError;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
@@ -83,7 +83,7 @@ public abstract class _RobotBase implements IBasicRobot, Runnable {
 		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		String methodName = trace[2].getMethodName();
 
-		throw new RobotException(
+		throw new RobotError(
 				"You cannot call the " + methodName
 				+ "() method before your run() method is called, or you are using a Robot object that the game doesn't know about.");
 	}
