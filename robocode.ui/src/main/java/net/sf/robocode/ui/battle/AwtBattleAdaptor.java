@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
@@ -44,6 +45,8 @@ public final class AwtBattleAdaptor {
 	private final AtomicInteger majorEvent;
 	private final AtomicInteger lastMajorEvent;
 	private ITurnSnapshot lastSnapshot;
+
+	private final ReentrantLock outCacheLock = new ReentrantLock();
 	private StringBuilder[] outCache;
 
 	public AwtBattleAdaptor(IBattleManager battleManager, int maxFps, boolean skipSameFrames) {
@@ -98,7 +101,8 @@ public final class AwtBattleAdaptor {
 					IRobotSnapshot[] robots = null;
 
 					if (readoutText) {
-						synchronized (snapshot) {
+						outCacheLock.lock();
+						try {
 							robots = lastSnapshot.getRobots();
 
 							for (int i = 0; i < robots.length; i++) {
@@ -111,6 +115,8 @@ public final class AwtBattleAdaptor {
 									outCache[i].setLength(0);
 								}
 							}
+						} finally {
+							outCacheLock.unlock();
 						}
 					}
 
@@ -184,8 +190,11 @@ public final class AwtBattleAdaptor {
 					robot.setOutputStreamSnapshot(null);
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							synchronized (snapshot) {
+							outCacheLock.lock();
+							try {
 								outCache[r].append(text);
+							} finally {
+								outCacheLock.unlock();
 							}
 						}
 					});
@@ -222,11 +231,15 @@ public final class AwtBattleAdaptor {
 				public void run() {
 					isRunning.set(true);
 					isPaused.set(false);
-					synchronized (snapshot) {
+
+					outCacheLock.lock();
+					try {
 						outCache = new StringBuilder[event.getRobotsCount()];
 						for (int i = 0; i < event.getRobotsCount(); i++) {
 							outCache[i] = new StringBuilder(1024);
 						}
+					} finally {
+						outCacheLock.unlock();
 					}
 					snapshot.set(null);
 					battleEventDispatcher.onBattleStarted(event);
