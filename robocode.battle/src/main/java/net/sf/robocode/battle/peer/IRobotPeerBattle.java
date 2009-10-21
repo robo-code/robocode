@@ -51,9 +51,9 @@ public interface IRobotPeerBattle extends ContestantPeer {
 
 	void println(String s);
 
-	void waitWakeup();
+	void wakeup(boolean waitTillAwake);
 
-	void waitSleeping(long millisWait, int microWait);
+	void waitSleeping(long nanoWait);
 
 	void waitForStop();
 

@@ -24,7 +24,8 @@ import robocode.control.events.BattleResumedEvent;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
@@ -57,7 +58,11 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	private int measuredTurnCounter;
 
 	// Battle state
-	private final AtomicBoolean isRunning = new AtomicBoolean(false);
+	private final ReentrantLock runningLock = new ReentrantLock();
+	private final Condition battleStarted = runningLock.newCondition();
+	private final Condition battleOver = runningLock.newCondition();
+	private boolean isRunning;
+
 	protected boolean isAborted;
 
 	// Battle control
@@ -132,7 +137,12 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	 * @return true if the battle is running, false otherwise
 	 */
 	public boolean isRunning() {
-		return isRunning.get();
+		runningLock.lock();
+		try {
+			return isRunning;
+		} finally {
+			runningLock.unlock();
+		}
 	}
 
 	/**
@@ -155,32 +165,34 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	public void waitTillStarted() {
-		synchronized (isRunning) {
-			while (!isRunning.get()) {
+		runningLock.lock();
+		try {
+			while (!isRunning) {
 				try {
-					isRunning.wait();
+					battleStarted.await();
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
-
-					return; // Break out
 				}
 			}
+		} finally {
+			runningLock.unlock();			
 		}
 	}
 
 	public void waitTillOver() {
-		synchronized (isRunning) {
-			while (isRunning.get()) {
+		runningLock.lock();
+		try {
+			while (isRunning) {
 				try {
-					isRunning.wait();
+					battleOver.await();
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
-
-					return; // Break out
 				}
 			}
+		} finally {
+			runningLock.unlock();			
 		}
 	}
 
@@ -232,18 +244,24 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		URLJarCollector.enableGc(false);
 		roundNum = 0;
 
-		// Notify that the battle is now running
-		synchronized (isRunning) {
-			isRunning.set(true);
-			isRunning.notifyAll();
+		// Notify that the battle is started
+		runningLock.lock();
+		try {
+			isRunning = true;
+			battleStarted.signalAll();
+		} finally {
+			runningLock.unlock();
 		}
 	}
 
 	protected void finalizeBattle() {
 		// Notify that the battle is over
-		synchronized (isRunning) {
-			isRunning.set(false);
-			isRunning.notifyAll();
+		runningLock.lock();
+		try {
+			isRunning = false;
+			battleOver.signalAll();
+		} finally {
+			runningLock.unlock();
 		}
 	}
 

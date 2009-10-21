@@ -145,9 +145,8 @@ public final class Battle extends BaseBattle {
 
 	// Turn skip related items
 	private boolean parallelOn;
-	static final int DEBUG_TURN_WAIT = 10 * 60 * 1000;
-	private long millisWait;
-	private int microWait;
+	static final int DEBUG_TURN_WAIT = 10 * 60 * 1000000000; // nanoseconds
+	private long nanoWait;
 
 	// Objects in the battle
 	private int robotsCount;
@@ -374,22 +373,18 @@ public final class Battle extends BaseBattle {
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
 		if (parallelOn) {
 			// how could robots share CPUs ?
-			double parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
+			double parallelConstant = (double) robots.size() / Runtime.getRuntime().availableProcessors();
 
 			// four CPUs can't run two single threaded robot faster than two CPUs
 			if (parallelConstant < 1) {
 				parallelConstant = 1;
 			}
-			final long waitTime = (long) (cpuConstant * parallelConstant);
-
-			millisWait = waitTime / 1000000;
-			microWait = (int) (waitTime % 1000000);
+			nanoWait = (long) (cpuConstant * parallelConstant);
 		} else {
-			millisWait = cpuConstant / 1000000;
-			microWait = (int) (cpuConstant % 1000000);
+			nanoWait = cpuConstant;
 		}
-		if (microWait == 0) {
-			microWait = 1;
+		if (nanoWait == 0) {
+			nanoWait = 1;
 		}
 	}
 
@@ -742,13 +737,13 @@ public final class Battle extends BaseBattle {
 			if (robotPeer.isRunning()) {
 				// This call blocks until the
 				// robot's thread actually wakes up.
-				robotPeer.waitWakeup();
+				robotPeer.wakeup(true);
 
 				if (robotPeer.isAlive()) {
 					if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
-						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
+						robotPeer.waitSleeping(DEBUG_TURN_WAIT);
 					} else {
-						robotPeer.waitSleeping(millisWait, microWait);
+						robotPeer.waitSleeping(nanoWait);
 					}
 				}
 				if (robotPeer.isRunning() && robotPeer.isAlive() && !robotPeer.isSleeping()) {
@@ -761,15 +756,15 @@ public final class Battle extends BaseBattle {
 	private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning()) {
-				robotPeer.waitWakeup();
+				robotPeer.wakeup(true);
 			}
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning() && robotPeer.isAlive()) {
 				if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
-					robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
+					robotPeer.waitSleeping(DEBUG_TURN_WAIT);
 				} else {
-					robotPeer.waitSleeping(millisWait, microWait);
+					robotPeer.waitSleeping(nanoWait);
 				}
 			}
 		}
