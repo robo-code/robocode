@@ -250,7 +250,7 @@ public class PrepareBattles {
 		File r = new File(priority);
 
 		if (r.exists() && !r.delete()) {
-			Logger.logError("Can't delete" + r);
+			Logger.logError("Cannot delete " + r);
 		}
 
 		// Open battles file
@@ -433,7 +433,9 @@ public class PrepareBattles {
 		// Delete priority battles (avoid duplication)
 		File r = new File(priority);
 
-		r.delete();
+		if (r.delete() == false) {
+			System.out.println("Cannot delete the priority battles file " + priority);
+		}
 
 		// Open battles file
 		PrintStream outtxt;
