@@ -76,7 +76,7 @@ public class AutoExtract implements ActionListener {
 	}
 
 	private boolean acceptLicense() {
-		String licenseText = "";
+		StringBuffer licenseText = new StringBuffer();
 
 		InputStream is;
 
@@ -91,19 +91,38 @@ public class AutoExtract implements ActionListener {
 			return true;
 		}
 
-		BufferedReader r = new BufferedReader(new InputStreamReader(is));
+		InputStreamReader isr = null;
+		BufferedReader br = null;
 
 		try {
-			String line = r.readLine();
+			isr = new InputStreamReader(is);
+			br = new BufferedReader(isr);
+
+			String line = br.readLine();
 
 			while (line != null) {
-				licenseText += line;
-				line = r.readLine();
+				licenseText.append(line);
+				line = br.readLine();
 			}
-			return acceptReject(licenseText);
+			return acceptReject(licenseText.toString());
 
 		} catch (IOException e) {
 			System.err.println("Could not read line from license file: " + e);
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (isr != null) {
+				try {
+					isr.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return true;
 	}
@@ -185,17 +204,17 @@ public class AutoExtract implements ActionListener {
 		final String src = urlJar.substring("jar:file:/".length(), urlJar.indexOf("!/"));
 
 		if (src.indexOf('!') > -1) {
-			final String message = src
-					+ "\nContains an exclamation point.  Please move the file to a different directory.";
-
-			JOptionPane.showMessageDialog(null, message);
+			message = src + "\nContains an exclamation point.  Please move the file to a different directory.";
 			System.err.println(message);
-			System.exit(0);
+			return false;
 		}
+		JarInputStream jarIS = null;
+
 		try {
 			final URL url = new URL("file:/" + src);
 			InputStream is = url.openStream();
-			JarInputStream jarIS = new JarInputStream(is);
+
+			jarIS = new JarInputStream(is);
 
 			JarEntry entry = jarIS.getNextJarEntry();
 
@@ -258,6 +277,14 @@ public class AutoExtract implements ActionListener {
 		} catch (IOException e) {
 			message = "Installation failed" + e;
 			return false;
+		} finally {
+			if (jarIS != null) {
+				try {
+					jarIS.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -279,19 +306,21 @@ public class AutoExtract implements ActionListener {
 		} catch (Throwable t) {// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
 		}
 
-		File installDir = null;
-		File suggestedDir;
-
 		AutoExtract extractor = new AutoExtract();
 
 		if (extractor.acceptLicense()) {
+			String suggestedDirName;
+			
 			if (argv.length == 1) {
-				suggestedDir = new File(argv[0]);
+				suggestedDirName = argv[0];
 			} else if (File.separatorChar == '\\') {
-				suggestedDir = new File("c:\\robocode\\");
+				suggestedDirName = "c:\\robocode\\";
 			} else {
-				suggestedDir = new File(System.getProperty("user.home") + File.separator + "robocode" + File.separator);
+				suggestedDirName = System.getProperty("user.home") + File.separator + "robocode" + File.separator;
 			}
+
+			File suggestedDir = new File(suggestedDirName);
+			File installDir = null;
 
 			boolean done = false;
 
@@ -502,14 +531,14 @@ public class AutoExtract implements ActionListener {
 	}
 
 	private String escaped(String s) {
-		String r = "";
+		StringBuffer eascaped = new StringBuffer();
 
 		for (int i = 0; i < s.length(); i++) {
 			if (s.charAt(i) == '\\') {
-				r += '\\';
+				eascaped.append('\\');
 			}
-			r += s.charAt(i);
+			eascaped.append(s.charAt(i));
 		}
-		return r;
+		return eascaped.toString();
 	}
 }
