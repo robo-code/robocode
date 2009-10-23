@@ -1,3 +1,9 @@
+Version 1.7.1.5
+(24-Oct-2009)
+---------------
+= Bugfixes =
+* RobocodeFileOutputStream.getName() always returned null instead of the filename
+
 Version 1.7.1.5 Beta
 (14-Oct-2009)
 ---------------
