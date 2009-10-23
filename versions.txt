@@ -1,8 +1,13 @@
 Version 1.7.2 Alpha
-(11-Oct-2009)
 ---------------
 = New features =
 * Req [2342293] - Screenshot of battleview. Press Ctrl+T on Windows and Linux, and Command+T for Mac OS in order to take a screenshot of the battleview. The screenshot will be saved in the Robocode folder named "screenshots", and the filename will be a timestamp for when the screenshot was taken.
+
+Version 1.7.1.5
+(24-Oct-2009)
+---------------
+= Bugfixes =
+* RobocodeFileOutputStream.getName() always returned null instead of the filename
 
 Version 1.7.1.5 Beta
 (14-Oct-2009)

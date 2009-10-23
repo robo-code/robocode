@@ -42,8 +42,8 @@ import java.io.*;
  * @see java.io.FileOutputStream
  */
 public class RobocodeFileOutputStream extends OutputStream {
-	private FileOutputStream out;
-	private String fileName;
+	private final FileOutputStream out;
+	private final String fileName;
 
 	/**
 	 * Constructs a new RobocodeFileOutputStream.
@@ -86,6 +86,8 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * @see java.io.FileOutputStream#FileOutputStream(String, boolean)
 	 */
 	public RobocodeFileOutputStream(String fileName, boolean append) throws IOException {
+		this.fileName = fileName;
+		
 		final IThreadManagerBase threadManager = ContainerBase.getComponent(IThreadManagerBase.class);
 
 		if (threadManager == null) {
