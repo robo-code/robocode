@@ -50,7 +50,7 @@ public class RobotThreadManager {
 	private Thread runThread;
 	private LoggingThreadGroup runThreadGroup;
 	private Object awtForThreadGroup;
-	private final Map<Thread, Boolean> disposeAppContextThreadMap = new HashMap<Thread, Boolean>();
+	private final Map<Thread, Disposal> disposeAppContextThreadMap = new HashMap<Thread, Disposal>();
 
 	public RobotThreadManager(IHostedThread robotProxy) {
 		this.robotProxy = robotProxy;
@@ -255,7 +255,7 @@ public class RobotThreadManager {
 	public Object createNewAppContext() {
 		// Add the current thread to our disposeAppContextThreadMap if it does not exit already
 		if (!disposeAppContextThreadMap.containsKey(Thread.currentThread())) {
-			disposeAppContextThreadMap.put(Thread.currentThread(), new Boolean(false));
+			disposeAppContextThreadMap.put(Thread.currentThread(), new Disposal());
 		}
 
 		// same as SunToolkit.createNewAppContext();
@@ -269,12 +269,12 @@ public class RobotThreadManager {
 			// a new AppContext for it. Otherwise the AWT EventQueue fires events like WINDOW_CLOSE to our main window
 			// which closes the entire application due to a System.exit()
 
-			Boolean isDisposing = disposeAppContextThreadMap.get(Thread.currentThread());
+			Disposal disposal = disposeAppContextThreadMap.get(Thread.currentThread());
 
-			synchronized (isDisposing) {
-				while (isDisposing) {
+			synchronized (disposal) {
+				while (disposal.isDisposing) {
 					try {
-						isDisposing.wait();
+						disposal.wait();
 					} catch (InterruptedException e) {
 						return -1;
 					}
@@ -317,30 +317,42 @@ public class RobotThreadManager {
 			// a battle.
 			new Thread(new Runnable() {
 				public void run() {
+					Disposal disposal = disposeAppContextThreadMap.get(Thread.currentThread());
+
 					try {
 						// Signal that the AppContext for the current thread is being disposed (start)
-						Boolean isDisposing = disposeAppContextThreadMap.get(Thread.currentThread());
-
-						synchronized (isDisposing) {
-							isDisposing = true;
-							isDisposing.notifyAll();
+						if (disposal != null) {
+							synchronized (disposal) {
+								disposal.isDisposing = true;
+								disposal.notifyAll();
+							}
 						}
-
 						// Call sun.awt.AppContext.dispose(appContext) to dispose the AppContext for the current thread
-						sunToolkit.getDeclaredMethod("dispose").invoke(appContext);
+						sunToolkit.getDeclaredMethod("dispose").invoke(appContext);	
 
+					} catch (Exception e) {
+						logError(e);
+					} finally {
 						// Signal that the AppContext for the current thread has been disposed (finish)
-						synchronized (isDisposing) {
-							isDisposing = false;
-							isDisposing.notifyAll();
+						if (disposal != null) {
+							synchronized (disposal) {
+								disposal.isDisposing = false;
+								disposal.notifyAll();
+							}
 						}
-					} catch (Exception ignore) {}
+					}
 				}
 			}, "DisposeAppContext").start();
 
 			return true;
-		} catch (ClassNotFoundException ignore) {}
+		} catch (ClassNotFoundException e) {
+			logError(e);			
+		}
 		return false;
 		// end: same as AppContext.dispose();
+	}
+
+	private static class Disposal {
+		boolean isDisposing;
 	}
 }
