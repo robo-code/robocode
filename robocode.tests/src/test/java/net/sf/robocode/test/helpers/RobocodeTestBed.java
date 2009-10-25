@@ -32,10 +32,10 @@ import java.util.Random;
  * @author Pavel Savara (original)
  */
 public abstract class RobocodeTestBed extends BattleAdaptor {
-	protected static final IRobocodeEngine engine;
+
 	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
-	protected static int errors = 0;
-	protected static int messages = 0;
+	protected int errors;
+	protected int messages;
 	protected static String absolutePath;
 	
 	public static boolean isDumpingPositions = false;
@@ -49,21 +49,14 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		System.setProperty("TESTING", "true");
 		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
 		System.setProperty("ROBOTPATH", "target//classes");
-		engine = new RobocodeEngine(new BattleAdaptor() {
-			public void onBattleMessage(BattleMessageEvent event) {
-				if (isDumpingMessages) {
-					Logger.realOut.println(event.getMessage());
-				}
-				messages++;
-			}
 
-			public void onBattleError(BattleErrorEvent event) {
-				if (isDumpingErrors) {
-					Logger.realErr.println(event.getError());
-				}
-				errors++;
-			}
-		});
+		// silent when running in Maven
+		if (System.getProperty("surefire.test.class.path", null) != null) {
+			isDumpingOutput = false;
+			isDumpingErrors = false;
+			isDumpingMessages = false;
+		}
+
 		try {
 			absolutePath = new File("").getCanonicalPath();
 		} catch (IOException e) {
@@ -71,16 +64,21 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		}
 	}
 
-	public RobocodeTestBed() {
-		// silent when running in maven
-		if (System.getProperty("surefire.test.class.path", null) != null) {
-			isDumpingOutput = false;
-			isDumpingErrors = false;
-			isDumpingMessages = false;
+	protected final IRobocodeEngine engine = new RobocodeEngine(new BattleAdaptor() {
+		public void onBattleMessage(BattleMessageEvent event) {
+			if (isDumpingMessages) {
+				Logger.realOut.println(event.getMessage());
+			}
+			messages++;
 		}
-		errors = 0;
-		messages = 0;
-	}
+
+		public void onBattleError(BattleErrorEvent event) {
+			if (isDumpingErrors) {
+				Logger.realErr.println(event.getError());
+			}
+			errors++;
+		}
+	});
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {
