@@ -23,6 +23,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 
 /**
@@ -30,8 +32,8 @@ import java.net.URL;
  */
 public class RobotClassLoaderTest {
 	static URL classPath;
-	final String badRobot = "tested.robots.IncludeNamespaceAttack";
-	final String goodRobot = "tested.robots.Ahead";
+	static final String badRobot = "tested.robots.IncludeNamespaceAttack";
+	static final String goodRobot = "tested.robots.Ahead";
 
 	@BeforeClass
 	public static void init() throws IOException {
@@ -41,7 +43,12 @@ public class RobotClassLoaderTest {
 
 	@Test
 	public void engineAllowed() throws ClassNotFoundException {
-		final ClassLoader engineLoader = new EngineClassLoader(ClassLoader.getSystemClassLoader());
+		// The class loader must be granted security permissions
+		final ClassLoader engineLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+			public ClassLoader run() {
+				return new EngineClassLoader(ClassLoader.getSystemClassLoader());
+			}
+		});
 
 		engineLoader.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
 		final Class<?> c = engineLoader.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
@@ -51,7 +58,12 @@ public class RobotClassLoaderTest {
 
 	@Test
 	public void robotAllowed() throws ClassNotFoundException {
-		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
+		// The class loader must be granted security permissions
+		RobotClassLoader cl = AccessController.doPrivileged(new PrivilegedAction<RobotClassLoader>() {
+			public RobotClassLoader run() {
+				return new RobotClassLoader(classPath, goodRobot);
+			}
+		});
 		final Class<?> c = cl.loadClass("robocode.Robot", true);
 
 		Assert.assertEquals(Container.systemLoader, c.getClassLoader());
@@ -59,7 +71,12 @@ public class RobotClassLoaderTest {
 
 	@Test
 	public void robotAllowedMain() throws ClassNotFoundException {
-		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
+		// The class loader must be granted security permissions
+		RobotClassLoader cl = AccessController.doPrivileged(new PrivilegedAction<RobotClassLoader>() {
+			public RobotClassLoader run() {
+				return new RobotClassLoader(classPath, goodRobot);
+			}
+		});
 		final Class<?> c = cl.loadRobotMainClass(true);
 
 		Assert.assertEquals(cl, c.getClassLoader());
@@ -67,21 +84,36 @@ public class RobotClassLoaderTest {
 
 	@Test(expected = ClassNotFoundException.class)
 	public void robotBlockedBad() throws ClassNotFoundException {
-		RobotClassLoader cl = new RobotClassLoader(classPath, badRobot);
+		// The class loader must be granted security permissions
+		RobotClassLoader cl = AccessController.doPrivileged(new PrivilegedAction<RobotClassLoader>() {
+			public RobotClassLoader run() {
+				return new RobotClassLoader(classPath, badRobot);
+			}
+		});
 
 		cl.loadRobotMainClass(true);
 	}
 
 	@Test(expected = ClassNotFoundException.class)
 	public void robotBlockedRobocode() throws ClassNotFoundException {
-		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
+		// The class loader must be granted security permissions
+		RobotClassLoader cl = AccessController.doPrivileged(new PrivilegedAction<RobotClassLoader>() {
+			public RobotClassLoader run() {
+				return new RobotClassLoader(classPath, goodRobot);
+			}
+		});
 
 		cl.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
 	}
 
 	@Test(expected = ClassNotFoundException.class)
 	public void robotBlockedControl() throws ClassNotFoundException {
-		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
+		// The class loader must be granted security permissions
+		RobotClassLoader cl = AccessController.doPrivileged(new PrivilegedAction<RobotClassLoader>() {
+			public RobotClassLoader run() {
+				return new RobotClassLoader(classPath, goodRobot);
+			}
+		});
 
 		cl.loadClass("robocode.control.RobocodeEngine");
 	}

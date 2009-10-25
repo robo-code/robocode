@@ -23,6 +23,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.*;
 import java.util.List;
 import java.net.URL;
@@ -59,7 +61,14 @@ public final class Container extends ContainerBase {
 	static {
 		instance = new Container();
 		systemLoader = Container.class.getClassLoader();
-		engineLoader = new EngineClassLoader(systemLoader);
+
+		// The class loader must be granted security permissions
+		engineLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+			public ClassLoader run() {
+				return new EngineClassLoader(systemLoader);
+			}
+		});
+
 		final Thread currentThread = Thread.currentThread();
 
 		currentThread.setContextClassLoader(engineLoader);

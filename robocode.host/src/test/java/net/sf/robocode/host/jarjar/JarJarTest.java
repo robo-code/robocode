@@ -18,6 +18,8 @@ import org.junit.Assert;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -65,9 +67,14 @@ public class JarJarTest {
 		String outer = "file:src/test/resources/Outer.jar";
 		final String separ = "!/";
 		final String root = "jar:jarjar:" + outer + JarJar.SEPARATOR + inner + separ;
-		URL u = new URL(root);
+		final URL url = new URL(root);
 
-		ClassLoader ucl = new URLClassLoader(new URL[] { u});
+		// The class loader must be granted security permissions
+		ClassLoader ucl = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+			public ClassLoader run() {
+				return new URLClassLoader(new URL[] { url });
+			}
+		});
 
 		ucl.loadClass(clas);
 	}

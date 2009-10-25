@@ -30,6 +30,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.*;
 import java.security.AccessControlException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.lang.reflect.Method;
 
 
@@ -37,8 +39,15 @@ import java.lang.reflect.Method;
  * @author Pavel Savara (original)
  */
 public class JavaHost implements IHost {
-	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
+	public IRobotClassLoader createLoader(final IRobotRepositoryItem robotRepositoryItem) {
+		// The class loader must be granted security permissions
+		return AccessController.doPrivileged(
+				new PrivilegedAction<IRobotClassLoader>() {
+			public IRobotClassLoader run() {
+				return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(),
+						robotRepositoryItem.getFullClassName());
+			}
+		});
 	}
 
 	public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
