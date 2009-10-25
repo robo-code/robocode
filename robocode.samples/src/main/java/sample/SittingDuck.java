@@ -43,12 +43,16 @@ public class SittingDuck extends AdvancedRobot {
 
 		// Read file "count.dat" which contains 2 lines,
 		// a round count, and a battle count
+		FileReader fr = null;
+		BufferedReader br = null;
+
 		try {
-			BufferedReader r = new BufferedReader(new FileReader(getDataFile("count.dat")));
+			fr = new FileReader(getDataFile("count.dat"));
+			br = new BufferedReader(fr);
 
 			// Try to get the counts
-			roundCount = Integer.parseInt(r.readLine());
-			battleCount = Integer.parseInt(r.readLine());
+			roundCount = Integer.parseInt(br.readLine());
+			battleCount = Integer.parseInt(br.readLine());
 		} catch (IOException e) {
 			// Something went wrong reading the file, reset to 0.
 			roundCount = 0;
@@ -57,6 +61,22 @@ public class SittingDuck extends AdvancedRobot {
 			// Something went wrong converting to ints, reset to 0
 			roundCount = 0;
 			battleCount = 0;
+		} finally {
+			// Make sure we close the readers, if they were successfully opened
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace(out);
+				}
+			}
+			if (fr != null) {
+				try {
+					fr.close();
+				} catch (IOException e) {
+					e.printStackTrace(out);					
+				}
+			}
 		}
 
 		// Increment the # of rounds
