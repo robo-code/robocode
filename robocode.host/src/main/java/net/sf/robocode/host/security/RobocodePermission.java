@@ -22,19 +22,9 @@ public class RobocodePermission extends java.security.Permission {
 		super(name);
 	}
 
-	/**
-	 * Checks two Permission objects for equality.
-	 * <p/>
-	 * Do not use the {@code equals} method for making access control
-	 * decisions; use the {@code implies} method.
-	 *
-	 * @param obj the object we are testing for equality with this object.
-	 * @return true if both Permission objects are equivalent.
-	 */
 	@Override
-	@SuppressWarnings({ "EqualsWhichDoesntCheckParameterClass"})
 	public boolean equals(Object obj) {
-		return false;
+		return (this == obj);
 	}
 
 	/**

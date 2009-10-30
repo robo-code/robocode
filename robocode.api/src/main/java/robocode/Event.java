@@ -42,10 +42,11 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_PRIORITY = 80;
 
-	// time is valid only after adding to event manager on proxy side, we do not update it on Battle side
-	private transient boolean addedToQueue;
 	private long time;
 	private int priority;
+
+	// time is valid only after adding to event manager on proxy side, we do not update it on Battle side
+	private transient boolean addedToQueue;
 
 	/**
 	 * Called by the game to create a new Event.
@@ -94,6 +95,38 @@ public abstract class Event implements Comparable<Event>, Serializable {
 
 		// No difference found
 		return 0;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result + priority;
+		result = prime * result + (int) (time ^ (time >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Event other = (Event) obj;
+
+		if (priority != other.priority) {
+			return false;
+		}
+		if (time != other.time) {
+			return false;
+		}
+		return true;
 	}
 
 	/**

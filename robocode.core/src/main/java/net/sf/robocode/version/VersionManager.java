@@ -363,6 +363,62 @@ public final class VersionManager implements IVersionManager {
 			throw new IllegalArgumentException("The input object must be a String or Version object");
 		}
 
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+
+			result = prime * result + build;
+			result = prime * result + major;
+			result = prime * result + maturity;
+			result = prime * result + maturity_version;
+			result = prime * result + minor;
+			result = prime * result + revision;
+			result = prime * result + ((version == null) ? 0 : version.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			Version other = (Version) obj;
+
+			if (build != other.build) {
+				return false;
+			}
+			if (major != other.major) {
+				return false;
+			}
+			if (maturity != other.maturity) {
+				return false;
+			}
+			if (maturity_version != other.maturity_version) {
+				return false;
+			}
+			if (minor != other.minor) {
+				return false;
+			}
+			if (revision != other.revision) {
+				return false;
+			}
+			if (version == null) {
+				if (other.version != null) {
+					return false;
+				}
+			} else if (!version.equals(other.version)) {
+				return false;
+			}
+			return true;
+		}
+
 		private long getVersionLong() {
 			return ((long) major << 40) + ((long) minor << 32) + (revision << 24) + (build << 16) + (maturity << 8)
 					+ maturity_version;
