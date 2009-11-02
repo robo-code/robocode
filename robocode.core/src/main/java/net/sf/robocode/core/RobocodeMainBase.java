@@ -21,8 +21,8 @@ import java.io.IOException;
 
 
 /**
- * There are entrypoints called with reflection from HiddenAccess in robocode.api module,
- * they cross classloaders boundaries.
+ * There are entry points called with reflection from HiddenAccess in robocode.api module,
+ * they cross class loaders boundaries.
  * 
  * @author Pavel Savara (original)
  */
@@ -34,7 +34,7 @@ public abstract class RobocodeMainBase implements Runnable {
 	public abstract void cleanup();
 
 	// -----------
-	// entrypoints called with reflection from HiddenAccess in robocode.api module
+	// entry points called with reflection from HiddenAccess in robocode.api module
 	// -----------
 
 	public static void robocodeMain(Object args) {
@@ -84,5 +84,4 @@ public abstract class RobocodeMainBase implements Runnable {
 
 		main.initForRobocodeEngine(listener);
 	}
-
 }

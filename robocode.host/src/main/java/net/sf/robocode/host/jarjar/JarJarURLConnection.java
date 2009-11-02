@@ -162,7 +162,6 @@ public class JarJarURLConnection extends URLConnection {
 		@SuppressWarnings({"UnusedAssignment", "UnusedDeclaration"})
 		private String parseAbsoluteSpec(String spec) {
 			@SuppressWarnings("unused")
-			URL url = null;
 			int index = -1;
 
 			// check for !/
@@ -173,7 +172,7 @@ public class JarJarURLConnection extends URLConnection {
 			try {
 				String innerSpec = spec.substring(0, index - 1);
 
-				url = new URL(innerSpec);
+				new URL(innerSpec);
 			} catch (MalformedURLException e) {
 				throw new NullPointerException("invalid url: " + spec + " (" + e + ")");
 			}

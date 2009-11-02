@@ -173,12 +173,12 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		String path = "";
+		StringBuffer path = new StringBuffer();
 
 		for (int i = 0; i < ((DefaultListModel) getPathList().getModel()).getSize(); i++) {
-			path += ((DefaultListModel) getPathList().getModel()).getElementAt(i) + File.pathSeparator;
+			path.append(((DefaultListModel) getPathList().getModel()).getElementAt(i)).append(File.pathSeparator);
 		}
-		properties.setOptionsDevelopmentPath(path);
+		properties.setOptionsDevelopmentPath(path.toString());
 		properties.saveProperties();
 	}
 

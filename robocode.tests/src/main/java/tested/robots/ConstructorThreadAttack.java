@@ -58,7 +58,9 @@ public class ConstructorThreadAttack extends robocode.AdvancedRobot {
 			runAttack2();
 
 			try {
-				this.wait();
+				while (true) {
+					this.wait();
+				}
 			} catch (InterruptedException e) {}
 		}
 	}

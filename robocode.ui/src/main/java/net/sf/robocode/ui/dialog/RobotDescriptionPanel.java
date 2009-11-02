@@ -199,16 +199,16 @@ public class RobotDescriptionPanel extends JPanel {
 				StringTokenizer tok = new StringTokenizer(desc, "\n");
 
 				while (tok.hasMoreTokens() && count < 3) {
-					String line = tok.nextToken();
+					StringBuffer line = new StringBuffer(tok.nextToken());
 
 					if (line != null) {
-						if (line.length() > BLANK_STRING.length()) {
-							line = line.substring(0, BLANK_STRING.length());
+						if (line.length() > BLANK_STRING.length()) {						
+							line.delete(BLANK_STRING.length(), line.length());
 						}
 						for (int i = line.length(); i < BLANK_STRING.length(); i++) {
-							line += " ";
+							line.append(' ');
 						}
-						getDescriptionLabel(count).setText(line);
+						getDescriptionLabel(count).setText(line.toString());
 					}
 					count++;
 				}

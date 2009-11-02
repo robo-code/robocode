@@ -25,17 +25,26 @@ public class FileOutputStreamAttack extends AdvancedRobot {
 
 	public void run() {
 		File file = null;
+		FileOutputStream fis = null;
 
 		try {		
 			file = getDataFile("test");
-			FileOutputStream fis = new FileOutputStream(file);
-
+			fis = new FileOutputStream(file);
 			fis.write(1);
 		} catch (IOException e) {
 			e.printStackTrace(out);
 		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace(out);
+				}
+			}
 			if (file != null) {
-				file.delete();
+				if (file.delete() == false) {
+					out.println("Could not delete the file: " + file);
+				}
 			}
 		}
 	}

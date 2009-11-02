@@ -81,7 +81,7 @@ public final class RbSerializer {
 	private final CharsetEncoder encoder;
 	private final CharsetDecoder decoder;
 
-	private final int byteOrder = 0xC0DEDEA1;
+	private static final int BYTE_ORDER = 0xC0DEDEA1;
 	private final int currentVersion;
 
 	static {
@@ -110,7 +110,7 @@ public final class RbSerializer {
 		// header
 		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT);
 
-		buffer.putInt(byteOrder);
+		buffer.putInt(BYTE_ORDER);
 		buffer.putInt(currentVersion);
 		buffer.putInt(length);
 		target.write(buffer.array());
@@ -130,7 +130,7 @@ public final class RbSerializer {
 		// header
 		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
 
-		buffer.putInt(byteOrder);
+		buffer.putInt(BYTE_ORDER);
 		buffer.putInt(currentVersion);
 		buffer.putInt(length);
 
@@ -150,7 +150,7 @@ public final class RbSerializer {
 		buffer.flip();
 		int bo = buffer.getInt();
 
-		if (bo != byteOrder) {
+		if (bo != BYTE_ORDER) {
 			throw new IOException("Different byte order is not supported");
 		}
 		int version = buffer.getInt();
@@ -175,7 +175,7 @@ public final class RbSerializer {
 	public Object deserialize(final ByteBuffer buffer) throws IOException {
 		int bo = buffer.getInt();
 
-		if (bo != byteOrder) {
+		if (bo != BYTE_ORDER) {
 			throw new IOException("Different byte order is not supported");
 		}
 

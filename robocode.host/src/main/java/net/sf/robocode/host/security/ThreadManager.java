@@ -179,15 +179,7 @@ public class ThreadManager implements IThreadManager {
 	}
 
 	public boolean checkRobotFileStream() {
-		final Thread c = Thread.currentThread();
-
-		synchronized (outputStreamThreads) {
-			if (outputStreamThreads.contains(c)) {
-				outputStreamThreads.remove(c);
-				return true;
-			}
-		}
-		return false;
+		return outputStreamThreads.remove(Thread.currentThread());
 	}
 
 	public boolean isSafeThread(Thread c) {

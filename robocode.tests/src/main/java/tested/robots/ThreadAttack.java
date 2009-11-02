@@ -82,7 +82,9 @@ public class ThreadAttack extends AdvancedRobot {
 			runAttack2();
 
 			try {
-				this.wait();
+				while (true) {
+					this.wait();
+				}
 			} catch (InterruptedException e) {
 				out.println("Interrupted id:" + id);
 			}

@@ -266,8 +266,12 @@ public class RobotFileSystemManager {
 
 		final File parent = getWritableDirectory();
 
-		parent.mkdirs();
-		
+		if (!parent.exists()) {
+			if (parent.mkdirs() == false) {
+				throw new IOException("Could not create writeable directory for " + robotProxy.getStatics().getName());
+			}
+		}
+
 		InputStream is = null;
 		OutputStream os = null;
 

@@ -47,8 +47,8 @@ public class RobocodeCompilerFactory {
 			+ File.separator + "robocode.jar" + File.pathSeparator
 			+ FileUtil.quoteFileName(FileUtil.getRobotsDir().toString());
 
-	private static CompilerProperties compilerProperties;
-	private static boolean compilerInstalling;
+	private CompilerProperties compilerProperties;
+	private boolean compilerInstalling;
 
 	private static final char SPINNER[] = {
 		'-', '\\', '|', '/'
@@ -426,7 +426,7 @@ public class RobocodeCompilerFactory {
 		return result;
 	}
 
-	public static void saveCompilerProperties() {
+	public void saveCompilerProperties() {
 		if (compilerProperties == null) {
 			logError("Cannot save null compiler properties");
 			return;

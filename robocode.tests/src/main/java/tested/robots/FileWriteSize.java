@@ -30,13 +30,14 @@ public class FileWriteSize extends AdvancedRobot {
 		byte[] buf = new byte[100000];
 
 		File file = null;
+		RobocodeFileOutputStream rfos = null;
 
 		try {		
 			file = getDataFile("test");
 
 			out.println("Data file: " + file.getCanonicalPath());
 
-			RobocodeFileOutputStream rfos = new RobocodeFileOutputStream(file);
+			rfos = new RobocodeFileOutputStream(file);
 
 			for (int i = 0; i < 3; i++) {
 				rfos.write(buf);
@@ -44,8 +45,17 @@ public class FileWriteSize extends AdvancedRobot {
 		} catch (IOException e) {
 			e.printStackTrace(out);
 		} finally {
+			if (rfos != null) {
+				try {
+					rfos.close();
+				} catch (IOException e) {
+					e.printStackTrace(out);
+				}
+			}
 			if (file != null) {
-				file.delete();
+				if (file.delete() == false) {
+					out.println("Could not delete the file: " + file);
+				}
 			}
 		}
 	}

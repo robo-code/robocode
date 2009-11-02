@@ -83,7 +83,9 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		parent = getParent();
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
-		} catch (MalformedURLException ignored) {}
+		} catch (MalformedURLException e) {
+			Logger.logError(e.getMessage());
+		}
 	}
 
 	public void setRobotProxy(Object robotProxy) {

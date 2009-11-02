@@ -49,8 +49,8 @@ import java.util.List;
 public class RobotExtractor extends JDialog implements WizardListener {
 	String unusedrobotPath;
 
-	private final int minRobots = 1;
-	private final int maxRobots = 1; // 250;
+	private static final int MIN_ROBOTS = 1;
+	private static final int MAX_ROBOTS = 1; // 250;
 
 	private JPanel robotImporterContentPane;
 
@@ -128,7 +128,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	public RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
 			robotSelectionPanel = net.sf.robocode.core.Container.createComponent(RobotSelectionPanel.class);
-			robotSelectionPanel.setup(minRobots, maxRobots, false,
+			robotSelectionPanel.setup(MIN_ROBOTS, MAX_ROBOTS, false,
 					"Select the robot you would like to extract to the robots directory.  Robots not shown do not include source.",
 					true, true, true, false, true, true, null);
 		}

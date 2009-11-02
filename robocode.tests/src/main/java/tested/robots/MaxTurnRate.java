@@ -40,8 +40,6 @@ public class MaxTurnRate extends robocode.AdvancedRobot {
 
 		double turnRate = robocode.util.Utils.normalRelativeAngleDegrees(getHeading() - lastHeading);
 
-		lastHeading = getHeading();
-
 		out.println(getTime() + ": " + getVelocity() + ", " + turnRate);
 	}
 }
