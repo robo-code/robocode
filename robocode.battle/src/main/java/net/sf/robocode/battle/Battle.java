@@ -359,11 +359,6 @@ public final class Battle extends BaseBattle {
 		super.cleanup();
 
 		battleManager = null;
-
-		// Request garbage collecting
-		for (int i = 4; i >= 0; i--) { // Make sure it is run
-			System.gc();
-		}
 	}
 
 	@Override

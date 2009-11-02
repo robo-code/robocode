@@ -30,14 +30,14 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-@SuppressWarnings("serial")
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
+	private static final long serialVersionUID = 1L;
 
 	private final List<String> memberNames;
 	private final String name;
 	private final int contestIndex;
-	private RobotPeer teamLeader;
-	private final TeamStatistics teamStatistics;
+	private transient final TeamStatistics teamStatistics;
+	private transient RobotPeer teamLeader;
 
 	public TeamPeer(String name, List<String> memberNames, int contestIndex) {
 		this.name = name;

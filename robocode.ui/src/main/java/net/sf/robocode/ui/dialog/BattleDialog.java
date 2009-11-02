@@ -134,7 +134,7 @@ public class BattleDialog extends JFrame {
 		return button;
 	}
 
-	private final ActionListener eventHandler = new ActionListener() {
+	private final transient ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
 

@@ -603,7 +603,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 *
 	 * @author Pavel Savara
 	 */
-	private class SerializableArc implements Serializable {
+	private static class SerializableArc implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		public final double x;

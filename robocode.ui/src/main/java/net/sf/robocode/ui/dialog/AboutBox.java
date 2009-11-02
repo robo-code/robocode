@@ -104,7 +104,7 @@ public final class AboutBox extends JDialog {
 	private String htmlText;
 
 	// General event handler
-	private final ActionListener eventHandler = new ActionListener() {
+	private final transient ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == AboutBox.this.getOkButton()) {
 				AboutBox.this.dispose();
@@ -113,7 +113,7 @@ public final class AboutBox extends JDialog {
 	};
 
 	// Hyperlink event handler
-	private final HyperlinkListener hyperlinkHandler = new HyperlinkListener() {
+	private final transient HyperlinkListener hyperlinkHandler = new HyperlinkListener() {
 		public void hyperlinkUpdate(HyperlinkEvent event) {
 			if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 				try {

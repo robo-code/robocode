@@ -72,7 +72,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 	final private IRecordManager recordManager;
 	final private IVersionManager versionManager;
 
-	private class Setup {
+	private static class Setup {
 		boolean minimize;
 		boolean exitOnComplete;
 		String battleFilename;

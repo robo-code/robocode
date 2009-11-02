@@ -152,7 +152,7 @@ public class RobotDialog extends JFrame {
 		return getSGCheckBox().isSelected();
 	}
 
-	private final ActionListener eventHandler = new ActionListener() {
+	private final transient ActionListener eventHandler = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
 

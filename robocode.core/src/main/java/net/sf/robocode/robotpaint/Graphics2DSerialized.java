@@ -2274,7 +2274,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	 *
 	 * @author Flemming N. Larsen
 	 */
-	private class FontMetricsByFont extends FontMetrics {
+	private static class FontMetricsByFont extends FontMetrics {
 		static final long serialVersionUID = 1L;
 
 		final FontRenderContext fontRenderContext;
