@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@
  *       installation will terminate
  *     - Changed the information message for how to run robocode.sh, where the
  *       user does not have to change the directory before calling robocode.sh
- *     - Code cleanup
+ *     - Added creating file associations in the Windows Registry
  *******************************************************************************/
 package net.sf.robocode.installer;
 
@@ -205,7 +205,7 @@ public class AutoExtract implements ActionListener {
 
 		if (src.indexOf('!') > -1) {
 			message = src + "\nContains an exclamation point.  Please move the file to a different directory.";
-			System.err.println(message);
+			JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		JarInputStream jarIS = null;
@@ -272,10 +272,10 @@ public class AutoExtract implements ActionListener {
 				entry = jarIS.getNextJarEntry();
 			}
 			statusDialog.dispose();
-			message = "Installation successful";
 			return true;
 		} catch (IOException e) {
 			message = "Installation failed" + e;
+			JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		} finally {
 			if (jarIS != null) {
@@ -289,6 +289,27 @@ public class AutoExtract implements ActionListener {
 	}
 
 	public static void main(String argv[]) {
+		String suggestedDirName;
+		
+		if (argv.length == 1) {
+			suggestedDirName = argv[0];
+		} else if (isWindowsOS()) {
+			suggestedDirName = "C:\\robocode\\";
+		} else {
+			suggestedDirName = System.getProperty("user.home") + File.separator + "robocode" + File.separator;
+		}
+
+		String message;
+
+		if (install(new File(suggestedDirName))) {
+			message = "Installation successful"; 
+		} else {
+			message = "Installation cancelled";
+		}
+		JOptionPane.showMessageDialog(null, message);
+	}
+	
+	private static boolean install(File suggestedDir) {
 		// Verify that the Java version is version 5 (1.5.0) or newer
 		if (javaVersion.startsWith("1.") && javaVersion.charAt(2) < '5') {
 			final String message = "Robocode requires Java 5.0 (1.5.0) or newer.\n"
@@ -297,7 +318,7 @@ public class AutoExtract implements ActionListener {
 
 			JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 			System.err.println(message);
-			System.exit(0);
+			return false;
 		}
 
 		// Set native look and feel
@@ -309,17 +330,6 @@ public class AutoExtract implements ActionListener {
 		AutoExtract extractor = new AutoExtract();
 
 		if (extractor.acceptLicense()) {
-			String suggestedDirName;
-			
-			if (argv.length == 1) {
-				suggestedDirName = argv[0];
-			} else if (File.separatorChar == '\\') {
-				suggestedDirName = "c:\\robocode\\";
-			} else {
-				suggestedDirName = System.getProperty("user.home") + File.separator + "robocode" + File.separator;
-			}
-
-			File suggestedDir = new File(suggestedDirName);
 			File installDir = null;
 
 			boolean done = false;
@@ -336,15 +346,13 @@ public class AutoExtract implements ActionListener {
 					Object r = JOptionPane.showInputDialog(null, "Please type in the installation directory",
 							"Installation Directory", JOptionPane.PLAIN_MESSAGE, null, null, suggestedDir);
 
-					if (r == null) {
-						JOptionPane.showMessageDialog(null, "Installation cancelled.");
-						System.exit(0);
-					} else {
+					if (r != null) {
 						suggestedDir = new File(((String) r).trim());
+					} else {
+						return false;
 					}
 				} else if (rc == JOptionPane.CANCEL_OPTION) {
-					JOptionPane.showMessageDialog(null, "Installation cancelled.");
-					System.exit(0);
+					return false;
 				}
 			}
 			if (!installDir.exists()) {
@@ -357,25 +365,20 @@ public class AutoExtract implements ActionListener {
 						System.err.println("Can't create dir: " + installDir);
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Installation cancelled.");
-					System.exit(0);
+					return false;
 				}
 			}
 			deleteOldLibs(installDir);
 			
 			deleteDir(new File(installDir, "robots/.robotcache"));
 
-			boolean rv = extractor.extract(installDir);
-
-			if (rv) {
+			if (extractor.extract(installDir)) {
 				extractor.createShortcuts(installDir, "robocode.bat", "Robocode", "Robocode");
-			} else {
-				JOptionPane.showMessageDialog(null, extractor.message);
+				extractor.createFileAssociations(installDir);
+				return true;
 			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Installation cancelled.");
 		}
-		System.exit(0);
+		return false;
 	}
 
 	private static void deleteOldLibs(File installDir) {
@@ -434,9 +437,8 @@ public class AutoExtract implements ActionListener {
 	}
 
 	private void createShortcuts(File installDir, String runnable, String folder, String name) {
-
 		if (osName.toLowerCase().indexOf("win") == 0) {
-			if (createWindowsShortcuts(installDir, runnable, folder, name)) {} else {
+			if (createWindowsShortcuts(installDir, runnable, folder, name) == false) {
 				JOptionPane.showMessageDialog(null,
 						message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
 						+ installDir.getAbsolutePath() + "\n" + "robocode.bat");
@@ -466,13 +468,8 @@ public class AutoExtract implements ActionListener {
 			return false;
 		}
 
-		String command;
+		final String command = getWindowsCmd() + " cscript.exe ";
 
-		if (osName.indexOf("9") != -1) {
-			command = "command.com /c cscript.exe "; // /nologo
-		} else {
-			command = "cmd.exe /c cscript.exe ";
-		} // /nologo
 		try {
 			File shortcutMaker = new File(installDir, "makeshortcut.vbs");
 			PrintStream out = new PrintStream(new FileOutputStream(shortcutMaker));
@@ -530,7 +527,92 @@ public class AutoExtract implements ActionListener {
 		return false;
 	}
 
-	private String escaped(String s) {
+	private void createFileAssociations(File installDir) {
+		if (isWindowsOS()) {
+			createWindowsFileAssociations(installDir);
+		}
+	}
+
+	private void createWindowsFileAssociations(File installDir) {
+		int rc = JOptionPane.showConfirmDialog(null,
+				"Would you like to create file associations for Robocode in\n"
+				+ "the Windows Registry for the file extensions .battle and .br?\n"
+				+ "Please notice that you might need to grant permission to add\n"
+				+ "the file associations in the Registry, and you must be an\n"
+				+ "administrator or granted permission to change the registry.",
+				"Create File Associations",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
+
+		if (rc != JOptionPane.YES_OPTION) {
+			return;
+		}
+
+		File file = null;
+		PrintStream out = null;
+
+		try {
+			file = new File(installDir + "\\FileAssoc.reg");
+
+			out = new PrintStream(new FileOutputStream(file));
+
+			String installPath = installDir.getAbsolutePath();
+
+			out.print(
+					createWindowsRegistryFileAssociation(installPath, ".battle", "Robocode.BattleSpecification",
+					"Robocode Battle Specification", "-battle"));
+			out.print(
+					createWindowsRegistryFileAssociation(installPath, ".br", "Robocode.BattleRecord", "Robocode Battle Record",
+					"-replay"));
+
+			out.close();
+			out = null;
+
+			Process p = Runtime.getRuntime().exec(getWindowsCmd() + file.getAbsolutePath(), null, null);
+			int rv;
+
+			try {
+				rv = p.waitFor();
+				if (rv != 0) {
+					System.err.println("Could not create association(s)");
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+			if (file != null) {
+				if (!file.delete()) {
+					System.err.println("Could not delete the file: " + file);
+				}
+			}
+		}
+	}
+
+	private static String createWindowsRegistryFileAssociation(String installDir, String fileExt, String progId, String description, String robocodeCmdParam) {
+		StringBuffer sb = new StringBuffer();
+
+		final String HKCR = "[HKEY_CLASSES_ROOT\\";
+
+		sb.append("REGEDIT4\n");
+		sb.append(HKCR).append(fileExt).append("]\n");
+		sb.append("@=\"").append(progId).append("\"\n");
+		sb.append(HKCR).append(progId).append("]\n");
+		sb.append("@=\"").append(description).append("\"\n");
+		sb.append(HKCR).append(progId).append("\\shell]\n");
+		sb.append(HKCR).append(progId).append("\\shell\\open]\n");
+		sb.append(HKCR).append(progId).append("\\shell\\open\\command]\n");
+		sb.append("@=\"").append(getWindowsCmd()).append("\\\"cd \\\"").append(installDir.replaceAll("[\\\\]", "\\\\\\\\")).append("\\\" && robocode.bat ").append(robocodeCmdParam).append(
+				" \\\"%1\\\"\\\"\"\n");
+
+		return sb.toString();
+	}
+
+	private static String escaped(String s) {
 		StringBuffer eascaped = new StringBuffer();
 
 		for (int i = 0; i < s.length(); i++) {
@@ -540,5 +622,18 @@ public class AutoExtract implements ActionListener {
 			eascaped.append(s.charAt(i));
 		}
 		return eascaped.toString();
+	}
+
+	private static boolean isWindowsOS() {
+		return osName.startsWith("Windows ");
+	}
+	
+	private static String getWindowsCmd() {
+		String os = System.getProperty("os.name");
+
+		return ((os.equals("Windows 95") || os.equals("Windows 95") || os.equals("Windows ME"))
+				? "command.com"
+				: "cmd.exe")
+						+ " /C ";
 	}
 }
