@@ -15,6 +15,7 @@ package net.sf.robocode.repository.items;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.util.AlphanumericComparator;
 import robocode.control.RobotSpecification;
 
 import java.io.IOException;
@@ -201,41 +202,22 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	private static int compare(String p1, String c1, String v1, String p2, String c2, String v2) {
-		if (p1 == null && p2 != null) {
-			return 1;
-		}
-		if (p2 == null && p1 != null) {
-			return -1;
-		}
+		AlphanumericComparator alphaNumComparator = new AlphanumericComparator();
 
-		if (p1 != null) // then p2 isn't either
-		{
-			// If packages are different, return
-			int pc = p1.compareToIgnoreCase(p2);
+		// Compare packages
+		int result = alphaNumComparator.compare(p1, p2);
 
-			if (pc != 0) {
-				return pc;
-			}
+		if (result != 0) {
+			return result;
 		}
 
-		if (c1 == null && c2 != null) {
-			return 1;
-		}
-		if (c2 == null && c1 != null) {
-			return -1;
-		}
-
-		if (c1 != null) {
-			// Ok, same package... compare class:
-			int cc = c1.compareToIgnoreCase(c2);
-
-			if (cc != 0) {
-				// Different classes, return
-				return cc;
-			}
+		// Same package, so compare classes
+		result = alphaNumComparator.compare(c1, c2);
+		if (result != 0) {
+			return result;
 		}
 
-		// Ok, same robot... compare version
+		// Same robot, so compare versions
 		if (v1 == null && v2 == null) {
 			return 0;
 		}
@@ -251,7 +233,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 		}
 
 		if (v1.indexOf(".") < 0 || v2.indexOf(".") < 0) {
-			return v1.compareToIgnoreCase(v2);
+			return alphaNumComparator.compare(v1, v2);
 		}
 
 		// Dot separated versions.
@@ -270,7 +252,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 					return i1 - i2;
 				}
 			} catch (NumberFormatException e) {
-				int tc = tok1.compareToIgnoreCase(tok2);
+				int tc = alphaNumComparator.compare(tok1, tok2);
 
 				if (tc != 0) {
 					return tc;

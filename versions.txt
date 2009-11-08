@@ -1,26 +1,27 @@
 Version 1.7.1.5
-(24-Oct-2009)
+(08-Nov-2009)
 ---------------
 = Bugfixes =
-* RobocodeFileOutputStream.getName() always returned null instead of the filename
+* RobocodeFileOutputStream.getName() always returned null instead of the filename.
+* Robots listed in e.g. the New Battle window was sorted like: 1.1.1, 1.1.10y, 1.1.2, 1.1.10. That is alpha-numerical, but where version numbers with an ending letter like e.g. "1.1.10y", where not placed in the correct order. This bug has been fixed so the robots in the example will be sorted like: 1.1.1, 1.1.2, 1.1.10, 1.1.10y
 
 Version 1.7.1.5 Beta
 (14-Oct-2009)
 ---------------
 = Bugfixes =
-* Bug [2871138] - Graphics2D.getTransform() throws NPE
-* Bug [2872781] - "Teleport" - occurs when robot's distance remaining is very large
-* Bug [2876395] - Source is not included, robot.java.source.included was not set
+* Bug [2871138] - Graphics2D.getTransform() throws NPE.
+* Bug [2872781] - "Teleport" - occurs when robot's distance remaining is very large.
+* Bug [2876395] - Source is not included, robot.java.source.included was not set.
 
 Version 1.7.1.4
 (25-Sep-2009)
 ---------------
 = Bugfixes =
-* Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init
-* Bug [2845612] - Can't load Katana 1.0 or DrussGT 1.3.1wilo
-* Bug [2854692] - Lockup on start if too many bots in robots dir
-* Bug [2852860] - IllegalArgumentException on painting in some robots
-* Fixed NullPointerException that could occur with the -battle command-line option
+* Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init.
+* Bug [2845612] - Can't load Katana 1.0 or DrussGT 1.3.1wilo.
+* Bug [2854692] - Lockup on start if too many bots in robots dir.
+* Bug [2852860] - IllegalArgumentException on painting in some robots.
+* Fixed NullPointerException that could occur with the -battle command-line option.
 
 = Changes =
 
