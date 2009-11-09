@@ -164,8 +164,8 @@
   <component name="IdProvider" IDEtalkID="F27E01D789A09AF0ABD103A83B854541" />
   <component name="InspectionProjectProfileManager">
     <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_PROFILE" value="true" />
-    <version value="1.0" />
+    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
+    <scopes />
     <profiles>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
@@ -397,6 +397,7 @@
       <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.installer/robocode.testing.installer.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.installer/robocode.testing.installer.iml" group="plugins.testing" />
       <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.samples/robocode.testing.samples.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.samples/robocode.testing.samples.iml" group="plugins.testing" />
       <module fileurl="file://$PROJECT_DIR$/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" group="main" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" filepath="$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" group="main" />
       <module fileurl="file://$PROJECT_DIR$/robocode.ui/robocode.ui.iml" filepath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" group="main" />
       <module fileurl="file://$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" filepath="$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" group="main" />
     </modules>
