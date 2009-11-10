@@ -36,7 +36,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	protected final BattlefieldSpecification battleFieldSpec = new BattlefieldSpecification();
 	protected int errors;
 	protected int messages;
-	protected static String absolutePath;
+	protected static String robotsPath;
 	
 	public static boolean isDumpingPositions = false;
 	public static boolean isDumpingTurns = false;
@@ -47,8 +47,8 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
-		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
-		System.setProperty("ROBOTPATH", "target//classes");
+		System.setProperty("WORKINGDIRECTORY", "target/test-classes");
+		System.setProperty("ROBOTPATH", "../robocode.tests.robots/target/classes");
 
 		// silent when running in Maven
 		if (System.getProperty("surefire.test.class.path", null) != null) {
@@ -58,7 +58,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		}
 
 		try {
-			absolutePath = new File("").getCanonicalPath();
+			robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
 		} catch (IOException e) {
 			e.printStackTrace(Logger.realErr);
 		}
