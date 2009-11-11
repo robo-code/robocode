@@ -1,9 +1,9 @@
 Version 1.7.1.5
-(08-Nov-2009)
+(11-Nov-2009)
 ---------------
 = Bugfixes =
 * RobocodeFileOutputStream.getName() always returned null instead of the filename.
-* Robots listed in e.g. the New Battle window was sorted like: 1.1.1, 1.1.10y, 1.1.2, 1.1.10. That is alpha-numerical, but where version numbers with an ending letter like e.g. "1.1.10y", where not placed in the correct order. This bug has been fixed so the robots in the example will be sorted like: 1.1.1, 1.1.2, 1.1.10, 1.1.10y
+* Robots listed in e.g. the New Battle window was sorted like: 1.1.1, 1.1.10y, 1.1.2, 1.1.10 (alpha-numerical). But version numbers with an ending letter like in "1.1.10y" like in the versions just listed, were not placed in the correct order. Notice that 1.1.10y is between 1.1.1 and 1.1.2. This bug has been fixed so the versions in the example now will be sorted correctly like: 1.1.1, 1.1.2, 1.1.10, 1.1.10y
 
 Version 1.7.1.5 Beta
 (14-Oct-2009)
