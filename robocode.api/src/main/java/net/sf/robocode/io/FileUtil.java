@@ -157,18 +157,22 @@ public class FileUtil {
 						// Robocode won't create one, but just in case a user does...
 						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
 							deleteDir(file);
-							if (file.exists() && !file.delete()) {
-								Logger.logError("Can't delete: " + file);
+							if (file.exists()) {
+								if (file.delete() == false) {
+									Logger.logError("Cannot delete: " + file);
+								}
 							}
 						} else {
-							Logger.logMessage("Warning: " + file + " may be a symlink.  Ignoring.");
+							Logger.logWarning(file + " may be a symlink. Ignoring.");
 						}
 					} catch (IOException e) {
-						Logger.logMessage("Warning: Cannot determine canonical file for " + file + " - ignoring.");
+						Logger.logWarning("Cannot determine canonical file for " + file + ". Ignoring.");
 					}
 				} else {
-					if (file.exists() && !file.delete()) {
-						Logger.logError("Can't delete: " + file);
+					if (file.exists()) {
+						if (file.delete() == false) {
+							Logger.logError("Cannot delete: " + file);
+						}
 					}
 				}
 			}
@@ -186,7 +190,7 @@ public class FileUtil {
 	public static File createDir(File dir) {
 		if (dir != null && !dir.exists()) {
 			if (!dir.mkdir()) {
-				Logger.logError("Can't create" + dir);
+				Logger.logError("Cannot create dir: " + dir);
 			}
 		}
 		return dir;

@@ -66,6 +66,8 @@
 package net.sf.robocode.battle.peer;
 
 
+import static net.sf.robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BoundingRectangle;
 import net.sf.robocode.host.IHostManager;
@@ -74,7 +76,6 @@ import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.host.events.EventQueue;
 import net.sf.robocode.host.proxies.IHostingRobotProxy;
 import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
@@ -1502,7 +1503,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					" has been banned and will not be allowed to participate in battles.");
 		}
 
-		logMessage(message.toString());
+		logError(message.toString());
 	}
 
 	public void updateEnergy(double delta) {

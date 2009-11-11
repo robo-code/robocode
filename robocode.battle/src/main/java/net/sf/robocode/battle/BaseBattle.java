@@ -225,7 +225,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 					cleanupRound();
 
 				} catch (Exception e) {
-					logError("Exception running a battle round: ", e);
+					logError("Exception running a battle round", e);
 					isAborted = true;
 				}
 
@@ -236,7 +236,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 			cleanup();
 		} catch (Throwable e) {
-			logError("Exception running a battle: ", e);
+			logError("Error running a battle", e);
 		}
 	}
 
@@ -267,12 +267,11 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	protected void preloadRound() {
 		logMessage("----------------------");
-		Logger.logMessage("Round " + (roundNum + 1) + " initializing..", false);
+		logMessage("Round " + (roundNum + 1) + " initializing..", false);
 	}
 
 	protected void initializeRound() {
-		logMessage("");
-		logMessage("Let the games begin!");
+		logMessage("\nLet the games begin!");
 
 		roundOver = false;
 		endTimer = 0;
@@ -508,10 +507,10 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 		battleThread.getThreadGroup().enumerate(systemThreads, false);
 
-		logMessage("Threads: ------------------------");
+		System.out.println("Threads: ------------------------");
 		for (Thread thread : systemThreads) {
 			if (thread != null) {
-				logError(thread.getName());
+				System.out.println(thread.getName());
 			}
 		}
 	}

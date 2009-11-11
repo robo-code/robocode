@@ -30,6 +30,7 @@ import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logWarning;
 import net.sf.robocode.security.LoggingThreadGroup;
 import robocode.exception.RobotError;
 
@@ -64,10 +65,10 @@ public class RobotThreadManager {
 					runThreadGroup.destroy();
 				}
 			} else {
-				Logger.logError("Warning, could not destroy " + runThread.getName());
+				Logger.logWarning("Could not destroy " + runThread.getName());
 			}
 		} catch (Exception e) {
-			Logger.logError("Warning, could not destroy " + runThreadGroup.getName(), e);
+			Logger.logError("Could not destroy " + runThreadGroup.getName(), e);
 		}
 	}
 
@@ -107,7 +108,7 @@ public class RobotThreadManager {
 			runThread.setContextClassLoader(this.robotProxy.getRobotClassloader());
 			runThread.start();
 		} catch (Exception e) {
-			logError("Exception starting thread: ", e);
+			logError("Exception starting thread", e);
 		}
 	}
 
@@ -137,14 +138,14 @@ public class RobotThreadManager {
 
 		if (isAlive) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
+				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping. Forcing a stop.");
 
 				// Force the robot to stop
 				return forceStop();
 			} else {
 				logError(
 						"Robot " + robotProxy.getStatics().getName()
-						+ " is still running.  Not stopping it because security is off.");
+						+ " is still running. Not stopping it because security is off.");
 			}
 		}
 
@@ -189,7 +190,7 @@ public class RobotThreadManager {
 			if (t.isAlive()) {
 				// noinspection deprecation
 				// t.suspend();
-				logError("Warning!  Unable to stop thread: " + runThread.getName());
+				logWarning("Unable to stop thread: " + runThread.getName());
 			} else {
 				logMessage(robotProxy.getStatics().getName() + " has been stopped.");
 			}
@@ -232,7 +233,7 @@ public class RobotThreadManager {
 	private void waitForStop(Thread thread) {
 		for (int j = 0; j < 100 && thread.isAlive(); j++) {
 			if (j == 50) {
-				logError(
+				logMessage(
 						"Waiting for robot " + robotProxy.getStatics().getName() + " to stop thread " + thread.getName());
 			}
 			try {

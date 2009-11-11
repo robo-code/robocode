@@ -281,14 +281,14 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			} catch (Exception e) {
 				drainEnergy();
 				println(e);
-				logMessage(statics.getName() + ": Exception: " + e); // without stack here
+				logError(statics.getName() + ": Exception: " + e); // without stack here
 			} catch (Throwable t) {
 				drainEnergy();
 				if (t instanceof ThreadDeath) {
 					logMessage(statics.getName() + " stopped successfully.");
 				} else {
 					println(t);
-					logMessage(statics.getName() + ": Throwable: " + t); // without stack here
+					logError(statics.getName() + ": Throwable: " + t); // without stack here
 				}
 			} finally {
 				waitForBattleEndImpl();

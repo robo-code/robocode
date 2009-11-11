@@ -30,7 +30,7 @@ public class RobocodeRunner {
 		BattleObserver battleListener = new BattleObserver();
 
 		// Create the RobocodeEngine
-//		IRobocodeEngine engine = new RobocodeEngine(new java.io.File("C:/Robocode")); // Run from C:/Robocode
+		// IRobocodeEngine engine = new RobocodeEngine(new java.io.File("C:/Robocode")); // Run from C:/Robocode
 		RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
 
 		// Add battle listener to our RobocodeEngine

@@ -51,6 +51,6 @@ public class TestThreadAttack extends RobocodeTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 1; // Security error must be reported as an error
+		return 2; // Security errors must be reported as errors
 	}
 }

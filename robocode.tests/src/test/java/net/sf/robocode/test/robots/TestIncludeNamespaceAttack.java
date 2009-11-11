@@ -27,7 +27,7 @@ public class TestIncludeNamespaceAttack extends RobocodeTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 2;
+		return 3; // Security errors must be reported as errors
 	}
 
 	@Override

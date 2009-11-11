@@ -48,7 +48,7 @@ public class JarExtractor {
 					File dir = new File(dest, entry.getName());
 
 					if (!dir.exists() && !dir.mkdirs()) {
-						Logger.logError("Can't create dir " + dir);
+						Logger.logError("Cannot create dir: " + dir);
 					}
 				} else {
 					extractFile(dest, jarIS, entry);
@@ -68,7 +68,7 @@ public class JarExtractor {
 		File parentDirectory = new File(out.getParent());
 
 		if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
-			Logger.logError("Can't create dir " + parentDirectory);
+			Logger.logError("Cannot create dir: " + parentDirectory);
 		}
 		FileOutputStream fos = null;
 		byte buf[] = new byte[2048];

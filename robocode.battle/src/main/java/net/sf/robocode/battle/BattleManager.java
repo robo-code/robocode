@@ -214,6 +214,7 @@ public class BattleManager implements IBattleManager {
 			return;
 		}
 		logMessage("Preparing replay...");
+
 		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
 		}
@@ -278,15 +279,9 @@ public class BattleManager implements IBattleManager {
 
 			battleProperties.store(out, "Battle Properties");
 		} catch (IOException e) {
-			logError("IO Exception saving battle properties: " + e);
+			logError("Error while saving " + battleFilename + ": " + e);
 		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					Logger.logError(e);
-				}
-			}
+			FileUtil.cleanupStream(out);
 		}
 	}
 
@@ -295,20 +290,14 @@ public class BattleManager implements IBattleManager {
 		FileInputStream in = null;
 
 		try {
-			in = new FileInputStream(getBattleFilename());
+			in = new FileInputStream(battleFilename);
 			res.load(in);
 		} catch (FileNotFoundException e) {
 			logError("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {
-			logError("IO Exception reading " + getBattleFilename() + ": " + e);
+			logError("Error while reading " + battleFilename + ": " + e);
 		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-					Logger.logError(e);
-				}
-			}
+			FileUtil.cleanupStream(in);
 		}
 		return res;
 	}

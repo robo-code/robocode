@@ -85,8 +85,8 @@ public final class Container extends ContainerBase {
 		}
 
 		if (known.size() < 2) {
-			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size());
-			Logger.logError("ClassPath : " + classPath);
+			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size() + " modules");
+			Logger.logError("Class path: " + classPath);
 			throw new Error("Main modules not loaded");
 		}
 	}
@@ -143,13 +143,13 @@ public final class Container extends ContainerBase {
 	private static boolean loadModule(String module, ClassLoader loader) {
 		try {
 			if (known.contains(module)) {
-				// Logger.logMessage("already loaded " + module);
+				// Logger.logMessage("Module already loaded: " + module);
 				return false;
 			}
 			Class<?> modClass = loader.loadClass(module + ".Module");
 
 			modClass.newInstance();
-			Logger.logMessage("Loaded " + module);
+			Logger.logMessage("Loaded module: " + module);
 			known.add(module);
 			return true;
 		} catch (ClassNotFoundException ignore) {// it is not our module ?

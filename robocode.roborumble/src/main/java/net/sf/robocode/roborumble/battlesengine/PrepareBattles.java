@@ -250,7 +250,7 @@ public class PrepareBattles {
 		File r = new File(priority);
 
 		if (r.exists() && !r.delete()) {
-			Logger.logError("Cannot delete " + r);
+			Logger.logError("Cannot delete: " + r);
 		}
 
 		// Open battles file

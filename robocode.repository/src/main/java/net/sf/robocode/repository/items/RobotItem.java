@@ -335,28 +335,26 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
 				if (!silent) {
-					logError("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
+					logError("Robot " + fullClassName + " ignored. You cannot use package " + rootPackage);
 				}
 				return false;
 			}
 
 			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				final String message = "Robot " + fullClassName + " has package name too long.  "
-						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
-
 				if (!silent) {
-					logError(message);
+					logError(
+							"Robot " + fullClassName + " has package name too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+							+ " characters maximum please.");
 				}
 				return false;
 			}
 		}
 
 		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-			final String message = "Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
-					+ " characters maximum please.";
-
 			if (!silent) {
-				logError(message);
+				logError(
+						"Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+						+ " characters maximum please.");
 			}
 			return false;
 		}

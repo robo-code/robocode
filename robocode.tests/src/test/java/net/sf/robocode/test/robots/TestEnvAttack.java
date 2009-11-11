@@ -36,7 +36,7 @@ public class TestEnvAttack extends RobocodeTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 1;
+		return 3; // Security errors must be reported as errors
 	}
 
 	@Override

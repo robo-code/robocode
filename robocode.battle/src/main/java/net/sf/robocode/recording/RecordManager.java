@@ -209,7 +209,7 @@ public class RecordManager implements IRecordManager {
 			recordInfo = null;
 		} catch (ClassNotFoundException e) {
 			if (e.getMessage().contains("robocode.recording.BattleRecordInfo")) {
-				Logger.logMessage("Sorry, backward compatibility with record from version 1.6 is not provided.");
+				Logger.logError("Sorry, backward compatibility with record from version 1.6 is not provided.");
 			} else {
 				logError(e);
 			}

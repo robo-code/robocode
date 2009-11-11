@@ -160,9 +160,9 @@ public class SettingsManager implements ISettingsManager {
 			in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 			this.load(in);
 		} catch (FileNotFoundException e) {
-			logError("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
+			logError("No " + FileUtil.getRobocodeConfigFile().getName() + ". Using defaults.");
 		} catch (IOException e) {
-			logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+			logError("Error while reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 		} finally {
 			if (in != null) {
 				// noinspection EmptyCatchBlock

@@ -53,6 +53,6 @@ public class TestConstructorHttpAttack extends RobocodeTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 2; // Security error must be reported as an error
+		return 4; // Security errors must be reported as errors
 	}
 }
