@@ -179,7 +179,7 @@ public final class AboutBox extends JDialog {
 
 	private String getHtmlText() {
 		if (htmlText == null) {
-			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION, System.getProperty("java.version")).replaceAll(
+			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION, getJavaVersion()).replaceAll(
 					TAG_JAVA_VENDOR, System.getProperty("java.vendor"));
 		}
 		return htmlText;
@@ -200,5 +200,19 @@ public final class AboutBox extends JDialog {
 			return (char) ('0' + v);
 		}
 		return (char) ('A' + (v - 10));
+	}
+	
+	private static String getJavaVersion() {
+		String javaVersion = System.getProperty("java.version");
+		String javaArchModel = System.getProperty("sun.arch.data.model");
+
+		if (javaArchModel != null) {
+			try {
+				int numBits = Integer.parseInt(javaArchModel);
+
+				javaVersion += " (" + numBits + "-bit)";
+			} catch (NumberFormatException ignore) {}
+		}
+		return javaVersion;
 	}
 }
