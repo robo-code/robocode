@@ -1,3 +1,12 @@
+Version 1.7.1.6 Alpha
+(15-Nov-2009)
+---------------
+= Bugfixes =
+* Bug [2897215] - Robot Editor doesn't accept packagename with dot (.) in it.
+
+= Changes =
+* Changed the messages given when creating a new robot with the Robot Editor regarding robot name and package name.
+
 Version 1.7.1.5
 (11-Nov-2009)
 ---------------
