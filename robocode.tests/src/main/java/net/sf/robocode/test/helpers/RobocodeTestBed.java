@@ -44,7 +44,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	public static boolean isDumpingErrors = true;
 	public static boolean isDumpingMessages = true;
 
-    static {
+	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
 		System.setProperty("WORKINGDIRECTORY", "target/test-classes");
