@@ -58,9 +58,12 @@
     <Compile Include="net\sf\robocode\security\IHiddenEventHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenRulesHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenStatusHelper.cs" />
-    <Compile Include="net\sf\robocode\serialization\IByteBuffer.cs" />
     <Compile Include="net\sf\robocode\serialization\ISerializableHelper.cs" />
     <Compile Include="net\sf\robocode\serialization\RbSerializer.cs" />
+    <Compile Include="net\sf\robocode\nio\Buffer.cs" />
+    <Compile Include="net\sf\robocode\nio\ByteBuffer.cs" />
+    <Compile Include="net\sf\robocode\nio\HeapByteBuffer.cs" />
+    <Compile Include="net\sf\robocode\nio\InvalidMarkException.cs" />
     <Compile Include="robocode\AdvancedRobot.cs" />
     <Compile Include="robocode\BattleEndedEvent.cs" />
     <Compile Include="robocode\BattleResults.cs" />
@@ -142,7 +145,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.tests\target</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.host\target</PostBuildEvent>
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
 echo [assembly: System.Reflection.AssemblyVersion("1.7.3.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>

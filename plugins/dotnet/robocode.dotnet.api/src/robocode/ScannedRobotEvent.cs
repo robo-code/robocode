@@ -13,7 +13,7 @@
  *******************************************************************************/
 using System;
 using System.Drawing;
-using java.nio;
+using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
 using robocode.robotinterfaces;
@@ -231,7 +231,7 @@ namespace robocode
                 return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5*RbSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (ScannedRobotEvent) objec;
 
@@ -243,7 +243,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.velocity);
             }
 
-            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
             {
                 string name = serializer.deserializeString(buffer);
                 double energy = buffer.getDouble();

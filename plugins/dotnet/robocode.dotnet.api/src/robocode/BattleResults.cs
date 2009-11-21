@@ -12,7 +12,7 @@
  *     - Javadocs
  *******************************************************************************/
 using System;
-using java.nio;
+using net.sf.robocode.nio;
 using net.sf.robocode.serialization;
 
 namespace robocode
@@ -231,7 +231,7 @@ namespace robocode
                        + 7*RbSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (BattleResults) objec;
 
@@ -249,7 +249,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.thirds);
             }
 
-            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
             {
                 string teamLeaderName = serializer.deserializeString(buffer);
                 int rank = buffer.getInt();

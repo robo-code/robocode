@@ -13,7 +13,7 @@
  *******************************************************************************/
 using System;
 using System.Drawing;
-using java.nio;
+using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
 using robocode.robotinterfaces;
@@ -90,7 +90,7 @@ namespace robocode
                        RbSerializer.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (KeyReleasedEvent) objec;
 
@@ -102,7 +102,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.getWhen());
             }
 
-            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
             {
                 char keyChar = buffer.getChar();
                 int keyCode = buffer.getInt();

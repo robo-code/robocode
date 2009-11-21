@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using java.nio;
+using net.sf.robocode.nio;
 using net.sf.robocode.io;
 using net.sf.robocode.security;
 using robocode;
@@ -126,14 +126,14 @@ namespace net.sf.robocode.serialization
          */
         }
 
-        public IByteBuffer serialize(byte type, object obj)
+        public ByteBuffer serialize(byte type, object obj)
         {
             int length = sizeOf(type, obj);
 
             // header
-            IByteBuffer buffer = ByteBufferFactory.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
+            ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
 
-            buffer.putUInt(byteOrder);
+            buffer.putInt((int)byteOrder);
             buffer.putInt(currentVersion);
             buffer.putInt(length);
 
@@ -149,7 +149,7 @@ namespace net.sf.robocode.serialization
         public Object deserialize(BinaryReader source)
         {
             // header
-            IByteBuffer buffer = ByteBufferFactory.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT);
+            ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT);
 
             fillBuffer(source, buffer);
             buffer.flip();
@@ -168,7 +168,7 @@ namespace net.sf.robocode.serialization
             int length = buffer.getInt();
 
             // body
-            buffer = ByteBufferFactory.allocate(length);
+            buffer = ByteBuffer.allocate(length);
             fillBuffer(source, buffer);
             buffer.flip();
             Object res = deserializeAny(buffer);
@@ -180,7 +180,7 @@ namespace net.sf.robocode.serialization
             return res;
         }
 
-        public Object deserialize(IByteBuffer buffer)
+        public Object deserialize(ByteBuffer buffer)
         {
             int bo = buffer.getInt();
 
@@ -212,7 +212,7 @@ namespace net.sf.robocode.serialization
             return res;
         }
 
-        public void serialize(IByteBuffer buffer, byte type, object obj)
+        public void serialize(ByteBuffer buffer, byte type, object obj)
         {
             ISerializableHelper helper = getHelper(type);
 
@@ -232,7 +232,7 @@ namespace net.sf.robocode.serialization
             // FOR-DEBUG }
         }
 
-        public void serialize(IByteBuffer buffer, string data)
+        public void serialize(ByteBuffer buffer, string data)
         {
             if (data == null)
             {
@@ -240,14 +240,14 @@ namespace net.sf.robocode.serialization
             }
             else
             {
-                IByteBuffer slice = encode(data);
+                ByteBuffer slice = encode(data);
 
                 buffer.putInt(slice.limit());
                 buffer.put(slice);
             }
         }
 
-        public void serialize(IByteBuffer buffer, byte[] data)
+        public void serialize(ByteBuffer buffer, byte[] data)
         {
             if (data == null)
             {
@@ -260,7 +260,7 @@ namespace net.sf.robocode.serialization
             }
         }
 
-        public void serialize(IByteBuffer buffer, int[] data)
+        public void serialize(ByteBuffer buffer, int[] data)
         {
             if (data == null)
             {
@@ -276,7 +276,7 @@ namespace net.sf.robocode.serialization
             }
         }
 
-        public void serialize(IByteBuffer buffer, char[] data)
+        public void serialize(ByteBuffer buffer, char[] data)
         {
             if (data == null)
             {
@@ -292,7 +292,7 @@ namespace net.sf.robocode.serialization
             }
         }
 
-        public void serialize(IByteBuffer buffer, double[] data)
+        public void serialize(ByteBuffer buffer, double[] data)
         {
             if (data == null)
             {
@@ -308,7 +308,7 @@ namespace net.sf.robocode.serialization
             }
         }
 
-        public void serialize(IByteBuffer buffer, float[] data)
+        public void serialize(ByteBuffer buffer, float[] data)
         {
             if (data == null)
             {
@@ -324,39 +324,39 @@ namespace net.sf.robocode.serialization
             }
         }
 
-        public void serialize(IByteBuffer buffer, bool value)
+        public void serialize(ByteBuffer buffer, bool value)
         {
             buffer.put((byte) (value ? 1 : 0));
         }
 
-        public void serialize(IByteBuffer buffer, double value)
+        public void serialize(ByteBuffer buffer, double value)
         {
             buffer.putDouble(value);
         }
 
-        public void serialize(IByteBuffer buffer, char value)
+        public void serialize(ByteBuffer buffer, char value)
         {
             buffer.putChar(value);
         }
 
-        public void serialize(IByteBuffer buffer, long value)
+        public void serialize(ByteBuffer buffer, long value)
         {
             buffer.putLong(value);
         }
 
-        public void serialize(IByteBuffer buffer, int value)
+        public void serialize(ByteBuffer buffer, int value)
         {
             buffer.putInt(value);
         }
 
-        public void serialize(IByteBuffer buffer, Event evnt)
+        public void serialize(ByteBuffer buffer, Event evnt)
         {
             byte type = HiddenAccessN.getSerializationType(evnt);
 
             serialize(buffer, type, evnt);
         }
 
-        public Object deserializeAny(IByteBuffer buffer)
+        public Object deserializeAny(ByteBuffer buffer)
         {
             byte type = buffer.get();
 
@@ -367,7 +367,7 @@ namespace net.sf.robocode.serialization
             return getHelper(type).deserialize(this, buffer);
         }
 
-        public string deserializeString(IByteBuffer buffer)
+        public string deserializeString(ByteBuffer buffer)
         {
             int bytes = buffer.getInt();
 
@@ -375,7 +375,7 @@ namespace net.sf.robocode.serialization
             {
                 return null;
             }
-            IByteBuffer slice = buffer.slice();
+            ByteBuffer slice = buffer.slice();
 
             slice.limit(bytes);
             string res;
@@ -393,7 +393,7 @@ namespace net.sf.robocode.serialization
             return res;
         }
 
-        public byte[] deserializeBytes(IByteBuffer buffer)
+        public byte[] deserializeBytes(ByteBuffer buffer)
         {
             int len = buffer.getInt();
 
@@ -407,7 +407,7 @@ namespace net.sf.robocode.serialization
             return res;
         }
 
-        public int[] deserializeints(IByteBuffer buffer)
+        public int[] deserializeints(ByteBuffer buffer)
         {
             int len = buffer.getInt();
 
@@ -424,7 +424,7 @@ namespace net.sf.robocode.serialization
             return res;
         }
 
-        public float[] deserializeFloats(IByteBuffer buffer)
+        public float[] deserializeFloats(ByteBuffer buffer)
         {
             int len = buffer.getInt();
 
@@ -441,7 +441,7 @@ namespace net.sf.robocode.serialization
             return res;
         }
 
-        public char[] deserializeChars(IByteBuffer buffer)
+        public char[] deserializeChars(ByteBuffer buffer)
         {
             int len = buffer.getInt();
 
@@ -458,7 +458,7 @@ namespace net.sf.robocode.serialization
             return res;
         }
 
-        public double[] deserializeDoubles(IByteBuffer buffer)
+        public double[] deserializeDoubles(ByteBuffer buffer)
         {
             int len = buffer.getInt();
 
@@ -475,27 +475,27 @@ namespace net.sf.robocode.serialization
             return res;
         }
 
-        public bool deserializeBoolean(IByteBuffer buffer)
+        public bool deserializeBoolean(ByteBuffer buffer)
         {
             return buffer.get() != 0;
         }
 
-        public char deserializeChar(IByteBuffer buffer)
+        public char deserializeChar(ByteBuffer buffer)
         {
             return buffer.getChar();
         }
 
-        public int deserializeInt(IByteBuffer buffer)
+        public int deserializeInt(ByteBuffer buffer)
         {
             return buffer.getInt();
         }
 
-        public float deserializeFloat(IByteBuffer buffer)
+        public float deserializeFloat(ByteBuffer buffer)
         {
             return buffer.getFloat();
         }
 
-        public double deserializeDouble(IByteBuffer buffer)
+        public double deserializeDouble(ByteBuffer buffer)
         {
             return buffer.getDouble();
         }
@@ -531,16 +531,16 @@ namespace net.sf.robocode.serialization
             return helper;
         }
 
-        private IByteBuffer encode(string data)
+        private ByteBuffer encode(string data)
         {
-            IByteBuffer slice = ByteBufferFactory.allocate(data.Length*3);
+            ByteBuffer slice = ByteBuffer.allocate(data.Length * 3);
             throw new NotImplementedException();
             //encoder.encode(CharBuffer.wrap(data), slice, false);
             slice.flip();
             return slice;
         }
 
-        private void fillBuffer(BinaryReader source, IByteBuffer buffer)
+        private void fillBuffer(BinaryReader source, ByteBuffer buffer)
         {
             throw new NotImplementedException();
             /*
@@ -576,7 +576,7 @@ namespace net.sf.robocode.serialization
             }
         }
 
-        public static IByteBuffer serializeToBuffer(Object src)
+        public static ByteBuffer serializeToBuffer(Object src)
         {
             var rbs = new RbSerializer();
             Byte type = classToType[src.GetType()];
@@ -584,7 +584,7 @@ namespace net.sf.robocode.serialization
             return rbs.serialize(type, src);
         }
 
-        public static T deserializeFromBuffer<T>(IByteBuffer buffer)
+        public static T deserializeFromBuffer<T>(ByteBuffer buffer)
         {
             var rbs = new RbSerializer();
             Object res = rbs.deserialize(buffer);

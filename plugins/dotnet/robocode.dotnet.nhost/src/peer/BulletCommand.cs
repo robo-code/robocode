@@ -53,7 +53,7 @@ namespace net.sf.robocode.dotnet.peer
                        + RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, Object obje)
+            public void serialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (BulletCommand) obje;
 
@@ -63,7 +63,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.bulletId);
             }
 
-            public Object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public Object deserialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 double power = buffer.getDouble();
                 bool fireAssistValid = serializer.deserializeBoolean(buffer);

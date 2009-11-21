@@ -37,24 +37,24 @@
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.j</artifactId>
-            <version>0.4.0.0</version>
+            <version>0.5.0.0</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.n</artifactId>
-            <version>0.4.0.0</version>
+            <version>0.5.0.0</version>
             <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.n.w32</artifactId>
-            <version>0.4.0.0</version>
+            <version>0.5.0.0</version>
             <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.n.w64</artifactId>
-            <version>0.4.0.0</version>
+            <version>0.5.0.0</version>
             <type>dotnet:library</type>
         </dependency>
         <dependency>
@@ -78,21 +78,21 @@
 	                              <resolveArtifact property="jni4net.n" 
 	                                               groupId="net.sf.jni4net"
 	                                               artifactId="jni4net.n" 
-	                                               version="0.4.0.0"
+	                                               version="0.5.0.0"
 	                                               type="dotnet:library"/>
 	                              <copy file="${jni4net.n}" todir="target"/>
 	
 	                              <resolveArtifact property="jni4net.n.w32" 
 	                                               groupId="net.sf.jni4net"
 	                                               artifactId="jni4net.n.w32" 
-	                                               version="0.4.0.0"
+	                                               version="0.5.0.0"
 	                                               type="dotnet:library"/>
 	                              <copy file="${jni4net.n.w32}" todir="target"/>
 	
 	                              <resolveArtifact property="jni4net.n.w64" 
 	                                               groupId="net.sf.jni4net"
 	                                               artifactId="jni4net.n.w64" 
-	                                               version="0.4.0.0"
+	                                               version="0.5.0.0"
 	                                               type="dotnet:library"/>
 	                              <copy file="${jni4net.n.w64}" todir="target"/>
 

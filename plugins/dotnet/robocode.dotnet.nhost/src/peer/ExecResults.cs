@@ -160,7 +160,7 @@ namespace net.sf.robocode.dotnet.peer
                 return size;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, Object obje)
+            public void serialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (ExecResults) obje;
 
@@ -188,7 +188,7 @@ namespace net.sf.robocode.dotnet.peer
                 buffer.put(RbSerializer.TERMINATOR_TYPE);
             }
 
-            public Object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public Object deserialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 var res = new ExecResults();
 

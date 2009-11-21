@@ -40,9 +40,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="jni4net.n-0.4.0.0, Version=0.4.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
+    <Reference Include="jni4net.n-0.5.0.0, Version=0.5.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\lib\jni4net.n-0.4.0.0.dll</HintPath>
+      <HintPath>..\..\tools\lib\jni4net.n-0.5.0.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -86,6 +86,7 @@
     <Compile Include="host\security\RobotThreadManager.cs" />
     <Compile Include="host\seed\AppDomainSeed.cs" />
     <Compile Include="host\seed\AppDomainShell.cs" />
+    <Compile Include="host\seed\HostingSeed.cs" />
     <Compile Include="host\seed\HostingShell.cs" />
     <Compile Include="peer\BulletCommand.cs" />
     <Compile Include="peer\BulletStatus.cs" />
@@ -118,6 +119,6 @@
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
 echo [assembly: System.Reflection.AssemblyVersion("1.7.3.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
-    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.tests\target</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.host\target</PostBuildEvent>
   </PropertyGroup>
 </Project>

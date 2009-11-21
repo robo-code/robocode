@@ -55,7 +55,7 @@ namespace net.sf.robocode.dotnet.peer
                 return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.key) + serializer.sizeOf(obj.value);
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, Object obje)
+            public void serialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (DebugProperty) obje;
 
@@ -63,7 +63,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.value);
             }
 
-            public Object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public Object deserialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 String key = serializer.deserializeString(buffer);
                 String value = serializer.deserializeString(buffer);

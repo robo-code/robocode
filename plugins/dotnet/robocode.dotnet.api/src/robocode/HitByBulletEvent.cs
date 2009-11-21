@@ -13,7 +13,7 @@
  *******************************************************************************/
 using System;
 using System.Drawing;
-using java.nio;
+using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
 using robocode.robotinterfaces;
@@ -193,7 +193,7 @@ namespace robocode
                        + RbSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (HitByBulletEvent) objec;
 
@@ -201,7 +201,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.bearing);
             }
 
-            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
             {
                 var bullet = (Bullet) serializer.deserializeAny(buffer);
                 double bearing = buffer.getDouble();

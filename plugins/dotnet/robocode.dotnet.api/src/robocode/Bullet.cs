@@ -12,7 +12,7 @@
  *     - Updated Javadocs
  *******************************************************************************/
 using System;
-using java.nio;
+using net.sf.robocode.nio;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
 using robocode.util;
@@ -234,7 +234,7 @@ namespace robocode
                        + serializer.sizeOf(obj.victimName) + RbSerializer.SIZEOF_BOOL;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (Bullet) objec;
 
@@ -247,7 +247,7 @@ namespace robocode
                 serializer.serialize(buffer, obj._isActive);
             }
 
-            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
             {
                 double headingRadians = buffer.getDouble();
                 double x = buffer.getDouble();

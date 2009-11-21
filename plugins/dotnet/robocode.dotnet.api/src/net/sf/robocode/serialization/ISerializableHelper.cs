@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-using java.nio;
+using net.sf.robocode.nio;
 
 namespace net.sf.robocode.serialization
 {
@@ -19,8 +19,8 @@ namespace net.sf.robocode.serialization
     public interface ISerializableHelper
     {
         int sizeOf(RbSerializer serializer, object obj);
-        void serialize(RbSerializer serializer, IByteBuffer buffer, object obj);
-        object deserialize(RbSerializer serializer, IByteBuffer buffer);
+        void serialize(RbSerializer serializer, ByteBuffer buffer, object obj);
+        object deserialize(RbSerializer serializer, ByteBuffer buffer);
     }
 }
 //happy

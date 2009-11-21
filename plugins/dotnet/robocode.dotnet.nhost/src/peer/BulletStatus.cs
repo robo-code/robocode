@@ -36,7 +36,7 @@ namespace net.sf.robocode.dotnet.peer
                        + RbSerializer.SIZEOF_BOOL + 2*RbSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, Object obje)
+            public void serialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (BulletStatus) obje;
 
@@ -47,7 +47,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.y);
             }
 
-            public Object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public Object deserialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 int bulletId = buffer.getInt();
                 String victimName = serializer.deserializeString(buffer);

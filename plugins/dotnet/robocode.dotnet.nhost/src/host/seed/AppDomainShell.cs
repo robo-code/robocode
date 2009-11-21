@@ -16,7 +16,7 @@ namespace net.sf.robocode.dotnet.host.seed
         private static readonly Assembly robocodeAssembly = typeof(Robot).Assembly;
         private static readonly Assembly hostAssembly = typeof(AppDomainShell).Assembly;
         private static readonly Assembly jniAssembly = typeof(Bridge).Assembly;
-        private AppDomain domain;
+        protected AppDomain domain;
         private string tempDir;
         private string name;
         private string robotAssemblyFileName;
@@ -88,15 +88,6 @@ namespace net.sf.robocode.dotnet.host.seed
                 return RobotType.Invalid;
             }
             return new RobotType(type);
-        }
-
-
-        public void StartRound(ExecCommands commands, RobotStatus status, string typeFullName)
-        {
-            domain.SetData("loadRobot", typeFullName);
-            domain.SetData("commands", commands);
-            domain.SetData("status", status);
-            domain.DoCallBack(AppDomainSeed.StartRound);
         }
 
 

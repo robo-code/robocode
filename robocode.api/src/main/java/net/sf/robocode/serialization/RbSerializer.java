@@ -128,7 +128,7 @@ public final class RbSerializer {
 		int length = sizeOf(type, object);
 
 		// header
-		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
+		ByteBuffer buffer = ByteBuffer.allocateDirect(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
 
 		buffer.putInt(byteOrder);
 		buffer.putInt(currentVersion);

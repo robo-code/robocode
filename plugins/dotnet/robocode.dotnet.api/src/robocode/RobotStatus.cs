@@ -10,7 +10,7 @@
  *     - Initial implementation
  *******************************************************************************/
 using System;
-using java.nio;
+using net.sf.robocode.nio;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
 using robocode.util;
@@ -382,7 +382,7 @@ namespace robocode
                        + RbSerializer.SIZEOF_LONG;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (RobotStatus) objec;
 
@@ -404,7 +404,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.time);
             }
 
-            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
             {
                 double energy = buffer.getDouble();
                 double x = buffer.getDouble();

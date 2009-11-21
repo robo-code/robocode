@@ -14,7 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using java.nio;
+using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
 using robocode.robotinterfaces;
@@ -134,7 +134,7 @@ namespace robocode
                        + RbSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, IByteBuffer buffer, object objec)
+            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (BulletHitEvent) objec;
 
@@ -143,7 +143,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.energy);
             }
 
-            public object deserialize(RbSerializer serializer, IByteBuffer buffer)
+            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
             {
                 var bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
                 string name = serializer.deserializeString(buffer);
