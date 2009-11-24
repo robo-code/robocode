@@ -25,25 +25,23 @@ import java.util.ArrayList;
 
 
 /**
- * Represents on classpath of robots
+ * Represents a class path root
  * @author Pavel Savara (original)
  */
 public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	public ClassPathRoot(Database db, File rootPath) {
+	private final File parentPath;
+
+	public ClassPathRoot(Database db, File rootPath, File parentPath) {
 		super(db, rootPath);
-		try {
-			url = rootPath.toURI().toURL();
-		} catch (MalformedURLException e) {
-			Logger.logError(e);
-		}
+		this.parentPath = (parentPath != null ? parentPath : rootPath);
 	}
 
 	public void update(boolean updateInvalid) {
 		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
 
-		setStatus(windowManager, "Updating ClassPath: " + rootPath.toString());
+		setStatus(windowManager, "Updating class path: " + rootPath);
 		db.moveOldItems(this);
 		final ArrayList<IItem> items = new ArrayList<IItem>();
 		final ArrayList<Long> modified = new ArrayList<Long>();
@@ -110,10 +108,13 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		return false;
 	}
 
+	public File getParentPath() {
+		return parentPath;
+	}
+
 	private void setStatus(IWindowManager windowManager, String message) {
 		if (windowManager != null) {
 			windowManager.setStatus(message);
 		}
 	}
-
 }

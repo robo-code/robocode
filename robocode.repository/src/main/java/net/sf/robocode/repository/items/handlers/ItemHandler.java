@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Added getFullRobotNameFromURL() method
  *******************************************************************************/
 package net.sf.robocode.repository.items.handlers;
 
@@ -15,14 +17,19 @@ package net.sf.robocode.repository.items.handlers;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.root.ClassPathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 
 /**
+ * Abstract class for handlers for accepting and registering a specific item type.
+ *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public abstract class ItemHandler {
 	public abstract IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db);
@@ -41,4 +48,28 @@ public abstract class ItemHandler {
 		return null;
 	}
 
+	public static String getItemKey(URL itemURL, IRepositoryRoot root) {
+		assert (itemURL != null);
+		assert (root != null);
+
+		String name = itemURL.toString();
+
+		if (root instanceof ClassPathRoot) {
+			ClassPathRoot croot = (ClassPathRoot) root;
+			
+			if (!croot.getRootPath().equals(croot.getParentPath())) {
+				String parentPath = null;
+	
+				try {
+					parentPath = croot.getParentPath().toURI().toURL().toString();
+				} catch (MalformedURLException ignore) {}		
+	
+				if (parentPath != null) {
+					name = name.substring(croot.getRootUrl().toString().length());
+					name = parentPath + name;
+				}
+			}
+		}
+		return name.substring(0, name.lastIndexOf('.'));
+	}
 }

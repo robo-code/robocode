@@ -38,7 +38,7 @@ import java.lang.reflect.Method;
  */
 public class JavaHost implements IHost {
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
+		return new RobotClassLoader(robotRepositoryItem.getClassPathURL(), robotRepositoryItem.getFullClassName());
 	}
 
 	public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {

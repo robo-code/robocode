@@ -94,35 +94,37 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 			optionsPanel.setLayout(layout);
 			GridBagConstraints c = new GridBagConstraints();
 
-			c.insets = new Insets(5, 5, 5, 5);
+			c.insets = new Insets(0, 5, 5, 5);
 			c.anchor = GridBagConstraints.NORTHWEST;
 
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridwidth = 2;
 			c.weightx = 0;
+			c.gridy = 1;
 
 			optionsPanel.add(
 					new JLabel(
 							"If you are using an external IDE to develop robots, you may enter the classpath to those robots here."),
 							c);
+			c.gridy = 2;
+			optionsPanel.add(
+					new JLabel(
+							"If you are using Eclipse, you can enter paths to robot projects inside a workspace as well (recommended)"),
+							c);
 
-			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridwidth = 1;
-			c.gridy = 1;
+			c.gridy = 3;
 			c.insets = new Insets(3, 3, 3, 3);
 			optionsPanel.add(getAddButton(), c);
 
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.gridwidth = 1;
-			c.gridy = 2;
-			c.insets = new Insets(3, 3, 3, 3);
+			c.gridy = 4;
 			optionsPanel.add(getRemoveButton(), c);
 
 			c.fill = GridBagConstraints.BOTH;
 			c.weightx = 1;
 			c.weighty = 1;
 			c.gridx = 1;
-			c.gridy = 1;
+			c.gridy = 3;
 			c.gridheight = 3;
 			c.insets = new Insets(5, 5, 5, 5);
 			JScrollPane pathListScroller = new JScrollPane(getPathList());

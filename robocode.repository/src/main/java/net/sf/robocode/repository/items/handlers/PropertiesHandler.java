@@ -22,6 +22,8 @@ import java.net.URL;
 
 
 /**
+ * Handler for accepting and registering .properties files.
+ *
  * @author Pavel Savara (original)
  */
 public class PropertiesHandler extends ItemHandler {
@@ -36,22 +38,24 @@ public class PropertiesHandler extends ItemHandler {
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		RobotItem item = (RobotItem) db.getOldItem(itemURL.toString());
+		final String itemKey = getItemKey(itemURL, root);
+
+		RobotItem item = (RobotItem) db.getOldItem(itemKey);
 
 		if (item == null) {
-			item = (RobotItem) db.getItem(itemURL.toString());
+			item = (RobotItem) db.getItem(itemKey);
 		}
 		if (item == null) {
 			item = createItem(itemURL, root, db);
-		} else {
-			item.setPropertiesUrl(itemURL);
 		}
-		db.addItem(item);
+		db.putItem(itemKey, item);
 		return item;
 	}
 
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
-		final RobotItem robotItem = new RobotItem(null, itemURL, root);
+		final RobotItem robotItem = new RobotItem(root);
+
+		robotItem.setPropertiesUrl(itemURL);
 
 		final String lang = robotItem.getRobotLanguage();
 

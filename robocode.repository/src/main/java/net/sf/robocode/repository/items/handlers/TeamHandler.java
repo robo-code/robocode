@@ -21,6 +21,8 @@ import java.net.URL;
 
 
 /**
+ * Handler for accepting and registering .team files.
+ *
  * @author Pavel Savara (original)
  */
 public class TeamHandler extends ItemHandler {
@@ -32,15 +34,17 @@ public class TeamHandler extends ItemHandler {
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		TeamItem item = (TeamItem) db.getOldItem(itemURL.toString());
+		final String itemKey = itemURL.toString();
+
+		TeamItem item = (TeamItem) db.getOldItem(itemKey);
 
 		if (item == null) {
-			item = (TeamItem) db.getItem(itemURL.toString());
+			item = (TeamItem) db.getItem(itemKey);
 		}
 		if (item == null) {
 			item = new TeamItem(itemURL, root);
 		}
-		db.addItem(item);
+		db.putItem(itemKey, item);
 		return item;
 	}
 }

@@ -15,6 +15,7 @@ package net.sf.robocode.repository;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.items.handlers.ClassHandler;
 import net.sf.robocode.repository.items.handlers.PropertiesHandler;
+import net.sf.robocode.repository.items.handlers.SourceHandler;
 import net.sf.robocode.repository.items.handlers.TeamHandler;
 import net.sf.robocode.repository.root.handlers.ClassPathHandler;
 import net.sf.robocode.repository.root.handlers.JarHandler;
@@ -31,6 +32,7 @@ public class Module {
 		Container.cache.addComponent("TeamHandler", TeamHandler.class);
 		Container.cache.addComponent("PropertiesHandler", PropertiesHandler.class);
 		Container.cache.addComponent("ClassHandler", ClassHandler.class);
+		Container.cache.addComponent("SourceHandler", SourceHandler.class);
 
 		// root handlers
 		Container.cache.addComponent("JarHandler", JarHandler.class);
