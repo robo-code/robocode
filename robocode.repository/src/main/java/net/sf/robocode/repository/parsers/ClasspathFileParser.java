@@ -14,6 +14,8 @@ package net.sf.robocode.repository.parsers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -30,34 +32,32 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class ClasspathFileParser {
 
-	ClassPathHandler classpathHandler;
+	private ClassPathHandler classpathHandler = new ClassPathHandler();
 
 	public void parse(URL url) {
-		classpathHandler = new ClassPathHandler();
-
 		try {
 			SAXParserFactory.newInstance().newSAXParser().parse(url.toString(), classpathHandler);
 		} catch (SAXException ignore) {} catch (IOException ignore) {} catch (ParserConfigurationException ignore) {}
 	}
 
-	public String getSourcePath() {
-		return classpathHandler != null ? classpathHandler.outputPath : null;
+	public String[] getSourcePaths() {
+		return classpathHandler.sourcePaths.toArray(new String[] {});
 	}
 
 	public String getClassPath() {
-		return classpathHandler != null ? classpathHandler.sourcePath : null;
+		return classpathHandler.outputPath;
 	}
 
 	private static class ClassPathHandler extends DefaultHandler {
 		String outputPath = null;
-		String sourcePath = null;		
+		List<String> sourcePaths = new ArrayList<String>();		
 
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 			if ("classpathentry".equals(qName)) {
 				String kind = attributes.getValue("kind");
 
 				if ("src".equals(kind)) {
-					sourcePath = attributes.getValue("path");
+					sourcePaths.add(attributes.getValue("path"));
 				} else if ("output".equals(kind)) {
 					outputPath = attributes.getValue("path");
 				}
@@ -65,4 +65,3 @@ public class ClasspathFileParser {
 		}			
 	}
 }
-

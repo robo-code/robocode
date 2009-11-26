@@ -20,7 +20,7 @@ import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.root.ClassPathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
-import java.net.MalformedURLException;
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -48,28 +48,33 @@ public abstract class ItemHandler {
 		return null;
 	}
 
+	/**
+	 * Gets a suitable item key, which ensure that files belonging to an item will be put into the same item.
+	 * If the root has a parent path, this path will be used as the key. Otherwise the item URL without the
+	 * ending file extension will be used as item key.
+	 *
+	 * @param itemURL the URL of the item.
+	 * @param root the repository root which the item belong to.
+	 * @return an item key based on the specified item URL and repository root.
+	 */
 	public static String getItemKey(URL itemURL, IRepositoryRoot root) {
 		assert (itemURL != null);
 		assert (root != null);
 
-		String name = itemURL.toString();
-
+		// Check if the ClassPathRoot contains a parent path. If so, we use the parent as
+		// item key as this points to a project in a workspace can contain lots of individual
+		// directories with class files, properties files, and java files.
 		if (root instanceof ClassPathRoot) {
-			ClassPathRoot croot = (ClassPathRoot) root;
+			File parentPath = ((ClassPathRoot) root).getParentPath();
 			
-			if (!croot.getRootPath().equals(croot.getParentPath())) {
-				String parentPath = null;
-	
-				try {
-					parentPath = croot.getParentPath().toURI().toURL().toString();
-				} catch (MalformedURLException ignore) {}		
-	
-				if (parentPath != null) {
-					name = name.substring(croot.getRootUrl().toString().length());
-					name = parentPath + name;
-				}
+			if (parentPath != null) {
+				return parentPath.toString();
 			}
 		}
+
+		// We don't have a parent path, so use the item URL without the file extension
+		String name = itemURL.toString();
+
 		return name.substring(0, name.lastIndexOf('.'));
 	}
 }

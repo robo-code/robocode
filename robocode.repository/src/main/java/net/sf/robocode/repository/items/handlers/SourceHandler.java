@@ -46,8 +46,7 @@ public class SourceHandler extends ItemHandler {
 		if (item == null) {
 			item = new RobotItem(root);
 		}
-		item.setSourcePathURL(root.getRootUrl());
-		item.setJavaFileUrl(itemURL);
+		item.addSourcePathURL(root.getRootUrl());
 
 		db.putItem(itemKey, item);
 		return item;

@@ -1,12 +1,12 @@
 Version 1.7.1.6 Alpha
-(24-Nov-2009)
+(27-Nov-2009)
 ---------------
 = Bugfixes =
 * Bug [2897215] - Robot Editor doesn't accept packagename with dot (.) in it.
 * Bug [2876395] - Source is not included.
 
 = Changes =
-* It is now possible to add paths to robot projects inside an Eclipse workspace under the Development Options in the Preferences. Robocode is now able to read the .classpath file in a project under an Eclipse workspace, and is hence able to locate both classes, properties files, and java files. This means that the Robot Packager will be able to include your source files, if you wish. Notice that Robocode is not able to handle linked sources.
+* It is now possible to add paths to robot project inside an Eclipse workspace under the Development Options in the Preferences. Robocode will read the .classpath file in the project in order to locate both class files, properties files, and java files. This means that the Robot Packager is now able to include your source files when you use Eclipse, and it supports multiple source paths. Notice that Robocode does not support linked sources or include and exclude filters.
 * Changed the messages given when creating a new robot with the Robot Editor regarding robot name and package name.
 
 Version 1.7.1.5

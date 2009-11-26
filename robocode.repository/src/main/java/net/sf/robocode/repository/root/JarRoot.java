@@ -133,7 +133,6 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 					RobotItem robotItem = (RobotItem) item; 
 
 					robotItem.setClassPathURL(root);
-					robotItem.setSourcePathURL(root);
 				}
 				items.add(item);
 			}

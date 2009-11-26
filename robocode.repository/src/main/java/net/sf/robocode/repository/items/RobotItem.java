@@ -35,8 +35,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -74,10 +76,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	private URL classURL;
 	private URL propertiesURL;
-	private URL javaFileURL;
 
 	private URL classPathURL;
-	private URL sourcePathURL;
+	private Set<URL> sourcePathURLs; // This is a Set in order to avoid duplicates
 
 	public RobotItem(IRepositoryRoot root) {
 		super(root.getRootUrl(), root);
@@ -85,7 +86,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		isValid = true;
 
 		classPathURL = root.getRootUrl();
-		sourcePathURL = classPathURL;
+		sourcePathURLs = new HashSet<URL>();
 
 		init();
 	}
@@ -109,16 +110,12 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		init();
 	}
 
-	public void setJavaFileUrl(URL javaFileUrl) {
-		this.javaFileURL = javaFileUrl;
-	}
-
 	public void setClassPathURL(URL classPathUrl) {
 		this.classPathURL = classPathUrl;
 	}
 
-	public void setSourcePathURL(URL sourcePathUrl) {
-		this.sourcePathURL = sourcePathUrl;
+	public void addSourcePathURL(URL sourcePathUrl) {
+		sourcePathURLs.add(sourcePathUrl);
 	}
 
 	// / -------------------------------------
@@ -236,10 +233,6 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	public URL getPropertiesUrl() {
 		return propertiesURL;
-	}
-
-	public URL getJavaFileUrl() {
-		return javaFileURL;
 	}
 
 	public List<String> getFriendlyUrls() {
@@ -443,8 +436,12 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		return classPathURL;
 	}
 
-	public URL getSourcePathURL() {
-		return sourcePathURL;
+	public URL[] getSourcePathURLs() {
+		// If no source path URL exists, we must use the class path URL
+		if (sourcePathURLs.size() == 0) {
+			return new URL[] { classPathURL };
+		}
+		return sourcePathURLs.toArray(new URL[] {});
 	}
 
 	public String getFullClassName() {

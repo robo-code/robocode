@@ -35,7 +35,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 
 	public ClassPathRoot(Database db, File rootPath, File parentPath) {
 		super(db, rootPath);
-		this.parentPath = (parentPath != null ? parentPath : rootPath);
+		this.parentPath = parentPath;
 	}
 
 	public void update(boolean updateInvalid) {

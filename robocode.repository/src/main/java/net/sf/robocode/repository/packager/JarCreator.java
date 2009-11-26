@@ -154,17 +154,19 @@ public class JarCreator {
 		final String classFileName = name + ".class";
 
 		if (includeSource && !entries.contains(javaFileName) && !name.contains("$")) {
-			File javaFile = new File(robot.getSourcePathURL().getFile(), javaFileName);
+			for (URL sourcePathURL : robot.getSourcePathURLs()) {
+				File javaFile = new File(sourcePathURL.getFile(), javaFileName);
 
-			if (javaFile.exists()) {
-				JarEntry je = new JarEntry(javaFileName);
+				if (javaFile.exists()) {
+					JarEntry je = new JarEntry(javaFileName);
 
-				jarout.putNextEntry(je);
-				entries.add(javaFileName); // called here, as an exception might occur before this line
-				try {
-					copy(javaFile, jarout);
-				} finally {
-					jarout.closeEntry();
+					jarout.putNextEntry(je);
+					entries.add(javaFileName); // called here, as an exception might occur before this line
+					try {
+						copy(javaFile, jarout);
+					} finally {
+						jarout.closeEntry();
+					}
 				}
 			}
 		}

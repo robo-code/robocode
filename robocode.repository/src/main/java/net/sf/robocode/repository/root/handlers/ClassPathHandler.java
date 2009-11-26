@@ -55,18 +55,19 @@ public class ClassPathHandler extends RootHandler {
 						handleDirectory(classPathDir, dir, newroots, roots, db, updateInvalid);			
 					}
 
-					String sourcePath = classpathParser.getSourcePath();
+					for (String sourcePath : classpathParser.getSourcePaths()) {
+						if (sourcePath != null) {
+							File sourcePathDir = new File(dir, sourcePath);
 
-					if (sourcePath != null) {
-						File sourcePathDir = new File(dir, sourcePath);
-
-						handleDirectory(sourcePathDir, dir, newroots, roots, db, updateInvalid);			
+							handleDirectory(sourcePathDir, dir, newroots, roots, db, updateInvalid);			
+						}
 					}
-					return; 
+
+					return; // we are done! 
 				}
 			}
 		}
-		handleDirectory(dir, dir, newroots, roots, db, updateInvalid);
+		handleDirectory(dir, null, newroots, roots, db, updateInvalid);
 	}
 
 	private void handleDirectory(File dir, File parentDir, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
