@@ -44,7 +44,7 @@ public class JavaHost implements IHost {
 		return AccessController.doPrivileged(
 				new PrivilegedAction<IRobotClassLoader>() {
 			public IRobotClassLoader run() {
-				return new RobotClassLoader(robotRepositoryItem.getRobotClassPath(),
+				return new RobotClassLoader(robotRepositoryItem.getClassPathURL(),
 						robotRepositoryItem.getFullClassName());
 			}
 		});

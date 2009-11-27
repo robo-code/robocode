@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
 package net.sf.robocode.repository.items.handlers;
@@ -21,15 +21,15 @@ import java.net.URL;
 
 
 /**
- * Handler for accepting and registering .class files.
+ * Handler for accepting and registering source files, e.g. .java files.
  *
- * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
-public class ClassHandler extends ItemHandler {
+public class SourceHandler extends ItemHandler {
 	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
 		final String name = itemURL.toString().toLowerCase();
 
-		if (name.endsWith(".class") && !name.contains("$")) {
+		if (name.endsWith(".java") && !name.contains("$")) {
 			return register(itemURL, root, db);
 		}
 		return null;
@@ -46,8 +46,7 @@ public class ClassHandler extends ItemHandler {
 		if (item == null) {
 			item = new RobotItem(root);
 		}
-		item.setClassPathURL(root.getRootUrl());
-		item.setClassUrl(itemURL);
+		item.addSourcePathURL(root.getRootUrl());
 
 		db.putItem(itemKey, item);
 		return item;

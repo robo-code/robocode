@@ -51,7 +51,6 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			jarNoSeparator = "jar:" + rootPath.toURI().toString();
 
 			jarUrl = new URL(jarNoSeparator + "!/");
-			url = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
@@ -82,14 +81,14 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		JarInputStream jarIS = null;
 
 		try {
-			final URLConnection con = URLJarCollector.openConnection(url);
+			final URLConnection con = URLJarCollector.openConnection(rootURL);
 
 			is = con.getInputStream();
 			jarIS = new JarInputStream(is);
 			readJarStream(items, root, jarIS);
 
 		} catch (Exception e) {
-			Logger.logError(url + " is probably corrupted (" + e.getClass().getName() + " " + e.getMessage() + ")");
+			Logger.logError(rootURL + " is probably corrupted (" + e.getClass().getName() + " " + e.getMessage() + ")");
 		} finally {
 			FileUtil.cleanupStream(jarIS);
 			FileUtil.cleanupStream(is);
@@ -131,7 +130,9 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 
 			if (item != null) {
 				if (item instanceof RobotItem) {
-					((RobotItem) item).setClassPathURL(root);
+					RobotItem robotItem = (RobotItem) item; 
+
+					robotItem.setClassPathURL(root);
 				}
 				items.add(item);
 			}
@@ -161,7 +162,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	public void extractJar() {
-		JarExtractor.extractJar(url);
+		JarExtractor.extractJar(rootURL);
 	}
 
 	private static void setStatus(IWindowManager windowManager, String message) {
