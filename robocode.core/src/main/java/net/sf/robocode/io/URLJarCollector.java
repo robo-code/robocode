@@ -8,6 +8,9 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - The closeJarURLConnection(URL) method was made public
+ *     - Extended the gc() method to always remove temporary jar_cache entries
  *******************************************************************************/
 package net.sf.robocode.io;
 
@@ -17,6 +20,7 @@ import java.net.URL;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.jar.JarFile;
+import java.io.File;
 import java.io.IOException;
 
 
@@ -28,6 +32,7 @@ import java.io.IOException;
  * Collection is disabled/posponed during running battle.
  * 
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class URLJarCollector {
 	static Object factory;
@@ -46,7 +51,6 @@ public class URLJarCollector {
 
 			factoryF.setAccessible(true);
 			factory = factoryF.get(null);
-			factoryF.setAccessible(false);
 
 			final Class<?> jarFactory = ClassLoader.getSystemClassLoader().loadClass(
 					"sun.net.www.protocol.jar.JarFileFactory");
@@ -54,13 +58,11 @@ public class URLJarCollector {
 
 			fileCacheF.setAccessible(true);
 			fileCache = (HashMap<?, ?>) fileCacheF.get(null);
-			fileCacheF.setAccessible(false);
 
 			final Field urlCacheF = jarFactory.getDeclaredField("urlCache");
 
 			urlCacheF.setAccessible(true);
 			urlCache = (HashMap<?, ?>) urlCacheF.get(null);
-			urlCacheF.setAccessible(false);
 
 			final Class<?> jarURLConnection = ClassLoader.getSystemClassLoader().loadClass(
 					"sun.net.www.protocol.jar.JarURLConnection");
@@ -96,13 +98,31 @@ public class URLJarCollector {
 	}
 
 	public static synchronized void gc() {
-		if (sunJVM && enabled) {
-			for (URL url : urlToClean) {
-				closeJarURLConnection(url);
+		if (sunJVM) {
+			// Close all JarURLConnections if garbage collection is enabled
+			if (enabled) {
+				for (URL url : urlToClean) {
+					closeJarURLConnection(url);
+				}
+				urlToClean.clear();
+			} else {
+				// Else, remove all cache entries to temporary jar cache files created
+				// for connections using the jarjar protocol that get stuck up.
+				for (Iterator<?> it = fileCache.keySet().iterator(); it.hasNext();) {
+					Object urlJarFile = it.next();
+
+					final JarFile jarFile = (JarFile) fileCache.get(urlJarFile);
+
+					String filename = jarFile.getName();
+
+					filename = filename.substring(filename.lastIndexOf(File.separatorChar) + 1).toLowerCase();
+
+					if (filename.startsWith("jar_cache")) {
+						it.remove();
+						urlCache.remove(jarFile);
+					}
+				}
 			}
-			urlToClean.clear();
-			// dump();
-			System.gc();
 		}
 	}
 
@@ -122,7 +142,7 @@ public class URLJarCollector {
 		}
 	}
 
-	private static void closeJarURLConnection(URL url) {
+	public static void closeJarURLConnection(URL url) {
 		if (url != null) {
 			JarFile jarFile = (JarFile) fileCache.get(url);
 

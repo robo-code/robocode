@@ -8,6 +8,7 @@
     <project>robocode.host</project>
     <project>robocode.repository</project>
     <project>robocode.samples</project>
+    <project>robocode.tests.robots</project>
   </projects>
   <buildSpec>
     <buildCommand>

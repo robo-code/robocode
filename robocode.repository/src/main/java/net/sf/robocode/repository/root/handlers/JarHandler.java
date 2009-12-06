@@ -15,10 +15,12 @@ package net.sf.robocode.repository.root.handlers;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.JarRoot;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.net.MalformedURLException;
 import java.util.Hashtable;
 
 
@@ -49,7 +51,13 @@ public class JarHandler extends RootHandler {
 				}
 
 				root.update(updateInvalid);
-				newroots.put(jar.toURI().toString(), root);
+				newroots.put(key, root);
+
+				try {
+					URLJarCollector.closeJarURLConnection(jar.toURI().toURL());
+				} catch (MalformedURLException e) {
+					Logger.logError(e);
+				}
 				URLJarCollector.gc();
 			}
 		}
