@@ -94,16 +94,17 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public boolean refresh(boolean updateInvalid) {
-		if (db.update(getRobotsDirectory(), getDevelDirectories(), updateInvalid)) {
+		boolean refreshed = db.update(getRobotsDirectory(), getDevelDirectories(), updateInvalid);
+
+		if (refreshed) {
 			setStatus("Saving robot database");
 			db.save();
-			setStatus("");
-			URLJarCollector.gc();
-			return true;
 		}
+
 		setStatus("");
 		URLJarCollector.gc();
-		return false;
+
+		return refreshed;
 	}
 
 	public void reload(boolean forced) {
