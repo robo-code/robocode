@@ -17,6 +17,8 @@ package net.sf.robocode.ui.dialog;
 
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,16 +32,32 @@ import java.io.InputStreamReader;
  */
 @SuppressWarnings("serial")
 public class ConsoleScrollPane extends JScrollPane {
-
-	private static final int MAX_ROWS = 500;
-
-	private JTextArea textPane;
+	private final int MAX_ROWS = 500;
+	private JTextArea textArea;
 	private int lines;
-	private final Rectangle bottomRect = new Rectangle(0, 32767, 1, 1);
+	private int maxRows;
 
 	public ConsoleScrollPane() {
 		super();
-		initialize();
+		setViewportView(getTextPane());
+		lines = 0;
+	}
+
+	public JTextArea getTextPane() {
+		if (textArea == null) {
+			textArea = new JTextArea();
+
+			textArea.setEditable(false);
+			textArea.setTabSize(4);
+			textArea.setBackground(Color.DARK_GRAY);
+			textArea.setForeground(Color.WHITE);
+			textArea.setBounds(0, 0, 1000, 1000);
+
+			// Make sure the caret is not reset every time text is updated, meaning that
+			// the view will not reset it's position until we want it to.
+			((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+		}
+		return textArea;
 	}
 
 	public void append(String text) {
@@ -47,7 +65,7 @@ public class ConsoleScrollPane extends JScrollPane {
 		getTextPane().append(text);
 		if (lines > MAX_ROWS) {
 			lines = 0;
-			final String[] rows = getTextPane().getText().split("\n");
+			final String[] rows = getText().split("\n");
 			StringBuilder sb = new StringBuilder();
 			final int from = Math.min(rows.length, Math.max((MAX_ROWS / 2), rows.length - (MAX_ROWS / 2)));
 
@@ -56,12 +74,8 @@ public class ConsoleScrollPane extends JScrollPane {
 				sb.append('\n');
 				lines++;
 			}
-			getTextPane().setText(sb.toString());
+			setText(sb.toString());
 		}
-	}
-
-	public Dimension getAreaSize() {
-		return getTextPane().getPreferredSize();
 	}
 
 	public String getSelectedText() {
@@ -72,19 +86,13 @@ public class ConsoleScrollPane extends JScrollPane {
 		return getTextPane().getText();
 	}
 
-	public JTextArea getTextPane() {
-		if (textPane == null) {
-			textPane = new JTextArea();
-			textPane.setBackground(Color.lightGray);
-			textPane.setBounds(0, 0, 1000, 1000);
-			textPane.setEditable(false);
-		}
-		return textPane;
-	}
+	public void setText(String text) {
+		final JTextArea textArea = getTextPane();
 
-	private void initialize() {
-		lines = 0;
-		setViewportView(getTextPane());
+		textArea.setText(text);
+
+		maxRows = Math.max(maxRows, textArea.getLineCount());
+		textArea.setRows(maxRows);
 	}
 
 	public void processStream(InputStream input) {
@@ -93,32 +101,20 @@ public class ConsoleScrollPane extends JScrollPane {
 
 		try {
 			while ((line = br.readLine()) != null) {
-				int tabIndex = line.indexOf("\t");
-
-				while (tabIndex >= 0) {
-					line = line.substring(0, tabIndex) + "    " + line.substring(tabIndex + 1);
-					tabIndex = line.indexOf("\t");
-				}
 				append(line + "\n");
 			}
 		} catch (IOException e) {
-			append("IOException: " + e);
+			append("SYSTEM: IOException: " + e);
 		}
 		scrollToBottom();
 	}
 
-	private final transient Runnable scroller = new Runnable() {
-		public void run() {
-			getViewport().scrollRectToVisible(bottomRect);
-			getViewport().repaint();
-		}
-	};
-
 	public void scrollToBottom() {
-		SwingUtilities.invokeLater(scroller);
-	}
-
-	public void setText(String text) {
-		getTextPane().setText(text);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				getViewport().scrollRectToVisible(new Rectangle(0, 32767, 1, 1));
+				getViewport().repaint();
+			}
+		});
 	}
 }

@@ -47,8 +47,8 @@ public class RobotDialog extends JFrame {
 	private final Color grayGreen = new Color(0x0080C080);
 	private RobotButton robotButton;
 	private JTabbedPane tabbedPane;
-	private ConsoleScrollPane scrollPane;
-	private ConsoleScrollPane propertiesPane;
+	private ConsoleScrollPane consoleScrollPane;
+	private ConsoleScrollPane propertiesScrollPane;
 	private JPanel robotDialogContentPane;
 	private JPanel buttonPanel;
 	private JButton okButton;
@@ -131,7 +131,7 @@ public class RobotDialog extends JFrame {
 	public void pack() {
 		getConsoleScrollPane().setPreferredSize(new Dimension(426, 200));
 		super.pack();
-		getConsoleScrollPane().setPreferredSize(null);
+		getTabbedPane().setPreferredSize(null);
 	}
 
 	/**
@@ -192,8 +192,7 @@ public class RobotDialog extends JFrame {
 			tabbedPane = new JTabbedPane();
 			tabbedPane.setLayout(new BorderLayout());
 			tabbedPane.addTab("Console", getConsoleScrollPane());
-			tabbedPane.addTab("Properties", getTurnScrollPane());
-			// tabbedPane.setSelectedIndex(0);
+			tabbedPane.addTab("Properties", getPropertiesScrollPane());
 			tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 			tabbedPane.addChangeListener(new ChangeListener() {
@@ -208,6 +207,8 @@ public class RobotDialog extends JFrame {
 
 	private void paintSnapshot() {
 		if (paintSnapshot) {
+			String text = null;
+
 			if (lastSnapshot != null) {
 				StringBuilder sb = new StringBuilder();
 
@@ -239,18 +240,17 @@ public class RobotDialog extends JFrame {
 					sb.append(prop.getKey()).append(": ").append(prop.getValue()).append('\n');
 				}
 
-				getTurnScrollPane().setText(sb.toString());
-			} else {
-				getTurnScrollPane().setText(null);
+				text = sb.toString();
 			}
+			getPropertiesScrollPane().setText(text);
 		}
 	}
 
-	private ConsoleScrollPane getTurnScrollPane() {
-		if (propertiesPane == null) {
-			propertiesPane = new ConsoleScrollPane();
+	private ConsoleScrollPane getPropertiesScrollPane() {
+		if (propertiesScrollPane == null) {
+			propertiesScrollPane = new ConsoleScrollPane();
 		}
-		return propertiesPane;
+		return propertiesScrollPane;
 	}
 
 	/**
@@ -259,14 +259,10 @@ public class RobotDialog extends JFrame {
 	 * @return the console scroll pane
 	 */
 	private ConsoleScrollPane getConsoleScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new ConsoleScrollPane();
-			JTextArea textPane = scrollPane.getTextPane();
-
-			textPane.setBackground(Color.DARK_GRAY);
-			textPane.setForeground(Color.WHITE);
+		if (consoleScrollPane == null) {
+			consoleScrollPane = new ConsoleScrollPane();
 		}
-		return scrollPane;
+		return consoleScrollPane;
 	}
 
 	/**

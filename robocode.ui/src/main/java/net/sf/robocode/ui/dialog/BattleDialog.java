@@ -37,8 +37,8 @@ public class BattleDialog extends JFrame {
 
 	private final BattleObserver battleObserver = new BattleObserver();
 
-	private ConsoleScrollPane scrollPane;
-	private ConsoleScrollPane xmlPane;
+	private ConsoleScrollPane consoleScrollPane;
+	private ConsoleScrollPane turnSnapshotScrollPane;
 	private JTabbedPane tabbedPane;
 	private JButton okButton;
 	private JButton clearButton;
@@ -70,7 +70,7 @@ public class BattleDialog extends JFrame {
 
 	public void reset() {
 		getConsoleScrollPane().setText(null);
-		getTurnScrollPane().setText(null);
+		getTurnSnapshotScrollPane().setText(null);
 		lastSnapshot = null;
 	}
 
@@ -83,7 +83,7 @@ public class BattleDialog extends JFrame {
 
 	/**
 	 * When robotDialog is packed, we want to set a reasonable size. However,
-	 * after that, we need a null preferred size so the scrollpane will scroll.
+	 * after that, we need a null preferred size so the scroll pane will scroll.
 	 * (preferred size should be based on the text inside)
 	 */
 	@Override
@@ -151,8 +151,7 @@ public class BattleDialog extends JFrame {
 			tabbedPane = new JTabbedPane();
 			tabbedPane.setLayout(new BorderLayout());
 			tabbedPane.addTab("Console", getConsoleScrollPane());
-			tabbedPane.addTab("Turn Snapshot", getTurnScrollPane());
-			// tabbedPane.setSelectedIndex(0);
+			tabbedPane.addTab("Turn Snapshot", getTurnSnapshotScrollPane());
 			tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 			tabbedPane.addChangeListener(new ChangeListener() {
@@ -166,21 +165,17 @@ public class BattleDialog extends JFrame {
 	}
 
 	private ConsoleScrollPane getConsoleScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new ConsoleScrollPane();
-			JTextArea textPane = scrollPane.getTextPane();
-
-			textPane.setBackground(Color.DARK_GRAY);
-			textPane.setForeground(Color.WHITE);
+		if (consoleScrollPane == null) {
+			consoleScrollPane = new ConsoleScrollPane();
 		}
-		return scrollPane;
+		return consoleScrollPane;
 	}
 
-	private ConsoleScrollPane getTurnScrollPane() {
-		if (xmlPane == null) {
-			xmlPane = new ConsoleScrollPane();
+	private ConsoleScrollPane getTurnSnapshotScrollPane() {
+		if (turnSnapshotScrollPane == null) {
+			turnSnapshotScrollPane = new ConsoleScrollPane();
 		}
-		return xmlPane;
+		return turnSnapshotScrollPane;
 	}
 
 	private void okButtonActionPerformed() {
@@ -193,6 +188,8 @@ public class BattleDialog extends JFrame {
 
 	private void paintSnapshot() {
 		if (paintSnapshot) {
+			String text = null;
+
 			if (lastSnapshot != null) {
 				final StringWriter writer = new StringWriter();
 				final XmlWriter xmlWriter = new XmlWriter(writer, true);
@@ -203,10 +200,9 @@ public class BattleDialog extends JFrame {
 				} catch (IOException e) {
 					Logger.logError(e);
 				}
-				getTurnScrollPane().setText(writer.toString());
-			} else {
-				getTurnScrollPane().setText(null);
+				text = writer.toString();
 			}
+			getTurnSnapshotScrollPane().setText(text);
 		}
 	}
 
