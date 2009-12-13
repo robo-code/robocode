@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="true" version="4">
+<project version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
   </component>
@@ -27,13 +27,8 @@
     <option name="PROJECT_PROFILE" />
     <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
   </component>
-  <component name="CodeStyleSettingsManager">
-    <option name="PER_PROJECT_SETTINGS" />
-    <option name="USE_PER_PROJECT_SETTINGS" value="false" />
-  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <option name="DEPLOY_AFTER_MAKE" value="0" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -49,6 +44,7 @@
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
     </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -66,11 +62,8 @@
     <option name="runtimeAnalysisType" value="-1" />
   </component>
   <component name="EclipseCompilerSettings">
-    <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="true" />
     <option name="DEPRECATION" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="EclipseEmbeddedCompilerSettings">
     <option name="DEBUGGING_INFO" value="true" />
@@ -163,28 +156,16 @@
   </component>
   <component name="IdProvider" IDEtalkID="F27E01D789A09AF0ABD103A83B854541" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
-    <scopes />
-    <profiles>
-      <profile version="1.0" is_locked="false">
-        <option name="myName" value="Project Default" />
-        <option name="myLocal" value="false" />
-      </profile>
-    </profiles>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
       <item index="1" class="java.lang.String" itemvalue="INFO" />
-      <item index="2" class="java.lang.String" itemvalue="WARNING" />
-      <item index="3" class="java.lang.String" itemvalue="ERROR" />
+      <item index="2" class="java.lang.String" itemvalue="TYPO" />
+      <item index="3" class="java.lang.String" itemvalue="WARNING" />
+      <item index="4" class="java.lang.String" itemvalue="ERROR" />
     </list>
   </component>
   <component name="JavacSettings">
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="DEPRECATION" value="true" />
     <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -202,14 +183,6 @@
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
-  </component>
-  <component name="JikesSettings">
-    <option name="JIKES_PATH" value="" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="DEPRECATION" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="IS_EMACS_ERRORS_MODE" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -351,55 +324,54 @@
   <component name="ProjectDetails">
     <option name="projectName" value="Robocode" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
     <option name="state" value="https://robocode.svn.sourceforge.net/svnroot/robocode/robocode/trunk/Robocode.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/tools/debugall/all.iml" filepath="$PROJECT_DIR$/tools/debugall/all.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.iml" filepath="$PROJECT_DIR$/robocode.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/robocode.api/robocode.api.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.iml" group="plugins.bv3d" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.content/robocode.bv3d.content.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.content/robocode.bv3d.content.iml" group="plugins.bv3d" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.installer/robocode.bv3d.installer.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.installer/robocode.bv3d.installer.iml" group="plugins.bv3d" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.view/robocode.bv3d.view.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.view/robocode.bv3d.view.iml" group="plugins.bv3d" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" group="plugins.dotnet" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" group="plugins.dotnet" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" group="plugins.dotnet" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" group="plugins.dotnet" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" group="plugins.dotnet" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.repository/robocode.dotnet.repository.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.repository/robocode.dotnet.repository.iml" group="plugins.dotnet" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" group="plugins.dotnet" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/robocode.installer/robocode.installer.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.iml" group="plugins.js" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.content/robocode.js.content.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.content/robocode.js.content.iml" group="plugins.js" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.host/robocode.js.host.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.host/robocode.js.host.iml" group="plugins.js" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.installer/robocode.js.installer.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.installer/robocode.js.installer.iml" group="plugins.js" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.repository/robocode.js.repository.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.repository/robocode.js.repository.iml" group="plugins.js" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.samples/robocode.js.samples.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.samples/robocode.js.samples.iml" group="plugins.js" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.repository/robocode.repository.iml" filepath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.iml" group="plugins.scala" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.content/robocode.scala.content.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.content/robocode.scala.content.iml" group="plugins.scala" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" group="plugins.scala" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" group="plugins.scala" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.samples/robocode.scala.samples.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.samples/robocode.scala.samples.iml" group="plugins.scala" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.sound/robocode.sound.iml" filepath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.iml" group="plugins.testing" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.api/robocode.testing.api.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.api/robocode.testing.api.iml" group="plugins.testing" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.content/robocode.testing.content.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.content/robocode.testing.content.iml" group="plugins.testing" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.installer/robocode.testing.installer.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.installer/robocode.testing.installer.iml" group="plugins.testing" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.samples/robocode.testing.samples.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.samples/robocode.testing.samples.iml" group="plugins.testing" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" filepath="$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.ui/robocode.ui.iml" filepath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" group="main" />
-      <module fileurl="file://$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" filepath="$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" group="main" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.iml" filepath="$PROJECT_DIR$/robocode.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/robocode.api/robocode.api.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.iml" group="robocode.bv3d and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.content/robocode.bv3d.content.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.content/robocode.bv3d.content.iml" group="robocode.bv3d and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.installer/robocode.bv3d.installer.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.installer/robocode.bv3d.installer.iml" group="robocode.bv3d and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.view/robocode.bv3d.view.iml" filepath="$PROJECT_DIR$/plugins/battleview3d/robocode.bv3d.view/robocode.bv3d.view.iml" group="robocode.bv3d and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.repository/robocode.dotnet.repository.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.repository/robocode.dotnet.repository.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/robocode.installer/robocode.installer.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.iml" group="robocode.js and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.content/robocode.js.content.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.content/robocode.js.content.iml" group="robocode.js and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.host/robocode.js.host.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.host/robocode.js.host.iml" group="robocode.js and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.installer/robocode.js.installer.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.installer/robocode.js.installer.iml" group="robocode.js and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.repository/robocode.js.repository.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.repository/robocode.js.repository.iml" group="robocode.js and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.samples/robocode.js.samples.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.samples/robocode.js.samples.iml" group="robocode.js and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.repository/robocode.repository.iml" filepath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" filepath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.samples/robocode.samples.iml" filepath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.iml" group="robocode.scala and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.content/robocode.scala.content.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.content/robocode.scala.content.iml" group="robocode.scala and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.host/robocode.scala.host.iml" group="robocode.scala and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.installer/robocode.scala.installer.iml" group="robocode.scala and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/scala/robocode.scala.samples/robocode.scala.samples.iml" filepath="$PROJECT_DIR$/plugins/scala/robocode.scala.samples/robocode.scala.samples.iml" group="robocode.scala and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.sound/robocode.sound.iml" filepath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.iml" group="robocode.testing and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.api/robocode.testing.api.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.api/robocode.testing.api.iml" group="robocode.testing and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.content/robocode.testing.content.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.content/robocode.testing.content.iml" group="robocode.testing and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.installer/robocode.testing.installer.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.installer/robocode.testing.installer.iml" group="robocode.testing and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/testing/robocode.testing.samples/robocode.testing.samples.iml" filepath="$PROJECT_DIR$/plugins/testing/robocode.testing.samples/robocode.testing.samples.iml" group="robocode.testing and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.tests/robocode.tests.iml" filepath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" filepath="$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.ui/robocode.ui.iml" filepath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" group="robocode and modules" />
+      <module fileurl="file://$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" filepath="$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" group="robocode and modules" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
@@ -411,13 +383,6 @@
         <list size="0" />
       </value>
     </option>
-  </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="StarteamConfiguration">
     <option name="SERVER" value="" />
@@ -488,17 +453,6 @@
         <root url="jar://C:/Program Files/Scala/src/scala-swing-src.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: junit:junit:4.5">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: org.picocontainer:picocontainer:2.6">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar!/" />
@@ -510,6 +464,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: junit:junit:4.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: net.sf.robocode:codesize:1.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/codesize/1.1/codesize-1.1.jar!/" />
@@ -519,39 +484,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/codesize/1.1/codesize-1.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: rhino:js:1.7R1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.scala-lang:scala-library:2.7.3">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.jni4net:jni4net.j:0.2.0.0">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: net.java.dev.jogl:jogl:1.1.1-rc6">
@@ -642,9 +574,39 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-macosx-universal/1.0b05/gluegen-rt-macosx-universal-1.0b05-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: net.sf.jni4net:jni4net.j:0.2.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.scala-lang:scala-library:2.7.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: rhino:js:1.7R1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-sources.jar!/" />
+      </SOURCES>
+    </library>
   </component>
-  <UsedPathMacros>
-    <macro name="MAVEN_REPOSITORY" description="Maven Local Repostiry" />
-  </UsedPathMacros>
 </project>
 
