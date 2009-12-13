@@ -25,12 +25,12 @@ public class JsRobotItem extends RobotItem {
 	private static final long serialVersionUID = 1L;
 
 	public JsRobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
-		super(classUrl, propUrl, root);
+		super(root);
 	}
 
 	@Override
 	protected void init() {
-		extension = ".js";
+		//extension = ".js";
 		super.init();
 	}
 }

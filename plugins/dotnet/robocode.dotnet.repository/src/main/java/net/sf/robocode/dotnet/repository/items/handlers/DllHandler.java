@@ -41,11 +41,11 @@ public class DllHandler extends ItemHandler {
 			item = (DotNetRobotItem) db.getItem(itemURL.toString());
 		}
 		if (item == null) {
-			item = new DotNetRobotItem(itemURL, null, root);
+			item = new DotNetRobotItem(root);
 		} else {
 			item.setClassUrl(itemURL);
 		}
-		db.addItem(item);
+		db.putItem(item.getFullUrl().toString(), item);
 		return item;
 	}
 }

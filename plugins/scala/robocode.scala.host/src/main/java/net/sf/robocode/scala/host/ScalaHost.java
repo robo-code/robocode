@@ -23,6 +23,6 @@ import net.sf.robocode.scala.host.security.ScalaRobotClassLoader;
  */
 public class ScalaHost extends JavaHost {
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		return new ScalaRobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
+		return new ScalaRobotClassLoader(robotRepositoryItem.getClassPathURL(), robotRepositoryItem.getFullClassName());
 	}
 }

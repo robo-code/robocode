@@ -24,13 +24,13 @@ import java.net.URL;
 public class DotNetRobotItem extends RobotItem {
 	private static final long serialVersionUID = 1L;
 
-	public DotNetRobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
-		super(classUrl, propUrl, root);
+	public DotNetRobotItem(IRepositoryRoot root) {
+		super(root);
 	}
 
 	@Override
 	protected void init() {
-		extension = ".dll";
+		//extension = ".dll";
 		super.init();
 	}
 }

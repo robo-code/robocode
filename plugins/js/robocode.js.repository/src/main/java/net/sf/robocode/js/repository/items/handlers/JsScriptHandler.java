@@ -45,7 +45,7 @@ public class JsScriptHandler extends ItemHandler {
 		} else {
 			item.setClassUrl(itemURL);
 		}
-		db.addItem(item);
+		db.putItem(item.getFullUrl().toString(), item);
 		return item;
 	}
 }

@@ -28,6 +28,6 @@ public class DotNetPropertiesHandler extends PropertiesHandler {
 
 	@Override
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
-		return new DotNetRobotItem(null, itemURL, root);
+		return new DotNetRobotItem(root);
 	}
 }
