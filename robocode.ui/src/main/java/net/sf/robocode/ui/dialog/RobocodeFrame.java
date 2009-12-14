@@ -49,6 +49,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryUsage;
 import java.util.*;
 import java.util.List;
 
@@ -972,6 +974,19 @@ public class RobocodeFrame extends JFrame {
 			if (isBattlePaused) {
 				title.append(" (paused)");
 			}
+
+			MemoryUsage memUsage = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+			
+			long usedMem = memUsage.getUsed() / (1024 * 1024);
+			title.append(", Used mem: ").append(usedMem);
+
+			long maxMem = memUsage.getMax();
+			if (maxMem >= 0) {
+				maxMem /= (1024 * 1024);
+				title.append(" of ").append(maxMem);
+			}
+			title.append(" MB");
+
 			setTitle(title.toString());
 
 			lastTitleUpdateTime = System.currentTimeMillis();
