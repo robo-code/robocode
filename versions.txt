@@ -1,6 +1,10 @@
 Version 1.7.1.6
-(14-Dec-2009)
+(16-Dec-2009)
 ---------------
+= Bugfixes =
+* Bug [2912942] - Mac OS X 10.6: Cannot run Robocode from robocode.sh. It must be run from the new robocode.command file instead.
+* Bug [2912944} - Mac OS X 10.6: The editor cannot see the JDK. It must be run from the new robocode.command file instead.
+
 = New Features =
 * The amount of used memory and total memory is now shown in the title bar of Robocode. This is useful to see how much memory your robots are consuming.
 
