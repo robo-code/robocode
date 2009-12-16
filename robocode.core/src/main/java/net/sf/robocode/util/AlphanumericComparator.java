@@ -36,14 +36,11 @@ public class AlphanumericComparator implements Comparator<String>, java.io.Seria
 	 *         than the second. 
 	 */
 	public int compare(String str1, String str2) {
-		if (str1 == null && str2 == null) {
-			return 0;
+		if (str1 == null) {
+			return (str2 == null) ? 0 : 1;
 		}
-		if (str1 != null && str2 == null) {
+		if (str2 == null) {
 			return -1;
-		}
-		if (str1 == null && str2 != null) {
-			return 1;
 		}
 
 		final int len1 = str1.length();
