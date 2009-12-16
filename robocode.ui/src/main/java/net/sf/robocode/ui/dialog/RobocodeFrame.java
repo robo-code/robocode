@@ -771,7 +771,7 @@ public class RobocodeFrame extends JFrame {
 
 		public void windowIconified(WindowEvent e) {
 			setIconified(true);
-			battleManager.setManagedTPS(false);
+			battleManager.setManagedTPS(properties.getOptionsViewPreventSpeedupWhenMinimized());
 		}
 
 		public void windowOpened(WindowEvent e) {

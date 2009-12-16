@@ -57,6 +57,10 @@ public interface ISettingsManager {
 
 	void setOptionsViewExplosionDebris(boolean optionsViewExplosionDebris);
 
+	boolean getOptionsViewPreventSpeedupWhenMinimized();
+
+	void setOptionsViewPreventSpeedupWhenMinimized(boolean preventSpeedupWhenMinimized);
+
 	int getOptionsRenderingAntialiasing();
 
 	void setOptionsRenderingAntialiasing(int optionsRenderingAntialiasing);
@@ -208,6 +212,8 @@ public interface ISettingsManager {
 			OPTIONS_VIEW_EXPLOSION_DEBRIS = "robocode.options.view.explosionDebris",
 
 			OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS",
+
+			OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED = "robocode.options.view.preventSpeedupWhenMinimized",
 
 			OPTIONS_RENDERING_ANTIALIASING = "robocode.options.rendering.antialiasing",
 			OPTIONS_RENDERING_TEXT_ANTIALIASING = "robocode.options.rendering.text.antialiasing",
