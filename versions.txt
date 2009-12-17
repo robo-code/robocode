@@ -4,6 +4,7 @@ Version 1.7.2 Alpha
 * Req [2342293] - Screenshot of battleview. Press Ctrl+T on Windows and Linux, and Command+T for Mac OS in order to take a screenshot of the battleview. The screenshot will be saved in the Robocode folder named "screenshots", and the filename will be a timestamp for when the screenshot was taken.
 * Req [2496661] - Lauch Robocode from .battle (battle specification) and .br (battle record) files.
 * Req [2659612] - Add option to prevent speedup when minimized. This new View Option can now be set in the Preferences by putting a check mark into "Prevent speedup when minimized".
+* Req [2643438] - Rename /robots/.robotcache to /robots/.data
 
 Version 1.7.1.6 Alpha
 (06-Dec-2009)

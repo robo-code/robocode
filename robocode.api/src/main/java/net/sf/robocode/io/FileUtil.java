@@ -241,12 +241,12 @@ public class FileUtil {
 	}
 
 	/**
-	 * Returns the directory containing caches files of robots.
+	 * Returns the directory containing data files of robots.
 	 *
-	 * @return a File that is the directory containing the robot cache.
+	 * @return a File that is the directory containing the robot data.
 	 */
-	public static File getRobotCacheDir() {
-		return createDir(new File(getRobotsDir(), "/.robotcache/"));
+	public static File getRobotsDataDir() {
+		return createDir(new File(getRobotsDir(), "/.data/"));
 	}
 
 	/**
