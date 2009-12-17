@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="true" version="4">
+<project version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
   </component>
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
-  <component name="CodeStyleSettingsManager">
-    <option name="PER_PROJECT_SETTINGS" />
-    <option name="USE_PER_PROJECT_SETTINGS" value="false" />
-  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <option name="DEPLOY_AFTER_MAKE" value="0" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -29,6 +24,7 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -46,23 +42,16 @@
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
   <component name="IdProvider" IDEtalkID="3EA6626CADD2DC75DD620617F291688A" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
-    <scopes />
-    <profiles>
-      <profile version="1.0" is_locked="false">
-        <option name="myName" value="Project Default" />
-        <option name="myLocal" value="false" />
-      </profile>
-    </profiles>
-    <list size="0" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
+      <item index="1" class="java.lang.String" itemvalue="INFO" />
+      <item index="2" class="java.lang.String" itemvalue="TYPO" />
+      <item index="3" class="java.lang.String" itemvalue="WARNING" />
+      <item index="4" class="java.lang.String" itemvalue="ERROR" />
+    </list>
   </component>
   <component name="JavacSettings">
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="DEPRECATION" value="true" />
     <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -262,7 +251,6 @@
   <component name="ProjectDetails">
     <option name="projectName" value="Robocode" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
     <option name="state" value="project://D:\Sf\RobocodeN3\Robocode.ipr" />
   </component>
@@ -349,6 +337,37 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
+    <library name="Maven: net.sf.robocode:robocode.ui:1.7.3.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom.xml!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom.xml!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.sf.robocode:robocode.repository:1.7.3.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.picocontainer:picocontainer:2.6">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar!/" />
@@ -360,6 +379,28 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: junit:junit:4.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.scala-lang:scala-library:2.7.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: net.sf.robocode:codesize:1.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/codesize/1.1/codesize-1.1.jar!/" />
@@ -369,6 +410,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/codesize/1.1/codesize-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.sf.jni4net:jni4net.j:0.5.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.5.0.0/jni4net.j-0.5.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.5.0.0/jni4net.j-0.5.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.5.0.0/jni4net.j-0.5.0.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: net.java.dev.jogl:jogl:1.1.1-rc6">
@@ -459,59 +511,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-macosx-universal/1.0b05/gluegen-rt-macosx-universal-1.0b05-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: net.sf.robocode:robocode.ui:1.7.3.0">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/robocode.ui/pom.xml!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.ui/pom.xml!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-javadoc.jar!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.ui/pom-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.robocode:robocode.repository:1.7.3.0">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom.xml!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/robocode.repository/pom-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: junit:junit:4.5">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.5/junit-4.5-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.jni4net:jni4net.j:0.4.0.0">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.4.0.0/jni4net.j-0.4.0.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.4.0.0/jni4net.j-0.4.0.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.4.0.0/jni4net.j-0.4.0.0-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: rhino:js:1.7R1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1.jar!/" />
@@ -523,20 +522,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.scala-lang:scala-library:2.7.3">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3-sources.jar!/" />
-      </SOURCES>
-    </library>
   </component>
-  <UsedPathMacros>
-    <macro name="MAVEN_REPOSITORY" description="Maven Local Repostiry" />
-  </UsedPathMacros>
 </project>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module relativePaths="true" MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+<module MavenProjectsManager.isMavenModule="true" org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" relativePaths="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -18,8 +18,8 @@
     <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
     <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
     <orderEntry type="module" module-name="robocode.dotnet.api" exported="" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.4.0.0" level="project" />
-    <orderEntry type="library" name="Maven: junit:junit:4.5" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.5.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.5" level="project" />
   </component>
 </module>
 
