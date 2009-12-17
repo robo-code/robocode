@@ -101,7 +101,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.MouseWheelMovedEvent_TYPE;
+            return RbnSerializer.MouseWheelMovedEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -111,12 +111,12 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
-                return RbSerializer.SIZEOF_TYPEINFO + 8*RbSerializer.SIZEOF_INT + RbSerializer.SIZEOF_LONG;
+                return RbnSerializer.SIZEOF_TYPEINFO + 8*RbnSerializer.SIZEOF_INT + RbnSerializer.SIZEOF_LONG;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (MouseWheelMovedEvent) objec;
 
@@ -131,7 +131,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.getWhen());
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 int clickCount = buffer.getInt();
                 int x = buffer.getInt();

@@ -47,13 +47,13 @@ namespace net.sf.robocode.dotnet.peer
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, Object obje)
+            public int sizeOf(RbnSerializer serializer, Object obje)
             {
-                return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_BOOL
-                       + RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_INT;
+                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_DOUBLE + RbnSerializer.SIZEOF_BOOL
+                       + RbnSerializer.SIZEOF_DOUBLE + RbnSerializer.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (BulletCommand) obje;
 
@@ -63,7 +63,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.bulletId);
             }
 
-            public Object deserialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
+            public Object deserialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 double power = buffer.getDouble();
                 bool fireAssistValid = serializer.deserializeBoolean(buffer);

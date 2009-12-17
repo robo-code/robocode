@@ -175,7 +175,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.HitByBulletEvent_TYPE;
+            return RbnSerializer.HitByBulletEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -185,23 +185,23 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
                 var obj = (HitByBulletEvent) objec;
 
-                return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(RbSerializer.Bullet_TYPE, obj.bullet)
-                       + RbSerializer.SIZEOF_DOUBLE;
+                return RbnSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(RbnSerializer.Bullet_TYPE, obj.bullet)
+                       + RbnSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (HitByBulletEvent) objec;
 
-                serializer.serialize(buffer, RbSerializer.Bullet_TYPE, obj.bullet);
+                serializer.serialize(buffer, RbnSerializer.Bullet_TYPE, obj.bullet);
                 serializer.serialize(buffer, obj.bearing);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 var bullet = (Bullet) serializer.deserializeAny(buffer);
                 double bearing = buffer.getDouble();

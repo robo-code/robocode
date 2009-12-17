@@ -127,7 +127,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
 
-        public void startRound(Object par0, Object par1)
+        public void startRound(Object commands, Object status)
         {
             //TODO
             throw new NotImplementedException();

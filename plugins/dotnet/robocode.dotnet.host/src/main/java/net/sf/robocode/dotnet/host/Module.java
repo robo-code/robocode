@@ -53,6 +53,7 @@ public class Module {
                 throw new Error("Can't find " + file);
             }
 
+            libsDir=libsDir.replace("robocode.dotnet.host","robocode.dotnet.nhost");
             final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
 
             Bridge.setVerbose(true);

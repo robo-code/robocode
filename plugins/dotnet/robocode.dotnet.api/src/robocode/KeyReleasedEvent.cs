@@ -73,7 +73,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.KeyReleasedEvent_TYPE;
+            return RbnSerializer.KeyReleasedEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -83,14 +83,14 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
-                return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_CHAR + RbSerializer.SIZEOF_INT
-                       + RbSerializer.SIZEOF_INT + RbSerializer.SIZEOF_LONG + RbSerializer.SIZEOF_INT +
-                       RbSerializer.SIZEOF_INT;
+                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_CHAR + RbnSerializer.SIZEOF_INT
+                       + RbnSerializer.SIZEOF_INT + RbnSerializer.SIZEOF_LONG + RbnSerializer.SIZEOF_INT +
+                       RbnSerializer.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (KeyReleasedEvent) objec;
 
@@ -102,7 +102,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.getWhen());
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 char keyChar = buffer.getChar();
                 int keyCode = buffer.getInt();

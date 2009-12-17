@@ -223,15 +223,15 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
                 var obj = (BattleResults) objec;
 
-                return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.teamLeaderName) + 4*RbSerializer.SIZEOF_INT
-                       + 7*RbSerializer.SIZEOF_DOUBLE;
+                return RbnSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.teamLeaderName) + 4*RbnSerializer.SIZEOF_INT
+                       + 7*RbnSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (BattleResults) objec;
 
@@ -249,7 +249,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.thirds);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 string teamLeaderName = serializer.deserializeString(buffer);
                 int rank = buffer.getInt();

@@ -115,7 +115,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.BattleEndedEvent_TYPE;
+            return RbnSerializer.BattleEndedEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -125,23 +125,23 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
                 var obj = (BattleEndedEvent) objec;
 
-                return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_BOOL
-                       + serializer.sizeOf(RbSerializer.BattleResults_TYPE, obj.results);
+                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_BOOL
+                       + serializer.sizeOf(RbnSerializer.BattleResults_TYPE, obj.results);
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (BattleEndedEvent) objec;
 
                 serializer.serialize(buffer, obj.aborted);
-                serializer.serialize(buffer, RbSerializer.BattleResults_TYPE, obj.results);
+                serializer.serialize(buffer, RbnSerializer.BattleResults_TYPE, obj.results);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 bool aborted = serializer.deserializeBoolean(buffer);
                 var results = (BattleResults) serializer.deserializeAny(buffer);

@@ -1,7 +1,6 @@
 using System.IO;
 using java.lang;
 using net.sf.jni4net;
-using net.sf.jni4net.utils;
 using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.host;
 using net.sf.robocode.host.proxies;
@@ -20,9 +19,9 @@ namespace net.sf.robocode.dotnet.host
                                                    RobotStatics statics, IRobotPeer peer)
         {
             Object s = HiddenAccess.getFileSpecification(robotSpecification);
-            IRobotRepositoryItem specification = Bridge.Cast<IRobotRepositoryItem>(s);
-            string file = GetDllFileName(specification);
-            return new HostingShell(robotSpecification,hostManager,peer,statics, file);
+            IRobotRepositoryItem itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);
+            string file = GetDllFileName(itemSpecification);
+            return new HostingShell(robotSpecification, itemSpecification, hostManager, peer, statics, file);
         }
 
         public String[] getReferencedClasses(IRobotRepositoryItem par0)

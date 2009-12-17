@@ -55,13 +55,11 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
-		if (helper == null) {
-			helper = new DllRootHelper();
-		}
+        getHelper();
 
-	}
+    }
 
-	public void update(boolean updateInvalid) {
+    public void update(boolean updateInvalid) {
 		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
 
 		setStatus(windowManager, "Updating .dll: " + rootPath.toString());
@@ -81,7 +79,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IItem> items) {
-		final String[] dllitems = helper.findItems(dllNoSeparator);
+		final String[] dllitems = getHelper().findItems(dllNoSeparator);
 		for (String url : dllitems) {
 			createItem(items, dllUrl, url);
 		}
@@ -127,4 +125,11 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 			windowManager.setStatus(message);
 		}
 	}
+
+    private static DllRootHelper getHelper() {
+        if (helper == null) {
+            helper = new DllRootHelper();
+        }
+        return helper;
+    }
 }

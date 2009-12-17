@@ -79,7 +79,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.RobotDeathEvent_TYPE;
+            return RbnSerializer.RobotDeathEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -89,21 +89,21 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
                 var obj = (RobotDeathEvent) objec;
 
-                return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.robotName);
+                return RbnSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.robotName);
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (RobotDeathEvent) objec;
 
                 serializer.serialize(buffer, obj.robotName);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 string name = serializer.deserializeString(buffer);
 

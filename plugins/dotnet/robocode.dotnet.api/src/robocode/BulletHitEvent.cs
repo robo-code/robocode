@@ -116,7 +116,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.BulletHitEvent_TYPE;
+            return RbnSerializer.BulletHitEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -126,15 +126,15 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
                 var obj = (BulletHitEvent) objec;
 
-                return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_INT + serializer.sizeOf(obj.name)
-                       + RbSerializer.SIZEOF_DOUBLE;
+                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_INT + serializer.sizeOf(obj.name)
+                       + RbnSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (BulletHitEvent) objec;
 
@@ -143,7 +143,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.energy);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 var bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
                 string name = serializer.deserializeString(buffer);

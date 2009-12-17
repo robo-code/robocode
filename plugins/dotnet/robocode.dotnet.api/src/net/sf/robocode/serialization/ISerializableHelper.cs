@@ -18,9 +18,9 @@ namespace net.sf.robocode.serialization
     /// </summary>
     public interface ISerializableHelper
     {
-        int sizeOf(RbSerializer serializer, object obj);
-        void serialize(RbSerializer serializer, ByteBuffer buffer, object obj);
-        object deserialize(RbSerializer serializer, ByteBuffer buffer);
+        int sizeOf(RbnSerializer serializer, object obj);
+        void serialize(RbnSerializer serializer, ByteBuffer buffer, object obj);
+        object deserialize(RbnSerializer serializer, ByteBuffer buffer);
     }
 }
 //happy

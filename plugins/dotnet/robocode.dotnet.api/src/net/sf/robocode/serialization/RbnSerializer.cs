@@ -25,7 +25,7 @@ namespace net.sf.robocode.serialization
     /// <summary>
     /// @author Pavel Savara (original)
     /// </summary>
-    public sealed class RbSerializer
+    public sealed class RbnSerializer
     {
         public static readonly int SIZEOF_TYPEINFO = 1;
         public static readonly int SIZEOF_BYTE = 1;
@@ -79,13 +79,13 @@ namespace net.sf.robocode.serialization
         private readonly uint byteOrder = 0xC0DEDEA1;
         private readonly int currentVersion;
 
-        static RbSerializer()
+        static RbnSerializer()
         {
             charset = Encoding.UTF8; // we will use it as UCS-2
             register(null, TERMINATOR_TYPE); // reserved for end of (list) element
         }
 
-        public RbSerializer()
+        public RbnSerializer()
         {
             currentVersion = 0; //TODO ContainerBase.getComponent(IVersionManagerBase.class).getVersionAsInt();
             /*
@@ -578,7 +578,7 @@ namespace net.sf.robocode.serialization
 
         public static ByteBuffer serializeToBuffer(Object src)
         {
-            var rbs = new RbSerializer();
+            var rbs = new RbnSerializer();
             Byte type = classToType[src.GetType()];
 
             return rbs.serialize(type, src);
@@ -586,7 +586,7 @@ namespace net.sf.robocode.serialization
 
         public static T deserializeFromBuffer<T>(ByteBuffer buffer)
         {
-            var rbs = new RbSerializer();
+            var rbs = new RbnSerializer();
             Object res = rbs.deserialize(buffer);
 
             return (T) res;
@@ -595,7 +595,7 @@ namespace net.sf.robocode.serialization
         public static Object deepCopy(byte type, Object src)
         {
             var output = new MemoryStream(1024);
-            var rbs = new RbSerializer();
+            var rbs = new RbnSerializer();
 
             try
             {

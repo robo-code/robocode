@@ -17,15 +17,16 @@ namespace net.sf.robocode.dotnet.host.seed
 {
     class HostingShell : AppDomainShell, IHostingRobotProxy
     {
-        public HostingShell(RobotSpecification robotSpecification, IHostManager hostManager, IRobotPeer peer,
+        public HostingShell(RobotSpecification robotSpecification, IRobotRepositoryItem itemSpecification, IHostManager hostManager, IRobotPeer peer,
                                   RobotStatics statics, string dllFileName) 
         {
-            Object s = HiddenAccess.getFileSpecification(robotSpecification);
             Init(dllFileName);
             domain.SetData("hostManager", ((IJvmProxy) hostManager).JvmHandle);
             domain.SetData("peer", ((IJvmProxy) peer).JvmHandle);
             domain.SetData("statics", ((IJvmProxy) statics).JvmHandle);
-            domain.SetData("specification", ((IJvmProxy) s).JvmHandle);
+            domain.SetData("specification", ((IJvmProxy)robotSpecification).JvmHandle);
+            domain.SetData("item", ((IJvmProxy)itemSpecification).JvmHandle);
+            domain.DoCallBack(HostingSeed.Construct);
         }
 
         /*public void StartRound(ExecCommands commands, RobotStatus status, string typeFullName)
@@ -37,13 +38,15 @@ namespace net.sf.robocode.dotnet.host.seed
         }*/
 
 
-        public void startRound(Object par0, Object par1)
+        public void startRound(Object aCommands, Object aStatus)
         {
-            /*var commands = Bridge.Cast<ISerializableHelper>(par0);
-            var status = Bridge.Cast<ISerializableHelper>(par0);
-            domain.SetData("commands", commands.serialize());
+            ISerializableHelper commands = Bridge.Cast<ISerializableHelper>(aCommands);
+            ISerializableHelper status = Bridge.Cast<ISerializableHelper>(aStatus);
+            commands.serialize()
+
+            domain.SetData("commands", );
             domain.SetData("status", status);
-            domain.DoCallBack(HostingSeed.StartRound);*/
+            domain.DoCallBack(HostingSeed.StartRound);
             ByteBuffer bb = ByteBuffer.allocateDirect(10);
             //JNIEnv.ThreadEnv.NewDirectByteBuffer();
         }

@@ -93,7 +93,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.HitWallEvent_TYPE;
+            return RbnSerializer.HitWallEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -103,19 +103,19 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
-                return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_DOUBLE;
+                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (HitWallEvent) objec;
 
                 serializer.serialize(buffer, obj.bearing);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 double bearing = buffer.getDouble();
 

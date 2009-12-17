@@ -19,7 +19,7 @@ namespace net.sf.robocode.host.proxies {
         void cleanup();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V")]
-        void startRound(global::java.lang.Object par0, global::java.lang.Object par1);
+        void startRound(global::java.lang.Object commands, global::java.lang.Object status);
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         void forceStopThread();

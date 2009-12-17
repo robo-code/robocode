@@ -226,15 +226,15 @@ namespace robocode
                 bullet.update(x, y, victimName, isActive);
             }
 
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
                 var obj = (Bullet) objec;
 
-                return RbSerializer.SIZEOF_TYPEINFO + 4*RbSerializer.SIZEOF_DOUBLE + serializer.sizeOf(obj.ownerName)
-                       + serializer.sizeOf(obj.victimName) + RbSerializer.SIZEOF_BOOL;
+                return RbnSerializer.SIZEOF_TYPEINFO + 4*RbnSerializer.SIZEOF_DOUBLE + serializer.sizeOf(obj.ownerName)
+                       + serializer.sizeOf(obj.victimName) + RbnSerializer.SIZEOF_BOOL;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (Bullet) objec;
 
@@ -247,7 +247,7 @@ namespace robocode
                 serializer.serialize(buffer, obj._isActive);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 double headingRadians = buffer.getDouble();
                 double x = buffer.getDouble();

@@ -28,15 +28,15 @@ namespace net.sf.robocode.dotnet.peer
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, Object obje)
+            public int sizeOf(RbnSerializer serializer, Object obje)
             {
                 var obj = (BulletStatus) obje;
 
-                return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_INT + serializer.sizeOf(obj.victimName)
-                       + RbSerializer.SIZEOF_BOOL + 2*RbSerializer.SIZEOF_DOUBLE;
+                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_INT + serializer.sizeOf(obj.victimName)
+                       + RbnSerializer.SIZEOF_BOOL + 2*RbnSerializer.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (BulletStatus) obje;
 
@@ -47,7 +47,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.y);
             }
 
-            public Object deserialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
+            public Object deserialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 int bulletId = buffer.getInt();
                 String victimName = serializer.deserializeString(buffer);

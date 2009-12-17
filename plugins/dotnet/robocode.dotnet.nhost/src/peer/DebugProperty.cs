@@ -48,14 +48,14 @@ namespace net.sf.robocode.dotnet.peer
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, Object obje)
+            public int sizeOf(RbnSerializer serializer, Object obje)
             {
                 var obj = (DebugProperty) obje;
 
-                return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.key) + serializer.sizeOf(obj.value);
+                return RbnSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.key) + serializer.sizeOf(obj.value);
             }
 
-            public void serialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (DebugProperty) obje;
 
@@ -63,7 +63,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.value);
             }
 
-            public Object deserialize(RbSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
+            public Object deserialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 String key = serializer.deserializeString(buffer);
                 String value = serializer.deserializeString(buffer);

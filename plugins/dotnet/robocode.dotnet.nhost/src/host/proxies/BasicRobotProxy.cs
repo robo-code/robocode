@@ -454,8 +454,8 @@ namespace net.sf.robocode.dotnet.host.proxies
 	 public ExecResults run() {
 	 final ByteBuffer result;
 	 try {
-	 result = peer.executeImplSerial(RbSerializer.serializeToBuffer(commands));
-	 return RbSerializer.deserializeFromBuffer(result);
+	 result = peer.executeImplSerial(RbnSerializer.serializeToBuffer(commands));
+	 return RbnSerializer.deserializeFromBuffer(result);
 	 } catch (IOException e) {
 	 Logger.logError(e);
 	 return null;

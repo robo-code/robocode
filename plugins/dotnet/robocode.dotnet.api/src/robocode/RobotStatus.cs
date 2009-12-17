@@ -376,13 +376,13 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper, IHiddenStatusHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
-                return RbSerializer.SIZEOF_TYPEINFO + 12*RbSerializer.SIZEOF_DOUBLE + 3*RbSerializer.SIZEOF_INT
-                       + RbSerializer.SIZEOF_LONG;
+                return RbnSerializer.SIZEOF_TYPEINFO + 12*RbnSerializer.SIZEOF_DOUBLE + 3*RbnSerializer.SIZEOF_INT
+                       + RbnSerializer.SIZEOF_LONG;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (RobotStatus) objec;
 
@@ -404,7 +404,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.time);
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 double energy = buffer.getDouble();
                 double x = buffer.getDouble();

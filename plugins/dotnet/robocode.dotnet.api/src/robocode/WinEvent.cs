@@ -73,7 +73,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.WinEvent_TYPE;
+            return RbnSerializer.WinEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -83,16 +83,16 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
-                return RbSerializer.SIZEOF_TYPEINFO;
+                return RbnSerializer.SIZEOF_TYPEINFO;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 return new WinEvent();
             }

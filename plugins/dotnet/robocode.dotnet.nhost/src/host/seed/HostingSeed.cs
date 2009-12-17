@@ -1,13 +1,42 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
+using net.sf.jni4net;
+using net.sf.jni4net.jni;
 using net.sf.robocode.dotnet.peer;
+using net.sf.robocode.host;
+using net.sf.robocode.peer;
+using net.sf.robocode.repository;
 using robocode;
+using robocode.control;
+using Object = java.lang.Object;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
     public class HostingSeed : AppDomainSeed
     {
+        private static IHostManager hostManager;
+        private static IRobotPeer robotPeer;
+        private static RobotStatics statics;
+        private static IRobotRepositoryItem itemSpecification;
+        private static RobotSpecification robotSpecification;
+
+        public static void Construct()
+        {
+            hostManager = CopyProxy<IHostManager>((IntPtr) domain.GetData("hostManager"));
+            robotPeer = CopyProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
+            statics = CopyProxy<RobotStatics>((IntPtr)domain.GetData("statics"));
+            robotSpecification = CopyProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
+            itemSpecification = CopyProxy<IRobotRepositoryItem>((IntPtr)domain.GetData("item"));
+        }
+
+        private static T CopyProxy<T>(IntPtr robotFullName)
+        {
+            Object temp = new java.lang.Object();
+            ((IJvmProxy)temp).Copy(JNIEnv.ThreadEnv,robotFullName, IHostManager_._class);
+            return Bridge.Cast<T>(temp);
+        }
+
         public static void StartRound()
         {
             var commands = (ExecCommands) domain.GetData("commands");

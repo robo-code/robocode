@@ -90,7 +90,7 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbSerializer.BulletMissedEvent_TYPE;
+            return RbnSerializer.BulletMissedEvent_TYPE;
         }
 
         private static ISerializableHelper createHiddenSerializer()
@@ -100,19 +100,19 @@ namespace robocode
 
         private class SerializableHelper : ISerializableHelper
         {
-            public int sizeOf(RbSerializer serializer, object objec)
+            public int sizeOf(RbnSerializer serializer, object objec)
             {
-                return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_INT;
+                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (BulletMissedEvent) objec;
 
                 serializer.serialize(buffer, obj.bullet.getBulletId());
             }
 
-            public object deserialize(RbSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
             {
                 var bullet = new Bullet(0, 0, 0, 0, null, null, false, buffer.getInt());
 
