@@ -213,28 +213,28 @@ namespace robocode
         /// @return a hidden bullet helper.
         /// </summary>
         // this class is invisible on RobotAPI
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new HiddenBulletHelper();
         }
 
         // this class is invisible on RobotAPI
-        private class HiddenBulletHelper : IHiddenBulletHelper, ISerializableHelper
+        private class HiddenBulletHelper : IHiddenBulletHelper, ISerializableHelperN
         {
             public void update(Bullet bullet, double x, double y, string victimName, bool isActive)
             {
                 bullet.update(x, y, victimName, isActive);
             }
 
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
                 var obj = (Bullet) objec;
 
-                return RbnSerializer.SIZEOF_TYPEINFO + 4*RbnSerializer.SIZEOF_DOUBLE + serializer.sizeOf(obj.ownerName)
-                       + serializer.sizeOf(obj.victimName) + RbnSerializer.SIZEOF_BOOL;
+                return RbSerializerN.SIZEOF_TYPEINFO + 4*RbSerializerN.SIZEOF_DOUBLE + serializer.sizeOf(obj.ownerName)
+                       + serializer.sizeOf(obj.victimName) + RbSerializerN.SIZEOF_BOOL;
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (Bullet) objec;
 
@@ -247,7 +247,7 @@ namespace robocode
                 serializer.serialize(buffer, obj._isActive);
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 double headingRadians = buffer.getDouble();
                 double x = buffer.getDouble();

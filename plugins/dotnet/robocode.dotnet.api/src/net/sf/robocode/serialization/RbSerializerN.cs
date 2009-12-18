@@ -25,7 +25,7 @@ namespace net.sf.robocode.serialization
     /// <summary>
     /// @author Pavel Savara (original)
     /// </summary>
-    public sealed class RbnSerializer
+    public sealed class RbSerializerN
     {
         public static readonly int SIZEOF_TYPEINFO = 1;
         public static readonly int SIZEOF_BYTE = 1;
@@ -70,60 +70,25 @@ namespace net.sf.robocode.serialization
         public static readonly byte MouseReleasedEvent_TYPE = 53;
         public static readonly byte MouseWheelMovedEvent_TYPE = 54;
 
-        private static readonly ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
+        private static readonly ISerializableHelperN[] typeToHelper = new ISerializableHelperN[256];
         private static Dictionary<Type, byte> classToType = new Dictionary<Type, byte>();
         private static readonly Encoding charset;
-        private readonly Encoder encoder;
-        private readonly Decoder decoder;
 
-        private readonly uint byteOrder = 0xC0DEDEA1;
-        private readonly int currentVersion;
+        private const int byteOrder = -1059135839; //0xC0DEDEA1
+        private static int currentVersion;
 
-        static RbnSerializer()
+        static RbSerializerN()
         {
             charset = Encoding.UTF8; // we will use it as UCS-2
             register(null, TERMINATOR_TYPE); // reserved for end of (list) element
         }
 
-        public RbnSerializer()
+        public static void Init(int version)
         {
-            currentVersion = 0; //TODO ContainerBase.getComponent(IVersionManagerBase.class).getVersionAsInt();
-            /*
-		encoder = charset.newEncoder();
-		encoder.onMalformedInput(CodingErrorAction.REPORT);
-		encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-		// throw away forst bom
-		ByteBuffer buffer = ByteBufferFactory.allocate(8);
-
-		encoder.encode(CharBuffer.wrap("BOM"), buffer, false);
-
-		decoder = charset.newDecoder();
-		decoder.onMalformedInput(CodingErrorAction.REPORT);
-		decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-         */
-        }
-
-        public void serialize(BinaryWriter target, byte type, object obj)
-        {
-            /*
-		int length = sizeOf(type, object);
-
-		// header
-		ByteBuffer buffer = ByteBufferFactory.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT);
-
-		buffer.putInt(byteOrder);
-		buffer.putInt(currentVersion);
-		buffer.putInt(length);
-		target.write(buffer.array());
-
-		// body
-		buffer = ByteBufferFactory.allocate(length);
-		serialize(buffer, type, object);
-		if (buffer.remaining() != 0) {
-			throw new IOException("Serialization failed: bad size"); 
-		}
-		target.write(buffer.array());
-         */
+            if (currentVersion == 0)
+            {
+                currentVersion = version;
+            }
         }
 
         public ByteBuffer serialize(byte type, object obj)
@@ -146,38 +111,22 @@ namespace net.sf.robocode.serialization
             return buffer;
         }
 
-        public Object deserialize(BinaryReader source)
+        public ByteBuffer serializeToBuffer(ByteBuffer buffer, byte type, object obj)
         {
-            // header
-            ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT);
+            int length = sizeOf(type, obj);
+            buffer.limit(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
 
-            fillBuffer(source, buffer);
-            buffer.flip();
-            int bo = buffer.getInt();
-
-            if (bo != byteOrder)
-            {
-                throw new IOException("Different byte order is not supported");
-            }
-            int version = buffer.getInt();
-
-            if (version != currentVersion)
-            {
-                throw new IOException("Version of data is not supported. We support only strong match");
-            }
-            int length = buffer.getInt();
+            buffer.putInt(byteOrder);
+            buffer.putInt(currentVersion);
+            buffer.putInt(length);
 
             // body
-            buffer = ByteBuffer.allocate(length);
-            fillBuffer(source, buffer);
-            buffer.flip();
-            Object res = deserializeAny(buffer);
-
+            serialize(buffer, type, obj);
             if (buffer.remaining() != 0)
             {
-                throw new IOException("Serialization failed");
+                throw new IOException("Serialization failed: bad size");
             }
-            return res;
+            return buffer;
         }
 
         public Object deserialize(ByteBuffer buffer)
@@ -214,7 +163,7 @@ namespace net.sf.robocode.serialization
 
         public void serialize(ByteBuffer buffer, byte type, object obj)
         {
-            ISerializableHelper helper = getHelper(type);
+            ISerializableHelperN helper = getHelper(type);
 
             // FOR-DEBUG int expect = sizeOf(type, object) + buffer.position();
 
@@ -240,10 +189,9 @@ namespace net.sf.robocode.serialization
             }
             else
             {
-                ByteBuffer slice = encode(data);
-
-                buffer.putInt(slice.limit());
-                buffer.put(slice);
+                int bytes = charset.GetBytes(data, 0, data.Length, buffer.array(), buffer.position() + 4);
+                buffer.putInt(bytes);
+                buffer.position(buffer.position() + bytes);
             }
         }
 
@@ -382,8 +330,9 @@ namespace net.sf.robocode.serialization
 
             try
             {
-                //TODO res = decoder.GetChars() .decode(slice).tostring();
-                throw new NotImplementedException();
+                byte[] array = buffer.array();
+                char[] chars = charset.GetChars(array, buffer.position(), bytes);
+                res = new string(chars);
             }
             catch (Exception e)
             {
@@ -502,7 +451,7 @@ namespace net.sf.robocode.serialization
 
         public int sizeOf(string data)
         {
-            return (data == null) ? SIZEOF_INT : SIZEOF_INT + encode(data).limit();
+            return (data == null) ? SIZEOF_INT : SIZEOF_INT + charset.GetByteCount(data);
         }
 
         public int sizeOf(byte[] data)
@@ -520,9 +469,9 @@ namespace net.sf.robocode.serialization
             return sizeOf(HiddenAccessN.getSerializationType(evnt), evnt);
         }
 
-        private ISerializableHelper getHelper(byte type)
+        private ISerializableHelperN getHelper(byte type)
         {
-            ISerializableHelper helper = typeToHelper[type];
+            ISerializableHelperN helper = typeToHelper[type];
 
             if (helper == null)
             {
@@ -531,40 +480,14 @@ namespace net.sf.robocode.serialization
             return helper;
         }
 
-        private ByteBuffer encode(string data)
-        {
-            ByteBuffer slice = ByteBuffer.allocate(data.Length * 3);
-            throw new NotImplementedException();
-            //encoder.encode(CharBuffer.wrap(data), slice, false);
-            slice.flip();
-            return slice;
-        }
-
-        private void fillBuffer(BinaryReader source, ByteBuffer buffer)
-        {
-            throw new NotImplementedException();
-            /*
-		int res;
-
-		do {
-			res = source.read(buffer.array(), buffer.position(), buffer.remaining());
-			if (res == -1) {
-				throw new IOException("Unexpected EOF");
-			}
-			buffer.position(buffer.position() + res);
-		} while (buffer.remaining() != 0);
-         */
-        }
-
         public static void register(Type realClass, byte type)
         {
             try
             {
                 if (realClass != null)
                 {
-                    MethodInfo method = realClass.GetMethod("createHiddenSerializer");
-
-                    var helper = (ISerializableHelper) method.Invoke(null, null);
+                    MethodInfo method = realClass.GetMethod("createHiddenSerializer", BindingFlags.NonPublic|BindingFlags.Static);
+                    var helper = (ISerializableHelperN) method.Invoke(null, null);
 
                     typeToHelper[type] = helper;
                     classToType.Add(realClass, type);
@@ -572,13 +495,13 @@ namespace net.sf.robocode.serialization
             }
             catch (Exception e)
             {
-                Logger.logError(e);
+                LoggerN.logError(e);
             }
         }
 
         public static ByteBuffer serializeToBuffer(Object src)
         {
-            var rbs = new RbnSerializer();
+            var rbs = new RbSerializerN();
             Byte type = classToType[src.GetType()];
 
             return rbs.serialize(type, src);
@@ -586,7 +509,7 @@ namespace net.sf.robocode.serialization
 
         public static T deserializeFromBuffer<T>(ByteBuffer buffer)
         {
-            var rbs = new RbnSerializer();
+            var rbs = new RbSerializerN();
             Object res = rbs.deserialize(buffer);
 
             return (T) res;
@@ -595,7 +518,7 @@ namespace net.sf.robocode.serialization
         public static Object deepCopy(byte type, Object src)
         {
             var output = new MemoryStream(1024);
-            var rbs = new RbnSerializer();
+            var rbs = new RbSerializerN();
 
             try
             {
@@ -608,7 +531,7 @@ namespace net.sf.robocode.serialization
             }
             catch (IOException e)
             {
-                Logger.logError(e);
+                LoggerN.logError(e);
                 return null;
             }
         }

@@ -19,41 +19,13 @@ namespace net.sf.robocode.peer {
         
         internal static global::net.sf.jni4net.jni.MethodId _valueOf0;
         
-        internal static global::net.sf.jni4net.jni.MethodId _hashCode1;
+        internal static global::net.sf.jni4net.jni.FieldId _CANNOT_START1;
         
-        internal static global::net.sf.jni4net.jni.MethodId _compareTo2;
+        internal static global::net.sf.jni4net.jni.FieldId _SKIPPED_TOO_MANY_TURNS2;
         
-        internal static global::net.sf.jni4net.jni.MethodId _name3;
+        internal static global::net.sf.jni4net.jni.FieldId _UNSTOPPABLE3;
         
-        internal static global::net.sf.jni4net.jni.MethodId _equals4;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _toString5;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _valueOf6;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _getDeclaringClass7;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _ordinal8;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _getClass9;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _wait10;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _wait11;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _wait12;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _notify13;
-        
-        internal static global::net.sf.jni4net.jni.MethodId _notifyAll14;
-        
-        internal static global::net.sf.jni4net.jni.FieldId _CANNOT_START15;
-        
-        internal static global::net.sf.jni4net.jni.FieldId _SKIPPED_TOO_MANY_TURNS16;
-        
-        internal static global::net.sf.jni4net.jni.FieldId _UNSTOPPABLE17;
-        
-        internal static global::net.sf.jni4net.jni.FieldId _SECURITY_VIOLATION18;
+        internal static global::net.sf.jni4net.jni.FieldId _SECURITY_VIOLATION4;
         
         protected BadBehavior(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
@@ -69,7 +41,7 @@ namespace net.sf.robocode.peer {
         public static global::net.sf.robocode.peer.BadBehavior CANNOT_START {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._CANNOT_START15));
+                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._CANNOT_START1));
             }
         }
         
@@ -77,7 +49,7 @@ namespace net.sf.robocode.peer {
         public static global::net.sf.robocode.peer.BadBehavior SKIPPED_TOO_MANY_TURNS {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._SKIPPED_TOO_MANY_TURNS16));
+                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._SKIPPED_TOO_MANY_TURNS2));
             }
         }
         
@@ -85,7 +57,7 @@ namespace net.sf.robocode.peer {
         public static global::net.sf.robocode.peer.BadBehavior UNSTOPPABLE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._UNSTOPPABLE17));
+                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._UNSTOPPABLE3));
             }
         }
         
@@ -93,121 +65,23 @@ namespace net.sf.robocode.peer {
         public static global::net.sf.robocode.peer.BadBehavior SECURITY_VIOLATION {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._SECURITY_VIOLATION18));
+                return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.GetStaticObjectFieldPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._SECURITY_VIOLATION4));
             }
         }
         
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
             global::net.sf.robocode.peer.BadBehavior.staticClass = @__class;
             global::net.sf.robocode.peer.BadBehavior._valueOf0 = @__env.GetStaticMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "valueOf", "(Ljava/lang/String;)Lnet/sf/robocode/peer/BadBehavior;");
-            global::net.sf.robocode.peer.BadBehavior._hashCode1 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "hashCode", "()I");
-            global::net.sf.robocode.peer.BadBehavior._compareTo2 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "compareTo", "(Ljava/lang/Enum;)I");
-            global::net.sf.robocode.peer.BadBehavior._name3 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "name", "()Ljava/lang/String;");
-            global::net.sf.robocode.peer.BadBehavior._equals4 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "equals", "(Ljava/lang/Object;)Z");
-            global::net.sf.robocode.peer.BadBehavior._toString5 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "toString", "()Ljava/lang/String;");
-            global::net.sf.robocode.peer.BadBehavior._valueOf6 = @__env.GetStaticMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "valueOf", "(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;");
-            global::net.sf.robocode.peer.BadBehavior._getDeclaringClass7 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "getDeclaringClass", "()Ljava/lang/Class;");
-            global::net.sf.robocode.peer.BadBehavior._ordinal8 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "ordinal", "()I");
-            global::net.sf.robocode.peer.BadBehavior._getClass9 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "getClass", "()Ljava/lang/Class;");
-            global::net.sf.robocode.peer.BadBehavior._wait10 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "wait", "()V");
-            global::net.sf.robocode.peer.BadBehavior._wait11 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "wait", "(JI)V");
-            global::net.sf.robocode.peer.BadBehavior._wait12 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "wait", "(J)V");
-            global::net.sf.robocode.peer.BadBehavior._notify13 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "notify", "()V");
-            global::net.sf.robocode.peer.BadBehavior._notifyAll14 = @__env.GetMethodID(global::net.sf.robocode.peer.BadBehavior.staticClass, "notifyAll", "()V");
-            global::net.sf.robocode.peer.BadBehavior._CANNOT_START15 = @__env.GetStaticFieldID(global::net.sf.robocode.peer.BadBehavior.staticClass, "CANNOT_START", "Lnet/sf/robocode/peer/BadBehavior;");
-            global::net.sf.robocode.peer.BadBehavior._SKIPPED_TOO_MANY_TURNS16 = @__env.GetStaticFieldID(global::net.sf.robocode.peer.BadBehavior.staticClass, "SKIPPED_TOO_MANY_TURNS", "Lnet/sf/robocode/peer/BadBehavior;");
-            global::net.sf.robocode.peer.BadBehavior._UNSTOPPABLE17 = @__env.GetStaticFieldID(global::net.sf.robocode.peer.BadBehavior.staticClass, "UNSTOPPABLE", "Lnet/sf/robocode/peer/BadBehavior;");
-            global::net.sf.robocode.peer.BadBehavior._SECURITY_VIOLATION18 = @__env.GetStaticFieldID(global::net.sf.robocode.peer.BadBehavior.staticClass, "SECURITY_VIOLATION", "Lnet/sf/robocode/peer/BadBehavior;");
+            global::net.sf.robocode.peer.BadBehavior._CANNOT_START1 = @__env.GetStaticFieldID(global::net.sf.robocode.peer.BadBehavior.staticClass, "CANNOT_START", "Lnet/sf/robocode/peer/BadBehavior;");
+            global::net.sf.robocode.peer.BadBehavior._SKIPPED_TOO_MANY_TURNS2 = @__env.GetStaticFieldID(global::net.sf.robocode.peer.BadBehavior.staticClass, "SKIPPED_TOO_MANY_TURNS", "Lnet/sf/robocode/peer/BadBehavior;");
+            global::net.sf.robocode.peer.BadBehavior._UNSTOPPABLE3 = @__env.GetStaticFieldID(global::net.sf.robocode.peer.BadBehavior.staticClass, "UNSTOPPABLE", "Lnet/sf/robocode/peer/BadBehavior;");
+            global::net.sf.robocode.peer.BadBehavior._SECURITY_VIOLATION4 = @__env.GetStaticFieldID(global::net.sf.robocode.peer.BadBehavior.staticClass, "SECURITY_VIOLATION", "Lnet/sf/robocode/peer/BadBehavior;");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)Lnet/sf/robocode/peer/BadBehavior;")]
         public static global::net.sf.robocode.peer.BadBehavior valueOf(global::java.lang.String par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.peer.BadBehavior>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._valueOf0, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
-        public int hashCode() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.peer.BadBehavior._hashCode1)));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Enum;)I")]
-        public int compareTo(global::java.lang.Object par0) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.peer.BadBehavior._compareTo2, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
-        public global::java.lang.String name() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.peer.BadBehavior._name3));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Object;)Z")]
-        public bool equals(global::java.lang.Object par0) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.peer.BadBehavior._equals4, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0))));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
-        public virtual global::java.lang.String toString() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.peer.BadBehavior._toString5));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;")]
-        public static global::java.lang.Object valueOf(global::java.lang.Class par0, global::java.lang.String par1) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.peer.BadBehavior.staticClass, global::net.sf.robocode.peer.BadBehavior._valueOf6, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1)));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/Class;")]
-        public global::java.lang.Class getDeclaringClass() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpClass(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.peer.BadBehavior._getDeclaringClass7));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
-        public int ordinal() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.peer.BadBehavior._ordinal8)));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/Class;")]
-        public global::java.lang.Class getClass() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpClass(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.peer.BadBehavior._getClass9));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
-        public void wait() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.BadBehavior._wait10);
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(JI)V")]
-        public void wait(long par0, int par1) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.BadBehavior._wait11, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
-        public void wait(long par0) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.BadBehavior._wait12, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
-        public void notify() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.BadBehavior._notify13);
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
-        public void notifyAll() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.BadBehavior._notifyAll14);
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {

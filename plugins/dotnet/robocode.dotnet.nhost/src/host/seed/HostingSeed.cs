@@ -2,14 +2,15 @@
 using System.Reflection;
 using System.Threading;
 using net.sf.jni4net;
-using net.sf.jni4net.jni;
+using net.sf.robocode.dotnet.host.proxies;
+using net.sf.robocode.dotnet.nhost;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
+using net.sf.robocode.security;
 using robocode;
 using robocode.control;
-using Object = java.lang.Object;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
@@ -18,23 +19,28 @@ namespace net.sf.robocode.dotnet.host.seed
         private static IHostManager hostManager;
         private static IRobotPeer robotPeer;
         private static RobotStatics statics;
-        private static IRobotRepositoryItem itemSpecification;
+        private static IRobotRepositoryItem specification;
         private static RobotSpecification robotSpecification;
+        private static Type robotType;
+        private static Thread robotThread;
+        private static HostingRobotProxy robotProxy;
 
         public static void Construct()
         {
-            hostManager = CopyProxy<IHostManager>((IntPtr) domain.GetData("hostManager"));
-            robotPeer = CopyProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
-            statics = CopyProxy<RobotStatics>((IntPtr)domain.GetData("statics"));
-            robotSpecification = CopyProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
-            itemSpecification = CopyProxy<IRobotRepositoryItem>((IntPtr)domain.GetData("item"));
-        }
+            ModuleN.InitN();
 
-        private static T CopyProxy<T>(IntPtr robotFullName)
-        {
-            Object temp = new java.lang.Object();
-            ((IJvmProxy)temp).Copy(JNIEnv.ThreadEnv,robotFullName, IHostManager_._class);
-            return Bridge.Cast<T>(temp);
+            hostManager = Bridge.CreateProxy<IHostManager>((IntPtr)domain.GetData("hostManager"));
+            robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
+            statics = Bridge.CreateProxy<RobotStatics>((IntPtr)domain.GetData("statics"));
+            robotSpecification = Bridge.CreateProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
+            specification = Bridge.CreateProxy<IRobotRepositoryItem>((IntPtr)domain.GetData("item"));
+            robotProxy = CreateProxy();
+
+            Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);
+            string robotFullName = specification.getFullClassName();
+            robotType = assembly.GetType(robotFullName, false);
+            robotProxy.setRobotType(robotType);
+
         }
 
         public static void StartRound()
@@ -42,46 +48,50 @@ namespace net.sf.robocode.dotnet.host.seed
             var commands = (ExecCommands) domain.GetData("commands");
             var status = (RobotStatus) domain.GetData("status");
 
-            var robotFullName = (string) domain.GetData("loadRobot");
-            Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);
-            Type robotType = assembly.GetType(robotFullName, false);
-            var robotThread = new Thread(RobotMain);
-            robotThread.Start(robotType);
+            robotProxy.initializeRound(commands, status);
+
+            robotThread = new Thread(RobotMain);
+            robotThread.Start(null);
         }
 
         private static void RobotMain(object param)
         {
-            var robotType = (Type) param;
+            robotProxy.run();
         }
 
         public static void ForceStopThread()
         {
+            robotThread.Abort();
         }
 
         public static void WaitForStopThread()
         {
+            if (!robotThread.Join(1000))
+            {
+                robotPeer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
+                robotPeer.setRunning(false);
+            }
         }
 
-        /*private static IHostingRobotProxy CreateProxy()
+        private static HostingRobotProxy CreateProxy()
         {
-            IHostingRobotProxy robotProxy;
-            IRobotRepositoryItem specification = (IRobotRepositoryItem)HiddenAccess.getFileSpecification(robotSpecification);
+            HostingRobotProxy robotProxy;
 
             if (specification.isTeamRobot())
             {
-                robotProxy = new TeamRobotProxy(specification, hostManager, peer, statics);
+                robotProxy = new TeamRobotProxy(specification, hostManager, robotPeer, statics);
             }
             else if (specification.isAdvancedRobot())
             {
-                robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, statics);
+                robotProxy = new AdvancedRobotProxy(specification, hostManager, robotPeer, statics);
             }
             else if (specification.isStandardRobot())
             {
-                robotProxy = new StandardRobotProxy(specification, hostManager, peer, statics);
+                robotProxy = new StandardRobotProxy(specification, hostManager, robotPeer, statics);
             }
             else if (specification.isJuniorRobot())
             {
-                robotProxy = new JuniorRobotProxy(specification, hostManager, peer, statics);
+                robotProxy = new JuniorRobotProxy(specification, hostManager, robotPeer, statics);
             }
             else
             {
@@ -89,35 +99,5 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             return robotProxy;            
         }
-            RobotClassLoader loader = null;
-
-            try
-            {
-                loader = new RobotClassLoader(robotRepositoryItem);
-                Type robotClass = loader.LoadRobotMainClass();
-
-                return Reflection.CheckInterfaces(robotClass);
-            }
-            catch (Exception ex)
-            {
-                if (message)
-                {
-                    Logger.logError(robotRepositoryItem.getFullClassName() + ": Got an error with this class: " + ex);
-                }
-                return RobotType.INVALID;
-            }
-            finally
-            {
-                if (loader != null)
-                {
-                    loader.Cleanup();
-                }
-            }
-
- * 
-
- 
-  
- */
     }
 }

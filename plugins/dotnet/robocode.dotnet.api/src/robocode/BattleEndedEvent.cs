@@ -90,7 +90,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             if (robot != null)
             {
@@ -115,33 +115,33 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbnSerializer.BattleEndedEvent_TYPE;
+            return RbSerializerN.BattleEndedEvent_TYPE;
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
                 var obj = (BattleEndedEvent) objec;
 
-                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_BOOL
-                       + serializer.sizeOf(RbnSerializer.BattleResults_TYPE, obj.results);
+                return RbSerializerN.SIZEOF_TYPEINFO + RbSerializerN.SIZEOF_BOOL
+                       + serializer.sizeOf(RbSerializerN.BattleResults_TYPE, obj.results);
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (BattleEndedEvent) objec;
 
                 serializer.serialize(buffer, obj.aborted);
-                serializer.serialize(buffer, RbnSerializer.BattleResults_TYPE, obj.results);
+                serializer.serialize(buffer, RbSerializerN.BattleResults_TYPE, obj.results);
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 bool aborted = serializer.deserializeBoolean(buffer);
                 var results = (BattleResults) serializer.deserializeAny(buffer);

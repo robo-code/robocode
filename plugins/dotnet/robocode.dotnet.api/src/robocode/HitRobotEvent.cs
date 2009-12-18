@@ -151,7 +151,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             IBasicEvents listener = robot.getBasicEventListener();
 
@@ -166,25 +166,25 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbnSerializer.HitRobotEvent_TYPE;
+            return RbSerializerN.HitRobotEvent_TYPE;
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
                 var obj = (HitRobotEvent) objec;
 
-                return RbnSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 2*RbnSerializer.SIZEOF_DOUBLE
-                       + RbnSerializer.SIZEOF_BOOL;
+                return RbSerializerN.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 2*RbSerializerN.SIZEOF_DOUBLE
+                       + RbSerializerN.SIZEOF_BOOL;
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (HitRobotEvent) objec;
 
@@ -194,7 +194,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.atFault);
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 string robotName = serializer.deserializeString(buffer);
                 double bearing = buffer.getDouble();

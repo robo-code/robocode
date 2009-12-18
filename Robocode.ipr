@@ -256,6 +256,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/_all/_all.iml" filepath="$PROJECT_DIR$/_all/_all.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/robocode.iml" filepath="$PROJECT_DIR$/robocode.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/robocode.api/robocode.api.iml" filepath="$PROJECT_DIR$/robocode.api/robocode.api.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/robocode.battle/robocode.battle.iml" filepath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" group="robocode and modules" />
@@ -311,13 +312,6 @@
         <list size="0" />
       </value>
     </option>
-  </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="SvnBranchConfigurationManager">
     <option name="mySupportsUserInfoFilter" value="true" />
@@ -410,17 +404,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/codesize/1.1/codesize-1.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.jni4net:jni4net.j:0.5.0.0">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.5.0.0/jni4net.j-0.5.0.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.5.0.0/jni4net.j-0.5.0.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.5.0.0/jni4net.j-0.5.0.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: net.java.dev.jogl:jogl:1.1.1-rc6">
@@ -520,6 +503,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.sf.jni4net:jni4net.j:0.6.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.6.0.0/jni4net.j-0.6.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.6.0.0/jni4net.j-0.6.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.6.0.0/jni4net.j-0.6.0.0-sources.jar!/" />
       </SOURCES>
     </library>
   </component>

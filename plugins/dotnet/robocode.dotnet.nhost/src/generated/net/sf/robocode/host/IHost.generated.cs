@@ -101,7 +101,7 @@ namespace net.sf.robocode.host {
             try {
             global::net.sf.robocode.host.IHost @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHost>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.FullC2J<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__real.createRobotProxy(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostManager>(@__env, par0), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::robocode.control.RobotSpecification>(@__env, par1), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.host.RobotStatics>(@__env, par2), global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, par3)));
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return default(global::System.IntPtr);
         }
         
@@ -112,7 +112,7 @@ namespace net.sf.robocode.host {
             try {
             global::net.sf.robocode.host.IHost @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHost>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.ArrayStrongCp2J(@__env, @__real.getReferencedClasses(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, par0)));
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return default(global::System.IntPtr);
         }
         
@@ -123,7 +123,7 @@ namespace net.sf.robocode.host {
             try {
             global::net.sf.robocode.host.IHost @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHost>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getRobotType(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, par0), par1, par2));
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return default(global::System.IntPtr);
         }
         

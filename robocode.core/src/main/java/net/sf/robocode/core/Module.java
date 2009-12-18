@@ -19,24 +19,26 @@ import net.sf.robocode.settings.SettingsManager;
 import net.sf.robocode.version.IVersionManager;
 import net.sf.robocode.version.VersionManager;
 
+import java.util.List;
+
 
 /**
  * @author Pavel Savara (original)
  */
-public class Module {
+public class Module extends BaseModule {
 	static {
 		Container.cache.addComponent(RobocodeMain.class);
 		Container.cache.addComponent(IVersionManager.class, VersionManager.class);
 		Container.cache.addComponent(ISettingsManager.class, SettingsManager.class);
-		initSerializer();
 	}
 
-	private static void initSerializer() {
-		RbSerializer.register(ExecCommands.class, RbSerializer.ExecCommands_TYPE);
-		RbSerializer.register(BulletCommand.class, RbSerializer.BulletCommand_TYPE);
-		RbSerializer.register(TeamMessage.class, RbSerializer.TeamMessage_TYPE);
-		RbSerializer.register(DebugProperty.class, RbSerializer.DebugProperty_TYPE);
-		RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
-		RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
-	}
+    @Override
+    public void afterLoaded(List<IModule> allModules) {
+        RbSerializer.register(ExecCommands.class, RbSerializer.ExecCommands_TYPE);
+        RbSerializer.register(BulletCommand.class, RbSerializer.BulletCommand_TYPE);
+        RbSerializer.register(TeamMessage.class, RbSerializer.TeamMessage_TYPE);
+        RbSerializer.register(DebugProperty.class, RbSerializer.DebugProperty_TYPE);
+        RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
+        RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
+    }
 }

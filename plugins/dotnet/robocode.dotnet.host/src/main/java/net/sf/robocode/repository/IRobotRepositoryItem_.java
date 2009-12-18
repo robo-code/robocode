@@ -33,38 +33,8 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
             super(__env, __handle);
     }
     
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isInteractiveRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isPaintRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isAdvancedRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isTeamRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isJuniorRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isStandardRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isDroid();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
-    public native java.net.URL getRobotClassPath();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getWritableDirectory();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getReadableDirectory();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getRobotLanguage();
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;)I")
+    public native int compareTo(java.lang.Object par0);
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isValid();
@@ -74,6 +44,21 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     
     @net.sf.jni4net.attributes.ClrMethod("()J")
     public native long getLastModified();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getFullClassName();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getShortClassName();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getFullClassNameWithVersion();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getUniqueShortClassNameWithVersion();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getUniqueVeryShortClassNameWithVersion();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getDescription();
@@ -121,22 +106,7 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     public native java.lang.String getRootPackage();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getFullClassNameWithVersion();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getUniqueFullClassNameWithVersion();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getUniqueShortClassNameWithVersion();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getUniqueVeryShortClassNameWithVersion();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getFullClassName();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getShortClassName();
     
     @net.sf.jni4net.attributes.ClrMethod("()Lrobocode/control/RobotSpecification;")
     public native robocode.control.RobotSpecification createRobotSpecification();
@@ -147,7 +117,37 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/io/OutputStream;)V")
     public native void storeProperties(java.io.OutputStream par0);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;)I")
-    public native int compareTo(java.lang.Object par0);
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isInteractiveRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isPaintRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isAdvancedRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isTeamRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isJuniorRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isDroid();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getReadableDirectory();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getWritableDirectory();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isStandardRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
+    public native java.net.URL getRobotClassPath();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getRobotLanguage();
 }
 //</generated-proxy>

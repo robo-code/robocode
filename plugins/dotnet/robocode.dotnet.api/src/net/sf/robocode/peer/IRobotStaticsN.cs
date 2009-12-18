@@ -9,15 +9,19 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-namespace net.sf.robocode.manager
+namespace net.sf.robocode.peer
 {
     /// <summary>
     /// @author Pavel Savara (original)
     /// </summary>
-    public interface IVersionManagerBase
+    public interface IRobotStaticsN
     {
-        string getVersion();
-        int getVersionAsInt();
-        bool isLastRunVersionChanged();
+        bool isInteractiveRobot();
+
+        bool isPaintRobot();
+
+        bool isAdvancedRobot();
+
+        bool isTeamRobot();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
-using java.nio;
 using net.sf.jni4net;
 using net.sf.jni4net.jni;
+using net.sf.jni4net.nio;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
 using net.sf.robocode.host.proxies;
@@ -11,12 +11,15 @@ using net.sf.robocode.security;
 using net.sf.robocode.serialization;
 using robocode;
 using robocode.control;
+using ByteBuffer = java.nio.ByteBuffer;
 using Object=java.lang.Object;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
     class HostingShell : AppDomainShell, IHostingRobotProxy
     {
+        RbSerializer serializer=new RbSerializer();
+
         public HostingShell(RobotSpecification robotSpecification, IRobotRepositoryItem itemSpecification, IHostManager hostManager, IRobotPeer peer,
                                   RobotStatics statics, string dllFileName) 
         {
@@ -29,26 +32,14 @@ namespace net.sf.robocode.dotnet.host.seed
             domain.DoCallBack(HostingSeed.Construct);
         }
 
-        /*public void StartRound(ExecCommands commands, RobotStatus status, string typeFullName)
-        {
-            domain.SetData("loadRobot", typeFullName);
-            domain.SetData("commands", commands);
-            domain.SetData("status", status);
-            domain.DoCallBack(AppDomainSeed.StartRound);
-        }*/
-
-
         public void startRound(Object aCommands, Object aStatus)
         {
-            ISerializableHelper commands = Bridge.Cast<ISerializableHelper>(aCommands);
-            ISerializableHelper status = Bridge.Cast<ISerializableHelper>(aStatus);
-            commands.serialize()
+            ExecCommands commands = serializer.ConvertJ2C<ExecCommands>(RbSerializerN.ExecCommands_TYPE, aCommands);
+            RobotStatus status = serializer.ConvertJ2C<RobotStatus>(RbSerializerN.RobotStatus_TYPE, aStatus);
 
-            domain.SetData("commands", );
+            domain.SetData("commands", commands);
             domain.SetData("status", status);
             domain.DoCallBack(HostingSeed.StartRound);
-            ByteBuffer bb = ByteBuffer.allocateDirect(10);
-            //JNIEnv.ThreadEnv.NewDirectByteBuffer();
         }
 
         public void forceStopThread()

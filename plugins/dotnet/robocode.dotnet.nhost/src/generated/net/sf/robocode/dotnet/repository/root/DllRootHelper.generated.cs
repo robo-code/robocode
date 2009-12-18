@@ -52,7 +52,7 @@ namespace net.sf.robocode.dotnet.repository.root {
             try {
             global::net.sf.robocode.dotnet.repository.root.DllRootHelper @__real = global::net.sf.jni4net.utils.Convertor.StrongJp2C<global::net.sf.robocode.dotnet.repository.root.DllRootHelper>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.ArrayStrongC2JString(@__env, @__real.findItems(global::net.sf.jni4net.utils.Convertor.StrongJ2CString(@__env, dllPath)));
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return default(global::System.IntPtr);
         }
         
@@ -63,7 +63,7 @@ namespace net.sf.robocode.dotnet.repository.root {
             try {
             global::net.sf.robocode.dotnet.repository.root.DllRootHelper @__real = new global::net.sf.robocode.dotnet.repository.root.DllRootHelper();
             global::net.sf.jni4net.utils.Convertor.InitProxy(@__env, @__obj, @__real);
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {

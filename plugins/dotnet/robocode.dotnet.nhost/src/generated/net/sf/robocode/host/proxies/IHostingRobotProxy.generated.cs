@@ -19,7 +19,7 @@ namespace net.sf.robocode.host.proxies {
         void cleanup();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V")]
-        void startRound(global::java.lang.Object commands, global::java.lang.Object status);
+        void startRound(global::java.lang.Object par0, global::java.lang.Object par1);
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         void forceStopThread();
@@ -104,7 +104,7 @@ namespace net.sf.robocode.host.proxies {
             try {
             global::net.sf.robocode.host.proxies.IHostingRobotProxy @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__obj);
             @__real.cleanup();
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
         private static void startRound1(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0, global::System.IntPtr par1) {
@@ -114,7 +114,7 @@ namespace net.sf.robocode.host.proxies {
             try {
             global::net.sf.robocode.host.proxies.IHostingRobotProxy @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__obj);
             @__real.startRound(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par0), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par1));
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
         private static void forceStopThread2(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
@@ -124,7 +124,7 @@ namespace net.sf.robocode.host.proxies {
             try {
             global::net.sf.robocode.host.proxies.IHostingRobotProxy @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__obj);
             @__real.forceStopThread();
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
         private static void waitForStopThread3(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
@@ -134,7 +134,7 @@ namespace net.sf.robocode.host.proxies {
             try {
             global::net.sf.robocode.host.proxies.IHostingRobotProxy @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.proxies.IHostingRobotProxy>(@__env, @__obj);
             @__real.waitForStopThread();
-            }catch (global::System.Exception ex){@__env.ThrowExisting(ex);}
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {

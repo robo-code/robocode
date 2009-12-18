@@ -77,7 +77,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             if (statics.isTeamRobot())
             {

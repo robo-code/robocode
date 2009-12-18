@@ -11,6 +11,7 @@
  *******************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using net.sf.robocode.io;
@@ -42,24 +43,24 @@ namespace net.sf.robocode.security
 
             try
             {
-                method = typeof (Event).GetMethod("createHiddenHelper");
+                method = typeof (Event).GetMethod("createHiddenHelper", BindingFlags.Static|BindingFlags.NonPublic);
                 eventHelper = (IHiddenEventHelper) method.Invoke(null, null);
 
-                method = typeof (Bullet).GetMethod("createHiddenHelper");
+                method = typeof(Bullet).GetMethod("createHiddenHelper", BindingFlags.Static | BindingFlags.NonPublic);
                 bulletHelper = (IHiddenBulletHelper) method.Invoke(null, null);
 
-                method = typeof (RobotStatus).GetMethod("createHiddenSerializer");
+                method = typeof(RobotStatus).GetMethod("createHiddenSerializer", BindingFlags.Static | BindingFlags.NonPublic);
                 statusHelper = (IHiddenStatusHelper) method.Invoke(null, null);
 
-                method = typeof (BattleRules).GetMethod("createHiddenHelper");
+                method = typeof(BattleRules).GetMethod("createHiddenHelper", BindingFlags.Static | BindingFlags.NonPublic);
                 rulesHelper = (IHiddenRulesHelper) method.Invoke(null, null);
 
                 initialized = true;
             }
             catch (Exception e)
             {
-                Logger.logError(e);
-                //TODO Application.exit(-1);
+                LoggerN.logError(e);
+                Environment.Exit(-1);
             }
         }
 
@@ -78,7 +79,7 @@ namespace net.sf.robocode.security
             eventHelper.setPriority(e, newPriority);
         }
 
-        public static void dispatch(Event evnt, IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        public static void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             eventHelper.dispatch(evnt, robot, statics, graphics);
         }

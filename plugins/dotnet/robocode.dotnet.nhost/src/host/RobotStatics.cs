@@ -1,6 +1,8 @@
-﻿namespace net.sf.robocode.host
+﻿using net.sf.robocode.peer;
+
+namespace net.sf.robocode.host
 {
-    partial class RobotStatics
+    partial class RobotStatics : IRobotStaticsN
     {
     }
 }

@@ -22,7 +22,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
 
-        protected override void initializeRound(ExecCommands commands, RobotStatus status)
+        internal override void initializeRound(ExecCommands commands, RobotStatus status)
         {
             base.initializeRound(commands, status);
             isStopped = true;

@@ -696,14 +696,13 @@ namespace net.sf.robocode.dotnet.host.events
 
         private void registerNamedEvent(Event e)
         {
-            String name = e.GetType().Name;
-
             if (!HiddenAccessN.isCriticalEvent(e))
             {
                 HiddenAccessN.setDefaultPriority(e);
             }
-            namedEvents.Add(name, e);
-            namedEvents.Add(name.Substring(9), e);
+            Type type = e.GetType();
+            namedEvents.Add(type.FullName, e);
+            namedEvents.Add(type.Name, e);
         }
 
         private class DummyCustomEvent : CustomEvent

@@ -88,14 +88,14 @@ namespace robocode
             this.name = name;
             if (priority < 0)
             {
-                Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99.");
-                Logger.printlnToRobotsConsole("SYSTEM: Priority for condition " + name + " will be 0.");
+                LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99.");
+                LoggerN.printlnToRobotsConsole("SYSTEM: Priority for condition " + name + " will be 0.");
                 priority = 0;
             }
             else if (priority > 99)
             {
-                Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99.");
-                Logger.printlnToRobotsConsole("SYSTEM: Priority for condition " + name + " will be 99.");
+                LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99.");
+                LoggerN.printlnToRobotsConsole("SYSTEM: Priority for condition " + name + " will be 99.");
                 priority = 99;
             }
             this.priority = priority;

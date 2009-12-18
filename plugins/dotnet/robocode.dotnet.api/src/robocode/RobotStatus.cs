@@ -369,20 +369,20 @@ namespace robocode
             this.time = time;
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper, IHiddenStatusHelper
+        private class SerializableHelper : ISerializableHelperN, IHiddenStatusHelper
         {
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
-                return RbnSerializer.SIZEOF_TYPEINFO + 12*RbnSerializer.SIZEOF_DOUBLE + 3*RbnSerializer.SIZEOF_INT
-                       + RbnSerializer.SIZEOF_LONG;
+                return RbSerializerN.SIZEOF_TYPEINFO + 12*RbSerializerN.SIZEOF_DOUBLE + 3*RbSerializerN.SIZEOF_INT
+                       + RbSerializerN.SIZEOF_LONG;
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (RobotStatus) objec;
 
@@ -404,7 +404,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.time);
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 double energy = buffer.getDouble();
                 double x = buffer.getDouble();

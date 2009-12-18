@@ -41,11 +41,6 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add("net.sf.robocode.repository.IRobotRepositoryItem");
 		exclusions.add("net.sf.robocode.repository.RobotType");
 		exclusions.add("net.sf.robocode.host.RobotStatics");
-		/*
-		exclusions.add("robocode.control.RobotSpecification");
-		exclusions.add("net.sf.robocode.repository.IRepositoryItem");
-		exclusions.add("net.sf.robocode.peer.ExecResults");
-		exclusions.add("net.sf.robocode.peer.ExecCommands");*/
 	}
 
 	public static void addExclusion(String classFullName){

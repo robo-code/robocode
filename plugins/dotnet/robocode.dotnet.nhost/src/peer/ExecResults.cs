@@ -121,20 +121,20 @@ namespace net.sf.robocode.dotnet.peer
         {
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, Object obje)
+            public int sizeOf(RbSerializerN serializer, Object obje)
             {
                 var obj = (ExecResults) obje;
-                int size = RbnSerializer.SIZEOF_TYPEINFO + 3*RbnSerializer.SIZEOF_BOOL;
+                int size = RbSerializerN.SIZEOF_TYPEINFO + 3*RbSerializerN.SIZEOF_BOOL;
 
-                size += serializer.sizeOf(RbnSerializer.ExecCommands_TYPE, obj.commands);
-                size += serializer.sizeOf(RbnSerializer.RobotStatus_TYPE, obj.status);
+                size += serializer.sizeOf(RbSerializerN.ExecCommands_TYPE, obj.commands);
+                size += serializer.sizeOf(RbSerializerN.RobotStatus_TYPE, obj.status);
 
                 // events
                 foreach (Event evnt in obj.events)
@@ -146,21 +146,21 @@ namespace net.sf.robocode.dotnet.peer
                 // messages
                 foreach (TeamMessage m in obj.teamMessages)
                 {
-                    size += serializer.sizeOf(RbnSerializer.TeamMessage_TYPE, m);
+                    size += serializer.sizeOf(RbSerializerN.TeamMessage_TYPE, m);
                 }
                 size += 1;
 
                 // bullets
                 foreach (BulletStatus b in obj.bulletUpdates)
                 {
-                    size += serializer.sizeOf(RbnSerializer.BulletStatus_TYPE, b);
+                    size += serializer.sizeOf(RbSerializerN.BulletStatus_TYPE, b);
                 }
                 size += 1;
 
                 return size;
             }
 
-            public void serialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (ExecResults) obje;
 
@@ -168,27 +168,27 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.shouldWait);
                 serializer.serialize(buffer, obj.paintEnabled);
 
-                serializer.serialize(buffer, RbnSerializer.ExecCommands_TYPE, obj.commands);
-                serializer.serialize(buffer, RbnSerializer.RobotStatus_TYPE, obj.status);
+                serializer.serialize(buffer, RbSerializerN.ExecCommands_TYPE, obj.commands);
+                serializer.serialize(buffer, RbSerializerN.RobotStatus_TYPE, obj.status);
 
                 foreach (Event evnt in obj.events)
                 {
                     serializer.serialize(buffer, evnt);
                 }
-                buffer.put(RbnSerializer.TERMINATOR_TYPE);
+                buffer.put(RbSerializerN.TERMINATOR_TYPE);
                 foreach (TeamMessage message in obj.teamMessages)
                 {
-                    serializer.serialize(buffer, RbnSerializer.TeamMessage_TYPE, message);
+                    serializer.serialize(buffer, RbSerializerN.TeamMessage_TYPE, message);
                 }
-                buffer.put(RbnSerializer.TERMINATOR_TYPE);
+                buffer.put(RbSerializerN.TERMINATOR_TYPE);
                 foreach (BulletStatus bulletStatus in obj.bulletUpdates)
                 {
-                    serializer.serialize(buffer, RbnSerializer.BulletStatus_TYPE, bulletStatus);
+                    serializer.serialize(buffer, RbSerializerN.BulletStatus_TYPE, bulletStatus);
                 }
-                buffer.put(RbnSerializer.TERMINATOR_TYPE);
+                buffer.put(RbSerializerN.TERMINATOR_TYPE);
             }
 
-            public Object deserialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
+            public Object deserialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 var res = new ExecResults();
 

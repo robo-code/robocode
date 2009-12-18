@@ -26,7 +26,7 @@ namespace net.sf.robocode.security
         void setPriority(Event evnt, int newPriority);
         void setTime(Event evnt, long newTime);
         bool isCriticalEvent(Event evnt);
-        void dispatch(Event evnt, IBasicRobot robot, IRobotStatics statics, Graphics graphics);
+        void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, Graphics graphics);
         void updateBullets(Event evnt, Dictionary<int, Bullet> bullets);
         byte getSerializationType(Event evnt);
     }

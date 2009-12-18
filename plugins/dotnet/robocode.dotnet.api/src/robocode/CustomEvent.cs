@@ -101,7 +101,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override sealed void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal override sealed void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             if (statics.isAdvancedRobot())
             {

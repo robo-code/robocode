@@ -136,19 +136,19 @@ namespace robocode
         {
             if (addedToQueue)
             {
-                Logger.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, priority can't be changed.");
+                LoggerN.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, priority can't be changed.");
                 return;
             }
             if (newPriority < 0)
             {
-                Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
-                Logger.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 0");
+                LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
+                LoggerN.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 0");
                 newPriority = 0;
             }
             else if (newPriority > 99)
             {
-                Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
-                Logger.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 99");
+                LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
+                LoggerN.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 99");
                 newPriority = 99;
             }
             priority = newPriority;
@@ -184,7 +184,7 @@ namespace robocode
             }
             else
             {
-                Logger.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, time can't be changed.");
+                LoggerN.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, time can't be changed.");
             }
         }
 
@@ -196,7 +196,7 @@ namespace robocode
         /// @param graphics the graphics to dispatch to.
         /// </summary>
         // this method is invisible on RobotAPI
-        internal virtual void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal virtual void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
         }
 
@@ -271,7 +271,7 @@ namespace robocode
                 return evnt.isCriticalEvent();
             }
 
-            public void dispatch(Event evnt, IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+            public void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
             {
                 evnt.dispatch(robot, statics, graphics);
             }

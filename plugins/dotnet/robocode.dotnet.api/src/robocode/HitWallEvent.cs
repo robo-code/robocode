@@ -78,7 +78,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             IBasicEvents listener = robot.getBasicEventListener();
 
@@ -93,29 +93,29 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbnSerializer.HitWallEvent_TYPE;
+            return RbSerializerN.HitWallEvent_TYPE;
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
-                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_DOUBLE;
+                return RbSerializerN.SIZEOF_TYPEINFO + RbSerializerN.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (HitWallEvent) objec;
 
                 serializer.serialize(buffer, obj.bearing);
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 double bearing = buffer.getDouble();
 

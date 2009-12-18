@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
+using net.sf.jni4net.nio;
 using net.sf.robocode.dotnet.host.events;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using net.sf.robocode.security;
+using net.sf.robocode.serialization;
 using robocode;
 using robocode.exception;
 using robocode.robotinterfaces.peer;
@@ -22,13 +24,14 @@ namespace net.sf.robocode.dotnet.host.proxies
             MAX_GET_CALL_COUNT = 10000;
 
         //private IGraphicsProxy graphicsProxy;
-
+        //TODO interlocked
         private RobotStatus status;
         protected ExecCommands commands;
         private ExecResults execResults;
         private readonly Dictionary<int, Bullet> bullets = new Dictionary<int, Bullet>();
         private int bulletCounter;
-
+        
+        //TODO interlocked
         private volatile int setCallCount = 0;
         private volatile int getCallCount = 0;
 
@@ -36,6 +39,9 @@ namespace net.sf.robocode.dotnet.host.proxies
         private bool testingCondition;
         private double firedEnergy;
         private double firedHeat;
+        private ByteBufferClr execJavaBuffer;
+        private nio.ByteBuffer execNetBuffer;
+        private RbSerializerN rbSerializerN;
 
         public BasicRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
                                RobotStatics statics)
@@ -50,9 +56,14 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             setSetCallCount(0);
             setGetCallCount(0);
+
+            byte[] sharedBuffer = new byte[1024*100];
+            execJavaBuffer = new ByteBufferClr(sharedBuffer);
+            execNetBuffer = nio.ByteBuffer.wrap(sharedBuffer);
+            rbSerializerN=new RbSerializerN();
         }
 
-        protected override void initializeRound(ExecCommands commands, RobotStatus status)
+        internal override void initializeRound(ExecCommands commands, RobotStatus status)
         {
             updateStatus(commands, status);
             eventManager.reset();
@@ -382,11 +393,18 @@ namespace net.sf.robocode.dotnet.host.proxies
                 commands.setScan(true);
             }
 
-            //TODO commands.setOutputText(out.readAndReset());
+            lock(output)
+            {
+                output.Flush();
+                commands.setOutputText(outputSb.ToString());
+                outputSb.Length = 0;
+            }
             //TODO commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
             // call server
-            callBattle();
+            SerializeCommands();
+            peer.executeImplSerial(execJavaBuffer);
+            DeserializeResults();
 
             updateStatus(execResults.getCommands(), execResults.getStatus());
             //TODO graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
@@ -434,34 +452,21 @@ namespace net.sf.robocode.dotnet.host.proxies
             eventManager.processEvents();
         }
 
-        private void callBattle()
+
+        private void SerializeCommands()
         {
-            //TODO execResults = peer.executeImpl(commands);
+            execNetBuffer.clear();
+            rbSerializerN.serializeToBuffer(execNetBuffer, RbSerializerN.ExecCommands_TYPE, commands);
+            execJavaBuffer.position(0);
+            execJavaBuffer.limit(execNetBuffer.limit());
         }
 
-        /* TODO this stuff will be used only for IPC/serialized communication with battle 
-	 private void callBattleSerial() {
-	 // we need to elevate just for interactive robot, because of MouseEvent constructors calling security check
-	 ExecutePrivilegedAction rpa = new ExecutePrivilegedAction();
-
-	 rpa.newCommands = commands;
-	 execResults  = AccessController.doPrivileged(rpa);
-	 }
-
-	 public class ExecutePrivilegedAction implements PrivilegedAction<ExecResults> {
-	 public ExecCommands newCommands;
-
-	 public ExecResults run() {
-	 final ByteBuffer result;
-	 try {
-	 result = peer.executeImplSerial(RbnSerializer.serializeToBuffer(commands));
-	 return RbnSerializer.deserializeFromBuffer(result);
-	 } catch (IOException e) {
-	 Logger.logError(e);
-	 return null;
-	 }
-	 }
-	 }*/
+        private void DeserializeResults()
+        {
+            execNetBuffer.position(0);
+            execNetBuffer.limit(execJavaBuffer.limit());
+            execResults = (ExecResults)rbSerializerN.deserialize(execNetBuffer);
+        }
 
         protected override sealed void waitForBattleEndImpl()
         {
@@ -473,7 +478,9 @@ namespace net.sf.robocode.dotnet.host.proxies
                 //TODO commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
                 // call server
-                //TODO execResults = peer.waitForBattleEndImpl(commands);
+                SerializeCommands();
+                peer.waitForBattleEndImplSerial(execJavaBuffer);
+                DeserializeResults();
 
                 updateStatus(execResults.getCommands(), execResults.getStatus());
 

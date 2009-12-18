@@ -216,22 +216,22 @@ namespace robocode
             return score.CompareTo(o.score);
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
                 var obj = (BattleResults) objec;
 
-                return RbnSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.teamLeaderName) + 4*RbnSerializer.SIZEOF_INT
-                       + 7*RbnSerializer.SIZEOF_DOUBLE;
+                return RbSerializerN.SIZEOF_TYPEINFO + serializer.sizeOf(obj.teamLeaderName) + 4*RbSerializerN.SIZEOF_INT
+                       + 7*RbSerializerN.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (BattleResults) objec;
 
@@ -249,7 +249,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.thirds);
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 string teamLeaderName = serializer.deserializeString(buffer);
                 int rank = buffer.getInt();

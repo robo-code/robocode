@@ -21,6 +21,7 @@ namespace samplecs
             {
                 ahead(100);
                 turnLeft(30);
+                output.WriteLine("test");
             }
         }
     }

@@ -9,18 +9,14 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-using net.sf.robocode.nio;
+package net.sf.robocode.core;
 
-namespace net.sf.robocode.serialization
-{
-    /// <summary>
-    /// @author Pavel Savara (original)
-    /// </summary>
-    public interface ISerializableHelper
-    {
-        int sizeOf(RbnSerializer serializer, object obj);
-        void serialize(RbnSerializer serializer, ByteBuffer buffer, object obj);
-        object deserialize(RbnSerializer serializer, ByteBuffer buffer);
+import java.util.List;
+
+/**
+ * @author Pavel Savara (original)
+ */
+public class BaseModule implements IModule {
+    public void afterLoaded(List<IModule> allModules) {
     }
 }
-//happy

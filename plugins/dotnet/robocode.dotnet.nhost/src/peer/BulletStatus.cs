@@ -21,22 +21,22 @@ namespace net.sf.robocode.dotnet.peer
         public readonly double x;
         public readonly double y;
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, Object obje)
+            public int sizeOf(RbSerializerN serializer, Object obje)
             {
                 var obj = (BulletStatus) obje;
 
-                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_INT + serializer.sizeOf(obj.victimName)
-                       + RbnSerializer.SIZEOF_BOOL + 2*RbnSerializer.SIZEOF_DOUBLE;
+                return RbSerializerN.SIZEOF_TYPEINFO + RbSerializerN.SIZEOF_INT + serializer.sizeOf(obj.victimName)
+                       + RbSerializerN.SIZEOF_BOOL + 2*RbSerializerN.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (BulletStatus) obje;
 
@@ -47,7 +47,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.y);
             }
 
-            public Object deserialize(RbnSerializer serializer, net.sf.robocode.nio.ByteBuffer buffer)
+            public Object deserialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer)
             {
                 int bulletId = buffer.getInt();
                 String victimName = serializer.deserializeString(buffer);

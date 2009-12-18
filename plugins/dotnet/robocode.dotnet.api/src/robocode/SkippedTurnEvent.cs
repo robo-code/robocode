@@ -74,7 +74,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             if (statics.isAdvancedRobot())
             {
@@ -100,26 +100,26 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbnSerializer.SkippedTurnEvent_TYPE;
+            return RbSerializerN.SkippedTurnEvent_TYPE;
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
-                return RbnSerializer.SIZEOF_TYPEINFO;
+                return RbSerializerN.SIZEOF_TYPEINFO;
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 return new SkippedTurnEvent();
             }

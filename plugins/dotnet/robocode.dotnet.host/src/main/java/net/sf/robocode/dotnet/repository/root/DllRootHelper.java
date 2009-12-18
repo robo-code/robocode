@@ -29,7 +29,7 @@ public class DllRootHelper extends system.Object {
     private native static void __ctorDllRootHelper0(net.sf.jni4net.inj.IClrProxy thiz);
     
     @net.sf.jni4net.attributes.ClrMethod("(LSystem/String;)[LSystem/String;")
-    public native final java.lang.String[] findItems(java.lang.String dllPath);
+    public native java.lang.String[] findItems(java.lang.String dllPath);
     
     public static system.Type typeof() {
         return net.sf.robocode.dotnet.repository.root.DllRootHelper.staticType;

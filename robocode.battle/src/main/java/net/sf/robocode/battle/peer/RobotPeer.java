@@ -188,12 +188,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private RobotState state;
 	private final Arc2D scanArc;
 	private final BoundingRectangle boundingBox;
+    private final RbSerializer rbSerializer;
 
 	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();
 		if (team != null) {
 			team.add(this);
 		}
+
+        rbSerializer=new RbSerializer();
 
 		this.battle = battle;
 		boundingBox = new BoundingRectangle();
@@ -462,17 +465,23 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// -----------
 
 	public ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException {
-		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
+        ExecCommands commands = (ExecCommands)rbSerializer.deserialize(newCommands);
+
 		final ExecResults results = executeImpl(commands);
 
-		return RbSerializer.serializeToBuffer(results);
+        newCommands.clear();
+        rbSerializer.serializeToBuffer(newCommands, RbSerializer.ExecResults_TYPE, results);
+		return newCommands;
 	}
 
 	public ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException {
-		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
+        ExecCommands commands = (ExecCommands)rbSerializer.deserialize(newCommands);
+
 		final ExecResults results = waitForBattleEndImpl(commands);
 
-		return RbSerializer.serializeToBuffer(results);
+        newCommands.clear();
+        rbSerializer.serializeToBuffer(newCommands, RbSerializer.ExecResults_TYPE, results);
+		return newCommands;
 	}
 
 	public final ExecResults executeImpl(ExecCommands newCommands) {

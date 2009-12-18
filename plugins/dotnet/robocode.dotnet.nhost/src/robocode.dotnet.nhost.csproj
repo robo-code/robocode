@@ -40,9 +40,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="jni4net.n-0.5.0.0, Version=0.5.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
+    <Reference Include="jni4net.n-0.6.0.0, Version=0.6.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\lib\jni4net.n-0.5.0.0.dll</HintPath>
+      <HintPath>..\..\tools\lib\jni4net.n-0.6.0.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -56,33 +56,38 @@
     <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
       <Link>generated\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="generated\net\sf\robocode\core\ContainerBase.generated.cs" />
     <Compile Include="generated\net\sf\robocode\dotnet\host\DotnetHost.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\dotnet\nhost\ModuleN.generated.cs" />
     <Compile Include="generated\net\sf\robocode\dotnet\repository\root\DllRootHelper.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\host\IHostedThread.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\host\io\RobotFileSystemManager.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\RobotStatics.generated.cs" />
     <Compile Include="generated\net\sf\robocode\io\Logger.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\manager\IVersionManagerBase.generated.cs" />
     <Compile Include="generated\net\sf\robocode\peer\BadBehavior.generated.cs" />
     <Compile Include="generated\net\sf\robocode\peer\IRobotPeer.generated.cs" />
     <Compile Include="generated\net\sf\robocode\peer\IRobotStatics.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\repository\IRepositoryItem.generated.cs" />
     <Compile Include="generated\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs" />
     <Compile Include="generated\net\sf\robocode\repository\RobotType.generated.cs" />
     <Compile Include="generated\net\sf\robocode\security\HiddenAccess.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\serialization\ISerializableHelper.generated.cs" />
+    <Compile Include="generated\net\sf\robocode\serialization\RbSerializer.generated.cs" />
     <Compile Include="generated\robocode\control\RobotSpecification.generated.cs" />
     <Compile Include="host\DotnetHost.cs" />
     <Compile Include="host\events\EventManager.cs" />
     <Compile Include="host\events\EventQueue.cs" />
+    <Compile Include="host\ModuleN.cs" />
     <Compile Include="host\proxies\AdvancedRobotProxy.cs" />
     <Compile Include="host\proxies\BasicRobotProxy.cs" />
     <Compile Include="host\proxies\HostingRobotProxy.cs" />
     <Compile Include="host\proxies\JuniorRobotProxy.cs" />
     <Compile Include="host\proxies\StandardRobotProxy.cs" />
     <Compile Include="host\proxies\TeamRobotProxy.cs" />
-    <Compile Include="host\RobotClassLoader.cs" />
     <Compile Include="host\RobotStatics.cs" />
+    <Compile Include="host\security\RobotFileSystemManager.cs" />
     <Compile Include="host\security\RobotThreadManager.cs" />
     <Compile Include="host\seed\AppDomainSeed.cs" />
     <Compile Include="host\seed\AppDomainShell.cs" />
@@ -97,6 +102,7 @@
     <Compile Include="repository\RobotType.cs" />
     <Compile Include="repository\root\DllRootHelper.cs" />
     <Compile Include="robocode\control\RobotSpecification.cs" />
+    <Compile Include="serialization\RbSerializer.cs" />
     <Compile Include="utils\Reflection.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +112,9 @@
       <Project>{7E0900D3-6E8F-48EB-86DB-AA767AA90B84}</Project>
       <Name>robocode.dotnet.api</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="generated\net\sf\robocode\host\io\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -119,6 +128,7 @@
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
 echo [assembly: System.Reflection.AssemblyVersion("1.7.3.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
-    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.host\target</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.host\target
+copy $(SolutionDir)\tools\lib\*.dll $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>

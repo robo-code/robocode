@@ -9,19 +9,13 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-namespace net.sf.robocode.peer
-{
-    /// <summary>
-    /// @author Pavel Savara (original)
-    /// </summary>
-    public interface IRobotStatics
-    {
-        bool isInteractiveRobot();
+package net.sf.robocode.core;
 
-        bool isPaintRobot();
+import java.util.List;
 
-        bool isAdvancedRobot();
-
-        bool isTeamRobot();
-    }
+/**
+ * @author Pavel Savara (original)
+ */
+public interface IModule {
+    void afterLoaded(List<IModule> allModules);
 }

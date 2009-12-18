@@ -25,7 +25,7 @@ namespace net.sf.robocode.io
     /// @author Flemming N. Larsen (original)
     /// @author Mathew A. Nelson (original)
     /// </summary>
-    public class Logger
+    public class LoggerN
     {
         public static TextWriter realOut = Console.Out;
         public static TextWriter realErr = Console.Error;
@@ -35,7 +35,7 @@ namespace net.sf.robocode.io
 
         public static void setLogListener(object logListener)
         {
-            Logger.logListener = logListener;
+            LoggerN.logListener = logListener;
         }
 
         public static void logMessage(string s)

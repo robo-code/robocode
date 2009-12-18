@@ -55,7 +55,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             if (statics.isInteractiveRobot())
             {
@@ -73,24 +73,24 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbnSerializer.KeyTypedEvent_TYPE;
+            return RbSerializerN.KeyTypedEvent_TYPE;
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
-                return RbnSerializer.SIZEOF_TYPEINFO + RbnSerializer.SIZEOF_CHAR + RbnSerializer.SIZEOF_INT
-                       + RbnSerializer.SIZEOF_INT + RbnSerializer.SIZEOF_LONG + RbnSerializer.SIZEOF_INT +
-                       RbnSerializer.SIZEOF_INT;
+                return RbSerializerN.SIZEOF_TYPEINFO + RbSerializerN.SIZEOF_CHAR + RbSerializerN.SIZEOF_INT
+                       + RbSerializerN.SIZEOF_INT + RbSerializerN.SIZEOF_LONG + RbSerializerN.SIZEOF_INT +
+                       RbSerializerN.SIZEOF_INT;
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (KeyTypedEvent) objec;
 
@@ -102,7 +102,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.getWhen());
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 char keyChar = buffer.getChar();
                 int keyCode = buffer.getInt();

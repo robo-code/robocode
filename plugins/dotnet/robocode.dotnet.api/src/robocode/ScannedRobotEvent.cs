@@ -199,7 +199,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
         {
             IBasicEvents listener = robot.getBasicEventListener();
 
@@ -214,24 +214,24 @@ namespace robocode
         /// </summary>
         internal override byte getSerializationType()
         {
-            return RbnSerializer.ScannedRobotEvent_TYPE;
+            return RbSerializerN.ScannedRobotEvent_TYPE;
         }
 
-        private static ISerializableHelper createHiddenSerializer()
+        private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
-        private class SerializableHelper : ISerializableHelper
+        private class SerializableHelper : ISerializableHelperN
         {
-            public int sizeOf(RbnSerializer serializer, object objec)
+            public int sizeOf(RbSerializerN serializer, object objec)
             {
                 var obj = (ScannedRobotEvent) objec;
 
-                return RbnSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5*RbnSerializer.SIZEOF_DOUBLE;
+                return RbSerializerN.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5*RbSerializerN.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbnSerializer serializer, ByteBuffer buffer, object objec)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
                 var obj = (ScannedRobotEvent) objec;
 
@@ -243,7 +243,7 @@ namespace robocode
                 serializer.serialize(buffer, obj.velocity);
             }
 
-            public object deserialize(RbnSerializer serializer, ByteBuffer buffer)
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 string name = serializer.deserializeString(buffer);
                 double energy = buffer.getDouble();

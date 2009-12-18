@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using java.io;
 using java.lang;
 using net.sf.robocode.dotnet.host.events;
 using net.sf.robocode.dotnet.host.security;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
-using net.sf.robocode.host.io;
 using net.sf.robocode.host.proxies;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
@@ -22,7 +22,7 @@ using String=System.String;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
-    internal abstract class HostingRobotProxy : IHostingRobotProxy, IHostedThread
+    internal abstract class HostingRobotProxy
     {
         protected EventManager eventManager;
         protected RobotThreadManager robotThreadManager;
@@ -30,10 +30,11 @@ namespace net.sf.robocode.dotnet.host.proxies
         private IRobotRepositoryItem robotSpecification;
         protected RobotStatics statics;
         protected IRobotPeer peer;
-        internal RobotClassLoader robotClassLoader;
         protected IHostManager hostManager;
         protected IBasicRobot robot;
-        private TextWriter output;
+        protected TextWriter output;
+        protected System.Text.StringBuilder outputSb;
+        private Type robotType;
 
         protected HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer,
                                     RobotStatics statics)
@@ -42,17 +43,21 @@ namespace net.sf.robocode.dotnet.host.proxies
             this.statics = statics;
             this.hostManager = hostManager;
             this.robotSpecification = robotSpecification;
+            outputSb = new System.Text.StringBuilder(5000);
+            output = TextWriter.Synchronized(new StringWriter(outputSb));
 
             robotThreadManager = new RobotThreadManager(this);
 
-            loadClassBattle();
-
-            robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
+            robotFileSystemManager = new RobotFileSystemManager(hostManager.getRobotFilesystemQuota(),
                                                                 robotSpecification.getWritableDirectory(),
                                                                 robotSpecification.getReadableDirectory(),
                                                                 robotSpecification.getRootFile());
 
-            robotFileSystemManager.initialize();
+        }
+
+        public void setRobotType(Type robotType)
+        {
+            this.robotType = robotType;
         }
 
         public virtual void cleanup()
@@ -118,7 +123,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         // battle driven methods
         // -----------
 
-        protected abstract void initializeRound(ExecCommands commands, RobotStatus status);
+        internal abstract void initializeRound(ExecCommands commands, RobotStatus status);
 
         public void startRound(ExecCommands commands, RobotStatus status)
         {
@@ -151,26 +156,13 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
-        private void loadClassBattle()
-        {
-            try
-            {
-                robotClassLoader.LoadRobotMainClass();
-            }
-            catch (Throwable e)
-            {
-                println("SYSTEM: Could not load " + statics.getName() + " : ");
-                println(e);
-                drainEnergy();
-            }
-        }
-
         private bool loadRobotRound()
         {
             robot = null;
             try
             {
-                robot = robotClassLoader.CreateRobotInstance();
+                object instance = Activator.CreateInstance(robotType);
+                robot = instance as IBasicRobot;
                 if (robot == null)
                 {
                     println("SYSTEM: Skipping robot: " + statics.getName());
@@ -180,26 +172,14 @@ namespace net.sf.robocode.dotnet.host.proxies
                 robot.setPeer((IBasicRobotPeer) this);
                 eventManager.setRobot(robot);
             }
-                /*catch (IllegalAccessException e) {
-			println("SYSTEM: Unable to instantiate this robot: " + e);
-			println("SYSTEM: Is your constructor marked public?");
-			println(e);
-			robot = null;
-			logMessage(e);
-			return false;
-		} */
-            catch (Throwable e)
+            catch (Exception e)
             {
                 println("SYSTEM: An error occurred during initialization of " + statics.getName());
                 println("SYSTEM: " + e);
                 println(e);
                 robot = null;
-                Logger.logMessage(e);
+                LoggerN.logMessage(e);
                 return false;
-            }
-            finally
-            {
-                //threadManager.setLoadingRobot(null);
             }
             return true;
         }
@@ -211,8 +191,6 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         public void run()
         {
-            //robotThreadManager.initAWT();
-
             peer.setRunning(true);
 
             if (!robotSpecification.isValid() || !loadRobotRound())
@@ -252,7 +230,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                 }
                 catch (AbortedException e)
                 {
-// Do nothing
+                    // Do nothing
                 }
                 catch (DeathException e)
                 {

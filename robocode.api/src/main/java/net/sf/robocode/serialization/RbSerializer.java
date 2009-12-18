@@ -40,7 +40,7 @@ public final class RbSerializer {
 	public final static int SIZEOF_LONG = 8;
 	public final static int SIZEOF_DOUBLE = 8;
 
-	public final static byte TERMINATOR_TYPE = -128;
+	public final static byte TERMINATOR_TYPE = -1;
 	public final static byte ExecCommands_TYPE = 1;
 	public final static byte BulletCommand_TYPE = 2;
 	public final static byte TeamMessage_TYPE = 3;
@@ -141,6 +141,22 @@ public final class RbSerializer {
 		}
 		return buffer;
 	}
+
+    public ByteBuffer serializeToBuffer(ByteBuffer buffer, byte type, Object object) throws IOException {
+        int length = sizeOf(type, object);
+        buffer.limit(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
+
+        buffer.putInt(byteOrder);
+        buffer.putInt(currentVersion);
+        buffer.putInt(length);
+
+        // body
+        serialize(buffer, type, object);
+        if (buffer.remaining() != 0) {
+            throw new IOException("Serialization failed: bad size");
+        }
+        return buffer;
+    }
 
 	public Object deserialize(InputStream source) throws IOException {
 		// header

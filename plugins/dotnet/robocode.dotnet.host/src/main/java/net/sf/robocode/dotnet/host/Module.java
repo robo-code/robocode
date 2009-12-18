@@ -12,9 +12,7 @@
 package net.sf.robocode.dotnet.host;
 
 
-import net.sf.robocode.core.Container;
-import net.sf.robocode.core.EngineClassLoader;
-import net.sf.robocode.core.ContainerBase;
+import net.sf.robocode.core.*;
 import net.sf.robocode.dotnet.repository.items.handlers.DotnetPropertiesHandler;
 import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
 import net.sf.robocode.host.IHost;
@@ -24,16 +22,19 @@ import net.sf.robocode.io.Logger;
 import net.sf.jni4net.Bridge;
 
 import java.io.File;
+import java.util.List;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class Module {
+public class Module extends BaseModule {
 	static {
 		// .NET proxies and their interfaces must be loaded in system class loader in order to call native methods
 		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.host.DotnetHost");
 		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.repository.root.DllRootHelper");
+        EngineClassLoader.addExclusion("net.sf.robocode.dotnet.nhost.ModuleN");
+
 		Init();
 	}
 
@@ -57,6 +58,7 @@ public class Module {
             final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
 
             Bridge.setVerbose(true);
+            Bridge.setDebug(true);
             Bridge.init(new File(libsDir).getCanonicalPath());
             Bridge.LoadAndRegisterAssembly(new File(nhost).getCanonicalPath());
 
@@ -74,4 +76,9 @@ public class Module {
 			throw new Error("Can't initialize .NET Robocode", e);
 		}
 	}
+
+    public void afterLoaded(List<IModule> allModules) {
+        net.sf.robocode.dotnet.nhost.ModuleN.InitN();
+    }
+
 }

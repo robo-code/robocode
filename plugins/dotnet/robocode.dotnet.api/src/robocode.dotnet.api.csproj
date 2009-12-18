@@ -50,16 +50,15 @@
     <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
       <Link>AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="net\sf\robocode\io\Logger.cs" />
-    <Compile Include="net\sf\robocode\manager\IVersionManagerBase.cs" />
-    <Compile Include="net\sf\robocode\peer\IRobotStatics.cs" />
+    <Compile Include="net\sf\robocode\io\LoggerN.cs" />
+    <Compile Include="net\sf\robocode\peer\IRobotStaticsN.cs" />
     <Compile Include="net\sf\robocode\security\HiddenAccessN.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenBulletHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenEventHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenRulesHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenStatusHelper.cs" />
-    <Compile Include="net\sf\robocode\serialization\ISerializableHelper.cs" />
-    <Compile Include="net\sf\robocode\serialization\RbnSerializer.cs" />
+    <Compile Include="net\sf\robocode\serialization\ISerializableHelperN.cs" />
+    <Compile Include="net\sf\robocode\serialization\RbSerializerN.cs" />
     <Compile Include="net\sf\robocode\nio\Buffer.cs" />
     <Compile Include="net\sf\robocode\nio\ByteBuffer.cs" />
     <Compile Include="net\sf\robocode\nio\HeapByteBuffer.cs" />
