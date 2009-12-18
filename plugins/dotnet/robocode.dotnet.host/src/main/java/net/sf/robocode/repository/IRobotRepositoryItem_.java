@@ -135,17 +135,17 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isDroid();
     
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getReadableDirectory();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getWritableDirectory();
-    
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isStandardRobot();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
     public native java.net.URL getRobotClassPath();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getWritableDirectory();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getReadableDirectory();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getRobotLanguage();

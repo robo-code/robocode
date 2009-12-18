@@ -16,16 +16,16 @@ namespace robocode.exception
     /// <summary>
     /// @author Mathew A. Nelson (original)
     /// </summary>
-    public class WinException : Exception
+    public class WinExceptionN : Exception
     {
         // Must be error!
 
 
-        public WinException()
+        public WinExceptionN()
         {
         }
 
-        public WinException(string s)
+        public WinExceptionN(string s)
             : base(s)
         {
         }

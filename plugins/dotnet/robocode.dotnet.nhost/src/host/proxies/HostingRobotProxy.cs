@@ -224,19 +224,19 @@ namespace net.sf.robocode.dotnet.host.proxies
                         executeImpl();
                     }
                 }
-                catch (WinException e)
+                catch (WinExceptionN e)
                 {
                     // Do nothing
                 }
-                catch (AbortedException e)
+                catch (AbortedExceptionN e)
                 {
                     // Do nothing
                 }
-                catch (DeathException e)
+                catch (DeathExceptionN e)
                 {
                     println("SYSTEM: " + statics.getName() + " has died");
                 }
-                catch (DisabledException e)
+                catch (DisabledExceptionN e)
                 {
                     drainEnergy();
                     String msg = e.Message;

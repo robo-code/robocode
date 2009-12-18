@@ -16,19 +16,14 @@ namespace robocode.exception
     /// <summary>
     /// @author Mathew A. Nelson (original)
     /// </summary>
-    public class DeathException : Exception
+    public class DisabledExceptionN : Exception
     {
-        // Must be error!
-        // From viewpoint of the Robot, an Error is a JVM error:
-        // Robot died, their CPU exploded, the JVM for the robot's brain has an error.
-
-
-        public DeathException()
+        public DisabledExceptionN()
         {
         }
 
-        public DeathException(string message)
-            : base(message)
+        public DisabledExceptionN(string s)
+            : base(s)
         {
         }
     }

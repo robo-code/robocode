@@ -76,6 +76,10 @@
     <Compile Include="generated\net\sf\robocode\serialization\ISerializableHelper.generated.cs" />
     <Compile Include="generated\net\sf\robocode\serialization\RbSerializer.generated.cs" />
     <Compile Include="generated\robocode\control\RobotSpecification.generated.cs" />
+    <Compile Include="generated\robocode\exception\AbortedException.generated.cs" />
+    <Compile Include="generated\robocode\exception\DeathException.generated.cs" />
+    <Compile Include="generated\robocode\exception\DisabledException.generated.cs" />
+    <Compile Include="generated\robocode\exception\WinException.generated.cs" />
     <Compile Include="host\DotnetHost.cs" />
     <Compile Include="host\events\EventManager.cs" />
     <Compile Include="host\events\EventQueue.cs" />

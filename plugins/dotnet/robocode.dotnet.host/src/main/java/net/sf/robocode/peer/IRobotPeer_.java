@@ -48,10 +48,10 @@ class __IRobotPeer extends system.Object implements net.sf.robocode.peer.IRobotP
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;)Ljava/lang/Object;")
     public native net.sf.robocode.peer.ExecResults executeImpl(net.sf.robocode.peer.ExecCommands par0);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Ljava/nio/ByteBuffer;)Ljava/nio/ByteBuffer;")
-    public native java.nio.ByteBuffer executeImplSerial(java.nio.ByteBuffer par0);
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/nio/ByteBuffer;)V")
+    public native void executeImplSerial(java.nio.ByteBuffer par0);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Ljava/nio/ByteBuffer;)Ljava/nio/ByteBuffer;")
-    public native java.nio.ByteBuffer waitForBattleEndImplSerial(java.nio.ByteBuffer par0);
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/nio/ByteBuffer;)V")
+    public native void waitForBattleEndImplSerial(java.nio.ByteBuffer par0);
 }
 //</generated-proxy>

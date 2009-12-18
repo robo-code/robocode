@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
+using java.lang;
 using net.sf.jni4net.nio;
 using net.sf.robocode.dotnet.host.events;
 using net.sf.robocode.dotnet.peer;
@@ -14,6 +15,8 @@ using robocode;
 using robocode.exception;
 using robocode.robotinterfaces.peer;
 using robocode.util;
+using Double = System.Double;
+using String = System.String;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
@@ -185,7 +188,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             if (res >= MAX_SET_CALL_COUNT)
             {
                 println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
-                throw new DisabledException("Too many calls to setXX methods");
+                throw new DisabledExceptionN("Too many calls to setXX methods");
             }
         }
 
@@ -196,7 +199,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             if (res >= MAX_GET_CALL_COUNT)
             {
                 println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
-                throw new DisabledException("Too many calls to getXX methods");
+                throw new DisabledExceptionN("Too many calls to getXX methods");
             }
         }
 
@@ -403,7 +406,26 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             // call server
             SerializeCommands();
-            peer.executeImplSerial(execJavaBuffer);
+            try
+            {
+                peer.executeImplSerial(execJavaBuffer);
+            }
+            catch (WinException e)
+            {
+                throw new WinExceptionN(e.getMessage());
+            }
+            catch (AbortedException e)
+            {
+                throw new AbortedExceptionN(e.getMessage());
+            }
+            catch (DeathException e)
+            {
+                throw new DeathExceptionN(e.getMessage());
+            }
+            catch (DisabledException e)
+            {
+                throw new DisabledExceptionN(e.getMessage());
+            }
             DeserializeResults();
 
             updateStatus(execResults.getCommands(), execResults.getStatus());

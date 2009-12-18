@@ -33,6 +33,12 @@
   <JavaClass TypeName="net.sf.robocode.manager.IVersionManagerBase"/>
   <JavaClass TypeName="net.sf.robocode.peer.IRobotStatics"/>
   
+  <JavaClass TypeName="robocode.exception.WinException"/>
+  <JavaClass TypeName="robocode.exception.AbortedException"/>
+  <JavaClass TypeName="robocode.exception.DeathException"/>
+  <JavaClass TypeName="robocode.exception.DisabledException"/>
+  
+  
   <!-- .NET -->
   <ClrType TypeName="net.sf.robocode.dotnet.host.DotnetHost"/>
   <ClrType TypeName="net.sf.robocode.dotnet.repository.root.DllRootHelper"/>

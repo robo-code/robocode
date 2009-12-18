@@ -6,29 +6,33 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
+ *     Pavel Savara
+ *     - Initial implementation
  *******************************************************************************/
 using System;
 
 namespace robocode.exception
 {
     /// <summary>
-    /// @author Mathew A. Nelson (original)
+    /// @author Pavel Savara (original)
+    /// @since 1.6.1
     /// </summary>
-    public class DisabledException : Exception
+    public class AbortedExceptionN : Exception
     {
         // Must be error!
+        // From viewpoint of the Robot, an Error is a JVM error:
+        // Robot died, their CPU exploded, the JVM for the robot's brain has an error.
 
 
-        public DisabledException()
+        public AbortedExceptionN()
         {
         }
 
-        public DisabledException(string s)
-            : base(s)
+        public AbortedExceptionN(string message)
+            : base(message)
         {
         }
     }
 }
+
 //happy

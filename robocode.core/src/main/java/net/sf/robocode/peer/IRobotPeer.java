@@ -31,7 +31,7 @@ public interface IRobotPeer {
 
 	ExecResults executeImpl(ExecCommands newCommands);
 
-	ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException;
+	void executeImplSerial(ByteBuffer bidirectionalBuffer) throws IOException;
 	
-	ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException;
+	void waitForBattleEndImplSerial(ByteBuffer bidirectionalBuffer) throws IOException;
 }

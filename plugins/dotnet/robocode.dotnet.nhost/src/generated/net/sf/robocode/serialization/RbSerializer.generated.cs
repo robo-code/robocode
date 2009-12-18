@@ -49,135 +49,137 @@ namespace net.sf.robocode.serialization {
         
         internal static global::net.sf.jni4net.jni.MethodId _serialize15;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserialize16;
+        internal static global::net.sf.jni4net.jni.MethodId _serializeToBuffer16;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserialize17;
+        internal static global::net.sf.jni4net.jni.MethodId _serializeToBuffer17;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeAny18;
+        internal static global::net.sf.jni4net.jni.MethodId _deserialize18;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeString19;
+        internal static global::net.sf.jni4net.jni.MethodId _deserialize19;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeBytes20;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeAny20;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeIntegers21;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeString21;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeFloats22;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeBytes22;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeChars23;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeIntegers23;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeDoubles24;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeFloats24;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeBoolean25;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeChars25;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeChar26;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeDoubles26;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeInt27;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeBoolean27;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeFloat28;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeChar28;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeDouble29;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeInt29;
         
-        internal static global::net.sf.jni4net.jni.MethodId _sizeOf30;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeFloat30;
         
-        internal static global::net.sf.jni4net.jni.MethodId _sizeOf31;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeDouble31;
         
         internal static global::net.sf.jni4net.jni.MethodId _sizeOf32;
         
         internal static global::net.sf.jni4net.jni.MethodId _sizeOf33;
         
-        internal static global::net.sf.jni4net.jni.MethodId _serializeToBuffer34;
+        internal static global::net.sf.jni4net.jni.MethodId _sizeOf34;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserializeFromBuffer35;
+        internal static global::net.sf.jni4net.jni.MethodId _sizeOf35;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deepCopy36;
+        internal static global::net.sf.jni4net.jni.MethodId _deserializeFromBuffer36;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_TYPEINFO37;
+        internal static global::net.sf.jni4net.jni.MethodId _deepCopy37;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_BYTE38;
+        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_TYPEINFO38;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_BOOL39;
+        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_BYTE39;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_CHAR40;
+        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_BOOL40;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_INT41;
+        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_CHAR41;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_LONG42;
+        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_INT42;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_DOUBLE43;
+        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_LONG43;
         
-        internal static global::net.sf.jni4net.jni.FieldId _TERMINATOR_TYPE44;
+        internal static global::net.sf.jni4net.jni.FieldId _SIZEOF_DOUBLE44;
         
-        internal static global::net.sf.jni4net.jni.FieldId _ExecCommands_TYPE45;
+        internal static global::net.sf.jni4net.jni.FieldId _TERMINATOR_TYPE45;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BulletCommand_TYPE46;
+        internal static global::net.sf.jni4net.jni.FieldId _ExecCommands_TYPE46;
         
-        internal static global::net.sf.jni4net.jni.FieldId _TeamMessage_TYPE47;
+        internal static global::net.sf.jni4net.jni.FieldId _BulletCommand_TYPE47;
         
-        internal static global::net.sf.jni4net.jni.FieldId _DebugProperty_TYPE48;
+        internal static global::net.sf.jni4net.jni.FieldId _TeamMessage_TYPE48;
         
-        internal static global::net.sf.jni4net.jni.FieldId _ExecResults_TYPE49;
+        internal static global::net.sf.jni4net.jni.FieldId _DebugProperty_TYPE49;
         
-        internal static global::net.sf.jni4net.jni.FieldId _RobotStatus_TYPE50;
+        internal static global::net.sf.jni4net.jni.FieldId _ExecResults_TYPE50;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BulletStatus_TYPE51;
+        internal static global::net.sf.jni4net.jni.FieldId _RobotStatus_TYPE51;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BattleResults_TYPE52;
+        internal static global::net.sf.jni4net.jni.FieldId _BulletStatus_TYPE52;
         
-        internal static global::net.sf.jni4net.jni.FieldId _Bullet_TYPE53;
+        internal static global::net.sf.jni4net.jni.FieldId _BattleResults_TYPE53;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BattleEndedEvent_TYPE54;
+        internal static global::net.sf.jni4net.jni.FieldId _Bullet_TYPE54;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BulletHitBulletEvent_TYPE55;
+        internal static global::net.sf.jni4net.jni.FieldId _BattleEndedEvent_TYPE55;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BulletHitEvent_TYPE56;
+        internal static global::net.sf.jni4net.jni.FieldId _BulletHitBulletEvent_TYPE56;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BulletMissedEvent_TYPE57;
+        internal static global::net.sf.jni4net.jni.FieldId _BulletHitEvent_TYPE57;
         
-        internal static global::net.sf.jni4net.jni.FieldId _DeathEvent_TYPE58;
+        internal static global::net.sf.jni4net.jni.FieldId _BulletMissedEvent_TYPE58;
         
-        internal static global::net.sf.jni4net.jni.FieldId _WinEvent_TYPE59;
+        internal static global::net.sf.jni4net.jni.FieldId _DeathEvent_TYPE59;
         
-        internal static global::net.sf.jni4net.jni.FieldId _HitWallEvent_TYPE60;
+        internal static global::net.sf.jni4net.jni.FieldId _WinEvent_TYPE60;
         
-        internal static global::net.sf.jni4net.jni.FieldId _RobotDeathEvent_TYPE61;
+        internal static global::net.sf.jni4net.jni.FieldId _HitWallEvent_TYPE61;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SkippedTurnEvent_TYPE62;
+        internal static global::net.sf.jni4net.jni.FieldId _RobotDeathEvent_TYPE62;
         
-        internal static global::net.sf.jni4net.jni.FieldId _ScannedRobotEvent_TYPE63;
+        internal static global::net.sf.jni4net.jni.FieldId _SkippedTurnEvent_TYPE63;
         
-        internal static global::net.sf.jni4net.jni.FieldId _HitByBulletEvent_TYPE64;
+        internal static global::net.sf.jni4net.jni.FieldId _ScannedRobotEvent_TYPE64;
         
-        internal static global::net.sf.jni4net.jni.FieldId _HitRobotEvent_TYPE65;
+        internal static global::net.sf.jni4net.jni.FieldId _HitByBulletEvent_TYPE65;
         
-        internal static global::net.sf.jni4net.jni.FieldId _KeyPressedEvent_TYPE66;
+        internal static global::net.sf.jni4net.jni.FieldId _HitRobotEvent_TYPE66;
         
-        internal static global::net.sf.jni4net.jni.FieldId _KeyReleasedEvent_TYPE67;
+        internal static global::net.sf.jni4net.jni.FieldId _KeyPressedEvent_TYPE67;
         
-        internal static global::net.sf.jni4net.jni.FieldId _KeyTypedEvent_TYPE68;
+        internal static global::net.sf.jni4net.jni.FieldId _KeyReleasedEvent_TYPE68;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseClickedEvent_TYPE69;
+        internal static global::net.sf.jni4net.jni.FieldId _KeyTypedEvent_TYPE69;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseDraggedEvent_TYPE70;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseClickedEvent_TYPE70;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseEnteredEvent_TYPE71;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseDraggedEvent_TYPE71;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseExitedEvent_TYPE72;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseEnteredEvent_TYPE72;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseMovedEvent_TYPE73;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseExitedEvent_TYPE73;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MousePressedEvent_TYPE74;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseMovedEvent_TYPE74;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseReleasedEvent_TYPE75;
+        internal static global::net.sf.jni4net.jni.FieldId _MousePressedEvent_TYPE75;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseWheelMovedEvent_TYPE76;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseReleasedEvent_TYPE76;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor77;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseWheelMovedEvent_TYPE77;
+        
+        internal static global::net.sf.jni4net.jni.MethodId @__ctor78;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public RbSerializer() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer.@__ctor77, this);
+            @__env.NewObject(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer.@__ctor78, this);
         }
         
         protected RbSerializer(global::net.sf.jni4net.jni.JNIEnv @__env) : 
@@ -194,7 +196,7 @@ namespace net.sf.robocode.serialization {
         public static int SIZEOF_TYPEINFO {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_TYPEINFO37)));
+                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_TYPEINFO38)));
             }
         }
         
@@ -202,7 +204,7 @@ namespace net.sf.robocode.serialization {
         public static int SIZEOF_BYTE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_BYTE38)));
+                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_BYTE39)));
             }
         }
         
@@ -210,7 +212,7 @@ namespace net.sf.robocode.serialization {
         public static int SIZEOF_BOOL {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_BOOL39)));
+                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_BOOL40)));
             }
         }
         
@@ -218,7 +220,7 @@ namespace net.sf.robocode.serialization {
         public static int SIZEOF_CHAR {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_CHAR40)));
+                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_CHAR41)));
             }
         }
         
@@ -226,7 +228,7 @@ namespace net.sf.robocode.serialization {
         public static int SIZEOF_INT {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_INT41)));
+                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_INT42)));
             }
         }
         
@@ -234,7 +236,7 @@ namespace net.sf.robocode.serialization {
         public static int SIZEOF_LONG {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_LONG42)));
+                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_LONG43)));
             }
         }
         
@@ -242,7 +244,7 @@ namespace net.sf.robocode.serialization {
         public static int SIZEOF_DOUBLE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_DOUBLE43)));
+                return ((int)(@__env.GetStaticIntField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SIZEOF_DOUBLE44)));
             }
         }
         
@@ -250,7 +252,7 @@ namespace net.sf.robocode.serialization {
         public static byte TERMINATOR_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._TERMINATOR_TYPE44)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._TERMINATOR_TYPE45)));
             }
         }
         
@@ -258,7 +260,7 @@ namespace net.sf.robocode.serialization {
         public static byte ExecCommands_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._ExecCommands_TYPE45)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._ExecCommands_TYPE46)));
             }
         }
         
@@ -266,7 +268,7 @@ namespace net.sf.robocode.serialization {
         public static byte BulletCommand_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletCommand_TYPE46)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletCommand_TYPE47)));
             }
         }
         
@@ -274,7 +276,7 @@ namespace net.sf.robocode.serialization {
         public static byte TeamMessage_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._TeamMessage_TYPE47)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._TeamMessage_TYPE48)));
             }
         }
         
@@ -282,7 +284,7 @@ namespace net.sf.robocode.serialization {
         public static byte DebugProperty_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._DebugProperty_TYPE48)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._DebugProperty_TYPE49)));
             }
         }
         
@@ -290,7 +292,7 @@ namespace net.sf.robocode.serialization {
         public static byte ExecResults_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._ExecResults_TYPE49)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._ExecResults_TYPE50)));
             }
         }
         
@@ -298,7 +300,7 @@ namespace net.sf.robocode.serialization {
         public static byte RobotStatus_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._RobotStatus_TYPE50)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._RobotStatus_TYPE51)));
             }
         }
         
@@ -306,7 +308,7 @@ namespace net.sf.robocode.serialization {
         public static byte BulletStatus_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletStatus_TYPE51)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletStatus_TYPE52)));
             }
         }
         
@@ -314,7 +316,7 @@ namespace net.sf.robocode.serialization {
         public static byte BattleResults_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BattleResults_TYPE52)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BattleResults_TYPE53)));
             }
         }
         
@@ -322,7 +324,7 @@ namespace net.sf.robocode.serialization {
         public static byte Bullet_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._Bullet_TYPE53)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._Bullet_TYPE54)));
             }
         }
         
@@ -330,7 +332,7 @@ namespace net.sf.robocode.serialization {
         public static byte BattleEndedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BattleEndedEvent_TYPE54)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BattleEndedEvent_TYPE55)));
             }
         }
         
@@ -338,7 +340,7 @@ namespace net.sf.robocode.serialization {
         public static byte BulletHitBulletEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletHitBulletEvent_TYPE55)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletHitBulletEvent_TYPE56)));
             }
         }
         
@@ -346,7 +348,7 @@ namespace net.sf.robocode.serialization {
         public static byte BulletHitEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletHitEvent_TYPE56)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletHitEvent_TYPE57)));
             }
         }
         
@@ -354,7 +356,7 @@ namespace net.sf.robocode.serialization {
         public static byte BulletMissedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletMissedEvent_TYPE57)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletMissedEvent_TYPE58)));
             }
         }
         
@@ -362,7 +364,7 @@ namespace net.sf.robocode.serialization {
         public static byte DeathEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._DeathEvent_TYPE58)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._DeathEvent_TYPE59)));
             }
         }
         
@@ -370,7 +372,7 @@ namespace net.sf.robocode.serialization {
         public static byte WinEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._WinEvent_TYPE59)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._WinEvent_TYPE60)));
             }
         }
         
@@ -378,7 +380,7 @@ namespace net.sf.robocode.serialization {
         public static byte HitWallEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitWallEvent_TYPE60)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitWallEvent_TYPE61)));
             }
         }
         
@@ -386,7 +388,7 @@ namespace net.sf.robocode.serialization {
         public static byte RobotDeathEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._RobotDeathEvent_TYPE61)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._RobotDeathEvent_TYPE62)));
             }
         }
         
@@ -394,7 +396,7 @@ namespace net.sf.robocode.serialization {
         public static byte SkippedTurnEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SkippedTurnEvent_TYPE62)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SkippedTurnEvent_TYPE63)));
             }
         }
         
@@ -402,7 +404,7 @@ namespace net.sf.robocode.serialization {
         public static byte ScannedRobotEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._ScannedRobotEvent_TYPE63)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._ScannedRobotEvent_TYPE64)));
             }
         }
         
@@ -410,7 +412,7 @@ namespace net.sf.robocode.serialization {
         public static byte HitByBulletEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitByBulletEvent_TYPE64)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitByBulletEvent_TYPE65)));
             }
         }
         
@@ -418,7 +420,7 @@ namespace net.sf.robocode.serialization {
         public static byte HitRobotEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitRobotEvent_TYPE65)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitRobotEvent_TYPE66)));
             }
         }
         
@@ -426,7 +428,7 @@ namespace net.sf.robocode.serialization {
         public static byte KeyPressedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyPressedEvent_TYPE66)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyPressedEvent_TYPE67)));
             }
         }
         
@@ -434,7 +436,7 @@ namespace net.sf.robocode.serialization {
         public static byte KeyReleasedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyReleasedEvent_TYPE67)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyReleasedEvent_TYPE68)));
             }
         }
         
@@ -442,7 +444,7 @@ namespace net.sf.robocode.serialization {
         public static byte KeyTypedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyTypedEvent_TYPE68)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyTypedEvent_TYPE69)));
             }
         }
         
@@ -450,7 +452,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseClickedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseClickedEvent_TYPE69)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseClickedEvent_TYPE70)));
             }
         }
         
@@ -458,7 +460,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseDraggedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseDraggedEvent_TYPE70)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseDraggedEvent_TYPE71)));
             }
         }
         
@@ -466,7 +468,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseEnteredEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseEnteredEvent_TYPE71)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseEnteredEvent_TYPE72)));
             }
         }
         
@@ -474,7 +476,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseExitedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseExitedEvent_TYPE72)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseExitedEvent_TYPE73)));
             }
         }
         
@@ -482,7 +484,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseMovedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseMovedEvent_TYPE73)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseMovedEvent_TYPE74)));
             }
         }
         
@@ -490,7 +492,7 @@ namespace net.sf.robocode.serialization {
         public static byte MousePressedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE74)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE75)));
             }
         }
         
@@ -498,7 +500,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseReleasedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE75)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE76)));
             }
         }
         
@@ -506,7 +508,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseWheelMovedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE76)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE77)));
             }
         }
         
@@ -514,82 +516,83 @@ namespace net.sf.robocode.serialization {
             global::net.sf.robocode.serialization.RbSerializer.staticClass = @__class;
             global::net.sf.robocode.serialization.RbSerializer._register0 = @__env.GetStaticMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "register", "(Ljava/lang/Class;B)V");
             global::net.sf.robocode.serialization.RbSerializer._serialize1 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/io/OutputStream;BLjava/lang/Object;)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize2 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;BLjava/lang/Object;)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize3 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;Ljava/lang/String;)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize4 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[B)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize5 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[I)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize6 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[C)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize7 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[D)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize8 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[F)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize9 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;Z)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize10 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;D)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize11 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;C)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize12 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;J)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize13 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;I)V");
-            global::net.sf.robocode.serialization.RbSerializer._serialize14 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;Lrobocode/Event;)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize2 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;Lrobocode/Event;)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize3 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;BLjava/lang/Object;)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize4 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;Ljava/lang/String;)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize5 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[B)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize6 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[I)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize7 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[C)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize8 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[D)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize9 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;[F)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize10 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;Z)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize11 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;D)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize12 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;C)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize13 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;J)V");
+            global::net.sf.robocode.serialization.RbSerializer._serialize14 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(Ljava/nio/ByteBuffer;I)V");
             global::net.sf.robocode.serialization.RbSerializer._serialize15 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serialize", "(BLjava/lang/Object;)Ljava/nio/ByteBuffer;");
-            global::net.sf.robocode.serialization.RbSerializer._deserialize16 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserialize", "(Ljava/io/InputStream;)Ljava/lang/Object;");
-            global::net.sf.robocode.serialization.RbSerializer._deserialize17 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserialize", "(Ljava/nio/ByteBuffer;)Ljava/lang/Object;");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeAny18 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeAny", "(Ljava/nio/ByteBuffer;)Ljava/lang/Object;");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeString19 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeString", "(Ljava/nio/ByteBuffer;)Ljava/lang/String;");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeBytes20 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeBytes", "(Ljava/nio/ByteBuffer;)[B");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeIntegers21 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeIntegers", "(Ljava/nio/ByteBuffer;)[I");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeFloats22 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeFloats", "(Ljava/nio/ByteBuffer;)[F");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeChars23 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeChars", "(Ljava/nio/ByteBuffer;)[C");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeDoubles24 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeDoubles", "(Ljava/nio/ByteBuffer;)[D");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeBoolean25 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeBoolean", "(Ljava/nio/ByteBuffer;)Z");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeChar26 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeChar", "(Ljava/nio/ByteBuffer;)C");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeInt27 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeInt", "(Ljava/nio/ByteBuffer;)I");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeFloat28 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeFloat", "(Ljava/nio/ByteBuffer;)Ljava/lang/Float;");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeDouble29 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeDouble", "(Ljava/nio/ByteBuffer;)D");
-            global::net.sf.robocode.serialization.RbSerializer._sizeOf30 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "sizeOf", "(BLjava/lang/Object;)I");
-            global::net.sf.robocode.serialization.RbSerializer._sizeOf31 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "sizeOf", "(Ljava/lang/String;)I");
-            global::net.sf.robocode.serialization.RbSerializer._sizeOf32 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "sizeOf", "([B)I");
+            global::net.sf.robocode.serialization.RbSerializer._serializeToBuffer16 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serializeToBuffer", "(Ljava/nio/ByteBuffer;BLjava/lang/Object;)Ljava/nio/ByteBuffer;");
+            global::net.sf.robocode.serialization.RbSerializer._serializeToBuffer17 = @__env.GetStaticMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serializeToBuffer", "(Ljava/lang/Object;)Ljava/nio/ByteBuffer;");
+            global::net.sf.robocode.serialization.RbSerializer._deserialize18 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserialize", "(Ljava/io/InputStream;)Ljava/lang/Object;");
+            global::net.sf.robocode.serialization.RbSerializer._deserialize19 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserialize", "(Ljava/nio/ByteBuffer;)Ljava/lang/Object;");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeAny20 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeAny", "(Ljava/nio/ByteBuffer;)Ljava/lang/Object;");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeString21 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeString", "(Ljava/nio/ByteBuffer;)Ljava/lang/String;");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeBytes22 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeBytes", "(Ljava/nio/ByteBuffer;)[B");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeIntegers23 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeIntegers", "(Ljava/nio/ByteBuffer;)[I");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeFloats24 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeFloats", "(Ljava/nio/ByteBuffer;)[F");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeChars25 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeChars", "(Ljava/nio/ByteBuffer;)[C");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeDoubles26 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeDoubles", "(Ljava/nio/ByteBuffer;)[D");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeBoolean27 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeBoolean", "(Ljava/nio/ByteBuffer;)Z");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeChar28 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeChar", "(Ljava/nio/ByteBuffer;)C");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeInt29 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeInt", "(Ljava/nio/ByteBuffer;)I");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeFloat30 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeFloat", "(Ljava/nio/ByteBuffer;)Ljava/lang/Float;");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeDouble31 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeDouble", "(Ljava/nio/ByteBuffer;)D");
+            global::net.sf.robocode.serialization.RbSerializer._sizeOf32 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "sizeOf", "(BLjava/lang/Object;)I");
             global::net.sf.robocode.serialization.RbSerializer._sizeOf33 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "sizeOf", "(Lrobocode/Event;)I");
-            global::net.sf.robocode.serialization.RbSerializer._serializeToBuffer34 = @__env.GetStaticMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "serializeToBuffer", "(Ljava/lang/Object;)Ljava/nio/ByteBuffer;");
-            global::net.sf.robocode.serialization.RbSerializer._deserializeFromBuffer35 = @__env.GetStaticMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeFromBuffer", "(Ljava/nio/ByteBuffer;)Ljava/lang/Object;");
-            global::net.sf.robocode.serialization.RbSerializer._deepCopy36 = @__env.GetStaticMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deepCopy", "(BLjava/lang/Object;)Ljava/lang/Object;");
-            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_TYPEINFO37 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_TYPEINFO", "I");
-            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_BYTE38 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_BYTE", "I");
-            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_BOOL39 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_BOOL", "I");
-            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_CHAR40 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_CHAR", "I");
-            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_INT41 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_INT", "I");
-            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_LONG42 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_LONG", "I");
-            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_DOUBLE43 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_DOUBLE", "I");
-            global::net.sf.robocode.serialization.RbSerializer._TERMINATOR_TYPE44 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "TERMINATOR_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._ExecCommands_TYPE45 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "ExecCommands_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BulletCommand_TYPE46 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletCommand_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._TeamMessage_TYPE47 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "TeamMessage_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._DebugProperty_TYPE48 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "DebugProperty_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._ExecResults_TYPE49 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "ExecResults_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._RobotStatus_TYPE50 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "RobotStatus_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BulletStatus_TYPE51 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletStatus_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BattleResults_TYPE52 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BattleResults_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._Bullet_TYPE53 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "Bullet_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BattleEndedEvent_TYPE54 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BattleEndedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BulletHitBulletEvent_TYPE55 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletHitBulletEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BulletHitEvent_TYPE56 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletHitEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BulletMissedEvent_TYPE57 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletMissedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._DeathEvent_TYPE58 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "DeathEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._WinEvent_TYPE59 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "WinEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._HitWallEvent_TYPE60 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitWallEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._RobotDeathEvent_TYPE61 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "RobotDeathEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._SkippedTurnEvent_TYPE62 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SkippedTurnEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._ScannedRobotEvent_TYPE63 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "ScannedRobotEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._HitByBulletEvent_TYPE64 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitByBulletEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._HitRobotEvent_TYPE65 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitRobotEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._KeyPressedEvent_TYPE66 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyPressedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._KeyReleasedEvent_TYPE67 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyReleasedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._KeyTypedEvent_TYPE68 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyTypedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseClickedEvent_TYPE69 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseClickedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseDraggedEvent_TYPE70 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseDraggedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseEnteredEvent_TYPE71 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseEnteredEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseExitedEvent_TYPE72 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseExitedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseMovedEvent_TYPE73 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseMovedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE74 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MousePressedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE75 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseReleasedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE76 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseWheelMovedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer.@__ctor77 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "<init>", "()V");
+            global::net.sf.robocode.serialization.RbSerializer._sizeOf34 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "sizeOf", "([B)I");
+            global::net.sf.robocode.serialization.RbSerializer._sizeOf35 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "sizeOf", "(Ljava/lang/String;)I");
+            global::net.sf.robocode.serialization.RbSerializer._deserializeFromBuffer36 = @__env.GetStaticMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deserializeFromBuffer", "(Ljava/nio/ByteBuffer;)Ljava/lang/Object;");
+            global::net.sf.robocode.serialization.RbSerializer._deepCopy37 = @__env.GetStaticMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "deepCopy", "(BLjava/lang/Object;)Ljava/lang/Object;");
+            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_TYPEINFO38 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_TYPEINFO", "I");
+            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_BYTE39 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_BYTE", "I");
+            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_BOOL40 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_BOOL", "I");
+            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_CHAR41 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_CHAR", "I");
+            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_INT42 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_INT", "I");
+            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_LONG43 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_LONG", "I");
+            global::net.sf.robocode.serialization.RbSerializer._SIZEOF_DOUBLE44 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SIZEOF_DOUBLE", "I");
+            global::net.sf.robocode.serialization.RbSerializer._TERMINATOR_TYPE45 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "TERMINATOR_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._ExecCommands_TYPE46 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "ExecCommands_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BulletCommand_TYPE47 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletCommand_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._TeamMessage_TYPE48 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "TeamMessage_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._DebugProperty_TYPE49 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "DebugProperty_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._ExecResults_TYPE50 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "ExecResults_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._RobotStatus_TYPE51 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "RobotStatus_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BulletStatus_TYPE52 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletStatus_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BattleResults_TYPE53 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BattleResults_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._Bullet_TYPE54 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "Bullet_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BattleEndedEvent_TYPE55 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BattleEndedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BulletHitBulletEvent_TYPE56 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletHitBulletEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BulletHitEvent_TYPE57 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletHitEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BulletMissedEvent_TYPE58 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletMissedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._DeathEvent_TYPE59 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "DeathEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._WinEvent_TYPE60 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "WinEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._HitWallEvent_TYPE61 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitWallEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._RobotDeathEvent_TYPE62 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "RobotDeathEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._SkippedTurnEvent_TYPE63 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SkippedTurnEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._ScannedRobotEvent_TYPE64 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "ScannedRobotEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._HitByBulletEvent_TYPE65 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitByBulletEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._HitRobotEvent_TYPE66 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitRobotEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._KeyPressedEvent_TYPE67 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyPressedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._KeyReleasedEvent_TYPE68 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyReleasedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._KeyTypedEvent_TYPE69 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyTypedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseClickedEvent_TYPE70 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseClickedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseDraggedEvent_TYPE71 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseDraggedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseEnteredEvent_TYPE72 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseEnteredEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseExitedEvent_TYPE73 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseExitedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseMovedEvent_TYPE74 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseMovedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE75 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MousePressedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE76 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseReleasedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE77 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseWheelMovedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer.@__ctor78 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "<init>", "()V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Class;B)V")]
@@ -604,82 +607,82 @@ namespace net.sf.robocode.serialization {
             @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize1, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par2));
         }
         
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;Lrobocode/Event;)V")]
+        public virtual void serialize(global::java.nio.ByteBuffer par0, global::java.lang.Object par1) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize2, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1));
+        }
+        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;BLjava/lang/Object;)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, byte par1, global::java.lang.Object par2) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize2, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par2));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize3, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par2));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;Ljava/lang/String;)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, global::java.lang.String par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize3, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize4, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;[B)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, byte[] par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize4, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize5, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;[I)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, int[] par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize5, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize6, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;[C)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, char[] par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize6, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize7, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;[D)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, double[] par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize7, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize8, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;[F)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, float[] par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize8, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize9, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;Z)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, bool par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize9, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize10, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;D)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, double par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize10, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize11, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;C)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, char par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize11, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize12, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;J)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, long par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize12, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize13, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;I)V")]
         public virtual void serialize(global::java.nio.ByteBuffer par0, int par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize13, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;Lrobocode/Event;)V")]
-        public virtual void serialize(global::java.nio.ByteBuffer par0, global::java.lang.Object par1) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize14, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.RbSerializer._serialize14, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(BLjava/lang/Object;)Ljava/nio/ByteBuffer;")]
@@ -688,106 +691,106 @@ namespace net.sf.robocode.serialization {
             return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.nio.ByteBuffer>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._serialize15, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1)));
         }
         
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;BLjava/lang/Object;)Ljava/nio/ByteBuffer;")]
+        public virtual global::java.nio.ByteBuffer serializeToBuffer(global::java.nio.ByteBuffer par0, byte par1, global::java.lang.Object par2) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.nio.ByteBuffer>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._serializeToBuffer16, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par2)));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Object;)Ljava/nio/ByteBuffer;")]
+        public static global::java.nio.ByteBuffer serializeToBuffer(global::java.lang.Object par0) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.nio.ByteBuffer>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._serializeToBuffer17, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0)));
+        }
+        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/io/InputStream;)Ljava/lang/Object;")]
         public virtual global::java.lang.Object deserialize(global::java.io.InputStream par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserialize16, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserialize18, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)Ljava/lang/Object;")]
         public virtual global::java.lang.Object deserialize(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserialize17, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserialize19, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)Ljava/lang/Object;")]
         public virtual global::java.lang.Object deserializeAny(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeAny18, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeAny20, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)Ljava/lang/String;")]
         public virtual global::java.lang.String deserializeString(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeString19, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeString21, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)[B")]
         public virtual byte[] deserializeBytes(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cbyte(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeBytes20, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cbyte(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeBytes22, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)[I")]
         public virtual int[] deserializeIntegers(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cint(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeIntegers21, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cint(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeIntegers23, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)[F")]
         public virtual float[] deserializeFloats(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cfloat(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeFloats22, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cfloat(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeFloats24, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)[C")]
         public virtual char[] deserializeChars(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cchar(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeChars23, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cchar(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeChars25, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)[D")]
         public virtual double[] deserializeDoubles(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cdouble(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeDoubles24, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.ArrayPrimJ2Cdouble(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeDoubles26, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)Z")]
         public virtual bool deserializeBoolean(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.serialization.RbSerializer._deserializeBoolean25, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.serialization.RbSerializer._deserializeBoolean27, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)C")]
         public virtual char deserializeChar(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((char)(@__env.CallCharMethod(this, global::net.sf.robocode.serialization.RbSerializer._deserializeChar26, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
+            return ((char)(@__env.CallCharMethod(this, global::net.sf.robocode.serialization.RbSerializer._deserializeChar28, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)I")]
         public virtual int deserializeInt(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._deserializeInt27, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
+            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._deserializeInt29, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)Ljava/lang/Float;")]
         public virtual global::java.lang.Float deserializeFloat(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Float>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeFloat28, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Float>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.RbSerializer._deserializeFloat30, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)D")]
         public virtual double deserializeDouble(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((double)(@__env.CallDoubleMethod(this, global::net.sf.robocode.serialization.RbSerializer._deserializeDouble29, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
+            return ((double)(@__env.CallDoubleMethod(this, global::net.sf.robocode.serialization.RbSerializer._deserializeDouble31, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(BLjava/lang/Object;)I")]
         public virtual int sizeOf(byte par0, global::java.lang.Object par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._sizeOf30, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1))));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)I")]
-        public virtual int sizeOf(global::java.lang.String par0) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._sizeOf31, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("([B)I")]
-        public virtual int sizeOf(byte[] par0) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._sizeOf32, global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par0))));
+            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._sizeOf32, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lrobocode/Event;)I")]
@@ -796,22 +799,28 @@ namespace net.sf.robocode.serialization {
             return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._sizeOf33, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
         }
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Object;)Ljava/nio/ByteBuffer;")]
-        public static global::java.nio.ByteBuffer serializeToBuffer(global::java.lang.Object par0) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.nio.ByteBuffer>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._serializeToBuffer34, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0)));
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("([B)I")]
+        public virtual int sizeOf(byte[] par0) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._sizeOf34, global::net.sf.jni4net.utils.Convertor.ParArrayPrimC2J(@__env, par0))));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)I")]
+        public virtual int sizeOf(global::java.lang.String par0) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.RbSerializer._sizeOf35, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0))));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)Ljava/lang/Object;")]
         public static global::java.lang.Object deserializeFromBuffer(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._deserializeFromBuffer35, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._deserializeFromBuffer36, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(BLjava/lang/Object;)Ljava/lang/Object;")]
         public static global::java.lang.Object deepCopy(byte par0, global::java.lang.Object par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._deepCopy36, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1)));
+            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._deepCopy37, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1)));
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
