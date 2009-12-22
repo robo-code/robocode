@@ -47,7 +47,7 @@ public final class BattlePlayer extends BaseBattle {
 		battleRules = recordManager.recordInfo.battleRules;
 		paint = new boolean[recordManager.recordInfo.robotCount];
 		eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, recordManager.recordInfo.robotCount, true));
-		if (isPaused()) {
+		if (isPaused) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
 	}
@@ -74,7 +74,7 @@ public final class BattlePlayer extends BaseBattle {
 	protected void initializeRound() {
 		super.initializeRound();
 
-		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTurn);
 
 		if (snapshot != null) {
 			eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
@@ -97,7 +97,7 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTurn);
 
 		if (snapshot != null) {
 			final IRobotSnapshot[] robots = snapshot.getRobots();
@@ -115,15 +115,15 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected boolean isRoundOver() {
-		final boolean end = getTime() >= recordManager.recordInfo.turnsInRounds[getRoundNum()] - 1;
+		final boolean endOfRound = getTime() >= recordManager.recordInfo.turnsInRounds[getRoundNum()] - 1;
 
-		if (end) {
+		if (endOfRound) {
 			if (recordManager.recordInfo.turnsInRounds.length > getRoundNum()
 					&& recordManager.recordInfo.turnsInRounds[getRoundNum()] == 0) {
 				isAborted = true;
 			}
 		}
-		return (isAborted || end);
+		return (isAborted || endOfRound);
 	}
 
 	public void setPaintEnabled(int robotIndex, boolean enable) {

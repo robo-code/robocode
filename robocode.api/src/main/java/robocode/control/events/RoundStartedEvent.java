@@ -37,7 +37,7 @@ public class RoundStartedEvent extends BattleEvent {
 	 * Creates a new RoundStartedEvent.
 	 *
 	 * @param startSnapshot the start snapshot of the participating robots, initial starting positions etc.
-	 * @param round the round number.
+	 * @param round the round number (zero indexed).
 	 */
 	public RoundStartedEvent(ITurnSnapshot startSnapshot, int round) {
 		super();
@@ -55,9 +55,9 @@ public class RoundStartedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the round number.
+	 * Returns the round number (zero indexed).
 	 *
-	 * @return the round number.
+	 * @return the round number (zero indexed).
 	 */
 	public int getRound() {
 		return round;

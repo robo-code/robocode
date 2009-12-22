@@ -33,7 +33,7 @@ public class RoundEndedEvent extends BattleEvent {
 	/**
 	 * Creates a new RoundEndedEvent.
 	 *
-	 * @param round the round number that was ended.
+	 * @param round the round number that was ended (zero indexed).
 	 * @param turns the number of turns that this round reached.
 	 */
 	public RoundEndedEvent(int round, int turns) {
@@ -43,9 +43,9 @@ public class RoundEndedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the round number that was ended.
+	 * Returns the round number that was ended (zero indexed).
 	 *
-	 * @return the round number that was ended.
+	 * @return the round number that was ended (zero indexed).
 	 */
 	public int getRound() {
 		return round;

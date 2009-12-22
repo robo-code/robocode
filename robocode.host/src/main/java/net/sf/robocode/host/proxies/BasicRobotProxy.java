@@ -450,7 +450,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			// add new events
 			if (execResults.getEvents() != null) {
 				for (Event event : execResults.getEvents()) {
-					if (event instanceof BattleEndedEvent) {
+					if (/* event instanceof RoundEndedEvent ||*/event instanceof BattleEndedEvent) {
 						eventManager.add(event);
 					}
 				}

@@ -74,6 +74,7 @@ public final class RbSerializer {
 	public final static byte MousePressedEvent_TYPE = 52;
 	public final static byte MouseReleasedEvent_TYPE = 53;
 	public final static byte MouseWheelMovedEvent_TYPE = 54;
+	public final static byte RoundEndedEvent_TYPE = 55;
 
 	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
 	private static Dictionary<Class<?>, Byte> classToType = new Hashtable<Class<?>, Byte>();

@@ -113,6 +113,7 @@ import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
 import robocode.control.RobotSpecification;
 import robocode.control.events.*;
+import robocode.control.events.RoundEndedEvent;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.ITurnSnapshot;
 
@@ -385,9 +386,9 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeBattle() {
-		eventDispatcher.onBattleFinished(new BattleFinishedEvent(isAborted()));
+		eventDispatcher.onBattleFinished(new BattleFinishedEvent(isAborted));
 
-		if (!isAborted()) {
+		if (!isAborted) {
 			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeBattleResults()));
 		}
 
@@ -408,13 +409,13 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer robotPeer : robots) {
 			robotPeer.initializeRound(robots, initialRobotPositions);
 			robotPeer.println("=========================");
-			robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
+			robotPeer.println("Round " + (roundNum + 1) + " of " + getNumRounds());
 			robotPeer.println("=========================");
 		}
 
-		if (getRoundNum() == 0) {
+		if (roundNum == 0) {
 			eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, robots.size(), false));
-			if (isPaused()) {
+			if (isPaused) {
 				eventDispatcher.onBattlePaused(new BattlePausedEvent());
 			}
 		}
@@ -440,7 +441,7 @@ public final class Battle extends BaseBattle {
 
 		final ITurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
 
-		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
+		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, roundNum));
 	}
 
 	@Override
@@ -454,7 +455,7 @@ public final class Battle extends BaseBattle {
 
 		bullets.clear();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), currentTime));
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(roundNum, currentTurn));
 	}
 
 	@Override
@@ -477,7 +478,7 @@ public final class Battle extends BaseBattle {
 
 		handleDeadRobots();
 
-		if (isAborted() || oneTeamRemaining()) {
+		if (isAborted || oneTeamRemaining()) {
 			shutdownTurn();
 		}
 
@@ -493,8 +494,8 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void shutdownTurn() {
-		if (getEndTimer() == 0) {
-			if (isAborted()) {
+		if (shutdownDelay == 0) {
+			if (isAborted) {
 				for (RobotPeer robotPeer : getRobotsAtRandom()) {
 					if (!robotPeer.isDead()) {
 						robotPeer.println("SYSTEM: game aborted.");
@@ -504,7 +505,11 @@ public final class Battle extends BaseBattle {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
+				final robocode.RoundEndedEvent roundEndedEvent = new robocode.RoundEndedEvent(roundNum, currentTurn,
+						totalTurns); 
+
 				for (RobotPeer robotPeer : getRobotsAtRandom()) {
+					robotPeer.addEvent(roundEndedEvent);
 					if (!robotPeer.isDead()) {
 						if (!robotPeer.isWinner()) {
 							robotPeer.getRobotStatistics().scoreLastSurvivor();
@@ -527,7 +532,7 @@ public final class Battle extends BaseBattle {
 			}
 		}
 
-		if (getEndTimer() == 1 && (isAborted() || isLastRound())) {
+		if (shutdownDelay == 1 && (isAborted || isLastRound())) {
 
 			List<RobotPeer> orderedRobots = new ArrayList<RobotPeer>(robots);
 
@@ -540,11 +545,11 @@ public final class Battle extends BaseBattle {
 				robotPeer.getStatistics().setRank(rank + 1);
 				BattleResults resultsForRobot = robotPeer.getStatistics().getFinalResults();
 
-				robotPeer.addEvent(new BattleEndedEvent(isAborted(), resultsForRobot));
+				robotPeer.addEvent(new BattleEndedEvent(isAborted, resultsForRobot));
 			}
 		}
 
-		if (getEndTimer() > 4 * 30) {
+		if (shutdownDelay > 4 * 30) {
 			for (RobotPeer robotPeer : robots) {
 				robotPeer.setHalt(true);
 			}
@@ -650,7 +655,7 @@ public final class Battle extends BaseBattle {
 	private void updateRobots() {
 		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
 
-		final double zapEnergy = isAborted() ? 5 : zap ? .1 : 0;
+		final double zapEnergy = isAborted ? 5 : zap ? .1 : 0;
 
 		// Move all bots
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
@@ -700,7 +705,7 @@ public final class Battle extends BaseBattle {
 
 	private void publishStatuses() {
 		for (RobotPeer robotPeer : robots) {
-			robotPeer.publishStatus(currentTime);
+			robotPeer.publishStatus(currentTurn);
 		}
 	}
 

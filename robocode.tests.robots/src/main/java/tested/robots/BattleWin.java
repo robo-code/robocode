@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Extended to include onRoundEnded(RoundEndedEvent)
  *******************************************************************************/
 package tested.robots;
 
@@ -17,6 +19,7 @@ import robocode.*;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class BattleWin extends Robot {
 
@@ -48,6 +51,11 @@ public class BattleWin extends Robot {
 	@Override
 	public void onDeath(DeathEvent e) {
 		out.println("Death!");
+	}
+
+	@Override
+	public void onRoundEnded(RoundEndedEvent event) {
+		out.println("RoundEnded!");
 	}
 
 	@Override

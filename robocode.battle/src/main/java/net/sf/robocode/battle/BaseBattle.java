@@ -46,9 +46,11 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected BattleRules battleRules;
 
 	// Current round items
-	private int roundNum;
-	protected int currentTime;
-	private int endTimer;
+	protected int roundNum;
+	protected int currentTurn;
+	protected int totalTurns;
+
+	protected int shutdownDelay;
 
 	// TPS (turns per second) calculation stuff
 	private int tps;
@@ -60,12 +62,12 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	private final ReentrantLock runningLock = new ReentrantLock();
 	private final Condition battleStarted = runningLock.newCondition();
 	private final Condition battleOver = runningLock.newCondition();
-	private boolean isRunning;
 
+	private boolean isRunning;
 	protected boolean isAborted;
 
 	// Battle control
-	boolean isPaused;
+	protected boolean isPaused;
 	private int stepCount;
 	private boolean runBackward;
 	private boolean roundOver;
@@ -78,14 +80,6 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		this.eventDispatcher = eventDispatcher;
 
 		this.battleManager = battleManager;
-	}
-
-	protected int getEndTimer() {
-		return endTimer;
-	}
-
-	protected boolean isPaused() {
-		return isPaused;
 	}
 
 	public void setBattleThread(Thread newBattleThread) {
@@ -119,7 +113,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	public int getTime() {
-		return currentTime;
+		return currentTurn;
 	}
 
 	public boolean isLastRound() {
@@ -242,6 +236,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected void initializeBattle() {
 		URLJarCollector.enableGc(false);
 		roundNum = 0;
+		totalTurns = 0;
 
 		// Notify that the battle is started
 		runningLock.lock();
@@ -273,8 +268,8 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		logMessage("\nLet the games begin!");
 
 		roundOver = false;
-		endTimer = 0;
-		currentTime = 0;
+		currentTurn = 0;
+		shutdownDelay = 0;
 	}
 
 	private void runRound() {
@@ -298,7 +293,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	protected boolean isRoundOver() {
-		return (endTimer > 5 * TURNS_DISPLAYED_AFTER_ENDING);
+		return (shutdownDelay > 5 * TURNS_DISPLAYED_AFTER_ENDING);
 	}
 
 	protected void finalizeRound() {}
@@ -313,17 +308,19 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	protected void runTurn() {
 		if (runBackward) {
-			currentTime--;
-			if (currentTime == 0 && !isPaused) {
+			currentTurn--;
+			totalTurns--;
+			if (currentTurn == 0 && !isPaused) {
 				pauseImpl();
 			}
-		} else {
-			currentTime++;
+		} else if (shutdownDelay == 0) {
+			currentTurn++;
+			totalTurns++;
 		}
 	}
 
 	protected void shutdownTurn() {
-		endTimer++;
+		shutdownDelay++;
 	}
 
 	protected void finalizeTurn() {
@@ -339,7 +336,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		if (battleManager.isManagedTPS()) {
 			long delay = 0;
 
-			if (!isAborted() && endTimer < TURNS_DISPLAYED_AFTER_ENDING) {
+			if (!isAborted() && shutdownDelay < TURNS_DISPLAYED_AFTER_ENDING) {
 				int desiredTPS = properties.getOptionsBattleDesiredTPS();
 
 				if (desiredTPS < MAX_TPS) {

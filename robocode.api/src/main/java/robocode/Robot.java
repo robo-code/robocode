@@ -637,7 +637,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Returns the current round number (0 to {@link #getNumRounds()} - 1) of
 	 * the battle.
 	 *
-	 * @return the current round number of the battle
+	 * @return the current round number of the battle (zero indexed).
 	 * @see #getNumRounds()
 	 */
 	public int getRoundNum() {
@@ -732,6 +732,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@inheritDoc}
 	 */
 	public void onWin(WinEvent event) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onRoundEnded(RoundEndedEvent event) {}
 
 	/**
 	 * {@inheritDoc}
