@@ -436,6 +436,9 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		eventManager.clearAllEvents(false);
 		graphicsProxy.setPaintingEnabled(false);
 		do {
+			// Make sure remaining system events like e.g. DeathEvent are processed this round
+			eventManager.processEvents();
+
 			commands.setOutputText(out.readAndReset());
 			commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
@@ -453,7 +456,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 				}
 			}
 			eventManager.resetCustomEvents();
-			eventManager.processEvents();
 		} while (!execResults.isHalt() && execResults.isShouldWait());
 	}
 
