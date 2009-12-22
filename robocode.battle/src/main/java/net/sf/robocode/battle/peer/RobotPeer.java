@@ -190,7 +190,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final BoundingRectangle boundingBox;
     private final RbSerializer rbSerializer;
 
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
+    public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();
 		if (team != null) {
 			team.add(this);
@@ -464,22 +464,28 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// execute
 	// -----------
 
-	public void executeImplSerial(ByteBuffer newCommands) throws IOException {
-        ExecCommands commands = (ExecCommands)rbSerializer.deserialize(newCommands);
+    ByteBuffer bidirectionalBuffer;
+
+    public void setupBuffer(ByteBuffer bidirectionalBuffer){
+        this.bidirectionalBuffer =bidirectionalBuffer;
+    }
+
+	public void executeImplSerial() throws IOException {
+        ExecCommands commands = (ExecCommands)rbSerializer.deserialize(bidirectionalBuffer);
 
 		final ExecResults results = executeImpl(commands);
 
-        newCommands.clear();
-        rbSerializer.serializeToBuffer(newCommands, RbSerializer.ExecResults_TYPE, results);
+        bidirectionalBuffer.clear();
+        rbSerializer.serializeToBuffer(bidirectionalBuffer, RbSerializer.ExecResults_TYPE, results);
 	}
 
-	public void waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException {
-        ExecCommands commands = (ExecCommands)rbSerializer.deserialize(newCommands);
+	public void waitForBattleEndImplSerial() throws IOException {
+        ExecCommands commands = (ExecCommands)rbSerializer.deserialize(bidirectionalBuffer);
 
 		final ExecResults results = waitForBattleEndImpl(commands);
 
-        newCommands.clear();
-        rbSerializer.serializeToBuffer(newCommands, RbSerializer.ExecResults_TYPE, results);
+        bidirectionalBuffer.clear();
+        rbSerializer.serializeToBuffer(bidirectionalBuffer, RbSerializer.ExecResults_TYPE, results);
 	}
 
 	public final ExecResults executeImpl(ExecCommands newCommands) {

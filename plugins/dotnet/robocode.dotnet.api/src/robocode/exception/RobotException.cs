@@ -10,12 +10,14 @@
  *     - Initial API and implementation
  *******************************************************************************/
 using System;
+using System.Runtime.Serialization;
 
 namespace robocode.exception
 {
     /// <summary>
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [Serializable]
     public class RobotException : Exception
     {
         // Must be error!
@@ -29,6 +31,12 @@ namespace robocode.exception
             : base(s)
         {
         }
+
+        protected RobotException(SerializationInfo info, StreamingContext context) :
+            base(info, context)
+        {
+        }
+
     }
 }
 //happy

@@ -13,6 +13,7 @@
  *******************************************************************************/
 using System;
 using System.Drawing;
+using System.Runtime.Serialization;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 
@@ -31,8 +32,8 @@ namespace robocode
         private const int DEFAULT_PRIORITY = 75;
 
         private readonly string sender;
-        [NonSerialized] //TODO
-        private readonly object message;
+        [NonSerialized]
+        private readonly ISerializable message;
 
         /// <summary>
         /// Called by the game to create a new MessageEvent.
@@ -40,7 +41,7 @@ namespace robocode
         /// @param sender  the name of the sending robot
         /// @param message the message for your robot
         /// </summary>
-        public MessageEvent(string sender, object message)
+        public MessageEvent(string sender, ISerializable message)
         {
             this.sender = sender;
             this.message = message;
@@ -61,7 +62,7 @@ namespace robocode
         ///
         /// @return the message
         /// </summary>
-        public object getMessage()
+        public ISerializable getMessage()
         {
             return message;
         }
@@ -90,9 +91,6 @@ namespace robocode
             }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
         internal override byte getSerializationType()
         {
             throw new Exception("Serialization of evnt type not supported");

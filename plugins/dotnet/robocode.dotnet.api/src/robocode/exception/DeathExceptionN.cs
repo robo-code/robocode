@@ -10,12 +10,14 @@
  *     - Initial API and implementation
  *******************************************************************************/
 using System;
+using System.Runtime.Serialization;
 
 namespace robocode.exception
 {
     /// <summary>
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [Serializable]
     public class DeathExceptionN : Exception
     {
         // Must be error!
@@ -29,6 +31,11 @@ namespace robocode.exception
 
         public DeathExceptionN(string message)
             : base(message)
+        {
+        }
+
+        protected DeathExceptionN(SerializationInfo info, StreamingContext context) :
+            base(info, context)
         {
         }
     }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using java.io;
 using java.lang;
 using net.sf.robocode.dotnet.host.events;
 using net.sf.robocode.dotnet.host.security;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
-using net.sf.robocode.host.proxies;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
@@ -16,7 +14,6 @@ using robocode.exception;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using Exception=System.Exception;
-using Object=java.lang.Object;
 using Runnable=robocode.robotinterfaces.Runnable;
 using String=System.String;
 
@@ -27,7 +24,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         protected EventManager eventManager;
         protected RobotThreadManager robotThreadManager;
         protected RobotFileSystemManager robotFileSystemManager;
-        private IRobotRepositoryItem robotSpecification;
+        private readonly IRobotRepositoryItem robotSpecification;
         protected RobotStatics statics;
         protected IRobotPeer peer;
         protected IHostManager hostManager;
@@ -48,7 +45,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             robotThreadManager = new RobotThreadManager(this);
 
-            robotFileSystemManager = new RobotFileSystemManager(hostManager.getRobotFilesystemQuota(),
+            robotFileSystemManager = new RobotFileSystemManager((int)hostManager.getRobotFilesystemQuota(),
                                                                 robotSpecification.getWritableDirectory(),
                                                                 robotSpecification.getReadableDirectory(),
                                                                 robotSpecification.getRootFile());
@@ -132,30 +129,6 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
 
-        public void startRound(Object commands, Object status)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-        public void forceStopThread()
-        {
-            if (!robotThreadManager.forceStop())
-            {
-                peer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
-                peer.setRunning(false);
-            }
-        }
-
-        public void waitForStopThread()
-        {
-            if (!robotThreadManager.waitForStop())
-            {
-                peer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
-                peer.setRunning(false);
-            }
-        }
-
         private bool loadRobotRound()
         {
             robot = null;
@@ -224,15 +197,15 @@ namespace net.sf.robocode.dotnet.host.proxies
                         executeImpl();
                     }
                 }
-                catch (WinExceptionN e)
+                catch (WinExceptionN)
                 {
                     // Do nothing
                 }
-                catch (AbortedExceptionN e)
+                catch (AbortedExceptionN)
                 {
                     // Do nothing
                 }
-                catch (DeathExceptionN e)
+                catch (DeathExceptionN)
                 {
                     println("SYSTEM: " + statics.getName() + " has died");
                 }
@@ -262,13 +235,6 @@ namespace net.sf.robocode.dotnet.host.proxies
                 {
                     waitForBattleEndImpl();
                 }
-            }
-
-            // If battle is waiting for us, well, all done!
-            lock (this)
-            {
-                peer.setRunning(false);
-                //TODO notifyAll();
             }
         }
 

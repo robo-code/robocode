@@ -208,26 +208,24 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             getCall();
             commands.setIORobot();
-            throw new NotImplementedException();
-            //TODO return robotFileSystemManager.getWritableDirectory();
+            return robotFileSystemManager.getWritableDirectory();
         }
 
-        public string getDataFile(String filename)
+        /*TODO 
+        public string getDataFile(string filename)
         {
             getCall();
             commands.setIORobot();
-            /* TODO 
-		if (filename.contains("..")) {
-			throw new AccessControlException("no relative path allowed");
-		}
+		    if (filename.contains("..")) {
+			    throw new AccessControlException("no relative path allowed");
+		    }
 
-		return AccessController.doPrivileged(new PrivilegedAction<File>() {
-			public File run() {
-				return robotFileSystemManager.getDataFile(filename);
-			}
-		});*/
-            throw new NotImplementedException();
-        }
+		    return AccessController.doPrivileged(new PrivilegedAction<File>() {
+			    public File run() {
+				    return robotFileSystemManager.getDataFile(filename);
+			    }
+		    });
+        }*/
 
         public long getDataQuotaAvailable()
         {

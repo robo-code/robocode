@@ -18,6 +18,7 @@ namespace net.sf.robocode.dotnet.peer
         public String recipient;
         public byte[] message;
 
+        // ReSharper disable UnusedMember.Local
         private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();

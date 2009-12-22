@@ -10,6 +10,7 @@
  *     - Initial implementation
  *******************************************************************************/
 using System;
+using System.Runtime.Serialization;
 
 namespace robocode.exception
 {
@@ -17,6 +18,7 @@ namespace robocode.exception
     /// @author Pavel Savara (original)
     /// @since 1.6.1
     /// </summary>
+    [Serializable]
     public class AbortedExceptionN : Exception
     {
         // Must be error!
@@ -30,6 +32,11 @@ namespace robocode.exception
 
         public AbortedExceptionN(string message)
             : base(message)
+        {
+        }
+
+        protected AbortedExceptionN(SerializationInfo info, StreamingContext context) :
+            base(info, context)
         {
         }
     }

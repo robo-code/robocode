@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
-using java.lang;
 using net.sf.jni4net.nio;
 using net.sf.robocode.dotnet.host.events;
 using net.sf.robocode.dotnet.peer;
@@ -35,16 +34,16 @@ namespace net.sf.robocode.dotnet.host.proxies
         private int bulletCounter;
         
         //TODO interlocked
-        private volatile int setCallCount = 0;
-        private volatile int getCallCount = 0;
+        private int setCallCount;
+        private int getCallCount;
 
         protected Condition waitCondition;
         private bool testingCondition;
         private double firedEnergy;
         private double firedHeat;
-        private ByteBufferClr execJavaBuffer;
-        private nio.ByteBuffer execNetBuffer;
-        private RbSerializerN rbSerializerN;
+        private readonly ByteBufferClr execJavaBuffer;
+        private readonly nio.ByteBuffer execNetBuffer;
+        private readonly RbSerializerN rbSerializerN;
 
         public BasicRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
                                RobotStatics statics)
@@ -60,10 +59,11 @@ namespace net.sf.robocode.dotnet.host.proxies
             setSetCallCount(0);
             setGetCallCount(0);
 
-            byte[] sharedBuffer = new byte[1024*100];
+            byte[] sharedBuffer = new byte[10*1024*100];
             execJavaBuffer = new ByteBufferClr(sharedBuffer);
             execNetBuffer = nio.ByteBuffer.wrap(sharedBuffer);
             rbSerializerN=new RbSerializerN();
+            this.peer.setupBuffer(execJavaBuffer);
         }
 
         internal override void initializeRound(ExecCommands commands, RobotStatus status)
@@ -82,10 +82,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             base.cleanup();
 
             // Cleanup and remove current wait condition
-            if (waitCondition != null)
-            {
-                waitCondition = null;
-            }
+            waitCondition = null;
 
             // Cleanup and remove the event manager
             if (eventManager != null)
@@ -153,31 +150,31 @@ namespace net.sf.robocode.dotnet.host.proxies
         public void setBodyColor(Color color)
         {
             setCall();
-            commands.setBodyColor(color != null ? color.ToArgb() : ExecCommands.defaultBodyColor);
+            commands.setBodyColor(color.ToArgb());
         }
 
         public void setGunColor(Color color)
         {
             setCall();
-            commands.setGunColor(color != null ? color.ToArgb() : ExecCommands.defaultGunColor);
+            commands.setGunColor(color.ToArgb());
         }
 
         public void setRadarColor(Color color)
         {
             setCall();
-            commands.setRadarColor(color != null ? color.ToArgb() : ExecCommands.defaultRadarColor);
+            commands.setRadarColor(color.ToArgb());
         }
 
         public void setBulletColor(Color color)
         {
             setCall();
-            commands.setBulletColor(color != null ? color.ToArgb() : ExecCommands.defaultBulletColor);
+            commands.setBulletColor(color.ToArgb());
         }
 
         public void setScanColor(Color color)
         {
             setCall();
-            commands.setScanColor(color != null ? color.ToArgb() : ExecCommands.defaultScanColor);
+            commands.setScanColor(color.ToArgb());
         }
 
         // counters
@@ -379,7 +376,6 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
 
             // Entering tick
-            //TODO robotThreadManager.checkRunThread();
             if (testingCondition)
             {
                 throw new RobotException(
@@ -396,7 +392,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                 commands.setScan(true);
             }
 
-            lock(output)
+            lock (output)
             {
                 output.Flush();
                 commands.setOutputText(outputSb.ToString());
@@ -405,10 +401,16 @@ namespace net.sf.robocode.dotnet.host.proxies
             //TODO commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
             // call server
-            SerializeCommands();
             try
             {
-                peer.executeImplSerial(execJavaBuffer);
+                SerializeCommands();
+                peer.executeImplSerial();
+                DeserializeResults();
+
+                if (execResults == null)
+                {
+                    throw new InvalidOperationException();
+                }
             }
             catch (WinException e)
             {
@@ -426,7 +428,6 @@ namespace net.sf.robocode.dotnet.host.proxies
             {
                 throw new DisabledExceptionN(e.getMessage());
             }
-            DeserializeResults();
 
             updateStatus(execResults.getCommands(), execResults.getStatus());
             //TODO graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
@@ -501,7 +502,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
                 // call server
                 SerializeCommands();
-                peer.waitForBattleEndImplSerial(execJavaBuffer);
+                peer.waitForBattleEndImplSerial();
                 DeserializeResults();
 
                 updateStatus(execResults.getCommands(), execResults.getStatus());

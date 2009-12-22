@@ -266,9 +266,6 @@ namespace net.sf.robocode.nio
             if (capacity < 0)
                 throw new ArgumentException();
             return new HeapByteBuffer(capacity, capacity);
-
-            //TODO ?
-            //return new DirectByteBuffer(capacity);
         }
 
 

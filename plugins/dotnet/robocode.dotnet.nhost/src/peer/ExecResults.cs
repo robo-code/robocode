@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using java.nio;
 using net.sf.robocode.serialization;
 using robocode;
 
@@ -121,6 +120,7 @@ namespace net.sf.robocode.dotnet.peer
         {
         }
 
+        // ReSharper disable UnusedMember.Local
         private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
@@ -160,7 +160,7 @@ namespace net.sf.robocode.dotnet.peer
                 return size;
             }
 
-            public void serialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbSerializerN serializer, nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (ExecResults) obje;
 
@@ -188,7 +188,7 @@ namespace net.sf.robocode.dotnet.peer
                 buffer.put(RbSerializerN.TERMINATOR_TYPE);
             }
 
-            public Object deserialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer)
+            public Object deserialize(RbSerializerN serializer, nio.ByteBuffer buffer)
             {
                 var res = new ExecResults();
 

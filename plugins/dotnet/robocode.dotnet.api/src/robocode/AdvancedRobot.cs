@@ -754,6 +754,7 @@ namespace robocode
             return null; // never called
         }
 
+        /*TODO
         /// <summary>
         /// Returns a file in your data directory that you can write to using
         /// {@link RobocodeFileOutputStream} or {@link RobocodeFileWriter}.
@@ -781,7 +782,7 @@ namespace robocode
             }
             uninitializedException();
             return null; // never called
-        }
+        }*/
 
         /// <summary>
         /// Returns the data quota available in your data directory, i.e. the amount

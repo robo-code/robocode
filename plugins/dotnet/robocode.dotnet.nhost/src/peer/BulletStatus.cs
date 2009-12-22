@@ -1,5 +1,4 @@
 ﻿using System;
-using java.nio;
 using net.sf.robocode.serialization;
 
 namespace net.sf.robocode.dotnet.peer
@@ -21,6 +20,7 @@ namespace net.sf.robocode.dotnet.peer
         public readonly double x;
         public readonly double y;
 
+        // ReSharper disable UnusedMember.Local
         private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
@@ -36,7 +36,7 @@ namespace net.sf.robocode.dotnet.peer
                        + RbSerializerN.SIZEOF_BOOL + 2*RbSerializerN.SIZEOF_DOUBLE;
             }
 
-            public void serialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbSerializerN serializer, nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (BulletStatus) obje;
 
@@ -47,7 +47,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.y);
             }
 
-            public Object deserialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer)
+            public Object deserialize(RbSerializerN serializer, nio.ByteBuffer buffer)
             {
                 int bulletId = buffer.getInt();
                 String victimName = serializer.deserializeString(buffer);

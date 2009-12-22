@@ -31,10 +31,13 @@ namespace net.sf.robocode.peer {
         global::java.lang.Object executeImpl(global::java.lang.Object par0);
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)V")]
-        void executeImplSerial(global::java.nio.ByteBuffer par0);
+        void setupBuffer(global::java.nio.ByteBuffer par0);
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/nio/ByteBuffer;)V")]
-        void waitForBattleEndImplSerial(global::java.nio.ByteBuffer par0);
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
+        void executeImplSerial();
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
+        void waitForBattleEndImplSerial();
     }
     #endregion
     
@@ -66,9 +69,11 @@ namespace net.sf.robocode.peer {
         
         internal static global::net.sf.jni4net.jni.MethodId _executeImpl4;
         
-        internal static global::net.sf.jni4net.jni.MethodId _executeImplSerial5;
+        internal static global::net.sf.jni4net.jni.MethodId _setupBuffer5;
         
-        internal static global::net.sf.jni4net.jni.MethodId _waitForBattleEndImplSerial6;
+        internal static global::net.sf.jni4net.jni.MethodId _executeImplSerial6;
+        
+        internal static global::net.sf.jni4net.jni.MethodId _waitForBattleEndImplSerial7;
         
         protected @__IRobotPeer(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
@@ -81,8 +86,9 @@ namespace net.sf.robocode.peer {
             global::net.sf.robocode.peer.@__IRobotPeer._setRunning2 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "setRunning", "(Z)V");
             global::net.sf.robocode.peer.@__IRobotPeer._waitForBattleEndImpl3 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "waitForBattleEndImpl", "(Lnet/sf/robocode/peer/ExecCommands;)Lnet/sf/robocode/peer/ExecResults;");
             global::net.sf.robocode.peer.@__IRobotPeer._executeImpl4 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "executeImpl", "(Lnet/sf/robocode/peer/ExecCommands;)Lnet/sf/robocode/peer/ExecResults;");
-            global::net.sf.robocode.peer.@__IRobotPeer._executeImplSerial5 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "executeImplSerial", "(Ljava/nio/ByteBuffer;)V");
-            global::net.sf.robocode.peer.@__IRobotPeer._waitForBattleEndImplSerial6 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "waitForBattleEndImplSerial", "(Ljava/nio/ByteBuffer;)V");
+            global::net.sf.robocode.peer.@__IRobotPeer._setupBuffer5 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "setupBuffer", "(Ljava/nio/ByteBuffer;)V");
+            global::net.sf.robocode.peer.@__IRobotPeer._executeImplSerial6 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "executeImplSerial", "()V");
+            global::net.sf.robocode.peer.@__IRobotPeer._waitForBattleEndImplSerial7 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "waitForBattleEndImplSerial", "()V");
         }
         
         public void drainEnergy() {
@@ -110,14 +116,19 @@ namespace net.sf.robocode.peer {
             return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.peer.@__IRobotPeer._executeImpl4, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
         }
         
-        public void executeImplSerial(global::java.nio.ByteBuffer par0) {
+        public void setupBuffer(global::java.nio.ByteBuffer par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._executeImplSerial5, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._setupBuffer5, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
-        public void waitForBattleEndImplSerial(global::java.nio.ByteBuffer par0) {
+        public void executeImplSerial() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._waitForBattleEndImplSerial6, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._executeImplSerial6);
+        }
+        
+        public void waitForBattleEndImplSerial() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._waitForBattleEndImplSerial7);
         }
         
         private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv @__env, global::java.lang.Class @__class) {
@@ -128,8 +139,9 @@ namespace net.sf.robocode.peer {
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "setRunning", "setRunning2", "(Z)V"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "waitForBattleEndImpl", "waitForBattleEndImpl3", "(Lnet/sf/robocode/peer/ExecCommands;)Lnet/sf/robocode/peer/ExecResults;"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "executeImpl", "executeImpl4", "(Lnet/sf/robocode/peer/ExecCommands;)Lnet/sf/robocode/peer/ExecResults;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "executeImplSerial", "executeImplSerial5", "(Ljava/nio/ByteBuffer;)V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "waitForBattleEndImplSerial", "waitForBattleEndImplSerial6", "(Ljava/nio/ByteBuffer;)V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "setupBuffer", "setupBuffer5", "(Ljava/nio/ByteBuffer;)V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "executeImplSerial", "executeImplSerial6", "()V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "waitForBattleEndImplSerial", "waitForBattleEndImplSerial7", "()V"));
             return methods;
         }
         
@@ -185,23 +197,33 @@ namespace net.sf.robocode.peer {
             return default(global::System.IntPtr);
         }
         
-        private static void executeImplSerial5(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0) {
+        private static void setupBuffer5(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0) {
             // (Ljava/nio/ByteBuffer;)V
             // (Ljava/nio/ByteBuffer;)V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
             global::net.sf.robocode.peer.IRobotPeer @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, @__obj);
-            @__real.executeImplSerial(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.nio.ByteBuffer>(@__env, par0));
+            @__real.setupBuffer(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.nio.ByteBuffer>(@__env, par0));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static void waitForBattleEndImplSerial6(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0) {
-            // (Ljava/nio/ByteBuffer;)V
-            // (Ljava/nio/ByteBuffer;)V
+        private static void executeImplSerial6(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+            // ()V
+            // ()V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
             global::net.sf.robocode.peer.IRobotPeer @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, @__obj);
-            @__real.waitForBattleEndImplSerial(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.nio.ByteBuffer>(@__env, par0));
+            @__real.executeImplSerial();
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+        }
+        
+        private static void waitForBattleEndImplSerial7(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+            // ()V
+            // ()V
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            try {
+            global::net.sf.robocode.peer.IRobotPeer @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, @__obj);
+            @__real.waitForBattleEndImplSerial();
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         

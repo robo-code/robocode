@@ -10,16 +10,17 @@
  *     - Initial API and implementation
  *******************************************************************************/
 using System;
+using System.Runtime.Serialization;
 
 namespace robocode.exception
 {
     /// <summary>
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [Serializable]
     public class EventInterruptedException : Exception
     {
         // Must be error!
-
 
         private int priority = int.MinValue;
 
@@ -32,6 +33,12 @@ namespace robocode.exception
         {
             return priority;
         }
+
+        protected EventInterruptedException(SerializationInfo info, StreamingContext context) :
+            base(info, context)
+        {
+        }
+    
     }
 }
 //happy

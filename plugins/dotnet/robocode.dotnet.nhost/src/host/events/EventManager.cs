@@ -29,11 +29,10 @@ namespace net.sf.robocode.dotnet.host.events
         private IBasicRobot robot;
 
         /**
-	 * EventManager constructor comment.
-	 *
-	 * @param robotProxy robotProxy
-	 */
-
+	     * EventManager constructor comment.
+	     *
+	     * @param robotProxy robotProxy
+	     */
         public EventManager(BasicRobotProxy robotProxy)
         {
             registerNamedEvents();
@@ -89,28 +88,28 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a list containing all events currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (Event e : getAllEvents()) {
-	 *       if (e instanceof HitByRobotEvent)
-	 *        <i> (do something with e) </i>
-	 *       else if (e instanceof HitByBulletEvent)
-	 *        <i> (so something else with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see BulletHitEvent
-	 * @see BulletMissedEvent
-	 * @see HitByBulletEvent
-	 * @see HitRobotEvent
-	 * @see HitWallEvent
-	 * @see SkippedTurnEvent
-	 * @see Event
-	 * @see List
-	 */
+	     * Returns a list containing all events currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (Event e : getAllEvents()) {
+	     *       if (e instanceof HitByRobotEvent)
+	     *        <i> (do something with e) </i>
+	     *       else if (e instanceof HitByBulletEvent)
+	     *        <i> (so something else with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see BulletHitEvent
+	     * @see BulletMissedEvent
+	     * @see HitByBulletEvent
+	     * @see HitRobotEvent
+	     * @see HitWallEvent
+	     * @see SkippedTurnEvent
+	     * @see Event
+	     * @see List
+	     */
 
         public List<Event> getAllEvents()
         {
@@ -126,19 +125,19 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a list containing all BulletHitBulletEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see BulletHitBulletEvent
-	 * @see List
-	 */
+	     * Returns a list containing all BulletHitBulletEvents currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
+	     *      <i> (do something with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see BulletHitBulletEvent
+	     * @see List
+	     */
 
         public List<BulletHitBulletEvent> getBulletHitBulletEvents()
         {
@@ -158,20 +157,19 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a list containing all BulletHitEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (BulletHitEvent e : getBulletHitEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see BulletHitEvent
-	 * @see List
-	 */
-
+	     * Returns a list containing all BulletHitEvents currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (BulletHitEvent e : getBulletHitEvents()) {
+	     *      <i> (do something with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see BulletHitEvent
+	     * @see List
+	     */
         public List<BulletHitEvent> getBulletHitEvents()
         {
             var events = new List<BulletHitEvent>();
@@ -190,19 +188,19 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a list containing all BulletMissedEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (BulletMissedEvent e : getBulletMissedEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see BulletMissedEvent
-	 * @see List
-	 */
+	     * Returns a list containing all BulletMissedEvents currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (BulletMissedEvent e : getBulletMissedEvents()) {
+	     *      <i> (do something with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see BulletMissedEvent
+	     * @see List
+	     */
 
         public List<BulletMissedEvent> getBulletMissedEvents()
         {
@@ -232,19 +230,19 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (HitByBulletEvent e : getHitByBulletEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see HitByBulletEvent
-	 * @see List
-	 */
+	     * Returns a list containing all HitByBulletEvents currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (HitByBulletEvent e : getHitByBulletEvents()) {
+	     *      <i> (do something with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see HitByBulletEvent
+	     * @see List
+	     */
 
         public List<HitByBulletEvent> getHitByBulletEvents()
         {
@@ -264,19 +262,19 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a list containing all HitRobotEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (HitRobotEvent e : getHitRobotEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see HitRobotEvent
-	 * @see List
-	 */
+	     * Returns a list containing all HitRobotEvents currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (HitRobotEvent e : getHitRobotEvents()) {
+	     *      <i> (do something with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see HitRobotEvent
+	     * @see List
+	     */
 
         public List<HitRobotEvent> getHitRobotEvents()
         {
@@ -296,19 +294,19 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a list containing all HitWallEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (HitWallEvent e : getHitWallEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see HitWallEvent
-	 * @see List
-	 */
+	     * Returns a list containing all HitWallEvents currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (HitWallEvent e : getHitWallEvents()) {
+	     *      <i> (do something with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see HitWallEvent
+	     * @see List
+	     */
 
         public List<HitWallEvent> getHitWallEvents()
         {
@@ -332,30 +330,25 @@ namespace net.sf.robocode.dotnet.host.events
             return interruptible[priority];
         }
 
-        private IBasicRobot getRobot()
-        {
-            return robot;
-        }
-
         public void setRobot(IBasicRobot r)
         {
             robot = r;
         }
 
         /**
-	 * Returns a list containing all RobotDeathEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (RobotDeathEvent e : getRobotDeathEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see RobotDeathEvent
-	 * @see List
-	 */
+	     * Returns a list containing all RobotDeathEvents currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (RobotDeathEvent e : getRobotDeathEvents()) {
+	     *      <i> (do something with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see RobotDeathEvent
+	     * @see List
+	     */
 
         public List<RobotDeathEvent> getRobotDeathEvents()
         {
@@ -380,19 +373,19 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a list containing all ScannedRobotEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (ScannedRobotEvent e : getScannedRobotEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see ScannedRobotEvent
-	 * @see List
-	 */
+	     * Returns a list containing all ScannedRobotEvents currently in the robot's queue.
+	     * You might, for example, call this while processing another event.
+	     * <p/>
+	     * <P>Example:
+	     * <pre>
+	     *    for (ScannedRobotEvent e : getScannedRobotEvents()) {
+	     *      <i> (do something with e) </i>
+	     *    }
+	     * </pre>
+	     *
+	     * @see ScannedRobotEvent
+	     * @see List
+	     */
 
         public List<ScannedRobotEvent> getScannedRobotEvents()
         {
@@ -424,7 +417,7 @@ namespace net.sf.robocode.dotnet.host.events
             // Process custom events
             foreach (Condition customEvent in customEvents)
             {
-                bool conditionSatisfied = false;
+                bool conditionSatisfied;
 
                 robotProxy.setTestingCondition(true);
                 try
@@ -480,20 +473,15 @@ namespace net.sf.robocode.dotnet.host.events
 
                     setInterruptible(currentTopEventPriority, false);
                 }
-                catch (EventInterruptedException e)
+                catch (EventInterruptedException)
                 {
                     currentTopEvent = null;
                 }
-                    /*TODO catch (RuntimeException e) {
-				currentTopEventPriority = oldTopEventPriority;
-				currentTopEvent = null;
-				throw e;
-			} */
-                catch (Exception e)
+                catch (Exception)
                 {
                     currentTopEventPriority = oldTopEventPriority;
                     currentTopEvent = null;
-                    throw e;
+                    throw;
                 }
                 currentTopEventPriority = oldTopEventPriority;
                 currentEvent = (eventQueue.Count > 0) ? eventQueue[0] : null;
@@ -502,8 +490,6 @@ namespace net.sf.robocode.dotnet.host.events
 
         private void dispatch(Event currentEvent)
         {
-            IBasicRobot robot = getRobot();
-
             if (robot != null && currentEvent != null)
             {
                 try
@@ -553,21 +539,21 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a vector containing all MessageEvents currently in the robot's
-	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   for (MessageEvent e : getMessageEvents()) {
-	 *      <i> (do something with e) </i>
-	 *   }
-	 * </pre>
-	 *
-	 * @return a vector containing all MessageEvents currently in the robot's
-	 *         queue
-	 * @see MessageEvent
-	 * @since 1.2.6
-	 */
+	     * Returns a vector containing all MessageEvents currently in the robot's
+	     * queue. You might, for example, call this while processing another event.
+	     * <p/>
+	     * Example:
+	     * <pre>
+	     *   for (MessageEvent e : getMessageEvents()) {
+	     *      <i> (do something with e) </i>
+	     *   }
+	     * </pre>
+	     *
+	     * @return a vector containing all MessageEvents currently in the robot's
+	     *         queue
+	     * @see MessageEvent
+	     * @since 1.2.6
+	     */
 
         public List<MessageEvent> getMessageEvents()
         {
@@ -587,21 +573,21 @@ namespace net.sf.robocode.dotnet.host.events
         }
 
         /**
-	 * Returns a vector containing all StatusEvents currently in the robot's
-	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   for (StatusEvent e : getStatusEvents()) {
-	 *      <i> (do something with e) </i>
-	 *   }
-	 * </pre>
-	 *
-	 * @return a vector containing all StatusEvents currently in the robot's
-	 *         queue.
-	 * @see StatusEvent
-	 * @since 1.5
-	 */
+	     * Returns a vector containing all StatusEvents currently in the robot's
+	     * queue. You might, for example, call this while processing another event.
+	     * <p/>
+	     * Example:
+	     * <pre>
+	     *   for (StatusEvent e : getStatusEvents()) {
+	     *      <i> (do something with e) </i>
+	     *   }
+	     * </pre>
+	     *
+	     * @return a vector containing all StatusEvents currently in the robot's
+	     *         queue.
+	     * @see StatusEvent
+	     * @since 1.5
+	     */
 
         public List<StatusEvent> getStatusEvents()
         {

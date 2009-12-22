@@ -15,8 +15,6 @@ package net.sf.robocode.dotnet.host;
 import net.sf.robocode.core.*;
 import net.sf.robocode.dotnet.repository.items.handlers.DotnetPropertiesHandler;
 import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
-import net.sf.robocode.host.IHost;
-import net.sf.robocode.version.VersionManager;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.io.Logger;
 import net.sf.jni4net.Bridge;
@@ -34,8 +32,10 @@ public class Module extends BaseModule {
 		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.host.DotnetHost");
 		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.repository.root.DllRootHelper");
         EngineClassLoader.addExclusion("net.sf.robocode.dotnet.nhost.ModuleN");
+        EngineClassLoader.addExclusion("net.sf.robocode.peer.__IRobotPeer");
+        EngineClassLoader.addExclusion("net.sf.robocode.peer.BadBehavior");
 
-		Init();
+        Init();
 	}
 
 	private static void Init() {

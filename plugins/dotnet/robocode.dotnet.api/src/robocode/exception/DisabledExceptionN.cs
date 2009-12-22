@@ -10,12 +10,14 @@
  *     - Initial API and implementation
  *******************************************************************************/
 using System;
+using System.Runtime.Serialization;
 
 namespace robocode.exception
 {
     /// <summary>
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [Serializable]
     public class DisabledExceptionN : Exception
     {
         public DisabledExceptionN()
@@ -24,6 +26,11 @@ namespace robocode.exception
 
         public DisabledExceptionN(string s)
             : base(s)
+        {
+        }
+
+        protected DisabledExceptionN(SerializationInfo info, StreamingContext context) :
+            base(info, context)
         {
         }
     }

@@ -735,7 +735,7 @@ namespace robocode.robotinterfaces.peer
         /// @see RobocodeFileOutputStream
         /// @see RobocodeFileWriter
         /// </summary>
-        string getDataFile(string filename);
+        //TODO string getDataFile(string filename);
 
         /// <summary>
         /// Returns the data quota available in your data directory, i.e. the amount

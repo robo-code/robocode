@@ -1,5 +1,4 @@
 ﻿using System;
-using java.nio;
 using net.sf.robocode.serialization;
 
 namespace net.sf.robocode.dotnet.peer
@@ -40,6 +39,7 @@ namespace net.sf.robocode.dotnet.peer
             return fireAssistAngle;
         }
 
+        // ReSharper disable UnusedMember.Local
         private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
@@ -53,7 +53,7 @@ namespace net.sf.robocode.dotnet.peer
                        + RbSerializerN.SIZEOF_DOUBLE + RbSerializerN.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbSerializerN serializer, nio.ByteBuffer buffer, Object obje)
             {
                 var obj = (BulletCommand) obje;
 
@@ -63,7 +63,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.bulletId);
             }
 
-            public Object deserialize(RbSerializerN serializer, net.sf.robocode.nio.ByteBuffer buffer)
+            public Object deserialize(RbSerializerN serializer, nio.ByteBuffer buffer)
             {
                 double power = buffer.getDouble();
                 bool fireAssistValid = serializer.deserializeBoolean(buffer);
