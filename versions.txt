@@ -6,13 +6,27 @@ Version 1.7.2 Alpha
 * Req [2659612] - Add option to prevent speedup when minimized. This new View Option can now be set in the Preferences by putting a check mark into "Prevent speedup when minimized".
 * Req [2643438] - Rename /robots/.robotcache to /robots/.data
 
-Version 1.7.1.6 Alpha
-(06-Dec-2009)
+Version 1.7.1.6
+(22-Dec-2009)
+---------------
+= Bugfixes =
+* Bug [2912942] - Mac OS X 10.6: Cannot run Robocode from robocode.sh. It must be run from the new robocode.command file instead.
+* Bug [2912944] - Mac OS X 10.6: The editor cannot see the JDK. It must be run from the new robocode.command file instead.
+* The onDeathEvent(DeathEvent) method was called too late, when a new round was about to start. Not when the robot has died.
+
+= New Features =
+* The amount of used memory and total memory is now shown in the title bar of Robocode. This is useful to see how much memory your robots are consuming.
+
+Version 1.7.1.6 Beta
+(10-Dec-2009)
 ---------------
 = Bugfixes =
 * Bug [2897215] - Robot Editor doesn't accept packagename with dot (.) in it.
 * Bug [2876395] - Source is not included.
 * Bug [2867326] - Lockup on start if too many bots in robots dir (cont'd).
+
+= Requests =
+* Req [2641759] - Scrollable properties. All console windows including the Robot Console and Properties are now scrollable, and all have the same look.
 
 = Changes =
 * It is now possible to add paths to robot project inside an Eclipse workspace under the Development Options in the Preferences. Robocode will read the .classpath file in the project in order to locate both class files, properties files, and java files. This means that the Robot Packager is now able to include your source files when you use Eclipse, and it supports multiple source paths. Notice that Robocode does not support linked sources or include and exclude filters.
