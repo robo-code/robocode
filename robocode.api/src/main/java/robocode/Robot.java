@@ -407,15 +407,6 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
-	 * Called by the system to 'clean up' after your robot.
-	 * You may not override this method.
-	 */
-	@Override
-	protected final void finalize() throws Throwable { // This method must be final!
-		super.finalize();
-	}
-
-	/**
 	 * Immediately fires a bullet. The bullet will travel in the direction the
 	 * gun is pointing.
 	 * <p/>
