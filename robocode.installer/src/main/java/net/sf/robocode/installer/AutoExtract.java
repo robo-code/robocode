@@ -369,9 +369,13 @@ public class AutoExtract implements ActionListener {
 				}
 			}
 			deleteOldLibs(installDir);
-			
-			deleteDir(new File(installDir, "robots/.robotcache"));
-			deleteDir(new File(installDir, "robots/.data")); // former .robotcache
+
+			// The .robotcache has been renamed to .data
+			File robotCacheDir = new File(installDir, "robots/.robotcache");
+
+			if (robotCacheDir.exists()) {
+				robotCacheDir.renameTo(new File(installDir, "robots/.data"));
+			}
 
 			if (extractor.extract(installDir)) {
 				extractor.createShortcuts(installDir, "robocode.bat", "Robocode", "Robocode");
