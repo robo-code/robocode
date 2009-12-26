@@ -31,7 +31,7 @@ namespace net.sf.robocode.dotnet.host.seed
 
             hostManager = Bridge.CreateProxy<IHostManager>((IntPtr)domain.GetData("hostManager"));
             robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
-            statics = Bridge.CreateProxy<RobotStatics>((IntPtr)domain.GetData("statics"));
+            statics = ((RobotStatics)domain.GetData("statics"));
             robotSpecification = Bridge.CreateProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
             specification = Bridge.CreateProxy<IRobotRepositoryItem>((IntPtr)domain.GetData("item"));
             robotProxy = CreateProxy();

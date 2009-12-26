@@ -16,7 +16,7 @@ namespace net.sf.robocode.dotnet.host
         #region IHost Members
 
         public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification,
-                                                   RobotStatics statics, IRobotPeer peer)
+                                                   IRobotStatics statics, IRobotPeer peer)
         {
             Object s = HiddenAccess.getFileSpecification(robotSpecification);
             IRobotRepositoryItem itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);

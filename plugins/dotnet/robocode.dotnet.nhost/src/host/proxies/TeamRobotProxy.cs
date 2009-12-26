@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
 using net.sf.robocode.peer;
@@ -13,21 +15,18 @@ namespace net.sf.robocode.dotnet.host.proxies
     internal class TeamRobotProxy : AdvancedRobotProxy, ITeamRobotPeer
     {
         private const int MAX_MESSAGE_SIZE = 32768;
-        private readonly MemoryStream byteStreamWriter;
 
         public TeamRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
                               RobotStatics statics)
             : base(specification, hostManager, peer, statics)
         {
-            byteStreamWriter = new MemoryStream(MAX_MESSAGE_SIZE);
         }
 
         // team
         public string[] getTeammates()
         {
             getCall();
-            throw new NotImplementedException();
-            //TODO return statics.getTeammates();
+            return statics.getTeammates();
         }
 
         public bool isTeammate(String name)
@@ -37,18 +36,16 @@ namespace net.sf.robocode.dotnet.host.proxies
             {
                 return true;
             }
-            throw new NotImplementedException();
-            /* TODO 
             String[] teammates = statics.getTeammates();
 
             if (teammates != null) {
-                for (String mate : teammates) {
-                    if (mate.equals(name)) {
+                foreach (string mate in teammates) {
+                    if (mate == name) {
                         return true;
                     }
                 }
             }
-            return false;*/
+            return false;
         }
 
         public void broadcastMessage(object message)
@@ -56,33 +53,37 @@ namespace net.sf.robocode.dotnet.host.proxies
             sendMessage(null, message);
         }
 
+        private class SerializationGuard : SurrogateSelector
+        {
+            public override ISerializationSurrogate GetSurrogate(Type type, StreamingContext context, out ISurrogateSelector selector)
+            {
+                if (typeof(MarshalByRefObject).IsAssignableFrom(type))
+                {
+                    throw new AccessViolationException("Messages should not contain MarshalByRefObject objects");
+                }
+                return base.GetSurrogate(type, context, out selector);
+            }
+        }
+
         public void sendMessage(String name, object message)
         {
             setCall();
 
-            throw new NotImplementedException();
-            /* TODO 
             try {
-                if (!statics.isTeamRobot()) {
+                if (!statics.IsTeamRobot()) {
                     throw new IOException("You are not on a team.");
                 }
-                byteStreamWriter.reset();
-                ObjectOutputStream objectStreamWriter = new ObjectOutputStream(byteStreamWriter);
-
-                objectStreamWriter.writeObject(message);
-                objectStreamWriter.flush();
-                byteStreamWriter.flush();
-                final byte[] bytes = byteStreamWriter.toByteArray();
-
-                objectStreamWriter.reset();
-                if (bytes.length > MAX_MESSAGE_SIZE) {
-                    throw new IOException("Message too big. " + bytes.length + ">" + MAX_MESSAGE_SIZE);
+                using (MemoryStream byteStreamWriter = new MemoryStream(MAX_MESSAGE_SIZE))
+                {
+                    BinaryFormatter bf=new BinaryFormatter(new SerializationGuard(), new StreamingContext());
+                    bf.Serialize(byteStreamWriter, message);
+                    byte[] bytes = byteStreamWriter.ToArray();
+                    commands.getTeamMessages().Add(new TeamMessage(getName(), name, bytes));
                 }
-                commands.getTeamMessages().add(new TeamMessage(getName(), name, bytes));
-            } catch (IOException e) {
-                out.printStackTrace(e);
-                throw e;
-            }*/
+            } catch (Exception e) {
+                output.WriteLine(e);
+                throw;
+            }
         }
 
         protected override sealed void loadTeamMessages(List<TeamMessage> teamMessages)
@@ -91,25 +92,24 @@ namespace net.sf.robocode.dotnet.host.proxies
             {
                 return;
             }
-            throw new NotImplementedException();
-            /* TODO 
-            for (TeamMessage teamMessage : teamMessages) {
-                try {
-                    ByteArrayInputStream byteStreamReader = new ByteArrayInputStream(teamMessage.message);
+            foreach (TeamMessage teamMessage in teamMessages)
+            {
+                try
+                {
+                    using (var ms = new MemoryStream(teamMessage.message))
+                    {
+                        var bf = new BinaryFormatter();
+                        object message = bf.Deserialize(ms);
+                        var evnt = new MessageEvent(teamMessage.sender, message);
 
-                    byteStreamReader.reset();
-                    RobocodeObjectInputStream objectStreamReader = new RobocodeObjectInputStream(byteStreamReader,
-                            (ClassLoader) robotClassLoader);
-                    Serializable message = (Serializable) objectStreamReader.readObject();
-                    final MessageEvent event = new MessageEvent(teamMessage.sender, message);
-
-                    eventManager.add(event);
-                } catch (IOException e) {
-                    out.printStackTrace(e);
-                } catch (ClassNotFoundException e) {
-                    out.printStackTrace(e);
+                        eventManager.add(evnt);
+                    }
                 }
-            }*/
+                catch (Exception e)
+                {
+                    output.WriteLine(e);
+                }
+            }
         }
 
         // events

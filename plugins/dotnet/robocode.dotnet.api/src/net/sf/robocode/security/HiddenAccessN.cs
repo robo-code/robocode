@@ -17,6 +17,7 @@ using System.Reflection;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using robocode;
+using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace net.sf.robocode.security
@@ -79,7 +80,7 @@ namespace net.sf.robocode.security
             eventHelper.setPriority(e, newPriority);
         }
 
-        public static void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
+        public static void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             eventHelper.dispatch(evnt, robot, statics, graphics);
         }

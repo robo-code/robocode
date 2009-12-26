@@ -50,7 +50,8 @@ public final class RbSerializer {
 	public final static byte BulletStatus_TYPE = 7;
 	public final static byte BattleResults_TYPE = 8;
 	public final static byte Bullet_TYPE = 9;
-	
+    public final static byte RobotStatics_TYPE = 10;
+
 	public final static byte BattleEndedEvent_TYPE = 32;
 	public final static byte BulletHitBulletEvent_TYPE = 33;
 	public final static byte BulletHitEvent_TYPE = 34;
@@ -438,6 +439,10 @@ public final class RbSerializer {
 		return buffer.getDouble();
 	}
 
+    public long deserializeLong(ByteBuffer buffer) {
+        return buffer.getLong();
+    }
+
 	public int sizeOf(String data) {
 		return (data == null) ? SIZEOF_INT : SIZEOF_INT + encode(data).limit();
 	}
@@ -447,6 +452,9 @@ public final class RbSerializer {
 	}
 
 	public int sizeOf(byte type, Object object) {
+        if (object ==null){
+            return SIZEOF_INT;
+        }
 		return getHelper(type).sizeOf(this, object);
 	}
 

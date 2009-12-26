@@ -12,9 +12,8 @@
  *     - Updated Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
-using System.Runtime.Serialization;
 using net.sf.robocode.peer;
+using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -33,7 +32,7 @@ namespace robocode
 
         private readonly string sender;
         [NonSerialized]
-        private readonly ISerializable message;
+        private readonly object message;
 
         /// <summary>
         /// Called by the game to create a new MessageEvent.
@@ -41,7 +40,7 @@ namespace robocode
         /// @param sender  the name of the sending robot
         /// @param message the message for your robot
         /// </summary>
-        public MessageEvent(string sender, ISerializable message)
+        public MessageEvent(string sender, object message)
         {
             this.sender = sender;
             this.message = message;
@@ -62,7 +61,7 @@ namespace robocode
         ///
         /// @return the message
         /// </summary>
-        public ISerializable getMessage()
+        public object getMessage()
         {
             return message;
         }
@@ -78,9 +77,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            if (statics.isTeamRobot())
+            if (statics.IsTeamRobot())
             {
                 ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
 

@@ -16,12 +16,12 @@ namespace net.sf.robocode.peer
     /// </summary>
     public interface IRobotStaticsN
     {
-        bool isInteractiveRobot();
+        bool IsInteractiveRobot();
 
-        bool isPaintRobot();
+        bool IsPaintRobot();
 
-        bool isAdvancedRobot();
+        bool IsAdvancedRobot();
 
-        bool isTeamRobot();
+        bool IsTeamRobot();
     }
 }

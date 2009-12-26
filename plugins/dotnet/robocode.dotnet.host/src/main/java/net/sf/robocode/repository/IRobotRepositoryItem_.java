@@ -46,21 +46,6 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     public native long getLastModified();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getFullClassName();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getShortClassName();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getFullClassNameWithVersion();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getUniqueShortClassNameWithVersion();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getUniqueVeryShortClassNameWithVersion();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getDescription();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
@@ -106,7 +91,22 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     public native java.lang.String getRootPackage();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getFullClassNameWithVersion();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getUniqueFullClassNameWithVersion();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getUniqueShortClassNameWithVersion();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getUniqueVeryShortClassNameWithVersion();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getFullClassName();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getShortClassName();
     
     @net.sf.jni4net.attributes.ClrMethod("()Lrobocode/control/RobotSpecification;")
     public native robocode.control.RobotSpecification createRobotSpecification();
@@ -133,10 +133,10 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     public native boolean isJuniorRobot();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isDroid();
+    public native boolean isStandardRobot();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isStandardRobot();
+    public native boolean isDroid();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
     public native java.net.URL getRobotClassPath();

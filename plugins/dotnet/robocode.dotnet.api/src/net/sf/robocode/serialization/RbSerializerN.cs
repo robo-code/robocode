@@ -45,6 +45,7 @@ namespace net.sf.robocode.serialization
         public static readonly byte BulletStatus_TYPE = 7;
         public static readonly byte BattleResults_TYPE = 8;
         public static readonly byte Bullet_TYPE = 9;
+        public static readonly byte RobotStatics_TYPE = 10;
 
         public static readonly byte BattleEndedEvent_TYPE = 32;
         public static readonly byte BulletHitBulletEvent_TYPE = 33;
@@ -437,6 +438,11 @@ namespace net.sf.robocode.serialization
         public int deserializeInt(ByteBuffer buffer)
         {
             return buffer.getInt();
+        }
+
+        public long deserializeLong(ByteBuffer buffer)
+        {
+            return buffer.getLong();
         }
 
         public float deserializeFloat(ByteBuffer buffer)

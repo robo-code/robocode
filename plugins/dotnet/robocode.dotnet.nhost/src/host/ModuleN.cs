@@ -1,6 +1,7 @@
 ﻿using net.sf.jni4net;
 using net.sf.robocode.core;
 using net.sf.robocode.dotnet.peer;
+using net.sf.robocode.host;
 using net.sf.robocode.manager;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
@@ -23,6 +24,7 @@ namespace net.sf.robocode.dotnet.nhost
             RbSerializerN.register(typeof (RobotStatus), RbSerializer.RobotStatus_TYPE);
             RbSerializerN.register(typeof (BattleResults), RbSerializer.BattleResults_TYPE);
             RbSerializerN.register(typeof (Bullet), RbSerializer.Bullet_TYPE);
+            RbSerializerN.register(typeof(RobotStatics), RbSerializer.RobotStatics_TYPE);
 
             // events
             RbSerializerN.register(typeof (BattleEndedEvent), RbSerializer.BattleEndedEvent_TYPE);

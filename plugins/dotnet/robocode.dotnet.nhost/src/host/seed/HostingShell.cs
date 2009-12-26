@@ -21,12 +21,15 @@ namespace net.sf.robocode.dotnet.host.seed
         RbSerializer serializer=new RbSerializer();
 
         public HostingShell(RobotSpecification robotSpecification, IRobotRepositoryItem itemSpecification, IHostManager hostManager, IRobotPeer peer,
-                                  RobotStatics statics, string dllFileName) 
+                                  IRobotStatics jstatics, string dllFileName) 
         {
             Init(dllFileName);
             domain.SetData("hostManager", ((IJvmProxy) hostManager).JvmHandle);
             domain.SetData("peer", ((IJvmProxy) peer).JvmHandle);
-            domain.SetData("statics", ((IJvmProxy) statics).JvmHandle);
+
+            RobotStatics statics = serializer.ConvertJ2C<RobotStatics>(RbSerializerN.RobotStatics_TYPE, (Object)jstatics);
+
+            domain.SetData("statics", statics);
             domain.SetData("specification", ((IJvmProxy)robotSpecification).JvmHandle);
             domain.SetData("item", ((IJvmProxy)itemSpecification).JvmHandle);
             domain.DoCallBack(HostingSeed.Construct);

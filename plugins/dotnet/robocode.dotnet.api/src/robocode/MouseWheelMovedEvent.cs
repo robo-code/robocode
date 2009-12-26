@@ -16,6 +16,7 @@ using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
+using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -83,9 +84,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            if (statics.isInteractiveRobot())
+            if (statics.IsInteractiveRobot())
             {
                 IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 

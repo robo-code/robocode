@@ -82,6 +82,7 @@
     <Compile Include="robocode\exception\EventInterruptedException.cs" />
     <Compile Include="robocode\exception\RobotException.cs" />
     <Compile Include="robocode\exception\WinExceptionN.cs" />
+    <Compile Include="robocode\IGraphics.cs" />
     <Compile Include="robocode\GunTurnCompleteCondition.cs" />
     <Compile Include="robocode\HitByBulletEvent.cs" />
     <Compile Include="robocode\HitRobotEvent.cs" />

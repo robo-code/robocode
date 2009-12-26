@@ -12,6 +12,7 @@
 package net.sf.robocode.core;
 
 
+import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.serialization.RbSerializer;
 import net.sf.robocode.settings.ISettingsManager;
@@ -40,5 +41,6 @@ public class Module extends BaseModule {
         RbSerializer.register(DebugProperty.class, RbSerializer.DebugProperty_TYPE);
         RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
         RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
+        RbSerializer.register(RobotStatics.class, RbSerializer.RobotStatics_TYPE);
     }
 }

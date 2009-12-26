@@ -12,6 +12,7 @@ using net.sf.robocode.security;
 using net.sf.robocode.serialization;
 using robocode;
 using robocode.exception;
+using robocode.robocode;
 using robocode.robotinterfaces.peer;
 using robocode.util;
 using Double = System.Double;
@@ -25,15 +26,13 @@ namespace net.sf.robocode.dotnet.host.proxies
             MAX_SET_CALL_COUNT = 10000,
             MAX_GET_CALL_COUNT = 10000;
 
-        //private IGraphicsProxy graphicsProxy;
-        //TODO interlocked
+        private GraphicsProxy graphicsProxy;
         private RobotStatus status;
         protected ExecCommands commands;
         private ExecResults execResults;
         private readonly Dictionary<int, Bullet> bullets = new Dictionary<int, Bullet>();
         private int bulletCounter;
         
-        //TODO interlocked
         private int setCallCount;
         private int getCallCount;
 
@@ -51,7 +50,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             eventManager = new EventManager(this);
 
-            //TODO graphicsProxy = new Graphics2DSerialized();
+            graphicsProxy = new GraphicsProxy();
 
             // dummy
             execResults = new ExecResults(null, null, null, null, null, false, false, false);
@@ -92,7 +91,11 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
 
             // Cleanup graphics proxy
-            //TODO graphicsProxy = null;
+            if (graphicsProxy != null)
+            {
+                graphicsProxy.Dispose();
+                graphicsProxy = null;
+            }
             execResults = null;
             status = null;
             commands = null;
@@ -233,7 +236,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         public double getGunCoolingRate()
         {
             getCall();
-            return 0; //TODO statics.getBattleRules().getGunCoolingRate();
+            return statics.getBattleRules().getGunCoolingRate();
         }
 
         public String getName()
@@ -299,19 +302,19 @@ namespace net.sf.robocode.dotnet.host.proxies
         public double getBattleFieldHeight()
         {
             getCall();
-            return 0; //TODO statics.getBattleRules().getBattlefieldHeight();
+            return statics.getBattleRules().getBattlefieldHeight();
         }
 
         public double getBattleFieldWidth()
         {
             getCall();
-            return 0; //TODO statics.getBattleRules().getBattlefieldWidth();
+            return statics.getBattleRules().getBattlefieldWidth();
         }
 
         public int getNumRounds()
         {
             getCall();
-            return 0; //TODO statics.getBattleRules().getNumRounds();
+            return statics.getBattleRules().getNumRounds();
         }
 
         public int getRoundNum()
@@ -320,7 +323,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             return status.getRoundNum();
         }
 
-        public Graphics getGraphics()
+        public IGraphics getGraphics()
         {
             getCall();
             commands.setTryingToPaint(true);
@@ -362,9 +365,9 @@ namespace net.sf.robocode.dotnet.host.proxies
             return status.getTime();
         }
 
-        public Graphics getGraphicsImpl()
+        public IGraphics getGraphicsImpl()
         {
-            return null; //TODO (Graphics) graphicsProxy;
+            return graphicsProxy;
         }
 
         protected override sealed void executeImpl()
@@ -392,13 +395,8 @@ namespace net.sf.robocode.dotnet.host.proxies
                 commands.setScan(true);
             }
 
-            lock (output)
-            {
-                output.Flush();
-                commands.setOutputText(outputSb.ToString());
-                outputSb.Length = 0;
-            }
-            //TODO commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
+            commands.setOutputText(GetOutTextAndReset());
+            commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
             // call server
             try
@@ -430,13 +428,13 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
 
             updateStatus(execResults.getCommands(), execResults.getStatus());
-            //TODO graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
+            graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
             firedEnergy = 0;
             firedHeat = 0;
 
             // add new events
             eventManager.add(new StatusEvent(execResults.getStatus()));
-            if (statics.isPaintRobot() && (execResults.isPaintEnabled()))
+            if (statics.IsPaintRobot() && (execResults.isPaintEnabled()))
             {
                 // Add paint event, if robot is a paint robot and its painting is enabled
                 eventManager.add(new PaintEvent());
@@ -475,6 +473,18 @@ namespace net.sf.robocode.dotnet.host.proxies
             eventManager.processEvents();
         }
 
+        private string GetOutTextAndReset()
+        {
+            string res;
+            lock (output)
+            {
+                output.Flush();
+                res = outputSb.ToString();
+                outputSb.Length = 0;
+            }
+            return res;
+        }
+
 
         private void SerializeCommands()
         {
@@ -494,11 +504,11 @@ namespace net.sf.robocode.dotnet.host.proxies
         protected override sealed void waitForBattleEndImpl()
         {
             eventManager.clearAllEvents(false);
-            //TODO graphicsProxy.setPaintingEnabled(false);
+            graphicsProxy.setPaintingEnabled(false);
             do
             {
-                //TODO commands.setOutputText(out.readAndReset());
-                //TODO commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
+                commands.setOutputText(GetOutTextAndReset());
+                commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
                 // call server
                 SerializeCommands();
@@ -573,7 +583,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             bulletCounter++;
 
-            if (currentTopEvent != null && currentTopEvent.getTime() == status.getTime() && !statics.isAdvancedRobot()
+            if (currentTopEvent != null && currentTopEvent.getTime() == status.getTime() && !statics.IsAdvancedRobot()
                 && status.getGunHeadingRadians() == status.getRadarHeadingRadians()
                 && typeof (ScannedRobotEvent).IsAssignableFrom(currentTopEvent.GetType()))
             {

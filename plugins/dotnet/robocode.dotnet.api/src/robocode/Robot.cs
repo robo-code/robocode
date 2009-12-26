@@ -33,6 +33,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using robocode.exception;
+using robocode.robocode;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using robocode.util;
@@ -1656,7 +1657,7 @@ namespace robocode
         /// @see #onPaint(Graphics)
         /// @since 1.6.1
         /// </summary>
-        public Graphics getGraphics()
+        public IGraphics getGraphics()
         {
             if (peer != null)
             {
@@ -1691,7 +1692,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public virtual void onPaint(Graphics g)
+        public virtual void onPaint(IGraphics g)
         {
         }
 

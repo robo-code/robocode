@@ -10,6 +10,7 @@
  *     - Initial implementation
  *******************************************************************************/
 using System.Drawing;
+using robocode.robocode;
 
 namespace robocode.robotinterfaces
 {
@@ -44,10 +45,10 @@ namespace robocode.robotinterfaces
         ///
         /// @param g the graphics context to use for painting graphical items for the
         ///          robot
-        /// @see java.awt.Graphics
+        /// @see System.Drawing.Graphics
         /// @since 1.1
         /// </summary>
-        void onPaint(Graphics g);
+        void onPaint(IGraphics g);
     }
 }
 //happy

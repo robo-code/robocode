@@ -63,7 +63,6 @@
     <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
     <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\host\RobotStatics.generated.cs" />
     <Compile Include="generated\net\sf\robocode\io\Logger.generated.cs" />
     <Compile Include="generated\net\sf\robocode\manager\IVersionManagerBase.generated.cs" />
     <Compile Include="generated\net\sf\robocode\peer\BadBehavior.generated.cs" />
@@ -86,6 +85,7 @@
     <Compile Include="host\ModuleN.cs" />
     <Compile Include="host\proxies\AdvancedRobotProxy.cs" />
     <Compile Include="host\proxies\BasicRobotProxy.cs" />
+    <Compile Include="host\proxies\GraphicsProxy.cs" />
     <Compile Include="host\proxies\HostingRobotProxy.cs" />
     <Compile Include="host\proxies\JuniorRobotProxy.cs" />
     <Compile Include="host\proxies\StandardRobotProxy.cs" />

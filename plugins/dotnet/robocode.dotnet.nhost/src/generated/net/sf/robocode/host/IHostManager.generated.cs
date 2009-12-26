@@ -38,7 +38,7 @@ namespace net.sf.robocode.host {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lrobocode/control/RobotSpecification;Lnet/sf/robocode/host/RobotStatics;Lnet/sf/" +
             "robocode/peer/IRobotPeer;)Ljava/lang/Object;")]
-        global::java.lang.Object createRobotProxy(global::robocode.control.RobotSpecification par0, global::net.sf.robocode.host.RobotStatics par1, global::net.sf.robocode.peer.IRobotPeer par2);
+        global::java.lang.Object createRobotProxy(global::robocode.control.RobotSpecification par0, global::java.lang.Object par1, global::net.sf.robocode.peer.IRobotPeer par2);
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;")]
         java.lang.String[] getReferencedClasses(global::net.sf.robocode.repository.IRobotRepositoryItem par0);
@@ -142,7 +142,7 @@ namespace net.sf.robocode.host {
             return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.PrintStream>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.@__IHostManager._getRobotOutputStream6));
         }
         
-        public global::java.lang.Object createRobotProxy(global::robocode.control.RobotSpecification par0, global::net.sf.robocode.host.RobotStatics par1, global::net.sf.robocode.peer.IRobotPeer par2) {
+        public global::java.lang.Object createRobotProxy(global::robocode.control.RobotSpecification par0, global::java.lang.Object par1, global::net.sf.robocode.peer.IRobotPeer par2) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.host.@__IHostManager._createRobotProxy7, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::net.sf.robocode.peer.IRobotPeer>(@__env, par2)));
         }
@@ -249,11 +249,11 @@ namespace net.sf.robocode.host {
         
         private static global::System.IntPtr createRobotProxy7(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0, global::System.IntPtr par1, global::System.IntPtr par2) {
             // (Lrobocode/control/RobotSpecification;Lnet/sf/robocode/host/RobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Ljava/lang/Object;
-            // (Lrobocode/control/RobotSpecification;Lnet/sf/robocode/host/RobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Ljava/lang/Object;
+            // (Lrobocode/control/RobotSpecification;Ljava/lang/Object;Lnet/sf/robocode/peer/IRobotPeer;)Ljava/lang/Object;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
             global::net.sf.robocode.host.IHostManager @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.host.IHostManager>(@__env, @__obj);
-            return global::net.sf.jni4net.utils.Convertor.FullC2J<global::java.lang.Object>(@__env, @__real.createRobotProxy(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::robocode.control.RobotSpecification>(@__env, par0), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.host.RobotStatics>(@__env, par1), global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, par2)));
+            return global::net.sf.jni4net.utils.Convertor.FullC2J<global::java.lang.Object>(@__env, @__real.createRobotProxy(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::robocode.control.RobotSpecification>(@__env, par0), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par1), global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, par2)));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return default(global::System.IntPtr);
         }

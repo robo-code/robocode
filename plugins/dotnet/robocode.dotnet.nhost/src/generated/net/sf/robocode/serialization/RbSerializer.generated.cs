@@ -127,59 +127,61 @@ namespace net.sf.robocode.serialization {
         
         internal static global::net.sf.jni4net.jni.FieldId _Bullet_TYPE54;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BattleEndedEvent_TYPE55;
+        internal static global::net.sf.jni4net.jni.FieldId _RobotStatics_TYPE55;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BulletHitBulletEvent_TYPE56;
+        internal static global::net.sf.jni4net.jni.FieldId _BattleEndedEvent_TYPE56;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BulletHitEvent_TYPE57;
+        internal static global::net.sf.jni4net.jni.FieldId _BulletHitBulletEvent_TYPE57;
         
-        internal static global::net.sf.jni4net.jni.FieldId _BulletMissedEvent_TYPE58;
+        internal static global::net.sf.jni4net.jni.FieldId _BulletHitEvent_TYPE58;
         
-        internal static global::net.sf.jni4net.jni.FieldId _DeathEvent_TYPE59;
+        internal static global::net.sf.jni4net.jni.FieldId _BulletMissedEvent_TYPE59;
         
-        internal static global::net.sf.jni4net.jni.FieldId _WinEvent_TYPE60;
+        internal static global::net.sf.jni4net.jni.FieldId _DeathEvent_TYPE60;
         
-        internal static global::net.sf.jni4net.jni.FieldId _HitWallEvent_TYPE61;
+        internal static global::net.sf.jni4net.jni.FieldId _WinEvent_TYPE61;
         
-        internal static global::net.sf.jni4net.jni.FieldId _RobotDeathEvent_TYPE62;
+        internal static global::net.sf.jni4net.jni.FieldId _HitWallEvent_TYPE62;
         
-        internal static global::net.sf.jni4net.jni.FieldId _SkippedTurnEvent_TYPE63;
+        internal static global::net.sf.jni4net.jni.FieldId _RobotDeathEvent_TYPE63;
         
-        internal static global::net.sf.jni4net.jni.FieldId _ScannedRobotEvent_TYPE64;
+        internal static global::net.sf.jni4net.jni.FieldId _SkippedTurnEvent_TYPE64;
         
-        internal static global::net.sf.jni4net.jni.FieldId _HitByBulletEvent_TYPE65;
+        internal static global::net.sf.jni4net.jni.FieldId _ScannedRobotEvent_TYPE65;
         
-        internal static global::net.sf.jni4net.jni.FieldId _HitRobotEvent_TYPE66;
+        internal static global::net.sf.jni4net.jni.FieldId _HitByBulletEvent_TYPE66;
         
-        internal static global::net.sf.jni4net.jni.FieldId _KeyPressedEvent_TYPE67;
+        internal static global::net.sf.jni4net.jni.FieldId _HitRobotEvent_TYPE67;
         
-        internal static global::net.sf.jni4net.jni.FieldId _KeyReleasedEvent_TYPE68;
+        internal static global::net.sf.jni4net.jni.FieldId _KeyPressedEvent_TYPE68;
         
-        internal static global::net.sf.jni4net.jni.FieldId _KeyTypedEvent_TYPE69;
+        internal static global::net.sf.jni4net.jni.FieldId _KeyReleasedEvent_TYPE69;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseClickedEvent_TYPE70;
+        internal static global::net.sf.jni4net.jni.FieldId _KeyTypedEvent_TYPE70;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseDraggedEvent_TYPE71;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseClickedEvent_TYPE71;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseEnteredEvent_TYPE72;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseDraggedEvent_TYPE72;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseExitedEvent_TYPE73;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseEnteredEvent_TYPE73;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseMovedEvent_TYPE74;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseExitedEvent_TYPE74;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MousePressedEvent_TYPE75;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseMovedEvent_TYPE75;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseReleasedEvent_TYPE76;
+        internal static global::net.sf.jni4net.jni.FieldId _MousePressedEvent_TYPE76;
         
-        internal static global::net.sf.jni4net.jni.FieldId _MouseWheelMovedEvent_TYPE77;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseReleasedEvent_TYPE77;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor78;
+        internal static global::net.sf.jni4net.jni.FieldId _MouseWheelMovedEvent_TYPE78;
+        
+        internal static global::net.sf.jni4net.jni.MethodId @__ctor79;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public RbSerializer() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer.@__ctor78, this);
+            @__env.NewObject(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer.@__ctor79, this);
         }
         
         protected RbSerializer(global::net.sf.jni4net.jni.JNIEnv @__env) : 
@@ -329,10 +331,18 @@ namespace net.sf.robocode.serialization {
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("B")]
+        public static byte RobotStatics_TYPE {
+            get {
+                global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._RobotStatics_TYPE55)));
+            }
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("B")]
         public static byte BattleEndedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BattleEndedEvent_TYPE55)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BattleEndedEvent_TYPE56)));
             }
         }
         
@@ -340,7 +350,7 @@ namespace net.sf.robocode.serialization {
         public static byte BulletHitBulletEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletHitBulletEvent_TYPE56)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletHitBulletEvent_TYPE57)));
             }
         }
         
@@ -348,7 +358,7 @@ namespace net.sf.robocode.serialization {
         public static byte BulletHitEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletHitEvent_TYPE57)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletHitEvent_TYPE58)));
             }
         }
         
@@ -356,7 +366,7 @@ namespace net.sf.robocode.serialization {
         public static byte BulletMissedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletMissedEvent_TYPE58)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._BulletMissedEvent_TYPE59)));
             }
         }
         
@@ -364,7 +374,7 @@ namespace net.sf.robocode.serialization {
         public static byte DeathEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._DeathEvent_TYPE59)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._DeathEvent_TYPE60)));
             }
         }
         
@@ -372,7 +382,7 @@ namespace net.sf.robocode.serialization {
         public static byte WinEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._WinEvent_TYPE60)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._WinEvent_TYPE61)));
             }
         }
         
@@ -380,7 +390,7 @@ namespace net.sf.robocode.serialization {
         public static byte HitWallEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitWallEvent_TYPE61)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitWallEvent_TYPE62)));
             }
         }
         
@@ -388,7 +398,7 @@ namespace net.sf.robocode.serialization {
         public static byte RobotDeathEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._RobotDeathEvent_TYPE62)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._RobotDeathEvent_TYPE63)));
             }
         }
         
@@ -396,7 +406,7 @@ namespace net.sf.robocode.serialization {
         public static byte SkippedTurnEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SkippedTurnEvent_TYPE63)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._SkippedTurnEvent_TYPE64)));
             }
         }
         
@@ -404,7 +414,7 @@ namespace net.sf.robocode.serialization {
         public static byte ScannedRobotEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._ScannedRobotEvent_TYPE64)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._ScannedRobotEvent_TYPE65)));
             }
         }
         
@@ -412,7 +422,7 @@ namespace net.sf.robocode.serialization {
         public static byte HitByBulletEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitByBulletEvent_TYPE65)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitByBulletEvent_TYPE66)));
             }
         }
         
@@ -420,7 +430,7 @@ namespace net.sf.robocode.serialization {
         public static byte HitRobotEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitRobotEvent_TYPE66)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._HitRobotEvent_TYPE67)));
             }
         }
         
@@ -428,7 +438,7 @@ namespace net.sf.robocode.serialization {
         public static byte KeyPressedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyPressedEvent_TYPE67)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyPressedEvent_TYPE68)));
             }
         }
         
@@ -436,7 +446,7 @@ namespace net.sf.robocode.serialization {
         public static byte KeyReleasedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyReleasedEvent_TYPE68)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyReleasedEvent_TYPE69)));
             }
         }
         
@@ -444,7 +454,7 @@ namespace net.sf.robocode.serialization {
         public static byte KeyTypedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyTypedEvent_TYPE69)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._KeyTypedEvent_TYPE70)));
             }
         }
         
@@ -452,7 +462,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseClickedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseClickedEvent_TYPE70)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseClickedEvent_TYPE71)));
             }
         }
         
@@ -460,7 +470,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseDraggedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseDraggedEvent_TYPE71)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseDraggedEvent_TYPE72)));
             }
         }
         
@@ -468,7 +478,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseEnteredEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseEnteredEvent_TYPE72)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseEnteredEvent_TYPE73)));
             }
         }
         
@@ -476,7 +486,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseExitedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseExitedEvent_TYPE73)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseExitedEvent_TYPE74)));
             }
         }
         
@@ -484,7 +494,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseMovedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseMovedEvent_TYPE74)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseMovedEvent_TYPE75)));
             }
         }
         
@@ -492,7 +502,7 @@ namespace net.sf.robocode.serialization {
         public static byte MousePressedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE75)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE76)));
             }
         }
         
@@ -500,7 +510,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseReleasedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE76)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE77)));
             }
         }
         
@@ -508,7 +518,7 @@ namespace net.sf.robocode.serialization {
         public static byte MouseWheelMovedEvent_TYPE {
             get {
                 global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE77)));
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE78)));
             }
         }
         
@@ -569,30 +579,31 @@ namespace net.sf.robocode.serialization {
             global::net.sf.robocode.serialization.RbSerializer._BulletStatus_TYPE52 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletStatus_TYPE", "B");
             global::net.sf.robocode.serialization.RbSerializer._BattleResults_TYPE53 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BattleResults_TYPE", "B");
             global::net.sf.robocode.serialization.RbSerializer._Bullet_TYPE54 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "Bullet_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BattleEndedEvent_TYPE55 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BattleEndedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BulletHitBulletEvent_TYPE56 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletHitBulletEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BulletHitEvent_TYPE57 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletHitEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._BulletMissedEvent_TYPE58 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletMissedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._DeathEvent_TYPE59 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "DeathEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._WinEvent_TYPE60 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "WinEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._HitWallEvent_TYPE61 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitWallEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._RobotDeathEvent_TYPE62 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "RobotDeathEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._SkippedTurnEvent_TYPE63 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SkippedTurnEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._ScannedRobotEvent_TYPE64 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "ScannedRobotEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._HitByBulletEvent_TYPE65 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitByBulletEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._HitRobotEvent_TYPE66 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitRobotEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._KeyPressedEvent_TYPE67 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyPressedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._KeyReleasedEvent_TYPE68 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyReleasedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._KeyTypedEvent_TYPE69 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyTypedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseClickedEvent_TYPE70 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseClickedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseDraggedEvent_TYPE71 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseDraggedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseEnteredEvent_TYPE72 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseEnteredEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseExitedEvent_TYPE73 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseExitedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseMovedEvent_TYPE74 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseMovedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE75 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MousePressedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE76 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseReleasedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE77 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseWheelMovedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer.@__ctor78 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "<init>", "()V");
+            global::net.sf.robocode.serialization.RbSerializer._RobotStatics_TYPE55 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "RobotStatics_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BattleEndedEvent_TYPE56 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BattleEndedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BulletHitBulletEvent_TYPE57 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletHitBulletEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BulletHitEvent_TYPE58 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletHitEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._BulletMissedEvent_TYPE59 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "BulletMissedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._DeathEvent_TYPE60 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "DeathEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._WinEvent_TYPE61 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "WinEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._HitWallEvent_TYPE62 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitWallEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._RobotDeathEvent_TYPE63 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "RobotDeathEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._SkippedTurnEvent_TYPE64 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "SkippedTurnEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._ScannedRobotEvent_TYPE65 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "ScannedRobotEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._HitByBulletEvent_TYPE66 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitByBulletEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._HitRobotEvent_TYPE67 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "HitRobotEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._KeyPressedEvent_TYPE68 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyPressedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._KeyReleasedEvent_TYPE69 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyReleasedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._KeyTypedEvent_TYPE70 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "KeyTypedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseClickedEvent_TYPE71 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseClickedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseDraggedEvent_TYPE72 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseDraggedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseEnteredEvent_TYPE73 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseEnteredEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseExitedEvent_TYPE74 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseExitedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseMovedEvent_TYPE75 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseMovedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE76 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MousePressedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE77 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseReleasedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE78 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseWheelMovedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer.@__ctor79 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "<init>", "()V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Class;B)V")]

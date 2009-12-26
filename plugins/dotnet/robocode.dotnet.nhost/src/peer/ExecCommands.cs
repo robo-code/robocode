@@ -41,9 +41,8 @@ namespace net.sf.robocode.dotnet.peer
         private List<TeamMessage> teamMessages = new List<TeamMessage>();
         private List<DebugProperty> debugProperties = new List<DebugProperty>();
         
-        //TODO
         [NonSerialized]
-        private Object graphicsCalls;
+        private byte[] graphicsCalls;
 
         public ExecCommands()
         {
@@ -274,7 +273,7 @@ namespace net.sf.robocode.dotnet.peer
             return debugProperties;
         }
 
-        public void setGraphicsCalls(Object graphicsCalls)
+        public void setGraphicsCalls(byte[] graphicsCalls)
         {
             this.graphicsCalls = graphicsCalls;
         }
@@ -338,7 +337,7 @@ namespace net.sf.robocode.dotnet.peer
                 size += 4*RbSerializerN.SIZEOF_BOOL;
                 size += serializer.sizeOf(obj.outputText);
 
-                size += serializer.sizeOf((byte[]) obj.graphicsCalls);
+                size += serializer.sizeOf(obj.graphicsCalls);
 
                 // bullets
                 size += obj.bullets.Count*serializer.sizeOf(RbSerializerN.BulletCommand_TYPE, null);
@@ -391,7 +390,7 @@ namespace net.sf.robocode.dotnet.peer
 
                 serializer.serialize(buffer, obj.outputText);
 
-                serializer.serialize(buffer, (byte[]) obj.graphicsCalls);
+                serializer.serialize(buffer, obj.graphicsCalls);
 
                 foreach (BulletCommand bullet in obj.bullets)
                 {

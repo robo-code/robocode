@@ -16,6 +16,7 @@
  *     - Javadocs
  *******************************************************************************/
 using System.Drawing;
+using robocode.robocode;
 
 namespace robocode.robotinterfaces.peer
 {
@@ -669,7 +670,7 @@ namespace robocode.robotinterfaces.peer
         /// @see robocode.robotinterfaces.IPaintEvents#onPaint(Graphics)
         /// @since 1.6.1
         /// </summary>
-        Graphics getGraphics();
+        IGraphics getGraphics();
 
         /// <summary>
         /// Sets the debug property with the specified key to the specified value.

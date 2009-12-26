@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using net.sf.robocode.peer;
 using robocode;
+using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace net.sf.robocode.security
@@ -26,7 +27,7 @@ namespace net.sf.robocode.security
         void setPriority(Event evnt, int newPriority);
         void setTime(Event evnt, long newTime);
         bool isCriticalEvent(Event evnt);
-        void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, Graphics graphics);
+        void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics);
         void updateBullets(Event evnt, Dictionary<int, Bullet> bullets);
         byte getSerializationType(Event evnt);
     }

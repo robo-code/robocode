@@ -25,6 +25,7 @@ using System.Drawing;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.security;
+using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -196,7 +197,7 @@ namespace robocode
         /// @param graphics the graphics to dispatch to.
         /// </summary>
         // this method is invisible on RobotAPI
-        internal virtual void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
+        internal virtual void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
         }
 
@@ -271,7 +272,7 @@ namespace robocode
                 return evnt.isCriticalEvent();
             }
 
-            public void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
+            public void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
             {
                 evnt.dispatch(robot, statics, graphics);
             }

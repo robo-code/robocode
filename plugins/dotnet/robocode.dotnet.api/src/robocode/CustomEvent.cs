@@ -14,6 +14,7 @@
 using System;
 using System.Drawing;
 using net.sf.robocode.peer;
+using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -101,9 +102,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override sealed void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
+        internal override sealed void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            if (statics.isAdvancedRobot())
+            if (statics.IsAdvancedRobot())
             {
                 IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 

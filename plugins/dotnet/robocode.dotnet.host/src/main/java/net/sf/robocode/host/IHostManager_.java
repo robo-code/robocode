@@ -54,7 +54,7 @@ class __IHostManager extends system.Object implements net.sf.robocode.host.IHost
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/io/PrintStream;")
     public native java.io.PrintStream getRobotOutputStream();
     
-    @net.sf.jni4net.attributes.ClrMethod("(Lrobocode/control/RobotSpecification;Lnet/sf/robocode/host/RobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Ljava/lang/Object;")
+    @net.sf.jni4net.attributes.ClrMethod("(Lrobocode/control/RobotSpecification;Ljava/lang/Object;Lnet/sf/robocode/peer/IRobotPeer;)Ljava/lang/Object;")
     public native java.lang.Object createRobotProxy(robocode.control.RobotSpecification par0, net.sf.robocode.host.RobotStatics par1, net.sf.robocode.peer.IRobotPeer par2);
     
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;")

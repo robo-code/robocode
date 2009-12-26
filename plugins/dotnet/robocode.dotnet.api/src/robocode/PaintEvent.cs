@@ -11,7 +11,9 @@
  *******************************************************************************/
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using net.sf.robocode.peer;
+using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace robocode
@@ -42,9 +44,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, Graphics graphics)
+        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            if (statics.isPaintRobot())
+            if (statics.IsPaintRobot())
             {
                 IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
 
