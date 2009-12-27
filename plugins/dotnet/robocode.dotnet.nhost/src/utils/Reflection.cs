@@ -65,7 +65,7 @@ namespace net.sf.robocode.dotnet.utils
             bool isTeamRobot = false;
             bool isDroid = false;
 
-            if (typeof(Droid).IsAssignableFrom(robotClass))
+            if (typeof(IDroid).IsAssignableFrom(robotClass))
             {
                 isDroid = true;
             }

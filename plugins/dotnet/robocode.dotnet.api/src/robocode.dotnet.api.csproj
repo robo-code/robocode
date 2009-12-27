@@ -74,7 +74,7 @@
     <Compile Include="robocode\Condition.cs" />
     <Compile Include="robocode\CustomEvent.cs" />
     <Compile Include="robocode\DeathEvent.cs" />
-    <Compile Include="robocode\Droid.cs" />
+    <Compile Include="robocode\IDroid.cs" />
     <Compile Include="robocode\Event.cs" />
     <Compile Include="robocode\exception\EventInterruptedException.cs">
       <SubType>Code</SubType>

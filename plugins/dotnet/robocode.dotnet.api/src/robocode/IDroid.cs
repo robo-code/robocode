@@ -23,7 +23,7 @@ namespace robocode
     /// @see AdvancedRobot
     /// @see TeamRobot
     /// </summary>
-    public interface Droid
+    public interface IDroid
     {
     }
 }

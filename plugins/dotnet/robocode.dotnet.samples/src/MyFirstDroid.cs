@@ -25,7 +25,7 @@ namespace samplecs
     /// <p/>
     /// Follows orders of team leader
     /// </summary>
-    public class MyFirstDroid : TeamRobot, Droid
+    public class MyFirstDroid : TeamRobot, IDroid
     {
 
         /// <summary>
