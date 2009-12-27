@@ -168,6 +168,21 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
+        public void DrawEllipse(Pen pen, RectangleF rect)
+        {
+            DrawEllipse(pen, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        public void DrawEllipse(Pen pen, float x, float y, float width, float height)
+        {
+            DrawEllipse(pen, (int) x, (int) y, (int) width, (int) height);
+        }
+
+        public void DrawEllipse(Pen pen, Rectangle rect)
+        {
+            DrawEllipse(pen, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
         public void FillEllipse(Brush brush, int x, int y, int width, int height)
         {
             if (isPaintingEnabled)
@@ -177,10 +192,10 @@ namespace net.sf.robocode.dotnet.host.proxies
                 try
                 {
                     put(Method.FILL_OVAL);
-                    put((float)x);
-                    put((float)y);
-                    put((float)width);
-                    put((float)height);
+                    put(x);
+                    put(y);
+                    put(width);
+                    put(height);
                 }
                 catch (BufferOverflowException e)
                 {
@@ -192,6 +207,21 @@ namespace net.sf.robocode.dotnet.host.proxies
                 }
             }
         }
+
+        public void FillEllipse(Brush brush, RectangleF rect)
+        {
+            FillEllipse(brush, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+        public void FillEllipse(Brush brush, float x, float y, float width, float height)
+        {
+            FillEllipse(brush, (int)x, (int)y, (int)width, (int)height);
+        }
+
+        public void FillEllipse(Brush brush, Rectangle rect)
+        {
+            FillEllipse(brush, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
 
         private bool reallocBuffer()
         {
@@ -465,21 +495,6 @@ namespace net.sf.robocode.dotnet.host.proxies
             throw new NotImplementedException();
         }
 
-        public void DrawEllipse(Pen pen, RectangleF rect)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawEllipse(Pen pen, float x, float y, float width, float height)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawEllipse(Pen pen, Rectangle rect)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DrawPie(Pen pen, RectangleF rect, float startAngle, float sweepAngle)
         {
             throw new NotImplementedException();
@@ -616,21 +631,6 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
         public void FillPolygon(Brush brush, Point[] points, FillMode fillMode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillEllipse(Brush brush, RectangleF rect)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillEllipse(Brush brush, float x, float y, float width, float height)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillEllipse(Brush brush, Rectangle rect)
         {
             throw new NotImplementedException();
         }

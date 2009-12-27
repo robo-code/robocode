@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using java.lang;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.security;
 using robocode;
 using robocode.exception;
 using robocode.robotinterfaces;
+using Exception = System.Exception;
+using String = System.String;
 
 namespace net.sf.robocode.dotnet.host.events
 {
@@ -501,6 +504,10 @@ namespace net.sf.robocode.dotnet.host.events
                         HiddenAccessN.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
                     }
                 }
+                catch (AbortedException){} //ignore
+                catch (DeathException) { } //ignore
+                catch (DisabledException) { } //ignore
+                catch (WinException) { } //ignore
                 catch (Exception ex)
                 {
                     robotProxy.println("SYSTEM: Exception occurred on " + currentEvent.GetType().Name);

@@ -197,22 +197,22 @@ namespace net.sf.robocode.dotnet.host.proxies
                         executeImpl();
                     }
                 }
-                catch (WinExceptionN)
+                catch (WinException)
                 {
                     // Do nothing
                 }
-                catch (AbortedExceptionN)
+                catch (AbortedException)
                 {
                     // Do nothing
                 }
-                catch (DeathExceptionN)
+                catch (DeathException)
                 {
                     println("SYSTEM: " + statics.getName() + " has died");
                 }
-                catch (DisabledExceptionN e)
+                catch (DisabledException e)
                 {
                     drainEnergy();
-                    String msg = e.Message;
+                    string msg = e.getMessage();
 
                     if (msg == null)
                     {
@@ -236,6 +236,8 @@ namespace net.sf.robocode.dotnet.host.proxies
                     waitForBattleEndImpl();
                 }
             }
+
+            peer.setRunning(false);
         }
 
         protected abstract void waitForBattleEndImpl();

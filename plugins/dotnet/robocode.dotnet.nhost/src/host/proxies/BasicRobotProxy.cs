@@ -6,6 +6,7 @@ using net.sf.jni4net.nio;
 using net.sf.robocode.dotnet.host.events;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
+using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using net.sf.robocode.security;
@@ -182,7 +183,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             if (res >= MAX_SET_CALL_COUNT)
             {
                 println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
-                throw new DisabledExceptionN("Too many calls to setXX methods");
+                throw new DisabledException("Too many calls to setXX methods");
             }
         }
 
@@ -193,7 +194,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             if (res >= MAX_GET_CALL_COUNT)
             {
                 println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
-                throw new DisabledExceptionN("Too many calls to getXX methods");
+                throw new DisabledException("Too many calls to getXX methods");
             }
         }
 
@@ -393,32 +394,13 @@ namespace net.sf.robocode.dotnet.host.proxies
             commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
             // call server
-            try
-            {
-                SerializeCommands();
-                peer.executeImplSerial();
-                DeserializeResults();
+            SerializeCommands();
+            peer.executeImplSerial();
+            DeserializeResults();
 
-                if (execResults == null)
-                {
-                    throw new InvalidOperationException();
-                }
-            }
-            catch (WinException e)
+            if (execResults == null)
             {
-                throw new WinExceptionN(e.getMessage());
-            }
-            catch (AbortedException e)
-            {
-                throw new AbortedExceptionN(e.getMessage());
-            }
-            catch (DeathException e)
-            {
-                throw new DeathExceptionN(e.getMessage());
-            }
-            catch (DisabledException e)
-            {
-                throw new DisabledExceptionN(e.getMessage());
+                throw new InvalidOperationException();
             }
 
             updateStatus(execResults.getCommands(), execResults.getStatus());
@@ -504,9 +486,17 @@ namespace net.sf.robocode.dotnet.host.proxies
                 commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
                 // call server
-                SerializeCommands();
-                peer.waitForBattleEndImplSerial();
-                DeserializeResults();
+                try
+                {
+                    SerializeCommands();
+                    peer.waitForBattleEndImplSerial();
+                    DeserializeResults();
+                }
+                catch (Exception ex)
+                {
+                    Logger.logMessage(statics.getName() + ": Exception: " + ex); // without stack here
+                    return;
+                }
 
                 updateStatus(execResults.getCommands(), execResults.getStatus());
 

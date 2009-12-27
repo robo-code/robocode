@@ -69,9 +69,9 @@ namespace samplecs
         /// </summary>
         public override void onPaint(IGraphics g)
         {
-            g.DrawEllipse(Pens.Red, (int) (getX() - 50), (int) (getY() - 50), 100, 100);
-            g.FillEllipse(new SolidBrush(Color.FromArgb(0, 0xFF, 0, 30)), (int) (getX() - 60), (int) (getY() - 60), 120,
-                          120);
+            SolidBrush transparentGreen = new SolidBrush(Color.FromArgb(30, 0, 0xFF, 0));
+            g.FillEllipse(transparentGreen, (int)(getX() - 60), (int)(getY() - 60), 120, 120);
+            g.DrawEllipse(Pens.Red, (int)(getX() - 50), (int)(getY() - 50), 100, 100);
         }
     }
 }

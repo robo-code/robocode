@@ -76,12 +76,12 @@
     <Compile Include="robocode\DeathEvent.cs" />
     <Compile Include="robocode\Droid.cs" />
     <Compile Include="robocode\Event.cs" />
-    <Compile Include="robocode\exception\AbortedExceptionN.cs" />
-    <Compile Include="robocode\exception\DeathExceptionN.cs" />
-    <Compile Include="robocode\exception\DisabledExceptionN.cs" />
-    <Compile Include="robocode\exception\EventInterruptedException.cs" />
-    <Compile Include="robocode\exception\RobotException.cs" />
-    <Compile Include="robocode\exception\WinExceptionN.cs" />
+    <Compile Include="robocode\exception\EventInterruptedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="robocode\exception\RobotException.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="robocode\IGraphics.cs" />
     <Compile Include="robocode\GunTurnCompleteCondition.cs" />
     <Compile Include="robocode\HitByBulletEvent.cs" />
