@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Security.Permissions;
 using System.Threading;
 using net.sf.jni4net;
 using net.sf.robocode.dotnet.host.proxies;
@@ -8,50 +9,66 @@ using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
-using net.sf.robocode.security;
 using robocode;
 using robocode.control;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
+    [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
+    [FileIOPermission(SecurityAction.Assert, Unrestricted = true)]
     public class HostingSeed : AppDomainSeed
     {
         private static IHostManager hostManager;
         private static IRobotPeer robotPeer;
         private static RobotStatics statics;
         private static IRobotRepositoryItem specification;
-        private static RobotSpecification robotSpecification;
+        //private static RobotSpecification robotSpecification;
         private static Type robotType;
         private static Thread robotThread;
         private static HostingRobotProxy robotProxy;
 
         public static void Construct()
         {
-            ModuleN.InitN();
+            try
+            {
+                ModuleN.InitN();
 
-            hostManager = Bridge.CreateProxy<IHostManager>((IntPtr)domain.GetData("hostManager"));
-            robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
-            statics = ((RobotStatics)domain.GetData("statics"));
-            robotSpecification = Bridge.CreateProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
-            specification = Bridge.CreateProxy<IRobotRepositoryItem>((IntPtr)domain.GetData("item"));
-            robotProxy = CreateProxy();
+                hostManager = Bridge.CreateProxy<IHostManager>((IntPtr)domain.GetData("hostManager"));
+                robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
+                statics = ((RobotStatics)domain.GetData("statics"));
+                //robotSpecification = Bridge.CreateProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
+                specification = Bridge.CreateProxy<IRobotRepositoryItem>((IntPtr)domain.GetData("item"));
+                CreateProxy();
 
-            Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);
-            string robotFullName = specification.getFullClassName();
-            robotType = assembly.GetType(robotFullName, false);
-            robotProxy.setRobotType(robotType);
-
+                Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);
+                string robotFullName = specification.getFullClassName();
+                robotType = assembly.GetType(robotFullName, false);
+                robotProxy.setRobotType(robotType);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                throw;
+            }
         }
 
         public static void StartRound()
         {
-            var commands = (ExecCommands) domain.GetData("commands");
-            var status = (RobotStatus) domain.GetData("status");
+            try
+            {
+                var commands = (ExecCommands)domain.GetData("commands");
+                var status = (RobotStatus)domain.GetData("status");
 
-            robotProxy.initializeRound(commands, status);
+                robotProxy.initializeRound(commands, status);
 
-            robotThread = new Thread(RobotMain);
-            robotThread.Start(null);
+                robotThread = new Thread(RobotMain);
+                robotThread.Start(null);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                throw;
+            }
         }
 
         private static void RobotMain(object param)
@@ -61,22 +78,36 @@ namespace net.sf.robocode.dotnet.host.seed
 
         public static void ForceStopThread()
         {
-            robotThread.Abort();
+            try
+            {
+                robotThread.Abort();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                throw;
+            }
         }
 
         public static void WaitForStopThread()
         {
-            if (!robotThread.Join(1000))
+            try
             {
-                robotPeer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
-                robotPeer.setRunning(false);
+                if (!robotThread.Join(1000))
+                {
+                    robotPeer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
+                    robotPeer.setRunning(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                throw;
             }
         }
 
-        private static HostingRobotProxy CreateProxy()
+        private static void CreateProxy()
         {
-            HostingRobotProxy robotProxy;
-
             if (specification.isTeamRobot())
             {
                 robotProxy = new TeamRobotProxy(specification, hostManager, robotPeer, statics);
@@ -97,7 +128,6 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 throw new AccessViolationException("Unknown robot type");
             }
-            return robotProxy;            
         }
     }
 }

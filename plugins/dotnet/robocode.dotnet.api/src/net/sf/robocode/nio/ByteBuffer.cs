@@ -34,7 +34,9 @@
  *******************************************************************************/
 
 using System;
+using System.Security.Permissions;
 using System.Text;
+using robocode.net.sf.robocode.security;
 
 // ReSharper disable InconsistentNaming
 namespace net.sf.robocode.nio
@@ -216,6 +218,7 @@ namespace net.sf.robocode.nio
      * @since 1.4
      */
 
+    [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public abstract class ByteBuffer : Buffer //, Comparable<ByteBuffer>
     {
         // These fields are declared here rather than in Heap-X-Buffer in order to

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Permissions;
 using java.io;
 using java.lang;
 using net.sf.robocode.dotnet.host.events;
@@ -129,6 +130,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
 
+        [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
         private bool loadRobotRound()
         {
             robot = null;

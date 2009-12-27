@@ -11,12 +11,12 @@
  *******************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Reflection;
+using System.Security.Permissions;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using robocode;
+using robocode.net.sf.robocode.security;
 using robocode.robotinterfaces;
 
 namespace net.sf.robocode.security
@@ -25,6 +25,7 @@ namespace net.sf.robocode.security
     /// Helpers for accessing hidden methods on events
     /// @author Pavel Savara (original)
     /// </summary>
+    [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public class HiddenAccessN
     {
         private static IHiddenEventHelper eventHelper;

@@ -19,7 +19,7 @@ namespace net.sf.robocode.dotnet
         {
             var h = new DllRootHelper();
             string[] strings = h.findItems(@"file:/" + typeof(MyCsRobot).Assembly.Location);
-            Assert.AreEqual(2, strings.Length);
+            Assert.GreaterOrEqual(strings.Length,5);
         }
 
         [Test]

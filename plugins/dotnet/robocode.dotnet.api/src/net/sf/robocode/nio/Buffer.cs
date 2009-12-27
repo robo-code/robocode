@@ -34,6 +34,8 @@
  *******************************************************************************/
 
 using System;
+using System.Security.Permissions;
+using robocode.net.sf.robocode.security;
 
 // ReSharper disable InconsistentNaming
 namespace net.sf.robocode.nio
@@ -183,6 +185,7 @@ namespace net.sf.robocode.nio
      * @version 1.35, 06/08/11
      * @since 1.4
      */
+    [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public abstract class Buffer
     {
         // Invariants: mark <= position <= limit <= capacity

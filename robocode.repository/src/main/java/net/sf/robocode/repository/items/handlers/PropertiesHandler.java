@@ -46,7 +46,9 @@ public class PropertiesHandler extends ItemHandler {
 		} else {
 			item.setPropertiesUrl(itemURL);
 		}
-		db.addItem(item);
+        if (item == null) {
+		    db.addItem(item);
+        }
 		return item;
 	}
 
@@ -59,8 +61,9 @@ public class PropertiesHandler extends ItemHandler {
 			// dispatch to other robot types
 			String uplang = lang.substring(0, 1).toUpperCase() + lang.substring(1).toLowerCase();
 			final PropertiesHandler handlerI = Container.getComponent(uplang + "PropertiesHandler");
-
-			return handlerI.createItem(itemURL, root, db);
+            if (handlerI!=null){
+                return handlerI.createItem(itemURL, root, db);
+            }
 		}
 		return robotItem;
 	}

@@ -32,7 +32,9 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Security.Permissions;
 using robocode.exception;
+using robocode.net.sf.robocode.security;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using robocode.util;
@@ -96,17 +98,13 @@ namespace robocode
             get { return _output; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        [RobocodeInternalPermission(SecurityAction.LinkDemand)]
         void IBasicRobot.setOut(TextWriter outpt)
         {
             _output = outpt;
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        [RobocodeInternalPermission(SecurityAction.LinkDemand)]
         void IBasicRobot.setPeer(IBasicRobotPeer per)
         {
             peer = per;

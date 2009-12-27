@@ -14,8 +14,10 @@
  *******************************************************************************/
 using System;
 using System.IO;
+using System.Security.Permissions;
 using System.Text;
 using net.sf.robocode.security;
+using robocode.net.sf.robocode.security;
 
 namespace net.sf.robocode.io
 {
@@ -25,6 +27,7 @@ namespace net.sf.robocode.io
     /// @author Flemming N. Larsen (original)
     /// @author Mathew A. Nelson (original)
     /// </summary>
+    [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public class LoggerN
     {
         public static TextWriter realOut = Console.Out;

@@ -28,17 +28,12 @@ namespace robocode.util
     /// @author Mathew A. Nelson (original)
     /// @author Flemming N. Larsen (contributor)
     /// </summary>
-    public class Utils
+    public static class Utils
     {
         private const double TWO_PI = 2*Math.PI;
         private const double THREE_PI_OVER_TWO = 3*Math.PI/2;
         private const double PI_OVER_TWO = Math.PI/2;
         public const double NEAR_DELTA = .00001;
-
-        // Hide the default constructor as this class only provides static method
-        private Utils()
-        {
-        }
 
         /// <summary>
         /// Normalizes an angle to an absolute angle.

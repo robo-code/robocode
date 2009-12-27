@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Permissions;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
 using net.sf.robocode.peer;
@@ -65,6 +66,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
+        [SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.SerializationFormatter)]
         public void sendMessage(String name, object message)
         {
             setCall();
@@ -86,6 +88,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
+        [SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.SerializationFormatter)]
         protected override sealed void loadTeamMessages(List<TeamMessage> teamMessages)
         {
             if (teamMessages == null)

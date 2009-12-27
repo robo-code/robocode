@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
+using System.Security.Policy;
 using net.sf.jni4net;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.dotnet.utils;
@@ -47,12 +49,19 @@ namespace net.sf.robocode.dotnet.host.seed
             File.Copy(hostAssembly.Location, hostShadow);
             File.Copy(jniAssembly.Location, jniShadow);
 
-            var trustAssemblies = new[] { Reflection.GetStrongName(robocodeAssembly), Reflection.GetStrongName(hostAssembly), Reflection.GetStrongName(jniAssembly) };
-            var domainSetup = new AppDomainSetup();
-            var securityInfo = AppDomain.CurrentDomain.Evidence;
-            //PermissionSet permissionSet = new PermissionSet(PermissionState.None);
-            //permissionSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
-            PermissionSet permissionSet = new PermissionSet(PermissionState.Unrestricted);
+            StrongName[] trustAssemblies = new []
+                                               {
+                                                   Reflection.GetStrongName(robocodeAssembly), 
+                                                   Reflection.GetStrongName(hostAssembly), 
+                                                   Reflection.GetStrongName(jniAssembly),
+                                               };
+            AppDomainSetup domainSetup = new AppDomainSetup();
+            Evidence securityInfo = AppDomain.CurrentDomain.Evidence;
+            PermissionSet permissionSet = new PermissionSet(PermissionState.None);
+            permissionSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution|SecurityPermissionFlag.Assertion));
+            //TODO serialization ?
+            permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, tempDir));
+            
             domainSetup.ApplicationBase = tempDir;
 
             domainSetup.ApplicationName = name;
@@ -60,14 +69,11 @@ namespace net.sf.robocode.dotnet.host.seed
             domainSetup.DisallowBindingRedirects = true;
             domainSetup.DisallowCodeDownload = true;
             domainSetup.DisallowPublisherPolicy = true;
-            //domainSetup.DisallowApplicationBaseProbing = true;
-            //domainSetup.PrivateBinPathProbe = "true";
-            //domainSetup.PrivateBinPath = tempDir;
-
             domainSetup.AppDomainInitializer = AppDomainSeed.Load;
             domainSetup.AppDomainInitializerArguments = new[] { robotAssemblyFileName, robotShadow };
 
             domain = AppDomain.CreateDomain(name, securityInfo, domainSetup, permissionSet, trustAssemblies);
+            domain.DoCallBack(AppDomainSeed.Bind);
         }
 
         public string[] FindRobots()
