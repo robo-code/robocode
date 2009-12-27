@@ -17,7 +17,6 @@ using System.Reflection;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using robocode;
-using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace net.sf.robocode.security

@@ -13,7 +13,6 @@
  *******************************************************************************/
 using System;
 using net.sf.robocode.peer;
-using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace robocode

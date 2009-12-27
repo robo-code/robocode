@@ -12,7 +12,6 @@
 using System;
 using System.Drawing;
 using net.sf.robocode.peer;
-using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace robocode

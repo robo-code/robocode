@@ -170,7 +170,7 @@ namespace net.sf.robocode.host
                         size += serializer.sizeOf(mate);
                     }
                 }
-                size += 1;
+                size += RbSerializer.SIZEOF_INT;
                 size += serializer.sizeOf(obj.teamName);
 
                 return size;
@@ -204,7 +204,7 @@ namespace net.sf.robocode.host
                         serializer.serialize(buffer, mate);
                     }
                 }
-                buffer.put(RbSerializer.TERMINATOR_TYPE);
+                buffer.putInt(-1);
                 serializer.serialize(buffer, obj.teamName);
                 serializer.serialize(buffer, obj.index);
                 serializer.serialize(buffer, obj.contestantIndex);
@@ -233,14 +233,14 @@ namespace net.sf.robocode.host
                     );
 
                 var teammates = new List<string>();
-                object item = serializer.deserializeAny(buffer);
+                object item = serializer.deserializeString(buffer);
                 while (item != null)
                 {
                     if (item is string)
                     {
                         teammates.Add((string) item);
                     }
-                    item = serializer.deserializeAny(buffer);
+                    item = serializer.deserializeString(buffer);
                 }
 
                 string teamName = serializer.deserializeString(buffer);

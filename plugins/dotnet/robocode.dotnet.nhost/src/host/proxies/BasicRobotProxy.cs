@@ -12,7 +12,6 @@ using net.sf.robocode.security;
 using net.sf.robocode.serialization;
 using robocode;
 using robocode.exception;
-using robocode.robocode;
 using robocode.robotinterfaces.peer;
 using robocode.util;
 using Double = System.Double;
@@ -90,12 +89,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                 eventManager = null;
             }
 
-            // Cleanup graphics proxy
-            if (graphicsProxy != null)
-            {
-                graphicsProxy.Dispose();
-                graphicsProxy = null;
-            }
+            graphicsProxy = null;
             execResults = null;
             status = null;
             commands = null;
@@ -454,9 +448,8 @@ namespace net.sf.robocode.dotnet.host.proxies
             {
                 foreach (BulletStatus s in execResults.getBulletUpdates())
                 {
-                    Bullet bullet = bullets[s.bulletId];
-
-                    if (bullet != null)
+                    Bullet bullet;
+                    if (bullets.TryGetValue(s.bulletId, out bullet))
                     {
                         HiddenAccessN.update(bullet, s.x, s.y, s.victimName, s.isActive);
                         if (!s.isActive)

@@ -16,7 +16,6 @@
  *     - Javadocs
  *******************************************************************************/
 using System.Drawing;
-using robocode.robocode;
 
 namespace robocode.robotinterfaces.peer
 {

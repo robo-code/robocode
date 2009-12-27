@@ -105,7 +105,7 @@ namespace net.sf.robocode.dotnet.utils
             if (typeof(IPaintRobot).IsAssignableFrom(robotClass))
             {
                 if (checkMethodOverride(robotClass, typeof(Robot), "getPaintEventListener")
-                    || checkMethodOverride(robotClass, typeof(Robot), "onPaint", typeof(Graphics))
+                    || checkMethodOverride(robotClass, typeof(Robot), "onPaint", typeof(IGraphics))
                     )
                 {
                     isPaintRobot = true;
@@ -143,21 +143,20 @@ namespace net.sf.robocode.dotnet.utils
                                  isTeamRobot, isDroid);
         }
 
-        private static bool checkMethodOverride(Type robotClass, Type knownBase, String name,
-                                                params Type[] parameterTypes)
+        private static bool checkMethodOverride(Type robotClass, Type knownBase, String name, params Type[] parameterTypes)
         {
             if (knownBase.IsAssignableFrom(robotClass))
             {
-                MethodInfo getInteractiveEventListener;
+                MethodInfo method;
 
-                getInteractiveEventListener = robotClass.GetMethod(name, parameterTypes);
-                if (getInteractiveEventListener == null)
+                method = robotClass.GetMethod(name, parameterTypes);
+                if (method == null)
                 {
                     return false;
                 }
 
 
-                if (getInteractiveEventListener.DeclaringType.Equals(knownBase))
+                if (method.DeclaringType.Equals(knownBase))
                 {
                     return false;
                 }

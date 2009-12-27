@@ -26,6 +26,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
 import java.util.Map;
@@ -1330,6 +1331,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	public void setPaintingEnabled(boolean enabled) {
 		if (enabled && !isPaintingEnabled) {
 			calls = ByteBuffer.allocate(INITIAL_BUFFER_SIZE);
+            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
 		}
 		isPaintingEnabled = enabled;
 	}
@@ -1364,10 +1366,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 	}
 
-	public void clearQueue() {
-		calls.clear();
-	}
-
 	public void processTo(Graphics2D g, Object graphicsCalls) {
 		calls.clear();
 
@@ -1384,7 +1382,13 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 
 		calls.flip();
-		while (calls.remaining() > 0) {
+        if (calls.get() == 1) {
+            calls.order(ByteOrder.BIG_ENDIAN);
+        } else {
+            calls.order(ByteOrder.LITTLE_ENDIAN);
+        }
+
+        while (calls.remaining() > 0) {
 			try {
 				processQueuedCall(g);
 			} catch (Exception e) {
@@ -1404,7 +1408,8 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		calls.flip();
 		calls.get(res);
 		calls.clear();
-		return res; 
+        calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
+		return res;
 	}
 
 	private void processQueuedCall(Graphics2D g) {
@@ -1927,7 +1932,8 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 		if (!recovered) {
 			calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
-			
+            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
+
 			if (unrecoveredBufferOverflowCount++ % 500 == 0) { // Prevent spamming 
 				System.out.println(
 						"SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");

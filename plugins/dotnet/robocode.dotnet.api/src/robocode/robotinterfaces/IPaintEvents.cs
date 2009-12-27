@@ -10,7 +10,6 @@
  *     - Initial implementation
  *******************************************************************************/
 using System.Drawing;
-using robocode.robocode;
 
 namespace robocode.robotinterfaces
 {

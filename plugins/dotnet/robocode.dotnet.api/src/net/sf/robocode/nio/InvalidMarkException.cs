@@ -16,7 +16,7 @@ using System.Runtime.Serialization;
 namespace net.sf.robocode.nio
 {
     [Serializable]
-    internal class InvalidMarkException : Exception
+    public class InvalidMarkException : Exception
     {
         public InvalidMarkException()
         {
@@ -40,7 +40,7 @@ namespace net.sf.robocode.nio
     }
 
     [Serializable]
-    internal class BufferUnderflowException : Exception
+    public class BufferUnderflowException : Exception
     {
         public BufferUnderflowException()
         {
@@ -64,7 +64,7 @@ namespace net.sf.robocode.nio
     }
 
     [Serializable]
-    internal class BufferOverflowException : Exception
+    public class BufferOverflowException : Exception
     {
         public BufferOverflowException()
         {
@@ -88,7 +88,7 @@ namespace net.sf.robocode.nio
     }
 
     [Serializable]
-    internal class ReadOnlyBufferException : Exception
+    public class ReadOnlyBufferException : Exception
     {
         public ReadOnlyBufferException()
         {

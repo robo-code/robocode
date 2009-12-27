@@ -2,7 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace robocode.robocode
+namespace robocode
 {
     public interface IGraphics
     {

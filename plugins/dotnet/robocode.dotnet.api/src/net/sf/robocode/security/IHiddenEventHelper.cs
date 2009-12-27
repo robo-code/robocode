@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using net.sf.robocode.peer;
 using robocode;
-using robocode.robocode;
 using robocode.robotinterfaces;
 
 namespace net.sf.robocode.security

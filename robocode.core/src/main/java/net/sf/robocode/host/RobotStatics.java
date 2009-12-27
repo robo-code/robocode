@@ -208,7 +208,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
                     size += serializer.sizeOf(mate);
                 }
             }
-            size += 1;
+            size += RbSerializer.SIZEOF_INT;
             size+= serializer.sizeOf(obj.teamName);
 
             return size;
@@ -239,7 +239,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
                     serializer.serialize(buffer, mate);
                 }
             }
-            buffer.put(RbSerializer.TERMINATOR_TYPE);
+            buffer.putInt(-1);
             serializer.serialize(buffer, obj.teamName);
             serializer.serialize(buffer, obj.index);
             serializer.serialize(buffer, obj.contestantIndex);
@@ -268,7 +268,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
             );
 
             List<String> teammates = new ArrayList<String>();
-            Object item = serializer.deserializeAny(buffer);
+            Object item = serializer.deserializeString(buffer);
             if (item == null) {
                 teammates = null;
             }
@@ -276,7 +276,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
                 if (item instanceof String) {
                     teammates.add((String) item);
                 }
-                item = serializer.deserializeAny(buffer);
+                item = serializer.deserializeString(buffer);
             }
 
             String teamName = serializer.deserializeString(buffer);

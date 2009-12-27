@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Text;
 using net.sf.robocode.nio;
-using robocode.robocode;
+using net.sf.robocode.serialization;
+using robocode;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
-    public class GraphicsProxy : IGraphics, IDisposable
+    public class GraphicsProxy : IGraphics
     {
-	    private const int INITIAL_BUFFER_SIZE = 2 * 1024;
-        private const int MAX_BUFFER_SIZE = 64 * 1024;  
+        private const int INITIAL_BUFFER_SIZE = 2*1024;
+        private const int MAX_BUFFER_SIZE = 64*1024;
+
         private enum Method
         {
             TRANSLATE_INT, // translate(int, int)
@@ -75,12 +75,17 @@ namespace net.sf.robocode.dotnet.host.proxies
             CLIP, // clip(Shape)
         }
 
-    	private bool isPaintingEnabled;
+        private bool isPaintingEnabled;
+        private readonly bool isDebugging;
         private ByteBuffer calls;
+        private readonly RbSerializerN serializer = new RbSerializerN();
 
         public GraphicsProxy()
         {
             calls = ByteBuffer.allocate(INITIAL_BUFFER_SIZE);
+            calls.order(ByteOrder.LITTLE_ENDIAN);
+            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
+            isDebugging = java.lang.System.getProperty("debug", "false") == "true";
         }
 
         public void setPaintingEnabled(bool value)
@@ -90,8 +95,245 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         public byte[] readoutQueuedCalls()
         {
-            return calls.array();
+            if (calls == null || calls.position() == 0)
+            {
+                return null;
+            }
+            byte[] res = new byte[calls.position()];
+
+            calls.flip();
+            calls.get(res);
+            calls.clear();
+            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
+            return res;
         }
+
+        private void setColor(Brush brush)
+        {
+            var sb = brush as SolidBrush;
+            if (sb != null)
+            {
+                setColor(sb.Color);
+            }
+        }
+
+        private void setColor(Pen p)
+        {
+            setColor(p.Color);
+        }
+
+        private void setColor(Color c)
+        {
+            if (isPaintingEnabled)
+            {
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.SET_COLOR);
+                    put(c);
+                }
+                catch (BufferOverflowException e)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        setColor(c); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
+        public void DrawEllipse(Pen pen, int x, int y, int width, int height)
+        {
+            if (isPaintingEnabled)
+            {
+                setColor(pen);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.DRAW_OVAL);
+                    put(x);
+                    put(y);
+                    put(width);
+                    put(height);
+                }
+                catch (BufferOverflowException e)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        DrawEllipse(pen, x, y, width, height); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
+        public void FillEllipse(Brush brush, int x, int y, int width, int height)
+        {
+            if (isPaintingEnabled)
+            {
+                setColor(brush);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.FILL_OVAL);
+                    put((float)x);
+                    put((float)y);
+                    put((float)width);
+                    put((float)height);
+                }
+                catch (BufferOverflowException e)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        FillEllipse(brush, x, y, width, height); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
+        private bool reallocBuffer()
+        {
+            int bufferSize;
+
+            if (calls == null)
+            {
+                // No buffer -> Use initial buffer size
+                bufferSize = INITIAL_BUFFER_SIZE;
+            }
+            else
+            {
+                // Otherwise, double up capacity
+                bufferSize = 2*calls.capacity();
+            }
+
+            // Check if the max. buffer size has been reached
+            if (!isDebugging && bufferSize > MAX_BUFFER_SIZE)
+            {
+                return false; // not reallocated!
+            }
+
+            // Allocate new buffer
+            ByteBuffer newBuffer = ByteBuffer.allocate(bufferSize);
+            newBuffer.order(ByteOrder.LITTLE_ENDIAN);
+
+            if (calls != null)
+            {
+                // Copy all bytes contained in the current buffer to the new buffer
+
+                var copiedBytes = new byte[calls.position()];
+
+                calls.clear();
+                calls.get(copiedBytes);
+
+                newBuffer.put(copiedBytes);
+            }
+
+            // Switch to the new buffer
+            calls = newBuffer;
+
+            return true; // buffer was reallocated
+        }
+
+        private int unrecoveredBufferOverflowCount;
+
+        private bool recoverFromBufferOverflow()
+        {
+            calls.reset(); // Rollback buffer
+
+            bool recovered = reallocBuffer();
+
+            if (!recovered)
+            {
+                calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
+                calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
+
+                if (unrecoveredBufferOverflowCount++%500 == 0)
+                {
+                    // Prevent spamming 
+                    java.lang.System.@out.println(
+                        "SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
+                }
+            }
+            return recovered;
+        }
+
+        private void put(Method m)
+        {
+            // FOR-DEBUG calls.putInt(0xBADF00D);
+            calls.put((byte) m);
+            // FOR-DEBUG calls.putInt(0xBADF00D);
+        }
+
+        private void put(String value)
+        {
+            serializer.serialize(calls, value);
+        }
+
+        private void put(bool value)
+        {
+            serializer.serialize(calls, value);
+        }
+
+        private void put(byte value)
+        {
+            calls.put(value);
+        }
+
+        private void put(int value)
+        {
+            calls.putInt(value);
+        }
+
+        private void put(int[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(byte[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(char[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(double[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(float[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(double value)
+        {
+            calls.putDouble(value);
+        }
+
+        private void put(float value)
+        {
+            calls.putFloat(value);
+        }
+
+        private void put(Color value)
+        {
+            calls.putInt(value.ToArgb());
+        }
+
+        private void put(Font font)
+        {
+            serializer.serialize(calls, font.Name);
+            calls.putInt((int) font.Style);
+            calls.putInt((int) font.Size);
+        }
+
+        #region TODO
 
         public void ResetTransform()
         {
@@ -234,11 +476,6 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
         public void DrawEllipse(Pen pen, Rectangle rect)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawEllipse(Pen pen, int x, int y, int width, int height)
         {
             throw new NotImplementedException();
         }
@@ -398,11 +635,6 @@ namespace net.sf.robocode.dotnet.host.proxies
             throw new NotImplementedException();
         }
 
-        public void FillEllipse(Brush brush, int x, int y, int width, int height)
-        {
-            throw new NotImplementedException();
-        }
-
         public void FillPie(Brush brush, Rectangle rect, float startAngle, float sweepAngle)
         {
             throw new NotImplementedException();
@@ -488,7 +720,8 @@ namespace net.sf.robocode.dotnet.host.proxies
             throw new NotImplementedException();
         }
 
-        public SizeF MeasureString(string text, Font font, SizeF layoutArea, StringFormat stringFormat, out int charactersFitted, out int linesFilled)
+        public SizeF MeasureString(string text, Font font, SizeF layoutArea, StringFormat stringFormat,
+                                   out int charactersFitted, out int linesFilled)
         {
             throw new NotImplementedException();
         }
@@ -761,9 +994,6 @@ namespace net.sf.robocode.dotnet.host.proxies
             get { throw new NotImplementedException(); }
         }
 
-        public void Dispose()
-        {
-            //TODO close buffer
-        }
+        #endregion
     }
 }
