@@ -452,9 +452,6 @@ public final class RbSerializer {
 	}
 
 	public int sizeOf(byte type, Object object) {
-        if (object ==null){
-            return SIZEOF_INT;
-        }
 		return getHelper(type).sizeOf(this, object);
 	}
 
