@@ -16,7 +16,7 @@ import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.robotinterfaces.IBasicEvents;
-import robocode.robotinterfaces.IBasicEvents2;
+import robocode.robotinterfaces.IBasicEvents3;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
@@ -104,8 +104,8 @@ public final class RoundEndedEvent extends Event {
 		if (robot != null) {
 			IBasicEvents listener = robot.getBasicEventListener();
 
-			if (listener != null && IBasicEvents2.class.isAssignableFrom(listener.getClass())) {
-				((IBasicEvents2) listener).onRoundEnded(this);
+			if (listener != null && IBasicEvents3.class.isAssignableFrom(listener.getClass())) {
+				((IBasicEvents3) listener).onRoundEnded(this);
 			}
 		}
 	}

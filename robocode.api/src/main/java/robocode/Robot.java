@@ -66,7 +66,7 @@ import java.awt.*;
  * @see TeamRobot
  * @see Droid
  */
-public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents, IPaintEvents {
+public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents, IPaintEvents {
 
 	private static final int
 			WIDTH = 40,
