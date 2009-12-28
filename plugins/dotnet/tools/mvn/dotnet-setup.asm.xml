@@ -8,6 +8,28 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <moduleSets>
 
+        <!-- robocode.dotnet.api renamed to robocode.dll -->
+        <moduleSet>
+            <includes>
+                <include>net.sf.robocode:robocode.dotnet.api</include>
+            </includes>
+            <binaries>
+                <excludes>
+                    <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
+                    <exclude>net.sf.robocode:robocode.api</exclude>
+                    <exclude>net.sf.robocode:robocode.host</exclude>
+                    <exclude>net.sf.robocode:robocode.repository</exclude>
+                    <exclude>net.sf.robocode:robocode.core</exclude>
+                    <exclude>net.sf.robocode:codesize</exclude>
+                    <exclude>org.picocontainer:picocontainer</exclude>
+                </excludes>
+                <outputFileNameMapping>robocode.${module.extension}</outputFileNameMapping>
+                <includeDependencies>false</includeDependencies>
+                <outputDirectory>libs</outputDirectory>
+                <unpack>false</unpack>
+            </binaries>
+        </moduleSet>
+
         <!-- other libraries -->
         <moduleSet>
             <includes>
@@ -16,6 +38,7 @@
             </includes>
             <binaries>
                 <excludes>
+                    <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
                     <exclude>net.sf.robocode:robocode.api</exclude>
                     <exclude>net.sf.robocode:robocode.host</exclude>
                     <exclude>net.sf.robocode:robocode.repository</exclude>
@@ -41,7 +64,20 @@
                     <!-- installer and static content -->
                     <dependencySet>
                         <excludes>
+				                    <exclude>net.sf.robocode:robocode.api</exclude>
+				                    <exclude>net.sf.robocode:robocode.host</exclude>
+				                    <exclude>net.sf.robocode:robocode.repository</exclude>
+				                    <exclude>net.sf.robocode:robocode.core</exclude>
+				                    <exclude>net.sf.robocode:codesize</exclude>
+				                    <exclude>org.picocontainer:picocontainer</exclude>
+                            <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
                             <exclude>net.sf.robocode:robocode.dotnet.samples</exclude>
+                            <exclude>net.sf.robocode:robocode.dotnet.nhost</exclude>
+                            <exclude>net.sf.robocode:robocode.dotnet.host</exclude>
+                            <exclude>net.sf.jni4net:jni4net.j</exclude>
+                            <exclude>net.sf.jni4net:jni4net.n</exclude>
+                            <exclude>net.sf.jni4net:jni4net.n.w32</exclude>
+                            <exclude>net.sf.jni4net:jni4net.n.w64</exclude>
                         </excludes>
                         <unpack>true</unpack>
                         <unpackOptions>
@@ -51,7 +87,7 @@
                         </unpackOptions>
                     </dependencySet>
 
-                    <!-- sample robots -->
+                    <!-- sample robots 
                     <dependencySet>
                         <excludes>
                             <exclude>net.sf.robocode:robocode.dotnet.content</exclude>
@@ -65,6 +101,7 @@
                             </excludes>
                         </unpackOptions>
                     </dependencySet>
+                    -->
                 </dependencySets>
             </binaries>
         </moduleSet>

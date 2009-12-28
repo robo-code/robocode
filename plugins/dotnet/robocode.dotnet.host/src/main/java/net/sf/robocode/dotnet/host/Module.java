@@ -56,9 +56,10 @@ public class Module extends BaseModule {
 
             final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
 
-            Bridge.setVerbose(true);
-            Bridge.setDebug(true);
+            //Bridge.setVerbose(true);
+            //Bridge.setDebug(true);
             Bridge.init(new File(libsDir).getCanonicalPath());
+            Bridge.SetSystemClassLoader(Container.engineLoader);
             Bridge.LoadAndRegisterAssembly(new File(nhost).getCanonicalPath());
 
 			Container.cache.addComponent("DllItemHandler", DllHandler.class);
