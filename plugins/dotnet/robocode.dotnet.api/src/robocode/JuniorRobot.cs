@@ -35,7 +35,7 @@ namespace robocode
     /// robot etc.
     /// <p/>
     /// All methods on this class are blocking calls, i.e. they do not return before
-    /// their action has been completed and will at least take one turn to execute.
+    /// their action has been completed and will at least take one turn to Execute.
     /// However, setting colors is executed immediately and does not cost a turn to
     /// perform.
     ///
@@ -144,13 +144,13 @@ namespace robocode
         /// <summary>
         /// Current heading angle of this robot (in degrees).
         ///
-        /// @see #turnLeft(int)
-        /// @see #turnRight(int)
-        /// @see #turnTo(int)
-        /// @see #turnAheadLeft(int, int)
-        /// @see #turnAheadRight(int, int)
-        /// @see #turnBackLeft(int, int)
-        /// @see #turnBackRight(int, int)
+        /// @see #TurnLeft(int)
+        /// @see #TurnRight(int)
+        /// @see #TurnTo(int)
+        /// @see #TurnAheadLeft(int, int)
+        /// @see #TurnAheadRight(int, int)
+        /// @see #TurnBackLeft(int, int)
+        /// @see #TurnBackRight(int, int)
         /// </summary>
         public int heading;
 
@@ -158,9 +158,9 @@ namespace robocode
         /// Current gun heading angle of this robot (in degrees).
         ///
         /// @see #gunBearing
-        /// @see #turnGunLeft(int)
-        /// @see #turnGunRight(int)
-        /// @see #turnGunTo(int)
+        /// @see #TurnGunLeft(int)
+        /// @see #TurnGunRight(int)
+        /// @see #TurnGunTo(int)
         /// @see #bearGunTo(int)
         /// </summary>
         public int gunHeading;
@@ -169,29 +169,29 @@ namespace robocode
         /// Current gun heading angle of this robot compared to its body (in degrees).
         ///
         /// @see #gunHeading
-        /// @see #turnGunLeft(int)
-        /// @see #turnGunRight(int)
-        /// @see #turnGunTo(int)
+        /// @see #TurnGunLeft(int)
+        /// @see #TurnGunRight(int)
+        /// @see #TurnGunTo(int)
         /// @see #bearGunTo(int)
         /// </summary>
         public int gunBearing;
 
         /// <summary>
-        /// Flag specifying if the gun is ready to fire, i.e. gun heat <= 0.
-        /// {@code true} means that the gun is able to fire; {@code false}
-        /// means that the gun cannot fire yet as it still needs to cool down.
+        /// Flag specifying if the gun is ready to Fire, i.e. gun heat &lt;= 0.
+        /// {@code true} means that the gun is able to Fire; {@code false}
+        /// means that the gun cannot Fire yet as it still needs to cool down.
         ///
-        /// @see #fire()
-        /// @see #fire(double)
+        /// @see #Fire()
+        /// @see #Fire(double)
         /// </summary>
         public bool gunReady;
 
         /// <summary>
         /// Current distance to the scanned nearest other robot (in pixels).
         /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-        /// This field will not be updated while {@link #onScannedRobot()} evnt is active.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
         ///
-        /// @see #onScannedRobot()
+        /// @see #OnScannedRobot()
         /// @see #scannedAngle
         /// @see #scannedBearing
         /// @see #scannedEnergy
@@ -203,9 +203,9 @@ namespace robocode
         /// <summary>
         /// Current angle to the scanned nearest other robot (in degrees).
         /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-        /// This field will not be updated while {@link #onScannedRobot()} evnt is active.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
         ///
-        /// @see #onScannedRobot()
+        /// @see #OnScannedRobot()
         /// @see #scannedDistance
         /// @see #scannedBearing
         /// @see #scannedEnergy
@@ -218,9 +218,9 @@ namespace robocode
         /// Current angle to the scanned nearest other robot (in degrees) compared to
         /// the body of this robot.
         /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-        /// This field will not be updated while {@link #onScannedRobot()} evnt is active.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
         ///
-        /// @see #onScannedRobot()
+        /// @see #OnScannedRobot()
         /// @see #scannedDistance
         /// @see #scannedAngle
         /// @see #scannedEnergy
@@ -235,9 +235,9 @@ namespace robocode
         /// Note that a positive value means that the robot moves forward, a negative
         /// value means that the robot moved backward, and 0 means that the robot is
         /// not moving at all.
-        /// This field will not be updated while {@link #onScannedRobot()} evnt is active.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
         ///
-        /// @see #onScannedRobot()
+        /// @see #OnScannedRobot()
         /// @see #scannedDistance
         /// @see #scannedAngle
         /// @see #scannedBearing
@@ -249,9 +249,9 @@ namespace robocode
         /// <summary>
         /// Current heading of the scanned nearest other robot (in degrees).
         /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-        /// This field will not be updated while {@link #onScannedRobot()} evnt is active.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
         ///
-        /// @see #onScannedRobot()
+        /// @see #OnScannedRobot()
         /// @see #scannedDistance
         /// @see #scannedAngle
         /// @see #scannedBearing
@@ -263,9 +263,9 @@ namespace robocode
         /// <summary>
         /// Current energy of scanned nearest other robot.
         /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
-        /// This field will not be updated while {@link #onScannedRobot()} evnt is active.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
         ///
-        /// @see #onScannedRobot()
+        /// @see #OnScannedRobot()
         /// @see #scannedDistance
         /// @see #scannedAngle
         /// @see #scannedBearing
@@ -276,9 +276,9 @@ namespace robocode
         /// <summary>
         /// Latest angle from where this robot was hit by a bullet (in degrees).
         /// If the robot has never been hit, this field will be less than 0, i.e. -1.
-        /// This field will not be updated while {@link #onHitByBullet()} evnt is active.
+        /// This field will not be updated while {@link #OnHitByBullet()} evnt is active.
         ///
-        /// @see #onHitByBullet()
+        /// @see #OnHitByBullet()
         /// @see #hitByBulletBearing
         /// </summary>
         public int hitByBulletAngle = -1;
@@ -287,9 +287,9 @@ namespace robocode
         /// Latest angle from where this robot was hit by a bullet (in degrees)
         /// compared to the body of this robot.
         /// If the robot has never been hit, this field will be less than 0, i.e. -1.
-        /// This field will not be updated while {@link #onHitByBullet()} evnt is active.
+        /// This field will not be updated while {@link #OnHitByBullet()} evnt is active.
         ///
-        /// @see #onHitByBullet()
+        /// @see #OnHitByBullet()
         /// @see #hitByBulletAngle
         /// </summary>
         public int hitByBulletBearing = -1;
@@ -297,9 +297,9 @@ namespace robocode
         /// <summary>
         /// Latest angle where this robot has hit another robot (in degrees).
         /// If this robot has never hit another robot, this field will be less than 0, i.e. -1.
-        /// This field will not be updated while {@link #onHitRobot()} evnt is active.
+        /// This field will not be updated while {@link #OnHitRobot()} evnt is active.
         ///
-        /// @see #onHitRobot()
+        /// @see #OnHitRobot()
         /// @see #hitRobotBearing
         /// </summary>
         public int hitRobotAngle = -1;
@@ -308,9 +308,9 @@ namespace robocode
         /// Latest angle where this robot has hit another robot (in degrees)
         /// compared to the body of this robot.
         /// If this robot has never hit another robot, this field will be less than 0, i.e. -1.
-        /// This field will not be updated while {@link #onHitRobot()} evnt is active.
+        /// This field will not be updated while {@link #OnHitRobot()} evnt is active.
         ///
-        /// @see #onHitRobot()
+        /// @see #OnHitRobot()
         /// @see #hitRobotAngle
         /// </summary>
         public int hitRobotBearing = -1;
@@ -318,9 +318,9 @@ namespace robocode
         /// <summary>
         /// Latest angle where this robot has hit a wall (in degrees).
         /// If this robot has never hit a wall, this field will be less than 0, i.e. -1.
-        /// This field will not be updated while {@link #onHitWall()} evnt is active.
+        /// This field will not be updated while {@link #OnHitWall()} evnt is active.
         ///
-        /// @see #onHitWall()
+        /// @see #OnHitWall()
         /// @see #hitWallBearing
         /// </summary>
         public int hitWallAngle = -1;
@@ -329,9 +329,9 @@ namespace robocode
         /// Latest angle where this robot has hit a wall (in degrees)
         /// compared to the body of this robot.
         /// If this robot has never hit a wall, this field will be less than 0, i.e. -1.
-        /// This field will not be updated while {@link #onHitWall()} evnt is active.
+        /// This field will not be updated while {@link #OnHitWall()} evnt is active.
         ///
-        /// @see #onHitWall()
+        /// @see #OnHitWall()
         /// @see #hitWallAngle
         /// </summary>
         public int hitWallBearing = -1;
@@ -343,16 +343,16 @@ namespace robocode
 
 
         /// <summary>
-        /// The output stream your robot should use to print.
+        /// The Output stream your robot should use to print.
         /// <p/>
         /// You can view the print-outs by clicking the button for your robot in the
         /// right side of the battle window.
         /// <p/>
         /// Example:
         /// <pre>
-        ///   // Print output a line each time my robot hits another robot
-        ///   public void onHitRobot(HitRobotEvent e) {
-        ///       output.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
+        ///   // Print Output a line each time my robot hits another robot
+        ///   public void OnHitRobot(HitRobotEvent e) {
+        ///       Output.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
         ///   }
         /// </pre>
         /// </summary>
@@ -364,7 +364,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        void IBasicRobot.setOut(TextWriter outpt)
+        void IBasicRobot.SetOut(TextWriter outpt)
         {
             _output = outpt;
         }
@@ -372,7 +372,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        void IBasicRobot.setPeer(IBasicRobotPeer per)
+        void IBasicRobot.SetPeer(IBasicRobotPeer per)
         {
             peer = per;
         }
@@ -381,16 +381,16 @@ namespace robocode
         /// Throws a RobotException. This method should be called when the robot's peer
         /// is uninitialized.
         /// </summary>
-        internal static void uninitializedException()
+        internal static void UninitializedException()
         {
             throw new RobotException(
-                "You cannot call the methods before your run() method is called, or you are using a Robot object that the game doesn't know about.");
+                "You cannot call the methods before your Run() method is called, or you are using a Robot object that the game doesn't know about.");
         }
 
         /// <summary>
         /// {@inheritDoc}}
         /// </summary>
-        Runnable IBasicRobot.getRobotRunnable()
+        IRunnable IBasicRobot.GetRobotRunnable()
         {
             return getEventHandler();
         }
@@ -398,7 +398,7 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}}
         /// </summary>
-        IBasicEvents IBasicRobot.getBasicEventListener()
+        IBasicEvents IBasicRobot.GetBasicEventListener()
         {
             return getEventHandler();
         }
@@ -408,7 +408,7 @@ namespace robocode
         /// Moves this robot forward by pixels.
         ///
         /// @param distance the amount of pixels to move forward
-        /// @see #back(int)
+        /// @see #Back(int)
         /// @see #robotX
         /// @see #robotY
         /// </summary>
@@ -420,7 +420,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -428,7 +428,7 @@ namespace robocode
         /// Moves this robot backward by pixels.
         ///
         /// @param distance the amount of pixels to move backward
-        /// @see #ahead(int)
+        /// @see #Ahead(int)
         /// @see #robotX
         /// @see #robotY
         /// </summary>
@@ -444,27 +444,27 @@ namespace robocode
         /// @param angle the angle to turn the gun to relative to the body of this robot
         /// @see #gunHeading
         /// @see #gunBearing
-        /// @see #turnGunLeft(int)
-        /// @see #turnGunRight(int)
-        /// @see #turnGunTo(int)
+        /// @see #TurnGunLeft(int)
+        /// @see #TurnGunRight(int)
+        /// @see #TurnGunTo(int)
         /// </summary>
         public void bearGunTo(int angle)
         {
             if (peer != null)
             {
                 peer.turnGun(
-                    Utils.normalRelativeAngle(peer.getBodyHeading() + Utils.toRadians(angle) - peer.getGunHeading()));
+                    Utils.NormalRelativeAngle(peer.getBodyHeading() + Utils.toRadians(angle) - peer.getGunHeading()));
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
         /// Skips a turn.
         ///
-        /// @see #doNothing(int)
+        /// @see #DoNothing(int)
         /// </summary>
         public void doNothing()
         {
@@ -474,7 +474,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -482,7 +482,7 @@ namespace robocode
         /// Skips the specified number of turns.
         ///
         /// @param turns the number of turns to skip
-        /// @see #doNothing()
+        /// @see #DoNothing()
         /// </summary>
         public void doNothing(int turns)
         {
@@ -499,14 +499,14 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
         /// Fires a bullet with the default power of 1.
-        /// If the gun heat is more than 0 and hence cannot fire, this method will
-        /// suspend until the gun is ready to fire, and then fire a bullet.
+        /// If the gun heat is more than 0 and hence cannot Fire, this method will
+        /// suspend until the gun is ready to Fire, and then Fire a bullet.
         ///
         /// @see #gunReady
         /// </summary>
@@ -518,8 +518,8 @@ namespace robocode
         /// <summary>
         /// Fires a bullet with the specified bullet power, which is between 0.1 and 3
         /// where 3 is the maximum bullet power.
-        /// If the gun heat is more than 0 and hence cannot fire, this method will
-        /// suspend until the gun is ready to fire, and then fire a bullet.
+        /// If the gun heat is more than 0 and hence cannot Fire, this method will
+        /// suspend until the gun is ready to Fire, and then Fire a bullet.
         ///
         /// @param power between 0.1 and 3
         /// @see #gunReady
@@ -533,7 +533,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -546,7 +546,7 @@ namespace robocode
         /// @see #hitByBulletAngle
         /// @see #hitByBulletBearing
         /// </summary>
-        public virtual void onHitByBullet()
+        public virtual void OnHitByBullet()
         {
         }
 
@@ -558,7 +558,7 @@ namespace robocode
         /// @see #hitRobotAngle
         /// @see #hitRobotBearing
         /// </summary>
-        public virtual void onHitRobot()
+        public virtual void OnHitRobot()
         {
         }
 
@@ -570,7 +570,7 @@ namespace robocode
         /// @see #hitWallAngle
         /// @see #hitWallBearing
         /// </summary>
-        public virtual void onHitWall()
+        public virtual void OnHitWall()
         {
         }
 
@@ -585,7 +585,7 @@ namespace robocode
         /// @see #scannedBearing
         /// @see #scannedEnergy
         /// </summary>
-        public virtual void onScannedRobot()
+        public virtual void OnScannedRobot()
         {
         }
 
@@ -596,14 +596,14 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // A basic robot that moves around in a square
-        ///   public void run() {
-        ///       ahead(100);
-        ///       turnRight(90);
+        ///   public void Run() {
+        ///       Ahead(100);
+        ///       TurnRight(90);
         ///   }
         /// </pre>
         /// This method is automatically re-called when it has returned.
         /// </summary>
-        public virtual void run()
+        public virtual void Run()
         {
         }
 
@@ -614,9 +614,9 @@ namespace robocode
         /// @param bodyColor  the RGB color value for the body
         /// @param gunColor   the RGB color value for the gun
         /// @param radarColor the RGB color value for the radar
-        /// @see #setColors(int, int, int, int, int)
+        /// @see #SetColors(int, int, int, int, int)
         /// </summary>
-        public void setColors(int bodyColor, int gunColor, int radarColor)
+        public void SetColors(int bodyColor, int gunColor, int radarColor)
         {
             if (peer != null)
             {
@@ -626,7 +626,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -638,10 +638,10 @@ namespace robocode
         /// @param gunColor	 the RGB color value for the gun
         /// @param radarColor   the RGB color value for the radar
         /// @param bulletColor  the RGB color value for the bullets
-        /// @param scanArcColor the RGB color value for the scan arc
-        /// @see #setColors(int, int, int)
+        /// @param scanArcColor the RGB color value for the Scan arc
+        /// @see #SetColors(int, int, int)
         /// </summary>
-        public void setColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor)
+        public void SetColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor)
         {
             if (peer != null)
             {
@@ -653,7 +653,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -671,16 +671,16 @@ namespace robocode
         /// @see #heading
         /// @see #robotX
         /// @see #robotY
-        /// @see #turnLeft(int)
-        /// @see #turnRight(int)
-        /// @see #turnTo(int)
-        /// @see #turnAheadRight(int, int)
-        /// @see #turnBackLeft(int, int)
-        /// @see #turnBackRight(int, int)
+        /// @see #TurnLeft(int)
+        /// @see #TurnRight(int)
+        /// @see #TurnTo(int)
+        /// @see #TurnAheadRight(int, int)
+        /// @see #TurnBackLeft(int, int)
+        /// @see #TurnBackRight(int, int)
         /// </summary>
-        public void turnAheadLeft(int distance, int degrees)
+        public void TurnAheadLeft(int distance, int degrees)
         {
-            turnAheadRight(distance, -degrees);
+            TurnAheadRight(distance, -degrees);
         }
 
         /// <summary>
@@ -697,14 +697,14 @@ namespace robocode
         /// @see #heading
         /// @see #robotX
         /// @see #robotY
-        /// @see #turnLeft(int)
-        /// @see #turnRight(int)
-        /// @see #turnTo(int)
-        /// @see #turnAheadLeft(int, int)
-        /// @see #turnBackLeft(int, int)
-        /// @see #turnBackRight(int, int)
+        /// @see #TurnLeft(int)
+        /// @see #TurnRight(int)
+        /// @see #TurnTo(int)
+        /// @see #TurnAheadLeft(int, int)
+        /// @see #TurnBackLeft(int, int)
+        /// @see #TurnBackRight(int, int)
         /// </summary>
-        public void turnAheadRight(int distance, int degrees)
+        public void TurnAheadRight(int distance, int degrees)
         {
             if (peer != null)
             {
@@ -712,7 +712,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -730,16 +730,16 @@ namespace robocode
         /// @see #heading
         /// @see #robotX
         /// @see #robotY
-        /// @see #turnLeft(int)
-        /// @see #turnRight(int)
-        /// @see #turnTo(int)
-        /// @see #turnAheadLeft(int, int)
-        /// @see #turnAheadRight(int, int)
-        /// @see #turnBackRight(int, int)
+        /// @see #TurnLeft(int)
+        /// @see #TurnRight(int)
+        /// @see #TurnTo(int)
+        /// @see #TurnAheadLeft(int, int)
+        /// @see #TurnAheadRight(int, int)
+        /// @see #TurnBackRight(int, int)
         /// </summary>
-        public void turnBackLeft(int distance, int degrees)
+        public void TurnBackLeft(int distance, int degrees)
         {
-            turnAheadRight(-distance, degrees);
+            TurnAheadRight(-distance, degrees);
         }
 
         /// <summary>
@@ -756,16 +756,16 @@ namespace robocode
         /// @see #heading
         /// @see #robotX
         /// @see #robotY
-        /// @see #turnLeft(int)
-        /// @see #turnRight(int)
-        /// @see #turnTo(int)
-        /// @see #turnAheadLeft(int, int)
-        /// @see #turnAheadRight(int, int)
-        /// @see #turnBackLeft(int, int)
+        /// @see #TurnLeft(int)
+        /// @see #TurnRight(int)
+        /// @see #TurnTo(int)
+        /// @see #TurnAheadLeft(int, int)
+        /// @see #TurnAheadRight(int, int)
+        /// @see #TurnBackLeft(int, int)
         /// </summary>
-        public void turnBackRight(int distance, int degrees)
+        public void TurnBackRight(int distance, int degrees)
         {
-            turnAheadRight(-distance, -degrees);
+            TurnAheadRight(-distance, -degrees);
         }
 
         /// <summary>
@@ -774,13 +774,13 @@ namespace robocode
         /// @param degrees the amount of degrees to turn the gun to the left
         /// @see #gunHeading
         /// @see #gunBearing
-        /// @see #turnGunRight(int)
-        /// @see #turnGunTo(int)
+        /// @see #TurnGunRight(int)
+        /// @see #TurnGunTo(int)
         /// @see #bearGunTo(int)
         /// </summary>
-        public void turnGunLeft(int degrees)
+        public void TurnGunLeft(int degrees)
         {
-            turnGunRight(-degrees);
+            TurnGunRight(-degrees);
         }
 
         /// <summary>
@@ -789,11 +789,11 @@ namespace robocode
         /// @param degrees the amount of degrees to turn the gun to the right
         /// @see #gunHeading
         /// @see #gunBearing
-        /// @see #turnGunLeft(int)
-        /// @see #turnGunTo(int)
+        /// @see #TurnGunLeft(int)
+        /// @see #TurnGunTo(int)
         /// @see #bearGunTo(int)
         /// </summary>
-        public void turnGunRight(int degrees)
+        public void TurnGunRight(int degrees)
         {
             if (peer != null)
             {
@@ -801,7 +801,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -813,19 +813,19 @@ namespace robocode
         /// @param angle the angle to turn the gun to
         /// @see #gunHeading
         /// @see #gunBearing
-        /// @see #turnGunLeft(int)
-        /// @see #turnGunRight(int)
+        /// @see #TurnGunLeft(int)
+        /// @see #TurnGunRight(int)
         /// @see #bearGunTo(int)
         /// </summary>
-        public void turnGunTo(int angle)
+        public void TurnGunTo(int angle)
         {
             if (peer != null)
             {
-                peer.turnGun(Utils.normalRelativeAngle(Utils.toRadians(angle) - peer.getGunHeading()));
+                peer.turnGun(Utils.NormalRelativeAngle(Utils.toRadians(angle) - peer.getGunHeading()));
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -834,16 +834,16 @@ namespace robocode
         ///
         /// @param degrees the amount of degrees to turn to the left
         /// @see #heading
-        /// @see #turnRight(int)
-        /// @see #turnTo(int)
-        /// @see #turnAheadLeft(int, int)
-        /// @see #turnAheadRight(int, int)
-        /// @see #turnBackLeft(int, int)
-        /// @see #turnBackRight(int, int)
+        /// @see #TurnRight(int)
+        /// @see #TurnTo(int)
+        /// @see #TurnAheadLeft(int, int)
+        /// @see #TurnAheadRight(int, int)
+        /// @see #TurnBackLeft(int, int)
+        /// @see #TurnBackRight(int, int)
         /// </summary>
-        public void turnLeft(int degrees)
+        public void TurnLeft(int degrees)
         {
-            turnRight(-degrees);
+            TurnRight(-degrees);
         }
 
         /// <summary>
@@ -851,14 +851,14 @@ namespace robocode
         ///
         /// @param degrees the amount of degrees to turn to the right
         /// @see #heading
-        /// @see #turnLeft(int)
-        /// @see #turnTo(int)
-        /// @see #turnAheadLeft(int, int)
-        /// @see #turnAheadRight(int, int)
-        /// @see #turnBackLeft(int, int)
-        /// @see #turnBackRight(int, int)
+        /// @see #TurnLeft(int)
+        /// @see #TurnTo(int)
+        /// @see #TurnAheadLeft(int, int)
+        /// @see #TurnAheadRight(int, int)
+        /// @see #TurnBackLeft(int, int)
+        /// @see #TurnBackRight(int, int)
         /// </summary>
-        public void turnRight(int degrees)
+        public void TurnRight(int degrees)
         {
             if (peer != null)
             {
@@ -866,7 +866,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -877,22 +877,22 @@ namespace robocode
         ///
         /// @param angle the angle to turn this robot to
         /// @see #heading
-        /// @see #turnLeft(int)
-        /// @see #turnRight(int)
-        /// @see #turnAheadLeft(int, int)
-        /// @see #turnAheadRight(int, int)
-        /// @see #turnBackLeft(int, int)
-        /// @see #turnBackRight(int, int)
+        /// @see #TurnLeft(int)
+        /// @see #TurnRight(int)
+        /// @see #TurnAheadLeft(int, int)
+        /// @see #TurnAheadRight(int, int)
+        /// @see #TurnBackLeft(int, int)
+        /// @see #TurnBackRight(int, int)
         /// </summary>
-        public void turnTo(int angle)
+        public void TurnTo(int angle)
         {
             if (peer != null)
             {
-                peer.turnBody(Utils.normalRelativeAngle(Utils.toRadians(angle) - peer.getBodyHeading()));
+                peer.turnBody(Utils.NormalRelativeAngle(Utils.toRadians(angle) - peer.getBodyHeading()));
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -910,99 +910,99 @@ namespace robocode
 
         /// <summary>
         /// The JuniorRobot evnt handler, which  :  the basic robot events,
-        /// JuniorRobot evnt, and Runnable.
+        /// JuniorRobot evnt, and IRunnable.
         /// </summary>
-        private sealed class InnerEventHandler : IBasicEvents, Runnable
+        private sealed class InnerEventHandler : IBasicEvents, IRunnable
         {
             public InnerEventHandler(JuniorRobot robot)
             {
                 this.robot = robot;
             }
 
-            private JuniorRobot robot;
+            private readonly JuniorRobot robot;
             internal double juniorFirePower;
             private long currentTurn;
 
-            public void onBulletHit(BulletHitEvent evnt)
+            public void OnBulletHit(BulletHitEvent evnt)
             {
             }
 
-            public void onBulletHitBullet(BulletHitBulletEvent evnt)
+            public void OnBulletHitBullet(BulletHitBulletEvent evnt)
             {
             }
 
-            public void onBulletMissed(BulletMissedEvent evnt)
+            public void OnBulletMissed(BulletMissedEvent evnt)
             {
             }
 
-            public void onDeath(DeathEvent evnt)
+            public void OnDeath(DeathEvent evnt)
             {
             }
 
-            public void onHitByBullet(HitByBulletEvent evnt)
+            public void OnHitByBullet(HitByBulletEvent evnt)
             {
-                double angle = robot.peer.getBodyHeading() + evnt.getBearingRadians();
+                double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
 
-                robot.hitByBulletAngle = (int) (Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                robot.hitByBulletBearing = (int) (evnt.getBearing() + 0.5);
-                robot.onHitByBullet();
+                robot.hitByBulletAngle = (int) (Utils.toDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
+                robot.hitByBulletBearing = (int) (evnt.Bearing + 0.5);
+                robot.OnHitByBullet();
             }
 
-            public void onHitRobot(HitRobotEvent evnt)
+            public void OnHitRobot(HitRobotEvent evnt)
             {
-                double angle = robot.peer.getBodyHeading() + evnt.getBearingRadians();
+                double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
 
-                robot.hitRobotAngle = (int) (Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                robot.hitRobotBearing = (int) (evnt.getBearing() + 0.5);
-                robot.onHitRobot();
+                robot.hitRobotAngle = (int) (Utils.toDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
+                robot.hitRobotBearing = (int) (evnt.Bearing + 0.5);
+                robot.OnHitRobot();
             }
 
-            public void onHitWall(HitWallEvent evnt)
+            public void OnHitWall(HitWallEvent evnt)
             {
-                double angle = robot.peer.getBodyHeading() + evnt.getBearingRadians();
+                double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
 
-                robot.hitWallAngle = (int) (Utils.toDegrees(Utils.normalAbsoluteAngle(angle)) + 0.5);
-                robot.hitWallBearing = (int) (evnt.getBearing() + 0.5);
-                robot.onHitWall();
+                robot.hitWallAngle = (int) (Utils.toDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
+                robot.hitWallBearing = (int) (evnt.Bearing + 0.5);
+                robot.OnHitWall();
             }
 
-            public void onRobotDeath(RobotDeathEvent evnt)
+            public void OnRobotDeath(RobotDeathEvent evnt)
             {
                 robot.others = robot.peer.getOthers();
             }
 
-            public void onScannedRobot(ScannedRobotEvent evnt)
+            public void OnScannedRobot(ScannedRobotEvent evnt)
             {
-                robot.scannedDistance = (int) (evnt.getDistance() + 0.5);
-                robot.scannedEnergy = Math.Max(1, (int) (evnt.getEnergy() + 0.5));
+                robot.scannedDistance = (int) (evnt.Distance + 0.5);
+                robot.scannedEnergy = Math.Max(1, (int) (evnt.Energy + 0.5));
                 robot.scannedAngle = (int) (Utils.toDegrees(
-                                                Utils.normalAbsoluteAngle(robot.peer.getBodyHeading() +
-                                                                          evnt.getBearingRadians()))
+                                                Utils.NormalAbsoluteAngle(robot.peer.getBodyHeading() +
+                                                                          evnt.BearingRadians))
                                             + 0.5);
-                robot.scannedBearing = (int) (evnt.getBearing() + 0.5);
-                robot.scannedHeading = (int) (evnt.getHeading() + 0.5);
-                robot.scannedVelocity = (int) (evnt.getVelocity() + 0.5);
+                robot.scannedBearing = (int) (evnt.Bearing + 0.5);
+                robot.scannedHeading = (int) (evnt.Heading + 0.5);
+                robot.scannedVelocity = (int) (evnt.Velocity + 0.5);
 
-                robot.onScannedRobot();
+                robot.OnScannedRobot();
             }
 
-            public void onStatus(StatusEvent e)
+            public void OnStatus(StatusEvent e)
             {
-                RobotStatus s = e.getStatus();
+                RobotStatus s = e.Status;
 
                 robot.others = robot.peer.getOthers();
-                robot.energy = Math.Max(1, (int) (s.getEnergy() + 0.5));
-                robot.robotX = (int) (s.getX() + 0.5);
-                robot.robotY = (int) (s.getY() + 0.5);
-                robot.heading = (int) (Utils.toDegrees(s.getHeading()) + 0.5);
-                robot.gunHeading = (int) (Utils.toDegrees(s.getGunHeading()) + 0.5);
+                robot.energy = Math.Max(1, (int) (s.Energy + 0.5));
+                robot.robotX = (int) (s.X + 0.5);
+                robot.robotY = (int) (s.Y + 0.5);
+                robot.heading = (int) (Utils.toDegrees(s.Heading) + 0.5);
+                robot.gunHeading = (int) (Utils.toDegrees(s.GunHeading) + 0.5);
                 robot.gunBearing =
-                    (int) (Utils.toDegrees(Utils.normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
-                robot.gunReady = (s.getGunHeat() <= 0);
+                    (int) (Utils.toDegrees(Utils.NormalRelativeAngle(s.GunHeading - s.Heading)) + 0.5);
+                robot.gunReady = (s.GunHeat <= 0);
 
-                currentTurn = e.getTime();
+                currentTurn = e.Time;
 
-                // Auto fire
+                // Auto Fire
                 if (juniorFirePower > 0 && robot.gunReady && (robot.peer.getGunTurnRemaining() == 0))
                 {
                     if (robot.peer.setFire(juniorFirePower) != null)
@@ -1027,11 +1027,11 @@ namespace robocode
                 robot.hitWallBearing = -1;
             }
 
-            public void onWin(WinEvent evnt)
+            public void OnWin(WinEvent evnt)
             {
             }
 
-            public void run()
+            public void Run()
             {
                 robot.fieldWidth = (int) (robot.peer.getBattleFieldWidth() + 0.5);
                 robot.fieldHeight = (int) (robot.peer.getBattleFieldHeight() + 0.5);
@@ -1041,9 +1041,9 @@ namespace robocode
                 {
                     long lastTurn = currentTurn; // Used for the rescan check
 
-                    robot.run(); // Run the code in the JuniorRobot
+                    robot.Run(); // Run the code in the JuniorRobot
 
-                    // Make sure that we rescan if the robot did not execute anything this turn.
+                    // Make sure that we rescan if the robot did not Execute anything this turn.
                     // When the robot executes the currentTurn will automatically be increased by 1,
                     // So when the turn stays the same, the robot did not take any action this turn.
                     if (lastTurn == currentTurn)

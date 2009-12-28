@@ -83,19 +83,19 @@ namespace net.sf.robocode.dotnet.utils
             if (typeof(IInteractiveRobot).IsAssignableFrom(robotClass))
             {
                 // in this case we make sure that robot don't waste time
-                if (checkMethodOverride(robotClass, typeof(Robot), "getInteractiveEventListener")
-                    || checkMethodOverride(robotClass, typeof(Robot), "onKeyPressed", typeof(KeyEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onKeyReleased", typeof(KeyEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onKeyTyped", typeof(KeyEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onMouseClicked", typeof(MouseEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onMouseEntered", typeof(MouseEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onMouseExited", typeof(MouseEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onMousePressed", typeof(MouseEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onMouseReleased", typeof(MouseEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onMouseMoved", typeof(MouseEvent))
-                    || checkMethodOverride(robotClass, typeof(Robot), "onMouseDragged", typeof(MouseEvent))
+                if (checkMethodOverride(robotClass, typeof(Robot), "GetInteractiveEventListener")
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnKeyPressed", typeof(KeyEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnKeyReleased", typeof(KeyEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnKeyTyped", typeof(KeyEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnMouseClicked", typeof(MouseEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnMouseEntered", typeof(MouseEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnMouseExited", typeof(MouseEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnMousePressed", typeof(MouseEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnMouseReleased", typeof(MouseEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnMouseMoved", typeof(MouseEvent))
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnMouseDragged", typeof(MouseEvent))
                     ||
-                    checkMethodOverride(robotClass, typeof(Robot), "onMouseWheelMoved", typeof(MouseWheelMovedEvent))
+                    checkMethodOverride(robotClass, typeof(Robot), "OnMouseWheelMoved", typeof(MouseWheelMovedEvent))
                     )
                 {
                     isInteractiveRobot = true;
@@ -104,8 +104,8 @@ namespace net.sf.robocode.dotnet.utils
 
             if (typeof(IPaintRobot).IsAssignableFrom(robotClass))
             {
-                if (checkMethodOverride(robotClass, typeof(Robot), "getPaintEventListener")
-                    || checkMethodOverride(robotClass, typeof(Robot), "onPaint", typeof(IGraphics))
+                if (checkMethodOverride(robotClass, typeof(Robot), "GetPaintEventListener")
+                    || checkMethodOverride(robotClass, typeof(Robot), "OnPaint", typeof(IGraphics))
                     )
                 {
                     isPaintRobot = true;

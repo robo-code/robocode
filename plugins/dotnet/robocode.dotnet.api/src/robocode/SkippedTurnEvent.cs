@@ -20,8 +20,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A SkippedTurnEvent is sent to {@link AdvancedRobot#onSkippedTurn(SkippedTurnEvent)
-    /// onSkippedTurn()} when your robot is forced to skipping a turn.
+    /// A SkippedTurnEvent is sent to {@link AdvancedRobot#OnSkippedTurn(SkippedTurnEvent)
+    /// OnSkippedTurn()} when your robot is forced to skipping a turn.
     /// You must take an action every turn in order to participate in the game.
     /// For example,
     /// <pre>
@@ -39,7 +39,7 @@ namespace robocode
     /// Instead, you should do something such as:
     /// <pre>
     ///     for (int i = 0; i < 30; i++) {
-    ///         doNothing(); // or perhaps scan();
+    ///         DoNothing(); // or perhaps Scan();
     ///     }
     /// </pre>
     /// <p/>
@@ -48,7 +48,7 @@ namespace robocode
     /// etc. in your robot.
     ///
     /// @author Mathew A. Nelson (original)
-    /// @see AdvancedRobot#onSkippedTurn(SkippedTurnEvent)
+    /// @see AdvancedRobot#OnSkippedTurn(SkippedTurnEvent)
     /// @see SkippedTurnEvent
     /// </summary>
     public sealed class SkippedTurnEvent : Event
@@ -58,31 +58,31 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public override int getPriority()
+        public override int Priority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsAdvancedRobot())
             {
-                IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+                IAdvancedEvents listener = ((IAdvancedRobot) robot).GetAdvancedEventListener();
 
                 if (listener != null)
                 {
-                    listener.onSkippedTurn(this);
+                    listener.OnSkippedTurn(this);
                 }
             }
         }
@@ -90,17 +90,17 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override bool isCriticalEvent()
+        internal override bool IsCriticalEvent
         {
-            return true;
+            get { return true; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.SkippedTurnEvent_TYPE;
+            get { return RbSerializerN.SkippedTurnEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

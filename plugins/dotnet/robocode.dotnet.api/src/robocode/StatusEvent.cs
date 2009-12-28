@@ -17,7 +17,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link Robot#onStatus(StatusEvent) onStatus()} every
+    /// This evnt is sent to {@link Robot#OnStatus(StatusEvent) OnStatus()} every
     /// turn in a battle to provide the status of the robot.
     ///
     /// @author Flemming N. Larsen (original)
@@ -47,38 +47,38 @@ namespace robocode
         /// @return the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
         /// @see #getTime()
         /// </summary>
-        public RobotStatus getStatus()
+        public RobotStatus Status
         {
-            return status;
+            get { return status; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onStatus(this);
+                listener.OnStatus(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            throw new Exception("Serialization of this type is not supported");
+            get { throw new Exception("Serialization of this type is not supported"); }
         }
     }
 }

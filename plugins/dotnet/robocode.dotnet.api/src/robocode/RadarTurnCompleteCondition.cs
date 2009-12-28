@@ -27,7 +27,7 @@ namespace robocode
     /// </summary>
     public class RadarTurnCompleteCondition : Condition
     {
-        private AdvancedRobot robot;
+        private readonly AdvancedRobot robot;
 
         /// <summary>
         /// Creates a new RadarTurnCompleteCondition with default priority.
@@ -61,9 +61,9 @@ namespace robocode
         /// @return {@code true} if the radar has stopped turning; {@code false}
         ///         otherwise
         /// </summary>
-        public override bool test()
+        public override bool Test()
         {
-            return (robot.getRadarTurnRemaining() == 0);
+            return (robot.RadarTurnRemaining == 0);
         }
     }
 }

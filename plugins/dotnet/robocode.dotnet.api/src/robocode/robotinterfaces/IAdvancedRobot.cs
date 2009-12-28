@@ -39,7 +39,7 @@ namespace robocode.robotinterfaces
         ///         not receive the notifications.
         /// @since 1.6
         /// </summary>
-        IAdvancedEvents getAdvancedEventListener();
+        IAdvancedEvents GetAdvancedEventListener();
     }
 }
 //happy

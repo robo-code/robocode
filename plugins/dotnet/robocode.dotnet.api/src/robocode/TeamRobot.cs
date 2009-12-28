@@ -9,15 +9,14 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Flemming N. Larsen
- *     - Added missing getMessageEvents()
+ *     - Added missing GetMessageEvents()
  *     - Updated Javadocs
- *     - The uninitializedException() method does not need a method name as input
+ *     - The UninitializedException() method does not need a method name as input
  *       parameter anymore
  *     Pavel Savara
  *     - Re-work of robot interfaces
  *******************************************************************************/
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 
@@ -45,19 +44,19 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void run() {
-        ///       broadcastMessage("I'm here!");
+        ///   public void Run() {
+        ///       BroadcastMessage("I'm here!");
         ///   }
         /// </pre>
         ///
         /// @param message the message to broadcast to all teammates
         /// @ if the message could not be broadcasted to the
         ///                     teammates
-        /// @see #isTeammate(string)
+        /// @see #IsTeammate(string)
         /// @see #getTeammates()
-        /// @see #sendMessage(string, ISerializable)
+        /// @see #SendMessage(string, ISerializable)
         /// </summary>
-        public void broadcastMessage(object message)
+        public void BroadcastMessage(object message)
         {
             if (peer != null)
             {
@@ -65,7 +64,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -75,24 +74,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (MessageEvent e : getMessageEvents()) {
+        ///   for (MessageEvent e : GetMessageEvents()) {
         ///      // do something with e
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all MessageEvents currently in the robot's
         ///         queue
-        /// @see #onMessageReceived(MessageEvent)
+        /// @see #OnMessageReceived(MessageEvent)
         /// @see MessageEvent
         /// @since 1.2.6
         /// </summary>
-        public IList<MessageEvent> getMessageEvents()
+        public IList<MessageEvent> GetMessageEvents()
         {
             if (peer != null)
             {
                 return new List<MessageEvent>(((ITeamRobotPeer) peer).getMessageEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -101,7 +100,7 @@ namespace robocode
         /// <p/>
         /// {@inheritDoc}
         /// </summary>
-        public ITeamEvents getTeamEventListener()
+        ITeamEvents ITeamRobot.GetTeamEventListener()
         {
             return this; // this robot is listening
         }
@@ -112,12 +111,12 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void run() {
-        ///       // Prints output all teammates
+        ///   public void Run() {
+        ///       // Prints Output all teammates
         ///       string[] teammates = getTeammates();
         ///       if (teammates != null) {
         ///           for (string member : teammates) {
-        ///               output.println(member);
+        ///               Output.println(member);
         ///           }
         ///       }
         ///   }
@@ -126,18 +125,21 @@ namespace robocode
         /// @return a string array containing the names of all your teammates, or
         ///         {@code null} if there is no teammates. The length of the string array
         ///         is equal to the number of teammates.
-        /// @see #isTeammate(string)
-        /// @see #broadcastMessage(ISerializable)
-        /// @see #sendMessage(string, ISerializable)
+        /// @see #IsTeammate(string)
+        /// @see #BroadcastMessage(ISerializable)
+        /// @see #SendMessage(string, ISerializable)
         /// </summary>
-        public string[] getTeammates()
+        public string[] Teammates
         {
-            if (peer != null)
+            get
             {
-                return ((ITeamRobotPeer) peer).getTeammates();
+                if (peer != null)
+                {
+                    return ((ITeamRobotPeer) peer).getTeammates();
+                }
+                UninitializedException();
+                return null;
             }
-            uninitializedException();
-            return null;
         }
 
         /// <summary>
@@ -145,11 +147,11 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void onScannedRobot(ScannedRobotEvent e) {
-        ///       if (isTeammate(e.getName()) {
+        ///   public void OnScannedRobot(ScannedRobotEvent e) {
+        ///       if (IsTeammate(e.getName()) {
         ///           return;
         ///       }
-        ///       fire(1);
+        ///       Fire(1);
         ///   }
         /// </pre>
         ///
@@ -157,23 +159,23 @@ namespace robocode
         /// @return {@code true} if the specified name belongs to one of your
         ///         teammates; {@code false} otherwise.
         /// @see #getTeammates()
-        /// @see #broadcastMessage(ISerializable)
-        /// @see #sendMessage(string, ISerializable)
+        /// @see #BroadcastMessage(ISerializable)
+        /// @see #SendMessage(string, ISerializable)
         /// </summary>
-        public bool isTeammate(string name)
+        public bool IsTeammate(string name)
         {
             if (peer != null)
             {
                 return ((ITeamRobotPeer) peer).isTeammate(name);
             }
-            uninitializedException();
+            UninitializedException();
             return false;
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public virtual void onMessageReceived(MessageEvent evnt)
+        public virtual void OnMessageReceived(MessageEvent evnt)
         {
         }
 
@@ -182,19 +184,19 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void run() {
-        ///       sendMessage("sample.DroidBot", "I'm here!");
+        ///   public void Run() {
+        ///       SendMessage("sample.DroidBot", "I'm here!");
         ///   }
         /// </pre>
         ///
         /// @param name	the name of the intended recipient of the message
         /// @param message the message to send
         /// @ if the message could not be sent
-        /// @see #isTeammate(string)
+        /// @see #IsTeammate(string)
         /// @see #getTeammates()
-        /// @see #broadcastMessage(ISerializable)
+        /// @see #BroadcastMessage(ISerializable)
         /// </summary>
-        public void sendMessage(string name, ISerializable message)
+        public void SendMessage(string name, object message)
         {
             if (peer != null)
             {
@@ -202,7 +204,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
     }

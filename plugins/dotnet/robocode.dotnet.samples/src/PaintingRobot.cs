@@ -4,7 +4,7 @@ using robocode;
 namespace samplecs
 {
     /// <summary>
-    ///  PaintingRobot - a sample robot that demonstrates the onPaint() and
+    ///  PaintingRobot - a sample robot that demonstrates the OnPaint() and
     ///  getGraphics() methods.
     ///  Also demonstrate feature of debugging properties on RobotDialog
     ///  <p/>
@@ -15,28 +15,28 @@ namespace samplecs
     public class PaintingRobot : Robot
     {
         /// <summary>
-        /// PaintingRobot's run method - Seesaw
+        /// PaintingRobot's Run method - Seesaw
         /// </summary>
-        public override void run()
+        public override void Run()
         {
             while (true)
             {
-                ahead(100);
-                turnGunRight(360);
-                back(100);
-                turnGunRight(360);
+                Ahead(100);
+                TurnGunRight(360);
+                Back(100);
+                TurnGunRight(360);
             }
         }
 
         /// <summary>
         /// Fire when we see a robot
         /// </summary>
-        public override void onScannedRobot(ScannedRobotEvent e)
+        public override void OnScannedRobot(ScannedRobotEvent e)
         {
             // demonstrate feature of debugging properties on RobotDialog
-            setDebugProperty("lastScannedRobot", e.getName() + " at " + e.getBearing() + " degrees at time " + getTime());
+            DebugProperty["lastScannedRobot"] = e.Name + " at " + e.Bearing + " degrees at time " + Time;
 
-            fire(1);
+            Fire(1);
         }
 
         /// <summary>
@@ -44,34 +44,33 @@ namespace samplecs
         /// so our seesaw might avoid a future shot. 
         /// In addition, draw orange circles where we were hit.
         /// </summary>
-        public override void onHitByBullet(HitByBulletEvent e)
+        public override void OnHitByBullet(HitByBulletEvent e)
         {
             // demonstrate feature of debugging properties on RobotDialog
-            setDebugProperty("lastHitBy",
-                             e.getName() + " with power of bullet " + e.getPower() + " at time " + getTime());
+            DebugProperty["lastHitBy"] = e.Name + " with power of bullet " + e.Power + " at time " + Time;
 
             // show how to remove debugging property
-            setDebugProperty("lastScannedRobot", null);
+            DebugProperty["lastScannedRobot"] = null;
 
             // gebugging by painting to battle view
-            IGraphics g = getGraphics();
+            IGraphics g = Graphics;
 
-            g.DrawEllipse(Pens.Orange, (int) (getX() - 55), (int) (getY() - 55), 110, 110);
-            g.DrawEllipse(Pens.Orange, (int) (getX() - 56), (int) (getY() - 56), 112, 112);
-            g.DrawEllipse(Pens.Orange, (int) (getX() - 59), (int) (getY() - 59), 118, 118);
-            g.DrawEllipse(Pens.Orange, (int) (getX() - 60), (int) (getY() - 60), 120, 120);
+            g.DrawEllipse(Pens.Orange, (int) (X - 55), (int) (Y - 55), 110, 110);
+            g.DrawEllipse(Pens.Orange, (int) (X - 56), (int) (Y - 56), 112, 112);
+            g.DrawEllipse(Pens.Orange, (int) (X - 59), (int) (Y - 59), 118, 118);
+            g.DrawEllipse(Pens.Orange, (int) (X - 60), (int) (Y - 60), 120, 120);
 
-            turnLeft(90 - e.getBearing());
+            TurnLeft(90 - e.Bearing);
         }
 
         /// <summary>
         /// Paint a red circle around our PaintingRobot
         /// </summary>
-        public override void onPaint(IGraphics g)
+        public override void OnPaint(IGraphics graphics)
         {
             SolidBrush transparentGreen = new SolidBrush(Color.FromArgb(30, 0, 0xFF, 0));
-            g.FillEllipse(transparentGreen, (int)(getX() - 60), (int)(getY() - 60), 120, 120);
-            g.DrawEllipse(Pens.Red, (int)(getX() - 50), (int)(getY() - 50), 100, 100);
+            graphics.FillEllipse(transparentGreen, (int)(X - 60), (int)(Y - 60), 120, 120);
+            graphics.DrawEllipse(Pens.Red, (int)(X - 50), (int)(Y - 50), 100, 100);
         }
     }
 }

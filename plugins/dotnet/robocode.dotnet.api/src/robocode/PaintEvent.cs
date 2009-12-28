@@ -19,11 +19,11 @@ namespace robocode
 {
     /// <summary>
     /// This evnt occurs when your robot should paint, where the {@link
-    /// Robot#onPaint(Graphics) onPaint()} is called on your robot.
+    /// Robot#OnPaint(Graphics) OnPaint()} is called on your robot.
     /// </p>
     /// You can use this evnt for setting the evnt priority by calling
-    /// {@link AdvancedRobot#setEventPriority(string, int)
-    /// setEventPriority("PaintEvent", priority)}
+    /// {@link AdvancedRobot#SetEventPriority(string, int)
+    /// SetEventPriority("PaintEvent", priority)}
     ///
     /// @author Flemming N. Larsen (original)
     /// </summary>
@@ -35,23 +35,23 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsPaintRobot())
             {
-                IPaintEvents listener = ((IPaintRobot) robot).getPaintEventListener();
+                IPaintEvents listener = ((IPaintRobot) robot).GetPaintEventListener();
 
                 if (listener != null)
                 {
-                    listener.onPaint(graphics);
+                    listener.OnPaint(graphics);
                 }
             }
         }
@@ -59,9 +59,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            throw new Exception("Serialization of this type is not supported");
+            get { throw new Exception("Serialization of this type is not supported"); }
         }
     }
 }

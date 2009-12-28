@@ -21,8 +21,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A MousePressedEvent is sent to {@link Robot#onMousePressed(java.awt.event.MouseEvent)
-    /// onMousePressed()} when the mouse is pressed inside the battle view.
+    /// A MousePressedEvent is sent to {@link Robot#OnMousePressed(java.awt.event.MouseEvent)
+    /// OnMousePressed()} when the mouse is pressed inside the battle view.
     ///
     /// @author Pavel Savara (original)
     /// @see MouseClickedEvent
@@ -52,23 +52,23 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsInteractiveRobot())
             {
-                IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+                IInteractiveEvents listener = ((IInteractiveRobot) robot).GetInteractiveEventListener();
 
                 if (listener != null)
                 {
-                    listener.onMouseDragged(this);
+                    listener.OnMouseDragged(this);
                 }
             }
         }
@@ -76,9 +76,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.MouseDraggedEvent_TYPE;
+            get { return RbSerializerN.MouseDraggedEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()
@@ -97,13 +97,13 @@ namespace robocode
             {
                 var obj = (MouseDraggedEvent) objec;
 
-                serializer.serialize(buffer, obj.getButton());
-                serializer.serialize(buffer, obj.getClickCount());
-                serializer.serialize(buffer, obj.getX());
-                serializer.serialize(buffer, obj.getY());
-                serializer.serialize(buffer, obj.getID());
-                serializer.serialize(buffer, obj.getModifiersEx());
-                serializer.serialize(buffer, obj.getWhen());
+                serializer.serialize(buffer, obj.Button);
+                serializer.serialize(buffer, obj.ClickCount);
+                serializer.serialize(buffer, obj.X);
+                serializer.serialize(buffer, obj.Y);
+                serializer.serialize(buffer, obj.ID);
+                serializer.serialize(buffer, obj.ModifiersEx);
+                serializer.serialize(buffer, obj.When);
             }
 
             public object deserialize(RbSerializerN serializer, ByteBuffer buffer)

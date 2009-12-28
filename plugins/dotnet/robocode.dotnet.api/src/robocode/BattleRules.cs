@@ -42,9 +42,9 @@ namespace robocode
         ///
         /// @return the battlefield width.
         /// </summary>
-        public int getBattlefieldWidth()
+        public int BattlefieldWidth
         {
-            return battlefieldWidth;
+            get { return battlefieldWidth; }
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace robocode
         ///
         /// @return the battlefield height.
         /// </summary>
-        public int getBattlefieldHeight()
+        public int BattlefieldHeight
         {
-            return battlefieldHeight;
+            get { return battlefieldHeight; }
         }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace robocode
         ///
         /// @return the number of rounds.
         /// </summary>
-        public int getNumRounds()
+        public int NumRounds
         {
-            return numRounds;
+            get { return numRounds; }
         }
 
         /// <summary>
@@ -74,13 +74,13 @@ namespace robocode
         /// So don't count on the cooling rate being 0.1!
         ///
         /// @return the gun cooling rate.
-        /// @see Robot#getGunHeat()
-        /// @see Robot#fire(double)
-        /// @see Robot#fireBullet(double)
+        /// @see Robot#GetGunHeat()
+        /// @see Robot#Fire(double)
+        /// @see Robot#FireBullet(double)
         /// </summary>
-        public double getGunCoolingRate()
+        public double GunCoolingRate
         {
-            return gunCoolingRate;
+            get { return gunCoolingRate; }
         }
 
         /// <summary>
@@ -96,17 +96,13 @@ namespace robocode
         /// So don't count on the inactivity time being 450 turns!
         ///
         /// @return the allowed inactivity time.
-        /// @see Robot#doNothing()
-        /// @see AdvancedRobot#execute()
+        /// @see Robot#DoNothing()
+        /// @see AdvancedRobot#Execute()
         /// </summary>
-        public long getInactivityTime()
+        public long InactivityTime
         {
-            return inactivityTime;
+            get { return inactivityTime; }
         }
-
-        /* public BattleField getBattleField() {
-	 return new DefaultBattleField(battlefieldWidth, battlefieldHeight);
-	 }*/
 
         private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate,
                             long inactivityTime)

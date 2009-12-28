@@ -15,12 +15,12 @@ namespace samplecs
 {
     public class MyCsRobot : Robot
     {
-        public override void run()
+        public override void Run()
         {
             while (true)
             {
-                ahead(100);
-                turnLeft(30);
+                Ahead(100);
+                TurnLeft(30);
             }
         }
     }

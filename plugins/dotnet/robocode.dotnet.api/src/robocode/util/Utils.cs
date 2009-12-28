@@ -12,10 +12,10 @@
  *     - Moved all methods to classes like FileUtil, stringUtil, WindowUtil,
  *       Logger etc. exception for the following methods, which have been kept
  *       here as legacy robots make use of these methods:
- *       - normalAbsoluteAngle()
- *       - normalNearAbsoluteAngle()
- *       - normalRelativeAngle()
- *     - The isNear() was made public
+ *       - NormalAbsoluteAngle()
+ *       - NormalNearAbsoluteAngle()
+ *       - NormalRelativeAngle()
+ *     - The IsNear() was made public
  *     - Optimized and provided javadocs for all methods
  *******************************************************************************/
 using System;
@@ -43,7 +43,7 @@ namespace robocode.util
         /// @param angle the angle to normalize
         /// @return the normalized angle that will be in the range of [0,2*PI[
         /// </summary>
-        public static double normalAbsoluteAngle(double angle)
+        public static double NormalAbsoluteAngle(double angle)
         {
             return (angle %= TWO_PI) >= 0 ? angle : (angle + TWO_PI);
         }
@@ -56,7 +56,7 @@ namespace robocode.util
         /// @param angle the angle to normalize
         /// @return the normalized angle that will be in the range of [0,360[
         /// </summary>
-        public static double normalAbsoluteAngleDegrees(double angle)
+        public static double NormalAbsoluteAngleDegrees(double angle)
         {
             return (angle %= 360) >= 0 ? angle : (angle + 360);
         }
@@ -69,7 +69,7 @@ namespace robocode.util
         /// @param angle the angle to normalize
         /// @return the normalized angle that will be in the range of [-PI,PI[
         /// </summary>
-        public static double normalRelativeAngle(double angle)
+        public static double NormalRelativeAngle(double angle)
         {
             return (angle %= TWO_PI) >= 0
                        ? (angle < Math.PI) ? angle : angle - TWO_PI
@@ -84,7 +84,7 @@ namespace robocode.util
         /// @param angle the angle to normalize
         /// @return the normalized angle that will be in the range of [-180,180[
         /// </summary>
-        public static double normalRelativeAngleDegrees(double angle)
+        public static double NormalRelativeAngleDegrees(double angle)
         {
             return (angle %= 360) >= 0 ? (angle < 180) ? angle : angle - 360 : (angle >= -180) ? angle : angle + 360;
         }
@@ -94,41 +94,41 @@ namespace robocode.util
         /// The normalized angle will be in the range from 0 to 360, where 360
         /// itself is not included.
         /// If the normalized angle is near to 0, 90, 180, 270 or 360, that
-        /// angle will be returned. The {@link #isNear(double, double) isNear}
+        /// angle will be returned. The {@link #IsNear(double, double) IsNear}
         /// method is used for defining when the angle is near one of angles listed
         /// above.
         ///
         /// @param angle the angle to normalize
         /// @return the normalized angle that will be in the range of [0,360[
-        /// @see #normalAbsoluteAngle(double)
-        /// @see #isNear(double, double)
+        /// @see #NormalAbsoluteAngle(double)
+        /// @see #IsNear(double, double)
         /// </summary>
-        public static double normalNearAbsoluteAngleDegrees(double angle)
+        public static double NormalNearAbsoluteAngleDegrees(double angle)
         {
             angle = (angle %= 360) >= 0 ? angle : (angle + 360);
 
-            if (isNear(angle, 180))
+            if (IsNear(angle, 180))
             {
                 return 180;
             }
             else if (angle < 180)
             {
-                if (isNear(angle, 0))
+                if (IsNear(angle, 0))
                 {
                     return 0;
                 }
-                else if (isNear(angle, 90))
+                else if (IsNear(angle, 90))
                 {
                     return 90;
                 }
             }
             else
             {
-                if (isNear(angle, 270))
+                if (IsNear(angle, 270))
                 {
                     return 270;
                 }
-                else if (isNear(angle, 360))
+                else if (IsNear(angle, 360))
                 {
                     return 0;
                 }
@@ -141,41 +141,41 @@ namespace robocode.util
         /// The normalized angle will be in the range from 0 to 2*PI, where 2*PI
         /// itself is not included.
         /// If the normalized angle is near to 0, PI/2, PI, 3*PI/2 or 2*PI, that
-        /// angle will be returned. The {@link #isNear(double, double) isNear}
+        /// angle will be returned. The {@link #IsNear(double, double) IsNear}
         /// method is used for defining when the angle is near one of angles listed
         /// above.
         ///
         /// @param angle the angle to normalize
         /// @return the normalized angle that will be in the range of [0,2*PI[
-        /// @see #normalAbsoluteAngle(double)
-        /// @see #isNear(double, double)
+        /// @see #NormalAbsoluteAngle(double)
+        /// @see #IsNear(double, double)
         /// </summary>
-        public static double normalNearAbsoluteAngle(double angle)
+        public static double NormalNearAbsoluteAngle(double angle)
         {
             angle = (angle %= TWO_PI) >= 0 ? angle : (angle + TWO_PI);
 
-            if (isNear(angle, Math.PI))
+            if (IsNear(angle, Math.PI))
             {
                 return Math.PI;
             }
             else if (angle < Math.PI)
             {
-                if (isNear(angle, 0))
+                if (IsNear(angle, 0))
                 {
                     return 0;
                 }
-                else if (isNear(angle, PI_OVER_TWO))
+                else if (IsNear(angle, PI_OVER_TWO))
                 {
                     return PI_OVER_TWO;
                 }
             }
             else
             {
-                if (isNear(angle, THREE_PI_OVER_TWO))
+                if (IsNear(angle, THREE_PI_OVER_TWO))
                 {
                     return THREE_PI_OVER_TWO;
                 }
-                else if (isNear(angle, TWO_PI))
+                else if (IsNear(angle, TWO_PI))
                 {
                     return 0;
                 }
@@ -198,7 +198,7 @@ namespace robocode.util
         /// @return {@code true} if the two doubles are near to each other;
         ///         {@code false} otherwise.
         /// </summary>
-        public static bool isNear(double value1, double value2)
+        public static bool IsNear(double value1, double value2)
         {
             return (Math.Abs(value1 - value2) < NEAR_DELTA);
         }
@@ -210,6 +210,7 @@ namespace robocode.util
         /// </summary>
         public static Random getRandom()
         {
+            //TODO
             throw new NotImplementedException();
         }
 

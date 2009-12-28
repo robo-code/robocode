@@ -27,7 +27,7 @@ namespace robocode
     /// </summary>
     public class MoveCompleteCondition : Condition
     {
-        private AdvancedRobot robot;
+        private readonly AdvancedRobot robot;
 
         /// <summary>
         /// Creates a new MoveCompleteCondition with default priority.
@@ -61,9 +61,9 @@ namespace robocode
         /// @return {@code true} if the robot has stopped moving; {@code false}
         ///         otherwise
         /// </summary>
-        public override bool test()
+        public override bool Test()
         {
-            return (robot.getDistanceRemaining() == 0);
+            return (robot.DistanceRemaining == 0);
         }
     }
 }

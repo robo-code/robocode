@@ -39,7 +39,7 @@ namespace robocode.robotinterfaces
         /// @return listener to team events or {@code null} if this robot should
         ///         not receive the notifications.
         /// </summary>
-        ITeamEvents getTeamEventListener();
+        ITeamEvents GetTeamEventListener();
     }
 }
 //happy

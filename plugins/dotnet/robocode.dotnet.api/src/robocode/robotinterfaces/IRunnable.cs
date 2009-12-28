@@ -1,8 +1,8 @@
 ﻿namespace robocode.robotinterfaces
 {
-    public interface Runnable
+    public interface IRunnable
     {
-        void run();
+        void Run();
     }
 }
 //happy

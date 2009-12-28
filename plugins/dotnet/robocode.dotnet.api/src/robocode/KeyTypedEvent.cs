@@ -21,8 +21,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A KeyTypedEvent is sent to {@link Robot#onKeyTyped(java.awt.event.KeyEvent)
-    /// onKeyTyped()} when a key has been typed (pressed and released) on the keyboard.
+    /// A KeyTypedEvent is sent to {@link Robot#OnKeyTyped(java.awt.event.KeyEvent)
+    /// OnKeyTyped()} when a key has been typed (pressed and released) on the keyboard.
     ///
     /// @author Pavel Savara (original)
     /// @see KeyPressedEvent
@@ -47,23 +47,23 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsInteractiveRobot())
             {
-                IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+                IInteractiveEvents listener = ((IInteractiveRobot) robot).GetInteractiveEventListener();
 
                 if (listener != null)
                 {
-                    listener.onKeyTyped(this);
+                    listener.OnKeyTyped(this);
                 }
             }
         }
@@ -71,9 +71,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.KeyTypedEvent_TYPE;
+            get { return RbSerializerN.KeyTypedEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()
@@ -94,12 +94,12 @@ namespace robocode
             {
                 var obj = (KeyTypedEvent) objec;
 
-                serializer.serialize(buffer, obj.getKeyChar());
-                serializer.serialize(buffer, obj.getKeyCode());
-                serializer.serialize(buffer, obj.getKeyLocation());
-                serializer.serialize(buffer, obj.getID());
-                serializer.serialize(buffer, obj.getModifiersEx());
-                serializer.serialize(buffer, obj.getWhen());
+                serializer.serialize(buffer, obj.KeyChar);
+                serializer.serialize(buffer, obj.KeyCode);
+                serializer.serialize(buffer, obj.KeyLocation);
+                serializer.serialize(buffer, obj.ID);
+                serializer.serialize(buffer, obj.ModifiersEx);
+                serializer.serialize(buffer, obj.When);
             }
 
             public object deserialize(RbSerializerN serializer, ByteBuffer buffer)

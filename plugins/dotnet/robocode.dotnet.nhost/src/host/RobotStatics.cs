@@ -192,11 +192,11 @@ namespace net.sf.robocode.host
                 serializer.serialize(buffer, obj.veryShortName);
                 serializer.serialize(buffer, obj.fullClassName);
                 serializer.serialize(buffer, obj.shortClassName);
-                serializer.serialize(buffer, obj.battleRules.getBattlefieldWidth());
-                serializer.serialize(buffer, obj.battleRules.getBattlefieldHeight());
-                serializer.serialize(buffer, obj.battleRules.getNumRounds());
-                serializer.serialize(buffer, obj.battleRules.getGunCoolingRate());
-                serializer.serialize(buffer, obj.battleRules.getInactivityTime());
+                serializer.serialize(buffer, obj.battleRules.BattlefieldWidth);
+                serializer.serialize(buffer, obj.battleRules.BattlefieldHeight);
+                serializer.serialize(buffer, obj.battleRules.NumRounds);
+                serializer.serialize(buffer, obj.battleRules.GunCoolingRate);
+                serializer.serialize(buffer, obj.battleRules.InactivityTime);
                 if (obj.teammates != null)
                 {
                     foreach (string mate in obj.teammates)

@@ -11,11 +11,11 @@
  *     Flemming N. Larsen
  *     - Ported to Java 5
  *     - Updated Javadocs
- *     - The uninitializedException() method does not need a method name as input
+ *     - The UninitializedException() method does not need a method name as input
  *       parameter anymore
  *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
  *       robots process events before they die
- *     - Added getStatusEvents()
+ *     - Added GetStatusEvents()
  *     Robert D. Maupin
  *     - Replaced old collection types like Vector and Hashtable with
  *       synchronized List and HashMap
@@ -35,19 +35,12 @@ namespace robocode
     /// custom events, and writes to the filesystem.
     /// <p/>
     /// If you have not already, you should create a {@link Robot} first.
-    ///
-    /// @author Mathew A. Nelson (original)
-    /// @author Flemming N. Larsen (contributor)
-    /// @author Robert D. Maupin (contributor)
-    /// @author Pavel Savara (contributor)
-    /// @see <a target="_top" href="http://robocode.sourceforge.net">
-    ///      robocode.sourceforge.net</a>
-    /// @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
-    ///      Building your first robot<a>
-    /// @see JuniorRobot
-    /// @see Robot
-    /// @see TeamRobot
-    /// @see Droid
+    /// <see href="http://robocode.sourceforge.net"/>
+    /// <see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">Building your first robot</see>
+    /// <see cref="JuniorRobot"/>
+    /// <see cref="Robot"/>
+    /// <see cref="TeamRobot"/>
+    /// <see cref="IDroid"/>
     /// </summary>
     public abstract class AdvancedRobot : Robot, IAdvancedRobot, IAdvancedEvents
     {
@@ -69,14 +62,17 @@ namespace robocode
         /// @see #getRadarTurnRemaining() getRadarTurnRemaining()
         /// @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
         /// </summary>
-        public double getDistanceRemaining()
+        public double DistanceRemaining
         {
-            if (peer != null)
+            get
             {
-                return peer.getDistanceRemaining();
+                if (peer != null)
+                {
+                    return peer.getDistanceRemaining();
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
@@ -95,14 +91,17 @@ namespace robocode
         /// @see #getRadarTurnRemaining() getRadarTurnRemaining()
         /// @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
         /// </summary>
-        public double getTurnRemaining()
+        public double TurnRemaining
         {
-            if (peer != null)
+            get
             {
-                return Utils.toDegrees(peer.getBodyTurnRemaining());
+                if (peer != null)
+                {
+                    return Utils.toDegrees(peer.getBodyTurnRemaining());
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
@@ -121,14 +120,17 @@ namespace robocode
         /// @see #getRadarTurnRemaining() getRadarTurnRemaining()
         /// @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
         /// </summary>
-        public double getGunTurnRemaining()
+        public double GunTurnRemaining
         {
-            if (peer != null)
+            get
             {
-                return Utils.toDegrees(peer.getGunTurnRemaining());
+                if (peer != null)
+                {
+                    return Utils.toDegrees(peer.getGunTurnRemaining());
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
@@ -147,53 +149,52 @@ namespace robocode
         /// @see #getRadarTurnRemaining() getRadarTurnRemaining()
         /// @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
         /// </summary>
-        public double getRadarTurnRemaining()
+        public double RadarTurnRemaining
         {
-            if (peer != null)
+            get
             {
-                return Utils.toDegrees(peer.getRadarTurnRemaining());
+                if (peer != null)
+                {
+                    return Utils.toDegrees(peer.getRadarTurnRemaining());
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
-        /// <summary>
-        /// Sets the robot to move ahead (forward) by distance measured in pixels
-        /// when the next execution takes place.
-        /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// {@link #execute()} or take an action that executes.
-        /// <p/>
-        /// Note that both positive and negative values can be given as input, where
-        /// positive values means that the robot is set to move ahead, and negative
-        /// values means that the robot is set to move back. If 0 is given as input,
-        /// the robot will stop its movement, but will have to decelerate
-        /// till it stands still, and will thus not be able to stop its movement
-        /// immediately, but eventually.
-        /// <p/>
-        /// Example:
-        /// <pre>
-        ///   // Set the robot to move 50 pixels ahead
-        ///   setAhead(50);
-        /// <p/>
-        ///   // Set the robot to move 100 pixels back
-        ///   // (overrides the previous order)
-        ///   setAhead(-100);
-        /// <p/>
-        ///   ...
-        ///   // Executes the last setAhead()
-        ///   execute();
-        /// </pre>
-        ///
-        /// @param distance the distance to move measured in pixels.
-        ///                 If {@code distance} > 0 the robot is set to move ahead.
-        ///                 If {@code distance} < 0 the robot is set to move back.
-        ///                 If {@code distance} = 0 the robot is set to stop its movement.
-        /// @see #ahead(double) ahead(double)
-        /// @see #back(double) back(double)
-        /// @see #setBack(double)
+        /// <summary>Sets the robot to move Ahead (forward) by distance measured in 
+        /// pixels when the next execution takes place.
+        /// <br/> This call returns immediately, and will not Execute until you 
+        /// call <see cref="Execute"/> or take an action that executes.
+        /// <br/> Note that both positive and negative values can be given as input, 
+        /// where positive values means that the robot is set to move Ahead, and negative 
+        /// values means that the robot is set to move Back. If 0 is given as input, the 
+        /// robot will Stop its movement, but will have to decelerate till it stands still, 
+        /// and will thus not be able to Stop its movement immediately, but eventually.
         /// </summary>
-        public void setAhead(double distance)
+        /// <param name="distance">distance the distance to move measured in pixels.
+        /// <br/>If <code>distance</code> &gt; 0 the robot is set to move Ahead.
+        /// <br/>If <code>distance</code> &lt; 0 the robot is set to move Back.
+        /// <br/>If <code>distance</code> = 0 the robot is set to Stop its movement.
+        /// </param>
+        /// <example>
+        /// <code>
+        ///   // Set the robot to move 50 pixels Ahead
+        ///   SetAhead(50);
+        /// <br/>
+        ///   // Set the robot to move 100 pixels Back
+        ///   // (overrides the previous order)
+        ///   SetAhead(-100);
+        /// <br/>
+        ///   ...
+        ///   // Executes the last SetAhead()
+        ///   Execute();
+        /// </code>
+        /// </example>
+        /// <seealso cref="Robot.Ahead"/>
+        /// <seealso cref="Robot.Back"/>
+        /// <seealso cref="SetBack"/>
+        public void SetAhead(double distance)
         {
             if (peer != null)
             {
@@ -201,47 +202,47 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
-        /// Sets the robot to move back by distance measured in pixels when the next
+        /// Sets the robot to move Back by distance measured in pixels when the next
         /// execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// {@link #execute()} or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// {@link #Execute()} or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
-        /// positive values means that the robot is set to move back, and negative
-        /// values means that the robot is set to move ahead. If 0 is given as input,
-        /// the robot will stop its movement, but will have to decelerate
-        /// till it stands still, and will thus not be able to stop its movement
+        /// positive values means that the robot is set to move Back, and negative
+        /// values means that the robot is set to move Ahead. If 0 is given as input,
+        /// the robot will Stop its movement, but will have to decelerate
+        /// till it stands still, and will thus not be able to Stop its movement
         /// immediately, but eventually.
         /// <p/>
         /// Example:
         /// <pre>
-        ///   // Set the robot to move 50 pixels back
-        ///   setBack(50);
+        ///   // Set the robot to move 50 pixels Back
+        ///   SetBack(50);
         /// <p/>
-        ///   // Set the robot to move 100 pixels ahead
+        ///   // Set the robot to move 100 pixels Ahead
         ///   // (overrides the previous order)
-        ///   setBack(-100);
+        ///   SetBack(-100);
         /// <p/>
         ///   ...
-        ///   // Executes the last setBack()
-        ///   execute();
+        ///   // Executes the last SetBack()
+        ///   Execute();
         /// </pre>
         ///
         /// @param distance the distance to move measured in pixels.
-        ///                 If {@code distance} > 0 the robot is set to move back.
-        ///                 If {@code distance} < 0 the robot is set to move ahead.
-        ///                 If {@code distance} = 0 the robot is set to stop its movement.
-        /// @see #back(double) back(double)
-        /// @see #ahead(double) ahead(double)
-        /// @see #setAhead(double)
+        ///                 If {@code distance} &gt; 0 the robot is set to move Back.
+        ///                 If {@code distance} &lt; 0 the robot is set to move Ahead.
+        ///                 If {@code distance} = 0 the robot is set to Stop its movement.
+        /// @see #Back(double) Back(double)
+        /// @see #Ahead(double) Ahead(double)
+        /// @see #SetAhead(double)
         /// </summary>
-        public void setBack(double distance)
+        public void SetBack(double distance)
         {
             if (peer != null)
             {
@@ -249,7 +250,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -257,8 +258,8 @@ namespace robocode
         /// Sets the robot's body to turn left by degrees when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's body is set to turn right
@@ -267,30 +268,30 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the robot to turn 180 degrees to the left
-        ///   setTurnLeft(180);
+        ///   SetTurnLeft(180);
         /// <p/>
         ///   // Set the robot to turn 90 degrees to the right instead of left
         ///   // (overrides the previous order)
-        ///   setTurnLeft(-90);
+        ///   SetTurnLeft(-90);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnLeft()
-        ///   execute();
+        ///   // Executes the last SetTurnLeft()
+        ///   Execute();
         /// </pre>
         ///
         /// @param degrees the amount of degrees to turn the robot's body to the left.
-        ///                If {@code degrees} > 0 the robot is set to turn left.
-        ///                If {@code degrees} < 0 the robot is set to turn right.
-        ///                If {@code degrees} = 0 the robot is set to stop turning.
-        /// @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
-        /// @see #turnLeft(double) turnLeft(double)
-        /// @see #turnLeftRadians(double) turnLeftRadians(double)
-        /// @see #turnRight(double) turnRight(double)
-        /// @see #turnRightRadians(double) turnRightRadians(double)
-        /// @see #setTurnRight(double) setTurnRight(double)
-        /// @see #setTurnRightRadians(double) setTurnRightRadians(double)
+        ///                If {@code degrees} &gt; 0 the robot is set to turn left.
+        ///                If {@code degrees} &lt; 0 the robot is set to turn right.
+        ///                If {@code degrees} = 0 the robot is set to Stop turning.
+        /// @see #SetTurnLeftRadians(double) SetTurnLeftRadians(double)
+        /// @see #TurnLeft(double) TurnLeft(double)
+        /// @see #TurnLeftRadians(double) TurnLeftRadians(double)
+        /// @see #TurnRight(double) TurnRight(double)
+        /// @see #TurnRightRadians(double) TurnRightRadians(double)
+        /// @see #SetTurnRight(double) SetTurnRight(double)
+        /// @see #SetTurnRightRadians(double) SetTurnRightRadians(double)
         /// </summary>
-        public void setTurnLeft(double degrees)
+        public void SetTurnLeft(double degrees)
         {
             if (peer != null)
             {
@@ -298,7 +299,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -306,8 +307,8 @@ namespace robocode
         /// Sets the robot's body to turn right by degrees when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's body is set to turn left
@@ -316,30 +317,30 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the robot to turn 180 degrees to the right
-        ///   setTurnRight(180);
+        ///   SetTurnRight(180);
         /// <p/>
         ///   // Set the robot to turn 90 degrees to the left instead of right
         ///   // (overrides the previous order)
-        ///   setTurnRight(-90);
+        ///   SetTurnRight(-90);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnRight()
-        ///   execute();
+        ///   // Executes the last SetTurnRight()
+        ///   Execute();
         /// </pre>
         ///
         /// @param degrees the amount of degrees to turn the robot's body to the right.
-        ///                If {@code degrees} > 0 the robot is set to turn right.
-        ///                If {@code degrees} < 0 the robot is set to turn left.
-        ///                If {@code degrees} = 0 the robot is set to stop turning.
-        /// @see #setTurnRightRadians(double) setTurnRightRadians(double)
-        /// @see #turnRight(double) turnRight(double)
-        /// @see #turnRightRadians(double) turnRightRadians(double)
-        /// @see #turnLeft(double) turnLeft(double)
-        /// @see #turnLeftRadians(double) turnLeftRadians(double)
-        /// @see #setTurnLeft(double) setTurnLeft(double)
-        /// @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
+        ///                If {@code degrees} &gt; 0 the robot is set to turn right.
+        ///                If {@code degrees} &lt; 0 the robot is set to turn left.
+        ///                If {@code degrees} = 0 the robot is set to Stop turning.
+        /// @see #SetTurnRightRadians(double) SetTurnRightRadians(double)
+        /// @see #TurnRight(double) TurnRight(double)
+        /// @see #TurnRightRadians(double) TurnRightRadians(double)
+        /// @see #TurnLeft(double) TurnLeft(double)
+        /// @see #TurnLeftRadians(double) TurnLeftRadians(double)
+        /// @see #SetTurnLeft(double) SetTurnLeft(double)
+        /// @see #SetTurnLeftRadians(double) SetTurnLeftRadians(double)
         /// </summary>
-        public void setTurnRight(double degrees)
+        public void SetTurnRight(double degrees)
         {
             if (peer != null)
             {
@@ -347,16 +348,16 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
-        /// Sets the gun to fire a bullet when the next execution takes place.
+        /// Sets the gun to Fire a bullet when the next execution takes place.
         /// The bullet will travel in the direction the gun is pointing.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// The specified bullet power is an amount of energy that will be taken from
         /// the robot's energy. Hence, the more power you want to spend on the
@@ -364,15 +365,15 @@ namespace robocode
         /// <p/>
         /// The bullet will do (4 * power) damage if it hits another robot. If power
         /// is greater than 1, it will do an additional 2 * (power - 1) damage.
-        /// You will get (3 * power) back if you hit the other robot. You can call
-        /// Rules#getBulletDamage(double)} for getting the damage that a
+        /// You will get (3 * power) Back if you hit the other robot. You can call
+        /// Rules#GetBulletDamage(double)} for getting the damage that a
         /// bullet with a specific bullet power will do.
         /// <p/>
         /// The specified bullet power should be between
         /// {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
         /// <p/>
-        /// Note that the gun cannot fire if the gun is overheated, meaning that
-        /// {@link #getGunHeat()} returns a value > 0.
+        /// Note that the gun cannot Fire if the gun is overheated, meaning that
+        /// {@link #GetGunHeat()} returns a value > 0.
         /// <p/>
         /// An evnt is generated when the bullet hits a robot, wall, or another
         /// bullet.
@@ -380,25 +381,25 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Fire a bullet with maximum power if the gun is ready
-        ///   if (getGunHeat() == 0) {
-        ///       setFire(Rules.MAX_BULLET_POWER);
+        ///   if (GetGunHeat() == 0) {
+        ///       SetFire(Rules.MAX_BULLET_POWER);
         ///   }
         ///   ...
-        ///   execute();
+        ///   Execute();
         /// </pre>
         ///
         /// @param power the amount of energy given to the bullet, and subtracted
         ///              from the robot's energy.
-        /// @see #setFireBullet(double)
-        /// @see #fire(double) fire(double)
-        /// @see #fireBullet(double) fireBullet(double)
-        /// @see #getGunHeat() getGunHeat()
+        /// @see #SetFireBullet(double)
+        /// @see #Fire(double) Fire(double)
+        /// @see #FireBullet(double) FireBullet(double)
+        /// @see #GetGunHeat() GetGunHeat()
         /// @see #getGunCoolingRate() getGunCoolingRate()
-        /// @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
-        /// @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
-        /// @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
+        /// @see #OnBulletHit(BulletHitEvent) OnBulletHit(BulletHitEvent)
+        /// @see #OnBulletHitBullet(BulletHitBulletEvent) OnBulletHitBullet(BulletHitBulletEvent)
+        /// @see #OnBulletMissed(BulletMissedEvent) OnBulletMissed(BulletMissedEvent)
         /// </summary>
-        public void setFire(double power)
+        public void SetFire(double power)
         {
             if (peer != null)
             {
@@ -406,16 +407,16 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
-        /// Sets the gun to fire a bullet when the next execution takes place.
+        /// Sets the gun to Fire a bullet when the next execution takes place.
         /// The bullet will travel in the direction the gun is pointing.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// The specified bullet power is an amount of energy that will be taken from
         /// the robot's energy. Hence, the more power you want to spend on the
@@ -423,15 +424,15 @@ namespace robocode
         /// <p/>
         /// The bullet will do (4 * power) damage if it hits another robot. If power
         /// is greater than 1, it will do an additional 2 * (power - 1) damage.
-        /// You will get (3 * power) back if you hit the other robot. You can call
-        /// {@link Rules#getBulletDamage(double)} for getting the damage that a
+        /// You will get (3 * power) Back if you hit the other robot. You can call
+        /// {@link Rules#GetBulletDamage(double)} for getting the damage that a
         /// bullet with a specific bullet power will do.
         /// <p/>
         /// The specified bullet power should be between
         /// {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
         /// <p/>
-        /// Note that the gun cannot fire if the gun is overheated, meaning that
-        /// {@link #getGunHeat()} returns a value > 0.
+        /// Note that the gun cannot Fire if the gun is overheated, meaning that
+        /// {@link #GetGunHeat()} returns a value > 0.
         /// <p/>
         /// A evnt is generated when the bullet hits a robot
         /// ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
@@ -442,11 +443,11 @@ namespace robocode
         ///   Bullet bullet = null;
         /// <p/>
         ///   // Fire a bullet with maximum power if the gun is ready
-        ///   if (getGunHeat() == 0) {
-        ///       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
+        ///   if (GetGunHeat() == 0) {
+        ///       bullet = SetFireBullet(Rules.MAX_BULLET_POWER);
         ///   }
         ///   ...
-        ///   execute();
+        ///   Execute();
         ///   ...
         ///   // Get the velocity of the bullet
         ///   if (bullet != null) {
@@ -459,51 +460,51 @@ namespace robocode
         /// @return a {@link Bullet} that contains information about the bullet if it
         ///         was actually fired, which can be used for tracking the bullet after it
         ///         has been fired. If the bullet was not fired, {@code null} is returned.
-        /// @see #setFire(double)
+        /// @see #SetFire(double)
         /// @see Bullet
-        /// @see #fire(double) fire(double)
-        /// @see #fireBullet(double) fireBullet(double)
-        /// @see #getGunHeat() getGunHeat()
+        /// @see #Fire(double) Fire(double)
+        /// @see #FireBullet(double) FireBullet(double)
+        /// @see #GetGunHeat() GetGunHeat()
         /// @see #getGunCoolingRate() getGunCoolingRate()
-        /// @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
-        /// @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
-        /// @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
+        /// @see #OnBulletHit(BulletHitEvent) OnBulletHit(BulletHitEvent)
+        /// @see #OnBulletHitBullet(BulletHitBulletEvent) OnBulletHitBullet(BulletHitBulletEvent)
+        /// @see #OnBulletMissed(BulletMissedEvent) OnBulletMissed(BulletMissedEvent)
         /// </summary>
-        public Bullet setFireBullet(double power)
+        public Bullet SetFireBullet(double power)
         {
             if (peer != null)
             {
                 return peer.setFire(power);
             }
-            uninitializedException();
+            UninitializedException();
             return null;
         }
 
         /// <summary>
         /// Registers a custom evnt to be called when a condition is met.
         /// When you are finished with your condition or just want to remove it you
-        /// must call {@link #removeCustomEvent(Condition)}.
+        /// must call {@link #RemoveCustomEvent(Condition)}.
         /// <p/>
         /// Example:
         /// <pre>
         ///   // Create the condition for our custom event
         ///   Condition triggerHitCondition = new Condition("triggerhit") {
-        ///       public bool test() {
-        ///           return (getEnergy() <= trigger);
+        ///       public bool Test() {
+        ///           return (getEnergy() &lt;= trigger);
         ///       };
         ///   }
         /// <p/>
         ///   // Add our custom evnt based on our condition
-        ///   <b>addCustomEvent(triggerHitCondition);</b>
+        ///   <b>AddCustomEvent(triggerHitCondition);</b>
         /// </pre>
         ///
         /// @param condition the condition that must be met.
         /// @throws NullPointerException if the condition parameter has been set to
         ///                              {@code null}.
         /// @see Condition
-        /// @see #removeCustomEvent(Condition)
+        /// @see #RemoveCustomEvent(Condition)
         /// </summary>
-        public void addCustomEvent(Condition condition)
+        public void AddCustomEvent(Condition condition)
         {
             if (condition == null)
             {
@@ -515,30 +516,30 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
         /// Removes a custom evnt that was previously added by calling
-        /// {@link #addCustomEvent(Condition)}.
+        /// {@link #AddCustomEvent(Condition)}.
         /// <p/>
         /// Example:
         /// <pre>
         ///   // Create the condition for our custom event
         ///   Condition triggerHitCondition = new Condition("triggerhit") {
-        ///       public bool test() {
-        ///           return (getEnergy() <= trigger);
+        ///       public bool Test() {
+        ///           return (getEnergy() &lt;= trigger);
         ///       };
         ///   }
         /// <p/>
         ///   // Add our custom evnt based on our condition
-        ///   addCustomEvent(triggerHitCondition);
+        ///   AddCustomEvent(triggerHitCondition);
         ///   ...
         ///   <i>do something with your robot</i>
         ///   ...
         ///   // Remove the custom evnt based on our condition
-        ///   <b>removeCustomEvent(triggerHitCondition);</b>
+        ///   <b>RemoveCustomEvent(triggerHitCondition);</b>
         /// </pre>
         ///
         /// @param condition the condition that was previous added and that must be
@@ -546,9 +547,9 @@ namespace robocode
         /// @throws NullPointerException if the condition parameter has been set to
         ///                              {@code null}.
         /// @see Condition
-        /// @see #addCustomEvent(Condition)
+        /// @see #AddCustomEvent(Condition)
         /// </summary>
-        public void removeCustomEvent(Condition condition)
+        public void RemoveCustomEvent(Condition condition)
         {
             if (condition == null)
             {
@@ -560,16 +561,16 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
-        /// Clears output any pending events in the robot's evnt queue immediately.
+        /// Clears Output any pending events in the robot's evnt queue immediately.
         ///
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public void clearAllEvents()
+        public void ClearAllEvents()
         {
             if (peer != null)
             {
@@ -577,7 +578,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -586,22 +587,22 @@ namespace robocode
         /// in process. This call returns after the actions have been started.
         /// <p/>
         /// Note that advanced robots <em>must</em> call this function in order to
-        /// execute pending set* calls like e.g. {@link #setAhead(double)},
-        /// {@link #setFire(double)}, {@link #setTurnLeft(double)} etc. Otherwise,
+        /// Execute pending set* calls like e.g. {@link #SetAhead(double)},
+        /// {@link #SetFire(double)}, {@link #SetTurnLeft(double)} etc. Otherwise,
         /// these calls will never get executed.
         /// <p/>
         /// In this example the robot will move while turning:
         /// <pre>
-        ///   setTurnRight(90);
-        ///   setAhead(100);
-        ///   execute();
+        ///   SetTurnRight(90);
+        ///   SetAhead(100);
+        ///   Execute();
         /// <p/>
         ///   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
-        ///       execute();
+        ///       Execute();
         ///   }
         /// </pre>
         /// </summary>
-        public virtual void execute()
+        public virtual void Execute()
         {
             if (peer != null)
             {
@@ -609,7 +610,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -619,7 +620,7 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (Event evnt : getAllEvents()) {
+        ///   for (Event evnt : GetAllEvents()) {
         ///       if (event instanceof HitRobotEvent) {
         ///           <i>// do something with the event</i>
         ///       } else if (event instanceof HitByBulletEvent) {
@@ -630,21 +631,21 @@ namespace robocode
         ///
         /// @return a vector containing all events currently in the robot's queue
         /// @see Event
-        /// @see #clearAllEvents()
-        /// @see #getStatusEvents()
-        /// @see #getScannedRobotEvents()
-        /// @see #getBulletHitEvents()
-        /// @see #getBulletMissedEvents()
-        /// @see #getBulletHitBulletEvents()
-        /// @see #getRobotDeathEvents()
+        /// @see #ClearAllEvents()
+        /// @see #GetStatusEvents()
+        /// @see #GetScannedRobotEvents()
+        /// @see #GetBulletHitEvents()
+        /// @see #GetBulletMissedEvents()
+        /// @see #GetBulletHitBulletEvents()
+        /// @see #GetRobotDeathEvents()
         /// </summary>
-        public IList<Event> getAllEvents()
+        public IList<Event> GetAllEvents()
         {
             if (peer != null)
             {
                 return new List<Event>(((IAdvancedRobotPeer) peer).getAllEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -655,24 +656,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (BulletHitBulletEvent evnt : getBulletHitBulletEvents()) {
+        ///   for (BulletHitBulletEvent evnt : GetBulletHitBulletEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all BulletHitBulletEvents currently in the
         ///         robot's queue
-        /// @see #onBulletHitBullet(BulletHitBulletEvent) onBulletHitBullet(BulletHitBulletEvent)
+        /// @see #OnBulletHitBullet(BulletHitBulletEvent) OnBulletHitBullet(BulletHitBulletEvent)
         /// @see BulletHitBulletEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public IList<BulletHitBulletEvent> getBulletHitBulletEvents()
+        public IList<BulletHitBulletEvent> GetBulletHitBulletEvents()
         {
             if (peer != null)
             {
                 return new List<BulletHitBulletEvent>(((IAdvancedRobotPeer) peer).getBulletHitBulletEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -682,24 +683,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (BulletHitEvent event: getBulletHitEvents()) {
+        ///   for (BulletHitEvent event: GetBulletHitEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all BulletHitEvents currently in the robot's
         ///         queue
-        /// @see #onBulletHit(BulletHitEvent) onBulletHit(BulletHitEvent)
+        /// @see #OnBulletHit(BulletHitEvent) OnBulletHit(BulletHitEvent)
         /// @see BulletHitEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public IList<BulletHitEvent> getBulletHitEvents()
+        public IList<BulletHitEvent> GetBulletHitEvents()
         {
             if (peer != null)
             {
                 return new List<BulletHitEvent>(((IAdvancedRobotPeer) peer).getBulletHitEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -710,24 +711,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (BulletMissedEvent evnt : getBulletMissedEvents()) {
+        ///   for (BulletMissedEvent evnt : GetBulletMissedEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all BulletMissedEvents currently in the
         ///         robot's queue
-        /// @see #onBulletMissed(BulletMissedEvent) onBulletMissed(BulletMissedEvent)
+        /// @see #OnBulletMissed(BulletMissedEvent) OnBulletMissed(BulletMissedEvent)
         /// @see BulletMissedEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public IList<BulletMissedEvent> getBulletMissedEvents()
+        public IList<BulletMissedEvent> GetBulletMissedEvents()
         {
             if (peer != null)
             {
                 return new List<BulletMissedEvent>(((IAdvancedRobotPeer) peer).getBulletMissedEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -744,13 +745,13 @@ namespace robocode
         /// @see RobocodeFileOutputStream
         /// @see RobocodeFileWriter
         /// </summary>
-        public string getDataDirectory()
+        public string GetDataDirectory()
         {
             if (peer != null)
             {
                 return ((IAdvancedRobotPeer) peer).getDataDirectory();
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -770,7 +771,7 @@ namespace robocode
         ///
         /// @param filename the file name of the data file for your robot
         /// @return a file representing the data file for your robot
-        /// @see #getDataDirectory()
+        /// @see #GetDataDirectory()
         /// @see RobocodeFileOutputStream
         /// @see RobocodeFileWriter
         /// </summary>
@@ -780,7 +781,7 @@ namespace robocode
             {
                 return ((IAdvancedRobotPeer) peer).getDataFile(filename);
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }*/
 
@@ -789,17 +790,20 @@ namespace robocode
         /// of bytes left in the data directory for the robot.
         ///
         /// @return the amount of bytes left in the robot's data directory
-        /// @see #getDataDirectory()
+        /// @see #GetDataDirectory()
         /// @see #getDataFile(string)
         /// </summary>
-        public long getDataQuotaAvailable()
+        public long DataQuotaAvailable
         {
-            if (peer != null)
+            get
             {
-                return ((IAdvancedRobotPeer) peer).getDataQuotaAvailable();
+                if (peer != null)
+                {
+                    return ((IAdvancedRobotPeer) peer).getDataQuotaAvailable();
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
@@ -809,7 +813,7 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   int myHitRobotPriority = getEventPriority("HitRobotEvent");
+        ///   int myHitRobotPriority = GetEventPriority("HitRobotEvent");
         /// </pre>
         /// <p/>
         /// The default priorities are, from highest to lowest:
@@ -835,15 +839,15 @@ namespace robocode
         ///
         /// @param eventClass the name of the evnt class (string)
         /// @return the current priority of a class of events
-        /// @see #setEventPriority(string, int)
+        /// @see #SetEventPriority(string, int)
         /// </summary>
-        public int getEventPriority(string eventClass)
+        public int GetEventPriority(string eventClass)
         {
             if (peer != null)
             {
                 return ((IAdvancedRobotPeer) peer).getEventPriority(eventClass);
             }
-            uninitializedException();
+            UninitializedException();
             return 0; // never called
         }
 
@@ -854,24 +858,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (HitByBulletEvent evnt : getHitByBulletEvents()) {
+        ///   for (HitByBulletEvent evnt : GetHitByBulletEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all HitByBulletEvents currently in the
         ///         robot's queue
-        /// @see #onHitByBullet(HitByBulletEvent) onHitByBullet(HitByBulletEvent)
+        /// @see #OnHitByBullet(HitByBulletEvent) OnHitByBullet(HitByBulletEvent)
         /// @see HitByBulletEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public IList<HitByBulletEvent> getHitByBulletEvents()
+        public IList<HitByBulletEvent> GetHitByBulletEvents()
         {
             if (peer != null)
             {
                 return new List<HitByBulletEvent>(((IAdvancedRobotPeer) peer).getHitByBulletEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -881,24 +885,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (HitRobotEvent evnt : getHitRobotEvents()) {
+        ///   for (HitRobotEvent evnt : GetHitRobotEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all HitRobotEvents currently in the robot's
         ///         queue
-        /// @see #onHitRobot(HitRobotEvent) onHitRobot(HitRobotEvent)
+        /// @see #OnHitRobot(HitRobotEvent) OnHitRobot(HitRobotEvent)
         /// @see HitRobotEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public IList<HitRobotEvent> getHitRobotEvents()
+        public IList<HitRobotEvent> GetHitRobotEvents()
         {
             if (peer != null)
             {
                 return new List<HitRobotEvent>(((IAdvancedRobotPeer) peer).getHitRobotEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -908,24 +912,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (HitWallEvent evnt : getHitWallEvents()) {
+        ///   for (HitWallEvent evnt : GetHitWallEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all HitWallEvents currently in the robot's
         ///         queue
-        /// @see #onHitWall(HitWallEvent) onHitWall(HitWallEvent)
+        /// @see #OnHitWall(HitWallEvent) OnHitWall(HitWallEvent)
         /// @see HitWallEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public IList<HitWallEvent> getHitWallEvents()
+        public IList<HitWallEvent> GetHitWallEvents()
         {
             if (peer != null)
             {
                 return new List<HitWallEvent>(((IAdvancedRobotPeer) peer).getHitWallEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -935,24 +939,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (RobotDeathEvent evnt : getRobotDeathEvents()) {
+        ///   for (RobotDeathEvent evnt : GetRobotDeathEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all RobotDeathEvents currently in the robot's
         ///         queue
-        /// @see #onRobotDeath(RobotDeathEvent) onRobotDeath(RobotDeathEvent)
+        /// @see #OnRobotDeath(RobotDeathEvent) OnRobotDeath(RobotDeathEvent)
         /// @see RobotDeathEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public IList<RobotDeathEvent> getRobotDeathEvents()
+        public IList<RobotDeathEvent> GetRobotDeathEvents()
         {
             if (peer != null)
             {
                 return new List<RobotDeathEvent>(((IAdvancedRobotPeer) peer).getRobotDeathEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -963,24 +967,24 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (ScannedRobotEvent evnt : getScannedRobotEvents()) {
+        ///   for (ScannedRobotEvent evnt : GetScannedRobotEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all ScannedRobotEvents currently in the
         ///         robot's queue
-        /// @see #onScannedRobot(ScannedRobotEvent) onScannedRobot(ScannedRobotEvent)
+        /// @see #OnScannedRobot(ScannedRobotEvent) OnScannedRobot(ScannedRobotEvent)
         /// @see ScannedRobotEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
-        public IList<ScannedRobotEvent> getScannedRobotEvents()
+        public IList<ScannedRobotEvent> GetScannedRobotEvents()
         {
             if (peer != null)
             {
                 return new List<ScannedRobotEvent>(((IAdvancedRobotPeer) peer).getScannedRobotEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
         }
 
@@ -990,106 +994,31 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (StatusEvent evnt : getStatusEvents()) {
+        ///   for (StatusEvent evnt : GetStatusEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all StatusEvents currently in the robot's queue
-        /// @see #onStatus(StatusEvent) onStatus(StatusEvent)
+        /// @see #OnStatus(StatusEvent) OnStatus(StatusEvent)
         /// @see StatusEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// @since 1.6.1
         /// </summary>
-        public IList<StatusEvent> getStatusEvents()
+        public IList<StatusEvent> GetStatusEvents()
         {
             if (peer != null)
             {
                 return new List<StatusEvent>(((IAdvancedRobotPeer) peer).getStatusEvents());
             }
-            uninitializedException();
+            UninitializedException();
             return null; // never called
-        }
-
-        /// <summary>
-        /// Checks if the gun is set to adjust for the robot turning, i.e. to turn
-        /// independent from the robot's body turn.
-        /// <p/>
-        /// This call returns {@code true} if the gun is set to turn independent of
-        /// the turn of the robot's body. Otherwise, {@code false} is returned,
-        /// meaning that the gun is set to turn with the robot's body turn.
-        ///
-        /// @return {@code true} if the gun is set to turn independent of the robot
-        ///         turning; {@code false} if the gun is set to turn with the robot
-        ///         turning
-        /// @see #setAdjustGunForRobotTurn(bool) setAdjustGunForRobotTurn(bool)
-        /// @see #isAdjustRadarForRobotTurn()
-        /// @see #isAdjustRadarForGunTurn()
-        /// </summary>
-        public bool isAdjustGunForRobotTurn()
-        {
-            if (peer != null)
-            {
-                return ((IAdvancedRobotPeer) peer).isAdjustGunForBodyTurn();
-            }
-            uninitializedException();
-            return false; // never called
-        }
-
-        /// <summary>
-        /// Checks if the radar is set to adjust for the robot turning, i.e. to turn
-        /// independent from the robot's body turn.
-        /// <p/>
-        /// This call returns {@code true} if the radar is set to turn independent of
-        /// the turn of the robot. Otherwise, {@code false} is returned, meaning that
-        /// the radar is set to turn with the robot's turn.
-        ///
-        /// @return {@code true} if the radar is set to turn independent of the robot
-        ///         turning; {@code false} if the radar is set to turn with the robot
-        ///         turning
-        /// @see #setAdjustRadarForRobotTurn(bool) setAdjustRadarForRobotTurn(bool)
-        /// @see #isAdjustGunForRobotTurn()
-        /// @see #isAdjustRadarForGunTurn()
-        /// </summary>
-        public bool isAdjustRadarForRobotTurn()
-        {
-            if (peer != null)
-            {
-                return ((IAdvancedRobotPeer) peer).isAdjustRadarForBodyTurn();
-            }
-            uninitializedException();
-            return false; // never called
-        }
-
-        /// <summary>
-        /// Checks if the radar is set to adjust for the gun turning, i.e. to turn
-        /// independent from the gun's turn.
-        /// <p/>
-        /// This call returns {@code true} if the radar is set to turn independent of
-        /// the turn of the gun. Otherwise, {@code false} is returned, meaning that
-        /// the radar is set to turn with the gun's turn.
-        ///
-        /// @return {@code true} if the radar is set to turn independent of the gun
-        ///         turning; {@code false} if the radar is set to turn with the gun
-        ///         turning
-        /// @see #setAdjustRadarForGunTurn(bool) setAdjustRadarForGunTurn(bool)
-        /// @see #isAdjustGunForRobotTurn()
-        /// @see #isAdjustRadarForRobotTurn()
-        /// </summary>
-        public bool isAdjustRadarForGunTurn()
-        {
-            if (peer != null)
-            {
-                return ((IAdvancedRobotPeer) peer).isAdjustRadarForGunTurn();
-            }
-            uninitializedException();
-            return false; // never called
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public virtual void onCustomEvent(CustomEvent evnt)
+        public virtual void OnCustomEvent(CustomEvent evnt)
         {
         }
 
@@ -1104,7 +1033,7 @@ namespace robocode
         /// <p/>
         /// Example:
         /// <pre>
-        ///   setEventPriority("RobotDeathEvent", 15);
+        ///   SetEventPriority("RobotDeathEvent", 15);
         /// </pre>
         /// <p/>
         /// The default priorities are, from highest to lowest:
@@ -1135,13 +1064,13 @@ namespace robocode
         /// @param eventClass the name of the evnt class (string) to set the
         ///                   priority for
         /// @param priority   the new priority for that evnt class
-        /// @see #getEventPriority(string)
+        /// @see #GetEventPriority(string)
         /// @see #setInterruptible(bool)
         /// @since 1.5, the priority of DeathEvent was changed from 100 to -1 in
         ///        order to let robots process pending events on its evnt queue before
         ///        it dies. When the robot dies, it will not be able to process events.
         /// </summary>
-        public void setEventPriority(string eventClass, int priority)
+        public void SetEventPriority(string eventClass, int priority)
         {
             if (peer != null)
             {
@@ -1149,7 +1078,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1157,35 +1086,38 @@ namespace robocode
         /// Call this during an evnt handler to allow new events of the same
         /// priority to restart the evnt handler.
         /// <p/>
-        /// <p>Example:
+        /// <p/>Example:
         /// <pre>
-        ///   public override void onScannedRobot(ScannedRobotEvent e) {
-        ///       fire(1);
+        ///   public override void OnScannedRobot(ScannedRobotEvent e) {
+        ///       Fire(1);
         ///       <b>setInterruptible(true);</b>
-        ///       ahead(100); // If you see a robot while moving ahead,
+        ///       Ahead(100); // If you see a robot while moving Ahead,
         ///                   // this handler will start from the top
         ///                   // Without setInterruptible(true), we wouldn't
-        ///                   // receive scan events at all!
+        ///                   // receive Scan events at all!
         ///       // We'll only get here if we don't see a robot during the move.
-        ///       output.println("Ok, I can't see anyone");
+        ///       Output.println("Ok, I can't see anyone");
         ///   }
         /// </pre>
         ///
         /// @param interruptible {@code true} if the evnt handler should be
         ///                      interrupted if new events of the same priority occurs; {@code false}
         ///                      otherwise
-        /// @see #setEventPriority(string, int)
-        /// @see Robot#onScannedRobot(ScannedRobotEvent) onScannedRobot(ScannedRobotEvent)
+        /// @see #SetEventPriority(string, int)
+        /// @see Robot#OnScannedRobot(ScannedRobotEvent) OnScannedRobot(ScannedRobotEvent)
         /// </summary>
-        public void setInterruptible(bool interruptible)
+        public bool IsInterruptible
         {
-            if (peer != null)
+            set
             {
-                ((IAdvancedRobotPeer) peer).setInterruptible(interruptible);
-            }
-            else
-            {
-                uninitializedException();
+                if (peer != null)
+                {
+                    ((IAdvancedRobotPeer) peer).setInterruptible(value);
+                }
+                else
+                {
+                    UninitializedException();
+                }
             }
         }
 
@@ -1195,21 +1127,24 @@ namespace robocode
         ///
         /// @param newMaxTurnRate the new maximum turn rate of the robot measured in
         ///                       degrees. Valid values are 0 - {@link Rules#MAX_TURN_RATE}
-        /// @see #turnRight(double) turnRight(double)
-        /// @see #turnLeft(double) turnLeft(double)
-        /// @see #setTurnRight(double)
-        /// @see #setTurnLeft(double)
+        /// @see #TurnRight(double) TurnRight(double)
+        /// @see #TurnLeft(double) TurnLeft(double)
+        /// @see #SetTurnRight(double)
+        /// @see #SetTurnLeft(double)
         /// @see #setMaxVelocity(double)
         /// </summary>
-        public void setMaxTurnRate(double newMaxTurnRate)
+        public double MaxTurnRate
         {
-            if (peer != null)
+            set
             {
-                ((IAdvancedRobotPeer) peer).setMaxTurnRate(Utils.toRadians(newMaxTurnRate));
-            }
-            else
-            {
-                uninitializedException();
+                if (peer != null)
+                {
+                    ((IAdvancedRobotPeer) peer).setMaxTurnRate(Utils.toRadians(value));
+                }
+                else
+                {
+                    UninitializedException();
+                }
             }
         }
 
@@ -1219,39 +1154,42 @@ namespace robocode
         ///
         /// @param newMaxVelocity the new maximum turn rate of the robot measured in
         ///                       pixels/turn. Valid values are 0 - {@link Rules#MAX_VELOCITY}
-        /// @see #ahead(double)
-        /// @see #setAhead(double)
-        /// @see #back(double)
-        /// @see #setBack(double)
+        /// @see #Ahead(double)
+        /// @see #SetAhead(double)
+        /// @see #Back(double)
+        /// @see #SetBack(double)
         /// @see #setMaxTurnRate(double)
         /// </summary>
-        public void setMaxVelocity(double newMaxVelocity)
+        public double MaxVelocity
         {
-            if (peer != null)
+            set
             {
-                ((IAdvancedRobotPeer) peer).setMaxVelocity(newMaxVelocity);
-            }
-            else
-            {
-                uninitializedException();
+                if (peer != null)
+                {
+                    ((IAdvancedRobotPeer) peer).setMaxVelocity(value);
+                }
+                else
+                {
+                    UninitializedException();
+                }
             }
         }
 
         /// <summary>
-        /// Sets the robot to resume the movement stopped by {@link #stop() stop()}
-        /// or {@link #setStop()}, if any.
+        /// Sets the robot to Resume the movement stopped by {@link #Stop() Stop()}
+        /// or {@link #SetStop()}, if any.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// {@link #execute()} or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// {@link #Execute()} or take an action that executes.
         ///
-        /// @see #resume() resume()
-        /// @see #stop() stop()
-        /// @see #stop(bool) stop(bool)
-        /// @see #setStop()
-        /// @see #setStop(bool)
-        /// @see #execute()
+        /// @see #Resume() Resume()
+        /// @see #Stop() Stop()
+        /// @see #Stop(bool) Stop(bool)
+        /// @see #SetStop()
+        /// @see #SetStop(bool)
+        /// @see #Execute()
         /// </summary>
-        public void setResume()
+        public void SetResume()
         {
             if (peer != null)
             {
@@ -1259,50 +1197,50 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
-        /// This call is identical to {@link #stop() stop()}, but returns immediately, and
-        /// will not execute until you call {@link #execute()} or take an action that
+        /// This call is identical to {@link #Stop() Stop()}, but returns immediately, and
+        /// will not Execute until you call {@link #Execute()} or take an action that
         /// executes.
         /// <p/>
-        /// If there is already movement saved from a previous stop, this will have
+        /// If there is already movement saved from a previous Stop, this will have
         /// no effect.
         /// <p/>
-        /// This call is equivalent to calling {@code setStop(false)};
+        /// This call is equivalent to calling {@code SetStop(false)};
         ///
-        /// @see #stop() stop()
-        /// @see #stop(bool) stop(bool)
-        /// @see #resume() resume()
-        /// @see #setResume()
-        /// @see #setStop(bool)
-        /// @see #execute()
+        /// @see #Stop() Stop()
+        /// @see #Stop(bool) Stop(bool)
+        /// @see #Resume() Resume()
+        /// @see #SetResume()
+        /// @see #SetStop(bool)
+        /// @see #Execute()
         /// </summary>
-        public void setStop()
+        public void SetStop()
         {
-            setStop(false);
+            SetStop(false);
         }
 
         /// <summary>
-        /// This call is identical to {@link #stop(bool) stop(bool)}, but
-        /// returns immediately, and will not execute until you call
-        /// {@link #execute()} or take an action that executes.
+        /// This call is identical to {@link #Stop(bool) Stop(bool)}, but
+        /// returns immediately, and will not Execute until you call
+        /// {@link #Execute()} or take an action that executes.
         /// <p/>
-        /// If there is already movement saved from a previous stop, you can
-        /// overwrite it by calling {@code setStop(true)}.
+        /// If there is already movement saved from a previous Stop, you can
+        /// overwrite it by calling {@code SetStop(true)}.
         ///
-        /// @param overwrite {@code true} if the movement saved from a previous stop
+        /// @param overwrite {@code true} if the movement saved from a previous Stop
         ///                  should be overwritten; {@code false} otherwise.
-        /// @see #stop() stop()
-        /// @see #stop(bool) stop(bool)
-        /// @see #resume() resume()
-        /// @see #setResume()
-        /// @see #setStop()
-        /// @see #execute()
+        /// @see #Stop() Stop()
+        /// @see #Stop(bool) Stop(bool)
+        /// @see #Resume() Resume()
+        /// @see #SetResume()
+        /// @see #SetStop()
+        /// @see #Execute()
         /// </summary>
-        public void setStop(bool overwrite)
+        public void SetStop(bool overwrite)
         {
             if (peer != null)
             {
@@ -1310,7 +1248,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1318,8 +1256,8 @@ namespace robocode
         /// Sets the robot's gun to turn left by degrees when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's gun is set to turn right
@@ -1328,31 +1266,31 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the gun to turn 180 degrees to the left
-        ///   setTurnGunLeft(180);
+        ///   SetTurnGunLeft(180);
         /// <p/>
         ///   // Set the gun to turn 90 degrees to the right instead of left
         ///   // (overrides the previous order)
-        ///   setTurnGunLeft(-90);
+        ///   SetTurnGunLeft(-90);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnGunLeft()
-        ///   execute();
+        ///   // Executes the last SetTurnGunLeft()
+        ///   Execute();
         /// </pre>
         ///
         /// @param degrees the amount of degrees to turn the robot's gun to the left.
-        ///                If {@code degrees} > 0 the robot's gun is set to turn left.
-        ///                If {@code degrees} < 0 the robot's gun is set to turn right.
-        ///                If {@code degrees} = 0 the robot's gun is set to stop turning.
-        /// @see #setTurnGunLeftRadians(double) setTurnGunLeftRadians(double)
-        /// @see #turnGunLeft(double) turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double) turnGunLeftRadians(double)
-        /// @see #turnGunRight(double) turnGunRight(double)
-        /// @see #turnGunRightRadians(double) turnGunRightRadians(double)
-        /// @see #setTurnGunRight(double) setTurnGunRight(double)
-        /// @see #setTurnGunRightRadians(double) setTurnGunRightRadians(double)
+        ///                If {@code degrees} &gt; 0 the robot's gun is set to turn left.
+        ///                If {@code degrees} &lt; 0 the robot's gun is set to turn right.
+        ///                If {@code degrees} = 0 the robot's gun is set to Stop turning.
+        /// @see #SetTurnGunLeftRadians(double) SetTurnGunLeftRadians(double)
+        /// @see #TurnGunLeft(double) TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double) TurnGunLeftRadians(double)
+        /// @see #TurnGunRight(double) TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double) TurnGunRightRadians(double)
+        /// @see #SetTurnGunRight(double) SetTurnGunRight(double)
+        /// @see #SetTurnGunRightRadians(double) SetTurnGunRightRadians(double)
         /// @see #setAdjustGunForRobotTurn(bool) setAdjustGunForRobotTurn(bool)
         /// </summary>
-        public void setTurnGunLeft(double degrees)
+        public void SetTurnGunLeft(double degrees)
         {
             if (peer != null)
             {
@@ -1360,7 +1298,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1368,8 +1306,8 @@ namespace robocode
         /// Sets the robot's gun to turn right by degrees when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's gun is set to turn left
@@ -1378,31 +1316,31 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the gun to turn 180 degrees to the right
-        ///   setTurnGunRight(180);
+        ///   SetTurnGunRight(180);
         /// <p/>
         ///   // Set the gun to turn 90 degrees to the left instead of right
         ///   // (overrides the previous order)
-        ///   setTurnGunRight(-90);
+        ///   SetTurnGunRight(-90);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnGunRight()
-        ///   execute();
+        ///   // Executes the last SetTurnGunRight()
+        ///   Execute();
         /// </pre>
         ///
         /// @param degrees the amount of degrees to turn the robot's gun to the right.
-        ///                If {@code degrees} > 0 the robot's gun is set to turn right.
-        ///                If {@code degrees} < 0 the robot's gun is set to turn left.
-        ///                If {@code degrees} = 0 the robot's gun is set to stop turning.
-        /// @see #setTurnGunRightRadians(double) setTurnGunRightRadians(double)
-        /// @see #turnGunRight(double) turnGunRight(double)
-        /// @see #turnGunRightRadians(double) turnGunRightRadians(double)
-        /// @see #turnGunLeft(double) turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double) turnGunLeftRadians(double)
-        /// @see #setTurnGunLeft(double) setTurnGunLeft(double)
-        /// @see #setTurnGunLeftRadians(double) setTurnGunLeftRadians(double)
+        ///                If {@code degrees} &gt; 0 the robot's gun is set to turn right.
+        ///                If {@code degrees} &lt; 0 the robot's gun is set to turn left.
+        ///                If {@code degrees} = 0 the robot's gun is set to Stop turning.
+        /// @see #SetTurnGunRightRadians(double) SetTurnGunRightRadians(double)
+        /// @see #TurnGunRight(double) TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double) TurnGunRightRadians(double)
+        /// @see #TurnGunLeft(double) TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double) TurnGunLeftRadians(double)
+        /// @see #SetTurnGunLeft(double) SetTurnGunLeft(double)
+        /// @see #SetTurnGunLeftRadians(double) SetTurnGunLeftRadians(double)
         /// @see #setAdjustGunForRobotTurn(bool) setAdjustGunForRobotTurn(bool)
         /// </summary>
-        public void setTurnGunRight(double degrees)
+        public void SetTurnGunRight(double degrees)
         {
             if (peer != null)
             {
@@ -1410,7 +1348,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1418,8 +1356,8 @@ namespace robocode
         /// Sets the robot's radar to turn left by degrees when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's radar is set to turn right
@@ -1428,32 +1366,32 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the radar to turn 180 degrees to the left
-        ///   setTurnRadarLeft(180);
+        ///   SetTurnRadarLeft(180);
         /// <p/>
         ///   // Set the radar to turn 90 degrees to the right instead of left
         ///   // (overrides the previous order)
-        ///   setTurnRadarLeft(-90);
+        ///   SetTurnRadarLeft(-90);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnRadarLeft()
-        ///   execute();
+        ///   // Executes the last SetTurnRadarLeft()
+        ///   Execute();
         /// </pre>
         ///
         /// @param degrees the amount of degrees to turn the robot's radar to the left.
-        ///                If {@code degrees} > 0 the robot's radar is set to turn left.
-        ///                If {@code degrees} < 0 the robot's radar is set to turn right.
-        ///                If {@code degrees} = 0 the robot's radar is set to stop turning.
-        /// @see #setTurnRadarLeftRadians(double) setTurnRadarLeftRadians(double)
-        /// @see #turnRadarLeft(double) turnRadarLeft(double)
-        /// @see #turnRadarLeftRadians(double) turnRadarLeftRadians(double)
-        /// @see #turnRadarRight(double) turnRadarRight(double)
-        /// @see #turnRadarRightRadians(double) turnRadarRightRadians(double)
-        /// @see #setTurnRadarRight(double) setTurnRadarRight(double)
-        /// @see #setTurnRadarRightRadians(double) setTurnRadarRightRadians(double)
+        ///                If {@code degrees} &gt; 0 the robot's radar is set to turn left.
+        ///                If {@code degrees} &lt; 0 the robot's radar is set to turn right.
+        ///                If {@code degrees} = 0 the robot's radar is set to Stop turning.
+        /// @see #SetTurnRadarLeftRadians(double) SetTurnRadarLeftRadians(double)
+        /// @see #TurnRadarLeft(double) TurnRadarLeft(double)
+        /// @see #TurnRadarLeftRadians(double) TurnRadarLeftRadians(double)
+        /// @see #TurnRadarRight(double) TurnRadarRight(double)
+        /// @see #TurnRadarRightRadians(double) TurnRadarRightRadians(double)
+        /// @see #SetTurnRadarRight(double) SetTurnRadarRight(double)
+        /// @see #SetTurnRadarRightRadians(double) SetTurnRadarRightRadians(double)
         /// @see #setAdjustRadarForRobotTurn(bool) setAdjustRadarForRobotTurn(bool)
         /// @see #setAdjustRadarForGunTurn(bool) setAdjustRadarForGunTurn(bool)
         /// </summary>
-        public void setTurnRadarLeft(double degrees)
+        public void SetTurnRadarLeft(double degrees)
         {
             if (peer != null)
             {
@@ -1461,7 +1399,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1469,8 +1407,8 @@ namespace robocode
         /// Sets the robot's radar to turn right by degrees when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's radar is set to turn left
@@ -1479,32 +1417,32 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the radar to turn 180 degrees to the right
-        ///   setTurnRadarRight(180);
+        ///   SetTurnRadarRight(180);
         /// <p/>
         ///   // Set the radar to turn 90 degrees to the right instead of right
         ///   // (overrides the previous order)
-        ///   setTurnRadarRight(-90);
+        ///   SetTurnRadarRight(-90);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnRadarRight()
-        ///   execute();
+        ///   // Executes the last SetTurnRadarRight()
+        ///   Execute();
         /// </pre>
         ///
         /// @param degrees the amount of degrees to turn the robot's radar to the right.
-        ///                If {@code degrees} > 0 the robot's radar is set to turn right.
-        ///                If {@code degrees} < 0 the robot's radar is set to turn left.
-        ///                If {@code degrees} = 0 the robot's radar is set to stop turning.
-        /// @see #setTurnRadarRightRadians(double) setTurnRadarRightRadians(double)
-        /// @see #turnRadarRight(double) turnRadarRight(double)
-        /// @see #turnRadarRightRadians(double) turnRadarRightRadians(double)
-        /// @see #turnRadarLeft(double) turnRadarLeft(double)
-        /// @see #turnRadarLeftRadians(double) turnRadarLeftRadians(double)
-        /// @see #setTurnRadarLeft(double) setTurnRadarLeft(double)
-        /// @see #setTurnRadarLeftRadians(double) setTurnRadarLeftRadians(double)
+        ///                If {@code degrees} &gt; 0 the robot's radar is set to turn right.
+        ///                If {@code degrees} &lt; 0 the robot's radar is set to turn left.
+        ///                If {@code degrees} = 0 the robot's radar is set to Stop turning.
+        /// @see #SetTurnRadarRightRadians(double) SetTurnRadarRightRadians(double)
+        /// @see #TurnRadarRight(double) TurnRadarRight(double)
+        /// @see #TurnRadarRightRadians(double) TurnRadarRightRadians(double)
+        /// @see #TurnRadarLeft(double) TurnRadarLeft(double)
+        /// @see #TurnRadarLeftRadians(double) TurnRadarLeftRadians(double)
+        /// @see #SetTurnRadarLeft(double) SetTurnRadarLeft(double)
+        /// @see #SetTurnRadarLeftRadians(double) SetTurnRadarLeftRadians(double)
         /// @see #setAdjustRadarForRobotTurn(bool) setAdjustRadarForRobotTurn(bool)
         /// @see #setAdjustRadarForGunTurn(bool) setAdjustRadarForGunTurn(bool)
         /// </summary>
-        public void setTurnRadarRight(double degrees)
+        public void SetTurnRadarRight(double degrees)
         {
             if (peer != null)
             {
@@ -1512,13 +1450,13 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
         /// <summary>
         /// Does not return until a condition is met, i.e. when a
-        /// {@link Condition#test()} returns {@code true}.
+        /// {@link Condition#Test()} returns {@code true}.
         /// <p/>
         /// This call executes immediately.
         /// <p/>
@@ -1526,9 +1464,9 @@ namespace robocode
         ///
         /// @param condition the condition that must be met before this call returns
         /// @see Condition
-        /// @see Condition#test()
+        /// @see Condition#Test()
         /// </summary>
-        public void waitFor(Condition condition)
+        public void WaitFor(Condition condition)
         {
             if (peer != null)
             {
@@ -1536,7 +1474,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1552,14 +1490,14 @@ namespace robocode
         /// @see DeathEvent
         /// @see Event
         /// </summary>
-        public override void onDeath(DeathEvent evnt)
+        public override void OnDeath(DeathEvent evnt)
         {
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public virtual void onSkippedTurn(SkippedTurnEvent evnt)
+        public virtual void OnSkippedTurn(SkippedTurnEvent evnt)
         {
         }
 
@@ -1575,22 +1513,25 @@ namespace robocode
         /// @see #getGunHeadingRadians()
         /// @see #getRadarHeadingRadians()
         /// </summary>
-        public double getHeadingRadians()
+        public double HeadingRadians
         {
-            if (peer != null)
+            get
             {
-                return peer.getBodyHeading();
+                if (peer != null)
+                {
+                    return peer.getBodyHeading();
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
         /// Sets the robot's body to turn left by radians when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's body is set to turn right
@@ -1599,30 +1540,30 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the robot to turn 180 degrees to the left
-        ///   setTurnLeftRadians(Math.PI);
+        ///   SetTurnLeftRadians(Math.PI);
         /// <p/>
         ///   // Set the robot to turn 90 degrees to the right instead of left
         ///   // (overrides the previous order)
-        ///   setTurnLeftRadians(-Math.PI / 2);
+        ///   SetTurnLeftRadians(-Math.PI / 2);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnLeftRadians()
-        ///   execute();
+        ///   // Executes the last SetTurnLeftRadians()
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's body to the left.
-        ///                If {@code radians} > 0 the robot is set to turn left.
-        ///                If {@code radians} < 0 the robot is set to turn right.
-        ///                If {@code radians} = 0 the robot is set to stop turning.
-        /// @see AdvancedRobot#setTurnLeft(double) setTurnLeft(double)
-        /// @see #turnLeft(double)
-        /// @see #turnLeftRadians(double)
-        /// @see #turnRight(double)
-        /// @see #turnRightRadians(double)
-        /// @see AdvancedRobot#setTurnRight(double) setTurnRight(double)
-        /// @see AdvancedRobot#setTurnRightRadians(double) setTurnRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot is set to turn left.
+        ///                If {@code radians} &lt; 0 the robot is set to turn right.
+        ///                If {@code radians} = 0 the robot is set to Stop turning.
+        /// @see AdvancedRobot#SetTurnLeft(double) SetTurnLeft(double)
+        /// @see #TurnLeft(double)
+        /// @see #TurnLeftRadians(double)
+        /// @see #TurnRight(double)
+        /// @see #TurnRightRadians(double)
+        /// @see AdvancedRobot#SetTurnRight(double) SetTurnRight(double)
+        /// @see AdvancedRobot#SetTurnRightRadians(double) SetTurnRightRadians(double)
         /// </summary>
-        public void setTurnLeftRadians(double radians)
+        public void SetTurnLeftRadians(double radians)
         {
             if (peer != null)
             {
@@ -1630,7 +1571,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1638,8 +1579,8 @@ namespace robocode
         /// Sets the robot's body to turn right by radians when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's body is set to turn left
@@ -1648,30 +1589,30 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the robot to turn 180 degrees to the right
-        ///   setTurnRightRadians(Math.PI);
+        ///   SetTurnRightRadians(Math.PI);
         /// <p/>
         ///   // Set the robot to turn 90 degrees to the left instead of right
         ///   // (overrides the previous order)
-        ///   setTurnRightRadians(-Math.PI / 2);
+        ///   SetTurnRightRadians(-Math.PI / 2);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnRightRadians()
-        ///   execute();
+        ///   // Executes the last SetTurnRightRadians()
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's body to the right.
-        ///                If {@code radians} > 0 the robot is set to turn right.
-        ///                If {@code radians} < 0 the robot is set to turn left.
-        ///                If {@code radians} = 0 the robot is set to stop turning.
-        /// @see AdvancedRobot#setTurnRight(double) setTurnRight(double)
-        /// @see #turnRight(double)
-        /// @see #turnRightRadians(double)
-        /// @see #turnLeft(double)
-        /// @see #turnLeftRadians(double)
-        /// @see AdvancedRobot#setTurnLeft(double) setTurnLeft(double)
-        /// @see AdvancedRobot#setTurnLeftRadians(double) setTurnLeftRadians(double)
+        ///                If {@code radians} &gt; 0 the robot is set to turn right.
+        ///                If {@code radians} &lt; 0 the robot is set to turn left.
+        ///                If {@code radians} = 0 the robot is set to Stop turning.
+        /// @see AdvancedRobot#SetTurnRight(double) SetTurnRight(double)
+        /// @see #TurnRight(double)
+        /// @see #TurnRightRadians(double)
+        /// @see #TurnLeft(double)
+        /// @see #TurnLeftRadians(double)
+        /// @see AdvancedRobot#SetTurnLeft(double) SetTurnLeft(double)
+        /// @see AdvancedRobot#SetTurnLeftRadians(double) SetTurnLeftRadians(double)
         /// </summary>
-        public void setTurnRightRadians(double radians)
+        public void SetTurnRightRadians(double radians)
         {
             if (peer != null)
             {
@@ -1679,7 +1620,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1696,30 +1637,30 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Turn the robot 180 degrees to the left
-        ///   turnLeftRadians(Math.PI);
+        ///   TurnLeftRadians(Math.PI);
         /// <p/>
         ///   // Afterwards, turn the robot 90 degrees to the right
-        ///   turnLeftRadians(-Math.PI / 2);
+        ///   TurnLeftRadians(-Math.PI / 2);
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's body to the left.
-        ///                If {@code radians} > 0 the robot will turn right.
-        ///                If {@code radians} < 0 the robot will turn left.
-        ///                If {@code radians} = 0 the robot will not turn, but execute.
-        /// @see #turnLeft(double)
-        /// @see #turnRight(double)
-        /// @see #turnRightRadians(double)
-        /// @see #turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double)
-        /// @see #turnGunRight(double)
-        /// @see #turnGunRightRadians(double)
-        /// @see #turnRadarLeft(double)
-        /// @see #turnRadarLeftRadians(double)
-        /// @see #turnRadarRight(double)
-        /// @see #turnRadarRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot will turn right.
+        ///                If {@code radians} &lt; 0 the robot will turn left.
+        ///                If {@code radians} = 0 the robot will not turn, but Execute.
+        /// @see #TurnLeft(double)
+        /// @see #TurnRight(double)
+        /// @see #TurnRightRadians(double)
+        /// @see #TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double)
+        /// @see #TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double)
+        /// @see #TurnRadarLeft(double)
+        /// @see #TurnRadarLeftRadians(double)
+        /// @see #TurnRadarRight(double)
+        /// @see #TurnRadarRightRadians(double)
         /// @see #setAdjustGunForRobotTurn(bool)
         /// </summary>
-        public void turnLeftRadians(double radians)
+        public void TurnLeftRadians(double radians)
         {
             if (peer != null)
             {
@@ -1727,7 +1668,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1743,30 +1684,30 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Turn the robot 180 degrees to the right
-        ///   turnRightRadians(Math.PI);
+        ///   TurnRightRadians(Math.PI);
         /// <p/>
         ///   // Afterwards, turn the robot 90 degrees to the left
-        ///   turnRightRadians(-Math.PI / 2);
+        ///   TurnRightRadians(-Math.PI / 2);
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's body to the right.
-        ///                If {@code radians} > 0 the robot will turn right.
-        ///                If {@code radians} < 0 the robot will turn left.
-        ///                If {@code radians} = 0 the robot will not turn, but execute.
-        /// @see #turnRight(double)
-        /// @see #turnLeft(double)
-        /// @see #turnLeftRadians(double)
-        /// @see #turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double)
-        /// @see #turnGunRight(double)
-        /// @see #turnGunRightRadians(double)
-        /// @see #turnRadarLeft(double)
-        /// @see #turnRadarLeftRadians(double)
-        /// @see #turnRadarRight(double)
-        /// @see #turnRadarRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot will turn right.
+        ///                If {@code radians} &lt; 0 the robot will turn left.
+        ///                If {@code radians} = 0 the robot will not turn, but Execute.
+        /// @see #TurnRight(double)
+        /// @see #TurnLeft(double)
+        /// @see #TurnLeftRadians(double)
+        /// @see #TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double)
+        /// @see #TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double)
+        /// @see #TurnRadarLeft(double)
+        /// @see #TurnRadarLeftRadians(double)
+        /// @see #TurnRadarRight(double)
+        /// @see #TurnRadarRightRadians(double)
         /// @see #setAdjustGunForRobotTurn(bool)
         /// </summary>
-        public void turnRightRadians(double radians)
+        public void TurnRightRadians(double radians)
         {
             if (peer != null)
             {
@@ -1774,7 +1715,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1790,14 +1731,17 @@ namespace robocode
         /// @see #getHeadingRadians()
         /// @see #getRadarHeadingRadians()
         /// </summary>
-        public double getGunHeadingRadians()
+        public double GunHeadingRadians
         {
-            if (peer != null)
+            get
             {
-                return peer.getGunHeading();
+                if (peer != null)
+                {
+                    return peer.getGunHeading();
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
@@ -1812,22 +1756,25 @@ namespace robocode
         /// @see #getHeadingRadians()
         /// @see #getGunHeadingRadians()
         /// </summary>
-        public double getRadarHeadingRadians()
+        public double RadarHeadingRadians
         {
-            if (peer != null)
+            get
             {
-                return peer.getRadarHeading();
+                if (peer != null)
+                {
+                    return peer.getRadarHeading();
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
         /// Sets the robot's gun to turn left by radians when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's gun is set to turn right
@@ -1836,31 +1783,31 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the gun to turn 180 degrees to the left
-        ///   setTurnGunLeftRadians(Math.PI);
+        ///   SetTurnGunLeftRadians(Math.PI);
         /// <p/>
         ///   // Set the gun to turn 90 degrees to the right instead of left
         ///   // (overrides the previous order)
-        ///   setTurnGunLeftRadians(-Math.PI / 2);
+        ///   SetTurnGunLeftRadians(-Math.PI / 2);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnGunLeftRadians()
-        ///   execute();
+        ///   // Executes the last SetTurnGunLeftRadians()
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's gun to the left.
-        ///                If {@code radians} > 0 the robot's gun is set to turn left.
-        ///                If {@code radians} < 0 the robot's gun is set to turn right.
-        ///                If {@code radians} = 0 the robot's gun is set to stop turning.
-        /// @see AdvancedRobot#setTurnGunLeft(double) setTurnGunLeft(double)
-        /// @see #turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double)
-        /// @see #turnGunRight(double)
-        /// @see #turnGunRightRadians(double)
-        /// @see AdvancedRobot#setTurnGunRight(double) setTurnGunRight(double)
-        /// @see AdvancedRobot#setTurnGunRightRadians(double) setTurnGunRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot's gun is set to turn left.
+        ///                If {@code radians} &lt; 0 the robot's gun is set to turn right.
+        ///                If {@code radians} = 0 the robot's gun is set to Stop turning.
+        /// @see AdvancedRobot#SetTurnGunLeft(double) SetTurnGunLeft(double)
+        /// @see #TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double)
+        /// @see #TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double)
+        /// @see AdvancedRobot#SetTurnGunRight(double) SetTurnGunRight(double)
+        /// @see AdvancedRobot#SetTurnGunRightRadians(double) SetTurnGunRightRadians(double)
         /// @see #setAdjustGunForRobotTurn(bool)
         /// </summary>
-        public void setTurnGunLeftRadians(double radians)
+        public void SetTurnGunLeftRadians(double radians)
         {
             if (peer != null)
             {
@@ -1868,7 +1815,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1876,8 +1823,8 @@ namespace robocode
         /// Sets the robot's gun to turn right by radians when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's gun is set to turn left
@@ -1886,31 +1833,31 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the gun to turn 180 degrees to the right
-        ///   setTurnGunRightRadians(Math.PI);
+        ///   SetTurnGunRightRadians(Math.PI);
         /// <p/>
         ///   // Set the gun to turn 90 degrees to the left instead of right
         ///   // (overrides the previous order)
-        ///   setTurnGunRightRadians(-Math.PI / 2);
+        ///   SetTurnGunRightRadians(-Math.PI / 2);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnGunRightRadians()
-        ///   execute();
+        ///   // Executes the last SetTurnGunRightRadians()
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's gun to the right.
-        ///                If {@code radians} > 0 the robot's gun is set to turn left.
-        ///                If {@code radians} < 0 the robot's gun is set to turn right.
-        ///                If {@code radians} = 0 the robot's gun is set to stop turning.
-        /// @see AdvancedRobot#setTurnGunRight(double) setTurnGunRight(double)
-        /// @see #turnGunRight(double)
-        /// @see #turnGunRightRadians(double)
-        /// @see #turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double)
-        /// @see AdvancedRobot#setTurnGunLeft(double) setTurnGunLeft(double)
-        /// @see AdvancedRobot#setTurnGunLeftRadians(double) setTurnGunLeftRadians(double)
+        ///                If {@code radians} &gt; 0 the robot's gun is set to turn left.
+        ///                If {@code radians} &lt; 0 the robot's gun is set to turn right.
+        ///                If {@code radians} = 0 the robot's gun is set to Stop turning.
+        /// @see AdvancedRobot#SetTurnGunRight(double) SetTurnGunRight(double)
+        /// @see #TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double)
+        /// @see #TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double)
+        /// @see AdvancedRobot#SetTurnGunLeft(double) SetTurnGunLeft(double)
+        /// @see AdvancedRobot#SetTurnGunLeftRadians(double) SetTurnGunLeftRadians(double)
         /// @see #setAdjustGunForRobotTurn(bool)
         /// </summary>
-        public void setTurnGunRightRadians(double radians)
+        public void SetTurnGunRightRadians(double radians)
         {
             if (peer != null)
             {
@@ -1918,7 +1865,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1926,8 +1873,8 @@ namespace robocode
         /// Sets the robot's radar to turn left by radians when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's radar is set to turn right
@@ -1936,32 +1883,32 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the radar to turn 180 degrees to the left
-        ///   setTurnRadarLeftRadians(Math.PI);
+        ///   SetTurnRadarLeftRadians(Math.PI);
         /// <p/>
         ///   // Set the radar to turn 90 degrees to the right instead of left
         ///   // (overrides the previous order)
-        ///   setTurnRadarLeftRadians(-Math.PI / 2);
+        ///   SetTurnRadarLeftRadians(-Math.PI / 2);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnRadarLeftRadians()
-        ///   execute();
+        ///   // Executes the last SetTurnRadarLeftRadians()
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's radar to the left.
-        ///                If {@code radians} > 0 the robot's radar is set to turn left.
-        ///                If {@code radians} < 0 the robot's radar is set to turn right.
-        ///                If {@code radians} = 0 the robot's radar is set to stop turning.
-        /// @see AdvancedRobot#setTurnRadarLeft(double) setTurnRadarLeft(double)
-        /// @see #turnRadarLeft(double)
-        /// @see #turnRadarLeftRadians(double)
-        /// @see #turnRadarRight(double)
-        /// @see #turnRadarRightRadians(double)
-        /// @see AdvancedRobot#setTurnRadarRight(double) setTurnRadarRight(double)
-        /// @see AdvancedRobot#setTurnRadarRightRadians(double) setTurnRadarRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot's radar is set to turn left.
+        ///                If {@code radians} &lt; 0 the robot's radar is set to turn right.
+        ///                If {@code radians} = 0 the robot's radar is set to Stop turning.
+        /// @see AdvancedRobot#SetTurnRadarLeft(double) SetTurnRadarLeft(double)
+        /// @see #TurnRadarLeft(double)
+        /// @see #TurnRadarLeftRadians(double)
+        /// @see #TurnRadarRight(double)
+        /// @see #TurnRadarRightRadians(double)
+        /// @see AdvancedRobot#SetTurnRadarRight(double) SetTurnRadarRight(double)
+        /// @see AdvancedRobot#SetTurnRadarRightRadians(double) SetTurnRadarRightRadians(double)
         /// @see #setAdjustRadarForRobotTurn(bool)
         /// @see #setAdjustRadarForGunTurn(bool)
         /// </summary>
-        public void setTurnRadarLeftRadians(double radians)
+        public void SetTurnRadarLeftRadians(double radians)
         {
             if (peer != null)
             {
@@ -1969,7 +1916,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -1977,8 +1924,8 @@ namespace robocode
         /// Sets the robot's radar to turn right by radians when the next execution
         /// takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot's radar is set to turn left
@@ -1987,32 +1934,32 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Set the radar to turn 180 degrees to the right
-        ///   setTurnRadarRightRadians(Math.PI);
+        ///   SetTurnRadarRightRadians(Math.PI);
         /// <p/>
         ///   // Set the radar to turn 90 degrees to the right instead of right
         ///   // (overrides the previous order)
-        ///   setTurnRadarRightRadians(-Math.PI / 2);
+        ///   SetTurnRadarRightRadians(-Math.PI / 2);
         /// <p/>
         ///   ...
-        ///   // Executes the last setTurnRadarRightRadians()
-        ///   execute();
+        ///   // Executes the last SetTurnRadarRightRadians()
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's radar to the right.
-        ///                If {@code radians} > 0 the robot's radar is set to turn left.
-        ///                If {@code radians} < 0 the robot's radar is set to turn right.
-        ///                If {@code radians} = 0 the robot's radar is set to stop turning.
-        /// @see AdvancedRobot#setTurnRadarRight(double) setTurnRadarRight(double)
-        /// @see #turnRadarRight(double)
-        /// @see #turnRadarRightRadians(double)
-        /// @see #turnRadarLeft(double)
-        /// @see #turnRadarLeftRadians(double)
-        /// @see AdvancedRobot#setTurnRadarLeft(double) setTurnRadarLeft(double)
-        /// @see AdvancedRobot#setTurnRadarLeftRadians(double) setTurnRadarLeftRadians(double)
+        ///                If {@code radians} &gt; 0 the robot's radar is set to turn left.
+        ///                If {@code radians} &lt; 0 the robot's radar is set to turn right.
+        ///                If {@code radians} = 0 the robot's radar is set to Stop turning.
+        /// @see AdvancedRobot#SetTurnRadarRight(double) SetTurnRadarRight(double)
+        /// @see #TurnRadarRight(double)
+        /// @see #TurnRadarRightRadians(double)
+        /// @see #TurnRadarLeft(double)
+        /// @see #TurnRadarLeftRadians(double)
+        /// @see AdvancedRobot#SetTurnRadarLeft(double) SetTurnRadarLeft(double)
+        /// @see AdvancedRobot#SetTurnRadarLeftRadians(double) SetTurnRadarLeftRadians(double)
         /// @see #setAdjustRadarForRobotTurn(bool)
         /// @see #setAdjustRadarForGunTurn(bool)
         /// </summary>
-        public void setTurnRadarRightRadians(double radians)
+        public void SetTurnRadarRightRadians(double radians)
         {
             if (peer != null)
             {
@@ -2020,7 +1967,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -2037,30 +1984,30 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Turn the robot's gun 180 degrees to the left
-        ///   turnGunLeftRadians(Math.PI);
+        ///   TurnGunLeftRadians(Math.PI);
         /// <p/>
         ///   // Afterwards, turn the robot's gun 90 degrees to the right
-        ///   turnGunLeftRadians(-Math.PI / 2);
+        ///   TurnGunLeftRadians(-Math.PI / 2);
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's gun to the left.
-        ///                If {@code radians} > 0 the robot's gun will turn left.
-        ///                If {@code radians} < 0 the robot's gun will turn right.
-        ///                If {@code radians} = 0 the robot's gun will not turn, but execute.
-        /// @see #turnGunLeft(double)
-        /// @see #turnGunRight(double)
-        /// @see #turnGunRightRadians(double)
-        /// @see #turnLeft(double)
-        /// @see #turnLeftRadians(double)
-        /// @see #turnRight(double)
-        /// @see #turnRightRadians(double)
-        /// @see #turnRadarLeft(double)
-        /// @see #turnRadarLeftRadians(double)
-        /// @see #turnRadarRight(double)
-        /// @see #turnRadarRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot's gun will turn left.
+        ///                If {@code radians} &lt; 0 the robot's gun will turn right.
+        ///                If {@code radians} = 0 the robot's gun will not turn, but Execute.
+        /// @see #TurnGunLeft(double)
+        /// @see #TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double)
+        /// @see #TurnLeft(double)
+        /// @see #TurnLeftRadians(double)
+        /// @see #TurnRight(double)
+        /// @see #TurnRightRadians(double)
+        /// @see #TurnRadarLeft(double)
+        /// @see #TurnRadarLeftRadians(double)
+        /// @see #TurnRadarRight(double)
+        /// @see #TurnRadarRightRadians(double)
         /// @see #setAdjustGunForRobotTurn(bool)
         /// </summary>
-        public void turnGunLeftRadians(double radians)
+        public void TurnGunLeftRadians(double radians)
         {
             if (peer != null)
             {
@@ -2068,7 +2015,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -2084,30 +2031,30 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Turn the robot's gun 180 degrees to the right
-        ///   turnGunRightRadians(Math.PI);
+        ///   TurnGunRightRadians(Math.PI);
         /// <p/>
         ///   // Afterwards, turn the robot's gun 90 degrees to the left
-        ///   turnGunRightRadians(-Math.PI / 2);
+        ///   TurnGunRightRadians(-Math.PI / 2);
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's gun to the right.
-        ///                If {@code radians} > 0 the robot's gun will turn right.
-        ///                If {@code radians} < 0 the robot's gun will turn left.
-        ///                If {@code radians} = 0 the robot's gun will not turn, but execute.
-        /// @see #turnGunRight(double)
-        /// @see #turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double)
-        /// @see #turnLeft(double)
-        /// @see #turnLeftRadians(double)
-        /// @see #turnRight(double)
-        /// @see #turnRightRadians(double)
-        /// @see #turnRadarLeft(double)
-        /// @see #turnRadarLeftRadians(double)
-        /// @see #turnRadarRight(double)
-        /// @see #turnRadarRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot's gun will turn right.
+        ///                If {@code radians} &lt; 0 the robot's gun will turn left.
+        ///                If {@code radians} = 0 the robot's gun will not turn, but Execute.
+        /// @see #TurnGunRight(double)
+        /// @see #TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double)
+        /// @see #TurnLeft(double)
+        /// @see #TurnLeftRadians(double)
+        /// @see #TurnRight(double)
+        /// @see #TurnRightRadians(double)
+        /// @see #TurnRadarLeft(double)
+        /// @see #TurnRadarLeftRadians(double)
+        /// @see #TurnRadarRight(double)
+        /// @see #TurnRadarRightRadians(double)
         /// @see #setAdjustGunForRobotTurn(bool)
         /// </summary>
-        public void turnGunRightRadians(double radians)
+        public void TurnGunRightRadians(double radians)
         {
             if (peer != null)
             {
@@ -2115,7 +2062,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -2132,31 +2079,31 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Turn the robot's radar 180 degrees to the left
-        ///   turnRadarLeftRadians(Math.PI);
+        ///   TurnRadarLeftRadians(Math.PI);
         /// <p/>
         ///   // Afterwards, turn the robot's radar 90 degrees to the right
-        ///   turnRadarLeftRadians(-Math.PI / 2);
+        ///   TurnRadarLeftRadians(-Math.PI / 2);
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's radar to the left.
-        ///                If {@code radians} > 0 the robot's radar will turn left.
-        ///                If {@code radians} < 0 the robot's radar will turn right.
-        ///                If {@code radians} = 0 the robot's radar will not turn, but execute.
-        /// @see #turnRadarLeft(double)
-        /// @see #turnRadarRight(double)
-        /// @see #turnGunRightRadians(double)
-        /// @see #turnLeft(double)
-        /// @see #turnLeftRadians(double)
-        /// @see #turnRight(double)
-        /// @see #turnRightRadians(double)
-        /// @see #turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double)
-        /// @see #turnGunRight(double)
-        /// @see #turnGunRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot's radar will turn left.
+        ///                If {@code radians} &lt; 0 the robot's radar will turn right.
+        ///                If {@code radians} = 0 the robot's radar will not turn, but Execute.
+        /// @see #TurnRadarLeft(double)
+        /// @see #TurnRadarRight(double)
+        /// @see #TurnGunRightRadians(double)
+        /// @see #TurnLeft(double)
+        /// @see #TurnLeftRadians(double)
+        /// @see #TurnRight(double)
+        /// @see #TurnRightRadians(double)
+        /// @see #TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double)
+        /// @see #TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double)
         /// @see #setAdjustRadarForRobotTurn(bool)
         /// @see #setAdjustRadarForGunTurn(bool)
         /// </summary>
-        public void turnRadarLeftRadians(double radians)
+        public void TurnRadarLeftRadians(double radians)
         {
             if (peer != null)
             {
@@ -2164,7 +2111,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -2180,31 +2127,31 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   // Turn the robot's radar 180 degrees to the right
-        ///   turnRadarRightRadians(Math.PI);
+        ///   TurnRadarRightRadians(Math.PI);
         /// <p/>
         ///   // Afterwards, turn the robot's radar 90 degrees to the left
-        ///   turnRadarRightRadians(-Math.PI / 2);
+        ///   TurnRadarRightRadians(-Math.PI / 2);
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's radar to the right.
-        ///                If {@code radians} > 0 the robot's radar will turn right.
-        ///                If {@code radians} < 0 the robot's radar will turn left.
-        ///                If {@code radians} = 0 the robot's radar will not turn, but execute.
-        /// @see #turnRadarRight(double)
-        /// @see #turnRadarLeft(double)
-        /// @see #turnGunLeftRadians(double)
-        /// @see #turnLeft(double)
-        /// @see #turnLeftRadians(double)
-        /// @see #turnRight(double)
-        /// @see #turnRightRadians(double)
-        /// @see #turnGunLeft(double)
-        /// @see #turnGunLeftRadians(double)
-        /// @see #turnGunRight(double)
-        /// @see #turnGunRightRadians(double)
+        ///                If {@code radians} &gt; 0 the robot's radar will turn right.
+        ///                If {@code radians} &lt; 0 the robot's radar will turn left.
+        ///                If {@code radians} = 0 the robot's radar will not turn, but Execute.
+        /// @see #TurnRadarRight(double)
+        /// @see #TurnRadarLeft(double)
+        /// @see #TurnGunLeftRadians(double)
+        /// @see #TurnLeft(double)
+        /// @see #TurnLeftRadians(double)
+        /// @see #TurnRight(double)
+        /// @see #TurnRightRadians(double)
+        /// @see #TurnGunLeft(double)
+        /// @see #TurnGunLeftRadians(double)
+        /// @see #TurnGunRight(double)
+        /// @see #TurnGunRightRadians(double)
         /// @see #setAdjustRadarForRobotTurn(bool)
         /// @see #setAdjustRadarForGunTurn(bool)
         /// </summary>
-        public void turnRadarRightRadians(double radians)
+        public void TurnRadarRightRadians(double radians)
         {
             if (peer != null)
             {
@@ -2212,7 +2159,7 @@ namespace robocode
             }
             else
             {
-                uninitializedException();
+                UninitializedException();
             }
         }
 
@@ -2230,14 +2177,17 @@ namespace robocode
         /// @see AdvancedRobot#getRadarTurnRemaining() getRadarTurnRemaining()
         /// @see #getRadarTurnRemainingRadians()
         /// </summary>
-        public double getGunTurnRemainingRadians()
+        public double GunTurnRemainingRadians
         {
-            if (peer != null)
+            get
             {
-                return peer.getGunTurnRemaining();
+                if (peer != null)
+                {
+                    return peer.getGunTurnRemaining();
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
@@ -2254,14 +2204,17 @@ namespace robocode
         /// @see AdvancedRobot#getGunTurnRemaining() getGunTurnRemaining()
         /// @see #getGunTurnRemainingRadians()
         /// </summary>
-        public double getRadarTurnRemainingRadians()
+        public double RadarTurnRemainingRadians
         {
-            if (peer != null)
+            get
             {
-                return peer.getRadarTurnRemaining();
+                if (peer != null)
+                {
+                    return peer.getRadarTurnRemaining();
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
@@ -2278,14 +2231,17 @@ namespace robocode
         /// @see AdvancedRobot#getRadarTurnRemaining() getRadarTurnRemaining()
         /// @see #getRadarTurnRemainingRadians()
         /// </summary>
-        public double getTurnRemainingRadians()
+        public double TurnRemainingRadians
         {
-            if (peer != null)
+            get
             {
-                return peer.getBodyTurnRemaining();
+                if (peer != null)
+                {
+                    return peer.getBodyTurnRemaining();
+                }
+                UninitializedException();
+                return 0; // never called
             }
-            uninitializedException();
-            return 0; // never called
         }
 
         /// <summary>
@@ -2293,7 +2249,7 @@ namespace robocode
         /// <p/>
         /// {@inheritDoc}
         /// </summary>
-        public IAdvancedEvents getAdvancedEventListener()
+        IAdvancedEvents IAdvancedRobot.GetAdvancedEventListener()
         {
             return this; // this robot is listening
         }

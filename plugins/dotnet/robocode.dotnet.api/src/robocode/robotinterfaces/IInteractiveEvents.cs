@@ -32,11 +32,11 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.KeyListener#keyPressed(KeyEvent)
-        /// @see #onKeyReleased(KeyEvent)
-        /// @see #onKeyTyped(KeyEvent)
+        /// @see #OnKeyReleased(KeyEvent)
+        /// @see #OnKeyTyped(KeyEvent)
         /// @since 1.3.4
         /// </summary>
-        void onKeyPressed(KeyEvent evnt);
+        void OnKeyPressed(KeyEvent evnt);
 
         /// <summary>
         /// This method is called when a key has been released.
@@ -46,11 +46,11 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.KeyListener#keyReleased(KeyEvent)
-        /// @see #onKeyPressed(KeyEvent)
-        /// @see #onKeyTyped(KeyEvent)
+        /// @see #OnKeyPressed(KeyEvent)
+        /// @see #OnKeyTyped(KeyEvent)
         /// @since 1.3.4
         /// </summary>
-        void onKeyReleased(KeyEvent evnt);
+        void OnKeyReleased(KeyEvent evnt);
 
         /// <summary>
         /// This method is called when a key has been typed (pressed and released).
@@ -60,11 +60,11 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.KeyListener#keyTyped(KeyEvent)
-        /// @see #onKeyPressed(KeyEvent)
-        /// @see #onKeyReleased(KeyEvent)
+        /// @see #OnKeyPressed(KeyEvent)
+        /// @see #OnKeyReleased(KeyEvent)
         /// @since 1.3.4
         /// </summary>
-        void onKeyTyped(KeyEvent evnt);
+        void OnKeyTyped(KeyEvent evnt);
 
         /// <summary>
         /// This method is called when a mouse button has been clicked (pressed and
@@ -75,16 +75,16 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
-        /// @see #onMouseMoved(MouseEvent)
-        /// @see #onMousePressed(MouseEvent)
-        /// @see #onMouseReleased(MouseEvent)
-        /// @see #onMouseEntered(MouseEvent)
-        /// @see #onMouseExited(MouseEvent)
-        /// @see #onMouseDragged(MouseEvent)
-        /// @see #onMouseWheelMoved(MouseWheelEvent)
+        /// @see #OnMouseMoved(MouseEvent)
+        /// @see #OnMousePressed(MouseEvent)
+        /// @see #OnMouseReleased(MouseEvent)
+        /// @see #OnMouseEntered(MouseEvent)
+        /// @see #OnMouseExited(MouseEvent)
+        /// @see #OnMouseDragged(MouseEvent)
+        /// @see #OnMouseWheelMoved(MouseWheelEvent)
         /// @since 1.3.4
         /// </summary>
-        void onMouseClicked(MouseEvent evnt);
+        void OnMouseClicked(MouseEvent evnt);
 
         /// <summary>
         /// This method is called when the mouse has entered the battle view.
@@ -94,16 +94,16 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.MouseListener#mouseEntered(MouseEvent)
-        /// @see #onMouseMoved(MouseEvent)
-        /// @see #onMousePressed(MouseEvent)
-        /// @see #onMouseReleased(MouseEvent)
-        /// @see #onMouseClicked(MouseEvent)
-        /// @see #onMouseExited(MouseEvent)
-        /// @see #onMouseDragged(MouseEvent)
-        /// @see #onMouseWheelMoved(MouseWheelEvent)
+        /// @see #OnMouseMoved(MouseEvent)
+        /// @see #OnMousePressed(MouseEvent)
+        /// @see #OnMouseReleased(MouseEvent)
+        /// @see #OnMouseClicked(MouseEvent)
+        /// @see #OnMouseExited(MouseEvent)
+        /// @see #OnMouseDragged(MouseEvent)
+        /// @see #OnMouseWheelMoved(MouseWheelEvent)
         /// @since 1.3.4
         /// </summary>
-        void onMouseEntered(MouseEvent evnt);
+        void OnMouseEntered(MouseEvent evnt);
 
         /// <summary>
         /// This method is called when the mouse has exited the battle view.
@@ -113,16 +113,16 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.MouseListener#mouseExited(MouseEvent)
-        /// @see #onMouseMoved(MouseEvent)
-        /// @see #onMousePressed(MouseEvent)
-        /// @see #onMouseReleased(MouseEvent)
-        /// @see #onMouseClicked(MouseEvent)
-        /// @see #onMouseEntered(MouseEvent)
-        /// @see #onMouseDragged(MouseEvent)
-        /// @see #onMouseWheelMoved(MouseWheelEvent)
+        /// @see #OnMouseMoved(MouseEvent)
+        /// @see #OnMousePressed(MouseEvent)
+        /// @see #OnMouseReleased(MouseEvent)
+        /// @see #OnMouseClicked(MouseEvent)
+        /// @see #OnMouseEntered(MouseEvent)
+        /// @see #OnMouseDragged(MouseEvent)
+        /// @see #OnMouseWheelMoved(MouseWheelEvent)
         /// @since 1.3.4
         /// </summary>
-        void onMouseExited(MouseEvent evnt);
+        void OnMouseExited(MouseEvent evnt);
 
         /// <summary>
         /// This method is called when a mouse button has been pressed.
@@ -132,16 +132,16 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.MouseListener#mousePressed(MouseEvent)
-        /// @see #onMouseMoved(MouseEvent)
-        /// @see #onMouseReleased(MouseEvent)
-        /// @see #onMouseClicked(MouseEvent)
-        /// @see #onMouseEntered(MouseEvent)
-        /// @see #onMouseExited(MouseEvent)
-        /// @see #onMouseDragged(MouseEvent)
-        /// @see #onMouseWheelMoved(MouseWheelEvent)
+        /// @see #OnMouseMoved(MouseEvent)
+        /// @see #OnMouseReleased(MouseEvent)
+        /// @see #OnMouseClicked(MouseEvent)
+        /// @see #OnMouseEntered(MouseEvent)
+        /// @see #OnMouseExited(MouseEvent)
+        /// @see #OnMouseDragged(MouseEvent)
+        /// @see #OnMouseWheelMoved(MouseWheelEvent)
         /// @since 1.3.4
         /// </summary>
-        void onMousePressed(MouseEvent evnt);
+        void OnMousePressed(MouseEvent evnt);
 
         /// <summary>
         /// This method is called when a mouse button has been released.
@@ -151,16 +151,16 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.MouseListener#mouseReleased(MouseEvent)
-        /// @see #onMouseMoved(MouseEvent)
-        /// @see #onMousePressed(MouseEvent)
-        /// @see #onMouseClicked(MouseEvent)
-        /// @see #onMouseEntered(MouseEvent)
-        /// @see #onMouseExited(MouseEvent)
-        /// @see #onMouseDragged(MouseEvent)
-        /// @see #onMouseWheelMoved(MouseWheelEvent)
+        /// @see #OnMouseMoved(MouseEvent)
+        /// @see #OnMousePressed(MouseEvent)
+        /// @see #OnMouseClicked(MouseEvent)
+        /// @see #OnMouseEntered(MouseEvent)
+        /// @see #OnMouseExited(MouseEvent)
+        /// @see #OnMouseDragged(MouseEvent)
+        /// @see #OnMouseWheelMoved(MouseWheelEvent)
         /// @since 1.3.4
         /// </summary>
-        void onMouseReleased(MouseEvent evnt);
+        void OnMouseReleased(MouseEvent evnt);
 
         /// <summary>
         /// This method is called when the mouse has been moved.
@@ -170,16 +170,16 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.MouseMotionListener#mouseMoved(MouseEvent)
-        /// @see #onMousePressed(MouseEvent)
-        /// @see #onMouseReleased(MouseEvent)
-        /// @see #onMouseClicked(MouseEvent)
-        /// @see #onMouseEntered(MouseEvent)
-        /// @see #onMouseExited(MouseEvent)
-        /// @see #onMouseDragged(MouseEvent)
-        /// @see #onMouseWheelMoved(MouseWheelEvent)
+        /// @see #OnMousePressed(MouseEvent)
+        /// @see #OnMouseReleased(MouseEvent)
+        /// @see #OnMouseClicked(MouseEvent)
+        /// @see #OnMouseEntered(MouseEvent)
+        /// @see #OnMouseExited(MouseEvent)
+        /// @see #OnMouseDragged(MouseEvent)
+        /// @see #OnMouseWheelMoved(MouseWheelEvent)
         /// @since 1.3.4
         /// </summary>
-        void onMouseMoved(MouseEvent evnt);
+        void OnMouseMoved(MouseEvent evnt);
 
         /// <summary>
         /// This method is called when a mouse button has been pressed and then
@@ -190,16 +190,16 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.MouseMotionListener#mouseDragged(MouseEvent)
-        /// @see #onMouseMoved(MouseEvent)
-        /// @see #onMousePressed(MouseEvent)
-        /// @see #onMouseReleased(MouseEvent)
-        /// @see #onMouseClicked(MouseEvent)
-        /// @see #onMouseEntered(MouseEvent)
-        /// @see #onMouseExited(MouseEvent)
-        /// @see #onMouseWheelMoved(MouseWheelEvent)
+        /// @see #OnMouseMoved(MouseEvent)
+        /// @see #OnMousePressed(MouseEvent)
+        /// @see #OnMouseReleased(MouseEvent)
+        /// @see #OnMouseClicked(MouseEvent)
+        /// @see #OnMouseEntered(MouseEvent)
+        /// @see #OnMouseExited(MouseEvent)
+        /// @see #OnMouseWheelMoved(MouseWheelEvent)
         /// @since 1.3.4
         /// </summary>
-        void onMouseDragged(MouseEvent evnt);
+        void OnMouseDragged(MouseEvent evnt);
 
         /// <summary>
         /// This method is called when the mouse wheel has been rotated.
@@ -209,15 +209,15 @@ namespace robocode.robotinterfaces
         ///
         /// @param evnt holds details about current event
         /// @see java.awt.event.MouseWheelListener#mouseWheelMoved(MouseWheelEvent)
-        /// @see #onMouseMoved(MouseEvent)
-        /// @see #onMousePressed(MouseEvent)
-        /// @see #onMouseReleased(MouseEvent)
-        /// @see #onMouseClicked(MouseEvent)
-        /// @see #onMouseEntered(MouseEvent)
-        /// @see #onMouseExited(MouseEvent)
-        /// @see #onMouseDragged(MouseEvent)
+        /// @see #OnMouseMoved(MouseEvent)
+        /// @see #OnMousePressed(MouseEvent)
+        /// @see #OnMouseReleased(MouseEvent)
+        /// @see #OnMouseClicked(MouseEvent)
+        /// @see #OnMouseEntered(MouseEvent)
+        /// @see #OnMouseExited(MouseEvent)
+        /// @see #OnMouseDragged(MouseEvent)
         /// </summary>
-        void onMouseWheelMoved(MouseWheelMovedEvent evnt);
+        void OnMouseWheelMoved(MouseWheelMovedEvent evnt);
     }
 }
 //happy

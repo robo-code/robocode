@@ -96,7 +96,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (Event e : getAllEvents()) {
+	     *    for (Event e : GetAllEvents()) {
 	     *       if (e instanceof HitByRobotEvent)
 	     *        <i> (do something with e) </i>
 	     *       else if (e instanceof HitByBulletEvent)
@@ -133,7 +133,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
+	     *    for (BulletHitBulletEvent e : GetBulletHitBulletEvents()) {
 	     *      <i> (do something with e) </i>
 	     *    }
 	     * </pre>
@@ -165,7 +165,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (BulletHitEvent e : getBulletHitEvents()) {
+	     *    for (BulletHitEvent e : GetBulletHitEvents()) {
 	     *      <i> (do something with e) </i>
 	     *    }
 	     * </pre>
@@ -196,7 +196,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (BulletMissedEvent e : getBulletMissedEvents()) {
+	     *    for (BulletMissedEvent e : GetBulletMissedEvents()) {
 	     *      <i> (do something with e) </i>
 	     *    }
 	     * </pre>
@@ -238,7 +238,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (HitByBulletEvent e : getHitByBulletEvents()) {
+	     *    for (HitByBulletEvent e : GetHitByBulletEvents()) {
 	     *      <i> (do something with e) </i>
 	     *    }
 	     * </pre>
@@ -270,7 +270,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (HitRobotEvent e : getHitRobotEvents()) {
+	     *    for (HitRobotEvent e : GetHitRobotEvents()) {
 	     *      <i> (do something with e) </i>
 	     *    }
 	     * </pre>
@@ -302,7 +302,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (HitWallEvent e : getHitWallEvents()) {
+	     *    for (HitWallEvent e : GetHitWallEvents()) {
 	     *      <i> (do something with e) </i>
 	     *    }
 	     * </pre>
@@ -344,7 +344,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (RobotDeathEvent e : getRobotDeathEvents()) {
+	     *    for (RobotDeathEvent e : GetRobotDeathEvents()) {
 	     *      <i> (do something with e) </i>
 	     *    }
 	     * </pre>
@@ -372,7 +372,7 @@ namespace net.sf.robocode.dotnet.host.events
 
         public int getScannedRobotEventPriority()
         {
-            return dummyScannedRobotEvent.getPriority();
+            return dummyScannedRobotEvent.Priority;
         }
 
         /**
@@ -381,7 +381,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * <P>Example:
 	     * <pre>
-	     *    for (ScannedRobotEvent e : getScannedRobotEvents()) {
+	     *    for (ScannedRobotEvent e : GetScannedRobotEvents()) {
 	     *      <i> (do something with e) </i>
 	     *    }
 	     * </pre>
@@ -425,7 +425,7 @@ namespace net.sf.robocode.dotnet.host.events
                 robotProxy.setTestingCondition(true);
                 try
                 {
-                    conditionSatisfied = customEvent.test();
+                    conditionSatisfied = customEvent.Test();
                 }
                 finally
                 {
@@ -449,9 +449,9 @@ namespace net.sf.robocode.dotnet.host.events
             {
                 currentEvent = eventQueue[0];
             }
-            while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority)
+            while (currentEvent != null && currentEvent.Priority >= currentTopEventPriority)
             {
-                if (currentEvent.getPriority() == currentTopEventPriority)
+                if (currentEvent.Priority == currentTopEventPriority)
                 {
                     if (currentTopEventPriority > int.MinValue && getInterruptible(currentTopEventPriority))
                     {
@@ -459,14 +459,14 @@ namespace net.sf.robocode.dotnet.host.events
 
                         // We are already in an event handler, took action, and a new event was generated.
                         // So we want to break out of the old handler to process it here.
-                        throw new EventInterruptedException(currentEvent.getPriority());
+                        throw new EventInterruptedException(currentEvent.Priority);
                     }
                     break;
                 }
 
                 int oldTopEventPriority = currentTopEventPriority;
 
-                currentTopEventPriority = currentEvent.getPriority();
+                currentTopEventPriority = currentEvent.Priority;
                 currentTopEvent = currentEvent;
 
                 eventQueue.Remove(currentEvent);
@@ -498,7 +498,7 @@ namespace net.sf.robocode.dotnet.host.events
                 try
                 {
                     // skip too old events
-                    if ((currentEvent.getTime() > getTime() - MAX_EVENT_STACK) ||
+                    if ((currentEvent.Time > getTime() - MAX_EVENT_STACK) ||
                         HiddenAccessN.isCriticalEvent(currentEvent))
                     {
                         HiddenAccessN.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
@@ -551,7 +551,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * Example:
 	     * <pre>
-	     *   for (MessageEvent e : getMessageEvents()) {
+	     *   for (MessageEvent e : GetMessageEvents()) {
 	     *      <i> (do something with e) </i>
 	     *   }
 	     * </pre>
@@ -585,7 +585,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * <p/>
 	     * Example:
 	     * <pre>
-	     *   for (StatusEvent e : getStatusEvents()) {
+	     *   for (StatusEvent e : GetStatusEvents()) {
 	     *      <i> (do something with e) </i>
 	     *   }
 	     * </pre>
@@ -625,7 +625,7 @@ namespace net.sf.robocode.dotnet.host.events
             {
                 return -1;
             }
-            return evnt.getPriority();
+            return evnt.Priority;
         }
 
         public void setEventPriority(String eventClass, int priority)

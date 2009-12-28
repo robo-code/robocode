@@ -130,9 +130,9 @@ namespace robocode.robotinterfaces.peer
         double getRadarHeading();
 
         /// <summary>
-        /// Returns the current heat of the gun. The gun cannot fire unless this is
-        /// 0. (Calls to fire will succeed, but will not actually fire unless
-        /// getGunHeat() == 0).
+        /// Returns the current heat of the gun. The gun cannot Fire unless this is
+        /// 0. (Calls to Fire will succeed, but will not actually Fire unless
+        /// GetGunHeat() == 0).
         /// <p/>
         /// The amount of gun heat generated when the gun is fired is
         /// 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
@@ -143,7 +143,7 @@ namespace robocode.robotinterfaces.peer
         ///
         /// @return the current gun heat
         /// @see #getGunCoolingRate()
-        /// @see #setFire(double)
+        /// @see #SetFire(double)
         /// </summary>
         double getGunHeat();
 
@@ -193,8 +193,8 @@ namespace robocode.robotinterfaces.peer
         /// battle setup. So don't count on the cooling rate being 0.1!
         ///
         /// @return the gun cooling rate
-        /// @see #getGunHeat()
-        /// @see #setFire(double)
+        /// @see #GetGunHeat()
+        /// @see #SetFire(double)
         /// </summary>
         double getGunCoolingRate();
 
@@ -262,9 +262,9 @@ namespace robocode.robotinterfaces.peer
         /// in process. This call returns after the actions have been started.
         /// <p/>
         /// Note that advanced robots <em>must</em> call this function in order to
-        /// execute pending set* calls like e.g. {@link
+        /// Execute pending set* calls like e.g. {@link
         /// IAdvancedRobotPeer#setMove(double) setMove(double)},
-        /// {@link IAdvancedRobotPeer#setFire(double) setFire(double)}, {@link
+        /// {@link IAdvancedRobotPeer#SetFire(double) SetFire(double)}, {@link
         /// IAdvancedRobotPeer#setTurnBody(double) setTurnBody(double)} etc.
         /// Otherwise, these calls will never get executed.
         /// <p/>
@@ -272,10 +272,10 @@ namespace robocode.robotinterfaces.peer
         /// <pre>
         ///   setTurnBody(90);
         ///   setMove(100);
-        ///   execute();
+        ///   Execute();
         /// <p/>
         ///   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
-        ///       execute();
+        ///       Execute();
         ///   }
         /// </pre>
         /// </summary>
@@ -299,10 +299,10 @@ namespace robocode.robotinterfaces.peer
         /// Example:
         /// <pre>
         ///   // Move the robot 100 pixels forward
-        ///   ahead(100);
+        ///   Ahead(100);
         /// <p/>
         ///   // Afterwards, move the robot 50 pixels backward
-        ///   ahead(-50);
+        ///   Ahead(-50);
         /// </pre>
         ///
         /// @param distance the distance to move measured in pixels.
@@ -310,8 +310,8 @@ namespace robocode.robotinterfaces.peer
         ///                 If {@code distance} < 0 the robot is set to move backward.
         ///                 If {@code distance} = 0 the robot will not move anywhere, but just
         ///                 finish its turn.
-        /// @see robocode.robotinterfaces.IBasicEvents#onHitWall(robocode.HitWallEvent)
-        /// @see robocode.robotinterfaces.IBasicEvents#onHitRobot(robocode.HitRobotEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnHitWall(robocode.HitWallEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnHitRobot(robocode.HitRobotEvent)
         /// </summary>
         void move(double distance);
 
@@ -323,7 +323,7 @@ namespace robocode.robotinterfaces.peer
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's body is set to turn right, and
         /// negative values means that the robot's body is set to turn left.
-        /// If 0 is given as input, the robot's body will stop turning.
+        /// If 0 is given as input, the robot's body will Stop turning.
         /// <p/>
         /// Example:
         /// <pre>
@@ -337,7 +337,7 @@ namespace robocode.robotinterfaces.peer
         /// @param radians the amount of radians to turn the robot's body.
         ///                If {@code radians} > 0 the robot's body is set to turn right.
         ///                If {@code radians} < 0 the robot's body is set to turn left.
-        ///                If {@code radians} = 0 the robot's body is set to stop turning.
+        ///                If {@code radians} = 0 the robot's body is set to Stop turning.
         /// @see #turnGun(double)
         /// @see IStandardRobotPeer#turnRadar(double) turnRadar(double)
         /// @see #move(double)
@@ -352,7 +352,7 @@ namespace robocode.robotinterfaces.peer
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's gun is set to turn right, and
         /// negative values means that the robot's gun is set to turn left.
-        /// If 0 is given as input, the robot's gun will stop turning.
+        /// If 0 is given as input, the robot's gun will Stop turning.
         /// <p/>
         /// Example:
         /// <pre>
@@ -366,7 +366,7 @@ namespace robocode.robotinterfaces.peer
         /// @param radians the amount of radians to turn the robot's gun.
         ///                If {@code radians} > 0 the robot's gun is set to turn right.
         ///                If {@code radians} < 0 the robot's gun is set to turn left.
-        ///                If {@code radians} = 0 the robot's gun is set to stop turning.
+        ///                If {@code radians} = 0 the robot's gun is set to Stop turning.
         /// @see #turnBody(double)
         /// @see IStandardRobotPeer#turnRadar(double) turnRadar(double)
         /// @see #move(double)
@@ -383,15 +383,15 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// The bullet will do (4 * power) damage if it hits another robot. If power
         /// is greater than 1, it will do an additional 2 * (power - 1) damage.
-        /// You will get (3 * power) back if you hit the other robot. You can call
-        /// {@link Rules#getBulletDamage(double)} for getting the damage that a
+        /// You will get (3 * power) Back if you hit the other robot. You can call
+        /// {@link Rules#GetBulletDamage(double)} for getting the damage that a
         /// bullet with a specific bullet power will do.
         /// <p/>
         /// The specified bullet power should be between
         /// {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
         /// <p/>
-        /// Note that the gun cannot fire if the gun is overheated, meaning that
-        /// {@link #getGunHeat()} returns a value > 0.
+        /// Note that the gun cannot Fire if the gun is overheated, meaning that
+        /// {@link #GetGunHeat()} returns a value > 0.
         /// <p/>
         /// A evnt is generated when the bullet hits a robot
         /// ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
@@ -400,8 +400,8 @@ namespace robocode.robotinterfaces.peer
         /// Example:
         /// <pre>
         ///   // Fire a bullet with maximum power if the gun is ready
-        ///   if (getGunHeat() == 0) {
-        ///       Bullet bullet = fire(Rules.MAX_BULLET_POWER);
+        ///   if (GetGunHeat() == 0) {
+        ///       Bullet bullet = Fire(Rules.MAX_BULLET_POWER);
         /// <p/>
         ///       // Get the velocity of the bullet
         ///       if (bullet != null) {
@@ -415,25 +415,25 @@ namespace robocode.robotinterfaces.peer
         /// @return a {@link Bullet} that contains information about the bullet if it
         ///         was actually fired, which can be used for tracking the bullet after it
         ///         has been fired. If the bullet was not fired, {@code null} is returned.
-        /// @see #setFire(double)
+        /// @see #SetFire(double)
         /// @see Bullet
-        /// @see #getGunHeat()
+        /// @see #GetGunHeat()
         /// @see #getGunCoolingRate()
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletHit(BulletHitEvent)
-        ///      onBulletHit(BulletHitEvent)
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletHitBullet(BulletHitBulletEvent)
-        ///      onBulletHitBullet(BulletHitBulletEvent)
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletMissed(BulletMissedEvent)
-        ///      onBulletMissed(BulletMissedEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletHit(BulletHitEvent)
+        ///      OnBulletHit(BulletHitEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletHitBullet(BulletHitBulletEvent)
+        ///      OnBulletHitBullet(BulletHitBulletEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletMissed(BulletMissedEvent)
+        ///      OnBulletMissed(BulletMissedEvent)
         /// </summary>
         Bullet fire(double power);
 
         /// <summary>
-        /// Sets the gun to fire a bullet when the next execution takes place.
+        /// Sets the gun to Fire a bullet when the next execution takes place.
         /// The bullet will travel in the direction the gun is pointing.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// The specified bullet power is an amount of energy that will be taken from
         /// the robot's energy. Hence, the more power you want to spend on the
@@ -441,15 +441,15 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// The bullet will do (4 * power) damage if it hits another robot. If power
         /// is greater than 1, it will do an additional 2 * (power - 1) damage.
-        /// You will get (3 * power) back if you hit the other robot. You can call
-        /// {@link Rules#getBulletDamage(double)} for getting the damage that a
+        /// You will get (3 * power) Back if you hit the other robot. You can call
+        /// {@link Rules#GetBulletDamage(double)} for getting the damage that a
         /// bullet with a specific bullet power will do.
         /// <p/>
         /// The specified bullet power should be between
         /// {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
         /// <p/>
-        /// Note that the gun cannot fire if the gun is overheated, meaning that
-        /// {@link #getGunHeat()} returns a value > 0.
+        /// Note that the gun cannot Fire if the gun is overheated, meaning that
+        /// {@link #GetGunHeat()} returns a value > 0.
         /// <p/>
         /// A evnt is generated when the bullet hits a robot
         /// ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
@@ -460,11 +460,11 @@ namespace robocode.robotinterfaces.peer
         ///   Bullet bullet = null;
         /// <p/>
         ///   // Fire a bullet with maximum power if the gun is ready
-        ///   if (getGunHeat() == 0) {
-        ///       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
+        ///   if (GetGunHeat() == 0) {
+        ///       bullet = SetFireBullet(Rules.MAX_BULLET_POWER);
         ///   }
         ///   ...
-        ///   execute();
+        ///   Execute();
         ///   ...
         ///   // Get the velocity of the bullet
         ///   if (bullet != null) {
@@ -477,16 +477,16 @@ namespace robocode.robotinterfaces.peer
         /// @return a {@link Bullet} that contains information about the bullet if it
         ///         was actually fired, which can be used for tracking the bullet after it
         ///         has been fired. If the bullet was not fired, {@code null} is returned.
-        /// @see #fire(double)
+        /// @see #Fire(double)
         /// @see Bullet
-        /// @see #getGunHeat()
+        /// @see #GetGunHeat()
         /// @see #getGunCoolingRate()
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletHit(BulletHitEvent)
-        ///      onBulletHit(BulletHitEvent)
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletHitBullet(BulletHitBulletEvent)
-        ///      onBulletHitBullet(BulletHitBulletEvent)
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletMissed(BulletMissedEvent)
-        ///      onBulletMissed(BulletMissedEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletHit(BulletHitEvent)
+        ///      OnBulletHit(BulletHitEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletHitBullet(BulletHitBulletEvent)
+        ///      OnBulletHitBullet(BulletHitBulletEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletMissed(BulletMissedEvent)
+        ///      OnBulletMissed(BulletMissedEvent)
         /// </summary>
         Bullet setFire(double power);
 
@@ -501,7 +501,7 @@ namespace robocode.robotinterfaces.peer
         ///   using java.awt.Color;
         ///   ...
         /// <p/>
-        ///   public void run() {
+        ///   public void Run() {
         ///       setBodyColor(Color.BLACK);
         ///       ...
         ///   }
@@ -528,7 +528,7 @@ namespace robocode.robotinterfaces.peer
         ///   using java.awt.Color;
         ///   ...
         /// <p/>
-        ///   public void run() {
+        ///   public void Run() {
         ///       setGunColor(Color.RED);
         ///       ...
         ///   }
@@ -555,7 +555,7 @@ namespace robocode.robotinterfaces.peer
         ///   using java.awt.Color;
         ///   ...
         /// <p/>
-        ///   public void run() {
+        ///   public void Run() {
         ///       setRadarColor(Color.YELLOW);
         ///       ...
         ///   }
@@ -582,7 +582,7 @@ namespace robocode.robotinterfaces.peer
         ///   using java.awt.Color;
         ///   ...
         /// <p/>
-        ///   public void run() {
+        ///   public void Run() {
         ///       setBulletColor(Color.GREEN);
         ///       ...
         ///   }
@@ -599,7 +599,7 @@ namespace robocode.robotinterfaces.peer
         void setBulletColor(Color color);
 
         /// <summary>
-        /// Sets the color of the robot's scan arc.
+        /// Sets the color of the robot's Scan arc.
         /// <p/>
         /// A {@code null} indicates the default (blue) color.
         /// <p/>
@@ -609,13 +609,13 @@ namespace robocode.robotinterfaces.peer
         ///   using java.awt.Color;
         ///   ...
         /// <p/>
-        ///   public void run() {
+        ///   public void Run() {
         ///       setScanColor(Color.WHITE);
         ///       ...
         ///   }
         /// </pre>
         ///
-        /// @param color the new scan arc color
+        /// @param color the new Scan arc color
         /// @see #setBodyColor(Color)
         /// @see #setGunColor(Color)
         /// @see #setRadarColor(Color)
@@ -640,7 +640,7 @@ namespace robocode.robotinterfaces.peer
         /// <summary>
         /// This call <em>must</em> be made from a robot call to inform the game
         /// that the robot made a {@code set*} call like e.g. {@link
-        /// #setFire(double)} or {@link #setBodyColor(Color)}.
+        /// #SetFire(double)} or {@link #setBodyColor(Color)}.
         /// <p/>
         /// This method is used by the game to determine if the robot is inactive or
         /// not. Note: You should only make this call once in a {@code set*} method!
@@ -666,7 +666,7 @@ namespace robocode.robotinterfaces.peer
         /// is upwards.
         ///
         /// @return a graphics context used for painting graphical items for the robot.
-        /// @see robocode.robotinterfaces.IPaintEvents#onPaint(Graphics)
+        /// @see robocode.robotinterfaces.IPaintEvents#OnPaint(Graphics)
         /// @since 1.6.1
         /// </summary>
         IGraphics getGraphics();
@@ -690,22 +690,22 @@ namespace robocode.robotinterfaces.peer
         /// as long as the robot is moving, turning its body, turning its gun, or
         /// turning its radar.
         /// <p/>
-        /// Rescan will cause {@link IBasicEvents#onScannedRobot(ScannedRobotEvent)
-        /// onScannedRobot(ScannedRobotEvent)} to be called if you see a robot.
+        /// Rescan will cause {@link IBasicEvents#OnScannedRobot(ScannedRobotEvent)
+        /// OnScannedRobot(ScannedRobotEvent)} to be called if you see a robot.
         /// <p/>
         /// There are 2 reasons to call {@code rescan()} manually:
         /// <ol>
-        /// <li>You want to scan after you stop moving.
-        /// <li>You want to interrupt the {@code onScannedRobot} evnt. This is more
-        /// likely. If you are in {@code onScannedRobot} and call {@code scan()},
+        /// <li>You want to Scan after you Stop moving.
+        /// <li>You want to interrupt the {@code OnScannedRobot} evnt. This is more
+        /// likely. If you are in {@code OnScannedRobot} and call {@code Scan()},
         /// and you still see a robot, then the system will interrupt your
-        /// {@code onScannedRobot} evnt immediately and start it from the top.
+        /// {@code OnScannedRobot} evnt immediately and start it from the top.
         /// </ol>
         /// <p/>
         /// This call executes immediately.
         ///
-        /// @see IBasicEvents#onScannedRobot(ScannedRobotEvent)
-        ///      onScannedRobot(ScannedRobotEvent)
+        /// @see IBasicEvents#OnScannedRobot(ScannedRobotEvent)
+        ///      OnScannedRobot(ScannedRobotEvent)
         /// @see ScannedRobotEvent
         ///
         /// @since 1.7.2

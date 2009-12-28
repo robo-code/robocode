@@ -21,7 +21,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A HitWallEvent is sent to {@link Robot#onHitWall(HitWallEvent) onHitWall()}
+    /// A HitWallEvent is sent to {@link Robot#OnHitWall(HitWallEvent) OnHitWall()}
     /// when you collide a wall.
     /// You can use the information contained in this evnt to determine what to do.
     ///
@@ -50,9 +50,9 @@ namespace robocode
         ///
         /// @return the bearing to the wall you hit, in degrees
         /// </summary>
-        public double getBearing()
+        public double Bearing
         {
-            return bearing*180.0/Math.PI;
+            get { return bearing*180.0/Math.PI; }
         }
 
 
@@ -62,38 +62,38 @@ namespace robocode
         ///
         /// @return the bearing to the wall you hit, in radians
         /// </summary>
-        public double getBearingRadians()
+        public double BearingRadians
         {
-            return bearing;
+            get { return bearing; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onHitWall(this);
+                listener.OnHitWall(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.HitWallEvent_TYPE;
+            get { return RbSerializerN.HitWallEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

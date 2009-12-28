@@ -31,41 +31,41 @@ namespace samplecs
         /// <summary>
         /// Droid's default behavior
         /// </summary>
-        public override void run()
+        public override void Run()
         {
-            output.WriteLine("MyFirstDroid ready.");
+            Output.WriteLine("MyFirstDroid ready.");
         }
 
         /// <summary>
-        /// onMessageReceived:  What to do when our leader sends a message
+        /// OnMessageReceived:  What to do when our leader sends a message
         /// </summary>
-        public override void onMessageReceived(MessageEvent e)
+        public override void OnMessageReceived(MessageEvent e)
         {
             // Fire at a point
-            if (e.getMessage() is PointF)
+            if (e.Message is PointF)
             {
-                var p = (PointF)e.getMessage();
+                var p = (PointF)e.Message;
                 // Calculate x and y to target
-                double dx = p.X - getX();
-                double dy = p.Y - getY();
+                double dx = p.X - X;
+                double dy = p.Y - Y;
                 // Calculate angle to target
                 double theta = Utils.toDegrees(Math.Atan2(dx, dy));
 
                 // Turn gun to target
-                turnGunRight(Utils.normalRelativeAngleDegrees(theta - getGunHeading()));
+                TurnGunRight(Utils.NormalRelativeAngleDegrees(theta - GunHeading));
                 // Fire hard!
-                fire(3);
+                Fire(3);
             }
-            else if (e.getMessage() is RobotColors)
+            else if (e.Message is RobotColors)
             {
                 // Set our colors
-                var c = (RobotColors)e.getMessage();
+                var c = (RobotColors)e.Message;
 
-                setBodyColor(c.bodyColor);
-                setGunColor(c.gunColor);
-                setRadarColor(c.radarColor);
-                setScanColor(c.scanColor);
-                setBulletColor(c.bulletColor);
+                BodyColor = c.bodyColor;
+                GunColor = c.gunColor;
+                RadarColor = c.radarColor;
+                ScanColor = c.scanColor;
+                BulletColor = c.bulletColor;
             }
         }
     }

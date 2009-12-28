@@ -26,17 +26,17 @@ namespace robocode
     /// <li>radar rotation - radians per turn</li>
     /// </ul>
     /// When you set a rate for one of the above movements, the movement will continue the move by
-    /// specified rate for ever, until the rate is changed. In order to move ahead or right, the
+    /// specified rate for ever, until the rate is changed. In order to move Ahead or right, the
     /// rate must be set to a positive value. If a negative value is used instead, the movement
-    /// will go back or to the left. In order to stop the movement, the rate must be
+    /// will go Back or to the left. In order to Stop the movement, the rate must be
     /// set to 0.
-    /// </p>
+    /// 
     /// Note: When calling {@code setVelocityRate()}, {@code setTurnRate()}, {@code setGunRotationRate()},
     /// {@code setRadarRotationRate()} and variants, Any previous calls to "movement" functions outside of
-    /// {@code RateControlRobot}, such as {@code setAhead()}, {@code setTurnLeft()},
-    /// {@code setTurnRadarRightRadians()} and similar will be overridden when calling the
-    /// {@link #execute() execute()} on this robot class.
-    /// </p>
+    /// {@code RateControlRobot}, such as {@code SetAhead()}, {@code SetTurnLeft()},
+    /// {@code SetTurnRadarRightRadians()} and similar will be overridden when calling the
+    /// {@link #Execute() Execute()} on this robot class.
+    /// 
     /// Look into the source code for the {@code sample.VelociRobot} in order to see how to use this
     /// robot type. 
     ///
@@ -53,8 +53,8 @@ namespace robocode
         /// <summary>
         /// Sets the speed the robot will move (forward), in pixels per turn.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot will move backwards
@@ -70,11 +70,11 @@ namespace robocode
         ///
         ///   ...
         ///   // Executes the last setVelocityRate()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         ///
-        /// Note: This method overrules {@link robocode.AdvancedRobot#setAhead(double)} and
-        /// {@link robocode.AdvancedRobot#setBack(double)}.
+        /// Note: This method overrules {@link robocode.AdvancedRobot#SetAhead(double)} and
+        /// {@link robocode.AdvancedRobot#SetBack(double)}.
         ///
         /// @param velocityRate pixels per turn the robot will move.
         /// 
@@ -82,34 +82,19 @@ namespace robocode
         /// @see #setTurnRate(double)
         /// @see #setGunRotationRate(double)
         /// @see #setRadarRotationRate(double)
-        /// @see AdvancedRobot#setAhead(double)
-        /// @see AdvancedRobot#setBack(double)
+        /// @see AdvancedRobot#SetAhead(double)
+        /// @see AdvancedRobot#SetBack(double)
         /// </summary>
-        public void setVelocityRate(double velocityRate)
+        public double VelocityRate
         {
-            this.velocityRate = velocityRate;
-        }
-
-        /// <summary>
-        /// Returns the speed the robot will move, in pixels per turn.
-        /// Positive values means that the robot will move forward.
-        /// Negative values means that the robot will move backwards.
-        /// If the value is 0, the robot will stand still.
-        ///
-        /// @return The speed of the robot in pixels per turn
-        ///
-        /// @see #setVelocityRate(double)
-        /// </summary>
-        public double getVelocityRate()
-        {
-            return velocityRate;
-        }
+            get { return velocityRate; }
+            set { velocityRate = value; }        }
 
         /// <summary>
         /// Sets the robot's clockwise (right) rotation per turn, in degrees.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot turns counterclockwise (left)
@@ -125,43 +110,27 @@ namespace robocode
         ///
         ///   ...
         ///   // Executes the last setTurnRate()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         ///
         /// @param turnRate angle of the clockwise rotation, in degrees.
         ///
-        /// @see #getTurnRate()
+        /// @see #GetTurnRate()
         /// @see #setVelocityRate(double)
         /// @see #setGunRotationRate(double)
         /// @see #setRadarRotationRate(double)
-        /// @see AdvancedRobot#setTurnRight(double)
-        /// @see AdvancedRobot#setTurnLeft(double)
+        /// @see AdvancedRobot#SetTurnRight(double)
+        /// @see AdvancedRobot#SetTurnLeft(double)
         /// </summary>
-        public void setTurnRate(double turnRate)
+        public double TurnRate
         {
-            this.turnRate = Utils.toRadians(turnRate);
-        }
-
-        /// <summary>
-        /// Gets the robot's clockwise rotation per turn, in degrees.
-        /// Positive values means that the robot will turn to the right.
-        /// Negative values means that the robot will turn to the left.
-        /// If the value is 0, the robot will not turn.
-        ///
-        /// @return Angle of the clockwise rotation, in degrees.
-        ///
-        /// @see #setTurnRate(double)
-        /// </summary>
-        public double getTurnRate()
-        {
-            return Utils.toRadians(turnRate);
-        }
+            get { return Utils.toRadians(turnRate); }            set { turnRate = Utils.toRadians(value); }        }
 
         /// <summary>
         /// Sets the robot's clockwise (right) rotation per turn, in radians.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the robot turns counterclockwise (left)
@@ -177,43 +146,29 @@ namespace robocode
         /// <p/>
         ///   ...
         ///   // Executes the last setTurnRateRadians()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         /// 
         /// @param turnRate angle of the clockwise rotation, in radians.
         ///
-        /// @see #getTurnRateRadians()()
+        /// @see #GetTurnRateRadians()()
         /// @see #setVelocityRate(double)
         /// @see #setGunRotationRateRadians(double)
         /// @see #setRadarRotationRateRadians(double)
-        /// @see AdvancedRobot#setTurnRightRadians(double)
-        /// @see AdvancedRobot#setTurnLeftRadians(double)
+        /// @see AdvancedRobot#SetTurnRightRadians(double)
+        /// @see AdvancedRobot#SetTurnLeftRadians(double)
         /// </summary>
-        public void setTurnRateRadians(double turnRate)
+        public double TurnRateRadians
         {
-            this.turnRate = turnRate;
-        }
-
-        /// <summary>
-        /// Gets the robot's clockwise rotation per turn, in radians.
-        /// Positive values means that the robot will turn to the right.
-        /// Negative values means that the robot will turn to the left.
-        /// If the value is 0, the robot will not turn.
-        /// 
-        /// @return Angle of the clockwise rotation, in radians.
-        /// 
-        /// @see #getTurnRateRadians()
-        /// </summary>
-        public double getTurnRateRadians()
-        {
-            return turnRate;
+            get { return turnRate; }
+            set{turnRate = value;}
         }
 
         /// <summary>
         /// Sets the gun's clockwise (right) rotation per turn, in degrees.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the gun turns counterclockwise (left)
@@ -229,7 +184,7 @@ namespace robocode
         /// <p/>
         ///   ...
         ///   // Executes the last setGunRotationRate()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         /// 
         /// @param gunRotationRate angle of the clockwise rotation, in degrees.
@@ -238,34 +193,19 @@ namespace robocode
         /// @see #setVelocityRate(double)
         /// @see #setTurnRate(double)
         /// @see #setRadarRotationRate(double)
-        /// @see AdvancedRobot#setTurnGunRight(double)
-        /// @see AdvancedRobot#setTurnGunLeft(double)
+        /// @see AdvancedRobot#SetTurnGunRight(double)
+        /// @see AdvancedRobot#SetTurnGunLeft(double)
         /// </summary>
-        public void setGunRotationRate(double gunRotationRate)
+        public double GunRotationRate
         {
-            this.gunRotationRate = Utils.toRadians(gunRotationRate);
-        }
-
-        /// <summary>
-        /// Gets the gun's clockwise rotation per turn, in degrees.
-        /// Positive values means that the gun will turn to the right.
-        /// Negative values means that the gun will turn to the left.
-        /// If the value is 0, the gun will not turn.
-        /// 
-        /// @return Angle of the clockwise rotation, in degrees.
-        /// 
-        /// @see #setGunRotationRate(double)
-        /// </summary>
-        public double getGunRotationRate()
-        {
-            return Utils.toRadians(gunRotationRate);
-        }
+            get { return Utils.toDegrees(gunRotationRate); }
+            set { gunRotationRate = Utils.toRadians(value); }        }
 
         /// <summary>
         /// Sets the gun's clockwise (right) rotation per turn, in radians.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the gun turns counterclockwise (left)
@@ -281,7 +221,7 @@ namespace robocode
         /// <p/>
         ///   ...
         ///   // Executes the last setGunRotationRateRadians()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         /// 
         /// @param gunRotationRate angle of the clockwise rotation, in radians.
@@ -290,34 +230,19 @@ namespace robocode
         /// @see #setVelocityRate(double)
         /// @see #setTurnRateRadians(double)
         /// @see #setRadarRotationRateRadians(double)
-        /// @see AdvancedRobot#setTurnGunRightRadians(double)
-        /// @see AdvancedRobot#setTurnGunLeftRadians(double)
+        /// @see AdvancedRobot#SetTurnGunRightRadians(double)
+        /// @see AdvancedRobot#SetTurnGunLeftRadians(double)
         /// </summary>
-        public void setGunRotationRateRadians(double gunRotationRate)
+        public double GunRotationRateRadians
         {
-            this.gunRotationRate = gunRotationRate;
-        }
-
-        /// <summary>
-        /// Gets the gun's clockwise rotation per turn, in radians.
-        /// Positive values means that the gun will turn to the right.
-        /// Negative values means that the gun will turn to the left.
-        /// If the value is 0, the gun will not turn.
-        /// 
-        /// @return Angle of the clockwise rotation, in radians.
-        /// 
-        /// @see #setGunRotationRateRadians(double)
-        /// </summary>
-        public double getGunRotationRateRadians()
-        {
-            return gunRotationRate;
-        }
+            get { return gunRotationRate; }
+            set { gunRotationRate = value; }        }
 
         /// <summary>
         /// Sets the radar's clockwise (right) rotation per turn, in degrees.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the radar turns counterclockwise (left)
@@ -333,7 +258,7 @@ namespace robocode
         /// <p/>
         ///   ...
         ///   // Executes the last setRadarRotationRate()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         /// 
         /// @param radarRotationRate angle of the clockwise rotation, in degrees.
@@ -342,34 +267,18 @@ namespace robocode
         /// @see #setVelocityRate(double)
         /// @see #setTurnRate(double)
         /// @see #setGunRotationRate(double)
-        /// @see AdvancedRobot#setTurnRadarRight(double)
-        /// @see AdvancedRobot#setTurnRadarLeft(double)
-        /// </summary>
-        public void setRadarRotationRate(double radarRotationRate)
+        /// @see AdvancedRobot#SetTurnRadarRight(double)
+        /// @see AdvancedRobot#SetTurnRadarLeft(double)
+        /// </summary>        public double RadarRotationRate
         {
-            this.radarRotationRate = Utils.toRadians(radarRotationRate);
-        }
-
-        /// <summary>
-        /// Gets the radar's clockwise rotation per turn, in degrees.
-        /// Positive values means that the radar will turn to the right.
-        /// Negative values means that the radar will turn to the left.
-        /// If the value is 0, the radar will not turn.
-        /// 
-        /// @return Angle of the clockwise rotation, in degrees.
-        /// 
-        /// @see #setRadarRotationRate(double)
-        /// </summary>
-        public double getRadarRotationRate()
-        {
-            return Utils.toRadians(radarRotationRate);
-        }
+            get { return Utils.toDegrees(radarRotationRate); }
+            set { radarRotationRate = Utils.toRadians(value); }        }
 
         /// <summary>
         /// Sets the radar's clockwise (right) rotation per turn, in radians.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// execute() or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// Execute() or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input,
         /// where negative values means that the radar turns counterclockwise (left)
@@ -385,7 +294,7 @@ namespace robocode
         /// <p/>
         ///   ...
         ///   // Executes the last setRadarRotationRateRadians()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         /// 
         /// @param gunRotationRate angle of the clockwise rotation, in radians.
@@ -394,39 +303,23 @@ namespace robocode
         /// @see #setVelocityRate(double)
         /// @see #setTurnRateRadians(double)
         /// @see #setGunRotationRateRadians(double)
-        /// @see AdvancedRobot#setTurnRadarRightRadians(double)
-        /// @see AdvancedRobot#setTurnRadarLeftRadians(double)
+        /// @see AdvancedRobot#SetTurnRadarRightRadians(double)
+        /// @see AdvancedRobot#SetTurnRadarLeftRadians(double)
         /// </summary>
-        public void setRadarRotationRateRadians(double radarRotationRate)
+        public double RadarRotationRateRadians
         {
-            this.radarRotationRate = radarRotationRate;
-        }
-
-        /// <summary>
-        /// Gets the radar's clockwise rotation per turn, in radians.
-        /// Positive values means that the radar will turn to the right.
-        /// Negative values means that the radar will turn to the left.
-        /// If the value is 0, the radar will not turn.
-        /// 
-        /// @return Angle of the clockwise rotation, in radians.
-        /// 
-        /// @see #setRadarRotationRateRadians(double)
-        /// </summary>
-        public double getRadarRotationRateRadians()
-        {
-            return radarRotationRate;
-        }
+            get { return radarRotationRate; }            set { radarRotationRate = value; }        }
 
         /// <summary>
         /// Executes any pending actions, or continues executing actions that are
         /// in process. This call returns after the actions have been started.
         /// <p/>
         /// Note that advanced robots <em>must</em> call this function in order to
-        /// execute pending set* calls like e.g. {@code setVelocityRate()}, {@code setFire()},
+        /// Execute pending set* calls like e.g. {@code setVelocityRate()}, {@code SetFire()},
         /// {@code setTurnRate()} etc. Otherwise, these calls will never get executed.
         /// <p/>
         /// Any previous calls to "movement" functions outside of {@code RateControlRobot},
-        /// such as {@code setAhead()}, {@code setTurnLeft()}, {@code setTurnRadarLeftRadians()}
+        /// such as {@code SetAhead()}, {@code SetTurnLeft()}, {@code SetTurnRadarLeftRadians()}
         /// etc. will be overridden when this method is called on this robot class.
         /// <p/>
         /// In this example the robot will move while turning:
@@ -435,31 +328,31 @@ namespace robocode
         ///   setTurnRate(7);
         ///
         ///   while (true) {
-        ///       execute();
+        ///       Execute();
         ///   }
         /// </pre>
         /// </summary>
-        public override void execute()
+        public override void Execute()
         {
-            setMaxVelocity(velocityRate);
+            MaxVelocity = velocityRate;
             if (velocityRate > 0)
             {
-                setAhead(Double.PositiveInfinity);
+                SetAhead(Double.PositiveInfinity);
             }
             else if (velocityRate < 0)
             {
-                setBack(Double.PositiveInfinity);
+                SetBack(Double.PositiveInfinity);
             }
             else
             {
-                setAhead(0);
+                SetAhead(0);
             }
 
-            setTurnGunRightRadians(gunRotationRate);
-            setTurnRadarRightRadians(radarRotationRate);
-            setTurnRightRadians(turnRate);
+            SetTurnGunRightRadians(gunRotationRate);
+            SetTurnRadarRightRadians(radarRotationRate);
+            SetTurnRightRadians(turnRate);
 
-            base.execute();
+            base.Execute();
         }
     }
 }

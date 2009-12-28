@@ -21,7 +21,6 @@
  *******************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.security;
@@ -44,13 +43,6 @@ namespace robocode
         private volatile bool addedToQueue;
         private long time;
         private int priority;
-
-        /// <summary>
-        /// Called by the game to create a new Event.
-        /// </summary>
-        public Event()
-        {
-        }
 
         /// <summary>
         /// Compares this evnt to another evnt regarding precedence.
@@ -83,7 +75,7 @@ namespace robocode
             }
 
             // Same time -> Compare the difference in priority
-            int priorityDiff = evnt.getPriority() - getPriority();
+            int priorityDiff = evnt.Priority - Priority;
 
             if (priorityDiff != 0)
             {
@@ -104,9 +96,30 @@ namespace robocode
         ///
         /// @return the priority of this event
         /// </summary>
-        public virtual int getPriority()
+        public virtual int Priority
         {
-            return priority;
+            get { return priority; }
+            set
+            {
+                if (addedToQueue)
+                {
+                    LoggerN.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, priority can't be changed.");
+                    return;
+                }
+                if (value < 0)
+                {
+                    LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
+                    LoggerN.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 0");
+                    value = 0;
+                }
+                else if (value > 99)
+                {
+                    LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
+                    LoggerN.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 99");
+                    value = 99;
+                }
+                priority = value;
+            }
         }
 
         /// <summary>
@@ -114,44 +127,20 @@ namespace robocode
         ///
         /// @return the time this evnt occurred.
         /// </summary>
-        public long getTime()
+        public long Time
         {
-            return time;
-        }
-
-        /// <summary>
-        /// Called by the game to set the priority of an evnt to the priority your
-        /// robot specified for this type of evnt (or the default priority).
-        /// <p/>
-        /// An evnt priority is a value from 0 - 99. The higher value, the higher
-        /// priority. The default priority is 80.
-        ///
-        /// Could be called by robot on events which are not managed by game.
-        /// If the evnt is added into EventQueue, the time will be overridden.
-        /// 
-        /// @param newPriority the new priority of this event
-        /// @see AdvancedRobot#setEventPriority(string, int)
-        /// </summary>
-        public void setPriority(int newPriority)
-        {
-            if (addedToQueue)
+            get { return time; }
+            set
             {
-                LoggerN.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, priority can't be changed.");
-                return;
+                if (!addedToQueue)
+                {
+                    time = value;
+                }
+                else
+                {
+                    LoggerN.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, time can't be changed.");
+                }
             }
-            if (newPriority < 0)
-            {
-                LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
-                LoggerN.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 0");
-                newPriority = 0;
-            }
-            else if (newPriority > 99)
-            {
-                LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
-                LoggerN.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 99");
-                newPriority = 99;
-            }
-            priority = newPriority;
         }
 
         /// <summary>
@@ -171,24 +160,6 @@ namespace robocode
         }
 
         /// <summary>
-        /// Could be caled by robot to assign the time to events which are not managed by game.
-        /// If the evnt is added into EventQueue, the time could be overriden
-        ///
-        /// @param newTime the time this evnt occurred
-        /// </summary>
-        public void setTime(long newTime)
-        {
-            if (!addedToQueue)
-            {
-                time = newTime;
-            }
-            else
-            {
-                LoggerN.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, time can't be changed.");
-            }
-        }
-
-        /// <summary>
         /// Dispatch this evnt for a robot, it's statistics, and graphics context.
         ///
         /// @param robot the robot to dispatch to.
@@ -196,7 +167,7 @@ namespace robocode
         /// @param graphics the graphics to dispatch to.
         /// </summary>
         // this method is invisible on RobotAPI
-        internal virtual void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal virtual void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
         }
 
@@ -206,9 +177,9 @@ namespace robocode
         /// @return the default priority of this evnt class.
         /// </summary>
         // this method is invisible on RobotAPI
-        internal virtual int getDefaultPriority()
+        internal virtual int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
@@ -217,23 +188,24 @@ namespace robocode
         /// @return {@code true} when this evnt must be delivered even after timeout; {@code false} otherwise.
         /// </summary>
         // this method is invisible on RobotAPI
-        internal virtual bool isCriticalEvent()
+        internal virtual bool IsCriticalEvent
         {
-            return false;
+            get { return false; }
         }
 
         // this method is invisible on RobotAPI
-        internal virtual byte getSerializationType()
+
+        internal virtual byte SerializationType
         {
-            throw new Exception("Serialization not supported on this evnt type");
+            get { throw new Exception("Serialization not supported on this evnt type"); }
         }
 
         /// <summary>
-        /// This method is replacing bullet on evnt with bullet instance which was passed to robot as result of fire command
+        /// This method is replacing bullet on evnt with bullet instance which was passed to robot as result of Fire command
         /// @param bullets collection containing all moving bullets known to robot
         /// </summary>
         // this method is invisible on RobotAPI
-        internal virtual void updateBullets(Dictionary<int, Bullet> bullets)
+        internal virtual void UpdateBullets(Dictionary<int, Bullet> bullets)
         {
         }
 
@@ -258,32 +230,32 @@ namespace robocode
 
             public void setDefaultPriority(Event evnt)
             {
-                evnt.setPriority(evnt.getDefaultPriority());
+                evnt.Priority = evnt.DefaultPriority;
             }
 
             public void setPriority(Event evnt, int newPriority)
             {
-                evnt.setPriority(newPriority);
+                evnt.Priority = newPriority;
             }
 
             public bool isCriticalEvent(Event evnt)
             {
-                return evnt.isCriticalEvent();
+                return evnt.IsCriticalEvent;
             }
 
             public void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
             {
-                evnt.dispatch(robot, statics, graphics);
+                evnt.Dispatch(robot, statics, graphics);
             }
 
             public byte getSerializationType(Event evnt)
             {
-                return evnt.getSerializationType();
+                return evnt.SerializationType;
             }
 
             public void updateBullets(Event evnt, Dictionary<int, Bullet> bullets)
             {
-                evnt.updateBullets(bullets);
+                evnt.UpdateBullets(bullets);
             }
         }
     }

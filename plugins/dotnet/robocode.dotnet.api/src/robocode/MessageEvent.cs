@@ -18,8 +18,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A MessageEvent is sent to {@link TeamRobot#onMessageReceived(MessageEvent)
-    /// onMessageReceived()} when a teammate sends a message to your robot.
+    /// A MessageEvent is sent to {@link TeamRobot#OnMessageReceived(MessageEvent)
+    /// OnMessageReceived()} when a teammate sends a message to your robot.
     /// You can use the information contained in this evnt to determine what to do.
     ///
     /// @author Mathew A. Nelson (original)
@@ -50,9 +50,9 @@ namespace robocode
         ///
         /// @return the name of the sending robot
         /// </summary>
-        public string getSender()
+        public string Sender
         {
-            return sender;
+            get { return sender; }
         }
 
         /// <summary>
@@ -60,38 +60,38 @@ namespace robocode
         ///
         /// @return the message
         /// </summary>
-        public object getMessage()
+        public object Message
         {
-            return message;
+            get { return message; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsTeamRobot())
             {
-                ITeamEvents listener = ((ITeamRobot) robot).getTeamEventListener();
+                ITeamEvents listener = ((ITeamRobot) robot).GetTeamEventListener();
 
                 if (listener != null)
                 {
-                    listener.onMessageReceived(this);
+                    listener.OnMessageReceived(this);
                 }
             }
         }
 
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            throw new Exception("Serialization of evnt type not supported");
+            get { throw new Exception("Serialization of evnt type not supported"); }
         }
     }
 }

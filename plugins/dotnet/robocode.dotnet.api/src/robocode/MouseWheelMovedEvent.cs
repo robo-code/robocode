@@ -21,8 +21,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A MouseWheelMovedEvent is sent to {@link Robot#onMouseWheelMoved(java.awt.event.MouseWheelEvent e)
-    /// onMouseWheelMoved()} when the mouse wheel is rotated inside the battle view.
+    /// A MouseWheelMovedEvent is sent to {@link Robot#OnMouseWheelMoved(java.awt.event.MouseWheelEvent e)
+    /// OnMouseWheelMoved()} when the mouse wheel is rotated inside the battle view.
     ///
     /// @author Pavel Savara (original)
     /// @see MouseClickedEvent
@@ -75,23 +75,23 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsInteractiveRobot())
             {
-                IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
+                IInteractiveEvents listener = ((IInteractiveRobot) robot).GetInteractiveEventListener();
 
                 if (listener != null)
                 {
-                    listener.onMouseWheelMoved(this);
+                    listener.OnMouseWheelMoved(this);
                 }
             }
         }
@@ -99,9 +99,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.MouseWheelMovedEvent_TYPE;
+            get { return RbSerializerN.MouseWheelMovedEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()
@@ -120,15 +120,15 @@ namespace robocode
             {
                 var obj = (MouseWheelMovedEvent) objec;
 
-                serializer.serialize(buffer, obj.getClickCount());
-                serializer.serialize(buffer, obj.getX());
-                serializer.serialize(buffer, obj.getY());
+                serializer.serialize(buffer, obj.ClickCount);
+                serializer.serialize(buffer, obj.X);
+                serializer.serialize(buffer, obj.Y);
                 serializer.serialize(buffer, obj.getScrollType());
                 serializer.serialize(buffer, obj.getScrollAmount());
                 serializer.serialize(buffer, obj.getWheelRotation());
-                serializer.serialize(buffer, obj.getID());
-                serializer.serialize(buffer, obj.getModifiersEx());
-                serializer.serialize(buffer, obj.getWhen());
+                serializer.serialize(buffer, obj.ID);
+                serializer.serialize(buffer, obj.ModifiersEx);
+                serializer.serialize(buffer, obj.When);
             }
 
             public object deserialize(RbSerializerN serializer, ByteBuffer buffer)

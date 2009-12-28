@@ -127,7 +127,7 @@
     <Compile Include="robocode\robotinterfaces\peer\IJuniorRobotPeer.cs" />
     <Compile Include="robocode\robotinterfaces\peer\IStandardRobotPeer.cs" />
     <Compile Include="robocode\robotinterfaces\peer\ITeamRobotPeer.cs" />
-    <Compile Include="robocode\robotinterfaces\Runnable.cs" />
+    <Compile Include="robocode\robotinterfaces\IRunnable.cs" />
     <Compile Include="robocode\RobotStatus.cs" />
     <Compile Include="robocode\Rules.cs" />
     <Compile Include="robocode\ScannedRobotEvent.cs" />

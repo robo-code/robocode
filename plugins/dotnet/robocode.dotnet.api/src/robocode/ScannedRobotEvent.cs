@@ -21,8 +21,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A ScannedRobotEvent is sent to {@link Robot#onScannedRobot(ScannedRobotEvent)
-    /// onScannedRobot()} when you scan a robot.
+    /// A ScannedRobotEvent is sent to {@link Robot#OnScannedRobot(ScannedRobotEvent)
+    /// OnScannedRobot()} when you Scan a robot.
     /// You can use the information contained in this evnt to determine what to do.
     /// <p>
     /// <b>Note</b>: You should not inherit from this class in your own evnt class!
@@ -89,9 +89,9 @@ namespace robocode
         ///
         /// @return the bearing to the robot you scanned, in degrees
         /// </summary>
-        public double getBearing()
+        public double Bearing
         {
-            return bearing*180.0/Math.PI;
+            get { return bearing*180.0/Math.PI; }
         }
 
         /// <summary>
@@ -100,9 +100,9 @@ namespace robocode
         ///
         /// @return the bearing to the robot you scanned, in radians
         /// </summary>
-        public double getBearingRadians()
+        public double BearingRadians
         {
-            return bearing;
+            get { return bearing; }
         }
 
         /// <summary>
@@ -110,9 +110,9 @@ namespace robocode
         ///
         /// @return the distance to the robot.
         /// </summary>
-        public double getDistance()
+        public double Distance
         {
-            return distance;
+            get { return distance; }
         }
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace robocode
         ///
         /// @return the energy of the robot
         /// </summary>
-        public double getEnergy()
+        public double Energy
         {
-            return energy;
+            get { return energy; }
         }
 
         /// <summary>
@@ -130,9 +130,9 @@ namespace robocode
         ///
         /// @return the heading of the robot, in degrees
         /// </summary>
-        public double getHeading()
+        public double Heading
         {
-            return heading*180.0/Math.PI;
+            get { return heading*180.0/Math.PI; }
         }
 
         /// <summary>
@@ -140,9 +140,9 @@ namespace robocode
         ///
         /// @return the heading of the robot, in radians
         /// </summary>
-        public double getHeadingRadians()
+        public double HeadingRadians
         {
-            return heading;
+            get { return heading; }
         }
 
 
@@ -151,9 +151,9 @@ namespace robocode
         ///
         /// @return the name of the robot
         /// </summary>
-        public string getName()
+        public string Name
         {
-            return name;
+            get { return name; }
         }
 
 
@@ -162,9 +162,9 @@ namespace robocode
         ///
         /// @return the velocity of the robot
         /// </summary>
-        public double getVelocity()
+        public double Velocity
         {
-            return velocity;
+            get { return velocity; }
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace robocode
             // The shorter distance to the robot, the higher priority
             if (evnt is ScannedRobotEvent)
             {
-                return (int) (getDistance() - ((ScannedRobotEvent) evnt).getDistance());
+                return (int) (Distance - ((ScannedRobotEvent) evnt).Distance);
             }
             // No difference found
             return 0;
@@ -191,30 +191,30 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onScannedRobot(this);
+                listener.OnScannedRobot(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.ScannedRobotEvent_TYPE;
+            get { return RbSerializerN.ScannedRobotEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

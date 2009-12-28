@@ -47,7 +47,7 @@ namespace robocode.robotinterfaces
         /// @see System.Drawing.Graphics
         /// @since 1.1
         /// </summary>
-        void onPaint(IGraphics g);
+        void OnPaint(IGraphics graphics);
     }
 }
 //happy

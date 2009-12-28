@@ -42,7 +42,7 @@ namespace robocode.robotinterfaces
         /// @see robocode.SkippedTurnEvent
         /// @see robocode.Event
         /// </summary>
-        void onSkippedTurn(SkippedTurnEvent evnt);
+        void OnSkippedTurn(SkippedTurnEvent evnt);
 
         /// <summary>
         /// This method is called when a custom condition is met.
@@ -51,11 +51,11 @@ namespace robocode.robotinterfaces
         /// robot.
         ///
         /// @param evnt the custom evnt that occurred
-        /// @see robocode.AdvancedRobot#addCustomEvent
+        /// @see robocode.AdvancedRobot#AddCustomEvent
         /// @see robocode.CustomEvent
         /// @see robocode.Event
         /// </summary>
-        void onCustomEvent(CustomEvent evnt);
+        void OnCustomEvent(CustomEvent evnt);
     }
 }
 //happy

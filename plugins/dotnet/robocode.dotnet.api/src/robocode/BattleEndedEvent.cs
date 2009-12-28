@@ -21,20 +21,20 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A BattleEndedEvent is sent to {@link Robot#onBattleEnded(BattleEndedEvent)
-    /// onBattleEnded()} when the battle is ended.
+    /// A BattleEndedEvent is sent to {@link Robot#OnBattleEnded(BattleEndedEvent)
+    /// OnBattleEnded()} when the battle is ended.
     /// You can use the information contained in this evnt to determine if the
     /// battle was aborted and also get the results of the battle.
     ///
     /// @author Pavel Savara (original)
     /// @see BattleResults
-    /// @see Robot#onBattleEnded(BattleEndedEvent)
+    /// @see Robot#OnBattleEnded(BattleEndedEvent)
     /// @since 1.6.1
     /// </summary>
     [Serializable]
     public sealed class BattleEndedEvent : Event
     {
-        private static readonly int DEFAULT_PRIORITY = 100; // System evnt -> cannot be changed!;
+        private const int DEFAULT_PRIORITY = 100; // System evnt -> cannot be changed!;
 
         private readonly bool aborted;
         private readonly BattleResults results;
@@ -56,9 +56,9 @@ namespace robocode
         ///
         /// @return {@code true} if the battle was aborted; {@code false} otherwise.
         /// </summary>
-        public bool isAborted()
+        public bool IsAborted
         {
-            return aborted;
+            get { return aborted; }
         }
 
         /// <summary>
@@ -66,38 +66,38 @@ namespace robocode
         ///
         /// @return the battle results.
         /// </summary>
-        public BattleResults getResults()
+        public BattleResults Results
         {
-            return results;
+            get { return results; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public override int getPriority()
+        public override int Priority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (robot != null)
             {
-                var listener = robot.getBasicEventListener() as IBasicEvents2;
+                var listener = robot.GetBasicEventListener() as IBasicEvents2;
                 if (listener != null)
                 {
-                    listener.onBattleEnded(this);
+                    listener.OnBattleEnded(this);
                 }
             }
         }
@@ -105,17 +105,17 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override bool isCriticalEvent()
+        internal override bool IsCriticalEvent
         {
-            return true;
+            get { return true; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.BattleEndedEvent_TYPE;
+            get { return RbSerializerN.BattleEndedEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

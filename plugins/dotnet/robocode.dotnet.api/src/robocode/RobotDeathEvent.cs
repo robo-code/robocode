@@ -21,7 +21,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link Robot#onRobotDeath(RobotDeathEvent) onRobotDeath()}
+    /// This evnt is sent to {@link Robot#OnRobotDeath(RobotDeathEvent) OnRobotDeath()}
     /// when another robot (not your robot) dies.
     ///
     /// @author Mathew A. Nelson (original)
@@ -48,38 +48,38 @@ namespace robocode
         ///
         /// @return the name of the robot that died
         /// </summary>
-        public string getName()
+        public string Name
         {
-            return robotName;
+            get { return robotName; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onRobotDeath(this);
+                listener.OnRobotDeath(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.RobotDeathEvent_TYPE;
+            get { return RbSerializerN.RobotDeathEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

@@ -45,7 +45,7 @@ namespace robocode.robotinterfaces
         /// @see Event
         /// @since 1.5
         /// </summary>
-        void onStatus(StatusEvent evnt);
+        void OnStatus(StatusEvent evnt);
 
         /// <summary>
         /// This method is called when one of your bullets hits another robot.
@@ -54,8 +54,8 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void onBulletHit(BulletHitEvent evnt) {
-        ///       output.println("I hit " + evnt.getName() + "!");
+        ///   public void OnBulletHit(BulletHitEvent evnt) {
+        ///       Output.println("I hit " + evnt.getName() + "!");
         ///   }
         /// </pre>
         ///
@@ -63,7 +63,7 @@ namespace robocode.robotinterfaces
         /// @see BulletHitEvent
         /// @see Event
         /// </summary>
-        void onBulletHit(BulletHitEvent evnt);
+        void OnBulletHit(BulletHitEvent evnt);
 
         /// <summary>
         /// This method is called when one of your bullets hits another bullet.
@@ -72,8 +72,8 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void onBulletHitBullet(BulletHitBulletEvent evnt) {
-        ///       output.println("I hit a bullet fired by " + evnt.getBullet().getName() + "!");
+        ///   public void OnBulletHitBullet(BulletHitBulletEvent evnt) {
+        ///       Output.println("I hit a bullet fired by " + evnt.getBullet().getName() + "!");
         ///   }
         /// </pre>
         ///
@@ -81,7 +81,7 @@ namespace robocode.robotinterfaces
         /// @see BulletHitBulletEvent
         /// @see Event
         /// </summary>
-        void onBulletHitBullet(BulletHitBulletEvent evnt);
+        void OnBulletHitBullet(BulletHitBulletEvent evnt);
 
         /// <summary>
         /// This method is called when one of your bullets misses, i.e. hits a wall.
@@ -90,8 +90,8 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void onBulletMissed(BulletMissedEvent evnt) {
-        ///       output.println("Drat, I missed.");
+        ///   public void OnBulletMissed(BulletMissedEvent evnt) {
+        ///       Output.println("Drat, I missed.");
         ///   }
         /// </pre>
         ///
@@ -99,7 +99,7 @@ namespace robocode.robotinterfaces
         /// @see BulletMissedEvent
         /// @see Event
         /// </summary>
-        void onBulletMissed(BulletMissedEvent evnt);
+        void OnBulletMissed(BulletMissedEvent evnt);
 
         /// <summary>
         /// This method is called if your robot dies.
@@ -115,7 +115,7 @@ namespace robocode.robotinterfaces
         /// @see BattleEndedEvent
         /// @see Event
         /// </summary>
-        void onDeath(DeathEvent evnt);
+        void OnDeath(DeathEvent evnt);
 
         /// <summary>
         /// This method is called when your robot is hit by a bullet.
@@ -124,8 +124,8 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// Example:
         /// <pre>
-        ///   void onHitByBullet(HitByBulletEvent evnt) {
-        ///       output.println(event.getRobotName() + " hit me!");
+        ///   void OnHitByBullet(HitByBulletEvent evnt) {
+        ///       Output.println(event.getRobotName() + " hit me!");
         ///   }
         /// </pre>
         ///
@@ -133,7 +133,7 @@ namespace robocode.robotinterfaces
         /// @see HitByBulletEvent
         /// @see Event
         /// </summary>
-        void onHitByBullet(HitByBulletEvent evnt);
+        void OnHitByBullet(HitByBulletEvent evnt);
 
         /// <summary>
         /// This method is called when your robot collides with another robot.
@@ -142,26 +142,26 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// Example:
         /// <pre>
-        ///   void onHitRobot(HitRobotEvent evnt) {
+        ///   void OnHitRobot(HitRobotEvent evnt) {
         ///       if (event.getBearing() > -90 && evnt.getBearing() <= 90) {
-        ///           back(100);
+        ///           Back(100);
         ///       } else {
-        ///           ahead(100);
+        ///           Ahead(100);
         ///       }
         ///   }
         /// <p/>
         ///   -- or perhaps, for a more advanced robot --
         /// <p/>
-        ///   public void onHitRobot(HitRobotEvent evnt) {
+        ///   public void OnHitRobot(HitRobotEvent evnt) {
         ///       if (event.getBearing() > -90 && evnt.getBearing() <= 90) {
-        ///           setBack(100);
+        ///           SetBack(100);
         ///       } else {
-        ///           setAhead(100);
+        ///           SetAhead(100);
         ///       }
         ///   }
         /// </pre>
         /// <p/>
-        /// The angle is relative to your robot's facing. So 0 is straight ahead of
+        /// The angle is relative to your robot's facing. So 0 is straight Ahead of
         /// you.
         /// <p/>
         /// This evnt can be generated if another robot hits you, in which case
@@ -174,7 +174,7 @@ namespace robocode.robotinterfaces
         /// @see HitRobotEvent
         /// @see Event
         /// </summary>
-        void onHitRobot(HitRobotEvent evnt);
+        void OnHitRobot(HitRobotEvent evnt);
 
         /// <summary>
         /// This method is called when your robot collides with a wall.
@@ -183,14 +183,14 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// The wall at the top of the screen is 0 degrees, right is 90 degrees,
         /// bottom is 180 degrees, left is 270 degrees. But this evnt is relative to
-        /// your heading, so: The bearing is such that {@link Robot#turnRight(double)
-        /// turnRight} {@link HitWallEvent#getBearing() (event.getBearing())} will
+        /// your heading, so: The bearing is such that {@link Robot#TurnRight(double)
+        /// TurnRight} {@link HitWallEvent#getBearing() (event.getBearing())} will
         /// point you perpendicular to the wall.
         /// <p/>
         /// Example:
         /// <pre>
-        ///   void onHitWall(HitWallEvent evnt) {
-        ///       output.println("Ouch, I hit a wall bearing " + evnt.getBearing() + " degrees.");
+        ///   void OnHitWall(HitWallEvent evnt) {
+        ///       Output.println("Ouch, I hit a wall bearing " + evnt.getBearing() + " degrees.");
         ///   }
         /// </pre>
         ///
@@ -198,11 +198,11 @@ namespace robocode.robotinterfaces
         /// @see HitWallEvent
         /// @see Event
         /// </summary>
-        void onHitWall(HitWallEvent evnt);
+        void OnHitWall(HitWallEvent evnt);
 
         /// <summary>
         /// This method is called when your robot sees another robot, i.e. when the
-        /// robot's radar scan "hits" another robot.
+        /// robot's radar Scan "hits" another robot.
         /// You should override it in your robot if you want to be informed of this
         /// evnt. (Almost all robots should override this!)
         /// <p/>
@@ -217,12 +217,12 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// Example:
         /// <pre>
-        ///   void onScannedRobot(ScannedRobotEvent evnt) {
+        ///   void OnScannedRobot(ScannedRobotEvent evnt) {
         ///       // Assuming radar and gun are aligned...
         ///       if (event.getDistance() < 100) {
-        ///           fire(3);
+        ///           Fire(3);
         ///       } else {
-        ///           fire(1);
+        ///           Fire(1);
         ///       }
         ///   }
         /// </pre>
@@ -232,15 +232,15 @@ namespace robocode.robotinterfaces
         /// <ul>
         /// <li>If the gun and radar are aligned (and were aligned last turn),
         /// <li>and the evnt is current,
-        /// <li>and you call fire() before taking any other actions, {@link
-        /// Robot#fire(double) fire()} will fire directly at the robot.
+        /// <li>and you call Fire() before taking any other actions, {@link
+        /// Robot#Fire(double) Fire()} will Fire directly at the robot.
         /// </ul>
         /// <p/>
         /// In essence, this means that if you can see a robot, and it doesn't move,
-        /// then fire will hit it.
+        /// then Fire will hit it.
         /// <p/>
         /// AdvancedRobots will NOT be assisted in this manner, and are expected to
-        /// examine the evnt to determine if {@link Robot#fire(double) fire()} would
+        /// examine the evnt to determine if {@link Robot#Fire(double) Fire()} would
         /// hit. (i.e. you are spinning your gun around, but by the time you get the
         /// evnt, your gun is 5 degrees past the robot).
         ///
@@ -249,7 +249,7 @@ namespace robocode.robotinterfaces
         /// @see Event
         /// @see Rules#RADAR_SCAN_RADIUS
         /// </summary>
-        void onScannedRobot(ScannedRobotEvent evnt);
+        void OnScannedRobot(ScannedRobotEvent evnt);
 
         /// <summary>
         /// This method is called when another robot dies.
@@ -260,7 +260,7 @@ namespace robocode.robotinterfaces
         /// @see RobotDeathEvent
         /// @see Event
         /// </summary>
-        void onRobotDeath(RobotDeathEvent evnt);
+        void OnRobotDeath(RobotDeathEvent evnt);
 
         /// <summary>
         /// This method is called if your robot wins a battle.
@@ -272,7 +272,7 @@ namespace robocode.robotinterfaces
         /// @see BattleEndedEvent
         /// @see Event
         /// </summary>
-        void onWin(WinEvent evnt);
+        void OnWin(WinEvent evnt);
     }
 }
 //happy

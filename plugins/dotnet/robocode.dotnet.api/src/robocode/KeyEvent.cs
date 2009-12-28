@@ -41,34 +41,34 @@ namespace robocode
             this.when = when;
         }
 
-        public char getKeyChar()
+        public char KeyChar
         {
-            return keyChar;
+            get { return keyChar; }
         }
 
-        public int getKeyCode()
+        public int KeyCode
         {
-            return keyCode;
+            get { return keyCode; }
         }
 
-        public int getKeyLocation()
+        public int KeyLocation
         {
-            return keyLocation;
+            get { return keyLocation; }
         }
 
-        public int getID()
+        public int ID
         {
-            return id;
+            get { return id; }
         }
 
-        public int getModifiersEx()
+        public int ModifiersEx
         {
-            return modifiersEx;
+            get { return modifiersEx; }
         }
 
-        public long getWhen()
+        public long When
         {
-            return when;
+            get { return when; }
         }
     }
 }

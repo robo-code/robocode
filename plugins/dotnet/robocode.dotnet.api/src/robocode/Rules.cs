@@ -46,7 +46,7 @@ namespace robocode
         public static readonly double MAX_VELOCITY = 8;
 
         /// <summary>
-        /// The radar scan radius, which is 1200 pixels.
+        /// The radar Scan radius, which is 1200 pixels.
         /// Robots which is more than 1200 pixels away cannot be seen on the radar.
         /// </summary>
         public static readonly double RADAR_SCAN_RADIUS = 1200;
@@ -69,8 +69,8 @@ namespace robocode
         /// Note, that the turn rate of the robot depends on it's velocity.
         ///
         /// @see #MAX_TURN_RATE_RADIANS
-        /// @see #getTurnRate(double)
-        /// @see #getTurnRateRadians(double)
+        /// @see #GetTurnRate(double)
+        /// @see #GetTurnRateRadians(double)
         /// </summary>
         public static readonly double MAX_TURN_RATE = 10;
 
@@ -79,8 +79,8 @@ namespace robocode
         /// degrees.
         ///
         /// @see #MAX_TURN_RATE
-        /// @see #getTurnRate(double)
-        /// @see #getTurnRateRadians(double)
+        /// @see #GetTurnRate(double)
+        /// @see #GetTurnRateRadians(double)
         /// </summary>
         public static readonly double MAX_TURN_RATE_RADIANS = Utils.toRadians(MAX_TURN_RATE);
 
@@ -150,9 +150,9 @@ namespace robocode
         ///
         /// @param velocity the velocity of the robot.
         /// @return turn rate in degrees/turn.
-        /// @see #getTurnRateRadians(double)
+        /// @see #GetTurnRateRadians(double)
         /// </summary>
-        public static double getTurnRate(double velocity)
+        public static double GetTurnRate(double velocity)
         {
             return MAX_TURN_RATE - 0.75*velocity;
         }
@@ -163,11 +163,11 @@ namespace robocode
         ///
         /// @param velocity the velocity of the robot.
         /// @return turn rate in radians/turn.
-        /// @see #getTurnRate(double)
+        /// @see #GetTurnRate(double)
         /// </summary>
-        public static double getTurnRateRadians(double velocity)
+        public static double GetTurnRateRadians(double velocity)
         {
-            return Utils.toRadians(getTurnRate(velocity));
+            return Utils.toRadians(GetTurnRate(velocity));
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace robocode
         /// @param velocity the velocity of the robot.
         /// @return wall hit damage in energy points.
         /// </summary>
-        public static double getWallHitDamage(double velocity)
+        public static double GetWallHitDamage(double velocity)
         {
             return Math.Max(Math.Abs(velocity)/2 - 1, 0);
         }
@@ -188,7 +188,7 @@ namespace robocode
         /// @param bulletPower the energy power of the bullet.
         /// @return bullet damage in energy points.
         /// </summary>
-        public static double getBulletDamage(double bulletPower)
+        public static double GetBulletDamage(double bulletPower)
         {
             double damage = 4*bulletPower;
 
@@ -206,7 +206,7 @@ namespace robocode
         /// @param bulletPower the energy power of the bullet.
         /// @return bullet hit bonus in energy points.
         /// </summary>
-        public static double getBulletHitBonus(double bulletPower)
+        public static double GetBulletHitBonus(double bulletPower)
         {
             return 3*bulletPower;
         }
@@ -218,7 +218,7 @@ namespace robocode
         /// @param bulletPower the energy power of the bullet.
         /// @return bullet speed in pixels/turn
         /// </summary>
-        public static double getBulletSpeed(double bulletPower)
+        public static double GetBulletSpeed(double bulletPower)
         {
             return 20 - 3*bulletPower;
         }
@@ -230,7 +230,7 @@ namespace robocode
         /// @param bulletPower the energy power of the bullet.
         /// @return gun heat
         /// </summary>
-        public static double getGunHeat(double bulletPower)
+        public static double GetGunHeat(double bulletPower)
         {
             return 1 + (bulletPower/5);
         }

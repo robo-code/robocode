@@ -37,12 +37,12 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void run() {
-        ///       // Prints output all teammates
+        ///   public void Run() {
+        ///       // Prints Output all teammates
         ///       string[] teammates = getTeammates();
         ///       if (teammates != null) {
         ///           for (string member : teammates) {
-        ///               output.println(member);
+        ///               Output.println(member);
         ///           }
         ///       }
         ///   }
@@ -51,9 +51,9 @@ namespace robocode.robotinterfaces.peer
         /// @return a string array containing the names of all your teammates, or
         ///         {@code null} if there is no teammates. The length of the string array
         ///         is equal to the number of teammates.
-        /// @see #isTeammate(string)
-        /// @see #broadcastMessage(ISerializable)
-        /// @see #sendMessage(string, ISerializable)
+        /// @see #IsTeammate(string)
+        /// @see #BroadcastMessage(ISerializable)
+        /// @see #SendMessage(string, ISerializable)
         /// </summary>
         string[] getTeammates();
 
@@ -62,11 +62,11 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void onScannedRobot(ScannedRobotEvent e) {
-        ///       if (isTeammate(e.getName()) {
+        ///   public void OnScannedRobot(ScannedRobotEvent e) {
+        ///       if (IsTeammate(e.getName()) {
         ///           return;
         ///       }
-        ///       fire(1);
+        ///       Fire(1);
         ///   }
         /// </pre>
         ///
@@ -74,8 +74,8 @@ namespace robocode.robotinterfaces.peer
         /// @return {@code true} if the specified name belongs to one of your
         ///         teammates; {@code false} otherwise.
         /// @see #getTeammates()
-        /// @see #broadcastMessage(ISerializable)
-        /// @see #sendMessage(string, ISerializable)
+        /// @see #BroadcastMessage(ISerializable)
+        /// @see #SendMessage(string, ISerializable)
         /// </summary>
         bool isTeammate(string name);
 
@@ -84,17 +84,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void run() {
-        ///       broadcastMessage("I'm here!");
+        ///   public void Run() {
+        ///       BroadcastMessage("I'm here!");
         ///   }
         /// </pre>
         ///
         /// @param message the message to broadcast to all teammates
         /// @ if the message could not be broadcasted to the
         ///                     teammates
-        /// @see #isTeammate(string)
+        /// @see #IsTeammate(string)
         /// @see #getTeammates()
-        /// @see #sendMessage(string, ISerializable)
+        /// @see #SendMessage(string, ISerializable)
         /// </summary>
         void broadcastMessage(object message);
 
@@ -103,17 +103,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void run() {
-        ///       sendMessage("sample.DroidBot", "I'm here!");
+        ///   public void Run() {
+        ///       SendMessage("sample.DroidBot", "I'm here!");
         ///   }
         /// </pre>
         ///
         /// @param name	the name of the intended recipient of the message
         /// @param message the message to send
         /// @ if the message could not be sent
-        /// @see #isTeammate(string)
+        /// @see #IsTeammate(string)
         /// @see #getTeammates()
-        /// @see #broadcastMessage(ISerializable)
+        /// @see #BroadcastMessage(ISerializable)
         /// </summary>
         void sendMessage(string name, object message);
 
@@ -123,15 +123,15 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (MessageEvent e : getMessageEvents()) {
+        ///   for (MessageEvent e : GetMessageEvents()) {
         ///      // do something with e
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all MessageEvents currently in the robot's
         ///         queue
-        /// @see robocode.robotinterfaces.ITeamEvents#onMessageReceived(MessageEvent)
-        ///      onMessageReceived(MessageEvent)
+        /// @see robocode.robotinterfaces.ITeamEvents#OnMessageReceived(MessageEvent)
+        ///      OnMessageReceived(MessageEvent)
         /// @see MessageEvent
         /// @since 1.2.6
         /// </summary>

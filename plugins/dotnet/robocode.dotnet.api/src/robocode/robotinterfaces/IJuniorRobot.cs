@@ -29,7 +29,7 @@ namespace robocode.robotinterfaces
     /// <p/>
     /// All methods on a junior robot are blocking calls, i.e. they do not return
     /// before their action has been completed and will at least take one turn to
-    /// execute.
+    /// Execute.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)

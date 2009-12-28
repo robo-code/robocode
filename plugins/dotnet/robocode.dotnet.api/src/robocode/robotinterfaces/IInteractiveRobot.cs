@@ -43,7 +43,7 @@ namespace robocode.robotinterfaces
         ///         should not receive the notifications.
         /// @since 1.6
         /// </summary>
-        IInteractiveEvents getInteractiveEventListener();
+        IInteractiveEvents GetInteractiveEventListener();
     }
 }
 //happy

@@ -48,39 +48,39 @@ namespace robocode
             this.when = when;
         }
 
-        public int getButton()
+        public int Button
         {
-            return button;
+            get { return button; }
         }
 
-        public int getClickCount()
+        public int ClickCount
         {
-            return clickCount;
+            get { return clickCount; }
         }
 
-        public int getX()
+        public int X
         {
-            return x;
+            get { return x; }
         }
 
-        public int getY()
+        public int Y
         {
-            return y;
+            get { return y; }
         }
 
-        public int getID()
+        public int ID
         {
-            return id;
+            get { return id; }
         }
 
-        public int getModifiersEx()
+        public int ModifiersEx
         {
-            return modifiersEx;
+            get { return modifiersEx; }
         }
 
-        public long getWhen()
+        public long When
         {
-            return when;
+            get { return when; }
         }
     }
 }

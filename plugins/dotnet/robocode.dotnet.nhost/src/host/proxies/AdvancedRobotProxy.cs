@@ -16,24 +16,6 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
         }
 
-        public bool isAdjustGunForBodyTurn()
-        {
-            getCall();
-            return commands.IsAdjustGunForBodyTurn();
-        }
-
-        public bool isAdjustRadarForGunTurn()
-        {
-            getCall();
-            return commands.IsAdjustRadarForGunTurn();
-        }
-
-        public bool isAdjustRadarForBodyTurn()
-        {
-            getCall();
-            return commands.IsAdjustRadarForBodyTurn();
-        }
-
         // asynchronous actions
         public void setResume()
         {
@@ -78,7 +60,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             do
             {
                 execute(); // Always tick at least once
-            } while (!condition.test());
+            } while (!condition.Test());
 
             waitCondition = null;
         }
@@ -221,7 +203,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 		    }
 
 		    return AccessController.doPrivileged(new PrivilegedAction<File>() {
-			    public File run() {
+			    public File Run() {
 				    return robotFileSystemManager.getDataFile(filename);
 			    }
 		    });

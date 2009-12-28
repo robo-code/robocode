@@ -92,6 +92,7 @@ namespace net.sf.robocode.io
                     }
                     else if (newline)
                     {
+                        //TODO
                         throw new NotImplementedException();
                         //logListener.onBattleMessage(new BattleMessageEvent(logBuffer + s));
                         logBuffer.Length = 0;
@@ -112,6 +113,7 @@ namespace net.sf.robocode.io
             }
             else
             {
+                //TODO
                 throw new NotImplementedException();
                 //logListener.onBattleError(new BattleErrorEvent(s));
             }

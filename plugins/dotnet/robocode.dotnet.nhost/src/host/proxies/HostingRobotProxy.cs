@@ -15,7 +15,6 @@ using robocode.exception;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using Exception=System.Exception;
-using Runnable=robocode.robotinterfaces.Runnable;
 using String=System.String;
 
 namespace net.sf.robocode.dotnet.host.proxies
@@ -143,8 +142,8 @@ namespace net.sf.robocode.dotnet.host.proxies
                     println("SYSTEM: Skipping robot: " + statics.getName());
                     return false;
                 }
-                robot.setOut(output);
-                robot.setPeer((IBasicRobotPeer) this);
+                robot.SetOut(output);
+                robot.SetPeer((IBasicRobotPeer) this);
                 eventManager.setRobot(robot);
             }
             catch (Exception e)
@@ -185,11 +184,11 @@ namespace net.sf.robocode.dotnet.host.proxies
                         // has started running.
                         eventManager.processEvents();
 
-                        Runnable runnable = robot.getRobotRunnable();
+                        IRunnable runnable = robot.GetRobotRunnable();
 
                         if (runnable != null)
                         {
-                            runnable.run();
+                            runnable.Run();
                         }
                     }
 

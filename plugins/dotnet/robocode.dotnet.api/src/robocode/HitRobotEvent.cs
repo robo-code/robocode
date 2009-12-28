@@ -21,7 +21,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A HitRobotEvent is sent to {@link Robot#onHitRobot(HitRobotEvent) onHitRobot()}
+    /// A HitRobotEvent is sent to {@link Robot#OnHitRobot(HitRobotEvent) OnHitRobot()}
     /// when your robot collides with another robot.
     /// You can use the information contained in this evnt to determine what to do.
     ///
@@ -60,9 +60,9 @@ namespace robocode
         ///
         /// @return the bearing to the robot you hit, in degrees
         /// </summary>
-        public double getBearing()
+        public double Bearing
         {
-            return bearing*180.0/Math.PI;
+            get { return bearing*180.0/Math.PI; }
         }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace robocode
         ///
         /// @return the bearing to the robot you hit, in radians
         /// </summary>
-        public double getBearingRadians()
+        public double BearingRadians
         {
-            return bearing;
+            get { return bearing; }
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace robocode
         ///
         /// @return the amount of energy of the robot you hit
         /// </summary>
-        public double getEnergy()
+        public double Energy
         {
-            return energy;
+            get { return energy; }
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace robocode
         ///
         /// @return the name of the robot you hit
         /// </summary>
-        public string getName()
+        public string Name
         {
-            return name;
+            get { return name; }
         }
 
         /// <summary>
@@ -109,9 +109,9 @@ namespace robocode
         /// @return {@code true} if your robot was moving towards the robot that was
         ///         hit; {@code false} otherwise.
         /// </summary>
-        public bool isMyFault()
+        public bool IsMyFault
         {
-            return atFault;
+            get { return atFault; }
         }
 
         /// <summary>
@@ -130,8 +130,8 @@ namespace robocode
             // The isMyFault has higher priority when it is set compared to when it is not set
             if (evnt is HitRobotEvent)
             {
-                int compare1 = (this).isMyFault() ? -1 : 0;
-                int compare2 = ((HitRobotEvent) evnt).isMyFault() ? -1 : 0;
+                int compare1 = (this).IsMyFault ? -1 : 0;
+                int compare2 = ((HitRobotEvent) evnt).IsMyFault ? -1 : 0;
 
                 return compare1 - compare2;
             }
@@ -143,30 +143,30 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onHitRobot(this);
+                listener.OnHitRobot(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.HitRobotEvent_TYPE;
+            get { return RbSerializerN.HitRobotEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

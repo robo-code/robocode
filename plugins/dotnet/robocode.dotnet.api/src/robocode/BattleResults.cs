@@ -23,7 +23,7 @@ namespace robocode
     ///
     /// @author Pavel Savara (original)
     /// @see BattleEndedEvent#getResults()
-    /// @see Robot#onBattleEnded(BattleEndedEvent)
+    /// @see Robot#OnBattleEnded(BattleEndedEvent)
     /// @since 1.6.1
     /// </summary>
     [Serializable]
@@ -93,9 +93,9 @@ namespace robocode
         ///
         /// @return the name of the team leader in the team or the name of the robot.
         /// </summary>
-        public string getTeamLeaderName()
+        public string TeamLeaderName
         {
-            return teamLeaderName;
+            get { return teamLeaderName; }
         }
 
         /// <summary>
@@ -103,9 +103,9 @@ namespace robocode
         ///
         /// @return the rank of this robot in the battle results.
         /// </summary>
-        public int getRank()
+        public int Rank
         {
-            return rank;
+            get { return rank; }
         }
 
         /// <summary>
@@ -113,9 +113,9 @@ namespace robocode
         ///
         /// @return the total score of this robot in the battle.
         /// </summary>
-        public int getScore()
+        public int Score
         {
-            return (int) (score + 0.5);
+            get { return (int) (score + 0.5); }
         }
 
         /// <summary>
@@ -123,9 +123,9 @@ namespace robocode
         ///
         /// @return the survival score of this robot in the battle.
         /// </summary>
-        public int getSurvival()
+        public int Survival
         {
-            return (int) (survival + 0.5);
+            get { return (int) (survival + 0.5); }
         }
 
         /// <summary>
@@ -133,9 +133,9 @@ namespace robocode
         ///
         /// @return the last survivor score of this robot in the battle.
         /// </summary>
-        public int getLastSurvivorBonus()
+        public int LastSurvivorBonus
         {
-            return (int) (lastSurvivorBonus + 0.5);
+            get { return (int) (lastSurvivorBonus + 0.5); }
         }
 
         /// <summary>
@@ -143,9 +143,9 @@ namespace robocode
         ///
         /// @return the bullet damage score of this robot in the battle.
         /// </summary>
-        public int getBulletDamage()
+        public int BulletDamage
         {
-            return (int) (bulletDamage + 0.5);
+            get { return (int) (bulletDamage + 0.5); }
         }
 
         /// <summary>
@@ -153,9 +153,9 @@ namespace robocode
         ///
         /// @return the bullet damage bonus of this robot in the battle.
         /// </summary>
-        public int getBulletDamageBonus()
+        public int BulletDamageBonus
         {
-            return (int) (bulletDamageBonus + 0.5);
+            get { return (int) (bulletDamageBonus + 0.5); }
         }
 
         /// <summary>
@@ -163,9 +163,9 @@ namespace robocode
         ///
         /// @return the ram damage score of this robot in the battle.
         /// </summary>
-        public int getRamDamage()
+        public int RamDamage
         {
-            return (int) (ramDamage + 0.5);
+            get { return (int) (ramDamage + 0.5); }
         }
 
         /// <summary>
@@ -173,9 +173,9 @@ namespace robocode
         ///
         /// @return the ram damage bonus of this robot in the battle.
         /// </summary>
-        public int getRamDamageBonus()
+        public int RamDamageBonus
         {
-            return (int) (ramDamageBonus + 0.5);
+            get { return (int) (ramDamageBonus + 0.5); }
         }
 
         /// <summary>
@@ -183,9 +183,9 @@ namespace robocode
         ///
         /// @return the number of rounds this robot placed first in the battle.
         /// </summary>
-        public int getFirsts()
+        public int Firsts
         {
-            return firsts;
+            get { return firsts; }
         }
 
         /// <summary>
@@ -193,9 +193,9 @@ namespace robocode
         ///
         /// @return the number of rounds this robot placed second in the battle.
         /// </summary>
-        public int getSeconds()
+        public int Seconds
         {
-            return seconds;
+            get { return seconds; }
         }
 
         /// <summary>
@@ -203,9 +203,9 @@ namespace robocode
         ///
         /// @return the number of rounds this robot placed third in the battle.
         /// </summary>
-        public int getThirds()
+        public int Thirds
         {
-            return thirds;
+            get { return thirds; }
         }
 
         /// <summary>

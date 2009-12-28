@@ -23,14 +23,14 @@ namespace samplecs
     /// <summary>
     /// MyFirstLeader - a sample team robot by Mathew Nelson, and maintained by Flemming N. Larsen
     /// <p/>
-    /// Looks around for enemies, and orders teammates to fire
+    /// Looks around for enemies, and orders teammates to Fire
     /// </summary>
     public class MyFirstLeader : TeamRobot
     {
         /// <summary>
-        /// run:  Leader's default behavior
+        /// Run:  Leader's default behavior
         /// </summary>
-        public override void run()
+        public override void Run()
         {
             // Prepare RobotColors object
             var c = new RobotColors();
@@ -42,15 +42,15 @@ namespace samplecs
             c.bulletColor = Color.Yellow;
 
             // Set the color of this robot containing the RobotColors
-            setBodyColor(c.bodyColor);
-            setGunColor(c.gunColor);
-            setRadarColor(c.radarColor);
-            setScanColor(c.scanColor);
-            setBulletColor(c.bulletColor);
+            BodyColor = c.bodyColor;
+            GunColor = c.gunColor;
+            RadarColor = c.radarColor;
+            ScanColor = c.scanColor;
+            BulletColor = c.bulletColor;
             try
             {
                 // Send RobotColors object to our entire team
-                broadcastMessage(c);
+                BroadcastMessage(c);
             }
             catch (Exception)
             {
@@ -59,47 +59,47 @@ namespace samplecs
             // Normal behavior
             while (true)
             {
-                setTurnRadarRight(10000);
-                ahead(100);
-                back(100);
+                SetTurnRadarRight(10000);
+                Ahead(100);
+                Back(100);
             }
         }
 
 
         /// <summary>
-        /// onScannedRobot:  What to do when you see another robot
+        /// OnScannedRobot:  What to do when you see another robot
         /// </summary>
-        public override void onScannedRobot(ScannedRobotEvent e)
+        public override void OnScannedRobot(ScannedRobotEvent e)
         {
-            // Don't fire on teammates
-            if (isTeammate(e.getName()))
+            // Don't Fire on teammates
+            if (IsTeammate(e.Name))
             {
                 return;
             }
             // Calculate enemy bearing
-            double enemyBearing = getHeading() + e.getBearing();
+            double enemyBearing = Heading + e.Bearing;
             // Calculate enemy's position
-            double enemyX = getX() + e.getDistance()*Math.Sin(Utils.toRadians(enemyBearing));
-            double enemyY = getY() + e.getDistance()*Math.Cos(Utils.toRadians(enemyBearing));
+            double enemyX = X + e.Distance*Math.Sin(Utils.toRadians(enemyBearing));
+            double enemyY = Y + e.Distance*Math.Cos(Utils.toRadians(enemyBearing));
 
             try
             {
                 // Send enemy position to teammates
-                broadcastMessage(new PointF((float) enemyX, (float) enemyY));
+                BroadcastMessage(new PointF((float) enemyX, (float) enemyY));
             }
             catch (Exception ex)
             {
-                output.WriteLine("Unable to send order: ");
-                output.WriteLine(ex);
+                Output.WriteLine("Unable to send order: ");
+                Output.WriteLine(ex);
             }
         }
 
         /// <summary>
-        /// onHitByBullet:  Turn perpendicular to bullet path
+        /// OnHitByBullet:  Turn perpendicular to bullet path
         /// </summary>
-        public override void onHitByBullet(HitByBulletEvent e)
+        public override void OnHitByBullet(HitByBulletEvent e)
         {
-            turnLeft(90 - e.getBearing());
+            TurnLeft(90 - e.Bearing);
         }
     }
 }

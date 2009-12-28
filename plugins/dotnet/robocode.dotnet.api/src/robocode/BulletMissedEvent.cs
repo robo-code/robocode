@@ -22,8 +22,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link Robot#onBulletMissed(BulletMissedEvent)
-    /// onBulletMissed} when one of your bullets has missed, i.e. when the bullet has
+    /// This evnt is sent to {@link Robot#OnBulletMissed(BulletMissedEvent)
+    /// OnBulletMissed} when one of your bullets has missed, i.e. when the bullet has
     /// reached the border of the battlefield.
     ///
     /// @author Mathew A. Nelson (original)
@@ -50,36 +50,36 @@ namespace robocode
         ///
         /// @return the bullet that missed
         /// </summary>
-        public Bullet getBullet()
+        public Bullet Bullet
         {
-            return bullet;
+            get { return bullet; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onBulletMissed(this);
+                listener.OnBulletMissed(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void updateBullets(Dictionary<int, Bullet> bullets)
+        internal override void UpdateBullets(Dictionary<int, Bullet> bullets)
         {
             // we need to pass same instance
             bullet = bullets[bullet.getBulletId()];
@@ -88,9 +88,9 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.BulletMissedEvent_TYPE;
+            get { return RbSerializerN.BulletMissedEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

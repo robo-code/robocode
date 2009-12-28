@@ -36,14 +36,14 @@ namespace robocode.robotinterfaces
     {
         /// <summary>
         /// This method is called by the game to invoke the
-        /// {@link java.lang.Runnable#run() run()} method of your robot, where the program
+        /// {@link java.lang.IRunnable#Run() Run()} method of your robot, where the program
         /// of your robot is implemented.
         ///
         /// @return a runnable implementation
-        /// @see java.lang.Runnable#run()
+        /// @see java.lang.IRunnable#Run()
         /// @since 1.6
         /// </summary>
-        Runnable getRobotRunnable();
+        IRunnable GetRobotRunnable();
 
         /// <summary>
         /// This method is called by the game to notify this robot about basic
@@ -54,10 +54,10 @@ namespace robocode.robotinterfaces
         ///         not receive the notifications.
         /// @since 1.6
         /// </summary>
-        IBasicEvents getBasicEventListener();
+        IBasicEvents GetBasicEventListener();
 
         /// <summary>
-        /// Do not call this method! Your robot will simply stop interacting with
+        /// Do not call this method! Your robot will simply Stop interacting with
         /// the game.
         /// <p/>
         /// This method is called by the game. A robot peer is the object that deals
@@ -65,18 +65,18 @@ namespace robocode.robotinterfaces
         ///
         /// @param peer the robot peer supplied by the game
         /// </summary>
-        void setPeer(IBasicRobotPeer peer);
+        void SetPeer(IBasicRobotPeer peer);
 
         /// <summary>
         /// Do not call this method!
         /// <p/>
-        /// This method is called by the game when setting the output stream for your
+        /// This method is called by the game when setting the Output stream for your
         /// robot.
         ///
-        /// @param output the new output print stream for this robot
+        /// @param Output the new Output print stream for this robot
         /// @since 1.6
         /// </summary>
-        void setOut(TextWriter output);
+        void SetOut(TextWriter output);
     }
 }
 //happy

@@ -21,8 +21,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A HitByBulletEvent is sent to {@link Robot#onHitByBullet(HitByBulletEvent)
-    /// onHitByBullet()} when your robot has been hit by a bullet.
+    /// A HitByBulletEvent is sent to {@link Robot#OnHitByBullet(HitByBulletEvent)
+    /// OnHitByBullet()} when your robot has been hit by a bullet.
     /// You can use the information contained in this evnt to determine what to do.
     ///
     /// @author Mathew A. Nelson (original)
@@ -51,30 +51,30 @@ namespace robocode
         /// Returns the bearing to the bullet, relative to your robot's heading,
         /// in degrees (-180 < getBearing() <= 180)
         /// <p/>
-        /// If you were to turnRight(e.getBearing()), you would be facing the
+        /// If you were to TurnRight(e.getBearing()), you would be facing the
         /// direction the bullet came from. The calculation used here is:
         /// (bullet's heading in degrees + 180) - (your heading in degrees)
         ///
         /// @return the bearing to the bullet, in degrees
         /// </summary>
-        public double getBearing()
+        public double Bearing
         {
-            return bearing*180.0/Math.PI;
+            get { return bearing*180.0/Math.PI; }
         }
 
         /// <summary>
         /// Returns the bearing to the bullet, relative to your robot's heading,
         /// in radians (-Math.PI < getBearingRadians() <= Math.PI)
         /// <p/>
-        /// If you were to turnRightRadians(e.getBearingRadians()), you would be
+        /// If you were to TurnRightRadians(e.getBearingRadians()), you would be
         /// facing the direction the bullet came from. The calculation used here is:
         /// (bullet's heading in radians + Math.PI) - (your heading in radians)
         ///
         /// @return the bearing to the bullet, in radians
         /// </summary>
-        public double getBearingRadians()
+        public double BearingRadians
         {
-            return bearing;
+            get { return bearing; }
         }
 
         /// <summary>
@@ -82,9 +82,9 @@ namespace robocode
         ///
         /// @return the bullet that hit your robot
         /// </summary>
-        public Bullet getBullet()
+        public Bullet Bullet
         {
-            return bullet;
+            get { return bullet; }
         }
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace robocode
         ///
         /// @return the heading of the bullet, in degrees
         /// </summary>
-        public double getHeading()
+        public double Heading
         {
-            return bullet.getHeading();
+            get { return bullet.Heading; }
         }
 
         /// <summary>
@@ -112,9 +112,9 @@ namespace robocode
         ///
         /// @return the heading of the bullet, in radians
         /// </summary>
-        public double getHeadingRadians()
+        public double HeadingRadians
         {
-            return bullet.getHeadingRadians();
+            get { return bullet.HeadingRadians; }
         }
 
         /// <summary>
@@ -122,21 +122,21 @@ namespace robocode
         ///
         /// @return the name of the robot that fired the bullet
         /// </summary>
-        public string getName()
+        public string Name
         {
-            return bullet.getName();
+            get { return bullet.Name; }
         }
 
         /// <summary>
         /// Returns the power of this bullet. The damage you take (in fact, already
         /// took) is 4 * power, plus 2 * (power-1) if power > 1. The robot that fired
-        /// the bullet receives 3 * power back.
+        /// the bullet receives 3 * power Back.
         ///
         /// @return the power of the bullet
         /// </summary>
-        public double getPower()
+        public double Power
         {
-            return bullet.getPower();
+            get { return bullet.Power; }
         }
 
         /// <summary>
@@ -144,38 +144,38 @@ namespace robocode
         ///
         /// @return the velocity of the bullet
         /// </summary>
-        public double getVelocity()
+        public double Velocity
         {
-            return bullet.getVelocity();
+            get { return bullet.Velocity; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onHitByBullet(this);
+                listener.OnHitByBullet(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.HitByBulletEvent_TYPE;
+            get { return RbSerializerN.HitByBulletEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

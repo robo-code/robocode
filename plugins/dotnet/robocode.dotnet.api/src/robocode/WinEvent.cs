@@ -21,7 +21,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link Robot#onWin(WinEvent) onWin()} when your robot
+    /// This evnt is sent to {@link Robot#OnWin(WinEvent) OnWin()} when your robot
     /// wins the round in a battle.
     ///
     /// @author Mathew A. Nelson (original)
@@ -34,46 +34,46 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public override int getPriority()
+        public override int Priority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onWin(this);
+                listener.OnWin(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override bool isCriticalEvent()
+        internal override bool IsCriticalEvent
         {
-            return true;
+            get { return true; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.WinEvent_TYPE;
+            get { return RbSerializerN.WinEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

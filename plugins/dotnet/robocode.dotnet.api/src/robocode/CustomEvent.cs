@@ -19,8 +19,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link AdvancedRobot#onCustomEvent(CustomEvent)
-    /// onCustomEvent()} when a custom condition is met. Be sure to reset or remove
+    /// This evnt is sent to {@link AdvancedRobot#OnCustomEvent(CustomEvent)
+    /// OnCustomEvent()} when a custom condition is met. Be sure to reset or remove
     /// the custom condition to avoid having it recurring repeatedly (see the
     /// example for the {@link #getCondition()} method.
     ///
@@ -44,7 +44,7 @@ namespace robocode
             this.condition = condition;
             if (condition != null)
             {
-                setPriority(condition.getPriority());
+                Priority = condition.Priority;
             }
         }
 
@@ -63,10 +63,10 @@ namespace robocode
         public CustomEvent(Condition condition, int priority)
         {
             this.condition = condition;
-            setPriority(priority);
+            Priority = priority;
             if (condition != null)
             {
-                condition.setPriority(getPriority());
+                condition.Priority = priority;
             }
         }
 
@@ -75,9 +75,9 @@ namespace robocode
         /// Use this to determine which condition fired, and to remove the custom
         /// evnt.
         /// <pre>
-        ///   public void onCustomEvent(CustomEvent evnt) {
+        ///   public void OnCustomEvent(CustomEvent evnt) {
         ///       if (event.getCondition().getName().equals("mycondition")) {
-        ///           removeCustomEvent(event.getCondition());
+        ///           RemoveCustomEvent(event.getCondition());
         ///           <i>// do something else</i>
         ///       }
         ///   }
@@ -85,31 +85,31 @@ namespace robocode
         ///
         /// @return the condition that fired, causing this evnt to be generated
         /// </summary>
-        public Condition getCondition()
+        public Condition Condition
         {
-            return condition;
+            get { return condition; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override sealed int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override sealed void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override sealed void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsAdvancedRobot())
             {
-                IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
+                IAdvancedEvents listener = ((IAdvancedRobot) robot).GetAdvancedEventListener();
 
                 if (listener != null)
                 {
-                    listener.onCustomEvent(this);
+                    listener.OnCustomEvent(this);
                 }
             }
         }
@@ -127,26 +127,26 @@ namespace robocode
         /// {@inheritDoc}
         /// </summary>
         // final to disable overrides
-        internal override sealed bool isCriticalEvent()
+        internal override bool IsCriticalEvent
         {
-            return false;
+            get { return false; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
         // final to disable overrides
-        public override sealed int getPriority()
+        public sealed override int Priority
         {
-            return base.getPriority();
+            get { return base.Priority; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override sealed byte getSerializationType()
+        internal override byte SerializationType
         {
-            throw new Exception("Serialization not supported on this evnt type");
+            get { throw new Exception("Serialization not supported on this evnt type"); }
         }
     }
 }

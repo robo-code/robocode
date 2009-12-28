@@ -21,7 +21,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link Robot#onDeath(DeathEvent) onDeath()} when your
+    /// This evnt is sent to {@link Robot#OnDeath(DeathEvent) OnDeath()} when your
     /// robot dies.
     ///
     /// @author Mathew A. Nelson (original)
@@ -34,46 +34,46 @@ namespace robocode
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public override int getPriority()
+        public override int Priority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override int getDefaultPriority()
+        internal override int DefaultPriority
         {
-            return DEFAULT_PRIORITY;
+            get { return DEFAULT_PRIORITY; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override void dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            IBasicEvents listener = robot.getBasicEventListener();
+            IBasicEvents listener = robot.GetBasicEventListener();
 
             if (listener != null)
             {
-                listener.onDeath(this);
+                listener.OnDeath(this);
             }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override bool isCriticalEvent()
+        internal override bool IsCriticalEvent
         {
-            return true;
+            get { return true; }
         }
 
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        internal override byte getSerializationType()
+        internal override byte SerializationType
         {
-            return RbSerializerN.DeathEvent_TYPE;
+            get { return RbSerializerN.DeathEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()

@@ -49,9 +49,9 @@ namespace robocode
         ///
         /// @return the robot's current energy
         /// </summary>
-        public double getEnergy()
+        public double Energy
         {
-            return energy;
+            get { return energy; }
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace robocode
         /// @return the X position of the robot
         /// @see #getY()
         /// </summary>
-        public double getX()
+        public double X
         {
-            return x;
+            get { return x; }
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace robocode
         /// @return the Y position of the robot
         /// @see #getX()
         /// </summary>
-        public double getY()
+        public double Y
         {
-            return y;
+            get { return y; }
         }
 
         /// <summary>
@@ -87,9 +87,9 @@ namespace robocode
         ///
         /// @return the direction that the robot's body is facing, in radians.
         /// </summary>
-        public double getHeadingRadians()
+        public double HeadingRadians
         {
-            return bodyHeading;
+            get { return bodyHeading; }
         }
 
         /// <summary>
@@ -101,9 +101,9 @@ namespace robocode
         ///
         /// @return the direction that the robot's body is facing, in degrees.
         /// </summary>
-        public double getHeading()
+        public double Heading
         {
-            return Utils.toDegrees(bodyHeading);
+            get { return Utils.toDegrees(bodyHeading); }
         }
 
         /// <summary>
@@ -115,9 +115,9 @@ namespace robocode
         ///
         /// @return the direction that the robot's gun is facing, in radians.
         /// </summary>
-        public double getGunHeadingRadians()
+        public double GunHeadingRadians
         {
-            return gunHeading;
+            get { return gunHeading; }
         }
 
         /// <summary>
@@ -129,9 +129,9 @@ namespace robocode
         ///
         /// @return the direction that the robot's gun is facing, in degrees.
         /// </summary>
-        public double getGunHeading()
+        public double GunHeading
         {
-            return Utils.toDegrees(gunHeading);
+            get { return Utils.toDegrees(gunHeading); }
         }
 
         /// <summary>
@@ -143,9 +143,9 @@ namespace robocode
         ///
         /// @return the direction that the robot's radar is facing, in radians.
         /// </summary>
-        public double getRadarHeadingRadians()
+        public double RadarHeadingRadians
         {
-            return radarHeading;
+            get { return radarHeading; }
         }
 
         /// <summary>
@@ -157,9 +157,9 @@ namespace robocode
         ///
         /// @return the direction that the robot's radar is facing, in degrees.
         /// </summary>
-        public double getRadarHeading()
+        public double RadarHeading
         {
-            return Utils.toDegrees(radarHeading);
+            get { return Utils.toDegrees(radarHeading); }
         }
 
         /// <summary>
@@ -171,9 +171,9 @@ namespace robocode
         /// @return the velocity of the robot measured in pixels/turn
         /// @see Rules#MAX_VELOCITY
         /// </summary>
-        public double getVelocity()
+        public double Velocity
         {
-            return velocity;
+            get { return velocity; }
         }
 
         /// <summary>
@@ -185,9 +185,9 @@ namespace robocode
         ///
         /// @return the angle remaining in the robots's turn, in radians
         /// </summary>
-        public double getTurnRemainingRadians()
+        public double TurnRemainingRadians
         {
-            return bodyTurnRemaining;
+            get { return bodyTurnRemaining; }
         }
 
         /// <summary>
@@ -199,9 +199,9 @@ namespace robocode
         ///
         /// @return the angle remaining in the robots's turn, in degrees
         /// </summary>
-        public double getTurnRemaining()
+        public double TurnRemaining
         {
-            return Utils.toDegrees(bodyTurnRemaining);
+            get { return Utils.toDegrees(bodyTurnRemaining); }
         }
 
         /// <summary>
@@ -213,9 +213,9 @@ namespace robocode
         ///
         /// @return the angle remaining in the radar's turn, in radians
         /// </summary>
-        public double getRadarTurnRemainingRadians()
+        public double RadarTurnRemainingRadians
         {
-            return radarTurnRemaining;
+            get { return radarTurnRemaining; }
         }
 
         /// <summary>
@@ -227,9 +227,9 @@ namespace robocode
         ///
         /// @return the angle remaining in the radar's turn, in degrees
         /// </summary>
-        public double getRadarTurnRemaining()
+        public double RadarTurnRemaining
         {
-            return Utils.toDegrees(radarTurnRemaining);
+            get { return Utils.toDegrees(radarTurnRemaining); }
         }
 
         /// <summary>
@@ -241,9 +241,9 @@ namespace robocode
         ///
         /// @return the angle remaining in the gun's turn, in radians
         /// </summary>
-        public double getGunTurnRemainingRadians()
+        public double GunTurnRemainingRadians
         {
-            return gunTurnRemaining;
+            get { return gunTurnRemaining; }
         }
 
         /// <summary>
@@ -255,9 +255,9 @@ namespace robocode
         ///
         /// @return the angle remaining in the gun's turn, in degrees
         /// </summary>
-        public double getGunTurnRemaining()
+        public double GunTurnRemaining
         {
-            return Utils.toDegrees(gunTurnRemaining);
+            get { return Utils.toDegrees(gunTurnRemaining); }
         }
 
         /// <summary>
@@ -271,15 +271,15 @@ namespace robocode
         /// @return the distance remaining in the robot's current move measured in
         ///         pixels.
         /// </summary>
-        public double getDistanceRemaining()
+        public double DistanceRemaining
         {
-            return distanceRemaining;
+            get { return distanceRemaining; }
         }
 
         /// <summary>
-        /// Returns the current heat of the gun. The gun cannot fire unless this is
-        /// 0. (Calls to fire will succeed, but will not actually fire unless
-        /// getGunHeat() == 0).
+        /// Returns the current heat of the gun. The gun cannot Fire unless this is
+        /// 0. (Calls to Fire will succeed, but will not actually Fire unless
+        /// GetGunHeat() == 0).
         /// <p/>
         /// The amount of gun heat generated when the gun is fired is
         /// 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
@@ -290,12 +290,12 @@ namespace robocode
         ///
         /// @return the current gun heat
         /// @see Robot#getGunCoolingRate()
-        /// @see Robot#fire(double)
-        /// @see Robot#fireBullet(double)
+        /// @see Robot#Fire(double)
+        /// @see Robot#FireBullet(double)
         /// </summary>
-        public double getGunHeat()
+        public double GunHeat
         {
-            return gunHeat;
+            get { return gunHeat; }
         }
 
         /// <summary>
@@ -304,9 +304,9 @@ namespace robocode
         /// @return how many opponents that are left in the current round.
         /// @since 1.6.2
         /// </summary>
-        public int getOthers()
+        public int Others
         {
-            return others;
+            get { return others; }
         }
 
         /// <summary>
@@ -316,9 +316,9 @@ namespace robocode
         /// @see #getRoundNum()
         /// @since 1.6.2
         /// </summary>
-        public int getNumRounds()
+        public int NumRounds
         {
-            return numRounds;
+            get { return numRounds; }
         }
 
         /// <summary>
@@ -329,9 +329,9 @@ namespace robocode
         /// @see #getNumRounds()
         /// @since 1.6.2
         /// </summary>
-        public int getRoundNum()
+        public int RoundNum
         {
-            return roundNum;
+            get { return roundNum; }
         }
 
         /// <summary>
@@ -340,9 +340,9 @@ namespace robocode
         /// @return the game time/turn of the current round.
         /// @since 1.6.2
         /// </summary>
-        public long getTime()
+        public long Time
         {
-            return time;
+            get { return time; }
         }
 
         private RobotStatus(double energy, double x, double y, double bodyHeading, double gunHeading,

@@ -20,14 +20,14 @@ using net.sf.robocode.io;
 namespace robocode
 {
     /// <summary>
-    /// Condition is used to define custom  {@link AdvancedRobot#waitFor(Condition)
-    /// waitFor(Condition)} and custom events for an {@link AdvancedRobot}. The code
+    /// Condition is used to define custom  {@link AdvancedRobot#WaitFor(Condition)
+    /// WaitFor(Condition)} and custom events for an {@link AdvancedRobot}. The code
     /// below is taken from the sample robot named {@code sample.Target}. See the
     /// {@code sample/Target.java} for details.
     /// <pre>
-    ///   addCustomEvent(
+    ///   AddCustomEvent(
     ///       new Condition("triggerhit") {
-    ///           public bool test() {
+    ///           public bool Test() {
     ///               return (getEnergy() <= trigger);
     ///           };
     ///       }
@@ -40,10 +40,10 @@ namespace robocode
     /// @author Mathew A. Nelson (original)
     /// @author Flemming N. Larsen (contributor)
     /// @author Nathaniel Troutman (contributor)
-    /// @see AdvancedRobot#waitFor(Condition)
-    /// @see AdvancedRobot#addCustomEvent(Condition)
-    /// @see AdvancedRobot#removeCustomEvent(Condition)
-    /// @see AdvancedRobot#onCustomEvent(CustomEvent)
+    /// @see AdvancedRobot#WaitFor(Condition)
+    /// @see AdvancedRobot#AddCustomEvent(Condition)
+    /// @see AdvancedRobot#RemoveCustomEvent(Condition)
+    /// @see AdvancedRobot#OnCustomEvent(CustomEvent)
     /// </summary>
     public abstract class Condition
     {
@@ -106,9 +106,10 @@ namespace robocode
         ///
         /// @return the name of this condition
         /// </summary>
-        public string getName()
+        public string Name
         {
-            return name ?? GetType().Name;
+            get { return name ?? GetType().Name; }
+            set { name = value; }
         }
 
         /// <summary>
@@ -118,45 +119,24 @@ namespace robocode
         ///
         /// @return the priority of this condition
         /// </summary>
-        public int getPriority()
+        public int Priority
         {
-            return priority;
+            get { return priority; }
+            set { priority=value; }
         }
 
         /// <summary>
-        /// Sets the name of this condition.
-        ///
-        /// @param newName the new name of this condition
-        /// </summary>
-        public void setName(string newName)
-        {
-            name = newName;
-        }
-
-        /// <summary>
-        /// Sets the priority of this condition.
-        /// A condition priority is a value from 0 - 99. The higher value, the
-        /// higher priority. The default priority is 80.
-        ///
-        /// @param newPriority the new priority of this condition.
-        /// </summary>
-        public void setPriority(int newPriority)
-        {
-            priority = newPriority;
-        }
-
-        /// <summary>
-        /// Overriding the test() method is the point of a Condition.
-        /// The game will call your test() function, and take action if it returns
-        /// {@code true}. This is valid for both {@link AdvancedRobot#waitFor} and
-        /// {@link AdvancedRobot#addCustomEvent}.
+        /// Overriding the Test() method is the point of a Condition.
+        /// The game will call your Test() function, and take action if it returns
+        /// {@code true}. This is valid for both {@link AdvancedRobot#WaitFor} and
+        /// {@link AdvancedRobot#AddCustomEvent}.
         /// <p/>
-        /// You may not take any actions inside of test().
+        /// You may not take any actions inside of Test().
         ///
         /// @return {@code true} if the condition has been met, {@code false}
         ///         otherwise.
         /// </summary>
-        public abstract bool test();
+        public abstract bool Test();
     }
 }
 //happy

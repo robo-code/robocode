@@ -27,8 +27,8 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// Example:
         /// <pre>
-        ///   public void onBattleEnded(BattleEndedEvent evnt) {
-        ///       output.println("The battle has ended");
+        ///   public void OnBattleEnded(BattleEndedEvent evnt) {
+        ///       Output.println("The battle has ended");
         ///   }
         /// </pre>
         ///
@@ -38,7 +38,7 @@ namespace robocode.robotinterfaces
         /// @see robocode.DeathEvent
         /// @see robocode.Event
         /// </summary>
-        void onBattleEnded(BattleEndedEvent evnt);
+        void OnBattleEnded(BattleEndedEvent evnt);
     }
 }
 //happy

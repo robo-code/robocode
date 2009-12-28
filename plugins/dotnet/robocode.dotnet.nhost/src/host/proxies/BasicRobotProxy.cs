@@ -182,7 +182,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             if (res >= MAX_SET_CALL_COUNT)
             {
-                println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
+                println("SYSTEM: You have made " + res + " calls to setXX methods without calling Execute()");
                 throw new DisabledException("Too many calls to setXX methods");
             }
         }
@@ -193,7 +193,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             if (res >= MAX_GET_CALL_COUNT)
             {
-                println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
+                println("SYSTEM: You have made " + res + " calls to getXX methods without calling Execute()");
                 throw new DisabledException("Too many calls to getXX methods");
             }
         }
@@ -225,13 +225,13 @@ namespace net.sf.robocode.dotnet.host.proxies
         public double getVelocity()
         {
             getCall();
-            return status.getVelocity();
+            return status.Velocity;
         }
 
         public double getGunCoolingRate()
         {
             getCall();
-            return statics.getBattleRules().getGunCoolingRate();
+            return statics.getBattleRules().GunCoolingRate;
         }
 
         public String getName()
@@ -249,19 +249,19 @@ namespace net.sf.robocode.dotnet.host.proxies
         public double getBodyHeading()
         {
             getCall();
-            return status.getHeadingRadians();
+            return status.HeadingRadians;
         }
 
         public double getGunHeading()
         {
             getCall();
-            return status.getGunHeadingRadians();
+            return status.GunHeadingRadians;
         }
 
         public double getRadarHeading()
         {
             getCall();
-            return status.getRadarHeadingRadians();
+            return status.RadarHeadingRadians;
         }
 
         public double getEnergy()
@@ -279,43 +279,43 @@ namespace net.sf.robocode.dotnet.host.proxies
         public double getX()
         {
             getCall();
-            return status.getX();
+            return status.X;
         }
 
         public double getY()
         {
             getCall();
-            return status.getY();
+            return status.Y;
         }
 
         public int getOthers()
         {
             getCall();
-            return status.getOthers();
+            return status.Others;
         }
 
         public double getBattleFieldHeight()
         {
             getCall();
-            return statics.getBattleRules().getBattlefieldHeight();
+            return statics.getBattleRules().BattlefieldHeight;
         }
 
         public double getBattleFieldWidth()
         {
             getCall();
-            return statics.getBattleRules().getBattlefieldWidth();
+            return statics.getBattleRules().BattlefieldWidth;
         }
 
         public int getNumRounds()
         {
             getCall();
-            return statics.getBattleRules().getNumRounds();
+            return statics.getBattleRules().NumRounds;
         }
 
         public int getRoundNum()
         {
             getCall();
-            return status.getRoundNum();
+            return status.RoundNum;
         }
 
         public IGraphics getGraphics()
@@ -357,7 +357,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         public long getTimeImpl()
         {
-            return status.getTime();
+            return status.Time;
         }
 
         public IGraphics getGraphicsImpl()
@@ -377,14 +377,14 @@ namespace net.sf.robocode.dotnet.host.proxies
             if (testingCondition)
             {
                 throw new RobotException(
-                    "You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");
+                    "You cannot take action inside Condition.Test().  You should handle OnCustomEvent instead.");
             }
 
             setSetCallCount(0);
             setGetCallCount(0);
 
             // This stops autoscan from scanning...
-            if (waitCondition != null && waitCondition.test())
+            if (waitCondition != null && waitCondition.Test())
             {
                 waitCondition = null;
                 commands.setScan(true);
@@ -528,12 +528,12 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         protected double getEnergyImpl()
         {
-            return status.getEnergy() - firedEnergy;
+            return status.Energy - firedEnergy;
         }
 
         protected double getGunHeatImpl()
         {
-            return status.getGunHeat() + firedHeat;
+            return status.GunHeat + firedHeat;
         }
 
         protected void setMoveImpl(double distance)
@@ -550,7 +550,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             if (Double.IsNaN(power))
             {
-                println("SYSTEM: You cannot call fire(NaN)");
+                println("SYSTEM: You cannot call Fire(NaN)");
                 return null;
             }
             if (getGunHeatImpl() > 0 || getEnergyImpl() == 0)
@@ -566,13 +566,13 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             bulletCounter++;
 
-            if (currentTopEvent != null && currentTopEvent.getTime() == status.getTime() && !statics.IsAdvancedRobot()
-                && status.getGunHeadingRadians() == status.getRadarHeadingRadians()
+            if (currentTopEvent != null && currentTopEvent.Time == status.Time && !statics.IsAdvancedRobot()
+                && status.GunHeadingRadians == status.RadarHeadingRadians
                 && typeof (ScannedRobotEvent).IsAssignableFrom(currentTopEvent.GetType()))
             {
                 // this is angle assisted bullet
                 var e = (ScannedRobotEvent) currentTopEvent;
-                double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeadingRadians() + e.getBearingRadians());
+                double fireAssistAngle = Utils.NormalAbsoluteAngle(status.HeadingRadians + e.BearingRadians);
 
                 bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true, bulletCounter);
                 wrapper = new BulletCommand(power, true, fireAssistAngle, bulletCounter);
@@ -580,13 +580,13 @@ namespace net.sf.robocode.dotnet.host.proxies
             else
             {
                 // this is normal bullet
-                bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName(), null, true,
+                bullet = new Bullet(status.GunHeadingRadians, getX(), getY(), power, statics.getName(), null, true,
                                     bulletCounter);
                 wrapper = new BulletCommand(power, false, 0, bulletCounter);
             }
 
             firedEnergy += power;
-            firedHeat += Rules.getGunHeat(power);
+            firedHeat += Rules.GetGunHeat(power);
 
             commands.getBullets().Add(wrapper);
 
@@ -639,8 +639,8 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         public override String ToString()
         {
-            return statics.getShortName() + "(" + (int) status.getEnergy() + ") X" + (int) status.getX() + " Y"
-                   + (int) status.getY();
+            return statics.getShortName() + "(" + (int) status.Energy + ") X" + (int) status.X + " Y"
+                   + (int) status.Y;
         }
     }
 }

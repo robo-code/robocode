@@ -74,6 +74,24 @@ namespace net.sf.robocode.dotnet.host.proxies
             commands.setAdjustRadarForBodyTurnSet(true);
         }
 
+        public bool isAdjustGunForBodyTurn()
+        {
+            getCall();
+            return commands.IsAdjustGunForBodyTurn();
+        }
+
+        public bool isAdjustRadarForGunTurn()
+        {
+            getCall();
+            return commands.IsAdjustRadarForGunTurn();
+        }
+
+        public bool isAdjustRadarForBodyTurn()
+        {
+            getCall();
+            return commands.IsAdjustRadarForBodyTurn();
+        }
+
         protected void setResumeImpl()
         {
             if (isStopped)

@@ -32,22 +32,22 @@ namespace robocode.robotinterfaces.peer
     {
         /// <summary>
         /// Immediately stops all movement, and saves it for a call to
-        /// {@link #resume()}. If there is already movement saved from a previous
-        /// stop, you can overwrite it by calling {@code stop(true)}.
+        /// {@link #Resume()}. If there is already movement saved from a previous
+        /// Stop, you can overwrite it by calling {@code Stop(true)}.
         ///
-        /// @param overwrite If there is already movement saved from a previous stop,
-        ///                  you can overwrite it by calling {@code stop(true)}.
-        /// @see #resume()
+        /// @param overwrite If there is already movement saved from a previous Stop,
+        ///                  you can overwrite it by calling {@code Stop(true)}.
+        /// @see #Resume()
         /// </summary>
         void stop(bool overwrite);
 
         /// <summary>
-        /// Immediately resumes the movement you stopped by {@link #stop(bool)},
+        /// Immediately resumes the movement you stopped by {@link #Stop(bool)},
         /// if any.
         /// <p/>
         /// This call executes immediately, and does not return until it is complete.
         ///
-        /// @see #stop(bool)
+        /// @see #Stop(bool)
         /// </summary>
         void resume();
 
@@ -59,7 +59,7 @@ namespace robocode.robotinterfaces.peer
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's radar is set to turn right, and
         /// negative values means that the robot's radar is set to turn left.
-        /// If 0 is given as input, the robot's radar will stop turning.
+        /// If 0 is given as input, the robot's radar will Stop turning.
         /// <p/>
         /// Example:
         /// <pre>
@@ -73,7 +73,7 @@ namespace robocode.robotinterfaces.peer
         /// @param radians the amount of radians to turn the robot's radar.
         ///                If {@code radians} > 0 the robot's radar is set to turn right.
         ///                If {@code radians} < 0 the robot's radar is set to turn left.
-        ///                If {@code radians} = 0 the robot's radar is set to stop turning.
+        ///                If {@code radians} = 0 the robot's radar is set to Stop turning.
         /// @see #turnBody(double)
         /// @see #turnGun(double)
         /// @see #move(double)
@@ -95,14 +95,14 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming both the robot and gun start output facing up (0 degrees):
+        /// Example, assuming both the robot and gun start Output facing up (0 degrees):
         /// <pre>
         ///   // Set gun to turn with the robot's turn
         ///   setAdjustGunForBodyTurn(false); // This is the default
         ///   turnBodyRight(Math.PI / 2);
         ///   // At this point, both the robot and gun are facing right (90 degrees)
         ///   turnBodyLeft(Math.PI / 2);
-        ///   // Both are back to 0 degrees
+        ///   // Both are Back to 0 degrees
         /// <p/>
         ///   -- or --
         /// <p/>
@@ -111,7 +111,7 @@ namespace robocode.robotinterfaces.peer
         ///   turnBodyRight(Math.PI / 2);
         ///   // At this point, the robot is facing right (90 degrees), but the gun is still facing up.
         ///   turnBodyLeft(Math.PI / 2);
-        ///   // Both are back to 0 degrees.
+        ///   // Both are Back to 0 degrees.
         /// </pre>
         /// <p/>
         /// Note: The gun compensating this way does count as "turning the gun".
@@ -138,18 +138,18 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming both the gun and radar start output facing up (0 degrees):
+        /// Example, assuming both the gun and radar start Output facing up (0 degrees):
         /// <pre>
         ///   // Set radar to turn with the gun's turn
         ///   setAdjustRadarForGunTurn(false); // This is the default
-        ///   turnGunRight(Math.PI / 2);
+        ///   TurnGunRight(Math.PI / 2);
         ///   // At this point, both the radar and gun are facing right (90 degrees);
         /// <p/>
         ///   -- or --
         /// <p/>
         ///   // Set radar to turn independent from the gun's turn
         ///   setAdjustRadarForGunTurn(true);
-        ///   turnGunRight(Math.PI / 2);
+        ///   TurnGunRight(Math.PI / 2);
         ///   // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
         /// </pre>
         /// Note: Calling {@code setAdjustRadarForGunTurn(bool)} will
@@ -182,19 +182,19 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming the robot, gun, and radar all start output facing up (0
+        /// Example, assuming the robot, gun, and radar all start Output facing up (0
         /// degrees):
         /// <pre>
         ///   // Set radar to turn with the robots's turn
         ///   setAdjustRadarForBodyTurn(false); // This is the default
-        ///   turnRight(Math.PI / 2);
+        ///   TurnRight(Math.PI / 2);
         ///   // At this point, the body, gun, and radar are all facing right (90 degrees);
         /// <p/>
         ///   -- or --
         /// <p/>
         ///   // Set radar to turn independent from the robot's turn
         ///   setAdjustRadarForBodyTurn(true);
-        ///   turnRight(Math.PI / 2);
+        ///   TurnRight(Math.PI / 2);
         ///   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
         /// </pre>
         ///
@@ -205,6 +205,57 @@ namespace robocode.robotinterfaces.peer
         /// @see #setAdjustRadarForGunTurn(bool)
         /// </summary>
         void setAdjustRadarForBodyTurn(bool independent);
+
+        /// <summary>
+        /// Checks if the gun is set to adjust for the robot turning, i.e. to turn
+        /// independent from the robot's body turn.
+        /// <p/>
+        /// This call returns {@code true} if the gun is set to turn independent of
+        /// the turn of the robot's body. Otherwise, {@code false} is returned,
+        /// meaning that the gun is set to turn with the robot's body turn.
+        ///
+        /// @return {@code true} if the gun is set to turn independent of the robot
+        ///         turning; {@code false} if the gun is set to turn with the robot
+        ///         turning
+        /// @see #setAdjustGunForBodyTurn(bool) setAdjustGunForBodyTurn(bool)
+        /// @see #isAdjustRadarForBodyTurn()
+        /// @see #isAdjustRadarForGunTurn()
+        /// </summary>
+        bool isAdjustGunForBodyTurn();
+
+        /// <summary>
+        /// Checks if the radar is set to adjust for the robot turning, i.e. to turn
+        /// independent from the robot's body turn.
+        /// <p/>
+        /// This call returns {@code true} if the radar is set to turn independent of
+        /// the turn of the robot. Otherwise, {@code false} is returned, meaning that
+        /// the radar is set to turn with the robot's turn.
+        ///
+        /// @return {@code true} if the radar is set to turn independent of the robot
+        ///         turning; {@code false} if the radar is set to turn with the robot
+        ///         turning
+        /// @see #setAdjustRadarForBodyTurn(bool) setAdjustRadarForBodyTurn(bool)
+        /// @see #isAdjustGunForBodyTurn()
+        /// @see #isAdjustRadarForGunTurn()
+        /// </summary>
+        bool isAdjustRadarForGunTurn();
+
+        /// <summary>
+        /// Checks if the radar is set to adjust for the gun turning, i.e. to turn
+        /// independent from the gun's turn.
+        /// <p/>
+        /// This call returns {@code true} if the radar is set to turn independent of
+        /// the turn of the gun. Otherwise, {@code false} is returned, meaning that
+        /// the radar is set to turn with the gun's turn.
+        ///
+        /// @return {@code true} if the radar is set to turn independent of the gun
+        ///         turning; {@code false} if the radar is set to turn with the gun
+        ///         turning
+        /// @see #setAdjustRadarForGunTurn(bool) setAdjustRadarForGunTurn(bool)
+        /// @see #isAdjustGunForBodyTurn()
+        /// @see #isAdjustRadarForBodyTurn()
+        /// </summary>
+        bool isAdjustRadarForBodyTurn();
     }
 }
 //happy

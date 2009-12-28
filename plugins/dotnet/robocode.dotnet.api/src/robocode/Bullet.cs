@@ -20,13 +20,13 @@ using robocode.util;
 namespace robocode
 {
     /// <summary>
-    /// Represents a bullet. This is returned from {@link Robot#fireBullet(double)}
-    /// and {@link AdvancedRobot#setFireBullet(double)}, and all the bullet-related
+    /// Represents a bullet. This is returned from {@link Robot#FireBullet(double)}
+    /// and {@link AdvancedRobot#SetFireBullet(double)}, and all the bullet-related
     /// events.
     ///
     /// @author Mathew A. Nelson (original)
-    /// @see Robot#fireBullet(double)
-    /// @see AdvancedRobot#setFireBullet(double)
+    /// @see Robot#FireBullet(double)
+    /// @see AdvancedRobot#SetFireBullet(double)
     /// @see BulletHitEvent
     /// @see BulletMissedEvent
     /// @see BulletHitBulletEvent
@@ -75,9 +75,9 @@ namespace robocode
         ///
         /// @return the direction the bullet is/was heading, in degrees
         /// </summary>
-        public double getHeading()
+        public double Heading
         {
-            return Utils.toDegrees(headingRadians);
+            get { return Utils.toDegrees(headingRadians); }
         }
 
         /// <summary>
@@ -87,9 +87,9 @@ namespace robocode
         ///
         /// @return the direction the bullet is/was heading, in radians
         /// </summary>
-        public double getHeadingRadians()
+        public double HeadingRadians
         {
-            return headingRadians;
+            get { return headingRadians; }
         }
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace robocode
         ///
         /// @return the name of the robot that fired this bullet
         /// </summary>
-        public string getName()
+        public string Name
         {
-            return ownerName;
+            get { return ownerName; }
         }
 
         /// <summary>
@@ -107,13 +107,13 @@ namespace robocode
         /// <p/>
         /// The bullet will do (4 * power) damage if it hits another robot.
         /// If power is greater than 1, it will do an additional 2 * (power - 1)
-        /// damage. You will get (3 * power) back if you hit the other robot.
+        /// damage. You will get (3 * power) Back if you hit the other robot.
         ///
         /// @return the power of the bullet
         /// </summary>
-        public double getPower()
+        public double Power
         {
-            return power;
+            get { return power; }
         }
 
         /// <summary>
@@ -122,9 +122,9 @@ namespace robocode
         ///
         /// @return the velocity of the bullet
         /// </summary>
-        public double getVelocity()
+        public double Velocity
         {
-            return Rules.getBulletSpeed(power);
+            get { return Rules.GetBulletSpeed(power); }
         }
 
         /// <summary>
@@ -134,9 +134,9 @@ namespace robocode
         /// @return the name of the robot that this bullet hit, or {@code null} if
         ///         the bullet has not hit a robot.
         /// </summary>
-        public string getVictim()
+        public string Victim
         {
-            return victimName;
+            get { return victimName; }
         }
 
         /// <summary>
@@ -144,9 +144,9 @@ namespace robocode
         ///
         /// @return the X position of the bullet
         /// </summary>
-        public double getX()
+        public double X
         {
-            return x;
+            get { return x; }
         }
 
         /// <summary>
@@ -154,9 +154,9 @@ namespace robocode
         ///
         /// @return the Y position of the bullet
         /// </summary>
-        public double getY()
+        public double Y
         {
-            return y;
+            get { return y; }
         }
 
         /// <summary>
@@ -165,9 +165,9 @@ namespace robocode
         /// @return {@code true} if the bullet is still active on the battlefield;
         ///         {@code false} otherwise
         /// </summary>
-        public bool isActive()
+        public bool IsActive
         {
-            return _isActive;
+            get { return _isActive; }
         }
 
         /// <summary>

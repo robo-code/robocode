@@ -22,14 +22,14 @@ namespace robocode.exception
     {
         // Must be error!
 
-        private int priority = int.MinValue;
+        private readonly int priority = int.MinValue;
 
         public EventInterruptedException(int priority)
         {
             this.priority = priority;
         }
 
-        public int getPriority()
+        public int GetPriority()
         {
             return priority;
         }

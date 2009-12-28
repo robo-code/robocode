@@ -12,7 +12,6 @@
  *     - Javadocs
  *******************************************************************************/
 using System.Collections.Generic;
-using System.IO;
 
 namespace robocode.robotinterfaces.peer
 {
@@ -34,85 +33,34 @@ namespace robocode.robotinterfaces.peer
     public interface IAdvancedRobotPeer : IStandardRobotPeer
     {
         /// <summary>
-        /// Checks if the gun is set to adjust for the robot turning, i.e. to turn
-        /// independent from the robot's body turn.
+        /// This call is identical to {@link IStandardRobotPeer#Stop(bool)
+        /// Stop(bool)}, but returns immediately, and will not Execute until you
+        /// call {@link IBasicRobotPeer#Execute() Execute()} or take an action that executes.
         /// <p/>
-        /// This call returns {@code true} if the gun is set to turn independent of
-        /// the turn of the robot's body. Otherwise, {@code false} is returned,
-        /// meaning that the gun is set to turn with the robot's body turn.
+        /// If there is already movement saved from a previous Stop, you can
+        /// overwrite it by calling {@code SetStop(true)}.
         ///
-        /// @return {@code true} if the gun is set to turn independent of the robot
-        ///         turning; {@code false} if the gun is set to turn with the robot
-        ///         turning
-        /// @see #setAdjustGunForBodyTurn(bool) setAdjustGunForBodyTurn(bool)
-        /// @see #isAdjustRadarForBodyTurn()
-        /// @see #isAdjustRadarForGunTurn()
-        /// </summary>
-        bool isAdjustGunForBodyTurn();
-
-        /// <summary>
-        /// Checks if the radar is set to adjust for the robot turning, i.e. to turn
-        /// independent from the robot's body turn.
-        /// <p/>
-        /// This call returns {@code true} if the radar is set to turn independent of
-        /// the turn of the robot. Otherwise, {@code false} is returned, meaning that
-        /// the radar is set to turn with the robot's turn.
-        ///
-        /// @return {@code true} if the radar is set to turn independent of the robot
-        ///         turning; {@code false} if the radar is set to turn with the robot
-        ///         turning
-        /// @see #setAdjustRadarForBodyTurn(bool) setAdjustRadarForBodyTurn(bool)
-        /// @see #isAdjustGunForBodyTurn()
-        /// @see #isAdjustRadarForGunTurn()
-        /// </summary>
-        bool isAdjustRadarForGunTurn();
-
-        /// <summary>
-        /// Checks if the radar is set to adjust for the gun turning, i.e. to turn
-        /// independent from the gun's turn.
-        /// <p/>
-        /// This call returns {@code true} if the radar is set to turn independent of
-        /// the turn of the gun. Otherwise, {@code false} is returned, meaning that
-        /// the radar is set to turn with the gun's turn.
-        ///
-        /// @return {@code true} if the radar is set to turn independent of the gun
-        ///         turning; {@code false} if the radar is set to turn with the gun
-        ///         turning
-        /// @see #setAdjustRadarForGunTurn(bool) setAdjustRadarForGunTurn(bool)
-        /// @see #isAdjustGunForBodyTurn()
-        /// @see #isAdjustRadarForBodyTurn()
-        /// </summary>
-        bool isAdjustRadarForBodyTurn();
-
-        /// <summary>
-        /// This call is identical to {@link IStandardRobotPeer#stop(bool)
-        /// stop(bool)}, but returns immediately, and will not execute until you
-        /// call {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
-        /// <p/>
-        /// If there is already movement saved from a previous stop, you can
-        /// overwrite it by calling {@code setStop(true)}.
-        ///
-        /// @param overwrite {@code true} if the movement saved from a previous stop
+        /// @param overwrite {@code true} if the movement saved from a previous Stop
         ///                  should be overwritten; {@code false} otherwise.
-        /// @see IStandardRobotPeer#stop(bool) stop(bool)
-        /// @see IStandardRobotPeer#resume() resume()
-        /// @see #setResume()
-        /// @see IBasicRobotPeer#execute() execute()
+        /// @see IStandardRobotPeer#Stop(bool) Stop(bool)
+        /// @see IStandardRobotPeer#Resume() Resume()
+        /// @see #SetResume()
+        /// @see IBasicRobotPeer#Execute() Execute()
         /// </summary>
         void setStop(bool overwrite);
 
         /// <summary>
-        /// Sets the robot to resume the movement stopped by
-        /// {@link IStandardRobotPeer#stop(bool) stop(bool)} or
-        /// {@link #setStop(bool)}, if any.
+        /// Sets the robot to Resume the movement stopped by
+        /// {@link IStandardRobotPeer#Stop(bool) Stop(bool)} or
+        /// {@link #SetStop(bool)}, if any.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// {@link IBasicRobotPeer#Execute() Execute()} or take an action that executes.
         ///
-        /// @see IStandardRobotPeer#resume() resume()
-        /// @see IStandardRobotPeer#stop(bool) stop(bool)
-        /// @see #setStop(bool)
-        /// @see IBasicRobotPeer#execute() execute()
+        /// @see IStandardRobotPeer#Resume() Resume()
+        /// @see IStandardRobotPeer#Stop(bool) Stop(bool)
+        /// @see #SetStop(bool)
+        /// @see IBasicRobotPeer#Execute() Execute()
         /// </summary>
         void setResume();
 
@@ -120,14 +68,14 @@ namespace robocode.robotinterfaces.peer
         /// Sets the robot to move forward or backward by distance measured in pixels
         /// when the next execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
+        /// This call returns immediately, and will not Execute until you call
+        /// {@link IBasicRobotPeer#Execute() Execute()} or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot is set to move forward, and negative
         /// values means that the robot is set to move backward. If 0 is given as
-        /// input, the robot will stop its movement, but will have to decelerate
-        /// till it stands still, and will thus not be able to stop its movement
+        /// input, the robot will Stop its movement, but will have to decelerate
+        /// till it stands still, and will thus not be able to Stop its movement
         /// immediately, but eventually.
         /// <p/>
         /// Example:
@@ -141,13 +89,13 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         ///   ...
         ///   // Executes the last setMove()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         ///
         /// @param distance the distance to move measured in pixels.
         ///                 If {@code distance} > 0 the robot is set to move forward.
         ///                 If {@code distance} < 0 the robot is set to move backward.
-        ///                 If {@code distance} = 0 the robot is set to stop its movement.
+        ///                 If {@code distance} = 0 the robot is set to Stop its movement.
         /// @see IBasicRobotPeer#move(double) move(double)
         /// @see #setMaxVelocity(double)
         /// @see #setTurnBody(double)
@@ -160,14 +108,14 @@ namespace robocode.robotinterfaces.peer
         /// Sets the robot's body to turn right or left by radians when the next
         /// execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// {@link IBasicRobotPeer#execute() execute()} or take an action that
+        /// This call returns immediately, and will not Execute until you call
+        /// {@link IBasicRobotPeer#Execute() Execute()} or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's body is set to turn right, and
         /// negative values means that the robot's body is set to turn left.
-        /// If 0 is given as input, the robot's body will stop turning.
+        /// If 0 is given as input, the robot's body will Stop turning.
         /// <p/>
         /// Example:
         /// <pre>
@@ -180,13 +128,13 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         ///   ...
         ///   // Executes the last setTurnBody()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's body.
         ///                If {@code radians} > 0 the robot's body is set to turn right.
         ///                If {@code radians} < 0 the robot's body is set to turn left.
-        ///                If {@code radians} = 0 the robot's body is set to stop turning.
+        ///                If {@code radians} = 0 the robot's body is set to Stop turning.
         /// @see IBasicRobotPeer#turnBody(double) turnBody(double)
         /// @see #setTurnGun(double)
         /// @see #setTurnRadar(double)
@@ -199,14 +147,14 @@ namespace robocode.robotinterfaces.peer
         /// Sets the robot's gun to turn right or left by radians when the next
         /// execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// {@link IBasicRobotPeer#execute() execute()} or take an action that
+        /// This call returns immediately, and will not Execute until you call
+        /// {@link IBasicRobotPeer#Execute() Execute()} or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's gun is set to turn right, and
         /// negative values means that the robot's gun is set to turn left.
-        /// If 0 is given as input, the robot's gun will stop turning.
+        /// If 0 is given as input, the robot's gun will Stop turning.
         /// <p/>
         /// Example:
         /// <pre>
@@ -219,13 +167,13 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         ///   ...
         ///   // Executes the last setTurnFun()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's gun.
         ///                If {@code radians} > 0 the robot's gun is set to turn right.
         ///                If {@code radians} < 0 the robot's gun is set to turn left.
-        ///                If {@code radians} = 0 the robot's gun is set to stop turning.
+        ///                If {@code radians} = 0 the robot's gun is set to Stop turning.
         /// @see IBasicRobotPeer#turnGun(double) turnGun(double)
         /// @see #setTurnBody(double)
         /// @see #setTurnRadar(double)
@@ -237,14 +185,14 @@ namespace robocode.robotinterfaces.peer
         /// Sets the robot's radar to turn right or left by radians when the next
         /// execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not execute until you call
-        /// {@link IBasicRobotPeer#execute() execute()} or take an action that
+        /// This call returns immediately, and will not Execute until you call
+        /// {@link IBasicRobotPeer#Execute() Execute()} or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's radar is set to turn right, and
         /// negative values means that the robot's radar is set to turn left.
-        /// If 0 is given as input, the robot's radar will stop turning.
+        /// If 0 is given as input, the robot's radar will Stop turning.
         /// <p/>
         /// Example:
         /// <pre>
@@ -257,13 +205,13 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         ///   ...
         ///   // Executes the last setTurnRadar()
-        ///   execute();
+        ///   Execute();
         /// </pre>
         ///
         /// @param radians the amount of radians to turn the robot's radar.
         ///                If {@code radians} > 0 the robot's radar is set to turn right.
         ///                If {@code radians} < 0 the robot's radar is set to turn left.
-        ///                If {@code radians} = 0 the robot's radar is set to stop turning.
+        ///                If {@code radians} = 0 the robot's radar is set to Stop turning.
         /// @see IStandardRobotPeer#turnRadar(double) turnRadar(double)
         /// @see #setTurnBody(double)
         /// @see #setTurnGun(double)
@@ -297,7 +245,7 @@ namespace robocode.robotinterfaces.peer
 
         /// <summary>
         /// Does not return until a condition is met, i.e. when a
-        /// {@link Condition#test()} returns {@code true}.
+        /// {@link Condition#Test()} returns {@code true}.
         /// <p/>
         /// This call executes immediately.
         /// <p/>
@@ -305,7 +253,7 @@ namespace robocode.robotinterfaces.peer
         ///
         /// @param condition the condition that must be met before this call returns
         /// @see Condition
-        /// @see Condition#test()
+        /// @see Condition#Test()
         /// </summary>
         void waitFor(Condition condition);
 
@@ -315,13 +263,13 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <p>Example:
         /// <pre>
-        ///   public void onScannedRobot(ScannedRobotEvent e) {
-        ///       fire(1);
+        ///   public void OnScannedRobot(ScannedRobotEvent e) {
+        ///       Fire(1);
         ///       <b>setInterruptible(true);</b>
-        ///       move(100);  // If you see a robot while moving ahead,
+        ///       move(100);  // If you see a robot while moving Ahead,
         ///                   // this handler will start from the top
         ///                   // Without setInterruptible(true), we wouldn't
-        ///                   // receive scan events at all!
+        ///                   // receive Scan events at all!
         ///       // We'll only get here if we don't see a robot during the move.
         ///       getOut().println("Ok, I can't see anyone");
         ///   }
@@ -330,9 +278,9 @@ namespace robocode.robotinterfaces.peer
         /// @param interruptible {@code true} if the evnt handler should be
         ///                      interrupted if new events of the same priority occurs; {@code false}
         ///                      otherwise
-        /// @see #setEventPriority(string, int)
-        /// @see robocode.robotinterfaces.IBasicEvents#onScannedRobot(ScannedRobotEvent)
-        ///      onScannedRobot(ScannedRobotEvent)
+        /// @see #SetEventPriority(string, int)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnScannedRobot(ScannedRobotEvent)
+        ///      OnScannedRobot(ScannedRobotEvent)
         /// </summary>
         void setInterruptible(bool interruptible);
 
@@ -347,7 +295,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   setEventPriority("RobotDeathEvent", 15);
+        ///   SetEventPriority("RobotDeathEvent", 15);
         /// </pre>
         /// <p/>
         /// The default priorities are, from highest to lowest:
@@ -380,7 +328,7 @@ namespace robocode.robotinterfaces.peer
         /// @param eventClass the name of the evnt class (string) to set the
         ///                   priority for
         /// @param priority   the new priority for that evnt class
-        /// @see #getEventPriority(string)
+        /// @see #GetEventPriority(string)
         /// @see #setInterruptible(bool)
         /// @since 1.5, the priority of DeathEvent was changed from 100 to -1 in
         ///        order to let robots process pending events on its evnt queue before
@@ -395,7 +343,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   int myHitRobotPriority = getEventPriority("HitRobotEvent");
+        ///   int myHitRobotPriority = GetEventPriority("HitRobotEvent");
         /// </pre>
         /// <p/>
         /// The default priorities are, from highest to lowest:
@@ -421,56 +369,56 @@ namespace robocode.robotinterfaces.peer
         ///
         /// @param eventClass the name of the evnt class (string)
         /// @return the current priority of a class of events
-        /// @see #setEventPriority(string, int)
+        /// @see #SetEventPriority(string, int)
         /// </summary>
         int getEventPriority(string eventClass);
 
         /// <summary>
         /// Registers a custom evnt to be called when a condition is met.
         /// When you are finished with your condition or just want to remove it you
-        /// must call {@link #removeCustomEvent(Condition)}.
+        /// must call {@link #RemoveCustomEvent(Condition)}.
         /// <p/>
         /// Example:
         /// <pre>
         ///   // Create the condition for our custom event
         ///   Condition triggerHitCondition = new Condition("triggerhit") {
-        ///       public bool test() {
+        ///       public bool Test() {
         ///           return (getEnergy() <= trigger);
         ///       };
         ///   }
         /// <p/>
         ///   // Add our custom evnt based on our condition
-        ///   <b>addCustomEvent(triggerHitCondition);</b>
+        ///   <b>AddCustomEvent(triggerHitCondition);</b>
         /// </pre>
         ///
         /// @param condition the condition that must be met.
         /// @throws NullPointerException if the condition parameter has been set to
         ///                              {@code null}.
         /// @see Condition
-        /// @see #removeCustomEvent(Condition)
+        /// @see #RemoveCustomEvent(Condition)
         /// </summary>
         void addCustomEvent(Condition condition);
 
         /// <summary>
         /// Removes a custom evnt that was previously added by calling
-        /// {@link #addCustomEvent(Condition)}.
+        /// {@link #AddCustomEvent(Condition)}.
         /// <p/>
         /// Example:
         /// <pre>
         ///   // Create the condition for our custom event
         ///   Condition triggerHitCondition = new Condition("triggerhit") {
-        ///       public bool test() {
+        ///       public bool Test() {
         ///           return (getEnergy() <= trigger);
         ///       };
         ///   }
         /// <p/>
         ///   // Add our custom evnt based on our condition
-        ///   addCustomEvent(triggerHitCondition);
+        ///   AddCustomEvent(triggerHitCondition);
         ///   ...
         ///   <i>do something with your robot</i>
         ///   ...
         ///   // Remove the custom evnt based on our condition
-        ///   <b>removeCustomEvent(triggerHitCondition);</b>
+        ///   <b>RemoveCustomEvent(triggerHitCondition);</b>
         /// </pre>
         ///
         /// @param condition the condition that was previous added and that must be
@@ -478,14 +426,14 @@ namespace robocode.robotinterfaces.peer
         /// @throws NullPointerException if the condition parameter has been set to
         ///                              {@code null}.
         /// @see Condition
-        /// @see #addCustomEvent(Condition)
+        /// @see #AddCustomEvent(Condition)
         /// </summary>
         void removeCustomEvent(Condition condition);
 
         /// <summary>
-        /// Clears output any pending events in the robot's evnt queue immediately.
+        /// Clears Output any pending events in the robot's evnt queue immediately.
         ///
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         void clearAllEvents();
 
@@ -495,7 +443,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (Event evnt : getAllEvents()) {
+        ///   for (Event evnt : GetAllEvents()) {
         ///       if (event instanceof HitRobotEvent) {
         ///           <i>// do something with the event</i>
         ///       } else if (event instanceof HitByBulletEvent) {
@@ -506,13 +454,13 @@ namespace robocode.robotinterfaces.peer
         ///
         /// @return a vector containing all events currently in the robot's queue
         /// @see Event
-        /// @see #clearAllEvents()
-        /// @see #getStatusEvents()
-        /// @see #getScannedRobotEvents()
-        /// @see #getBulletHitEvents()
-        /// @see #getBulletMissedEvents()
-        /// @see #getBulletHitBulletEvents()
-        /// @see #getRobotDeathEvents()
+        /// @see #ClearAllEvents()
+        /// @see #GetStatusEvents()
+        /// @see #GetScannedRobotEvents()
+        /// @see #GetBulletHitEvents()
+        /// @see #GetBulletMissedEvents()
+        /// @see #GetBulletHitBulletEvents()
+        /// @see #GetRobotDeathEvents()
         /// </summary>
         IList<Event> getAllEvents();
 
@@ -522,17 +470,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (StatusEvent evnt : getStatusEvents()) {
+        ///   for (StatusEvent evnt : GetStatusEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all StatusEvents currently in the robot's
         ///         queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onStatus(StatusEvent)
-        ///      onStatus(StatusEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnStatus(StatusEvent)
+        ///      OnStatus(StatusEvent)
         /// @see StatusEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// @since 1.6.1
         /// </summary>
         IList<StatusEvent> getStatusEvents();
@@ -544,17 +492,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (BulletMissedEvent evnt : getBulletMissedEvents()) {
+        ///   for (BulletMissedEvent evnt : GetBulletMissedEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all BulletMissedEvents currently in the
         ///         robot's queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletMissed(BulletMissedEvent)
-        ///      onBulletMissed(BulletMissedEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletMissed(BulletMissedEvent)
+        ///      OnBulletMissed(BulletMissedEvent)
         /// @see BulletMissedEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         IList<BulletMissedEvent> getBulletMissedEvents();
 
@@ -565,17 +513,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (BulletHitBulletEvent evnt : getBulletHitBulletEvents()) {
+        ///   for (BulletHitBulletEvent evnt : GetBulletHitBulletEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all BulletHitBulletEvents currently in the
         ///         robot's queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletHitBullet(BulletHitBulletEvent)
-        ///      onBulletHitBullet(BulletHitBulletEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletHitBullet(BulletHitBulletEvent)
+        ///      OnBulletHitBullet(BulletHitBulletEvent)
         /// @see BulletHitBulletEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         IList<BulletHitBulletEvent> getBulletHitBulletEvents();
 
@@ -585,17 +533,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (BulletHitEvent event: getBulletHitEvents()) {
+        ///   for (BulletHitEvent event: GetBulletHitEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all BulletHitEvents currently in the robot's
         ///         queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onBulletHit(BulletHitEvent)
-        ///      onBulletHit(BulletHitEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnBulletHit(BulletHitEvent)
+        ///      OnBulletHit(BulletHitEvent)
         /// @see BulletHitEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         IList<BulletHitEvent> getBulletHitEvents();
 
@@ -606,17 +554,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (HitByBulletEvent evnt : getHitByBulletEvents()) {
+        ///   for (HitByBulletEvent evnt : GetHitByBulletEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all HitByBulletEvents currently in the
         ///         robot's queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onHitByBullet(HitByBulletEvent)
-        ///      onHitByBullet(HitByBulletEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnHitByBullet(HitByBulletEvent)
+        ///      OnHitByBullet(HitByBulletEvent)
         /// @see HitByBulletEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         IList<HitByBulletEvent> getHitByBulletEvents();
 
@@ -626,17 +574,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (HitRobotEvent evnt : getHitRobotEvents()) {
+        ///   for (HitRobotEvent evnt : GetHitRobotEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all HitRobotEvents currently in the robot's
         ///         queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onHitRobot(HitRobotEvent)
-        ///      onHitRobot(HitRobotEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnHitRobot(HitRobotEvent)
+        ///      OnHitRobot(HitRobotEvent)
         /// @see HitRobotEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         IList<HitRobotEvent> getHitRobotEvents();
 
@@ -646,17 +594,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (HitWallEvent evnt : getHitWallEvents()) {
+        ///   for (HitWallEvent evnt : GetHitWallEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all HitWallEvents currently in the robot's
         ///         queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onHitWall(HitWallEvent)
-        ///      onHitWall(HitWallEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnHitWall(HitWallEvent)
+        ///      OnHitWall(HitWallEvent)
         /// @see HitWallEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         IList<HitWallEvent> getHitWallEvents();
 
@@ -666,17 +614,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (RobotDeathEvent evnt : getRobotDeathEvents()) {
+        ///   for (RobotDeathEvent evnt : GetRobotDeathEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all RobotDeathEvents currently in the robot's
         ///         queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onRobotDeath(RobotDeathEvent)
-        ///      onRobotDeath(RobotDeathEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnRobotDeath(RobotDeathEvent)
+        ///      OnRobotDeath(RobotDeathEvent)
         /// @see RobotDeathEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         IList<RobotDeathEvent> getRobotDeathEvents();
 
@@ -687,17 +635,17 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Example:
         /// <pre>
-        ///   for (ScannedRobotEvent evnt : getScannedRobotEvents()) {
+        ///   for (ScannedRobotEvent evnt : GetScannedRobotEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
         ///
         /// @return a vector containing all ScannedRobotEvents currently in the
         ///         robot's queue
-        /// @see robocode.robotinterfaces.IBasicEvents#onScannedRobot(ScannedRobotEvent)
-        ///      onScannedRobot(ScannedRobotEvent)
+        /// @see robocode.robotinterfaces.IBasicEvents#OnScannedRobot(ScannedRobotEvent)
+        ///      OnScannedRobot(ScannedRobotEvent)
         /// @see ScannedRobotEvent
-        /// @see #getAllEvents()
+        /// @see #GetAllEvents()
         /// </summary>
         IList<ScannedRobotEvent> getScannedRobotEvents();
 
@@ -731,7 +679,7 @@ namespace robocode.robotinterfaces.peer
         ///
         /// @param filename the file name of the data file for your robot
         /// @return a file representing the data file for your robot
-        /// @see #getDataDirectory()
+        /// @see #GetDataDirectory()
         /// @see RobocodeFileOutputStream
         /// @see RobocodeFileWriter
         /// </summary>
@@ -742,7 +690,7 @@ namespace robocode.robotinterfaces.peer
         /// of bytes left in the data directory for the robot.
         ///
         /// @return the amount of bytes left in the robot's data directory
-        /// @see #getDataDirectory()
+        /// @see #GetDataDirectory()
         /// @see #getDataFile(string)
         /// </summary>
         long getDataQuotaAvailable();

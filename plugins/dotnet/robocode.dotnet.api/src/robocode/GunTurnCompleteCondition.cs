@@ -61,9 +61,9 @@ namespace robocode
         /// @return {@code true} if the gun has stopped turning; {@code false}
         ///         otherwise
         /// </summary>
-        public override bool test()
+        public override bool Test()
         {
-            return (robot.getGunTurnRemaining() == 0);
+            return (robot.GunTurnRemaining == 0);
         }
     }
 }

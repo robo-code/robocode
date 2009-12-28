@@ -61,9 +61,9 @@ namespace robocode
         /// @return {@code true} if the robot has stopped turning; {@code false}
         ///         otherwise
         /// </summary>
-        public override bool test()
+        public override bool Test()
         {
-            return (robot.getTurnRemaining() == 0);
+            return (robot.TurnRemaining == 0);
         }
     }
 }
