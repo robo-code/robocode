@@ -55,7 +55,6 @@ public class RobotFileOutputStream extends FileOutputStream {
 			fileSystemManager.checkQuota(len);
 			super.write(b, off, len);
 		} catch (IOException e) {
-			close();
 			try {
 				close();
 			} catch (IOException ignored) {}
@@ -69,7 +68,6 @@ public class RobotFileOutputStream extends FileOutputStream {
 			fileSystemManager.checkQuota(1);
 			super.write(b);
 		} catch (IOException e) {
-			close();
 			try {
 				close();
 			} catch (IOException ignored) {}
