@@ -19,6 +19,7 @@
  *     - Optimized and provided javadocs for all methods
  *******************************************************************************/
 using System;
+using net.sf.robocode.security;
 
 namespace robocode.util
 {
@@ -210,8 +211,7 @@ namespace robocode.util
         /// </summary>
         public static Random getRandom()
         {
-            //TODO
-            throw new NotImplementedException();
+            return HiddenAccessN.randomHelper.GetRandom();
         }
 
         public static double toRadians(double angle)

@@ -56,6 +56,7 @@
     <Compile Include="net\sf\robocode\security\HiddenAccessN.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenBulletHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenEventHelper.cs" />
+    <Compile Include="net\sf\robocode\security\IHiddenRandomHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenRulesHelper.cs" />
     <Compile Include="net\sf\robocode\security\IHiddenStatusHelper.cs" />
     <Compile Include="net\sf\robocode\security\RobocodeInternalPermission.cs" />

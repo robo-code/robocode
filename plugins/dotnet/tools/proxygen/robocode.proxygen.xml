@@ -36,7 +36,8 @@
   <JavaClass TypeName="robocode.exception.AbortedException"/>
   <JavaClass TypeName="robocode.exception.DeathException"/>
   <JavaClass TypeName="robocode.exception.DisabledException"/>
-  
+  <JavaClass TypeName="java.util.Random"/>
+  <JavaClass TypeName="robocode.control.RandomFactory"/>
   
   <!-- .NET -->
   <ClrType TypeName="net.sf.robocode.dotnet.host.DotnetHost"/>

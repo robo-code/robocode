@@ -7,6 +7,7 @@ using net.sf.robocode.manager;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
 using robocode;
+using robocode.control;
 
 namespace net.sf.robocode.dotnet.nhost
 {
@@ -15,8 +16,9 @@ namespace net.sf.robocode.dotnet.nhost
         public static void InitN()
         {
             HiddenAccessN.init();
-            LoggerN.setLogListener(new Logger(true));
             LoggerN.IsSafeThread = true;
+            LoggerN.setLogListener(new Logger(true));
+            HiddenAccessN.randomHelper = new RandomFactory(true);
 
             var versionManager =
                 Bridge.Cast<IVersionManagerBase>(ContainerBase.getComponent(IVersionManagerBase_._class));
