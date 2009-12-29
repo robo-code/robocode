@@ -72,4 +72,9 @@ public class TestFileWriteSize extends RobocodeTestBed {
 		Assert.assertTrue("Error must be output that file quota has been exceeded", messageQuotaReached);
 		Assert.assertTrue("Game must terminate the robot", robotTerminated);
 	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 1; // Security errors must be reported as errors
+	}
 }

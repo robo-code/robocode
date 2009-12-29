@@ -70,7 +70,7 @@ public class RobotFileSystemManager {
 			if (streams.size() < 5) {
 				streams.add(s);
 			} else {
-				throw new IOException(
+				throw new SecurityException(
 						"You may only have 5 streams open at a time.\n Make sure you call close() on your streams when you are finished with them.");
 			}
 		}
@@ -86,17 +86,20 @@ public class RobotFileSystemManager {
 
 	public void checkQuota(long numBytes) throws IOException {
 		if (numBytes < 0) {
-			throw new IndexOutOfBoundsException("checkQuota on negative numBytes!");
+			throw new IllegalArgumentException("checkQuota on negative numBytes!");
 		}
 		if (quotaUsed + numBytes <= maxQuota) {
 			adjustQuota(numBytes);
 			return;
 		}
+
+		final String msg = "You have reached your filesystem quota of: " + maxQuota + " bytes.";
+
 		if (!quotaMessagePrinted) {
-			robotProxy.println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
+			robotProxy.println("SYSTEM: " + msg);
 			quotaMessagePrinted = true;
 		}
-		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");
+		throw new SecurityException(msg);
 	}
 
 	public long getMaxQuota() {
