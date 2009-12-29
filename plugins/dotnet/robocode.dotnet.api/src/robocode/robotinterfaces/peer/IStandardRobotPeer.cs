@@ -95,7 +95,7 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming both the robot and gun start Output facing up (0 degrees):
+        /// Example, assuming both the robot and gun start Out facing up (0 degrees):
         /// <pre>
         ///   // Set gun to turn with the robot's turn
         ///   setAdjustGunForBodyTurn(false); // This is the default
@@ -138,7 +138,7 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming both the gun and radar start Output facing up (0 degrees):
+        /// Example, assuming both the gun and radar start Out facing up (0 degrees):
         /// <pre>
         ///   // Set radar to turn with the gun's turn
         ///   setAdjustRadarForGunTurn(false); // This is the default
@@ -182,7 +182,7 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming the robot, gun, and radar all start Output facing up (0
+        /// Example, assuming the robot, gun, and radar all start Out facing up (0
         /// degrees):
         /// <pre>
         ///   // Set radar to turn with the robots's turn

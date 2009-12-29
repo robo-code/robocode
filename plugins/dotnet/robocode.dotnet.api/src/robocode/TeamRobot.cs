@@ -112,11 +112,11 @@ namespace robocode
         /// Example:
         /// <pre>
         ///   public void Run() {
-        ///       // Prints Output all teammates
+        ///       // Prints Out all teammates
         ///       string[] teammates = getTeammates();
         ///       if (teammates != null) {
         ///           for (string member : teammates) {
-        ///               Output.println(member);
+        ///               Out.println(member);
         ///           }
         ///       }
         ///   }

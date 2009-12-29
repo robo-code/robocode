@@ -94,6 +94,7 @@
     <Compile Include="robocode\KeyEvent.cs" />
     <Compile Include="robocode\KeyPressedEvent.cs" />
     <Compile Include="robocode\KeyReleasedEvent.cs" />
+    <Compile Include="robocode\Keys.cs" />
     <Compile Include="robocode\KeyTypedEvent.cs" />
     <Compile Include="robocode\MessageEvent.cs" />
     <Compile Include="robocode\MouseClickedEvent.cs" />

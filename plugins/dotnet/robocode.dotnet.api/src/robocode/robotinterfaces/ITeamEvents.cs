@@ -32,7 +32,7 @@ namespace robocode.robotinterfaces
         /// Example:
         /// <pre>
         ///   public void OnMessageReceived(MessageEvent evnt) {
-        ///       Output.println(event.getSender() + " sent me: " + evnt.getMessage());
+        ///       Out.println(event.getSender() + " sent me: " + evnt.getMessage());
         ///   }
         /// </pre>
         ///

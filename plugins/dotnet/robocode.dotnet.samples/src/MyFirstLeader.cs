@@ -84,8 +84,8 @@ namespace samplecs
             }
             catch (Exception ex)
             {
-                Output.WriteLine("Unable to send order: ");
-                Output.WriteLine(ex);
+                Out.WriteLine("Unable to send order: ");
+                Out.WriteLine(ex);
             }
         }
 

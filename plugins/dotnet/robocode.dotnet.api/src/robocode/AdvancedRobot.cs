@@ -569,7 +569,7 @@ namespace robocode
         }
 
         ///<summary>
-        ///  Clears Output any pending events in the robot's evnt queue immediately.
+        ///  Clears Out any pending events in the robot's evnt queue immediately.
         ///
         ///  @see #GetAllEvents()
         ///</summary>
@@ -1125,7 +1125,7 @@ namespace robocode
         ///    // Without setInterruptible(true), we wouldn't
         ///    // receive Scan events at all!
         ///    // We'll only get here if we don't see a robot during the move.
-        ///    Output.println("Ok, I can't see anyone");
+        ///    Out.println("Ok, I can't see anyone");
         ///    }
         ///  </pre>
         ///  @param interruptible {@code true} if the evnt handler should be

@@ -68,7 +68,7 @@ namespace robocode
 
                 if (listener != null)
                 {
-                    listener.OnMouseDragged(this);
+                    listener.OnMousePressed(this);
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace robocode
         /// </summary>
         internal override byte SerializationType
         {
-            get { return RbSerializerN.MouseDraggedEvent_TYPE; }
+            get { return RbSerializerN.MousePressedEvent_TYPE; }
         }
 
         private static ISerializableHelperN createHiddenSerializer()
@@ -95,7 +95,7 @@ namespace robocode
 
             public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
-                var obj = (MouseDraggedEvent) objec;
+                var obj = (MousePressedEvent)objec;
 
                 serializer.serialize(buffer, obj.Button);
                 serializer.serialize(buffer, obj.ClickCount);

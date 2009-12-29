@@ -80,10 +80,10 @@ namespace samplecs
             }
             catch (Exception)
             {
-                Output.WriteLine("I could not write the count!");
+                Out.WriteLine("I could not write the count!");
             }
 
-            Output.WriteLine("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles.");
+            Out.WriteLine("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles.");
         }
     }
 }

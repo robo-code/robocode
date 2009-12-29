@@ -27,7 +27,7 @@ namespace samplecs
         /// </summary>
         public override void Run()
         {
-            Output.WriteLine("MyFirstDroid ready.");
+            Out.WriteLine("MyFirstDroid ready.");
         }
 
         /// <summary>

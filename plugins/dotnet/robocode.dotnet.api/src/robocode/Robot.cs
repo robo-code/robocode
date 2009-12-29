@@ -80,20 +80,20 @@ namespace robocode
         internal TextWriter _output;
 
         /// <summary>
-        /// The Output stream your robot should use to print.
+        /// The Out stream your robot should use to print.
         /// <p/>
         /// You can view the print-outs by clicking the button for your robot in the
         /// right side of the battle window.
         /// <p/>
         /// Example:
         /// <pre>
-        ///   // Print Output a line each time my robot hits another robot
+        ///   // Print Out a line each time my robot hits another robot
         ///   public void OnHitRobot(HitRobotEvent e) {
-        ///       Output.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
+        ///       Out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
         ///   }
         /// </pre>
         /// </summary>
-        public TextWriter Output
+        public TextWriter Out
         {
             get { return _output; }
         }
@@ -962,7 +962,7 @@ namespace robocode
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming both the robot and gun start Output facing up (0 degrees):
+        /// Example, assuming both the robot and gun start Out facing up (0 degrees):
         /// <pre>
         ///   // Set gun to turn with the robot's turn
         ///   setAdjustGunForRobotTurn(false); // This is the default
@@ -1029,7 +1029,7 @@ namespace robocode
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming the robot, gun, and radar all start Output facing up (0
+        /// Example, assuming the robot, gun, and radar all start Out facing up (0
         /// degrees):
         /// <pre>
         ///   // Set radar to turn with the robots's turn
@@ -1090,7 +1090,7 @@ namespace robocode
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming both the gun and radar start Output facing up (0 degrees):
+        /// Example, assuming both the gun and radar start Out facing up (0 degrees):
         /// <pre>
         ///   // Set radar to turn with the gun's turn
         ///   setAdjustRadarForGunTurn(false); // This is the default

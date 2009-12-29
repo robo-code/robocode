@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{80857B97-6397-487B-A9F5-B07026DCBB66}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>robocode.dotnet.samples</RootNamespace>
+    <RootNamespace>samplecs</RootNamespace>
     <AssemblyName>robocode.dotnet.samples-1.7.3.0</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -48,6 +48,10 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Corners.cs" />
+    <Compile Include="Crazy.cs" />
+    <Compile Include="Fire.cs" />
+    <Compile Include="Interactive.cs" />
     <Compile Include="MyFirstDroid.cs" />
     <Compile Include="MyFirstLeader.cs" />
     <Compile Include="PaintingRobot.cs" />

@@ -524,6 +524,9 @@ namespace net.sf.robocode.dotnet.host.events
                 catch (WinException)
                 {
                 } //ignore
+                catch (EventInterruptedException)
+                {
+                } //ignore
                 catch (Exception ex)
                 {
                     robotProxy.println("SYSTEM: Exception occurred on " + currentEvent.GetType().Name);

@@ -343,16 +343,16 @@ namespace robocode
 
 
         /// <summary>
-        /// The Output stream your robot should use to print.
+        /// The Out stream your robot should use to print.
         /// <p/>
         /// You can view the print-outs by clicking the button for your robot in the
         /// right side of the battle window.
         /// <p/>
         /// Example:
         /// <pre>
-        ///   // Print Output a line each time my robot hits another robot
+        ///   // Print Out a line each time my robot hits another robot
         ///   public void OnHitRobot(HitRobotEvent e) {
-        ///       Output.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
+        ///       Out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
         ///   }
         /// </pre>
         /// </summary>

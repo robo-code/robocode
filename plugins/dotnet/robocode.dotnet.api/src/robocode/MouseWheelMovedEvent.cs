@@ -56,19 +56,19 @@ namespace robocode
             this.wheelRotation = wheelRotation;
         }
 
-        public int getScrollType()
+        public int ScrollType
         {
-            return scrollType;
+            get { return scrollType; }
         }
 
-        public int getScrollAmount()
+        public int ScrollAmount
         {
-            return scrollAmount;
+            get { return scrollAmount; }
         }
 
-        public int getWheelRotation()
+        public int WheelRotation
         {
-            return wheelRotation;
+            get { return wheelRotation; }
         }
 
 
@@ -123,9 +123,9 @@ namespace robocode
                 serializer.serialize(buffer, obj.ClickCount);
                 serializer.serialize(buffer, obj.X);
                 serializer.serialize(buffer, obj.Y);
-                serializer.serialize(buffer, obj.getScrollType());
-                serializer.serialize(buffer, obj.getScrollAmount());
-                serializer.serialize(buffer, obj.getWheelRotation());
+                serializer.serialize(buffer, obj.ScrollType);
+                serializer.serialize(buffer, obj.ScrollAmount);
+                serializer.serialize(buffer, obj.WheelRotation);
                 serializer.serialize(buffer, obj.ID);
                 serializer.serialize(buffer, obj.ModifiersEx);
                 serializer.serialize(buffer, obj.When);

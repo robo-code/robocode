@@ -432,7 +432,7 @@ namespace robocode.robotinterfaces.peer
         void removeCustomEvent(Condition condition);
 
         /// <summary>
-        /// Clears Output any pending events in the robot's evnt queue immediately.
+        /// Clears Out any pending events in the robot's evnt queue immediately.
         ///
         /// @see #GetAllEvents()
         /// </summary>

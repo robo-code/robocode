@@ -70,10 +70,10 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// Do not call this method!
         /// <p/>
-        /// This method is called by the game when setting the Output stream for your
+        /// This method is called by the game when setting the Out stream for your
         /// robot.
         ///
-        /// @param Output the new Output print stream for this robot
+        /// @param Out the new Out print stream for this robot
         /// @since 1.6
         /// </summary>
         void SetOut(TextWriter output);

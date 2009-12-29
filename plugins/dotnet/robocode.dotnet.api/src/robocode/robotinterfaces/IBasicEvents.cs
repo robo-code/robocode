@@ -55,7 +55,7 @@ namespace robocode.robotinterfaces
         /// Example:
         /// <pre>
         ///   public void OnBulletHit(BulletHitEvent evnt) {
-        ///       Output.println("I hit " + evnt.getName() + "!");
+        ///       Out.println("I hit " + evnt.getName() + "!");
         ///   }
         /// </pre>
         ///
@@ -73,7 +73,7 @@ namespace robocode.robotinterfaces
         /// Example:
         /// <pre>
         ///   public void OnBulletHitBullet(BulletHitBulletEvent evnt) {
-        ///       Output.println("I hit a bullet fired by " + evnt.getBullet().getName() + "!");
+        ///       Out.println("I hit a bullet fired by " + evnt.getBullet().getName() + "!");
         ///   }
         /// </pre>
         ///
@@ -91,7 +91,7 @@ namespace robocode.robotinterfaces
         /// Example:
         /// <pre>
         ///   public void OnBulletMissed(BulletMissedEvent evnt) {
-        ///       Output.println("Drat, I missed.");
+        ///       Out.println("Drat, I missed.");
         ///   }
         /// </pre>
         ///
@@ -125,7 +125,7 @@ namespace robocode.robotinterfaces
         /// Example:
         /// <pre>
         ///   void OnHitByBullet(HitByBulletEvent evnt) {
-        ///       Output.println(event.getRobotName() + " hit me!");
+        ///       Out.println(event.getRobotName() + " hit me!");
         ///   }
         /// </pre>
         ///
@@ -190,7 +190,7 @@ namespace robocode.robotinterfaces
         /// Example:
         /// <pre>
         ///   void OnHitWall(HitWallEvent evnt) {
-        ///       Output.println("Ouch, I hit a wall bearing " + evnt.getBearing() + " degrees.");
+        ///       Out.println("Ouch, I hit a wall bearing " + evnt.getBearing() + " degrees.");
         ///   }
         /// </pre>
         ///
