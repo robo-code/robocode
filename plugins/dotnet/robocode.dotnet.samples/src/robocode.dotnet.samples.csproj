@@ -39,7 +39,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
@@ -50,6 +52,7 @@
     <Compile Include="MyFirstLeader.cs" />
     <Compile Include="PaintingRobot.cs" />
     <Compile Include="RobotColors.cs" />
+    <Compile Include="SittingDuck.cs" />
     <Compile Include="YourCsRobot.cs" />
     <Compile Include="MyCsRobot.cs" />
   </ItemGroup>

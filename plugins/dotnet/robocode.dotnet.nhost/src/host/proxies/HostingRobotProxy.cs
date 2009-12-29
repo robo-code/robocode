@@ -22,7 +22,6 @@ namespace net.sf.robocode.dotnet.host.proxies
     internal abstract class HostingRobotProxy
     {
         protected EventManager eventManager;
-        protected RobotThreadManager robotThreadManager;
         protected RobotFileSystemManager robotFileSystemManager;
         private readonly IRobotRepositoryItem robotSpecification;
         protected RobotStatics statics;
@@ -43,12 +42,9 @@ namespace net.sf.robocode.dotnet.host.proxies
             outputSb = new System.Text.StringBuilder(5000);
             output = TextWriter.Synchronized(new StringWriter(outputSb));
 
-            robotThreadManager = new RobotThreadManager(this);
-
             robotFileSystemManager = new RobotFileSystemManager((int)hostManager.getRobotFilesystemQuota(),
                                                                 robotSpecification.getWritableDirectory(),
-                                                                robotSpecification.getReadableDirectory(),
-                                                                robotSpecification.getRootFile());
+                                                                robotSpecification.getReadableDirectory());
 
         }
 
@@ -62,13 +58,8 @@ namespace net.sf.robocode.dotnet.host.proxies
             robot = null;
 
             // Remove the file system and the manager
+            robotFileSystemManager.cleanup();
             robotFileSystemManager = null;
-
-            if (robotThreadManager != null)
-            {
-                robotThreadManager.cleanup();
-            }
-            robotThreadManager = null;
         }
 
         public PrintStream getOut()
@@ -121,13 +112,6 @@ namespace net.sf.robocode.dotnet.host.proxies
         // -----------
 
         internal abstract void initializeRound(ExecCommands commands, RobotStatus status);
-
-        public void startRound(ExecCommands commands, RobotStatus status)
-        {
-            initializeRound(commands, status);
-            robotThreadManager.start();
-        }
-
 
         [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
         private bool loadRobotRound()

@@ -24,6 +24,7 @@
  *******************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.IO;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
 using robocode.util;
@@ -741,7 +742,7 @@ namespace robocode
         /// need to create it by yourself.
         ///
         /// @return a file representing the data directory for your robot
-        /// @see #getDataFile(string)
+        /// @see #GetDataFile(string)
         /// @see RobocodeFileOutputStream
         /// @see RobocodeFileWriter
         /// </summary>
@@ -755,7 +756,6 @@ namespace robocode
             return null; // never called
         }
 
-        /*TODO
         /// <summary>
         /// Returns a file in your data directory that you can write to using
         /// {@link RobocodeFileOutputStream} or {@link RobocodeFileWriter}.
@@ -775,7 +775,7 @@ namespace robocode
         /// @see RobocodeFileOutputStream
         /// @see RobocodeFileWriter
         /// </summary>
-        public string getDataFile(string filename)
+        public Stream GetDataFile(string filename)
         {
             if (peer != null)
             {
@@ -783,7 +783,7 @@ namespace robocode
             }
             UninitializedException();
             return null; // never called
-        }*/
+        }
 
         /// <summary>
         /// Returns the data quota available in your data directory, i.e. the amount
@@ -791,7 +791,7 @@ namespace robocode
         ///
         /// @return the amount of bytes left in the robot's data directory
         /// @see #GetDataDirectory()
-        /// @see #getDataFile(string)
+        /// @see #GetDataFile(string)
         /// </summary>
         public long DataQuotaAvailable
         {

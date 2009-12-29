@@ -91,6 +91,7 @@
     <Compile Include="host\proxies\StandardRobotProxy.cs" />
     <Compile Include="host\proxies\TeamRobotProxy.cs" />
     <Compile Include="host\RobotStatics.cs" />
+    <Compile Include="host\security\QuotaStream.cs" />
     <Compile Include="host\security\RobotFileSystemManager.cs" />
     <Compile Include="host\security\RobotThreadManager.cs" />
     <Compile Include="host\seed\AppDomainSeed.cs" />

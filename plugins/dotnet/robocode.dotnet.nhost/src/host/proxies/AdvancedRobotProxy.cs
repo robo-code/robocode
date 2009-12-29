@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using net.sf.robocode.host;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
@@ -193,26 +194,21 @@ namespace net.sf.robocode.dotnet.host.proxies
             return robotFileSystemManager.getWritableDirectory();
         }
 
-        /*TODO 
-        public string getDataFile(string filename)
+        public Stream getDataFile(string filename)
         {
             getCall();
             commands.setIORobot();
-		    if (filename.contains("..")) {
-			    throw new AccessControlException("no relative path allowed");
+		    if (filename.Contains("..")) {
+                throw new AccessViolationException("no relative path allowed");
 		    }
 
-		    return AccessController.doPrivileged(new PrivilegedAction<File>() {
-			    public File Run() {
-				    return robotFileSystemManager.getDataFile(filename);
-			    }
-		    });
-        }*/
+    	    return robotFileSystemManager.getDataFile(filename);
+        }
 
         public long getDataQuotaAvailable()
         {
             getCall();
-            return robotFileSystemManager.getMaxQuota() - robotFileSystemManager.getQuotaUsed();
+            return robotFileSystemManager.getDataQuotaAvailable();
         }
     }
 }

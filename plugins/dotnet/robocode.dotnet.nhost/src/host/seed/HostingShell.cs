@@ -53,6 +53,7 @@ namespace net.sf.robocode.dotnet.host.seed
 
         public void cleanup()
         {
+            domain.DoCallBack(HostingSeed.Cleanup);
             Dispose();
         }
     }

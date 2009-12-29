@@ -12,6 +12,7 @@
  *     - Javadocs
  *******************************************************************************/
 using System.Collections.Generic;
+using System.IO;
 
 namespace robocode.robotinterfaces.peer
 {
@@ -658,7 +659,7 @@ namespace robocode.robotinterfaces.peer
         /// need to create it by yourself.
         ///
         /// @return a file representing the data directory for your robot
-        /// @see #getDataFile(string)
+        /// @see #GetDataFile(string)
         /// @see RobocodeFileOutputStream
         /// @see RobocodeFileWriter
         /// </summary>
@@ -683,7 +684,7 @@ namespace robocode.robotinterfaces.peer
         /// @see RobocodeFileOutputStream
         /// @see RobocodeFileWriter
         /// </summary>
-        //TODO string getDataFile(string filename);
+        Stream getDataFile(string filename);
 
         /// <summary>
         /// Returns the data quota available in your data directory, i.e. the amount
@@ -691,7 +692,7 @@ namespace robocode.robotinterfaces.peer
         ///
         /// @return the amount of bytes left in the robot's data directory
         /// @see #GetDataDirectory()
-        /// @see #getDataFile(string)
+        /// @see #GetDataFile(string)
         /// </summary>
         long getDataQuotaAvailable();
     }

@@ -59,7 +59,6 @@ namespace net.sf.robocode.dotnet.host.seed
             Evidence securityInfo = AppDomain.CurrentDomain.Evidence;
             PermissionSet permissionSet = new PermissionSet(PermissionState.None);
             permissionSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution|SecurityPermissionFlag.Assertion));
-            //TODO serialization ?
             permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, tempDir));
             
             domainSetup.ApplicationBase = tempDir;

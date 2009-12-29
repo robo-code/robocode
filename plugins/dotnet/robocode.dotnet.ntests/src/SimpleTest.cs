@@ -1,6 +1,9 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using net.sf.robocode.dotnet.host.proxies;
+using net.sf.robocode.dotnet.host.security;
 using net.sf.robocode.nio;
 using NUnit.Framework;
 
@@ -37,5 +40,79 @@ namespace net.sf.robocode.dotnet
             byte[] readoutQueuedCalls = sg.readoutQueuedCalls();
             Assert.Greater(readoutQueuedCalls.Length,0);
         }
+
+        [Test]
+        [ExpectedException(typeof(AccessViolationException))]
+        public void StreamBig()
+        {
+            string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempDir);
+            RobotFileSystemManager m = new RobotFileSystemManager(100, tempDir, tempDir);
+
+            using (Stream dataFile = m.getDataFile("test.txt"))
+            {
+                dataFile.WriteByte(0xFF);
+                dataFile.Position = 98;
+                dataFile.WriteByte(0xFF);
+                dataFile.WriteByte(0xFF);
+                dataFile.WriteByte(0xFF);
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(AccessViolationException))]
+        public void StreamBig2()
+        {
+            string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempDir);
+            RobotFileSystemManager m = new RobotFileSystemManager(100, tempDir, tempDir);
+
+            using (Stream dataFile = m.getDataFile("test.txt"))
+            {
+                dataFile.WriteByte(0xFF);
+                dataFile.Position = 97;
+                dataFile.WriteByte(0xFF);
+                using (Stream dataFile2 = m.getDataFile("test.txt"))
+                {
+                    dataFile2.WriteByte(0xFF);
+                    dataFile2.Position = 98;
+                    dataFile2.WriteByte(0xFF);
+                }
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(AccessViolationException))]
+        public void StreamBig3()
+        {
+            string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempDir);
+            RobotFileSystemManager m = new RobotFileSystemManager(100, tempDir, tempDir);
+
+            using (Stream dataFile = m.getDataFile("test.txt"))
+            {
+                dataFile.WriteByte(0xFF);
+                dataFile.Position = 97;
+                dataFile.WriteByte(0xFF);
+                dataFile.Write(new byte[] {0xFF, 0xFF, 0xFF}, 0, 3);
+            }
+        }
+
+        [Test]
+        public void StreamOk()
+        {
+            string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempDir);
+            RobotFileSystemManager m = new RobotFileSystemManager(100, tempDir, tempDir);
+
+            using (Stream dataFile = m.getDataFile("test.txt"))
+            {
+                dataFile.WriteByte(0xFF);
+                dataFile.Position = 97;
+                dataFile.WriteByte(0xFF);
+                dataFile.Write(new byte[] { 0xFF, 0xFF, 0xFF }, 0, 2);
+            }
+        }
+    
     }
 }

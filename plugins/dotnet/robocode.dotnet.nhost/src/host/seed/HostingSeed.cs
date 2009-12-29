@@ -89,6 +89,19 @@ namespace net.sf.robocode.dotnet.host.seed
             }
         }
 
+        public static void Cleanup()
+        {
+            try
+            {
+                robotProxy.cleanup();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                throw;
+            }
+        }
+
         public static void WaitForStopThread()
         {
             try
