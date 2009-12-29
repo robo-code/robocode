@@ -119,6 +119,46 @@ namespace net.sf.robocode.dotnet.host.proxies
             FillEllipse(brush, rect.X, rect.Y, rect.Width, rect.Height);
         }
 
+        public void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
+        {
+            DrawLine(pen, (int)x1, (int)y1, (int)x2, (int)y2);
+        }
+
+        public void DrawLine(Pen pen, PointF pt1, PointF pt2)
+        {
+            DrawLine(pen, (int)pt1.X, (int)pt1.Y, (int)pt2.X, (int)pt2.Y);
+        }
+
+        public void DrawLine(Pen pen, Point pt1, Point pt2)
+        {
+            DrawLine(pen, pt1.X, pt1.Y, pt2.X, pt2.Y);
+        }
+
+        public void DrawLine(Pen pen, int x1, int y1, int x2, int y2)
+        {
+            if (isPaintingEnabled)
+            {
+                setColor(pen);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.DRAW_LINE);
+                    put(x1);
+                    put(y1);
+                    put(x2);
+                    put(y2);
+                }
+                catch (BufferOverflowException e)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        DrawLine(pen, x1, y1, x2, y2); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
         #endregion
 
         public void setPaintingEnabled(bool value)
@@ -372,27 +412,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             throw new NotImplementedException();
         }
 
-        public void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawLine(Pen pen, PointF pt1, PointF pt2)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DrawLines(Pen pen, PointF[] points)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawLine(Pen pen, int x1, int y1, int x2, int y2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawLine(Pen pen, Point pt1, Point pt2)
         {
             throw new NotImplementedException();
         }
