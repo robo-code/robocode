@@ -1,10 +1,11 @@
 Version 1.7.1.6
-(22-Dec-2009)
+(29-Dec-2009)
 ---------------
 = Bugfixes =
 * Bug [2912942] - Mac OS X 10.6: Cannot run Robocode from robocode.sh. It must be run from the new robocode.command file instead.
 * Bug [2912944] - Mac OS X 10.6: The editor cannot see the JDK. It must be run from the new robocode.command file instead.
 * The onDeathEvent(DeathEvent) method was called too late, when a new round was about to start. Not when the robot has died.
+* Bug [2867326] - Lockup on start if too many bots in robots dir (cont'd). Additional fix was made to locate multiple robots under the same (sub)packages.
 
 = New Features =
 * The amount of used memory and total memory is now shown in the title bar of Robocode. This is useful to see how much memory your robots are consuming.

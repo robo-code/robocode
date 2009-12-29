@@ -21,6 +21,7 @@ import net.sf.robocode.repository.root.ClassPathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public abstract class ItemHandler {
 			File parentPath = ((ClassPathRoot) root).getParentPath();
 			
 			if (parentPath != null) {
-				return parentPath.toString();
+				return parentPath.toString() + getItemPart(itemURL);
 			}
 		}
 
@@ -76,5 +77,35 @@ public abstract class ItemHandler {
 		String name = itemURL.toString();
 
 		return name.substring(0, name.lastIndexOf('.'));
+	}
+
+	/**
+	 * Returns the item part name of the specified item URL.
+	 *
+	 * E.g. the itemURL "file:/C:/robot-workspace/holiday/bin/nat/holiday/Card.class"
+	 * will output "Card", which suits well as last part of an item key.
+	 */
+	private static String getItemPart(URL itemURL) {
+		String name;
+
+		try {
+			name = itemURL.toURI().toString();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		name = name.replaceAll("\\\\", "/"); // Turn all backslashes into slashes
+
+		int index = name.lastIndexOf('/');
+
+		if (index > 0) {
+			name = name.substring(index);
+		}
+		index = name.indexOf('.');
+		if (index > 0) {
+			name = name.substring(0, index);
+		}		
+		return name;
 	}
 }
