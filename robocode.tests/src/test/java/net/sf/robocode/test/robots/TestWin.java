@@ -61,8 +61,6 @@ public class TestWin extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		System.err.print(outputBuf.toString());
-
 		String[] lines = outputBuf.toString().split("\\n");
 
 		Assert.assertThat(lines[1], is("Round 1 of 5"));
