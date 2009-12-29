@@ -9,8 +9,6 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-using System.Drawing;
-
 namespace robocode.robotinterfaces
 {
     /// <summary>
@@ -50,4 +48,5 @@ namespace robocode.robotinterfaces
         void OnPaint(IGraphics graphics);
     }
 }
+
 //happy

@@ -1,3 +1,13 @@
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,8 +25,7 @@ using robocode;
 using robocode.exception;
 using robocode.robotinterfaces.peer;
 using robocode.util;
-using Double = System.Double;
-using String = System.String;
+using ByteBuffer = net.sf.robocode.nio.ByteBuffer;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
@@ -26,23 +35,21 @@ namespace net.sf.robocode.dotnet.host.proxies
             MAX_SET_CALL_COUNT = 10000,
             MAX_GET_CALL_COUNT = 10000;
 
-        private GraphicsProxy graphicsProxy;
-        private RobotStatus status;
+        private readonly Dictionary<int, Bullet> bullets = new Dictionary<int, Bullet>();
+        private readonly ByteBufferClr execJavaBuffer;
+        private readonly ByteBuffer execNetBuffer;
+        private readonly RbSerializerN rbSerializerN;
+        private int bulletCounter;
         protected ExecCommands commands;
         private ExecResults execResults;
-        private readonly Dictionary<int, Bullet> bullets = new Dictionary<int, Bullet>();
-        private int bulletCounter;
-        
-        private int setCallCount;
-        private int getCallCount;
-
-        protected Condition waitCondition;
-        private bool testingCondition;
         private double firedEnergy;
         private double firedHeat;
-        private readonly ByteBufferClr execJavaBuffer;
-        private readonly nio.ByteBuffer execNetBuffer;
-        private readonly RbSerializerN rbSerializerN;
+        private int getCallCount;
+        private GraphicsProxy graphicsProxy;
+        private int setCallCount;
+        private RobotStatus status;
+        private bool testingCondition;
+        protected Condition waitCondition;
 
         public BasicRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
                                RobotStatics statics)
@@ -58,45 +65,17 @@ namespace net.sf.robocode.dotnet.host.proxies
             setSetCallCount(0);
             setGetCallCount(0);
 
-            byte[] sharedBuffer = new byte[10*1024*100];
+            var sharedBuffer = new byte[10*1024*100];
             execJavaBuffer = new ByteBufferClr(sharedBuffer);
-            execNetBuffer = nio.ByteBuffer.wrap(sharedBuffer);
-            rbSerializerN=new RbSerializerN();
+            execNetBuffer = ByteBuffer.wrap(sharedBuffer);
+            rbSerializerN = new RbSerializerN();
             this.peer.setupBuffer(execJavaBuffer);
         }
 
-        internal override void initializeRound(ExecCommands commands, RobotStatus status)
-        {
-            updateStatus(commands, status);
-            eventManager.reset();
-            var start = new StatusEvent(status);
-
-            eventManager.add(start);
-            setSetCallCount(0);
-            setGetCallCount(0);
-        }
-
-        public override void cleanup()
-        {
-            base.cleanup();
-
-            // Cleanup and remove current wait condition
-            waitCondition = null;
-
-            // Cleanup and remove the event manager
-            if (eventManager != null)
-            {
-                eventManager.cleanup();
-                eventManager = null;
-            }
-
-            graphicsProxy = null;
-            execResults = null;
-            status = null;
-            commands = null;
-        }
-
         // asynchronous actions
+
+        #region IBasicRobotPeer Members
+
         public Bullet setFire(double power)
         {
             setCall();
@@ -351,6 +330,39 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
+        #endregion
+
+        internal override void initializeRound(ExecCommands commands, RobotStatus status)
+        {
+            updateStatus(commands, status);
+            eventManager.reset();
+            var start = new StatusEvent(status);
+
+            eventManager.add(start);
+            setSetCallCount(0);
+            setGetCallCount(0);
+        }
+
+        public override void cleanup()
+        {
+            base.cleanup();
+
+            // Cleanup and remove current wait condition
+            waitCondition = null;
+
+            // Cleanup and remove the event manager
+            if (eventManager != null)
+            {
+                eventManager.cleanup();
+                eventManager = null;
+            }
+
+            graphicsProxy = null;
+            execResults = null;
+            status = null;
+            commands = null;
+        }
+
         // -----------
         // implementations
         // -----------
@@ -473,7 +485,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             execNetBuffer.position(0);
             execNetBuffer.limit(execJavaBuffer.limit());
-            execResults = (ExecResults)rbSerializerN.deserialize(execNetBuffer);
+            execResults = (ExecResults) rbSerializerN.deserialize(execNetBuffer);
         }
 
         protected override sealed void waitForBattleEndImpl()

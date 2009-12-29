@@ -43,4 +43,5 @@ namespace robocode.robotinterfaces
         void OnMessageReceived(MessageEvent evnt);
     }
 }
+
 //happy

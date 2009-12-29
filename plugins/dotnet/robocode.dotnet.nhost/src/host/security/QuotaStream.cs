@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.IO;
 using System.Runtime.Remoting;
 using System.Threading;
@@ -9,10 +19,22 @@ namespace net.sf.robocode.dotnet.host.security
     internal class QuotaStream : FileStream
     {
         private RobotFileSystemManager manager;
-        public QuotaStream(RobotFileSystemManager manager, String path, FileMode mode, FileAccess access, FileShare share)
+
+        public QuotaStream(RobotFileSystemManager manager, String path, FileMode mode, FileAccess access,
+                           FileShare share)
             : base(path, mode, access, share)
         {
             this.manager = manager;
+        }
+
+        public override IntPtr Handle
+        {
+            get { throw new AccessViolationException(); }
+        }
+
+        public override SafeFileHandle SafeFileHandle
+        {
+            get { throw new AccessViolationException(); }
         }
 
         public override void SetLength(long value)
@@ -76,19 +98,9 @@ namespace net.sf.robocode.dotnet.host.security
             throw new AccessViolationException();
         }
 
-        public override IntPtr Handle
-        {
-            get { throw new AccessViolationException(); }
-        }
-
         public override object InitializeLifetimeService()
         {
             throw new AccessViolationException();
-        }
-
-        public override SafeFileHandle SafeFileHandle
-        {
-            get { throw new AccessViolationException(); }
         }
 
         public override void Lock(long position, long length)

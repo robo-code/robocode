@@ -16,7 +16,7 @@ namespace net.sf.robocode.dotnet
         public virtual void Setup()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-            BridgeSetup setup = new BridgeSetup(false) { Verbose = true, Debug = true };
+            var setup = new BridgeSetup(false) {Verbose = true, Debug = true};
             string prefix;
             if (Environment.CurrentDirectory.EndsWith("target"))
             {
@@ -27,9 +27,10 @@ namespace net.sf.robocode.dotnet
                 prefix = "../../../";
             }
             string userHome = Environment.GetEnvironmentVariable("USERPROFILE");
-            var version = typeof(BridgeSetup).Assembly.GetName().Version.ToString();
+            string version = typeof (BridgeSetup).Assembly.GetName().Version.ToString();
             setup.AddClassPath(userHome + @"/.m2/repository/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar");
-            setup.AddClassPath(userHome + @"/.m2/repository/net/sf/jni4net/jni4net.j/" + version + "/jni4net.j-" + version + ".jar");
+            setup.AddClassPath(userHome + @"/.m2/repository/net/sf/jni4net/jni4net.j/" + version + "/jni4net.j-" +
+                               version + ".jar");
             setup.AddClassPath(prefix + "../../robocode.api/target/Test-classes");
             setup.AddClassPath(prefix + "../../robocode.api/target/classes");
             setup.AddClassPath(prefix + "../../robocode.battle/target/Test-classes");
@@ -63,8 +64,8 @@ namespace net.sf.robocode.dotnet
             setup.AddClassPath(prefix + "robocode.dotnet.tests/target/Test-classes");
             setup.AddClassPath(prefix + "robocode.dotnet.tests/target/classes");
             env = Bridge.CreateJVM(setup);
-            Bridge.RegisterAssembly(typeof(TestBase).Assembly);
-            Bridge.RegisterAssembly(typeof(DllRootHelper).Assembly);
+            Bridge.RegisterAssembly(typeof (TestBase).Assembly);
+            Bridge.RegisterAssembly(typeof (DllRootHelper).Assembly);
         }
 
         [TestFixtureTearDown]

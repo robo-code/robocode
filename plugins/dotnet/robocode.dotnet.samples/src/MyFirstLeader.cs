@@ -1,18 +1,13 @@
-﻿/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Maintainance
- *     Pavel Savara
- *     - .NET conversion
- *******************************************************************************/
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using System.Drawing;
 using robocode;
@@ -21,14 +16,14 @@ using robocode.util;
 namespace samplecs
 {
     /// <summary>
-    /// MyFirstLeader - a sample team robot by Mathew Nelson, and maintained by Flemming N. Larsen
-    /// <p/>
-    /// Looks around for enemies, and orders teammates to Fire
+    ///   MyFirstLeader - a sample team robot by Mathew Nelson, and maintained by Flemming N. Larsen
+    ///   <p />
+    ///   Looks around for enemies, and orders teammates to Fire
     /// </summary>
     public class MyFirstLeader : TeamRobot
     {
         /// <summary>
-        /// Run:  Leader's default behavior
+        ///   Run:  Leader's default behavior
         /// </summary>
         public override void Run()
         {
@@ -67,7 +62,7 @@ namespace samplecs
 
 
         /// <summary>
-        /// OnScannedRobot:  What to do when you see another robot
+        ///   OnScannedRobot:  What to do when you see another robot
         /// </summary>
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
@@ -79,8 +74,8 @@ namespace samplecs
             // Calculate enemy bearing
             double enemyBearing = Heading + e.Bearing;
             // Calculate enemy's position
-            double enemyX = X + e.Distance*Math.Sin(Utils.toRadians(enemyBearing));
-            double enemyY = Y + e.Distance*Math.Cos(Utils.toRadians(enemyBearing));
+            double enemyX = X + e.Distance*Math.Sin(Utils.ToRadians(enemyBearing));
+            double enemyY = Y + e.Distance*Math.Cos(Utils.ToRadians(enemyBearing));
 
             try
             {
@@ -95,7 +90,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// OnHitByBullet:  Turn perpendicular to bullet path
+        ///   OnHitByBullet:  Turn perpendicular to bullet path
         /// </summary>
         public override void OnHitByBullet(HitByBulletEvent e)
         {

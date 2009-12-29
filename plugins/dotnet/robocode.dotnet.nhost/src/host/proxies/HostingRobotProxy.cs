@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.IO;
 using System.Security.Permissions;
 using java.io;
@@ -14,23 +24,24 @@ using robocode;
 using robocode.exception;
 using robocode.robotinterfaces;
 using robocode.robotinterfaces.peer;
-using Exception=System.Exception;
-using String=System.String;
+using Exception = System.Exception;
+using String = System.String;
+using StringBuilder = System.Text.StringBuilder;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
     internal abstract class HostingRobotProxy
     {
-        protected EventManager eventManager;
-        protected RobotFileSystemManager robotFileSystemManager;
         private readonly IRobotRepositoryItem robotSpecification;
-        protected RobotStatics statics;
-        protected IRobotPeer peer;
+        protected EventManager eventManager;
         protected IHostManager hostManager;
-        protected IBasicRobot robot;
         protected TextWriter output;
-        protected System.Text.StringBuilder outputSb;
+        protected StringBuilder outputSb;
+        protected IRobotPeer peer;
+        protected IBasicRobot robot;
+        protected RobotFileSystemManager robotFileSystemManager;
         private Type robotType;
+        protected RobotStatics statics;
 
         protected HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer,
                                     RobotStatics statics)
@@ -39,14 +50,13 @@ namespace net.sf.robocode.dotnet.host.proxies
             this.statics = statics;
             this.hostManager = hostManager;
             this.robotSpecification = robotSpecification;
-            outputSb = new System.Text.StringBuilder(5000);
+            outputSb = new StringBuilder(5000);
             output = TextWriter.Synchronized(new StringWriter(outputSb));
             LoggerN.robotOut = output;
 
-            robotFileSystemManager = new RobotFileSystemManager((int)hostManager.getRobotFilesystemQuota(),
+            robotFileSystemManager = new RobotFileSystemManager((int) hostManager.getRobotFilesystemQuota(),
                                                                 robotSpecification.getWritableDirectory(),
                                                                 robotSpecification.getReadableDirectory());
-
         }
 
         public void setRobotType(Type robotType)

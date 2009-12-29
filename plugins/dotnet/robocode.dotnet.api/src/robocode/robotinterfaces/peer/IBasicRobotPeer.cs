@@ -713,4 +713,5 @@ namespace robocode.robotinterfaces.peer
         void rescan();
     }
 }
+
 //happy

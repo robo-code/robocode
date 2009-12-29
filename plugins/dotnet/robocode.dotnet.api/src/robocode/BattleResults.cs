@@ -1,31 +1,29 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using net.sf.robocode.nio;
 using net.sf.robocode.serialization;
 
 namespace robocode
 {
-    /// <summary>
-    /// Contains the battle results returned by {@link BattleEndedEvent#getResults()}
-    /// when a battle has ended.
+    /// 
+    ///<summary>
+    ///  Contains the battle results returned by {@link BattleEndedEvent#getResults()}
+    ///  when a battle has ended.
     ///
-    /// @author Pavel Savara (original)
-    /// @see BattleEndedEvent#getResults()
-    /// @see Robot#OnBattleEnded(BattleEndedEvent)
-    /// @since 1.6.1
-    /// </summary>
+    ///  @author Pavel Savara (original)
+    ///  @see BattleEndedEvent#getResults()
+    ///  @see Robot#OnBattleEnded(BattleEndedEvent)
+    ///  @since 1.6.1
+    ///</summary>
     [Serializable]
     public class BattleResults : IComparable<BattleResults>
     {
@@ -42,22 +40,23 @@ namespace robocode
         protected int seconds;
         protected int thirds;
 
-        /// <summary>
-        /// Constructs this BattleResults objec.
+        /// 
+        ///<summary>
+        ///  Constructs this BattleResults objec.
         ///
-        /// @param teamLeaderName    the name of the team leader.
-        /// @param rank              the rank of the robot in the battle.
-        /// @param score             the total score for the robot in the battle.
-        /// @param survival          the survival score for the robot in the battle.
-        /// @param lastSurvivorBonus the last survivor bonus for the robot in the battle.
-        /// @param bulletDamage      the bullet damage score for the robot in the battle.
-        /// @param bulletDamageBonus the bullet damage bonus for the robot in the battle.
-        /// @param ramDamage         the ramming damage for the robot in the battle.
-        /// @param ramDamageBonus    the ramming damage bonus for the robot in the battle.
-        /// @param firsts            the number of rounds this robot placed first.
-        /// @param seconds           the number of rounds this robot placed second.
-        /// @param thirds            the number of rounds this robot placed third.
-        /// </summary>
+        ///  @param teamLeaderName    the name of the team leader.
+        ///  @param rank              the rank of the robot in the battle.
+        ///  @param score             the total score for the robot in the battle.
+        ///  @param survival          the survival score for the robot in the battle.
+        ///  @param lastSurvivorBonus the last survivor bonus for the robot in the battle.
+        ///  @param bulletDamage      the bullet damage score for the robot in the battle.
+        ///  @param bulletDamageBonus the bullet damage bonus for the robot in the battle.
+        ///  @param ramDamage         the ramming damage for the robot in the battle.
+        ///  @param ramDamageBonus    the ramming damage bonus for the robot in the battle.
+        ///  @param firsts            the number of rounds this robot placed first.
+        ///  @param seconds           the number of rounds this robot placed second.
+        ///  @param thirds            the number of rounds this robot placed third.
+        ///</summary>
         public BattleResults(
             string teamLeaderName,
             int rank,
@@ -87,130 +86,140 @@ namespace robocode
             this.thirds = thirds;
         }
 
-        /// <summary>
-        /// Returns the name of the team leader in the team or the name of the
-        /// robot if the robot is not participating in a team.
+        /// 
+        ///<summary>
+        ///  Returns the name of the team leader in the team or the name of the
+        ///  robot if the robot is not participating in a team.
         ///
-        /// @return the name of the team leader in the team or the name of the robot.
-        /// </summary>
+        ///  @return the name of the team leader in the team or the name of the robot.
+        ///</summary>
         public string TeamLeaderName
         {
             get { return teamLeaderName; }
         }
 
-        /// <summary>
-        /// Returns the rank of this robot in the battle results.
+        /// 
+        ///<summary>
+        ///  Returns the rank of this robot in the battle results.
         ///
-        /// @return the rank of this robot in the battle results.
-        /// </summary>
+        ///  @return the rank of this robot in the battle results.
+        ///</summary>
         public int Rank
         {
             get { return rank; }
         }
 
-        /// <summary>
-        /// Returns the total score of this robot in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the total score of this robot in the battle.
         ///
-        /// @return the total score of this robot in the battle.
-        /// </summary>
+        ///  @return the total score of this robot in the battle.
+        ///</summary>
         public int Score
         {
             get { return (int) (score + 0.5); }
         }
 
-        /// <summary>
-        /// Returns the survival score of this robot in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the survival score of this robot in the battle.
         ///
-        /// @return the survival score of this robot in the battle.
-        /// </summary>
+        ///  @return the survival score of this robot in the battle.
+        ///</summary>
         public int Survival
         {
             get { return (int) (survival + 0.5); }
         }
 
-        /// <summary>
-        /// Returns the last survivor score of this robot in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the last survivor score of this robot in the battle.
         ///
-        /// @return the last survivor score of this robot in the battle.
-        /// </summary>
+        ///  @return the last survivor score of this robot in the battle.
+        ///</summary>
         public int LastSurvivorBonus
         {
             get { return (int) (lastSurvivorBonus + 0.5); }
         }
 
-        /// <summary>
-        /// Returns the bullet damage score of this robot in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the bullet damage score of this robot in the battle.
         ///
-        /// @return the bullet damage score of this robot in the battle.
-        /// </summary>
+        ///  @return the bullet damage score of this robot in the battle.
+        ///</summary>
         public int BulletDamage
         {
             get { return (int) (bulletDamage + 0.5); }
         }
 
-        /// <summary>
-        /// Returns the bullet damage bonus of this robot in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the bullet damage bonus of this robot in the battle.
         ///
-        /// @return the bullet damage bonus of this robot in the battle.
-        /// </summary>
+        ///  @return the bullet damage bonus of this robot in the battle.
+        ///</summary>
         public int BulletDamageBonus
         {
             get { return (int) (bulletDamageBonus + 0.5); }
         }
 
-        /// <summary>
-        /// Returns the ram damage score of this robot in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the ram damage score of this robot in the battle.
         ///
-        /// @return the ram damage score of this robot in the battle.
-        /// </summary>
+        ///  @return the ram damage score of this robot in the battle.
+        ///</summary>
         public int RamDamage
         {
             get { return (int) (ramDamage + 0.5); }
         }
 
-        /// <summary>
-        /// Returns the ram damage bonus of this robot in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the ram damage bonus of this robot in the battle.
         ///
-        /// @return the ram damage bonus of this robot in the battle.
-        /// </summary>
+        ///  @return the ram damage bonus of this robot in the battle.
+        ///</summary>
         public int RamDamageBonus
         {
             get { return (int) (ramDamageBonus + 0.5); }
         }
 
-        /// <summary>
-        /// Returns the number of rounds this robot placed first in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the number of rounds this robot placed first in the battle.
         ///
-        /// @return the number of rounds this robot placed first in the battle.
-        /// </summary>
+        ///  @return the number of rounds this robot placed first in the battle.
+        ///</summary>
         public int Firsts
         {
             get { return firsts; }
         }
 
-        /// <summary>
-        /// Returns the number of rounds this robot placed second in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the number of rounds this robot placed second in the battle.
         ///
-        /// @return the number of rounds this robot placed second in the battle.
-        /// </summary>
+        ///  @return the number of rounds this robot placed second in the battle.
+        ///</summary>
         public int Seconds
         {
             get { return seconds; }
         }
 
-        /// <summary>
-        /// Returns the number of rounds this robot placed third in the battle.
+        /// 
+        ///<summary>
+        ///  Returns the number of rounds this robot placed third in the battle.
         ///
-        /// @return the number of rounds this robot placed third in the battle.
-        /// </summary>
+        ///  @return the number of rounds this robot placed third in the battle.
+        ///</summary>
         public int Thirds
         {
             get { return thirds; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <summary>{@inheritDoc}</summary>
         public int CompareTo(BattleResults o)
         {
             return score.CompareTo(o.score);
@@ -227,7 +236,8 @@ namespace robocode
             {
                 var obj = (BattleResults) objec;
 
-                return RbSerializerN.SIZEOF_TYPEINFO + serializer.sizeOf(obj.teamLeaderName) + 4*RbSerializerN.SIZEOF_INT
+                return RbSerializerN.SIZEOF_TYPEINFO + serializer.sizeOf(obj.teamLeaderName) +
+                       4*RbSerializerN.SIZEOF_INT
                        + 7*RbSerializerN.SIZEOF_DOUBLE;
             }
 
@@ -270,4 +280,5 @@ namespace robocode
         }
     }
 }
+
 //happy

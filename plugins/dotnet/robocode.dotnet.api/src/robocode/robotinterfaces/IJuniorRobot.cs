@@ -44,4 +44,5 @@ namespace robocode.robotinterfaces
     {
     }
 }
+
 //happy

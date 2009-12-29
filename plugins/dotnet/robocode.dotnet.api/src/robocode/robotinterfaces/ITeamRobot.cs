@@ -42,4 +42,5 @@ namespace robocode.robotinterfaces
         ITeamEvents GetTeamEventListener();
     }
 }
+
 //happy

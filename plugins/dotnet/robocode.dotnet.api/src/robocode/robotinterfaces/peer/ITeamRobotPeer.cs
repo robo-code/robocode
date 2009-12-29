@@ -138,4 +138,5 @@ namespace robocode.robotinterfaces.peer
         IList<MessageEvent> getMessageEvents();
     }
 }
+
 //happy

@@ -220,4 +220,5 @@ namespace robocode.robotinterfaces
         void OnMouseWheelMoved(MouseWheelMovedEvent evnt);
     }
 }
+
 //happy

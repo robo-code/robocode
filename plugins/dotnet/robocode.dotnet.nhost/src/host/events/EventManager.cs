@@ -1,41 +1,47 @@
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using System.Collections.Generic;
-using java.lang;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.security;
 using robocode;
 using robocode.exception;
 using robocode.robotinterfaces;
-using Exception = System.Exception;
-using String = System.String;
 
 namespace net.sf.robocode.dotnet.host.events
 {
     internal class EventManager
     {
-        private BasicRobotProxy robotProxy;
         private const int MAX_PRIORITY = 100;
         public const int MAX_EVENT_STACK = 2;
-
-        private int currentTopEventPriority;
-        private Event currentTopEvent;
+        public const int MAX_QUEUE_SIZE = 256;
 
         private readonly List<Condition> customEvents = new List<Condition>();
         private readonly EventQueue eventQueue;
 
         private readonly bool[] interruptible = new bool[MAX_PRIORITY + 1];
-        private Dictionary<String, Event> namedEvents;
+        private Event currentTopEvent;
+        private int currentTopEventPriority;
         private ScannedRobotEvent dummyScannedRobotEvent;
-
-        public const int MAX_QUEUE_SIZE = 256;
+        private Dictionary<String, Event> namedEvents;
 
         private IBasicRobot robot;
+        private BasicRobotProxy robotProxy;
 
         /**
 	     * EventManager constructor comment.
 	     *
 	     * @param robotProxy robotProxy
 	     */
+
         public EventManager(BasicRobotProxy robotProxy)
         {
             registerNamedEvents();
@@ -173,6 +179,7 @@ namespace net.sf.robocode.dotnet.host.events
 	     * @see BulletHitEvent
 	     * @see List
 	     */
+
         public List<BulletHitEvent> getBulletHitEvents()
         {
             var events = new List<BulletHitEvent>();
@@ -501,13 +508,22 @@ namespace net.sf.robocode.dotnet.host.events
                     if ((currentEvent.Time > getTime() - MAX_EVENT_STACK) ||
                         HiddenAccessN.isCriticalEvent(currentEvent))
                     {
-                        HiddenAccessN.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
+                        HiddenAccessN.dispatch(currentEvent, robot, robotProxy.getStatics(),
+                                               robotProxy.getGraphicsImpl());
                     }
                 }
-                catch (AbortedException){} //ignore
-                catch (DeathException) { } //ignore
-                catch (DisabledException) { } //ignore
-                catch (WinException) { } //ignore
+                catch (AbortedException)
+                {
+                } //ignore
+                catch (DeathException)
+                {
+                } //ignore
+                catch (DisabledException)
+                {
+                } //ignore
+                catch (WinException)
+                {
+                } //ignore
                 catch (Exception ex)
                 {
                     robotProxy.println("SYSTEM: Exception occurred on " + currentEvent.GetType().Name);
@@ -698,6 +714,8 @@ namespace net.sf.robocode.dotnet.host.events
             namedEvents.Add(type.Name, e);
         }
 
+        #region Nested type: DummyCustomEvent
+
         private class DummyCustomEvent : CustomEvent
         {
             public DummyCustomEvent()
@@ -705,5 +723,7 @@ namespace net.sf.robocode.dotnet.host.events
             {
             }
         }
+
+        #endregion
     }
 }

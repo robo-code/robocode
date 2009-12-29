@@ -1,4 +1,14 @@
-﻿using net.sf.robocode.dotnet.peer;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
@@ -22,13 +32,10 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
 
-        internal override void initializeRound(ExecCommands commands, RobotStatus status)
-        {
-            base.initializeRound(commands, status);
-            isStopped = true;
-        }
-
         // blocking actions
+
+        #region IStandardRobotPeer Members
+
         public void stop(bool overwrite)
         {
             setStopImpl(overwrite);
@@ -90,6 +97,14 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             getCall();
             return commands.IsAdjustRadarForBodyTurn();
+        }
+
+        #endregion
+
+        internal override void initializeRound(ExecCommands commands, RobotStatus status)
+        {
+            base.initializeRound(commands, status);
+            isStopped = true;
         }
 
         protected void setResumeImpl()

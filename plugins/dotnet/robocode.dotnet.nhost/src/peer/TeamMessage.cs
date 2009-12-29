@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using net.sf.robocode.nio;
 using net.sf.robocode.serialization;
 
@@ -7,6 +17,10 @@ namespace net.sf.robocode.dotnet.peer
     [Serializable]
     public class TeamMessage
     {
+        public byte[] message;
+        public String recipient;
+        public String sender;
+
         public TeamMessage(String sender, String recipient, byte[] message)
         {
             this.sender = sender;
@@ -14,18 +28,18 @@ namespace net.sf.robocode.dotnet.peer
             this.message = message;
         }
 
-        public String sender;
-        public String recipient;
-        public byte[] message;
-
         // ReSharper disable UnusedMember.Local
         private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
+        #region Nested type: SerializableHelper
+
         private class SerializableHelper : ISerializableHelperN
         {
+            #region ISerializableHelperN Members
+
             public int sizeOf(RbSerializerN serializer, Object obje)
             {
                 var obj = (TeamMessage) obje;
@@ -53,6 +67,10 @@ namespace net.sf.robocode.dotnet.peer
 
                 return new TeamMessage(sender, recipient, message);
             }
+
+            #endregion
         }
+
+        #endregion
     }
 }

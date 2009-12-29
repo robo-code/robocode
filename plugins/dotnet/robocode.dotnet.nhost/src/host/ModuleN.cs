@@ -1,4 +1,14 @@
-﻿using net.sf.jni4net;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using net.sf.jni4net;
 using net.sf.robocode.core;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
@@ -29,7 +39,7 @@ namespace net.sf.robocode.dotnet.nhost
             RbSerializerN.register(typeof (RobotStatus), RbSerializer.RobotStatus_TYPE);
             RbSerializerN.register(typeof (BattleResults), RbSerializer.BattleResults_TYPE);
             RbSerializerN.register(typeof (Bullet), RbSerializer.Bullet_TYPE);
-            RbSerializerN.register(typeof(RobotStatics), RbSerializer.RobotStatics_TYPE);
+            RbSerializerN.register(typeof (RobotStatics), RbSerializer.RobotStatics_TYPE);
 
             // events
             RbSerializerN.register(typeof (BattleEndedEvent), RbSerializer.BattleEndedEvent_TYPE);

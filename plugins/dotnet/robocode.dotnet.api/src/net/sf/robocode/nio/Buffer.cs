@@ -1,43 +1,19 @@
-﻿#region Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
-/*
- * Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.  Sun designates this
- * particular file as subject to the "Classpath" exception as provided
- * by Sun in the LICENSE file that accompanied this code.
- *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 2 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
- *
- * You should have received a copy of the GNU General Public License version
- * 2 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa Clara,
- * CA 95054 USA or visit www.sun.com if you need additional information or
- * have any questions.
- */
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
 
 #endregion
-/*******************************************************************************
- *
- * Contributors:
- *     Pavel Savara
- *     - This file was ported to .NET in jni4net
- *
- *******************************************************************************/
 
 using System;
 using System.Security.Permissions;
 using robocode.net.sf.robocode.security;
 
 // ReSharper disable InconsistentNaming
+
 namespace net.sf.robocode.nio
 {
     /**
@@ -185,14 +161,15 @@ namespace net.sf.robocode.nio
      * @version 1.35, 06/08/11
      * @since 1.4
      */
+
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public abstract class Buffer
     {
         // Invariants: mark <= position <= limit <= capacity
+        private readonly int _capacity;
+        private int _limit;
         private int _mark = -1;
         private int _position;
-        private int _limit;
-        private readonly int _capacity;
 
         // Creates a new buffer with the given mark, position, limit, and capacity,
         // after checking invariants.
@@ -248,6 +225,7 @@ namespace net.sf.robocode.nio
          * @throws  ArgumentException
          *          If the preconditions on <tt>newPosition</tt> do not hold
          */
+
         public Buffer position(int newPosition)
         {
             if ((newPosition > _limit) || (newPosition < 0))
@@ -262,6 +240,7 @@ namespace net.sf.robocode.nio
          *
          * @return  The limit of this buffer
          */
+
         public int limit()
         {
             return _limit;
@@ -281,6 +260,7 @@ namespace net.sf.robocode.nio
          * @throws  ArgumentException
          *          If the preconditions on <tt>newLimit</tt> do not hold
          */
+
         public Buffer limit(int newLimit)
         {
             if ((newLimit > _capacity) || (newLimit < 0))
@@ -296,6 +276,7 @@ namespace net.sf.robocode.nio
          *
          * @return  This buffer
          */
+
         public Buffer mark()
         {
             _mark = _position;
@@ -313,6 +294,7 @@ namespace net.sf.robocode.nio
          * @throws  InvalidMarkException
          *          If the mark has not been set
          */
+
         public Buffer reset()
         {
             int m = _mark;
@@ -517,9 +499,10 @@ namespace net.sf.robocode.nio
         }
 
         internal void discardMark()
-        {                          // package-private
+        {
+            // package-private
             _mark = -1;
-        } 
+        }
 
         internal static void checkBounds(int off, int len, int size)
         {
@@ -529,4 +512,5 @@ namespace net.sf.robocode.nio
         }
     }
 }
+
 // ReSharper restore InconsistentNaming

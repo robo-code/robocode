@@ -1,21 +1,31 @@
-﻿using System.Drawing;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System.Drawing;
 using robocode;
 
 namespace samplecs
 {
     /// <summary>
-    ///  PaintingRobot - a sample robot that demonstrates the OnPaint() and
-    ///  getGraphics() methods.
-    ///  Also demonstrate feature of debugging properties on RobotDialog
-    ///  <p/>
-    ///  Moves in a seesaw motion, and spins the gun around at each end.
-    ///  When painting is enabled for this robot, a red circle will be painted
-    ///  around this robot.
+    ///   PaintingRobot - a sample robot that demonstrates the OnPaint() and
+    ///   getGraphics() methods.
+    ///   Also demonstrate feature of debugging properties on RobotDialog
+    ///   <p />
+    ///   Moves in a seesaw motion, and spins the gun around at each end.
+    ///   When painting is enabled for this robot, a red circle will be painted
+    ///   around this robot.
     /// </summary>
     public class PaintingRobot : Robot
     {
         /// <summary>
-        /// PaintingRobot's Run method - Seesaw
+        ///   PaintingRobot's Run method - Seesaw
         /// </summary>
         public override void Run()
         {
@@ -29,7 +39,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// Fire when we see a robot
+        ///   Fire when we see a robot
         /// </summary>
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
@@ -40,9 +50,9 @@ namespace samplecs
         }
 
         /// <summary>
-        /// We were hit!  Turn perpendicular to the bullet, 
-        /// so our seesaw might avoid a future shot. 
-        /// In addition, draw orange circles where we were hit.
+        ///   We were hit!  Turn perpendicular to the bullet, 
+        ///   so our seesaw might avoid a future shot. 
+        ///   In addition, draw orange circles where we were hit.
         /// </summary>
         public override void OnHitByBullet(HitByBulletEvent e)
         {
@@ -64,13 +74,13 @@ namespace samplecs
         }
 
         /// <summary>
-        /// Paint a red circle around our PaintingRobot
+        ///   Paint a red circle around our PaintingRobot
         /// </summary>
         public override void OnPaint(IGraphics graphics)
         {
-            SolidBrush transparentGreen = new SolidBrush(Color.FromArgb(30, 0, 0xFF, 0));
-            graphics.FillEllipse(transparentGreen, (int)(X - 60), (int)(Y - 60), 120, 120);
-            graphics.DrawEllipse(Pens.Red, (int)(X - 50), (int)(Y - 50), 100, 100);
+            var transparentGreen = new SolidBrush(Color.FromArgb(30, 0, 0xFF, 0));
+            graphics.FillEllipse(transparentGreen, (int) (X - 60), (int) (Y - 60), 120, 120);
+            graphics.DrawEllipse(Pens.Red, (int) (X - 50), (int) (Y - 50), 100, 100);
         }
     }
 }

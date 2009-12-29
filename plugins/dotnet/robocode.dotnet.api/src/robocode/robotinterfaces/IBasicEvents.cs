@@ -275,4 +275,5 @@ namespace robocode.robotinterfaces
         void OnWin(WinEvent evnt);
     }
 }
+
 //happy

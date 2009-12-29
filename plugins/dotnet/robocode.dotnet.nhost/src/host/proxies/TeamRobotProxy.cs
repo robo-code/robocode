@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
@@ -24,6 +34,9 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
         // team
+
+        #region ITeamRobotPeer Members
+
         public string[] getTeammates()
         {
             getCall();
@@ -39,9 +52,12 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
             String[] teammates = statics.getTeammates();
 
-            if (teammates != null) {
-                foreach (string mate in teammates) {
-                    if (mate == name) {
+            if (teammates != null)
+            {
+                foreach (string mate in teammates)
+                {
+                    if (mate == name)
+                    {
                         return true;
                     }
                 }
@@ -54,39 +70,40 @@ namespace net.sf.robocode.dotnet.host.proxies
             sendMessage(null, message);
         }
 
-        private class SerializationGuard : SurrogateSelector
-        {
-            public override ISerializationSurrogate GetSurrogate(Type type, StreamingContext context, out ISurrogateSelector selector)
-            {
-                if (typeof(MarshalByRefObject).IsAssignableFrom(type))
-                {
-                    throw new AccessViolationException("Messages should not contain MarshalByRefObject objects");
-                }
-                return base.GetSurrogate(type, context, out selector);
-            }
-        }
-
         [SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.SerializationFormatter)]
         public void sendMessage(String name, object message)
         {
             setCall();
 
-            try {
-                if (!statics.IsTeamRobot()) {
+            try
+            {
+                if (!statics.IsTeamRobot())
+                {
                     throw new IOException("You are not on a team.");
                 }
-                using (MemoryStream byteStreamWriter = new MemoryStream(MAX_MESSAGE_SIZE))
+                using (var byteStreamWriter = new MemoryStream(MAX_MESSAGE_SIZE))
                 {
-                    BinaryFormatter bf=new BinaryFormatter(new SerializationGuard(), new StreamingContext());
+                    var bf = new BinaryFormatter(new SerializationGuard(), new StreamingContext());
                     bf.Serialize(byteStreamWriter, message);
                     byte[] bytes = byteStreamWriter.ToArray();
                     commands.getTeamMessages().Add(new TeamMessage(getName(), name, bytes));
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 output.WriteLine(e);
                 throw;
             }
         }
+
+        // events
+        public IList<MessageEvent> getMessageEvents()
+        {
+            getCall();
+            return eventManager.getMessageEvents();
+        }
+
+        #endregion
 
         [SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.SerializationFormatter)]
         protected override sealed void loadTeamMessages(List<TeamMessage> teamMessages)
@@ -115,11 +132,21 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
-        // events
-        public IList<MessageEvent> getMessageEvents()
+        #region Nested type: SerializationGuard
+
+        private class SerializationGuard : SurrogateSelector
         {
-            getCall();
-            return eventManager.getMessageEvents();
+            public override ISerializationSurrogate GetSurrogate(Type type, StreamingContext context,
+                                                                 out ISurrogateSelector selector)
+            {
+                if (typeof (MarshalByRefObject).IsAssignableFrom(type))
+                {
+                    throw new AccessViolationException("Messages should not contain MarshalByRefObject objects");
+                }
+                return base.GetSurrogate(type, context, out selector);
+            }
         }
+
+        #endregion
     }
 }

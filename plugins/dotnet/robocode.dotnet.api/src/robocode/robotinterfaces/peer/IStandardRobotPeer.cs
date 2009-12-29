@@ -258,4 +258,5 @@ namespace robocode.robotinterfaces.peer
         bool isAdjustRadarForBodyTurn();
     }
 }
+
 //happy

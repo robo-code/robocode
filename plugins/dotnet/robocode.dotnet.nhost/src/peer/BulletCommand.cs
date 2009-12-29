@@ -1,4 +1,15 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
+using net.sf.robocode.nio;
 using net.sf.robocode.serialization;
 
 namespace net.sf.robocode.dotnet.peer
@@ -6,6 +17,11 @@ namespace net.sf.robocode.dotnet.peer
     [Serializable]
     public class BulletCommand
     {
+        private readonly int bulletId;
+        private readonly double fireAssistAngle;
+        private readonly bool fireAssistValid;
+        private readonly double power;
+
         public BulletCommand(double power, bool fireAssistValid, double fireAssistAngle, int bulletId)
         {
             this.fireAssistValid = fireAssistValid;
@@ -13,11 +29,6 @@ namespace net.sf.robocode.dotnet.peer
             this.bulletId = bulletId;
             this.power = power;
         }
-
-        private readonly double power;
-        private readonly bool fireAssistValid;
-        private readonly double fireAssistAngle;
-        private readonly int bulletId;
 
         public bool isFireAssistValid()
         {
@@ -45,15 +56,19 @@ namespace net.sf.robocode.dotnet.peer
             return new SerializableHelper();
         }
 
+        #region Nested type: SerializableHelper
+
         private class SerializableHelper : ISerializableHelperN
         {
+            #region ISerializableHelperN Members
+
             public int sizeOf(RbSerializerN serializer, Object obje)
             {
                 return RbSerializerN.SIZEOF_TYPEINFO + RbSerializerN.SIZEOF_DOUBLE + RbSerializerN.SIZEOF_BOOL
                        + RbSerializerN.SIZEOF_DOUBLE + RbSerializerN.SIZEOF_INT;
             }
 
-            public void serialize(RbSerializerN serializer, nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, Object obje)
             {
                 var obj = (BulletCommand) obje;
 
@@ -63,7 +78,7 @@ namespace net.sf.robocode.dotnet.peer
                 serializer.serialize(buffer, obj.bulletId);
             }
 
-            public Object deserialize(RbSerializerN serializer, nio.ByteBuffer buffer)
+            public Object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 double power = buffer.getDouble();
                 bool fireAssistValid = serializer.deserializeBoolean(buffer);
@@ -72,6 +87,10 @@ namespace net.sf.robocode.dotnet.peer
 
                 return new BulletCommand(power, fireAssistValid, fireAssistAngle, bulletId);
             }
+
+            #endregion
         }
+
+        #endregion
     }
 }

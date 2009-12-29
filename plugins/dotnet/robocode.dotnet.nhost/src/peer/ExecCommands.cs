@@ -1,5 +1,16 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
+using net.sf.robocode.nio;
 using net.sf.robocode.serialization;
 using robocode;
 
@@ -13,36 +24,34 @@ namespace net.sf.robocode.dotnet.peer
         public const int defaultRadarColor = 0; //0xFF29298C;
         public const int defaultScanColor = 0; //0xFF0000FF;
         public const int defaultBulletColor = 0; //0xFFFFFFFF;
+        private int bodyColor = defaultBodyColor;
 
         private double bodyTurnRemaining;
-        private double radarTurnRemaining;
-        private double gunTurnRemaining;
+        private int bulletColor = defaultBulletColor;
+        private List<BulletCommand> bullets = new List<BulletCommand>();
+        private List<DebugProperty> debugProperties = new List<DebugProperty>();
         private double distanceRemaining;
+        [NonSerialized] private byte[] graphicsCalls;
+        private int gunColor = defaultGunColor;
+        private double gunTurnRemaining;
 
         private bool isAdjustGunForBodyTurn;
-        private bool isAdjustRadarForGunTurn;
         private bool isAdjustRadarForBodyTurn;
         private bool isAdjustRadarForBodyTurnSet;
+        private bool isAdjustRadarForGunTurn;
+        private bool isIORobot;
+        private bool isTryingToPaint;
 
-        private int bodyColor = defaultBodyColor;
-        private int gunColor = defaultGunColor;
-        private int radarColor = defaultRadarColor;
-        private int scanColor = defaultScanColor;
-        private int bulletColor = defaultBulletColor;
         private double maxTurnRate;
         private double maxVelocity;
 
         private bool moved;
-        private bool scan;
-        private bool isIORobot;
-        private bool isTryingToPaint;
         private String outputText;
-        private List<BulletCommand> bullets = new List<BulletCommand>();
+        private int radarColor = defaultRadarColor;
+        private double radarTurnRemaining;
+        private bool scan;
+        private int scanColor = defaultScanColor;
         private List<TeamMessage> teamMessages = new List<TeamMessage>();
-        private List<DebugProperty> debugProperties = new List<DebugProperty>();
-        
-        [NonSerialized]
-        private byte[] graphicsCalls;
 
         public ExecCommands()
         {
@@ -324,8 +333,12 @@ namespace net.sf.robocode.dotnet.peer
             return new SerializableHelper();
         }
 
+        #region Nested type: SerializableHelper
+
         private class SerializableHelper : ISerializableHelperN
         {
+            #region ISerializableHelperN Members
+
             public int sizeOf(RbSerializerN serializer, Object obje)
             {
                 var obj = (ExecCommands) obje;
@@ -360,7 +373,7 @@ namespace net.sf.robocode.dotnet.peer
                 return size;
             }
 
-            public void serialize(RbSerializerN serializer, nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, Object obje)
             {
                 var obj = (ExecCommands) obje;
 
@@ -409,7 +422,7 @@ namespace net.sf.robocode.dotnet.peer
                 buffer.put(RbSerializerN.TERMINATOR_TYPE);
             }
 
-            public Object deserialize(RbSerializerN serializer, nio.ByteBuffer buffer)
+            public Object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 var res = new ExecCommands();
 
@@ -471,6 +484,10 @@ namespace net.sf.robocode.dotnet.peer
                 }
                 return res;
             }
+
+            #endregion
         }
+
+        #endregion
     }
 }

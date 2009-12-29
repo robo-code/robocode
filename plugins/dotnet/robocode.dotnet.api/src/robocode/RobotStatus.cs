@@ -103,7 +103,7 @@ namespace robocode
         /// </summary>
         public double Heading
         {
-            get { return Utils.toDegrees(bodyHeading); }
+            get { return Utils.ToDegrees(bodyHeading); }
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace robocode
         /// </summary>
         public double GunHeading
         {
-            get { return Utils.toDegrees(gunHeading); }
+            get { return Utils.ToDegrees(gunHeading); }
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace robocode
         /// </summary>
         public double RadarHeading
         {
-            get { return Utils.toDegrees(radarHeading); }
+            get { return Utils.ToDegrees(radarHeading); }
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace robocode
         /// </summary>
         public double TurnRemaining
         {
-            get { return Utils.toDegrees(bodyTurnRemaining); }
+            get { return Utils.ToDegrees(bodyTurnRemaining); }
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace robocode
         /// </summary>
         public double RadarTurnRemaining
         {
-            get { return Utils.toDegrees(radarTurnRemaining); }
+            get { return Utils.ToDegrees(radarTurnRemaining); }
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace robocode
         /// </summary>
         public double GunTurnRemaining
         {
-            get { return Utils.toDegrees(gunTurnRemaining); }
+            get { return Utils.ToDegrees(gunTurnRemaining); }
         }
 
         /// <summary>

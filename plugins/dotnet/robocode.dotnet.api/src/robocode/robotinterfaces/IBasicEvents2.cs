@@ -41,4 +41,5 @@ namespace robocode.robotinterfaces
         void OnBattleEnded(BattleEndedEvent evnt);
     }
 }
+
 //happy

@@ -58,4 +58,5 @@ namespace robocode.robotinterfaces
         void OnCustomEvent(CustomEvent evnt);
     }
 }
+
 //happy

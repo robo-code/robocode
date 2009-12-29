@@ -82,7 +82,7 @@ namespace robocode
         /// @see #GetTurnRate(double)
         /// @see #GetTurnRateRadians(double)
         /// </summary>
-        public static readonly double MAX_TURN_RATE_RADIANS = Utils.toRadians(MAX_TURN_RATE);
+        public static readonly double MAX_TURN_RATE_RADIANS = Utils.ToRadians(MAX_TURN_RATE);
 
         /// <summary>
         /// The turning rate of the gun measured in degrees, which is
@@ -105,7 +105,7 @@ namespace robocode
         ///
         /// @see #GUN_TURN_RATE
         /// </summary>
-        public static readonly double GUN_TURN_RATE_RADIANS = Utils.toRadians(GUN_TURN_RATE);
+        public static readonly double GUN_TURN_RATE_RADIANS = Utils.ToRadians(GUN_TURN_RATE);
 
         /// <summary>
         /// The turning rate of the radar measured in degrees, which is
@@ -130,7 +130,7 @@ namespace robocode
         ///
         /// @see #RADAR_TURN_RATE
         /// </summary>
-        public static readonly double RADAR_TURN_RATE_RADIANS = Utils.toRadians(RADAR_TURN_RATE);
+        public static readonly double RADAR_TURN_RATE_RADIANS = Utils.ToRadians(RADAR_TURN_RATE);
 
         /// <summary>
         /// The amount of damage taken when a robot hits or is hit by another robot,
@@ -167,7 +167,7 @@ namespace robocode
         /// </summary>
         public static double GetTurnRateRadians(double velocity)
         {
-            return Utils.toRadians(GetTurnRate(velocity));
+            return Utils.ToRadians(GetTurnRate(velocity));
         }
 
         /// <summary>

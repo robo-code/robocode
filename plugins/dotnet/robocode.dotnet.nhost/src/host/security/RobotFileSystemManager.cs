@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Permissions;
@@ -10,10 +20,10 @@ namespace net.sf.robocode.dotnet.host.security
     public class RobotFileSystemManager
     {
         private long maxQuota;
+        private string readableRootDirectory;
+        private List<QuotaStream> streams = new List<QuotaStream>();
         private long usedQuota;
         private string writableRootDirectory;
-        private string readableRootDirectory;
-        List<QuotaStream> streams=new List<QuotaStream>();
 
         public RobotFileSystemManager(int maxQuota, string writableRootDirectory, string readableRootDirectory)
         {
@@ -23,7 +33,7 @@ namespace net.sf.robocode.dotnet.host.security
 
             if (Directory.Exists(writableRootDirectory))
             {
-                DirectoryInfo di=new DirectoryInfo(writableRootDirectory);
+                var di = new DirectoryInfo(writableRootDirectory);
                 foreach (FileInfo file in di.GetFiles())
                 {
                     usedQuota += file.Length;
@@ -48,7 +58,7 @@ namespace net.sf.robocode.dotnet.host.security
         {
             lock (this)
             {
-                if (usedQuota+bytes>maxQuota)
+                if (usedQuota + bytes > maxQuota)
                 {
                     throw new AccessViolationException("File too big. Max " + maxQuota + " bytes per robot.");
                 }
@@ -82,7 +92,8 @@ namespace net.sf.robocode.dotnet.host.security
                 {
                     Directory.CreateDirectory(writableRootDirectory);
                 }
-                QuotaStream quotaStream = new QuotaStream(this, filename, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+                var quotaStream = new QuotaStream(this, filename, FileMode.OpenOrCreate, FileAccess.ReadWrite,
+                                                  FileShare.ReadWrite);
                 streams.Add(quotaStream);
                 return quotaStream;
             }

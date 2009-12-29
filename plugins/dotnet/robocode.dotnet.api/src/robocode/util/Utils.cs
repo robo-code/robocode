@@ -34,7 +34,7 @@ namespace robocode.util
         private const double TWO_PI = 2*Math.PI;
         private const double THREE_PI_OVER_TWO = 3*Math.PI/2;
         private const double PI_OVER_TWO = Math.PI/2;
-        public const double NEAR_DELTA = .00001;
+        private const double NEAR_DELTA = .00001;
 
         /// <summary>
         /// Normalizes an angle to an absolute angle.
@@ -209,20 +209,21 @@ namespace robocode.util
         ///
         /// @return random number generator
         /// </summary>
-        public static Random getRandom()
+        public static Random GetRandom()
         {
             return HiddenAccessN.randomHelper.GetRandom();
         }
 
-        public static double toRadians(double angle)
+        public static double ToRadians(double angle)
         {
-            return Math.PI * angle / 180.0;
+            return Math.PI*angle/180.0;
         }
 
-        public static double toDegrees(double angle)
+        public static double ToDegrees(double angle)
         {
-            return angle * (180.0 / Math.PI);
+            return angle*(180.0/Math.PI);
         }
     }
 }
+
 //happy

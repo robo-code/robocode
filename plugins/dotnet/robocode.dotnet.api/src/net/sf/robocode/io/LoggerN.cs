@@ -1,17 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Initial implementation based on methods from robocode.util.Utils, which
- *       has been moved to this class
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using System.IO;
 using System.Security.Permissions;
@@ -20,12 +16,13 @@ using robocode.net.sf.robocode.security;
 
 namespace net.sf.robocode.io
 {
-    /// <summary>
-    /// This is a class used for logging.
+    /// 
+    ///<summary>
+    ///  This is a class used for logging.
     ///
-    /// @author Flemming N. Larsen (original)
-    /// @author Mathew A. Nelson (original)
-    /// </summary>
+    ///  @author Flemming N. Larsen (original)
+    ///  @author Mathew A. Nelson (original)
+    ///</summary>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public class LoggerN
     {
@@ -35,6 +32,7 @@ namespace net.sf.robocode.io
 
         private static ILoggerN logListener;
         private static readonly StringBuilder logBuffer = new StringBuilder();
+        [ThreadStatic] public static bool IsSafeThread;
 
         public static void setLogListener(ILoggerN logListener)
         {
@@ -115,9 +113,6 @@ namespace net.sf.robocode.io
             }
         }
 
-        [ThreadStatic]
-        public static bool IsSafeThread;
-
         public static void printlnToRobotsConsole(string s)
         {
             if (robotOut != null)
@@ -136,7 +131,6 @@ namespace net.sf.robocode.io
         void logMessage(string s, bool newline);
         void logError(string s);
     }
-
-    
 }
+
 //happy

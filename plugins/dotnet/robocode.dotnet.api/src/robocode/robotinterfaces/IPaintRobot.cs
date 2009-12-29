@@ -34,4 +34,5 @@ namespace robocode.robotinterfaces
         IPaintEvents GetPaintEventListener();
     }
 }
+
 //happy

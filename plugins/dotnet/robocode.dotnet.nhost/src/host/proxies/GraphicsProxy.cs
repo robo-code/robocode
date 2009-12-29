@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -13,135 +23,21 @@ namespace net.sf.robocode.dotnet.host.proxies
         private const int INITIAL_BUFFER_SIZE = 2*1024;
         private const int MAX_BUFFER_SIZE = 64*1024;
 
-        private enum Method
-        {
-            TRANSLATE_INT, // translate(int, int)
-            SET_COLOR, // setColor(Color)
-            SET_PAINT_MODE, // setPaintMode()
-            SET_XOR_MODE, // setXORMode(Color)
-            SET_FONT, // setFont(Font)
-            CLIP_RECT, // clipRect(int, int, int, int)
-            SET_CLIP, // setClip(int, int, int, int)
-            SET_CLIP_SHAPE, // setClip(Shape)
-            COPY_AREA, // copyArea(int, int, int, int, int, int)
-            DRAW_LINE, // drawLine(int, int, int, int)
-            FILL_RECT, // fillRect(int, int, int, int)
-            DRAW_RECT, // drawRect(int, int, int, int)
-            CLEAR_RECT, // clearRect(int, int, int, int)
-            DRAW_ROUND_RECT, // drawRoundRect(int, int, int, int, int, int)
-            FILL_ROUND_RECT, // fillRoundRect(int, int, int, int, int, int)
-            DRAW_3D_RECT, // draw3DRect(int, int, int, int, boolean)
-            FILL_3D_RECT, // draw3DRect(int, int, int, int, boolean)
-            DRAW_OVAL, // drawOval(int, int, int, int)
-            FILL_OVAL, // fillOval(int, int, int, int)
-            DRAW_ARC, // drawArc(int, int, int, int, int, int)
-            FILL_ARC, // fillArc(int, int, int, int, int, int)
-            DRAW_POLYLINE, // drawPolyline(int[], int[], int)
-            DRAW_POLYGON, // drawPolygon(int[], int[], int)
-            FILL_POLYGON, // fillPolygon(int[], int[], int)
-            DRAW_STRING_INT, // drawString(String, int, int)
-            DRAW_STRING_ACI_INT, // drawString(AttributedCharacterIterator, int, int)
-            DRAW_CHARS, // drawChars(char[], int, int, int, int)
-            DRAW_BYTES, // drawBytes(byte[], int, int, int, int)
-            DRAW_IMAGE_1, // drawImage(Image, int, int, ImageObserver)
-            DRAW_IMAGE_2, // drawImage(Image, int, int, int, int, ImageObserver)
-            DRAW_IMAGE_3, // drawImage(Image, int, int, Color, ImageObserver)
-            DRAW_IMAGE_4, // drawImage(Image, int, int, int, int, Color, ImageObserver)
-            DRAW_IMAGE_5, // drawImage(Image, int, int, int, int, int, int, int, int, ImageObserver)
-            DRAW_IMAGE_6, // drawImage(Image, int, int, int, int, int, int, int, int, Color, ImageObserver)
-            DRAW_SHAPE, // draw(Shape)
-            DRAW_IMAGE_7, // drawImage(Image, AffineTransform, ImageObserver)
-            DRAW_IMAGE_8, // drawImage(BufferedImage, BufferedImageOp, int, int)
-            DRAW_RENDERED_IMAGE, // drawRenderedImage(RenderedImage, AffineTransform)
-            DRAW_RENDERABLE_IMGAGE, // drawRenderableImage(RenderableImage, AffineTransform)
-            DRAW_STRING_FLOAT, // drawString(String, float, float)
-            DRAW_STRING_ACI_FLOAT, // drawString(AttributedCharacterIterator, float, float)
-            DRAW_GLYPH_VECTOR, // drawGlyphVector(GlyphVector gv, float x, float y)
-            FILL_SHAPE, // fill(Shape)
-            SET_COMPOSITE, // setComposite(Composite)
-            SET_PAINT, // setPaint(Paint)
-            SET_STROKE, // setStroke(Stroke)
-            SET_RENDERING_HINT, // setRenderingHint(Key, Object)
-            SET_RENDERING_HINTS, // setRenderingHints(Map<?, ?>)
-            ADD_RENDERING_HINTS, // addRenderingHints(Map<?, ?>)
-            TRANSLATE_DOUBLE, // translate(double, double)
-            ROTATE, // rotate(double)
-            ROTATE_XY, // rotate(double, double, double)
-            SCALE, // scale(double, double)
-            SHEAR, // shear(double, double)
-            TRANSFORM, // transform(AffineTransform)
-            SET_TRANSFORM, // setTransform(AffineTransform Tx)
-            SET_BACKGROUND, // setBackground(Color)
-            CLIP, // clip(Shape)
-        }
-
-        private bool isPaintingEnabled;
         private readonly bool isDebugging;
-        private ByteBuffer calls;
         private readonly RbSerializerN serializer = new RbSerializerN();
+        private ByteBuffer calls;
+        private bool isPaintingEnabled;
+        private int unrecoveredBufferOverflowCount;
 
         public GraphicsProxy()
         {
             calls = ByteBuffer.allocate(INITIAL_BUFFER_SIZE);
             calls.order(ByteOrder.LITTLE_ENDIAN);
-            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
+            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
             isDebugging = java.lang.System.getProperty("debug", "false") == "true";
         }
 
-        public void setPaintingEnabled(bool value)
-        {
-            isPaintingEnabled = value;
-        }
-
-        public byte[] readoutQueuedCalls()
-        {
-            if (calls == null || calls.position() == 0)
-            {
-                return null;
-            }
-            byte[] res = new byte[calls.position()];
-
-            calls.flip();
-            calls.get(res);
-            calls.clear();
-            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
-            return res;
-        }
-
-        private void setColor(Brush brush)
-        {
-            var sb = brush as SolidBrush;
-            if (sb != null)
-            {
-                setColor(sb.Color);
-            }
-        }
-
-        private void setColor(Pen p)
-        {
-            setColor(p.Color);
-        }
-
-        private void setColor(Color c)
-        {
-            if (isPaintingEnabled)
-            {
-                calls.mark(); // Mark for rollback
-                try
-                {
-                    put(Method.SET_COLOR);
-                    put(c);
-                }
-                catch (BufferOverflowException e)
-                {
-                    if (recoverFromBufferOverflow())
-                    {
-                        setColor(c); // Retry this method after reallocation
-                        return; // Make sure we leave
-                    }
-                }
-            }
-        }
+        #region IGraphics Members
 
         public void DrawEllipse(Pen pen, int x, int y, int width, int height)
         {
@@ -212,14 +108,72 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             FillEllipse(brush, rect.X, rect.Y, rect.Width, rect.Height);
         }
+
         public void FillEllipse(Brush brush, float x, float y, float width, float height)
         {
-            FillEllipse(brush, (int)x, (int)y, (int)width, (int)height);
+            FillEllipse(brush, (int) x, (int) y, (int) width, (int) height);
         }
 
         public void FillEllipse(Brush brush, Rectangle rect)
         {
             FillEllipse(brush, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        #endregion
+
+        public void setPaintingEnabled(bool value)
+        {
+            isPaintingEnabled = value;
+        }
+
+        public byte[] readoutQueuedCalls()
+        {
+            if (calls == null || calls.position() == 0)
+            {
+                return null;
+            }
+            var res = new byte[calls.position()];
+
+            calls.flip();
+            calls.get(res);
+            calls.clear();
+            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
+            return res;
+        }
+
+        private void setColor(Brush brush)
+        {
+            var sb = brush as SolidBrush;
+            if (sb != null)
+            {
+                setColor(sb.Color);
+            }
+        }
+
+        private void setColor(Pen p)
+        {
+            setColor(p.Color);
+        }
+
+        private void setColor(Color c)
+        {
+            if (isPaintingEnabled)
+            {
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.SET_COLOR);
+                    put(c);
+                }
+                catch (BufferOverflowException e)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        setColor(c); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
         }
 
 
@@ -266,8 +220,6 @@ namespace net.sf.robocode.dotnet.host.proxies
             return true; // buffer was reallocated
         }
 
-        private int unrecoveredBufferOverflowCount;
-
         private bool recoverFromBufferOverflow()
         {
             calls.reset(); // Rollback buffer
@@ -277,7 +229,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             if (!recovered)
             {
                 calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
-                calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte)1 : (byte)0);
+                calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
 
                 if (unrecoveredBufferOverflowCount++%500 == 0)
                 {
@@ -992,6 +944,72 @@ namespace net.sf.robocode.dotnet.host.proxies
         public bool IsVisibleClipEmpty
         {
             get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region Nested type: Method
+
+        private enum Method
+        {
+            TRANSLATE_INT, // translate(int, int)
+            SET_COLOR, // setColor(Color)
+            SET_PAINT_MODE, // setPaintMode()
+            SET_XOR_MODE, // setXORMode(Color)
+            SET_FONT, // setFont(Font)
+            CLIP_RECT, // clipRect(int, int, int, int)
+            SET_CLIP, // setClip(int, int, int, int)
+            SET_CLIP_SHAPE, // setClip(Shape)
+            COPY_AREA, // copyArea(int, int, int, int, int, int)
+            DRAW_LINE, // drawLine(int, int, int, int)
+            FILL_RECT, // fillRect(int, int, int, int)
+            DRAW_RECT, // drawRect(int, int, int, int)
+            CLEAR_RECT, // clearRect(int, int, int, int)
+            DRAW_ROUND_RECT, // drawRoundRect(int, int, int, int, int, int)
+            FILL_ROUND_RECT, // fillRoundRect(int, int, int, int, int, int)
+            DRAW_3D_RECT, // draw3DRect(int, int, int, int, boolean)
+            FILL_3D_RECT, // draw3DRect(int, int, int, int, boolean)
+            DRAW_OVAL, // drawOval(int, int, int, int)
+            FILL_OVAL, // fillOval(int, int, int, int)
+            DRAW_ARC, // drawArc(int, int, int, int, int, int)
+            FILL_ARC, // fillArc(int, int, int, int, int, int)
+            DRAW_POLYLINE, // drawPolyline(int[], int[], int)
+            DRAW_POLYGON, // drawPolygon(int[], int[], int)
+            FILL_POLYGON, // fillPolygon(int[], int[], int)
+            DRAW_STRING_INT, // drawString(String, int, int)
+            DRAW_STRING_ACI_INT, // drawString(AttributedCharacterIterator, int, int)
+            DRAW_CHARS, // drawChars(char[], int, int, int, int)
+            DRAW_BYTES, // drawBytes(byte[], int, int, int, int)
+            DRAW_IMAGE_1, // drawImage(Image, int, int, ImageObserver)
+            DRAW_IMAGE_2, // drawImage(Image, int, int, int, int, ImageObserver)
+            DRAW_IMAGE_3, // drawImage(Image, int, int, Color, ImageObserver)
+            DRAW_IMAGE_4, // drawImage(Image, int, int, int, int, Color, ImageObserver)
+            DRAW_IMAGE_5, // drawImage(Image, int, int, int, int, int, int, int, int, ImageObserver)
+            DRAW_IMAGE_6, // drawImage(Image, int, int, int, int, int, int, int, int, Color, ImageObserver)
+            DRAW_SHAPE, // draw(Shape)
+            DRAW_IMAGE_7, // drawImage(Image, AffineTransform, ImageObserver)
+            DRAW_IMAGE_8, // drawImage(BufferedImage, BufferedImageOp, int, int)
+            DRAW_RENDERED_IMAGE, // drawRenderedImage(RenderedImage, AffineTransform)
+            DRAW_RENDERABLE_IMGAGE, // drawRenderableImage(RenderableImage, AffineTransform)
+            DRAW_STRING_FLOAT, // drawString(String, float, float)
+            DRAW_STRING_ACI_FLOAT, // drawString(AttributedCharacterIterator, float, float)
+            DRAW_GLYPH_VECTOR, // drawGlyphVector(GlyphVector gv, float x, float y)
+            FILL_SHAPE, // fill(Shape)
+            SET_COMPOSITE, // setComposite(Composite)
+            SET_PAINT, // setPaint(Paint)
+            SET_STROKE, // setStroke(Stroke)
+            SET_RENDERING_HINT, // setRenderingHint(Key, Object)
+            SET_RENDERING_HINTS, // setRenderingHints(Map<?, ?>)
+            ADD_RENDERING_HINTS, // addRenderingHints(Map<?, ?>)
+            TRANSLATE_DOUBLE, // translate(double, double)
+            ROTATE, // rotate(double)
+            ROTATE_XY, // rotate(double, double, double)
+            SCALE, // scale(double, double)
+            SHEAR, // shear(double, double)
+            TRANSFORM, // transform(AffineTransform)
+            SET_TRANSFORM, // setTransform(AffineTransform Tx)
+            SET_BACKGROUND, // setBackground(Color)
+            CLIP, // clip(Shape)
         }
 
         #endregion

@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
@@ -11,23 +21,23 @@ namespace net.sf.robocode.host
     [Serializable]
     public class RobotStatics : IRobotStaticsN
     {
-        private readonly bool isJuniorRobot;
-        private readonly bool isInteractiveRobot;
-        private readonly bool isPaintRobot;
-        private readonly bool isAdvancedRobot;
-        private readonly bool isTeamRobot;
-        private readonly bool isTeamLeader;
-        private readonly bool isDroid;
-        private readonly string name;
-        private readonly string shortName;
-        private readonly string veryShortName;
-        private readonly string fullClassName;
-        private readonly string shortClassName;
         private readonly BattleRules battleRules;
-        private readonly string[] teammates;
-        private readonly string teamName;
-        private readonly int index;
         private readonly int contestantIndex;
+        private readonly string fullClassName;
+        private readonly int index;
+        private readonly bool isAdvancedRobot;
+        private readonly bool isDroid;
+        private readonly bool isInteractiveRobot;
+        private readonly bool isJuniorRobot;
+        private readonly bool isPaintRobot;
+        private readonly bool isTeamLeader;
+        private readonly bool isTeamRobot;
+        private readonly string name;
+        private readonly string shortClassName;
+        private readonly string shortName;
+        private readonly string teamName;
+        private readonly string[] teammates;
+        private readonly string veryShortName;
 
         public RobotStatics(bool isJuniorRobot, bool isInteractiveRobot, bool isPaintRobot, bool isAdvancedRobot,
                             bool isTeamRobot, bool isTeamLeader, bool isDroid, string name, string shortName,
@@ -53,10 +63,7 @@ namespace net.sf.robocode.host
             this.contestantIndex = contestantIndex;
         }
 
-        public bool IsJuniorRobot()
-        {
-            return isJuniorRobot;
-        }
+        #region IRobotStaticsN Members
 
         public bool IsInteractiveRobot()
         {
@@ -76,6 +83,13 @@ namespace net.sf.robocode.host
         public bool IsTeamRobot()
         {
             return isTeamRobot;
+        }
+
+        #endregion
+
+        public bool IsJuniorRobot()
+        {
+            return isJuniorRobot;
         }
 
         public bool IsTeamLeader()
@@ -149,8 +163,12 @@ namespace net.sf.robocode.host
             return new SerializableHelper();
         }
 
+        #region Nested type: SerializableHelper
+
         private class SerializableHelper : ISerializableHelperN
         {
+            #region ISerializableHelperN Members
+
             public int sizeOf(RbSerializerN serializer, object obje)
             {
                 var obj = (RobotStatics) obje;
@@ -268,6 +286,10 @@ namespace net.sf.robocode.host
                     contestantIndex
                     );
             }
+
+            #endregion
         }
+
+        #endregion
     }
 }

@@ -451,7 +451,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                peer.turnBody(-Utils.toRadians(degrees));
+                peer.turnBody(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -491,7 +491,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                peer.turnBody(Utils.toRadians(degrees));
+                peer.turnBody(Utils.ToRadians(degrees));
             }
             else
             {
@@ -1587,7 +1587,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                peer.turnGun(-Utils.toRadians(degrees));
+                peer.turnGun(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -1628,7 +1628,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                peer.turnGun(Utils.toRadians(degrees));
+                peer.turnGun(Utils.ToRadians(degrees));
             }
             else
             {
@@ -1671,7 +1671,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                ((IStandardRobotPeer) peer).turnRadar(-Utils.toRadians(degrees));
+                ((IStandardRobotPeer) peer).turnRadar(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -1713,7 +1713,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                ((IStandardRobotPeer) peer).turnRadar(Utils.toRadians(degrees));
+                ((IStandardRobotPeer) peer).turnRadar(Utils.ToRadians(degrees));
             }
             else
             {

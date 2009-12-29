@@ -1,14 +1,12 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
 
 using System;
 using System.Collections.Generic;
@@ -16,8 +14,8 @@ using System.IO;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Text;
-using net.sf.robocode.nio;
 using net.sf.robocode.io;
+using net.sf.robocode.nio;
 using net.sf.robocode.security;
 using robocode;
 using robocode.net.sf.robocode.security;
@@ -25,11 +23,12 @@ using robocode.net.sf.robocode.security;
 namespace net.sf.robocode.serialization
 {
     /// <summary>
-    /// @author Pavel Savara (original)
+    ///   @author Pavel Savara (original)
     /// </summary>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public sealed class RbSerializerN
     {
+        private const int byteOrder = -1059135839; //0xC0DEDEA1
         public static readonly int SIZEOF_TYPEINFO = 1;
         public static readonly int SIZEOF_BYTE = 1;
         public static readonly int SIZEOF_BOOL = 1;
@@ -75,10 +74,9 @@ namespace net.sf.robocode.serialization
         public static readonly byte MouseWheelMovedEvent_TYPE = 54;
 
         private static readonly ISerializableHelperN[] typeToHelper = new ISerializableHelperN[256];
-        private static Dictionary<Type, byte> classToType = new Dictionary<Type, byte>();
+        private static readonly Dictionary<Type, byte> classToType = new Dictionary<Type, byte>();
         private static readonly Encoding charset;
 
-        private const int byteOrder = -1059135839; //0xC0DEDEA1
         private static int currentVersion;
 
         static RbSerializerN()
@@ -102,7 +100,7 @@ namespace net.sf.robocode.serialization
             // header
             ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
 
-            buffer.putInt((int)byteOrder);
+            buffer.putInt(byteOrder);
             buffer.putInt(currentVersion);
             buffer.putInt(length);
 
@@ -495,7 +493,8 @@ namespace net.sf.robocode.serialization
             {
                 if (realClass != null)
                 {
-                    MethodInfo method = realClass.GetMethod("createHiddenSerializer", BindingFlags.NonPublic|BindingFlags.Static);
+                    MethodInfo method = realClass.GetMethod("createHiddenSerializer",
+                                                            BindingFlags.NonPublic | BindingFlags.Static);
                     var helper = (ISerializableHelperN) method.Invoke(null, null);
 
                     typeToHelper[type] = helper;

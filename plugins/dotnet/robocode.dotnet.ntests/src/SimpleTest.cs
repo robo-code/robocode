@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.dotnet.host.security;
-using net.sf.robocode.nio;
 using NUnit.Framework;
 
 namespace net.sf.robocode.dotnet
@@ -15,8 +13,8 @@ namespace net.sf.robocode.dotnet
         [Test]
         public void Graphics()
         {
-            GraphicsProxy sg = new GraphicsProxy();
-		    sg.setPaintingEnabled(true);
+            var sg = new GraphicsProxy();
+            sg.setPaintingEnabled(true);
             /*sg.DrawArc(Pens.Red, new RectangleF(0,0,80,80),-30,10);
 
             GraphicsPath path = new GraphicsPath();
@@ -32,22 +30,22 @@ namespace net.sf.robocode.dotnet
             sg.FillEllipse(brush, new RectangleF(70, 70, 30, 50 ));
              */
 
-            sg.DrawEllipse(Pens.Red, (int)(50), (int)(50), 100, 100);
-            sg.FillEllipse(new SolidBrush(Color.FromArgb(0, 0xFF, 0, 30)), (int)(100- 60), (int)(100- 60), 120,
-                          120);
+            sg.DrawEllipse(Pens.Red, (50), (50), 100, 100);
+            sg.FillEllipse(new SolidBrush(Color.FromArgb(0, 0xFF, 0, 30)), (100 - 60), (100 - 60), 120,
+                           120);
 
 
             byte[] readoutQueuedCalls = sg.readoutQueuedCalls();
-            Assert.Greater(readoutQueuedCalls.Length,0);
+            Assert.Greater(readoutQueuedCalls.Length, 0);
         }
 
         [Test]
-        [ExpectedException(typeof(AccessViolationException))]
+        [ExpectedException(typeof (AccessViolationException))]
         public void StreamBig()
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
-            RobotFileSystemManager m = new RobotFileSystemManager(100, tempDir, tempDir);
+            var m = new RobotFileSystemManager(100, tempDir, tempDir);
 
             using (Stream dataFile = m.getDataFile("test.txt"))
             {
@@ -60,12 +58,12 @@ namespace net.sf.robocode.dotnet
         }
 
         [Test]
-        [ExpectedException(typeof(AccessViolationException))]
+        [ExpectedException(typeof (AccessViolationException))]
         public void StreamBig2()
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
-            RobotFileSystemManager m = new RobotFileSystemManager(100, tempDir, tempDir);
+            var m = new RobotFileSystemManager(100, tempDir, tempDir);
 
             using (Stream dataFile = m.getDataFile("test.txt"))
             {
@@ -82,12 +80,12 @@ namespace net.sf.robocode.dotnet
         }
 
         [Test]
-        [ExpectedException(typeof(AccessViolationException))]
+        [ExpectedException(typeof (AccessViolationException))]
         public void StreamBig3()
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
-            RobotFileSystemManager m = new RobotFileSystemManager(100, tempDir, tempDir);
+            var m = new RobotFileSystemManager(100, tempDir, tempDir);
 
             using (Stream dataFile = m.getDataFile("test.txt"))
             {
@@ -103,16 +101,15 @@ namespace net.sf.robocode.dotnet
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
-            RobotFileSystemManager m = new RobotFileSystemManager(100, tempDir, tempDir);
+            var m = new RobotFileSystemManager(100, tempDir, tempDir);
 
             using (Stream dataFile = m.getDataFile("test.txt"))
             {
                 dataFile.WriteByte(0xFF);
                 dataFile.Position = 97;
                 dataFile.WriteByte(0xFF);
-                dataFile.Write(new byte[] { 0xFF, 0xFF, 0xFF }, 0, 2);
+                dataFile.Write(new byte[] {0xFF, 0xFF, 0xFF}, 0, 2);
             }
         }
-    
     }
 }

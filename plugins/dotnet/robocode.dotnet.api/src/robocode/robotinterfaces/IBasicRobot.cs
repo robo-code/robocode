@@ -79,4 +79,5 @@ namespace robocode.robotinterfaces
         void SetOut(TextWriter output);
     }
 }
+
 //happy

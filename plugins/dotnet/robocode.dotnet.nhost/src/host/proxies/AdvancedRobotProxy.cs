@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using net.sf.robocode.host;
@@ -18,6 +28,9 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
         // asynchronous actions
+
+        #region IAdvancedRobotPeer Members
+
         public void setResume()
         {
             setCall();
@@ -198,11 +211,12 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             getCall();
             commands.setIORobot();
-		    if (filename.Contains("..")) {
+            if (filename.Contains(".."))
+            {
                 throw new AccessViolationException("no relative path allowed");
-		    }
+            }
 
-    	    return robotFileSystemManager.getDataFile(filename);
+            return robotFileSystemManager.getDataFile(filename);
         }
 
         public long getDataQuotaAvailable()
@@ -210,5 +224,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             getCall();
             return robotFileSystemManager.getDataQuotaAvailable();
         }
+
+        #endregion
     }
 }

@@ -1,3 +1,13 @@
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System.IO;
 using java.lang;
 using net.sf.jni4net;
@@ -19,7 +29,7 @@ namespace net.sf.robocode.dotnet.host
                                                    IRobotStatics statics, IRobotPeer peer)
         {
             Object s = HiddenAccess.getFileSpecification(robotSpecification);
-            IRobotRepositoryItem itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);
+            var itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);
             string file = GetDllFileName(itemSpecification);
             return new HostingShell(itemSpecification, hostManager, peer, statics, file);
         }
@@ -42,12 +52,12 @@ namespace net.sf.robocode.dotnet.host
             }
         }
 
+        #endregion
+
         private static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
         {
             string url = robotRepositoryItem.getRobotClassPath().getFile();
             return url.Substring(1, url.LastIndexOf(".dll!/") + 3);
         }
-
-        #endregion
     }
 }

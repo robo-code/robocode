@@ -1,5 +1,14 @@
-﻿using System;
-using System.Diagnostics;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Threading;
@@ -34,11 +43,11 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 ModuleN.InitN();
 
-                hostManager = Bridge.CreateProxy<IHostManager>((IntPtr)domain.GetData("hostManager"));
-                robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
-                statics = ((RobotStatics)domain.GetData("statics"));
+                hostManager = Bridge.CreateProxy<IHostManager>((IntPtr) domain.GetData("hostManager"));
+                robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr) domain.GetData("peer"));
+                statics = ((RobotStatics) domain.GetData("statics"));
                 //robotSpecification = Bridge.CreateProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
-                specification = Bridge.CreateProxy<IRobotRepositoryItem>((IntPtr)domain.GetData("item"));
+                specification = Bridge.CreateProxy<IRobotRepositoryItem>((IntPtr) domain.GetData("item"));
                 CreateProxy();
 
                 Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);
@@ -57,8 +66,8 @@ namespace net.sf.robocode.dotnet.host.seed
         {
             try
             {
-                var commands = (ExecCommands)domain.GetData("commands");
-                var status = (RobotStatus)domain.GetData("status");
+                var commands = (ExecCommands) domain.GetData("commands");
+                var status = (RobotStatus) domain.GetData("status");
 
                 robotProxy.initializeRound(commands, status);
 

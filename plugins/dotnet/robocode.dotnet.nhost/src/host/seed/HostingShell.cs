@@ -1,4 +1,14 @@
-﻿using java.lang;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using java.lang;
 using net.sf.jni4net.jni;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
@@ -31,6 +41,8 @@ namespace net.sf.robocode.dotnet.host.seed
             robotPeer = peer;
         }
 
+        #region IHostingRobotProxy Members
+
         public void startRound(Object aCommands, Object aStatus)
         {
             var commands = serializer.ConvertJ2C<ExecCommands>(RbSerializerN.ExecCommands_TYPE, aCommands);
@@ -56,5 +68,7 @@ namespace net.sf.robocode.dotnet.host.seed
             domain.DoCallBack(HostingSeed.Cleanup);
             Dispose();
         }
+
+        #endregion
     }
 }

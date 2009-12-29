@@ -1,7 +1,18 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Reflection;
 using System.Security.Permissions;
 using java.lang;
+using java.nio;
 using net.sf.jni4net;
 using net.sf.jni4net.jni;
 using net.sf.jni4net.nio;
@@ -9,6 +20,8 @@ using net.sf.jni4net.utils;
 using net.sf.robocode.dotnet.utils;
 using net.sf.robocode.io;
 using net.sf.robocode.repository;
+using Buffer = java.nio.Buffer;
+using ByteBuffer = java.nio.ByteBuffer;
 using Exception = System.Exception;
 using StringBuilder = System.Text.StringBuilder;
 
@@ -17,7 +30,7 @@ namespace net.sf.robocode.dotnet.host.seed
     [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
     [FileIOPermission(SecurityAction.Assert, Unrestricted = true)]
     //[EnvironmentPermission(SecurityAction.Assert, Unrestricted = true)]
-    //[SecurityPermission(SecurityAction.Assert, Unrestricted = true)]
+        //[SecurityPermission(SecurityAction.Assert, Unrestricted = true)]
     public class AppDomainSeed
     {
         protected static string robotAssemblyFileName;
@@ -51,13 +64,13 @@ namespace net.sf.robocode.dotnet.host.seed
                 setup.BindStatic = false;
                 Bridge.CreateJVM(setup);
                 JNIEnv env = JNIEnv.ThreadEnv;
-                Registry.RegisterType(typeof(Error), true, env);
-                Registry.RegisterType(typeof(java.nio.ByteBuffer), true, env);
-                Registry.RegisterType(typeof(java.nio.Buffer), true, env);
-                Registry.RegisterType(typeof(ByteBufferClr), true, env);
-                Registry.RegisterType(typeof(java.lang.System), true, env);
-                Registry.RegisterType(typeof(java.nio.ByteOrder), true, env);
-                Bridge.LoadAndRegisterAssembly(typeof(AppDomainSeed).Assembly.Location);
+                Registry.RegisterType(typeof (Error), true, env);
+                Registry.RegisterType(typeof (ByteBuffer), true, env);
+                Registry.RegisterType(typeof (Buffer), true, env);
+                Registry.RegisterType(typeof (ByteBufferClr), true, env);
+                Registry.RegisterType(typeof (java.lang.System), true, env);
+                Registry.RegisterType(typeof (ByteOrder), true, env);
+                Bridge.LoadAndRegisterAssembly(typeof (AppDomainSeed).Assembly.Location);
             }
             catch (Exception ex)
             {

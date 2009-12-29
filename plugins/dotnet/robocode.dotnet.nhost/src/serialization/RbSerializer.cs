@@ -1,9 +1,16 @@
-﻿using System.IO;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System.IO;
 using java.lang;
-using net.sf.jni4net;
 using net.sf.jni4net.nio;
-using net.sf.robocode.core;
-using net.sf.robocode.manager;
 using ByteBuffer = net.sf.robocode.nio.ByteBuffer;
 
 namespace net.sf.robocode.serialization
@@ -49,7 +56,5 @@ namespace net.sf.robocode.serialization
             ByteBuffer byteBuffer = ByteBuffer.wrap(commandBuffer.GetSharedBuffer());
             return RbSerializerN.deserializeFromBuffer<T>(byteBuffer);
         }
-
-       
     }
 }

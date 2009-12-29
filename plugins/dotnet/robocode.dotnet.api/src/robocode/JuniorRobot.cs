@@ -453,7 +453,7 @@ namespace robocode
             if (peer != null)
             {
                 peer.turnGun(
-                    Utils.NormalRelativeAngle(peer.getBodyHeading() + Utils.toRadians(angle) - peer.getGunHeading()));
+                    Utils.NormalRelativeAngle(peer.getBodyHeading() + Utils.ToRadians(angle) - peer.getGunHeading()));
             }
             else
             {
@@ -708,7 +708,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                ((IJuniorRobotPeer) peer).turnAndMove(distance, Utils.toRadians(degrees));
+                ((IJuniorRobotPeer) peer).turnAndMove(distance, Utils.ToRadians(degrees));
             }
             else
             {
@@ -797,7 +797,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                peer.turnGun(Utils.toRadians(degrees));
+                peer.turnGun(Utils.ToRadians(degrees));
             }
             else
             {
@@ -821,7 +821,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                peer.turnGun(Utils.NormalRelativeAngle(Utils.toRadians(angle) - peer.getGunHeading()));
+                peer.turnGun(Utils.NormalRelativeAngle(Utils.ToRadians(angle) - peer.getGunHeading()));
             }
             else
             {
@@ -862,7 +862,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                peer.turnBody(Utils.toRadians(degrees));
+                peer.turnBody(Utils.ToRadians(degrees));
             }
             else
             {
@@ -888,7 +888,7 @@ namespace robocode
         {
             if (peer != null)
             {
-                peer.turnBody(Utils.NormalRelativeAngle(Utils.toRadians(angle) - peer.getBodyHeading()));
+                peer.turnBody(Utils.NormalRelativeAngle(Utils.ToRadians(angle) - peer.getBodyHeading()));
             }
             else
             {
@@ -943,7 +943,7 @@ namespace robocode
             {
                 double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
 
-                robot.hitByBulletAngle = (int) (Utils.toDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
+                robot.hitByBulletAngle = (int) (Utils.ToDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
                 robot.hitByBulletBearing = (int) (evnt.Bearing + 0.5);
                 robot.OnHitByBullet();
             }
@@ -952,7 +952,7 @@ namespace robocode
             {
                 double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
 
-                robot.hitRobotAngle = (int) (Utils.toDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
+                robot.hitRobotAngle = (int) (Utils.ToDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
                 robot.hitRobotBearing = (int) (evnt.Bearing + 0.5);
                 robot.OnHitRobot();
             }
@@ -961,7 +961,7 @@ namespace robocode
             {
                 double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
 
-                robot.hitWallAngle = (int) (Utils.toDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
+                robot.hitWallAngle = (int) (Utils.ToDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
                 robot.hitWallBearing = (int) (evnt.Bearing + 0.5);
                 robot.OnHitWall();
             }
@@ -975,7 +975,7 @@ namespace robocode
             {
                 robot.scannedDistance = (int) (evnt.Distance + 0.5);
                 robot.scannedEnergy = Math.Max(1, (int) (evnt.Energy + 0.5));
-                robot.scannedAngle = (int) (Utils.toDegrees(
+                robot.scannedAngle = (int) (Utils.ToDegrees(
                                                 Utils.NormalAbsoluteAngle(robot.peer.getBodyHeading() +
                                                                           evnt.BearingRadians))
                                             + 0.5);
@@ -994,10 +994,10 @@ namespace robocode
                 robot.energy = Math.Max(1, (int) (s.Energy + 0.5));
                 robot.robotX = (int) (s.X + 0.5);
                 robot.robotY = (int) (s.Y + 0.5);
-                robot.heading = (int) (Utils.toDegrees(s.Heading) + 0.5);
-                robot.gunHeading = (int) (Utils.toDegrees(s.GunHeading) + 0.5);
+                robot.heading = (int) (Utils.ToDegrees(s.Heading) + 0.5);
+                robot.gunHeading = (int) (Utils.ToDegrees(s.GunHeading) + 0.5);
                 robot.gunBearing =
-                    (int) (Utils.toDegrees(Utils.NormalRelativeAngle(s.GunHeading - s.Heading)) + 0.5);
+                    (int) (Utils.ToDegrees(Utils.NormalRelativeAngle(s.GunHeading - s.Heading)) + 0.5);
                 robot.gunReady = (s.GunHeat <= 0);
 
                 currentTurn = e.Time;

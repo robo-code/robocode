@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using net.sf.robocode.host;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
@@ -16,6 +26,8 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
         }
 
+        #region IJuniorRobotPeer Members
+
         public void turnAndMove(double distance, double radians)
         {
             if (distance == 0)
@@ -28,7 +40,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             double savedMaxVelocity = commands.getMaxVelocity();
             double savedMaxTurnRate = commands.getMaxTurnRate();
 
-            double absDegrees = Math.Abs(Utils.toDegrees(radians));
+            double absDegrees = Math.Abs(Utils.ToDegrees(radians));
             double absDistance = Math.Abs(distance);
 
             // -- Calculate max. velocity for moving perfect in a circle --
@@ -106,5 +118,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             commands.setMaxVelocity(savedMaxVelocity);
             commands.setMaxTurnRate(savedMaxTurnRate);
         }
+
+        #endregion
     }
 }

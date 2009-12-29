@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Drawing;
 using System.IO;
 using robocode;
@@ -6,13 +16,13 @@ using robocode;
 namespace samplecs
 {
     /// <summary>
-    /// SittingDuck - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
-    /// <p/>
-    /// Along with sitting still doing nothing, this robot demonstrates persistency.
+    ///   SittingDuck - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+    ///   <p />
+    ///   Along with sitting still doing nothing, this robot demonstrates persistency.
     /// </summary>
     public class SittingDuck : AdvancedRobot
     {
-        static bool incrementedBattles;
+        private static bool incrementedBattles;
 
         public override void Run()
         {
@@ -36,7 +46,8 @@ namespace samplecs
                         }
                     }
                 }
-            }catch(Exception)
+            }
+            catch (Exception)
             {
                 // Something went wrong reading the file, reset to 0.
                 roundCount = 0;

@@ -697,4 +697,5 @@ namespace robocode.robotinterfaces.peer
         long getDataQuotaAvailable();
     }
 }
+
 //happy

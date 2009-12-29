@@ -42,4 +42,5 @@ namespace robocode.robotinterfaces
         IAdvancedEvents GetAdvancedEventListener();
     }
 }
+
 //happy

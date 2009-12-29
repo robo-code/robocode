@@ -46,4 +46,5 @@ namespace robocode.robotinterfaces
         IInteractiveEvents GetInteractiveEventListener();
     }
 }
+
 //happy

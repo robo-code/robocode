@@ -69,4 +69,5 @@ namespace robocode.robotinterfaces.peer
         void turnAndMove(double distance, double radians);
     }
 }
+
 //happy

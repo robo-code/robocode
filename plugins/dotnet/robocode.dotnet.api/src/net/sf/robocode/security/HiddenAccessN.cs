@@ -1,14 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -22,8 +21,8 @@ using robocode.robotinterfaces;
 namespace net.sf.robocode.security
 {
     /// <summary>
-    /// Helpers for accessing hidden methods on events
-    /// @author Pavel Savara (original)
+    ///   Helpers for accessing hidden methods on events
+    ///   @author Pavel Savara (original)
     /// </summary>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public class HiddenAccessN
@@ -45,16 +44,18 @@ namespace net.sf.robocode.security
 
             try
             {
-                method = typeof (Event).GetMethod("createHiddenHelper", BindingFlags.Static|BindingFlags.NonPublic);
+                method = typeof (Event).GetMethod("createHiddenHelper", BindingFlags.Static | BindingFlags.NonPublic);
                 eventHelper = (IHiddenEventHelper) method.Invoke(null, null);
 
-                method = typeof(Bullet).GetMethod("createHiddenHelper", BindingFlags.Static | BindingFlags.NonPublic);
+                method = typeof (Bullet).GetMethod("createHiddenHelper", BindingFlags.Static | BindingFlags.NonPublic);
                 bulletHelper = (IHiddenBulletHelper) method.Invoke(null, null);
 
-                method = typeof(RobotStatus).GetMethod("createHiddenSerializer", BindingFlags.Static | BindingFlags.NonPublic);
+                method = typeof (RobotStatus).GetMethod("createHiddenSerializer",
+                                                        BindingFlags.Static | BindingFlags.NonPublic);
                 statusHelper = (IHiddenStatusHelper) method.Invoke(null, null);
 
-                method = typeof(BattleRules).GetMethod("createHiddenHelper", BindingFlags.Static | BindingFlags.NonPublic);
+                method = typeof (BattleRules).GetMethod("createHiddenHelper",
+                                                        BindingFlags.Static | BindingFlags.NonPublic);
                 rulesHelper = (IHiddenRulesHelper) method.Invoke(null, null);
 
                 initialized = true;
@@ -126,4 +127,5 @@ namespace net.sf.robocode.security
         }
     }
 }
+
 //happy

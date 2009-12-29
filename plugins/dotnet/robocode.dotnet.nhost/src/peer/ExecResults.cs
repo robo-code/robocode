@@ -1,5 +1,16 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
+using net.sf.robocode.nio;
 using net.sf.robocode.serialization;
 using robocode;
 
@@ -9,14 +20,14 @@ namespace net.sf.robocode.dotnet.peer
     public class ExecResults
     {
         private const long serialVersionUID = 1L;
-        private ExecCommands commands;
-        private RobotStatus status;
-        private List<Event> events;
-        private List<TeamMessage> teamMessages;
         private List<BulletStatus> bulletUpdates;
+        private ExecCommands commands;
+        private List<Event> events;
         private bool halt;
-        private bool shouldWait;
         private bool paintEnabled;
+        private bool shouldWait;
+        private RobotStatus status;
+        private List<TeamMessage> teamMessages;
 
         public ExecResults(ExecCommands commands, RobotStatus status, List<Event> events, List<TeamMessage> teamMessages,
                            List<BulletStatus> bulletUpdates, bool halt, bool shouldWait, bool paintEnabled)
@@ -29,6 +40,10 @@ namespace net.sf.robocode.dotnet.peer
             this.halt = halt;
             this.shouldWait = shouldWait;
             this.paintEnabled = paintEnabled;
+        }
+
+        private ExecResults()
+        {
         }
 
         public static long getSerialVersionUID()
@@ -116,18 +131,18 @@ namespace net.sf.robocode.dotnet.peer
             this.paintEnabled = paintEnabled;
         }
 
-        private ExecResults()
-        {
-        }
-
         // ReSharper disable UnusedMember.Local
         private static ISerializableHelperN createHiddenSerializer()
         {
             return new SerializableHelper();
         }
 
+        #region Nested type: SerializableHelper
+
         private class SerializableHelper : ISerializableHelperN
         {
+            #region ISerializableHelperN Members
+
             public int sizeOf(RbSerializerN serializer, Object obje)
             {
                 var obj = (ExecResults) obje;
@@ -160,7 +175,7 @@ namespace net.sf.robocode.dotnet.peer
                 return size;
             }
 
-            public void serialize(RbSerializerN serializer, nio.ByteBuffer buffer, Object obje)
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, Object obje)
             {
                 var obj = (ExecResults) obje;
 
@@ -188,7 +203,7 @@ namespace net.sf.robocode.dotnet.peer
                 buffer.put(RbSerializerN.TERMINATOR_TYPE);
             }
 
-            public Object deserialize(RbSerializerN serializer, nio.ByteBuffer buffer)
+            public Object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
                 var res = new ExecResults();
 
@@ -232,6 +247,10 @@ namespace net.sf.robocode.dotnet.peer
                 }
                 return res;
             }
+
+            #endregion
         }
+
+        #endregion
     }
 }

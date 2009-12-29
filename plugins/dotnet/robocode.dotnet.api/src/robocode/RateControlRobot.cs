@@ -124,7 +124,7 @@ namespace robocode
         /// </summary>
         public double TurnRate
         {
-            get { return Utils.toRadians(turnRate); }            set { turnRate = Utils.toRadians(value); }        }
+            get { return Utils.ToRadians(turnRate); }            set { turnRate = Utils.ToRadians(value); }        }
 
         /// <summary>
         /// Sets the robot's clockwise (right) rotation per turn, in radians.
@@ -198,8 +198,8 @@ namespace robocode
         /// </summary>
         public double GunRotationRate
         {
-            get { return Utils.toDegrees(gunRotationRate); }
-            set { gunRotationRate = Utils.toRadians(value); }        }
+            get { return Utils.ToDegrees(gunRotationRate); }
+            set { gunRotationRate = Utils.ToRadians(value); }        }
 
         /// <summary>
         /// Sets the gun's clockwise (right) rotation per turn, in radians.
@@ -271,8 +271,8 @@ namespace robocode
         /// @see AdvancedRobot#SetTurnRadarLeft(double)
         /// </summary>        public double RadarRotationRate
         {
-            get { return Utils.toDegrees(radarRotationRate); }
-            set { radarRotationRate = Utils.toRadians(value); }        }
+            get { return Utils.ToDegrees(radarRotationRate); }
+            set { radarRotationRate = Utils.ToRadians(value); }        }
 
         /// <summary>
         /// Sets the radar's clockwise (right) rotation per turn, in radians.

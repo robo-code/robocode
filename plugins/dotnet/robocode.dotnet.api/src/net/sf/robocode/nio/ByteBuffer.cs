@@ -1,37 +1,12 @@
-﻿#region Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
-/*
- * Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.  Sun designates this
- * particular file as subject to the "Classpath" exception as provided
- * by Sun in the LICENSE file that accompanied this code.
- *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 2 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
- *
- * You should have received a copy of the GNU General Public License version
- * 2 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa Clara,
- * CA 95054 USA or visit www.sun.com if you need additional information or
- * have any questions.
- */
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
 
 #endregion
-/*******************************************************************************
- *
- * Contributors:
- *     Pavel Savara
- *     - This file was ported to .NET in jni4net
- *
- *******************************************************************************/
 
 using System;
 using System.Security.Permissions;
@@ -39,6 +14,7 @@ using System.Text;
 using robocode.net.sf.robocode.security;
 
 // ReSharper disable InconsistentNaming
+
 namespace net.sf.robocode.nio
 {
     public enum ByteOrder
@@ -225,9 +201,16 @@ namespace net.sf.robocode.nio
         // reduce the number of virtual method invocations needed to access these
         // values, which is especially costly when coding small buffers.
         //
-        internal byte[] hb; // Non-null only for heap buffers
-        internal int _offset;
         internal bool _isReadOnly; // Valid only for heap buffers
+        internal int _offset;
+
+        internal bool bigEndian // package-private
+            = true;
+
+        internal byte[] hb; // Non-null only for heap buffers
+
+        internal bool nativeByteOrder // package-private
+            = true;
 
         // Creates a new buffer with the given mark, position, limit, capacity,
         // backing array, and array offset
@@ -264,6 +247,7 @@ namespace net.sf.robocode.nio
          * @throws  ArgumentException
          *          If the <tt>capacity</tt> is a negative integer
          */
+
         public static ByteBuffer allocateDirect(int capacity)
         {
             if (capacity < 0)
@@ -288,6 +272,7 @@ namespace net.sf.robocode.nio
          * @throws  ArgumentException
          *          If the <tt>capacity</tt> is a negative integer
          */
+
         public static ByteBuffer allocate(int capacity)
         {
             if (capacity < 0)
@@ -976,12 +961,6 @@ namespace net.sf.robocode.nio
         // -- Other byte stuff: Access to binary data --
 
 
-        internal bool bigEndian // package-private
-            = true;
-
-        internal bool nativeByteOrder // package-private
-            = true;
-
         //= (Bits.byteOrder() == ByteOrder.BIG_ENDIAN);
 
         /**
@@ -1619,4 +1598,5 @@ namespace net.sf.robocode.nio
         public abstract Buffer asDoubleBuffer();
     }
 }
+
 // ReSharper restore InconsistentNaming
