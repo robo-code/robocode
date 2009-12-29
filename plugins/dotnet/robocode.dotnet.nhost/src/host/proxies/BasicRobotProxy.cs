@@ -494,7 +494,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                 }
                 catch (Exception ex)
                 {
-                    Logger.logMessage(statics.getName() + ": Exception: " + ex); // without stack here
+                    LoggerN.logMessage(statics.getName() + ": Exception: " + ex); // without stack here
                     return;
                 }
 

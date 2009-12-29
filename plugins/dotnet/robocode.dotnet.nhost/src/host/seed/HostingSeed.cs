@@ -8,6 +8,7 @@ using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.dotnet.nhost;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
+using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using robocode;
@@ -47,7 +48,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }
@@ -66,7 +67,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }
@@ -85,7 +86,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }
@@ -102,7 +103,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }
@@ -115,7 +116,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }

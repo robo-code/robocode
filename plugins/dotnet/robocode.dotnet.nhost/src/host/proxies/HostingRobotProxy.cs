@@ -41,6 +41,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             this.robotSpecification = robotSpecification;
             outputSb = new System.Text.StringBuilder(5000);
             output = TextWriter.Synchronized(new StringWriter(outputSb));
+            LoggerN.robotOut = output;
 
             robotFileSystemManager = new RobotFileSystemManager((int)hostManager.getRobotFilesystemQuota(),
                                                                 robotSpecification.getWritableDirectory(),
@@ -208,13 +209,13 @@ namespace net.sf.robocode.dotnet.host.proxies
                         msg = ": " + msg;
                     }
                     println("SYSTEM: Robot disabled" + msg);
-                    Logger.logMessage(statics.getName() + "Robot disabled");
+                    LoggerN.logMessage(statics.getName() + "Robot disabled");
                 }
                 catch (Exception e)
                 {
                     drainEnergy();
                     println(e);
-                    Logger.logMessage(statics.getName() + ": Exception: " + e); // without stack here
+                    LoggerN.logMessage(statics.getName() + ": Exception: " + e); // without stack here
                 }
                 finally
                 {

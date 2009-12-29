@@ -16,7 +16,6 @@ using System;
 using System.IO;
 using System.Security.Permissions;
 using System.Text;
-using net.sf.robocode.security;
 using robocode.net.sf.robocode.security;
 
 namespace net.sf.robocode.io
@@ -32,11 +31,12 @@ namespace net.sf.robocode.io
     {
         public static TextWriter realOut = Console.Out;
         public static TextWriter realErr = Console.Error;
+        public static TextWriter robotOut = Console.Out;
 
-        private static object logListener;
+        private static ILoggerN logListener;
         private static readonly StringBuilder logBuffer = new StringBuilder();
 
-        public static void setLogListener(object logListener)
+        public static void setLogListener(ILoggerN logListener)
         {
             LoggerN.logListener = logListener;
         }
@@ -84,7 +84,7 @@ namespace net.sf.robocode.io
             {
                 lock (logBuffer)
                 {
-                    if (!HiddenAccessN.isSafeThread())
+                    if (!IsSafeThread)
                     {
                         // we just queue it, to not let unsafe thread travel thru system
                         logBuffer.Append(s);
@@ -92,9 +92,7 @@ namespace net.sf.robocode.io
                     }
                     else if (newline)
                     {
-                        //TODO
-                        throw new NotImplementedException();
-                        //logListener.onBattleMessage(new BattleMessageEvent(logBuffer + s));
+                        logMessage(logBuffer + s, true);
                         logBuffer.Length = 0;
                     }
                     else
@@ -113,17 +111,32 @@ namespace net.sf.robocode.io
             }
             else
             {
-                //TODO
-                throw new NotImplementedException();
-                //logListener.onBattleError(new BattleErrorEvent(s));
+                logListener.logError(s);
             }
         }
 
+        [ThreadStatic]
+        public static bool IsSafeThread;
+
         public static void printlnToRobotsConsole(string s)
         {
-            // this will get redirected to robot's console
-            Console.Out.WriteLine(s);
+            if (robotOut != null)
+            {
+                robotOut.WriteLine(s);
+            }
+            else
+            {
+                logMessage(s);
+            }
         }
     }
+
+    public interface ILoggerN
+    {
+        void logMessage(string s, bool newline);
+        void logError(string s);
+    }
+
+    
 }
 //happy

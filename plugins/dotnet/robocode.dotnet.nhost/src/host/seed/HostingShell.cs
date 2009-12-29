@@ -28,6 +28,7 @@ namespace net.sf.robocode.dotnet.host.seed
             //domain.SetData("specification", ((IJvmProxy)robotSpecification).JvmHandle);
             domain.SetData("item", ((IJvmProxy) itemSpecification).JvmHandle);
             domain.DoCallBack(HostingSeed.Construct);
+            robotPeer = peer;
         }
 
         public void startRound(Object aCommands, Object aStatus)

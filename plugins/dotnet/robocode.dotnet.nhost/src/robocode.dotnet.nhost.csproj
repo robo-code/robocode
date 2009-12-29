@@ -97,6 +97,7 @@
     <Compile Include="host\seed\AppDomainShell.cs" />
     <Compile Include="host\seed\HostingSeed.cs" />
     <Compile Include="host\seed\HostingShell.cs" />
+    <Compile Include="io\Logger.cs" />
     <Compile Include="peer\BulletCommand.cs" />
     <Compile Include="peer\BulletStatus.cs" />
     <Compile Include="peer\DebugProperty.cs" />

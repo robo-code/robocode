@@ -7,6 +7,7 @@ using net.sf.jni4net.jni;
 using net.sf.jni4net.nio;
 using net.sf.jni4net.utils;
 using net.sf.robocode.dotnet.utils;
+using net.sf.robocode.io;
 using net.sf.robocode.repository;
 using Exception = System.Exception;
 using StringBuilder = System.Text.StringBuilder;
@@ -33,7 +34,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }
@@ -60,7 +61,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }
@@ -90,7 +91,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }
@@ -110,7 +111,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                LoggerN.logError(ex);
                 throw;
             }
         }

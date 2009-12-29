@@ -1,24 +1,25 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
 using net.sf.jni4net;
-using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.dotnet.utils;
+using net.sf.robocode.io;
+using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using robocode;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
-    public class AppDomainShell : IDisposable
+    public class AppDomainShell:IDisposable
     {
         private static readonly Assembly robocodeAssembly = typeof(Robot).Assembly;
         private static readonly Assembly hostAssembly = typeof(AppDomainShell).Assembly;
         private static readonly Assembly jniAssembly = typeof(Bridge).Assembly;
         protected AppDomain domain;
+        protected IRobotPeer robotPeer;
         private string tempDir;
         private string name;
         private string robotAssemblyFileName;
@@ -104,9 +105,13 @@ namespace net.sf.robocode.dotnet.host.seed
                 {
                     AppDomain.Unload(domain);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //ignore
+                    LoggerN.logError(ex);
+                    if (robotPeer != null)
+                    {
+                        robotPeer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
+                    }
                 }
                 domain = null;
             }

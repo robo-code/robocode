@@ -523,27 +523,6 @@ namespace net.sf.robocode.serialization
 
             return (T) res;
         }
-
-        public static Object deepCopy(byte type, Object src)
-        {
-            var output = new MemoryStream(1024);
-            var rbs = new RbSerializerN();
-
-            try
-            {
-                throw new NotImplementedException();
-                /*
-			rbs.serialize(out, type, src);
-			ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-			return rbs.deserialize(in);
-            */
-            }
-            catch (IOException e)
-            {
-                LoggerN.logError(e);
-                return null;
-            }
-        }
     }
 }
 

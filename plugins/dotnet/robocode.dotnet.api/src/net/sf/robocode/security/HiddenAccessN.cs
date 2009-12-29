@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Permissions;
+using System.Threading;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using robocode;
@@ -122,11 +123,6 @@ namespace net.sf.robocode.security
         {
             return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate,
                                            inactivityTime);
-        }
-
-        public static bool isSafeThread()
-        {
-            throw new NotImplementedException();
         }
     }
 }
