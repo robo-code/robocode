@@ -7,7 +7,6 @@ using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using net.sf.robocode.serialization;
 using robocode;
-using robocode.control;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
@@ -15,7 +14,7 @@ namespace net.sf.robocode.dotnet.host.seed
     {
         private readonly RbSerializer serializer = new RbSerializer();
 
-        public HostingShell(RobotSpecification robotSpecification, IRobotRepositoryItem itemSpecification,
+        public HostingShell(IRobotRepositoryItem itemSpecification,
                             IHostManager hostManager, IRobotPeer peer,
                             IRobotStatics jstatics, string dllFileName)
         {

@@ -93,7 +93,6 @@
     <Compile Include="host\RobotStatics.cs" />
     <Compile Include="host\security\QuotaStream.cs" />
     <Compile Include="host\security\RobotFileSystemManager.cs" />
-    <Compile Include="host\security\RobotThreadManager.cs" />
     <Compile Include="host\seed\AppDomainSeed.cs" />
     <Compile Include="host\seed\AppDomainShell.cs" />
     <Compile Include="host\seed\HostingSeed.cs" />

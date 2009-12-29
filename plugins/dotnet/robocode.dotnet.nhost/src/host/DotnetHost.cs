@@ -21,7 +21,7 @@ namespace net.sf.robocode.dotnet.host
             Object s = HiddenAccess.getFileSpecification(robotSpecification);
             IRobotRepositoryItem itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);
             string file = GetDllFileName(itemSpecification);
-            return new HostingShell(robotSpecification, itemSpecification, hostManager, peer, statics, file);
+            return new HostingShell(itemSpecification, hostManager, peer, statics, file);
         }
 
         public String[] getReferencedClasses(IRobotRepositoryItem par0)
@@ -42,7 +42,7 @@ namespace net.sf.robocode.dotnet.host
             }
         }
 
-        private string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
+        private static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
         {
             string url = robotRepositoryItem.getRobotClassPath().getFile();
             return url.Substring(1, url.LastIndexOf(".dll!/") + 3);

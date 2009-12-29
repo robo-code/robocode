@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Threading;
@@ -10,7 +11,6 @@ using net.sf.robocode.host;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using robocode;
-using robocode.control;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
@@ -81,19 +81,7 @@ namespace net.sf.robocode.dotnet.host.seed
             try
             {
                 robotThread.Abort();
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine(ex);
-                throw;
-            }
-        }
-
-        public static void Cleanup()
-        {
-            try
-            {
-                robotProxy.cleanup();
+                robotThread.Interrupt();
             }
             catch (Exception ex)
             {
@@ -111,6 +99,19 @@ namespace net.sf.robocode.dotnet.host.seed
                     robotPeer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
                     robotPeer.setRunning(false);
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                throw;
+            }
+        }
+
+        public static void Cleanup()
+        {
+            try
+            {
+                robotProxy.cleanup();
             }
             catch (Exception ex)
             {

@@ -64,7 +64,7 @@ namespace net.sf.robocode.dotnet.host.seed
             domainSetup.ApplicationBase = tempDir;
 
             domainSetup.ApplicationName = name;
-            domainSetup.SandboxInterop = true;
+            //domainSetup.SandboxInterop = true;
             domainSetup.DisallowBindingRedirects = true;
             domainSetup.DisallowCodeDownload = true;
             domainSetup.DisallowPublisherPolicy = true;
@@ -100,7 +100,15 @@ namespace net.sf.robocode.dotnet.host.seed
         {
             if (domain != null)
             {
-                AppDomain.Unload(domain);
+                try
+                {
+                    AppDomain.Unload(domain);
+                }
+                catch (Exception)
+                {
+                    //ignore
+                }
+                domain = null;
             }
             if (tempDir != null && Directory.Exists(tempDir))
             {
@@ -112,6 +120,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 {
                     //ignore
                 }
+                tempDir = null;
             }
         }
     }
