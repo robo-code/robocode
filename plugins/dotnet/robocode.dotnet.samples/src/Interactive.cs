@@ -24,7 +24,7 @@ namespace samplecs
      * - Button 2:    Fire a bullet with power = 2
      * - Button 3:    Fire a bullet with power = 3
      * <p/>
-     * The bullet color depends on the fire power:
+     * The bullet color depends on the Fire power:
      * - Power = 1:   Yellow
      * - Power = 2:   Orange
      * - Power = 3:   Red
@@ -55,7 +55,7 @@ namespace samplecs
         // The coordinate of the aim (x,y)
         int aimX, aimY;
 
-        // Fire power, where 0 = don't fire
+        // Fire power, where 0 = don't Fire
         int firePower;
 
         // Called when the robot must run
@@ -88,7 +88,7 @@ namespace samplecs
 
                 SetTurnGunRightRadians(Utils.NormalRelativeAngle(angle - GunHeadingRadians));
 
-                // Fire the gun with the specified fire power, unless the fire power = 0
+                // Fire the gun with the specified Fire power, unless the Fire power = 0
                 if (firePower > 0)
                 {
                     SetFire(firePower);
@@ -177,20 +177,20 @@ namespace samplecs
         {
             if (e.Button == Keys.BUTTON3)
             {
-                // Button 3: fire power = 3 energy points, bullet color = red
+                // Button 3: Fire power = 3 energy points, bullet color = red
                 firePower = 3;
                 BulletColor=(Color.Red);
             }
             else if (e.Button == Keys.BUTTON2)
             {
-                // Button 2: fire power = 2 energy points, bullet color = orange
+                // Button 2: Fire power = 2 energy points, bullet color = orange
                 firePower = 2;
                 BulletColor=(Color.Orange);
             }
             else
             {
                 // Button 1 or unknown button:
-                // fire power = 1 energy points, bullet color = yellow
+                // Fire power = 1 energy points, bullet color = yellow
                 firePower = 1;
                 BulletColor=(Color.Yellow);
             }
@@ -199,7 +199,7 @@ namespace samplecs
         // Called when a mouse button has been released (after being pressed)
         public override void OnMouseReleased(MouseEvent e)
         {
-            // Fire power = 0, which means "don't fire"
+            // Fire power = 0, which means "don't Fire"
             firePower = 0;
         }
 

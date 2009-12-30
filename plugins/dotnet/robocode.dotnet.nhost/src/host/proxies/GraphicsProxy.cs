@@ -53,7 +53,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                     put(width);
                     put(height);
                 }
-                catch (BufferOverflowException e)
+                catch (BufferOverflowException)
                 {
                     if (recoverFromBufferOverflow())
                     {
@@ -93,7 +93,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                     put(width);
                     put(height);
                 }
-                catch (BufferOverflowException e)
+                catch (BufferOverflowException)
                 {
                     if (recoverFromBufferOverflow())
                     {
@@ -148,7 +148,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                     put(x2);
                     put(y2);
                 }
-                catch (BufferOverflowException e)
+                catch (BufferOverflowException)
                 {
                     if (recoverFromBufferOverflow())
                     {
@@ -205,7 +205,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                     put(Method.SET_COLOR);
                     put(c);
                 }
-                catch (BufferOverflowException e)
+                catch (BufferOverflowException)
                 {
                     if (recoverFromBufferOverflow())
                     {

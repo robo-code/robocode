@@ -108,38 +108,38 @@ namespace robocode
         ///
         /// @see #fieldWidth
         /// </summary>
-        public int fieldWidth;
+        private int fieldWidth;
 
         /// <summary>
         /// Contains the height of the battlefield.
         ///
         /// @see #fieldWidth
         /// </summary>
-        public int fieldHeight;
+        private int fieldHeight;
 
         /// <summary>
         /// Current number of other robots on the battle field.
         /// </summary>
-        public int others;
+        private int others;
 
         /// <summary>
         /// Current energy of this robot, where 100 means full energy and 0 means no energy (dead).
         /// </summary>
-        public int energy;
+        private int energy;
 
         /// <summary>
         /// Current horizontal location of this robot (in pixels).
         ///
         /// @see #robotY
         /// </summary>
-        public int robotX;
+        private int robotX;
 
         /// <summary>
         /// Current vertical location of this robot (in pixels).
         ///
         /// @see #robotX
         /// </summary>
-        public int robotY;
+        private int robotY;
 
         /// <summary>
         /// Current heading angle of this robot (in degrees).
@@ -152,7 +152,7 @@ namespace robocode
         /// @see #TurnBackLeft(int, int)
         /// @see #TurnBackRight(int, int)
         /// </summary>
-        public int heading;
+        private int heading;
 
         /// <summary>
         /// Current gun heading angle of this robot (in degrees).
@@ -161,9 +161,9 @@ namespace robocode
         /// @see #TurnGunLeft(int)
         /// @see #TurnGunRight(int)
         /// @see #TurnGunTo(int)
-        /// @see #bearGunTo(int)
+        /// @see #BearGunTo(int)
         /// </summary>
-        public int gunHeading;
+        private int gunHeading;
 
         /// <summary>
         /// Current gun heading angle of this robot compared to its body (in degrees).
@@ -172,9 +172,9 @@ namespace robocode
         /// @see #TurnGunLeft(int)
         /// @see #TurnGunRight(int)
         /// @see #TurnGunTo(int)
-        /// @see #bearGunTo(int)
+        /// @see #BearGunTo(int)
         /// </summary>
-        public int gunBearing;
+        private int gunBearing;
 
         /// <summary>
         /// Flag specifying if the gun is ready to Fire, i.e. gun heat &lt;= 0.
@@ -184,7 +184,7 @@ namespace robocode
         /// @see #Fire()
         /// @see #Fire(double)
         /// </summary>
-        public bool gunReady;
+        private bool gunReady;
 
         /// <summary>
         /// Current distance to the scanned nearest other robot (in pixels).
@@ -198,7 +198,7 @@ namespace robocode
         /// @see #scannedVelocity
         /// @see #scannedHeading
         /// </summary>
-        public int scannedDistance = -1;
+        private int scannedDistance = -1;
 
         /// <summary>
         /// Current angle to the scanned nearest other robot (in degrees).
@@ -212,7 +212,7 @@ namespace robocode
         /// @see #scannedVelocity
         /// @see #scannedHeading
         /// </summary>
-        public int scannedAngle = -1;
+        private int scannedAngle = -1;
 
         /// <summary>
         /// Current angle to the scanned nearest other robot (in degrees) compared to
@@ -227,7 +227,7 @@ namespace robocode
         /// @see #scannedVelocity
         /// @see #scannedHeading
         /// </summary>
-        public int scannedBearing = -1;
+        private int scannedBearing = -1;
 
         /// <summary>
         /// Current velocity of the scanned nearest other robot.
@@ -244,7 +244,7 @@ namespace robocode
         /// @see #scannedEnergy
         /// @see #scannedHeading
         /// </summary>
-        public int scannedVelocity = -99;
+        private int scannedVelocity = -99;
 
         /// <summary>
         /// Current heading of the scanned nearest other robot (in degrees).
@@ -258,7 +258,7 @@ namespace robocode
         /// @see #scannedEnergy
         /// @see #scannedVelocity
         /// </summary>
-        public int scannedHeading = -1;
+        private int scannedHeading = -1;
 
         /// <summary>
         /// Current energy of scanned nearest other robot.
@@ -271,7 +271,7 @@ namespace robocode
         /// @see #scannedBearing
         /// @see #scannedVelocity
         /// </summary>
-        public int scannedEnergy = -1;
+        private int scannedEnergy = -1;
 
         /// <summary>
         /// Latest angle from where this robot was hit by a bullet (in degrees).
@@ -281,7 +281,7 @@ namespace robocode
         /// @see #OnHitByBullet()
         /// @see #hitByBulletBearing
         /// </summary>
-        public int hitByBulletAngle = -1;
+        private int hitByBulletAngle = -1;
 
         /// <summary>
         /// Latest angle from where this robot was hit by a bullet (in degrees)
@@ -292,7 +292,7 @@ namespace robocode
         /// @see #OnHitByBullet()
         /// @see #hitByBulletAngle
         /// </summary>
-        public int hitByBulletBearing = -1;
+        private int hitByBulletBearing = -1;
 
         /// <summary>
         /// Latest angle where this robot has hit another robot (in degrees).
@@ -302,7 +302,7 @@ namespace robocode
         /// @see #OnHitRobot()
         /// @see #hitRobotBearing
         /// </summary>
-        public int hitRobotAngle = -1;
+        private int hitRobotAngle = -1;
 
         /// <summary>
         /// Latest angle where this robot has hit another robot (in degrees)
@@ -313,7 +313,7 @@ namespace robocode
         /// @see #OnHitRobot()
         /// @see #hitRobotAngle
         /// </summary>
-        public int hitRobotBearing = -1;
+        private int hitRobotBearing = -1;
 
         /// <summary>
         /// Latest angle where this robot has hit a wall (in degrees).
@@ -323,7 +323,7 @@ namespace robocode
         /// @see #OnHitWall()
         /// @see #hitWallBearing
         /// </summary>
-        public int hitWallAngle = -1;
+        private int hitWallAngle = -1;
 
         /// <summary>
         /// Latest angle where this robot has hit a wall (in degrees)
@@ -334,7 +334,7 @@ namespace robocode
         /// @see #OnHitWall()
         /// @see #hitWallAngle
         /// </summary>
-        public int hitWallBearing = -1;
+        private int hitWallBearing = -1;
 
         /// <summary>
         /// The robot evnt handler for this robot.
@@ -356,9 +356,308 @@ namespace robocode
         ///   }
         /// </pre>
         /// </summary>
-        public TextWriter output
+        public TextWriter Out
         {
             get { return _output; }
+        }
+
+        /// <summary>
+        /// Contains the width of the battlefield.
+        ///
+        /// @see #fieldWidth
+        /// </summary>
+        public int FieldWidth
+        {
+            get { return fieldWidth; }
+        }
+
+        /// <summary>
+        /// Contains the height of the battlefield.
+        ///
+        /// @see #fieldWidth
+        /// </summary>
+        public int FieldHeight
+        {
+            get { return fieldHeight; }
+        }
+
+        /// <summary>
+        /// Current number of other robots on the battle field.
+        /// </summary>
+        public int Others
+        {
+            get { return others; }
+        }
+
+        /// <summary>
+        /// Current energy of this robot, where 100 means full energy and 0 means no energy (dead).
+        /// </summary>
+        public int Energy
+        {
+            get { return energy; }
+        }
+
+        /// <summary>
+        /// Current horizontal location of this robot (in pixels).
+        ///
+        /// @see #robotY
+        /// </summary>
+        public int RobotX
+        {
+            get { return robotX; }
+        }
+
+        /// <summary>
+        /// Current vertical location of this robot (in pixels).
+        ///
+        /// @see #robotX
+        /// </summary>
+        public int RobotY
+        {
+            get { return robotY; }
+        }
+
+        /// <summary>
+        /// Current heading angle of this robot (in degrees).
+        ///
+        /// @see #TurnLeft(int)
+        /// @see #TurnRight(int)
+        /// @see #TurnTo(int)
+        /// @see #TurnAheadLeft(int, int)
+        /// @see #TurnAheadRight(int, int)
+        /// @see #TurnBackLeft(int, int)
+        /// @see #TurnBackRight(int, int)
+        /// </summary>
+        public int Heading
+        {
+            get { return heading; }
+        }
+
+        /// <summary>
+        /// Current gun heading angle of this robot (in degrees).
+        ///
+        /// @see #gunBearing
+        /// @see #TurnGunLeft(int)
+        /// @see #TurnGunRight(int)
+        /// @see #TurnGunTo(int)
+        /// @see #BearGunTo(int)
+        /// </summary>
+        public int GunHeading
+        {
+            get { return gunHeading; }
+        }
+
+        /// <summary>
+        /// Current gun heading angle of this robot compared to its body (in degrees).
+        ///
+        /// @see #gunHeading
+        /// @see #TurnGunLeft(int)
+        /// @see #TurnGunRight(int)
+        /// @see #TurnGunTo(int)
+        /// @see #BearGunTo(int)
+        /// </summary>
+        public int GunBearing
+        {
+            get { return gunBearing; }
+        }
+
+        /// <summary>
+        /// Flag specifying if the gun is ready to Fire, i.e. gun heat &lt;= 0.
+        /// {@code true} means that the gun is able to Fire; {@code false}
+        /// means that the gun cannot Fire yet as it still needs to cool down.
+        ///
+        /// @see #Fire()
+        /// @see #Fire(double)
+        /// </summary>
+        public bool IsGunReady
+        {
+            get { return gunReady; }
+        }
+
+        /// <summary>
+        /// Current distance to the scanned nearest other robot (in pixels).
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
+        ///
+        /// @see #OnScannedRobot()
+        /// @see #scannedAngle
+        /// @see #scannedBearing
+        /// @see #scannedEnergy
+        /// @see #scannedVelocity
+        /// @see #scannedHeading
+        /// </summary>
+        public int ScannedDistance
+        {
+            get { return scannedDistance; }
+        }
+
+        /// <summary>
+        /// Current angle to the scanned nearest other robot (in degrees).
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
+        ///
+        /// @see #OnScannedRobot()
+        /// @see #scannedDistance
+        /// @see #scannedBearing
+        /// @see #scannedEnergy
+        /// @see #scannedVelocity
+        /// @see #scannedHeading
+        /// </summary>
+        public int ScannedAngle
+        {
+            get { return scannedAngle; }
+        }
+
+        /// <summary>
+        /// Current angle to the scanned nearest other robot (in degrees) compared to
+        /// the body of this robot.
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
+        ///
+        /// @see #OnScannedRobot()
+        /// @see #scannedDistance
+        /// @see #scannedAngle
+        /// @see #scannedEnergy
+        /// @see #scannedVelocity
+        /// @see #scannedHeading
+        /// </summary>
+        public int ScannedBearing
+        {
+            get { return scannedBearing; }
+        }
+
+        /// <summary>
+        /// Current velocity of the scanned nearest other robot.
+        /// If there is no robot in the radar's sight, this field will be -99.
+        /// Note that a positive value means that the robot moves forward, a negative
+        /// value means that the robot moved backward, and 0 means that the robot is
+        /// not moving at all.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
+        ///
+        /// @see #OnScannedRobot()
+        /// @see #scannedDistance
+        /// @see #scannedAngle
+        /// @see #scannedBearing
+        /// @see #scannedEnergy
+        /// @see #scannedHeading
+        /// </summary>
+        public int ScannedVelocity
+        {
+            get { return scannedVelocity; }
+        }
+
+        /// <summary>
+        /// Current heading of the scanned nearest other robot (in degrees).
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
+        ///
+        /// @see #OnScannedRobot()
+        /// @see #scannedDistance
+        /// @see #scannedAngle
+        /// @see #scannedBearing
+        /// @see #scannedEnergy
+        /// @see #scannedVelocity
+        /// </summary>
+        public int ScannedHeading
+        {
+            get { return scannedHeading; }
+        }
+
+        /// <summary>
+        /// Current energy of scanned nearest other robot.
+        /// If there is no robot in the radar's sight, this field will be less than 0, i.e -1.
+        /// This field will not be updated while {@link #OnScannedRobot()} evnt is active.
+        ///
+        /// @see #OnScannedRobot()
+        /// @see #scannedDistance
+        /// @see #scannedAngle
+        /// @see #scannedBearing
+        /// @see #scannedVelocity
+        /// </summary>
+        public int ScannedEnergy
+        {
+            get { return scannedEnergy; }
+        }
+
+        /// <summary>
+        /// Latest angle from where this robot was hit by a bullet (in degrees).
+        /// If the robot has never been hit, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link #OnHitByBullet()} evnt is active.
+        ///
+        /// @see #OnHitByBullet()
+        /// @see #hitByBulletBearing
+        /// </summary>
+        public int HitByBulletAngle
+        {
+            get { return hitByBulletAngle; }
+        }
+
+        /// <summary>
+        /// Latest angle from where this robot was hit by a bullet (in degrees)
+        /// compared to the body of this robot.
+        /// If the robot has never been hit, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link #OnHitByBullet()} evnt is active.
+        ///
+        /// @see #OnHitByBullet()
+        /// @see #hitByBulletAngle
+        /// </summary>
+        public int HitByBulletBearing
+        {
+            get { return hitByBulletBearing; }
+        }
+
+        /// <summary>
+        /// Latest angle where this robot has hit another robot (in degrees).
+        /// If this robot has never hit another robot, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link #OnHitRobot()} evnt is active.
+        ///
+        /// @see #OnHitRobot()
+        /// @see #hitRobotBearing
+        /// </summary>
+        public int HitRobotAngle
+        {
+            get { return hitRobotAngle; }
+        }
+
+        /// <summary>
+        /// Latest angle where this robot has hit another robot (in degrees)
+        /// compared to the body of this robot.
+        /// If this robot has never hit another robot, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link #OnHitRobot()} evnt is active.
+        ///
+        /// @see #OnHitRobot()
+        /// @see #hitRobotAngle
+        /// </summary>
+        public int HitRobotBearing
+        {
+            get { return hitRobotBearing; }
+        }
+
+        /// <summary>
+        /// Latest angle where this robot has hit a wall (in degrees).
+        /// If this robot has never hit a wall, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link #OnHitWall()} evnt is active.
+        ///
+        /// @see #OnHitWall()
+        /// @see #hitWallBearing
+        /// </summary>
+        public int HitWallAngle
+        {
+            get { return hitWallAngle; }
+        }
+
+        /// <summary>
+        /// Latest angle where this robot has hit a wall (in degrees)
+        /// compared to the body of this robot.
+        /// If this robot has never hit a wall, this field will be less than 0, i.e. -1.
+        /// This field will not be updated while {@link #OnHitWall()} evnt is active.
+        ///
+        /// @see #OnHitWall()
+        /// @see #hitWallAngle
+        /// </summary>
+        public int HitWallBearing
+        {
+            get { return hitWallBearing; }
         }
 
         /// <summary>
@@ -412,7 +711,7 @@ namespace robocode
         /// @see #robotX
         /// @see #robotY
         /// </summary>
-        public void ahead(int distance)
+        public void Ahead(int distance)
         {
             if (peer != null)
             {
@@ -432,9 +731,9 @@ namespace robocode
         /// @see #robotX
         /// @see #robotY
         /// </summary>
-        public void back(int distance)
+        public void Back(int distance)
         {
-            ahead(-distance);
+            Ahead(-distance);
         }
 
         /// <summary>
@@ -448,7 +747,7 @@ namespace robocode
         /// @see #TurnGunRight(int)
         /// @see #TurnGunTo(int)
         /// </summary>
-        public void bearGunTo(int angle)
+        public void BearGunTo(int angle)
         {
             if (peer != null)
             {
@@ -466,7 +765,7 @@ namespace robocode
         ///
         /// @see #DoNothing(int)
         /// </summary>
-        public void doNothing()
+        public void DoNothing()
         {
             if (peer != null)
             {
@@ -484,7 +783,7 @@ namespace robocode
         /// @param turns the number of turns to skip
         /// @see #DoNothing()
         /// </summary>
-        public void doNothing(int turns)
+        public void DoNothing(int turns)
         {
             if (turns <= 0)
             {
@@ -510,9 +809,9 @@ namespace robocode
         ///
         /// @see #gunReady
         /// </summary>
-        public void fire()
+        public void Fire()
         {
-            fire(1);
+            Fire(1);
         }
 
         /// <summary>
@@ -524,7 +823,7 @@ namespace robocode
         /// @param power between 0.1 and 3
         /// @see #gunReady
         /// </summary>
-        public void fire(double power)
+        public void Fire(double power)
         {
             if (peer != null)
             {
@@ -776,7 +1075,7 @@ namespace robocode
         /// @see #gunBearing
         /// @see #TurnGunRight(int)
         /// @see #TurnGunTo(int)
-        /// @see #bearGunTo(int)
+        /// @see #BearGunTo(int)
         /// </summary>
         public void TurnGunLeft(int degrees)
         {
@@ -791,7 +1090,7 @@ namespace robocode
         /// @see #gunBearing
         /// @see #TurnGunLeft(int)
         /// @see #TurnGunTo(int)
-        /// @see #bearGunTo(int)
+        /// @see #BearGunTo(int)
         /// </summary>
         public void TurnGunRight(int degrees)
         {
@@ -815,7 +1114,7 @@ namespace robocode
         /// @see #gunBearing
         /// @see #TurnGunLeft(int)
         /// @see #TurnGunRight(int)
-        /// @see #bearGunTo(int)
+        /// @see #BearGunTo(int)
         /// </summary>
         public void TurnGunTo(int angle)
         {

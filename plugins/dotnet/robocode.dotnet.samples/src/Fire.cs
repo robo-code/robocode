@@ -47,11 +47,11 @@ namespace samplecs
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
             // If the other robot is close by, and we have plenty of life,
-            // fire hard!
+            // Fire hard!
             if (e.Distance < 50 && Energy > 50)
             {
                 Fire(3);
-            } // otherwise, fire 1.
+            } // otherwise, Fire 1.
             else
             {
                 Fire(1);

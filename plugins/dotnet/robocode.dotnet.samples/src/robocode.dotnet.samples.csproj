@@ -53,6 +53,7 @@
     <Compile Include="Fire.cs" />
     <Compile Include="Interactive.cs" />
     <Compile Include="MyFirstDroid.cs" />
+    <Compile Include="MyFirstJuniorRobot.cs" />
     <Compile Include="MyFirstLeader.cs" />
     <Compile Include="PaintingRobot.cs" />
     <Compile Include="RobotColors.cs" />

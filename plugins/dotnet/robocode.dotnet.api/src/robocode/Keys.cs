@@ -163,7 +163,7 @@ namespace robocode.robocode
         public const int VK_OPEN_BRACKET = 0x5B;
 
         /**
-        * Constant for the back slash key, "\"
+        * Constant for the Back slash key, "\"
         */
         public const int VK_BACK_SLASH = 0x5C;
 

@@ -18,7 +18,7 @@ namespace net.sf.robocode.dotnet.host.security
 {
     internal class QuotaStream : FileStream
     {
-        private RobotFileSystemManager manager;
+        private readonly RobotFileSystemManager manager;
 
         public QuotaStream(RobotFileSystemManager manager, String path, FileMode mode, FileAccess access,
                            FileShare share)
@@ -27,6 +27,7 @@ namespace net.sf.robocode.dotnet.host.security
             this.manager = manager;
         }
 
+        [Obsolete]
         public override IntPtr Handle
         {
             get { throw new AccessViolationException(); }
@@ -93,6 +94,7 @@ namespace net.sf.robocode.dotnet.host.security
             throw new AccessViolationException();
         }
 
+        [Obsolete]
         protected override WaitHandle CreateWaitHandle()
         {
             throw new AccessViolationException();

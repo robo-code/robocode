@@ -18,7 +18,7 @@ namespace samplecs
     /// <summary>
     /// Corners - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
     /// <p/>
-    /// This robot moves to a corner, then swings the gun back and forth.
+    /// This robot moves to a corner, then swings the gun Back and forth.
     /// If it dies, it tries a new corner in the next round.
     /// </summary>
     public class Corners : Robot
@@ -49,7 +49,7 @@ namespace samplecs
             // Initialize gun turn speed to 3
             int gunIncrement = 3;
 
-            // Spin gun back and forth
+            // Spin gun Back and forth
             while (true)
             {
                 for (int i = 0; i < 30; i++)
@@ -82,11 +82,11 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onScannedRobot:  Stop and fire!
+        /// onScannedRobot:  Stop and Fire!
         /// </summary>
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
-            // Should we stop, or just fire?
+            // Should we stop, or just Fire?
             if (stopWhenSeeRobot)
             {
                 // Stop everything!  You can safely call stop multiple times.
@@ -108,9 +108,9 @@ namespace samplecs
         }
 
         /// <summary>
-        /// smartFire:  Custom fire method that determines firepower based on distance.
+        /// smartFire:  Custom Fire method that determines firepower based on distance.
         /// </summary>
-        /// <param name="robotDistance">the distance to the robot to fire at</param>
+        /// <param name="robotDistance">the distance to the robot to Fire at</param>
         public void smartFire(double robotDistance)
         {
             if (robotDistance > 200 || Energy < 15)
