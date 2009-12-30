@@ -13,14 +13,14 @@ namespace net.sf.robocode.dotnet
         public void testDomain()
         {
             var h = new DllRootHelper();
-            string[] strings = h.findItems(@"file:/" + typeof (MyCsRobot).Assembly.Location);
+            string[] strings = h.findItems(@"file:/" + typeof (MyFirstRobot).Assembly.Location);
             Assert.GreaterOrEqual(strings.Length, 5);
         }
 
         [Test]
         public void testType()
         {
-            var shell = new AppDomainShell(typeof (MyCsRobot).Assembly.Location);
+            var shell = new AppDomainShell(typeof(MyFirstRobot).Assembly.Location);
             RobotType type = shell.GetRobotType("samplecs.MyCsRobot");
             Assert.AreEqual(RobotType.STANDARD, type);
         }

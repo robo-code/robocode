@@ -12,8 +12,9 @@ using System;
 using System.Drawing;
 using robocode;
 using robocode.util;
+using samplecs;
 
-namespace samplecs
+namespace samplecsteam
 {
     /// <summary>
     ///   SimpleDroid - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen

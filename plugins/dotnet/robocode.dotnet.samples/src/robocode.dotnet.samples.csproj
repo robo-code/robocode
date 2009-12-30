@@ -55,16 +55,11 @@
     <Compile Include="MyFirstDroid.cs" />
     <Compile Include="MyFirstJuniorRobot.cs" />
     <Compile Include="MyFirstLeader.cs" />
+    <Compile Include="MyFirstRobot.cs" />
     <Compile Include="PaintingRobot.cs" />
+    <Compile Include="RamFire.cs" />
     <Compile Include="RobotColors.cs" />
     <Compile Include="SittingDuck.cs" />
-    <Compile Include="YourCsRobot.cs" />
-    <Compile Include="MyCsRobot.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="MyCsRobot.properties">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
