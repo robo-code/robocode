@@ -1926,11 +1926,11 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		boolean recovered = reallocBuffer(); 
 
 		if (!recovered) {
-			calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
-			
-			if (unrecoveredBufferOverflowCount++ % 500 == 0) { // Prevent spamming 
+			if (unrecoveredBufferOverflowCount++ == 1) { // Prevent spamming 
 				System.out.println(
-						"SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
+						"SYSTEM: This robot is painting too much between actions.\n" + "SYSTEM: Max. buffer capacity ("
+						+ MAX_BUFFER_SIZE + " bytes per turn) has been reached.\n"
+						+ "SYSTEM: Last painting operations are being dropped.\n");
 			}
 		}
 		return recovered;

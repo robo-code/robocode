@@ -978,9 +978,11 @@ public class RobocodeFrame extends JFrame {
 			MemoryUsage memUsage = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
 			
 			long usedMem = memUsage.getUsed() / (1024 * 1024);
+
 			title.append(", Used mem: ").append(usedMem);
 
 			long maxMem = memUsage.getMax();
+
 			if (maxMem >= 0) {
 				maxMem /= (1024 * 1024);
 				title.append(" of ").append(maxMem);
