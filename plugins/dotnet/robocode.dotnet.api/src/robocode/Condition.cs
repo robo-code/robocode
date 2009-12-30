@@ -15,38 +15,15 @@
  *     - Added cleanup() method for cleaning up references to internal classes
  *       to prevent circular references causing memory leaks
  *******************************************************************************/
+using System;
 using net.sf.robocode.io;
 
 namespace robocode
 {
-    /// <summary>
-    /// Condition is used to define custom  {@link AdvancedRobot#WaitFor(Condition)
-    /// WaitFor(Condition)} and custom events for an {@link AdvancedRobot}. The code
-    /// below is taken from the sample robot named {@code sample.Target}. See the
-    /// {@code sample/Target.java} for details.
-    /// <pre>
-    ///   AddCustomEvent(
-    ///       new Condition("triggerhit") {
-    ///           public bool Test() {
-    ///               return (getEnergy() <= trigger);
-    ///           };
-    ///       }
-    ///   );
-    /// </pre>
-    /// You should note that by extending Condition this way, you are actually
-    /// creating an inner class -- so if you distribute your robot, there will be
-    /// multiple class files. (i.e. {@code Target$1.class})
-    ///
-    /// @author Mathew A. Nelson (original)
-    /// @author Flemming N. Larsen (contributor)
-    /// @author Nathaniel Troutman (contributor)
-    /// @see AdvancedRobot#WaitFor(Condition)
-    /// @see AdvancedRobot#AddCustomEvent(Condition)
-    /// @see AdvancedRobot#RemoveCustomEvent(Condition)
-    /// @see AdvancedRobot#OnCustomEvent(CustomEvent)
-    /// </summary>
-    public abstract class Condition
+    public class Condition
     {
+        private ConditionTest test;
+
         /// <summary>
         /// The priority of this condition. Defaults to 80.
         /// </summary>
@@ -56,6 +33,17 @@ namespace robocode
         /// The name of this condition.
         /// </summary>
         public string name;
+
+        public Condition(string name, ConditionTest test)
+        {
+            this.name = name;
+            this.test = test;
+        }
+
+        public Condition(ConditionTest test)
+        {
+            this.test = test;
+        }
 
         /// <summary>
         /// Creates a new, unnamed Condition with the default priority, which is 80.
@@ -136,7 +124,16 @@ namespace robocode
         /// @return {@code true} if the condition has been met, {@code false}
         ///         otherwise.
         /// </summary>
-        public abstract bool Test();
+        public virtual bool Test()
+        {
+            if (test!=null)
+            {
+                return test(this);
+            }
+            throw new NotImplementedException("You should inherit from Condition class and override Test() method or pass delegate into constructor");
+        }
     }
+
+    public delegate bool ConditionTest(Condition condition);
 }
 //happy
