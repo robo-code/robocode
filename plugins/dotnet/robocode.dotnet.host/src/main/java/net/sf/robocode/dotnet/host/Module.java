@@ -31,36 +31,37 @@ public class Module extends BaseModule {
 		// .NET proxies and their interfaces must be loaded in system class loader in order to call native methods
 		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.host.DotnetHost");
 		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.repository.root.DllRootHelper");
-        EngineClassLoader.addExclusion("net.sf.robocode.dotnet.nhost.ModuleN");
-        EngineClassLoader.addExclusion("net.sf.robocode.peer.__IRobotPeer");
-        EngineClassLoader.addExclusion("net.sf.robocode.peer.BadBehavior");
+		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.nhost.ModuleN");
+		EngineClassLoader.addExclusion("net.sf.robocode.peer.__IRobotPeer");
+		EngineClassLoader.addExclusion("net.sf.robocode.peer.BadBehavior");
 
-        Init();
+		Init();
 	}
 
 	private static void Init() {
 		try {
 
-            String libsDir;
-            final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersion();
+			String libsDir;
+			final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersion();
 
-            final java.security.CodeSource source = Module.class.getProtectionDomain().getCodeSource();
-            final File file = new File(source.getLocation().getFile()).getCanonicalFile();
-            if (file.getName().equals("classes")) {
-                libsDir=file.getParent();
-            } else if (file.getName().endsWith(".jar")) {
-                libsDir = file.getParent();
-            } else {
-                throw new Error("Can't find " + file);
-            }
+			final java.security.CodeSource source = Module.class.getProtectionDomain().getCodeSource();
+			final File file = new File(source.getLocation().getFile()).getCanonicalFile();
 
-            final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
+			if (file.getName().equals("classes")) {
+				libsDir = file.getParent();
+			} else if (file.getName().endsWith(".jar")) {
+				libsDir = file.getParent();
+			} else {
+				throw new Error("Can't find " + file);
+			}
 
-            //Bridge.setVerbose(true);
-            //Bridge.setDebug(true);
-            Bridge.init(new File(libsDir).getCanonicalPath());
-            Bridge.SetSystemClassLoader(Container.engineLoader);
-            Bridge.LoadAndRegisterAssembly(new File(nhost).getCanonicalPath());
+			final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
+
+			// Bridge.setVerbose(true);
+			// Bridge.setDebug(true);
+			Bridge.init(new File(libsDir).getCanonicalPath());
+			Bridge.SetSystemClassLoader(Container.engineLoader);
+			Bridge.LoadAndRegisterAssembly(new File(nhost).getCanonicalPath());
 
 			Container.cache.addComponent("DllItemHandler", DllHandler.class);
 			Container.cache.addComponent("CsPropertiesHandler", DotnetPropertiesHandler.class);
@@ -72,13 +73,13 @@ public class Module extends BaseModule {
 			Container.cache.addComponent("robocode.host.vb", DotnetHost.class);
 			Container.cache.addComponent("robocode.host.dotnet", DotnetHost.class);
 		} catch (Throwable e) {
-            Logger.logError(e);
+			Logger.logError(e);
 			throw new Error("Can't initialize .NET Robocode", e);
 		}
 	}
 
-    public void afterLoaded(List<IModule> allModules) {
-        net.sf.robocode.dotnet.nhost.ModuleN.InitN();
-    }
+	public void afterLoaded(List<IModule> allModules) {
+		net.sf.robocode.dotnet.nhost.ModuleN.InitN();
+	}
 
 }

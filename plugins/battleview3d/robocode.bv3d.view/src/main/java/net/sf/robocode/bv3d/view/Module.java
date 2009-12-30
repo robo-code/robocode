@@ -20,8 +20,7 @@ import net.sf.robocode.core.Container;
  * @author Pavel Savara (original)
  */
 public class Module extends BaseModule {
-	static {
-		// TODO Container.loadJars("gluegen-rt");
+	static {// TODO Container.loadJars("gluegen-rt");
 		// TODO Container.loadJars("jogl");
 		// TODO register new battleview
 	}

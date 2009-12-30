@@ -50,7 +50,7 @@ public final class RbSerializer {
 	public final static byte BulletStatus_TYPE = 7;
 	public final static byte BattleResults_TYPE = 8;
 	public final static byte Bullet_TYPE = 9;
-    public final static byte RobotStatics_TYPE = 10;
+	public final static byte RobotStatics_TYPE = 10;
 
 	public final static byte BattleEndedEvent_TYPE = 32;
 	public final static byte BulletHitBulletEvent_TYPE = 33;
@@ -143,21 +143,22 @@ public final class RbSerializer {
 		return buffer;
 	}
 
-    public ByteBuffer serializeToBuffer(ByteBuffer buffer, byte type, Object object) throws IOException {
-        int length = sizeOf(type, object);
-        buffer.limit(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
+	public ByteBuffer serializeToBuffer(ByteBuffer buffer, byte type, Object object) throws IOException {
+		int length = sizeOf(type, object);
 
-        buffer.putInt(byteOrder);
-        buffer.putInt(currentVersion);
-        buffer.putInt(length);
+		buffer.limit(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
 
-        // body
-        serialize(buffer, type, object);
-        if (buffer.remaining() != 0) {
-            throw new IOException("Serialization failed: bad size");
-        }
-        return buffer;
-    }
+		buffer.putInt(byteOrder);
+		buffer.putInt(currentVersion);
+		buffer.putInt(length);
+
+		// body
+		serialize(buffer, type, object);
+		if (buffer.remaining() != 0) {
+			throw new IOException("Serialization failed: bad size");
+		}
+		return buffer;
+	}
 
 	public Object deserialize(InputStream source) throws IOException {
 		// header
@@ -439,9 +440,9 @@ public final class RbSerializer {
 		return buffer.getDouble();
 	}
 
-    public long deserializeLong(ByteBuffer buffer) {
-        return buffer.getLong();
-    }
+	public long deserializeLong(ByteBuffer buffer) {
+		return buffer.getLong();
+	}
 
 	public int sizeOf(String data) {
 		return (data == null) ? SIZEOF_INT : SIZEOF_INT + encode(data).limit();

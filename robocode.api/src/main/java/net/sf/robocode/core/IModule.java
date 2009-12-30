@@ -11,11 +11,13 @@
  *******************************************************************************/
 package net.sf.robocode.core;
 
+
 import java.util.List;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IModule {
-    void afterLoaded(List<IModule> allModules);
+	void afterLoaded(List<IModule> allModules);
 }

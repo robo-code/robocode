@@ -184,10 +184,11 @@ public class ExecResults implements Serializable {
 			res.commands = (ExecCommands) serializer.deserializeAny(buffer);
 			res.status = (RobotStatus) serializer.deserializeAny(buffer);
 
-            res.events = new ArrayList<Event>();
-            res.teamMessages = new ArrayList<TeamMessage>();
-            res.bulletUpdates = new ArrayList<BulletStatus>();
+			res.events = new ArrayList<Event>();
+			res.teamMessages = new ArrayList<TeamMessage>();
+			res.bulletUpdates = new ArrayList<BulletStatus>();
 			Object item = serializer.deserializeAny(buffer);
+
 			while (item != null) {
 				if (item instanceof Event) {
 					res.events.add((Event) item);

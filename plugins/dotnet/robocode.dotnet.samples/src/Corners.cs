@@ -14,12 +14,11 @@ using robocode.util;
 
 namespace samplecs
 {
-
     /// <summary>
-    /// Corners - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
-    /// <p/>
-    /// This robot moves to a corner, then swings the gun Back and forth.
-    /// If it dies, it tries a new corner in the next round.
+    ///   Corners - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+    ///   <p />
+    ///   This robot moves to a corner, then swings the gun Back and forth.
+    ///   If it dies, it tries a new corner in the next round.
     /// </summary>
     public class Corners : Robot
     {
@@ -29,7 +28,7 @@ namespace samplecs
         private bool stopWhenSeeRobot; // See goCorner()
 
         /// <summary>
-        /// run:  Corners' main run function.
+        ///   run:  Corners' main run function.
         /// </summary>
         public override void Run()
         {
@@ -61,7 +60,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// goCorner:  A very inefficient way to get to a corner.  Can you do better?
+        ///   goCorner:  A very inefficient way to get to a corner.  Can you do better?
         /// </summary>
         public void goCorner()
         {
@@ -82,7 +81,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onScannedRobot:  Stop and Fire!
+        ///   onScannedRobot:  Stop and Fire!
         /// </summary>
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
@@ -108,9 +107,11 @@ namespace samplecs
         }
 
         /// <summary>
-        /// smartFire:  Custom Fire method that determines firepower based on distance.
+        ///   smartFire:  Custom Fire method that determines firepower based on distance.
         /// </summary>
-        /// <param name="robotDistance">the distance to the robot to Fire at</param>
+        /// <param name="robotDistance">
+        ///   the distance to the robot to Fire at
+        /// </param>
         public void smartFire(double robotDistance)
         {
             if (robotDistance > 200 || Energy < 15)
@@ -128,7 +129,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onDeath:  We died.  Decide whether to try a different corner next game.
+        ///   onDeath:  We died.  Decide whether to try a different corner next game.
         /// </summary>
         public override void OnDeath(DeathEvent e)
         {

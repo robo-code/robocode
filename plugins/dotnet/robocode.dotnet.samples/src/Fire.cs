@@ -15,15 +15,15 @@ using robocode.util;
 namespace samplecs
 {
     /// <summary>
-    /// Fire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
-    /// Sits still.  Spins gun around.  Moves when hit. 
+    ///   Fire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+    ///   Sits still.  Spins gun around.  Moves when hit.
     /// </summary>
     public class Fire : Robot
     {
-        int dist = 50; // distance to move when we're hit
+        private int dist = 50; // distance to move when we're hit
 
         /// <summary>
-        /// run:  Fire's main run function
+        ///   run:  Fire's main run function
         /// </summary>
         public override void Run()
         {
@@ -42,7 +42,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onScannedRobot:  Fire!
+        ///   onScannedRobot:  Fire!
         /// </summary>
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
@@ -61,7 +61,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
+        ///   onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
         /// </summary>
         public override void OnHitByBullet(HitByBulletEvent e)
         {
@@ -73,7 +73,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onHitRobot:  Aim at it.  Fire Hard!
+        ///   onHitRobot:  Aim at it.  Fire Hard!
         /// </summary>
         public override void OnHitRobot(HitRobotEvent e)
         {

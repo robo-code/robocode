@@ -48,13 +48,13 @@ public class JavaHost implements IHost {
 				robotSpecification);
 
 		if (specification.isTeamRobot()) {
-			robotProxy = new TeamRobotProxy(specification, hostManager, peer, (RobotStatics)statics);
+			robotProxy = new TeamRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else if (specification.isAdvancedRobot()) {
-			robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, (RobotStatics)statics);
+			robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else if (specification.isStandardRobot()) {
-			robotProxy = new StandardRobotProxy(specification, hostManager, peer, (RobotStatics)statics);
+			robotProxy = new StandardRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else if (specification.isJuniorRobot()) {
-			robotProxy = new JuniorRobotProxy(specification, hostManager, peer, (RobotStatics)statics);
+			robotProxy = new JuniorRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else {
 			throw new AccessControlException("Unknown robot type");
 		}

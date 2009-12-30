@@ -1,20 +1,29 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Drawing;
 using robocode;
 using robocode.util;
 
 namespace samplecs
 {
-
     /// <summary>
-    /// TrackFire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
-    /// <p/>
-    /// Sits still.  Tracks and fires at the nearest robot it sees
+    ///   TrackFire - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+    ///   <p />
+    ///   Sits still.  Tracks and fires at the nearest robot it sees
     /// </summary>
     public class TrackFire : Robot
     {
         /// <summary>
-        /// TrackFire's run method
+        ///   TrackFire's run method
         /// </summary>
         public override void Run()
         {
@@ -33,7 +42,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onScannedRobot:  We have a target.  Go get it.
+        ///   onScannedRobot:  We have a target.  Go get it.
         /// </summary>
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
@@ -52,7 +61,7 @@ namespace samplecs
                 {
                     Fire(Math.Min(3 - Math.Abs(bearingFromGun), Energy - .1));
                 }
-            } 
+            }
             else
             {
                 // otherwise just set the gun to turn.

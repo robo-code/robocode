@@ -44,23 +44,22 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	public static boolean isDumpingErrors = true;
 	public static boolean isDumpingMessages = true;
 
-    static {
+	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
 		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
-        try {
-            if (new File("").getAbsolutePath().endsWith("robocode.tests")){
-                robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
-            }
-            else if (new File("").getAbsolutePath().endsWith("robocode.dotnet.tests")){
-                robotsPath = new File("../../../robocode.tests.robots").getCanonicalPath();
-            } else{
-                throw new Error("Unknown directory");
-            }
-        } catch (IOException e) {
-            e.printStackTrace(Logger.realErr);
-        }
-        System.setProperty("ROBOTPATH", robotsPath +"/target/classes");
+		try {
+			if (new File("").getAbsolutePath().endsWith("robocode.tests")) {
+				robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
+			} else if (new File("").getAbsolutePath().endsWith("robocode.dotnet.tests")) {
+				robotsPath = new File("../../../robocode.tests.robots").getCanonicalPath();
+			} else {
+				throw new Error("Unknown directory");
+			}
+		} catch (IOException e) {
+			e.printStackTrace(Logger.realErr);
+		}
+		System.setProperty("ROBOTPATH", robotsPath + "/target/classes");
 
 		engine = new RobocodeEngine(new BattleAdaptor() {
 			public void onBattleMessage(BattleMessageEvent event) {

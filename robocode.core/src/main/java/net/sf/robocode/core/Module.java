@@ -33,14 +33,14 @@ public class Module extends BaseModule {
 		Container.cache.addComponent(ISettingsManager.class, SettingsManager.class);
 	}
 
-    @Override
-    public void afterLoaded(List<IModule> allModules) {
-        RbSerializer.register(ExecCommands.class, RbSerializer.ExecCommands_TYPE);
-        RbSerializer.register(BulletCommand.class, RbSerializer.BulletCommand_TYPE);
-        RbSerializer.register(TeamMessage.class, RbSerializer.TeamMessage_TYPE);
-        RbSerializer.register(DebugProperty.class, RbSerializer.DebugProperty_TYPE);
-        RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
-        RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
-        RbSerializer.register(RobotStatics.class, RbSerializer.RobotStatics_TYPE);
-    }
+	@Override
+	public void afterLoaded(List<IModule> allModules) {
+		RbSerializer.register(ExecCommands.class, RbSerializer.ExecCommands_TYPE);
+		RbSerializer.register(BulletCommand.class, RbSerializer.BulletCommand_TYPE);
+		RbSerializer.register(TeamMessage.class, RbSerializer.TeamMessage_TYPE);
+		RbSerializer.register(DebugProperty.class, RbSerializer.DebugProperty_TYPE);
+		RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
+		RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
+		RbSerializer.register(RobotStatics.class, RbSerializer.RobotStatics_TYPE);
+	}
 }

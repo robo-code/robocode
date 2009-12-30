@@ -43,7 +43,7 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add("net.sf.robocode.host.RobotStatics");
 	}
 
-	public static void addExclusion(String classFullName){
+	public static void addExclusion(String classFullName) {
 		exclusions.add(classFullName);
 	}
 
@@ -66,7 +66,7 @@ public class EngineClassLoader extends URLClassLoader {
 			return super.loadClass(name, resolve);
 		}
 		if (isSecutityOn && isEngineClass(name)) {
-			//System.out.println("engine: "+name);
+			// System.out.println("engine: "+name);
 
 			// yes, it is in engine's classpath
 			// we load it localy

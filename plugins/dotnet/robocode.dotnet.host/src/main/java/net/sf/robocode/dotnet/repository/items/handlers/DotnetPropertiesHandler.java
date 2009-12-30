@@ -30,35 +30,36 @@ import java.io.File;
  */
 public class DotnetPropertiesHandler extends PropertiesHandler {
 
-    @Override
-    public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
-        final String name = itemURL.toString().toLowerCase();
+	@Override
+	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
+		final String name = itemURL.toString().toLowerCase();
 
-        if (name.contains(".dll!/")) {
-            return register(itemURL, root, db);
-        }
-        return null;
-    }
+		if (name.contains(".dll!/")) {
+			return register(itemURL, root, db);
+		}
+		return null;
+	}
 
-    private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-        RobotItem item = (RobotItem) db.getOldItem(itemURL.toString());
+	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
+		RobotItem item = (RobotItem) db.getOldItem(itemURL.toString());
 
-        if (item == null) {
-            item = (RobotItem) db.getItem(itemURL.toString());
-        }
-        if (item == null) {
-            item = new DotNetRobotItem(itemURL, null, root);
-        } else {
-            item.setClassUrl(itemURL);
-        }
-        db.addItem(item);
-        return item;
-    }
+		if (item == null) {
+			item = (RobotItem) db.getItem(itemURL.toString());
+		}
+		if (item == null) {
+			item = new DotNetRobotItem(itemURL, null, root);
+		} else {
+			item.setClassUrl(itemURL);
+		}
+		db.addItem(item);
+		return item;
+	}
 
 	@Override
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
-		final File file = new File(itemURL.toString().replace(".properties",".dll"));
+		final File file = new File(itemURL.toString().replace(".properties", ".dll"));
 		final DotNetRobotItem item = new DotNetRobotItem(null, itemURL, new DllRoot(db, file));
+
 		return item;
 	}
 }

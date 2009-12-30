@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Drawing;
 using robocode;
 using robocode.robocode;
@@ -40,38 +50,37 @@ namespace samplecs
      * @version 1.1
      * @since 1.3.4
      */
+
     public class Interactive : AdvancedRobot
     {
-
         // Move direction: 1 = move forward, 0 = stand still, -1 = move backward
-        int moveDirection;
+        private int moveDirection;
 
         // Turn direction: 1 = turn right, 0 = no turning, -1 = turn left
-        int turnDirection;
+        private int turnDirection;
 
         // Amount of pixels/units to move
-        double moveAmount;
+        private double moveAmount;
 
         // The coordinate of the aim (x,y)
-        int aimX, aimY;
+        private int aimX, aimY;
 
         // Fire power, where 0 = don't Fire
-        int firePower;
+        private int firePower;
 
         // Called when the robot must run
         public override void Run()
         {
-
             // Sets the colors of the robot
             // body = black, gun = white, radar = red
             SetColors(Color.Black, Color.White, Color.Red);
 
             // Loop forever
-            for (; ; )
+            for (;;)
             {
                 // Sets the robot to move forward, backward or stop moving depending
                 // on the move direction and amount of pixels to move
-                SetAhead(moveAmount * moveDirection);
+                SetAhead(moveAmount*moveDirection);
 
                 // Decrement the amount of pixels to move until we reach 0 pixels
                 // This way the robot will automatically stop if the mouse wheel
@@ -80,7 +89,7 @@ namespace samplecs
 
                 // Sets the robot to turn right or turn left (at maximum speed) or
                 // stop turning depending on the turn direction
-                SetTurnRight(45 * turnDirection); // degrees
+                SetTurnRight(45*turnDirection); // degrees
 
                 // Turns the gun toward the current aim coordinate (x,y) controlled by
                 // the current mouse coordinate
@@ -161,7 +170,7 @@ namespace samplecs
             // Set the amount to move = absolute wheel rotation amount * 5 (speed)
             // Here 5 means 5 pixels per wheel rotation step. The higher value, the
             // more speed
-            moveAmount += Math.Abs(e.WheelRotation) * 5;
+            moveAmount += Math.Abs(e.WheelRotation)*5;
         }
 
         // Called when the mouse has been moved
@@ -179,20 +188,20 @@ namespace samplecs
             {
                 // Button 3: Fire power = 3 energy points, bullet color = red
                 firePower = 3;
-                BulletColor=(Color.Red);
+                BulletColor = (Color.Red);
             }
             else if (e.Button == Keys.BUTTON2)
             {
                 // Button 2: Fire power = 2 energy points, bullet color = orange
                 firePower = 2;
-                BulletColor=(Color.Orange);
+                BulletColor = (Color.Orange);
             }
             else
             {
                 // Button 1 or unknown button:
                 // Fire power = 1 energy points, bullet color = yellow
                 firePower = 1;
-                BulletColor=(Color.Yellow);
+                BulletColor = (Color.Yellow);
             }
         }
 

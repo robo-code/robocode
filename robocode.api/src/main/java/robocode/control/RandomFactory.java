@@ -33,15 +33,15 @@ public class RandomFactory {
 	private static Random randomNumberGenerator;
 
 	private static boolean warningNotSupportedLogged;
-    private static boolean isDeterministic;
+	private static boolean isDeterministic;
 
-    static {
-        randomNumberGenerator=new Random();
-    }
+	static {
+		randomNumberGenerator = new Random();
+	}
 
-    public boolean isDeterministic(){
-        return isDeterministic;
-    }
+	public boolean isDeterministic() {
+		return isDeterministic;
+	}
 
 	/**
 	 * Returns the random number generator used for generating a stream of
@@ -105,7 +105,7 @@ public class RandomFactory {
 	 */
 	public static void resetDeterministic(long seed) {
 		setRandom(new Random(seed));
-        isDeterministic=true;
+		isDeterministic = true;
 	}
 
 	/**

@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
 using System.Drawing;
 using robocode;
 using robocode.util;
@@ -6,9 +16,9 @@ using robocode.util;
 namespace samplecs
 {
     /// <summary>
-    /// Tracker - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
-    /// <p/>
-    /// Locks onto a robot, moves close, fires when close.
+    ///   Tracker - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+    ///   <p />
+    ///   Locks onto a robot, moves close, fires when close.
     /// </summary>
     public class Tracker : Robot
     {
@@ -18,7 +28,7 @@ namespace samplecs
         private String trackName; // Name of the robot we're currently tracking
 
         /// <summary>
-        /// run:  Tracker's main run function
+        ///   run:  Tracker's main run function
         /// </summary>
         public override void Run()
         {
@@ -60,7 +70,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onScannedRobot:  Here's the good stuff
+        ///   onScannedRobot:  Here's the good stuff
         /// </summary>
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
@@ -112,7 +122,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onHitRobot:  Set him as our new target
+        ///   onHitRobot:  Set him as our new target
         /// </summary>
         public override void OnHitRobot(HitRobotEvent e)
         {
@@ -133,7 +143,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onWin:  Do a victory dance
+        ///   onWin:  Do a victory dance
         /// </summary>
         public override void OnWin(WinEvent e)
         {
