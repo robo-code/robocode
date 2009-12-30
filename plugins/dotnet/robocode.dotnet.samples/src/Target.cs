@@ -3,19 +3,18 @@ using robocode;
 
 namespace samplecs
 {
-/**
- * Target - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * <p/>
- * Sits still.  Moves every time energy drops by 20.
- * This Robot demonstrates custom events.
- */
-
+    /// <summary>
+    ///   Target - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+    ///   <p />
+    ///   Sits still.  Moves every time energy drops by 20.
+    ///   This Robot demonstrates custom events.
+    /// </summary>
     public class Target : AdvancedRobot
     {
         private int trigger; // Keeps track of when to move
 
         /// <summary>
-        /// TrackFire's run method
+        ///   TrackFire's run method
         /// </summary>
         public override void Run()
         {
@@ -31,7 +30,7 @@ namespace samplecs
         }
 
         /// <summary>
-        /// onCustomEvent handler
+        ///   onCustomEvent handler
         /// </summary>
         public override void OnCustomEvent(CustomEvent e)
         {

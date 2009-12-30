@@ -62,6 +62,10 @@
     <Compile Include="SittingDuck.cs" />
     <Compile Include="SpinBot.cs" />
     <Compile Include="Target.cs" />
+    <Compile Include="Tracker.cs" />
+    <Compile Include="TrackFire.cs" />
+    <Compile Include="VelociRobot.cs" />
+    <Compile Include="Walls.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
