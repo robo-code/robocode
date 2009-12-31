@@ -406,6 +406,8 @@ public final class Battle extends BaseBattle {
 
 		// At this point the unsafe loader thread will now set itself to wait for a notify
 
+		final List<RobotPeer> robots = getRobotsAtRandom(); 
+
 		for (RobotPeer robotPeer : robots) {
 			robotPeer.initializeRound(robots, initialRobotPositions);
 			robotPeer.println("=========================");
@@ -867,7 +869,7 @@ public final class Battle extends BaseBattle {
 		boolean found = false;
 		TeamPeer currentTeam = null;
 
-		for (RobotPeer currentRobot : robots) {
+		for (RobotPeer currentRobot : getRobotsAtRandom()) {
 			if (!currentRobot.isDead()) {
 				if (!found) {
 					found = true;
