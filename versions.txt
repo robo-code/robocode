@@ -1,5 +1,8 @@
 Version 1.7.2 Alpha
 ---------------
+= Bugfixes =
+* The getWidth() and getHeight() methods both returned 40 since the dawn of Robocode, which is incorrect as robots actually are 36x36 pixels. Hence, both methods now returns 36.
+
 = New features =
 * Req [2816882] - onRoundEnded(). It is now possible for robots to get notified when a round has ended. The onRoundEnded() event handler received a new RoundEndedEvent that contains information about the number of turns in the round and total turns in the whole battle when the event occurred.
 * Req [2342293] - Screenshot of battleview. Press Ctrl+T on Windows and Linux, and Command+T for Mac OS in order to take a screenshot of the battleview. The screenshot will be saved in the Robocode folder named "screenshots", and the filename will be a timestamp for when the screenshot was taken.
@@ -8,16 +11,20 @@ Version 1.7.2 Alpha
 * Req [2643438] - Rename /robots/.robotcache to /robots/.data
 
 Version 1.7.1.6
-(22-Dec-2009)
+(29-Dec-2009)
 ---------------
 = Bugfixes =
-* The onDeathEvent(DeathEvent) method was called too late, when a new round was about to start. Not when the robot has died.
 * Bug [2912942] - Mac OS X 10.6: Cannot run Robocode from robocode.sh. It must be run from the new robocode.command file instead.
 * Bug [2912944] - Mac OS X 10.6: The editor cannot see the JDK. It must be run from the new robocode.command file instead.
-* The getWidth() and getHeight() methods both returned 40 since the dawn of Robocode, which is incorrect as robots actually are 36x36 pixels. Hence, both methods now returns 36.
+* The onDeathEvent(DeathEvent) method was called too late, when a new round was about to start. Not when the robot has died.
+* Bug [2867326] - Lockup on start if too many bots in robots dir (cont'd). Additional fix was made to locate multiple robots under the same (sub)packages.
+* Changed the robot painting so that everything that goes into the painting buffer is always painted, and remaining painting operations exceeding the buffer capacity are always dropped. Previously, only the last painting operations exceeding the painting buffer were executed.
 
 = New Features =
 * The amount of used memory and total memory is now shown in the title bar of Robocode. This is useful to see how much memory your robots are consuming.
+
+= Changes =
+* If the robot paints too much between actions, an improved error message is written out in the robot console. But from this version of Robocode this message is only written out a single time.
 
 Version 1.7.1.6 Beta
 (10-Dec-2009)
