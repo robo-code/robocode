@@ -10,8 +10,6 @@
 
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using net.sf.robocode.nio;
 using net.sf.robocode.serialization;
 using robocode;
@@ -38,6 +36,87 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
         #region IGraphics Members
+
+        public void DrawRectangle(Pen pen, RectangleF rect)
+        {
+            DrawRectangle(pen, (int) rect.X, (int) rect.Y, (int) rect.Width, (int) rect.Height);
+        }
+
+        public void DrawRectangle(Pen pen, Rectangle rect)
+        {
+            DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        public void DrawRectangle(Pen pen, float x, float y, float width, float height)
+        {
+            DrawRectangle(pen, (int) x, (int) y, (int) width, (int) height);
+        }
+
+        public void DrawRectangle(Pen pen, int x, int y, int width, int height)
+        {
+            if (isPaintingEnabled)
+            {
+                setColor(pen);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.DRAW_RECT);
+                    put(x);
+                    put(y);
+                    put(width);
+                    put(height);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        DrawRectangle(pen, x, y, width, height); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
+        public void FillRectangle(Brush brush, RectangleF rect)
+        {
+            FillRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        public void FillRectangle(Brush brush, float x, float y, float width, float height)
+        {
+            FillRectangle(brush, (int) x, (int) y, (int) width, (int) height);
+        }
+
+        public void FillRectangle(Brush brush, Rectangle rect)
+        {
+            FillRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        public void FillRectangle(Brush brush, int x, int y, int width, int height)
+        {
+            if (isPaintingEnabled)
+            {
+                setColor(brush);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.FILL_RECT);
+                    put(x);
+                    put(y);
+                    put(width);
+                    put(height);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        FillRectangle(brush, x, y, width, height); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
 
         public void DrawEllipse(Pen pen, int x, int y, int width, int height)
         {
@@ -121,12 +200,12 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         public void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
         {
-            DrawLine(pen, (int)x1, (int)y1, (int)x2, (int)y2);
+            DrawLine(pen, (int) x1, (int) y1, (int) x2, (int) y2);
         }
 
         public void DrawLine(Pen pen, PointF pt1, PointF pt2)
         {
-            DrawLine(pen, (int)pt1.X, (int)pt1.Y, (int)pt2.X, (int)pt2.Y);
+            DrawLine(pen, (int) pt1.X, (int) pt1.Y, (int) pt2.X, (int) pt2.Y);
         }
 
         public void DrawLine(Pen pen, Point pt1, Point pt2)
@@ -159,57 +238,167 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
-        #endregion
-
-        public void setPaintingEnabled(bool value)
+        public void DrawArc(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
         {
-            isPaintingEnabled = value;
+            DrawArc(pen, (int) x, (int) y, (int) width, (int) height, (int) startAngle, (int) sweepAngle);
         }
 
-        public byte[] readoutQueuedCalls()
+        public void DrawArc(Pen pen, RectangleF rect, float startAngle, float sweepAngle)
         {
-            if (calls == null || calls.position() == 0)
-            {
-                return null;
-            }
-            var res = new byte[calls.position()];
-
-            calls.flip();
-            calls.get(res);
-            calls.clear();
-            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
-            return res;
+            DrawArc(pen, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
         }
 
-        private void setColor(Brush brush)
+        public void DrawArc(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
         {
-            var sb = brush as SolidBrush;
-            if (sb != null)
-            {
-                setColor(sb.Color);
-            }
+            DrawArc(pen, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
         }
 
-        private void setColor(Pen p)
-        {
-            setColor(p.Color);
-        }
-
-        private void setColor(Color c)
+        public void DrawArc(Pen pen, int x, int y, int width, int height, int startAngle, int sweepAngle)
         {
             if (isPaintingEnabled)
             {
+                setColor(pen);
                 calls.mark(); // Mark for rollback
                 try
                 {
-                    put(Method.SET_COLOR);
-                    put(c);
+                    put(Method.DRAW_ARC);
+                    put(x);
+                    put(y);
+                    put(width);
+                    put(height);
+                    put(startAngle);
+                    put(sweepAngle);
                 }
                 catch (BufferOverflowException)
                 {
                     if (recoverFromBufferOverflow())
                     {
-                        setColor(c); // Retry this method after reallocation
+                        DrawArc(pen, x, y, width, height, startAngle, sweepAngle);
+                            // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
+        public void DrawPie(Pen pen, RectangleF rect, float startAngle, float sweepAngle)
+        {
+            //for now redirected to arc, I wonder if java have Pie as well
+            DrawArc(pen, rect, startAngle, sweepAngle);
+        }
+
+        public void DrawPie(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
+        {
+            //for now redirected to arc, I wonder if java have Pie as well
+            DrawArc(pen, x, y, width, height, startAngle, sweepAngle);
+        }
+
+        public void DrawPie(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
+        {
+            //for now redirected to arc, I wonder if java have Pie as well
+            DrawArc(pen, rect, startAngle, sweepAngle);
+        }
+
+        public void DrawPie(Pen pen, int x, int y, int width, int height, int startAngle, int sweepAngle)
+        {
+            //for now redirected to arc, I wonder if java have Pie as well
+            DrawArc(pen, x, y, width, height, startAngle, sweepAngle);
+        }
+
+        public void FillPie(Brush brush, Rectangle rect, float startAngle, float sweepAngle)
+        {
+            FillPie(brush, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
+        }
+
+        public void FillPie(Brush brush, float x, float y, float width, float height, float startAngle, float sweepAngle)
+        {
+            FillPie(brush, (int) x, (int) y, (int) width, (int) height, (int) startAngle, (int) sweepAngle);
+        }
+
+        public void FillPie(Brush brush, int x, int y, int width, int height, int startAngle, int sweepAngle)
+        {
+            if (isPaintingEnabled)
+            {
+                setColor(brush);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.DRAW_ARC);
+                    put(x);
+                    put(y);
+                    put(width);
+                    put(height);
+                    put(startAngle);
+                    put(sweepAngle);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        FillPie(brush, x, y, width, height, startAngle, sweepAngle);
+                            // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
+        public void DrawPolygon(Pen pen, PointF[] points)
+        {
+            if (isPaintingEnabled)
+            {
+                int[] xPoints = new int[points.Length];
+                int[] yPoints = new int[points.Length];
+                for (int i = 0; i < points.Length; i++)
+                {
+                    xPoints[i] = (int) points[i].X;
+                    yPoints[i] = (int) points[i].Y;
+                }
+                setColor(pen);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.DRAW_POLYGON);
+                    put(xPoints);
+                    put(yPoints);
+                    put(points.Length);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        DrawPolygon(pen, points); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
+        public void DrawPolygon(Pen pen, Point[] points)
+        {
+            if (isPaintingEnabled)
+            {
+                int[] xPoints = new int[points.Length];
+                int[] yPoints = new int[points.Length];
+                for (int i = 0; i < points.Length; i++)
+                {
+                    xPoints[i] = points[i].X;
+                    yPoints[i] = points[i].Y;
+                }
+                setColor(pen);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.DRAW_POLYGON);
+                    put(xPoints);
+                    put(yPoints);
+                    put(points.Length);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        DrawPolygon(pen, points); // Retry this method after reallocation
                         return; // Make sure we leave
                     }
                 }
@@ -217,145 +406,125 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
 
-        private bool reallocBuffer()
+        public void FillPolygon(Brush brush, PointF[] points)
         {
-            int bufferSize;
-
-            if (calls == null)
+            if (isPaintingEnabled)
             {
-                // No buffer -> Use initial buffer size
-                bufferSize = INITIAL_BUFFER_SIZE;
-            }
-            else
-            {
-                // Otherwise, double up capacity
-                bufferSize = 2*calls.capacity();
-            }
-
-            // Check if the max. buffer size has been reached
-            if (!isDebugging && bufferSize > MAX_BUFFER_SIZE)
-            {
-                return false; // not reallocated!
-            }
-
-            // Allocate new buffer
-            ByteBuffer newBuffer = ByteBuffer.allocate(bufferSize);
-            newBuffer.order(ByteOrder.LITTLE_ENDIAN);
-
-            if (calls != null)
-            {
-                // Copy all bytes contained in the current buffer to the new buffer
-
-                var copiedBytes = new byte[calls.position()];
-
-                calls.clear();
-                calls.get(copiedBytes);
-
-                newBuffer.put(copiedBytes);
-            }
-
-            // Switch to the new buffer
-            calls = newBuffer;
-
-            return true; // buffer was reallocated
-        }
-
-        private bool recoverFromBufferOverflow()
-        {
-            calls.reset(); // Rollback buffer
-
-            bool recovered = reallocBuffer();
-
-            if (!recovered)
-            {
-                calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
-                calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
-
-                if (unrecoveredBufferOverflowCount++%500 == 0)
+                int[] xPoints = new int[points.Length];
+                int[] yPoints = new int[points.Length];
+                for (int i = 0; i < points.Length; i++)
                 {
-                    // Prevent spamming 
-                    java.lang.System.@out.println(
-                        "SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
+                    xPoints[i] = (int) points[i].X;
+                    yPoints[i] = (int) points[i].Y;
+                }
+                setColor(brush);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.FILL_POLYGON);
+                    put(xPoints);
+                    put(yPoints);
+                    put(points.Length);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        FillPolygon(brush, points); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
                 }
             }
-            return recovered;
         }
 
-        private void put(Method m)
+        public void FillPolygon(Brush brush, Point[] points)
         {
-            // FOR-DEBUG calls.putInt(0xBADF00D);
-            calls.put((byte) m);
-            // FOR-DEBUG calls.putInt(0xBADF00D);
+            if (isPaintingEnabled)
+            {
+                int[] xPoints = new int[points.Length];
+                int[] yPoints = new int[points.Length];
+                for (int i = 0; i < points.Length; i++)
+                {
+                    xPoints[i] = points[i].X;
+                    yPoints[i] = points[i].Y;
+                }
+                setColor(brush);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.FILL_POLYGON);
+                    put(xPoints);
+                    put(yPoints);
+                    put(points.Length);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        FillPolygon(brush, points); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
         }
 
-        private void put(String value)
+        public void DrawString(string s, Font font, Brush brush, float x, float y)
         {
-            serializer.serialize(calls, value);
+            DrawString(s, font, brush, (int) x, (int) y);
         }
 
-        private void put(bool value)
+        public void DrawString(string s, Font font, Brush brush, PointF point)
         {
-            serializer.serialize(calls, value);
+            DrawString(s, font, brush, point.X, point.Y);
         }
 
-        private void put(byte value)
+        public void DrawString(string s, Font font, Brush brush, Point point)
         {
-            calls.put(value);
+            DrawString(s, font, brush, point.X, point.Y);
         }
 
-        private void put(int value)
+        public void DrawString(string s, Font font, Brush brush, int x, int y)
         {
-            calls.putInt(value);
+            if (string.IsNullOrEmpty(s))
+            {
+                return;
+            }
+            if (isPaintingEnabled)
+            {
+                setColor(brush);
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.DRAW_STRING_INT);
+                    put(s);
+                    put(x);
+                    put(y);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        DrawString(s, font, brush, x, y); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
         }
 
-        private void put(int[] values)
-        {
-            serializer.serialize(calls, values);
-        }
-
-        private void put(byte[] values)
-        {
-            serializer.serialize(calls, values);
-        }
-
-        private void put(char[] values)
-        {
-            serializer.serialize(calls, values);
-        }
-
-        private void put(double[] values)
-        {
-            serializer.serialize(calls, values);
-        }
-
-        private void put(float[] values)
-        {
-            serializer.serialize(calls, values);
-        }
-
-        private void put(double value)
-        {
-            calls.putDouble(value);
-        }
-
-        private void put(float value)
-        {
-            calls.putFloat(value);
-        }
-
-        private void put(Color value)
-        {
-            calls.putInt(value.ToArgb());
-        }
-
-        private void put(Font font)
-        {
-            serializer.serialize(calls, font.Name);
-            calls.putInt((int) font.Style);
-            calls.putInt((int) font.Size);
-        }
+        #endregion
 
         #region TODO
+        /*
+
+        public void FillPolygon(Brush brush, PointF[] points, FillMode fillMode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FillPolygon(Brush brush, Point[] points, FillMode fillMode)
+        {
+            throw new NotImplementedException();
+        }
 
         public void ResetTransform()
         {
@@ -422,77 +591,12 @@ namespace net.sf.robocode.dotnet.host.proxies
             throw new NotImplementedException();
         }
 
-        public void DrawArc(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawArc(Pen pen, RectangleF rect, float startAngle, float sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawArc(Pen pen, int x, int y, int width, int height, int startAngle, int sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawArc(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawRectangle(Pen pen, Rectangle rect)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawRectangle(Pen pen, float x, float y, float width, float height)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawRectangle(Pen pen, int x, int y, int width, int height)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DrawRectangles(Pen pen, RectangleF[] rects)
         {
             throw new NotImplementedException();
         }
 
         public void DrawRectangles(Pen pen, Rectangle[] rects)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawPie(Pen pen, RectangleF rect, float startAngle, float sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawPie(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawPie(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawPie(Pen pen, int x, int y, int width, int height, int startAngle, int sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawPolygon(Pen pen, PointF[] points)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawPolygon(Pen pen, Point[] points)
         {
             throw new NotImplementedException();
         }
@@ -557,67 +661,12 @@ namespace net.sf.robocode.dotnet.host.proxies
             throw new NotImplementedException();
         }
 
-        public void FillRectangle(Brush brush, RectangleF rect)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillRectangle(Brush brush, float x, float y, float width, float height)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillRectangle(Brush brush, Rectangle rect)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillRectangle(Brush brush, int x, int y, int width, int height)
-        {
-            throw new NotImplementedException();
-        }
-
         public void FillRectangles(Brush brush, RectangleF[] rects)
         {
             throw new NotImplementedException();
         }
 
         public void FillRectangles(Brush brush, Rectangle[] rects)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillPolygon(Brush brush, PointF[] points)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillPolygon(Brush brush, PointF[] points, FillMode fillMode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillPolygon(Brush brush, Point[] points)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillPolygon(Brush brush, Point[] points, FillMode fillMode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillPie(Brush brush, Rectangle rect, float startAngle, float sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillPie(Brush brush, float x, float y, float width, float height, float startAngle, float sweepAngle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FillPie(Brush brush, int x, int y, int width, int height, int startAngle, int sweepAngle)
         {
             throw new NotImplementedException();
         }
@@ -658,16 +707,6 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
         public void FillRegion(Brush brush, Region region)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawString(string s, Font font, Brush brush, float x, float y)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawString(string s, Font font, Brush brush, PointF point)
         {
             throw new NotImplementedException();
         }
@@ -900,12 +939,6 @@ namespace net.sf.robocode.dotnet.host.proxies
             set { throw new NotImplementedException(); }
         }
 
-        public object PrintingHelper
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
         public InterpolationMode InterpolationMode
         {
             get { throw new NotImplementedException(); }
@@ -964,6 +997,205 @@ namespace net.sf.robocode.dotnet.host.proxies
         public bool IsVisibleClipEmpty
         {
             get { throw new NotImplementedException(); }
+        }
+        */
+
+        #endregion
+
+        #region Helpers
+
+        public void setPaintingEnabled(bool value)
+        {
+            isPaintingEnabled = value;
+        }
+
+        public byte[] readoutQueuedCalls()
+        {
+            if (calls == null || calls.position() == 0)
+            {
+                return null;
+            }
+            var res = new byte[calls.position()];
+
+            calls.flip();
+            calls.get(res);
+            calls.clear();
+            calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
+            return res;
+        }
+
+        private void setColor(Brush brush)
+        {
+            var sb = brush as SolidBrush;
+            if (sb != null)
+            {
+                setColor(sb.Color);
+            }
+        }
+
+        private void setColor(Pen p)
+        {
+            setColor(p.Color);
+        }
+
+        private void setColor(Color c)
+        {
+            if (isPaintingEnabled)
+            {
+                calls.mark(); // Mark for rollback
+                try
+                {
+                    put(Method.SET_COLOR);
+                    put(c);
+                }
+                catch (BufferOverflowException)
+                {
+                    if (recoverFromBufferOverflow())
+                    {
+                        setColor(c); // Retry this method after reallocation
+                        return; // Make sure we leave
+                    }
+                }
+            }
+        }
+
+
+        private bool reallocBuffer()
+        {
+            int bufferSize;
+
+            if (calls == null)
+            {
+                // No buffer -> Use initial buffer size
+                bufferSize = INITIAL_BUFFER_SIZE;
+            }
+            else
+            {
+                // Otherwise, double up capacity
+                bufferSize = 2*calls.capacity();
+            }
+
+            // Check if the max. buffer size has been reached
+            if (!isDebugging && bufferSize > MAX_BUFFER_SIZE)
+            {
+                return false; // not reallocated!
+            }
+
+            // Allocate new buffer
+            ByteBuffer newBuffer = ByteBuffer.allocate(bufferSize);
+            newBuffer.order(ByteOrder.LITTLE_ENDIAN);
+
+            if (calls != null)
+            {
+                // Copy all bytes contained in the current buffer to the new buffer
+
+                var copiedBytes = new byte[calls.position()];
+
+                calls.clear();
+                calls.get(copiedBytes);
+
+                newBuffer.put(copiedBytes);
+            }
+
+            // Switch to the new buffer
+            calls = newBuffer;
+
+            return true; // buffer was reallocated
+        }
+
+        private bool recoverFromBufferOverflow()
+        {
+            calls.reset(); // Rollback buffer
+
+            bool recovered = reallocBuffer();
+
+            if (!recovered)
+            {
+                calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
+                calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
+
+                if (unrecoveredBufferOverflowCount++%500 == 0)
+                {
+                    // Prevent spamming 
+                    java.lang.System.@out.println(
+                        "SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
+                }
+            }
+            return recovered;
+        }
+
+        private void put(Method m)
+        {
+            // FOR-DEBUG calls.putInt(0xBADF00D);
+            calls.put((byte) m);
+            // FOR-DEBUG calls.putInt(0xBADF00D);
+        }
+
+        private void put(String value)
+        {
+            serializer.serialize(calls, value);
+        }
+
+        private void put(bool value)
+        {
+            serializer.serialize(calls, value);
+        }
+
+        private void put(byte value)
+        {
+            calls.put(value);
+        }
+
+        private void put(int value)
+        {
+            calls.putInt(value);
+        }
+
+        private void put(int[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(byte[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(char[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(double[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(float[] values)
+        {
+            serializer.serialize(calls, values);
+        }
+
+        private void put(double value)
+        {
+            calls.putDouble(value);
+        }
+
+        private void put(float value)
+        {
+            calls.putFloat(value);
+        }
+
+        private void put(Color value)
+        {
+            calls.putInt(value.ToArgb());
+        }
+
+        private void put(Font font)
+        {
+            serializer.serialize(calls, font.Name);
+            calls.putInt((int) font.Style);
+            calls.putInt((int) font.Size);
         }
 
         #endregion

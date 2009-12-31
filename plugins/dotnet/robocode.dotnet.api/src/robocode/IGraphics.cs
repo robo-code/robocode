@@ -1,37 +1,21 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 
 namespace robocode
 {
     public interface IGraphics
     {
-        void ResetTransform();
-        void MultiplyTransform(Matrix matrix);
-        void MultiplyTransform(Matrix matrix, MatrixOrder order);
-        void TranslateTransform(float dx, float dy);
-        void TranslateTransform(float dx, float dy, MatrixOrder order);
-        void ScaleTransform(float sx, float sy);
-        void ScaleTransform(float sx, float sy, MatrixOrder order);
-        void RotateTransform(float angle);
-        void RotateTransform(float angle, MatrixOrder order);
-        void TransformPoints(CoordinateSpace destSpace, CoordinateSpace srcSpace, PointF[] pts);
-        void TransformPoints(CoordinateSpace destSpace, CoordinateSpace srcSpace, Point[] pts);
         void DrawLine(Pen pen, float x1, float y1, float x2, float y2);
         void DrawLine(Pen pen, PointF pt1, PointF pt2);
-        void DrawLines(Pen pen, PointF[] points);
         void DrawLine(Pen pen, int x1, int y1, int x2, int y2);
         void DrawLine(Pen pen, Point pt1, Point pt2);
-        void DrawLines(Pen pen, Point[] points);
         void DrawArc(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle);
         void DrawArc(Pen pen, RectangleF rect, float startAngle, float sweepAngle);
         void DrawArc(Pen pen, int x, int y, int width, int height, int startAngle, int sweepAngle);
         void DrawArc(Pen pen, Rectangle rect, float startAngle, float sweepAngle);
+        void DrawRectangle(Pen pen, RectangleF rect);
         void DrawRectangle(Pen pen, Rectangle rect);
         void DrawRectangle(Pen pen, float x, float y, float width, float height);
         void DrawRectangle(Pen pen, int x, int y, int width, int height);
-        void DrawRectangles(Pen pen, RectangleF[] rects);
-        void DrawRectangles(Pen pen, Rectangle[] rects);
         void DrawEllipse(Pen pen, RectangleF rect);
         void DrawEllipse(Pen pen, float x, float y, float width, float height);
         void DrawEllipse(Pen pen, Rectangle rect);
@@ -42,6 +26,29 @@ namespace robocode
         void DrawPie(Pen pen, int x, int y, int width, int height, int startAngle, int sweepAngle);
         void DrawPolygon(Pen pen, PointF[] points);
         void DrawPolygon(Pen pen, Point[] points);
+        void FillRectangle(Brush brush, RectangleF rect);
+        void FillRectangle(Brush brush, float x, float y, float width, float height);
+        void FillRectangle(Brush brush, Rectangle rect);
+        void FillRectangle(Brush brush, int x, int y, int width, int height);
+        void FillPolygon(Brush brush, PointF[] points);
+        void FillPolygon(Brush brush, Point[] points);
+        void FillEllipse(Brush brush, RectangleF rect);
+        void FillEllipse(Brush brush, float x, float y, float width, float height);
+        void FillEllipse(Brush brush, Rectangle rect);
+        void FillEllipse(Brush brush, int x, int y, int width, int height);
+        void FillPie(Brush brush, Rectangle rect, float startAngle, float sweepAngle);
+        void FillPie(Brush brush, float x, float y, float width, float height, float startAngle, float sweepAngle);
+        void FillPie(Brush brush, int x, int y, int width, int height, int startAngle, int sweepAngle);
+        void DrawString(string s, Font font, Brush brush, int x, int y);
+        void DrawString(string s, Font font, Brush brush, float x, float y);
+        void DrawString(string s, Font font, Brush brush, PointF point);
+        void DrawString(string s, Font font, Brush brush, Point point);
+
+        /*
+        void DrawLines(Pen pen, PointF[] points);
+        void DrawLines(Pen pen, Point[] points);
+        void DrawRectangles(Pen pen, RectangleF[] rects);
+        void DrawRectangles(Pen pen, Rectangle[] rects);
         void DrawPath(Pen pen, GraphicsPath path);
         void DrawCurve(Pen pen, PointF[] points);
         void DrawCurve(Pen pen, PointF[] points, float tension);
@@ -54,24 +61,10 @@ namespace robocode
         void DrawClosedCurve(Pen pen, PointF[] points, float tension, FillMode fillmode);
         void DrawClosedCurve(Pen pen, Point[] points);
         void DrawClosedCurve(Pen pen, Point[] points, float tension, FillMode fillmode);
-        void FillRectangle(Brush brush, RectangleF rect);
-        void FillRectangle(Brush brush, float x, float y, float width, float height);
-        void FillRectangle(Brush brush, Rectangle rect);
-        void FillRectangle(Brush brush, int x, int y, int width, int height);
+        void FillPolygon(Brush brush, PointF[] points, FillMode fillMode);
+        void FillPolygon(Brush brush, Point[] points, FillMode fillMode);
         void FillRectangles(Brush brush, RectangleF[] rects);
         void FillRectangles(Brush brush, Rectangle[] rects);
-        void FillPolygon(Brush brush, PointF[] points);
-        void FillPolygon(Brush brush, PointF[] points, FillMode fillMode);
-        void FillPolygon(Brush brush, Point[] points);
-        void FillPolygon(Brush brush, Point[] points, FillMode fillMode);
-        void FillEllipse(Brush brush, RectangleF rect);
-        void FillEllipse(Brush brush, float x, float y, float width, float height);
-        void FillEllipse(Brush brush, Rectangle rect);
-        void FillEllipse(Brush brush, int x, int y, int width, int height);
-        void FillPie(Brush brush, Rectangle rect, float startAngle, float sweepAngle);
-        void FillPie(Brush brush, float x, float y, float width, float height, float startAngle, float sweepAngle);
-        void FillPie(Brush brush, int x, int y, int width, int height, int startAngle, int sweepAngle);
-        void FillPath(Brush brush, GraphicsPath path);
         void FillClosedCurve(Brush brush, PointF[] points);
         void FillClosedCurve(Brush brush, PointF[] points, FillMode fillmode);
         void FillClosedCurve(Brush brush, PointF[] points, FillMode fillmode, float tension);
@@ -79,8 +72,7 @@ namespace robocode
         void FillClosedCurve(Brush brush, Point[] points, FillMode fillmode);
         void FillClosedCurve(Brush brush, Point[] points, FillMode fillmode, float tension);
         void FillRegion(Brush brush, Region region);
-        void DrawString(string s, Font font, Brush brush, float x, float y);
-        void DrawString(string s, Font font, Brush brush, PointF point);
+        void FillPath(Brush brush, GraphicsPath path);
         void DrawString(string s, Font font, Brush brush, float x, float y, StringFormat format);
         void DrawString(string s, Font font, Brush brush, PointF point, StringFormat format);
         void DrawString(string s, Font font, Brush brush, RectangleF layoutRectangle);
@@ -96,6 +88,18 @@ namespace robocode
         SizeF MeasureString(string text, Font font, int width);
         SizeF MeasureString(string text, Font font, int width, StringFormat format);
         Region[] MeasureCharacterRanges(string text, Font font, RectangleF layoutRect, StringFormat stringFormat);
+
+        void ResetTransform();
+        void MultiplyTransform(Matrix matrix);
+        void MultiplyTransform(Matrix matrix, MatrixOrder order);
+        void TranslateTransform(float dx, float dy);
+        void TranslateTransform(float dx, float dy, MatrixOrder order);
+        void ScaleTransform(float sx, float sy);
+        void ScaleTransform(float sx, float sy, MatrixOrder order);
+        void RotateTransform(float angle);
+        void RotateTransform(float angle, MatrixOrder order);
+        void TransformPoints(CoordinateSpace destSpace, CoordinateSpace srcSpace, PointF[] pts);
+        void TransformPoints(CoordinateSpace destSpace, CoordinateSpace srcSpace, Point[] pts);
         void SetClip(Graphics g);
         void SetClip(Graphics g, CombineMode combineMode);
         void SetClip(Rectangle rect);
@@ -128,7 +132,6 @@ namespace robocode
         int TextContrast { get; set; }
         SmoothingMode SmoothingMode { get; set; }
         PixelOffsetMode PixelOffsetMode { get; set; }
-        object PrintingHelper { get; set; }
         InterpolationMode InterpolationMode { get; set; }
         Matrix Transform { get; set; }
         GraphicsUnit PageUnit { get; set; }
@@ -140,5 +143,6 @@ namespace robocode
         bool IsClipEmpty { get; }
         RectangleF VisibleClipBounds { get; }
         bool IsVisibleClipEmpty { get; }
+         */
     }
 }
