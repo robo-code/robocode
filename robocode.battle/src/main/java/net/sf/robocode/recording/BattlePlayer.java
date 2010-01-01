@@ -85,7 +85,7 @@ public final class BattlePlayer extends BaseBattle {
 	protected void finalizeRound() {
 		super.finalizeRound();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime()));
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), getTime(), getTotalTurns()));
 	}
 
 	@Override

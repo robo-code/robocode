@@ -116,6 +116,10 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		return currentTurn;
 	}
 
+	public int getTotalTurns() {
+		return totalTurns;
+	}
+
 	public boolean isLastRound() {
 		return (roundNum + 1 == getNumRounds());
 	}

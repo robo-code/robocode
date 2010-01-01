@@ -457,7 +457,7 @@ public final class Battle extends BaseBattle {
 
 		bullets.clear();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(roundNum, currentTurn));
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(roundNum, currentTurn, totalTurns));
 	}
 
 	@Override
