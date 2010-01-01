@@ -6,36 +6,41 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
+ *     Flemming N. Larsen
  *     - Initial implementation
  *******************************************************************************/
-
-package net.sf.robocode.test.robots;
+package net.sf.robocode.test.robotscs;
 
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import static org.hamcrest.CoreMatchers.is;
-import org.junit.Test;
-import robocode.control.events.RoundStartedEvent;
+
 import robocode.control.events.TurnEndedEvent;
-import robocode.control.snapshot.IRobotSnapshot;
 
 
 /**
- * Repeatable robot possition test
- *
- * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (original)
  */
-public class TestJump extends RobocodeTestBed {
-	int lastTurn;
+public class TestRobotDeathEvents extends RobocodeTestBed {
 
-	@Test
-	public void run() {
-		super.run();
+	@Override
+	public String getRobotNames() {
+		return "tested.robotscs.RobotDeathEvents,samplecs.Crazy,samplecs.Target,samplecs.Target,samplecs.Target";
 	}
 
-	public String getRobotNames() {
-		return "samplecs.MyCsRobot,sample.Target";
+	@Override
+	public int getNumRounds() {
+		return 5;
+	}
+
+	@Override
+	public void onTurnEnded(TurnEndedEvent event) {
+		super.onTurnEnded(event);
+
+		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
+
+		if (out.contains("enemyCount != getOthers()")) {
+			Assert.fail("Robot is missing RobotDeathEvent");
+		}	
 	}
 }

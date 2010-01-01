@@ -3,6 +3,7 @@ using net.sf.robocode.dotnet.repository.root;
 using net.sf.robocode.repository;
 using NUnit.Framework;
 using samplecs;
+using tested.robotscs;
 
 namespace net.sf.robocode.dotnet
 {
@@ -12,17 +13,22 @@ namespace net.sf.robocode.dotnet
         [Test]
         public void testDomain()
         {
-            var h = new DllRootHelper();
-            string[] strings = h.findItems(@"file:/" + typeof (MyFirstRobot).Assembly.Location);
+            string[] strings = DllRootHelper.findItems(@"file:/" + typeof(MyFirstRobot).Assembly.Location);
             Assert.GreaterOrEqual(strings.Length, 5);
         }
 
         [Test]
         public void testType()
         {
-            var shell = new AppDomainShell(typeof(MyFirstRobot).Assembly.Location);
-            RobotType type = shell.GetRobotType("samplecs.MyCsRobot");
+            var shell = new AppDomainShell();
+            shell.Init(false);
+            shell.Open(typeof(ThreadAttack).Assembly.Location);
+            RobotType type = shell.GetRobotType(typeof(ThreadAttack).FullName);
+            Assert.AreEqual(RobotType.ADVANCED, type);
+            shell.Open(typeof(MyFirstRobot).Assembly.Location);
+            type = shell.GetRobotType(typeof(MyFirstRobot).FullName);
             Assert.AreEqual(RobotType.STANDARD, type);
+            shell.Dispose();
         }
     }
 }

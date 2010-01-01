@@ -12,7 +12,6 @@
  *     - Updated Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 

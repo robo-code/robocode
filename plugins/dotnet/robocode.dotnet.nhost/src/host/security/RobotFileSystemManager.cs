@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Permissions;
+using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.io;
 
 namespace net.sf.robocode.dotnet.host.security
@@ -24,9 +25,11 @@ namespace net.sf.robocode.dotnet.host.security
         private List<QuotaStream> streams = new List<QuotaStream>();
         private long usedQuota;
         private string writableRootDirectory;
+        private HostingRobotProxy hostingProxy;
 
-        public RobotFileSystemManager(int maxQuota, string writableRootDirectory, string readableRootDirectory)
+        public RobotFileSystemManager(HostingRobotProxy hostingProxy , int maxQuota, string writableRootDirectory, string readableRootDirectory)
         {
+            this.hostingProxy = hostingProxy;
             this.maxQuota = maxQuota;
             this.writableRootDirectory = Path.GetFullPath(writableRootDirectory);
             this.readableRootDirectory = Path.GetFullPath(readableRootDirectory);
@@ -60,7 +63,12 @@ namespace net.sf.robocode.dotnet.host.security
             {
                 if (usedQuota + bytes > maxQuota)
                 {
-                    throw new AccessViolationException("File too big. Max " + maxQuota + " bytes per robot.");
+                    string message = "You have reached your filesystem quota: " + maxQuota + " bytes per robot.";
+                    if (hostingProxy != null)
+                    {
+                        hostingProxy.punishSecurityViolation(message);
+                    }
+                    throw new AccessViolationException(message);
                 }
                 usedQuota += bytes;
                 return usedQuota;

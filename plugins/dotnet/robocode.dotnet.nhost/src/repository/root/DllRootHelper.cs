@@ -9,21 +9,31 @@
 #endregion
 
 using System;
-using System.Globalization;
 using System.IO;
-using System.Threading;
+using net.sf.robocode.dotnet.host;
 using net.sf.robocode.dotnet.host.seed;
+using net.sf.robocode.repository;
 
 namespace net.sf.robocode.dotnet.repository.root
 {
-    public class DllRootHelper
+    public static class DllRootHelper
     {
-        public DllRootHelper()
+        private static AppDomainShell shell;
+
+        public static void Open()
         {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            shell = new AppDomainShell();
+            shell.Init(false);
         }
 
-        public string[] findItems(string dllPath)
+        public static void Close()
+        {
+            shell.Dispose();
+            shell = null;
+        }
+
+        public static string[] findItems(string dllPath)
         {
             string file = dllPath.Substring("file:/".Length);
             if (!File.Exists(file))
@@ -31,10 +41,43 @@ namespace net.sf.robocode.dotnet.repository.root
                 throw new ArgumentException();
             }
 
-            using (var shell = new AppDomainShell(file))
+            if (shell != null)
             {
+                shell.Open(file);
                 return shell.FindRobots();
             }
+            using (AppDomainShell localshell = new AppDomainShell())
+            {
+                localshell.Init(false);
+                localshell.Open(file);
+                return localshell.FindRobots();
+            }
+        }
+
+        public static RobotType GetRobotType(IRobotRepositoryItem robotRepositoryItem)
+        {
+            string file = GetDllFileName(robotRepositoryItem);
+            if (!File.Exists(file))
+            {
+                return RobotType.Invalid;
+            }
+            if (shell != null)
+            {
+                shell.Open(file);
+                return shell.GetRobotType(robotRepositoryItem.getFullClassName());
+            }
+            using (AppDomainShell localshell = new AppDomainShell())
+            {
+                localshell.Init(false);
+                localshell.Open(file);
+                return localshell.GetRobotType(robotRepositoryItem.getFullClassName());
+            }
+        }
+
+        public static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
+        {
+            string url = robotRepositoryItem.getRobotClassPath().getFile();
+            return url.Substring(1, url.LastIndexOf(".dll!/") + 3);
         }
     }
 }

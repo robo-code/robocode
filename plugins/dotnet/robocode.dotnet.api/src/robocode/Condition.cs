@@ -22,7 +22,7 @@ namespace robocode
 {
     public class Condition
     {
-        private ConditionTest test;
+        private readonly ConditionTest test;
 
         /// <summary>
         /// The priority of this condition. Defaults to 80.
@@ -34,9 +34,15 @@ namespace robocode
         /// </summary>
         public string name;
 
-        public Condition(string name, ConditionTest test)
+        public Condition(string name, int priority, ConditionTest test)
+            : this(name, priority)
         {
-            this.name = name;
+            this.test = test;
+        }
+
+        public Condition(string name, ConditionTest test)
+            : this(name)
+        {
             this.test = test;
         }
 

@@ -18,6 +18,7 @@
 package net.sf.robocode.dotnet.repository.root.handlers;
 
 
+import net.sf.robocode.dotnet.repository.root.DllRootHelper;
 import net.sf.robocode.repository.root.handlers.RootHandler;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.JarRoot;
@@ -33,29 +34,38 @@ import java.util.Hashtable;
  * @author Pavel Savara (original)
  */
 public class DllHandler extends RootHandler {
+    public void open(){
+        DllRootHelper.Open();
+    }
+    
+    public void close(){
+        DllRootHelper.Close();
+    }
+
 	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
 		// find dll files
 		final File[] dlls = dir.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				final String low = pathname.toString().toLowerCase();
 
-				return pathname.isFile() && low.endsWith(".dll") && !low.endsWith("robocode.dll");
-			}
-		});
+				return pathname.isFile() && low.endsWith(".dll") && !low.endsWith("robocode.dll") && !low.contains("jni4net");
+            }
+        });
+        if (dlls != null) {
+            // update DLL files
+            for (File dll : dlls) {
+                final String key = dll.toURI().toString();
+                IRepositoryRoot root = roots.get(key);
 
-		// update DLL files
-		for (File dll : dlls) {
-			final String key = dll.toURI().toString();
-			IRepositoryRoot root = roots.get(key);
+                if (root == null) {
+                    root = new DllRoot(db, dll);
+                } else {
+                    roots.remove(key);
+                }
 
-			if (root == null) {
-				root = new DllRoot(db, dll);
-			} else {
-				roots.remove(key);
-			}
-
-			root.update(updateInvalid);
-			newroots.put(dll.toURI().toString(), root);
-		}
-	}
+                root.update(updateInvalid);
+                newroots.put(dll.toURI().toString(), root);
+            }
+        }
+    }
 }

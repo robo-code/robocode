@@ -13,7 +13,7 @@ namespace robocode.control {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class RandomFactory : global::java.lang.Object {
+    public partial class RandomFactory : global::java.lang.Object, global::robocode.net.sf.robocode.security.IHiddenRandomHelper {
         
         internal static global::java.lang.Class staticClass;
         

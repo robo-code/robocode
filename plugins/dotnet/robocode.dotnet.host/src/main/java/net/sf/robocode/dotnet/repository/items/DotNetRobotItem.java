@@ -38,7 +38,6 @@ public class DotNetRobotItem extends RobotItem {
 			properties.setProperty(ROBOT_CLASSNAME, clazz);
 		}
 		isPropertiesLoaded = true; // TODO something real ?
-		isExpectedRobot = true;
 	}
 
 	@Override

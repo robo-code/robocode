@@ -19,17 +19,24 @@ public class DllRootHelper extends system.Object {
             super(__env, __handle);
     }
     
-    @net.sf.jni4net.attributes.ClrConstructor("()V")
-    public DllRootHelper() {
+    protected DllRootHelper() {
             super(((net.sf.jni4net.inj.INJEnv)(null)), 0);
-        net.sf.robocode.dotnet.repository.root.DllRootHelper.__ctorDllRootHelper0(this);
     }
     
     @net.sf.jni4net.attributes.ClrMethod("()V")
-    private native static void __ctorDllRootHelper0(net.sf.jni4net.inj.IClrProxy thiz);
+    public native static void Open();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()V")
+    public native static void Close();
     
     @net.sf.jni4net.attributes.ClrMethod("(LSystem/String;)[LSystem/String;")
-    public native java.lang.String[] findItems(java.lang.String dllPath);
+    public native static java.lang.String[] findItems(java.lang.String dllPath);
+    
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/RobotType;")
+    public native static net.sf.robocode.repository.RobotType GetRobotType(net.sf.robocode.repository.IRobotRepositoryItem robotRepositoryItem);
+    
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)LSystem/String;")
+    public native static java.lang.String GetDllFileName(net.sf.robocode.repository.IRobotRepositoryItem robotRepositoryItem);
     
     public static system.Type typeof() {
         return net.sf.robocode.dotnet.repository.root.DllRootHelper.staticType;

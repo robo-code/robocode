@@ -43,6 +43,7 @@ public class Database {
 		final int prev = items.size();
 		Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
 
+        RootHandler.openHandlers();
 		RootHandler.visitDirectories(robotsDir, false, newroots, roots, this, updateInvalid);
 		for (File dir : devDirs) {
 			RootHandler.visitDirectories(dir, true, newroots, roots, this, updateInvalid);
@@ -55,6 +56,7 @@ public class Database {
 		roots = newroots;
 		oldItems = new Hashtable<String, IItem>();
 
+        RootHandler.closeHandlers();
 		System.gc();
 		return prev != items.size();
 	}

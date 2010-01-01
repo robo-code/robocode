@@ -8,7 +8,7 @@
     <ProjectGuid>{B3487E2D-2737-4C04-AA71-B9A726B3F781}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>net.sf.robocode.dotnet</RootNamespace>
-    <AssemblyName>robocode.dotnet.tests-1.7.1.3</AssemblyName>
+    <AssemblyName>robocode.dotnet.ntests-1.7.3.0</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
@@ -66,6 +66,10 @@
     <ProjectReference Include="..\..\robocode.dotnet.nhost\src\robocode.dotnet.nhost.csproj">
       <Project>{674AED55-B9EC-4C7D-8E0B-1B2481C578B2}</Project>
       <Name>robocode.dotnet.nhost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\robocode.dotnet.robotscs\src\robocode.dotnet.robotscs.csproj">
+      <Project>{B3487E2D-2737-4C04-AA71-B9A726B3F787}</Project>
+      <Name>robocode.dotnet.robotscs</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\robocode.dotnet.samples\src\robocode.dotnet.samples.csproj">
       <Project>{80857B97-6397-487B-A9F5-B07026DCBB66}</Project>

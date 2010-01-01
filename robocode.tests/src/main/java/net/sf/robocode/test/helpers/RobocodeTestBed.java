@@ -163,7 +163,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		runSetup();
 		runBattle(getRobotNames(), getNumRounds(), getInitialPositions());
 		runTeardown();
-		Assert.assertThat(errors, is(getExpectedErrors()));
+		Assert.assertThat("Errors count", errors, is(getExpectedErrors()));
 	}
 
 	protected int getExpectedErrors() {

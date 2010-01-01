@@ -29,7 +29,7 @@ using ByteBuffer = net.sf.robocode.nio.ByteBuffer;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
-    internal class BasicRobotProxy : HostingRobotProxy, IBasicRobotPeer
+    public class BasicRobotProxy : HostingRobotProxy, IBasicRobotPeer
     {
         private const long
             MAX_SET_CALL_COUNT = 10000,

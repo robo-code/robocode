@@ -35,15 +35,6 @@ namespace net.sf.robocode.dotnet.host.seed
         private string robotShadow;
         private string tempDir;
 
-        public AppDomainShell(string dllName)
-        {
-            Init(dllName);
-        }
-
-        protected AppDomainShell()
-        {
-        }
-
         #region IDisposable Members
 
         public void Dispose()
@@ -80,18 +71,15 @@ namespace net.sf.robocode.dotnet.host.seed
 
         #endregion
 
-        protected void Init(string dllName)
+        public void Init(bool fullBind)
         {
-            robotAssemblyFileName = Path.GetFullPath(dllName);
-            name = Path.GetFileNameWithoutExtension(robotAssemblyFileName);
-            tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            robotShadow = Path.Combine(tempDir, Path.GetFileName(robotAssemblyFileName));
+            string name = Path.GetRandomFileName();
+            tempDir = Path.Combine(Path.GetTempPath(), name);
             string robocodeShadow = Path.Combine(tempDir, Path.GetFileName(robocodeAssembly.Location));
             string hostShadow = Path.Combine(tempDir, Path.GetFileName(hostAssembly.Location));
             string jniShadow = Path.Combine(tempDir, Path.GetFileName(jniAssembly.Location));
 
             Directory.CreateDirectory(tempDir);
-            File.Copy(robotAssemblyFileName, robotShadow);
             File.Copy(robocodeAssembly.Location, robocodeShadow);
             File.Copy(hostAssembly.Location, hostShadow);
             File.Copy(jniAssembly.Location, jniShadow);
@@ -108,6 +96,8 @@ namespace net.sf.robocode.dotnet.host.seed
             permissionSet.AddPermission(
                 new SecurityPermission(SecurityPermissionFlag.Execution | SecurityPermissionFlag.Assertion));
             permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, tempDir));
+            permissionSet.AddPermission(new UIPermission(PermissionState.None));
+            //permissionSet.AddPermission(HostProtection);
 
             domainSetup.ApplicationBase = tempDir;
 
@@ -117,11 +107,26 @@ namespace net.sf.robocode.dotnet.host.seed
             domainSetup.DisallowCodeDownload = true;
             domainSetup.DisallowPublisherPolicy = true;
             domainSetup.AppDomainInitializer = AppDomainSeed.Load;
-            domainSetup.AppDomainInitializerArguments = new[] {robotAssemblyFileName, robotShadow};
+            
 
             domain = AppDomain.CreateDomain(name, securityInfo, domainSetup, permissionSet, trustAssemblies);
+            domain.SetData("fullBind", fullBind);
             domain.DoCallBack(AppDomainSeed.Bind);
         }
+
+        public void Open(string dllName)
+        {
+            robotAssemblyFileName = Path.GetFullPath(dllName);
+            robotShadow = Path.Combine(tempDir, Path.GetFileName(robotAssemblyFileName));
+            if (!File.Exists(robotShadow))
+            {
+                File.Copy(robotAssemblyFileName, robotShadow);
+            }
+            domain.SetData("robotAssemblyFileName", robotAssemblyFileName);
+            domain.SetData("robotAssemblyShadowFileName", robotShadow);
+            domain.DoCallBack(AppDomainSeed.Open);
+        }
+
 
         public string[] FindRobots()
         {
@@ -135,7 +140,12 @@ namespace net.sf.robocode.dotnet.host.seed
         {
             domain.SetData("loadRobot", typeFullName);
             domain.DoCallBack(AppDomainSeed.GetRobotType);
-            var type = (int) domain.GetData("robotLoaded");
+            object data = domain.GetData("robotLoaded");
+            if (data==null)
+            {
+                return RobotType.Invalid;
+            }
+            var type = (int) data;
             if (type == 0)
             {
                 return RobotType.Invalid;

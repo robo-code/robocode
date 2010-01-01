@@ -9,7 +9,10 @@
 #endregion
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Security;
 using System.Security.Permissions;
 using java.io;
 using java.lang;
@@ -30,7 +33,7 @@ using StringBuilder = System.Text.StringBuilder;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
-    internal abstract class HostingRobotProxy
+    public abstract class HostingRobotProxy
     {
         private readonly IRobotRepositoryItem robotSpecification;
         protected EventManager eventManager;
@@ -43,6 +46,8 @@ namespace net.sf.robocode.dotnet.host.proxies
         private Type robotType;
         protected RobotStatics statics;
 
+        private readonly Hashtable securityViolations = Hashtable.Synchronized(new Hashtable());
+
         protected HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer,
                                     RobotStatics statics)
         {
@@ -54,7 +59,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             output = TextWriter.Synchronized(new StringWriter(outputSb));
             LoggerN.robotOut = output;
 
-            robotFileSystemManager = new RobotFileSystemManager((int) hostManager.getRobotFilesystemQuota(),
+            robotFileSystemManager = new RobotFileSystemManager(this, (int) hostManager.getRobotFilesystemQuota(),
                                                                 robotSpecification.getWritableDirectory(),
                                                                 robotSpecification.getReadableDirectory());
         }
@@ -73,14 +78,9 @@ namespace net.sf.robocode.dotnet.host.proxies
             robotFileSystemManager = null;
         }
 
-        public PrintStream getOut()
-        {
-            return null;
-        }
-
         public TextWriter GetOut()
         {
-            return null;
+            return output;
         }
 
         public void println(String s)
@@ -98,9 +98,25 @@ namespace net.sf.robocode.dotnet.host.proxies
             output.WriteLine(par0);
         }
 
-        public void punishSecurityViolation(java.lang.String par0)
+        public void punishSecurityViolation(java.lang.String message)
         {
+            peer.drainEnergy();
             peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
+
+            // Prevent unit tests of failing if multiple threads are calling this method in the same time.
+            // We only want the a specific type of security violation logged once so we only get one error
+            // per security violation.
+            lock (securityViolations)
+            {
+                if (securityViolations.ContainsKey(message))
+                {
+                    return;
+                }
+                securityViolations.Add(message, null);
+            }
+
+            Logger.logError(message);
+            println("SYSTEM: " + message);
         }
 
         public RobotStatics getStatics()
@@ -141,8 +157,23 @@ namespace net.sf.robocode.dotnet.host.proxies
                 robot.SetPeer((IBasicRobotPeer) this);
                 eventManager.setRobot(robot);
             }
+
+            catch (MissingMethodException e)
+            {
+                punishSecurityViolation(statics.getName() + " " + e.Message);
+                return false;
+            }
+            catch (SecurityException e)
+            {
+                punishSecurityViolation(statics.getName() + " " + e.Message);
+                return false;
+            }
             catch (Exception e)
             {
+                if (e.InnerException is SecurityException)
+                {
+                    
+                }
                 println("SYSTEM: An error occurred during initialization of " + statics.getName());
                 println("SYSTEM: " + e);
                 println(e);
@@ -179,12 +210,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                         // has started running.
                         eventManager.processEvents();
 
-                        IRunnable runnable = robot.GetRobotRunnable();
-
-                        if (runnable != null)
-                        {
-                            runnable.Run();
-                        }
+                        CallUserCode();
                     }
 
                     // noinspection InfiniteLoopStatement
@@ -221,11 +247,22 @@ namespace net.sf.robocode.dotnet.host.proxies
                     println("SYSTEM: Robot disabled" + msg);
                     LoggerN.logMessage(statics.getName() + "Robot disabled");
                 }
+                catch (SecurityException e)
+                {
+                    punishSecurityViolation(statics.getName() + " " + e.Message);
+                }
                 catch (Exception e)
                 {
-                    drainEnergy();
-                    println(e);
-                    LoggerN.logMessage(statics.getName() + ": Exception: " + e); // without stack here
+                    if (e.InnerException is SecurityException)
+                    {
+                        punishSecurityViolation(statics.getName() + " " + e.InnerException +" "+ e.Message);
+                    }
+                    else
+                    {
+                        drainEnergy();
+                        println(e);
+                        LoggerN.logMessage(statics.getName() + ": Exception: " + e); // without stack here
+                    }
                 }
                 finally
                 {
@@ -234,6 +271,20 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
 
             peer.setRunning(false);
+        }
+
+        [SecurityPermission(SecurityAction.Deny)]
+        [ReflectionPermission(SecurityAction.Deny)]
+        [FileIOPermission(SecurityAction.Deny)]
+        [UIPermission(SecurityAction.Deny)]
+        private void CallUserCode()
+        {
+            IRunnable runnable = robot.GetRobotRunnable();
+
+            if (runnable != null)
+            {
+                runnable.Run();
+            }
         }
 
         protected abstract void waitForBattleEndImpl();

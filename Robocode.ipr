@@ -272,6 +272,8 @@
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.ntests/robocode.dotnet.ntests.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.ntests/robocode.dotnet.ntests.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.robotscs/robocode.dotnet.robotscs.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.robotscs/robocode.dotnet.robotscs.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.tests/robocode.dotnet.tests.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.tests/robocode.dotnet.tests.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" group="robocode and modules" />
@@ -327,6 +329,7 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="" />
+    <mapping directory="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.ntests" vcs="svn" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">

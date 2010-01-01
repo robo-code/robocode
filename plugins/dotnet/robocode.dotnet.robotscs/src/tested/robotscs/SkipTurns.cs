@@ -1,0 +1,95 @@
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System;
+using System.Threading;
+using robocode;
+using robocode.exception;
+
+namespace tested.robotscs
+{
+    public class SkipTurns : AdvancedRobot
+    {
+        private volatile int skipped = 0;
+
+        private const int limit = 5;
+
+        public override void Run()
+        {
+            // noinspection InfiniteLoopStatement
+            for (;;)
+            {
+                if (skipped > limit)
+                {
+                    throw new RobotException("satisfied, end battle please");
+                }
+                TurnLeft(10);
+                if (skipped > limit)
+                {
+                    // satisfied, end battle please
+                    throw new RobotException();
+                }
+                Ahead(1);
+                if (skipped > limit)
+                {
+                    // satisfied, end battle please
+                    throw new RobotException();
+                }
+                TurnLeft(10);
+                if (skipped > limit)
+                {
+                    // satisfied, end battle please
+                    throw new RobotException();
+                }
+                Back(1);
+            }
+        }
+
+
+        public override void OnStatus(StatusEvent e)
+        {
+            Out.WriteLine("live");
+            slowResponse();
+        }
+
+
+        public override void OnSkippedTurn(SkippedTurnEvent evnt)
+        {
+            Out.WriteLine("Skipped!!!");
+
+            skipped++;
+        }
+
+        private readonly Object w = new Object();
+
+        private void slowResponse()
+        {
+            lock (w)
+            {
+                try
+                {
+                    if (skipped > 3)
+                    {
+                        Thread.Sleep(3000);
+                    }
+                    else
+                    {
+                        Thread.Sleep(130);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // eat interrupt
+                    Out.WriteLine(ex);
+                }
+            }
+        }
+    }
+}

@@ -18,6 +18,7 @@
 package net.sf.robocode.dotnet.repository.root;
 
 
+import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
 import net.sf.robocode.repository.root.BaseRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.Database;
@@ -41,8 +42,6 @@ import java.lang.String;
 public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	private static DllRootHelper helper;
-
 	private URL dllUrl;
 	private String dllNoSeparator;
 	private long lastModified;
@@ -57,8 +56,6 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
-		getHelper();
-
 	}
 
 	public void update(boolean updateInvalid) {
@@ -81,7 +78,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IItem> items) {
-		final String[] dllitems = getHelper().findItems(dllNoSeparator);
+		final String[] dllitems = DllRootHelper.findItems(dllNoSeparator);
 
 		for (String url : dllitems) {
 			createItem(items, dllUrl, url);
@@ -129,10 +126,4 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private static DllRootHelper getHelper() {
-		if (helper == null) {
-			helper = new DllRootHelper();
-		}
-		return helper;
-	}
 }

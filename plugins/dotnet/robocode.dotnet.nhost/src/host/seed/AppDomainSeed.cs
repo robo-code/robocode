@@ -17,9 +17,16 @@ using net.sf.jni4net;
 using net.sf.jni4net.jni;
 using net.sf.jni4net.nio;
 using net.sf.jni4net.utils;
+using net.sf.robocode.core;
 using net.sf.robocode.dotnet.utils;
+using net.sf.robocode.host;
 using net.sf.robocode.io;
+using net.sf.robocode.manager;
+using net.sf.robocode.peer;
 using net.sf.robocode.repository;
+using net.sf.robocode.serialization;
+using robocode.control;
+using robocode.exception;
 using Buffer = java.nio.Buffer;
 using ByteBuffer = java.nio.ByteBuffer;
 using Exception = System.Exception;
@@ -42,8 +49,7 @@ namespace net.sf.robocode.dotnet.host.seed
             try
             {
                 domain = AppDomain.CurrentDomain;
-                robotAssemblyFileName = args[0];
-                robotAssemblyShadowFileName = args[1];
+                domain.UnhandledException += (domain_UnhandledException);
             }
             catch (Exception ex)
             {
@@ -52,10 +58,30 @@ namespace net.sf.robocode.dotnet.host.seed
             }
         }
 
+        public static void Open()
+        {
+            try
+            {
+                robotAssemblyFileName = (string)domain.GetData("robotAssemblyFileName");
+                robotAssemblyShadowFileName = (string)domain.GetData("robotAssemblyShadowFileName");
+            }
+            catch (Exception ex)
+            {
+                LoggerN.logError(ex);
+                throw;
+            }
+        }
+
+        static void domain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            LoggerN.logError(e.ExceptionObject.ToString());
+        }
+
         public static void Bind()
         {
             try
             {
+                bool fullBind = (bool)domain.GetData("fullBind");
                 var setup = new BridgeSetup(false);
                 //setup.Verbose = true;
                 //setup.Debug = true;
@@ -64,13 +90,34 @@ namespace net.sf.robocode.dotnet.host.seed
                 setup.BindStatic = false;
                 Bridge.CreateJVM(setup);
                 JNIEnv env = JNIEnv.ThreadEnv;
-                Registry.RegisterType(typeof (Error), true, env);
-                Registry.RegisterType(typeof (ByteBuffer), true, env);
-                Registry.RegisterType(typeof (Buffer), true, env);
-                Registry.RegisterType(typeof (ByteBufferClr), true, env);
-                Registry.RegisterType(typeof (java.lang.System), true, env);
-                Registry.RegisterType(typeof (ByteOrder), true, env);
-                Bridge.LoadAndRegisterAssembly(typeof (AppDomainSeed).Assembly.Location);
+                Registry.RegisterType(typeof(RobotType), true, env);
+                Registry.RegisterType(typeof(Logger), true, env);
+                if (fullBind)
+                {
+                    Registry.RegisterType(typeof(ByteBuffer), true, env);
+                    Registry.RegisterType(typeof(Buffer), true, env);
+                    Registry.RegisterType(typeof(ByteBufferClr), true, env);
+                    Registry.RegisterType(typeof(java.lang.System), true, env);
+                    Registry.RegisterType(typeof(ByteOrder), true, env);
+                    Registry.RegisterType(typeof(java.util.Random), true, env);
+                    Registry.RegisterType(typeof(BadBehavior), true, env);
+                    Registry.RegisterType(typeof(RandomFactory), true, env);
+                    Registry.RegisterType(typeof(RobotSpecification), true, env);
+                    Registry.RegisterType(typeof(ContainerBase), true, env);
+                    Registry.RegisterType(typeof(RbSerializer), true, env);
+                    Registry.RegisterType(typeof(Error), true, env);
+                    Registry.RegisterType(typeof(AbortedException), true, env);
+                    Registry.RegisterType(typeof(DeathException), true, env);
+                    Registry.RegisterType(typeof(DisabledException), true, env);
+                    Registry.RegisterType(typeof(WinException), true, env);
+
+                    Registry.RegisterType(typeof(__IVersionManagerBase), true, env);
+                    Registry.RegisterType(typeof(__IRobotPeer), true, env);
+                    Registry.RegisterType(typeof(__IRobotStatics), true, env);
+                    Registry.RegisterType(typeof(__IRobotRepositoryItem), true, env);
+                    Registry.RegisterType(typeof(__ISerializableHelper), true, env);
+                    Registry.RegisterType(typeof(__IHostManager), true, env);
+                }
             }
             catch (Exception ex)
             {
@@ -124,6 +171,7 @@ namespace net.sf.robocode.dotnet.host.seed
             }
             catch (Exception ex)
             {
+                domain.SetData("robotLoaded", 0);
                 LoggerN.logError(ex);
                 throw;
             }

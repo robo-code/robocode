@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security;
+using System.Security.Permissions;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.security;
 using robocode;
@@ -18,7 +20,7 @@ using robocode.robotinterfaces;
 
 namespace net.sf.robocode.dotnet.host.events
 {
-    internal class EventManager
+    public class EventManager
     {
         private const int MAX_PRIORITY = 100;
         public const int MAX_EVENT_STACK = 2;
@@ -31,7 +33,7 @@ namespace net.sf.robocode.dotnet.host.events
         private Event currentTopEvent;
         private int currentTopEventPriority;
         private ScannedRobotEvent dummyScannedRobotEvent;
-        private Dictionary<String, Event> namedEvents;
+        private Dictionary<string, Event> namedEvents;
 
         private IBasicRobot robot;
         private BasicRobotProxy robotProxy;
@@ -427,17 +429,7 @@ namespace net.sf.robocode.dotnet.host.events
             // Process custom events
             foreach (Condition customEvent in customEvents)
             {
-                bool conditionSatisfied;
-
-                robotProxy.setTestingCondition(true);
-                try
-                {
-                    conditionSatisfied = customEvent.Test();
-                }
-                finally
-                {
-                    robotProxy.setTestingCondition(false);
-                }
+                bool conditionSatisfied = CallUserCode(customEvent);
                 if (conditionSatisfied)
                 {
                     var evnt = new CustomEvent(customEvent);
@@ -498,6 +490,25 @@ namespace net.sf.robocode.dotnet.host.events
             }
         }
 
+        [SecurityPermission(SecurityAction.Deny)]
+        [ReflectionPermission(SecurityAction.Deny)]
+        [FileIOPermission(SecurityAction.Deny)]
+        [UIPermission(SecurityAction.Deny)]
+        private bool CallUserCode(Condition customEvent)
+        {
+            bool conditionSatisfied;
+            robotProxy.setTestingCondition(true);
+            try
+            {
+                conditionSatisfied = customEvent.Test();
+            }
+            finally
+            {
+                robotProxy.setTestingCondition(false);
+            }
+            return conditionSatisfied;
+        }
+
         private void dispatch(Event currentEvent)
         {
             if (robot != null && currentEvent != null)
@@ -512,25 +523,25 @@ namespace net.sf.robocode.dotnet.host.events
                                                robotProxy.getGraphicsImpl());
                     }
                 }
-                catch (AbortedException)
-                {
-                } //ignore
-                catch (DeathException)
-                {
-                } //ignore
-                catch (DisabledException)
-                {
-                } //ignore
-                catch (WinException)
-                {
-                } //ignore
                 catch (EventInterruptedException)
                 {
                 } //ignore
                 catch (Exception ex)
                 {
-                    robotProxy.println("SYSTEM: Exception occurred on " + currentEvent.GetType().Name);
-                    robotProxy.GetOut().WriteLine(ex.StackTrace);
+                    if (ex is SecurityException)
+                    {
+                        robotProxy.punishSecurityViolation(robotProxy.getStatics().getName() + " " + ex.Message);
+                    }
+                    else if (ex.InnerException is SecurityException)
+                    {
+                        robotProxy.punishSecurityViolation(robotProxy.getStatics().getName() + " " + ex.InnerException + " " + ex.Message);
+                    }
+                    else if (!(ex is AbortedException| ex is DeathException|ex is DisabledException |ex is WinException))
+                    {
+                        robotProxy.println("SYSTEM: Exception occurred on " + currentEvent.GetType().Name);
+                        robotProxy.GetOut().WriteLine(ex.StackTrace);
+                    }
+                    throw;
                 }
             }
         }
@@ -632,15 +643,15 @@ namespace net.sf.robocode.dotnet.host.events
             return events;
         }
 
-        public int getEventPriority(String eventClass)
+        public int getEventPriority(string eventClass)
         {
             if (eventClass == null)
             {
                 return -1;
             }
-            Event evnt = namedEvents[eventClass];
+            Event evnt;
 
-            if (evnt == null)
+            if (!namedEvents.TryGetValue(eventClass, out evnt))
             {
                 return -1;
             }
@@ -653,9 +664,9 @@ namespace net.sf.robocode.dotnet.host.events
             {
                 return;
             }
-            Event evnt = namedEvents[eventClass];
+            Event evnt ;
 
-            if (evnt == null)
+            if (!namedEvents.TryGetValue(eventClass, out evnt))
             {
                 robotProxy.println("SYSTEM: Unknown event class: " + eventClass);
                 return;

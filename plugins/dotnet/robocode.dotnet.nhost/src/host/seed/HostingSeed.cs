@@ -26,6 +26,7 @@ namespace net.sf.robocode.dotnet.host.seed
 {
     [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
     [FileIOPermission(SecurityAction.Assert, Unrestricted = true)]
+    [SecurityPermission(SecurityAction.Assert, Unrestricted = true)]
     public class HostingSeed : AppDomainSeed
     {
         private static IHostManager hostManager;
@@ -90,6 +91,7 @@ namespace net.sf.robocode.dotnet.host.seed
         {
             try
             {
+                robotThread.Priority = ThreadPriority.Lowest;
                 robotThread.Abort();
                 robotThread.Interrupt();
             }

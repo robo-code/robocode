@@ -28,7 +28,8 @@ namespace net.sf.robocode.dotnet.host.seed
                             IHostManager hostManager, IRobotPeer peer,
                             IRobotStatics jstatics, string dllFileName)
         {
-            Init(dllFileName);
+            Init(true);
+            Open(dllFileName);
             domain.SetData("hostManager", ((IJvmProxy) hostManager).JvmHandle);
             domain.SetData("peer", ((IJvmProxy) peer).JvmHandle);
 

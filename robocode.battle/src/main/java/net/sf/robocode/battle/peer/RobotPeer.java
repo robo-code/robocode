@@ -1562,19 +1562,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * Clean things up removing all references to the robot.
 	 */
 	public void cleanup() {
-		if (statistics != null) {
-			statistics.cleanup();
-			statistics = null;
-		}
-
 		battle = null;
 
 		if (robotProxy != null) {
 			robotProxy.cleanup();
+            robotProxy = null;
 		}
 
-		// Cleanup robot proxy
-		robotProxy = null;
+        if (statistics != null) {
+            statistics.cleanup();
+            statistics = null;
+        }
 
 		status = null;
 		commands = null;

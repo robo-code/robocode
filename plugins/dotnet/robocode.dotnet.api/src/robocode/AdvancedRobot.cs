@@ -520,6 +520,13 @@ namespace robocode
             }
         }
 
+        public void AddCustomEvent(string name, int priority, ConditionTest test)
+        {
+            AddCustomEvent(new Condition(name, priority, test));
+        }
+
+
+        
         ///<summary>
         ///  Removes a custom evnt that was previously added by calling
         ///  {@link #AddCustomEvent(Condition)}.

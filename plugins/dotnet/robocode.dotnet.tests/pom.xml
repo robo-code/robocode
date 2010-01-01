@@ -34,6 +34,12 @@
             <version>${robocode.nversion}</version>
         </dependency>
         <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.robotscs</artifactId>
+            <version>${robocode.nversion}</version>
+            <type>dotnet:library</type>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.5</version>
@@ -43,31 +49,26 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.core</artifactId>
             <version>${robocode.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.samples</artifactId>
             <version>${robocode.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
             <version>${robocode.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.battle</artifactId>
             <version>${robocode.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.repository</artifactId>
             <version>${robocode.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

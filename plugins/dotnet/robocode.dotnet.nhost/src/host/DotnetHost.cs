@@ -12,6 +12,7 @@ using System.IO;
 using java.lang;
 using net.sf.jni4net;
 using net.sf.robocode.dotnet.host.seed;
+using net.sf.robocode.dotnet.repository.root;
 using net.sf.robocode.host;
 using net.sf.robocode.host.proxies;
 using net.sf.robocode.peer;
@@ -30,8 +31,9 @@ namespace net.sf.robocode.dotnet.host
         {
             Object s = HiddenAccess.getFileSpecification(robotSpecification);
             var itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);
-            string file = GetDllFileName(itemSpecification);
-            return new HostingShell(itemSpecification, hostManager, peer, statics, file);
+            string file = DllRootHelper.GetDllFileName(itemSpecification);
+            HostingShell hostingShell = new HostingShell(itemSpecification, hostManager, peer, statics, file);
+            return hostingShell;
         }
 
         public String[] getReferencedClasses(IRobotRepositoryItem par0)
@@ -41,23 +43,10 @@ namespace net.sf.robocode.dotnet.host
 
         public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, bool resolve, bool message)
         {
-            string file = GetDllFileName(robotRepositoryItem);
-            if (!File.Exists(file))
-            {
-                return RobotType.Invalid;
-            }
-            using (var shell = new AppDomainShell(file))
-            {
-                return shell.GetRobotType(robotRepositoryItem.getFullClassName());
-            }
+            return DllRootHelper.GetRobotType(robotRepositoryItem);
         }
 
         #endregion
 
-        private static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
-        {
-            string url = robotRepositoryItem.getRobotClassPath().getFile();
-            return url.Substring(1, url.LastIndexOf(".dll!/") + 3);
-        }
     }
 }

@@ -17,12 +17,6 @@
         <name>Robocode</name>
         <url>http://robocode.sf.net</url>
     </organization>
-    <repositories>
-        <repository>
-            <id>net.sf.jni4net</id>
-            <url>http://jni4net.googlecode.com/svn/mvnrepo</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
