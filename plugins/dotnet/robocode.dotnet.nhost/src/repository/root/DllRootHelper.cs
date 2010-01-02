@@ -20,17 +20,14 @@ namespace net.sf.robocode.dotnet.repository.root
     {
         private static AppDomainShell shell;
 
-        public static void Open()
+        public static void Refresh()
         {
-            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            if (shell!=null)
+            {
+                shell.Dispose();
+            }
             shell = new AppDomainShell();
             shell.Init(false);
-        }
-
-        public static void Close()
-        {
-            shell.Dispose();
-            shell = null;
         }
 
         public static string[] findItems(string dllPath)

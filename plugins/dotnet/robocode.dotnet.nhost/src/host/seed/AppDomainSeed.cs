@@ -90,8 +90,6 @@ namespace net.sf.robocode.dotnet.host.seed
                 setup.BindStatic = false;
                 Bridge.CreateJVM(setup);
                 JNIEnv env = JNIEnv.ThreadEnv;
-                Registry.RegisterType(typeof(RobotType), true, env);
-                Registry.RegisterType(typeof(Logger), true, env);
                 if (fullBind)
                 {
                     Registry.RegisterType(typeof(ByteBuffer), true, env);
@@ -99,6 +97,10 @@ namespace net.sf.robocode.dotnet.host.seed
                     Registry.RegisterType(typeof(ByteBufferClr), true, env);
                     Registry.RegisterType(typeof(java.lang.System), true, env);
                     Registry.RegisterType(typeof(ByteOrder), true, env);
+                    /*
+                    Registry.RegisterType(typeof(RobotType), true, env);
+                    Registry.RegisterType(typeof(Logger), true, env);
+
                     Registry.RegisterType(typeof(java.util.Random), true, env);
                     Registry.RegisterType(typeof(BadBehavior), true, env);
                     Registry.RegisterType(typeof(RandomFactory), true, env);
@@ -117,6 +119,13 @@ namespace net.sf.robocode.dotnet.host.seed
                     Registry.RegisterType(typeof(__IRobotRepositoryItem), true, env);
                     Registry.RegisterType(typeof(__ISerializableHelper), true, env);
                     Registry.RegisterType(typeof(__IHostManager), true, env);
+                     */
+                    Bridge.RegisterAssembly(typeof(RbSerializer).Assembly);
+                }
+                else
+                {
+                    Registry.RegisterType(typeof(RobotType), true, env);
+                    Registry.RegisterType(typeof(Logger), true, env);
                 }
             }
             catch (Exception ex)

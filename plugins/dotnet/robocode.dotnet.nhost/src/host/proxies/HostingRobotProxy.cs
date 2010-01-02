@@ -100,9 +100,6 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         public void punishSecurityViolation(java.lang.String message)
         {
-            peer.drainEnergy();
-            peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
-
             // Prevent unit tests of failing if multiple threads are calling this method in the same time.
             // We only want the a specific type of security violation logged once so we only get one error
             // per security violation.
@@ -117,6 +114,8 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             Logger.logError(message);
             println("SYSTEM: " + message);
+            peer.drainEnergy();
+            peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
         }
 
         public RobotStatics getStatics()

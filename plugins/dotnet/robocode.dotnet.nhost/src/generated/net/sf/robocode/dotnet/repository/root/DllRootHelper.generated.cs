@@ -40,34 +40,24 @@ namespace net.sf.robocode.dotnet.repository.root {
         private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv @__env, global::java.lang.Class @__class) {
             global::System.Type @__type = typeof(__DllRootHelper);
             global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> methods = new global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod>();
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "Open", "Open0", "()V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "Close", "Close1", "()V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "findItems", "findItems2", "(Ljava/lang/String;)[Ljava/lang/String;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "GetRobotType", "GetRobotType3", "(Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/Ro" +
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "Refresh", "Refresh0", "()V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "findItems", "findItems1", "(Ljava/lang/String;)[Ljava/lang/String;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "GetRobotType", "GetRobotType2", "(Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/Ro" +
                         "botType;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "GetDllFileName", "GetDllFileName4", "(Lnet/sf/robocode/repository/IRobotRepositoryItem;)Ljava/lang/String;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "GetDllFileName", "GetDllFileName3", "(Lnet/sf/robocode/repository/IRobotRepositoryItem;)Ljava/lang/String;"));
             return methods;
         }
         
-        private static void Open0(global::System.IntPtr @__envp, global::System.IntPtr @__class) {
+        private static void Refresh0(global::System.IntPtr @__envp, global::System.IntPtr @__class) {
             // ()V
             // ()V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
-            global::net.sf.robocode.dotnet.repository.root.DllRootHelper.Open();
+            global::net.sf.robocode.dotnet.repository.root.DllRootHelper.Refresh();
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static void Close1(global::System.IntPtr @__envp, global::System.IntPtr @__class) {
-            // ()V
-            // ()V
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            try {
-            global::net.sf.robocode.dotnet.repository.root.DllRootHelper.Close();
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-        }
-        
-        private static global::System.IntPtr findItems2(global::System.IntPtr @__envp, global::System.IntPtr @__class, global::System.IntPtr dllPath) {
+        private static global::System.IntPtr findItems1(global::System.IntPtr @__envp, global::System.IntPtr @__class, global::System.IntPtr dllPath) {
             // (Ljava/lang/String;)[Ljava/lang/String;
             // (LSystem/String;)[LSystem/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -77,7 +67,7 @@ namespace net.sf.robocode.dotnet.repository.root {
             return default(global::System.IntPtr);
         }
         
-        private static global::System.IntPtr GetRobotType3(global::System.IntPtr @__envp, global::System.IntPtr @__class, global::System.IntPtr robotRepositoryItem) {
+        private static global::System.IntPtr GetRobotType2(global::System.IntPtr @__envp, global::System.IntPtr @__class, global::System.IntPtr robotRepositoryItem) {
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/RobotType;
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/RobotType;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -87,7 +77,7 @@ namespace net.sf.robocode.dotnet.repository.root {
             return default(global::System.IntPtr);
         }
         
-        private static global::System.IntPtr GetDllFileName4(global::System.IntPtr @__envp, global::System.IntPtr @__class, global::System.IntPtr robotRepositoryItem) {
+        private static global::System.IntPtr GetDllFileName3(global::System.IntPtr @__envp, global::System.IntPtr @__class, global::System.IntPtr robotRepositoryItem) {
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)Ljava/lang/String;
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)LSystem/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);

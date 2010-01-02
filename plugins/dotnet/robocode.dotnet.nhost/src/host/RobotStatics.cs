@@ -172,15 +172,15 @@ namespace net.sf.robocode.host
             public int sizeOf(RbSerializerN serializer, object obje)
             {
                 var obj = (RobotStatics) obje;
-                int size = RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_BOOL*7
+                int size = RbSerializerN.SIZEOF_TYPEINFO + RbSerializerN.SIZEOF_BOOL*7
                            + serializer.sizeOf(obj.name)
                            + serializer.sizeOf(obj.shortName)
                            + serializer.sizeOf(obj.veryShortName)
                            + serializer.sizeOf(obj.fullClassName)
                            + serializer.sizeOf(obj.shortClassName)
-                           + RbSerializer.SIZEOF_INT*5
-                           + RbSerializer.SIZEOF_DOUBLE
-                           + RbSerializer.SIZEOF_LONG;
+                           + RbSerializerN.SIZEOF_INT*5
+                           + RbSerializerN.SIZEOF_DOUBLE
+                           + RbSerializerN.SIZEOF_LONG;
                 if (obj.teammates != null)
                 {
                     foreach (String mate in obj.teammates)
@@ -188,7 +188,7 @@ namespace net.sf.robocode.host
                         size += serializer.sizeOf(mate);
                     }
                 }
-                size += RbSerializer.SIZEOF_INT;
+                size += RbSerializerN.SIZEOF_INT;
                 size += serializer.sizeOf(obj.teamName);
 
                 return size;

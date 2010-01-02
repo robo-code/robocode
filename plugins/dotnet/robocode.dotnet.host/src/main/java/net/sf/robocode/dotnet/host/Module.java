@@ -29,11 +29,6 @@ import java.util.List;
 public class Module extends BaseModule {
 	static {
 		// .NET proxies and their interfaces must be loaded in system class loader in order to call native methods
-		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.host.DotnetHost");
-		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.repository.root.DllRootHelper");
-		EngineClassLoader.addExclusion("net.sf.robocode.dotnet.nhost.ModuleN");
-		EngineClassLoader.addExclusion("net.sf.robocode.peer.__IRobotPeer");
-		EngineClassLoader.addExclusion("net.sf.robocode.peer.BadBehavior");
 
 		Init();
 	}

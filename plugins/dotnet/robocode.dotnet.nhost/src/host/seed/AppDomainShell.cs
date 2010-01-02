@@ -44,6 +44,8 @@ namespace net.sf.robocode.dotnet.host.seed
                 try
                 {
                     AppDomain.Unload(domain);
+                    domain = null;
+                    GC.Collect();
                 }
                 catch (Exception ex)
                 {
@@ -53,7 +55,6 @@ namespace net.sf.robocode.dotnet.host.seed
                         robotPeer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
                     }
                 }
-                domain = null;
             }
             if (tempDir != null && Directory.Exists(tempDir))
             {

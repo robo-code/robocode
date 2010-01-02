@@ -12,6 +12,9 @@
     <orderEntry type="module" module-name="robocode.host" exported="" />
     <orderEntry type="module" module-name="robocode.api" exported="" />
     <orderEntry type="module" module-name="robocode.core" exported="" />
+    <orderEntry type="module" module-name="robocode.host" exported="" />
+    <orderEntry type="module" module-name="robocode.api" exported="" />
+    <orderEntry type="module" module-name="robocode.core" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="Maven: org.scala-lang:scala-library:2.7.3" level="project" />
   </component>

@@ -309,8 +309,6 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 
 	public void punishSecurityViolation(String message) {
-        peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
-
 		// Prevent unit tests of failing if multiple threads are calling this method in the same time.
 		// We only want the a specific type of security violation logged once so we only get one error
 		// per security violation.
@@ -323,5 +321,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		logError(message);
 		println("SYSTEM: " + message);
+        peer.drainEnergy();
+        peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
 	}
 }

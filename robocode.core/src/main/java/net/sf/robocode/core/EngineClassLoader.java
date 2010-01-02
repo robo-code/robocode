@@ -41,6 +41,19 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add("net.sf.robocode.repository.IRobotRepositoryItem");
 		exclusions.add("net.sf.robocode.repository.RobotType");
 		exclusions.add("net.sf.robocode.host.RobotStatics");
+
+        exclusions.add("net.sf.robocode.dotnet.host.DotnetHost");
+        exclusions.add("net.sf.robocode.dotnet.repository.root.DllRootHelper");
+        exclusions.add("net.sf.robocode.dotnet.nhost.ModuleN");
+        exclusions.add("net.sf.robocode.peer.__IRobotPeer");
+        exclusions.add("net.sf.robocode.host.__IHostManager");
+        exclusions.add("net.sf.robocode.peer.__IRobotStatics");
+        exclusions.add("net.sf.robocode.repository.__IRepositoryItem");
+        exclusions.add("net.sf.robocode.host.proxies.__IHostingRobotProxy");
+        exclusions.add("net.sf.robocode.manager.__IVersionManagerBase");
+        exclusions.add("net.sf.robocode.peer.BadBehavior");
+        exclusions.add("net.sf.robocode.version.VersionManager");
+        exclusions.add("net.sf.robocode.dotnet.repository.items.DotNetRobotItem");
 	}
 
 	public static void addExclusion(String classFullName) {
@@ -96,6 +109,7 @@ public class EngineClassLoader extends URLClassLoader {
 	private boolean isEngineClass(String name) {
 		if (name.startsWith("net.sf.robocode") || name.startsWith("robocode.control")) {
 			if (exclusions.contains(name)) {
+                System.out.println("Exclusion "+name);
 				return false;
 			}
 			// try to find it in engine's classpath

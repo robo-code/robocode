@@ -47,7 +47,7 @@ namespace net.sf.robocode.dotnet.peer
                 int r = serializer.sizeOf(obj.recipient);
                 int m = serializer.sizeOf(obj.message);
 
-                return RbSerializer.SIZEOF_TYPEINFO + s + r + m;
+                return RbSerializerN.SIZEOF_TYPEINFO + s + r + m;
             }
 
             public void serialize(RbSerializerN serializer, ByteBuffer buffer, Object obje)

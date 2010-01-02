@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Security.Permissions;
 using System.Threading;
 using net.sf.jni4net;
+using net.sf.jni4net.jni;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.dotnet.nhost;
 using net.sf.robocode.dotnet.peer;
@@ -44,9 +45,9 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 ModuleN.InitN();
 
-                hostManager = Bridge.CreateProxy<IHostManager>((IntPtr) domain.GetData("hostManager"));
-                robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr) domain.GetData("peer"));
-                statics = ((RobotStatics) domain.GetData("statics"));
+                hostManager = Bridge.CreateProxy<IHostManager>((IntPtr)domain.GetData("hostManager"));
+                robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
+                statics = ((RobotStatics)domain.GetData("statics"));
                 //robotSpecification = Bridge.CreateProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
                 specification = Bridge.CreateProxy<IRobotRepositoryItem>((IntPtr) domain.GetData("item"));
                 CreateProxy();
@@ -74,6 +75,7 @@ namespace net.sf.robocode.dotnet.host.seed
 
                 robotThread = new Thread(RobotMain);
                 robotThread.Start(null);
+                robotThread.Name = "Robot: "+robotProxy.getStatics().getName();
             }
             catch (Exception ex)
             {
@@ -84,7 +86,14 @@ namespace net.sf.robocode.dotnet.host.seed
 
         private static void RobotMain(object param)
         {
-            robotProxy.run();
+            try
+            {
+                robotProxy.run();
+            }
+            finally
+            {
+                JNIEnv.ThreadEnv.GetJavaVM().DetachCurrentThread();
+            }
         }
 
         public static void ForceStopThread()

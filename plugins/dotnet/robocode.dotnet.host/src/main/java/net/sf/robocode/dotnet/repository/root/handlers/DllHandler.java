@@ -35,11 +35,11 @@ import java.util.Hashtable;
  */
 public class DllHandler extends RootHandler {
     public void open(){
-        DllRootHelper.Open();
+        DllRootHelper.Refresh();
     }
     
     public void close(){
-        DllRootHelper.Close();
+        DllRootHelper.Refresh();
     }
 
 	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
