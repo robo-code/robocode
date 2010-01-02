@@ -109,7 +109,6 @@ public class EngineClassLoader extends URLClassLoader {
 	private boolean isEngineClass(String name) {
 		if (name.startsWith("net.sf.robocode") || name.startsWith("robocode.control")) {
 			if (exclusions.contains(name)) {
-                System.out.println("Exclusion "+name);
 				return false;
 			}
 			// try to find it in engine's classpath
