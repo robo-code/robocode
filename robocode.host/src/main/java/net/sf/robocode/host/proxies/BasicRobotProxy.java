@@ -25,6 +25,7 @@ import net.sf.robocode.robotpaint.IGraphicsProxy;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.Event;
+import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
@@ -437,7 +438,10 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy.setPaintingEnabled(false);
 		do {
 			// Make sure remaining system events like e.g. DeathEvent are processed this round
-			eventManager.processEvents();
+			try {
+				eventManager.processEvents();
+			} catch (DeathException ignore) {// This one is expected to occur, and must be handled
+			}
 
 			commands.setOutputText(out.readAndReset());
 			commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
