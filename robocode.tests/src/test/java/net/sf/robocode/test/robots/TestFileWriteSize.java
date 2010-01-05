@@ -39,10 +39,10 @@ public class TestFileWriteSize extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("Data quota: 0\n")) {
-			messagedDataQuota = true;	
+		if (out.contains("Data quota: 200000\n")) {
+			messagedDataQuota = true;
 		}
-		
+
 		if (out.contains("Data directory: " + robotsPath + "\\target\\classes\\tested\\robots\\FileWriteSize.data")) {
 			messagedDataDirectory = true;	
 		} else if (out.contains("Data directory: " + robotsPath + "/target/classes/tested/robots/FileWriteSize.data")) {
@@ -66,7 +66,7 @@ public class TestFileWriteSize extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Data quota must be 0", messagedDataQuota);
+		Assert.assertTrue("Data quota must be 200000", messagedDataQuota);
 		Assert.assertTrue("Data directory path is wrong", messagedDataDirectory);
 		Assert.assertTrue("Data file path is wrong", messagedDataFile);
 		Assert.assertTrue("Error must be output that file quota has been exceeded", messageQuotaReached);

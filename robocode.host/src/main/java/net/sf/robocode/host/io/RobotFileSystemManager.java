@@ -38,10 +38,10 @@ import java.util.jar.JarFile;
  */
 public class RobotFileSystemManager {
 	private final IHostedThread robotProxy;
-	private long quotaUsed = 0;
-	private boolean quotaMessagePrinted = false;
+	private long quotaUsed;
+	private boolean quotaMessagePrinted;
 	private final List<RobotFileOutputStream> streams = new ArrayList<RobotFileOutputStream>();
-	private long maxQuota = 0;
+	private final long maxQuota;
 	private final String writableRootDirectory;
 	private final String readableRootDirectory;
 	private final String rootFile;
@@ -163,11 +163,12 @@ public class RobotFileSystemManager {
 	}
 
 	private void initializeQuota() {
+		quotaUsed = 0;
+		quotaMessagePrinted = false;
+
 		File dataDirectory = getWritableDirectory();
 
-		quotaUsed = 0;
 		if (dataDirectory != null && dataDirectory.exists()) {
-			quotaMessagePrinted = false;
 			File[] dataFiles = dataDirectory.listFiles();
 	
 			for (File file : dataFiles) {
