@@ -24,8 +24,8 @@ import java.io.IOException;
 public class FileWriteSize extends AdvancedRobot {
 
 	public void run() {
-		out.println("Data quota: " + getDataQuotaAvailable());
 		out.println("Data directory: " + getDataDirectory());
+		out.println("Data quota: " + getDataQuotaAvailable());
 
 		byte[] buf = new byte[100000];
 

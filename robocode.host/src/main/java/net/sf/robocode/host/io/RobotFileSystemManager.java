@@ -90,16 +90,15 @@ public class RobotFileSystemManager {
 		}
 		if (quotaUsed + numBytes <= maxQuota) {
 			adjustQuota(numBytes);
-			return;
-		}
+		} else {
+			final String msg = "You have reached your filesystem quota of: " + maxQuota + " bytes.";
 
-		final String msg = "You have reached your filesystem quota of: " + maxQuota + " bytes.";
-
-		if (!quotaMessagePrinted) {
-			robotProxy.println("SYSTEM: " + msg);
-			quotaMessagePrinted = true;
+			if (!quotaMessagePrinted) {
+				robotProxy.println("SYSTEM: " + msg);
+				quotaMessagePrinted = true;
+			}
+			throw new SecurityException(msg);
 		}
-		throw new SecurityException(msg);
 	}
 
 	public long getMaxQuota() {
@@ -166,20 +165,14 @@ public class RobotFileSystemManager {
 	private void initializeQuota() {
 		File dataDirectory = getWritableDirectory();
 
-		if (dataDirectory == null) {
-			quotaUsed = maxQuota;
-			return;
-		}
-		if (!dataDirectory.exists()) {
-			this.quotaUsed = 0;
-			return;
-		}
-		quotaMessagePrinted = false;
-		File[] dataFiles = dataDirectory.listFiles();
-
 		quotaUsed = 0;
-		for (File file : dataFiles) {
-			quotaUsed += file.length();
+		if (dataDirectory != null && dataDirectory.exists()) {
+			quotaMessagePrinted = false;
+			File[] dataFiles = dataDirectory.listFiles();
+	
+			for (File file : dataFiles) {
+				quotaUsed += file.length();
+			}
 		}
 	}
 
