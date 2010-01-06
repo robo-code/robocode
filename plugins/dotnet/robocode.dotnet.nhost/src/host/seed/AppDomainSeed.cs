@@ -94,7 +94,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 {
                     Registry.RegisterType(typeof(ByteBuffer), true, env);
                     Registry.RegisterType(typeof(Buffer), true, env);
-                    Registry.RegisterType(typeof(ByteBufferClr), true, env);
+                    Registry.RegisterType(typeof(DirectByteBuffer), true, env);
                     Registry.RegisterType(typeof(java.lang.System), true, env);
                     Registry.RegisterType(typeof(ByteOrder), true, env);
                     /*

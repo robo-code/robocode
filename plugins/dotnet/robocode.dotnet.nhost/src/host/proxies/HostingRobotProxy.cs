@@ -112,7 +112,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                 securityViolations.Add(message, null);
             }
 
-            Logger.logError(message);
+            LoggerN.logError(message);
             println("SYSTEM: " + message);
             peer.drainEnergy();
             peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);

@@ -36,42 +36,42 @@ namespace net.sf.robocode.dotnet.nhost
             RbSerializer.Init(currentVersion);
             RbSerializerN.Init(currentVersion);
 
-            RbSerializerN.register(typeof (RobotStatus), RbSerializer.RobotStatus_TYPE);
-            RbSerializerN.register(typeof (BattleResults), RbSerializer.BattleResults_TYPE);
-            RbSerializerN.register(typeof (Bullet), RbSerializer.Bullet_TYPE);
-            RbSerializerN.register(typeof (RobotStatics), RbSerializer.RobotStatics_TYPE);
+            RbSerializerN.register(typeof (RobotStatus), RbSerializerN.RobotStatus_TYPE);
+            RbSerializerN.register(typeof (BattleResults), RbSerializerN.BattleResults_TYPE);
+            RbSerializerN.register(typeof (Bullet), RbSerializerN.Bullet_TYPE);
+            RbSerializerN.register(typeof (RobotStatics), RbSerializerN.RobotStatics_TYPE);
 
             // events
-            RbSerializerN.register(typeof (BattleEndedEvent), RbSerializer.BattleEndedEvent_TYPE);
-            RbSerializerN.register(typeof (BulletHitBulletEvent), RbSerializer.BulletHitBulletEvent_TYPE);
-            RbSerializerN.register(typeof (BulletHitEvent), RbSerializer.BulletHitEvent_TYPE);
-            RbSerializerN.register(typeof (BulletMissedEvent), RbSerializer.BulletMissedEvent_TYPE);
-            RbSerializerN.register(typeof (DeathEvent), RbSerializer.DeathEvent_TYPE);
-            RbSerializerN.register(typeof (WinEvent), RbSerializer.WinEvent_TYPE);
-            RbSerializerN.register(typeof (HitWallEvent), RbSerializer.HitWallEvent_TYPE);
-            RbSerializerN.register(typeof (RobotDeathEvent), RbSerializer.RobotDeathEvent_TYPE);
-            RbSerializerN.register(typeof (SkippedTurnEvent), RbSerializer.SkippedTurnEvent_TYPE);
-            RbSerializerN.register(typeof (ScannedRobotEvent), RbSerializer.ScannedRobotEvent_TYPE);
-            RbSerializerN.register(typeof (HitByBulletEvent), RbSerializer.HitByBulletEvent_TYPE);
-            RbSerializerN.register(typeof (HitRobotEvent), RbSerializer.HitRobotEvent_TYPE);
-            RbSerializerN.register(typeof (KeyPressedEvent), RbSerializer.KeyPressedEvent_TYPE);
-            RbSerializerN.register(typeof (KeyReleasedEvent), RbSerializer.KeyReleasedEvent_TYPE);
-            RbSerializerN.register(typeof (KeyTypedEvent), RbSerializer.KeyTypedEvent_TYPE);
-            RbSerializerN.register(typeof (MouseClickedEvent), RbSerializer.MouseClickedEvent_TYPE);
-            RbSerializerN.register(typeof (MouseDraggedEvent), RbSerializer.MouseDraggedEvent_TYPE);
-            RbSerializerN.register(typeof (MouseEnteredEvent), RbSerializer.MouseEnteredEvent_TYPE);
-            RbSerializerN.register(typeof (MouseExitedEvent), RbSerializer.MouseExitedEvent_TYPE);
-            RbSerializerN.register(typeof (MouseMovedEvent), RbSerializer.MouseMovedEvent_TYPE);
-            RbSerializerN.register(typeof (MousePressedEvent), RbSerializer.MousePressedEvent_TYPE);
-            RbSerializerN.register(typeof (MouseReleasedEvent), RbSerializer.MouseReleasedEvent_TYPE);
-            RbSerializerN.register(typeof (MouseWheelMovedEvent), RbSerializer.MouseWheelMovedEvent_TYPE);
+            RbSerializerN.register(typeof (BattleEndedEvent), RbSerializerN.BattleEndedEvent_TYPE);
+            RbSerializerN.register(typeof (BulletHitBulletEvent), RbSerializerN.BulletHitBulletEvent_TYPE);
+            RbSerializerN.register(typeof (BulletHitEvent), RbSerializerN.BulletHitEvent_TYPE);
+            RbSerializerN.register(typeof (BulletMissedEvent), RbSerializerN.BulletMissedEvent_TYPE);
+            RbSerializerN.register(typeof (DeathEvent), RbSerializerN.DeathEvent_TYPE);
+            RbSerializerN.register(typeof (WinEvent), RbSerializerN.WinEvent_TYPE);
+            RbSerializerN.register(typeof (HitWallEvent), RbSerializerN.HitWallEvent_TYPE);
+            RbSerializerN.register(typeof (RobotDeathEvent), RbSerializerN.RobotDeathEvent_TYPE);
+            RbSerializerN.register(typeof (SkippedTurnEvent), RbSerializerN.SkippedTurnEvent_TYPE);
+            RbSerializerN.register(typeof (ScannedRobotEvent), RbSerializerN.ScannedRobotEvent_TYPE);
+            RbSerializerN.register(typeof (HitByBulletEvent), RbSerializerN.HitByBulletEvent_TYPE);
+            RbSerializerN.register(typeof (HitRobotEvent), RbSerializerN.HitRobotEvent_TYPE);
+            RbSerializerN.register(typeof (KeyPressedEvent), RbSerializerN.KeyPressedEvent_TYPE);
+            RbSerializerN.register(typeof (KeyReleasedEvent), RbSerializerN.KeyReleasedEvent_TYPE);
+            RbSerializerN.register(typeof (KeyTypedEvent), RbSerializerN.KeyTypedEvent_TYPE);
+            RbSerializerN.register(typeof (MouseClickedEvent), RbSerializerN.MouseClickedEvent_TYPE);
+            RbSerializerN.register(typeof (MouseDraggedEvent), RbSerializerN.MouseDraggedEvent_TYPE);
+            RbSerializerN.register(typeof (MouseEnteredEvent), RbSerializerN.MouseEnteredEvent_TYPE);
+            RbSerializerN.register(typeof (MouseExitedEvent), RbSerializerN.MouseExitedEvent_TYPE);
+            RbSerializerN.register(typeof (MouseMovedEvent), RbSerializerN.MouseMovedEvent_TYPE);
+            RbSerializerN.register(typeof (MousePressedEvent), RbSerializerN.MousePressedEvent_TYPE);
+            RbSerializerN.register(typeof (MouseReleasedEvent), RbSerializerN.MouseReleasedEvent_TYPE);
+            RbSerializerN.register(typeof (MouseWheelMovedEvent), RbSerializerN.MouseWheelMovedEvent_TYPE);
 
-            RbSerializerN.register(typeof (ExecCommands), RbSerializer.ExecCommands_TYPE);
-            RbSerializerN.register(typeof (BulletCommand), RbSerializer.BulletCommand_TYPE);
-            RbSerializerN.register(typeof (TeamMessage), RbSerializer.TeamMessage_TYPE);
-            RbSerializerN.register(typeof (DebugProperty), RbSerializer.DebugProperty_TYPE);
-            RbSerializerN.register(typeof (ExecResults), RbSerializer.ExecResults_TYPE);
-            RbSerializerN.register(typeof (BulletStatus), RbSerializer.BulletStatus_TYPE);
+            RbSerializerN.register(typeof (ExecCommands), RbSerializerN.ExecCommands_TYPE);
+            RbSerializerN.register(typeof (BulletCommand), RbSerializerN.BulletCommand_TYPE);
+            RbSerializerN.register(typeof (TeamMessage), RbSerializerN.TeamMessage_TYPE);
+            RbSerializerN.register(typeof (DebugProperty), RbSerializerN.DebugProperty_TYPE);
+            RbSerializerN.register(typeof (ExecResults), RbSerializerN.ExecResults_TYPE);
+            RbSerializerN.register(typeof (BulletStatus), RbSerializerN.BulletStatus_TYPE);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             MAX_GET_CALL_COUNT = 10000;
 
         private readonly Dictionary<int, Bullet> bullets = new Dictionary<int, Bullet>();
-        private readonly ByteBufferClr execJavaBuffer;
+        private readonly DirectByteBuffer execJavaBuffer;
         private readonly ByteBuffer execNetBuffer;
         private readonly RbSerializerN rbSerializerN;
         private int bulletCounter;
@@ -66,7 +66,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             setGetCallCount(0);
 
             var sharedBuffer = new byte[10*1024*100];
-            execJavaBuffer = new ByteBufferClr(sharedBuffer);
+            execJavaBuffer = new DirectByteBuffer(sharedBuffer);
             execNetBuffer = ByteBuffer.wrap(sharedBuffer);
             rbSerializerN = new RbSerializerN();
             this.peer.setupBuffer(execJavaBuffer);

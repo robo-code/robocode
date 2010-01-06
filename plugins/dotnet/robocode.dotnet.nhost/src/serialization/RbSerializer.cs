@@ -28,14 +28,14 @@ namespace net.sf.robocode.serialization
             }
         }
 
-        public ByteBufferClr serializeN(byte type, Object obj)
+        public DirectByteBuffer serializeN(byte type, Object obj)
         {
             int length = sizeOf(type, obj);
 
             // header
-            int size = SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length;
+            int size = RbSerializerN.SIZEOF_INT*3 + length;
             var sharedBuffer = new byte[size];
-            var buffer = new ByteBufferClr(sharedBuffer);
+            var buffer = new DirectByteBuffer(sharedBuffer);
 
             buffer.putInt(byteOrder);
             buffer.putInt(currentVersion);
@@ -52,7 +52,7 @@ namespace net.sf.robocode.serialization
 
         public T ConvertJ2C<T>(byte type, Object javaObject)
         {
-            ByteBufferClr commandBuffer = serializeN(type, javaObject);
+            DirectByteBuffer commandBuffer = serializeN(type, javaObject);
             ByteBuffer byteBuffer = ByteBuffer.wrap(commandBuffer.GetSharedBuffer());
             return RbSerializerN.deserializeFromBuffer<T>(byteBuffer);
         }
