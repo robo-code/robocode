@@ -1,5 +1,5 @@
 Version 1.7.1.6
-(07-Jan-2010)
+(06-Jan-2010)
 ---------------
 = Bugfixes =
 * Bug [2912942] - Mac OS X 10.6: Cannot run Robocode from robocode.sh. It must be run from the new robocode.command file instead.
@@ -13,7 +13,7 @@ Version 1.7.1.6
 
 = Changes =
 * If the robot paints too much between actions, an improved error message is written out in the robot console. But from this version of Robocode this message is only written out a single time.
-* A SecurityException is now thrown if a robot exceeds its max. data file quota, meaning that it uses more than 20.000 bytes its data files in total.
+* A SecurityException is now thrown if a robot exceeds its max. data file quota, meaning that it uses more than 200.000 bytes its data files in total.
 
 Version 1.7.1.6 Beta
 (10-Dec-2009)
