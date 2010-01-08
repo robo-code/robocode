@@ -21,6 +21,7 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>samplescs-${robocode.nversion}</finalName>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
@@ -28,6 +29,11 @@
                 <artifactId>maven-dotnet-compiler-plugin</artifactId>
                 <extensions>true</extensions>
                 <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/warn:0
+                    </aditionalOptions>
+                    <finalName>samplescs-${robocode.nversion}.dll</finalName>
+                </configuration>
             </plugin>
         </plugins>
         <resources>

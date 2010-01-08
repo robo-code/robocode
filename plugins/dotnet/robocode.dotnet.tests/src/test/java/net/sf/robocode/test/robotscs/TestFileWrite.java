@@ -41,7 +41,7 @@ public class TestFileWrite extends RobocodeTestBed {
 	@Override
 	protected void runSetup() {
         final IVersionManager vm = new VersionManager(null);
-        file = new File("../../../robocode.tests.robots/target/classes/.robotcache/robocode.dotnet.samples-" + vm.getVersion() + ".dll_/samplecs/count.dat");
+        file = new File("../../../robocode.tests.robots/target/classes/.robotcache/samplescs-" + vm.getVersion() + ".dll_/samplecs/count.dat");
 		if (file.exists()) {
 			if (!file.delete()) {
 				Logger.logError("Can't delete" + file);
