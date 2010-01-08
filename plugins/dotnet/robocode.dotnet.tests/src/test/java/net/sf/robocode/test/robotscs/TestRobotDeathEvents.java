@@ -15,12 +15,14 @@ package net.sf.robocode.test.robotscs;
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 
+import org.junit.Ignore;
 import robocode.control.events.TurnEndedEvent;
 
 
 /**
  * @author Flemming N. Larsen (original)
  */
+@Ignore("this crashes JVM under mvn still")
 public class TestRobotDeathEvents extends RobocodeTestBed {
 
 	@Override

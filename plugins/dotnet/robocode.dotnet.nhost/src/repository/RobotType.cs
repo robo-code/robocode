@@ -8,8 +8,23 @@
 
 #endregion
 
+using System;
+
 namespace net.sf.robocode.repository
 {
+    [Flags]
+    public enum RobotTypeN
+    {
+        INVALID = 0,
+        JUNIOR = 1,
+        STANDARD = 2,
+        ADVANCED = 4,
+        TEAM = 8,
+        DROID = 16,
+        INTERACTIVE = 32,
+        PAINTING = 64,
+    }
+
     partial class RobotType
     {
         private static RobotType _Invalid;

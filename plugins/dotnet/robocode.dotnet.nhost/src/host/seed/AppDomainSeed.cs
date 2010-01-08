@@ -82,50 +82,20 @@ namespace net.sf.robocode.dotnet.host.seed
             try
             {
                 bool fullBind = (bool)domain.GetData("fullBind");
-                var setup = new BridgeSetup(false);
-                //setup.Verbose = true;
-                //setup.Debug = true;
-                setup.BindCoreOnly = true;
-                setup.BindNative = false;
-                setup.BindStatic = false;
-                Bridge.CreateJVM(setup);
-                JNIEnv env = JNIEnv.ThreadEnv;
                 if (fullBind)
                 {
+                    var setup = new BridgeSetup(false);
+                    setup.BindCoreOnly = true;
+                    setup.BindNative = false;
+                    setup.BindStatic = false;
+                    Bridge.CreateJVM(setup);
+                    JNIEnv env = JNIEnv.ThreadEnv;
                     Registry.RegisterType(typeof(ByteBuffer), true, env);
                     Registry.RegisterType(typeof(Buffer), true, env);
                     Registry.RegisterType(typeof(DirectByteBuffer), true, env);
                     Registry.RegisterType(typeof(java.lang.System), true, env);
                     Registry.RegisterType(typeof(ByteOrder), true, env);
-                    /*
-                    Registry.RegisterType(typeof(RobotType), true, env);
-                    Registry.RegisterType(typeof(Logger), true, env);
-
-                    Registry.RegisterType(typeof(java.util.Random), true, env);
-                    Registry.RegisterType(typeof(BadBehavior), true, env);
-                    Registry.RegisterType(typeof(RandomFactory), true, env);
-                    Registry.RegisterType(typeof(RobotSpecification), true, env);
-                    Registry.RegisterType(typeof(ContainerBase), true, env);
-                    Registry.RegisterType(typeof(RbSerializer), true, env);
-                    Registry.RegisterType(typeof(Error), true, env);
-                    Registry.RegisterType(typeof(AbortedException), true, env);
-                    Registry.RegisterType(typeof(DeathException), true, env);
-                    Registry.RegisterType(typeof(DisabledException), true, env);
-                    Registry.RegisterType(typeof(WinException), true, env);
-
-                    Registry.RegisterType(typeof(__IVersionManagerBase), true, env);
-                    Registry.RegisterType(typeof(__IRobotPeer), true, env);
-                    Registry.RegisterType(typeof(__IRobotStatics), true, env);
-                    Registry.RegisterType(typeof(__IRobotRepositoryItem), true, env);
-                    Registry.RegisterType(typeof(__ISerializableHelper), true, env);
-                    Registry.RegisterType(typeof(__IHostManager), true, env);
-                     */
                     Bridge.RegisterAssembly(typeof(RbSerializer).Assembly);
-                }
-                else
-                {
-                    Registry.RegisterType(typeof(RobotType), true, env);
-                    Registry.RegisterType(typeof(Logger), true, env);
                 }
             }
             catch (Exception ex)
@@ -143,7 +113,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);
                 foreach (Type type in assembly.GetTypes())
                 {
-                    if (Reflection.CheckInterfaces(type) != RobotType.Invalid)
+                    if (Reflection.CheckInterfaces(type) != RobotTypeN.INVALID)
                     {
                         sb.Append("file://");
                         sb.Append(robotAssemblyFileName);
@@ -175,7 +145,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 Type robotType = assembly.GetType(robotFullName, false);
                 if (robotType != null)
                 {
-                    domain.SetData("robotLoaded", Reflection.CheckInterfaces(robotType).getCode());
+                    domain.SetData("robotLoaded", (int)Reflection.CheckInterfaces(robotType));
                 }
             }
             catch (Exception ex)

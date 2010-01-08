@@ -59,12 +59,12 @@ namespace net.sf.robocode.dotnet.utils
             return new StrongName(keyBlob, assemblyName.Name, assemblyName.Version);
         }
 
-        public static RobotType CheckInterfaces(Type robotClass)
+        public static RobotTypeN CheckInterfaces(Type robotClass)
         {
             if (robotClass == null || robotClass.IsAbstract)
             {
                 // this class is not robot
-                return RobotType.Invalid;
+                return RobotTypeN.INVALID;
             }
             bool isJuniorRobot = false;
             bool isStandardRobot = false;
@@ -145,11 +145,19 @@ namespace net.sf.robocode.dotnet.utils
             }
             if (!isAdvancedRobot && !isStandardRobot && !isJuniorRobot)
             {
-                return RobotType.Invalid;
+                return RobotTypeN.INVALID;
             }
 
-            return new RobotType(isJuniorRobot, isStandardRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot,
-                                 isTeamRobot, isDroid);
+            RobotTypeN type=0;
+
+            if (isJuniorRobot) type |= RobotTypeN.JUNIOR;
+            if (isStandardRobot) type |= RobotTypeN.STANDARD;
+            if (isInteractiveRobot) type |= RobotTypeN.INTERACTIVE;
+            if (isPaintRobot) type |= RobotTypeN.PAINTING;
+            if (isAdvancedRobot) type |= RobotTypeN.ADVANCED;
+            if (isTeamRobot) type |= RobotTypeN.TEAM;
+            if (isDroid) type |= RobotTypeN.DROID;
+            return type;
         }
 
         private static bool checkMethodOverride(Type robotClass, Type knownBase, String name,
