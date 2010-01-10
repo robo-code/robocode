@@ -12,6 +12,7 @@ using System;
 using System.Threading;
 using robocode;
 using robocode.exception;
+using Thread = robocode.Thread;
 
 namespace tested.robotscs
 {

@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Security.Permissions;
 using java.lang;
 using java.nio;
@@ -36,8 +38,6 @@ namespace net.sf.robocode.dotnet.host.seed
 {
     [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
     [FileIOPermission(SecurityAction.Assert, Unrestricted = true)]
-    //[EnvironmentPermission(SecurityAction.Assert, Unrestricted = true)]
-        //[SecurityPermission(SecurityAction.Assert, Unrestricted = true)]
     public class AppDomainSeed
     {
         protected static string robotAssemblyFileName;
@@ -50,11 +50,34 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 domain = AppDomain.CurrentDomain;
                 domain.UnhandledException += (domain_UnhandledException);
+                domain.AssemblyLoad += (domain_AssemblyLoad);
             }
             catch (Exception ex)
             {
                 LoggerN.logError(ex);
                 throw;
+            }
+        }
+
+        static void domain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            LoggerN.logError(e.ExceptionObject.ToString());
+        }
+
+        static void domain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
+        {
+            bool knownLocation = args.LoadedAssembly.Location != null &&
+                                 robotAssemblyShadowFileName != null &&
+                                 Path.GetFullPath(args.LoadedAssembly.Location).ToLower() ==
+                                 Path.GetFullPath(robotAssemblyShadowFileName).ToLower();
+            if (args.LoadedAssembly != typeof(Bridge).Assembly &&
+                args.LoadedAssembly != typeof(AppDomainSeed).Assembly &&
+                !knownLocation &&
+                !args.LoadedAssembly.GlobalAssemblyCache)
+            {
+                string message = "dependent assemblies are not alowed" + args.LoadedAssembly.Location;
+                LoggerN.logError(message);
+                throw new SecurityException(message);
             }
         }
 
@@ -70,11 +93,6 @@ namespace net.sf.robocode.dotnet.host.seed
                 LoggerN.logError(ex);
                 throw;
             }
-        }
-
-        static void domain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            LoggerN.logError(e.ExceptionObject.ToString());
         }
 
         public static void Bind()
@@ -142,6 +160,7 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 var robotFullName = (string) domain.GetData("loadRobot");
                 Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);
+                Reflection.CheckAssembly(assembly);
                 Type robotType = assembly.GetType(robotFullName, false);
                 if (robotType != null)
                 {
@@ -152,7 +171,6 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 domain.SetData("robotLoaded", 0);
                 LoggerN.logError(ex);
-                throw;
             }
         }
     }

@@ -21,7 +21,7 @@ using robocode;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
-    internal class HostingShell : AppDomainShell, IHostingRobotProxy
+    public class HostingShell : AppDomainShell, IHostingRobotProxy
     {
         private readonly RbSerializer serializer = new RbSerializer();
 
@@ -29,6 +29,8 @@ namespace net.sf.robocode.dotnet.host.seed
                             IHostManager hostManager, IRobotPeer peer,
                             IRobotStatics jstatics, string dllFileName)
         {
+            robotPeer = peer;
+
             Init(true);
             Open(dllFileName);
             JniGlobalHandle hmHandle = ((IJvmProxy) hostManager).JvmHandle;
@@ -40,10 +42,16 @@ namespace net.sf.robocode.dotnet.host.seed
             domain.SetData("item", itemHandle.DangerousGetHandle());
 
             var statics = serializer.ConvertJ2C<RobotStatics>(RbSerializerN.RobotStatics_TYPE, (Object) jstatics);
-
             domain.SetData("statics", statics);
-            domain.DoCallBack(HostingSeed.Construct);
-            robotPeer = peer;
+            domain.SetData("robotName", statics.getName());
+            try
+            {
+                domain.DoCallBack(HostingSeed.Construct);
+            }
+            catch (Exception)
+            {
+                robotPeer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
+            }
 
             hmHandle.HoldThisHandle();
             peerhandle.HoldThisHandle();

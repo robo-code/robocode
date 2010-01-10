@@ -18,11 +18,13 @@ using net.sf.jni4net.utils;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.dotnet.nhost;
 using net.sf.robocode.dotnet.peer;
+using net.sf.robocode.dotnet.utils;
 using net.sf.robocode.host;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using robocode;
+using Thread = System.Threading.Thread;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
@@ -57,6 +59,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 CreateProxy();
 
                 Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);
+                Reflection.CheckAssembly(assembly);
                 string robotFullName = specification.getFullClassName();
                 robotType = assembly.GetType(robotFullName, false);
                 robotProxy.setRobotType(robotType);

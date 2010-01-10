@@ -21,7 +21,7 @@ using robocode.robotinterfaces;
 
 namespace net.sf.robocode.dotnet.utils
 {
-    internal class Reflection
+    internal partial class Reflection
     {
         public static PermissionSet GetNamedPermissionSet(string name)
         {

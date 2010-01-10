@@ -154,6 +154,8 @@ namespace net.sf.robocode.dotnet.host.proxies
                 }
                 robot.SetOut(output);
                 robot.SetPeer((IBasicRobotPeer) this);
+                Console.SetOut(output);
+                Console.SetError(output);
                 eventManager.setRobot(robot);
             }
 

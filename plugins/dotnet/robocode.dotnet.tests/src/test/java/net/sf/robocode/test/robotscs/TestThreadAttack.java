@@ -21,10 +21,8 @@ import robocode.control.events.TurnEndedEvent;
 /**
  * @author Pavel Savara (original)
  */
-@Ignore("we still don't have solution for that")
 public class TestThreadAttack extends RobocodeTestBed {
 	boolean messagedMax;
-	boolean messagedUnknown;
 
 	@Override
 	public String getRobotNames() {
@@ -39,16 +37,11 @@ public class TestThreadAttack extends RobocodeTestBed {
 		if (out.contains("You may only create 5 threads")) {
 			messagedMax = true;
 		}
-
-		if (out.contains("Preventing thread Thread-") && out.contains("with unknown thread group MyAttack from access")) {
-			messagedUnknown = true;
-		}
 	}
 
 	@Override
 	protected void runTeardown() {
 		Assert.assertTrue(messagedMax);
-		Assert.assertTrue(messagedUnknown);
 	}
 
 	@Override

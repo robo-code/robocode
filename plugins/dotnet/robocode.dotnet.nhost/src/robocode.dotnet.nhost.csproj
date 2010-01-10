@@ -150,6 +150,7 @@
     <Compile Include="host\seed\HostingSeed.cs" />
     <Compile Include="host\seed\HostingShell.cs" />
     <Compile Include="io\Logger.cs" />
+    <Compile Include="mono\reflection\CILReader.cs" />
     <Compile Include="peer\BulletCommand.cs" />
     <Compile Include="peer\BulletStatus.cs" />
     <Compile Include="peer\DebugProperty.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="robocode\control\RobotSpecification.cs" />
     <Compile Include="serialization\RbSerializer.cs" />
     <Compile Include="utils\Reflection.cs" />
+    <Compile Include="utils\Reflection.security.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

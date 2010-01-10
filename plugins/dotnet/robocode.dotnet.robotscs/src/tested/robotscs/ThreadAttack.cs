@@ -11,6 +11,7 @@
 using System;
 using System.Threading;
 using robocode;
+using Thread = robocode.Thread;
 
 namespace tested.robotscs
 {
@@ -37,7 +38,6 @@ namespace tested.robotscs
         private void runAttack()
         {
             Thread t2 = new Thread(attack);
-            t2.Priority = ThreadPriority.Highest;
             t2.Start();
         }
 
@@ -50,11 +50,6 @@ namespace tested.robotscs
             int id = counter++;
 
             Out.WriteLine("Running id:" + id);
-
-            if (Thread.CurrentThread.Priority > ThreadPriority.Normal)
-            {
-                Out.WriteLine("Priority attack");
-            }
 
             try
             {

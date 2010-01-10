@@ -26,6 +26,7 @@ using robocode.exception;
 using robocode.robotinterfaces.peer;
 using robocode.util;
 using ByteBuffer = net.sf.robocode.nio.ByteBuffer;
+using Thread = System.Threading.Thread;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {

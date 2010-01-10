@@ -132,6 +132,7 @@
     <Compile Include="robocode\robotinterfaces\IRunnable.cs" />
     <Compile Include="robocode\RobotStatus.cs" />
     <Compile Include="robocode\Rules.cs" />
+    <Compile Include="robocode\Thread.cs" />
     <Compile Include="robocode\ScannedRobotEvent.cs" />
     <Compile Include="robocode\SkippedTurnEvent.cs" />
     <Compile Include="robocode\StatusEvent.cs" />

@@ -125,6 +125,12 @@ namespace net.sf.robocode.security
             return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate,
                                            inactivityTime);
         }
+
+        public static string GetRobotName()
+        {
+            string name = (string)AppDomain.CurrentDomain.GetData("robotName");
+            return name ?? "";
+        }
     }
 }
 

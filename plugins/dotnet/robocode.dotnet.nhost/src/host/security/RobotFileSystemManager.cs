@@ -92,7 +92,7 @@ namespace net.sf.robocode.dotnet.host.security
                 {
                     filename = Path.GetFullPath(Path.Combine(writableRootDirectory, Path.GetFileName(filename)));
                 }
-                if (Path.GetDirectoryName(filename) != writableRootDirectory)
+                if (Path.GetDirectoryName(filename).ToLower() != writableRootDirectory.ToLower())
                 {
                     throw new AccessViolationException("Access is allowed only in " + writableRootDirectory + ". Use ");
                 }
