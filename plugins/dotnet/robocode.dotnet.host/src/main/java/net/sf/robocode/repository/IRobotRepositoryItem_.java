@@ -118,6 +118,12 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     public native void storeProperties(java.io.OutputStream par0);
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isJuniorRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isStandardRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isInteractiveRobot();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
@@ -128,12 +134,6 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isTeamRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isJuniorRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isStandardRobot();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isDroid();

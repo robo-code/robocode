@@ -16,6 +16,12 @@ namespace net.sf.robocode.repository {
     public partial interface IRobotRepositoryItem : global::net.sf.robocode.repository.IRepositoryItem, global::java.lang.Comparable {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
+        bool isJuniorRobot();
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
+        bool isStandardRobot();
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isInteractiveRobot();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
@@ -26,12 +32,6 @@ namespace net.sf.robocode.repository {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isTeamRobot();
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
-        bool isJuniorRobot();
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
-        bool isStandardRobot();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isDroid();
@@ -124,17 +124,17 @@ namespace net.sf.robocode.repository {
         
         internal static global::net.sf.jni4net.jni.MethodId _storeProperties27;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isInteractiveRobot28;
+        internal static global::net.sf.jni4net.jni.MethodId _isJuniorRobot28;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isPaintRobot29;
+        internal static global::net.sf.jni4net.jni.MethodId _isStandardRobot29;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isAdvancedRobot30;
+        internal static global::net.sf.jni4net.jni.MethodId _isInteractiveRobot30;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isTeamRobot31;
+        internal static global::net.sf.jni4net.jni.MethodId _isPaintRobot31;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isJuniorRobot32;
+        internal static global::net.sf.jni4net.jni.MethodId _isAdvancedRobot32;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isStandardRobot33;
+        internal static global::net.sf.jni4net.jni.MethodId _isTeamRobot33;
         
         internal static global::net.sf.jni4net.jni.MethodId _isDroid34;
         
@@ -181,12 +181,12 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.@__IRobotRepositoryItem._storeProperties26 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "storeProperties", "(Ljava/io/OutputStream;Ljava/net/URL;Ljava/lang/String;Ljava/lang/String;Ljava/la" +
                     "ng/String;Z)V");
             global::net.sf.robocode.repository.@__IRobotRepositoryItem._storeProperties27 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "storeProperties", "(Ljava/io/OutputStream;)V");
-            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isInteractiveRobot28 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isInteractiveRobot", "()Z");
-            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isPaintRobot29 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isPaintRobot", "()Z");
-            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isAdvancedRobot30 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isAdvancedRobot", "()Z");
-            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isTeamRobot31 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isTeamRobot", "()Z");
-            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isJuniorRobot32 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isJuniorRobot", "()Z");
-            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isStandardRobot33 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isStandardRobot", "()Z");
+            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isJuniorRobot28 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isJuniorRobot", "()Z");
+            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isStandardRobot29 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isStandardRobot", "()Z");
+            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isInteractiveRobot30 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isInteractiveRobot", "()Z");
+            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isPaintRobot31 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isPaintRobot", "()Z");
+            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isAdvancedRobot32 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isAdvancedRobot", "()Z");
+            global::net.sf.robocode.repository.@__IRobotRepositoryItem._isTeamRobot33 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isTeamRobot", "()Z");
             global::net.sf.robocode.repository.@__IRobotRepositoryItem._isDroid34 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "isDroid", "()Z");
             global::net.sf.robocode.repository.@__IRobotRepositoryItem._getRobotClassPath35 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "getRobotClassPath", "()Ljava/net/URL;");
             global::net.sf.robocode.repository.@__IRobotRepositoryItem._getWritableDirectory36 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotRepositoryItem.staticClass, "getWritableDirectory", "()Ljava/lang/String;");
@@ -334,34 +334,34 @@ namespace net.sf.robocode.repository {
             @__env.CallVoidMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._storeProperties27, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
-        public bool isInteractiveRobot() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isInteractiveRobot28)));
-        }
-        
-        public bool isPaintRobot() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isPaintRobot29)));
-        }
-        
-        public bool isAdvancedRobot() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isAdvancedRobot30)));
-        }
-        
-        public bool isTeamRobot() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isTeamRobot31)));
-        }
-        
         public bool isJuniorRobot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isJuniorRobot32)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isJuniorRobot28)));
         }
         
         public bool isStandardRobot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isStandardRobot33)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isStandardRobot29)));
+        }
+        
+        public bool isInteractiveRobot() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isInteractiveRobot30)));
+        }
+        
+        public bool isPaintRobot() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isPaintRobot31)));
+        }
+        
+        public bool isAdvancedRobot() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isAdvancedRobot32)));
+        }
+        
+        public bool isTeamRobot() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.@__IRobotRepositoryItem._isTeamRobot33)));
         }
         
         public bool isDroid() {
@@ -421,12 +421,12 @@ namespace net.sf.robocode.repository {
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "storeProperties", "storeProperties26", "(Ljava/io/OutputStream;Ljava/net/URL;Ljava/lang/String;Ljava/lang/String;Ljava/la" +
                         "ng/String;Z)V"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "storeProperties", "storeProperties27", "(Ljava/io/OutputStream;)V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isInteractiveRobot", "isInteractiveRobot28", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isPaintRobot", "isPaintRobot29", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isAdvancedRobot", "isAdvancedRobot30", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isTeamRobot", "isTeamRobot31", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isJuniorRobot", "isJuniorRobot32", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isStandardRobot", "isStandardRobot33", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isJuniorRobot", "isJuniorRobot28", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isStandardRobot", "isStandardRobot29", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isInteractiveRobot", "isInteractiveRobot30", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isPaintRobot", "isPaintRobot31", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isAdvancedRobot", "isAdvancedRobot32", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isTeamRobot", "isTeamRobot33", "()Z"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isDroid", "isDroid34", "()Z"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getRobotClassPath", "getRobotClassPath35", "()Ljava/net/URL;"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getWritableDirectory", "getWritableDirectory36", "()Ljava/lang/String;"));
@@ -435,7 +435,7 @@ namespace net.sf.robocode.repository {
             return methods;
         }
         
-        private static int compareTo0(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0) {
+        private static int compareTo0(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0) {
             // (Ljava/lang/Object;)I
             // (Ljava/lang/Object;)I
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -446,7 +446,7 @@ namespace net.sf.robocode.repository {
             return default(int);
         }
         
-        private static bool isValid1(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isValid1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -457,7 +457,7 @@ namespace net.sf.robocode.repository {
             return default(bool);
         }
         
-        private static global::System.IntPtr getVersion2(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getVersion2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -465,10 +465,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getVersion());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static long getLastModified3(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static long getLastModified3(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()J
             // ()J
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -479,7 +479,7 @@ namespace net.sf.robocode.repository {
             return default(long);
         }
         
-        private static global::System.IntPtr getDescription4(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getDescription4(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -487,10 +487,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getDescription());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getRobocodeVersion5(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getRobocodeVersion5(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -498,10 +498,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getRobocodeVersion());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getWebpage6(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getWebpage6(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/net/URL;
             // ()Ljava/net/URL;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -509,10 +509,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getWebpage());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getAuthorName7(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getAuthorName7(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -520,10 +520,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getAuthorName());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static bool isTeam8(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isTeam8(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -534,7 +534,7 @@ namespace net.sf.robocode.repository {
             return default(bool);
         }
         
-        private static bool isInJar9(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isInJar9(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -545,7 +545,7 @@ namespace net.sf.robocode.repository {
             return default(bool);
         }
         
-        private static void setValid10(global::System.IntPtr @__envp, global::System.IntPtr @__obj, bool par0) {
+        private static void setValid10(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, bool par0) {
             // (Z)V
             // (Z)V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -555,7 +555,7 @@ namespace net.sf.robocode.repository {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static bool getJavaSourceIncluded11(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool getJavaSourceIncluded11(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -566,7 +566,7 @@ namespace net.sf.robocode.repository {
             return default(bool);
         }
         
-        private static global::System.IntPtr getRootFile12(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getRootFile12(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -574,10 +574,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getRootFile());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getFullUrl13(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getFullUrl13(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/net/URL;
             // ()Ljava/net/URL;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -585,10 +585,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getFullUrl());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getPropertiesUrl14(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getPropertiesUrl14(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/net/URL;
             // ()Ljava/net/URL;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -596,10 +596,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getPropertiesUrl());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static bool isDevelopmentVersion15(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isDevelopmentVersion15(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -610,7 +610,7 @@ namespace net.sf.robocode.repository {
             return default(bool);
         }
         
-        private static global::System.IntPtr getFullPackage16(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getFullPackage16(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -618,10 +618,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getFullPackage());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getRelativePath17(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getRelativePath17(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -629,10 +629,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getRelativePath());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getRootPackage18(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getRootPackage18(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -640,10 +640,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getRootPackage());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getFullClassNameWithVersion19(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getFullClassNameWithVersion19(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -651,10 +651,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getFullClassNameWithVersion());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getUniqueFullClassNameWithVersion20(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getUniqueFullClassNameWithVersion20(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -662,10 +662,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getUniqueFullClassNameWithVersion());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getUniqueShortClassNameWithVersion21(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getUniqueShortClassNameWithVersion21(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -673,10 +673,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getUniqueShortClassNameWithVersion());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getUniqueVeryShortClassNameWithVersion22(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getUniqueVeryShortClassNameWithVersion22(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -684,10 +684,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getUniqueVeryShortClassNameWithVersion());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getFullClassName23(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getFullClassName23(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -695,10 +695,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getFullClassName());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getShortClassName24(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getShortClassName24(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -706,10 +706,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).getShortClassName());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr createRobotSpecification25(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle createRobotSpecification25(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Lrobocode/control/RobotSpecification;
             // ()Lrobocode/control/RobotSpecification;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -717,10 +717,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.repository.IRepositoryItem)(@__real)).createRobotSpecification());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static void storeProperties26(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0, global::System.IntPtr par1, global::System.IntPtr par2, global::System.IntPtr par3, global::System.IntPtr par4, bool par5) {
+        private static void storeProperties26(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, global::net.sf.jni4net.utils.JniLocalHandle par1, global::net.sf.jni4net.utils.JniLocalHandle par2, global::net.sf.jni4net.utils.JniLocalHandle par3, global::net.sf.jni4net.utils.JniLocalHandle par4, bool par5) {
             // (Ljava/io/OutputStream;Ljava/net/URL;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V
             // (Ljava/io/OutputStream;Ljava/net/URL;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -730,7 +730,7 @@ namespace net.sf.robocode.repository {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static void storeProperties27(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0) {
+        private static void storeProperties27(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0) {
             // (Ljava/io/OutputStream;)V
             // (Ljava/io/OutputStream;)V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -740,51 +740,7 @@ namespace net.sf.robocode.repository {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static bool isInteractiveRobot28(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
-            // ()Z
-            // ()Z
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            try {
-            global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
-            return ((bool)(@__real.isInteractiveRobot()));
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
-        }
-        
-        private static bool isPaintRobot29(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
-            // ()Z
-            // ()Z
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            try {
-            global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
-            return ((bool)(@__real.isPaintRobot()));
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
-        }
-        
-        private static bool isAdvancedRobot30(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
-            // ()Z
-            // ()Z
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            try {
-            global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
-            return ((bool)(@__real.isAdvancedRobot()));
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
-        }
-        
-        private static bool isTeamRobot31(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
-            // ()Z
-            // ()Z
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            try {
-            global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
-            return ((bool)(@__real.isTeamRobot()));
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
-        }
-        
-        private static bool isJuniorRobot32(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isJuniorRobot28(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -795,7 +751,7 @@ namespace net.sf.robocode.repository {
             return default(bool);
         }
         
-        private static bool isStandardRobot33(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isStandardRobot29(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -806,7 +762,51 @@ namespace net.sf.robocode.repository {
             return default(bool);
         }
         
-        private static bool isDroid34(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isInteractiveRobot30(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()Z
+            // ()Z
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            try {
+            global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
+            return ((bool)(@__real.isInteractiveRobot()));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return default(bool);
+        }
+        
+        private static bool isPaintRobot31(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()Z
+            // ()Z
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            try {
+            global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
+            return ((bool)(@__real.isPaintRobot()));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return default(bool);
+        }
+        
+        private static bool isAdvancedRobot32(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()Z
+            // ()Z
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            try {
+            global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
+            return ((bool)(@__real.isAdvancedRobot()));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return default(bool);
+        }
+        
+        private static bool isTeamRobot33(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()Z
+            // ()Z
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            try {
+            global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
+            return ((bool)(@__real.isTeamRobot()));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return default(bool);
+        }
+        
+        private static bool isDroid34(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -817,7 +817,7 @@ namespace net.sf.robocode.repository {
             return default(bool);
         }
         
-        private static global::System.IntPtr getRobotClassPath35(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getRobotClassPath35(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/net/URL;
             // ()Ljava/net/URL;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -825,10 +825,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getRobotClassPath());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getWritableDirectory36(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getWritableDirectory36(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -836,10 +836,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getWritableDirectory());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getReadableDirectory37(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getReadableDirectory37(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -847,10 +847,10 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getReadableDirectory());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
-        private static global::System.IntPtr getRobotLanguage38(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getRobotLanguage38(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -858,7 +858,7 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.IRobotRepositoryItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, @__obj);
             return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getRobotLanguage());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::System.IntPtr);
+            return default(global::net.sf.jni4net.utils.JniHandle);
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {

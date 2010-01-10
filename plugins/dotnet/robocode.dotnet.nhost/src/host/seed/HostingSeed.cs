@@ -14,6 +14,7 @@ using System.Security.Permissions;
 using System.Threading;
 using net.sf.jni4net;
 using net.sf.jni4net.jni;
+using net.sf.jni4net.utils;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.dotnet.nhost;
 using net.sf.robocode.dotnet.peer;
@@ -34,7 +35,6 @@ namespace net.sf.robocode.dotnet.host.seed
         private static IRobotPeer robotPeer;
         private static RobotStatics statics;
         private static IRobotRepositoryItem specification;
-        //private static RobotSpecification robotSpecification;
         private static Type robotType;
         private static Thread robotThread;
         private static HostingRobotProxy robotProxy;
@@ -45,11 +45,15 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 ModuleN.InitN();
 
-                hostManager = Bridge.CreateProxy<IHostManager>((IntPtr)domain.GetData("hostManager"));
-                robotPeer = Bridge.CreateProxy<IRobotPeer>((IntPtr)domain.GetData("peer"));
+                JNIEnv env = JNIEnv.ThreadEnv;
+                JniGlobalHandle hmHandle = env.NewGlobalRef((JniHandle)domain.GetData("hostManager"));
+                JniGlobalHandle peerHandle = env.NewGlobalRef((JniHandle)domain.GetData("peer"));
+                JniGlobalHandle itemHandle = env.NewGlobalRef((JniHandle)domain.GetData("item"));
+                hostManager = Bridge.CreateProxy<IHostManager>(hmHandle);
+                robotPeer = Bridge.CreateProxy<IRobotPeer>(peerHandle);
+                specification = Bridge.CreateProxy<IRobotRepositoryItem>(itemHandle);
+
                 statics = ((RobotStatics)domain.GetData("statics"));
-                //robotSpecification = Bridge.CreateProxy<RobotSpecification>((IntPtr)domain.GetData("specification"));
-                specification = Bridge.CreateProxy<IRobotRepositoryItem>((IntPtr) domain.GetData("item"));
                 CreateProxy();
 
                 Assembly assembly = Assembly.LoadFrom(robotAssemblyShadowFileName);

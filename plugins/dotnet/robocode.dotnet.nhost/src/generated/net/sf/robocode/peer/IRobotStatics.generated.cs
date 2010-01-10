@@ -97,7 +97,7 @@ namespace net.sf.robocode.peer {
             return methods;
         }
         
-        private static bool isInteractiveRobot0(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isInteractiveRobot0(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -108,7 +108,7 @@ namespace net.sf.robocode.peer {
             return default(bool);
         }
         
-        private static bool isPaintRobot1(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isPaintRobot1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -119,7 +119,7 @@ namespace net.sf.robocode.peer {
             return default(bool);
         }
         
-        private static bool isAdvancedRobot2(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isAdvancedRobot2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -130,7 +130,7 @@ namespace net.sf.robocode.peer {
             return default(bool);
         }
         
-        private static bool isTeamRobot3(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static bool isTeamRobot3(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);

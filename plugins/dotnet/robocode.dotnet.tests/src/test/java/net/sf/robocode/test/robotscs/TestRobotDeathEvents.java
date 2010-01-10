@@ -22,7 +22,6 @@ import robocode.control.events.TurnEndedEvent;
 /**
  * @author Flemming N. Larsen (original)
  */
-@Ignore("this crashes JVM under mvn still")
 public class TestRobotDeathEvents extends RobocodeTestBed {
 
 	@Override

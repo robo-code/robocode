@@ -10,6 +10,7 @@
 
 using java.lang;
 using net.sf.jni4net.jni;
+using net.sf.jni4net.utils;
 using net.sf.robocode.dotnet.peer;
 using net.sf.robocode.host;
 using net.sf.robocode.host.proxies;
@@ -30,16 +31,23 @@ namespace net.sf.robocode.dotnet.host.seed
         {
             Init(true);
             Open(dllFileName);
-            domain.SetData("hostManager", ((IJvmProxy) hostManager).JvmHandle);
-            domain.SetData("peer", ((IJvmProxy) peer).JvmHandle);
+            JniGlobalHandle hmHandle = ((IJvmProxy) hostManager).JvmHandle;
+            JniGlobalHandle peerhandle = ((IJvmProxy)peer).JvmHandle;
+            JniGlobalHandle itemHandle = ((IJvmProxy)itemSpecification).JvmHandle;
+
+            domain.SetData("hostManager", hmHandle.DangerousGetHandle());
+            domain.SetData("peer", peerhandle.DangerousGetHandle());
+            domain.SetData("item", itemHandle.DangerousGetHandle());
 
             var statics = serializer.ConvertJ2C<RobotStatics>(RbSerializerN.RobotStatics_TYPE, (Object) jstatics);
 
             domain.SetData("statics", statics);
-            //domain.SetData("specification", ((IJvmProxy)robotSpecification).JvmHandle);
-            domain.SetData("item", ((IJvmProxy) itemSpecification).JvmHandle);
             domain.DoCallBack(HostingSeed.Construct);
             robotPeer = peer;
+
+            hmHandle.HoldThisHandle();
+            peerhandle.HoldThisHandle();
+            itemHandle.HoldThisHandle();
         }
 
         #region IHostingRobotProxy Members

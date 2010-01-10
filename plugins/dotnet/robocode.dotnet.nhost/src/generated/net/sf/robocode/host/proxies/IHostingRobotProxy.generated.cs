@@ -97,7 +97,7 @@ namespace net.sf.robocode.host.proxies {
             return methods;
         }
         
-        private static void cleanup0(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static void cleanup0(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()V
             // ()V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -107,7 +107,7 @@ namespace net.sf.robocode.host.proxies {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static void startRound1(global::System.IntPtr @__envp, global::System.IntPtr @__obj, global::System.IntPtr par0, global::System.IntPtr par1) {
+        private static void startRound1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, global::net.sf.jni4net.utils.JniLocalHandle par1) {
             // (Lnet/sf/robocode/peer/ExecCommands;Lrobocode/RobotStatus;)V
             // (Ljava/lang/Object;Ljava/lang/Object;)V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -117,7 +117,7 @@ namespace net.sf.robocode.host.proxies {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static void forceStopThread2(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static void forceStopThread2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()V
             // ()V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -127,7 +127,7 @@ namespace net.sf.robocode.host.proxies {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static void waitForStopThread3(global::System.IntPtr @__envp, global::System.IntPtr @__obj) {
+        private static void waitForStopThread3(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()V
             // ()V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);

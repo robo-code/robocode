@@ -56,31 +56,81 @@
     <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
       <Link>generated\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="generated\java\util\Random.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\core\ContainerBase.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\dotnet\host\DotnetHost.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\dotnet\nhost\ModuleN.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\dotnet\repository\root\DllRootHelper.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\io\Logger.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\manager\IVersionManagerBase.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\peer\BadBehavior.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\peer\IRobotPeer.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\peer\IRobotStatics.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\repository\IRepositoryItem.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\repository\RobotType.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\security\HiddenAccess.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\serialization\ISerializableHelper.generated.cs" />
-    <Compile Include="generated\net\sf\robocode\serialization\RbSerializer.generated.cs" />
-    <Compile Include="generated\robocode\control\RandomFactory.generated.cs" />
-    <Compile Include="generated\robocode\control\RobotSpecification.generated.cs" />
-    <Compile Include="generated\robocode\exception\AbortedException.generated.cs" />
-    <Compile Include="generated\robocode\exception\DeathException.generated.cs" />
-    <Compile Include="generated\robocode\exception\DisabledException.generated.cs" />
-    <Compile Include="generated\robocode\exception\WinException.generated.cs" />
+    <Compile Include="generated\java\util\Random.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\core\ContainerBase.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\dotnet\host\DotnetHost.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\dotnet\nhost\ModuleN.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\dotnet\repository\root\DllRootHelper.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\host\IHost.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\host\IHostManager.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\host\proxies\IHostingRobotProxy.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\io\Logger.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\manager\IVersionManagerBase.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\peer\BadBehavior.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\peer\IRobotPeer.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\peer\IRobotStatics.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\repository\IRepositoryItem.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\repository\RobotType.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\security\HiddenAccess.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\serialization\ISerializableHelper.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\net\sf\robocode\serialization\RbSerializer.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\RandomFactory.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\RobotSpecification.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\exception\AbortedException.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\exception\DeathException.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\exception\DisabledException.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\exception\WinException.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="host\DotnetHost.cs" />
     <Compile Include="host\events\EventManager.cs" />
     <Compile Include="host\events\EventQueue.cs" />
