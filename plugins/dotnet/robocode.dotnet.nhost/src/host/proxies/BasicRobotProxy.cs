@@ -477,8 +477,8 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             execNetBuffer.clear();
             rbSerializerN.serializeToBuffer(execNetBuffer, RbSerializerN.ExecCommands_TYPE, commands);
-            execJavaBuffer.position(0);
-            execJavaBuffer.limit(execNetBuffer.limit());
+            execJavaBuffer.Position(0);
+            execJavaBuffer.Limit(execNetBuffer.limit());
         }
 
         private void DeserializeResults()
