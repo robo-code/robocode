@@ -22,7 +22,6 @@ import net.sf.robocode.repository.items.TeamItem;
 import net.sf.robocode.repository.items.BaseItem;
 import net.sf.robocode.repository.packager.JarCreator;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.version.IVersionManager;
@@ -46,13 +45,6 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public RepositoryManager(ISettingsManager properties) {
 		this.properties = properties;
-		properties.addPropertyListener(new ISettingsListener() {
-			public void settingChanged(String property) {
-				if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)) {
-					reload(false);
-				}
-			}
-		});
 	}
 
 	// ------------------------------------------

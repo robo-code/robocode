@@ -45,6 +45,8 @@ public interface IWindowManager extends IWindowManagerBase {
 
 	JFrame getRobocodeFrame();
 
+	void setBusyPointer(boolean enabled);
+
 	void setStatus(String s);
 
 	void messageWarning(String s);

@@ -16,7 +16,10 @@
 package net.sf.robocode.ui.dialog;
 
 
+import net.sf.robocode.core.Container;
+import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.ui.IWindowManager;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -26,6 +29,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 
@@ -55,20 +59,31 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				if (chooser.showOpenDialog(optionsPanel) == JFileChooser.APPROVE_OPTION) {
-					((DefaultListModel) getPathList().getModel()).addElement(chooser.getSelectedFile().getAbsolutePath());
-				}
-			} else if (e.getSource() == getRemoveButton()) {
-				int index = getPathList().getSelectedIndex();
+					String path = chooser.getSelectedFile().getAbsolutePath();
 
-				if (index >= 0) {
-					((DefaultListModel) getPathList().getModel()).remove(index);
-					getRemoveButton().setEnabled(getPathList().getSelectedIndex() >= 0);
+					DefaultListModel model = getDefaultListModel();
+
+					if (!model.contains(path)) {
+						((DefaultListModel) getPathList().getModel()).addElement(path);
+
+						sort();
+					}
 				}
+				updateRemoveButton();
+
+			} else if (e.getSource() == getRemoveButton()) {
+				DefaultListModel model = getDefaultListModel();
+				int[] indices = getPathList().getSelectedIndices();
+
+				for (int i = indices.length - 1; i >= 0; i--) {
+					model.remove(i);
+				}
+				updateRemoveButton();
 			}
 		}
 
-		public void valueChanged(ListSelectionEvent e) {
-			getRemoveButton().setEnabled(getPathList().getSelectedIndex() >= 0);
+		public void valueChanged(ListSelectionEvent e) {			
+			updateRemoveButton();
 		}
 	}
 
@@ -155,7 +170,7 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	private JList getPathList() {
 		if (pathList == null) {
 			pathList = new JList(new DefaultListModel());
-			pathList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+			pathList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			pathList.setLayoutOrientation(JList.VERTICAL);
 			pathList.setVisibleRowCount(-1);
 			pathList.addListSelectionListener(eventHandler);
@@ -164,28 +179,84 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	}
 
 	private void loadPreferences(ISettingsManager robocodeProperties) {
-		((DefaultListModel) getPathList().getModel()).clear();
+		DefaultListModel model = getDefaultListModel();
+
+		model.clear();
+
 		StringTokenizer tokenizer = new StringTokenizer(robocodeProperties.getOptionsDevelopmentPath(),
 				File.pathSeparator);
 
 		while (tokenizer.hasMoreTokens()) {
-			((DefaultListModel) getPathList().getModel()).addElement(tokenizer.nextToken());
+			model.addElement(tokenizer.nextToken());
 		}
-		getRemoveButton().setEnabled(getPathList().getSelectedIndex() >= 0);
+		updateRemoveButton();
 	}
 
 	public void storePreferences() {
-		String path = "";
+		String oldPaths = properties.getOptionsDevelopmentPath();
+		String newPaths = "";
+		DefaultListModel model = getDefaultListModel();
 
-		for (int i = 0; i < ((DefaultListModel) getPathList().getModel()).getSize(); i++) {
-			path += ((DefaultListModel) getPathList().getModel()).getElementAt(i) + File.pathSeparator;
+		for (int i = 0; i < model.getSize(); i++) {
+			newPaths += model.getElementAt(i) + File.pathSeparator;
 		}
-		properties.setOptionsDevelopmentPath(path);
+		properties.setOptionsDevelopmentPath(newPaths);
 		properties.saveProperties();
+
+		// If the development path has changed, i.e. if a path has been added or removed,
+		// then the robot repository needs to be updated.
+
+		if (!newPaths.equals(oldPaths)) {
+			// The paths has been changed -> Force rebuild of the repository if we removed a path; otherwise just reload it
+
+			boolean forceRebuild = false;
+			String[] paths = oldPaths.split("\\" + File.pathSeparator);
+
+			for (String path : paths) {
+				if (path.length() > 0 && !model.contains(path)) {
+					forceRebuild = true;
+					break;
+				}
+			}
+
+			final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
+
+			try {
+				windowManager.setBusyPointer(true);
+				Container.getComponent(IRepositoryManager.class).reload(forceRebuild);
+			} finally {
+				windowManager.setBusyPointer(false);
+			}
+		}
 	}
 
 	@Override
 	public boolean isReady() {
 		return true;
+	}
+
+	private DefaultListModel getDefaultListModel() {
+		return (DefaultListModel) getPathList().getModel();
+	}
+
+	private void updateRemoveButton() {
+		getRemoveButton().setEnabled(getPathList().getSelectedIndex() >= 0);
+	}
+	
+	private void sort() {
+		DefaultListModel model = getDefaultListModel();
+		
+		int size = model.getSize();
+
+		if (size > 0) {
+			String[] items = new String[size];
+
+			model.copyInto(items);
+			Arrays.sort(items);
+	
+			for (int i = 0; i < items.length; i++) {
+				model.setElementAt(items[i], i);
+			}
+		}
 	}
 }
