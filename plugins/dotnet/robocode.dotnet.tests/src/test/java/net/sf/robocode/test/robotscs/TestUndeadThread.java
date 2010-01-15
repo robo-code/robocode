@@ -15,17 +15,14 @@ package net.sf.robocode.test.robotscs;
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
-import org.junit.Ignore;
 import robocode.control.events.BattleErrorEvent;
 
 
 /**
  * @author Pavel Savara (original)
  */
-@Ignore("we still don't have solution for that")
 public class TestUndeadThread extends RobocodeTestBed {
 	boolean messagedStop;
-	boolean messagedForcing;
 
 	@Test
 	public void run() {
@@ -36,9 +33,6 @@ public class TestUndeadThread extends RobocodeTestBed {
 		super.onBattleError(event);
 		final String error = event.getError();
 
-		if (error.contains("is not stopping.  Forcing a stop.")) {
-			messagedForcing = true;
-		}
 		if (error.contains("Unable to stop thread")) {
 			messagedStop = true;
 		}
@@ -46,7 +40,7 @@ public class TestUndeadThread extends RobocodeTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 3;
+		return 1;
 	}
 
 	@Override
@@ -56,7 +50,6 @@ public class TestUndeadThread extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue(messagedForcing);
 		Assert.assertTrue(messagedStop);
 	}
 

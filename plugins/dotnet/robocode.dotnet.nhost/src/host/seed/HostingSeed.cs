@@ -23,6 +23,7 @@ using net.sf.robocode.host;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
+using net.sf.robocode.security;
 using robocode;
 using Thread = System.Threading.Thread;
 
@@ -97,6 +98,10 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 robotProxy.run();
             }
+            catch(Exception ex)
+            {
+                robotProxy.println(ex);
+            }
             finally
             {
                 JNIEnv.ThreadEnv.GetJavaVM().DetachCurrentThread();
@@ -107,6 +112,7 @@ namespace net.sf.robocode.dotnet.host.seed
         {
             try
             {
+                LoggerN.logMessage(HiddenAccessN.GetRobotName() +  " is not stopping.  Forcing a stop.");
                 robotThread.Priority = ThreadPriority.Lowest;
                 robotThread.Abort();
                 robotThread.Interrupt();
@@ -124,6 +130,7 @@ namespace net.sf.robocode.dotnet.host.seed
             {
                 if (!robotThread.Join(1000))
                 {
+                    LoggerN.logError("Unable to stop thread for "+statics.getName());
                     robotPeer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
                     robotPeer.setRunning(false);
                 }

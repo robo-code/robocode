@@ -68,28 +68,23 @@ namespace tested.robotscs
             skipped++;
         }
 
-        private readonly Object w = new Object();
-
         private void slowResponse()
         {
-            lock (w)
+            try
             {
-                try
+                if (skipped > 3)
                 {
-                    if (skipped > 3)
-                    {
-                        Thread.Sleep(3000);
-                    }
-                    else
-                    {
-                        Thread.Sleep(130);
-                    }
+                    Thread.Sleep(3000);
                 }
-                catch (Exception ex)
+                else
                 {
-                    // eat interrupt
-                    Out.WriteLine(ex);
+                    Thread.Sleep(100);
                 }
+            }
+            catch (Exception ex)
+            {
+                // eat interrupt
+                Out.WriteLine(ex);
             }
         }
     }

@@ -114,7 +114,9 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		if (isDeterministic() && isCheckOnBattleStart()) {
 			final Random random = Utils.getRandom();
 
+            if (event.getRobotsCount()==2){
 			Assert.assertNear(0.98484154, random.nextDouble());
+            }
 		}
 	}
 

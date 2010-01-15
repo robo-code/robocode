@@ -81,7 +81,7 @@ namespace samplecsteam
             try
             {
                 // Send enemy position to teammates
-                BroadcastMessage(new PointF((float) enemyX, (float) enemyY));
+                BroadcastMessage(new PointD(enemyX, enemyY));
             }
             catch (Exception ex)
             {

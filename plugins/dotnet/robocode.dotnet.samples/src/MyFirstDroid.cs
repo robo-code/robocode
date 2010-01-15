@@ -37,9 +37,9 @@ namespace samplecsteam
         public override void OnMessageReceived(MessageEvent e)
         {
             // Fire at a point
-            if (e.Message is PointF)
+            if (e.Message is PointD)
             {
-                var p = (PointF) e.Message;
+                var p = (PointD)e.Message;
                 // Calculate x and y to target
                 double dx = p.X - X;
                 double dy = p.Y - Y;

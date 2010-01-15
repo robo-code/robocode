@@ -31,22 +31,36 @@ namespace tested.robotscs
 
         private void body()
         {
+            bool normal=false;
             try
             {
-                while (true)
-                {
-                    TurnLeft(100);
-                    Ahead(10);
-                    TurnLeft(100);
-                    Back(10);
-                }
+                loop();
+            }
+            catch(Exception ex)
+            {
+                Out.WriteLine("that's my time");
+                normal = true;
             }
             finally
             {
-                // spamming the console
-                Console.WriteLine("Console.Attack");
-                Out.WriteLine("Swalowed it, HA HA HA HA HAAAAA !!!!!");
-                body();
+                if (!normal)
+                {
+                    // spamming the console
+                    Out.WriteLine("Swalowed it, HA HA HA HA HAAAAA !!!!!");
+                    loop();
+                    body();
+                }
+            }
+        }
+
+        private void loop()
+        {
+            while (true)
+            {
+                TurnLeft(100);
+                Ahead(10);
+                TurnLeft(100);
+                Back(10);
             }
         }
     }
