@@ -83,9 +83,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		parent = getParent();
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
-		} catch (MalformedURLException e) {
-			Logger.logError(e.getMessage());
-		}
+		} catch (MalformedURLException ignored) {}
 	}
 
 	public void setRobotProxy(Object robotProxy) {
@@ -162,48 +160,52 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 	// this whole fun is there to be able to provide defineClass with bytes
 	// we need to call defineClass to be able to set codeSource to untrustedLocation  
-	private ByteBuffer findLocalResource(String name) {
-		// try to find it in robot's classpath
-		// this is URL, don't change to File.pathSeparator 
-		String path = name.replace('.', '/').concat(".class");
+	private ByteBuffer findLocalResource(final String name) {
+		return AccessController.doPrivileged(new PrivilegedAction<ByteBuffer>() {
+			public ByteBuffer run() {
+				// try to find it in robot's classpath
+				// this is URL, don't change to File.pathSeparator
+				String path = name.replace('.', '/').concat(".class");
 
-		final URL url = findResource(path);
-		ByteBuffer result = null;
-		InputStream is = null;
+				final URL url = findResource(path);
+				ByteBuffer result = null;
+				InputStream is = null;
 
-		if (url != null) {
-			try {
-				final URLConnection connection = URLJarCollector.openConnection(url);
+				if (url != null) {
+					try {
+						final URLConnection connection = URLJarCollector.openConnection(url);
 
-				is = connection.getInputStream();
+						is = connection.getInputStream();
 
-				result = ByteBuffer.allocate(1024 * 8);
-				boolean done = false;
+						result = ByteBuffer.allocate(1024 * 8);
+						boolean done = false;
 
-				do {
-					do {
-						int res = is.read(result.array(), result.position(), result.remaining());
+						do {
+							do {
+								int res = is.read(result.array(), result.position(), result.remaining());
 
-						if (res == -1) {
-							done = true;
-							break;
-						}
-						result.position(result.position() + res);
-					} while (result.remaining() != 0);
-					result.flip();
-					if (!done) {
-						result = ByteBuffer.allocate(result.capacity() * 2).put(result);
+								if (res == -1) {
+									done = true;
+									break;
+								}
+								result.position(result.position() + res);
+							} while (result.remaining() != 0);
+							result.flip();
+							if (!done) {
+								result = ByteBuffer.allocate(result.capacity() * 2).put(result);
+							}
+						}while (!done);
+
+					} catch (IOException e) {
+						Logger.logError(e);
+						return null;
+					} finally {
+						FileUtil.cleanupStream(is);
 					}
-				}while (!done);
-
-			} catch (IOException e) {
-				Logger.logError(e);
-				return null;
-			} finally {
-				FileUtil.cleanupStream(is);
+				}
+				return result;
 			}
-		}
-		return result;
+		});
 	}
 
 	private void punishSecurityViolation(String message) {
