@@ -470,6 +470,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		this.bidirectionalBuffer = bidirectionalBuffer;
 	}
 
+    public void sestupThread() {
+        Thread.currentThread().setName(getName());
+    }
+
 	public void executeImplSerial() throws IOException {
 		ExecCommands commands = (ExecCommands) rbSerializer.deserialize(bidirectionalBuffer);
 
@@ -801,7 +805,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				Thread.currentThread().interrupt();
 			}
 		}
-		if (!(isSleeping() || battle.isDebugging())) {
+		if (!isSleeping() && !battle.isDebugging()) {
 			logMessage("\n" + getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 		}
 	}

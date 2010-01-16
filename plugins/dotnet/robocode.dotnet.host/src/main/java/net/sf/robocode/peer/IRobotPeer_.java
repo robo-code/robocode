@@ -56,5 +56,8 @@ class __IRobotPeer extends system.Object implements net.sf.robocode.peer.IRobotP
     
     @net.sf.jni4net.attributes.ClrMethod("()V")
     public native void waitForBattleEndImplSerial();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()V")
+    public native void sestupThread();
 }
 //</generated-proxy>

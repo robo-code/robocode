@@ -96,6 +96,7 @@ namespace net.sf.robocode.dotnet.host.seed
         {
             try
             {
+                robotPeer.sestupThread();
                 robotProxy.run();
             }
             catch(Exception ex)

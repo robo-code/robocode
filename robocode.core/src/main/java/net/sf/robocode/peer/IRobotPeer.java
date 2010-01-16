@@ -36,5 +36,7 @@ public interface IRobotPeer {
 	void executeImplSerial() throws IOException;
 
 	void waitForBattleEndImplSerial() throws IOException;
+
+    void sestupThread();
 }
 
