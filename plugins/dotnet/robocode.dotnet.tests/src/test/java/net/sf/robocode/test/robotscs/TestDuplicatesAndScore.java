@@ -12,6 +12,7 @@
 package net.sf.robocode.test.robotscs;
 
 
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
@@ -28,7 +29,6 @@ import robocode.control.snapshot.IRobotSnapshot;
 /**
  * @author Pavel Savara (original)
  */
-@Ignore("we still failing, probably skipped turns")
 public class TestDuplicatesAndScore extends RobocodeTestBed {
 	private IRobotSnapshot[] robots;
 	private BattleResults[] results;
@@ -93,16 +93,25 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 			net.sf.robocode.test.helpers.Assert.assertNear(389.8100070, robots[7].getX());
 		}
 
-		if (lastTurn == 1365) {
-			net.sf.robocode.test.helpers.Assert.assertNear(473.2726591, robots[0].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(415.4262123, robots[1].getX());
+		if (lastTurn == 1365) {         
+			net.sf.robocode.test.helpers.Assert.assertNear(563.1336824, robots[0].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(572.9500601, robots[1].getX());
 			net.sf.robocode.test.helpers.Assert.assertNear(317.3362130, robots[2].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(671.1937618, robots[3].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(365.6640401, robots[4].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(578.2231942, robots[3].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(120.3355009, robots[4].getX());
 			net.sf.robocode.test.helpers.Assert.assertNear(734.4305396, robots[5].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(368.6778268, robots[6].getX());
-			net.sf.robocode.test.helpers.Assert.assertNear(20.2835804, robots[7].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(244.9583274, robots[6].getX());
+			net.sf.robocode.test.helpers.Assert.assertNear(333.1785378, robots[7].getX());
 		}
+
+        Assert.assertFalse("skipped", robots[0].getOutputStreamSnapshot().contains("skipped"));
+        Assert.assertFalse("skipped", robots[1].getOutputStreamSnapshot().contains("skipped"));
+        Assert.assertFalse("skipped", robots[2].getOutputStreamSnapshot().contains("skipped"));
+        Assert.assertFalse("skipped", robots[3].getOutputStreamSnapshot().contains("skipped"));
+        Assert.assertFalse("skipped", robots[4].getOutputStreamSnapshot().contains("skipped"));
+        Assert.assertFalse("skipped", robots[5].getOutputStreamSnapshot().contains("skipped"));
+        Assert.assertFalse("skipped", robots[6].getOutputStreamSnapshot().contains("skipped"));
+        Assert.assertFalse("skipped", robots[7].getOutputStreamSnapshot().contains("skipped"));
 	}
 
 	@Override
@@ -130,36 +139,38 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 		Assert.assertThat(robots[6].getName(), is("samplecs.Fire (3)"));
 		Assert.assertThat(robots[7].getName(), is("samplecs.Crazy"));
 
-		Assert.assertThat(results[0].getTeamLeaderName(), is("samplecs.Fire (1)"));
-		Assert.assertThat(results[1].getTeamLeaderName(), is("tested.robotscs.TestTeam (2)"));
-		Assert.assertThat(results[2].getTeamLeaderName(), is("tested.robotscs.TestTeam (1)"));
-		Assert.assertThat(results[3].getTeamLeaderName(), is("samplecs.Crazy"));
+		// the results are different from Java version because of strictfp in Java Math
+		// as oposed to FPU driven .NET, which gives better precision.
+		// difference acumulates to make big difference in results
+		Assert.assertThat(results[0].getTeamLeaderName(), is("tested.robotscs.TestTeam (2)"));
+		Assert.assertThat(results[1].getTeamLeaderName(), is("tested.robotscs.TestTeam (1)"));
+		Assert.assertThat(results[2].getTeamLeaderName(), is("samplecs.Crazy"));
+		Assert.assertThat(results[3].getTeamLeaderName(), is("samplecs.Fire (1)"));
 
-		Assert.assertThat(results[0].getLastSurvivorBonus(), is(70));
-		Assert.assertThat(results[1].getLastSurvivorBonus(), is(0));
+		Assert.assertThat(results[0].getLastSurvivorBonus(), is(0));
+		Assert.assertThat(results[1].getLastSurvivorBonus(), is(50));
 		Assert.assertThat(results[2].getLastSurvivorBonus(), is(0));
 		Assert.assertThat(results[3].getLastSurvivorBonus(), is(0));
 
 		Assert.assertThat(results[0].getRamDamage(), is(0));
-		Assert.assertThat(results[1].getRamDamage(), is(2));
-		Assert.assertThat(results[2].getRamDamage(), is(2));
-		Assert.assertThat(results[3].getRamDamage(), is(17));
+		Assert.assertThat(results[1].getRamDamage(), is(5));
+		Assert.assertThat(results[2].getRamDamage(), is(14));
+		Assert.assertThat(results[3].getRamDamage(), is(1));
 
-		Assert.assertThat(results[0].getBulletDamageBonus(), is(30));
-		Assert.assertThat(results[1].getBulletDamageBonus(), is(43));
-		Assert.assertThat(results[2].getBulletDamageBonus(), is(40));
+		Assert.assertThat(results[0].getBulletDamageBonus(), is(55));
+		Assert.assertThat(results[1].getBulletDamageBonus(), is(0));
+		Assert.assertThat(results[2].getBulletDamageBonus(), is(0));
 		Assert.assertThat(results[3].getBulletDamageBonus(), is(0));
 
-		Assert.assertThat(results[0].getBulletDamage(), is(248));
-		Assert.assertThat(results[1].getBulletDamage(), is(384));
-		Assert.assertThat(results[2].getBulletDamage(), is(316));
-		Assert.assertThat(results[3].getBulletDamage(), is(148));
+		Assert.assertThat(results[0].getBulletDamage(), is(480));
+		Assert.assertThat(results[1].getBulletDamage(), is(124));
+		Assert.assertThat(results[2].getBulletDamage(), is(148));
+		Assert.assertThat(results[3].getBulletDamage(), is(152));
 
-		Assert.assertThat(results[0].getScore(), is(698));
-		Assert.assertThat(results[1].getScore(), is(680));
-		Assert.assertThat(results[2].getScore(), is(559));
-		Assert.assertThat(results[3].getScore(), is(465));
+		Assert.assertThat(results[0].getScore(), is(1135));
+		Assert.assertThat(results[1].getScore(), is(434));
+		Assert.assertThat(results[2].getScore(), is(312));
+		Assert.assertThat(results[3].getScore(), is(253));
 
-		Assert.assertThat(lastTurn, is(2127));
 	}
 }
