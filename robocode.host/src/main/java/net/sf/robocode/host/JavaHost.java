@@ -14,6 +14,7 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.host.proxies.*;
+import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
 import static net.sf.robocode.io.Logger.logError;
@@ -50,19 +51,19 @@ public class JavaHost implements IHost {
 		});
 	}
 
-	public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
+	public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, IRobotStatics statics, IRobotPeer peer) {
 		IHostingRobotProxy robotProxy;
 		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
 		if (specification.isTeamRobot()) {
-			robotProxy = new TeamRobotProxy(specification, hostManager, peer, statics);
+			robotProxy = new TeamRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else if (specification.isAdvancedRobot()) {
-			robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, statics);
+			robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else if (specification.isStandardRobot()) {
-			robotProxy = new StandardRobotProxy(specification, hostManager, peer, statics);
+			robotProxy = new StandardRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else if (specification.isJuniorRobot()) {
-			robotProxy = new JuniorRobotProxy(specification, hostManager, peer, statics);
+			robotProxy = new JuniorRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else {
 			throw new AccessControlException("Unknown robot type");
 		}

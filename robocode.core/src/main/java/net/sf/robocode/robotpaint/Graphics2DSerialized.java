@@ -26,6 +26,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
 import java.util.Map;
@@ -1330,6 +1331,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	public void setPaintingEnabled(boolean enabled) {
 		if (enabled && !isPaintingEnabled) {
 			calls = ByteBuffer.allocate(INITIAL_BUFFER_SIZE);
+			calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
 		}
 		isPaintingEnabled = enabled;
 	}
@@ -1366,6 +1368,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	public void clearQueue() {
 		calls.clear();
+		calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
 	}
 
 	public void processTo(Graphics2D g, Object graphicsCalls) {
@@ -1384,6 +1387,12 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 
 		calls.flip();
+		if (calls.get() == 1) {
+			calls.order(ByteOrder.BIG_ENDIAN);
+		} else {
+			calls.order(ByteOrder.LITTLE_ENDIAN);
+		}
+
 		while (calls.remaining() > 0) {
 			try {
 				processQueuedCall(g);
@@ -1395,7 +1404,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 	}
 
-	public Object readoutQueuedCalls() {
+	public byte[] readoutQueuedCalls() {
 		if (calls == null || calls.position() == 0) {
 			return null;
 		}
@@ -1404,6 +1413,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		calls.flip();
 		calls.get(res);
 		calls.clear();
+		calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
 		return res; 
 	}
 

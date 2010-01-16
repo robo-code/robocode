@@ -12,6 +12,7 @@
 package net.sf.robocode.ui;
 
 
+import net.sf.robocode.core.BaseModule;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.ui.battleview.BattleView;
 import net.sf.robocode.ui.battleview.InteractiveHandler;
@@ -22,7 +23,7 @@ import net.sf.robocode.ui.packager.RobotPackager;
 /**
  * @author Pavel Savara (original)
  */
-public class Module {
+public class Module extends BaseModule {
 	static {
 		Container.cache.addComponent(AboutBox.class);
 		Container.cache.addComponent(BattleButton.class);
