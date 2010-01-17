@@ -351,12 +351,15 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" group="main" />
       <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" group="main" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" group="plugins.dotnet" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.api/robocode.dotnet.api.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.api/robocode.dotnet.api.iml" group="plugins.dotnet" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" group="plugins.dotnet" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" group="plugins.dotnet" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" group="plugins.dotnet" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" group="plugins.dotnet" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.repository/robocode.dotnet.repository.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.repository/robocode.dotnet.repository.iml" group="plugins.dotnet" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.ntests/robocode.dotnet.ntests.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.ntests/robocode.dotnet.ntests.iml" group="plugins.dotnet" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.robotscs/robocode.dotnet.robotscs.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.robotscs/robocode.dotnet.robotscs.iml" group="plugins.dotnet" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" group="plugins.dotnet" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.tests/robocode.dotnet.tests.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.tests/robocode.dotnet.tests.iml" group="plugins.dotnet" />
       <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" group="main" />
       <module fileurl="file://$PROJECT_DIR$/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/robocode.installer/robocode.installer.iml" group="main" />
       <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.iml" group="plugins.js" />

@@ -1596,10 +1596,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		if (robotProxy != null) {
 			robotProxy.cleanup();
+			robotProxy = null;
 		}
 
-		// Cleanup robot proxy
-		robotProxy = null;
+		if (statistics != null) {
+			statistics.cleanup();
+			statistics = null;
+		}
 
 		status = null;
 		commands = null;

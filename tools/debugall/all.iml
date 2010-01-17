@@ -28,6 +28,8 @@
     <orderEntry type="module" module-name="robocode.js.repository" />
     <orderEntry type="module" module-name="robocode.js.samples" />
     <orderEntry type="module" module-name="robocode.testing.samples" />
+    <orderEntry type="module" module-name="robocode.dotnet.host" />
+    <orderEntry type="module" module-name="robocode.dotnet.tests" />
   </component>
 </module>
 

@@ -47,8 +47,19 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
-		System.setProperty("WORKINGDIRECTORY", "target/test-classes");
-		System.setProperty("ROBOTPATH", "../robocode.tests.robots/target/classes");
+		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
+		try {
+			if (new File("").getAbsolutePath().endsWith("robocode.tests")) {
+				robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
+			} else if (new File("").getAbsolutePath().endsWith("robocode.dotnet.tests")) {
+				robotsPath = new File("../../../robocode.tests.robots").getCanonicalPath();
+			} else {
+				throw new Error("Unknown directory");
+			}
+		} catch (IOException e) {
+			e.printStackTrace(Logger.realErr);
+		}
+		System.setProperty("ROBOTPATH", robotsPath + "/target/classes");
 
 		// silent when running in Maven
 		if (System.getProperty("surefire.test.class.path", null) != null) {
@@ -154,7 +165,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		runSetup();
 		runBattle(getRobotNames(), getNumRounds(), getInitialPositions());
 		runTeardown();
-		Assert.assertThat(errors, is(getExpectedErrors()));
+		Assert.assertThat("Errors count", errors, is(getExpectedErrors()));
 	}
 
 	protected int getExpectedErrors() {

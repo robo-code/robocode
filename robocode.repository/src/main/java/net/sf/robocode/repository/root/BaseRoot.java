@@ -29,7 +29,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 
 	protected transient Database db;
 	protected final File rootPath;
-	protected final URL rootURL;
+	protected URL rootURL;
 
 	public BaseRoot(Database db, File rootPath) {
 		this.db = db;
