@@ -9,8 +9,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.installer</artifactId>
-    <version>${robocode.version}</version>
-    <name>.Net installer</name>
+    <version>${robocode.nversion}</version>
+    <name>.NET Robcode installer</name>
     <build>
         <plugins>
             <plugin>

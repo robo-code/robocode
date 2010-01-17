@@ -1,29 +1,52 @@
-﻿using System;
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System.IO;
+using java.lang;
+using net.sf.jni4net;
+using net.sf.robocode.dotnet.host.seed;
+using net.sf.robocode.dotnet.repository.root;
 using net.sf.robocode.host;
 using net.sf.robocode.host.proxies;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
+using net.sf.robocode.security;
 using robocode.control;
-using String=java.lang.String;
 
-namespace robocode.dotnet.nhost.host
+namespace net.sf.robocode.dotnet.host
 {
-    internal class DotnetHost : IHost
+    public class DotnetHost : IHost
     {
-        public IHostingRobotProxy createRobotProxy(IHostManager par0, RobotSpecification par1, RobotStatics par2,
-                                                   IRobotPeer par3)
+        #region IHost Members
+
+        public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification,
+                                                   IRobotStatics statics, IRobotPeer peer)
         {
-            throw new NotImplementedException();
+            Object s = HiddenAccess.getFileSpecification(robotSpecification);
+            var itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);
+            string file = DllRootHelper.GetDllFileName(itemSpecification);
+            HostingShell hostingShell = new HostingShell(itemSpecification, hostManager, peer, statics, file);
+            return hostingShell;
         }
 
         public String[] getReferencedClasses(IRobotRepositoryItem par0)
         {
-            throw new NotImplementedException();
+            return new String[] {};
         }
 
-        public object getRobotType(IRobotRepositoryItem par0, bool par1, bool par2)
+        public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, bool resolve, bool message)
         {
-            throw new NotImplementedException();
+            return DllRootHelper.GetRobotType(robotRepositoryItem);
         }
+
+        #endregion
+
     }
 }

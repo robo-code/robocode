@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,11 +9,20 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-//TODO
 
-public class MyCsRobot
+
+using robocode;
+
+public class NoPackageButReallyLongNameIWouldSayTooLongMaybeEventLongerCs : Robot
 {
-    public static void Main()
+    public override void Run()
     {
+        while (true)
+        {
+            Ahead(1); // Move ahead 100
+            TurnGunRight(360); // Spin gun around
+            Back(1); // Move back 100
+            TurnGunRight(360); // Spin gun around
+        }
     }
 }

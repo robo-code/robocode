@@ -11,22 +11,23 @@
     <artifactId>robocode.dotnet.nhost</artifactId>
     <version>${robocode.nversion}</version>
     <packaging>dotnet:library</packaging>
-    <name>.NET nhost for Robocode</name>
-	<description>.NET nhost for Robocode</description>
-	<organization>
-		<name>Robocode</name>
-		<url>http://robocode.sf.net</url>
-	</organization>
+    <name>.NET Robocode nhost</name>
+    <description>.NET nhost for Robocode</description>
+    <organization>
+        <name>Robocode</name>
+        <url>http://robocode.sf.net</url>
+    </organization>
     <dependencies>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.dotnet.host</artifactId>
-            <version>${robocode.version}</version>
-        </dependency>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.n</artifactId>
-            <version>0.2.0.0</version>
+            <version>0.6.0.0</version>
+            <type>dotnet:library</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.api</artifactId>
+            <version>${robocode.nversion}</version>
             <type>dotnet:library</type>
         </dependency>
     </dependencies>
@@ -34,32 +35,15 @@
         <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <tasks>
-                                <exec executable="cmd.exe" dir="." failonerror="true">
-                                    <arg value="/c ..\tools\lib\jni4net.proxygen-0.1.0.0.exe src\robocode.proxygen.xml"/>
-                                </exec>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:${basedir}/../tools/keys/robocode.snk
+                    </aditionalOptions>
+                </configuration>
             </plugin>
-			<plugin>
-				<groupId>org.sonatype.nmaven.plugins</groupId>
-				<artifactId>maven-dotnet-compiler-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>0.17robocode</version>
-				<configuration>
-		          <aditionalOptions>/unsafe /nowarn:1591</aditionalOptions>
-		        </configuration>
-			</plugin>
-	    </plugins>
+        </plugins>
     </build>
 </project>
