@@ -77,14 +77,18 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		});
 
 		// find sub-directories
-		for (File subDir : path.listFiles(
+		File[] subDirs = path.listFiles(
 				new FileFilter() {
 			public boolean accept(File pathname) {
 				return pathname.isDirectory() && !pathname.getName().toLowerCase().endsWith(".data")
 						&& !pathname.getName().toLowerCase().endsWith(".robotcache");
 			}
-		})) {
-			visitDirectory(subDir, items, modified);
+		});
+
+		if (subDirs != null) {
+			for (File subDir : subDirs) {
+				visitDirectory(subDir, items, modified);
+			}
 		}
 	}
 
