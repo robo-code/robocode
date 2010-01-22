@@ -37,6 +37,7 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.samples</artifactId>
             <version>${robocode.nversion}</version>
+            <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>

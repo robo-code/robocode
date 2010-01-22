@@ -67,12 +67,6 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 			isDumpingErrors = false;
 			isDumpingMessages = false;
 		}
-
-		try {
-			robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
-		} catch (IOException e) {
-			e.printStackTrace(Logger.realErr);
-		}
 	}
 
 	protected final IRobocodeEngine engine = new RobocodeEngine(new BattleAdaptor() {
@@ -153,6 +147,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		}
 		errors = 0;
 		messages = 0;
+        engine.getLocalRepository();
 	}
 
 	@After

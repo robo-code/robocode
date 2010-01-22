@@ -621,6 +621,20 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.6.0.0/jni4net.j-0.6.0.0-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: net.sf.robocode:robocode.dotnet.host:1.7.2-Alpha">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/pom.xml!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.dotnet.host/1.7.2-Alpha/robocode.dotnet.host-1.7.2-Alpha.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/pom-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.dotnet.host/1.7.2-Alpha/robocode.dotnet.host-1.7.2-Alpha-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/pom-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.dotnet.host/1.7.2-Alpha/robocode.dotnet.host-1.7.2-Alpha-sources.jar!/" />
+      </SOURCES>
+    </library>
   </component>
 </project>
 

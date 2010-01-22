@@ -18,14 +18,15 @@
     <orderEntry type="module" module-name="robocode.host" exported="" />
     <orderEntry type="module" module-name="robocode.core" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
+    <orderEntry type="module" module-name="robocode.repository" exported="" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
+    <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
+    <orderEntry type="module" module-name="robocode.dotnet.api" exported="" />
     <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.6.0.0" level="project" />
     <orderEntry type="module" module-name="robocode.dotnet.samples" exported="" />
-    <orderEntry type="module" module-name="robocode.dotnet.api" exported="" />
     <orderEntry type="module" module-name="robocode.dotnet.robotscs" exported="" />
     <orderEntry type="module" module-name="robocode.samples" exported="" />
     <orderEntry type="module" module-name="robocode.battle" exported="" />
-    <orderEntry type="module" module-name="robocode.repository" exported="" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
   </component>
 </module>
 
