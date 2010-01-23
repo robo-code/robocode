@@ -73,7 +73,8 @@ goto error
 :chkMHome
 if not "%M2_HOME%"=="" goto valMHome
 
-if "%OS%"=="Windows_NT" SET M2_HOME=%~dp0..
+if "%OS%"=="Windows_NT" SET M2_HOME=%~dp0
+if "%OS%"=="Windows_NT" set M2_HOME=%M2_HOME:~0,-5%
 if "%OS%"=="WINNT" SET M2_HOME=%~dp0..
 if not "%M2_HOME%"=="" goto valMHome
 
@@ -144,7 +145,9 @@ SET MAVEN_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
 if "%@eval[2+2]" == "4" goto 4NTCWJars
 
 @REM -- Regular WinNT shell
-for %%i in ("%M2_HOME%"\lib\classworlds-*) do set CLASSWORLDS_JAR="%%i"
+for %%i in ("%M2_HOME%"\lib\classworlds-*) do set CLASSWORLDS_JAR="%%~fi"
+for %%i in ("%M2_HOME%"\lib\maven-*-uber.jar) do set MAVENUBER_JAR="%%~fi"
+
 goto runm2
 
 @REM The 4NT Shell from jp software
@@ -154,7 +157,7 @@ goto runm2
 
 @REM Start MAVEN2
 :runm2
-%MAVEN_JAVA_EXE% %MAVEN_OPTS% -classpath %CLASSWORLDS_JAR% "-Dclassworlds.conf=%M2_HOME%\bin\m2.conf" "-Dmaven.home=%M2_HOME%" org.codehaus.classworlds.Launcher %MAVEN_CMD_LINE_ARGS%
+%MAVEN_JAVA_EXE% %MAVEN_OPTS% -classpath %CLASSWORLDS_JAR%;%MAVENUBER_JAR% "-Dclassworlds.conf=%M2_HOME%\bin\m2.conf" "-Dmaven.home=%M2_HOME%" org.codehaus.classworlds.Launcher %MAVEN_CMD_LINE_ARGS%
 if ERRORLEVEL 1 goto error
 goto end
 

@@ -3,4 +3,5 @@ if exist "%~dp0\tools\lib\maven-2.0.9-uber.jar" goto mvn
 call "%~dp0\tools\loadTools.cmd"
 
 :mvn
-@call "%~dp0\tools\bin\mvn.bat" package assembly:assembly %*
+@call "%~dp0\tools\bin\mvn.bat" ant:ant
+@call "%~dp0\tools\bin\mvn.bat" install assembly:assembly %*
