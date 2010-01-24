@@ -16,24 +16,24 @@ namespace robocode.exception {
     [global::System.SerializableAttribute()]
     public partial class DeathException : global::java.lang.Error {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor0;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorDeathException0;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor1;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorDeathException1;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)V")]
         public DeathException(global::java.lang.String par0) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::robocode.exception.DeathException.staticClass, global::robocode.exception.DeathException.@__ctor0, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
+            @__env.NewObject(global::robocode.exception.DeathException.staticClass, global::robocode.exception.DeathException.@__ctorDeathException0, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public DeathException() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::robocode.exception.DeathException.staticClass, global::robocode.exception.DeathException.@__ctor1, this);
+            @__env.NewObject(global::robocode.exception.DeathException.staticClass, global::robocode.exception.DeathException.@__ctorDeathException1, this);
         }
         
         protected DeathException(global::net.sf.jni4net.jni.JNIEnv @__env) : 
@@ -52,11 +52,11 @@ namespace robocode.exception {
         
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
             global::robocode.exception.DeathException.staticClass = @__class;
-            global::robocode.exception.DeathException.@__ctor0 = @__env.GetMethodID(global::robocode.exception.DeathException.staticClass, "<init>", "(Ljava/lang/String;)V");
-            global::robocode.exception.DeathException.@__ctor1 = @__env.GetMethodID(global::robocode.exception.DeathException.staticClass, "<init>", "()V");
+            global::robocode.exception.DeathException.@__ctorDeathException0 = @__env.GetMethodID(global::robocode.exception.DeathException.staticClass, "<init>", "(Ljava/lang/String;)V");
+            global::robocode.exception.DeathException.@__ctorDeathException1 = @__env.GetMethodID(global::robocode.exception.DeathException.staticClass, "<init>", "()V");
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::robocode.exception.DeathException(@__env);

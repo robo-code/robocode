@@ -16,24 +16,24 @@ namespace robocode.exception {
     [global::System.SerializableAttribute()]
     public partial class AbortedException : global::java.lang.Error {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor0;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorAbortedException0;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor1;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorAbortedException1;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/String;)V")]
         public AbortedException(global::java.lang.String par0) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::robocode.exception.AbortedException.staticClass, global::robocode.exception.AbortedException.@__ctor0, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
+            @__env.NewObject(global::robocode.exception.AbortedException.staticClass, global::robocode.exception.AbortedException.@__ctorAbortedException0, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public AbortedException() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::robocode.exception.AbortedException.staticClass, global::robocode.exception.AbortedException.@__ctor1, this);
+            @__env.NewObject(global::robocode.exception.AbortedException.staticClass, global::robocode.exception.AbortedException.@__ctorAbortedException1, this);
         }
         
         protected AbortedException(global::net.sf.jni4net.jni.JNIEnv @__env) : 
@@ -52,11 +52,11 @@ namespace robocode.exception {
         
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
             global::robocode.exception.AbortedException.staticClass = @__class;
-            global::robocode.exception.AbortedException.@__ctor0 = @__env.GetMethodID(global::robocode.exception.AbortedException.staticClass, "<init>", "(Ljava/lang/String;)V");
-            global::robocode.exception.AbortedException.@__ctor1 = @__env.GetMethodID(global::robocode.exception.AbortedException.staticClass, "<init>", "()V");
+            global::robocode.exception.AbortedException.@__ctorAbortedException0 = @__env.GetMethodID(global::robocode.exception.AbortedException.staticClass, "<init>", "(Ljava/lang/String;)V");
+            global::robocode.exception.AbortedException.@__ctorAbortedException1 = @__env.GetMethodID(global::robocode.exception.AbortedException.staticClass, "<init>", "()V");
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::robocode.exception.AbortedException(@__env);

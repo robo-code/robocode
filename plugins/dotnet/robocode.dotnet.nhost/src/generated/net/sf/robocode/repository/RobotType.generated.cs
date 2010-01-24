@@ -15,23 +15,23 @@ namespace net.sf.robocode.repository {
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
     public partial class RobotType : global::java.lang.Object, global::java.io.Serializable {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _isValid0;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isJuniorRobot1;
+        internal static global::net.sf.jni4net.jni.MethodId _isInteractiveRobot1;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isStandardRobot2;
+        internal static global::net.sf.jni4net.jni.MethodId _isPaintRobot2;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isInteractiveRobot3;
+        internal static global::net.sf.jni4net.jni.MethodId _isAdvancedRobot3;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isPaintRobot4;
+        internal static global::net.sf.jni4net.jni.MethodId _isTeamRobot4;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isAdvancedRobot5;
+        internal static global::net.sf.jni4net.jni.MethodId _isDroid5;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isTeamRobot6;
+        internal static global::net.sf.jni4net.jni.MethodId _isStandardRobot6;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isDroid7;
+        internal static global::net.sf.jni4net.jni.MethodId _isJuniorRobot7;
         
         internal static global::net.sf.jni4net.jni.MethodId _getCode8;
         
@@ -51,22 +51,22 @@ namespace net.sf.robocode.repository {
         
         internal static global::net.sf.jni4net.jni.FieldId _PAINTING16;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor17;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorRobotType17;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor18;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorRobotType18;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(ZZZZZZZ)V")]
         public RobotType(bool par0, bool par1, bool par2, bool par3, bool par4, bool par5, bool par6) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::net.sf.robocode.repository.RobotType.staticClass, global::net.sf.robocode.repository.RobotType.@__ctor17, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par5), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par6));
+            @__env.NewObject(global::net.sf.robocode.repository.RobotType.staticClass, global::net.sf.robocode.repository.RobotType.@__ctorRobotType17, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par5), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par6));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(I)V")]
         public RobotType(int par0) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::net.sf.robocode.repository.RobotType.staticClass, global::net.sf.robocode.repository.RobotType.@__ctor18, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
+            @__env.NewObject(global::net.sf.robocode.repository.RobotType.staticClass, global::net.sf.robocode.repository.RobotType.@__ctorRobotType18, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
         protected RobotType(global::net.sf.jni4net.jni.JNIEnv @__env) : 
@@ -146,13 +146,13 @@ namespace net.sf.robocode.repository {
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
             global::net.sf.robocode.repository.RobotType.staticClass = @__class;
             global::net.sf.robocode.repository.RobotType._isValid0 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isValid", "()Z");
-            global::net.sf.robocode.repository.RobotType._isJuniorRobot1 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isJuniorRobot", "()Z");
-            global::net.sf.robocode.repository.RobotType._isStandardRobot2 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isStandardRobot", "()Z");
-            global::net.sf.robocode.repository.RobotType._isInteractiveRobot3 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isInteractiveRobot", "()Z");
-            global::net.sf.robocode.repository.RobotType._isPaintRobot4 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isPaintRobot", "()Z");
-            global::net.sf.robocode.repository.RobotType._isAdvancedRobot5 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isAdvancedRobot", "()Z");
-            global::net.sf.robocode.repository.RobotType._isTeamRobot6 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isTeamRobot", "()Z");
-            global::net.sf.robocode.repository.RobotType._isDroid7 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isDroid", "()Z");
+            global::net.sf.robocode.repository.RobotType._isInteractiveRobot1 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isInteractiveRobot", "()Z");
+            global::net.sf.robocode.repository.RobotType._isPaintRobot2 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isPaintRobot", "()Z");
+            global::net.sf.robocode.repository.RobotType._isAdvancedRobot3 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isAdvancedRobot", "()Z");
+            global::net.sf.robocode.repository.RobotType._isTeamRobot4 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isTeamRobot", "()Z");
+            global::net.sf.robocode.repository.RobotType._isDroid5 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isDroid", "()Z");
+            global::net.sf.robocode.repository.RobotType._isStandardRobot6 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isStandardRobot", "()Z");
+            global::net.sf.robocode.repository.RobotType._isJuniorRobot7 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isJuniorRobot", "()Z");
             global::net.sf.robocode.repository.RobotType._getCode8 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "getCode", "()I");
             global::net.sf.robocode.repository.RobotType._INVALID9 = @__env.GetStaticFieldID(global::net.sf.robocode.repository.RobotType.staticClass, "INVALID", "Lnet/sf/robocode/repository/RobotType;");
             global::net.sf.robocode.repository.RobotType._JUNIOR10 = @__env.GetStaticFieldID(global::net.sf.robocode.repository.RobotType.staticClass, "JUNIOR", "Lnet/sf/robocode/repository/RobotType;");
@@ -162,8 +162,8 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.RobotType._DROID14 = @__env.GetStaticFieldID(global::net.sf.robocode.repository.RobotType.staticClass, "DROID", "Lnet/sf/robocode/repository/RobotType;");
             global::net.sf.robocode.repository.RobotType._INTERACTIVE15 = @__env.GetStaticFieldID(global::net.sf.robocode.repository.RobotType.staticClass, "INTERACTIVE", "Lnet/sf/robocode/repository/RobotType;");
             global::net.sf.robocode.repository.RobotType._PAINTING16 = @__env.GetStaticFieldID(global::net.sf.robocode.repository.RobotType.staticClass, "PAINTING", "Lnet/sf/robocode/repository/RobotType;");
-            global::net.sf.robocode.repository.RobotType.@__ctor17 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "<init>", "(ZZZZZZZ)V");
-            global::net.sf.robocode.repository.RobotType.@__ctor18 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "<init>", "(I)V");
+            global::net.sf.robocode.repository.RobotType.@__ctorRobotType17 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "<init>", "(ZZZZZZZ)V");
+            global::net.sf.robocode.repository.RobotType.@__ctorRobotType18 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "<init>", "(I)V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
@@ -173,45 +173,45 @@ namespace net.sf.robocode.repository {
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
-        public virtual bool isJuniorRobot() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isJuniorRobot1)));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
-        public virtual bool isStandardRobot() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isStandardRobot2)));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isInteractiveRobot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isInteractiveRobot3)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isInteractiveRobot1)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isPaintRobot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isPaintRobot4)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isPaintRobot2)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isAdvancedRobot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isAdvancedRobot5)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isAdvancedRobot3)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isTeamRobot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isTeamRobot6)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isTeamRobot4)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isDroid() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isDroid7)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isDroid5)));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
+        public virtual bool isStandardRobot() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isStandardRobot6)));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
+        public virtual bool isJuniorRobot() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((bool)(@__env.CallBooleanMethod(this, global::net.sf.robocode.repository.RobotType._isJuniorRobot7)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
@@ -220,7 +220,7 @@ namespace net.sf.robocode.repository {
             return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.repository.RobotType._getCode8)));
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.repository.RobotType(@__env);

@@ -36,11 +36,11 @@ class __IVersionManagerBase extends system.Object implements net.sf.robocode.man
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getVersion();
     
-    @net.sf.jni4net.attributes.ClrMethod("()I")
-    public native int getVersionAsInt();
-    
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getVersionN();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()I")
+    public native int getVersionAsInt();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isLastRunVersionChanged();

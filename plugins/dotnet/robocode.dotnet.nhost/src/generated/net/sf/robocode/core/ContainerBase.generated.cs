@@ -25,7 +25,7 @@ namespace net.sf.robocode.core {
                 base(@__env) {
         }
         
-        public static global::java.lang.Class _class {
+        public new static global::java.lang.Class _class {
             get {
                 return global::net.sf.robocode.core.ContainerBase.staticClass;
             }

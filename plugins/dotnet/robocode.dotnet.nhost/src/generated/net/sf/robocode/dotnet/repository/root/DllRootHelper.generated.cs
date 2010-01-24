@@ -14,7 +14,7 @@ namespace net.sf.robocode.dotnet.repository.root {
     #region Component Designer generated code 
     public partial class DllRootHelper_ {
         
-        public new static global::java.lang.Class _class {
+        public static global::java.lang.Class _class {
             get {
                 return global::net.sf.robocode.dotnet.repository.root.@__DllRootHelper.staticClass;
             }
@@ -27,9 +27,9 @@ namespace net.sf.robocode.dotnet.repository.root {
     [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper))]
     internal sealed partial class @__DllRootHelper : global::java.lang.Object {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
-        protected @__DllRootHelper(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+        private @__DllRootHelper(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
         }
         
@@ -61,33 +61,36 @@ namespace net.sf.robocode.dotnet.repository.root {
             // (Ljava/lang/String;)[Ljava/lang/String;
             // (LSystem/String;)[LSystem/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
-            return global::net.sf.jni4net.utils.Convertor.ArrayStrongC2JString(@__env, global::net.sf.robocode.dotnet.repository.root.DllRootHelper.findItems(global::net.sf.jni4net.utils.Convertor.StrongJ2CString(@__env, dllPath)));
+            @__return = global::net.sf.jni4net.utils.Convertor.ArrayStrongC2JString(@__env, global::net.sf.robocode.dotnet.repository.root.DllRootHelper.findItems(global::net.sf.jni4net.utils.Convertor.StrongJ2CString(@__env, dllPath)));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::net.sf.jni4net.utils.JniHandle);
+            return @__return;
         }
         
         private static global::net.sf.jni4net.utils.JniHandle GetRobotType2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__class, global::net.sf.jni4net.utils.JniLocalHandle robotRepositoryItem) {
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/RobotType;
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/RobotType;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
-            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(global::net.sf.robocode.dotnet.repository.root.DllRootHelper.GetRobotType(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, robotRepositoryItem)));
+            @__return = global::net.sf.jni4net.utils.Convertor.StrongCp2J(global::net.sf.robocode.dotnet.repository.root.DllRootHelper.GetRobotType(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, robotRepositoryItem)));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::net.sf.jni4net.utils.JniHandle);
+            return @__return;
         }
         
         private static global::net.sf.jni4net.utils.JniHandle GetDllFileName3(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__class, global::net.sf.jni4net.utils.JniLocalHandle robotRepositoryItem) {
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)Ljava/lang/String;
             // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)LSystem/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
-            return global::net.sf.jni4net.utils.Convertor.StrongC2JString(@__env, global::net.sf.robocode.dotnet.repository.root.DllRootHelper.GetDllFileName(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, robotRepositoryItem)));
+            @__return = global::net.sf.jni4net.utils.Convertor.StrongC2JString(@__env, global::net.sf.robocode.dotnet.repository.root.DllRootHelper.GetDllFileName(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, robotRepositoryItem)));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::net.sf.jni4net.utils.JniHandle);
+            return @__return;
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.dotnet.repository.root.@__DllRootHelper(@__env);
