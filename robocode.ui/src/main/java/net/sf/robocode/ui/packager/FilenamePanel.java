@@ -89,7 +89,7 @@ public class FilenamePanel extends WizardPanel {
 
 			if (!outgoingFile.exists()) {
 				if (!outgoingFile.mkdirs()) {
-					Logger.logError("Can't create" + outgoingFile);
+					Logger.logError("Cannot create: " + outgoingFile);
 				}
 			}
 			String jarName = "myrobots.jar";

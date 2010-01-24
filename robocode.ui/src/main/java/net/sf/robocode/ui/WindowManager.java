@@ -560,10 +560,6 @@ public class WindowManager implements IWindowManagerExt {
 		WindowUtil.messageWarning(s);
 	}
 
-	public boolean isIconified() {
-		return getRobocodeFrame().isIconified();
-	}
-
 	public IRobotDialogManager getRobotDialogManager() {
 		if (robotDialogManager == null) {
 			robotDialogManager = new RobotDialogManager();

@@ -65,8 +65,9 @@ public class RecordManager implements IRecordManager {
 	private void cleanup() {
 		cleanupStreams();
 		if (tempFile != null && tempFile.exists()) {
-			// noinspection ResultOfMethodCallIgnored
-			tempFile.delete();
+			if (tempFile.delete() == false) {
+				Logger.logError("Could not delete temp file");
+			}
 			tempFile = null;
 		}
 		recordInfo = null;
@@ -102,10 +103,12 @@ public class RecordManager implements IRecordManager {
 				tempFile = File.createTempFile("robocode-battle-records", ".tmp");
 				tempFile.deleteOnExit();
 			} else {
-				// noinspection ResultOfMethodCallIgnored
-				tempFile.delete();
-				// noinspection ResultOfMethodCallIgnored
-				tempFile.createNewFile();
+				if (!tempFile.delete()) {
+					Logger.logError("Could not delete temp file");
+				}
+				if (!tempFile.createNewFile()) {
+					throw new Error("Temp file creation failed");					
+				}
 			}
 		} catch (IOException e) {
 			logError(e);
@@ -206,7 +209,7 @@ public class RecordManager implements IRecordManager {
 			recordInfo = null;
 		} catch (ClassNotFoundException e) {
 			if (e.getMessage().contains("robocode.recording.BattleRecordInfo")) {
-				Logger.logMessage("Sorry, backward compatibility with record from version 1.6 is not provided.");
+				Logger.logError("Sorry, backward compatibility with record from version 1.6 is not provided.");
 			} else {
 				logError(e);
 			}
@@ -223,7 +226,7 @@ public class RecordManager implements IRecordManager {
 		}
 	}
 
-	private class RecordRoot implements IXmlSerializable {
+	private static class RecordRoot implements IXmlSerializable {
 
 		public RecordRoot() {
 			me = this;

@@ -79,6 +79,10 @@ public class SettingsManager implements ISettingsManager {
 			optionsViewTPS = true,
 			optionsViewFPS = true;
 
+	// Prevent speedup when view is minimized
+	private boolean
+			optionsViewPreventSpeedupWhenMinimized = false;
+
 	// Rendering Options
 	private int
 			optionsRenderingAntialiasing = 0, // 0 = default, 1 = on, 2 = off
@@ -160,9 +164,9 @@ public class SettingsManager implements ISettingsManager {
 			in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 			this.load(in);
 		} catch (FileNotFoundException e) {
-			logError("No " + FileUtil.getRobocodeConfigFile().getName() + ", using defaults.");
+			logError("No " + FileUtil.getRobocodeConfigFile().getName() + ". Using defaults.");
 		} catch (IOException e) {
-			logError("IO Exception reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+			logError("Error while reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 		} finally {
 			if (in != null) {
 				// noinspection EmptyCatchBlock
@@ -262,6 +266,15 @@ public class SettingsManager implements ISettingsManager {
 	public void setOptionsViewExplosionDebris(boolean optionsViewExplosionDebris) {
 		this.optionsViewExplosionDebris = optionsViewExplosionDebris;
 		props.setProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "" + optionsViewExplosionDebris);
+	}
+
+	public boolean getOptionsViewPreventSpeedupWhenMinimized() {
+		return optionsViewPreventSpeedupWhenMinimized;
+	}
+
+	public void setOptionsViewPreventSpeedupWhenMinimized(boolean preventSpeedupWhenMinimized) {
+		this.optionsViewPreventSpeedupWhenMinimized = preventSpeedupWhenMinimized;
+		props.setProperty(OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED, "" + preventSpeedupWhenMinimized);
 	}
 
 	public int getOptionsRenderingAntialiasing() {
@@ -613,6 +626,9 @@ public class SettingsManager implements ISettingsManager {
 		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true"));
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true"));
 		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "true"));
+
+		optionsViewPreventSpeedupWhenMinimized = Boolean.valueOf(
+				props.getProperty(OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED, "false"));
 
 		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
 

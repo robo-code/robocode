@@ -29,6 +29,7 @@ public class Module implements IModule {
 		RbSerializer.register(Bullet.class, RbSerializer.Bullet_TYPE);
 
 		// events
+		RbSerializer.register(RoundEndedEvent.class, RbSerializer.RoundEndedEvent_TYPE);
 		RbSerializer.register(BattleEndedEvent.class, RbSerializer.BattleEndedEvent_TYPE);
 		RbSerializer.register(BulletHitBulletEvent.class, RbSerializer.BulletHitBulletEvent_TYPE);
 		RbSerializer.register(BulletHitEvent.class, RbSerializer.BulletHitEvent_TYPE);

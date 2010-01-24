@@ -54,5 +54,10 @@ namespace tested.robotscs
         {
             Out.WriteLine("BattleEnded!");
         }
+
+        public override void OnRoundEnded(RoundEndedEvent evnt)
+        {
+            Out.WriteLine("RoundEnded!");
+        }
     }
 }

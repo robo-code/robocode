@@ -15,7 +15,7 @@ package robocode.control;
 
 
 import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logWarning;
 
 import java.lang.reflect.Field;
 import java.util.Random;
@@ -113,8 +113,8 @@ public class RandomFactory {
 	 */
 	private static void logWarningNotSupported() {
 		if (!(warningNotSupportedLogged || System.getProperty("RANDOMSEED", "none").equals("none"))) {
-			logMessage(
-					"Warning: The deterministic random generator feature is not supported by this JVM:\n"
+			logWarning(
+					"The deterministic random generator feature is not supported by this JVM:\n"
 							+ System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " "
 							+ System.getProperty("java.vm.version"));
 

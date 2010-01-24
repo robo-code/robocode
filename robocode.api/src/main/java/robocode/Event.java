@@ -42,10 +42,11 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_PRIORITY = 80;
 
-	// time is valid only after adding to event manager on proxy side, we do not update it on Battle side
-	private transient boolean addedToQueue;
 	private long time;
 	private int priority;
+
+	// time is valid only after adding to event manager on proxy side, we do not update it on Battle side
+	private transient boolean addedToQueue;
 
 	/**
 	 * Called by the game to create a new Event.

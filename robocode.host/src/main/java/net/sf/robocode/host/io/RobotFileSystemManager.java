@@ -38,10 +38,10 @@ import java.util.jar.JarFile;
  */
 public class RobotFileSystemManager {
 	private final IHostedThread robotProxy;
-	private long quotaUsed;
-	private boolean quotaMessagePrinted;
+	private long quotaUsed = 0;
+	private boolean quotaMessagePrinted = false;
 	private final List<RobotFileOutputStream> streams = new ArrayList<RobotFileOutputStream>();
-	private final long maxQuota;
+	private long maxQuota = 0;
 	private final String writableRootDirectory;
 	private final String readableRootDirectory;
 	private final String rootFile;
@@ -90,15 +90,16 @@ public class RobotFileSystemManager {
 		}
 		if (quotaUsed + numBytes <= maxQuota) {
 			adjustQuota(numBytes);
-		} else {
-			final String msg = "You have reached your filesystem quota of: " + maxQuota + " bytes.";
-
-			if (!quotaMessagePrinted) {
-				robotProxy.println("SYSTEM: " + msg);
-				quotaMessagePrinted = true;
-			}
-			throw new SecurityException(msg);
+			return;
 		}
+
+		final String msg = "You have reached your filesystem quota of: " + maxQuota + " bytes.";
+
+		if (!quotaMessagePrinted) {
+			robotProxy.println("SYSTEM: " + msg);
+			quotaMessagePrinted = true;
+		}
+		throw new SecurityException(msg);
 	}
 
 	public long getMaxQuota() {
@@ -163,17 +164,22 @@ public class RobotFileSystemManager {
 	}
 
 	private void initializeQuota() {
-		quotaUsed = 0;
-		quotaMessagePrinted = false;
-
 		File dataDirectory = getWritableDirectory();
 
-		if (dataDirectory != null && dataDirectory.exists()) {
-			File[] dataFiles = dataDirectory.listFiles();
-	
-			for (File file : dataFiles) {
-				quotaUsed += file.length();
-			}
+		if (dataDirectory == null) {
+			quotaUsed = maxQuota;
+			return;
+		}
+		if (!dataDirectory.exists()) {
+			this.quotaUsed = 0;
+			return;
+		}
+		quotaMessagePrinted = false;
+		File[] dataFiles = dataDirectory.listFiles();
+
+		quotaUsed = 0;
+		for (File file : dataFiles) {
+			quotaUsed += file.length();
 		}
 	}
 
@@ -263,8 +269,12 @@ public class RobotFileSystemManager {
 
 		final File parent = getWritableDirectory();
 
-		parent.mkdirs();
-		
+		if (!parent.exists()) {
+			if (parent.mkdirs() == false) {
+				throw new IOException("Could not create writeable directory for " + robotProxy.getStatics().getName());
+			}
+		}
+
 		InputStream is = null;
 		OutputStream os = null;
 

@@ -30,6 +30,7 @@ import robocode.control.*;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
+import robocode.control.events.BattleStartedEvent;
 
 import java.io.*;
 import java.util.*;
@@ -54,7 +55,6 @@ public class BattlesRunner {
 	private String game;
 	private static RobotResults[] lastResults;
 	private static IRobocodeEngine engine;
-	public static String version;
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
@@ -83,6 +83,10 @@ public class BattlesRunner {
 		}
 	}
 
+	public String getVersion() {
+		return (engine != null) ? engine.getVersion() : null;
+	}
+	
 	public void runBattlesImpl(boolean melee) {
 		// Initialize objects
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
@@ -134,8 +138,6 @@ public class BattlesRunner {
 			}
 			index++;
 		}
-
-		version = engine.getVersion();
 
 		// close
 		outtxt.close();

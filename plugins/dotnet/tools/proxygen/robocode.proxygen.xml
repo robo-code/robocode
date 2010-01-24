@@ -7,7 +7,7 @@
   <ClassPath Path="robocode.dotnet.host/target/classes"/>
   <ClassPath Path="../../robocode.api/target/classes"/>
   <ClassPath Path="../../robocode.host/target/classes"/>
-  <AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.dotnet.nhost-1.7.3.0.dll" />
+  <AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.dotnet.nhost-1.7.2.0.dll" />
   <!-- 
   -->
 

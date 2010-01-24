@@ -66,7 +66,7 @@ import java.awt.*;
  * @see TeamRobot
  * @see Droid
  */
-public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents, IPaintEvents {
+public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents, IPaintEvents {
 
 	private static final int
 			WIDTH = 40,
@@ -407,15 +407,6 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
-	 * Called by the system to 'clean up' after your robot.
-	 * You may not override this method.
-	 */
-	@Override
-	protected final void finalize() throws Throwable { // This method must be final!
-		super.finalize();
-	}
-
-	/**
 	 * Immediately fires a bullet. The bullet will travel in the direction the
 	 * gun is pointing.
 	 * <p/>
@@ -637,7 +628,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Returns the current round number (0 to {@link #getNumRounds()} - 1) of
 	 * the battle.
 	 *
-	 * @return the current round number of the battle
+	 * @return the current round number of the battle (zero indexed).
 	 * @see #getNumRounds()
 	 */
 	public int getRoundNum() {
@@ -732,6 +723,11 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@inheritDoc}
 	 */
 	public void onWin(WinEvent event) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onRoundEnded(RoundEndedEvent event) {}
 
 	/**
 	 * {@inheritDoc}

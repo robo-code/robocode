@@ -356,6 +356,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * <p/>
 	 * The default priorities are, from highest to lowest:
 	 * <pre>
+	 *   {@link RoundEndedEvent}:      100 (reserved)
 	 *   {@link BattleEndedEvent}:     100 (reserved)
 	 *   {@link WinEvent}:             100 (reserved)
 	 *   {@link SkippedTurnEvent}:     100 (reserved)
@@ -404,6 +405,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * <p/>
 	 * The default priorities are, from highest to lowest:
 	 * <pre>
+	 *   {@link RoundEndedEvent}:      100 (reserved)
 	 *   {@link BattleEndedEvent}:     100 (reserved)
 	 *   {@link WinEvent}:             100 (reserved)
 	 *   {@link SkippedTurnEvent}:     100 (reserved)

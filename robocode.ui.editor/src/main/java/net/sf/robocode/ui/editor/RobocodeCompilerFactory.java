@@ -116,7 +116,7 @@ public class RobocodeCompilerFactory {
 					File dir = new File(dest, entry.getName());
 
 					if (!dir.exists() && !dir.mkdirs()) {
-						Logger.logError("Can't create " + dir);
+						Logger.logError("Cannot create dir: " + dir);
 					}
 				} else {
 					status.setText(entryName + " " + SPINNER[spin++]);
@@ -124,7 +124,7 @@ public class RobocodeCompilerFactory {
 					File parentDirectory = new File(out.getParent());
 
 					if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
-						Logger.logError("Can't create " + parentDirectory);
+						Logger.logError("Cannot create dir: " + parentDirectory);
 					}
 
 					int index = 0;
@@ -179,13 +179,13 @@ public class RobocodeCompilerFactory {
 				in = new FileInputStream(file);
 				compilerProperties.load(in);
 				if (compilerProperties.getRobocodeVersion() == null) {
-					logMessage("Setting up new compiler");
+					logMessage("Setting up new compiler.");
 					compilerProperties.setCompilerBinary("");
 				}
 			} catch (FileNotFoundException e) {
 				logMessage("Compiler configuration file was not found. A new one will be created.");
 			} catch (IOException e) {
-				logError("IO Exception reading " + file, e);
+				logError("Error while reading " + file, e);
 			} finally {
 				if (in != null) {
 					try {

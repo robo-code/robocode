@@ -42,6 +42,7 @@ namespace net.sf.robocode.dotnet.nhost
             RbSerializerN.register(typeof (RobotStatics), RbSerializerN.RobotStatics_TYPE);
 
             // events
+            RbSerializerN.register(typeof (RoundEndedEvent), RbSerializerN.RoundEndedEvent_TYPE);
             RbSerializerN.register(typeof (BattleEndedEvent), RbSerializerN.BattleEndedEvent_TYPE);
             RbSerializerN.register(typeof (BulletHitBulletEvent), RbSerializerN.BulletHitBulletEvent_TYPE);
             RbSerializerN.register(typeof (BulletHitEvent), RbSerializerN.BulletHitEvent_TYPE);

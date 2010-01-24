@@ -72,6 +72,7 @@ namespace net.sf.robocode.serialization
         public static readonly byte MousePressedEvent_TYPE = 52;
         public static readonly byte MouseReleasedEvent_TYPE = 53;
         public static readonly byte MouseWheelMovedEvent_TYPE = 54;
+        public static readonly byte RoundEndedEvent_TYPE = 55;
 
         private static readonly ISerializableHelperN[] typeToHelper = new ISerializableHelperN[256];
         private static readonly Dictionary<Type, byte> classToType = new Dictionary<Type, byte>();

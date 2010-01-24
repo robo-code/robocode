@@ -176,7 +176,7 @@ public interface IBasicRobotPeer {
 	/**
 	 * Returns the number of rounds in the current battle.
 	 *
-	 * @return the number of rounds in the current battle
+	 * @return the number of rounds in the current battle.
 	 * @see #getRoundNum()
 	 */
 	int getNumRounds();
@@ -185,7 +185,7 @@ public interface IBasicRobotPeer {
 	 * Returns the number of the current round (0 to {@link #getNumRounds()} - 1)
 	 * in the battle.
 	 *
-	 * @return the number of the current round in the battle
+	 * @return the number of the current round in the battle (zero indexed).
 	 * @see #getNumRounds()
 	 */
 	int getRoundNum();

@@ -10,6 +10,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.6.0.0" level="project" />
     <orderEntry type="module" module-name="robocode.host" exported="" />
     <orderEntry type="module" module-name="robocode.api" exported="" />
     <orderEntry type="module" module-name="robocode.core" exported="" />

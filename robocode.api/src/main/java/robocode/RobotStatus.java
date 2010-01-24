@@ -308,7 +308,7 @@ public final class RobotStatus implements Serializable {
 	 * Returns the current round number (0 to {@link #getNumRounds()} - 1) of
 	 * the battle.
 	 *
-	 * @return the current round number of the battle
+	 * @return the current round number of the battle (zero indexed).
 	 * @see #getNumRounds()
 	 * @since 1.6.2
 	 */

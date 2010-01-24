@@ -205,6 +205,36 @@ public class BattleResults implements java.io.Serializable, Comparable<BattleRes
 		return ((Double) score).compareTo(o.score);
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+
+		temp = Double.doubleToLongBits(score);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		BattleResults other = (BattleResults) obj;
+
+		if (Double.doubleToLongBits(score) != Double.doubleToLongBits(other.score)) {
+			return false;
+		}
+		return true;
+	}
+
 	static ISerializableHelper createHiddenSerializer() {
 		return new SerializableHelper();
 	}

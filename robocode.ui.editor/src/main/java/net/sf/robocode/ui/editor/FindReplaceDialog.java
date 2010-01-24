@@ -314,21 +314,22 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 		int flags = Pattern.DOTALL;
 
 		if (!getRegexButton().isSelected()) {
-			String newpattern = "";
+			StringBuffer newpattern = new StringBuffer();
 
 			// 'quote' the pattern
 			for (int i = 0; i < pattern.length(); i++) {
 				if ("\\[]^$&|().*+?{}".indexOf(pattern.charAt(i)) >= 0) {
-					newpattern += '\\';
+					newpattern.append('\\');
 				}
-				newpattern += pattern.charAt(i);
+				newpattern.append(pattern.charAt(i));
 			}
+			pattern = newpattern.toString();
+
 			// make "*" .* and "?" .
 			if (getWildCardsButton().isSelected()) {
-				newpattern = newpattern.replaceAll("\\\\\\*", ".+?");
-				newpattern = newpattern.replaceAll("\\\\\\?", ".");
+				pattern = pattern.replaceAll("\\\\\\*", ".+?");
+				pattern = pattern.replaceAll("\\\\\\?", ".");
 			}
-			pattern = newpattern;
 		}
 		if (!getCaseSensitiveCheckBox().isSelected()) {
 			flags |= Pattern.CASE_INSENSITIVE;

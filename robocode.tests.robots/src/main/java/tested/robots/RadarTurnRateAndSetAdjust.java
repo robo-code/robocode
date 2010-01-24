@@ -133,8 +133,6 @@ public class RadarTurnRateAndSetAdjust extends robocode.AdvancedRobot {
 
 		double turnRate = robocode.util.Utils.normalRelativeAngleDegrees(getRadarHeading() - lastHeading);
 
-		lastHeading = getRadarHeading();
-
 		out.println(getTime() + ": " + turnRate);
 	}
 }

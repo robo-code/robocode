@@ -116,6 +116,7 @@ public interface IBasicEvents {
 	 * @param event the death event set by the game
 	 * @see DeathEvent
 	 * @see WinEvent
+	 * @see RoundEndedEvent
 	 * @see BattleEndedEvent
 	 * @see Event
 	 */
@@ -273,6 +274,7 @@ public interface IBasicEvents {
 	 *
 	 * @param event the win event set by the game
 	 * @see DeathEvent
+	 * @see RoundEndedEvent
 	 * @see BattleEndedEvent
 	 * @see Event
 	 */

@@ -48,6 +48,8 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	// Current round items
 	private int roundNum;
 	protected int currentTime;
+	protected int totalTurns;
+
 	private int endTimer;
 
 	// TPS (turns per second) calculation stuff
@@ -116,6 +118,10 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	public int getTime() {
 		return currentTime;
+	}
+
+	public int getTotalTurns() {
+		return totalTurns;
 	}
 
 	public boolean isLastRound() {
@@ -213,7 +219,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 					cleanupRound();
 
 				} catch (Exception e) {
-					logError("Exception running a battle round: ", e);
+					logError("Exception running a battle round", e);
 					isAborted = true;
 				}
 
@@ -231,6 +237,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected void initializeBattle() {
 		URLJarCollector.enableGc(false);
 		roundNum = 0;
+		totalTurns = 0;
 
 		// Notify that the battle is now running
 		synchronized (isRunning) {
@@ -298,11 +305,13 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected void runTurn() {
 		if (runBackward) {
 			currentTime--;
+			totalTurns--;
 			if (currentTime == 0 && !isPaused) {
 				pauseImpl();
 			}
 		} else {
 			currentTime++;
+			totalTurns++;
 		}
 	}
 

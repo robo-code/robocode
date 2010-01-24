@@ -158,17 +158,17 @@ public class FileUtil {
 						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
 							deleteDir(file);
 							if (file.exists() && !file.delete()) {
-								Logger.logError("Can't delete: " + file);
+								Logger.logError("Cannot delete: " + file);
 							}
 						} else {
-							Logger.logMessage("Warning: " + file + " may be a symlink.  Ignoring.");
+							Logger.logWarning(file + " may be a symlink. Ignoring.");
 						}
 					} catch (IOException e) {
-						Logger.logMessage("Warning: Cannot determine canonical file for " + file + " - ignoring.");
+						Logger.logWarning("Cannot determine canonical file for " + file + ". Ignoring.");
 					}
 				} else {
 					if (file.exists() && !file.delete()) {
-						Logger.logError("Can't delete: " + file);
+						Logger.logError("Cannot delete: " + file);
 					}
 				}
 			}
@@ -186,7 +186,7 @@ public class FileUtil {
 	public static File createDir(File dir) {
 		if (dir != null && !dir.exists()) {
 			if (!dir.mkdir()) {
-				Logger.logError("Can't create" + dir);
+				Logger.logError("Cannot create dir: " + dir);
 			}
 		}
 		return dir;
@@ -237,12 +237,12 @@ public class FileUtil {
 	}
 
 	/**
-	 * Returns the directory containing caches files of robots.
+	 * Returns the directory containing data files of robots.
 	 *
-	 * @return a File that is the directory containing the robot cache.
+	 * @return a File that is the directory containing the robot data.
 	 */
-	public static File getRobotCacheDir() {
-		return createDir(new File(getRobotsDir(), "/.robotcache/"));
+	public static File getRobotsDataDir() {
+		return createDir(new File(getRobotsDir(), "/.data/"));
 	}
 
 	/**
@@ -262,6 +262,16 @@ public class FileUtil {
 	 */
 	public static File getConfigDir() {
 		return createDir(new File(cwd, "/config"));
+	}
+
+	/**
+	 * Returns the directory containing the screen shot files.
+	 * If the directory does not exist, it will be created automatically.
+	 *
+	 * @return a File that is the directory containing screen shot files
+	 */
+	public static File getScreenshotsDir() {
+		return createDir(new File(cwd, "/screenshots"));
 	}
 
 	/**

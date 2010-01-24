@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,10 +34,11 @@ public class RoundStartedEvent extends BattleEvent {
 	private final int round;
 
 	/**
-	 * Creates a new RoundStartedEvent.
+	 * Called by the game to create a new RoundStartedEvent.
+	 * Please don't use this constructor as it might change.
 	 *
 	 * @param startSnapshot the start snapshot of the participating robots, initial starting positions etc.
-	 * @param round the round number.
+	 * @param round the round number (zero indexed).
 	 */
 	public RoundStartedEvent(ITurnSnapshot startSnapshot, int round) {
 		super();
@@ -55,9 +56,9 @@ public class RoundStartedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the round number.
+	 * Returns the round number (zero indexed).
 	 *
-	 * @return the round number.
+	 * @return the round number (zero indexed).
 	 */
 	public int getRound() {
 		return round;

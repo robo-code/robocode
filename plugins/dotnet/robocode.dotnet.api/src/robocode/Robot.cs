@@ -69,7 +69,7 @@ namespace robocode
     /// @see TeamRobot
     /// @see Droid
     /// </summary>
-    public abstract class Robot : IInteractiveRobot, IPaintRobot, IBasicEvents2, IInteractiveEvents,
+    public abstract class Robot : IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents,
                                   IPaintEvents, IRunnable
     {
         private const int
@@ -903,6 +903,13 @@ namespace robocode
         /// {@inheritDoc}
         /// </summary>
         public virtual void OnWin(WinEvent evnt)
+        {
+        }
+
+        /// <summary>
+        /// {@inheritDoc}
+        /// </summary>
+        public virtual void OnRoundEnded(RoundEndedEvent evnt)
         {
         }
 

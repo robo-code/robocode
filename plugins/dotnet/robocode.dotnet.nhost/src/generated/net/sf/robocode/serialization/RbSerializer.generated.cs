@@ -177,13 +177,15 @@ namespace net.sf.robocode.serialization {
         
         internal static global::net.sf.jni4net.jni.FieldId _MouseWheelMovedEvent_TYPE79;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctorRbSerializer80;
+        internal static global::net.sf.jni4net.jni.FieldId _RoundEndedEvent_TYPE80;
+        
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorRbSerializer81;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public RbSerializer() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer.@__ctorRbSerializer80, this);
+            @__env.NewObject(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer.@__ctorRbSerializer81, this);
         }
         
         protected RbSerializer(global::net.sf.jni4net.jni.JNIEnv @__env) : 
@@ -524,6 +526,14 @@ namespace net.sf.robocode.serialization {
             }
         }
         
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("B")]
+        public static byte RoundEndedEvent_TYPE {
+            get {
+                global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+                return ((byte)(@__env.GetStaticByteField(global::net.sf.robocode.serialization.RbSerializer.staticClass, global::net.sf.robocode.serialization.RbSerializer._RoundEndedEvent_TYPE80)));
+            }
+        }
+        
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
             global::net.sf.robocode.serialization.RbSerializer.staticClass = @__class;
             global::net.sf.robocode.serialization.RbSerializer._register0 = @__env.GetStaticMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "register", "(Ljava/lang/Class;B)V");
@@ -606,7 +616,8 @@ namespace net.sf.robocode.serialization {
             global::net.sf.robocode.serialization.RbSerializer._MousePressedEvent_TYPE77 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MousePressedEvent_TYPE", "B");
             global::net.sf.robocode.serialization.RbSerializer._MouseReleasedEvent_TYPE78 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseReleasedEvent_TYPE", "B");
             global::net.sf.robocode.serialization.RbSerializer._MouseWheelMovedEvent_TYPE79 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "MouseWheelMovedEvent_TYPE", "B");
-            global::net.sf.robocode.serialization.RbSerializer.@__ctorRbSerializer80 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "<init>", "()V");
+            global::net.sf.robocode.serialization.RbSerializer._RoundEndedEvent_TYPE80 = @__env.GetStaticFieldID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "RoundEndedEvent_TYPE", "B");
+            global::net.sf.robocode.serialization.RbSerializer.@__ctorRbSerializer81 = @__env.GetMethodID(global::net.sf.robocode.serialization.RbSerializer.staticClass, "<init>", "()V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Class;B)V")]

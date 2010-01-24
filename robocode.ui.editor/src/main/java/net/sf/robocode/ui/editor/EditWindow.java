@@ -323,7 +323,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 
 			if (ok == JOptionPane.YES_OPTION) {
 				if (!f.exists() && !f.mkdirs()) {
-					Logger.logError("Can't create" + f);
+					Logger.logError("Cannot create: " + f);
 				}
 				f = new File(saveDir);
 			}
@@ -423,7 +423,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 	}
 
 	private String getReasonableFilename() {
-		String fileName = robotsDirectory.getPath() + File.separatorChar;
+		StringBuffer fileName = new StringBuffer(robotsDirectory.getPath()).append(File.separatorChar);
 		String javaFileName;
 		String packageTree = null;
 
@@ -451,12 +451,12 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 				}
 				packageTree = packageTree.replace('.', File.separatorChar);
 				packageTree += File.separator;
-				fileName += packageTree;
+				fileName.append(packageTree);
 			}
 			if (token.equals("class")) {
 				javaFileName = tokenizer.nextToken() + ".java";
-				fileName += javaFileName;
-				return fileName;
+				fileName.append(javaFileName);
+				return fileName.toString();
 			}
 		}
 		return null;

@@ -8,7 +8,7 @@
     <ProjectGuid>{B3487E2D-2737-4C04-AA71-B9A726B3F781}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>net.sf.robocode.dotnet</RootNamespace>
-    <AssemblyName>robocode.dotnet.ntests-1.7.3.0</AssemblyName>
+    <AssemblyName>robocode.dotnet.ntests-1.7.2.0</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>

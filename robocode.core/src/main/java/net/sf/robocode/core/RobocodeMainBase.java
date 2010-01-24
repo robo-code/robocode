@@ -84,5 +84,4 @@ public abstract class RobocodeMainBase implements Runnable {
 
 		main.initForRobocodeEngine(listener);
 	}
-
 }

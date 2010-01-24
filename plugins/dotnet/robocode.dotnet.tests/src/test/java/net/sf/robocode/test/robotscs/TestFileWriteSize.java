@@ -48,7 +48,7 @@ public class TestFileWriteSize extends RobocodeTestBed {
     @Override
     protected void runSetup() {
         final IVersionManager vm = new VersionManager(null);
-        file = new File(robotsPath + "\\target\\classes\\.robotcache\\_\\tested\\robotscs\\test.txt");
+        file = new File(robotsPath + "\\target\\classes\\.data\\_\\tested\\robotscs\\test.txt");
         if (file.exists()) {
             if (!file.delete()) {
                 Logger.logError("Can't delete" + file);
@@ -71,7 +71,7 @@ public class TestFileWriteSize extends RobocodeTestBed {
 			messagedDataQuota = true;	
 		}
 		
-		if (out.contains("Data directory: " + robotsPath + "\\target\\classes\\.robotcache\\_\\tested\\robotscs")) {
+		if (out.contains("Data directory: " + robotsPath + "\\target\\classes\\.data\\_\\tested\\robotscs")) {
 			messagedDataDirectory = true;	
 		}
 

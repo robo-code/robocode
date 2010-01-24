@@ -653,7 +653,9 @@ public class BotsDownload {
 					try {
 						new URL(link);
 						matches = true;
-					} catch (MalformedURLException e) {}
+					} catch (MalformedURLException e) {
+						matches = false;
+					}
 				} else if (link.matches("[\\d]+")) {
 					matches = true;
 				}

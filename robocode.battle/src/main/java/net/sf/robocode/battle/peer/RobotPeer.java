@@ -66,6 +66,8 @@
 package net.sf.robocode.battle.peer;
 
 
+import static net.sf.robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BoundingRectangle;
 import net.sf.robocode.host.IHostManager;
@@ -74,7 +76,6 @@ import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.host.events.EventQueue;
 import net.sf.robocode.host.proxies.IHostingRobotProxy;
 import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
@@ -126,8 +127,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
 			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
 
-	private static final int maxSkippedTurns = 30;
-	private static final int maxSkippedTurnsWithIO = 240;
+	private static final int MAX_SKIPPED_TURNS = 30;
+	private static final int MAX_SKIPPED_TURNS_WITH_IO = 240;
 
 	private Battle battle;
 	private RobotStatistics statistics;
@@ -672,8 +673,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				addEvent(new SkippedTurnEvent());
 			}
 
-			if ((!isIORobot && (skippedTurns > maxSkippedTurns))
-					|| (isIORobot && (skippedTurns > maxSkippedTurnsWithIO))) {
+			if ((!isIORobot && (skippedTurns > MAX_SKIPPED_TURNS))
+					|| (isIORobot && (skippedTurns > MAX_SKIPPED_TURNS_WITH_IO))) {
 				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
@@ -748,9 +749,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		skippedTurns = 0;
 
 		status = new AtomicReference<RobotStatus>();
+
 		readoutEvents();
 		readoutTeamMessages();
 		readoutBullets();
+
 		battleText.setLength(0);
 		proxyText.setLength(0);
 

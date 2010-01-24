@@ -42,7 +42,7 @@ public final class CacheCleaner {
 		File roborumbleTempFile = new File("roborumble/temp");
 
 		deleteFile(roborumbleTempFile.getPath());
-		deleteFile(FileUtil.getRobotCacheDir().getPath());
+		deleteFile(FileUtil.getRobotsDataDir().getPath());
 		deleteFile(FileUtil.getRobotDatabaseFile().getPath());
 
 		FileUtil.createDir(roborumbleTempFile);

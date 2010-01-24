@@ -420,4 +420,120 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 			}
 		});
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+
+		temp = Double.doubleToLongBits(currentBulletDamageScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(currentBulletKillBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(currentRammingDamageScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(currentRammingKillBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(currentScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(currentSurvivalBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(currentSurvivalScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		temp = Double.doubleToLongBits(totalBulletDamageScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(totalBulletKillBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + totalFirsts;
+		temp = Double.doubleToLongBits(totalLastSurvivorBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(totalRammingDamageScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(totalRammingKillBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(totalScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + totalSeconds;
+		temp = Double.doubleToLongBits(totalSurvivalScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + totalThirds;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ScoreSnapshot other = (ScoreSnapshot) obj;
+
+		if (Double.doubleToLongBits(currentBulletDamageScore) != Double.doubleToLongBits(other.currentBulletDamageScore)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(currentBulletKillBonus) != Double.doubleToLongBits(other.currentBulletKillBonus)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(currentRammingDamageScore)
+				!= Double.doubleToLongBits(other.currentRammingDamageScore)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(currentRammingKillBonus) != Double.doubleToLongBits(other.currentRammingKillBonus)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(currentScore) != Double.doubleToLongBits(other.currentScore)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(currentSurvivalBonus) != Double.doubleToLongBits(other.currentSurvivalBonus)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(currentSurvivalScore) != Double.doubleToLongBits(other.currentSurvivalScore)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(totalBulletDamageScore) != Double.doubleToLongBits(other.totalBulletDamageScore)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(totalBulletKillBonus) != Double.doubleToLongBits(other.totalBulletKillBonus)) {
+			return false;
+		}
+		if (totalFirsts != other.totalFirsts) {
+			return false;
+		}
+		if (Double.doubleToLongBits(totalLastSurvivorBonus) != Double.doubleToLongBits(other.totalLastSurvivorBonus)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(totalRammingDamageScore) != Double.doubleToLongBits(other.totalRammingDamageScore)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(totalRammingKillBonus) != Double.doubleToLongBits(other.totalRammingKillBonus)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(totalScore) != Double.doubleToLongBits(other.totalScore)) {
+			return false;
+		}
+		if (totalSeconds != other.totalSeconds) {
+			return false;
+		}
+		if (Double.doubleToLongBits(totalSurvivalScore) != Double.doubleToLongBits(other.totalSurvivalScore)) {
+			return false;
+		}
+		if (totalThirds != other.totalThirds) {
+			return false;
+		}
+		return true;
+	}
 }

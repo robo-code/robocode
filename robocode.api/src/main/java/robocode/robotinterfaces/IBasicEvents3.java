@@ -6,10 +6,8 @@
  * http://robocode.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Pavel Savara
- *     - Initial implementation
  *     Flemming N. Larsen
- *     - Javadocs
+ *     - Initial implementation
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -19,32 +17,32 @@ import robocode.RoundEndedEvent;
 
 
 /**
- * First extended version of the {@link IBasicEvents} interface.
+ * Second extended version of the {@link IBasicEvents} interface.
  *
- * @author Pavel Savara (original)
- * @since 1.6.1
+ * @author Flemming N. Larsen (original)
+ * @since 1.7.2
  */
-public interface IBasicEvents2 extends IBasicEvents {
+public interface IBasicEvents3 extends IBasicEvents2 {
 
 	/**
-	 * This method is called after the end of the battle, even when the battle is aborted.
+	 * This method is called after the end of a round.
 	 * You should override it in your robot if you want to be informed of this event.
 	 * <p/>
 	 * Example:
 	 * <pre>
-	 *   public void onBattleEnded(BattleEndedEvent event) {
-	 *       out.println("The battle has ended");
+	 *   public void onRoundEnded(RoundEndedEvent event) {
+	 *       out.println("The round has ended");
 	 *   }
 	 * </pre>
 	 *
-	 * @param event the BattleEndedEvent set by the game
-	 * @see BattleEndedEvent
-	 * @see IBasicEvents3#onRoundEnded(RoundEndedEvent)
+	 * @param event the RoundEndedEvent event set by the game
+	 * @see RoundEndedEvent
+	 * @see #onBattleEnded(BattleEndedEvent)
 	 * @see robocode.WinEvent
 	 * @see robocode.DeathEvent
 	 * @see robocode.Event
 	 * 
-	 * @since 1.6.1
+	 * @since 1.7.2
 	 */
-	void onBattleEnded(BattleEndedEvent event);
+	void onRoundEnded(RoundEndedEvent event);
 }

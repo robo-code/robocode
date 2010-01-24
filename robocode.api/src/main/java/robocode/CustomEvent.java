@@ -35,7 +35,7 @@ public class CustomEvent extends Event {
 	private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_PRIORITY = 80;
 
-	private final Condition condition;
+	private transient final Condition condition;
 
 	/**
 	 * Called by the game to create a new CustomEvent when a condition is met.
