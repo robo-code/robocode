@@ -13,9 +13,9 @@ namespace robocode.control {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class RandomFactory : global::java.lang.Object, global::robocode.net.sf.robocode.security.IHiddenRandomHelper {
+    public partial class RandomFactory : global::java.lang.Object {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _isDeterministic0;
         
@@ -25,20 +25,20 @@ namespace robocode.control {
         
         internal static global::net.sf.jni4net.jni.MethodId _resetDeterministic3;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor4;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorRandomFactory4;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public RandomFactory() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::robocode.control.RandomFactory.staticClass, global::robocode.control.RandomFactory.@__ctor4, this);
+            @__env.NewObject(global::robocode.control.RandomFactory.staticClass, global::robocode.control.RandomFactory.@__ctorRandomFactory4, this);
         }
         
         protected RandomFactory(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
         }
         
-        public new static global::java.lang.Class _class {
+        public static global::java.lang.Class _class {
             get {
                 return global::robocode.control.RandomFactory.staticClass;
             }
@@ -50,7 +50,7 @@ namespace robocode.control {
             global::robocode.control.RandomFactory._getRandom1 = @__env.GetStaticMethodID(global::robocode.control.RandomFactory.staticClass, "getRandom", "()Ljava/util/Random;");
             global::robocode.control.RandomFactory._setRandom2 = @__env.GetStaticMethodID(global::robocode.control.RandomFactory.staticClass, "setRandom", "(Ljava/util/Random;)V");
             global::robocode.control.RandomFactory._resetDeterministic3 = @__env.GetStaticMethodID(global::robocode.control.RandomFactory.staticClass, "resetDeterministic", "(J)V");
-            global::robocode.control.RandomFactory.@__ctor4 = @__env.GetMethodID(global::robocode.control.RandomFactory.staticClass, "<init>", "()V");
+            global::robocode.control.RandomFactory.@__ctorRandomFactory4 = @__env.GetMethodID(global::robocode.control.RandomFactory.staticClass, "<init>", "()V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
@@ -77,7 +77,7 @@ namespace robocode.control {
             @__env.CallStaticVoidMethod(global::robocode.control.RandomFactory.staticClass, global::robocode.control.RandomFactory._resetDeterministic3, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::robocode.control.RandomFactory(@__env);

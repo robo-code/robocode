@@ -32,7 +32,7 @@ namespace net.sf.robocode.peer {
     #region Component Designer generated code 
     public partial class IRobotStatics_ {
         
-        public new static global::java.lang.Class _class {
+        public static global::java.lang.Class _class {
             get {
                 return global::net.sf.robocode.peer.@__IRobotStatics.staticClass;
             }
@@ -45,7 +45,7 @@ namespace net.sf.robocode.peer {
     [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.peer.IRobotStatics))]
     internal sealed partial class @__IRobotStatics : global::java.lang.Object, global::net.sf.robocode.peer.IRobotStatics {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _isTeamRobot0;
         
@@ -55,7 +55,7 @@ namespace net.sf.robocode.peer {
         
         internal static global::net.sf.jni4net.jni.MethodId _isPaintRobot3;
         
-        protected @__IRobotStatics(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+        private @__IRobotStatics(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
         }
         
@@ -101,47 +101,51 @@ namespace net.sf.robocode.peer {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            bool @__return = default(bool);
             try {
             global::net.sf.robocode.peer.IRobotStatics @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotStatics>(@__env, @__obj);
-            return ((bool)(@__real.isTeamRobot()));
+            @__return = ((bool)(@__real.isTeamRobot()));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
+            return @__return;
         }
         
         private static bool isAdvancedRobot1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            bool @__return = default(bool);
             try {
             global::net.sf.robocode.peer.IRobotStatics @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotStatics>(@__env, @__obj);
-            return ((bool)(@__real.isAdvancedRobot()));
+            @__return = ((bool)(@__real.isAdvancedRobot()));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
+            return @__return;
         }
         
         private static bool isInteractiveRobot2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            bool @__return = default(bool);
             try {
             global::net.sf.robocode.peer.IRobotStatics @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotStatics>(@__env, @__obj);
-            return ((bool)(@__real.isInteractiveRobot()));
+            @__return = ((bool)(@__real.isInteractiveRobot()));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
+            return @__return;
         }
         
         private static bool isPaintRobot3(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            bool @__return = default(bool);
             try {
             global::net.sf.robocode.peer.IRobotStatics @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotStatics>(@__env, @__obj);
-            return ((bool)(@__real.isPaintRobot()));
+            @__return = ((bool)(@__real.isPaintRobot()));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
+            return @__return;
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.peer.@__IRobotStatics(@__env);

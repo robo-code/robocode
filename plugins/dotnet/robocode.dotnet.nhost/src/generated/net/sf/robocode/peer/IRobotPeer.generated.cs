@@ -47,7 +47,7 @@ namespace net.sf.robocode.peer {
     #region Component Designer generated code 
     public partial class IRobotPeer_ {
         
-        public new static global::java.lang.Class _class {
+        public static global::java.lang.Class _class {
             get {
                 return global::net.sf.robocode.peer.@__IRobotPeer.staticClass;
             }
@@ -60,7 +60,7 @@ namespace net.sf.robocode.peer {
     [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.peer.IRobotPeer))]
     internal sealed partial class @__IRobotPeer : global::java.lang.Object, global::net.sf.robocode.peer.IRobotPeer {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _drainEnergy0;
         
@@ -80,7 +80,7 @@ namespace net.sf.robocode.peer {
         
         internal static global::net.sf.jni4net.jni.MethodId _sestupThread8;
         
-        protected @__IRobotPeer(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+        private @__IRobotPeer(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
         }
         
@@ -191,22 +191,24 @@ namespace net.sf.robocode.peer {
             // (Lnet/sf/robocode/peer/ExecCommands;)Lnet/sf/robocode/peer/ExecResults;
             // (Ljava/lang/Object;)Ljava/lang/Object;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
             global::net.sf.robocode.peer.IRobotPeer @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, @__obj);
-            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.waitForBattleEndImpl(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par0)));
+            @__return = global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.waitForBattleEndImpl(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par0)));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::net.sf.jni4net.utils.JniHandle);
+            return @__return;
         }
         
         private static global::net.sf.jni4net.utils.JniHandle executeImpl4(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0) {
             // (Lnet/sf/robocode/peer/ExecCommands;)Lnet/sf/robocode/peer/ExecResults;
             // (Ljava/lang/Object;)Ljava/lang/Object;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
             global::net.sf.robocode.peer.IRobotPeer @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, @__obj);
-            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.executeImpl(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par0)));
+            @__return = global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.executeImpl(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, par0)));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::net.sf.jni4net.utils.JniHandle);
+            return @__return;
         }
         
         private static void setupBuffer5(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0) {
@@ -249,7 +251,7 @@ namespace net.sf.robocode.peer {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.peer.@__IRobotPeer(@__env);

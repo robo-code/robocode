@@ -32,7 +32,7 @@ namespace net.sf.robocode.manager {
     #region Component Designer generated code 
     public partial class IVersionManagerBase_ {
         
-        public new static global::java.lang.Class _class {
+        public static global::java.lang.Class _class {
             get {
                 return global::net.sf.robocode.manager.@__IVersionManagerBase.staticClass;
             }
@@ -45,7 +45,7 @@ namespace net.sf.robocode.manager {
     [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.manager.IVersionManagerBase))]
     internal sealed partial class @__IVersionManagerBase : global::java.lang.Object, global::net.sf.robocode.manager.IVersionManagerBase {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _getVersion0;
         
@@ -55,7 +55,7 @@ namespace net.sf.robocode.manager {
         
         internal static global::net.sf.jni4net.jni.MethodId _isLastRunVersionChanged3;
         
-        protected @__IVersionManagerBase(global::net.sf.jni4net.jni.JNIEnv @__env) : 
+        private @__IVersionManagerBase(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
         }
         
@@ -101,47 +101,51 @@ namespace net.sf.robocode.manager {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
             global::net.sf.robocode.manager.IVersionManagerBase @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.manager.IVersionManagerBase>(@__env, @__obj);
-            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getVersion());
+            @__return = global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getVersion());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::net.sf.jni4net.utils.JniHandle);
+            return @__return;
         }
         
         private static int getVersionAsInt1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()I
             // ()I
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            int @__return = default(int);
             try {
             global::net.sf.robocode.manager.IVersionManagerBase @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.manager.IVersionManagerBase>(@__env, @__obj);
-            return ((int)(@__real.getVersionAsInt()));
+            @__return = ((int)(@__real.getVersionAsInt()));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(int);
+            return @__return;
         }
         
         private static global::net.sf.jni4net.utils.JniHandle getVersionN2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
             global::net.sf.robocode.manager.IVersionManagerBase @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.manager.IVersionManagerBase>(@__env, @__obj);
-            return global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getVersionN());
+            @__return = global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getVersionN());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(global::net.sf.jni4net.utils.JniHandle);
+            return @__return;
         }
         
         private static bool isLastRunVersionChanged3(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            bool @__return = default(bool);
             try {
             global::net.sf.robocode.manager.IVersionManagerBase @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.manager.IVersionManagerBase>(@__env, @__obj);
-            return ((bool)(@__real.isLastRunVersionChanged()));
+            @__return = ((bool)(@__real.isLastRunVersionChanged()));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return default(bool);
+            return @__return;
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.manager.@__IVersionManagerBase(@__env);
