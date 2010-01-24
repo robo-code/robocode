@@ -1,0 +1,214 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Mathew A. Nelson
+ *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Updated Javadocs
+ *******************************************************************************/
+using System;
+using System.Drawing;
+using net.sf.robocode.nio;
+using net.sf.robocode.peer;
+using net.sf.robocode.serialization;
+using robocode.robotinterfaces;
+
+namespace robocode
+{
+    /// <summary>
+    /// A HitByBulletEvent is sent to {@link Robot#OnHitByBullet(HitByBulletEvent)
+    /// OnHitByBullet()} when your robot has been hit by a bullet.
+    /// You can use the information contained in this evnt to determine what to do.
+    ///
+    /// @author Mathew A. Nelson (original)
+    /// </summary>
+    [Serializable]
+    public sealed class HitByBulletEvent : Event
+    {
+        private const int DEFAULT_PRIORITY = 20;
+
+        private readonly double bearing;
+        private readonly Bullet bullet;
+
+        /// <summary>
+        /// Called by the game to create a new HitByBulletEvent.
+        ///
+        /// @param bearing the bearing of the bullet that hit your robot, in radians
+        /// @param bullet  the bullet that has hit your robot
+        /// </summary>
+        public HitByBulletEvent(double bearing, Bullet bullet)
+        {
+            this.bearing = bearing;
+            this.bullet = bullet;
+        }
+
+        /// <summary>
+        /// Returns the bearing to the bullet, relative to your robot's heading,
+        /// in degrees (-180 < getBearing() <= 180)
+        /// <p/>
+        /// If you were to TurnRight(e.getBearing()), you would be facing the
+        /// direction the bullet came from. The calculation used here is:
+        /// (bullet's heading in degrees + 180) - (your heading in degrees)
+        ///
+        /// @return the bearing to the bullet, in degrees
+        /// </summary>
+        public double Bearing
+        {
+            get { return bearing*180.0/Math.PI; }
+        }
+
+        /// <summary>
+        /// Returns the bearing to the bullet, relative to your robot's heading,
+        /// in radians (-Math.PI < getBearingRadians() <= Math.PI)
+        /// <p/>
+        /// If you were to TurnRightRadians(e.getBearingRadians()), you would be
+        /// facing the direction the bullet came from. The calculation used here is:
+        /// (bullet's heading in radians + Math.PI) - (your heading in radians)
+        ///
+        /// @return the bearing to the bullet, in radians
+        /// </summary>
+        public double BearingRadians
+        {
+            get { return bearing; }
+        }
+
+        /// <summary>
+        /// Returns the bullet that hit your robot.
+        ///
+        /// @return the bullet that hit your robot
+        /// </summary>
+        public Bullet Bullet
+        {
+            get { return bullet; }
+        }
+
+        /// <summary>
+        /// Returns the heading of the bullet when it hit you, in degrees
+        /// (0 <= getHeading() < 360)
+        /// <p/>
+        /// Note: This is not relative to the direction you are facing. The robot
+        /// that fired the bullet was in the opposite direction of getHeading() when
+        /// it fired the bullet.
+        ///
+        /// @return the heading of the bullet, in degrees
+        /// </summary>
+        public double Heading
+        {
+            get { return bullet.Heading; }
+        }
+
+        /// <summary>
+        /// Returns the heading of the bullet when it hit you, in radians
+        /// (0 <= getHeadingRadians() < 2 * PI)
+        /// <p/>
+        /// Note: This is not relative to the direction you are facing. The robot
+        /// that fired the bullet was in the opposite direction of
+        /// getHeadingRadians() when it fired the bullet.
+        ///
+        /// @return the heading of the bullet, in radians
+        /// </summary>
+        public double HeadingRadians
+        {
+            get { return bullet.HeadingRadians; }
+        }
+
+        /// <summary>
+        /// Returns the name of the robot that fired the bullet.
+        ///
+        /// @return the name of the robot that fired the bullet
+        /// </summary>
+        public string Name
+        {
+            get { return bullet.Name; }
+        }
+
+        /// <summary>
+        /// Returns the power of this bullet. The damage you take (in fact, already
+        /// took) is 4 * power, plus 2 * (power-1) if power > 1. The robot that fired
+        /// the bullet receives 3 * power Back.
+        ///
+        /// @return the power of the bullet
+        /// </summary>
+        public double Power
+        {
+            get { return bullet.Power; }
+        }
+
+        /// <summary>
+        /// Returns the velocity of this bullet.
+        ///
+        /// @return the velocity of the bullet
+        /// </summary>
+        public double Velocity
+        {
+            get { return bullet.Velocity; }
+        }
+
+        /// <summary>
+        /// {@inheritDoc}
+        /// </summary>
+        internal override int DefaultPriority
+        {
+            get { return DEFAULT_PRIORITY; }
+        }
+
+        /// <summary>
+        /// {@inheritDoc}
+        /// </summary>
+        internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        {
+            IBasicEvents listener = robot.GetBasicEventListener();
+
+            if (listener != null)
+            {
+                listener.OnHitByBullet(this);
+            }
+        }
+
+        /// <summary>
+        /// {@inheritDoc}
+        /// </summary>
+        internal override byte SerializationType
+        {
+            get { return RbSerializerN.HitByBulletEvent_TYPE; }
+        }
+
+        private static ISerializableHelperN createHiddenSerializer()
+        {
+            return new SerializableHelper();
+        }
+
+        private class SerializableHelper : ISerializableHelperN
+        {
+            public int sizeOf(RbSerializerN serializer, object objec)
+            {
+                var obj = (HitByBulletEvent) objec;
+
+                return RbSerializerN.SIZEOF_TYPEINFO + serializer.sizeOf(RbSerializerN.Bullet_TYPE, obj.bullet)
+                       + RbSerializerN.SIZEOF_DOUBLE;
+            }
+
+            public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
+            {
+                var obj = (HitByBulletEvent) objec;
+
+                serializer.serialize(buffer, RbSerializerN.Bullet_TYPE, obj.bullet);
+                serializer.serialize(buffer, obj.bearing);
+            }
+
+            public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
+            {
+                var bullet = (Bullet) serializer.deserializeAny(buffer);
+                double bearing = buffer.getDouble();
+
+                return new HitByBulletEvent(bearing, bullet);
+            }
+        }
+    }
+}
+//happy
