@@ -30,9 +30,11 @@
 package net.sf.robocode.ui.dialog;
 
 
+import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.ui.IWindowManager;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -525,8 +527,10 @@ public class RobotSelectionPanel extends WizardPanel {
 
 		final Runnable runnable = new Runnable() {
 			public void run() {
+				final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
+
 				try {
-					setBusyPointer(true);
+					windowManager.setBusyPointer(true);
 					repositoryManager.refresh(withClear);
 
 					List<IRepositoryItem> robotList = repositoryManager.filterRepositoryItems(onlyShowSource,
@@ -538,19 +542,12 @@ public class RobotSelectionPanel extends WizardPanel {
 						preSelectedRobots = null;
 					}
 				} finally {
-					setBusyPointer(false);
+					windowManager.setBusyPointer(false);
 				}
 			}
 		};
 
 		SwingUtilities.invokeLater(runnable);
-	}
-
-	private static final Cursor BUSY_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-
-	private void setBusyPointer(boolean enabled) {
-		setCursor(enabled ? BUSY_CURSOR : DEFAULT_CURSOR);
 	}
 
 	private void selectedRobotsListSelectionChanged() {

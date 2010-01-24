@@ -1,6 +1,18 @@
 Version 1.7.3.0 Alpha
 ---------------
 
+Version 1.7.1.7 Alpha
+---------------
+* Bug [2930266] - Robot static data isn't being GCed after battle.
+* Bug [2931445] - Removing directories from "development options" doesn't work.
+* Bug in RobotClassLoader causing ClassNotFoundException for some robots during robot class load.
+* Fixed a NullPointerException occuring when Robocode is (re)loading the robot repository after a developer path has been removed.
+
+= Changes =
+* The Development Options dialog in the Preferences has been improved:
+  - Changed from using single interval selection to multi selection interval.
+  - Adding an existing path is ignored.
+  - The list of path is automatically sorted.
 
 Version 1.7.1.6
 (06-Jan-2010)

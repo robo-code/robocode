@@ -94,6 +94,10 @@ public class WindowManager implements IWindowManagerExt {
 		imageManager.initialize(); // Make sure this one is initialized so all images are available
 	}
 
+	public void setBusyPointer(boolean enabled) {
+		robocodeFrame.setBusyPointer(enabled);
+	}
+
 	public synchronized void addBattleListener(IBattleListener listener) {
 		awtAdaptor.addListener(listener);
 	}

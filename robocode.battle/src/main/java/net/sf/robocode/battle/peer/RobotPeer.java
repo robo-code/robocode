@@ -470,7 +470,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		this.bidirectionalBuffer = bidirectionalBuffer;
 	}
 
-    public void sestupThread() {
+    public void setupThread() {
         Thread.currentThread().setName(getName());
     }
 
