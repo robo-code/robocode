@@ -40,7 +40,7 @@ namespace net.sf.robocode.peer {
         void waitForBattleEndImplSerial();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
-        void sestupThread();
+        void setupThread();
     }
     #endregion
     
@@ -78,7 +78,7 @@ namespace net.sf.robocode.peer {
         
         internal static global::net.sf.jni4net.jni.MethodId _waitForBattleEndImplSerial7;
         
-        internal static global::net.sf.jni4net.jni.MethodId _sestupThread8;
+        internal static global::net.sf.jni4net.jni.MethodId _setupThread8;
         
         private @__IRobotPeer(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
@@ -94,7 +94,7 @@ namespace net.sf.robocode.peer {
             global::net.sf.robocode.peer.@__IRobotPeer._setupBuffer5 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "setupBuffer", "(Ljava/nio/ByteBuffer;)V");
             global::net.sf.robocode.peer.@__IRobotPeer._executeImplSerial6 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "executeImplSerial", "()V");
             global::net.sf.robocode.peer.@__IRobotPeer._waitForBattleEndImplSerial7 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "waitForBattleEndImplSerial", "()V");
-            global::net.sf.robocode.peer.@__IRobotPeer._sestupThread8 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "sestupThread", "()V");
+            global::net.sf.robocode.peer.@__IRobotPeer._setupThread8 = @__env.GetMethodID(global::net.sf.robocode.peer.@__IRobotPeer.staticClass, "setupThread", "()V");
         }
         
         public void drainEnergy() {
@@ -137,9 +137,9 @@ namespace net.sf.robocode.peer {
             @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._waitForBattleEndImplSerial7);
         }
         
-        public void sestupThread() {
+        public void setupThread() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._sestupThread8);
+            @__env.CallVoidMethod(this, global::net.sf.robocode.peer.@__IRobotPeer._setupThread8);
         }
         
         private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv @__env, global::java.lang.Class @__class) {
@@ -153,7 +153,7 @@ namespace net.sf.robocode.peer {
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "setupBuffer", "setupBuffer5", "(Ljava/nio/ByteBuffer;)V"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "executeImplSerial", "executeImplSerial6", "()V"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "waitForBattleEndImplSerial", "waitForBattleEndImplSerial7", "()V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "sestupThread", "sestupThread8", "()V"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "setupThread", "setupThread8", "()V"));
             return methods;
         }
         
@@ -241,13 +241,13 @@ namespace net.sf.robocode.peer {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static void sestupThread8(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static void setupThread8(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()V
             // ()V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
             global::net.sf.robocode.peer.IRobotPeer @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.peer.IRobotPeer>(@__env, @__obj);
-            @__real.sestupThread();
+            @__real.setupThread();
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
