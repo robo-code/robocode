@@ -1,3 +1,6 @@
+Version 1.7.3.0 Alpha
+---------------
+
 Version 1.7.1.7 Alpha
 ---------------
 * Bug [2930266] - Robot static data isn't being GCed after battle.

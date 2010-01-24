@@ -747,6 +747,8 @@ public final class Battle extends BaseBattle {
 				if (robotPeer.isAlive()) {
 					if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
 						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
+					} else if (currentTime == 1){
+						robotPeer.waitSleeping(millisWait*10, 1);
 					} else {
 						robotPeer.waitSleeping(millisWait, microWait);
 					}

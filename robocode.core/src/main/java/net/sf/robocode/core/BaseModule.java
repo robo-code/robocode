@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,19 +9,15 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.bv3d.view;
+package net.sf.robocode.core;
 
 
-import net.sf.robocode.core.BaseModule;
-import net.sf.robocode.core.Container;
+import java.util.List;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class Module extends BaseModule {
-	static {// TODO Container.loadJars("gluegen-rt");
-		// TODO Container.loadJars("jogl");
-		// TODO register new battleview
-	}
+public class BaseModule implements IModule {
+	public void afterLoaded(List<IModule> allModules) {}
 }

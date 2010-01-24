@@ -48,7 +48,19 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
 		System.setProperty("WORKINGDIRECTORY", "target/test-classes");
-		System.setProperty("ROBOTPATH", "../robocode.tests.robots/target/classes");
+		try {
+			if (new File("").getAbsolutePath().endsWith("robocode.tests")) {
+				robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
+			} else if (new File("").getAbsolutePath().endsWith("robocode.dotnet.tests")) {
+				robotsPath = new File("../../../robocode.tests.robots").getCanonicalPath();
+			} else {
+				throw new Error("Unknown directory");
+			}
+		} catch (IOException e) {
+			e.printStackTrace(Logger.realErr);
+		}
+		System.setProperty("ROBOTPATH", robotsPath + "/target/classes");
+
 		engine = new RobocodeEngine(new BattleAdaptor() {
 			public void onBattleMessage(BattleMessageEvent event) {
 				if (isDumpingMessages) {
@@ -64,11 +76,6 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 				errors++;
 			}
 		});
-		try {
-			robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
-		} catch (IOException e) {
-			e.printStackTrace(Logger.realErr);
-		}
 	}
 
 	public RobocodeTestBed() {
@@ -107,7 +114,9 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		if (isDeterministic() && isCheckOnBattleStart()) {
 			final Random random = Utils.getRandom();
 
+            if (event.getRobotsCount()==2){
 			Assert.assertNear(0.98484154, random.nextDouble());
+            }
 		}
 	}
 
@@ -156,7 +165,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		runSetup();
 		runBattle(getRobotNames(), getNumRounds(), getInitialPositions());
 		runTeardown();
-		Assert.assertThat(errors, is(getExpectedErrors()));
+		Assert.assertThat("Errors count", errors, is(getExpectedErrors()));
 	}
 
 	protected int getExpectedErrors() {

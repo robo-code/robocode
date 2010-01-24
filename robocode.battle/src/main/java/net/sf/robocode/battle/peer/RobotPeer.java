@@ -188,12 +188,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private RobotState state;
 	private final Arc2D scanArc;
 	private final BoundingRectangle boundingBox;
+	private final RbSerializer rbSerializer;
 
 	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();
 		if (team != null) {
 			team.add(this);
 		}
+
+		rbSerializer = new RbSerializer();
 
 		this.battle = battle;
 		boundingBox = new BoundingRectangle();
@@ -461,18 +464,32 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// execute
 	// -----------
 
-	public ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException {
-		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
-		final ExecResults results = executeImpl(commands);
+	ByteBuffer bidirectionalBuffer;
 
-		return RbSerializer.serializeToBuffer(results);
+	public void setupBuffer(ByteBuffer bidirectionalBuffer) {
+		this.bidirectionalBuffer = bidirectionalBuffer;
 	}
 
-	public ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException {
-		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
+    public void setupThread() {
+        Thread.currentThread().setName(getName());
+    }
+
+	public void executeImplSerial() throws IOException {
+		ExecCommands commands = (ExecCommands) rbSerializer.deserialize(bidirectionalBuffer);
+
+		final ExecResults results = executeImpl(commands);
+
+		bidirectionalBuffer.clear();
+		rbSerializer.serializeToBuffer(bidirectionalBuffer, RbSerializer.ExecResults_TYPE, results);
+	}
+
+	public void waitForBattleEndImplSerial() throws IOException {
+		ExecCommands commands = (ExecCommands) rbSerializer.deserialize(bidirectionalBuffer);
+
 		final ExecResults results = waitForBattleEndImpl(commands);
 
-		return RbSerializer.serializeToBuffer(results);
+		bidirectionalBuffer.clear();
+		rbSerializer.serializeToBuffer(bidirectionalBuffer, RbSerializer.ExecResults_TYPE, results);
 	}
 
 	public final ExecResults executeImpl(ExecCommands newCommands) {
@@ -788,7 +805,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				Thread.currentThread().interrupt();
 			}
 		}
-		if (!(isSleeping() || battle.isDebugging())) {
+		if (!isSleeping() && !battle.isDebugging()) {
 			logMessage("\n" + getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 		}
 	}
@@ -1549,19 +1566,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * Clean things up removing all references to the robot.
 	 */
 	public void cleanup() {
-		if (statistics != null) {
-			statistics.cleanup();
-			statistics = null;
-		}
-
 		battle = null;
 
 		if (robotProxy != null) {
 			robotProxy.cleanup();
+            robotProxy = null;
 		}
 
-		// Cleanup robot proxy
-		robotProxy = null;
+        if (statistics != null) {
+            statistics.cleanup();
+            statistics = null;
+        }
 
 		status = null;
 		commands = null;

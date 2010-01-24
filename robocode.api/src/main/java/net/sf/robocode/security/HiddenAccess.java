@@ -112,7 +112,7 @@ public class HiddenAccess {
 			Logger.logError(e);
 			if (!foundCore) {
 				Logger.logError("Can't find robocode.core-1.x.jar module near to robocode.jar");
-				Logger.logError("ClassPath: " + System.getProperty("robocode.class.path", null));
+				Logger.logError("Class path: " + System.getProperty("robocode.class.path", null));
 			}
 			System.exit(-1);
 		} catch (MalformedURLException e) {

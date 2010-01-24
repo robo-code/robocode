@@ -12,15 +12,18 @@
 package net.sf.robocode.api;
 
 
+import net.sf.robocode.core.IModule;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
+
+import java.util.List;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class Module {
-	static {
+public class Module implements IModule {
+	public void afterLoaded(List<IModule> allModules) {
 		RbSerializer.register(RobotStatus.class, RbSerializer.RobotStatus_TYPE);
 		RbSerializer.register(BattleResults.class, RbSerializer.BattleResults_TYPE);
 		RbSerializer.register(Bullet.class, RbSerializer.Bullet_TYPE);
