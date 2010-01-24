@@ -85,8 +85,8 @@ public final class Container extends ContainerBase {
 		}
 
 		if (known.size() < 2) {
-			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size());
-			Logger.logError("ClassPath : " + classPath);
+			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size() + " modules");
+			Logger.logError("Class path: " + classPath);
 			throw new Error("Main modules not loaded");
 		}
 

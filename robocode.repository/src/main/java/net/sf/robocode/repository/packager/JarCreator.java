@@ -39,7 +39,7 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public class JarCreator {
-	public static String createPackage(File target, boolean source, List<RobotItem> robots, List<TeamItem> teams, URL web, String desc, String author, String version) {
+	public static String createPackage(File target, boolean includeSources, List<RobotItem> robots, List<TeamItem> teams, URL web, String desc, String author, String version) {
 		final IHostManager host = Container.getComponent(IHostManager.class);
 		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
 		JarOutputStream jarout = null;
@@ -55,26 +55,32 @@ public class JarCreator {
 				final String teamEntry = team.getRelativePath() + '/' + team.getShortClassName() + ".team";
 
 				if (!entries.contains(teamEntry)) {
-					entries.add(teamEntry);
 					JarEntry jt = new JarEntry(teamEntry);
 
 					jarout.putNextEntry(jt);
-					team.storeProperties(jarout, web, desc, author, version, source);
-					jarout.closeEntry();
+					entries.add(teamEntry); // called here, as an exception might occur before this line
+					try {
+						team.storeProperties(jarout, web, desc, author, version, includeSources);
+					} finally {
+						jarout.closeEntry();
+					}
 				}
 			}
 
 			for (RobotItem robot : robots) {
-				final String proEntry = robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties";
+				final String propsEntry = robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties";
 
-				if (!entries.contains(proEntry)) {
-					entries.add(proEntry);
-					JarEntry jt = new JarEntry(proEntry);
+				if (!entries.contains(propsEntry)) {
+					JarEntry jt = new JarEntry(propsEntry);
 
 					jarout.putNextEntry(jt);
-					robot.storeProperties(jarout, web, desc, author, version, source);
-					jarout.closeEntry();
-					packageClasses(source, host, jarout, robot, entries);
+					entries.add(propsEntry); // called here, as an exception might occur before this line
+					try {
+						robot.storeProperties(jarout, web, desc, author, version, includeSources);
+					} finally {
+						jarout.closeEntry();
+					}
+					packageSourceAndClasses(includeSources, host, jarout, robot, entries);
 				}
 			}
 		} catch (IOException e) {
@@ -133,38 +139,49 @@ public class JarCreator {
 		return manifest;
 	}
 
-	private static void packageClasses(boolean source, IHostManager host, JarOutputStream jarout, RobotItem robot, Set<String> entries) throws IOException {
+	private static void packageSourceAndClasses(boolean includeSources, IHostManager host, JarOutputStream jarout, RobotItem robot, Set<String> entries) throws IOException {
 		for (String className : host.getReferencedClasses(robot)) {
 			if (!className.startsWith("java") && !className.startsWith("robocode")) {
 				String name = className.replace('.', '/');
 
-				packageClass(source, jarout, robot, name, entries);
+				packageSourceAndClass(includeSources, jarout, robot, name, entries);
 			}
 		}
 	}
 
-	private static void packageClass(boolean source, JarOutputStream jarout, RobotItem robot, String name, Set<String> entries) throws IOException {
-		if (source && !name.contains("$") && !entries.contains(name + ".java")) {
-			File javaFile = new File(robot.getRoot().getRootPath(), name + ".java");
+	private static void packageSourceAndClass(boolean includeSource, JarOutputStream jarout, RobotItem robot, String name, Set<String> entries) throws IOException {
+		final String javaFileName = name + ".java";
+		final String classFileName = name + ".class";
 
-			if (javaFile.exists()) {
-				entries.add(name + ".java");
-				JarEntry je = new JarEntry(name + ".java");
+		if (includeSource && !entries.contains(javaFileName) && !name.contains("$")) {
+			for (URL sourcePathURL : robot.getSourcePathURLs()) {
+				File javaFile = new File(sourcePathURL.getFile(), javaFileName);
 
-				jarout.putNextEntry(je);
-				copy(javaFile, jarout);
-				jarout.closeEntry();
+				if (javaFile.exists()) {
+					JarEntry je = new JarEntry(javaFileName);
+
+					jarout.putNextEntry(je);
+					entries.add(javaFileName); // called here, as an exception might occur before this line
+					try {
+						copy(javaFile, jarout);
+					} finally {
+						jarout.closeEntry();
+					}
+				}
 			}
 		}
-		File classFile = new File(robot.getRoot().getRootPath(), name + ".class");
+		File classFile = new File(robot.getClassPathURL().getFile(), classFileName);
 
-		if (classFile.exists() && !entries.contains(name + ".class")) {
-			entries.add(name + ".class");
-			JarEntry je = new JarEntry(name + ".class");
+		if (classFile.exists() && !entries.contains(classFileName)) {
+			JarEntry je = new JarEntry(classFileName);
 
 			jarout.putNextEntry(je);
-			copy(classFile, jarout);
-			jarout.closeEntry();
+			entries.add(classFileName); // called here, as an exception might occur before this line
+			try {
+				copy(classFile, jarout);
+			} finally {
+				jarout.closeEntry();
+			}
 		}
 	}
 

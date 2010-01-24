@@ -22,6 +22,8 @@ import java.net.URL;
 
 
 /**
+ * Handler for accepting and registering .properties files.
+ *
  * @author Pavel Savara (original)
  */
 public class PropertiesHandler extends ItemHandler {
@@ -36,35 +38,34 @@ public class PropertiesHandler extends ItemHandler {
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		RobotItem item = (RobotItem) db.getOldItem(itemURL.toString());
+		final String itemKey = getItemKey(itemURL, root);
+
+		RobotItem item = (RobotItem) db.getOldItem(itemKey);
 
 		if (item == null) {
-			item = (RobotItem) db.getItem(itemURL.toString());
+			item = (RobotItem) db.getItem(itemKey);
 		}
 		if (item == null) {
 			item = createItem(itemURL, root, db);
-		} else {
-			item.setPropertiesUrl(itemURL);
 		}
-		if (item == null) {
-			db.addItem(item);
-		}
+		db.putItem(itemKey, item);
 		return item;
 	}
 
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
-		final RobotItem robotItem = new RobotItem(null, itemURL, root);
+		final RobotItem robotItem = new RobotItem(root);
+
+		robotItem.setPropertiesUrl(itemURL);
 
 		final String lang = robotItem.getRobotLanguage();
 
 		if (!lang.equals("java")) {
 			// dispatch to other robot types
 			String uplang = lang.substring(0, 1).toUpperCase() + lang.substring(1).toLowerCase();
-			final PropertiesHandler handlerI = Container.getComponent(uplang + "PropertiesHandler");
+			final PropertiesHandler handler = Container.getComponent(PropertiesHandler.class,
+					uplang + "PropertiesHandler");
 
-			if (handlerI != null) {
-				return handlerI.createItem(itemURL, root, db);
-			}
+			return handler.createItem(itemURL, root, db);
 		}
 		return robotItem;
 	}

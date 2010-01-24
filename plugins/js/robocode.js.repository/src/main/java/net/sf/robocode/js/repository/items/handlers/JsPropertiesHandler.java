@@ -28,6 +28,6 @@ public class JsPropertiesHandler extends PropertiesHandler {
 
 	@Override
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
-		return new JsRobotItem(null, itemURL, root);
+		return new JsRobotItem(root);
 	}
 }

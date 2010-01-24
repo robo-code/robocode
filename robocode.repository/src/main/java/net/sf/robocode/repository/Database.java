@@ -22,7 +22,6 @@ import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.handlers.RootHandler;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 
@@ -61,8 +60,8 @@ public class Database {
 		return prev != items.size();
 	}
 
-	public boolean update(String url, boolean force) {
-		final IItem item = items.get(url);
+	public boolean update(String itemKey, boolean force) {
+		final IItem item = items.get(itemKey);
 
 		if (item != null) {
 			item.getRoot().update(item, force);
@@ -71,11 +70,9 @@ public class Database {
 		return false; 
 	}
 
-	public void addItem(IItem item) {
-		final URL url = item.getFullUrl();
-
-		if (url != null) {
-			items.put(url.toString(), item);
+	public void putItem(String itemKey, IItem item) {
+		if (itemKey != null) {
+			items.put(itemKey, item);
 		}
 		final List<String> friendlyUrls = item.getFriendlyUrls();
 
@@ -97,12 +94,12 @@ public class Database {
 		}
 	}
 
-	public IItem getItem(String url) {
-		return items.get(url);
+	public IItem getItem(String itemKey) {
+		return items.get(itemKey);
 	}
 
-	public IItem getOldItem(String url) {
-		return oldItems.get(url);
+	public IItem getOldItem(String itemKey) {
+		return oldItems.get(itemKey);
 	}
 
 	public void moveOldItems(IRepositoryRoot root) {
@@ -299,10 +296,10 @@ public class Database {
 
 			for (IRepositoryRoot root : uniqueroots) {
 				((BaseRoot) root).setDatabase(res);
-				res.roots.put(root.getRootPath().toURI().toString(), root);
+				res.roots.put(root.toString(), root);
 			}
 			for (IItem item : uniqueitems) {
-				res.addItem(item);
+				res.putItem(item.getFullUrl().toString(), item);
 			}
 			return res;
 		} catch (Throwable t) {

@@ -19,7 +19,7 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public interface IRobotRepositoryItem extends IRepositoryItem {
-	URL getRobotClassPath();
+	URL getClassPathURL();
 
 	String getWritableDirectory();
 

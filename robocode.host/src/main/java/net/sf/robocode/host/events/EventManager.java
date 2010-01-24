@@ -106,9 +106,9 @@ public class EventManager implements IEventManager {
 				robotProxy.println(
 						"Not adding to " + robotProxy.getStatics().getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE
 						+ " events in queue.");
-				return;
+			} else {
+				eventQueue.add(e);
 			}
-			eventQueue.add(e);
 		}
 	}
 
@@ -507,10 +507,9 @@ public class EventManager implements IEventManager {
 	}
 
 	public void setInterruptible(int priority, boolean interruptable) {
-		if (priority < 0 || priority > 99) {
-			return;
+		if (priority >= 0 && priority < MAX_PRIORITY) {
+			this.interruptible[priority] = interruptable;
 		}
-		this.interruptible[priority] = interruptable;
 	}
 
 	/**

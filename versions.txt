@@ -1,24 +1,63 @@
-Version 1.7.3.0
+Version 1.7.3.0 Alpha
 ---------------
 
+
+Version 1.7.1.6
+(06-Jan-2010)
+---------------
+= Bugfixes =
+* Bug [2912942] - Mac OS X 10.6: Cannot run Robocode from robocode.sh. It must be run from the new robocode.command file instead.
+* Bug [2912944] - Mac OS X 10.6: The editor cannot see the JDK. It must be run from the new robocode.command file instead.
+* The onDeathEvent(DeathEvent) method was called too late, when a new round was about to start. Not when the robot has died.
+* Bug [2867326] - Lockup on start if too many bots in robots dir (cont'd). Additional fix was made to locate multiple robots under the same package.
+* Changed the robot painting so that everything that goes into the painting buffer is always painted, and remaining painting operations exceeding the buffer capacity are always dropped. Previously, only the last painting operations exceeding the painting buffer were executed.
+
+= New Features =
+* The amount of used memory and total memory is now shown in the title bar of Robocode. This is useful to see how much memory your robots are consuming.
+
+= Changes =
+* If the robot paints too much between actions, an improved error message is written out in the robot console. But from this version of Robocode this message is only written out a single time.
+* A SecurityException is now thrown if a robot exceeds its max. data file quota, meaning that it uses more than 200.000 bytes its data files in total.
+
+Version 1.7.1.6 Beta
+(10-Dec-2009)
+---------------
+= Bugfixes =
+* Bug [2897215] - Robot Editor doesn't accept package name with dot (.) in it.
+* Bug [2876395] - Source is not included.
+* Bug [2867326] - Lockup on start if too many bots in robots dir (cont'd).
+
+= Requests =
+* Req [2641759] - Scrollable properties. All console windows including the Robot Console and Properties are now scrollable, and all have the same look.
+
+= Changes =
+* It is now possible to add paths to robot project inside an Eclipse workspace under the Development Options in the Preferences. Robocode will read the .classpath file in the project in order to locate both class files, properties files, and java files. This means that the Robot Packager is now able to include your source files when you use Eclipse, and it supports multiple source paths. Notice that Robocode does not support linked sources or include and exclude filters.
+* Changed the messages given when creating a new robot with the Robot Editor regarding robot name and package name.
+
+Version 1.7.1.5
+(11-Nov-2009)
+---------------
+= Bugfixes =
+* RobocodeFileOutputStream.getName() always returned null instead of the filename.
+* Robots listed in e.g. the New Battle window was sorted like: 1.1.1, 1.1.10y, 1.1.2, 1.1.10 (alpha-numerical). But version numbers with an ending letter like in "1.1.10y" like in the versions just listed, were not placed in the correct order. Notice that 1.1.10y is between 1.1.1 and 1.1.2. This bug has been fixed so the versions in the example now will be sorted correctly like: 1.1.1, 1.1.2, 1.1.10, 1.1.10y
 
 Version 1.7.1.5 Beta
 (14-Oct-2009)
 ---------------
 = Bugfixes =
-* Bug [2871138] - Graphics2D.getTransform() throws NPE
-* Bug [2872781] - "Teleport" - occurs when robot's distance remaining is very large
-* Bug [2876395] - Source is not included, robot.java.source.included was not set
+* Bug [2871138] - Graphics2D.getTransform() throws NPE.
+* Bug [2872781] - "Teleport" - occurs when robot's distance remaining is very large.
+* Bug [2876395] - Source is not included, robot.java.source.included was not set.
 
 Version 1.7.1.4
 (25-Sep-2009)
 ---------------
 = Bugfixes =
-* Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init
-* Bug [2845612] - Can't load Katana 1.0 or DrussGT 1.3.1wilo
-* Bug [2854692] - Lockup on start if too many bots in robots dir
-* Bug [2852860] - IllegalArgumentException on painting in some robots
-* Fixed NullPointerException that could occur with the -battle command-line option
+* Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init.
+* Bug [2845612] - Can't load Katana 1.0 or DrussGT 1.3.1wilo.
+* Bug [2854692] - Lockup on start if too many bots in robots dir.
+* Bug [2852860] - IllegalArgumentException on painting in some robots.
+* Fixed NullPointerException that could occur with the -battle command-line option.
 
 = Changes =
 

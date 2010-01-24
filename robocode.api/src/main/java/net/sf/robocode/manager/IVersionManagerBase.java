@@ -17,6 +17,7 @@ package net.sf.robocode.manager;
  */
 public interface IVersionManagerBase {
 	String getVersion();
+	String getVersionN();
 	int getVersionAsInt();
 	boolean isLastRunVersionChanged();
 }

@@ -73,7 +73,7 @@ namespace net.sf.robocode.dotnet.repository.root
 
         public static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
         {
-            string url = robotRepositoryItem.getRobotClassPath().getFile();
+            string url = robotRepositoryItem.getClassPathURL().getFile();
             return url.Substring(1, url.LastIndexOf(".dll!/") + 3);
         }
     }

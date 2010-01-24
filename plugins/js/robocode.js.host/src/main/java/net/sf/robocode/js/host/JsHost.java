@@ -23,6 +23,6 @@ import net.sf.robocode.js.host.security.JsRobotClassLoader;
  */
 public class JsHost extends JavaHost {
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		return new JsRobotClassLoader(robotRepositoryItem.getRobotClassPath(), robotRepositoryItem.getFullClassName());
+		return new JsRobotClassLoader(robotRepositoryItem.getClassPathURL(), robotRepositoryItem.getFullClassName());
 	}
 }

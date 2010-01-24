@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,8 @@
  * Contributors:
  *     Pavel Savara
  *     - Initial implementation
+ *     Flemming N. Larsen
+ *     - Extended to include the DeathEvent
  *******************************************************************************/
 package net.sf.robocode.test.robots;
 
@@ -26,10 +28,9 @@ import robocode.control.snapshot.IRobotSnapshot;
  * @author Pavel Savara (original)
  */
 public class TestWin extends RobocodeTestBed {
-	private int win = 0;
-	private int end = 0;
 	private BattleResults[] results; 
-
+	private StringBuffer outputBuf = new StringBuffer();
+	
 	@Test
 	public void run() {
 		super.run();
@@ -42,7 +43,7 @@ public class TestWin extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "sample.Target,tested.robots.BattleWin";        
+		return "sample.MyFirstRobot,tested.robots.BattleWin";        
 	}
 
 	@Override
@@ -51,12 +52,7 @@ public class TestWin extends RobocodeTestBed {
 		IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[1];
 		final String streamSnapshot = robot.getOutputStreamSnapshot();
 
-		if (streamSnapshot.contains("Win!")) {
-			win++;
-		}
-		if (streamSnapshot.contains("BattleEnded!")) {
-			end++;
-		}
+		outputBuf.append(streamSnapshot);
 	}
 
 	public void onBattleCompleted(BattleCompletedEvent event) {
@@ -65,9 +61,32 @@ public class TestWin extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertThat("always should win", win, is(getNumRounds()));
-		Assert.assertThat("should get BattleEnded event", end, is(1));
-		Assert.assertThat("always should be FIRST", results[0].getTeamLeaderName(), is("tested.robots.BattleWin"));
-		Assert.assertThat("always should get score", results[0].getScore(), is(897));
+		String[] lines = outputBuf.toString().split("\\n");
+
+		Assert.assertThat(lines[1], is("Round 1 of 5"));
+		Assert.assertThat(lines[3], is("SYSTEM: tested.robots.BattleWin has died"));
+		Assert.assertThat(lines[4], is("Death!"));
+		Assert.assertThat(lines[6], is("Round 2 of 5"));
+		Assert.assertThat(lines[8], is("SYSTEM: Bonus for killing sample.MyFirstRobot: 26"));
+		Assert.assertThat(lines[9], is("SYSTEM: tested.robots.BattleWin wins the round."));
+		Assert.assertThat(lines[10], is("Win!"));
+		Assert.assertThat(lines[12], is("Round 3 of 5"));
+		Assert.assertThat(lines[14], is("SYSTEM: Bonus for killing sample.MyFirstRobot: 14"));
+		Assert.assertThat(lines[15], is("SYSTEM: tested.robots.BattleWin wins the round."));
+		Assert.assertThat(lines[16], is("Win!"));
+		Assert.assertThat(lines[18], is("Round 4 of 5"));
+		Assert.assertThat(lines[20], is("SYSTEM: tested.robots.BattleWin wins the round."));
+		Assert.assertThat(lines[21], is("Win!"));
+		Assert.assertThat(lines[22], is("SYSTEM: tested.robots.BattleWin has died"));
+		Assert.assertThat(lines[23], is("Death!"));
+		Assert.assertThat(lines[25], is("Round 5 of 5"));
+		Assert.assertThat(lines[27], is("SYSTEM: tested.robots.BattleWin wins the round."));
+		Assert.assertThat(lines[28], is("Win!"));
+		Assert.assertThat(lines[29], is("BattleEnded!"));
+		Assert.assertThat(lines[30], is("SYSTEM: tested.robots.BattleWin has died"));
+		Assert.assertThat(lines[31], is("Death!"));
+
+		Assert.assertThat("1st robot should get right score", results[0].getScore(), is(485));
+		Assert.assertThat("2nd robot should get right score", results[1].getScore(), is(280));
 	}
 }

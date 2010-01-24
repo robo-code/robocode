@@ -1366,6 +1366,11 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 	}
 
+	public void clearQueue() {
+		calls.clear();
+		calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
+	}
+
 	public void processTo(Graphics2D g, Object graphicsCalls) {
 		calls.clear();
 
@@ -1931,12 +1936,11 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		boolean recovered = reallocBuffer(); 
 
 		if (!recovered) {
-			calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
-			calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
-
-			if (unrecoveredBufferOverflowCount++ % 500 == 0) { // Prevent spamming 
+			if (unrecoveredBufferOverflowCount++ == 1) { // Prevent spamming 
 				System.out.println(
-						"SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
+						"SYSTEM: This robot is painting too much between actions.\n" + "SYSTEM: Max. buffer capacity ("
+						+ MAX_BUFFER_SIZE + " bytes per turn) has been reached.\n"
+						+ "SYSTEM: Last painting operations are being dropped.\n");
 			}
 		}
 		return recovered;

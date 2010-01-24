@@ -71,14 +71,10 @@ public class EngineClassLoader extends URLClassLoader {
 			return super.loadClass(name, resolve);
 		}
 		if (isSecutityOn && isEngineClass(name)) {
-			// System.out.println("engine: "+name);
-
 			// yes, it is in engine's classpath
 			// we load it localy
 			return loadEngineClass(name, resolve);
 		}
-		// System.out.println("system: "+name);
-
 		// it is robot API
 		// or java class
 		// or security is off

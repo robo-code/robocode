@@ -15,7 +15,7 @@ namespace java.util {
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
     public partial class Random : global::java.lang.Object, global::java.io.Serializable {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _nextDouble0;
         
@@ -35,29 +35,29 @@ namespace java.util {
         
         internal static global::net.sf.jni4net.jni.MethodId _setSeed8;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor9;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorRandom9;
         
-        internal static global::net.sf.jni4net.jni.MethodId @__ctor10;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorRandom10;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
         public Random(long par0) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::java.util.Random.staticClass, global::java.util.Random.@__ctor9, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
+            @__env.NewObject(global::java.util.Random.staticClass, global::java.util.Random.@__ctorRandom9, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public Random() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::java.util.Random.staticClass, global::java.util.Random.@__ctor10, this);
+            @__env.NewObject(global::java.util.Random.staticClass, global::java.util.Random.@__ctorRandom10, this);
         }
         
         protected Random(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
         }
         
-        public new static global::java.lang.Class _class {
+        public static global::java.lang.Class _class {
             get {
                 return global::java.util.Random.staticClass;
             }
@@ -74,8 +74,8 @@ namespace java.util {
             global::java.util.Random._nextGaussian6 = @__env.GetMethodID(global::java.util.Random.staticClass, "nextGaussian", "()D");
             global::java.util.Random._nextLong7 = @__env.GetMethodID(global::java.util.Random.staticClass, "nextLong", "()J");
             global::java.util.Random._setSeed8 = @__env.GetMethodID(global::java.util.Random.staticClass, "setSeed", "(J)V");
-            global::java.util.Random.@__ctor9 = @__env.GetMethodID(global::java.util.Random.staticClass, "<init>", "(J)V");
-            global::java.util.Random.@__ctor10 = @__env.GetMethodID(global::java.util.Random.staticClass, "<init>", "()V");
+            global::java.util.Random.@__ctorRandom9 = @__env.GetMethodID(global::java.util.Random.staticClass, "<init>", "(J)V");
+            global::java.util.Random.@__ctorRandom10 = @__env.GetMethodID(global::java.util.Random.staticClass, "<init>", "()V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()D")]
@@ -132,7 +132,7 @@ namespace java.util {
             @__env.CallVoidMethod(this, global::java.util.Random._setSeed8, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::java.util.Random(@__env);

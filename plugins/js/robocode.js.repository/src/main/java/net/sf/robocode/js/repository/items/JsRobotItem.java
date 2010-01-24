@@ -24,13 +24,7 @@ import java.net.URL;
 public class JsRobotItem extends RobotItem {
 	private static final long serialVersionUID = 1L;
 
-	public JsRobotItem(URL classUrl, URL propUrl, IRepositoryRoot root) {
-		super(classUrl, propUrl, root);
-	}
-
-	@Override
-	protected void init() {
-		extension = ".js";
-		super.init();
+	public JsRobotItem(IRepositoryRoot root) {
+		super(root);
 	}
 }

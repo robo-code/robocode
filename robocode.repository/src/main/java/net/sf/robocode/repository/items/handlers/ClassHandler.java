@@ -21,6 +21,8 @@ import java.net.URL;
 
 
 /**
+ * Handler for accepting and registering .class files.
+ *
  * @author Pavel Savara (original)
  */
 public class ClassHandler extends ItemHandler {
@@ -34,18 +36,20 @@ public class ClassHandler extends ItemHandler {
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		RobotItem item = (RobotItem) db.getOldItem(itemURL.toString());
+		final String itemKey = getItemKey(itemURL, root);
+
+		RobotItem item = (RobotItem) db.getOldItem(itemKey);
 
 		if (item == null) {
-			item = (RobotItem) db.getItem(itemURL.toString());
+			item = (RobotItem) db.getItem(itemKey);
 		}
 		if (item == null) {
-			item = new RobotItem(itemURL, null, root);
-		} else {
-			item.setClassUrl(itemURL);
+			item = new RobotItem(root);
 		}
-		db.addItem(item);
+		item.setClassPathURL(root.getRootUrl());
+		item.setClassUrl(itemURL);
+
+		db.putItem(itemKey, item);
 		return item;
 	}
-
 }

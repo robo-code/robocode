@@ -37,7 +37,7 @@ public class Module extends BaseModule {
 		try {
 
 			String libsDir;
-			final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersion();
+			final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersionN();
 
 			final java.security.CodeSource source = Module.class.getProtectionDomain().getCodeSource();
 			final File file = new File(source.getLocation().getFile()).getCanonicalFile();

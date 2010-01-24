@@ -41,25 +41,27 @@ public class DotnetPropertiesHandler extends PropertiesHandler {
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		RobotItem item = (RobotItem) db.getOldItem(itemURL.toString());
+        final String itemKey = itemURL.toString();
+		RobotItem item = (RobotItem) db.getOldItem(itemKey);
 
 		if (item == null) {
-			item = (RobotItem) db.getItem(itemURL.toString());
+			item = (RobotItem) db.getItem(itemKey);
 		}
 		if (item == null) {
-			item = new DotNetRobotItem(itemURL, null, root);
+			item = new DotNetRobotItem(root, itemURL);
+            item.setClassUrl(itemURL);
 		} else {
 			item.setClassUrl(itemURL);
 		}
-		db.addItem(item);
+        db.putItem(itemKey, item);
 		return item;
 	}
 
 	@Override
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
 		final File file = new File(itemURL.toString().replace(".properties", ".dll"));
-		final DotNetRobotItem item = new DotNetRobotItem(null, itemURL, new DllRoot(db, file));
-
+		final DotNetRobotItem item = new DotNetRobotItem(new DllRoot(db, file), itemURL);
+        item.setClassUrl(itemURL);
 		return item;
 	}
 }

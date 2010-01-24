@@ -38,10 +38,10 @@ import java.util.jar.JarFile;
  */
 public class RobotFileSystemManager {
 	private final IHostedThread robotProxy;
-	private long quotaUsed = 0;
-	private boolean quotaMessagePrinted = false;
+	private long quotaUsed;
+	private boolean quotaMessagePrinted;
 	private final List<RobotFileOutputStream> streams = new ArrayList<RobotFileOutputStream>();
-	private long maxQuota = 0;
+	private final long maxQuota;
 	private final String writableRootDirectory;
 	private final String readableRootDirectory;
 	private final String rootFile;
@@ -70,7 +70,7 @@ public class RobotFileSystemManager {
 			if (streams.size() < 5) {
 				streams.add(s);
 			} else {
-				throw new IOException(
+				throw new SecurityException(
 						"You may only have 5 streams open at a time.\n Make sure you call close() on your streams when you are finished with them.");
 			}
 		}
@@ -86,17 +86,19 @@ public class RobotFileSystemManager {
 
 	public void checkQuota(long numBytes) throws IOException {
 		if (numBytes < 0) {
-			throw new IndexOutOfBoundsException("checkQuota on negative numBytes!");
+			throw new IllegalArgumentException("checkQuota on negative numBytes!");
 		}
 		if (quotaUsed + numBytes <= maxQuota) {
 			adjustQuota(numBytes);
-			return;
+		} else {
+			final String msg = "You have reached your filesystem quota of: " + maxQuota + " bytes.";
+
+			if (!quotaMessagePrinted) {
+				robotProxy.println("SYSTEM: " + msg);
+				quotaMessagePrinted = true;
+			}
+			throw new SecurityException(msg);
 		}
-		if (!quotaMessagePrinted) {
-			robotProxy.println("SYSTEM: You have reached your filesystem quota of: " + maxQuota + " bytes.");
-			quotaMessagePrinted = true;
-		}
-		throw new IOException("You have reached your filesystem quota of: " + maxQuota + " bytes.");
 	}
 
 	public long getMaxQuota() {
@@ -161,22 +163,17 @@ public class RobotFileSystemManager {
 	}
 
 	private void initializeQuota() {
+		quotaUsed = 0;
+		quotaMessagePrinted = false;
+
 		File dataDirectory = getWritableDirectory();
 
-		if (dataDirectory == null) {
-			quotaUsed = maxQuota;
-			return;
-		}
-		if (!dataDirectory.exists()) {
-			this.quotaUsed = 0;
-			return;
-		}
-		quotaMessagePrinted = false;
-		File[] dataFiles = dataDirectory.listFiles();
-
-		quotaUsed = 0;
-		for (File file : dataFiles) {
-			quotaUsed += file.length();
+		if (dataDirectory != null && dataDirectory.exists()) {
+			File[] dataFiles = dataDirectory.listFiles();
+	
+			for (File file : dataFiles) {
+				quotaUsed += file.length();
+			}
 		}
 	}
 

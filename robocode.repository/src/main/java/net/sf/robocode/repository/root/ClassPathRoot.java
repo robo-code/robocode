@@ -25,25 +25,23 @@ import java.util.ArrayList;
 
 
 /**
- * Represents on classpath of robots
+ * Represents a class path root
  * @author Pavel Savara (original)
  */
 public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	public ClassPathRoot(Database db, File rootPath) {
+	private final File parentPath;
+
+	public ClassPathRoot(Database db, File rootPath, File parentPath) {
 		super(db, rootPath);
-		try {
-			url = rootPath.toURI().toURL();
-		} catch (MalformedURLException e) {
-			Logger.logError(e);
-		}
+		this.parentPath = parentPath;
 	}
 
 	public void update(boolean updateInvalid) {
 		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
 
-		setStatus(windowManager, "Updating ClassPath: " + rootPath.toString());
+		setStatus(windowManager, "Updating class path: " + rootPath);
 		db.moveOldItems(this);
 		final ArrayList<IItem> items = new ArrayList<IItem>();
 		final ArrayList<Long> modified = new ArrayList<Long>();
@@ -78,22 +76,19 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 			}
 		});
 
-        // find sub-directories
-        final File[] files = path.listFiles(
-                new FileFilter() {
-                    public boolean accept(File pathname) {
-                        return pathname.isDirectory() && !pathname.getName().toLowerCase().endsWith(".data")
-                                && !pathname.getName().toLowerCase().endsWith(".robotcache");
-                    }
-                });
-        if (files != null) {
-            for (File subDir : files) {
-                visitDirectory(subDir, items, modified);
-            }
-        }
-    }
+		// find sub-directories
+		for (File subDir : path.listFiles(
+				new FileFilter() {
+			public boolean accept(File pathname) {
+				return pathname.isDirectory() && !pathname.getName().toLowerCase().endsWith(".data")
+						&& !pathname.getName().toLowerCase().endsWith(".robotcache");
+			}
+		})) {
+			visitDirectory(subDir, items, modified);
+		}
+	}
 
-    public void update(IItem item, boolean force) {
+	public void update(IItem item, boolean force) {
 		File f = new File(item.getFullUrl().toString());
 
 		item.update(f.lastModified(), force);
@@ -113,10 +108,13 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		return false;
 	}
 
+	public File getParentPath() {
+		return parentPath;
+	}
+
 	private void setStatus(IWindowManager windowManager, String message) {
 		if (windowManager != null) {
 			windowManager.setStatus(message);
 		}
 	}
-
 }

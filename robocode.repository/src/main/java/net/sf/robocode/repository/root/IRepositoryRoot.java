@@ -27,7 +27,6 @@ public interface IRepositoryRoot {
 	boolean isChanged(IItem item);
 	URL getRootUrl();
 	File getRootPath();
-	URL getClassPathUrl();
 	boolean isJar();
 	boolean isDevel();
 	void extractJar();

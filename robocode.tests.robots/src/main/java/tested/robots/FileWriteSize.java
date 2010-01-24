@@ -24,19 +24,21 @@ import java.io.IOException;
 public class FileWriteSize extends AdvancedRobot {
 
 	public void run() {
-		out.println("Data quota: " + getDataQuotaAvailable());
 		out.println("Data directory: " + getDataDirectory());
+		out.println("Data quota: " + getDataQuotaAvailable());
 
 		byte[] buf = new byte[100000];
 
 		File file = null;
+		RobocodeFileOutputStream rfos = null;
 
-		try {		
+		try {
 			file = getDataFile("test");
+			file.delete();
 
 			out.println("Data file: " + file.getCanonicalPath());
 
-			RobocodeFileOutputStream rfos = new RobocodeFileOutputStream(file);
+			rfos = new RobocodeFileOutputStream(file);
 
 			for (int i = 0; i < 3; i++) {
 				rfos.write(buf);
@@ -44,6 +46,13 @@ public class FileWriteSize extends AdvancedRobot {
 		} catch (IOException e) {
 			e.printStackTrace(out);
 		} finally {
+			if (rfos != null) {
+				try {
+					rfos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			if (file != null) {
 				file.delete();
 			}

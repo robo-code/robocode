@@ -12,11 +12,9 @@
 package net.sf.robocode.test.robotscs;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import robocode.BattleResults;
 import robocode.control.events.BattleCompletedEvent;
@@ -32,9 +30,8 @@ import robocode.control.snapshot.IRobotSnapshot;
 public class TestDuplicatesAndScore extends RobocodeTestBed {
 	private IRobotSnapshot[] robots;
 	private BattleResults[] results;
-	private int lastTurn;
 
-	@Test
+    @Test
 	public void run() {
 		super.run();
 	}
@@ -79,7 +76,7 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		lastTurn = event.getTurnSnapshot().getTurn();
+        int lastTurn = event.getTurnSnapshot().getTurn();
 		robots = event.getTurnSnapshot().getRobots();
 
 		if (lastTurn == 1) {

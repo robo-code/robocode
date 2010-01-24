@@ -9,13 +9,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.dotnet.content</artifactId>
-    <version>${robocode.nversion}</version>
-    <name>.NET Robocode static content</name>
+    <version>${robocode.version}</version>
+    <name>.NET static content</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.host</artifactId>
-            <version>${robocode.nversion}</version>
+            <version>${robocode.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sf.robocode</groupId>

@@ -109,6 +109,11 @@ public final class VersionManager implements IVersionManager {
 		return versionChanged;
 	}
 
+	public String getVersionN(){
+		Version v = getVersionInstance();
+		return v.getMajor() + "." + v.getMinor() + "." + v.getRevision() + "." + v.getBuild();
+	}
+
 	public int getVersionAsInt() {
 		Version v = getVersionInstance();
 
@@ -157,7 +162,7 @@ public final class VersionManager implements IVersionManager {
 
 		if (versionString != null && !versionString.equals(UNKNOWN_VERSION)) {
 			try {
-				version = versionString.substring(8);
+				version = versionString.substring(7);
 			} catch (Exception ignore) {}
 		}
 		if (version.equals(UNKNOWN_VERSION)) {

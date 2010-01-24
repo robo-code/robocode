@@ -36,10 +36,8 @@ public class TestFileWriteSize extends RobocodeTestBed {
 	
     @Test
     public void run() {
-        vm = new VersionManager(null);
         super.run();
     }
-    IVersionManager vm ;
 
 	@Override
 	public String getRobotNames() {
@@ -50,7 +48,7 @@ public class TestFileWriteSize extends RobocodeTestBed {
     @Override
     protected void runSetup() {
         final IVersionManager vm = new VersionManager(null);
-        file = new File(robotsPath + "\\target\\classes\\.robotcache\\robocode.dotnet.robotscs-" + vm.getVersion() + ".dll_\\tested\\robotscs\\test.txt");
+        file = new File(robotsPath + "\\target\\classes\\.robotcache\\_\\tested\\robotscs\\test.txt");
         if (file.exists()) {
             if (!file.delete()) {
                 Logger.logError("Can't delete" + file);
@@ -73,7 +71,7 @@ public class TestFileWriteSize extends RobocodeTestBed {
 			messagedDataQuota = true;	
 		}
 		
-		if (out.contains("Data directory: " + robotsPath + "\\target\\classes\\.robotcache\\robocode.dotnet.robotscs-" + vm.getVersion() + ".dll_\\tested\\robotscs")) {
+		if (out.contains("Data directory: " + robotsPath + "\\target\\classes\\.robotcache\\_\\tested\\robotscs")) {
 			messagedDataDirectory = true;	
 		}
 

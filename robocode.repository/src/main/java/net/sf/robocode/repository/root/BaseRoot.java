@@ -12,10 +12,12 @@
 package net.sf.robocode.repository.root;
 
 
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.Database;
 
 import java.io.File;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 
@@ -26,20 +28,30 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
 	protected transient Database db;
-	protected URL url;
-	protected File rootPath;
+	protected final File rootPath;
+	protected URL rootURL;
 
 	public BaseRoot(Database db, File rootPath) {
 		this.db = db;
 		this.rootPath = rootPath;
-	}
 
-	public URL getClassPathUrl() {
-		return url;
+		URL url;
+
+		try {
+			url = rootPath.toURI().toURL();
+		} catch (MalformedURLException e) {
+			url = null;
+			Logger.logError(e);
+		}
+		this.rootURL = url;
 	}
 
 	public URL getRootUrl() {
-		return url;
+		try {
+			return rootPath != null ? rootPath.toURI().toURL() : null;
+		} catch (MalformedURLException e) {
+			return null;
+		}
 	}
 
 	public File getRootPath() {
@@ -51,7 +63,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	}
 
 	public String toString() {
-		return url.toString();
+		return rootURL != null ? rootURL.toString() : null;
 	}
 
 	public void extractJar() {

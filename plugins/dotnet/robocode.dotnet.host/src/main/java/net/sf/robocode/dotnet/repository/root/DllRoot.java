@@ -52,7 +52,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 			dllNoSeparator = rootPath.toURI().toString();
 
 			dllUrl = new URL(dllNoSeparator + "!/");
-			url = rootPath.toURI().toURL();
+			rootURL = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}

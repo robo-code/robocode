@@ -47,7 +47,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
-		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
+		System.setProperty("WORKINGDIRECTORY", "target/test-classes");
 		try {
 			if (new File("").getAbsolutePath().endsWith("robocode.tests")) {
 				robotsPath = new File("../robocode.tests.robots").getCanonicalPath();

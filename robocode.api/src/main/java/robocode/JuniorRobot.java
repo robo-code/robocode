@@ -51,7 +51,7 @@ import static java.lang.Math.toRadians;
  * @see Droid
  * @since 1.4
  */
-public abstract class JuniorRobot extends _RobotBase implements IJuniorRobot {
+public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 
 	/**
 	 * The color black (0x000000)
