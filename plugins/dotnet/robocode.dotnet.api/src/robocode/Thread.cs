@@ -5,6 +5,9 @@ using net.sf.robocode.security;
 
 namespace robocode
 {
+    /// <summary>
+    /// Wrapper for .NET Thread, secured according to robocode rules.
+    /// </summary>
     public class Thread
     {
         public static object syncRoot=new object();
@@ -14,6 +17,10 @@ namespace robocode
         private readonly ParameterizedThreadStart real1;
         private readonly ThreadStart real2;
 
+        /// <summary>
+        /// Initializes a new instance of the Thread class
+        /// </summary>
+        /// <param name="start">A ThreadStart delegate that represents the methods to be invoked when this thread begins executing.</param>
         public Thread(ParameterizedThreadStart start)
         {
             if (start == null)
@@ -30,6 +37,10 @@ namespace robocode
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Thread class
+        /// </summary>
+        /// <param name="start">A ThreadStart delegate that represents the methods to be invoked when this thread begins executing.</param>
         public Thread(ThreadStart start)
         {
             if (start==null)
@@ -62,16 +73,25 @@ namespace robocode
             }
         }
 
+        /// <summary>
+        /// Blocks the current thread for the specified number of milliseconds.
+        /// </summary>
         public static void Sleep(int millisecondsTimeout)
         {
             System.Threading.Thread.Sleep(millisecondsTimeout);
         }
 
+        /// <summary>
+        /// Causes a thread to be scheduled for execution.
+        /// </summary>
         public void Start(object param)
         {
             thread.Start(param);
         }
 
+        /// <summary>
+        /// Causes a thread to be scheduled for execution.
+        /// </summary>
         public void Start()
         {
             thread.Start(null);
@@ -102,3 +122,4 @@ namespace robocode
         }
     }
 }
+//doc

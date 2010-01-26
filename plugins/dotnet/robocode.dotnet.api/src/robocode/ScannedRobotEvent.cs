@@ -21,10 +21,10 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A ScannedRobotEvent is sent to {@link Robot#OnScannedRobot(ScannedRobotEvent)
+    /// A ScannedRobotEvent is sent to <see cref="Robot.OnScannedRobot(ScannedRobotEvent)"/>
     /// OnScannedRobot()} when you Scan a robot.
     /// You can use the information contained in this evnt to determine what to do.
-    /// <p>
+    /// <p/>
     /// <b>Note</b>: You should not inherit from this class in your own evnt class!
     /// The internal logic of this evnt class might change. Hence, your robot might
     /// not work in future Robocode versions, if you choose to inherit from this class.
@@ -45,12 +45,12 @@ namespace robocode
         /// <summary>
         /// This constructor is only provided in order to preserve backwards compatibility with old robots that
         /// inherits from this Event class. 
-        /// <p>
+        /// <p/>
         /// <b>Note</b>: You should not inherit from this class in your own evnt class!
         /// The internal logic of this evnt class might change. Hence, your robot might
         /// not work in future Robocode versions, if you choose to inherit from this class.
         ///
-        /// @deprecated Use {@link #ScannedRobotEvent(string, double, double, double, double, double)} instead.
+        /// @deprecated Use <see cref="ScannedRobotEvent(string, double, double, double, double, double)"/> instead.
         /// </summary>
         public ScannedRobotEvent()
         {
@@ -64,14 +64,13 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new ScannedRobotEvent.
-        ///
-        /// @param name	 the name of the scanned robot
-        /// @param energy   the energy of the scanned robot
-        /// @param bearing  the bearing of the scanned robot, in radians
-        /// @param distance the distance from your robot to the scanned robot
-        /// @param heading  the heading of the scanned robot
-        /// @param velocity the velocity of the scanned robot
         /// </summary>
+        /// <param name="name">the name of the scanned robot</param>
+        /// <param name="energy">   the energy of the scanned robot</param>
+        /// <param name="bearing">  the bearing of the scanned robot, in radians</param>
+        /// <param name="distance"> the distance from your robot to the scanned robot</param>
+        /// <param name="heading">  the heading of the scanned robot</param>
+        /// <param name="velocity"> the velocity of the scanned robot</param>
         public ScannedRobotEvent(string name, double energy, double bearing, double distance, double heading,
                                  double velocity)
         {
@@ -86,8 +85,6 @@ namespace robocode
         /// <summary>
         /// Returns the bearing to the robot you scanned, relative to your robot's
         /// heading, in degrees (-180 <= getBearing() < 180)
-        ///
-        /// @return the bearing to the robot you scanned, in degrees
         /// </summary>
         public double Bearing
         {
@@ -97,8 +94,6 @@ namespace robocode
         /// <summary>
         /// Returns the bearing to the robot you scanned, relative to your robot's
         /// heading, in radians (-PI <= getBearingRadians() < PI)
-        ///
-        /// @return the bearing to the robot you scanned, in radians
         /// </summary>
         public double BearingRadians
         {
@@ -107,8 +102,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the distance to the robot (your center to his center).
-        ///
-        /// @return the distance to the robot.
         /// </summary>
         public double Distance
         {
@@ -117,8 +110,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the energy of the robot.
-        ///
-        /// @return the energy of the robot
         /// </summary>
         public double Energy
         {
@@ -127,8 +118,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the heading of the robot, in degrees (0 <= getHeading() < 360)
-        ///
-        /// @return the heading of the robot, in degrees
         /// </summary>
         public double Heading
         {
@@ -137,8 +126,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the heading of the robot, in radians (0 <= getHeading() < 2 * PI)
-        ///
-        /// @return the heading of the robot, in radians
         /// </summary>
         public double HeadingRadians
         {
@@ -148,8 +135,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the name of the robot.
-        ///
-        /// @return the name of the robot
         /// </summary>
         public string Name
         {
@@ -159,8 +144,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the velocity of the robot.
-        ///
-        /// @return the velocity of the robot
         /// </summary>
         public double Velocity
         {
@@ -249,4 +232,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

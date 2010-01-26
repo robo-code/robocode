@@ -6,12 +6,9 @@ using robocode.robotinterfaces;
 
 namespace robocode
 {
-    /// 
     ///<summary>
-    ///  This evnt is sent to {@link Robot#OnWin(WinEvent) OnWin()} when your robot
+    ///  This evnt is sent to <see cref="Robot#OnWin(WinEvent) OnWin()} when your robot
     ///  wins the round in a battle.
-    ///
-    ///  @author Mathew A. Nelson (original)
     ///</summary>
     [Serializable]
     public sealed class WinEvent : Event
@@ -77,4 +74,4 @@ namespace robocode
     }
 }
 
-//happy
+//doc

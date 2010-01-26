@@ -11,7 +11,6 @@
  *     Flemming N. Larsen
  *     - Updated Javadocs
  *******************************************************************************/
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -20,10 +19,10 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A SkippedTurnEvent is sent to {@link AdvancedRobot#OnSkippedTurn(SkippedTurnEvent)
+    /// A SkippedTurnEvent is sent to <see cref="AdvancedRobot.OnSkippedTurn(SkippedTurnEvent)"/>
     /// OnSkippedTurn()} when your robot is forced to skipping a turn.
     /// You must take an action every turn in order to participate in the game.
-    /// For example,
+    /// <example>
     /// <pre>
     ///    try {
     ///        Thread.sleep(1000);
@@ -38,18 +37,19 @@ namespace robocode
     /// <p/>
     /// Instead, you should do something such as:
     /// <pre>
-    ///     for (int i = 0; i < 30; i++) {
+    ///     for (int i = 0; i &lt; 30; i++) {
     ///         DoNothing(); // or perhaps Scan();
     ///     }
     /// </pre>
+    /// </example>
     /// <p/>
     /// This evnt may also be generated if you are simply doing too much processing
     /// between actions, that is using too much processing power for the calculations
     /// etc. in your robot.
     ///
     /// @author Mathew A. Nelson (original)
-    /// @see AdvancedRobot#OnSkippedTurn(SkippedTurnEvent)
-    /// @see SkippedTurnEvent
+    /// <seealso cref="AdvancedRobot#OnSkippedTurn(SkippedTurnEvent)"/>
+    /// <seealso cref="SkippedTurnEvent"/>
     /// </summary>
     public sealed class SkippedTurnEvent : Event
     {
@@ -116,4 +116,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

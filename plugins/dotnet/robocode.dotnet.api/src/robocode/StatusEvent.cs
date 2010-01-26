@@ -10,14 +10,13 @@
  *     - Initial implementation
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link Robot#OnStatus(StatusEvent) OnStatus()} every
+    /// This evnt is sent to <see cref="Robot.OnStatus(StatusEvent)"/> every
     /// turn in a battle to provide the status of the robot.
     ///
     /// @author Flemming N. Larsen (original)
@@ -32,20 +31,18 @@ namespace robocode
 
         /// <summary>
         /// This constructor is called internally from the game in order to create
-        /// a new {@link RobotStatus}.
+        /// a new <see cref="RobotStatus"/>.
         ///
-        /// @param status the current states
         /// </summary>
+        /// <param name="status">the current states</param>
         public StatusEvent(RobotStatus status)
         {
             this.status = status;
         }
 
         /// <summary>
-        /// Returns the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
-        ///
-        /// @return the {@link RobotStatus} at the time defined by {@link Robot#getTime()}.
-        /// @see #getTime()
+        /// Returns the <see cref="RobotStatus"/> at the time defined by <see cref="Robot.Time"/>.
+        /// <seealso cref="Event.Time"/>
         /// </summary>
         public RobotStatus Status
         {
@@ -76,4 +73,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc
