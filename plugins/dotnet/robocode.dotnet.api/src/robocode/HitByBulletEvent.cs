@@ -149,17 +149,13 @@ namespace robocode
             get { return bullet.Velocity; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             IBasicEvents listener = robot.GetBasicEventListener();
@@ -170,9 +166,7 @@ namespace robocode
             }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.HitByBulletEvent_TYPE; }

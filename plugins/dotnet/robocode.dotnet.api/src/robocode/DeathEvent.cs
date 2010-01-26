@@ -31,25 +31,19 @@ namespace robocode
     {
         private const int DEFAULT_PRIORITY = -1; // System evnt -> cannot be changed!;
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         public override int Priority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             IBasicEvents listener = robot.GetBasicEventListener();
@@ -60,17 +54,13 @@ namespace robocode
             }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override bool IsCriticalEvent
         {
             get { return true; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.DeathEvent_TYPE; }

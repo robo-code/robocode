@@ -95,11 +95,7 @@ namespace robocode
             return null; // never called
         }
 
-        /// <summary>
-        /// Do not call this method!
-        /// <p/>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         ITeamEvents ITeamRobot.GetTeamEventListener()
         {
             return this; // this robot is listening
@@ -172,9 +168,7 @@ namespace robocode
             return false;
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         public virtual void OnMessageReceived(MessageEvent evnt)
         {
         }

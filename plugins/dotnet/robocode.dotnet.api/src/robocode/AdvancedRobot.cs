@@ -1048,7 +1048,7 @@ namespace robocode
             return null; // never called
         }
 
-        /// <summary>{@inheritDoc}</summary>
+        /// <inheritdoc />
         public virtual void OnCustomEvent(CustomEvent evnt)
         {
         }
@@ -1536,7 +1536,7 @@ namespace robocode
         {
         }
 
-        /// <summary>{@inheritDoc}</summary>
+        /// <inheritdoc />
         public virtual void OnSkippedTurn(SkippedTurnEvent evnt)
         {
         }
@@ -2290,11 +2290,7 @@ namespace robocode
             }
         }
 
-        /// <summary>
-        ///   Do not call this method!
-        ///   <p />
-        ///   {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         IAdvancedEvents IAdvancedRobot.GetAdvancedEventListener()
         {
             return this; // this robot is listening

@@ -71,19 +71,19 @@ namespace robocode
             get { return results; }
         }
 
-        /// <summary>{@inheritDoc}</summary>
+        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <summary>{@inheritDoc}</summary>
+        /// <inheritdoc />
         public override int Priority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <summary>{@inheritDoc}</summary>
+        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (robot != null)
@@ -96,13 +96,13 @@ namespace robocode
             }
         }
 
-        /// <summary>{@inheritDoc}</summary>
+        /// <inheritdoc />
         internal override bool IsCriticalEvent
         {
             get { return true; }
         }
 
-        /// <summary>{@inheritDoc}</summary>
+        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.BattleEndedEvent_TYPE; }

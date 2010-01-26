@@ -114,9 +114,7 @@ namespace robocode
             get { return atFault; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         public override int CompareTo(Event evnt)
         {
             int res = base.CompareTo(evnt);
@@ -140,17 +138,13 @@ namespace robocode
             return 0;
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             IBasicEvents listener = robot.GetBasicEventListener();
@@ -161,9 +155,7 @@ namespace robocode
             }
         }
 
-        /// <summary>
-        /// {@inheritDoc}
-        /// </summary>
+        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.HitRobotEvent_TYPE; }

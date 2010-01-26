@@ -219,7 +219,7 @@ namespace robocode
             get { return thirds; }
         }
 
-        /// <summary>{@inheritDoc}</summary>
+        /// <inheritdoc />
         public int CompareTo(BattleResults o)
         {
             return score.CompareTo(o.score);
