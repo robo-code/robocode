@@ -17,12 +17,9 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    ///   A RoundEndedEvent is sent to {@link Robot#onRoundEnded(RoundEndedEvent)
-    ///   onRoundEnded()} when a round has ended.
+    ///   A RoundEndedEvent is sent to <see cref="Robot#onRoundEnded(RoundEndedEvent)"/> when a round has ended.
     ///   You can use the information contained in this event to determine which round that has ended.
-    ///   @author Flemming N. Larsen (original)
-    ///   @see Robot#onRoundEnded(RoundEndedEvent)
-    ///   @since 1.7.2
+    ///   <seealso cref="Robot#onRoundEnded(RoundEndedEvent)"/>
     /// </summary>
     public class RoundEndedEvent : Event
     {
@@ -40,12 +37,8 @@ namespace robocode
         /// <param name="round">
         ///   the round that has ended (zero-indexed)
         /// </param>
-        /// <param name="turns">
-        ///   the number of turns that this round reached
-        /// </param>
-        /// <param name="totalTurns">
-        ///   the total number of turns reached in the battle when this round ended
-        /// </param>
+        /// <param name="turns">the number of turns that this round reached</param>
+        /// <param name="totalTurns">the total number of turns reached in the battle when this round ended</param>
         public RoundEndedEvent(int round, int turns, int totalTurns)
         {
             this.round = round;
@@ -143,3 +136,4 @@ namespace robocode
         }
     }
 }
+//doc

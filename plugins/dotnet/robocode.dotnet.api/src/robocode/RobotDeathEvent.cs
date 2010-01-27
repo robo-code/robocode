@@ -21,10 +21,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link Robot#OnRobotDeath(RobotDeathEvent) OnRobotDeath()}
+    /// This evnt is sent to <see cref="Robot#OnRobotDeath(RobotDeathEvent)"/>
     /// when another robot (not your robot) dies.
-    ///
-    /// @author Mathew A. Nelson (original)
     /// </summary>
     [Serializable]
     public sealed class RobotDeathEvent : Event
@@ -35,9 +33,8 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new RobotDeathEvent.
-        ///
-        /// @param robotName the name of the robot that died
         /// </summary>
+        /// <param name="robotName">the name of the robot that died</param>
         public RobotDeathEvent(string robotName)
         {
             this.robotName = robotName;
@@ -45,8 +42,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the name of the robot that died.
-        ///
-        /// @return the name of the robot that died
         /// </summary>
         public string Name
         {
@@ -106,4 +101,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

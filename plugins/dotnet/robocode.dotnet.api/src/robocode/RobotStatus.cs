@@ -19,10 +19,7 @@ namespace robocode
 {
     /// <summary>
     /// Contains the status of a robot for a specific time/turn returned by
-    /// {@link StatusEvent#getStatus()}.
-    ///
-    /// @author Flemming N. Larsen (original)
-    /// @since 1.5
+    /// <see cref="StatusEvent.Status"/>
     /// </summary>
     [Serializable]
     public sealed class RobotStatus
@@ -46,8 +43,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the robot's current energy.
-        ///
-        /// @return the robot's current energy
         /// </summary>
         public double Energy
         {
@@ -57,10 +52,8 @@ namespace robocode
         /// <summary>
         /// Returns the X position of the robot. (0,0) is at the bottom left of the
         /// battlefield.
-        ///
-        /// @return the X position of the robot
-        /// @see #getY()
         /// </summary>
+        /// <seealso cref="Y"/>
         public double X
         {
             get { return x; }
@@ -69,9 +62,7 @@ namespace robocode
         /// <summary>
         /// Returns the Y position of the robot. (0,0) is at the bottom left of the
         /// battlefield.
-        ///
-        /// @return the Y position of the robot
-        /// @see #getX()
+        /// <seealso cref="X"/>
         /// </summary>
         public double Y
         {
@@ -84,8 +75,6 @@ namespace robocode
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        /// @return the direction that the robot's body is facing, in radians.
         /// </summary>
         public double HeadingRadians
         {
@@ -98,8 +87,6 @@ namespace robocode
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// 90 means East, 180 means South, and 270 means West.
-        ///
-        /// @return the direction that the robot's body is facing, in degrees.
         /// </summary>
         public double Heading
         {
@@ -112,8 +99,6 @@ namespace robocode
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        /// @return the direction that the robot's gun is facing, in radians.
         /// </summary>
         public double GunHeadingRadians
         {
@@ -126,8 +111,6 @@ namespace robocode
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// 90 means East, 180 means South, and 270 means West.
-        ///
-        /// @return the direction that the robot's gun is facing, in degrees.
         /// </summary>
         public double GunHeading
         {
@@ -140,8 +123,6 @@ namespace robocode
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        /// @return the direction that the robot's radar is facing, in radians.
         /// </summary>
         public double RadarHeadingRadians
         {
@@ -154,8 +135,6 @@ namespace robocode
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// 90 means East, 180 means South, and 270 means West.
-        ///
-        /// @return the direction that the robot's radar is facing, in degrees.
         /// </summary>
         public double RadarHeading
         {
@@ -165,11 +144,9 @@ namespace robocode
         /// <summary>
         /// Returns the velocity of the robot measured in pixels/turn.
         /// <p/>
-        /// The maximum velocity of a robot is defined by {@link Rules#MAX_VELOCITY}
+        /// The maximum velocity of a robot is defined by <see cref="Rules#MAX_VELOCITY"/>
         /// (8 pixels / turn).
-        ///
-        /// @return the velocity of the robot measured in pixels/turn
-        /// @see Rules#MAX_VELOCITY
+        /// <seealso cref="Rules.MAX_VELOCITY"/>
         /// </summary>
         public double Velocity
         {
@@ -182,8 +159,6 @@ namespace robocode
         /// This call returns both positive and negative values. Positive values
         /// means that the robot is currently turning to the right. Negative values
         /// means that the robot is currently turning to the left.
-        ///
-        /// @return the angle remaining in the robots's turn, in radians
         /// </summary>
         public double TurnRemainingRadians
         {
@@ -196,8 +171,6 @@ namespace robocode
         /// This call returns both positive and negative values. Positive values
         /// means that the robot is currently turning to the right. Negative values
         /// means that the robot is currently turning to the left.
-        ///
-        /// @return the angle remaining in the robots's turn, in degrees
         /// </summary>
         public double TurnRemaining
         {
@@ -210,8 +183,6 @@ namespace robocode
         /// This call returns both positive and negative values. Positive values
         /// means that the radar is currently turning to the right. Negative values
         /// means that the radar is currently turning to the left.
-        ///
-        /// @return the angle remaining in the radar's turn, in radians
         /// </summary>
         public double RadarTurnRemainingRadians
         {
@@ -224,8 +195,6 @@ namespace robocode
         /// This call returns both positive and negative values. Positive values
         /// means that the radar is currently turning to the right. Negative values
         /// means that the radar is currently turning to the left.
-        ///
-        /// @return the angle remaining in the radar's turn, in degrees
         /// </summary>
         public double RadarTurnRemaining
         {
@@ -238,8 +207,6 @@ namespace robocode
         /// This call returns both positive and negative values. Positive values
         /// means that the gun is currently turning to the right. Negative values
         /// means that the gun is currently turning to the left.
-        ///
-        /// @return the angle remaining in the gun's turn, in radians
         /// </summary>
         public double GunTurnRemainingRadians
         {
@@ -252,8 +219,6 @@ namespace robocode
         /// This call returns both positive and negative values. Positive values
         /// means that the gun is currently turning to the right. Negative values
         /// means that the gun is currently turning to the left.
-        ///
-        /// @return the angle remaining in the gun's turn, in degrees
         /// </summary>
         public double GunTurnRemaining
         {
@@ -267,9 +232,6 @@ namespace robocode
         /// This call returns both positive and negative values. Positive values
         /// means that the robot is currently moving forwards. Negative values means
         /// that the robot is currently moving backwards.
-        ///
-        /// @return the distance remaining in the robot's current move measured in
-        ///         pixels.
         /// </summary>
         public double DistanceRemaining
         {
@@ -283,16 +245,14 @@ namespace robocode
         /// <p/>
         /// The amount of gun heat generated when the gun is fired is
         /// 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
-        /// by {@link Robot#getGunCoolingRate()}, which is a battle setup.
+        /// by <see cref="Robot#getGunCoolingRate()"/>, which is a battle setup.
         /// <p/>
         /// Note that all guns are "hot" at the start of each round, where the gun
         /// heat is 3.
-        ///
-        /// @return the current gun heat
-        /// @see Robot#getGunCoolingRate()
-        /// @see Robot#Fire(double)
-        /// @see Robot#FireBullet(double)
         /// </summary>
+        /// <seealso cref="Robot.GunCoolingRate"/>
+        /// <seealso cref="Robot.Fire(double)"/>
+        /// <seealso cref="Robot.FireBullet(double)"/>
         public double GunHeat
         {
             get { return gunHeat; }
@@ -300,9 +260,6 @@ namespace robocode
 
         /// <summary>
         /// Returns how many opponents that are left in the current round.
-        ///
-        /// @return how many opponents that are left in the current round.
-        /// @since 1.6.2
         /// </summary>
         public int Others
         {
@@ -311,24 +268,18 @@ namespace robocode
 
         /// <summary>
         /// Returns the number of rounds in the current battle.
-        ///
-        /// @return the number of rounds in the current battle
-        /// @see #getRoundNum()
-        /// @since 1.6.2
         /// </summary>
+        /// <seealso cref="RoundNum"/>
         public int NumRounds
         {
             get { return numRounds; }
         }
 
         /// <summary>
-        /// Returns the current round number (0 to {@link #getNumRounds()} - 1) of
+        /// Returns the current round number (0 to <see cref="NumRounds"/> - 1) of
         /// the battle.
-        ///
-        /// @return the current round number of the battle
-        /// @see #getNumRounds()
-        /// @since 1.6.2
         /// </summary>
+        /// <seealso cref="NumRounds"/>
         public int RoundNum
         {
             get { return roundNum; }
@@ -336,9 +287,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the game time of the round, where the time is equal to the current turn in the round.
-        ///
-        /// @return the game time/turn of the current round.
-        /// @since 1.6.2
         /// </summary>
         public long Time
         {
@@ -440,4 +388,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

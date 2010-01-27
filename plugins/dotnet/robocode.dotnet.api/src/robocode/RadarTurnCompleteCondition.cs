@@ -19,11 +19,7 @@ namespace robocode
     /// <summary>
     /// A prebuilt condition you can use that indicates your radar has finished
     /// turning.
-    ///
-    /// @author Mathew A. Nelson (original)
-    /// @author Flemming N. Larsen (contributor)
-    /// @author Nathaniel Troutman (contributor)
-    /// @see Condition
+    /// <seealso cref="Condition"/>
     /// </summary>
     public class RadarTurnCompleteCondition : Condition
     {
@@ -32,9 +28,8 @@ namespace robocode
         /// <summary>
         /// Creates a new RadarTurnCompleteCondition with default priority.
         /// The default priority is 80.
-        ///
-        /// @param robot your robot, which must be a {@link AdvancedRobot}
         /// </summary>
+        /// <param name="robot">your robot, which must be a <see cref="AdvancedRobot"/></param>
         public RadarTurnCompleteCondition(AdvancedRobot robot)
         {
             this.robot = robot;
@@ -44,11 +39,10 @@ namespace robocode
         /// Creates a new RadarTurnCompleteCondition with the specified priority.
         /// A condition priority is a value from 0 - 99. The higher value, the
         /// higher priority. The default priority is 80.
-        ///
-        /// @param robot	your robot, which must be a {@link AdvancedRobot}
-        /// @param priority the priority of this condition
-        /// @see Condition#setPriority(int)
+        /// <seealso cref="Condition#setPriority(int)"/>
         /// </summary>
+        /// <param name="robot"> your robot, which must be a <see cref="AdvancedRobot"/></param>
+        /// <param name="priority"> the priority of this condition</param>
         public RadarTurnCompleteCondition(AdvancedRobot robot, int priority)
         {
             this.robot = robot;
@@ -57,9 +51,7 @@ namespace robocode
 
         /// <summary>
         /// Tests if the radar has stopped turning.
-        ///
-        /// @return {@code true} if the radar has stopped turning; {@code false}
-        ///         otherwise
+        /// Returns true if the radar has stopped turning; false otherwise
         /// </summary>
         public override bool Test()
         {
@@ -67,4 +59,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

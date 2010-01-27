@@ -19,10 +19,6 @@ namespace robocode
     /// Constants are used for rules that will not change.
     /// Methods are provided for rules that can be changed between battles or which depends
     /// on some other factor.
-    ///
-    /// @author Luis Crespo (original)
-    /// @author Flemming N. Larsen (original)
-    /// @since 1.1.4
     /// </summary>
     public static class Rules
     {
@@ -67,10 +63,9 @@ namespace robocode
         /// The maximum turning rate of the robot, in degrees, which is
         /// 10 degress/turn.
         /// Note, that the turn rate of the robot depends on it's velocity.
-        ///
-        /// @see #MAX_TURN_RATE_RADIANS
-        /// @see #GetTurnRate(double)
-        /// @see #GetTurnRateRadians(double)
+        /// <seealso cref="MAX_TURN_RATE_RADIANS"/>
+        /// <seealso cref="GetTurnRate(double)"/>
+        /// <seealso cref="GetTurnRateRadians(double)"/>
         /// </summary>
         public static readonly double MAX_TURN_RATE = 10;
 
@@ -78,9 +73,9 @@ namespace robocode
         /// The maximum turning rate of the robot measured in radians instead of
         /// degrees.
         ///
-        /// @see #MAX_TURN_RATE
-        /// @see #GetTurnRate(double)
-        /// @see #GetTurnRateRadians(double)
+        /// <seealso cref="MAX_TURN_RATE"/>
+        /// <seealso cref="GetTurnRate(double)"/>
+        /// <seealso cref="GetTurnRateRadians(double)"/>
         /// </summary>
         public static readonly double MAX_TURN_RATE_RADIANS = Utils.ToRadians(MAX_TURN_RATE);
 
@@ -95,15 +90,15 @@ namespace robocode
         /// default), then the gun turn is dependent on the robot turn, and in this
         /// case the gun moves relatively to the robot body.
         ///
-        /// @see #GUN_TURN_RATE_RADIANS
-        /// @see Robot#setAdjustGunForRobotTurn(bool)
+        /// <seealso cref="GUN_TURN_RATE_RADIANS"/>
+        /// <seealso cref="Robot#setAdjustGunForRobotTurn(bool)"/>
         /// </summary>
         public static readonly double GUN_TURN_RATE = 20;
 
         /// <summary>
         /// The turning rate of the gun measured in radians instead of degrees.
         ///
-        /// @see #GUN_TURN_RATE
+        /// <seealso cref="GUN_TURN_RATE"/>
         /// </summary>
         public static readonly double GUN_TURN_RATE_RADIANS = Utils.ToRadians(GUN_TURN_RATE);
 
@@ -119,16 +114,16 @@ namespace robocode
         /// radar turn is dependent on the robot and/or gun turn, and in this case
         /// the radar moves relatively to the gun and/or robot body.
         ///
-        /// @see #RADAR_TURN_RATE_RADIANS
-        /// @see Robot#setAdjustGunForRobotTurn(bool)
-        /// @see Robot#setAdjustRadarForGunTurn(bool)
+        /// <seealso cref="RADAR_TURN_RATE_RADIANS"/>
+        /// <seealso cref="Robot#setAdjustGunForRobotTurn(bool)"/>
+        /// <seealso cref="Robot#setAdjustRadarForGunTurn(bool)"/>
         /// </summary>
         public static readonly double RADAR_TURN_RATE = 45;
 
         /// <summary>
         /// The turning rate of the radar measured in radians instead of degrees.
         ///
-        /// @see #RADAR_TURN_RATE
+        /// <seealso cref="RADAR_TURN_RATE"/>
         /// </summary>
         public static readonly double RADAR_TURN_RATE_RADIANS = Utils.ToRadians(RADAR_TURN_RATE);
 
@@ -147,11 +142,9 @@ namespace robocode
         /// <summary>
         /// Returns the turn rate of a robot given a specific velocity measured in
         /// degrees/turn.
-        ///
-        /// @param velocity the velocity of the robot.
-        /// @return turn rate in degrees/turn.
-        /// @see #GetTurnRateRadians(double)
+        /// <seealso cref="GetTurnRateRadians(double)"/>
         /// </summary>
+        /// <param name="velocity">the velocity of the robot.</param>
         public static double GetTurnRate(double velocity)
         {
             return MAX_TURN_RATE - 0.75*velocity;
@@ -160,11 +153,9 @@ namespace robocode
         /// <summary>
         /// Returns the turn rate of a robot given a specific velocity measured in
         /// radians/turn.
-        ///
-        /// @param velocity the velocity of the robot.
-        /// @return turn rate in radians/turn.
-        /// @see #GetTurnRate(double)
+        /// <seealso cref="GetTurnRate(double)"/>
         /// </summary>
+        /// <param name="velocity">the velocity of the robot.</param>
         public static double GetTurnRateRadians(double velocity)
         {
             return Utils.ToRadians(GetTurnRate(velocity));
@@ -173,10 +164,8 @@ namespace robocode
         /// <summary>
         /// Returns the amount of damage taken when robot hits a wall with a
         /// specific velocity.
-        ///
-        /// @param velocity the velocity of the robot.
-        /// @return wall hit damage in energy points.
         /// </summary>
+        /// <param name="velocity"> the velocity of the robot.</param>
         public static double GetWallHitDamage(double velocity)
         {
             return Math.Max(Math.Abs(velocity)/2 - 1, 0);
@@ -184,10 +173,8 @@ namespace robocode
 
         /// <summary>
         /// Returns the amount of damage of a bullet given a specific bullet power.
-        ///
-        /// @param bulletPower the energy power of the bullet.
-        /// @return bullet damage in energy points.
         /// </summary>
+        /// <param name="bulletPower"> the energy power of the bullet.</param>
         public static double GetBulletDamage(double bulletPower)
         {
             double damage = 4*bulletPower;
@@ -202,10 +189,8 @@ namespace robocode
         /// <summary>
         /// Returns the amount of bonus given when a robot's bullet hits an opponent
         /// robot given a specific bullet power.
-        ///
-        /// @param bulletPower the energy power of the bullet.
-        /// @return bullet hit bonus in energy points.
         /// </summary>
+        /// <param name="bulletPower">the energy power of the bullet</param>
         public static double GetBulletHitBonus(double bulletPower)
         {
             return 3*bulletPower;
@@ -214,10 +199,8 @@ namespace robocode
         /// <summary>
         /// Returns the speed of a bullet given a specific bullet power measured in
         /// pixels/turn
-        ///
-        /// @param bulletPower the energy power of the bullet.
-        /// @return bullet speed in pixels/turn
         /// </summary>
+        /// <param name="bulletPower">the energy power of the bullet.</param>
         public static double GetBulletSpeed(double bulletPower)
         {
             return 20 - 3*bulletPower;
@@ -226,13 +209,12 @@ namespace robocode
         /// <summary>
         /// Returns the heat produced by firing the gun given a specific bullet
         /// power.
-        ///
-        /// @param bulletPower the energy power of the bullet.
-        /// @return gun heat
         /// </summary>
+        /// <param name="bulletPower">the energy power of the bullet</param>
         public static double GetGunHeat(double bulletPower)
         {
             return 1 + (bulletPower/5);
         }
     }
 }
+//doc
