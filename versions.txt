@@ -1,22 +1,20 @@
 Version 1.7.2.0 Alpha
 ---------------
 = Bugfixes =
+* Bug [2930266] - Robot static data isn't being GCed after battle.
+* Bug [2931445] - Removing directories from "development options" doesn't work.
+* Bug in RobotClassLoader causing ClassNotFoundException for some robots during robot class load.
+* Fixed a NullPointerException occuring when Robocode is (re)loading the robot repository after a developer path has been removed.
+* Bug [2935451] - Version ordering is somewhat strange with letters.
 
 = New features =
-* .NET Robocode plugin
+* .NET Robocode plugin. It is now possible to code robots in .NET and let them engage in Robocode battles. :-)
 * Req [2816882] - onRoundEnded(). It is now possible for robots to get notified when a round has ended. The onRoundEnded() event handler received a new RoundEndedEvent that contains information about the number of turns in the round and total turns in the whole battle when the event occurred.
 * The robocode.control.RoundEndedEvent in the Control API has been extended with a new method named getTotalTurns() similar to the new robocode.RoundEndedEvent for the Robot API.
 * Req [2342293] - Screenshot of battleview. Press Ctrl+T on Windows and Linux, and Command+T for Mac OS in order to take a screenshot of the battleview. The screenshot will be saved in the Robocode folder named "screenshots", and the filename will be a timestamp for when the screenshot was taken.
 * Req [2496661] - Launch Robocode from .battle (battle specification) and .br (battle record) files.
 * Req [2659612] - Add option to prevent speedup when minimized. This new View Option can now be set in the Preferences by putting a check mark into "Prevent speedup when minimized".
 * Req [2643438] - Renamed /robots/.robotcache to /robots/.data
-
-Version 1.7.1.7 Alpha
----------------
-* Bug [2930266] - Robot static data isn't being GCed after battle.
-* Bug [2931445] - Removing directories from "development options" doesn't work.
-* Bug in RobotClassLoader causing ClassNotFoundException for some robots during robot class load.
-* Fixed a NullPointerException occuring when Robocode is (re)loading the robot repository after a developer path has been removed.
 
 = Changes =
 * The Development Options dialog in the Preferences has been improved:
