@@ -6,6 +6,7 @@ Version 1.7.2.0 Alpha
 * Bug in RobotClassLoader causing ClassNotFoundException for some robots during robot class load.
 * Fixed a NullPointerException occuring when Robocode is (re)loading the robot repository after a developer path has been removed.
 * Bug [2935451] - Version ordering is somewhat strange with letters.
+* Bug [2930256] - Robot console text sometimes disappears.
 
 = New features =
 * .NET Robocode plugin. It is now possible to code robots in .NET and let them engage in Robocode battles. :-)
