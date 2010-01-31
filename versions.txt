@@ -18,6 +18,9 @@ Version 1.7.2.0 Alpha
 * Req [2643438] - Renamed /robots/.robotcache to /robots/.data
 
 = Changes =
+* Browser support has been improved for Mac OS, Unix and Linux, which in most cases did not work properly.
+  - In previous versions of Robocode, the browser.sh was used to start up the user's prefered browser. The browser.sh file is not being used anymore, and hence this file can safely be deleted from your robocode installation dir.
+  - Robocode will itself start up a browser under Mac OS, Unix and Linux.
 * The Development Options dialog in the Preferences has been improved:
   - Changed from using single interval selection to multi selection interval.
   - Adding an existing path is ignored.
