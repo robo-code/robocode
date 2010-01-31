@@ -17,9 +17,6 @@ namespace robocode
 {
     /// <summary>
     /// Super class of all events that originates from the mouse.
-    ///
-    /// @author Pavel Savara (original)
-    /// @since 1.6.1
     /// </summary>
     [Serializable]
     public abstract class MouseEvent : Event
@@ -34,8 +31,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new MouseEvent.
-        ///
-        /// @param source the source mouse evnt originating from the AWT.
         /// </summary>
         protected MouseEvent(int button, int clickCount, int x, int y, int id, int modifiersEx, long when)
         {
@@ -84,5 +79,4 @@ namespace robocode
         }
     }
 }
-
-//happy
+//doc

@@ -13,11 +13,11 @@ namespace robocode.robotinterfaces
 {
     /// <summary>
     /// An evnt interface for receiving paint events with an
-    /// {@link robocode.robotinterfaces.IPaintRobot}.
+    /// <see cref="robocode.robotinterfaces.IPaintRobot}.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// @see robocode.robotinterfaces.IPaintRobot
+    /// <seealso cref="robocode.robotinterfaces.IPaintRobot
     /// @since 1.6
     /// </summary>
     public interface IPaintEvents
@@ -40,9 +40,9 @@ namespace robocode.robotinterfaces
         /// the bottom left corner of the battlefield, where X is towards right and Y
         /// is upwards.
         ///
-        /// @param g the graphics context to use for painting graphical items for the
+        /// <param name="g the graphics context to use for painting graphical items for the
         ///          robot
-        /// @see System.Drawing.Graphics
+        /// <seealso cref="System.Drawing.Graphics
         /// @since 1.1
         /// </summary>
         void OnPaint(IGraphics graphics);

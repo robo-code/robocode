@@ -11,7 +11,7 @@
 namespace robocode.robotinterfaces
 {
     /// <summary>
-    /// Second extended version of the {@link IBasicEvents} interface.
+    /// Second extended version of the <see cref="IBasicEvents} interface.
     /// @author Flemming N. Larsen (original)
     /// @since 1.7.2
     /// </summary>
@@ -28,12 +28,12 @@ namespace robocode.robotinterfaces
 	     *   }
 	     * </pre>
 	     *
-	     * @param event the RoundEndedEvent event set by the game
-	     * @see RoundEndedEvent
-	     * @see #onBattleEnded(BattleEndedEvent)
-	     * @see robocode.WinEvent
-	     * @see robocode.DeathEvent
-	     * @see robocode.Event
+	     * <param name="event the RoundEndedEvent event set by the game
+	     * <seealso cref="RoundEndedEvent
+	     * <seealso cref="onBattleEnded(BattleEndedEvent)
+	     * <seealso cref="robocode.WinEvent
+	     * <seealso cref="robocode.DeathEvent
+	     * <seealso cref="robocode.Event
 	     * 
 	     * @since 1.7.2
 	     */

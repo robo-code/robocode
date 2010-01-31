@@ -10,22 +10,17 @@
  *     - Initial implementation
  *******************************************************************************/
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using net.sf.robocode.peer;
 using robocode.robotinterfaces;
 
 namespace robocode
 {
     /// <summary>
-    /// This evnt occurs when your robot should paint, where the {@link
-    /// Robot#OnPaint(Graphics) OnPaint()} is called on your robot.
-    /// </p>
+    /// This evnt occurs when your robot should paint, where the 
+    /// <see cref="Robot.OnPaint(IGraphics)"/> is called on your robot.
+    /// <p/>
     /// You can use this evnt for setting the evnt priority by calling
-    /// {@link AdvancedRobot#SetEventPriority(string, int)
-    /// SetEventPriority("PaintEvent", priority)}
-    ///
-    /// @author Flemming N. Larsen (original)
+    /// <see cref="AdvancedRobot.SetEventPriority(string, int)"/>
     /// </summary>
     [Serializable]
     public sealed class PaintEvent : Event
@@ -59,4 +54,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

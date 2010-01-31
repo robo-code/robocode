@@ -14,19 +14,19 @@
 namespace robocode.robotinterfaces
 {
     /// <summary>
-    /// A robot interface for creating a team robot like {@link robocode.TeamRobot}
+    /// A robot interface for creating a team robot like <see cref="robocode.TeamRobot}
     /// that is able to receive team events.
     /// A team robot is an advanced type of robot that supports sending messages
     /// between teammates that participates in a team.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// @see robocode.TeamRobot
-    /// @see IBasicRobot
-    /// @see IJuniorRobot
-    /// @see IInteractiveRobot
-    /// @see IAdvancedRobot
-    /// @see ITeamRobot
+    /// <seealso cref="robocode.TeamRobot
+    /// <seealso cref="IBasicRobot
+    /// <seealso cref="IJuniorRobot
+    /// <seealso cref="IInteractiveRobot
+    /// <seealso cref="IAdvancedRobot
+    /// <seealso cref="ITeamRobot
     /// @since 1.6
     /// </summary>
     public interface ITeamRobot : IAdvancedRobot
@@ -34,7 +34,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called by the game to notify this robot about team events.
         /// Hence, this method must be implemented so it returns your
-        /// {@link ITeamEvents} listener.
+        /// <see cref="ITeamEvents} listener.
         ///
         /// @return listener to team events or {@code null} if this robot should
         ///         not receive the notifications.

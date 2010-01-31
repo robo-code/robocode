@@ -16,12 +16,10 @@ namespace robocode
     /// <summary>
     /// Robots that implement Droid have no scanner, but an extra 20 life/energy.
     /// This class is intended for use in teams.
-    ///
-    /// @author Mathew A. Nelson (original)
-    /// @see JuniorRobot
-    /// @see Robot
-    /// @see AdvancedRobot
-    /// @see TeamRobot
+    /// <seealso cref="JuniorRobot"/>
+    /// <seealso cref="Robot"/>
+    /// <seealso cref="AdvancedRobot"/>
+    /// <seealso cref="TeamRobot"/>
     /// </summary>
     public interface IDroid
     {

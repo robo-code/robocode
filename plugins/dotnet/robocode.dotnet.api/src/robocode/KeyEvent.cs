@@ -17,9 +17,6 @@ namespace robocode
 {
     /// <summary>
     /// Super class of all events that originates from the keyboard.
-    ///
-    /// @author Pavel Savara (original)
-    /// @since 1.6.1
     /// </summary>
     [Serializable]
     public abstract class KeyEvent : Event
@@ -46,6 +43,9 @@ namespace robocode
             get { return keyChar; }
         }
 
+        /// <summary>
+        /// <see cref="Keys"/>
+        /// </summary>
         public int KeyCode
         {
             get { return keyCode; }
@@ -72,5 +72,4 @@ namespace robocode
         }
     }
 }
-
-//happy
+//doc

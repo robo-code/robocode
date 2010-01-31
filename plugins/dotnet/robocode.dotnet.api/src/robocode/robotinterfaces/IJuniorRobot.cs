@@ -15,8 +15,8 @@ namespace robocode.robotinterfaces
 {
     /// <summary>
     /// A robot interface for creating the most primitive robot type, which is a
-    /// {@link robocode.JuniorRobot}. A junior robot is simpler than the
-    /// {@link robocode.Robot} class.
+    /// <see cref="robocode.JuniorRobot}. A junior robot is simpler than the
+    /// <see cref="robocode.Robot} class.
     /// <p/>
     /// A junior robot has a simplified model, in purpose of teaching programming
     /// skills to inexperienced in programming students.
@@ -33,11 +33,11 @@ namespace robocode.robotinterfaces
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// @see robocode.JuniorRobot
-    /// @see IBasicRobot
-    /// @see IAdvancedRobot
-    /// @see IInteractiveRobot
-    /// @see ITeamRobot
+    /// <seealso cref="robocode.JuniorRobot
+    /// <seealso cref="IBasicRobot
+    /// <seealso cref="IAdvancedRobot
+    /// <seealso cref="IInteractiveRobot
+    /// <seealso cref="ITeamRobot
     /// @since 1.6
     /// </summary>
     public interface IJuniorRobot : IBasicRobot

@@ -18,10 +18,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     ///<summary>
-    ///  This evnt is sent to {@link Robot#OnBulletHit(BulletHitEvent) OnBulletHit}
+    ///  This evnt is sent to <see cref="Robot.OnBulletHit(BulletHitEvent)"/>
     ///  when one of your bullets has hit another robot.
-    ///
-    ///  @author Mathew A. Nelson (original)
     ///</summary>
     [Serializable]
     public sealed class BulletHitEvent : Event
@@ -34,10 +32,6 @@ namespace robocode
 
         ///<summary>
         ///  Called by the game to create a new {@code BulletHitEvent}.
-        ///
-        ///  @param name   the name of the robot your bullet hit
-        ///  @param energy the remaining energy of the robot that your bullet has hit
-        ///  @param bullet the bullet that hit the robot
         ///</summary>
         public BulletHitEvent(string name, double energy, Bullet bullet)
         {
@@ -48,8 +42,6 @@ namespace robocode
 
         ///<summary>
         ///  Returns the bullet of yours that hit the robot.
-        ///
-        ///  @return the bullet that hit the robot
         ///</summary>
         public Bullet Bullet
         {
@@ -59,8 +51,6 @@ namespace robocode
         ///<summary>
         ///  Returns the remaining energy of the robot your bullet has hit (after the
         ///  damage done by your bullet).
-        ///
-        ///  @return energy the remaining energy of the robot that your bullet has hit
         ///</summary>
         public double VictimEnergy
         {
@@ -69,8 +59,6 @@ namespace robocode
 
         ///<summary>
         ///  Returns the name of the robot your bullet hit.
-        ///
-        ///  @return the name of the robot your bullet hit.
         ///</summary>
         public string VictimName
         {

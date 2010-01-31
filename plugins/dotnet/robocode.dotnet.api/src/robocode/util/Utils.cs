@@ -41,7 +41,7 @@ namespace robocode.util
         /// The normalized angle will be in the range from 0 to 2*PI, where 2*PI
         /// itself is not included.
         ///
-        /// @param angle the angle to normalize
+        /// <param name="angle the angle to normalize
         /// @return the normalized angle that will be in the range of [0,2*PI[
         /// </summary>
         public static double NormalAbsoluteAngle(double angle)
@@ -54,7 +54,7 @@ namespace robocode.util
         /// The normalized angle will be in the range from 0 to 360, where 360
         /// itself is not included.
         ///
-        /// @param angle the angle to normalize
+        /// <param name="angle the angle to normalize
         /// @return the normalized angle that will be in the range of [0,360[
         /// </summary>
         public static double NormalAbsoluteAngleDegrees(double angle)
@@ -67,7 +67,7 @@ namespace robocode.util
         /// The normalized angle will be in the range from -PI to PI, where PI
         /// itself is not included.
         ///
-        /// @param angle the angle to normalize
+        /// <param name="angle the angle to normalize
         /// @return the normalized angle that will be in the range of [-PI,PI[
         /// </summary>
         public static double NormalRelativeAngle(double angle)
@@ -82,7 +82,7 @@ namespace robocode.util
         /// The normalized angle will be in the range from -180 to 180, where 180
         /// itself is not included.
         ///
-        /// @param angle the angle to normalize
+        /// <param name="angle the angle to normalize
         /// @return the normalized angle that will be in the range of [-180,180[
         /// </summary>
         public static double NormalRelativeAngleDegrees(double angle)
@@ -95,14 +95,14 @@ namespace robocode.util
         /// The normalized angle will be in the range from 0 to 360, where 360
         /// itself is not included.
         /// If the normalized angle is near to 0, 90, 180, 270 or 360, that
-        /// angle will be returned. The {@link #IsNear(double, double) IsNear}
+        /// angle will be returned. The <see cref="IsNear(double, double) IsNear}
         /// method is used for defining when the angle is near one of angles listed
         /// above.
         ///
-        /// @param angle the angle to normalize
+        /// <param name="angle the angle to normalize
         /// @return the normalized angle that will be in the range of [0,360[
-        /// @see #NormalAbsoluteAngle(double)
-        /// @see #IsNear(double, double)
+        /// <seealso cref="NormalAbsoluteAngle(double)
+        /// <seealso cref="IsNear(double, double)
         /// </summary>
         public static double NormalNearAbsoluteAngleDegrees(double angle)
         {
@@ -142,14 +142,14 @@ namespace robocode.util
         /// The normalized angle will be in the range from 0 to 2*PI, where 2*PI
         /// itself is not included.
         /// If the normalized angle is near to 0, PI/2, PI, 3*PI/2 or 2*PI, that
-        /// angle will be returned. The {@link #IsNear(double, double) IsNear}
+        /// angle will be returned. The <see cref="IsNear(double, double) IsNear}
         /// method is used for defining when the angle is near one of angles listed
         /// above.
         ///
-        /// @param angle the angle to normalize
+        /// <param name="angle the angle to normalize
         /// @return the normalized angle that will be in the range of [0,2*PI[
-        /// @see #NormalAbsoluteAngle(double)
-        /// @see #IsNear(double, double)
+        /// <seealso cref="NormalAbsoluteAngle(double)
+        /// <seealso cref="IsNear(double, double)
         /// </summary>
         public static double NormalNearAbsoluteAngle(double angle)
         {
@@ -194,8 +194,8 @@ namespace robocode.util
         /// the following expression:
         /// {@code (Math.abs(value1 - value2) < .00001)}
         ///
-        /// @param value1 the first double value
-        /// @param value2 the second double value
+        /// <param name="value1 the first double value
+        /// <param name="value2 the second double value
         /// @return {@code true} if the two doubles are near to each other;
         ///         {@code false} otherwise.
         /// </summary>

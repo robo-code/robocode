@@ -18,13 +18,11 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link AdvancedRobot#OnCustomEvent(CustomEvent)
-    /// OnCustomEvent()} when a custom condition is met. Be sure to reset or remove
+    /// This evnt is sent to <see cref="AdvancedRobot.OnCustomEvent(CustomEvent)"/>
+    /// when a custom condition is met. Be sure to reset or remove
     /// the custom condition to avoid having it recurring repeatedly (see the
-    /// example for the {@link #getCondition()} method.
-    ///
-    /// @author Mathew A. Nelson (original)
-    /// @see #getCondition()
+    /// example for the <see cref="Condition"/> method.
+    /// <seealso cref="Condition"/>
     /// </summary>
     [Serializable]
     public class CustomEvent : Event
@@ -35,8 +33,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new CustomEvent when a condition is met.
-        ///
-        /// @param condition the condition that must be met
         /// </summary>
         public CustomEvent(Condition condition)
         {
@@ -53,12 +49,11 @@ namespace robocode
         /// An evnt priority is a value from 0 - 99. The higher value, the higher
         /// priority. The default priority is 80.
         /// <p/>
-        /// This is equivalent to calling {@link Condition#setPriority(int)} on the
+        /// This is equivalent to calling <see cref="robocode.Condition.Priority"/> on the
         /// Condition.
-        ///
-        /// @param condition the condition that must be met
-        /// @param priority  the priority of the condition
         /// </summary>
+        /// <param name="condition">the condition that must be met</param>
+        /// <param name="priority">  the priority of the condition</param>
         public CustomEvent(Condition condition, int priority)
         {
             this.condition = condition;
@@ -81,8 +76,6 @@ namespace robocode
         ///       }
         ///   }
         /// </pre>
-        ///
-        /// @return the condition that fired, causing this evnt to be generated
         /// </summary>
         public Condition Condition
         {
@@ -137,4 +130,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

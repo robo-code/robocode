@@ -16,17 +16,17 @@ using System.Collections.Generic;
 namespace robocode.robotinterfaces.peer
 {
     /// <summary>
-    /// The team robot peer for team robots like {@link robocode.TeamRobot}.
+    /// The team robot peer for team robots like <see cref="robocode.TeamRobot}.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// @see IBasicRobotPeer
-    /// @see IStandardRobotPeer
-    /// @see IAdvancedRobotPeer
-    /// @see IJuniorRobotPeer
+    /// <seealso cref="IBasicRobotPeer
+    /// <seealso cref="IStandardRobotPeer
+    /// <seealso cref="IAdvancedRobotPeer
+    /// <seealso cref="IJuniorRobotPeer
     /// @since 1.6
     /// </summary>
     public interface ITeamRobotPeer : IAdvancedRobotPeer
@@ -35,7 +35,7 @@ namespace robocode.robotinterfaces.peer
         /// Returns the names of all teammates, or {@code null} there is no
         /// teammates.
         /// <p/>
-        /// Example:
+        /// <example>
         /// <pre>
         ///   public void Run() {
         ///       // Prints Out all teammates
@@ -51,16 +51,16 @@ namespace robocode.robotinterfaces.peer
         /// @return a string array containing the names of all your teammates, or
         ///         {@code null} if there is no teammates. The length of the string array
         ///         is equal to the number of teammates.
-        /// @see #IsTeammate(string)
-        /// @see #BroadcastMessage(ISerializable)
-        /// @see #SendMessage(string, ISerializable)
+        /// <seealso cref="IsTeammate(string)
+        /// <seealso cref="BroadcastMessage(ISerializable)
+        /// <seealso cref="SendMessage(string, ISerializable)
         /// </summary>
         string[] getTeammates();
 
         /// <summary>
         /// Checks if a given robot name is the name of one of your teammates.
         /// <p/>
-        /// Example:
+        /// <example>
         /// <pre>
         ///   public void OnScannedRobot(ScannedRobotEvent e) {
         ///       if (IsTeammate(e.getName()) {
@@ -70,50 +70,50 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         ///
-        /// @param name the robot name to check
+        /// <param name="name the robot name to check
         /// @return {@code true} if the specified name belongs to one of your
         ///         teammates; {@code false} otherwise.
-        /// @see #getTeammates()
-        /// @see #BroadcastMessage(ISerializable)
-        /// @see #SendMessage(string, ISerializable)
+        /// <seealso cref="getTeammates()
+        /// <seealso cref="BroadcastMessage(ISerializable)
+        /// <seealso cref="SendMessage(string, ISerializable)
         /// </summary>
         bool isTeammate(string name);
 
         /// <summary>
         /// Broadcasts a message to all teammates.
         /// <p/>
-        /// Example:
+        /// <example>
         /// <pre>
         ///   public void Run() {
         ///       BroadcastMessage("I'm here!");
         ///   }
         /// </pre>
         ///
-        /// @param message the message to broadcast to all teammates
+        /// <param name="message the message to broadcast to all teammates
         /// @ if the message could not be broadcasted to the
         ///                     teammates
-        /// @see #IsTeammate(string)
-        /// @see #getTeammates()
-        /// @see #SendMessage(string, ISerializable)
+        /// <seealso cref="IsTeammate(string)
+        /// <seealso cref="getTeammates()
+        /// <seealso cref="SendMessage(string, ISerializable)
         /// </summary>
         void broadcastMessage(object message);
 
         /// <summary>
         /// Sends a message to one (or more) teammates.
         /// <p/>
-        /// Example:
+        /// <example>
         /// <pre>
         ///   public void Run() {
         ///       SendMessage("sample.DroidBot", "I'm here!");
         ///   }
         /// </pre>
         ///
-        /// @param name	the name of the intended recipient of the message
-        /// @param message the message to send
+        /// <param name="name	the name of the intended recipient of the message
+        /// <param name="message the message to send
         /// @ if the message could not be sent
-        /// @see #IsTeammate(string)
-        /// @see #getTeammates()
-        /// @see #BroadcastMessage(ISerializable)
+        /// <seealso cref="IsTeammate(string)
+        /// <seealso cref="getTeammates()
+        /// <seealso cref="BroadcastMessage(ISerializable)
         /// </summary>
         void sendMessage(string name, object message);
 
@@ -121,7 +121,7 @@ namespace robocode.robotinterfaces.peer
         /// Returns a vector containing all MessageEvents currently in the robot's
         /// queue. You might, for example, call this while processing another evnt.
         /// <p/>
-        /// Example:
+        /// <example>
         /// <pre>
         ///   for (MessageEvent e : GetMessageEvents()) {
         ///      // do something with e
@@ -130,9 +130,9 @@ namespace robocode.robotinterfaces.peer
         ///
         /// @return a vector containing all MessageEvents currently in the robot's
         ///         queue
-        /// @see robocode.robotinterfaces.ITeamEvents#OnMessageReceived(MessageEvent)
+        /// <seealso cref="robocode.robotinterfaces.ITeamEvents#OnMessageReceived(MessageEvent)
         ///      OnMessageReceived(MessageEvent)
-        /// @see MessageEvent
+        /// <seealso cref="MessageEvent
         /// @since 1.2.6
         /// </summary>
         IList<MessageEvent> getMessageEvents();

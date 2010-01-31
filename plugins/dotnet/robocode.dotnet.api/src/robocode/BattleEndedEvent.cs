@@ -16,17 +16,13 @@ using robocode.robotinterfaces;
 
 namespace robocode
 {
-    /// 
     ///<summary>
-    ///  A BattleEndedEvent is sent to {@link Robot#OnBattleEnded(BattleEndedEvent)
-    ///  OnBattleEnded()} when the battle is ended.
+    ///  A BattleEndedEvent is sent to <see cref="Robot.OnBattleEnded(BattleEndedEvent)"/>
+    ///  when the battle is ended.
     ///  You can use the information contained in this evnt to determine if the
     ///  battle was aborted and also get the results of the battle.
-    ///
-    ///  @author Pavel Savara (original)
-    ///  @see BattleResults
-    ///  @see Robot#OnBattleEnded(BattleEndedEvent)
-    ///  @since 1.6.1
+    ///  <seealso cref="BattleResults"/>
+    ///  <seealso cref="Robot.OnBattleEnded(BattleEndedEvent)"/>
     ///</summary>
     [Serializable]
     public sealed class BattleEndedEvent : Event
@@ -39,9 +35,6 @@ namespace robocode
         /// 
         ///<summary>
         ///  Called by the game to create a new BattleEndedEvent.
-        ///
-        ///  @param aborted {@code true} if the battle was aborted; {@code false} otherwise.
-        ///  @param results the battle results
         ///</summary>
         public BattleEndedEvent(bool aborted, BattleResults results)
         {
@@ -49,22 +42,17 @@ namespace robocode
             this.results = results;
         }
 
-        /// 
         ///<summary>
         ///  Checks if this battle was aborted.
-        ///
-        ///  @return {@code true} if the battle was aborted; {@code false} otherwise.
+        ///  Returns true if the battle was aborted
         ///</summary>
         public bool IsAborted
         {
             get { return aborted; }
         }
 
-        /// 
         ///<summary>
         ///  Returns the battle results.
-        ///
-        ///  @return the battle results.
         ///</summary>
         public BattleResults Results
         {
@@ -142,4 +130,4 @@ namespace robocode
     }
 }
 
-//happpy
+//docl

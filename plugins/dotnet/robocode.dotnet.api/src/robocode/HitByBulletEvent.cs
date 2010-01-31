@@ -12,7 +12,6 @@
  *     - Updated Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -21,11 +20,9 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A HitByBulletEvent is sent to {@link Robot#OnHitByBullet(HitByBulletEvent)
-    /// OnHitByBullet()} when your robot has been hit by a bullet.
+    /// A HitByBulletEvent is sent to <see cref="Robot.OnHitByBullet(HitByBulletEvent)"/>
+    /// when your robot has been hit by a bullet.
     /// You can use the information contained in this evnt to determine what to do.
-    ///
-    /// @author Mathew A. Nelson (original)
     /// </summary>
     [Serializable]
     public sealed class HitByBulletEvent : Event
@@ -37,9 +34,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new HitByBulletEvent.
-        ///
-        /// @param bearing the bearing of the bullet that hit your robot, in radians
-        /// @param bullet  the bullet that has hit your robot
         /// </summary>
         public HitByBulletEvent(double bearing, Bullet bullet)
         {
@@ -49,13 +43,11 @@ namespace robocode
 
         /// <summary>
         /// Returns the bearing to the bullet, relative to your robot's heading,
-        /// in degrees (-180 < getBearing() <= 180)
+        /// in degrees (-180 &lt; getBearing() &lt;= 180)
         /// <p/>
         /// If you were to TurnRight(e.getBearing()), you would be facing the
         /// direction the bullet came from. The calculation used here is:
         /// (bullet's heading in degrees + 180) - (your heading in degrees)
-        ///
-        /// @return the bearing to the bullet, in degrees
         /// </summary>
         public double Bearing
         {
@@ -64,13 +56,11 @@ namespace robocode
 
         /// <summary>
         /// Returns the bearing to the bullet, relative to your robot's heading,
-        /// in radians (-Math.PI < getBearingRadians() <= Math.PI)
+        /// in radians (-Math.PI &lt; getBearingRadians() &lt;= Math.PI)
         /// <p/>
         /// If you were to TurnRightRadians(e.getBearingRadians()), you would be
         /// facing the direction the bullet came from. The calculation used here is:
         /// (bullet's heading in radians + Math.PI) - (your heading in radians)
-        ///
-        /// @return the bearing to the bullet, in radians
         /// </summary>
         public double BearingRadians
         {
@@ -79,8 +69,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the bullet that hit your robot.
-        ///
-        /// @return the bullet that hit your robot
         /// </summary>
         public Bullet Bullet
         {
@@ -89,13 +77,11 @@ namespace robocode
 
         /// <summary>
         /// Returns the heading of the bullet when it hit you, in degrees
-        /// (0 <= getHeading() < 360)
+        /// (0 &lt;= getHeading() &lt; 360)
         /// <p/>
         /// Note: This is not relative to the direction you are facing. The robot
         /// that fired the bullet was in the opposite direction of getHeading() when
         /// it fired the bullet.
-        ///
-        /// @return the heading of the bullet, in degrees
         /// </summary>
         public double Heading
         {
@@ -104,13 +90,11 @@ namespace robocode
 
         /// <summary>
         /// Returns the heading of the bullet when it hit you, in radians
-        /// (0 <= getHeadingRadians() < 2 * PI)
+        /// (0 &lt;= getHeadingRadians() &lt; 2 * PI)
         /// <p/>
         /// Note: This is not relative to the direction you are facing. The robot
         /// that fired the bullet was in the opposite direction of
         /// getHeadingRadians() when it fired the bullet.
-        ///
-        /// @return the heading of the bullet, in radians
         /// </summary>
         public double HeadingRadians
         {
@@ -119,8 +103,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the name of the robot that fired the bullet.
-        ///
-        /// @return the name of the robot that fired the bullet
         /// </summary>
         public string Name
         {
@@ -131,8 +113,6 @@ namespace robocode
         /// Returns the power of this bullet. The damage you take (in fact, already
         /// took) is 4 * power, plus 2 * (power-1) if power > 1. The robot that fired
         /// the bullet receives 3 * power Back.
-        ///
-        /// @return the power of the bullet
         /// </summary>
         public double Power
         {
@@ -141,8 +121,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the velocity of this bullet.
-        ///
-        /// @return the velocity of the bullet
         /// </summary>
         public double Velocity
         {
@@ -205,4 +183,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

@@ -25,7 +25,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called by the game to notify this robot about painting
         /// events. Hence, this method must be implemented so it returns your
-        /// {@link IPaintEvents} listener.
+        /// <see cref="IPaintEvents} listener.
         ///
         /// @return listener to paint events or {@code null} if this robot should
         ///         not receive the notifications.

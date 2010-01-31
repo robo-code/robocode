@@ -12,7 +12,6 @@
  *     - Updated Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -21,10 +20,8 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to {@link Robot#OnDeath(DeathEvent) OnDeath()} when your
+    /// This evnt is sent to <see cref="Robot#OnDeath(DeathEvent)"/> when your
     /// robot dies.
-    ///
-    /// @author Mathew A. Nelson (original)
     /// </summary>
     [Serializable]
     public sealed class DeathEvent : Event
@@ -89,4 +86,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

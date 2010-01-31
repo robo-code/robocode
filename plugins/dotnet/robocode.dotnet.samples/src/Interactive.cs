@@ -11,7 +11,6 @@
 using System;
 using System.Drawing;
 using robocode;
-using robocode.robocode;
 using robocode.util;
 
 namespace samplecs

@@ -14,17 +14,17 @@
 namespace robocode.robotinterfaces.peer
 {
     /// <summary>
-    /// The junior robot peer for junior robot types like {@link robocode.JuniorRobot}.
+    /// The junior robot peer for junior robot types like <see cref="robocode.JuniorRobot}.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// @see IBasicRobotPeer
-    /// @see IStandardRobotPeer
-    /// @see IAdvancedRobotPeer
-    /// @see ITeamRobotPeer
+    /// <seealso cref="IBasicRobotPeer
+    /// <seealso cref="IStandardRobotPeer
+    /// <seealso cref="IAdvancedRobotPeer
+    /// <seealso cref="ITeamRobotPeer
     /// @since 1.6
     /// </summary>
     public interface IJuniorRobotPeer : IBasicRobotPeer
@@ -51,20 +51,20 @@ namespace robocode.robotinterfaces.peer
         /// not turn, but will be able to move.
         /// </ul>
         ///
-        /// @param distance the distance to move measured in pixels.
+        /// <param name="distance the distance to move measured in pixels.
         ///                 If {@code distance} > 0 the robot is set to move forward.
         ///                 If {@code distance} < 0 the robot is set to move backward.
         ///                 If {@code distance} = 0 the robot will not move anywhere, but just
         ///                 finish its turn.
-        /// @param radians  the amount of radians to turn the robot's body.
+        /// <param name="radians  the amount of radians to turn the robot's body.
         ///                 If {@code radians} > 0 the robot's body is set to turn right.
         ///                 If {@code radians} < 0 the robot's body is set to turn left.
         ///                 If {@code radians} = 0 the robot's body is set to Stop turning.
-        /// @see IBasicRobotPeer#move(double) move(double)
-        /// @see IBasicRobotPeer#turnBody(double) turnBody(double)
-        /// @see IBasicRobotPeer#getBodyHeading() getBodyHeading()
-        /// @see IBasicRobotPeer#getX() getX()
-        /// @see IBasicRobotPeer#getY() getY()
+        /// <seealso cref="IBasicRobotPeer#move(double) move(double)
+        /// <seealso cref="IBasicRobotPeer#turnBody(double) turnBody(double)
+        /// <seealso cref="IBasicRobotPeer#getBodyHeading() getBodyHeading()
+        /// <seealso cref="IBasicRobotPeer#getX() getX()
+        /// <seealso cref="IBasicRobotPeer#getY() getY()
         /// </summary>
         void turnAndMove(double distance, double radians);
     }

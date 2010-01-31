@@ -18,11 +18,9 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     ///<summary>
-    ///  This evnt is sent to {@link Robot#OnBulletMissed(BulletMissedEvent)
-    ///  OnBulletMissed} when one of your bullets has missed, i.e. when the bullet has
+    ///  This evnt is sent to <see cref="Robot#OnBulletMissed(BulletMissedEvent)"/>
+    ///  when one of your bullets has missed, i.e. when the bullet has
     ///  reached the border of the battlefield.
-    ///
-    ///  @author Mathew A. Nelson (original)
     ///</summary>
     [Serializable]
     public sealed class BulletMissedEvent : Event
@@ -34,8 +32,6 @@ namespace robocode
         /// 
         ///<summary>
         ///  Called by the game to create a new {@code BulletMissedEvent}.
-        ///
-        ///  @param bullet the bullet that missed
         ///</summary>
         public BulletMissedEvent(Bullet bullet)
         {
@@ -45,8 +41,6 @@ namespace robocode
         /// 
         ///<summary>
         ///  Returns the bullet that missed.
-        ///
-        ///  @return the bullet that missed
         ///</summary>
         public Bullet Bullet
         {
@@ -111,5 +105,4 @@ namespace robocode
         }
     }
 }
-
-//happy
+//doc

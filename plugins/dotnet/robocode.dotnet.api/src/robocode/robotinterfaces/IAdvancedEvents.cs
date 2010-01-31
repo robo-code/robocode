@@ -15,11 +15,11 @@ namespace robocode.robotinterfaces
 {
     /// <summary>
     /// An evnt interface for receiving advanced robot events with an
-    /// {@link IAdvancedRobot}.
+    /// <see cref="IAdvancedRobot}.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// @see IAdvancedRobot
+    /// <seealso cref="IAdvancedRobot
     /// @since 1.6
     /// </summary>
     public interface IAdvancedEvents
@@ -38,9 +38,9 @@ namespace robocode.robotinterfaces
         /// No correctly working, reasonable robot should ever receive this event
         /// unless it is using too many CPU cycles.
         ///
-        /// @param evnt the skipped turn evnt set by the game
-        /// @see robocode.SkippedTurnEvent
-        /// @see robocode.Event
+        /// <param name="evnt the skipped turn evnt set by the game
+        /// <seealso cref="robocode.SkippedTurnEvent
+        /// <seealso cref="robocode.Event
         /// </summary>
         void OnSkippedTurn(SkippedTurnEvent evnt);
 
@@ -50,10 +50,10 @@ namespace robocode.robotinterfaces
         /// See the sample robots for examples of use, e.g. the {@code sample.Target}
         /// robot.
         ///
-        /// @param evnt the custom evnt that occurred
-        /// @see robocode.AdvancedRobot#AddCustomEvent
-        /// @see robocode.CustomEvent
-        /// @see robocode.Event
+        /// <param name="evnt the custom evnt that occurred
+        /// <seealso cref="robocode.AdvancedRobot#AddCustomEvent
+        /// <seealso cref="robocode.CustomEvent
+        /// <seealso cref="robocode.Event
         /// </summary>
         void OnCustomEvent(CustomEvent evnt);
     }

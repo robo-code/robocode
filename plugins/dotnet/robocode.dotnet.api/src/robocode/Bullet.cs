@@ -18,16 +18,16 @@ namespace robocode
 {
     /// 
     ///<summary>
-    ///  Represents a bullet. This is returned from {@link Robot#FireBullet(double)}
-    ///  and {@link AdvancedRobot#SetFireBullet(double)}, and all the bullet-related
+    ///  Represents a bullet. This is returned from <see cref="Robot#FireBullet(double)"/>
+    ///  and <see cref="AdvancedRobot#SetFireBullet(double)"/>, and all the bullet-related
     ///  events.
     ///
     ///  @author Mathew A. Nelson (original)
-    ///  @see Robot#FireBullet(double)
-    ///  @see AdvancedRobot#SetFireBullet(double)
-    ///  @see BulletHitEvent
-    ///  @see BulletMissedEvent
-    ///  @see BulletHitBulletEvent
+    ///  <seealso cref="Robot#FireBullet(double)"/>
+    ///  <seealso cref="AdvancedRobot#SetFireBullet(double)"/>
+    ///  <seealso cref="BulletHitEvent"/>
+    ///  <seealso cref="BulletMissedEvent"/>
+    ///  <seealso cref="BulletHitBulletEvent"/>
     ///</summary>
     [Serializable]
     public class Bullet
@@ -43,15 +43,6 @@ namespace robocode
 
         ///<summary>
         ///  Called by the game to create a new {@code Bullet} object
-        ///
-        ///  @param heading   the heading of the bullet, in radians.
-        ///  @param x		 the starting X position of the bullet.
-        ///  @param y		 the starting Y position of the bullet.
-        ///  @param power	 the power of the bullet.
-        ///  @param ownerName the name of the owner robot that owns the bullet.
-        ///  @param victimName the name of the robot hit by the bullet.
-        ///  @param isActive {@code true} if the bullet still moves; {@code false} otherwise.
-        ///  @param bulletId unique id of bullet for owner robot.
         ///</summary>
         public Bullet(double heading, double x, double y, double power, string ownerName, string victimName,
                       bool isActive, int bulletId)
@@ -69,8 +60,6 @@ namespace robocode
         ///<summary>
         ///  Returns the direction the bullet is/was heading, in degrees
         ///  (0 &lt;= getHeading() &lt; 360). This is not relative to the direction you are facing.
-        ///
-        ///  @return the direction the bullet is/was heading, in degrees
         ///</summary>
         public double Heading
         {
@@ -80,8 +69,6 @@ namespace robocode
         ///<summary>
         ///  Returns the direction the bullet is/was heading, in radians
         ///  (0 &lt;= getHeadingRadians() &lt; 2 * Math.PI). This is not relative to the direction you are facing.
-        ///
-        ///  @return the direction the bullet is/was heading, in radians
         ///</summary>
         public double HeadingRadians
         {
@@ -90,8 +77,6 @@ namespace robocode
 
         ///<summary>
         ///  Returns the name of the robot that fired this bullet.
-        ///
-        ///  @return the name of the robot that fired this bullet
         ///</summary>
         public string Name
         {
@@ -104,8 +89,6 @@ namespace robocode
         ///  The bullet will do (4 * power) damage if it hits another robot.
         ///  If power is greater than 1, it will do an additional 2 * (power - 1)
         ///  damage. You will get (3 * power) Back if you hit the other robot.
-        ///
-        ///  @return the power of the bullet
         ///</summary>
         public double Power
         {
@@ -115,8 +98,6 @@ namespace robocode
         ///<summary>
         ///  Returns the velocity of this bullet. The velocity of the bullet is
         ///  constant once it has been fired.
-        ///
-        ///  @return the velocity of the bullet
         ///</summary>
         public double Velocity
         {
@@ -126,20 +107,14 @@ namespace robocode
         ///<summary>
         ///  Returns the name of the robot that this bullet hit, or {@code null} if
         ///  the bullet has not hit a robot.
-        ///
-        ///  @return the name of the robot that this bullet hit, or {@code null} if
-        ///  the bullet has not hit a robot.
         ///</summary>
         public string Victim
         {
             get { return victimName; }
         }
 
-        /// 
         ///<summary>
         ///  Returns the X position of the bullet.
-        ///
-        ///  @return the X position of the bullet
         ///</summary>
         public double X
         {
@@ -148,20 +123,14 @@ namespace robocode
 
         ///<summary>
         ///  Returns the Y position of the bullet.
-        ///
-        ///  @return the Y position of the bullet
         ///</summary>
         public double Y
         {
             get { return y; }
         }
 
-        /// 
         ///<summary>
         ///  Checks if this bullet is still active on the battlefield.
-        ///
-        ///  @return {@code true} if the bullet is still active on the battlefield;
-        ///  {@code false} otherwise
         ///</summary>
         public bool IsActive
         {
@@ -170,11 +139,6 @@ namespace robocode
 
         ///<summary>
         ///  Updates this bullet based on the specified bullet status.
-        ///
-        ///  @param x the new X position of the bullet .
-        ///  @param y the new Y position of the bullet.
-        ///  @param victimName the name if the victim that has been hit by this bullet.
-        ///  @param isActive {@code true} if the bullet still moves; {@code false} otherwise.
         ///</summary>
         // this method is invisible on RobotAPI
         private void update(double x, double y, string victimName, bool isActive)
@@ -185,39 +149,21 @@ namespace robocode
             _isActive = isActive;
         }
 
-        // this method is invisible on RobotAPI
-        /// <summary>
-        ///   @return unique id of bullet for owner robot
-        /// </summary>
         internal int getBulletId()
         {
             return bulletId;
         }
 
-        /// <summary>
-        ///   Creates a hidden bullet helper for accessing hidden methods on this objec.
-        /// 
-        ///   @return a hidden bullet helper.
-        /// </summary>
-        // this method is invisible on RobotAPI
         private static IHiddenBulletHelper createHiddenHelper()
         {
             return new HiddenBulletHelper();
         }
 
-        /// 
-        ///<summary>
-        ///  Creates a hidden bullet helper for accessing hidden methods on this objec.
-        ///
-        ///  @return a hidden bullet helper.
-        ///</summary>
-        // this class is invisible on RobotAPI
         private static ISerializableHelperN createHiddenSerializer()
         {
             return new HiddenBulletHelper();
         }
 
-        // this class is invisible on RobotAPI
         private class HiddenBulletHelper : IHiddenBulletHelper, ISerializableHelperN
         {
             public void update(Bullet bullet, double x, double y, string victimName, bool isActive)
@@ -261,5 +207,4 @@ namespace robocode
         }
     }
 }
-
-//happy
+//doc

@@ -17,30 +17,30 @@ using robocode.robotinterfaces.peer;
 namespace robocode.robotinterfaces
 {
     /// <summary>
-    /// A robot interface for creating a basic type of robot like {@link robocode.Robot}
+    /// A robot interface for creating a basic type of robot like <see cref="robocode.Robot}
     /// that is able to receive common robot events, but not interactive events as
-    /// with the {@link robocode.Robot} class.
+    /// with the <see cref="robocode.Robot} class.
     /// A basic robot allows blocking calls only and cannot handle custom events nor
     /// writes to the file system like an advanced robot.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// @see robocode.Robot
-    /// @see IJuniorRobot
-    /// @see IInteractiveRobot
-    /// @see IAdvancedRobot
-    /// @see ITeamRobot
+    /// <seealso cref="robocode.Robot
+    /// <seealso cref="IJuniorRobot
+    /// <seealso cref="IInteractiveRobot
+    /// <seealso cref="IAdvancedRobot
+    /// <seealso cref="ITeamRobot
     /// @since 1.6
     /// </summary>
     public interface IBasicRobot
     {
         /// <summary>
         /// This method is called by the game to invoke the
-        /// {@link java.lang.IRunnable#Run() Run()} method of your robot, where the program
+        /// <see cref="java.lang.IRunnable#Run() Run()} method of your robot, where the program
         /// of your robot is implemented.
         ///
         /// @return a runnable implementation
-        /// @see java.lang.IRunnable#Run()
+        /// <seealso cref="java.lang.IRunnable#Run()
         /// @since 1.6
         /// </summary>
         IRunnable GetRobotRunnable();
@@ -48,7 +48,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called by the game to notify this robot about basic
         /// robot evnt. Hence, this method must be implemented so it returns your
-        /// {@link IBasicEvents} listener.
+        /// <see cref="IBasicEvents} listener.
         ///
         /// @return listener to basic events or {@code null} if this robot should
         ///         not receive the notifications.
@@ -63,7 +63,7 @@ namespace robocode.robotinterfaces
         /// This method is called by the game. A robot peer is the object that deals
         /// with game mechanics and rules, and makes sure your robot abides by them.
         ///
-        /// @param peer the robot peer supplied by the game
+        /// <param name="peer the robot peer supplied by the game
         /// </summary>
         void SetPeer(IBasicRobotPeer peer);
 
@@ -73,7 +73,7 @@ namespace robocode.robotinterfaces
         /// This method is called by the game when setting the Out stream for your
         /// robot.
         ///
-        /// @param Out the new Out print stream for this robot
+        /// <param name="Out the new Out print stream for this robot
         /// @since 1.6
         /// </summary>
         void SetOut(TextWriter output);

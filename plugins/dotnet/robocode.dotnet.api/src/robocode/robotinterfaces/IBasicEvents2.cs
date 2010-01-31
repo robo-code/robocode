@@ -14,7 +14,7 @@
 namespace robocode.robotinterfaces
 {
     /// <summary>
-    /// First extended version of the {@link IBasicEvents} interface.
+    /// First extended version of the <see cref="IBasicEvents} interface.
     ///
     /// @author Pavel Savara (original)
     /// @since 1.6.1
@@ -25,18 +25,18 @@ namespace robocode.robotinterfaces
         /// This method is called after end of the battle, even when the battle is aborted.
         /// You should override it in your robot if you want to be informed of this evnt.
         /// <p/>
-        /// Example:
+        /// <example>
         /// <pre>
         ///   public void OnBattleEnded(BattleEndedEvent evnt) {
         ///       Out.println("The battle has ended");
         ///   }
         /// </pre>
         ///
-        /// @param evnt the battle-ended evnt set by the game
-        /// @see BattleEndedEvent
-        /// @see robocode.WinEvent
-        /// @see robocode.DeathEvent
-        /// @see robocode.Event
+        /// <param name="evnt the battle-ended evnt set by the game
+        /// <seealso cref="BattleEndedEvent
+        /// <seealso cref="robocode.WinEvent
+        /// <seealso cref="robocode.DeathEvent
+        /// <seealso cref="robocode.Event
         /// </summary>
         void OnBattleEnded(BattleEndedEvent evnt);
     }

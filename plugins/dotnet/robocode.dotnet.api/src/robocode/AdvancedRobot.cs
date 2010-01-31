@@ -21,7 +21,7 @@ namespace robocode
     ///   A more advanced type of robot than Robot that allows non-blocking calls,
     ///   custom events, and writes to the filesystem.
     ///   <p />
-    ///   If you have not already, you should create a {@link Robot} first.
+    ///   If you have not already, you should create a <see cref="Robot"/> first.
     ///   <see href="http://robocode.sourceforge.net" />
     ///   <see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
     ///     Building your first robot
@@ -41,15 +41,12 @@ namespace robocode
         ///  means that the robot is currently moving forwards. Negative values means
         ///  that the robot is currently moving backwards. If the returned value is 0,
         ///  the robot currently stands still.
-        ///
-        ///  @return the distance remaining in the robot's current move measured in
-        ///  pixels.
-        ///  @see #getTurnRemaining() getTurnRemaining()
-        ///  @see #getTurnRemainingRadians() getTurnRemainingRadians()
-        ///  @see #getGunTurnRemaining() getGunTurnRemaining()
-        ///  @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
-        ///  @see #getRadarTurnRemaining() getRadarTurnRemaining()
-        ///  @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+        ///  <seealso cref="TurnRemaining" />
+        ///  <seealso cref="TurnRemainingRadians" />
+        ///  <seealso cref="GunTurnRemaining" />
+        ///  <seealso cref="GunTurnRemainingRadians" />
+        ///  <seealso cref="RadarTurnRemaining" />
+        ///  <seealso cref="RadarTurnRemainingRadians" />
         ///</summary>
         public double DistanceRemaining
         {
@@ -73,12 +70,12 @@ namespace robocode
         ///  value is 0, the robot is currently not turning.
         ///
         ///  @return the angle remaining in the robots's turn, in degrees
-        ///  @see #getTurnRemainingRadians() getTurnRemainingRadians()
-        ///  @see #getDistanceRemaining() getDistanceRemaining()
-        ///  @see #getGunTurnRemaining() getGunTurnRemaining()
-        ///  @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
-        ///  @see #getRadarTurnRemaining() getRadarTurnRemaining()
-        ///  @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+        ///  <seealso cref="TurnRemainingRadians" />
+        ///  <seealso cref="DistanceRemaining" />
+        ///  <seealso cref="GunTurnRemaining" />
+        ///  <seealso cref="GunTurnRemainingRadians" />
+        ///  <seealso cref="RadarTurnRemaining" />
+        ///  <seealso cref="RadarTurnRemainingRadians" />
         ///</summary>
         public double TurnRemaining
         {
@@ -100,14 +97,12 @@ namespace robocode
         ///  means that the gun is currently turning to the right. Negative values
         ///  means that the gun is currently turning to the left. If the returned
         ///  value is 0, the gun is currently not turning.
-        ///
-        ///  @return the angle remaining in the gun's turn, in degrees
-        ///  @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
-        ///  @see #getDistanceRemaining() getDistanceRemaining()
-        ///  @see #getTurnRemaining() getTurnRemaining()
-        ///  @see #getTurnRemainingRadians() getTurnRemainingRadians()
-        ///  @see #getRadarTurnRemaining() getRadarTurnRemaining()
-        ///  @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+        ///  <seealso cref="GunTurnRemainingRadians" />
+        ///  <seealso cref="DistanceRemaining" />
+        ///  <seealso cref="TurnRemaining" />
+        ///  <seealso cref="TurnRemainingRadians" />
+        ///  <seealso cref="RadarTurnRemaining" />
+        ///  <seealso cref="RadarTurnRemainingRadians" />
         ///</summary>
         public double GunTurnRemaining
         {
@@ -129,14 +124,12 @@ namespace robocode
         ///  means that the radar is currently turning to the right. Negative values
         ///  means that the radar is currently turning to the left. If the returned
         ///  value is 0, the radar is currently not turning.
-        ///
-        ///  @return the angle remaining in the radar's turn, in degrees
-        ///  @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
-        ///  @see #getDistanceRemaining() getDistanceRemaining()
-        ///  @see #getGunTurnRemaining() getGunTurnRemaining()
-        ///  @see #getGunTurnRemainingRadians() getGunTurnRemainingRadians()
-        ///  @see #getRadarTurnRemaining() getRadarTurnRemaining()
-        ///  @see #getRadarTurnRemainingRadians() getRadarTurnRemainingRadians()
+        ///  <seealso cref="RadarTurnRemainingRadians" />
+        ///  <seealso cref="DistanceRemaining" />
+        ///  <seealso cref="GunTurnRemaining" />
+        ///  <seealso cref="GunTurnRemainingRadians" />
+        ///  <seealso cref="RadarTurnRemaining" />
+        ///  <seealso cref="RadarTurnRemainingRadians" />
         ///</summary>
         public double RadarTurnRemaining
         {
@@ -215,7 +208,7 @@ namespace robocode
         ///  execution takes place.
         ///  <p />
         ///  This call returns immediately, and will not Execute until you call
-        ///  {@link #Execute()} or take an action that executes.
+        ///  <see cref="Execute()" /> or take an action that executes.
         ///  <p />
         ///  Note that both positive and negative values can be given as input, where
         ///  positive values means that the robot is set to move Back, and negative
@@ -237,14 +230,14 @@ namespace robocode
         ///    // Executes the last SetBack()
         ///    Execute();
         ///  </pre>
-        ///  @param distance the distance to move measured in pixels.
+        ///  <seealso cref="Robot.Back(double)"/>
+        ///  <seealso cref="Robot.Ahead(double)"/>
+        ///  <seealso cref="SetAhead(double)"/>
+        ///</summary>
+        ///  <param name="distance"> the distance to move measured in pixels.
         ///  If {@code distance} &gt; 0 the robot is set to move Back.
         ///  If {@code distance} &lt; 0 the robot is set to move Ahead.
-        ///  If {@code distance} = 0 the robot is set to Stop its movement.
-        ///  @see #Back(double) Back(double)
-        ///  @see #Ahead(double) Ahead(double)
-        ///  @see #SetAhead(double)
-        ///</summary>
+        ///  If {@code distance} = 0 the robot is set to Stop its movement.</param>
         public void SetBack(double distance)
         {
             if (peer != null)
@@ -281,18 +274,18 @@ namespace robocode
         ///    // Executes the last SetTurnLeft()
         ///    Execute();
         ///  </pre>
-        ///  @param degrees the amount of degrees to turn the robot's body to the left.
+        ///  <seealso cref="SetTurnLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="SetTurnRight(double)"/>
+        ///  <seealso cref="SetTurnRightRadians(double)"/>
+        ///</summary>
+        ///  <param name="degrees"> the amount of degrees to turn the robot's body to the left.
         ///  If {@code degrees} &gt; 0 the robot is set to turn left.
         ///  If {@code degrees} &lt; 0 the robot is set to turn right.
-        ///  If {@code degrees} = 0 the robot is set to Stop turning.
-        ///  @see #SetTurnLeftRadians(double) SetTurnLeftRadians(double)
-        ///  @see #TurnLeft(double) TurnLeft(double)
-        ///  @see #TurnLeftRadians(double) TurnLeftRadians(double)
-        ///  @see #TurnRight(double) TurnRight(double)
-        ///  @see #TurnRightRadians(double) TurnRightRadians(double)
-        ///  @see #SetTurnRight(double) SetTurnRight(double)
-        ///  @see #SetTurnRightRadians(double) SetTurnRightRadians(double)
-        ///</summary>
+        ///  If {@code degrees} = 0 the robot is set to Stop turning.</param>
         public void SetTurnLeft(double degrees)
         {
             if (peer != null)
@@ -329,18 +322,18 @@ namespace robocode
         ///    // Executes the last SetTurnRight()
         ///    Execute();
         ///  </pre>
-        ///  @param degrees the amount of degrees to turn the robot's body to the right.
+        ///  <seealso cref="SetTurnRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="SetTurnLeft(double)"/>
+        ///  <seealso cref="SetTurnLeftRadians(double)"/>
+        ///</summary>
+        ///  <param name="degrees"> the amount of degrees to turn the robot's body to the right.
         ///  If {@code degrees} &gt; 0 the robot is set to turn right.
         ///  If {@code degrees} &lt; 0 the robot is set to turn left.
-        ///  If {@code degrees} = 0 the robot is set to Stop turning.
-        ///  @see #SetTurnRightRadians(double) SetTurnRightRadians(double)
-        ///  @see #TurnRight(double) TurnRight(double)
-        ///  @see #TurnRightRadians(double) TurnRightRadians(double)
-        ///  @see #TurnLeft(double) TurnLeft(double)
-        ///  @see #TurnLeftRadians(double) TurnLeftRadians(double)
-        ///  @see #SetTurnLeft(double) SetTurnLeft(double)
-        ///  @see #SetTurnLeftRadians(double) SetTurnLeftRadians(double)
-        ///</summary>
+        ///  If {@code degrees} = 0 the robot is set to Stop turning.</param>
         public void SetTurnRight(double degrees)
         {
             if (peer != null)
@@ -367,14 +360,14 @@ namespace robocode
         ///  The bullet will do (4 * power) damage if it hits another robot. If power
         ///  is greater than 1, it will do an additional 2 * (power - 1) damage.
         ///  You will get (3 * power) Back if you hit the other robot. You can call
-        ///  Rules#GetBulletDamage(double)} for getting the damage that a
+        ///  Rules.GetBulletDamage(double)} for getting the damage that a
         ///  bullet with a specific bullet power will do.
         ///  <p />
         ///  The specified bullet power should be between
-        ///  {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+        ///  <see cref="Rules.MIN_BULLET_POWER"/> and <see cref="Rules.MAX_BULLET_POWER"/>.
         ///  <p />
         ///  Note that the gun cannot Fire if the gun is overheated, meaning that
-        ///  {@link #GetGunHeat()} returns a value > 0.
+        ///  <see cref="Robot.GunHeat"/> returns a value &gt; 0.
         ///  <p />
         ///  An evnt is generated when the bullet hits a robot, wall, or another
         ///  bullet.
@@ -388,17 +381,16 @@ namespace robocode
         ///    ...
         ///    Execute();
         ///  </pre>
-        ///  @param power the amount of energy given to the bullet, and subtracted
-        ///  from the robot's energy.
-        ///  @see #SetFireBullet(double)
-        ///  @see #Fire(double) Fire(double)
-        ///  @see #FireBullet(double) FireBullet(double)
-        ///  @see #GetGunHeat() GetGunHeat()
-        ///  @see #getGunCoolingRate() getGunCoolingRate()
-        ///  @see #OnBulletHit(BulletHitEvent) OnBulletHit(BulletHitEvent)
-        ///  @see #OnBulletHitBullet(BulletHitBulletEvent) OnBulletHitBullet(BulletHitBulletEvent)
-        ///  @see #OnBulletMissed(BulletMissedEvent) OnBulletMissed(BulletMissedEvent)
+        ///  <seealso cref="SetFireBullet(double)"/>
+        ///  <seealso cref="Robot.Fire(double)"/>
+        ///  <seealso cref="Robot.FireBullet(double)"/>
+        ///  <seealso cref="Robot.GunHeat"/>
+        ///  <seealso cref="Robot.GunCoolingRate"/>
+        ///  <seealso cref="Robot.OnBulletHit(BulletHitEvent)"/>
+        ///  <seealso cref="Robot.OnBulletHitBullet(BulletHitBulletEvent)"/>
+        ///  <seealso cref="Robot.OnBulletMissed(BulletMissedEvent)"/>
         ///</summary>
+        ///  <param name="power">the amount of energy given to the bullet, and subtracted from the robot's energy.</param>
         public void SetFire(double power)
         {
             if (peer != null)
@@ -425,18 +417,18 @@ namespace robocode
         ///  The bullet will do (4 * power) damage if it hits another robot. If power
         ///  is greater than 1, it will do an additional 2 * (power - 1) damage.
         ///  You will get (3 * power) Back if you hit the other robot. You can call
-        ///  {@link Rules#GetBulletDamage(double)} for getting the damage that a
+        ///  <see cref="Rules.GetBulletDamage(double)"/> for getting the damage that a
         ///  bullet with a specific bullet power will do.
         ///  <p />
         ///  The specified bullet power should be between
-        ///  {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
+        ///  <see cref="Rules.MIN_BULLET_POWER"/> and <see cref="Rules.MAX_BULLET_POWER"/>.
         ///  <p />
         ///  Note that the gun cannot Fire if the gun is overheated, meaning that
-        ///  {@link #GetGunHeat()} returns a value > 0.
+        ///  <see cref="Robot.GunHeat"/> returns a value &gt; 0.
         ///  <p />
         ///  A evnt is generated when the bullet hits a robot
-        ///  ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
-        ///  bullet ({@link BulletHitBulletEvent}).
+        ///  (<see cref="BulletHitEvent"/>), wall (<see cref="BulletMissedEvent"/>), or another
+        ///  bullet (<see cref="BulletHitBulletEvent"/>).
         ///  <p />
         ///  Example:
         ///  <pre>
@@ -454,21 +446,21 @@ namespace robocode
         ///    double bulletVelocity = bullet.getVelocity();
         ///    }
         ///  </pre>
-        ///  @param power the amount of energy given to the bullet, and subtracted
-        ///  from the robot's energy.
-        ///  @return a {@link Bullet} that contains information about the bullet if it
-        ///  was actually fired, which can be used for tracking the bullet after it
-        ///  has been fired. If the bullet was not fired, {@code null} is returned.
-        ///  @see #SetFire(double)
-        ///  @see Bullet
-        ///  @see #Fire(double) Fire(double)
-        ///  @see #FireBullet(double) FireBullet(double)
-        ///  @see #GetGunHeat() GetGunHeat()
-        ///  @see #getGunCoolingRate() getGunCoolingRate()
-        ///  @see #OnBulletHit(BulletHitEvent) OnBulletHit(BulletHitEvent)
-        ///  @see #OnBulletHitBullet(BulletHitBulletEvent) OnBulletHitBullet(BulletHitBulletEvent)
-        ///  @see #OnBulletMissed(BulletMissedEvent) OnBulletMissed(BulletMissedEvent)
+        ///  <seealso cref="SetFire(double)"/>
+        ///  <seealso cref="Bullet"/>
+        ///  <seealso cref="Robot.Fire(double)"/>
+        ///  <seealso cref="Robot.FireBullet(double)"/>
+        ///  <seealso cref="Robot.GunHeat()"/>
+        ///  <seealso cref="Robot.GunCoolingRate()"/>
+        ///  <seealso cref="Robot.OnBulletHit(BulletHitEvent)"/>
+        ///  <seealso cref="Robot.OnBulletHitBullet(BulletHitBulletEvent)"/>
+        ///  <seealso cref="Robot.OnBulletMissed(BulletMissedEvent)"/>
         ///</summary>
+        ///  <param name="power"> the amount of energy given to the bullet, and subtracted
+        ///  from the robot's energy.</param>
+        ///  Return a <see cref="Bullet"/> that contains information about the bullet if it
+        ///  was actually fired, which can be used for tracking the bullet after it
+        ///  has been fired. If the bullet was not fired, null is returned.
         public Bullet SetFireBullet(double power)
         {
             if (peer != null)
@@ -482,7 +474,7 @@ namespace robocode
         ///<summary>
         ///  Registers a custom evnt to be called when a condition is met.
         ///  When you are finished with your condition or just want to remove it you
-        ///  must call {@link #RemoveCustomEvent(Condition)}.
+        ///  must call <see cref="RemoveCustomEvent(Condition)"/>.
         ///  <p />
         ///  Example:
         ///  <pre>
@@ -498,12 +490,11 @@ namespace robocode
         ///      AddCustomEvent(triggerHitCondition);
         ///    </b>
         ///  </pre>
-        ///  @param condition the condition that must be met.
-        ///  @throws NullPointerException if the condition parameter has been set to
-        ///  {@code null}.
-        ///  @see Condition
-        ///  @see #RemoveCustomEvent(Condition)
+        ///  <seealso cref="Condition"/>
+        ///  <seealso cref="RemoveCustomEvent(Condition)"/>
         ///</summary>
+        ///  <param name="condition"> the condition that must be met.
+        ///  throws ArgumentException if the condition parameter has been set to null.</param>
         public void AddCustomEvent(Condition condition)
         {
             if (condition == null)
@@ -529,7 +520,7 @@ namespace robocode
         
         ///<summary>
         ///  Removes a custom evnt that was previously added by calling
-        ///  {@link #AddCustomEvent(Condition)}.
+        ///  <see cref="AddCustomEvent(Condition)"/>.
         ///  <p />
         ///  Example:
         ///  <pre>
@@ -552,13 +543,10 @@ namespace robocode
         ///      RemoveCustomEvent(triggerHitCondition);
         ///    </b>
         ///  </pre>
-        ///  @param condition the condition that was previous added and that must be
-        ///  removed now.
-        ///  @throws NullPointerException if the condition parameter has been set to
-        ///  {@code null}.
-        ///  @see Condition
-        ///  @see #AddCustomEvent(Condition)
+        ///  <seealso cref="Condition"/>
+        ///  <seealso cref="AddCustomEvent(Condition)"/>
         ///</summary>
+        ///  <param name="condition">the condition that was previous added and that must be removed now.</param>
         public void RemoveCustomEvent(Condition condition)
         {
             if (condition == null)
@@ -578,7 +566,7 @@ namespace robocode
         ///<summary>
         ///  Clears Out any pending events in the robot's evnt queue immediately.
         ///
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public void ClearAllEvents()
         {
@@ -599,8 +587,8 @@ namespace robocode
         ///   Note that advanced robots
         ///   <em>must</em>
         ///   call this function in order to
-        ///   Execute pending set* calls like e.g. {@link #SetAhead(double)},
-        ///   {@link #SetFire(double)}, {@link #SetTurnLeft(double)} etc. Otherwise,
+        ///   Execute pending set* calls like e.g. <see cref="SetAhead(double)"/>,
+        ///   <see cref="SetFire(double)"/>, <see cref="SetTurnLeft(double)"/> etc. Otherwise,
         ///   these calls will never get executed.
         ///   <p />
         ///   In this example the robot will move while turning:
@@ -645,14 +633,14 @@ namespace robocode
         ///    }
         ///  </pre>
         ///  @return a vector containing all events currently in the robot's queue
-        ///  @see Event
-        ///  @see #ClearAllEvents()
-        ///  @see #GetStatusEvents()
-        ///  @see #GetScannedRobotEvents()
-        ///  @see #GetBulletHitEvents()
-        ///  @see #GetBulletMissedEvents()
-        ///  @see #GetBulletHitBulletEvents()
-        ///  @see #GetRobotDeathEvents()
+        ///  <seealso cref="Event"/>
+        ///  <seealso cref="ClearAllEvents()"/>
+        ///  <seealso cref="GetStatusEvents()"/>
+        ///  <seealso cref="GetScannedRobotEvents()"/>
+        ///  <seealso cref="GetBulletHitEvents()"/>
+        ///  <seealso cref="GetBulletMissedEvents()"/>
+        ///  <seealso cref="GetBulletHitBulletEvents()"/>
+        ///  <seealso cref="GetRobotDeathEvents()"/>
         ///</summary>
         public IList<Event> GetAllEvents()
         {
@@ -679,9 +667,9 @@ namespace robocode
         ///  </pre>
         ///  @return a vector containing all BulletHitBulletEvents currently in the
         ///  robot's queue
-        ///  @see #OnBulletHitBullet(BulletHitBulletEvent) OnBulletHitBullet(BulletHitBulletEvent)
-        ///  @see BulletHitBulletEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnBulletHitBullet(BulletHitBulletEvent)"/>
+        ///  <seealso cref="BulletHitBulletEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public IList<BulletHitBulletEvent> GetBulletHitBulletEvents()
         {
@@ -707,9 +695,9 @@ namespace robocode
         ///  </pre>
         ///  @return a vector containing all BulletHitEvents currently in the robot's
         ///  queue
-        ///  @see #OnBulletHit(BulletHitEvent) OnBulletHit(BulletHitEvent)
-        ///  @see BulletHitEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnBulletHit(BulletHitEvent)"/>
+        ///  <seealso cref="BulletHitEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public IList<BulletHitEvent> GetBulletHitEvents()
         {
@@ -737,9 +725,9 @@ namespace robocode
         ///  </pre>
         ///  @return a vector containing all BulletMissedEvents currently in the
         ///  robot's queue
-        ///  @see #OnBulletMissed(BulletMissedEvent) OnBulletMissed(BulletMissedEvent)
-        ///  @see BulletMissedEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnBulletMissed(BulletMissedEvent)"/>
+        ///  <seealso cref="BulletMissedEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public IList<BulletMissedEvent> GetBulletMissedEvents()
         {
@@ -753,17 +741,13 @@ namespace robocode
 
         /// 
         ///<summary>
-        ///  Returns a file representing a data directory for the robot, which can be
-        ///  written to using {@link RobocodeFileOutputStream} or
-        ///  {@link RobocodeFileWriter}.
+        ///  Returns a file representing a data directory for the robot.
         ///  <p />
         ///  The system will automatically create the directory for you, so you do not
         ///  need to create it by yourself.
         ///
         ///  @return a file representing the data directory for your robot
-        ///  @see #GetDataFile(string)
-        ///  @see RobocodeFileOutputStream
-        ///  @see RobocodeFileWriter
+        ///  <seealso cref="GetDataFile(string)"/>
         ///</summary>
         public string GetDataDirectory()
         {
@@ -775,26 +759,20 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
         ///<summary>
-        ///  Returns a file in your data directory that you can write to using
-        ///  {@link RobocodeFileOutputStream} or {@link RobocodeFileWriter}.
+        ///  Returns a file in your data directory that you can write to.
         ///  <p />
         ///  The system will automatically create the directory for you, so you do not
         ///  need to create it by yourself.
         ///  <p />
-        ///  Please notice that the max. size of your data file is set to 200000
+        ///  Please notice that the max. size of your data file is set to 200000 bytes
         ///  (~195 KB).
         ///  <p />
         ///  See the {@code sample.SittingDuck} to see an example of how to use this
         ///  method.
-        ///
-        ///  @param filename the file name of the data file for your robot
-        ///  @return a file representing the data file for your robot
-        ///  @see #GetDataDirectory()
-        ///  @see RobocodeFileOutputStream
-        ///  @see RobocodeFileWriter
+        ///  <seealso cref="GetDataDirectory()"/>
         ///</summary>
+        ///  <param name="filename"> the file name of the data file for your robot</param>
         public Stream GetDataFile(string filename)
         {
             if (peer != null)
@@ -811,8 +789,8 @@ namespace robocode
         ///  of bytes left in the data directory for the robot.
         ///
         ///  @return the amount of bytes left in the robot's data directory
-        ///  @see #GetDataDirectory()
-        ///  @see #GetDataFile(string)
+        ///  <seealso cref="GetDataDirectory()"/>
+        ///  <seealso cref="GetDataFile(string)"/>
         ///</summary>
         public long DataQuotaAvailable
         {
@@ -840,28 +818,27 @@ namespace robocode
         ///  <p />
         ///  The default priorities are, from highest to lowest:
         ///  <pre>
-        ///    {@link BattleEndedEvent}:     100 (reserved)
-        ///    {@link WinEvent}:             100 (reserved)
-        ///    {@link SkippedTurnEvent}:     100 (reserved)
-        ///    {@link StatusEvent}:           99
+        ///    <see cref="BattleEndedEvent"/>:     100 (reserved)
+        ///    <see cref="WinEvent"/>:             100 (reserved)
+        ///    <see cref="SkippedTurnEvent"/>:     100 (reserved)
+        ///    <see cref="StatusEvent"/>:           99
         ///    Key and mouse events:  98
-        ///    {@link CustomEvent}:           80 (default value)
-        ///    {@link MessageEvent}:          75
-        ///    {@link RobotDeathEvent}:       70
-        ///    {@link BulletMissedEvent}:     60
-        ///    {@link BulletHitBulletEvent}:  55
-        ///    {@link BulletHitEvent}:        50
-        ///    {@link HitByBulletEvent}:      40
-        ///    {@link HitWallEvent}:          30
-        ///    {@link HitRobotEvent}:         20
-        ///    {@link ScannedRobotEvent}:     10
-        ///    {@link PaintEvent}:             5
-        ///    {@link DeathEvent}:            -1 (reserved)
+        ///    <see cref="CustomEvent"/>:           80 (default value)
+        ///    <see cref="MessageEvent"/>:          75
+        ///    <see cref="RobotDeathEvent"/>:       70
+        ///    <see cref="BulletMissedEvent"/>:     60
+        ///    <see cref="BulletHitBulletEvent"/>:  55
+        ///    <see cref="BulletHitEvent"/>:        50
+        ///    <see cref="HitByBulletEvent"/>:      40
+        ///    <see cref="HitWallEvent"/>:          30
+        ///    <see cref="HitRobotEvent"/>:         20
+        ///    <see cref="ScannedRobotEvent"/>:     10
+        ///    <see cref="PaintEvent"/>:             5
+        ///    <see cref="DeathEvent"/>:            -1 (reserved)
         ///  </pre>
-        ///  @param eventClass the name of the evnt class (string)
-        ///  @return the current priority of a class of events
-        ///  @see #SetEventPriority(string, int)
+        ///  <seealso cref="SetEventPriority(string, int)"/>
         ///</summary>
+        ///  <param name="eventClass"> the name of the evnt class (string)</param>
         public int GetEventPriority(string eventClass)
         {
             if (peer != null)
@@ -888,9 +865,9 @@ namespace robocode
         ///  </pre>
         ///  @return a vector containing all HitByBulletEvents currently in the
         ///  robot's queue
-        ///  @see #OnHitByBullet(HitByBulletEvent) OnHitByBullet(HitByBulletEvent)
-        ///  @see HitByBulletEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnHitByBullet(HitByBulletEvent)"/>
+        ///  <seealso cref="HitByBulletEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public IList<HitByBulletEvent> GetHitByBulletEvents()
         {
@@ -917,9 +894,9 @@ namespace robocode
         ///  </pre>
         ///  @return a vector containing all HitRobotEvents currently in the robot's
         ///  queue
-        ///  @see #OnHitRobot(HitRobotEvent) OnHitRobot(HitRobotEvent)
-        ///  @see HitRobotEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnHitRobot(HitRobotEvent)"/>
+        ///  <seealso cref="HitRobotEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public IList<HitRobotEvent> GetHitRobotEvents()
         {
@@ -946,9 +923,9 @@ namespace robocode
         ///  </pre>
         ///  @return a vector containing all HitWallEvents currently in the robot's
         ///  queue
-        ///  @see #OnHitWall(HitWallEvent) OnHitWall(HitWallEvent)
-        ///  @see HitWallEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnHitWall(HitWallEvent)"/>
+        ///  <seealso cref="HitWallEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public IList<HitWallEvent> GetHitWallEvents()
         {
@@ -975,9 +952,9 @@ namespace robocode
         ///  </pre>
         ///  @return a vector containing all RobotDeathEvents currently in the robot's
         ///  queue
-        ///  @see #OnRobotDeath(RobotDeathEvent) OnRobotDeath(RobotDeathEvent)
-        ///  @see RobotDeathEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnRobotDeath(RobotDeathEvent)"/>
+        ///  <seealso cref="RobotDeathEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public IList<RobotDeathEvent> GetRobotDeathEvents()
         {
@@ -1005,9 +982,9 @@ namespace robocode
         ///  </pre>
         ///  @return a vector containing all ScannedRobotEvents currently in the
         ///  robot's queue
-        ///  @see #OnScannedRobot(ScannedRobotEvent) OnScannedRobot(ScannedRobotEvent)
-        ///  @see ScannedRobotEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnScannedRobot(ScannedRobotEvent)"/>
+        ///  <seealso cref="ScannedRobotEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
         public IList<ScannedRobotEvent> GetScannedRobotEvents()
         {
@@ -1033,9 +1010,9 @@ namespace robocode
         ///    }
         ///  </pre>
         ///  @return a vector containing all StatusEvents currently in the robot's queue
-        ///  @see #OnStatus(StatusEvent) OnStatus(StatusEvent)
-        ///  @see StatusEvent
-        ///  @see #GetAllEvents()
+        ///  <seealso cref="Robot.OnStatus(StatusEvent)"/>
+        ///  <seealso cref="StatusEvent"/>
+        ///  <seealso cref="GetAllEvents()"/>
         ///  @since 1.6.1
         ///</summary>
         public IList<StatusEvent> GetStatusEvents()
@@ -1070,21 +1047,21 @@ namespace robocode
         ///  <p />
         ///  The default priorities are, from highest to lowest:
         ///  <pre>
-        ///    {@link WinEvent}:             100 (reserved)
-        ///    {@link SkippedTurnEvent}:     100 (reserved)
-        ///    {@link StatusEvent}:           99
-        ///    {@link CustomEvent}:           80
-        ///    {@link MessageEvent}:          75
-        ///    {@link RobotDeathEvent}:       70
-        ///    {@link BulletMissedEvent}:     60
-        ///    {@link BulletHitBulletEvent}:  55
-        ///    {@link BulletHitEvent}:        50
-        ///    {@link HitByBulletEvent}:      40
-        ///    {@link HitWallEvent}:          30
-        ///    {@link HitRobotEvent}:         20
-        ///    {@link ScannedRobotEvent}:     10
-        ///    {@link PaintEvent}:             5
-        ///    {@link DeathEvent}:            -1 (reserved)
+        ///    <see cref="WinEvent"/>:             100 (reserved)
+        ///    <see cref="SkippedTurnEvent"/>:     100 (reserved)
+        ///    <see cref="StatusEvent"/>:           99
+        ///    <see cref="CustomEvent"/>:           80
+        ///    <see cref="MessageEvent"/>:          75
+        ///    <see cref="RobotDeathEvent"/>:       70
+        ///    <see cref="BulletMissedEvent"/>:     60
+        ///    <see cref="BulletHitBulletEvent"/>:  55
+        ///    <see cref="BulletHitEvent"/>:        50
+        ///    <see cref="HitByBulletEvent"/>:      40
+        ///    <see cref="HitWallEvent"/>:          30
+        ///    <see cref="HitRobotEvent"/>:         20
+        ///    <see cref="ScannedRobotEvent"/>:     10
+        ///    <see cref="PaintEvent"/>:             5
+        ///    <see cref="DeathEvent"/>:            -1 (reserved)
         ///  </pre>
         ///  <p />
         ///  Note that you cannot change the priority for events with the special
@@ -1092,16 +1069,10 @@ namespace robocode
         ///  Also note that you cannot change the priority of CustomEvent.
         ///  Instead you must change the priority of the condition(s) for your custom
         ///  event(s).
-        ///
-        ///  @param eventClass the name of the evnt class (string) to set the
-        ///  priority for
-        ///  @param priority   the new priority for that evnt class
-        ///  @see #GetEventPriority(string)
-        ///  @see #setInterruptible(bool)
-        ///  @since 1.5, the priority of DeathEvent was changed from 100 to -1 in
-        ///  order to let robots process pending events on its evnt queue before
-        ///  it dies. When the robot dies, it will not be able to process events.
+        ///  <seealso cref="GetEventPriority(string)"/>
         ///</summary>
+        ///  <param name="eventClass"> the name of the evnt class (string) to set the priority for</param>
+        ///  <param name="priority"> the new priority for that evnt class</param>
         public void SetEventPriority(string eventClass, int priority)
         {
             if (peer != null)
@@ -1125,21 +1096,18 @@ namespace robocode
         ///    public override void OnScannedRobot(ScannedRobotEvent e) {
         ///    Fire(1);
         ///    <b>
-        ///      setInterruptible(true);
+        ///      IsInterruptible = true;
         ///    </b>
         ///    Ahead(100); // If you see a robot while moving Ahead,
         ///    // this handler will start from the top
-        ///    // Without setInterruptible(true), we wouldn't
+        ///    // Without IsInterruptible (true), we wouldn't
         ///    // receive Scan events at all!
         ///    // We'll only get here if we don't see a robot during the move.
         ///    Out.println("Ok, I can't see anyone");
         ///    }
         ///  </pre>
-        ///  @param interruptible {@code true} if the evnt handler should be
-        ///  interrupted if new events of the same priority occurs; {@code false}
-        ///  otherwise
-        ///  @see #SetEventPriority(string, int)
-        ///  @see Robot#OnScannedRobot(ScannedRobotEvent) OnScannedRobot(ScannedRobotEvent)
+        ///  <seealso cref="SetEventPriority(string, int)"/>
+        ///  <seealso cref="Robot.OnScannedRobot(ScannedRobotEvent)"/>
         ///</summary>
         public bool IsInterruptible
         {
@@ -1159,15 +1127,12 @@ namespace robocode
         /// 
         ///<summary>
         ///  Sets the maximum turn rate of the robot measured in degrees if the robot
-        ///  should turn slower than {@link Rules#MAX_TURN_RATE} (10 degress/turn).
-        ///
-        ///  @param newMaxTurnRate the new maximum turn rate of the robot measured in
-        ///  degrees. Valid values are 0 - {@link Rules#MAX_TURN_RATE}
-        ///  @see #TurnRight(double) TurnRight(double)
-        ///  @see #TurnLeft(double) TurnLeft(double)
-        ///  @see #SetTurnRight(double)
-        ///  @see #SetTurnLeft(double)
-        ///  @see #setMaxVelocity(double)
+        ///  should turn slower than <see cref="Rules.MAX_TURN_RATE"/> (10 degress/turn).
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="SetTurnRight(double)"/>
+        ///  <seealso cref="SetTurnLeft(double)"/>
+        ///  <seealso cref="MaxVelocity"/>
         ///</summary>
         public double MaxTurnRate
         {
@@ -1187,15 +1152,12 @@ namespace robocode
         /// 
         ///<summary>
         ///  Sets the maximum velocity of the robot measured in pixels/turn if the
-        ///  robot should move slower than {@link Rules#MAX_VELOCITY} (8 pixels/turn).
-        ///
-        ///  @param newMaxVelocity the new maximum turn rate of the robot measured in
-        ///  pixels/turn. Valid values are 0 - {@link Rules#MAX_VELOCITY}
-        ///  @see #Ahead(double)
-        ///  @see #SetAhead(double)
-        ///  @see #Back(double)
-        ///  @see #SetBack(double)
-        ///  @see #setMaxTurnRate(double)
+        ///  robot should move slower than <see cref="Rules.MAX_VELOCITY"/> (8 pixels/turn).
+        ///  <seealso cref="Robot.Ahead(double)"/>
+        ///  <seealso cref="SetAhead(double)"/>
+        ///  <seealso cref="Robot.Back(double)"/>
+        ///  <seealso cref="SetBack(double)"/>
+        ///  <seealso cref="MaxTurnRate"/>
         ///</summary>
         public double MaxVelocity
         {
@@ -1214,18 +1176,18 @@ namespace robocode
 
         /// 
         ///<summary>
-        ///  Sets the robot to Resume the movement stopped by {@link #Stop() Stop()}
-        ///  or {@link #SetStop()}, if any.
+        ///  Sets the robot to Resume the movement stopped by <see cref="Robot.Stop()"/>
+        ///  or <see cref="SetStop()"/>, if any.
         ///  <p />
         ///  This call returns immediately, and will not Execute until you call
-        ///  {@link #Execute()} or take an action that executes.
+        ///  <see cref="Execute()"/> or take an action that executes.
         ///
-        ///  @see #Resume() Resume()
-        ///  @see #Stop() Stop()
-        ///  @see #Stop(bool) Stop(bool)
-        ///  @see #SetStop()
-        ///  @see #SetStop(bool)
-        ///  @see #Execute()
+        ///  <seealso cref="Robot.Resume()"/>
+        ///  <seealso cref="Robot.Stop()"/>
+        ///  <seealso cref="Robot.Stop(bool)"/>
+        ///  <seealso cref="SetStop()"/>
+        ///  <seealso cref="SetStop(bool)"/>
+        ///  <seealso cref="Execute()"/>
         ///</summary>
         public void SetResume()
         {
@@ -1241,8 +1203,8 @@ namespace robocode
 
         /// 
         ///<summary>
-        ///  This call is identical to {@link #Stop() Stop()}, but returns immediately, and
-        ///  will not Execute until you call {@link #Execute()} or take an action that
+        ///  This call is identical to <see cref="Robot.Stop()"/>, but returns immediately, and
+        ///  will not Execute until you call <see cref="Execute()"/> or take an action that
         ///  executes.
         ///  <p />
         ///  If there is already movement saved from a previous Stop, this will have
@@ -1250,12 +1212,12 @@ namespace robocode
         ///  <p />
         ///  This call is equivalent to calling {@code SetStop(false)};
         ///
-        ///  @see #Stop() Stop()
-        ///  @see #Stop(bool) Stop(bool)
-        ///  @see #Resume() Resume()
-        ///  @see #SetResume()
-        ///  @see #SetStop(bool)
-        ///  @see #Execute()
+        ///  <seealso cref="Robot.Stop()"/>
+        ///  <seealso cref="Robot.Stop(bool)"/>
+        ///  <seealso cref="Robot.Resume()"/>
+        ///  <seealso cref="SetResume()"/>
+        ///  <seealso cref="SetStop(bool)"/>
+        ///  <seealso cref="Execute()"/>
         ///</summary>
         public void SetStop()
         {
@@ -1264,22 +1226,22 @@ namespace robocode
 
         /// 
         ///<summary>
-        ///  This call is identical to {@link #Stop(bool) Stop(bool)}, but
+        ///  This call is identical to <see cref="Robot.Stop(bool)"/>, but
         ///  returns immediately, and will not Execute until you call
-        ///  {@link #Execute()} or take an action that executes.
+        ///  <see cref="Execute()"/> or take an action that executes.
         ///  <p />
         ///  If there is already movement saved from a previous Stop, you can
-        ///  overwrite it by calling {@code SetStop(true)}.
+        ///  overwrite it by calling SetStop(true).
         ///
-        ///  @param overwrite {@code true} if the movement saved from a previous Stop
-        ///  should be overwritten; {@code false} otherwise.
-        ///  @see #Stop() Stop()
-        ///  @see #Stop(bool) Stop(bool)
-        ///  @see #Resume() Resume()
-        ///  @see #SetResume()
-        ///  @see #SetStop()
-        ///  @see #Execute()
+        ///  <seealso cref="Robot.Stop()"/>
+        ///  <seealso cref="Robot.Stop(bool)"/>
+        ///  <seealso cref="Robot.Resume()"/>
+        ///  <seealso cref="SetResume()"/>
+        ///  <seealso cref="SetStop()"/>
+        ///  <seealso cref="Execute()"/>
         ///</summary>
+        ///  <param name="overwrite"> true if the movement saved from a previous Stop
+        ///  should be overwritten; {@code false} otherwise.</param>
         public void SetStop(bool overwrite)
         {
             if (peer != null)
@@ -1317,19 +1279,19 @@ namespace robocode
         ///    // Executes the last SetTurnGunLeft()
         ///    Execute();
         ///  </pre>
-        ///  @param degrees the amount of degrees to turn the robot's gun to the left.
+        ///  <seealso cref="SetTurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="SetTurnGunRight(double)"/>
+        ///  <seealso cref="SetTurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        ///</summary>
+        ///  <param name="degrees"> the amount of degrees to turn the robot's gun to the left.
         ///  If {@code degrees} &gt; 0 the robot's gun is set to turn left.
         ///  If {@code degrees} &lt; 0 the robot's gun is set to turn right.
-        ///  If {@code degrees} = 0 the robot's gun is set to Stop turning.
-        ///  @see #SetTurnGunLeftRadians(double) SetTurnGunLeftRadians(double)
-        ///  @see #TurnGunLeft(double) TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double) TurnGunLeftRadians(double)
-        ///  @see #TurnGunRight(double) TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double) TurnGunRightRadians(double)
-        ///  @see #SetTurnGunRight(double) SetTurnGunRight(double)
-        ///  @see #SetTurnGunRightRadians(double) SetTurnGunRightRadians(double)
-        ///  @see #setAdjustGunForRobotTurn(bool) setAdjustGunForRobotTurn(bool)
-        ///</summary>
+        ///  If {@code degrees} = 0 the robot's gun is set to Stop turning.</param>
         public void SetTurnGunLeft(double degrees)
         {
             if (peer != null)
@@ -1367,19 +1329,19 @@ namespace robocode
         ///    // Executes the last SetTurnGunRight()
         ///    Execute();
         ///  </pre>
-        ///  @param degrees the amount of degrees to turn the robot's gun to the right.
+        ///  <seealso cref="SetTurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="SetTurnGunLeft(double)"/>
+        ///  <seealso cref="SetTurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        ///</summary>
+        ///  <param name="degrees"> the amount of degrees to turn the robot's gun to the right.
         ///  If {@code degrees} &gt; 0 the robot's gun is set to turn right.
         ///  If {@code degrees} &lt; 0 the robot's gun is set to turn left.
-        ///  If {@code degrees} = 0 the robot's gun is set to Stop turning.
-        ///  @see #SetTurnGunRightRadians(double) SetTurnGunRightRadians(double)
-        ///  @see #TurnGunRight(double) TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double) TurnGunRightRadians(double)
-        ///  @see #TurnGunLeft(double) TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double) TurnGunLeftRadians(double)
-        ///  @see #SetTurnGunLeft(double) SetTurnGunLeft(double)
-        ///  @see #SetTurnGunLeftRadians(double) SetTurnGunLeftRadians(double)
-        ///  @see #setAdjustGunForRobotTurn(bool) setAdjustGunForRobotTurn(bool)
-        ///</summary>
+        ///  If {@code degrees} = 0 the robot's gun is set to Stop turning.</param>
         public void SetTurnGunRight(double degrees)
         {
             if (peer != null)
@@ -1417,20 +1379,20 @@ namespace robocode
         ///    // Executes the last SetTurnRadarLeft()
         ///    Execute();
         ///  </pre>
-        ///  @param degrees the amount of degrees to turn the robot's radar to the left.
+        ///  <seealso cref="SetTurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnRadarRightRadians(double)"/>
+        ///  <seealso cref="SetTurnRadarRight(double)"/>
+        ///  <seealso cref="SetTurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForRobotTurn"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
+        ///</summary>
+        ///  <param name="degrees"> the amount of degrees to turn the robot's radar to the left.
         ///  If {@code degrees} &gt; 0 the robot's radar is set to turn left.
         ///  If {@code degrees} &lt; 0 the robot's radar is set to turn right.
-        ///  If {@code degrees} = 0 the robot's radar is set to Stop turning.
-        ///  @see #SetTurnRadarLeftRadians(double) SetTurnRadarLeftRadians(double)
-        ///  @see #TurnRadarLeft(double) TurnRadarLeft(double)
-        ///  @see #TurnRadarLeftRadians(double) TurnRadarLeftRadians(double)
-        ///  @see #TurnRadarRight(double) TurnRadarRight(double)
-        ///  @see #TurnRadarRightRadians(double) TurnRadarRightRadians(double)
-        ///  @see #SetTurnRadarRight(double) SetTurnRadarRight(double)
-        ///  @see #SetTurnRadarRightRadians(double) SetTurnRadarRightRadians(double)
-        ///  @see #setAdjustRadarForRobotTurn(bool) setAdjustRadarForRobotTurn(bool)
-        ///  @see #setAdjustRadarForGunTurn(bool) setAdjustRadarForGunTurn(bool)
-        ///</summary>
+        ///  If {@code degrees} = 0 the robot's radar is set to Stop turning.</param>
         public void SetTurnRadarLeft(double degrees)
         {
             if (peer != null)
@@ -1468,20 +1430,20 @@ namespace robocode
         ///    // Executes the last SetTurnRadarRight()
         ///    Execute();
         ///  </pre>
-        ///  @param degrees the amount of degrees to turn the robot's radar to the right.
+        ///  <seealso cref="SetTurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="SetTurnRadarLeft(double)"/>
+        ///  <seealso cref="SetTurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForRobotTurn"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
+        ///</summary>
+        ///  <param name="degrees"> the amount of degrees to turn the robot's radar to the right.
         ///  If {@code degrees} &gt; 0 the robot's radar is set to turn right.
         ///  If {@code degrees} &lt; 0 the robot's radar is set to turn left.
-        ///  If {@code degrees} = 0 the robot's radar is set to Stop turning.
-        ///  @see #SetTurnRadarRightRadians(double) SetTurnRadarRightRadians(double)
-        ///  @see #TurnRadarRight(double) TurnRadarRight(double)
-        ///  @see #TurnRadarRightRadians(double) TurnRadarRightRadians(double)
-        ///  @see #TurnRadarLeft(double) TurnRadarLeft(double)
-        ///  @see #TurnRadarLeftRadians(double) TurnRadarLeftRadians(double)
-        ///  @see #SetTurnRadarLeft(double) SetTurnRadarLeft(double)
-        ///  @see #SetTurnRadarLeftRadians(double) SetTurnRadarLeftRadians(double)
-        ///  @see #setAdjustRadarForRobotTurn(bool) setAdjustRadarForRobotTurn(bool)
-        ///  @see #setAdjustRadarForGunTurn(bool) setAdjustRadarForGunTurn(bool)
-        ///</summary>
+        ///  If {@code degrees} = 0 the robot's radar is set to Stop turning.</param>
         public void SetTurnRadarRight(double degrees)
         {
             if (peer != null)
@@ -1497,16 +1459,15 @@ namespace robocode
         /// 
         ///<summary>
         ///  Does not return until a condition is met, i.e. when a
-        ///  {@link Condition#Test()} returns {@code true}.
+        ///  <see cref="Condition.Test()"/> returns {@code true}.
         ///  <p />
         ///  This call executes immediately.
         ///  <p />
         ///  See the {@code sample.Crazy} robot for how this method can be used.
-        ///
-        ///  @param condition the condition that must be met before this call returns
-        ///  @see Condition
-        ///  @see Condition#Test()
+        ///  <seealso cref="Condition"/>
+        ///  <seealso cref="Condition.Test()"/>
         ///</summary>
+        ///  <param name="condition">the condition that must be met before this call returns</param>
         public void WaitFor(Condition condition)
         {
             if (peer != null)
@@ -1527,11 +1488,10 @@ namespace robocode
         ///  evnt. Actions will have no effect if called from this section. The
         ///  intent is to allow you to perform calculations or print something out
         ///  when the robot is killed.
-        ///
-        ///  @param evnt the death evnt set by the game
-        ///  @see DeathEvent
-        ///  @see Event
+        ///  <seealso cref="DeathEvent"/>
+        ///  <seealso cref="Event"/>
         ///</summary>
+        ///  <param name="evnt">the death event set by the game</param>
         public override void OnDeath(DeathEvent evnt)
         {
         }
@@ -1548,11 +1508,9 @@ namespace robocode
         ///  <p />
         ///  Note that the heading in Robocode is like a compass, where 0 means North,
         ///  PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        ///  @return the direction that the robot's body is facing, in radians.
-        ///  @see #getHeadingDegrees()
-        ///  @see #getGunHeadingRadians()
-        ///  @see #getRadarHeadingRadians()
+        ///  <seealso cref="Robot.Heading"/>
+        ///  <seealso cref="GunHeadingRadians"/>
+        ///  <seealso cref="RadarHeadingRadians"/>
         ///</summary>
         public double HeadingRadians
         {
@@ -1592,18 +1550,18 @@ namespace robocode
         ///    // Executes the last SetTurnLeftRadians()
         ///    Execute();
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's body to the left.
+        ///  <seealso cref="AdvancedRobot.SetTurnLeft(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnRight(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnRightRadians(double)"/>
+        ///</summary>
+        ///  <param name="radians"> the amount of radians to turn the robot's body to the left.
         ///  If {@code radians} &gt; 0 the robot is set to turn left.
         ///  If {@code radians} &lt; 0 the robot is set to turn right.
-        ///  If {@code radians} = 0 the robot is set to Stop turning.
-        ///  @see AdvancedRobot#SetTurnLeft(double) SetTurnLeft(double)
-        ///  @see #TurnLeft(double)
-        ///  @see #TurnLeftRadians(double)
-        ///  @see #TurnRight(double)
-        ///  @see #TurnRightRadians(double)
-        ///  @see AdvancedRobot#SetTurnRight(double) SetTurnRight(double)
-        ///  @see AdvancedRobot#SetTurnRightRadians(double) SetTurnRightRadians(double)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot is set to Stop turning.</param>
         public void SetTurnLeftRadians(double radians)
         {
             if (peer != null)
@@ -1641,18 +1599,18 @@ namespace robocode
         ///    // Executes the last SetTurnRightRadians()
         ///    Execute();
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's body to the right.
+        ///  <seealso cref="AdvancedRobot.SetTurnRight(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnLeft(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnLeftRadians(double)"/>
+        ///</summary>
+        ///  <param name="radians"> the amount of radians to turn the robot's body to the right.
         ///  If {@code radians} &gt; 0 the robot is set to turn right.
         ///  If {@code radians} &lt; 0 the robot is set to turn left.
-        ///  If {@code radians} = 0 the robot is set to Stop turning.
-        ///  @see AdvancedRobot#SetTurnRight(double) SetTurnRight(double)
-        ///  @see #TurnRight(double)
-        ///  @see #TurnRightRadians(double)
-        ///  @see #TurnLeft(double)
-        ///  @see #TurnLeftRadians(double)
-        ///  @see AdvancedRobot#SetTurnLeft(double) SetTurnLeft(double)
-        ///  @see AdvancedRobot#SetTurnLeftRadians(double) SetTurnLeftRadians(double)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot is set to Stop turning.</param>
         public void SetTurnRightRadians(double radians)
         {
             if (peer != null)
@@ -1684,23 +1642,23 @@ namespace robocode
         ///    // Afterwards, turn the robot 90 degrees to the right
         ///    TurnLeftRadians(-Math.PI / 2);
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's body to the left.
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        ///</summary>
+        ///  <param name="radians">the amount of radians to turn the robot's body to the left.
         ///  If {@code radians} &gt; 0 the robot will turn right.
         ///  If {@code radians} &lt; 0 the robot will turn left.
-        ///  If {@code radians} = 0 the robot will not turn, but Execute.
-        ///  @see #TurnLeft(double)
-        ///  @see #TurnRight(double)
-        ///  @see #TurnRightRadians(double)
-        ///  @see #TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double)
-        ///  @see #TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double)
-        ///  @see #TurnRadarLeft(double)
-        ///  @see #TurnRadarLeftRadians(double)
-        ///  @see #TurnRadarRight(double)
-        ///  @see #TurnRadarRightRadians(double)
-        ///  @see #setAdjustGunForRobotTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot will not turn, but Execute.</param>
         public void TurnLeftRadians(double radians)
         {
             if (peer != null)
@@ -1731,23 +1689,23 @@ namespace robocode
         ///    // Afterwards, turn the robot 90 degrees to the left
         ///    TurnRightRadians(-Math.PI / 2);
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's body to the right.
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        ///</summary>
+        ///  <param name="radians"> the amount of radians to turn the robot's body to the right.
         ///  If {@code radians} &gt; 0 the robot will turn right.
         ///  If {@code radians} &lt; 0 the robot will turn left.
-        ///  If {@code radians} = 0 the robot will not turn, but Execute.
-        ///  @see #TurnRight(double)
-        ///  @see #TurnLeft(double)
-        ///  @see #TurnLeftRadians(double)
-        ///  @see #TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double)
-        ///  @see #TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double)
-        ///  @see #TurnRadarLeft(double)
-        ///  @see #TurnRadarLeftRadians(double)
-        ///  @see #TurnRadarRight(double)
-        ///  @see #TurnRadarRightRadians(double)
-        ///  @see #setAdjustGunForRobotTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot will not turn, but Execute.</param>
         public void TurnRightRadians(double radians)
         {
             if (peer != null)
@@ -1769,9 +1727,9 @@ namespace robocode
         ///  PI / 2 means East, PI means South, and 3 * PI / 4 means West.
         ///
         ///  @return the direction that the robot's gun is facing, in radians.
-        ///  @see #getGunHeadingDegrees()
-        ///  @see #getHeadingRadians()
-        ///  @see #getRadarHeadingRadians()
+        ///  <seealso cref="Robot.GunHeading"/>
+        ///  <seealso cref="HeadingRadians"/>
+        ///  <seealso cref="RadarHeadingRadians"/>
         ///</summary>
         public double GunHeadingRadians
         {
@@ -1795,9 +1753,9 @@ namespace robocode
         ///  PI / 2 means East, PI means South, and 3 * PI / 4 means West.
         ///
         ///  @return the direction that the robot's radar is facing, in radians.
-        ///  @see #getRadarHeadingDegrees()
-        ///  @see #getHeadingRadians()
-        ///  @see #getGunHeadingRadians()
+        ///  <seealso cref="Robot.RadarHeading"/>
+        ///  <seealso cref="HeadingRadians"/>
+        ///  <seealso cref="GunHeadingRadians"/>
         ///</summary>
         public double RadarHeadingRadians
         {
@@ -1837,19 +1795,19 @@ namespace robocode
         ///    // Executes the last SetTurnGunLeftRadians()
         ///    Execute();
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's gun to the left.
+        ///  <seealso cref="AdvancedRobot.SetTurnGunLeft(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnGunRight(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        ///</summary>
+        ///  <param name="radians"> the amount of radians to turn the robot's gun to the left.
         ///  If {@code radians} &gt; 0 the robot's gun is set to turn left.
         ///  If {@code radians} &lt; 0 the robot's gun is set to turn right.
-        ///  If {@code radians} = 0 the robot's gun is set to Stop turning.
-        ///  @see AdvancedRobot#SetTurnGunLeft(double) SetTurnGunLeft(double)
-        ///  @see #TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double)
-        ///  @see #TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double)
-        ///  @see AdvancedRobot#SetTurnGunRight(double) SetTurnGunRight(double)
-        ///  @see AdvancedRobot#SetTurnGunRightRadians(double) SetTurnGunRightRadians(double)
-        ///  @see #setAdjustGunForRobotTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot's gun is set to Stop turning.</param>
         public void SetTurnGunLeftRadians(double radians)
         {
             if (peer != null)
@@ -1887,19 +1845,19 @@ namespace robocode
         ///    // Executes the last SetTurnGunRightRadians()
         ///    Execute();
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's gun to the right.
+        ///  <seealso cref="AdvancedRobot.SetTurnGunRight(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnGunLeft(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        ///</summary>
+        ///  <param name="radians">the amount of radians to turn the robot's gun to the right.
         ///  If {@code radians} &gt; 0 the robot's gun is set to turn left.
         ///  If {@code radians} &lt; 0 the robot's gun is set to turn right.
-        ///  If {@code radians} = 0 the robot's gun is set to Stop turning.
-        ///  @see AdvancedRobot#SetTurnGunRight(double) SetTurnGunRight(double)
-        ///  @see #TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double)
-        ///  @see #TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double)
-        ///  @see AdvancedRobot#SetTurnGunLeft(double) SetTurnGunLeft(double)
-        ///  @see AdvancedRobot#SetTurnGunLeftRadians(double) SetTurnGunLeftRadians(double)
-        ///  @see #setAdjustGunForRobotTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot's gun is set to Stop turning.</param>
         public void SetTurnGunRightRadians(double radians)
         {
             if (peer != null)
@@ -1937,20 +1895,20 @@ namespace robocode
         ///    // Executes the last SetTurnRadarLeftRadians()
         ///    Execute();
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's radar to the left.
+        ///  <seealso cref="AdvancedRobot.SetTurnRadarLeft(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnRadarRightRadians(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnRadarRight(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForRobotTurn"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
+        ///</summary>
+        ///  <param name="radians">the amount of radians to turn the robot's radar to the left.
         ///  If {@code radians} &gt; 0 the robot's radar is set to turn left.
         ///  If {@code radians} &lt; 0 the robot's radar is set to turn right.
-        ///  If {@code radians} = 0 the robot's radar is set to Stop turning.
-        ///  @see AdvancedRobot#SetTurnRadarLeft(double) SetTurnRadarLeft(double)
-        ///  @see #TurnRadarLeft(double)
-        ///  @see #TurnRadarLeftRadians(double)
-        ///  @see #TurnRadarRight(double)
-        ///  @see #TurnRadarRightRadians(double)
-        ///  @see AdvancedRobot#SetTurnRadarRight(double) SetTurnRadarRight(double)
-        ///  @see AdvancedRobot#SetTurnRadarRightRadians(double) SetTurnRadarRightRadians(double)
-        ///  @see #setAdjustRadarForRobotTurn(bool)
-        ///  @see #setAdjustRadarForGunTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot's radar is set to Stop turning.</param>
         public void SetTurnRadarLeftRadians(double radians)
         {
             if (peer != null)
@@ -1963,7 +1921,6 @@ namespace robocode
             }
         }
 
-        /// 
         ///<summary>
         ///  Sets the robot's radar to turn right by radians when the next execution
         ///  takes place.
@@ -1988,20 +1945,20 @@ namespace robocode
         ///    // Executes the last SetTurnRadarRightRadians()
         ///    Execute();
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's radar to the right.
+        ///  <seealso cref="AdvancedRobot.SetTurnRadarRight(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnRadarLeft(double)"/>
+        ///  <seealso cref="AdvancedRobot.SetTurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForRobotTurn"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
+        ///</summary>
+        ///  <param name="radians"> the amount of radians to turn the robot's radar to the right.
         ///  If {@code radians} &gt; 0 the robot's radar is set to turn left.
         ///  If {@code radians} &lt; 0 the robot's radar is set to turn right.
-        ///  If {@code radians} = 0 the robot's radar is set to Stop turning.
-        ///  @see AdvancedRobot#SetTurnRadarRight(double) SetTurnRadarRight(double)
-        ///  @see #TurnRadarRight(double)
-        ///  @see #TurnRadarRightRadians(double)
-        ///  @see #TurnRadarLeft(double)
-        ///  @see #TurnRadarLeftRadians(double)
-        ///  @see AdvancedRobot#SetTurnRadarLeft(double) SetTurnRadarLeft(double)
-        ///  @see AdvancedRobot#SetTurnRadarLeftRadians(double) SetTurnRadarLeftRadians(double)
-        ///  @see #setAdjustRadarForRobotTurn(bool)
-        ///  @see #setAdjustRadarForGunTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot's radar is set to Stop turning.</param>
         public void SetTurnRadarRightRadians(double radians)
         {
             if (peer != null)
@@ -2014,7 +1971,6 @@ namespace robocode
             }
         }
 
-        /// 
         ///<summary>
         ///  Immediately turns the robot's gun to the left by radians.
         ///  <p />
@@ -2033,23 +1989,23 @@ namespace robocode
         ///    // Afterwards, turn the robot's gun 90 degrees to the right
         ///    TurnGunLeftRadians(-Math.PI / 2);
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's gun to the left.
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        ///</summary>
+        ///  <param name="radians">the amount of radians to turn the robot's gun to the left.
         ///  If {@code radians} &gt; 0 the robot's gun will turn left.
         ///  If {@code radians} &lt; 0 the robot's gun will turn right.
-        ///  If {@code radians} = 0 the robot's gun will not turn, but Execute.
-        ///  @see #TurnGunLeft(double)
-        ///  @see #TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double)
-        ///  @see #TurnLeft(double)
-        ///  @see #TurnLeftRadians(double)
-        ///  @see #TurnRight(double)
-        ///  @see #TurnRightRadians(double)
-        ///  @see #TurnRadarLeft(double)
-        ///  @see #TurnRadarLeftRadians(double)
-        ///  @see #TurnRadarRight(double)
-        ///  @see #TurnRadarRightRadians(double)
-        ///  @see #setAdjustGunForRobotTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot's gun will not turn, but Execute.</param>        
         public void TurnGunLeftRadians(double radians)
         {
             if (peer != null)
@@ -2062,7 +2018,6 @@ namespace robocode
             }
         }
 
-        /// 
         ///<summary>
         ///  Immediately turns the robot's gun to the right by radians.
         ///  This call executes immediately, and does not return until it is complete,
@@ -2080,23 +2035,23 @@ namespace robocode
         ///    // Afterwards, turn the robot's gun 90 degrees to the left
         ///    TurnGunRightRadians(-Math.PI / 2);
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's gun to the right.
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnRadarLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnRadarRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        ///</summary>
+        ///  <param name="radians">the amount of radians to turn the robot's gun to the right.
         ///  If {@code radians} &gt; 0 the robot's gun will turn right.
         ///  If {@code radians} &lt; 0 the robot's gun will turn left.
-        ///  If {@code radians} = 0 the robot's gun will not turn, but Execute.
-        ///  @see #TurnGunRight(double)
-        ///  @see #TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double)
-        ///  @see #TurnLeft(double)
-        ///  @see #TurnLeftRadians(double)
-        ///  @see #TurnRight(double)
-        ///  @see #TurnRightRadians(double)
-        ///  @see #TurnRadarLeft(double)
-        ///  @see #TurnRadarLeftRadians(double)
-        ///  @see #TurnRadarRight(double)
-        ///  @see #TurnRadarRightRadians(double)
-        ///  @see #setAdjustGunForRobotTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot's gun will not turn, but Execute.</param>
         public void TurnGunRightRadians(double radians)
         {
             if (peer != null)
@@ -2109,7 +2064,6 @@ namespace robocode
             }
         }
 
-        /// 
         ///<summary>
         ///  Immediately turns the robot's radar to the left by radians.
         ///  <p />
@@ -2128,24 +2082,24 @@ namespace robocode
         ///    // Afterwards, turn the robot's radar 90 degrees to the right
         ///    TurnRadarLeftRadians(-Math.PI / 2);
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's radar to the left.
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForRobotTurn"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
+        ///</summary>
+        ///  <param name="radians">the amount of radians to turn the robot's radar to the left.
         ///  If {@code radians} &gt; 0 the robot's radar will turn left.
         ///  If {@code radians} &lt; 0 the robot's radar will turn right.
-        ///  If {@code radians} = 0 the robot's radar will not turn, but Execute.
-        ///  @see #TurnRadarLeft(double)
-        ///  @see #TurnRadarRight(double)
-        ///  @see #TurnGunRightRadians(double)
-        ///  @see #TurnLeft(double)
-        ///  @see #TurnLeftRadians(double)
-        ///  @see #TurnRight(double)
-        ///  @see #TurnRightRadians(double)
-        ///  @see #TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double)
-        ///  @see #TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double)
-        ///  @see #setAdjustRadarForRobotTurn(bool)
-        ///  @see #setAdjustRadarForGunTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot's radar will not turn, but Execute.</param>
         public void TurnRadarLeftRadians(double radians)
         {
             if (peer != null)
@@ -2158,7 +2112,6 @@ namespace robocode
             }
         }
 
-        /// 
         ///<summary>
         ///  Immediately turns the robot's radar to the right by radians.
         ///  This call executes immediately, and does not return until it is complete,
@@ -2176,24 +2129,24 @@ namespace robocode
         ///    // Afterwards, turn the robot's radar 90 degrees to the left
         ///    TurnRadarRightRadians(-Math.PI / 2);
         ///  </pre>
-        ///  @param radians the amount of radians to turn the robot's radar to the right.
+        ///  <seealso cref="Robot.TurnRadarRight(double)"/>
+        ///  <seealso cref="Robot.TurnRadarLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnLeft(double)"/>
+        ///  <seealso cref="TurnLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnRight(double)"/>
+        ///  <seealso cref="TurnRightRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunLeft(double)"/>
+        ///  <seealso cref="TurnGunLeftRadians(double)"/>
+        ///  <seealso cref="Robot.TurnGunRight(double)"/>
+        ///  <seealso cref="TurnGunRightRadians(double)"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForRobotTurn"/>
+        ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
+        ///</summary>
+        ///  <param name="radians">the amount of radians to turn the robot's radar to the right.
         ///  If {@code radians} &gt; 0 the robot's radar will turn right.
         ///  If {@code radians} &lt; 0 the robot's radar will turn left.
-        ///  If {@code radians} = 0 the robot's radar will not turn, but Execute.
-        ///  @see #TurnRadarRight(double)
-        ///  @see #TurnRadarLeft(double)
-        ///  @see #TurnGunLeftRadians(double)
-        ///  @see #TurnLeft(double)
-        ///  @see #TurnLeftRadians(double)
-        ///  @see #TurnRight(double)
-        ///  @see #TurnRightRadians(double)
-        ///  @see #TurnGunLeft(double)
-        ///  @see #TurnGunLeftRadians(double)
-        ///  @see #TurnGunRight(double)
-        ///  @see #TurnGunRightRadians(double)
-        ///  @see #setAdjustRadarForRobotTurn(bool)
-        ///  @see #setAdjustRadarForGunTurn(bool)
-        ///</summary>
+        ///  If {@code radians} = 0 the robot's radar will not turn, but Execute.</param>
         public void TurnRadarRightRadians(double radians)
         {
             if (peer != null)
@@ -2215,11 +2168,11 @@ namespace robocode
         ///  means that the gun is currently turning to the left.
         ///
         ///  @return the angle remaining in the gun's turn, in radians
-        ///  @see AdvancedRobot#getGunTurnRemaining()
-        ///  @see AdvancedRobot#getTurnRemaining() getTurnRemaining()
-        ///  @see #getTurnRemainingRadians()
-        ///  @see AdvancedRobot#getRadarTurnRemaining() getRadarTurnRemaining()
-        ///  @see #getRadarTurnRemainingRadians()
+        ///  <seealso cref="AdvancedRobot.GunTurnRemaining"/>
+        ///  <seealso cref="AdvancedRobot.TurnRemaining"/>
+        ///  <seealso cref="TurnRemainingRadians"/>
+        ///  <seealso cref="AdvancedRobot.RadarTurnRemaining"/>
+        ///  <seealso cref="RadarTurnRemainingRadians"/>
         ///</summary>
         public double GunTurnRemainingRadians
         {
@@ -2243,11 +2196,11 @@ namespace robocode
         ///  means that the radar is currently turning to the left.
         ///
         ///  @return the angle remaining in the radar's turn, in radians
-        ///  @see AdvancedRobot#getRadarTurnRemaining()
-        ///  @see AdvancedRobot#getTurnRemaining() getTurnRemaining()
-        ///  @see #getTurnRemainingRadians()
-        ///  @see AdvancedRobot#getGunTurnRemaining() getGunTurnRemaining()
-        ///  @see #getGunTurnRemainingRadians()
+        ///  <seealso cref="RadarTurnRemaining"/>
+        ///  <seealso cref="TurnRemaining"/>
+        ///  <seealso cref="TurnRemainingRadians"/>
+        ///  <seealso cref="GunTurnRemaining"/>
+        ///  <seealso cref="GunTurnRemainingRadians"/>
         ///</summary>
         public double RadarTurnRemainingRadians
         {
@@ -2271,11 +2224,11 @@ namespace robocode
         ///  means that the robot is currently turning to the left.
         ///
         ///  @return the angle remaining in the robot's turn, in radians
-        ///  @see AdvancedRobot#getTurnRemaining()
-        ///  @see AdvancedRobot#getGunTurnRemaining() getGunTurnRemaining()
-        ///  @see #getGunTurnRemainingRadians()
-        ///  @see AdvancedRobot#getRadarTurnRemaining() getRadarTurnRemaining()
-        ///  @see #getRadarTurnRemainingRadians()
+        ///  <seealso cref="AdvancedRobot.TurnRemaining"/>
+        ///  <seealso cref="AdvancedRobot.GunTurnRemaining"/>
+        ///  <seealso cref="GunTurnRemainingRadians"/>
+        ///  <seealso cref="AdvancedRobot.RadarTurnRemaining"/>
+        ///  <seealso cref="RadarTurnRemainingRadians"/>
         ///</summary>
         public double TurnRemainingRadians
         {
@@ -2298,4 +2251,4 @@ namespace robocode
     }
 }
 
-//happy
+//doc

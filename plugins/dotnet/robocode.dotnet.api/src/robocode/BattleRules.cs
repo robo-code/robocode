@@ -13,18 +13,8 @@ using net.sf.robocode.security;
 
 namespace robocode
 {
-    /// 
     ///<summary>
-    ///  Contains the battle rules returned by {@link robocode.control.events.BattleStartedEvent#getBattleRules()
-    ///  BattleStartedEvent.getBattleRules()} when a battle is started and
-    ///  {@link robocode.control.events.BattleCompletedEvent#getBattleRules() BattleCompletedEvent.getBattleRules()}
-    ///  when a battle is completed.
-    ///
-    ///  @see robocode.control.events.BattleStartedEvent BattleStartedEvent
-    ///  @see robocode.control.events.BattleCompletedEvent BattleCompletedEvent
-    ///
-    ///  @author Pavel Savara (original)
-    ///  @since 1.6.2
+    ///  Contains the battle rules
     ///</summary>
     [Serializable]
     public sealed class BattleRules
@@ -35,57 +25,44 @@ namespace robocode
         private readonly double gunCoolingRate;
         private readonly long inactivityTime;
 
-        /// 
         ///<summary>
         ///  Returns the battlefield width.
-        ///
-        ///  @return the battlefield width.
         ///</summary>
         public int BattlefieldWidth
         {
             get { return battlefieldWidth; }
         }
 
-        /// 
         ///<summary>
         ///  Returns the battlefield height.
-        ///
-        ///  @return the battlefield height.
         ///</summary>
         public int BattlefieldHeight
         {
             get { return battlefieldHeight; }
         }
 
-        /// 
         ///<summary>
         ///  Returns the number of rounds.
-        ///
-        ///  @return the number of rounds.
         ///</summary>
         public int NumRounds
         {
             get { return numRounds; }
         }
 
-        /// 
         ///<summary>
         ///  Returns the rate at which the gun will cool down, i.e. the amount of heat the gun heat will drop per turn.
         ///  <p />
         ///  The gun cooling rate is default 0.1 per turn, but can be changed by the battle setup.
         ///  So don't count on the cooling rate being 0.1!
-        ///
-        ///  @return the gun cooling rate.
-        ///  @see Robot#GetGunHeat()
-        ///  @see Robot#Fire(double)
-        ///  @see Robot#FireBullet(double)
+        ///  <seealso cref="Robot.GunHeat"/>
+        ///  <seealso cref="Robot.Fire(double)"/>
+        ///  <seealso cref="Robot.FireBullet(double)"/>
         ///</summary>
         public double GunCoolingRate
         {
             get { return gunCoolingRate; }
         }
 
-        /// 
         ///<summary>
         ///  Returns the allowed inactivity time, where the robot is not taking any action, before will begin to be zapped.
         ///  The inactivity time is measured in turns, and is the allowed time that a robot is allowed to omit taking
@@ -97,10 +74,8 @@ namespace robocode
         ///  <p />
         ///  The allowed inactivity time is per default 450 turns, but can be changed by the battle setup.
         ///  So don't count on the inactivity time being 450 turns!
-        ///
-        ///  @return the allowed inactivity time.
-        ///  @see Robot#DoNothing()
-        ///  @see AdvancedRobot#Execute()
+        ///  <seealso cref="Robot.DoNothing()"/>
+        ///  <seealso cref="AdvancedRobot.Execute()"/>
         ///</summary>
         public long InactivityTime
         {
@@ -133,4 +108,4 @@ namespace robocode
     }
 }
 
-//happy
+//doc

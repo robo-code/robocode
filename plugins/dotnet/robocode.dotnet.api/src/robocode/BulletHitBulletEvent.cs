@@ -17,12 +17,9 @@ using robocode.robotinterfaces;
 
 namespace robocode
 {
-    /// 
     ///<summary>
-    ///  This evnt is sent to {@link Robot#OnBulletHitBullet(BulletHitBulletEvent)
-    ///  OnBulletHitBullet} when one of your bullets has hit another bullet.
-    ///
-    ///  @author Mathew A. Nelson (original)
+    ///  This evnt is sent to <see cref="Robot#OnBulletHitBullet(BulletHitBulletEvent)"/>
+    ///  when one of your bullets has hit another bullet.
     ///</summary>
     [Serializable]
     public sealed class BulletHitBulletEvent : Event
@@ -32,12 +29,8 @@ namespace robocode
         private Bullet bullet;
         private readonly Bullet hitBullet;
 
-        /// 
         ///<summary>
-        ///  Called by the game to create a new {@code BulletHitEvent}.
-        ///
-        ///  @param bullet	your bullet that hit another bullet
-        ///  @param hitBullet the bullet that was hit by your bullet
+        ///  Called by the game to create a new BulletHitEvent.
         ///</summary>
         public BulletHitBulletEvent(Bullet bullet, Bullet hitBullet)
         {
@@ -45,22 +38,16 @@ namespace robocode
             this.hitBullet = hitBullet;
         }
 
-        /// 
         ///<summary>
         ///  Returns your bullet that hit another bullet.
-        ///
-        ///  @return your bullet
         ///</summary>
         public Bullet Bullet
         {
             get { return bullet; }
         }
 
-        /// 
         ///<summary>
         ///  Returns the bullet that was hit by your bullet.
-        ///
-        ///  @return the bullet that was hit
         ///</summary>
         public Bullet HitBullet
         {

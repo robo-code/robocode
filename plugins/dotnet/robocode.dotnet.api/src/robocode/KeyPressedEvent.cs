@@ -12,7 +12,6 @@
  *     - Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -21,13 +20,10 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A KeyPressedEvent is sent to {@link Robot#OnKeyPressed(java.awt.event.KeyEvent)
-    /// OnKeyPressed()} when a key has been pressed on the keyboard.
-    ///
-    /// @author Pavel Savara (original)
-    /// @see KeyReleasedEvent
-    /// @see KeyTypedEvent
-    /// @since 1.6.1
+    /// A KeyPressedEvent is sent to <see cref="Robot.OnKeyPressed(KeyEvent)"/>
+    /// when a key has been pressed on the keyboard.
+    /// <seealso cref="KeyReleasedEvent"/>
+    /// <seealso cref="KeyTypedEvent"/>
     /// </summary>
     [Serializable]
     public sealed class KeyPressedEvent : KeyEvent
@@ -36,8 +32,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new KeyPressedEvent.
-        ///
-        /// @param source the source key evnt originating from the AWT.
         /// </summary>
         public KeyPressedEvent(char keyChar, int keyCode, int keyLocation, int id, int modifiersEx, long when)
             : base(keyChar, keyCode, keyLocation, id, modifiersEx, when)
@@ -108,4 +102,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

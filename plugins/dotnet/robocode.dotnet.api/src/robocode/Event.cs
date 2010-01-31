@@ -30,9 +30,6 @@ namespace robocode
 {
     /// <summary>
     /// The superclass of all Robocode events.
-    ///
-    /// @author Mathew A. Nelson (original)
-    /// @author Flemming N. Larsen (contributor)
     /// </summary>
     [Serializable]
     public abstract class Event : IComparable<Event>
@@ -58,12 +55,12 @@ namespace robocode
         /// robot to make sure the events are listed in chronological order.
         /// <p/>
         ///
-        /// @param evnt the evnt to compare to this evnt.
-        /// @return a negative value if this evnt has higher precedence, i.e. must
+        /// Returns a negative value if this evnt has higher precedence, i.e. must
         ///         be listed before the specified evnt. A positive value if this event
         ///         has a lower precedence, i.e. must be listed after the specified evnt.
         ///         0 means that the precedence of the two events are equal.
         /// </summary>
+        /// <param name="evnt">the evnt to compare to this evnt.</param>
         public virtual int CompareTo(Event evnt)
         {
             // Compare the time difference which has precedence over priority.
@@ -93,8 +90,6 @@ namespace robocode
         /// Returns the priority of this evnt.
         /// An evnt priority is a value from 0 - 99. The higher value, the higher
         /// priority. The default priority is 80.
-        ///
-        /// @return the priority of this event
         /// </summary>
         public virtual int Priority
         {
@@ -124,8 +119,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the time this evnt occurred.
-        ///
-        /// @return the time this evnt occurred.
         /// </summary>
         public long Time
         {
@@ -138,17 +131,11 @@ namespace robocode
                 }
                 else
                 {
-                    LoggerN.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, time can't be changed.");
+                    LoggerN.printlnToRobotsConsole("SYSTEM: After the event was added to queue, time can't be changed.");
                 }
             }
         }
 
-        /// <summary>
-        /// Sets the time when this evnt occurred.
-        ///
-        /// @param time the time when this evnt occurred. 
-        /// </summary>
-        // this method is invisible on RobotAPI
         private void setTimeHidden(long time)
         {
             // we do not replace time which is set by robot to the future 
@@ -159,68 +146,34 @@ namespace robocode
             addedToQueue = true;
         }
 
-        /// <summary>
-        /// Dispatch this evnt for a robot, it's statistics, and graphics context.
-        ///
-        /// @param robot the robot to dispatch to.
-        /// @param statics the statistics to dispatch to.
-        /// @param graphics the graphics to dispatch to.
-        /// </summary>
-        // this method is invisible on RobotAPI
         internal virtual void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
         }
 
-        /// <summary>
-        /// Returns the default priority of this evnt class.
-        /// 
-        /// @return the default priority of this evnt class.
-        /// </summary>
-        // this method is invisible on RobotAPI
         internal virtual int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <summary>
-        /// Checks if this evnt must be delivered evnt after timeout.
-        ///
-        /// @return {@code true} when this evnt must be delivered even after timeout; {@code false} otherwise.
-        /// </summary>
-        // this method is invisible on RobotAPI
         internal virtual bool IsCriticalEvent
         {
             get { return false; }
         }
-
-        // this method is invisible on RobotAPI
 
         internal virtual byte SerializationType
         {
             get { throw new Exception("Serialization not supported on this evnt type"); }
         }
 
-        /// <summary>
-        /// This method is replacing bullet on evnt with bullet instance which was passed to robot as result of Fire command
-        /// @param bullets collection containing all moving bullets known to robot
-        /// </summary>
-        // this method is invisible on RobotAPI
         internal virtual void UpdateBullets(Dictionary<int, Bullet> bullets)
         {
         }
 
-        /// <summary>
-        /// Creates a hidden evnt helper for accessing hidden methods on this obj.
-        /// 
-        /// @return a hidden evnt helper.
-        /// </summary>
-        // this method is invisible on RobotAPI
         private static IHiddenEventHelper createHiddenHelper()
         {
             return new HiddenEventHelper();
         }
 
-        // this class is invisible on RobotAPI
         private class HiddenEventHelper : IHiddenEventHelper
         {
             public void setTime(Event evnt, long newTime)
@@ -260,4 +213,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

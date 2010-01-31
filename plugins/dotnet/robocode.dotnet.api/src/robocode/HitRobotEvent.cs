@@ -12,7 +12,6 @@
  *     - Updated Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -21,11 +20,9 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A HitRobotEvent is sent to {@link Robot#OnHitRobot(HitRobotEvent) OnHitRobot()}
+    /// A HitRobotEvent is sent to <see cref="Robot.OnHitRobot(HitRobotEvent)"/>
     /// when your robot collides with another robot.
     /// You can use the information contained in this evnt to determine what to do.
-    ///
-    /// @author Mathew A. Nelson (original)
     /// </summary>
     [Serializable]
     public sealed class HitRobotEvent : Event
@@ -39,12 +36,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new HitRobotEvent.
-        ///
-        /// @param name	the name of the robot you hit
-        /// @param bearing the bearing to the robot that your robot hit, in radians
-        /// @param energy  the amount of energy of the robot you hit
-        /// @param atFault {@code true} if your robot was moving toward the other
-        ///                robot; {@code false} otherwise
         /// </summary>
         public HitRobotEvent(string name, double bearing, double energy, bool atFault)
         {
@@ -56,9 +47,7 @@ namespace robocode
 
         /// <summary>
         /// Returns the bearing to the robot you hit, relative to your robot's
-        /// heading, in degrees (-180 <= getBearing() < 180)
-        ///
-        /// @return the bearing to the robot you hit, in degrees
+        /// heading, in degrees (-180 &lt;= getBearing() &lt; 180)
         /// </summary>
         public double Bearing
         {
@@ -67,9 +56,7 @@ namespace robocode
 
         /// <summary>
         /// Returns the bearing to the robot you hit, relative to your robot's
-        /// heading, in radians (-PI <= getBearingRadians() < PI)
-        ///
-        /// @return the bearing to the robot you hit, in radians
+        /// heading, in radians (-PI &lt;= getBearingRadians() &lt; PI)
         /// </summary>
         public double BearingRadians
         {
@@ -78,8 +65,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the amount of energy of the robot you hit.
-        ///
-        /// @return the amount of energy of the robot you hit
         /// </summary>
         public double Energy
         {
@@ -88,8 +73,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the name of the robot you hit.
-        ///
-        /// @return the name of the robot you hit
         /// </summary>
         public string Name
         {
@@ -105,9 +88,6 @@ namespace robocode
         /// Note: If two robots are moving toward each other and collide, they will
         /// each receive two HitRobotEvents. The first will be the one if isMyFault()
         /// returns {@code true}.
-        ///
-        /// @return {@code true} if your robot was moving towards the robot that was
-        ///         hit; {@code false} otherwise.
         /// </summary>
         public bool IsMyFault
         {
@@ -198,4 +178,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

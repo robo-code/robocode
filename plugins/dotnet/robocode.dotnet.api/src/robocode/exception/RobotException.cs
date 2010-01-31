@@ -14,15 +14,9 @@ using System.Runtime.Serialization;
 
 namespace robocode.exception
 {
-    /// <summary>
-    /// @author Mathew A. Nelson (original)
-    /// </summary>
     [Serializable]
     public class RobotException : Exception
     {
-        // Must be error!
-
-
         public RobotException()
         {
         }

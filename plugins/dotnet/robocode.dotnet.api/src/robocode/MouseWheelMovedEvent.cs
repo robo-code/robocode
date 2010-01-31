@@ -21,18 +21,15 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A MouseWheelMovedEvent is sent to {@link Robot#OnMouseWheelMoved(java.awt.event.MouseWheelEvent e)
-    /// OnMouseWheelMoved()} when the mouse wheel is rotated inside the battle view.
-    ///
-    /// @author Pavel Savara (original)
-    /// @see MouseClickedEvent
-    /// @see MousePressedEvent
-    /// @see MouseReleasedEvent
-    /// @see MouseEnteredEvent
-    /// @see MouseExitedEvent
-    /// @see MouseMovedEvent
-    /// @see MouseDraggedEvent
-    /// @since 1.6.1
+    /// A MouseWheelMovedEvent is sent to <see cref="Robot.OnMouseWheelMoved(MouseWheelMovedEvent)"/>
+    /// when the mouse wheel is rotated inside the battle view.
+    /// <seealso cref="MouseClickedEvent"/>
+    /// <seealso cref="MousePressedEvent"/>
+    /// <seealso cref="MouseReleasedEvent"/>
+    /// <seealso cref="MouseEnteredEvent"/>
+    /// <seealso cref="MouseExitedEvent"/>
+    /// <seealso cref="MouseMovedEvent"/>
+    /// <seealso cref="MouseDraggedEvent"/>
     /// </summary>
     [Serializable]
     public sealed class MouseWheelMovedEvent : MouseEvent
@@ -44,8 +41,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new MouseWheelMovedEvent.
-        ///
-        /// @param source the source mouse evnt originating from the AWT.
         /// </summary>
         public MouseWheelMovedEvent(int clickCount, int x, int y, int scrollType, int scrollAmount, int wheelRotation,
                                     int id, int modifiersEx, long when)
@@ -143,4 +138,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

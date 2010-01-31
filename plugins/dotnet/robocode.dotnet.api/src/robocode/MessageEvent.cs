@@ -18,11 +18,9 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A MessageEvent is sent to {@link TeamRobot#OnMessageReceived(MessageEvent)
-    /// OnMessageReceived()} when a teammate sends a message to your robot.
+    /// A MessageEvent is sent to <see cref="TeamRobot.OnMessageReceived(MessageEvent)"/>
+    /// when a teammate sends a message to your robot.
     /// You can use the information contained in this evnt to determine what to do.
-    ///
-    /// @author Mathew A. Nelson (original)
     /// </summary>
     [Serializable]
     public sealed class MessageEvent : Event
@@ -35,9 +33,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new MessageEvent.
-        ///
-        /// @param sender  the name of the sending robot
-        /// @param message the message for your robot
         /// </summary>
         public MessageEvent(string sender, object message)
         {
@@ -47,8 +42,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the name of the sending robot.
-        ///
-        /// @return the name of the sending robot
         /// </summary>
         public string Sender
         {
@@ -57,8 +50,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the message itself.
-        ///
-        /// @return the message
         /// </summary>
         public object Message
         {
@@ -91,4 +82,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

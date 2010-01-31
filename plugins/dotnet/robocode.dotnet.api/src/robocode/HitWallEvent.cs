@@ -12,7 +12,6 @@
  *     - Updated Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -21,11 +20,9 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A HitWallEvent is sent to {@link Robot#OnHitWall(HitWallEvent) OnHitWall()}
+    /// A HitWallEvent is sent to <see cref="Robot.OnHitWall(HitWallEvent)"/>
     /// when you collide a wall.
     /// You can use the information contained in this evnt to determine what to do.
-    ///
-    /// @author Mathew A. Nelson (original)
     /// </summary>
     [Serializable]
     public sealed class HitWallEvent : Event
@@ -36,8 +33,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new HitWallEvent.
-        ///
-        /// @param bearing the bearing to the wall that your robot hit, in radians
         /// </summary>
         public HitWallEvent(double bearing)
         {
@@ -46,9 +41,7 @@ namespace robocode
 
         /// <summary>
         /// Returns the bearing to the wall you hit, relative to your robot's
-        /// heading, in degrees (-180 <= getBearing() < 180)
-        ///
-        /// @return the bearing to the wall you hit, in degrees
+        /// heading, in degrees (-180 &lt;= getBearing() &lt; 180)
         /// </summary>
         public double Bearing
         {
@@ -58,9 +51,7 @@ namespace robocode
 
         /// <summary>
         /// Returns the bearing to the wall you hit, relative to your robot's
-        /// heading, in radians (-PI <= getBearingRadians() < PI)
-        ///
-        /// @return the bearing to the wall you hit, in radians
+        /// heading, in radians (-PI &lt;= getBearingRadians() &lt; PI)
         /// </summary>
         public double BearingRadians
         {
@@ -118,4 +109,4 @@ namespace robocode
         }
     }
 }
-//happy
+//doc

@@ -61,9 +61,8 @@ namespace robocode
         /// <summary>
         /// Creates a new Condition with the specified name, and default priority,
         /// which is 80.
-        ///
-        /// @param name the name for the new Condition
         /// </summary>
+        /// <param name="name">the name for the new Condition</param>
         protected Condition(string name)
         {
             this.name = name;
@@ -73,10 +72,9 @@ namespace robocode
         /// Creates a new Condition with the specified name and priority.
         /// A condition priority is a value from 0 - 99. The higher value, the
         /// higher priority. The default priority is 80.
-        ///
-        /// @param name	 the name for the new condition
-        /// @param priority the priority of the new condition
         /// </summary>
+        /// <param name="name">the name for the new condition</param>
+        /// <param name="priority">the priority of the new condition</param>
         protected Condition(string name, int priority)
         {
             this.name = name;
@@ -97,8 +95,6 @@ namespace robocode
 
         /// <summary>
         /// Returns the name of this condition.
-        ///
-        /// @return the name of this condition
         /// </summary>
         public string Name
         {
@@ -110,8 +106,6 @@ namespace robocode
         /// Returns the priority of this condition.
         /// A condition priority is a value from 0 - 99. The higher value, the
         /// higher priority. The default priority is 80.
-        ///
-        /// @return the priority of this condition
         /// </summary>
         public int Priority
         {
@@ -122,13 +116,10 @@ namespace robocode
         /// <summary>
         /// Overriding the Test() method is the point of a Condition.
         /// The game will call your Test() function, and take action if it returns
-        /// {@code true}. This is valid for both {@link AdvancedRobot#WaitFor} and
-        /// {@link AdvancedRobot#AddCustomEvent}.
+        /// {@code true}. This is valid for both <see cref="AdvancedRobot.WaitFor"/> and
+        /// <see cref="AdvancedRobot#AddCustomEvent"/>
         /// <p/>
         /// You may not take any actions inside of Test().
-        ///
-        /// @return {@code true} if the condition has been met, {@code false}
-        ///         otherwise.
         /// </summary>
         public virtual bool Test()
         {

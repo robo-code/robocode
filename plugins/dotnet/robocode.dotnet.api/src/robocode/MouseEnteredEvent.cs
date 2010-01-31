@@ -12,7 +12,6 @@
  *     - Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -21,18 +20,15 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// A MouseEnteredEvent is sent to {@link Robot#OnMouseEntered(java.awt.event.MouseEvent)
-    /// OnMouseEntered()} when the mouse has entered the battle view.
-    ///
-    /// @author Pavel Savara (original)
-    /// @see MouseClickedEvent
-    /// @see MousePressedEvent
-    /// @see MouseReleasedEvent
-    /// @see MouseExitedEvent
-    /// @see MouseMovedEvent
-    /// @see MouseDraggedEvent
-    /// @see MouseWheelMovedEvent
-    /// @since 1.6.1
+    /// A MouseEnteredEvent is sent to <see cref="Robot.OnMouseEntered(MouseEvent)"/>
+    /// when the mouse has entered the battle view.
+    /// <seealso cref="MouseClickedEvent"/>
+    /// <seealso cref="MousePressedEvent"/>
+    /// <seealso cref="MouseReleasedEvent"/>
+    /// <seealso cref="MouseExitedEvent"/>
+    /// <seealso cref="MouseMovedEvent"/>
+    /// <seealso cref="MouseDraggedEvent"/>
+    /// <seealso cref="MouseWheelMovedEvent"/>
     /// </summary>
     [Serializable]
     public sealed class MouseEnteredEvent : MouseEvent
@@ -41,8 +37,6 @@ namespace robocode
 
         /// <summary>
         /// Called by the game to create a new MouseDraggedEvent.
-        ///
-        /// @param source the source mouse evnt originating from the AWT.
         /// </summary>
         public MouseEnteredEvent(int button, int clickCount, int x, int y, int id, int modifiersEx, long when)
             : base(button, clickCount, x, y, id, modifiersEx, when)
@@ -116,4 +110,4 @@ namespace robocode
     }
 }
 
-//happy
+//doc
