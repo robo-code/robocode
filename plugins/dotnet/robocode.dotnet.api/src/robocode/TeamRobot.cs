@@ -9,10 +9,10 @@
 #endregion
 
 using System.Collections.Generic;
-using robocode.robotinterfaces;
-using robocode.robotinterfaces.peer;
+using Robocode.RobotInterfaces;
+using Robocode.RobotInterfaces.Peer;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// An an advanced type of robot that supports sending messages between team

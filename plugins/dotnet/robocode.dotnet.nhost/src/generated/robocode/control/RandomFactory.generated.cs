@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace robocode.control {
+namespace Robocode.control {
     
     
     #region Component Designer generated code 
@@ -31,7 +31,7 @@ namespace robocode.control {
         public RandomFactory() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::robocode.control.RandomFactory.staticClass, global::robocode.control.RandomFactory.@__ctorRandomFactory4, this);
+            @__env.NewObject(global::Robocode.control.RandomFactory.staticClass, global::Robocode.control.RandomFactory.@__ctorRandomFactory4, this);
         }
         
         protected RandomFactory(global::net.sf.jni4net.jni.JNIEnv @__env) : 
@@ -40,47 +40,47 @@ namespace robocode.control {
         
         public new static global::java.lang.Class _class {
             get {
-                return global::robocode.control.RandomFactory.staticClass;
+                return global::Robocode.control.RandomFactory.staticClass;
             }
         }
         
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
-            global::robocode.control.RandomFactory.staticClass = @__class;
-            global::robocode.control.RandomFactory._isDeterministic0 = @__env.GetMethodID(global::robocode.control.RandomFactory.staticClass, "isDeterministic", "()Z");
-            global::robocode.control.RandomFactory._getRandom1 = @__env.GetStaticMethodID(global::robocode.control.RandomFactory.staticClass, "getRandom", "()Ljava/util/Random;");
-            global::robocode.control.RandomFactory._setRandom2 = @__env.GetStaticMethodID(global::robocode.control.RandomFactory.staticClass, "setRandom", "(Ljava/util/Random;)V");
-            global::robocode.control.RandomFactory._resetDeterministic3 = @__env.GetStaticMethodID(global::robocode.control.RandomFactory.staticClass, "resetDeterministic", "(J)V");
-            global::robocode.control.RandomFactory.@__ctorRandomFactory4 = @__env.GetMethodID(global::robocode.control.RandomFactory.staticClass, "<init>", "()V");
+            global::Robocode.control.RandomFactory.staticClass = @__class;
+            global::Robocode.control.RandomFactory._isDeterministic0 = @__env.GetMethodID(global::Robocode.control.RandomFactory.staticClass, "isDeterministic", "()Z");
+            global::Robocode.control.RandomFactory._getRandom1 = @__env.GetStaticMethodID(global::Robocode.control.RandomFactory.staticClass, "getRandom", "()Ljava/util/Random;");
+            global::Robocode.control.RandomFactory._setRandom2 = @__env.GetStaticMethodID(global::Robocode.control.RandomFactory.staticClass, "setRandom", "(Ljava/util/Random;)V");
+            global::Robocode.control.RandomFactory._resetDeterministic3 = @__env.GetStaticMethodID(global::Robocode.control.RandomFactory.staticClass, "resetDeterministic", "(J)V");
+            global::Robocode.control.RandomFactory.@__ctorRandomFactory4 = @__env.GetMethodID(global::Robocode.control.RandomFactory.staticClass, "<init>", "()V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         public virtual bool isDeterministic() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.RandomFactory._isDeterministic0)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::Robocode.control.RandomFactory._isDeterministic0)));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/util/Random;")]
         public static global::java.util.Random getRandom() {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.util.Random>(@__env, @__env.CallStaticObjectMethodPtr(global::robocode.control.RandomFactory.staticClass, global::robocode.control.RandomFactory._getRandom1));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.util.Random>(@__env, @__env.CallStaticObjectMethodPtr(global::Robocode.control.RandomFactory.staticClass, global::Robocode.control.RandomFactory._getRandom1));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/util/Random;)V")]
         public static void setRandom(global::java.util.Random par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.CallStaticVoidMethod(global::robocode.control.RandomFactory.staticClass, global::robocode.control.RandomFactory._setRandom2, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
+            @__env.CallStaticVoidMethod(global::Robocode.control.RandomFactory.staticClass, global::Robocode.control.RandomFactory._setRandom2, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(J)V")]
         public static void resetDeterministic(long par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.CallStaticVoidMethod(global::robocode.control.RandomFactory.staticClass, global::robocode.control.RandomFactory._resetDeterministic3, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
+            @__env.CallStaticVoidMethod(global::Robocode.control.RandomFactory.staticClass, global::Robocode.control.RandomFactory._resetDeterministic3, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
         internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
-                return new global::robocode.control.RandomFactory(@__env);
+                return new global::Robocode.control.RandomFactory(@__env);
             }
         }
     }

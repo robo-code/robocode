@@ -31,7 +31,7 @@ public class TestRandom extends RobocodeTestBed {
 	}
 
 	public String getRobotNames() {
-		return "samplecs.Fire,tested.robotscs.Random";
+		return "SampleCs.Fire,tested.robotscs.Random";
 	}
 
 	@Override

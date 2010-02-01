@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 using net.sf.robocode.peer;
-using robocode;
-using robocode.robotinterfaces;
+using Robocode;
+using Robocode.RobotInterfaces;
 
 namespace net.sf.robocode.security
 {

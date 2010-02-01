@@ -1,4 +1,4 @@
-﻿#region Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
+#region Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
 
 /*
  * Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
@@ -36,7 +36,7 @@
 
 #endregion
 
-namespace robocode
+namespace Robocode
 {
 #pragma warning disable 1591
     /// <exclude/>

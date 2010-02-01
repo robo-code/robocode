@@ -9,9 +9,9 @@
 #endregion
 
 using System;
-using robocode.util;
+using Robocode.Util;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// Constants and methods that defines the rules of Robocode.

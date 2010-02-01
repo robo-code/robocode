@@ -21,10 +21,10 @@ using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
-using robocode;
-using robocode.exception;
-using robocode.robotinterfaces.peer;
-using robocode.util;
+using Robocode;
+using Robocode.Exception;
+using Robocode.RobotInterfaces.Peer;
+using Robocode.Util;
 using ByteBuffer = net.sf.robocode.nio.ByteBuffer;
 using Thread = System.Threading.Thread;
 

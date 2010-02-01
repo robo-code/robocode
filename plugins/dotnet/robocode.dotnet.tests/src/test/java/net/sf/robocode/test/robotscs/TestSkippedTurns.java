@@ -46,7 +46,7 @@ public class TestSkippedTurns extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "samplecs.TrackFire,tested.robotscs.SkipTurns";
+		return "SampleCs.TrackFire,tested.robotscs.SkipTurns";
 	}
 
 	@Override

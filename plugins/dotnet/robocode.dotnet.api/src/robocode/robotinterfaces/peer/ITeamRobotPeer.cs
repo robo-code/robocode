@@ -9,11 +9,12 @@
 #endregion
 
 using System.Collections.Generic;
+using Robocode;
 
-namespace robocode.robotinterfaces.peer
+namespace Robocode.RobotInterfaces.Peer
 {
     /// <summary>
-    /// The team robot peer for team robots like <see cref="robocode.TeamRobot"/>.
+    /// The team robot peer for team robots like <see cref="Robocode.TeamRobot"/>.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
@@ -114,7 +115,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.ITeamEvents.OnMessageReceived(MessageEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.ITeamEvents.OnMessageReceived(MessageEvent)"/>
         /// <seealso cref="MessageEvent"/>
         /// </summary>
         IList<MessageEvent> getMessageEvents();

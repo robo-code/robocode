@@ -11,9 +11,9 @@
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.robotinterfaces;
+using Robocode.RobotInterfaces;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// A SkippedTurnEvent is sent to <see cref="AdvancedRobot.OnSkippedTurn(SkippedTurnEvent)"/>

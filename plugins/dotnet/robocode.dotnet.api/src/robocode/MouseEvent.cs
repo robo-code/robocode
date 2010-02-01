@@ -10,7 +10,7 @@
 
 using System;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// Super class of all events that originates from the mouse.

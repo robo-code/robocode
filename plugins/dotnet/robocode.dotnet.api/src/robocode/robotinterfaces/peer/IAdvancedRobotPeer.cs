@@ -10,12 +10,13 @@
 
 using System.Collections.Generic;
 using System.IO;
+using Robocode;
 
-namespace robocode.robotinterfaces.peer
+namespace Robocode.RobotInterfaces.Peer
 {
     /// <summary>
     /// The advanced robot peer for advanced robot types like
-    /// <see cref="robocode.AdvancedRobot"/> and <see cref="robocode.TeamRobot"/>.
+    /// <see cref="Robocode.AdvancedRobot"/> and <see cref="Robocode.TeamRobot"/>.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
@@ -267,7 +268,7 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         /// </example>
         /// <seealso cref="setEventPriority(string, int)"/>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
         /// </summary>
         /// <param name="interruptible">true if the evnt handler should be
         ///                      interrupted if new events of the same priority occurs; false
@@ -455,7 +456,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnStatus(StatusEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnStatus(StatusEvent)"/>
         /// <seealso cref="StatusEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>
@@ -473,7 +474,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
         /// <seealso cref="BulletMissedEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>
@@ -491,7 +492,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
         /// <seealso cref="BulletHitBulletEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>
@@ -508,7 +509,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
         /// <seealso cref="BulletHitEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>
@@ -526,7 +527,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnHitByBullet(HitByBulletEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnHitByBullet(HitByBulletEvent)"/>
         /// <seealso cref="HitByBulletEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>
@@ -543,7 +544,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnHitRobot(HitRobotEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnHitRobot(HitRobotEvent)"/>
         /// <seealso cref="HitRobotEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>
@@ -560,7 +561,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnHitWall(HitWallEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnHitWall(HitWallEvent)"/>
         /// <seealso cref="HitWallEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>
@@ -577,7 +578,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnRobotDeath(RobotDeathEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnRobotDeath(RobotDeathEvent)"/>
         /// <seealso cref="RobotDeathEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>
@@ -595,7 +596,7 @@ namespace robocode.robotinterfaces.peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
         /// <seealso cref="ScannedRobotEvent"/>
         /// <seealso cref="getAllEvents()"/>
         /// </summary>

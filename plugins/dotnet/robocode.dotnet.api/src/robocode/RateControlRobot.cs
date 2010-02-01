@@ -9,9 +9,9 @@
 #endregion
 
 using System;
-using robocode.util;
+using Robocode.Util;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     ///   This advanced robot type allows you to set a rate for each of the robot's movements.

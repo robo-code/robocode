@@ -11,12 +11,12 @@
 using System;
 using System.Drawing;
 using System.IO;
-using robocode.exception;
-using robocode.robotinterfaces;
-using robocode.robotinterfaces.peer;
-using robocode.util;
+using Robocode.Exception;
+using Robocode.RobotInterfaces;
+using Robocode.RobotInterfaces.Peer;
+using Robocode.Util;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// This is the simplest robot type, which is simpler than the <see cref="Robot"/> and

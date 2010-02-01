@@ -8,12 +8,14 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+using Robocode;
+
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
     /// An evnt interface for receiving paint events with an
-    /// <see cref="robocode.robotinterfaces.IPaintRobot"/>.
-    /// <seealso cref="robocode.robotinterfaces.IPaintRobot"/>
+    /// <see cref="IPaintRobot"/>.
+    /// <seealso cref="IPaintRobot"/>
     /// </summary>
     public interface IPaintEvents
     {

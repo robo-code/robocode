@@ -10,9 +10,9 @@
 
 using System;
 using net.sf.robocode.peer;
-using robocode.robotinterfaces;
+using Robocode.RobotInterfaces;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// A MessageEvent is sent to <see cref="TeamRobot.OnMessageReceived(MessageEvent)"/>
@@ -75,7 +75,7 @@ namespace robocode
 
         internal override byte SerializationType
         {
-            get { throw new Exception("Serialization of evnt type not supported"); }
+            get { throw new System.Exception("Serialization of evnt type not supported"); }
         }
     }
 }

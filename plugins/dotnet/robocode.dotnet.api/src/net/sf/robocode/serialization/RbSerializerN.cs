@@ -17,7 +17,7 @@ using System.Text;
 using net.sf.robocode.io;
 using net.sf.robocode.nio;
 using net.sf.robocode.security;
-using robocode;
+using Robocode;
 
 namespace net.sf.robocode.serialization
 {

@@ -56,6 +56,6 @@ public class TestCustomEvents extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "samplecs.Target,tested.robotscs.CustomEvents";
+		return "SampleCs.Target,tested.robotscs.CustomEvents";
 	}
 }

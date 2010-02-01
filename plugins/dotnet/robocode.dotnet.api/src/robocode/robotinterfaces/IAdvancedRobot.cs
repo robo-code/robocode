@@ -8,14 +8,14 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
     /// A robot interface for creating a more advanced type of robot like
-    /// <see cref="robocode.AdvancedRobot"/> that is able to handle advanced robot events.
+    /// <see cref="Robocode.AdvancedRobot"/> that is able to handle advanced robot events.
     /// An advanced robot allows non-blocking calls, custom events, get notifications
     /// about skipped turns, and also allow writes to the file system.
-    /// <seealso cref="robocode.AdvancedRobot"/>
+    /// <seealso cref="Robocode.AdvancedRobot"/>
     /// <seealso cref="IBasicRobot"/>
     /// <seealso cref="IJuniorRobot"/>
     /// <seealso cref="IInteractiveRobot"/>

@@ -8,7 +8,7 @@
 
 #endregion
 
-using robocode;
+using Robocode;
 
 namespace tested.robotscs
 {

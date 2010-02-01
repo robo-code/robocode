@@ -11,11 +11,11 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace robocode.exception
+namespace Robocode.Exception
 {
     /// <exclude/>
     [Serializable]
-    public class EventInterruptedException : Exception
+    public class EventInterruptedException : System.Exception
     {
         private readonly int priority = int.MinValue;
 

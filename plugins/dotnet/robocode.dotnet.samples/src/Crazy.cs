@@ -1,4 +1,4 @@
-﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
@@ -9,9 +9,9 @@
 #endregion
 
 using System.Drawing;
-using robocode;
+using Robocode;
 
-namespace samplecs
+namespace SampleCs
 {
     /// <summary>
     ///   Crazy - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen

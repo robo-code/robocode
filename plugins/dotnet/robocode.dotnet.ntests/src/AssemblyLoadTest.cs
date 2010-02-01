@@ -1,4 +1,4 @@
-﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
@@ -12,7 +12,7 @@ using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.dotnet.repository.root;
 using net.sf.robocode.repository;
 using NUnit.Framework;
-using samplecs;
+using SampleCs;
 using tested.robotscs;
 
 namespace net.sf.robocode.dotnet

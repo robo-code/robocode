@@ -12,10 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using robocode;
-using robocode.robotinterfaces;
-using robocode.robotinterfaces.peer;
-using robocode.util;
+using Robocode;
+using Robocode.RobotInterfaces;
+using Robocode.RobotInterfaces.Peer;
+using Robocode.Util;
 
 namespace tested.robotscs
 {

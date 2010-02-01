@@ -1,4 +1,4 @@
-﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
@@ -23,10 +23,10 @@ using net.sf.robocode.host;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
-using robocode;
-using robocode.exception;
-using robocode.robotinterfaces;
-using robocode.robotinterfaces.peer;
+using Robocode;
+using Robocode.Exception;
+using Robocode.RobotInterfaces;
+using Robocode.RobotInterfaces.Peer;
 using Exception = System.Exception;
 using String = System.String;
 using StringBuilder = System.Text.StringBuilder;

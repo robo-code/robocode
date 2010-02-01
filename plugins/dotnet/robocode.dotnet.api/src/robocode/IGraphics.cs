@@ -1,4 +1,4 @@
-﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
@@ -10,7 +10,7 @@
 
 using System.Drawing;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// <see cref="Graphics"/>

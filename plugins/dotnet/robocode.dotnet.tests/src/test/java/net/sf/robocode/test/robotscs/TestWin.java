@@ -43,7 +43,7 @@ public class TestWin extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "samplecs.Target,tested.robotscs.BattleWin";        
+		return "SampleCs.Target,tested.robotscs.BattleWin";        
 	}
 
 	@Override

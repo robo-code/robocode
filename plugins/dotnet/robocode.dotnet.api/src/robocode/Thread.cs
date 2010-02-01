@@ -13,7 +13,7 @@ using System.Threading;
 using net.sf.robocode.io;
 using net.sf.robocode.security;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// Wrapper for .NET Thread, secured according to robocode rules.
@@ -117,7 +117,7 @@ namespace robocode
                 }
                 real2.Invoke();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine("Undandled exception on thread " + thread.Name);
                 Console.WriteLine(ex);

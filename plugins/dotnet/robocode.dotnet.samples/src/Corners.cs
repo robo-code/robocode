@@ -1,4 +1,4 @@
-﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
@@ -9,10 +9,10 @@
 #endregion
 
 using System.Drawing;
-using robocode;
-using robocode.util;
+using Robocode;
+using Robocode.Util;
 
-namespace samplecs
+namespace SampleCs
 {
     /// <summary>
     ///   Corners - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen

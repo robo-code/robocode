@@ -35,7 +35,7 @@ public class TestScoring extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "samplecs.Corners,samplecs.Crazy,samplecs.Fire,samplecs.RamFire,samplecs.SittingDuck,samplecs.SpinBot,samplecs.Tracker,samplecs.TrackFire,samplecs.Walls";
+		return "SampleCs.Corners,SampleCs.Crazy,SampleCs.Fire,SampleCs.RamFire,SampleCs.SittingDuck,SampleCs.SpinBot,SampleCs.Tracker,SampleCs.TrackFire,SampleCs.Walls";
 	}
 
 	@Override

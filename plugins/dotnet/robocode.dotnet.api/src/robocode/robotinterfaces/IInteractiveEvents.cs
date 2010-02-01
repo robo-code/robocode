@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+using Robocode;
+
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
     /// An evnt interface for receiving interactive events with an

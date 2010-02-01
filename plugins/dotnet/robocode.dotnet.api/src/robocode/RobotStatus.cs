@@ -12,9 +12,9 @@ using System;
 using net.sf.robocode.nio;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
-using robocode.util;
+using Robocode.Util;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// Contains the status of a robot for a specific time/turn returned by

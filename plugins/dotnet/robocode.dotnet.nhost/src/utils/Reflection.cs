@@ -1,4 +1,4 @@
-﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
@@ -16,8 +16,8 @@ using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
 using net.sf.robocode.repository;
-using robocode;
-using robocode.robotinterfaces;
+using Robocode;
+using Robocode.RobotInterfaces;
 
 namespace net.sf.robocode.dotnet.utils
 {

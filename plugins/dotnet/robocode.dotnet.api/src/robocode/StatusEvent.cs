@@ -11,9 +11,9 @@
 
 using System;
 using net.sf.robocode.peer;
-using robocode.robotinterfaces;
+using Robocode.RobotInterfaces;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// This evnt is sent to <see cref="Robot.OnStatus(StatusEvent)"/> every
@@ -66,7 +66,7 @@ namespace robocode
         /// <inheritdoc />
         internal override byte SerializationType
         {
-            get { throw new Exception("Serialization of this type is not supported"); }
+            get { throw new System.Exception("Serialization of this type is not supported"); }
         }
     }
 }

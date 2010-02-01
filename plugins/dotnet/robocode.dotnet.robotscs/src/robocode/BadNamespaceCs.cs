@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace robocode
+namespace Robocode
 {
     public class BadNamespaceCs : Robot
     {

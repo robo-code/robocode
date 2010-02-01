@@ -37,6 +37,6 @@ public class TestNames extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "samplecs.Fire,robocode.BadNamespace,tested.robotscs.TooLongNameThisIsReallyTooLongName,tooLongNamespaceThisIsReallyTooLongNamespace.TooLongNamespace,NoPackageButReallyLongNameIWouldSayTooLongMaybeEventLonger,NoPackageShortName";
+		return "SampleCs.Fire,robocode.BadNamespace,tested.robotscs.TooLongNameThisIsReallyTooLongName,tooLongNamespaceThisIsReallyTooLongNamespace.TooLongNamespace,NoPackageButReallyLongNameIWouldSayTooLongMaybeEventLonger,NoPackageShortName";
 	}
 }

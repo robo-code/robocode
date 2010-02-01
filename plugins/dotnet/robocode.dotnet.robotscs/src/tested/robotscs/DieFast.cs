@@ -8,8 +8,8 @@
 
 #endregion
 
-using robocode;
-using robocode.exception;
+using Robocode;
+using Robocode.Exception;
 
 namespace tested.robotscs
 {

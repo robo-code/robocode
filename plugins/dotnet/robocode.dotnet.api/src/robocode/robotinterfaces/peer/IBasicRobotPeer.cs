@@ -9,8 +9,10 @@
 #endregion
 
 using System.Drawing;
+using Robocode;
+using Robocode.RobotInterfaces;
 
-namespace robocode.robotinterfaces.peer
+namespace Robocode.RobotInterfaces.Peer
 {
     /// <summary>
     /// The basic robot peer for all robot types.
@@ -251,8 +253,8 @@ namespace robocode.robotinterfaces.peer
         ///   Ahead(-50);
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnHitWall(robocode.HitWallEvent)"/>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnHitRobot(robocode.HitRobotEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnHitWall(Robocode.HitWallEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnHitRobot(Robocode.HitRobotEvent)"/>
         /// </summary>
         /// <param name="distance">the distance to move measured in pixels.
         ///                 If distance &gt; 0 the robot is set to move forward.
@@ -360,9 +362,9 @@ namespace robocode.robotinterfaces.peer
         /// <seealso cref="Bullet"/>
         /// <seealso cref="getGunHeat()"/>
         /// <seealso cref="getGunCoolingRate()"/>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
         /// </summary>
         /// <param name="power">the amount of energy given to the bullet, and subtracted
         ///              from the robot's energy.</param>
@@ -416,9 +418,9 @@ namespace robocode.robotinterfaces.peer
         /// <seealso cref="Bullet"/>
         /// <seealso cref="getGunHeat()"/>
         /// <seealso cref="getGunCoolingRate()"/>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
         /// </summary>
         /// <param name="power">the amount of energy given to the bullet, and subtracted
         ///              from the robot's energy.</param> 
@@ -593,7 +595,7 @@ namespace robocode.robotinterfaces.peer
         /// paint items fits for the Robocode coordinate system where (0, 0) is at
         /// the bottom left corner of the battlefield, where X is towards right and Y
         /// is upwards.
-        /// <seealso cref="robocode.robotinterfaces.IPaintEvents.OnPaint(IGraphics)"/>
+        /// <seealso cref="Robocode.RobotInterfaces.IPaintEvents.OnPaint(IGraphics)"/>
         /// </summary>
         IGraphics getGraphics();
 

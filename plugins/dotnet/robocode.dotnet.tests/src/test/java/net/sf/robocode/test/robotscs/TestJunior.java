@@ -29,7 +29,7 @@ public class TestJunior extends RobocodeTestBed {
 	}
 
 	public String getRobotNames() {
-		return "tested.robotscs.JuniorEvents,samplecs.SittingDuck";
+		return "tested.robotscs.JuniorEvents,SampleCs.SittingDuck";
 	}
 
 	public void onTurnEnded(TurnEndedEvent event) {

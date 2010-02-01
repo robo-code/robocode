@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+using Robocode;
+
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
     /// An evnt interface for receiving robot team events with an
@@ -29,8 +31,8 @@ namespace robocode.robotinterfaces
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="robocode.MessageEvent"/>
-        /// <seealso cref="robocode.Event"/>
+        /// <seealso cref="Robocode.MessageEvent"/>
+        /// <seealso cref="Robocode.Event"/>
         /// </summary>
         /// <param name="evnt">the message evnt sent by the game</param>
         void OnMessageReceived(MessageEvent evnt);

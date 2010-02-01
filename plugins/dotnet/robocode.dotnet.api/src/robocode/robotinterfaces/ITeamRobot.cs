@@ -8,14 +8,14 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// A robot interface for creating a team robot like <see cref="robocode.TeamRobot"/>
+    /// A robot interface for creating a team robot like <see cref="Robocode.TeamRobot"/>
     /// that is able to receive team events.
     /// A team robot is an advanced type of robot that supports sending messages
     /// between teammates that participates in a team.
-    /// <seealso cref="robocode.TeamRobot"/>
+    /// <seealso cref="Robocode.TeamRobot"/>
     /// <seealso cref="IBasicRobot"/>
     /// <seealso cref="IJuniorRobot"/>
     /// <seealso cref="IInteractiveRobot"/>

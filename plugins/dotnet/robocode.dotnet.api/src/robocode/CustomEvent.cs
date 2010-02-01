@@ -10,9 +10,9 @@
 
 using System;
 using net.sf.robocode.peer;
-using robocode.robotinterfaces;
+using Robocode.RobotInterfaces;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// This evnt is sent to <see cref="AdvancedRobot.OnCustomEvent(CustomEvent)"/>
@@ -46,7 +46,7 @@ namespace robocode
         /// An evnt priority is a value from 0 - 99. The higher value, the higher
         /// priority. The default priority is 80.
         /// <p/>
-        /// This is equivalent to calling <see cref="robocode.Condition.Priority"/> on the
+        /// This is equivalent to calling <see cref="Robocode.Condition.Priority"/> on the
         /// Condition.
         /// </summary>
         /// <param name="condition">the condition that must be met</param>
@@ -123,7 +123,7 @@ namespace robocode
         /// <inheritdoc />
         internal override byte SerializationType
         {
-            get { throw new Exception("Serialization not supported on this evnt type"); }
+            get { throw new System.Exception("Serialization not supported on this evnt type"); }
         }
     }
 }

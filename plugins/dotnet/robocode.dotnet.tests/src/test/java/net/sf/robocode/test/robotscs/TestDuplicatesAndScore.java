@@ -43,7 +43,7 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "samplecs.Fire,tested.robotscs.TestTeam,tested.robotscs.TestTeam,samplecs.Crazy";
+		return "SampleCs.Fire,tested.robotscs.TestTeam,tested.robotscs.TestTeam,SampleCs.Crazy";
 	}
 
 	@Override
@@ -127,22 +127,22 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 	protected void runTeardown() {
 		Assert.assertNotNull(results);
 		Assert.assertNotNull(robots);
-		Assert.assertThat(robots[0].getName(), is("samplecs.Fire (1)"));
-		Assert.assertThat(robots[1].getName(), is("samplecsteam.MyFirstLeader (1)"));
-		Assert.assertThat(robots[2].getName(), is("samplecsteam.MyFirstDroid (1)"));
-		Assert.assertThat(robots[3].getName(), is("samplecs.Fire (2)"));
-		Assert.assertThat(robots[4].getName(), is("samplecsteam.MyFirstLeader (2)"));
-		Assert.assertThat(robots[5].getName(), is("samplecsteam.MyFirstDroid (2)"));
-		Assert.assertThat(robots[6].getName(), is("samplecs.Fire (3)"));
-		Assert.assertThat(robots[7].getName(), is("samplecs.Crazy"));
+		Assert.assertThat(robots[0].getName(), is("SampleCs.Fire (1)"));
+		Assert.assertThat(robots[1].getName(), is("SampleCsTeam.MyFirstLeader (1)"));
+		Assert.assertThat(robots[2].getName(), is("SampleCsTeam.MyFirstDroid (1)"));
+		Assert.assertThat(robots[3].getName(), is("SampleCs.Fire (2)"));
+		Assert.assertThat(robots[4].getName(), is("SampleCsTeam.MyFirstLeader (2)"));
+		Assert.assertThat(robots[5].getName(), is("SampleCsTeam.MyFirstDroid (2)"));
+		Assert.assertThat(robots[6].getName(), is("SampleCs.Fire (3)"));
+		Assert.assertThat(robots[7].getName(), is("SampleCs.Crazy"));
 
 		// the results are different from Java version because of strictfp in Java Math
 		// as oposed to FPU driven .NET, which gives better precision.
 		// difference acumulates to make big difference in results
 		Assert.assertThat(results[0].getTeamLeaderName(), is("tested.robotscs.TestTeam (2)"));
 		Assert.assertThat(results[1].getTeamLeaderName(), is("tested.robotscs.TestTeam (1)"));
-		Assert.assertThat(results[2].getTeamLeaderName(), is("samplecs.Crazy"));
-		Assert.assertThat(results[3].getTeamLeaderName(), is("samplecs.Fire (1)"));
+		Assert.assertThat(results[2].getTeamLeaderName(), is("SampleCs.Crazy"));
+		Assert.assertThat(results[3].getTeamLeaderName(), is("SampleCs.Fire (1)"));
 
 		Assert.assertThat(results[0].getLastSurvivorBonus(), is(0));
 		Assert.assertThat(results[1].getLastSurvivorBonus(), is(50));

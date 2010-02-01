@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using net.sf.robocode.security;
-using robocode;
+using Robocode;
 
 namespace net.sf.robocode.dotnet.host.events
 {

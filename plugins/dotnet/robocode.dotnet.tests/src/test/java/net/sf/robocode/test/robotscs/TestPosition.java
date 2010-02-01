@@ -36,7 +36,7 @@ public class TestPosition extends RobocodeTestBed {
 	}
 
 	public String getRobotNames() {
-		return "samplecs.Crazy,samplecs.Target";
+		return "SampleCs.Crazy,SampleCs.Target";
 	}
 
 	@Override

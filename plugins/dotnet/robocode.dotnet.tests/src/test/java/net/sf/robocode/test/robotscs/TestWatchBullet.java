@@ -31,7 +31,7 @@ public class TestWatchBullet extends RobocodeTestBed {
 	}
 
 	public String getRobotNames() {
-		return "tested.robotscs.WatchBullets,samplecs.SittingDuck";
+		return "tested.robotscs.WatchBullets,SampleCs.SittingDuck";
 	}
 
 	public void onTurnEnded(TurnEndedEvent event) {

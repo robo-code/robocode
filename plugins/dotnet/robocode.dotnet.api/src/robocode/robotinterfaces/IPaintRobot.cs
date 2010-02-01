@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
     /// A robot interface that makes it possible for a robot to receive paint events.

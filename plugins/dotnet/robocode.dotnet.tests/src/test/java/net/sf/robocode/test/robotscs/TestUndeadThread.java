@@ -45,7 +45,7 @@ public class TestUndeadThread extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "samplecs.SittingDuck,tested.robotscs.UndeadThread";
+		return "SampleCs.SittingDuck,tested.robotscs.UndeadThread";
 	}
 
 	@Override

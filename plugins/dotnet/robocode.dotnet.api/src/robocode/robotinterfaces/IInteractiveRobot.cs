@@ -8,18 +8,18 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
     /// A robot interface for creating an interactive type of robot like
-    /// <see cref="robocode.Robot"/> and <see cref="robocode.AdvancedRobot"/> that is able to
+    /// <see cref="Robocode.Robot"/> and <see cref="Robocode.AdvancedRobot"/> that is able to
     /// receive interactive events from the keyboard or mouse.
     /// If a robot is directly inherited from this class it will behave as similar to
     /// a <see cref="IBasicRobot"/>. If you need it to behave similar to a
     /// <see cref="IAdvancedRobot"/> or <see cref="ITeamRobot"/>, you should inherit from these
     /// interfaces instead, as these are inherited from this interface.
-    /// <seealso cref="robocode.Robot"/>
-    /// <seealso cref="robocode.AdvancedRobot"/>
+    /// <seealso cref="Robocode.Robot"/>
+    /// <seealso cref="Robocode.AdvancedRobot"/>
     /// <seealso cref="IBasicRobot"/>
     /// <seealso cref="IJuniorRobot"/>
     /// <seealso cref="IAdvancedRobot"/>

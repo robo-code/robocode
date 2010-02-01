@@ -35,12 +35,12 @@ public class TestFileWrite extends RobocodeTestBed {
     File file;
 
 	public String getRobotNames() {
-		return "samplecs.Walls,samplecs.SittingDuck";
+		return "SampleCs.Walls,SampleCs.SittingDuck";
 	}
 
 	@Override
 	protected void runSetup() {
-        file = new File("../../../robocode.tests.robots/target/classes/.data/_/samplecs/count.dat");
+        file = new File("../../../robocode.tests.robots/target/classes/.data/_/SampleCs/count.dat");
 		if (file.exists()) {
 			if (!file.delete()) {
 				Logger.logError("Can't delete" + file);

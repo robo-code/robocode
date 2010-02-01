@@ -9,10 +9,10 @@
 #endregion
 
 
-namespace robocode.robotinterfaces.peer
+namespace Robocode.RobotInterfaces.Peer
 {
     /// <summary>
-    /// The junior robot peer for junior robot types like <see cref="robocode.JuniorRobot"/>.
+    /// The junior robot peer for junior robot types like <see cref="Robocode.JuniorRobot"/>.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.

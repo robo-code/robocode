@@ -9,9 +9,9 @@
 #endregion
 
 using System.Drawing;
-using robocode;
+using Robocode;
 
-namespace samplecs
+namespace SampleCs
 {
     /// <summary>
     ///   Target - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen

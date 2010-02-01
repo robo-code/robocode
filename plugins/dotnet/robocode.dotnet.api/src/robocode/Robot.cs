@@ -13,12 +13,12 @@ using System.Drawing;
 using System.IO;
 using System.Security.Permissions;
 using net.sf.robocode.security;
-using robocode.exception;
-using robocode.robotinterfaces;
-using robocode.robotinterfaces.peer;
-using robocode.util;
+using Robocode.Exception;
+using Robocode.RobotInterfaces;
+using Robocode.RobotInterfaces.Peer;
+using Robocode.Util;
 
-namespace robocode
+namespace Robocode
 {
     /// 
     ///<summary>

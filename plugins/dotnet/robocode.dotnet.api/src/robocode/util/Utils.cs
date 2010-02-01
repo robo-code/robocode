@@ -11,7 +11,7 @@
 using System;
 using net.sf.robocode.security;
 
-namespace robocode.util
+namespace Robocode.Util
 {
     /// <summary>
     /// Utility class that provide methods for normalizing angles.

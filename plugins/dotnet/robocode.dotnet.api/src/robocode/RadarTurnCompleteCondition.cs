@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// A prebuilt condition you can use that indicates your radar has finished

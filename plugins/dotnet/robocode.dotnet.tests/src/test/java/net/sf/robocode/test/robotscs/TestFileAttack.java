@@ -43,7 +43,7 @@ public class TestFileAttack extends RobocodeTestBed {
 
 	@Override
 	public String getRobotNames() {
-		return "samplecs.Fire,tested.robotscs.FileAttack";
+		return "SampleCs.Fire,tested.robotscs.FileAttack";
 	}
 
 	@Override

@@ -12,7 +12,7 @@ using System;
 using net.sf.robocode.nio;
 using net.sf.robocode.serialization;
 
-namespace robocode
+namespace Robocode
 {
     ///<summary>
     ///  Contains the battle results returned by <see cref="BattleEndedEvent.Results"/>

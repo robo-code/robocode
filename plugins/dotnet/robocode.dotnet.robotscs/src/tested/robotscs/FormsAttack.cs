@@ -11,7 +11,7 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using robocode;
+using Robocode;
 
 namespace tested.robotscs
 {

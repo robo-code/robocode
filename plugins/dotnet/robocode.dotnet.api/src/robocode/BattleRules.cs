@@ -11,7 +11,7 @@
 using System;
 using net.sf.robocode.security;
 
-namespace robocode
+namespace Robocode
 {
     ///<summary>
     ///  Contains the battle rules

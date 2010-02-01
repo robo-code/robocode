@@ -14,9 +14,9 @@ using System.Security;
 using System.Security.Permissions;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.security;
-using robocode;
-using robocode.exception;
-using robocode.robotinterfaces;
+using Robocode;
+using Robocode.Exception;
+using Robocode.RobotInterfaces;
 
 namespace net.sf.robocode.dotnet.host.events
 {

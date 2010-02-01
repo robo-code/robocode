@@ -11,14 +11,14 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace robocode.exception
+namespace Robocode.Exception
 {
     /// <summary>
     /// Throw this exception to stop robot
     /// </summary>
     /// <exclude/>
     [Serializable]
-    public class RobotException : Exception
+    public class RobotException : System.Exception
     {
         /// <summary>
         /// Default constructor

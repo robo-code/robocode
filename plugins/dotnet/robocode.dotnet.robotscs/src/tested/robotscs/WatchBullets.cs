@@ -9,8 +9,8 @@
 #endregion
 
 using System;
-using robocode;
-using robocode.util;
+using Robocode;
+using Robocode.Util;
 
 namespace tested.robotscs
 {

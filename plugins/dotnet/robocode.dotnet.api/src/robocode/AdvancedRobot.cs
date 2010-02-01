@@ -11,11 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using robocode.robotinterfaces;
-using robocode.robotinterfaces.peer;
-using robocode.util;
+using Robocode.RobotInterfaces;
+using Robocode.RobotInterfaces.Peer;
+using Robocode.Util;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     ///   A more advanced type of robot than Robot that allows non-blocking calls,

@@ -11,7 +11,7 @@
 using System;
 using net.sf.robocode.io;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// Condition is used to define custom  <see cref="AdvancedRobot.WaitFor(Condition)"/> 

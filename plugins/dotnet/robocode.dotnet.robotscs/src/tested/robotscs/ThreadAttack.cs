@@ -10,8 +10,8 @@
 
 using System;
 using System.Threading;
-using robocode;
-using Thread = robocode.Thread;
+using Robocode;
+using Thread = Robocode.Thread;
 
 namespace tested.robotscs
 {

@@ -9,17 +9,17 @@
 #endregion
 
 using System.IO;
-using robocode.robotinterfaces.peer;
+using Robocode.RobotInterfaces.Peer;
 
-namespace robocode.robotinterfaces
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// A robot interface for creating a basic type of robot like <see cref="robocode.Robot"/>
+    /// A robot interface for creating a basic type of robot like <see cref="Robocode.Robot"/>
     /// that is able to receive common robot events, but not interactive events as
-    /// with the <see cref="robocode.Robot"/> class.
+    /// with the <see cref="Robocode.Robot"/> class.
     /// A basic robot allows blocking calls only and cannot handle custom events nor
     /// writes to the file system like an advanced robot.
-    /// <seealso cref="robocode.Robot"/>
+    /// <seealso cref="Robocode.Robot"/>
     /// <seealso cref="IJuniorRobot"/>
     /// <seealso cref="IInteractiveRobot"/>
     /// <seealso cref="IAdvancedRobot"/>
@@ -29,7 +29,7 @@ namespace robocode.robotinterfaces
     {
         /// <summary>
         /// This method is called by the game to invoke the
-        /// <see cref="robocode.robotinterfaces.IRunnable.Run()"/> method of your robot, where the program
+        /// <see cref="IRunnable.Run()"/> method of your robot, where the program
         /// of your robot is implemented.
         /// </summary>
         IRunnable GetRobotRunnable();

@@ -8,11 +8,11 @@
 
 #endregion
 
-namespace robocode.robotinterfaces.peer
+namespace Robocode.RobotInterfaces.Peer
 {
     /// <summary>
-    /// The standard robot peer for standard robot types like <see cref="robocode.Robot"/>,
-    /// <see cref="robocode.AdvancedRobot"/>, and <see cref="robocode.TeamRobot"/>.
+    /// The standard robot peer for standard robot types like <see cref="Robocode.Robot"/>,
+    /// <see cref="Robocode.AdvancedRobot"/>, and <see cref="Robocode.TeamRobot"/>.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.

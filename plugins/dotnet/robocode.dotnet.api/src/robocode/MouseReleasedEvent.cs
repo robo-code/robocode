@@ -12,9 +12,9 @@ using System;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
-using robocode.robotinterfaces;
+using Robocode.RobotInterfaces;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// A MouseReleasedEvent is sent to <see cref="Robot.OnMouseReleased(MouseEvent)"/>

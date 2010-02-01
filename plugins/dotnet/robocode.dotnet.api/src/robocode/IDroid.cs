@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// Robots that implement Droid have no scanner, but an extra 20 life/energy.

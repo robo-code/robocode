@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+using Robocode;
+
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
     /// An evnt interface for receiving advanced robot events with an
@@ -30,8 +32,8 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// No correctly working, reasonable robot should ever receive this event
         /// unless it is using too many CPU cycles.
-        /// <seealso cref="robocode.SkippedTurnEvent"/>
-        /// <seealso cref="robocode.Event"/>
+        /// <seealso cref="Robocode.SkippedTurnEvent"/>
+        /// <seealso cref="Robocode.Event"/>
         /// </summary>
         /// <param name="evnt">the skipped turn evnt set by the game</param>
         void OnSkippedTurn(SkippedTurnEvent evnt);
@@ -41,9 +43,9 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the sample robots for examples of use, e.g. the sample.Target
         /// robot.
-        /// <seealso cref="robocode.AdvancedRobot.AddCustomEvent(Condition)"/>
-        /// <seealso cref="robocode.CustomEvent"/>
-        /// <seealso cref="robocode.Event"/>
+        /// <seealso cref="Robocode.AdvancedRobot.AddCustomEvent(Condition)"/>
+        /// <seealso cref="Robocode.CustomEvent"/>
+        /// <seealso cref="Robocode.Event"/>
         /// </summary>
         /// <param name="evnt"> the custom evnt that occurred</param>
         void OnCustomEvent(CustomEvent evnt);

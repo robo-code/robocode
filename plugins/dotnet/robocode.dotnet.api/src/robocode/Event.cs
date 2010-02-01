@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.security;
-using robocode.robotinterfaces;
+using Robocode.RobotInterfaces;
 
-namespace robocode
+namespace Robocode
 {
     /// <summary>
     /// The superclass of all Robocode events.
@@ -154,7 +154,7 @@ namespace robocode
 
         internal virtual byte SerializationType
         {
-            get { throw new Exception("Serialization not supported on this evnt type"); }
+            get { throw new System.Exception("Serialization not supported on this evnt type"); }
         }
 
         internal virtual void UpdateBullets(Dictionary<int, Bullet> bullets)

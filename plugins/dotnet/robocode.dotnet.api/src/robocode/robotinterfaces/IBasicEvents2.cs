@@ -8,7 +8,9 @@
 
 #endregion
 
-namespace robocode.robotinterfaces
+using Robocode;
+
+namespace Robocode.RobotInterfaces
 {
     /// <summary>
     /// First extended version of the <see cref="IBasicEvents"/> interface.
@@ -27,9 +29,9 @@ namespace robocode.robotinterfaces
         /// </pre>
         /// </example>
         /// <seealso cref="BattleEndedEvent"/>
-        /// <seealso cref="robocode.WinEvent"/>
-        /// <seealso cref="robocode.DeathEvent"/>
-        /// <seealso cref="robocode.Event"/>
+        /// <seealso cref="Robocode.WinEvent"/>
+        /// <seealso cref="Robocode.DeathEvent"/>
+        /// <seealso cref="Robocode.Event"/>
         /// </summary>
         void OnBattleEnded(BattleEndedEvent evnt);
     }
