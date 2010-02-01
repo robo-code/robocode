@@ -131,10 +131,22 @@ namespace net.sf.robocode.dotnet.host.proxies
             commands.setBodyColor(color.ToArgb());
         }
 
+        public Color GetBodyColor()
+        {
+            GetCall();
+            return Color.FromArgb(commands.getBodyColor());
+        }
+
         public void SetGunColor(Color color)
         {
             SetCall();
             commands.setGunColor(color.ToArgb());
+        }
+
+        public Color GetGunColor()
+        {
+            GetCall();
+            return Color.FromArgb(commands.getGunColor());
         }
 
         public void SetRadarColor(Color color)
@@ -143,16 +155,34 @@ namespace net.sf.robocode.dotnet.host.proxies
             commands.setRadarColor(color.ToArgb());
         }
 
+        public Color GetRadarColor()
+        {
+            GetCall();
+            return Color.FromArgb(commands.getRadarColor());
+        }
+
         public void SetBulletColor(Color color)
         {
             SetCall();
             commands.setBulletColor(color.ToArgb());
         }
 
+        public Color GetBulletColor()
+        {
+            GetCall();
+            return Color.FromArgb(commands.getBulletColor());
+        }
+
         public void SetScanColor(Color color)
         {
             SetCall();
             commands.setScanColor(color.ToArgb());
+        }
+
+        public Color GetScanColor()
+        {
+            GetCall();
+            return Color.FromArgb(commands.getScanColor());
         }
 
         // counters

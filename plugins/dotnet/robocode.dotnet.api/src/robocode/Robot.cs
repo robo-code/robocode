@@ -1326,6 +1326,15 @@ namespace Robocode
                     UninitializedException();
                 }
             }
+            get
+            {
+                if (peer != null)
+                {
+                    return peer.GetBodyColor();
+                }
+                UninitializedException();
+                return default(Color);
+            }
         }
 
         /// 
@@ -1370,6 +1379,15 @@ namespace Robocode
                 {
                     UninitializedException();
                 }
+            }
+            get
+            {
+                if (peer != null)
+                {
+                    return peer.GetGunColor();
+                }
+                UninitializedException();
+                return default(Color);
             }
         }
 
@@ -1416,6 +1434,15 @@ namespace Robocode
                     UninitializedException();
                 }
             }
+            get
+            {
+                if (peer != null)
+                {
+                    return peer.GetRadarColor();
+                }
+                UninitializedException();
+                return default(Color);
+            }
         }
 
         /// 
@@ -1461,6 +1488,15 @@ namespace Robocode
                     UninitializedException();
                 }
             }
+            get
+            {
+                if (peer != null)
+                {
+                    return peer.GetBulletColor();
+                }
+                UninitializedException();
+                return default(Color);
+            }
         }
 
         /// 
@@ -1505,6 +1541,15 @@ namespace Robocode
                 {
                     UninitializedException();
                 }
+            }
+            get
+            {
+                if (peer != null)
+                {
+                    return peer.GetScanColor();
+                }
+                UninitializedException();
+                return default(Color);
             }
         }
 

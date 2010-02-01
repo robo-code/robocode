@@ -454,6 +454,11 @@ namespace Robocode.RobotInterfaces.Peer
         void SetBodyColor(Color color);
 
         /// <summary>
+        /// Returns current color of body
+        /// </summary>
+        Color GetBodyColor();
+
+        /// <summary>
         /// Sets the color of the robot's gun.
         /// <p/>
         /// A null indicates the default (blue) color.
@@ -478,6 +483,11 @@ namespace Robocode.RobotInterfaces.Peer
         /// </summary>
         /// <param name="color">the new gun color</param>
         void SetGunColor(Color color);
+
+        /// <summary>
+        /// Returns current color of gun
+        /// </summary>
+        Color GetGunColor();
 
         /// <summary>
         /// Sets the color of the robot's radar.
@@ -506,6 +516,11 @@ namespace Robocode.RobotInterfaces.Peer
         void SetRadarColor(Color color);
 
         /// <summary>
+        /// Returns current color of radar
+        /// </summary>
+        Color GetRadarColor();
+
+        /// <summary>
         /// Sets the color of the robot's bullets.
         /// <p/>
         /// A null indicates the default white color.
@@ -532,6 +547,11 @@ namespace Robocode.RobotInterfaces.Peer
         void SetBulletColor(Color color);
 
         /// <summary>
+        /// Returns current color of bullet
+        /// </summary>
+        Color GetBulletColor();
+
+        /// <summary>
         /// Sets the color of the robot's Scan arc.
         /// <p/>
         /// A null indicates the default (blue) color.
@@ -556,6 +576,11 @@ namespace Robocode.RobotInterfaces.Peer
         /// </summary>
         /// <param name="color">the new Scan arc color</param>
         void SetScanColor(Color color);
+
+        /// <summary>
+        /// Returns current color of scan beam
+        /// </summary>
+        Color GetScanColor();
 
         /// <summary>
         /// This call <em>must</em> be made from a robot call to inform the game
