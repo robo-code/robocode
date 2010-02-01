@@ -15,7 +15,6 @@ using System.Security.Permissions;
 using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using robocode;
-using robocode.net.sf.robocode.security;
 using robocode.robotinterfaces;
 
 namespace net.sf.robocode.security

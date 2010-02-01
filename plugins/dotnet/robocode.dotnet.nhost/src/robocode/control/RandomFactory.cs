@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using robocode.net.sf.robocode.security;
+using net.sf.robocode.security;
 
 namespace robocode.control
 {

@@ -18,7 +18,6 @@ using net.sf.robocode.io;
 using net.sf.robocode.nio;
 using net.sf.robocode.security;
 using robocode;
-using robocode.net.sf.robocode.security;
 
 namespace net.sf.robocode.serialization
 {
