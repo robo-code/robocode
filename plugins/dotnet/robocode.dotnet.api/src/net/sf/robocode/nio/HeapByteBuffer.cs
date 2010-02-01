@@ -45,6 +45,7 @@ namespace net.sf.robocode.nio
     /// <summary>
     /// A read/write HeapByteBuffer.
     /// </summary>
+    /// <exclude/>
     internal class HeapByteBuffer : ByteBuffer
     {
         internal HeapByteBuffer(int cap, int lim)

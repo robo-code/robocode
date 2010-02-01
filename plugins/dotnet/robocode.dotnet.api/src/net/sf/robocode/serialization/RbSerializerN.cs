@@ -23,6 +23,7 @@ using robocode.net.sf.robocode.security;
 namespace net.sf.robocode.serialization
 {
 #pragma warning disable 1591
+    /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public sealed class RbSerializerN
     {

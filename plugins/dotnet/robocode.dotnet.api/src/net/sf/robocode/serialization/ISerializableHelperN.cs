@@ -13,6 +13,7 @@ using net.sf.robocode.nio;
 namespace net.sf.robocode.serialization
 {
 #pragma warning disable 1591
+    /// <exclude/>
     public interface ISerializableHelperN
     {
         int sizeOf(RbSerializerN serializer, object obj);

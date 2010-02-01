@@ -39,7 +39,7 @@
 using System;
 using System.Security.Permissions;
 using System.Text;
-using robocode.net.sf.robocode.security;
+using net.sf.robocode.security;
 
 // ReSharper disable InconsistentNaming
 
@@ -47,6 +47,7 @@ namespace net.sf.robocode.nio
 {
 #pragma warning disable 1591
 #pragma warning disable 1570
+    /// <exclude/>
     public enum ByteOrder
     {
         BIG_ENDIAN,
@@ -224,6 +225,7 @@ namespace net.sf.robocode.nio
      * @since 1.4
      */
 
+    /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public abstract class ByteBuffer : Buffer //, Comparable<ByteBuffer>
     {

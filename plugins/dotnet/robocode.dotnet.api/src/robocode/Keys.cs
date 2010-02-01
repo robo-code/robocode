@@ -39,6 +39,7 @@
 namespace robocode
 {
 #pragma warning disable 1591
+    /// <exclude/>
     public static class Keys
     {
         public const int KEY_FIRST = 400;

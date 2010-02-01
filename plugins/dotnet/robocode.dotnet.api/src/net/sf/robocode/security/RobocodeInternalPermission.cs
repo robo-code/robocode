@@ -13,9 +13,10 @@ using System.Security;
 using System.Security.Permissions;
 using System.Text;
 
-namespace robocode.net.sf.robocode.security
+namespace net.sf.robocode.security
 {
 #pragma warning disable 1591
+    /// <exclude/>
     [Serializable]
     public sealed class RobocodeInternalPermission : CodeAccessPermission, IUnrestrictedPermission
     {
@@ -129,6 +130,8 @@ namespace robocode.net.sf.robocode.security
         }
     }
 
+
+    /// <exclude/>
     [AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = true)]
     public class RobocodeInternalPermissionAttribute : CodeAccessSecurityAttribute
     {

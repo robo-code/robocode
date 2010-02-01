@@ -17,6 +17,7 @@ namespace robocode.exception
     /// <summary>
     /// Throw this exception to stop robot
     /// </summary>
+    /// <exclude/>
     [Serializable]
     public class RobotException : Exception
     {
@@ -45,4 +46,4 @@ namespace robocode.exception
 
     }
 }
-//happy
+//doc

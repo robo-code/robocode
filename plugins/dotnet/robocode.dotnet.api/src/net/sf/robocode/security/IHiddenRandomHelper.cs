@@ -13,6 +13,7 @@ using System;
 namespace robocode.net.sf.robocode.security
 {
 #pragma warning disable 1591
+    /// <exclude/>
     public interface IHiddenRandomHelper
     {
         Random GetRandom();

@@ -11,6 +11,8 @@
 namespace net.sf.robocode.peer
 {
 #pragma warning disable 1591
+
+    /// <exclude/>
     public interface IRobotStaticsN
     {
         bool IsInteractiveRobot();

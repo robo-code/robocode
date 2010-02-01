@@ -14,6 +14,8 @@ using System.Runtime.Serialization;
 namespace net.sf.robocode.nio
 {
 #pragma warning disable 1591
+
+    /// <exclude/>
     [Serializable]
     public class InvalidMarkException : Exception
     {
@@ -38,6 +40,7 @@ namespace net.sf.robocode.nio
         }
     }
 
+    /// <exclude/>
     [Serializable]
     public class BufferUnderflowException : Exception
     {
@@ -62,6 +65,7 @@ namespace net.sf.robocode.nio
         }
     }
 
+    /// <exclude/>
     [Serializable]
     public class BufferOverflowException : Exception
     {
@@ -86,6 +90,7 @@ namespace net.sf.robocode.nio
         }
     }
 
+    /// <exclude/>
     [Serializable]
     public class ReadOnlyBufferException : Exception
     {

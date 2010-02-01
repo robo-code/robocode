@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Security.Permissions;
 using System.Text;
+using net.sf.robocode.security;
 using robocode.net.sf.robocode.security;
 
 namespace net.sf.robocode.io
@@ -20,6 +21,7 @@ namespace net.sf.robocode.io
     ///<summary>
     ///  This is a class used for logging.
     ///</summary>
+    /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public class LoggerN
     {
@@ -123,6 +125,7 @@ namespace net.sf.robocode.io
         }
     }
 
+    /// <exclude/>
     public interface ILoggerN
     {
         void logMessage(string s, bool newline);

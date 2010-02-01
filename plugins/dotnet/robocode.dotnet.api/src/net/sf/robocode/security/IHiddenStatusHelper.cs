@@ -13,6 +13,7 @@ using robocode;
 namespace net.sf.robocode.security
 {
 #pragma warning disable 1591
+    /// <exclude/>
     public interface IHiddenStatusHelper
     {
         RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading,

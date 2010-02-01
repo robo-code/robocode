@@ -16,6 +16,7 @@ using robocode.robotinterfaces;
 namespace net.sf.robocode.security
 {
 #pragma warning disable 1591
+    /// <exclude/>
     public interface IHiddenEventHelper
     {
         void setDefaultPriority(Event evnt);

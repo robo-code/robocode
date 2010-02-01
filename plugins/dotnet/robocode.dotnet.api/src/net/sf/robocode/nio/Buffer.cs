@@ -38,7 +38,7 @@
 
 using System;
 using System.Security.Permissions;
-using robocode.net.sf.robocode.security;
+using net.sf.robocode.security;
 
 // ReSharper disable InconsistentNaming
 
@@ -46,6 +46,7 @@ namespace net.sf.robocode.nio
 {
 #pragma warning disable 1591
 #pragma warning disable 1570
+
     /**
      * A container for data of a specific primitive type.
      *
@@ -192,6 +193,7 @@ namespace net.sf.robocode.nio
      * @since 1.4
      */
 
+    /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public abstract class Buffer
     {

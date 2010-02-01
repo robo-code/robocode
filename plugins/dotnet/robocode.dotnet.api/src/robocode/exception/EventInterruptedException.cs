@@ -14,9 +14,7 @@ using System.Runtime.Serialization;
 
 namespace robocode.exception
 {
-    /// <summary>
-    /// @author Mathew A. Nelson (original)
-    /// </summary>
+    /// <exclude/>
     [Serializable]
     public class EventInterruptedException : Exception
     {
@@ -51,4 +49,4 @@ namespace robocode.exception
     
     }
 }
-//happy
+//doc

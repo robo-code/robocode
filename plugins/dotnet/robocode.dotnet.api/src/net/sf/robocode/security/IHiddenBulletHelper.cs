@@ -13,6 +13,7 @@ using robocode;
 namespace net.sf.robocode.security
 {
 #pragma warning disable 1591
+    /// <exclude/>
     public interface IHiddenBulletHelper
     {
         void update(Bullet bullet, double x, double y, string victimName, bool isActive);
