@@ -142,6 +142,15 @@
             <outputDirectory>robots/samplescs</outputDirectory>
         </fileSet>
     </fileSets>
+    <files>
+        <file>
+            <source>robocode.dotnet.api/target/robocode.xml</source>
+            <outputDirectory>libs</outputDirectory>
+        </file>
+        <file>
+            <source>robocode.dotnet.api/target/Help/RobotAPI.chm</source>
+        </file>
+    </files>
 </assembly>
 
 
