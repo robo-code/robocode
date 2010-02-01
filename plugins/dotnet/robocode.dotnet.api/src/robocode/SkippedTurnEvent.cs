@@ -46,9 +46,7 @@ namespace robocode
     /// This evnt may also be generated if you are simply doing too much processing
     /// between actions, that is using too much processing power for the calculations
     /// etc. in your robot.
-    ///
-    /// @author Mathew A. Nelson (original)
-    /// <seealso cref="AdvancedRobot#OnSkippedTurn(SkippedTurnEvent)"/>
+    /// <seealso cref="AdvancedRobot.OnSkippedTurn(SkippedTurnEvent)"/>
     /// <seealso cref="SkippedTurnEvent"/>
     /// </summary>
     public sealed class SkippedTurnEvent : Event

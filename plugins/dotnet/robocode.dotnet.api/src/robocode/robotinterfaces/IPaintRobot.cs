@@ -27,7 +27,7 @@ namespace robocode.robotinterfaces
         /// events. Hence, this method must be implemented so it returns your
         /// <see cref="IPaintEvents} listener.
         ///
-        /// @return listener to paint events or {@code null} if this robot should
+        /// @return listener to paint events or null if this robot should
         ///         not receive the notifications.
         /// @since 1.6
         /// </summary>

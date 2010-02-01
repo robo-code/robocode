@@ -20,7 +20,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to <see cref="Robot#OnDeath(DeathEvent)"/> when your
+    /// This evnt is sent to <see cref="Robot.OnDeath(DeathEvent)"/> when your
     /// robot dies.
     /// </summary>
     [Serializable]

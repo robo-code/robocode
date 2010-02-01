@@ -144,7 +144,7 @@ namespace robocode
         /// <summary>
         /// Returns the velocity of the robot measured in pixels/turn.
         /// <p/>
-        /// The maximum velocity of a robot is defined by <see cref="Rules#MAX_VELOCITY"/>
+        /// The maximum velocity of a robot is defined by <see cref="Rules.MAX_VELOCITY"/>
         /// (8 pixels / turn).
         /// <seealso cref="Rules.MAX_VELOCITY"/>
         /// </summary>
@@ -245,7 +245,7 @@ namespace robocode
         /// <p/>
         /// The amount of gun heat generated when the gun is fired is
         /// 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
-        /// by <see cref="Robot#getGunCoolingRate()"/>, which is a battle setup.
+        /// by <see cref="Robot.GunCoolingRate"/>, which is a battle setup.
         /// <p/>
         /// Note that all guns are "hot" at the start of each round, where the gun
         /// heat is 3.

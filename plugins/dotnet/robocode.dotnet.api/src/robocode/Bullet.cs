@@ -18,13 +18,13 @@ namespace robocode
 {
     /// 
     ///<summary>
-    ///  Represents a bullet. This is returned from <see cref="Robot#FireBullet(double)"/>
-    ///  and <see cref="AdvancedRobot#SetFireBullet(double)"/>, and all the bullet-related
+    ///  Represents a bullet. This is returned from <see cref="Robot.FireBullet(double)"/>
+    ///  and <see cref="AdvancedRobot.SetFireBullet(double)"/>, and all the bullet-related
     ///  events.
     ///
     ///  @author Mathew A. Nelson (original)
-    ///  <seealso cref="Robot#FireBullet(double)"/>
-    ///  <seealso cref="AdvancedRobot#SetFireBullet(double)"/>
+    ///  <seealso cref="Robot.FireBullet(double)"/>
+    ///  <seealso cref="AdvancedRobot.SetFireBullet(double)"/>
     ///  <seealso cref="BulletHitEvent"/>
     ///  <seealso cref="BulletMissedEvent"/>
     ///  <seealso cref="BulletHitBulletEvent"/>
@@ -105,7 +105,7 @@ namespace robocode
         }
 
         ///<summary>
-        ///  Returns the name of the robot that this bullet hit, or {@code null} if
+        ///  Returns the name of the robot that this bullet hit, or null if
         ///  the bullet has not hit a robot.
         ///</summary>
         public string Victim

@@ -1,4 +1,32 @@
-﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+﻿#region Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
+
+/*
+ * Copyright 2000-2008 Sun Microsystems, Inc.  All Rights Reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Sun designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Sun in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa Clara,
+ * CA 95054 USA or visit www.sun.com if you need additional information or
+ * have any questions.
+ */
+
+#endregion
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 
 // Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
@@ -14,10 +42,9 @@ using System;
 
 namespace net.sf.robocode.nio
 {
-    /**
-     * A read/write HeapByteBuffer.
-     */
-
+    /// <summary>
+    /// A read/write HeapByteBuffer.
+    /// </summary>
     internal class HeapByteBuffer : ByteBuffer
     {
         internal HeapByteBuffer(int cap, int lim)
@@ -59,14 +86,6 @@ namespace net.sf.robocode.nio
 
         public override ByteBuffer asReadOnlyBuffer()
         {
-            /*return new HeapByteBufferR(hb,
-				     this.markValue(),
-				     this.position(),
-				     this.limit(),
-				     this.capacity(),
-                     _offset);*/
-
-
             throw new NotImplementedException();
         }
 
@@ -179,9 +198,6 @@ namespace net.sf.robocode.nio
             hb[i] = b;
         }
 
-        // char
-
-
         public override char getChar()
         {
             return BitConverter.ToChar(hb, ix(nextGetIndex(2)));
@@ -211,28 +227,8 @@ namespace net.sf.robocode.nio
 
         public override Buffer asCharBuffer()
         {
-            /*int size = this.remaining() >> 1;
-	int off = offset + position();
-	return (bigEndian
-		? (CharBuffer)(new ByteBufferAsCharBufferB(this,
-							       -1,
-							       0,
-							       size,
-							       size,
-							       off))
-		: (CharBuffer)(new ByteBufferAsCharBufferL(this,
-							       -1,
-							       0,
-							       size,
-							       size,
-							       off)));
-     */
             throw new NotImplementedException();
         }
-
-
-        // short
-
 
         public override short getShort()
         {
@@ -263,27 +259,8 @@ namespace net.sf.robocode.nio
 
         public override Buffer asShortBuffer()
         {
-            /*int size = this.remaining() >> 1;
-	int off = offset + position();
-	return (bigEndian
-		? (ShortBuffer)(new ByteBufferAsShortBufferB(this,
-								 -1,
-								 0,
-								 size,
-								 size,
-								 off))
-		: (ShortBuffer)(new ByteBufferAsShortBufferL(this,
-								 -1,
-								 0,
-								 size,
-								 size,
-								 off)));*/
             throw new NotImplementedException();
         }
-
-
-        // int
-
 
         public override int getInt()
         {
@@ -314,21 +291,6 @@ namespace net.sf.robocode.nio
 
         public override Buffer asIntBuffer()
         {
-            /*int size = this.remaining() >> 2;
-	int off = offset + position();
-	return (bigEndian
-		? (IntBuffer)(new ByteBufferAsIntBufferB(this,
-							     -1,
-							     0,
-							     size,
-							     size,
-							     off))
-		: (IntBuffer)(new ByteBufferAsIntBufferL(this,
-							     -1,
-							     0,
-							     size,
-							     size,
-							     off)));*/
             throw new NotImplementedException();
         }
 
@@ -365,21 +327,6 @@ namespace net.sf.robocode.nio
 
         public override Buffer asLongBuffer()
         {
-            /*int size = this.remaining() >> 3;
-	int off = offset + position();
-	return (bigEndian
-		? (LongBuffer)(new ByteBufferAsLongBufferB(this,
-							       -1,
-							       0,
-							       size,
-							       size,
-							       off))
-		: (LongBuffer)(new ByteBufferAsLongBufferL(this,
-							       -1,
-							       0,
-							       size,
-							       size,
-							       off)));*/
             throw new NotImplementedException();
         }
 
@@ -416,21 +363,6 @@ namespace net.sf.robocode.nio
 
         public override Buffer asFloatBuffer()
         {
-            /*int size = this.remaining() >> 2;
-	int off = offset + position();
-	return (bigEndian
-		? (FloatBuffer)(new ByteBufferAsFloatBufferB(this,
-								 -1,
-								 0,
-								 size,
-								 size,
-								 off))
-		: (FloatBuffer)(new ByteBufferAsFloatBufferL(this,
-								 -1,
-								 0,
-								 size,
-								 size,
-								 off)));*/
             throw new NotImplementedException();
         }
 
@@ -467,21 +399,6 @@ namespace net.sf.robocode.nio
 
         public override Buffer asDoubleBuffer()
         {
-            /*int size = this.remaining() >> 3;
-	int off = offset + position();
-	return (bigEndian
-		? (DoubleBuffer)(new ByteBufferAsDoubleBufferB(this,
-								   -1,
-								   0,
-								   size,
-								   size,
-								   off))
-		: (DoubleBuffer)(new ByteBufferAsDoubleBufferL(this,
-								   -1,
-								   0,
-								   size,
-								   size,
-								   off)));*/
             throw new NotImplementedException();
         }
     }

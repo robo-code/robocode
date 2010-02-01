@@ -15,6 +15,7 @@ using System.Text;
 
 namespace robocode.net.sf.robocode.security
 {
+#pragma warning disable 1591
     [Serializable]
     public sealed class RobocodeInternalPermission : CodeAccessPermission, IUnrestrictedPermission
     {
@@ -144,4 +145,5 @@ namespace robocode.net.sf.robocode.security
                        : new RobocodeInternalPermission(PermissionState.None);
         }
     }
+#pragma warning restore 1591
 }

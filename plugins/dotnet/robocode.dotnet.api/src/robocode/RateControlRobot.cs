@@ -60,8 +60,7 @@ namespace robocode
     ///   <see cref="Execute()" />
     ///   on this robot class.
     /// 
-    ///   Look into the source code for the
-    ///   <see cref="samplecs.VelociRobot" />
+    ///   Look into the source code for the samplecs.VelociRobot
     ///   in order to see how to use this
     ///   robot type.
     /// </summary>

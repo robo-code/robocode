@@ -21,7 +21,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    /// This evnt is sent to <see cref="Robot#OnRobotDeath(RobotDeathEvent)"/>
+    /// This evnt is sent to <see cref="Robot.OnRobotDeath(RobotDeathEvent)"/>
     /// when another robot (not your robot) dies.
     /// </summary>
     [Serializable]

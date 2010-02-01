@@ -15,9 +15,7 @@ using robocode.robotinterfaces;
 
 namespace net.sf.robocode.security
 {
-    /// <summary>
-    ///   @author Pavel Savara (original)
-    /// </summary>
+#pragma warning disable 1591
     public interface IHiddenEventHelper
     {
         void setDefaultPriority(Event evnt);

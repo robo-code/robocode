@@ -10,9 +10,7 @@
 
 namespace net.sf.robocode.peer
 {
-    /// <summary>
-    ///   @author Pavel Savara (original)
-    /// </summary>
+#pragma warning disable 1591
     public interface IRobotStaticsN
     {
         bool IsInteractiveRobot();

@@ -23,18 +23,18 @@ namespace robocode
     [Serializable]
     public class BattleResults : IComparable<BattleResults>
     {
-        protected string teamLeaderName;
-        protected int rank;
-        protected double score;
-        protected double survival;
-        protected double lastSurvivorBonus;
-        protected double bulletDamage;
-        protected double bulletDamageBonus;
-        protected double ramDamage;
-        protected double ramDamageBonus;
-        protected int firsts;
-        protected int seconds;
-        protected int thirds;
+        internal string teamLeaderName;
+        internal int rank;
+        internal double score;
+        internal double survival;
+        internal double lastSurvivorBonus;
+        internal double bulletDamage;
+        internal double bulletDamageBonus;
+        internal double ramDamage;
+        internal double ramDamageBonus;
+        internal int firsts;
+        internal int seconds;
+        internal int thirds;
 
         ///<summary>
         ///  Constructs this BattleResults objec.

@@ -20,6 +20,28 @@ using net.sf.robocode.io;
 
 namespace robocode
 {
+    /// <summary>
+    /// Condition is used to define custom  <see cref="AdvancedRobot.WaitFor(Condition)"/> 
+    /// and custom events for an {@link AdvancedRobot}. The code
+    /// below is taken from the sample robot named samplecs.Target. See the
+    /// samplecs/Target.cs for details.
+    /// <pre>
+    ///   AddCustomEvent(
+    ///       new Condition("triggerhit") {
+    ///           public boolean test() {
+    ///               return (getEnergy() &lt;= trigger);
+    ///           };
+    ///       }
+    ///   );
+    /// </pre>
+    /// You should note that by extending Condition this way, you are actually
+    /// creating an inner class -- so if you distribute your robot, there will be
+    /// multiple class files. (i.e. {@code Target$1.class})
+    /// <see cref="AdvancedRobot.WaitFor(Condition)"/>
+    /// <see cref="AdvancedRobot.AddCustomEvent(Condition)"/>
+    /// <see cref="AdvancedRobot.RemoveCustomEvent(Condition)"/>
+    /// <see cref="AdvancedRobot.OnCustomEvent(CustomEvent)"/>
+    /// </summary>
     public class Condition
     {
         private readonly ConditionTest test;
@@ -34,18 +56,27 @@ namespace robocode
         /// </summary>
         public string name;
 
+        /// <summary>
+        /// Convinience constructor, alows t pass delegate to method, instead of overriding Test method.
+        /// </summary>
         public Condition(string name, int priority, ConditionTest test)
             : this(name, priority)
         {
             this.test = test;
         }
 
+        /// <summary>
+        /// Convinience constructor, alows t pass delegate to method, instead of overriding Test method.
+        /// </summary>
         public Condition(string name, ConditionTest test)
             : this(name)
         {
             this.test = test;
         }
 
+        /// <summary>
+        /// Convinience constructor, alows t pass delegate to method, instead of overriding Test method.
+        /// </summary>
         public Condition(ConditionTest test)
         {
             this.test = test;
@@ -117,7 +148,7 @@ namespace robocode
         /// Overriding the Test() method is the point of a Condition.
         /// The game will call your Test() function, and take action if it returns
         /// {@code true}. This is valid for both <see cref="AdvancedRobot.WaitFor"/> and
-        /// <see cref="AdvancedRobot#AddCustomEvent"/>
+        /// <see cref="AdvancedRobot.AddCustomEvent(Condition)"/>
         /// <p/>
         /// You may not take any actions inside of Test().
         /// </summary>
@@ -131,6 +162,9 @@ namespace robocode
         }
     }
 
+    /// <summary>
+    /// Sugnature for Test method of <see cref="Condition"/>
+    /// </summary>
     public delegate bool ConditionTest(Condition condition);
 }
 //happy

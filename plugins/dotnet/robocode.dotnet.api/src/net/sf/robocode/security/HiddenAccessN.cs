@@ -20,10 +20,7 @@ using robocode.robotinterfaces;
 
 namespace net.sf.robocode.security
 {
-    /// <summary>
-    ///   Helpers for accessing hidden methods on events
-    ///   @author Pavel Savara (original)
-    /// </summary>
+#pragma warning disable 1591
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public class HiddenAccessN
     {
@@ -132,6 +129,7 @@ namespace net.sf.robocode.security
             return name ?? "";
         }
     }
+#pragma warning restore 1591
 }
 
 //happy

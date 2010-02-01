@@ -12,7 +12,6 @@
  *     - Updated Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -28,8 +27,6 @@ namespace robocode
     /// <b>Note</b>: You should not inherit from this class in your own evnt class!
     /// The internal logic of this evnt class might change. Hence, your robot might
     /// not work in future Robocode versions, if you choose to inherit from this class.
-    ///
-    /// @author Mathew A. Nelson (original)
     /// </summary>
     public class ScannedRobotEvent : Event
     {
@@ -42,17 +39,7 @@ namespace robocode
         private readonly double distance;
         private readonly double velocity;
 
-        /// <summary>
-        /// This constructor is only provided in order to preserve backwards compatibility with old robots that
-        /// inherits from this Event class. 
-        /// <p/>
-        /// <b>Note</b>: You should not inherit from this class in your own evnt class!
-        /// The internal logic of this evnt class might change. Hence, your robot might
-        /// not work in future Robocode versions, if you choose to inherit from this class.
-        ///
-        /// @deprecated Use <see cref="ScannedRobotEvent(string, double, double, double, double, double)"/> instead.
-        /// </summary>
-        public ScannedRobotEvent()
+        internal ScannedRobotEvent()
         {
             name = null;
             energy = 0;
@@ -84,7 +71,7 @@ namespace robocode
 
         /// <summary>
         /// Returns the bearing to the robot you scanned, relative to your robot's
-        /// heading, in degrees (-180 <= getBearing() < 180)
+        /// heading, in degrees (-180 &lt;= getBearing() &lt; 180)
         /// </summary>
         public double Bearing
         {
@@ -93,7 +80,7 @@ namespace robocode
 
         /// <summary>
         /// Returns the bearing to the robot you scanned, relative to your robot's
-        /// heading, in radians (-PI <= getBearingRadians() < PI)
+        /// heading, in radians (-PI &lt;= getBearingRadians() &lt; PI)
         /// </summary>
         public double BearingRadians
         {
@@ -117,7 +104,7 @@ namespace robocode
         }
 
         /// <summary>
-        /// Returns the heading of the robot, in degrees (0 <= getHeading() < 360)
+        /// Returns the heading of the robot, in degrees (0 &lt;= getHeading() &lt; 360)
         /// </summary>
         public double Heading
         {
@@ -125,7 +112,7 @@ namespace robocode
         }
 
         /// <summary>
-        /// Returns the heading of the robot, in radians (0 <= getHeading() < 2 * PI)
+        /// Returns the heading of the robot, in radians (0 &lt;= getHeading() &lt; 2 * PI)
         /// </summary>
         public double HeadingRadians
         {

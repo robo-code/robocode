@@ -14,18 +14,30 @@ using System.Runtime.Serialization;
 
 namespace robocode.exception
 {
+    /// <summary>
+    /// Throw this exception to stop robot
+    /// </summary>
     [Serializable]
     public class RobotException : Exception
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public RobotException()
         {
         }
 
+        /// <summary>
+        /// Constructor with message
+        /// </summary>
         public RobotException(string s)
             : base(s)
         {
         }
 
+        /// <summary>
+        /// Deserialization constructor
+        /// </summary>
         protected RobotException(SerializationInfo info, StreamingContext context) :
             base(info, context)
         {

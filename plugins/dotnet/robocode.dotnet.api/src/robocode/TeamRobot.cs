@@ -96,7 +96,7 @@ namespace robocode
         }
 
         /// <summary>
-        /// Returns the names of all teammates, or {@code null} there is no
+        /// Returns the names of all teammates, or null there is no
         /// teammates. The length of the string array is equal to the number of teammates.
         /// <p/>
         /// <example>

@@ -16,12 +16,9 @@ using robocode.net.sf.robocode.security;
 
 namespace net.sf.robocode.io
 {
-    /// 
+#pragma warning disable 1591
     ///<summary>
     ///  This is a class used for logging.
-    ///
-    ///  @author Flemming N. Larsen (original)
-    ///  @author Mathew A. Nelson (original)
     ///</summary>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public class LoggerN

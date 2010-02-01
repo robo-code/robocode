@@ -20,20 +20,30 @@ namespace robocode.exception
     [Serializable]
     public class EventInterruptedException : Exception
     {
-        // Must be error!
-
         private readonly int priority = int.MinValue;
 
+        /// <summary>
+        /// Used by game
+        /// </summary>
         public EventInterruptedException(int priority)
         {
             this.priority = priority;
         }
 
-        public int GetPriority()
+        /// <summary>
+        /// Last top priority
+        /// </summary>
+        public int Priority
         {
-            return priority;
+            get
+            {
+                return priority;
+            }
         }
 
+        /// <summary>
+        /// Serialization constructor
+        /// </summary>
         protected EventInterruptedException(SerializationInfo info, StreamingContext context) :
             base(info, context)
         {

@@ -50,7 +50,7 @@ namespace robocode.robotinterfaces
         /// robot evnt. Hence, this method must be implemented so it returns your
         /// <see cref="IBasicEvents} listener.
         ///
-        /// @return listener to basic events or {@code null} if this robot should
+        /// @return listener to basic events or null if this robot should
         ///         not receive the notifications.
         /// @since 1.6
         /// </summary>

@@ -20,19 +20,15 @@ namespace robocode.robotinterfaces.peer
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
-    ///
-    /// @author Pavel Savara (original)
-    /// @author Flemming N. Larsen (javadoc)
     /// <seealso cref="IBasicRobotPeer
     /// <seealso cref="IStandardRobotPeer
     /// <seealso cref="IAdvancedRobotPeer
     /// <seealso cref="IJuniorRobotPeer
-    /// @since 1.6
     /// </summary>
     public interface ITeamRobotPeer : IAdvancedRobotPeer
     {
         /// <summary>
-        /// Returns the names of all teammates, or {@code null} there is no
+        /// Returns the names of all teammates, or null there is no
         /// teammates.
         /// <p/>
         /// <example>
@@ -47,10 +43,6 @@ namespace robocode.robotinterfaces.peer
         ///       }
         ///   }
         /// </pre>
-        ///
-        /// @return a string array containing the names of all your teammates, or
-        ///         {@code null} if there is no teammates. The length of the string array
-        ///         is equal to the number of teammates.
         /// <seealso cref="IsTeammate(string)
         /// <seealso cref="BroadcastMessage(ISerializable)
         /// <seealso cref="SendMessage(string, ISerializable)
@@ -71,8 +63,6 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         ///
         /// <param name="name the robot name to check
-        /// @return {@code true} if the specified name belongs to one of your
-        ///         teammates; {@code false} otherwise.
         /// <seealso cref="getTeammates()
         /// <seealso cref="BroadcastMessage(ISerializable)
         /// <seealso cref="SendMessage(string, ISerializable)
@@ -90,8 +80,6 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         ///
         /// <param name="message the message to broadcast to all teammates
-        /// @ if the message could not be broadcasted to the
-        ///                     teammates
         /// <seealso cref="IsTeammate(string)
         /// <seealso cref="getTeammates()
         /// <seealso cref="SendMessage(string, ISerializable)
@@ -110,7 +98,6 @@ namespace robocode.robotinterfaces.peer
         ///
         /// <param name="name	the name of the intended recipient of the message
         /// <param name="message the message to send
-        /// @ if the message could not be sent
         /// <seealso cref="IsTeammate(string)
         /// <seealso cref="getTeammates()
         /// <seealso cref="BroadcastMessage(ISerializable)
@@ -127,13 +114,9 @@ namespace robocode.robotinterfaces.peer
         ///      // do something with e
         ///   }
         /// </pre>
-        ///
-        /// @return a vector containing all MessageEvents currently in the robot's
-        ///         queue
         /// <seealso cref="robocode.robotinterfaces.ITeamEvents#OnMessageReceived(MessageEvent)
         ///      OnMessageReceived(MessageEvent)
         /// <seealso cref="MessageEvent
-        /// @since 1.2.6
         /// </summary>
         IList<MessageEvent> getMessageEvents();
     }

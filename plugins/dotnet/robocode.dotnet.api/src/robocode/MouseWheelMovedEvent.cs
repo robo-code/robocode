@@ -12,7 +12,6 @@
  *     - Javadocs
  *******************************************************************************/
 using System;
-using System.Drawing;
 using net.sf.robocode.nio;
 using net.sf.robocode.peer;
 using net.sf.robocode.serialization;
@@ -51,16 +50,19 @@ namespace robocode
             this.wheelRotation = wheelRotation;
         }
 
-        public int ScrollType
+        internal int ScrollType
         {
             get { return scrollType; }
         }
 
-        public int ScrollAmount
+        internal int ScrollAmount
         {
             get { return scrollAmount; }
         }
 
+        /// <summary>
+        /// Indicates how far the mouse wheel was rotated.
+        /// </summary>
         public int WheelRotation
         {
             get { return wheelRotation; }

@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 
 namespace net.sf.robocode.nio
 {
+#pragma warning disable 1591
     [Serializable]
     public class InvalidMarkException : Exception
     {

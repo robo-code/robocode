@@ -41,7 +41,7 @@ namespace robocode
         /// </summary>
         /// <param name="robot">your robot, which must be a <see cref="AdvancedRobot"/></param>
         /// <param name="priority">the priority of this condition</param>
-        /// <seealso cref="Condition#setPriority(int)"/>
+        /// <seealso cref="Condition.Priority"/>
         public TurnCompleteCondition(AdvancedRobot robot, int priority)
         {
             this.robot = robot;

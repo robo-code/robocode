@@ -335,9 +335,9 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         ///
         /// <param name="radians the amount of radians to turn the robot's body.
-        ///                If {@code radians} > 0 the robot's body is set to turn right.
-        ///                If {@code radians} < 0 the robot's body is set to turn left.
-        ///                If {@code radians} = 0 the robot's body is set to Stop turning.
+        ///                If radians > 0 the robot's body is set to turn right.
+        ///                If radians < 0 the robot's body is set to turn left.
+        ///                If radians = 0 the robot's body is set to Stop turning.
         /// <seealso cref="turnGun(double)
         /// <seealso cref="IStandardRobotPeer#turnRadar(double) turnRadar(double)
         /// <seealso cref="move(double)
@@ -364,9 +364,9 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         ///
         /// <param name="radians the amount of radians to turn the robot's gun.
-        ///                If {@code radians} > 0 the robot's gun is set to turn right.
-        ///                If {@code radians} < 0 the robot's gun is set to turn left.
-        ///                If {@code radians} = 0 the robot's gun is set to Stop turning.
+        ///                If radians > 0 the robot's gun is set to turn right.
+        ///                If radians < 0 the robot's gun is set to turn left.
+        ///                If radians = 0 the robot's gun is set to Stop turning.
         /// <seealso cref="turnBody(double)
         /// <seealso cref="IStandardRobotPeer#turnRadar(double) turnRadar(double)
         /// <seealso cref="move(double)
@@ -414,7 +414,7 @@ namespace robocode.robotinterfaces.peer
         ///              from the robot's energy.
         /// @return a <see cref="Bullet} that contains information about the bullet if it
         ///         was actually fired, which can be used for tracking the bullet after it
-        ///         has been fired. If the bullet was not fired, {@code null} is returned.
+        ///         has been fired. If the bullet was not fired, null is returned.
         /// <seealso cref="SetFire(double)
         /// <seealso cref="Bullet
         /// <seealso cref="GetGunHeat()
@@ -476,7 +476,7 @@ namespace robocode.robotinterfaces.peer
         ///              from the robot's energy.
         /// @return a <see cref="Bullet} that contains information about the bullet if it
         ///         was actually fired, which can be used for tracking the bullet after it
-        ///         has been fired. If the bullet was not fired, {@code null} is returned.
+        ///         has been fired. If the bullet was not fired, null is returned.
         /// <seealso cref="Fire(double)
         /// <seealso cref="Bullet
         /// <seealso cref="GetGunHeat()
@@ -493,7 +493,7 @@ namespace robocode.robotinterfaces.peer
         /// <summary>
         /// Sets the color of the robot's body.
         /// <p/>
-        /// A {@code null} indicates the default (blue) color.
+        /// A null indicates the default (blue) color.
         /// <p/>
         /// <pre>
         /// <example>
@@ -520,7 +520,7 @@ namespace robocode.robotinterfaces.peer
         /// <summary>
         /// Sets the color of the robot's gun.
         /// <p/>
-        /// A {@code null} indicates the default (blue) color.
+        /// A null indicates the default (blue) color.
         /// <p/>
         /// <pre>
         /// <example>
@@ -547,7 +547,7 @@ namespace robocode.robotinterfaces.peer
         /// <summary>
         /// Sets the color of the robot's radar.
         /// <p/>
-        /// A {@code null} indicates the default (blue) color.
+        /// A null indicates the default (blue) color.
         /// <p/>
         /// <pre>
         /// <example>
@@ -574,7 +574,7 @@ namespace robocode.robotinterfaces.peer
         /// <summary>
         /// Sets the color of the robot's bullets.
         /// <p/>
-        /// A {@code null} indicates the default white color.
+        /// A null indicates the default white color.
         /// <p/>
         /// <pre>
         /// <example>
@@ -601,7 +601,7 @@ namespace robocode.robotinterfaces.peer
         /// <summary>
         /// Sets the color of the robot's Scan arc.
         /// <p/>
-        /// A {@code null} indicates the default (blue) color.
+        /// A null indicates the default (blue) color.
         /// <p/>
         /// <pre>
         /// <example>
@@ -679,7 +679,7 @@ namespace robocode.robotinterfaces.peer
         /// robots under the Debug Properties tab page.
         ///
         /// <param name="key the name/key of the debug property.
-        /// <param name="value the new value of the debug property, where {@code null} or
+        /// <param name="value the new value of the debug property, where null or
         ///              the empty string is used for removing this debug property. 
         /// @since 1.6.2
         /// </summary>

@@ -21,13 +21,16 @@ namespace robocode
     [Serializable]
     public abstract class KeyEvent : Event
     {
-        protected readonly char keyChar;
-        protected readonly int keyCode;
-        protected readonly int keyLocation;
-        protected readonly int id;
-        protected readonly int modifiersEx;
-        protected readonly long when;
+        private readonly char keyChar;
+        private readonly int keyCode;
+        private readonly int keyLocation;
+        private readonly int id;
+        private readonly int modifiersEx;
+        private readonly long when;
 
+        /// <summary>
+        /// Called by game
+        /// </summary>
         protected KeyEvent(char keyChar, int keyCode, int keyLocation, int id, int modifiersEx, long when)
         {
             this.keyChar = keyChar;
@@ -38,6 +41,9 @@ namespace robocode
             this.when = when;
         }
 
+        /// <summary>
+        /// char of they key pressed
+        /// </summary>
         public char KeyChar
         {
             get { return keyChar; }
@@ -51,21 +57,24 @@ namespace robocode
             get { return keyCode; }
         }
 
-        public int KeyLocation
+        internal int KeyLocation
         {
             get { return keyLocation; }
         }
 
-        public int ID
+        internal int ID
         {
             get { return id; }
         }
 
-        public int ModifiersEx
+        internal int ModifiersEx
         {
             get { return modifiersEx; }
         }
 
+        /// <summary>
+        /// Age of the event
+        /// </summary>
         public long When
         {
             get { return when; }

@@ -17,18 +17,17 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     /// <summary>
-    ///   A RoundEndedEvent is sent to <see cref="Robot#onRoundEnded(RoundEndedEvent)"/> when a round has ended.
+    ///   A RoundEndedEvent is sent to <see cref="Robot.OnRoundEnded(RoundEndedEvent)"/> when a round has ended.
     ///   You can use the information contained in this event to determine which round that has ended.
-    ///   <seealso cref="Robot#onRoundEnded(RoundEndedEvent)"/>
+    ///   <seealso cref="Robot.OnRoundEnded(RoundEndedEvent)"/>
     /// </summary>
     public class RoundEndedEvent : Event
     {
-        private static long serialVersionUID = 1L;
-        private static int DEFAULT_PRIORITY = 110; // System event -> cannot be changed!
+        private const int DEFAULT_PRIORITY = 110; // System event -> cannot be changed!
 
-        private int round;
-        private int turns;
-        private int totalTurns;
+        private readonly int round;
+        private readonly int turns;
+        private readonly int totalTurns;
 
 
         /// <summary>
@@ -70,11 +69,13 @@ namespace robocode
             return totalTurns;
         }
 
+        /// <inheritdoc />
         internal override sealed int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
+        /// <inheritdoc />
         public override sealed int Priority
         {
             get { return DEFAULT_PRIORITY; }

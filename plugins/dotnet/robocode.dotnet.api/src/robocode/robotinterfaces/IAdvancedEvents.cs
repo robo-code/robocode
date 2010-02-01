@@ -51,7 +51,7 @@ namespace robocode.robotinterfaces
         /// robot.
         ///
         /// <param name="evnt the custom evnt that occurred
-        /// <seealso cref="robocode.AdvancedRobot#AddCustomEvent
+        /// <seealso cref="robocode.AdvancedRobot.AddCustomEvent
         /// <seealso cref="robocode.CustomEvent
         /// <seealso cref="robocode.Event
         /// </summary>

@@ -1870,6 +1870,9 @@ namespace robocode
 
         private DebugPropertyH debugProperty;
 
+        /// <summary>
+        /// Container class for debug properties
+        /// </summary>
         public class DebugPropertyH
         {
             private readonly IBasicRobotPeer peer;

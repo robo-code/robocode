@@ -35,7 +35,7 @@ namespace robocode.robotinterfaces
         /// robot evnt. Hence, this method must be implemented so it returns your
         /// <see cref="IAdvancedEvents} listener.
         ///
-        /// @return listener to advanced events or {@code null} if this robot should
+        /// @return listener to advanced events or null if this robot should
         ///         not receive the notifications.
         /// @since 1.6
         /// </summary>

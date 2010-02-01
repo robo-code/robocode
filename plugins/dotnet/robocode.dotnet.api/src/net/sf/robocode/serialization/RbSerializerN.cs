@@ -22,9 +22,7 @@ using robocode.net.sf.robocode.security;
 
 namespace net.sf.robocode.serialization
 {
-    /// <summary>
-    ///   @author Pavel Savara (original)
-    /// </summary>
+#pragma warning disable 1591
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
     public sealed class RbSerializerN
     {
@@ -477,7 +475,7 @@ namespace net.sf.robocode.serialization
             return sizeOf(HiddenAccessN.getSerializationType(evnt), evnt);
         }
 
-        private ISerializableHelperN getHelper(byte type)
+        private static ISerializableHelperN getHelper(byte type)
         {
             ISerializableHelperN helper = typeToHelper[type];
 

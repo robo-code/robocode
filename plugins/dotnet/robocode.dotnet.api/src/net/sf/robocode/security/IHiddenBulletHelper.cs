@@ -12,9 +12,7 @@ using robocode;
 
 namespace net.sf.robocode.security
 {
-    /// <summary>
-    ///   @author Pavel Savara (original)
-    /// </summary>
+#pragma warning disable 1591
     public interface IHiddenBulletHelper
     {
         void update(Bullet bullet, double x, double y, string victimName, bool isActive);

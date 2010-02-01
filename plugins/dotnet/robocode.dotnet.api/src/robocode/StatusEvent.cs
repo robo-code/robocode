@@ -18,9 +18,6 @@ namespace robocode
     /// <summary>
     /// This evnt is sent to <see cref="Robot.OnStatus(StatusEvent)"/> every
     /// turn in a battle to provide the status of the robot.
-    ///
-    /// @author Flemming N. Larsen (original)
-    /// @since 1.5
     /// </summary>
     [Serializable]
     public sealed class StatusEvent : Event

@@ -511,6 +511,9 @@ namespace robocode
             }
         }
 
+        /// <summary>
+        /// Same as <see cref="AddCustomEvent(Condition)"/>, but alows to define condition as anonymous method.
+        /// </summary>
         public void AddCustomEvent(string name, int priority, ConditionTest test)
         {
             AddCustomEvent(new Condition(name, priority, test));
@@ -597,7 +600,7 @@ namespace robocode
         ///     SetAhead(100);
         ///     Execute();
         ///     <p />
-        ///     while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
+        ///     while (getDistanceRemaining() > 0 &amp;&amp; getTurnRemaining() > 0) {
         ///     Execute();
         ///     }
         ///   </pre>
@@ -1559,9 +1562,9 @@ namespace robocode
         ///  <seealso cref="AdvancedRobot.SetTurnRightRadians(double)"/>
         ///</summary>
         ///  <param name="radians"> the amount of radians to turn the robot's body to the left.
-        ///  If {@code radians} &gt; 0 the robot is set to turn left.
-        ///  If {@code radians} &lt; 0 the robot is set to turn right.
-        ///  If {@code radians} = 0 the robot is set to Stop turning.</param>
+        ///  If radians &gt; 0 the robot is set to turn left.
+        ///  If radians &lt; 0 the robot is set to turn right.
+        ///  If radians = 0 the robot is set to Stop turning.</param>
         public void SetTurnLeftRadians(double radians)
         {
             if (peer != null)
@@ -1608,9 +1611,9 @@ namespace robocode
         ///  <seealso cref="AdvancedRobot.SetTurnLeftRadians(double)"/>
         ///</summary>
         ///  <param name="radians"> the amount of radians to turn the robot's body to the right.
-        ///  If {@code radians} &gt; 0 the robot is set to turn right.
-        ///  If {@code radians} &lt; 0 the robot is set to turn left.
-        ///  If {@code radians} = 0 the robot is set to Stop turning.</param>
+        ///  If radians &gt; 0 the robot is set to turn right.
+        ///  If radians &lt; 0 the robot is set to turn left.
+        ///  If radians = 0 the robot is set to Stop turning.</param>
         public void SetTurnRightRadians(double radians)
         {
             if (peer != null)
@@ -1656,9 +1659,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         ///</summary>
         ///  <param name="radians">the amount of radians to turn the robot's body to the left.
-        ///  If {@code radians} &gt; 0 the robot will turn right.
-        ///  If {@code radians} &lt; 0 the robot will turn left.
-        ///  If {@code radians} = 0 the robot will not turn, but Execute.</param>
+        ///  If radians &gt; 0 the robot will turn right.
+        ///  If radians &lt; 0 the robot will turn left.
+        ///  If radians = 0 the robot will not turn, but Execute.</param>
         public void TurnLeftRadians(double radians)
         {
             if (peer != null)
@@ -1703,9 +1706,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         ///</summary>
         ///  <param name="radians"> the amount of radians to turn the robot's body to the right.
-        ///  If {@code radians} &gt; 0 the robot will turn right.
-        ///  If {@code radians} &lt; 0 the robot will turn left.
-        ///  If {@code radians} = 0 the robot will not turn, but Execute.</param>
+        ///  If radians &gt; 0 the robot will turn right.
+        ///  If radians &lt; 0 the robot will turn left.
+        ///  If radians = 0 the robot will not turn, but Execute.</param>
         public void TurnRightRadians(double radians)
         {
             if (peer != null)
@@ -1805,9 +1808,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         ///</summary>
         ///  <param name="radians"> the amount of radians to turn the robot's gun to the left.
-        ///  If {@code radians} &gt; 0 the robot's gun is set to turn left.
-        ///  If {@code radians} &lt; 0 the robot's gun is set to turn right.
-        ///  If {@code radians} = 0 the robot's gun is set to Stop turning.</param>
+        ///  If radians &gt; 0 the robot's gun is set to turn left.
+        ///  If radians &lt; 0 the robot's gun is set to turn right.
+        ///  If radians = 0 the robot's gun is set to Stop turning.</param>
         public void SetTurnGunLeftRadians(double radians)
         {
             if (peer != null)
@@ -1855,9 +1858,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         ///</summary>
         ///  <param name="radians">the amount of radians to turn the robot's gun to the right.
-        ///  If {@code radians} &gt; 0 the robot's gun is set to turn left.
-        ///  If {@code radians} &lt; 0 the robot's gun is set to turn right.
-        ///  If {@code radians} = 0 the robot's gun is set to Stop turning.</param>
+        ///  If radians &gt; 0 the robot's gun is set to turn left.
+        ///  If radians &lt; 0 the robot's gun is set to turn right.
+        ///  If radians = 0 the robot's gun is set to Stop turning.</param>
         public void SetTurnGunRightRadians(double radians)
         {
             if (peer != null)
@@ -1906,9 +1909,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
         ///</summary>
         ///  <param name="radians">the amount of radians to turn the robot's radar to the left.
-        ///  If {@code radians} &gt; 0 the robot's radar is set to turn left.
-        ///  If {@code radians} &lt; 0 the robot's radar is set to turn right.
-        ///  If {@code radians} = 0 the robot's radar is set to Stop turning.</param>
+        ///  If radians &gt; 0 the robot's radar is set to turn left.
+        ///  If radians &lt; 0 the robot's radar is set to turn right.
+        ///  If radians = 0 the robot's radar is set to Stop turning.</param>
         public void SetTurnRadarLeftRadians(double radians)
         {
             if (peer != null)
@@ -1956,9 +1959,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
         ///</summary>
         ///  <param name="radians"> the amount of radians to turn the robot's radar to the right.
-        ///  If {@code radians} &gt; 0 the robot's radar is set to turn left.
-        ///  If {@code radians} &lt; 0 the robot's radar is set to turn right.
-        ///  If {@code radians} = 0 the robot's radar is set to Stop turning.</param>
+        ///  If radians &gt; 0 the robot's radar is set to turn left.
+        ///  If radians &lt; 0 the robot's radar is set to turn right.
+        ///  If radians = 0 the robot's radar is set to Stop turning.</param>
         public void SetTurnRadarRightRadians(double radians)
         {
             if (peer != null)
@@ -2003,9 +2006,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         ///</summary>
         ///  <param name="radians">the amount of radians to turn the robot's gun to the left.
-        ///  If {@code radians} &gt; 0 the robot's gun will turn left.
-        ///  If {@code radians} &lt; 0 the robot's gun will turn right.
-        ///  If {@code radians} = 0 the robot's gun will not turn, but Execute.</param>        
+        ///  If radians &gt; 0 the robot's gun will turn left.
+        ///  If radians &lt; 0 the robot's gun will turn right.
+        ///  If radians = 0 the robot's gun will not turn, but Execute.</param>        
         public void TurnGunLeftRadians(double radians)
         {
             if (peer != null)
@@ -2049,9 +2052,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         ///</summary>
         ///  <param name="radians">the amount of radians to turn the robot's gun to the right.
-        ///  If {@code radians} &gt; 0 the robot's gun will turn right.
-        ///  If {@code radians} &lt; 0 the robot's gun will turn left.
-        ///  If {@code radians} = 0 the robot's gun will not turn, but Execute.</param>
+        ///  If radians &gt; 0 the robot's gun will turn right.
+        ///  If radians &lt; 0 the robot's gun will turn left.
+        ///  If radians = 0 the robot's gun will not turn, but Execute.</param>
         public void TurnGunRightRadians(double radians)
         {
             if (peer != null)
@@ -2097,9 +2100,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
         ///</summary>
         ///  <param name="radians">the amount of radians to turn the robot's radar to the left.
-        ///  If {@code radians} &gt; 0 the robot's radar will turn left.
-        ///  If {@code radians} &lt; 0 the robot's radar will turn right.
-        ///  If {@code radians} = 0 the robot's radar will not turn, but Execute.</param>
+        ///  If radians &gt; 0 the robot's radar will turn left.
+        ///  If radians &lt; 0 the robot's radar will turn right.
+        ///  If radians = 0 the robot's radar will not turn, but Execute.</param>
         public void TurnRadarLeftRadians(double radians)
         {
             if (peer != null)
@@ -2144,9 +2147,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
         ///</summary>
         ///  <param name="radians">the amount of radians to turn the robot's radar to the right.
-        ///  If {@code radians} &gt; 0 the robot's radar will turn right.
-        ///  If {@code radians} &lt; 0 the robot's radar will turn left.
-        ///  If {@code radians} = 0 the robot's radar will not turn, but Execute.</param>
+        ///  If radians &gt; 0 the robot's radar will turn right.
+        ///  If radians &lt; 0 the robot's radar will turn left.
+        ///  If radians = 0 the robot's radar will not turn, but Execute.</param>
         public void TurnRadarRightRadians(double radians)
         {
             if (peer != null)

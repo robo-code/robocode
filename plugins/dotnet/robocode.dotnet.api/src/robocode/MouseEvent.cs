@@ -21,13 +21,13 @@ namespace robocode
     [Serializable]
     public abstract class MouseEvent : Event
     {
-        protected readonly int button;
-        protected readonly int clickCount;
-        protected readonly int x;
-        protected readonly int y;
-        protected readonly int id;
-        protected readonly int modifiersEx;
-        protected readonly long when;
+        private readonly int button;
+        private readonly int clickCount;
+        private readonly int x;
+        private readonly int y;
+        private readonly int id;
+        private readonly int modifiersEx;
+        private readonly long when;
 
         /// <summary>
         /// Called by the game to create a new MouseEvent.
@@ -43,36 +43,51 @@ namespace robocode
             this.when = when;
         }
 
+        /// <summary>
+        /// Number of button
+        /// </summary>
         public int Button
         {
             get { return button; }
         }
 
+        /// <summary>
+        /// Click count
+        /// </summary>
         public int ClickCount
         {
             get { return clickCount; }
         }
 
+        /// <summary>
+        /// Cursor coordinates
+        /// </summary>
         public int X
         {
             get { return x; }
         }
 
+        /// <summary>
+        /// Cursor coordinates
+        /// </summary>
         public int Y
         {
             get { return y; }
         }
 
-        public int ID
+        internal int ID
         {
             get { return id; }
         }
 
-        public int ModifiersEx
+        internal int ModifiersEx
         {
             get { return modifiersEx; }
         }
 
+        /// <summary>
+        /// Age of the event
+        /// </summary>
         public long When
         {
             get { return when; }

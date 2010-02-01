@@ -39,7 +39,7 @@ namespace robocode.robotinterfaces
         /// events, i.e. keyboard and mouse events. Hence, this method must be
         /// implemented so it returns your <see cref="IInteractiveEvents} listener.
         ///
-        /// @return listener to interactive events or {@code null} if this robot
+        /// @return listener to interactive events or null if this robot
         ///         should not receive the notifications.
         /// @since 1.6
         /// </summary>

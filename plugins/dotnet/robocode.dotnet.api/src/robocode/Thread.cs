@@ -10,8 +10,8 @@ namespace robocode
     /// </summary>
     public class Thread
     {
-        public static object syncRoot=new object();
-        public static int runningCounter;
+        private static readonly object syncRoot=new object();
+        private static int runningCounter;
 
         private readonly System.Threading.Thread thread;
         private readonly ParameterizedThreadStart real1;
@@ -57,7 +57,7 @@ namespace robocode
             }
         }
 
-        private int CheckCount()
+        private static int CheckCount()
         {
             lock (syncRoot)
             {

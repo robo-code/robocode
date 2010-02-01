@@ -18,17 +18,17 @@ namespace robocode.robotinterfaces.peer
 {
     /// <summary>
     /// The advanced robot peer for advanced robot types like
-    /// <see cref="robocode.AdvancedRobot} and <see cref="robocode.TeamRobot}.
+    /// <see cref="robocode.AdvancedRobot"/> and <see cref="robocode.TeamRobot"/>.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// <seealso cref="IBasicRobotPeer
-    /// <seealso cref="IStandardRobotPeer
-    /// <seealso cref="ITeamRobotPeer
-    /// <seealso cref="IJuniorRobotPeer
+    /// <seealso cref="IBasicRobotPeer"/>
+    /// <seealso cref="IStandardRobotPeer"/>
+    /// <seealso cref="ITeamRobotPeer"/>
+    /// <seealso cref="IJuniorRobotPeer"/>
     /// @since 1.6
     /// </summary>
     public interface IAdvancedRobotPeer : IStandardRobotPeer
@@ -133,9 +133,9 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         ///
         /// <param name="radians the amount of radians to turn the robot's body.
-        ///                If {@code radians} > 0 the robot's body is set to turn right.
-        ///                If {@code radians} < 0 the robot's body is set to turn left.
-        ///                If {@code radians} = 0 the robot's body is set to Stop turning.
+        ///                If radians > 0 the robot's body is set to turn right.
+        ///                If radians < 0 the robot's body is set to turn left.
+        ///                If radians = 0 the robot's body is set to Stop turning.
         /// <seealso cref="IBasicRobotPeer#turnBody(double) turnBody(double)
         /// <seealso cref="setTurnGun(double)
         /// <seealso cref="setTurnRadar(double)
@@ -172,9 +172,9 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         ///
         /// <param name="radians the amount of radians to turn the robot's gun.
-        ///                If {@code radians} > 0 the robot's gun is set to turn right.
-        ///                If {@code radians} < 0 the robot's gun is set to turn left.
-        ///                If {@code radians} = 0 the robot's gun is set to Stop turning.
+        ///                If radians > 0 the robot's gun is set to turn right.
+        ///                If radians < 0 the robot's gun is set to turn left.
+        ///                If radians = 0 the robot's gun is set to Stop turning.
         /// <seealso cref="IBasicRobotPeer#turnGun(double) turnGun(double)
         /// <seealso cref="setTurnBody(double)
         /// <seealso cref="setTurnRadar(double)
@@ -210,9 +210,9 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         ///
         /// <param name="radians the amount of radians to turn the robot's radar.
-        ///                If {@code radians} > 0 the robot's radar is set to turn right.
-        ///                If {@code radians} < 0 the robot's radar is set to turn left.
-        ///                If {@code radians} = 0 the robot's radar is set to Stop turning.
+        ///                If radians > 0 the robot's radar is set to turn right.
+        ///                If radians < 0 the robot's radar is set to turn left.
+        ///                If radians = 0 the robot's radar is set to Stop turning.
         /// <seealso cref="IStandardRobotPeer#turnRadar(double) turnRadar(double)
         /// <seealso cref="setTurnBody(double)
         /// <seealso cref="setTurnGun(double)
@@ -394,7 +394,7 @@ namespace robocode.robotinterfaces.peer
         ///
         /// <param name="condition the condition that must be met.
         /// @throws NullPointerException if the condition parameter has been set to
-        ///                              {@code null}.
+        ///                              null.
         /// <seealso cref="Condition
         /// <seealso cref="RemoveCustomEvent(Condition)
         /// </summary>
@@ -425,7 +425,7 @@ namespace robocode.robotinterfaces.peer
         /// <param name="condition the condition that was previous added and that must be
         ///                  removed now.
         /// @throws NullPointerException if the condition parameter has been set to
-        ///                              {@code null}.
+        ///                              null.
         /// <seealso cref="Condition
         /// <seealso cref="AddCustomEvent(Condition)
         /// </summary>

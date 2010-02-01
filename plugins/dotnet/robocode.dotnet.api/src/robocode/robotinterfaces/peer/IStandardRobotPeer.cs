@@ -20,23 +20,20 @@ namespace robocode.robotinterfaces.peer
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
     ///
-    /// @author Pavel Savara (original)
-    /// @author Flemming N. Larsen (javadoc)
     /// <seealso cref="IBasicRobotPeer
     /// <seealso cref="IAdvancedRobotPeer
     /// <seealso cref="ITeamRobotPeer
     /// <seealso cref="IJuniorRobotPeer
-    /// @since 1.6
     /// </summary>
     public interface IStandardRobotPeer : IBasicRobotPeer
     {
         /// <summary>
         /// Immediately stops all movement, and saves it for a call to
         /// <see cref="Resume()}. If there is already movement saved from a previous
-        /// Stop, you can overwrite it by calling {@code Stop(true)}.
+        /// Stop, you can overwrite it by calling Stop(true).
         ///
         /// <param name="overwrite If there is already movement saved from a previous Stop,
-        ///                  you can overwrite it by calling {@code Stop(true)}.
+        ///                  you can overwrite it by calling Stop(true).
         /// <seealso cref="Resume()
         /// </summary>
         void stop(bool overwrite);
@@ -71,9 +68,9 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         ///
         /// <param name="radians the amount of radians to turn the robot's radar.
-        ///                If {@code radians} > 0 the robot's radar is set to turn right.
-        ///                If {@code radians} < 0 the robot's radar is set to turn left.
-        ///                If {@code radians} = 0 the robot's radar is set to Stop turning.
+        ///                If radians > 0 the robot's radar is set to turn right.
+        ///                If radians < 0 the robot's radar is set to turn left.
+        ///                If radians = 0 the robot's radar is set to Stop turning.
         /// <seealso cref="turnBody(double)
         /// <seealso cref="turnGun(double)
         /// <seealso cref="move(double)

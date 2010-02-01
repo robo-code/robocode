@@ -7,7 +7,7 @@ using robocode.robotinterfaces;
 namespace robocode
 {
     ///<summary>
-    ///  This evnt is sent to <see cref="Robot#OnWin(WinEvent) OnWin()} when your robot
+    ///  This evnt is sent to <see cref="Robot.OnWin(WinEvent)"/> when your robot
     ///  wins the round in a battle.
     ///</summary>
     [Serializable]

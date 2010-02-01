@@ -91,7 +91,7 @@ namespace robocode
         /// case the gun moves relatively to the robot body.
         ///
         /// <seealso cref="GUN_TURN_RATE_RADIANS"/>
-        /// <seealso cref="Robot#setAdjustGunForRobotTurn(bool)"/>
+        /// <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         /// </summary>
         public static readonly double GUN_TURN_RATE = 20;
 
@@ -115,8 +115,8 @@ namespace robocode
         /// the radar moves relatively to the gun and/or robot body.
         ///
         /// <seealso cref="RADAR_TURN_RATE_RADIANS"/>
-        /// <seealso cref="Robot#setAdjustGunForRobotTurn(bool)"/>
-        /// <seealso cref="Robot#setAdjustRadarForGunTurn(bool)"/>
+        /// <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
+        /// <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
         /// </summary>
         public static readonly double RADAR_TURN_RATE = 45;
 

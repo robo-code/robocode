@@ -35,9 +35,9 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// This is the only way to map the robots data values to a specific time.
         /// For example, it is not possible to determine the exact time of the
-        /// robot's heading by calling first calling <see cref="Robot#getTime()} and then
-        /// <see cref="Robot#getHeading()} afterwards, as the time <em>might</em> change
-        /// after between the <see cref="Robot#getTime()} and <see cref="Robot#getHeading()}
+        /// robot's heading by calling first calling <see cref="Robot.getTime()} and then
+        /// <see cref="Robot.getHeading()} afterwards, as the time <em>might</em> change
+        /// after between the <see cref="Robot.getTime()} and <see cref="Robot.getHeading()}
         /// call.
         ///
         /// <param name="evnt the evnt containing the robot status at the time it occurred.
@@ -183,7 +183,7 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// The wall at the top of the screen is 0 degrees, right is 90 degrees,
         /// bottom is 180 degrees, left is 270 degrees. But this evnt is relative to
-        /// your heading, so: The bearing is such that <see cref="Robot#TurnRight(double)
+        /// your heading, so: The bearing is such that <see cref="Robot.TurnRight(double)
         /// TurnRight} <see cref="HitWallEvent#getBearing() (event.getBearing())} will
         /// point you perpendicular to the wall.
         /// <p/>
@@ -233,14 +233,14 @@ namespace robocode.robotinterfaces
         /// <li>If the gun and radar are aligned (and were aligned last turn),
         /// <li>and the evnt is current,
         /// <li>and you call Fire() before taking any other actions, {@link
-        /// Robot#Fire(double) Fire()} will Fire directly at the robot.
+        /// Robot.Fire(double) Fire()} will Fire directly at the robot.
         /// </ul>
         /// <p/>
         /// In essence, this means that if you can see a robot, and it doesn't move,
         /// then Fire will hit it.
         /// <p/>
         /// AdvancedRobots will NOT be assisted in this manner, and are expected to
-        /// examine the evnt to determine if <see cref="Robot#Fire(double) Fire()} would
+        /// examine the evnt to determine if <see cref="Robot.Fire(double) Fire()} would
         /// hit. (i.e. you are spinning your gun around, but by the time you get the
         /// evnt, your gun is 5 degrees past the robot).
         ///

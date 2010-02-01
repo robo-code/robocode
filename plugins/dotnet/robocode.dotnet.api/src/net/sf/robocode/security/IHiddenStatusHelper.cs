@@ -12,9 +12,7 @@ using robocode;
 
 namespace net.sf.robocode.security
 {
-    /// <summary>
-    ///   @author Pavel Savara (original)
-    /// </summary>
+#pragma warning disable 1591
     public interface IHiddenStatusHelper
     {
         RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading,

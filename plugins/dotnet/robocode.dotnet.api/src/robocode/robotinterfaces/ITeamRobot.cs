@@ -36,7 +36,7 @@ namespace robocode.robotinterfaces
         /// Hence, this method must be implemented so it returns your
         /// <see cref="ITeamEvents} listener.
         ///
-        /// @return listener to team events or {@code null} if this robot should
+        /// @return listener to team events or null if this robot should
         ///         not receive the notifications.
         /// </summary>
         ITeamEvents GetTeamEventListener();

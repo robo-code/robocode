@@ -39,7 +39,7 @@ namespace robocode
         /// Creates a new RadarTurnCompleteCondition with the specified priority.
         /// A condition priority is a value from 0 - 99. The higher value, the
         /// higher priority. The default priority is 80.
-        /// <seealso cref="Condition#setPriority(int)"/>
+        /// <seealso cref="Condition.Priority"/>
         /// </summary>
         /// <param name="robot"> your robot, which must be a <see cref="AdvancedRobot"/></param>
         /// <param name="priority"> the priority of this condition</param>

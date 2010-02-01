@@ -45,7 +45,7 @@ namespace robocode.robotinterfaces.peer
         /// means that the robot is set to move forward, and a negative value means
         /// that the robot is set to move backward. If set to 0, the robot will not
         /// move, but will be able to turn.
-        /// <li>If the {@code radians} parameter is set to a positive value, it means
+        /// <li>If the radians parameter is set to a positive value, it means
         /// that the robot is set to turn to the right, and a negative value means
         /// that the robot is set to turn to the left. If set to 0, the robot will
         /// not turn, but will be able to move.
@@ -57,9 +57,9 @@ namespace robocode.robotinterfaces.peer
         ///                 If {@code distance} = 0 the robot will not move anywhere, but just
         ///                 finish its turn.
         /// <param name="radians  the amount of radians to turn the robot's body.
-        ///                 If {@code radians} > 0 the robot's body is set to turn right.
-        ///                 If {@code radians} < 0 the robot's body is set to turn left.
-        ///                 If {@code radians} = 0 the robot's body is set to Stop turning.
+        ///                 If radians > 0 the robot's body is set to turn right.
+        ///                 If radians < 0 the robot's body is set to turn left.
+        ///                 If radians = 0 the robot's body is set to Stop turning.
         /// <seealso cref="IBasicRobotPeer#move(double) move(double)
         /// <seealso cref="IBasicRobotPeer#turnBody(double) turnBody(double)
         /// <seealso cref="IBasicRobotPeer#getBodyHeading() getBodyHeading()
