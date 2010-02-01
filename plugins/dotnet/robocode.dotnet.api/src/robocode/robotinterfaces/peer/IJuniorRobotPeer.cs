@@ -44,11 +44,11 @@ namespace Robocode.RobotInterfaces.Peer
         /// that the robot is set to turn to the left. If set to 0, the robot will
         /// not turn, but will be able to move.</li>
         /// </ul>
-        /// <seealso cref="IBasicRobotPeer.move(double)"/>
-        /// <seealso cref="IBasicRobotPeer.turnBody(double)"/>
-        /// <seealso cref="IBasicRobotPeer.getBodyHeading()"/>
-        /// <seealso cref="IBasicRobotPeer.getX()"/>
-        /// <seealso cref="IBasicRobotPeer.getY()"/>
+        /// <seealso cref="IBasicRobotPeer.Move"/>
+        /// <seealso cref="IBasicRobotPeer.TurnBody"/>
+        /// <seealso cref="IBasicRobotPeer.GetBodyHeading"/>
+        /// <seealso cref="IBasicRobotPeer.GetX"/>
+        /// <seealso cref="IBasicRobotPeer.GetY"/>
         /// </summary>
         /// <param name="distance">the distance to move measured in pixels.
         ///                 If distance &gt; 0 the robot is set to move forward.
@@ -59,7 +59,7 @@ namespace Robocode.RobotInterfaces.Peer
         ///                 If radians &gt; 0 the robot's body is set to turn right.
         ///                 If radians &lt; 0 the robot's body is set to turn left.
         ///                 If radians = 0 the robot's body is set to Stop turning.</param>
-        void turnAndMove(double distance, double radians);
+        void TurnAndMove(double distance, double radians);
     }
 }
 

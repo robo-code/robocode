@@ -54,7 +54,7 @@ namespace SampleCs
             if (Math.Abs(bearingFromGun) <= 3)
             {
                 TurnGunRight(bearingFromGun);
-                // We check gun heat here, because calling fire()
+                // We check gun heat here, because calling Fire()
                 // uses a turn, which could cause us to lose track
                 // of the other robot.
                 if (GunHeat == 0)

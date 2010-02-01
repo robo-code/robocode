@@ -33,7 +33,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <pre>
         ///   public void Run() {
         ///       // Prints Out all teammates
-        ///       string[] teammates = getTeammates();
+        ///       string[] teammates = GetTeammates();
         ///       if (teammates != null) {
         ///           foreach (string member in teammates) {
         ///               Out.WriteLine(member);
@@ -42,11 +42,11 @@ namespace Robocode.RobotInterfaces.Peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="isTeammate(string)"/>
-        /// <seealso cref="broadcastMessage(object)"/>
-        /// <seealso cref="sendMessage(string, object)"/>
+        /// <seealso cref="IsTeammate"/>
+        /// <seealso cref="BroadcastMessage"/>
+        /// <seealso cref="SendMessage"/>
         /// </summary>
-        string[] getTeammates();
+        string[] GetTeammates();
 
         /// <summary>
         /// Checks if a given robot name is the name of one of your teammates.
@@ -62,12 +62,12 @@ namespace Robocode.RobotInterfaces.Peer
         /// </pre>
         /// </example>
         ///
-        /// <seealso cref="getTeammates()"/>
-        /// <seealso cref="broadcastMessage(object)"/>
-        /// <seealso cref="sendMessage(string, object)"/>
+        /// <seealso cref="GetTeammates"/>
+        /// <seealso cref="BroadcastMessage"/>
+        /// <seealso cref="SendMessage"/>
         /// </summary>
         /// <param name="name">the robot name to check</param>
-        bool isTeammate(string name);
+        bool IsTeammate(string name);
 
         /// <summary>
         /// Broadcasts a message to all teammates.
@@ -79,12 +79,12 @@ namespace Robocode.RobotInterfaces.Peer
         ///   }
         /// </pre>
         ///</example>
-        /// <seealso cref="isTeammate(string)"/>
-        /// <seealso cref="getTeammates()"/>
-        /// <seealso cref="sendMessage(string, object)"/>
+        /// <seealso cref="IsTeammate"/>
+        /// <seealso cref="GetTeammates"/>
+        /// <seealso cref="SendMessage"/>
         /// </summary>
         /// <param name="message">the message to broadcast to all teammates</param>
-        void broadcastMessage(object message);
+        void BroadcastMessage(object message);
 
         /// <summary>
         /// Sends a message to one (or more) teammates.
@@ -96,13 +96,13 @@ namespace Robocode.RobotInterfaces.Peer
         ///   }
         /// </pre>
         /// </example>
-        /// <seealso cref="isTeammate(string)"/>
-        /// <seealso cref="getTeammates()"/>
-        /// <seealso cref="broadcastMessage(object)"/>
+        /// <seealso cref="IsTeammate"/>
+        /// <seealso cref="GetTeammates"/>
+        /// <seealso cref="BroadcastMessage"/>
         /// </summary>
         /// <param name="name">the name of the intended recipient of the message</param>
         /// <param name="message">the message to send</param>
-        void sendMessage(string name, object message);
+        void SendMessage(string name, object message);
 
         /// <summary>
         /// Returns a vector containing all MessageEvents currently in the robot's
@@ -118,7 +118,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="Robocode.RobotInterfaces.ITeamEvents.OnMessageReceived(MessageEvent)"/>
         /// <seealso cref="MessageEvent"/>
         /// </summary>
-        IList<MessageEvent> getMessageEvents();
+        IList<MessageEvent> GetMessageEvents();
     }
 }
 

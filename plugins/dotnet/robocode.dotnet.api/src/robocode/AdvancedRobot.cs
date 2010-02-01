@@ -54,7 +54,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getDistanceRemaining();
+                    return peer.GetDistanceRemaining();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -81,7 +81,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return Utils.ToDegrees(peer.getBodyTurnRemaining());
+                    return Utils.ToDegrees(peer.GetBodyTurnRemaining());
                 }
                 UninitializedException();
                 return 0; // never called
@@ -108,7 +108,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return Utils.ToDegrees(peer.getGunTurnRemaining());
+                    return Utils.ToDegrees(peer.GetGunTurnRemaining());
                 }
                 UninitializedException();
                 return 0; // never called
@@ -135,7 +135,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return Utils.ToDegrees(peer.getRadarTurnRemaining());
+                    return Utils.ToDegrees(peer.GetRadarTurnRemaining());
                 }
                 UninitializedException();
                 return 0; // never called
@@ -193,7 +193,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setMove(distance);
+                ((IAdvancedRobotPeer) peer).SetMove(distance);
             }
             else
             {
@@ -252,7 +252,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setMove(-distance);
+                ((IAdvancedRobotPeer) peer).SetMove(-distance);
             }
             else
             {
@@ -312,7 +312,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnBody(-Utils.ToRadians(degrees));
+                ((IAdvancedRobotPeer) peer).SetTurnBody(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -372,7 +372,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnBody(Utils.ToRadians(degrees));
+                ((IAdvancedRobotPeer) peer).SetTurnBody(Utils.ToRadians(degrees));
             }
             else
             {
@@ -432,7 +432,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.setFire(power);
+                peer.SetFire(power);
             }
             else
             {
@@ -505,7 +505,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return peer.setFire(power);
+                return peer.SetFire(power);
             }
             UninitializedException();
             return null;
@@ -546,7 +546,7 @@ namespace Robocode
             }
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).addCustomEvent(condition);
+                ((IAdvancedRobotPeer) peer).AddCustomEvent(condition);
             }
             else
             {
@@ -604,7 +604,7 @@ namespace Robocode
             }
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).removeCustomEvent(condition);
+                ((IAdvancedRobotPeer) peer).RemoveCustomEvent(condition);
             }
             else
             {
@@ -657,7 +657,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.execute();
+                peer.Execute();
             }
             else
             {
@@ -697,7 +697,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<Event>(((IAdvancedRobotPeer) peer).getAllEvents());
+                return new List<Event>(((IAdvancedRobotPeer) peer).GetAllEvents());
             }
             UninitializedException();
             return null; // never called
@@ -725,7 +725,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<BulletHitBulletEvent>(((IAdvancedRobotPeer) peer).getBulletHitBulletEvents());
+                return new List<BulletHitBulletEvent>(((IAdvancedRobotPeer) peer).GetBulletHitBulletEvents());
             }
             UninitializedException();
             return null; // never called
@@ -752,7 +752,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<BulletHitEvent>(((IAdvancedRobotPeer) peer).getBulletHitEvents());
+                return new List<BulletHitEvent>(((IAdvancedRobotPeer) peer).GetBulletHitEvents());
             }
             UninitializedException();
             return null; // never called
@@ -780,7 +780,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<BulletMissedEvent>(((IAdvancedRobotPeer) peer).getBulletMissedEvents());
+                return new List<BulletMissedEvent>(((IAdvancedRobotPeer) peer).GetBulletMissedEvents());
             }
             UninitializedException();
             return null; // never called
@@ -797,7 +797,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return ((IAdvancedRobotPeer) peer).getDataDirectory();
+                return ((IAdvancedRobotPeer) peer).GetDataDirectory();
             }
             UninitializedException();
             return null; // never called
@@ -823,7 +823,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return ((IAdvancedRobotPeer) peer).getDataFile(filename);
+                return ((IAdvancedRobotPeer) peer).GetDataFile(filename);
             }
             UninitializedException();
             return null; // never called
@@ -841,7 +841,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return ((IAdvancedRobotPeer) peer).getDataQuotaAvailable();
+                    return ((IAdvancedRobotPeer) peer).GetDataQuotaAvailable();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -888,7 +888,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return ((IAdvancedRobotPeer) peer).getEventPriority(eventClass);
+                return ((IAdvancedRobotPeer) peer).GetEventPriority(eventClass);
             }
             UninitializedException();
             return 0; // never called
@@ -916,7 +916,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<HitByBulletEvent>(((IAdvancedRobotPeer) peer).getHitByBulletEvents());
+                return new List<HitByBulletEvent>(((IAdvancedRobotPeer) peer).GetHitByBulletEvents());
             }
             UninitializedException();
             return null; // never called
@@ -943,7 +943,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<HitRobotEvent>(((IAdvancedRobotPeer) peer).getHitRobotEvents());
+                return new List<HitRobotEvent>(((IAdvancedRobotPeer) peer).GetHitRobotEvents());
             }
             UninitializedException();
             return null; // never called
@@ -970,7 +970,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<HitWallEvent>(((IAdvancedRobotPeer) peer).getHitWallEvents());
+                return new List<HitWallEvent>(((IAdvancedRobotPeer) peer).GetHitWallEvents());
             }
             UninitializedException();
             return null; // never called
@@ -997,7 +997,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<RobotDeathEvent>(((IAdvancedRobotPeer) peer).getRobotDeathEvents());
+                return new List<RobotDeathEvent>(((IAdvancedRobotPeer) peer).GetRobotDeathEvents());
             }
             UninitializedException();
             return null; // never called
@@ -1025,7 +1025,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<ScannedRobotEvent>(((IAdvancedRobotPeer) peer).getScannedRobotEvents());
+                return new List<ScannedRobotEvent>(((IAdvancedRobotPeer) peer).GetScannedRobotEvents());
             }
             UninitializedException();
             return null; // never called
@@ -1052,7 +1052,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<StatusEvent>(((IAdvancedRobotPeer) peer).getStatusEvents());
+                return new List<StatusEvent>(((IAdvancedRobotPeer) peer).GetStatusEvents());
             }
             UninitializedException();
             return null; // never called
@@ -1114,7 +1114,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setEventPriority(eventClass, priority);
+                ((IAdvancedRobotPeer) peer).SetEventPriority(eventClass, priority);
             }
             else
             {
@@ -1152,7 +1152,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    ((IAdvancedRobotPeer) peer).setInterruptible(value);
+                    ((IAdvancedRobotPeer) peer).SetInterruptible(value);
                 }
                 else
                 {
@@ -1176,7 +1176,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    ((IAdvancedRobotPeer) peer).setMaxTurnRate(Utils.ToRadians(value));
+                    ((IAdvancedRobotPeer) peer).SetMaxTurnRate(Utils.ToRadians(value));
                 }
                 else
                 {
@@ -1200,7 +1200,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    ((IAdvancedRobotPeer) peer).setMaxVelocity(value);
+                    ((IAdvancedRobotPeer) peer).SetMaxVelocity(value);
                 }
                 else
                 {
@@ -1227,7 +1227,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setResume();
+                ((IAdvancedRobotPeer) peer).SetResume();
             }
             else
             {
@@ -1280,7 +1280,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setStop(overwrite);
+                ((IAdvancedRobotPeer) peer).SetStop(overwrite);
             }
             else
             {
@@ -1341,7 +1341,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnGun(-Utils.ToRadians(degrees));
+                ((IAdvancedRobotPeer) peer).SetTurnGun(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -1403,7 +1403,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnGun(Utils.ToRadians(degrees));
+                ((IAdvancedRobotPeer) peer).SetTurnGun(Utils.ToRadians(degrees));
             }
             else
             {
@@ -1465,7 +1465,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnRadar(-Utils.ToRadians(degrees));
+                ((IAdvancedRobotPeer) peer).SetTurnRadar(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -1527,7 +1527,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnRadar(Utils.ToRadians(degrees));
+                ((IAdvancedRobotPeer) peer).SetTurnRadar(Utils.ToRadians(degrees));
             }
             else
             {
@@ -1552,7 +1552,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).waitFor(condition);
+                ((IAdvancedRobotPeer) peer).WaitFor(condition);
             }
             else
             {
@@ -1596,7 +1596,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getBodyHeading();
+                    return peer.GetBodyHeading();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -1644,7 +1644,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnBody(-radians);
+                ((IAdvancedRobotPeer) peer).SetTurnBody(-radians);
             }
             else
             {
@@ -1693,7 +1693,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnBody(radians);
+                ((IAdvancedRobotPeer) peer).SetTurnBody(radians);
             }
             else
             {
@@ -1741,7 +1741,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnBody(-radians);
+                peer.TurnBody(-radians);
             }
             else
             {
@@ -1788,7 +1788,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnBody(radians);
+                peer.TurnBody(radians);
             }
             else
             {
@@ -1812,7 +1812,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getGunHeading();
+                    return peer.GetGunHeading();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -1835,7 +1835,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getRadarHeading();
+                    return peer.GetRadarHeading();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -1884,7 +1884,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnGun(-radians);
+                ((IAdvancedRobotPeer) peer).SetTurnGun(-radians);
             }
             else
             {
@@ -1934,7 +1934,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnGun(radians);
+                ((IAdvancedRobotPeer) peer).SetTurnGun(radians);
             }
             else
             {
@@ -1985,7 +1985,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnRadar(-radians);
+                ((IAdvancedRobotPeer) peer).SetTurnRadar(-radians);
             }
             else
             {
@@ -2036,7 +2036,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).setTurnRadar(radians);
+                ((IAdvancedRobotPeer) peer).SetTurnRadar(radians);
             }
             else
             {
@@ -2084,7 +2084,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnGun(-radians);
+                peer.TurnGun(-radians);
             }
             else
             {
@@ -2131,7 +2131,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnGun(radians);
+                peer.TurnGun(radians);
             }
             else
             {
@@ -2180,7 +2180,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).turnRadar(-radians);
+                ((IAdvancedRobotPeer) peer).TurnRadar(-radians);
             }
             else
             {
@@ -2228,7 +2228,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IAdvancedRobotPeer) peer).turnRadar(radians);
+                ((IAdvancedRobotPeer) peer).TurnRadar(radians);
             }
             else
             {
@@ -2254,7 +2254,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getGunTurnRemaining();
+                    return peer.GetGunTurnRemaining();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -2279,7 +2279,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getRadarTurnRemaining();
+                    return peer.GetRadarTurnRemaining();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -2304,7 +2304,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getBodyTurnRemaining();
+                    return peer.GetBodyTurnRemaining();
                 }
                 UninitializedException();
                 return 0; // never called

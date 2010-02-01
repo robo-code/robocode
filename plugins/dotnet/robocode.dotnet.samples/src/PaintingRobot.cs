@@ -15,7 +15,7 @@ namespace SampleCs
 {
     /// <summary>
     ///   PaintingRobot - a sample robot that demonstrates the OnPaint() and
-    ///   getGraphics() methods.
+    ///   GetGraphics() methods.
     ///   Also demonstrate feature of debugging properties on RobotDialog
     ///   <p />
     ///   Moves in a seesaw motion, and spins the gun around at each end.

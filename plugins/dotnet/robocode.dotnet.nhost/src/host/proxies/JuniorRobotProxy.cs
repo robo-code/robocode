@@ -28,11 +28,11 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         #region IJuniorRobotPeer Members
 
-        public void turnAndMove(double distance, double radians)
+        public void TurnAndMove(double distance, double radians)
         {
             if (distance == 0)
             {
-                turnBody(radians);
+                TurnBody(radians);
                 return;
             }
 
@@ -110,8 +110,8 @@ namespace net.sf.robocode.dotnet.host.proxies
             // the max. turn rate so it fit the current velocity of the robot
             for (int t = turns; t >= 0; t--)
             {
-                commands.setMaxTurnRate(getVelocity()*radians/absDistance);
-                execute(); // Perform next turn
+                commands.setMaxTurnRate(GetVelocity()*radians/absDistance);
+                Execute(); // Perform next turn
             }
 
             // Restore the saved max. velocity and max. turn rate

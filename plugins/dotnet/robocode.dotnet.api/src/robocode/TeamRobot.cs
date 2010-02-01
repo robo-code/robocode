@@ -49,7 +49,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((ITeamRobotPeer) peer).broadcastMessage(message);
+                ((ITeamRobotPeer) peer).BroadcastMessage(message);
             }
             else
             {
@@ -75,7 +75,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return new List<MessageEvent>(((ITeamRobotPeer) peer).getMessageEvents());
+                return new List<MessageEvent>(((ITeamRobotPeer) peer).GetMessageEvents());
             }
             UninitializedException();
             return null; // never called
@@ -95,7 +95,7 @@ namespace Robocode
         /// <pre>
         ///   public void Run() {
         ///       // Prints Out all teammates
-        ///       string[] teammates = getTeammates();
+        ///       string[] teammates = GetTeammates();
         ///       if (teammates != null) {
         ///           foreach (string member in teammates) {
         ///               Out.WriteLine(member);
@@ -114,7 +114,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return ((ITeamRobotPeer) peer).getTeammates();
+                    return ((ITeamRobotPeer) peer).GetTeammates();
                 }
                 UninitializedException();
                 return null;
@@ -143,7 +143,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return ((ITeamRobotPeer) peer).isTeammate(name);
+                return ((ITeamRobotPeer) peer).IsTeammate(name);
             }
             UninitializedException();
             return false;
@@ -174,7 +174,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((ITeamRobotPeer) peer).sendMessage(name, message);
+                ((ITeamRobotPeer) peer).SendMessage(name, message);
             }
             else
             {

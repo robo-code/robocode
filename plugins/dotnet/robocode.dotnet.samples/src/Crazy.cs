@@ -44,8 +44,8 @@ namespace SampleCs
                 // we will want to move Ahead and turn right.  That's what "set" means.
                 // It is important to realize we have not done anything yet!
                 // In order to actually move, we'll want to call a method that
-                // takes real time, such as waitFor.
-                // waitFor actually starts the action -- we start moving and turning.
+                // takes real time, such as WaitFor.
+                // WaitFor actually starts the action -- we start moving and turning.
                 // It will not return until we have finished turning.
                 WaitFor(new TurnCompleteCondition(this));
                 // Note:  We are still moving Ahead now, but the turn is complete.

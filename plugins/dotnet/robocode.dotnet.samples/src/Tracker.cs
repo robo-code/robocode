@@ -135,7 +135,7 @@ namespace SampleCs
             trackName = e.Name;
             // Back up a bit.
             // Note:  We won't get scan events while we're doing this!
-            // An AdvancedRobot might use setBack(); execute();
+            // An AdvancedRobot might use setBack(); Execute();
             gunTurnAmt = Utils.NormalRelativeAngleDegrees(e.Bearing + (Heading - RadarHeading));
             TurnGunRight(gunTurnAmt);
             Fire(3);

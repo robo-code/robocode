@@ -31,10 +31,10 @@ namespace tested.robotscs
             // noinspection InfiniteLoopStatement
             while (true)
             {
-                peer.move(100); // Move Ahead 100
-                peer.turnGun(Math.PI*2); // Spin gun around
-                peer.move(-100); // Move Back 100
-                peer.turnGun(Math.PI*2); // Spin gun around
+                peer.Move(100); // Move Ahead 100
+                peer.TurnGun(Math.PI*2); // Spin gun around
+                peer.Move(-100); // Move Back 100
+                peer.TurnGun(Math.PI*2); // Spin gun around
             }
         }
 
@@ -61,9 +61,9 @@ namespace tested.robotscs
         public void OnStatus(StatusEvent evnt)
         {
             count(evnt);
-            IGraphics g = peer.getGraphics();
+            IGraphics g = peer.GetGraphics();
 
-            g.DrawEllipse(Pens.Orange, (int) (peer.getX() - 55), (int) (peer.getY() - 55), 110, 110);
+            g.DrawEllipse(Pens.Orange, (int) (peer.GetX() - 55), (int) (peer.GetY() - 55), 110, 110);
         }
 
         public void OnBulletHit(BulletHitEvent evnt)
@@ -124,13 +124,13 @@ namespace tested.robotscs
             count(evnt);
 
             // Turn gun to point at the Scanned robot
-            peer.turnGun(Utils.NormalAbsoluteAngle(peer.getBodyHeading() + evnt.BearingRadians - peer.getGunHeading()));
+            peer.TurnGun(Utils.NormalAbsoluteAngle(peer.GetBodyHeading() + evnt.BearingRadians - peer.GetGunHeading()));
             //
 
             // Fire!
             const double power = 1;
 
-            Bullet firedBullet = peer.fire(power);
+            Bullet firedBullet = peer.Fire(power);
 
             if (firedBullet != null)
             {

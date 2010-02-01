@@ -37,15 +37,15 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         #region ITeamRobotPeer Members
 
-        public string[] getTeammates()
+        public string[] GetTeammates()
         {
-            getCall();
+            GetCall();
             return statics.getTeammates();
         }
 
-        public bool isTeammate(String name)
+        public bool IsTeammate(String name)
         {
-            getCall();
+            GetCall();
             if (name == statics.getName())
             {
                 return true;
@@ -65,15 +65,15 @@ namespace net.sf.robocode.dotnet.host.proxies
             return false;
         }
 
-        public void broadcastMessage(object message)
+        public void BroadcastMessage(object message)
         {
-            sendMessage(null, message);
+            SendMessage(null, message);
         }
 
         [SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        public void sendMessage(String name, object message)
+        public void SendMessage(String name, object message)
         {
-            setCall();
+            SetCall();
 
             try
             {
@@ -86,7 +86,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                     var bf = new BinaryFormatter(new SerializationGuard(), new StreamingContext());
                     bf.Serialize(byteStreamWriter, message);
                     byte[] bytes = byteStreamWriter.ToArray();
-                    commands.getTeamMessages().Add(new TeamMessage(getName(), name, bytes));
+                    commands.getTeamMessages().Add(new TeamMessage(GetName(), name, bytes));
                 }
             }
             catch (Exception e)
@@ -97,9 +97,9 @@ namespace net.sf.robocode.dotnet.host.proxies
         }
 
         // events
-        public IList<MessageEvent> getMessageEvents()
+        public IList<MessageEvent> GetMessageEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getMessageEvents();
         }
 

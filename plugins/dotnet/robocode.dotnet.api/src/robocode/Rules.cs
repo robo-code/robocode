@@ -105,10 +105,10 @@ namespace Robocode
         /// The turning rate of the radar measured in degrees, which is
         /// 45 degrees/turn.
         /// Note, that if setAdjustRadarForRobotTurn(true) and/or
-        /// setAdjustRadarForGunTurn(true) has been called, the radar turn is
+        /// SetAdjustRadarForGunTurn(true) has been called, the radar turn is
         /// independent of the robot and/or gun turn. If both methods has been set to
         /// true, the radar moves relatively to the screen.
-        /// If setAdjustRadarForRobotTurn(false) and/or setAdjustRadarForGunTurn(false)
+        /// If setAdjustRadarForRobotTurn(false) and/or SetAdjustRadarForGunTurn(false)
         /// has been called or not called at all (this is the default), then the
         /// radar turn is dependent on the robot and/or gun turn, and in this case
         /// the radar moves relatively to the gun and/or robot body.

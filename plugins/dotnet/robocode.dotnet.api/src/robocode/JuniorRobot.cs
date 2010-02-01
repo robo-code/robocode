@@ -697,7 +697,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.move(distance);
+                peer.Move(distance);
             }
             else
             {
@@ -732,8 +732,8 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnGun(
-                    Utils.NormalRelativeAngle(peer.getBodyHeading() + Utils.ToRadians(angle) - peer.getGunHeading()));
+                peer.TurnGun(
+                    Utils.NormalRelativeAngle(peer.GetBodyHeading() + Utils.ToRadians(angle) - peer.GetGunHeading()));
             }
             else
             {
@@ -749,7 +749,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.execute();
+                peer.Execute();
             }
             else
             {
@@ -772,7 +772,7 @@ namespace Robocode
             {
                 for (int i = 0; i < turns; i++)
                 {
-                    peer.execute();
+                    peer.Execute();
                 }
             }
             else
@@ -806,7 +806,7 @@ namespace Robocode
             if (peer != null)
             {
                 getEventHandler().juniorFirePower = power;
-                peer.execute();
+                peer.Execute();
             }
             else
             {
@@ -896,9 +896,9 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.setBodyColor(Color.FromArgb(bodyColor));
-                peer.setGunColor(Color.FromArgb(gunColor));
-                peer.setRadarColor(Color.FromArgb(radarColor));
+                peer.SetBodyColor(Color.FromArgb(bodyColor));
+                peer.SetGunColor(Color.FromArgb(gunColor));
+                peer.SetRadarColor(Color.FromArgb(radarColor));
             }
             else
             {
@@ -920,11 +920,11 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.setBodyColor(Color.FromArgb(bodyColor));
-                peer.setGunColor(Color.FromArgb(gunColor));
-                peer.setRadarColor(Color.FromArgb(radarColor));
-                peer.setBulletColor(Color.FromArgb(bulletColor));
-                peer.setScanColor(Color.FromArgb(scanArcColor));
+                peer.SetBodyColor(Color.FromArgb(bodyColor));
+                peer.SetGunColor(Color.FromArgb(gunColor));
+                peer.SetRadarColor(Color.FromArgb(radarColor));
+                peer.SetBulletColor(Color.FromArgb(bulletColor));
+                peer.SetScanColor(Color.FromArgb(scanArcColor));
             }
             else
             {
@@ -981,7 +981,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IJuniorRobotPeer) peer).turnAndMove(distance, Utils.ToRadians(degrees));
+                ((IJuniorRobotPeer) peer).TurnAndMove(distance, Utils.ToRadians(degrees));
             }
             else
             {
@@ -1066,7 +1066,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnGun(Utils.ToRadians(degrees));
+                peer.TurnGun(Utils.ToRadians(degrees));
             }
             else
             {
@@ -1089,7 +1089,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnGun(Utils.NormalRelativeAngle(Utils.ToRadians(angle) - peer.getGunHeading()));
+                peer.TurnGun(Utils.NormalRelativeAngle(Utils.ToRadians(angle) - peer.GetGunHeading()));
             }
             else
             {
@@ -1128,7 +1128,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnBody(Utils.ToRadians(degrees));
+                peer.TurnBody(Utils.ToRadians(degrees));
             }
             else
             {
@@ -1153,7 +1153,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnBody(Utils.NormalRelativeAngle(Utils.ToRadians(angle) - peer.getBodyHeading()));
+                peer.TurnBody(Utils.NormalRelativeAngle(Utils.ToRadians(angle) - peer.GetBodyHeading()));
             }
             else
             {
@@ -1206,7 +1206,7 @@ namespace Robocode
 
             public void OnHitByBullet(HitByBulletEvent evnt)
             {
-                double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
+                double angle = robot.peer.GetBodyHeading() + evnt.BearingRadians;
 
                 robot.hitByBulletAngle = (int) (Utils.ToDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
                 robot.hitByBulletBearing = (int) (evnt.Bearing + 0.5);
@@ -1215,7 +1215,7 @@ namespace Robocode
 
             public void OnHitRobot(HitRobotEvent evnt)
             {
-                double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
+                double angle = robot.peer.GetBodyHeading() + evnt.BearingRadians;
 
                 robot.hitRobotAngle = (int) (Utils.ToDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
                 robot.hitRobotBearing = (int) (evnt.Bearing + 0.5);
@@ -1224,7 +1224,7 @@ namespace Robocode
 
             public void OnHitWall(HitWallEvent evnt)
             {
-                double angle = robot.peer.getBodyHeading() + evnt.BearingRadians;
+                double angle = robot.peer.GetBodyHeading() + evnt.BearingRadians;
 
                 robot.hitWallAngle = (int) (Utils.ToDegrees(Utils.NormalAbsoluteAngle(angle)) + 0.5);
                 robot.hitWallBearing = (int) (evnt.Bearing + 0.5);
@@ -1233,7 +1233,7 @@ namespace Robocode
 
             public void OnRobotDeath(RobotDeathEvent evnt)
             {
-                robot.others = robot.peer.getOthers();
+                robot.others = robot.peer.GetOthers();
             }
 
             public void OnScannedRobot(ScannedRobotEvent evnt)
@@ -1241,7 +1241,7 @@ namespace Robocode
                 robot.scannedDistance = (int) (evnt.Distance + 0.5);
                 robot.scannedEnergy = Math.Max(1, (int) (evnt.Energy + 0.5));
                 robot.scannedAngle = (int) (Utils.ToDegrees(
-                                                Utils.NormalAbsoluteAngle(robot.peer.getBodyHeading() +
+                                                Utils.NormalAbsoluteAngle(robot.peer.GetBodyHeading() +
                                                                           evnt.BearingRadians))
                                             + 0.5);
                 robot.scannedBearing = (int) (evnt.Bearing + 0.5);
@@ -1255,7 +1255,7 @@ namespace Robocode
             {
                 RobotStatus s = e.Status;
 
-                robot.others = robot.peer.getOthers();
+                robot.others = robot.peer.GetOthers();
                 robot.energy = Math.Max(1, (int) (s.Energy + 0.5));
                 robot.robotX = (int) (s.X + 0.5);
                 robot.robotY = (int) (s.Y + 0.5);
@@ -1268,9 +1268,9 @@ namespace Robocode
                 currentTurn = e.Time;
 
                 // Auto Fire
-                if (juniorFirePower > 0 && robot.gunReady && (robot.peer.getGunTurnRemaining() == 0))
+                if (juniorFirePower > 0 && robot.gunReady && (robot.peer.GetGunTurnRemaining() == 0))
                 {
-                    if (robot.peer.setFire(juniorFirePower) != null)
+                    if (robot.peer.SetFire(juniorFirePower) != null)
                     {
                         robot.gunReady = false;
                         juniorFirePower = 0;
@@ -1299,22 +1299,22 @@ namespace Robocode
             // ReSharper disable FunctionNeverReturns
             public void Run()
             {
-                robot.fieldWidth = (int) (robot.peer.getBattleFieldWidth() + 0.5);
-                robot.fieldHeight = (int) (robot.peer.getBattleFieldHeight() + 0.5);
+                robot.fieldWidth = (int) (robot.peer.GetBattleFieldWidth() + 0.5);
+                robot.fieldHeight = (int) (robot.peer.GetBattleFieldHeight() + 0.5);
 
                 // noinspection InfiniteLoopStatement
                 while (true)
                 {
-                    long lastTurn = currentTurn; // Used for the rescan check
+                    long lastTurn = currentTurn; // Used for the Rescan check
 
                     robot.Run(); // Run the code in the JuniorRobot
 
-                    // Make sure that we rescan if the robot did not Execute anything this turn.
+                    // Make sure that we Rescan if the robot did not Execute anything this turn.
                     // When the robot executes the currentTurn will automatically be increased by 1,
                     // So when the turn stays the same, the robot did not take any action this turn.
                     if (lastTurn == currentTurn)
                     {
-                        robot.peer.rescan(); // Spend a turn on rescanning
+                        robot.peer.Rescan(); // Spend a turn on rescanning
                     }
                 }
             }

@@ -77,86 +77,86 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         #region IBasicRobotPeer Members
 
-        public Bullet setFire(double power)
+        public Bullet SetFire(double power)
         {
-            setCall();
+            SetCall();
             return setFireImpl(power);
         }
 
         // blocking actions
-        public void execute()
+        public void Execute()
         {
             executeImpl();
         }
 
-        public void move(double distance)
+        public void Move(double distance)
         {
             setMoveImpl(distance);
             do
             {
-                execute(); // Always tick at least once
-            } while (getDistanceRemaining() != 0);
+                Execute(); // Always tick at least once
+            } while (GetDistanceRemaining() != 0);
         }
 
-        public void turnBody(double radians)
+        public void TurnBody(double radians)
         {
             setTurnBodyImpl(radians);
             do
             {
-                execute(); // Always tick at least once
-            } while (getBodyTurnRemaining() != 0);
+                Execute(); // Always tick at least once
+            } while (GetBodyTurnRemaining() != 0);
         }
 
-        public void turnGun(double radians)
+        public void TurnGun(double radians)
         {
             setTurnGunImpl(radians);
             do
             {
-                execute(); // Always tick at least once
-            } while (getGunTurnRemaining() != 0);
+                Execute(); // Always tick at least once
+            } while (GetGunTurnRemaining() != 0);
         }
 
-        public Bullet fire(double power)
+        public Bullet Fire(double power)
         {
-            Bullet bullet = setFire(power);
+            Bullet bullet = SetFire(power);
 
-            execute();
+            Execute();
             return bullet;
         }
 
         // fast setters
-        public void setBodyColor(Color color)
+        public void SetBodyColor(Color color)
         {
-            setCall();
+            SetCall();
             commands.setBodyColor(color.ToArgb());
         }
 
-        public void setGunColor(Color color)
+        public void SetGunColor(Color color)
         {
-            setCall();
+            SetCall();
             commands.setGunColor(color.ToArgb());
         }
 
-        public void setRadarColor(Color color)
+        public void SetRadarColor(Color color)
         {
-            setCall();
+            SetCall();
             commands.setRadarColor(color.ToArgb());
         }
 
-        public void setBulletColor(Color color)
+        public void SetBulletColor(Color color)
         {
-            setCall();
+            SetCall();
             commands.setBulletColor(color.ToArgb());
         }
 
-        public void setScanColor(Color color)
+        public void SetScanColor(Color color)
         {
-            setCall();
+            SetCall();
             commands.setScanColor(color.ToArgb());
         }
 
         // counters
-        public void setCall()
+        public void SetCall()
         {
             int res = Interlocked.Increment(ref setCallCount);
 
@@ -167,7 +167,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
-        public void getCall()
+        public void GetCall()
         {
             int res = Interlocked.Increment(ref getCallCount);
 
@@ -178,140 +178,140 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
-        public double getDistanceRemaining()
+        public double GetDistanceRemaining()
         {
-            getCall();
+            GetCall();
             return commands.getDistanceRemaining();
         }
 
-        public double getRadarTurnRemaining()
+        public double GetRadarTurnRemaining()
         {
-            getCall();
+            GetCall();
             return commands.getRadarTurnRemaining();
         }
 
-        public double getBodyTurnRemaining()
+        public double GetBodyTurnRemaining()
         {
-            getCall();
+            GetCall();
             return commands.getBodyTurnRemaining();
         }
 
-        public double getGunTurnRemaining()
+        public double GetGunTurnRemaining()
         {
-            getCall();
+            GetCall();
             return commands.getGunTurnRemaining();
         }
 
-        public double getVelocity()
+        public double GetVelocity()
         {
-            getCall();
+            GetCall();
             return status.Velocity;
         }
 
-        public double getGunCoolingRate()
+        public double GetGunCoolingRate()
         {
-            getCall();
+            GetCall();
             return statics.getBattleRules().GunCoolingRate;
         }
 
-        public String getName()
+        public String GetName()
         {
-            getCall();
+            GetCall();
             return statics.getName();
         }
 
-        public long getTime()
+        public long GetTime()
         {
-            getCall();
+            GetCall();
             return getTimeImpl();
         }
 
-        public double getBodyHeading()
+        public double GetBodyHeading()
         {
-            getCall();
+            GetCall();
             return status.HeadingRadians;
         }
 
-        public double getGunHeading()
+        public double GetGunHeading()
         {
-            getCall();
+            GetCall();
             return status.GunHeadingRadians;
         }
 
-        public double getRadarHeading()
+        public double GetRadarHeading()
         {
-            getCall();
+            GetCall();
             return status.RadarHeadingRadians;
         }
 
-        public double getEnergy()
+        public double GetEnergy()
         {
-            getCall();
+            GetCall();
             return getEnergyImpl();
         }
 
-        public double getGunHeat()
+        public double GetGunHeat()
         {
-            getCall();
+            GetCall();
             return getGunHeatImpl();
         }
 
-        public double getX()
+        public double GetX()
         {
-            getCall();
+            GetCall();
             return status.X;
         }
 
-        public double getY()
+        public double GetY()
         {
-            getCall();
+            GetCall();
             return status.Y;
         }
 
-        public int getOthers()
+        public int GetOthers()
         {
-            getCall();
+            GetCall();
             return status.Others;
         }
 
-        public double getBattleFieldHeight()
+        public double GetBattleFieldHeight()
         {
-            getCall();
+            GetCall();
             return statics.getBattleRules().BattlefieldHeight;
         }
 
-        public double getBattleFieldWidth()
+        public double GetBattleFieldWidth()
         {
-            getCall();
+            GetCall();
             return statics.getBattleRules().BattlefieldWidth;
         }
 
-        public int getNumRounds()
+        public int GetNumRounds()
         {
-            getCall();
+            GetCall();
             return statics.getBattleRules().NumRounds;
         }
 
-        public int getRoundNum()
+        public int GetRoundNum()
         {
-            getCall();
+            GetCall();
             return status.RoundNum;
         }
 
-        public IGraphics getGraphics()
+        public IGraphics GetGraphics()
         {
-            getCall();
+            GetCall();
             commands.setTryingToPaint(true);
             return getGraphicsImpl();
         }
 
-        public void setDebugProperty(String key, String value)
+        public void SetDebugProperty(String key, String value)
         {
-            setCall();
+            SetCall();
             commands.setDebugProperty(key, value);
         }
 
-        public void rescan()
+        public void Rescan()
         {
             bool reset = false;
             bool resetValue = false;
@@ -587,13 +587,13 @@ namespace net.sf.robocode.dotnet.host.proxies
                 var e = (ScannedRobotEvent) currentTopEvent;
                 double fireAssistAngle = Utils.NormalAbsoluteAngle(status.HeadingRadians + e.BearingRadians);
 
-                bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true, bulletCounter);
+                bullet = new Bullet(fireAssistAngle, GetX(), GetY(), power, statics.getName(), null, true, bulletCounter);
                 wrapper = new BulletCommand(power, true, fireAssistAngle, bulletCounter);
             }
             else
             {
                 // this is normal bullet
-                bullet = new Bullet(status.GunHeadingRadians, getX(), getY(), power, statics.getName(), null, true,
+                bullet = new Bullet(status.GunHeadingRadians, GetX(), GetY(), power, statics.getName(), null, true,
                                     bulletCounter);
                 wrapper = new BulletCommand(power, false, 0, bulletCounter);
             }

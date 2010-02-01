@@ -31,185 +31,185 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         #region IAdvancedRobotPeer Members
 
-        public void setResume()
+        public void SetResume()
         {
-            setCall();
+            SetCall();
             setResumeImpl();
         }
 
-        public void setStop(bool overwrite)
+        public void SetStop(bool overwrite)
         {
-            setCall();
+            SetCall();
             setStopImpl(overwrite);
         }
 
-        public void setMove(double distance)
+        public void SetMove(double distance)
         {
-            setCall();
+            SetCall();
             setMoveImpl(distance);
         }
 
-        public void setTurnBody(double radians)
+        public void SetTurnBody(double radians)
         {
-            setCall();
+            SetCall();
             setTurnBodyImpl(radians);
         }
 
-        public void setTurnGun(double radians)
+        public void SetTurnGun(double radians)
         {
-            setCall();
+            SetCall();
             setTurnGunImpl(radians);
         }
 
-        public void setTurnRadar(double radians)
+        public void SetTurnRadar(double radians)
         {
-            setCall();
+            SetCall();
             setTurnRadarImpl(radians);
         }
 
         // blocking actions
-        public void waitFor(Condition condition)
+        public void WaitFor(Condition condition)
         {
             waitCondition = condition;
             do
             {
-                execute(); // Always tick at least once
+                Execute(); // Always tick at least once
             } while (!condition.Test());
 
             waitCondition = null;
         }
 
         // fast setters
-        public void setMaxTurnRate(double newTurnRate)
+        public void SetMaxTurnRate(double newTurnRate)
         {
-            setCall();
+            SetCall();
             if (Double.IsNaN(newTurnRate))
             {
-                println("You cannot setMaxTurnRate to: " + newTurnRate);
+                println("You cannot SetMaxTurnRate to: " + newTurnRate);
                 return;
             }
             commands.setMaxTurnRate(newTurnRate);
         }
 
-        public void setMaxVelocity(double newVelocity)
+        public void SetMaxVelocity(double newVelocity)
         {
-            setCall();
+            SetCall();
             if (Double.IsNaN(newVelocity))
             {
-                println("You cannot setMaxVelocity to: " + newVelocity);
+                println("You cannot SetMaxVelocity to: " + newVelocity);
                 return;
             }
             commands.setMaxVelocity(newVelocity);
         }
 
         // events manipulation
-        public void setInterruptible(bool interruptable)
+        public void SetInterruptible(bool interruptable)
         {
-            setCall();
+            SetCall();
             eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
         }
 
-        public void setEventPriority(String eventClass, int priority)
+        public void SetEventPriority(String eventClass, int priority)
         {
-            setCall();
+            SetCall();
             eventManager.setEventPriority(eventClass, priority);
         }
 
-        public int getEventPriority(String eventClass)
+        public int GetEventPriority(String eventClass)
         {
-            getCall();
+            GetCall();
             return eventManager.getEventPriority(eventClass);
         }
 
-        public void removeCustomEvent(Condition condition)
+        public void RemoveCustomEvent(Condition condition)
         {
-            setCall();
+            SetCall();
             eventManager.removeCustomEvent(condition);
         }
 
-        public void addCustomEvent(Condition condition)
+        public void AddCustomEvent(Condition condition)
         {
-            setCall();
+            SetCall();
             eventManager.addCustomEvent(condition);
         }
 
         public void clearAllEvents()
         {
-            setCall();
+            SetCall();
             eventManager.clearAllEvents(false);
         }
 
-        public IList<Event> getAllEvents()
+        public IList<Event> GetAllEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getAllEvents();
         }
 
-        public IList<StatusEvent> getStatusEvents()
+        public IList<StatusEvent> GetStatusEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getStatusEvents();
         }
 
-        public IList<BulletMissedEvent> getBulletMissedEvents()
+        public IList<BulletMissedEvent> GetBulletMissedEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getBulletMissedEvents();
         }
 
-        public IList<BulletHitBulletEvent> getBulletHitBulletEvents()
+        public IList<BulletHitBulletEvent> GetBulletHitBulletEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getBulletHitBulletEvents();
         }
 
-        public IList<BulletHitEvent> getBulletHitEvents()
+        public IList<BulletHitEvent> GetBulletHitEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getBulletHitEvents();
         }
 
-        public IList<HitByBulletEvent> getHitByBulletEvents()
+        public IList<HitByBulletEvent> GetHitByBulletEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getHitByBulletEvents();
         }
 
-        public IList<HitRobotEvent> getHitRobotEvents()
+        public IList<HitRobotEvent> GetHitRobotEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getHitRobotEvents();
         }
 
-        public IList<HitWallEvent> getHitWallEvents()
+        public IList<HitWallEvent> GetHitWallEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getHitWallEvents();
         }
 
-        public IList<RobotDeathEvent> getRobotDeathEvents()
+        public IList<RobotDeathEvent> GetRobotDeathEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getRobotDeathEvents();
         }
 
-        public IList<ScannedRobotEvent> getScannedRobotEvents()
+        public IList<ScannedRobotEvent> GetScannedRobotEvents()
         {
-            getCall();
+            GetCall();
             return eventManager.getScannedRobotEvents();
         }
 
         // data
-        public string getDataDirectory()
+        public string GetDataDirectory()
         {
-            getCall();
+            GetCall();
             commands.setIORobot();
             return robotFileSystemManager.getWritableDirectory();
         }
 
-        public Stream getDataFile(string filename)
+        public Stream GetDataFile(string filename)
         {
-            getCall();
+            GetCall();
             commands.setIORobot();
             if (filename.Contains(".."))
             {
@@ -219,9 +219,9 @@ namespace net.sf.robocode.dotnet.host.proxies
             return robotFileSystemManager.getDataFile(filename);
         }
 
-        public long getDataQuotaAvailable()
+        public long GetDataQuotaAvailable()
         {
-            getCall();
+            GetCall();
             return robotFileSystemManager.getDataQuotaAvailable();
         }
 

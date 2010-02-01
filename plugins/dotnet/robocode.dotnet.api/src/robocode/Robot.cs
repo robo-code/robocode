@@ -163,7 +163,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.move(distance);
+                peer.Move(distance);
             }
             else
             {
@@ -206,7 +206,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.move(-distance);
+                peer.Move(-distance);
             }
             else
             {
@@ -223,7 +223,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getBattleFieldWidth();
+                    return peer.GetBattleFieldWidth();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -239,7 +239,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getBattleFieldHeight();
+                    return peer.GetBattleFieldHeight();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -261,7 +261,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    double rv = 180.0*peer.getBodyHeading()/Math.PI;
+                    double rv = 180.0*peer.GetBodyHeading()/Math.PI;
 
                     while (rv < 0)
                     {
@@ -319,7 +319,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getName();
+                    return peer.GetName();
                 }
                 UninitializedException();
                 return null; // never called
@@ -337,7 +337,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getX();
+                    return peer.GetX();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -355,7 +355,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getY();
+                    return peer.GetY();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -423,7 +423,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnBody(-Utils.ToRadians(degrees));
+                peer.TurnBody(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -473,7 +473,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnBody(Utils.ToRadians(degrees));
+                peer.TurnBody(Utils.ToRadians(degrees));
             }
             else
             {
@@ -491,7 +491,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.execute();
+                peer.Execute();
             }
             else
             {
@@ -556,8 +556,8 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.setFire(power);
-                peer.execute();
+                peer.SetFire(power);
+                peer.Execute();
             }
             else
             {
@@ -636,7 +636,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                return peer.fire(power);
+                return peer.Fire(power);
             }
             UninitializedException();
             return null;
@@ -658,7 +658,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getGunCoolingRate();
+                    return peer.GetGunCoolingRate();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -680,7 +680,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getGunHeading()*180.0/Math.PI;
+                    return peer.GetGunHeading()*180.0/Math.PI;
                 }
                 UninitializedException();
                 return 0; // never called
@@ -710,7 +710,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getGunHeat();
+                    return peer.GetGunHeat();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -727,7 +727,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getNumRounds();
+                    return peer.GetNumRounds();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -743,7 +743,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getOthers();
+                    return peer.GetOthers();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -765,7 +765,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getRadarHeading()*180.0/Math.PI;
+                    return peer.GetRadarHeading()*180.0/Math.PI;
                 }
                 UninitializedException();
                 return 0; // never called
@@ -785,7 +785,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getRoundNum();
+                    return peer.GetRoundNum();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -806,7 +806,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getTime();
+                    return peer.GetTime();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -827,7 +827,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getVelocity();
+                    return peer.GetVelocity();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -934,7 +934,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.rescan();
+                peer.Rescan();
             }
             else
             {
@@ -989,7 +989,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return ((IStandardRobotPeer) peer).isAdjustGunForBodyTurn();
+                    return ((IStandardRobotPeer) peer).IsAdjustGunForBodyTurn();
                 }
                 UninitializedException();
                 return false;
@@ -998,7 +998,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    ((IStandardRobotPeer) peer).setAdjustGunForBodyTurn(value);
+                    ((IStandardRobotPeer) peer).SetAdjustGunForBodyTurn(value);
                 }
                 else
                 {
@@ -1052,7 +1052,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return ((IStandardRobotPeer) peer).isAdjustRadarForBodyTurn();
+                    return ((IStandardRobotPeer) peer).IsAdjustRadarForBodyTurn();
                 }
                 UninitializedException();
                 return false;
@@ -1061,7 +1061,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    ((IStandardRobotPeer) peer).setAdjustRadarForBodyTurn(value);
+                    ((IStandardRobotPeer) peer).SetAdjustRadarForBodyTurn(value);
                 }
                 else
                 {
@@ -1091,14 +1091,14 @@ namespace Robocode
         ///   Assuming both the gun and radar start Out facing up (0 degrees):
         ///   <pre>
         ///     // Set radar to turn with the gun's turn
-        ///     setAdjustRadarForGunTurn(false); // This is the default
+        ///     SetAdjustRadarForGunTurn(false); // This is the default
         ///     TurnGunRight(90);
         ///     // At this point, both the radar and gun are facing right (90 degrees);
         ///     <p />
         ///     -- or --
         ///     <p />
         ///     // Set radar to turn independent from the gun's turn
-        ///     setAdjustRadarForGunTurn(true);
+        ///     SetAdjustRadarForGunTurn(true);
         ///     TurnGunRight(90);
         ///     // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
         ///   </pre>
@@ -1120,7 +1120,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return ((IStandardRobotPeer) peer).isAdjustRadarForGunTurn();
+                    return ((IStandardRobotPeer) peer).IsAdjustRadarForGunTurn();
                 }
                 UninitializedException();
                 return false;
@@ -1129,7 +1129,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    ((IStandardRobotPeer) peer).setAdjustRadarForGunTurn(value);
+                    ((IStandardRobotPeer) peer).SetAdjustRadarForGunTurn(value);
                 }
                 else
                 {
@@ -1173,9 +1173,9 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.setBodyColor(bodyColor);
-                peer.setGunColor(gunColor);
-                peer.setRadarColor(radarColor);
+                peer.SetBodyColor(bodyColor);
+                peer.SetGunColor(gunColor);
+                peer.SetRadarColor(radarColor);
             }
             else
             {
@@ -1224,11 +1224,11 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.setBodyColor(bodyColor);
-                peer.setGunColor(gunColor);
-                peer.setRadarColor(radarColor);
-                peer.setBulletColor(bulletColor);
-                peer.setScanColor(scanArcColor);
+                peer.SetBodyColor(bodyColor);
+                peer.SetGunColor(gunColor);
+                peer.SetRadarColor(radarColor);
+                peer.SetBulletColor(bulletColor);
+                peer.SetScanColor(scanArcColor);
             }
             else
             {
@@ -1273,11 +1273,11 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.setBodyColor(color);
-                peer.setGunColor(color);
-                peer.setRadarColor(color);
-                peer.setBulletColor(color);
-                peer.setScanColor(color);
+                peer.SetBodyColor(color);
+                peer.SetGunColor(color);
+                peer.SetRadarColor(color);
+                peer.SetBulletColor(color);
+                peer.SetScanColor(color);
             }
             else
             {
@@ -1299,7 +1299,7 @@ namespace Robocode
         ///       ...
         ///       <p />
         ///       public void Run() {
-        ///       setBodyColor(Color.BLACK);
+        ///       SetBodyColor(Color.BLACK);
         ///       ...
         ///       }
         ///     </pre>
@@ -1319,7 +1319,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    peer.setBodyColor(value);
+                    peer.SetBodyColor(value);
                 }
                 else
                 {
@@ -1343,7 +1343,7 @@ namespace Robocode
         ///      ...
         ///      <p />
         ///      public void Run() {
-        ///      setGunColor(Color.RED);
+        ///      SetGunColor(Color.RED);
         ///      ...
         ///      }
         ///    </pre>
@@ -1364,7 +1364,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    peer.setGunColor(value);
+                    peer.SetGunColor(value);
                 }
                 else
                 {
@@ -1388,7 +1388,7 @@ namespace Robocode
         ///      ...
         ///      <p />
         ///      public void Run() {
-        ///      setRadarColor(Color.YELLOW);
+        ///      SetRadarColor(Color.YELLOW);
         ///      ...
         ///      }
         ///    </pre>
@@ -1409,7 +1409,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    peer.setRadarColor(value);
+                    peer.SetRadarColor(value);
                 }
                 else
                 {
@@ -1433,7 +1433,7 @@ namespace Robocode
         ///      ...
         ///      <p />
         ///      public void Run() {
-        ///      setBulletColor(Color.GREEN);
+        ///      SetBulletColor(Color.GREEN);
         ///      ...
         ///      }
         ///    </pre>
@@ -1454,7 +1454,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    peer.setBulletColor(value);
+                    peer.SetBulletColor(value);
                 }
                 else
                 {
@@ -1478,7 +1478,7 @@ namespace Robocode
         ///      ...
         ///      <p />
         ///      public void Run() {
-        ///      setScanColor(Color.WHITE);
+        ///      SetScanColor(Color.WHITE);
         ///      ...
         ///      }
         ///    </pre>
@@ -1499,7 +1499,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    peer.setScanColor(value);
+                    peer.SetScanColor(value);
                 }
                 else
                 {
@@ -1546,7 +1546,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IStandardRobotPeer) peer).stop(overwrite);
+                ((IStandardRobotPeer) peer).Stop(overwrite);
             }
             else
             {
@@ -1567,7 +1567,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IStandardRobotPeer) peer).resume();
+                ((IStandardRobotPeer) peer).Resume();
             }
             else
             {
@@ -1619,7 +1619,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnGun(-Utils.ToRadians(degrees));
+                peer.TurnGun(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -1670,7 +1670,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                peer.turnGun(Utils.ToRadians(degrees));
+                peer.TurnGun(Utils.ToRadians(degrees));
             }
             else
             {
@@ -1721,7 +1721,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IStandardRobotPeer) peer).turnRadar(-Utils.ToRadians(degrees));
+                ((IStandardRobotPeer) peer).TurnRadar(-Utils.ToRadians(degrees));
             }
             else
             {
@@ -1773,7 +1773,7 @@ namespace Robocode
         {
             if (peer != null)
             {
-                ((IStandardRobotPeer) peer).turnRadar(Utils.ToRadians(degrees));
+                ((IStandardRobotPeer) peer).TurnRadar(Utils.ToRadians(degrees));
             }
             else
             {
@@ -1790,7 +1790,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getEnergy();
+                    return peer.GetEnergy();
                 }
                 UninitializedException();
                 return 0; // never called
@@ -1820,7 +1820,7 @@ namespace Robocode
             {
                 if (peer != null)
                 {
-                    return peer.getGraphics();
+                    return peer.GetGraphics();
                 }
                 UninitializedException();
                 return null; // never called
@@ -1875,7 +1875,7 @@ namespace Robocode
             /// <returns></returns>
             public string this[string key]
             {
-                set { peer.setDebugProperty(key, value); }
+                set { peer.SetDebugProperty(key, value); }
             }
         }
 

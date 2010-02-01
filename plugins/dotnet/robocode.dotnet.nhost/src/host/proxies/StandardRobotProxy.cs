@@ -36,37 +36,37 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         #region IStandardRobotPeer Members
 
-        public void stop(bool overwrite)
+        public void Stop(bool overwrite)
         {
             setStopImpl(overwrite);
-            execute();
+            Execute();
         }
 
-        public void resume()
+        public void Resume()
         {
             setResumeImpl();
-            execute();
+            Execute();
         }
 
-        public void turnRadar(double radians)
+        public void TurnRadar(double radians)
         {
             setTurnRadarImpl(radians);
             do
             {
-                execute(); // Always tick at least once
-            } while (getRadarTurnRemaining() != 0);
+                Execute(); // Always tick at least once
+            } while (GetRadarTurnRemaining() != 0);
         }
 
         // fast setters
-        public void setAdjustGunForBodyTurn(bool newAdjustGunForBodyTurn)
+        public void SetAdjustGunForBodyTurn(bool newAdjustGunForBodyTurn)
         {
-            setCall();
+            SetCall();
             commands.setAdjustGunForBodyTurn(newAdjustGunForBodyTurn);
         }
 
-        public void setAdjustRadarForGunTurn(bool newAdjustRadarForGunTurn)
+        public void SetAdjustRadarForGunTurn(bool newAdjustRadarForGunTurn)
         {
-            setCall();
+            SetCall();
             commands.setAdjustRadarForGunTurn(newAdjustRadarForGunTurn);
             if (!commands.IsAdjustRadarForBodyTurnSet())
             {
@@ -74,28 +74,28 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
         }
 
-        public void setAdjustRadarForBodyTurn(bool newAdjustRadarForBodyTurn)
+        public void SetAdjustRadarForBodyTurn(bool newAdjustRadarForBodyTurn)
         {
-            setCall();
+            SetCall();
             commands.setAdjustRadarForBodyTurn(newAdjustRadarForBodyTurn);
             commands.setAdjustRadarForBodyTurnSet(true);
         }
 
-        public bool isAdjustGunForBodyTurn()
+        public bool IsAdjustGunForBodyTurn()
         {
-            getCall();
+            GetCall();
             return commands.IsAdjustGunForBodyTurn();
         }
 
-        public bool isAdjustRadarForGunTurn()
+        public bool IsAdjustRadarForGunTurn()
         {
-            getCall();
+            GetCall();
             return commands.IsAdjustRadarForGunTurn();
         }
 
-        public bool isAdjustRadarForBodyTurn()
+        public bool IsAdjustRadarForBodyTurn()
         {
-            getCall();
+            GetCall();
             return commands.IsAdjustRadarForBodyTurn();
         }
 
@@ -123,10 +123,10 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             if (!isStopped || overwrite)
             {
-                saveDistanceToGo = getDistanceRemaining();
-                saveAngleToTurn = getBodyTurnRemaining();
-                saveGunAngleToTurn = getGunTurnRemaining();
-                saveRadarAngleToTurn = getRadarTurnRemaining();
+                saveDistanceToGo = GetDistanceRemaining();
+                saveAngleToTurn = GetBodyTurnRemaining();
+                saveGunAngleToTurn = GetGunTurnRemaining();
+                saveRadarAngleToTurn = GetRadarTurnRemaining();
             }
             isStopped = true;
 

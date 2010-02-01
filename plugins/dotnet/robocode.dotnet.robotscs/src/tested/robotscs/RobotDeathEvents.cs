@@ -25,7 +25,7 @@ namespace tested.robotscs
             {
                 if (enemyCount != Others)
                 {
-                    throw new RobotException("enemyCount != getOthers()");
+                    throw new RobotException("enemyCount != GetOthers()");
                 }
                 Execute();
             }
