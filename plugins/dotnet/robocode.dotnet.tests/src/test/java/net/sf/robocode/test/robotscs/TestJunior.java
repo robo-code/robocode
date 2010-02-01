@@ -41,11 +41,11 @@ public class TestJunior extends RobocodeTestBed {
 		if (event.getTurnSnapshot().getTurn() == 589) {
 			// if (out.contains("robocode.BulletMissedEvent")) {
 
-			test(out, "robocode.BulletMissedEvent 5");
-			test(out, "robocode.ScannedRobotEvent 100");
-			test(out, "robocode.BulletHitEvent 24");
-			test(out, "robocode.StatusEvent 589");
-			test(out, "robocode.WinEvent 1");
+			test(out, "Robocode.BulletMissedEvent 5");
+			test(out, "Robocode.ScannedRobotEvent 100");
+			test(out, "Robocode.BulletHitEvent 24");
+			test(out, "Robocode.StatusEvent 589");
+			test(out, "Robocode.WinEvent 1");
 			test(out, "last bullet heading 6.0710");
 		}
 	}

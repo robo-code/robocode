@@ -32,6 +32,29 @@
                     <finalName>robocode.dll</finalName>
                 </configuration>
             </plugin>
+             <plugin>
+	              <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
+	              <artifactId>maven-antrun-extended-plugin</artifactId>
+	              <version>1.39</version>
+	              <executions>
+	                  <execution>
+	                      <phase>prepare-package</phase>
+	                      <configuration>
+	                          <tasks>
+	                              <copy file="target/comments.xml" tofile="target/robocode.xml"/>
+	                              <!--
+																<exec dir="target" executable="cmd.exe" failonerror="true">
+																  <arg line="/c %SystemRoot%\Microsoft.NET\Framework64\v3.5\MSBuild.exe /p:Configuration=Release ../robotAPI.shfbproj"/>
+																</exec>	                              
+																-->
+	                          </tasks>
+	                      </configuration>
+	                      <goals>
+	                          <goal>run</goal>
+	                      </goals>
+	                  </execution>
+	              </executions>
+	          </plugin>
         </plugins>
     </build>
 </project>
