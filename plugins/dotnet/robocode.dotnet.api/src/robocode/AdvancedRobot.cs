@@ -849,8 +849,6 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all HitByBulletEvents currently in the
-        ///  robot's queue
         ///  <seealso cref="Robot.OnHitByBullet(HitByBulletEvent)"/>
         ///  <seealso cref="HitByBulletEvent"/>
         ///  <seealso cref="GetAllEvents()"/>
@@ -877,8 +875,6 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all HitRobotEvents currently in the robot's
-        ///  queue
         ///  <seealso cref="Robot.OnHitRobot(HitRobotEvent)"/>
         ///  <seealso cref="HitRobotEvent"/>
         ///  <seealso cref="GetAllEvents()"/>
@@ -905,8 +901,6 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all HitWallEvents currently in the robot's
-        ///  queue
         ///  <seealso cref="Robot.OnHitWall(HitWallEvent)"/>
         ///  <seealso cref="HitWallEvent"/>
         ///  <seealso cref="GetAllEvents()"/>
@@ -933,8 +927,6 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all RobotDeathEvents currently in the robot's
-        ///  queue
         ///  <seealso cref="Robot.OnRobotDeath(RobotDeathEvent)"/>
         ///  <seealso cref="RobotDeathEvent"/>
         ///  <seealso cref="GetAllEvents()"/>
@@ -962,8 +954,6 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all ScannedRobotEvents currently in the
-        ///  robot's queue
         ///  <seealso cref="Robot.OnScannedRobot(ScannedRobotEvent)"/>
         ///  <seealso cref="ScannedRobotEvent"/>
         ///  <seealso cref="GetAllEvents()"/>
@@ -990,11 +980,9 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all StatusEvents currently in the robot's queue
         ///  <seealso cref="Robot.OnStatus(StatusEvent)"/>
         ///  <seealso cref="StatusEvent"/>
         ///  <seealso cref="GetAllEvents()"/>
-        ///  @since 1.6.1
         ///</summary>
         public IList<StatusEvent> GetStatusEvents()
         {
@@ -1185,7 +1173,7 @@ namespace robocode
         ///  If there is already movement saved from a previous Stop, this will have
         ///  no effect.
         ///  <p />
-        ///  This call is equivalent to calling {@code SetStop(false)};
+        ///  This call is equivalent to calling SetStop(false);
         ///
         ///  <seealso cref="Robot.Stop()"/>
         ///  <seealso cref="Robot.Stop(bool)"/>
@@ -1432,7 +1420,7 @@ namespace robocode
         ///  <p />
         ///  This call executes immediately.
         ///  <p />
-        ///  See the {@code sample.Crazy} robot for how this method can be used.
+        ///  See the sample.Crazy robot for how this method can be used.
         ///  <seealso cref="Condition"/>
         ///  <seealso cref="Condition.Test()"/>
         ///</summary>
@@ -1687,8 +1675,6 @@ namespace robocode
         ///  <p />
         ///  Note that the heading in Robocode is like a compass, where 0 means North,
         ///  PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        ///  @return the direction that the robot's gun is facing, in radians.
         ///  <seealso cref="Robot.GunHeading"/>
         ///  <seealso cref="HeadingRadians"/>
         ///  <seealso cref="RadarHeadingRadians"/>
@@ -1712,8 +1698,6 @@ namespace robocode
         ///  <p />
         ///  Note that the heading in Robocode is like a compass, where 0 means North,
         ///  PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        ///  @return the direction that the robot's radar is facing, in radians.
         ///  <seealso cref="Robot.RadarHeading"/>
         ///  <seealso cref="HeadingRadians"/>
         ///  <seealso cref="GunHeadingRadians"/>
@@ -2123,8 +2107,6 @@ namespace robocode
         ///  This call returns both positive and negative values. Positive values
         ///  means that the gun is currently turning to the right. Negative values
         ///  means that the gun is currently turning to the left.
-        ///
-        ///  @return the angle remaining in the gun's turn, in radians
         ///  <seealso cref="AdvancedRobot.GunTurnRemaining"/>
         ///  <seealso cref="AdvancedRobot.TurnRemaining"/>
         ///  <seealso cref="TurnRemainingRadians"/>
@@ -2150,8 +2132,6 @@ namespace robocode
         ///  This call returns both positive and negative values. Positive values
         ///  means that the radar is currently turning to the right. Negative values
         ///  means that the radar is currently turning to the left.
-        ///
-        ///  @return the angle remaining in the radar's turn, in radians
         ///  <seealso cref="RadarTurnRemaining"/>
         ///  <seealso cref="TurnRemaining"/>
         ///  <seealso cref="TurnRemainingRadians"/>
@@ -2177,8 +2157,6 @@ namespace robocode
         ///  This call returns both positive and negative values. Positive values
         ///  means that the robot is currently turning to the right. Negative values
         ///  means that the robot is currently turning to the left.
-        ///
-        ///  @return the angle remaining in the robot's turn, in radians
         ///  <seealso cref="AdvancedRobot.TurnRemaining"/>
         ///  <seealso cref="AdvancedRobot.GunTurnRemaining"/>
         ///  <seealso cref="GunTurnRemainingRadians"/>

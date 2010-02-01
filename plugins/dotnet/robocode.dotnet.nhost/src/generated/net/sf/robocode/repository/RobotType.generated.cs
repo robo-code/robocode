@@ -15,7 +15,7 @@ namespace net.sf.robocode.repository {
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
     public partial class RobotType : global::java.lang.Object, global::java.io.Serializable {
         
-        internal new static global::java.lang.Class staticClass;
+        internal static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _isValid0;
         
@@ -220,7 +220,7 @@ namespace net.sf.robocode.repository {
             return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.repository.RobotType._getCode8)));
         }
         
-        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.repository.RobotType(@__env);

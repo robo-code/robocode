@@ -15,7 +15,7 @@ namespace robocode.control {
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
     public partial class RandomFactory : global::java.lang.Object, global::net.sf.robocode.security.IHiddenRandomHelper {
         
-        internal new static global::java.lang.Class staticClass;
+        internal static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _isDeterministic0;
         
@@ -77,7 +77,7 @@ namespace robocode.control {
             @__env.CallStaticVoidMethod(global::robocode.control.RandomFactory.staticClass, global::robocode.control.RandomFactory._resetDeterministic3, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
         }
         
-        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::robocode.control.RandomFactory(@__env);

@@ -36,7 +36,7 @@ namespace tested.robotscs
             {
                 loop();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 Out.WriteLine("that's my time");
                 normal = true;

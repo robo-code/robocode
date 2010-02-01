@@ -29,7 +29,6 @@ namespace net.sf.robocode.dotnet.host.seed
         private static readonly Assembly hostAssembly = typeof (AppDomainShell).Assembly;
         private static readonly Assembly jniAssembly = typeof (Bridge).Assembly;
         protected AppDomain domain;
-        private string name;
         private string robotAssemblyFileName;
         protected IRobotPeer robotPeer;
         private string robotShadow;

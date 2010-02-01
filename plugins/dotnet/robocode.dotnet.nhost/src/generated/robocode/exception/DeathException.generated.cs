@@ -16,7 +16,7 @@ namespace robocode.exception {
     [global::System.SerializableAttribute()]
     public partial class DeathException : global::java.lang.Error {
         
-        internal new static global::java.lang.Class staticClass;
+        internal static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId @__ctorDeathException0;
         
@@ -56,7 +56,7 @@ namespace robocode.exception {
             global::robocode.exception.DeathException.@__ctorDeathException1 = @__env.GetMethodID(global::robocode.exception.DeathException.staticClass, "<init>", "()V");
         }
         
-        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::robocode.exception.DeathException(@__env);

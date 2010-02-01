@@ -27,7 +27,7 @@ namespace net.sf.robocode.dotnet.host {
     [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.dotnet.host.DotnetHost))]
     internal sealed partial class @__DotnetHost : global::java.lang.Object {
         
-        internal new static global::java.lang.Class staticClass;
+        internal static global::java.lang.Class staticClass;
         
         private @__DotnetHost(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
@@ -96,7 +96,7 @@ namespace net.sf.robocode.dotnet.host {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.dotnet.host.@__DotnetHost(@__env);

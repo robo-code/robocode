@@ -20,7 +20,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when a key has been pressed.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// key events.
         /// <seealso cref="OnKeyReleased(KeyEvent)"/>
         /// <seealso cref="OnKeyTyped(KeyEvent)"/>
@@ -31,7 +31,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when a key has been released.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// key events.
         /// <seealso cref="OnKeyPressed(KeyEvent)"/>
         /// <seealso cref="OnKeyTyped(KeyEvent)"/>
@@ -42,7 +42,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when a key has been typed (pressed and released).
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// key events.
         /// <seealso cref="OnKeyPressed(KeyEvent)"/>
         /// <seealso cref="OnKeyReleased(KeyEvent)"/>
@@ -54,7 +54,7 @@ namespace robocode.robotinterfaces
         /// This method is called when a mouse button has been clicked (pressed and
         /// released).
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// mouse events.
         /// <seealso cref="OnMouseMoved(MouseEvent)"/>
         /// <seealso cref="OnMousePressed(MouseEvent)"/>
@@ -70,7 +70,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when the mouse has entered the battle view.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// mouse events.
         /// <seealso cref="OnMouseMoved(MouseEvent)"/>
         /// <seealso cref="OnMousePressed(MouseEvent)"/>
@@ -86,7 +86,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when the mouse has exited the battle view.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// mouse events.
         /// <seealso cref="OnMouseMoved(MouseEvent)"/>
         /// <seealso cref="OnMousePressed(MouseEvent)"/>
@@ -102,7 +102,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when a mouse button has been pressed.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// mouse events.
         /// <seealso cref="OnMouseMoved(MouseEvent)"/>
         /// <seealso cref="OnMouseReleased(MouseEvent)"/>
@@ -118,7 +118,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when a mouse button has been released.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// mouse events.
         /// <seealso cref="OnMouseMoved(MouseEvent)"/>
         /// <seealso cref="OnMousePressed(MouseEvent)"/>
@@ -134,7 +134,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when the mouse has been moved.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// mouse events.
         /// <seealso cref="OnMousePressed(MouseEvent)"/>
         /// <seealso cref="OnMouseReleased(MouseEvent)"/>
@@ -151,7 +151,7 @@ namespace robocode.robotinterfaces
         /// This method is called when a mouse button has been pressed and then
         /// dragged.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// mouse events.
         /// <seealso cref="OnMouseMoved(MouseEvent)"/>
         /// <seealso cref="OnMousePressed(MouseEvent)"/>
@@ -167,7 +167,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when the mouse wheel has been rotated.
         /// <p/>
-        /// See the {@code sample.Interactive} robot for an example of how to use
+        /// See the sample.Interactive robot for an example of how to use
         /// mouse events.
         /// <seealso cref="OnMouseMoved(MouseEvent)"/>
         /// <seealso cref="OnMousePressed(MouseEvent)"/>
