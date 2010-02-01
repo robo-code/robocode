@@ -1,16 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System.IO;
 using robocode.robotinterfaces.peer;
 
@@ -22,15 +19,11 @@ namespace robocode.robotinterfaces
     /// with the <see cref="robocode.Robot"/> class.
     /// A basic robot allows blocking calls only and cannot handle custom events nor
     /// writes to the file system like an advanced robot.
-    ///
-    /// @author Pavel Savara (original)
-    /// @author Flemming N. Larsen (javadoc)
     /// <seealso cref="robocode.Robot"/>
     /// <seealso cref="IJuniorRobot"/>
     /// <seealso cref="IInteractiveRobot"/>
     /// <seealso cref="IAdvancedRobot"/>
     /// <seealso cref="ITeamRobot"/>
-    /// @since 1.6
     /// </summary>
     public interface IBasicRobot
     {

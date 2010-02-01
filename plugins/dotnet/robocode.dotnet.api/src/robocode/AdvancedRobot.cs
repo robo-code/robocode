@@ -68,8 +68,6 @@ namespace robocode
         ///  means that the robot is currently turning to the right. Negative values
         ///  means that the robot is currently turning to the left. If the returned
         ///  value is 0, the robot is currently not turning.
-        ///
-        ///  @return the angle remaining in the robots's turn, in degrees
         ///  <seealso cref="TurnRemainingRadians" />
         ///  <seealso cref="DistanceRemaining" />
         ///  <seealso cref="GunTurnRemaining" />
@@ -235,9 +233,9 @@ namespace robocode
         ///  <seealso cref="SetAhead(double)"/>
         ///</summary>
         ///  <param name="distance"> the distance to move measured in pixels.
-        ///  If {@code distance} &gt; 0 the robot is set to move Back.
-        ///  If {@code distance} &lt; 0 the robot is set to move Ahead.
-        ///  If {@code distance} = 0 the robot is set to Stop its movement.</param>
+        ///  If distance &gt; 0 the robot is set to move Back.
+        ///  If distance &lt; 0 the robot is set to move Ahead.
+        ///  If distance = 0 the robot is set to Stop its movement.</param>
         public void SetBack(double distance)
         {
             if (peer != null)
@@ -283,9 +281,9 @@ namespace robocode
         ///  <seealso cref="SetTurnRightRadians(double)"/>
         ///</summary>
         ///  <param name="degrees"> the amount of degrees to turn the robot's body to the left.
-        ///  If {@code degrees} &gt; 0 the robot is set to turn left.
-        ///  If {@code degrees} &lt; 0 the robot is set to turn right.
-        ///  If {@code degrees} = 0 the robot is set to Stop turning.</param>
+        ///  If degrees &gt; 0 the robot is set to turn left.
+        ///  If degrees &lt; 0 the robot is set to turn right.
+        ///  If degrees = 0 the robot is set to Stop turning.</param>
         public void SetTurnLeft(double degrees)
         {
             if (peer != null)
@@ -331,9 +329,9 @@ namespace robocode
         ///  <seealso cref="SetTurnLeftRadians(double)"/>
         ///</summary>
         ///  <param name="degrees"> the amount of degrees to turn the robot's body to the right.
-        ///  If {@code degrees} &gt; 0 the robot is set to turn right.
-        ///  If {@code degrees} &lt; 0 the robot is set to turn left.
-        ///  If {@code degrees} = 0 the robot is set to Stop turning.</param>
+        ///  If degrees &gt; 0 the robot is set to turn right.
+        ///  If degrees &lt; 0 the robot is set to turn left.
+        ///  If degrees = 0 the robot is set to Stop turning.</param>
         public void SetTurnRight(double degrees)
         {
             if (peer != null)
@@ -635,7 +633,6 @@ namespace robocode
         ///    }
         ///    }
         ///  </pre>
-        ///  @return a vector containing all events currently in the robot's queue
         ///  <seealso cref="Event"/>
         ///  <seealso cref="ClearAllEvents()"/>
         ///  <seealso cref="GetStatusEvents()"/>
@@ -668,7 +665,6 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all BulletHitBulletEvents currently in the
         ///  robot's queue
         ///  <seealso cref="Robot.OnBulletHitBullet(BulletHitBulletEvent)"/>
         ///  <seealso cref="BulletHitBulletEvent"/>
@@ -696,8 +692,6 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all BulletHitEvents currently in the robot's
-        ///  queue
         ///  <seealso cref="Robot.OnBulletHit(BulletHitEvent)"/>
         ///  <seealso cref="BulletHitEvent"/>
         ///  <seealso cref="GetAllEvents()"/>
@@ -712,7 +706,6 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
         ///<summary>
         ///  Returns a vector containing all BulletMissedEvents currently in the
         ///  robot's queue. You might, for example, call this while processing another
@@ -726,8 +719,6 @@ namespace robocode
         ///    </i>
         ///    }
         ///  </pre>
-        ///  @return a vector containing all BulletMissedEvents currently in the
-        ///  robot's queue
         ///  <seealso cref="Robot.OnBulletMissed(BulletMissedEvent)"/>
         ///  <seealso cref="BulletMissedEvent"/>
         ///  <seealso cref="GetAllEvents()"/>
@@ -742,14 +733,11 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
         ///<summary>
         ///  Returns a file representing a data directory for the robot.
         ///  <p />
         ///  The system will automatically create the directory for you, so you do not
         ///  need to create it by yourself.
-        ///
-        ///  @return a file representing the data directory for your robot
         ///  <seealso cref="GetDataFile(string)"/>
         ///</summary>
         public string GetDataDirectory()
@@ -771,7 +759,7 @@ namespace robocode
         ///  Please notice that the max. size of your data file is set to 200000 bytes
         ///  (~195 KB).
         ///  <p />
-        ///  See the {@code sample.SittingDuck} to see an example of how to use this
+        ///  See the sample.SittingDuck to see an example of how to use this
         ///  method.
         ///  <seealso cref="GetDataDirectory()"/>
         ///</summary>
@@ -786,12 +774,9 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
         ///<summary>
         ///  Returns the data quota available in your data directory, i.e. the amount
         ///  of bytes left in the data directory for the robot.
-        ///
-        ///  @return the amount of bytes left in the robot's data directory
         ///  <seealso cref="GetDataDirectory()"/>
         ///  <seealso cref="GetDataFile(string)"/>
         ///</summary>
@@ -808,9 +793,8 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
-        ///  Returns the current priority of a class of events.
+        ///<summary>        
+///  Returns the current priority of a class of events.
         ///  An evnt priority is a value from 0 - 99. The higher value, the higher
         ///  priority.
         ///  <p />
@@ -852,8 +836,7 @@ namespace robocode
             return 0; // never called
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns a vector containing all HitByBulletEvents currently in the
         ///  robot's queue. You might, for example, call this while processing
         ///  another evnt.
@@ -882,8 +865,7 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns a vector containing all HitRobotEvents currently in the robot's
         ///  queue. You might, for example, call this while processing another evnt.
         ///  <p />
@@ -911,8 +893,7 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns a vector containing all HitWallEvents currently in the robot's
         ///  queue. You might, for example, call this while processing another evnt.
         ///  <p />
@@ -940,8 +921,7 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns a vector containing all RobotDeathEvents currently in the robot's
         ///  queue. You might, for example, call this while processing another evnt.
         ///  <p />
@@ -969,8 +949,7 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns a vector containing all ScannedRobotEvents currently in the
         ///  robot's queue. You might, for example, call this while processing another
         ///  evnt.
@@ -999,8 +978,7 @@ namespace robocode
             return null; // never called
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns a vector containing all StatusEvents currently in the robot's
         ///  queue. You might, for example, call this while processing another evnt.
         ///  <p />
@@ -1033,8 +1011,7 @@ namespace robocode
         {
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the priority of a class of events.
         ///  <p />
         ///  Events are sent to the onXXX handlers in order of priority.
@@ -1088,8 +1065,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Call this during an evnt handler to allow new events of the same
         ///  priority to restart the evnt handler.
         ///  <p />
@@ -1127,8 +1103,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the maximum turn rate of the robot measured in degrees if the robot
         ///  should turn slower than <see cref="Rules.MAX_TURN_RATE"/> (10 degress/turn).
         ///  <seealso cref="Robot.TurnRight(double)"/>
@@ -1152,8 +1127,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the maximum velocity of the robot measured in pixels/turn if the
         ///  robot should move slower than <see cref="Rules.MAX_VELOCITY"/> (8 pixels/turn).
         ///  <seealso cref="Robot.Ahead(double)"/>
@@ -1177,8 +1151,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot to Resume the movement stopped by <see cref="Robot.Stop()"/>
         ///  or <see cref="SetStop()"/>, if any.
         ///  <p />
@@ -1204,8 +1177,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  This call is identical to <see cref="Robot.Stop()"/>, but returns immediately, and
         ///  will not Execute until you call <see cref="Execute()"/> or take an action that
         ///  executes.
@@ -1227,8 +1199,7 @@ namespace robocode
             SetStop(false);
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  This call is identical to <see cref="Robot.Stop(bool)"/>, but
         ///  returns immediately, and will not Execute until you call
         ///  <see cref="Execute()"/> or take an action that executes.
@@ -1244,7 +1215,7 @@ namespace robocode
         ///  <seealso cref="Execute()"/>
         ///</summary>
         ///  <param name="overwrite"> true if the movement saved from a previous Stop
-        ///  should be overwritten; {@code false} otherwise.</param>
+        ///  should be overwritten; false otherwise.</param>
         public void SetStop(bool overwrite)
         {
             if (peer != null)
@@ -1257,8 +1228,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's gun to turn left by degrees when the next execution
         ///  takes place.
         ///  <p />
@@ -1292,9 +1262,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         ///</summary>
         ///  <param name="degrees"> the amount of degrees to turn the robot's gun to the left.
-        ///  If {@code degrees} &gt; 0 the robot's gun is set to turn left.
-        ///  If {@code degrees} &lt; 0 the robot's gun is set to turn right.
-        ///  If {@code degrees} = 0 the robot's gun is set to Stop turning.</param>
+        ///  If degrees &gt; 0 the robot's gun is set to turn left.
+        ///  If degrees &lt; 0 the robot's gun is set to turn right.
+        ///  If degrees = 0 the robot's gun is set to Stop turning.</param>
         public void SetTurnGunLeft(double degrees)
         {
             if (peer != null)
@@ -1307,8 +1277,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's gun to turn right by degrees when the next execution
         ///  takes place.
         ///  <p />
@@ -1342,9 +1311,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustGunForRobotTurn"/>
         ///</summary>
         ///  <param name="degrees"> the amount of degrees to turn the robot's gun to the right.
-        ///  If {@code degrees} &gt; 0 the robot's gun is set to turn right.
-        ///  If {@code degrees} &lt; 0 the robot's gun is set to turn left.
-        ///  If {@code degrees} = 0 the robot's gun is set to Stop turning.</param>
+        ///  If degrees &gt; 0 the robot's gun is set to turn right.
+        ///  If degrees &lt; 0 the robot's gun is set to turn left.
+        ///  If degrees = 0 the robot's gun is set to Stop turning.</param>
         public void SetTurnGunRight(double degrees)
         {
             if (peer != null)
@@ -1357,8 +1326,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's radar to turn left by degrees when the next execution
         ///  takes place.
         ///  <p />
@@ -1393,9 +1361,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
         ///</summary>
         ///  <param name="degrees"> the amount of degrees to turn the robot's radar to the left.
-        ///  If {@code degrees} &gt; 0 the robot's radar is set to turn left.
-        ///  If {@code degrees} &lt; 0 the robot's radar is set to turn right.
-        ///  If {@code degrees} = 0 the robot's radar is set to Stop turning.</param>
+        ///  If degrees &gt; 0 the robot's radar is set to turn left.
+        ///  If degrees &lt; 0 the robot's radar is set to turn right.
+        ///  If degrees = 0 the robot's radar is set to Stop turning.</param>
         public void SetTurnRadarLeft(double degrees)
         {
             if (peer != null)
@@ -1408,8 +1376,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's radar to turn right by degrees when the next execution
         ///  takes place.
         ///  <p />
@@ -1444,9 +1411,9 @@ namespace robocode
         ///  <seealso cref="Robot.IsAdjustRadarForGunTurn"/>
         ///</summary>
         ///  <param name="degrees"> the amount of degrees to turn the robot's radar to the right.
-        ///  If {@code degrees} &gt; 0 the robot's radar is set to turn right.
-        ///  If {@code degrees} &lt; 0 the robot's radar is set to turn left.
-        ///  If {@code degrees} = 0 the robot's radar is set to Stop turning.</param>
+        ///  If degrees &gt; 0 the robot's radar is set to turn right.
+        ///  If degrees &lt; 0 the robot's radar is set to turn left.
+        ///  If degrees = 0 the robot's radar is set to Stop turning.</param>
         public void SetTurnRadarRight(double degrees)
         {
             if (peer != null)
@@ -1459,10 +1426,9 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Does not return until a condition is met, i.e. when a
-        ///  <see cref="Condition.Test()"/> returns {@code true}.
+        ///  <see cref="Condition.Test()"/> returns true.
         ///  <p />
         ///  This call executes immediately.
         ///  <p />
@@ -1483,8 +1449,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  This method is called if your robot dies.
         ///  <p />
         ///  You should override it in your robot if you want to be informed of this
@@ -1504,8 +1469,7 @@ namespace robocode
         {
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns the direction that the robot's body is facing, in radians.
         ///  The value returned will be between 0 and 2 * PI (is excluded).
         ///  <p />
@@ -1528,8 +1492,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's body to turn left by radians when the next execution
         ///  takes place.
         ///  <p />
@@ -1577,8 +1540,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's body to turn right by radians when the next execution
         ///  takes place.
         ///  <p />
@@ -1626,8 +1588,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Immediately turns the robot's body to the left by radians.
         ///  <p />
         ///  This call executes immediately, and does not return until it is complete,
@@ -1674,8 +1635,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Immediately turns the robot's body to the right by radians.
         ///  This call executes immediately, and does not return until it is complete,
         ///  i.e. when the angle remaining in the robot's turn is 0.
@@ -1721,8 +1681,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns the direction that the robot's gun is facing, in radians.
         ///  The value returned will be between 0 and 2 * PI (is excluded).
         ///  <p />
@@ -1747,8 +1706,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns the direction that the robot's radar is facing, in radians.
         ///  The value returned will be between 0 and 2 * PI (is excluded).
         ///  <p />
@@ -1773,8 +1731,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's gun to turn left by radians when the next execution
         ///  takes place.
         ///  <p />
@@ -1823,8 +1780,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's gun to turn right by radians when the next execution
         ///  takes place.
         ///  <p />
@@ -1873,8 +1829,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Sets the robot's radar to turn left by radians when the next execution
         ///  takes place.
         ///  <p />
@@ -2162,8 +2117,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns the angle remaining in the gun's turn, in radians.
         ///  <p />
         ///  This call returns both positive and negative values. Positive values
@@ -2190,8 +2144,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns the angle remaining in the radar's turn, in radians.
         ///  <p />
         ///  This call returns both positive and negative values. Positive values
@@ -2218,8 +2171,7 @@ namespace robocode
             }
         }
 
-        /// 
-        ///<summary>
+        ///<summary>        
         ///  Returns the angle remaining in the robot's turn, in radians.
         ///  <p />
         ///  This call returns both positive and negative values. Positive values

@@ -1,23 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Moved all methods to classes like FileUtil, stringUtil, WindowUtil,
- *       Logger etc. exception for the following methods, which have been kept
- *       here as legacy robots make use of these methods:
- *       - NormalAbsoluteAngle()
- *       - NormalNearAbsoluteAngle()
- *       - NormalRelativeAngle()
- *     - The IsNear() was made public
- *     - Optimized and provided javadocs for all methods
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using net.sf.robocode.security;
 

@@ -1,16 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 namespace robocode.robotinterfaces
 {
     /// <summary>
@@ -130,7 +127,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   void OnHitRobot(HitRobotEvent evnt) {
-        ///       if (event.getBearing() > -90 && evnt.getBearing() &lt;= 90) {
+        ///       if (event.getBearing() > -90 &amp;&amp; evnt.getBearing() &lt;= 90) {
         ///           Back(100);
         ///       } else {
         ///           Ahead(100);
@@ -140,7 +137,7 @@ namespace robocode.robotinterfaces
         ///   -- or perhaps, for a more advanced robot --
         /// <p/>
         ///   public void OnHitRobot(HitRobotEvent evnt) {
-        ///       if (event.getBearing() > -90 && evnt.getBearing() &lt;= 90) {
+        ///       if (event.getBearing() > -90 &amp;&amp; evnt.getBearing() &lt;= 90) {
         ///           SetBack(100);
         ///       } else {
         ///           SetAhead(100);
@@ -154,7 +151,7 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// This evnt can be generated if another robot hits you, in which case
         /// <see cref="HitRobotEvent.IsMyFault()"/> will return
-        /// {@code false}. In this case, you will not be automatically stopped by the
+        /// false. In this case, you will not be automatically stopped by the
         /// game -- but if you continue moving toward the robot you will hit it (and
         /// generate another evnt). If you are moving away, then you won't hit it.
         /// <seealso cref="HitRobotEvent"/>
@@ -218,8 +215,7 @@ namespace robocode.robotinterfaces
         /// <ul>
         /// <li>If the gun and radar are aligned (and were aligned last turn),</li>
         /// <li>and the evnt is current,</li>
-        /// <li>and you call Fire() before taking any other actions, {@link
-        /// Robot.Fire(double) Fire()} will Fire directly at the robot.</li>
+        /// <li>and you call Fire() before taking any other actions, Robot.Fire(double) will Fire directly at the robot.</li>
         /// </ul>
         /// <p/>
         /// In essence, this means that if you can see a robot, and it doesn't move,

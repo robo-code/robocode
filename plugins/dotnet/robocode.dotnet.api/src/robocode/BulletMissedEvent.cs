@@ -31,7 +31,7 @@ namespace robocode
 
         /// 
         ///<summary>
-        ///  Called by the game to create a new {@code BulletMissedEvent}.
+        ///  Called by the game to create a new BulletMissedEvent.
         ///</summary>
         public BulletMissedEvent(Bullet bullet)
         {

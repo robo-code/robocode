@@ -1,29 +1,26 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System.Collections.Generic;
 
 namespace robocode.robotinterfaces.peer
 {
     /// <summary>
-    /// The team robot peer for team robots like <see cref="robocode.TeamRobot}.
+    /// The team robot peer for team robots like <see cref="robocode.TeamRobot"/>.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
-    /// <seealso cref="IBasicRobotPeer
-    /// <seealso cref="IStandardRobotPeer
-    /// <seealso cref="IAdvancedRobotPeer
-    /// <seealso cref="IJuniorRobotPeer
+    /// <seealso cref="IBasicRobotPeer"/>
+    /// <seealso cref="IStandardRobotPeer"/>
+    /// <seealso cref="IAdvancedRobotPeer"/>
+    /// <seealso cref="IJuniorRobotPeer"/>
     /// </summary>
     public interface ITeamRobotPeer : IAdvancedRobotPeer
     {
@@ -43,9 +40,10 @@ namespace robocode.robotinterfaces.peer
         ///       }
         ///   }
         /// </pre>
-        /// <seealso cref="IsTeammate(string)
-        /// <seealso cref="BroadcastMessage(ISerializable)
-        /// <seealso cref="SendMessage(string, ISerializable)
+        /// </example>
+        /// <seealso cref="isTeammate(string)"/>
+        /// <seealso cref="broadcastMessage(object)"/>
+        /// <seealso cref="sendMessage(string, object)"/>
         /// </summary>
         string[] getTeammates();
 
@@ -61,12 +59,13 @@ namespace robocode.robotinterfaces.peer
         ///       Fire(1);
         ///   }
         /// </pre>
+        /// </example>
         ///
-        /// <param name="name the robot name to check
-        /// <seealso cref="getTeammates()
-        /// <seealso cref="BroadcastMessage(ISerializable)
-        /// <seealso cref="SendMessage(string, ISerializable)
+        /// <seealso cref="getTeammates()"/>
+        /// <seealso cref="broadcastMessage(object)"/>
+        /// <seealso cref="sendMessage(string, object)"/>
         /// </summary>
+        /// <param name="name">the robot name to check</param>
         bool isTeammate(string name);
 
         /// <summary>
@@ -78,12 +77,12 @@ namespace robocode.robotinterfaces.peer
         ///       BroadcastMessage("I'm here!");
         ///   }
         /// </pre>
-        ///
-        /// <param name="message the message to broadcast to all teammates
-        /// <seealso cref="IsTeammate(string)
-        /// <seealso cref="getTeammates()
-        /// <seealso cref="SendMessage(string, ISerializable)
+        ///</example>
+        /// <seealso cref="isTeammate(string)"/>
+        /// <seealso cref="getTeammates()"/>
+        /// <seealso cref="sendMessage(string, object)"/>
         /// </summary>
+        /// <param name="message">the message to broadcast to all teammates</param>
         void broadcastMessage(object message);
 
         /// <summary>
@@ -95,13 +94,13 @@ namespace robocode.robotinterfaces.peer
         ///       SendMessage("sample.DroidBot", "I'm here!");
         ///   }
         /// </pre>
-        ///
-        /// <param name="name	the name of the intended recipient of the message
-        /// <param name="message the message to send
-        /// <seealso cref="IsTeammate(string)
-        /// <seealso cref="getTeammates()
-        /// <seealso cref="BroadcastMessage(ISerializable)
+        /// </example>
+        /// <seealso cref="isTeammate(string)"/>
+        /// <seealso cref="getTeammates()"/>
+        /// <seealso cref="broadcastMessage(object)"/>
         /// </summary>
+        /// <param name="name">the name of the intended recipient of the message</param>
+        /// <param name="message">the message to send</param>
         void sendMessage(string name, object message);
 
         /// <summary>
@@ -114,12 +113,12 @@ namespace robocode.robotinterfaces.peer
         ///      // do something with e
         ///   }
         /// </pre>
-        /// <seealso cref="robocode.robotinterfaces.ITeamEvents#OnMessageReceived(MessageEvent)
-        ///      OnMessageReceived(MessageEvent)
-        /// <seealso cref="MessageEvent
+        /// </example>
+        /// <seealso cref="robocode.robotinterfaces.ITeamEvents.OnMessageReceived(MessageEvent)"/>
+        /// <seealso cref="MessageEvent"/>
         /// </summary>
         IList<MessageEvent> getMessageEvents();
     }
 }
 
-//happy
+//doc

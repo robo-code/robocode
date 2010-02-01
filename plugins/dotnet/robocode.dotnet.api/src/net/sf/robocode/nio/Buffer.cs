@@ -47,7 +47,7 @@ namespace net.sf.robocode.nio
 #pragma warning disable 1591
 #pragma warning disable 1570
 
-    /**
+    /*
      * A container for data of a specific primitive type.
      *
      * <p> A buffer is a linear, finite sequence of elements of a specific

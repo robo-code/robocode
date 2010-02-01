@@ -21,8 +21,6 @@ namespace robocode
     ///  Represents a bullet. This is returned from <see cref="Robot.FireBullet(double)"/>
     ///  and <see cref="AdvancedRobot.SetFireBullet(double)"/>, and all the bullet-related
     ///  events.
-    ///
-    ///  @author Mathew A. Nelson (original)
     ///  <seealso cref="Robot.FireBullet(double)"/>
     ///  <seealso cref="AdvancedRobot.SetFireBullet(double)"/>
     ///  <seealso cref="BulletHitEvent"/>
@@ -42,7 +40,7 @@ namespace robocode
         private readonly int bulletId;
 
         ///<summary>
-        ///  Called by the game to create a new {@code Bullet} object
+        ///  Called by the game to create a new Bullet object
         ///</summary>
         public Bullet(double heading, double x, double y, double power, string ownerName, string victimName,
                       bool isActive, int bulletId)

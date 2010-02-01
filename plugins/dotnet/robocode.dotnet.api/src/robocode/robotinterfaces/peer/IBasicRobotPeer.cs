@@ -1,20 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * This is private interface. You should build any external component (or robot)
- * based on it's current methods because it will change in the future.
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     - Added getGraphics()
- *     Flemming N. Larsen
- *     - Javadocs
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System.Drawing;
 
 namespace robocode.robotinterfaces.peer
@@ -24,21 +17,15 @@ namespace robocode.robotinterfaces.peer
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
-    ///
-    /// @author Pavel Savara (original)
-    /// @author Flemming N. Larsen (javadoc)
-    /// <seealso cref="IStandardRobotPeer
-    /// <seealso cref="IAdvancedRobotPeer
-    /// <seealso cref="ITeamRobotPeer
-    /// <seealso cref="IJuniorRobotPeer
-    /// @since 1.6
+    /// <seealso cref="IStandardRobotPeer"/>
+    /// <seealso cref="IAdvancedRobotPeer"/>
+    /// <seealso cref="ITeamRobotPeer"/>
+    /// <seealso cref="IJuniorRobotPeer"/>
     /// </summary>
     public interface IBasicRobotPeer
     {
         /// <summary>
         /// Returns the robot's name.
-        ///
-        /// @return the robot's name.
         /// </summary>
         string getName();
 
@@ -49,33 +36,25 @@ namespace robocode.robotinterfaces.peer
         /// A battle consists of multiple rounds.
         /// <p/>
         /// Time is reset to 0 at the beginning of every round.
-        ///
-        /// @return the game time/turn of the current round.
         /// </summary>
         long getTime();
 
         /// <summary>
         /// Returns the robot's current energy.
-        ///
-        /// @return the robot's current energy.
         /// </summary>
         double getEnergy();
 
         /// <summary>
         /// Returns the X position of the robot. (0,0) is at the bottom left of the
         /// battlefield.
-        ///
-        /// @return the X position of the robot.
-        /// <seealso cref="getY()
+        /// <seealso cref="getY()"/>
         /// </summary>
         double getX();
 
         /// <summary>
         /// Returns the Y position of the robot. (0,0) is at the bottom left of the
         /// battlefield.
-        ///
-        /// @return the Y position of the robot.
-        /// <seealso cref="getX()
+        /// <seealso cref="getX()"/>
         /// </summary>
         double getY();
 
@@ -83,10 +62,8 @@ namespace robocode.robotinterfaces.peer
         /// Returns the velocity of the robot measured in pixels/turn.
         /// <p/>
         /// The maximum velocity of a robot is defined by
-        /// <see cref="Rules#MAX_VELOCITY} (8 pixels / turn).
-        ///
-        /// @return the velocity of the robot measured in pixels/turn.
-        /// <seealso cref="Rules#MAX_VELOCITY
+        /// <see cref="Rules.MAX_VELOCITY"/> (8 pixels / turn).
+        /// <seealso cref="Rules.MAX_VELOCITY"/>
         /// </summary>
         double getVelocity();
 
@@ -96,10 +73,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        /// @return the direction that the robot's body is facing, in radians.
-        /// <seealso cref="getGunHeading()
-        /// <seealso cref="getRadarHeading()
+        /// <seealso cref="getGunHeading()"/>
+        /// <seealso cref="getRadarHeading()"/>
         /// </summary>
         double getBodyHeading();
 
@@ -109,10 +84,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        /// @return the direction that the robot's gun is facing, in radians.
-        /// <seealso cref="getBodyHeading()
-        /// <seealso cref="getRadarHeading()
+        /// <seealso cref="getBodyHeading()"/>
+        /// <seealso cref="getRadarHeading()"/>
         /// </summary>
         double getGunHeading();
 
@@ -122,10 +95,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
         /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
-        ///
-        /// @return the direction that the robot's radar is facing, in radians.
-        /// <seealso cref="getBodyHeading()
-        /// <seealso cref="getGunHeading()
+        /// <seealso cref="getBodyHeading()"/>
+        /// <seealso cref="getGunHeading()"/>
         /// </summary>
         double getRadarHeading();
 
@@ -136,52 +107,40 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// The amount of gun heat generated when the gun is fired is
         /// 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
-        /// by <see cref="getGunCoolingRate()}, which is a battle setup.
+        /// by <see cref="getGunCoolingRate()"/>, which is a battle setup.
         /// <p/>
         /// Note that all guns are "hot" at the start of each round, where the gun
         /// heat is 3.
-        ///
-        /// @return the current gun heat
-        /// <seealso cref="getGunCoolingRate()
-        /// <seealso cref="SetFire(double)
+        /// <seealso cref="getGunCoolingRate()"/>
+        /// <seealso cref="setFire(double)"/>
         /// </summary>
         double getGunHeat();
 
         /// <summary>
         /// Returns the width of the current battlefield measured in pixels.
-        ///
-        /// @return the width of the current battlefield measured in pixels.
         /// </summary>
         double getBattleFieldWidth();
 
         /// <summary>
         /// Returns the height of the current battlefield measured in pixels.
-        ///
-        /// @return the height of the current battlefield measured in pixels.
         /// </summary>
         double getBattleFieldHeight();
 
         /// <summary>
         /// Returns how many opponents that are left in the current round.
-        ///
-        /// @return how many opponents that are left in the current round.
         /// </summary>
         int getOthers();
 
         /// <summary>
         /// Returns the number of rounds in the current battle.
-        ///
-        /// @return the number of rounds in the current battle
-        /// <seealso cref="getRoundNum()
+        /// <seealso cref="getRoundNum()"/>
         /// </summary>
         int getNumRounds();
 
         /// <summary>
-        /// Returns the number of the current round (0 to <see cref="getNumRounds()} - 1)
+        /// Returns the number of the current round (0 to <see cref="getNumRounds()"/> - 1)
         /// in the battle.
-        ///
-        /// @return the number of the current round in the battle
-        /// <seealso cref="getNumRounds()
+        /// <seealso cref="getNumRounds()"/>
         /// </summary>
         int getRoundNum();
 
@@ -191,10 +150,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// The gun cooling rate is default 0.1 / turn, but can be changed by the
         /// battle setup. So don't count on the cooling rate being 0.1!
-        ///
-        /// @return the gun cooling rate
-        /// <seealso cref="GetGunHeat()
-        /// <seealso cref="SetFire(double)
+        /// <seealso cref="getGunHeat()"/>
+        /// <seealso cref="setFire(double)"/>
         /// </summary>
         double getGunCoolingRate();
 
@@ -206,12 +163,9 @@ namespace robocode.robotinterfaces.peer
         /// means that the robot is currently moving forwards. Negative values means
         /// that the robot is currently moving backwards. If the returned value is 0,
         /// the robot currently stands still.
-        ///
-        /// @return the distance remaining in the robot's current move measured in
-        ///         pixels.
-        /// <seealso cref="getBodyTurnRemaining()
-        /// <seealso cref="getGunTurnRemaining()
-        /// <seealso cref="getRadarTurnRemaining()
+        /// <seealso cref="getBodyTurnRemaining()"/>
+        /// <seealso cref="getGunTurnRemaining()"/>
+        /// <seealso cref="getRadarTurnRemaining()"/>
         /// </summary>
         double getDistanceRemaining();
 
@@ -221,11 +175,9 @@ namespace robocode.robotinterfaces.peer
         /// This call returns both positive and negative values. Positive values
         /// means that the robot is currently turning to the right. Negative values
         /// means that the robot is currently turning to the left.
-        ///
-        /// @return the angle remaining in the robot's turn, in radians
-        /// <seealso cref="getDistanceRemaining()
-        /// <seealso cref="getGunTurnRemaining()
-        /// <seealso cref="getRadarTurnRemaining()
+        /// <seealso cref="getDistanceRemaining()"/>
+        /// <seealso cref="getGunTurnRemaining()"/>
+        /// <seealso cref="getRadarTurnRemaining()"/>
         /// </summary>
         double getBodyTurnRemaining();
 
@@ -235,11 +187,9 @@ namespace robocode.robotinterfaces.peer
         /// This call returns both positive and negative values. Positive values
         /// means that the gun is currently turning to the right. Negative values
         /// means that the gun is currently turning to the left.
-        ///
-        /// @return the angle remaining in the gun's turn, in radians
-        /// <seealso cref="getDistanceRemaining()
-        /// <seealso cref="getBodyTurnRemaining()
-        /// <seealso cref="getRadarTurnRemaining()
+        /// <seealso cref="getDistanceRemaining()"/>
+        /// <seealso cref="getBodyTurnRemaining()"/>
+        /// <seealso cref="getRadarTurnRemaining()"/>
         /// </summary>
         double getGunTurnRemaining();
 
@@ -249,11 +199,9 @@ namespace robocode.robotinterfaces.peer
         /// This call returns both positive and negative values. Positive values
         /// means that the radar is currently turning to the right. Negative values
         /// means that the radar is currently turning to the left.
-        ///
-        /// @return the angle remaining in the radar's turn, in radians
-        /// <seealso cref="getDistanceRemaining()
-        /// <seealso cref="getBodyTurnRemaining()
-        /// <seealso cref="getGunTurnRemaining()
+        /// <seealso cref="getDistanceRemaining()"/>
+        /// <seealso cref="getBodyTurnRemaining()"/>
+        /// <seealso cref="getGunTurnRemaining()"/>
         /// </summary>
         double getRadarTurnRemaining();
 
@@ -262,10 +210,8 @@ namespace robocode.robotinterfaces.peer
         /// in process. This call returns after the actions have been started.
         /// <p/>
         /// Note that advanced robots <em>must</em> call this function in order to
-        /// Execute pending set* calls like e.g. {@link
-        /// IAdvancedRobotPeer#setMove(double) setMove(double)},
-        /// <see cref="IAdvancedRobotPeer#SetFire(double) SetFire(double)}, {@link
-        /// IAdvancedRobotPeer#setTurnBody(double) setTurnBody(double)} etc.
+        /// Execute pending set* calls like e.g. <see cref="IAdvancedRobotPeer.setMove(double)"/>
+        /// <see cref="IBasicRobotPeer.setFire(double)"/>, <see cref="IAdvancedRobotPeer.setTurnBody(double)"/> etc.
         /// Otherwise, these calls will never get executed.
         /// <p/>
         /// In this example the robot will move while turning:
@@ -274,7 +220,7 @@ namespace robocode.robotinterfaces.peer
         ///   setMove(100);
         ///   Execute();
         /// <p/>
-        ///   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
+        ///   while (getDistanceRemaining() > 0 &amp;&amp; getTurnRemaining() > 0) {
         ///       Execute();
         ///   }
         /// </pre>
@@ -304,15 +250,15 @@ namespace robocode.robotinterfaces.peer
         ///   // Afterwards, move the robot 50 pixels backward
         ///   Ahead(-50);
         /// </pre>
-        ///
-        /// <param name="distance the distance to move measured in pixels.
-        ///                 If {@code distance} > 0 the robot is set to move forward.
-        ///                 If {@code distance} < 0 the robot is set to move backward.
-        ///                 If {@code distance} = 0 the robot will not move anywhere, but just
-        ///                 finish its turn.
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents#OnHitWall(robocode.HitWallEvent)
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents#OnHitRobot(robocode.HitRobotEvent)
+        /// </example>
+        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnHitWall(robocode.HitWallEvent)"/>
+        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnHitRobot(robocode.HitRobotEvent)"/>
         /// </summary>
+        /// <param name="distance">the distance to move measured in pixels.
+        ///                 If distance &gt; 0 the robot is set to move forward.
+        ///                 If distance &lt; 0 the robot is set to move backward.
+        ///                 If distance = 0 the robot will not move anywhere, but just
+        ///                 finish its turn.</param>
         void move(double distance);
 
         /// <summary>
@@ -333,15 +279,15 @@ namespace robocode.robotinterfaces.peer
         ///   // Afterwards, turn the robot's body 90 degrees to the left
         ///   turnBody(-Math.PI / 2);
         /// </pre>
-        ///
-        /// <param name="radians the amount of radians to turn the robot's body.
-        ///                If radians > 0 the robot's body is set to turn right.
-        ///                If radians < 0 the robot's body is set to turn left.
-        ///                If radians = 0 the robot's body is set to Stop turning.
-        /// <seealso cref="turnGun(double)
-        /// <seealso cref="IStandardRobotPeer#turnRadar(double) turnRadar(double)
-        /// <seealso cref="move(double)
+        /// </example>
+        /// <seealso cref="turnGun(double)"/>
+        /// <seealso cref="IStandardRobotPeer.turnRadar(double)"/>
+        /// <seealso cref="move(double)"/>
         /// </summary>
+        /// <param name="radians">the amount of radians to turn the robot's body.
+        ///                If radians &gt; 0 the robot's body is set to turn right.
+        ///                If radians &lt; 0 the robot's body is set to turn left.
+        ///                If radians = 0 the robot's body is set to Stop turning.</param>
         void turnBody(double radians);
 
         /// <summary>
@@ -362,15 +308,15 @@ namespace robocode.robotinterfaces.peer
         ///   // Afterwards, turn the robot's gun 90 degrees to the left
         ///   turnGun(-Math.PI / 2);
         /// </pre>
-        ///
-        /// <param name="radians the amount of radians to turn the robot's gun.
-        ///                If radians > 0 the robot's gun is set to turn right.
-        ///                If radians < 0 the robot's gun is set to turn left.
-        ///                If radians = 0 the robot's gun is set to Stop turning.
-        /// <seealso cref="turnBody(double)
-        /// <seealso cref="IStandardRobotPeer#turnRadar(double) turnRadar(double)
-        /// <seealso cref="move(double)
+        /// </example>
+        /// <seealso cref="turnBody(double)"/>
+        /// <seealso cref="IStandardRobotPeer.turnRadar(double)"/>
+        /// <seealso cref="move(double)"/>
         /// </summary>
+        /// <param name="radians">the amount of radians to turn the robot's gun.
+        ///                If radians &gt; 0 the robot's gun is set to turn right.
+        ///                If radians &lt; 0 the robot's gun is set to turn left.
+        ///                If radians = 0 the robot's gun is set to Stop turning.</param>
         void turnGun(double radians);
 
         /// <summary>
@@ -384,18 +330,18 @@ namespace robocode.robotinterfaces.peer
         /// The bullet will do (4 * power) damage if it hits another robot. If power
         /// is greater than 1, it will do an additional 2 * (power - 1) damage.
         /// You will get (3 * power) Back if you hit the other robot. You can call
-        /// <see cref="Rules#GetBulletDamage(double)} for getting the damage that a
+        /// <see cref="Rules.GetBulletDamage(double)"/> for getting the damage that a
         /// bullet with a specific bullet power will do.
         /// <p/>
         /// The specified bullet power should be between
-        /// <see cref="Rules#MIN_BULLET_POWER} and <see cref="Rules#MAX_BULLET_POWER}.
+        /// <see cref="Rules.MIN_BULLET_POWER"/> and <see cref="Rules.MAX_BULLET_POWER"/>.
         /// <p/>
         /// Note that the gun cannot Fire if the gun is overheated, meaning that
-        /// <see cref="GetGunHeat()} returns a value > 0.
+        /// <see cref="getGunHeat()"/> returns a value &gt; 0.
         /// <p/>
         /// A evnt is generated when the bullet hits a robot
-        /// (<see cref="BulletHitEvent}), wall (<see cref="BulletMissedEvent}), or another
-        /// bullet (<see cref="BulletHitBulletEvent}).
+        /// (<see cref="BulletHitEvent"/>"/>, wall (<see cref="BulletMissedEvent"/>), or another
+        /// bullet (<see cref="BulletHitBulletEvent"/>).
         /// <p/>
         /// <example>
         /// <pre>
@@ -409,23 +355,17 @@ namespace robocode.robotinterfaces.peer
         ///       }
         ///   }
         /// </pre>
-        ///
-        /// <param name="power the amount of energy given to the bullet, and subtracted
-        ///              from the robot's energy.
-        /// @return a <see cref="Bullet} that contains information about the bullet if it
-        ///         was actually fired, which can be used for tracking the bullet after it
-        ///         has been fired. If the bullet was not fired, null is returned.
-        /// <seealso cref="SetFire(double)
-        /// <seealso cref="Bullet
-        /// <seealso cref="GetGunHeat()
-        /// <seealso cref="getGunCoolingRate()
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents#OnBulletHit(BulletHitEvent)
-        ///      OnBulletHit(BulletHitEvent)
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents#OnBulletHitBullet(BulletHitBulletEvent)
-        ///      OnBulletHitBullet(BulletHitBulletEvent)
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents#OnBulletMissed(BulletMissedEvent)
-        ///      OnBulletMissed(BulletMissedEvent)
+        /// </example>
+        /// <seealso cref="setFire(double)"/>
+        /// <seealso cref="Bullet"/>
+        /// <seealso cref="getGunHeat()"/>
+        /// <seealso cref="getGunCoolingRate()"/>
+        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
+        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
+        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
         /// </summary>
+        /// <param name="power">the amount of energy given to the bullet, and subtracted
+        ///              from the robot's energy.</param>
         Bullet fire(double power);
 
         /// <summary>
@@ -442,18 +382,18 @@ namespace robocode.robotinterfaces.peer
         /// The bullet will do (4 * power) damage if it hits another robot. If power
         /// is greater than 1, it will do an additional 2 * (power - 1) damage.
         /// You will get (3 * power) Back if you hit the other robot. You can call
-        /// <see cref="Rules#GetBulletDamage(double)} for getting the damage that a
+        /// <see cref="Rules.GetBulletDamage(double)"/> for getting the damage that a
         /// bullet with a specific bullet power will do.
         /// <p/>
         /// The specified bullet power should be between
-        /// <see cref="Rules#MIN_BULLET_POWER} and <see cref="Rules#MAX_BULLET_POWER}.
+        /// <see cref="Rules.MIN_BULLET_POWER"/> and <see cref="Rules.MAX_BULLET_POWER"/>.
         /// <p/>
         /// Note that the gun cannot Fire if the gun is overheated, meaning that
-        /// <see cref="GetGunHeat()} returns a value > 0.
+        /// <see cref="getGunHeat()"/> returns a value &gt; 0.
         /// <p/>
         /// A evnt is generated when the bullet hits a robot
-        /// (<see cref="BulletHitEvent}), wall (<see cref="BulletMissedEvent}), or another
-        /// bullet (<see cref="BulletHitBulletEvent}).
+        /// (<see cref="BulletHitEvent"/>), wall (<see cref="BulletMissedEvent"/>), or another
+        /// bullet (<see cref="BulletHitBulletEvent"/>).
         /// <p/>
         /// <example>
         /// <pre>
@@ -471,23 +411,17 @@ namespace robocode.robotinterfaces.peer
         ///       double bulletVelocity = bullet.getVelocity();
         ///   }
         /// </pre>
-        ///
-        /// <param name="power the amount of energy given to the bullet, and subtracted
-        ///              from the robot's energy.
-        /// @return a <see cref="Bullet} that contains information about the bullet if it
-        ///         was actually fired, which can be used for tracking the bullet after it
-        ///         has been fired. If the bullet was not fired, null is returned.
-        /// <seealso cref="Fire(double)
-        /// <seealso cref="Bullet
-        /// <seealso cref="GetGunHeat()
-        /// <seealso cref="getGunCoolingRate()
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents#OnBulletHit(BulletHitEvent)
-        ///      OnBulletHit(BulletHitEvent)
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents#OnBulletHitBullet(BulletHitBulletEvent)
-        ///      OnBulletHitBullet(BulletHitBulletEvent)
-        /// <seealso cref="robocode.robotinterfaces.IBasicEvents#OnBulletMissed(BulletMissedEvent)
-        ///      OnBulletMissed(BulletMissedEvent)
+        /// </example>
+        /// <seealso cref="fire(double)"/>
+        /// <seealso cref="Bullet"/>
+        /// <seealso cref="getGunHeat()"/>
+        /// <seealso cref="getGunCoolingRate()"/>
+        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
+        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
+        /// <seealso cref="robocode.robotinterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
         /// </summary>
+        /// <param name="power">the amount of energy given to the bullet, and subtracted
+        ///              from the robot's energy.</param> 
         Bullet setFire(double power);
 
         /// <summary>
@@ -495,8 +429,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// A null indicates the default (blue) color.
         /// <p/>
-        /// <pre>
         /// <example>
+        /// <pre>
         ///   // Don't forget to using java.awt.Color at the top...
         ///   using java.awt.Color;
         ///   ...
@@ -506,14 +440,14 @@ namespace robocode.robotinterfaces.peer
         ///       ...
         ///   }
         /// </pre>
+        /// </example>
         ///
-        /// <param name="color the new body color
-        /// <seealso cref="setGunColor(Color)
-        /// <seealso cref="setRadarColor(Color)
-        /// <seealso cref="setBulletColor(Color)
-        /// <seealso cref="setScanColor(Color)
-        /// <seealso cref="Color
-        /// @since 1.1.2
+        /// <seealso cref="setGunColor(Color)"/>
+        /// <seealso cref="setRadarColor(Color)"/>
+        /// <seealso cref="setBulletColor(Color)"/>
+        /// <seealso cref="setScanColor(Color)"/>
+        /// <seealso cref="Color"/>
+        /// <param name="color">the new body color</param>
         /// </summary>
         void setBodyColor(Color color);
 
@@ -522,8 +456,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// A null indicates the default (blue) color.
         /// <p/>
-        /// <pre>
         /// <example>
+        /// <pre>
         ///   // Don't forget to using java.awt.Color at the top...
         ///   using java.awt.Color;
         ///   ...
@@ -533,15 +467,14 @@ namespace robocode.robotinterfaces.peer
         ///       ...
         ///   }
         /// </pre>
-        ///
-        /// <param name="color the new gun color
-        /// <seealso cref="setBodyColor(Color)
-        /// <seealso cref="setRadarColor(Color)
-        /// <seealso cref="setBulletColor(Color)
-        /// <seealso cref="setScanColor(Color)
-        /// <seealso cref="Color
-        /// @since 1.1.2
+        /// </example>
+        /// <seealso cref="setBodyColor(Color)"/>
+        /// <seealso cref="setRadarColor(Color)"/>
+        /// <seealso cref="setBulletColor(Color)"/>
+        /// <seealso cref="setScanColor(Color)"/>
+        /// <seealso cref="Color"/>
         /// </summary>
+        /// <param name="color">the new gun color</param>
         void setGunColor(Color color);
 
         /// <summary>
@@ -549,8 +482,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// A null indicates the default (blue) color.
         /// <p/>
-        /// <pre>
         /// <example>
+        /// <pre>
         ///   // Don't forget to using java.awt.Color at the top...
         ///   using java.awt.Color;
         ///   ...
@@ -560,15 +493,14 @@ namespace robocode.robotinterfaces.peer
         ///       ...
         ///   }
         /// </pre>
-        ///
-        /// <param name="color the new radar color
-        /// <seealso cref="setBodyColor(Color)
-        /// <seealso cref="setGunColor(Color)
-        /// <seealso cref="setBulletColor(Color)
-        /// <seealso cref="setScanColor(Color)
-        /// <seealso cref="Color
-        /// @since 1.1.2
+        /// </example>
+        /// <seealso cref="setBodyColor(Color)"/>
+        /// <seealso cref="setGunColor(Color)"/>
+        /// <seealso cref="setBulletColor(Color)"/>
+        /// <seealso cref="setScanColor(Color)"/>
+        /// <seealso cref="Color"/>
         /// </summary>
+        /// <param name="color">the new radar color</param>
         void setRadarColor(Color color);
 
         /// <summary>
@@ -576,8 +508,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// A null indicates the default white color.
         /// <p/>
-        /// <pre>
         /// <example>
+        /// <pre>
         ///   // Don't forget to using java.awt.Color at the top...
         ///   using java.awt.Color;
         ///   ...
@@ -587,15 +519,14 @@ namespace robocode.robotinterfaces.peer
         ///       ...
         ///   }
         /// </pre>
-        ///
-        /// <param name="color the new bullet color
-        /// <seealso cref="setBodyColor(Color)
-        /// <seealso cref="setGunColor(Color)
-        /// <seealso cref="setRadarColor(Color)
-        /// <seealso cref="setScanColor(Color)
-        /// <seealso cref="Color
-        /// @since 1.1.2
+        /// </example>
+        /// <seealso cref="setBodyColor(Color)"/>
+        /// <seealso cref="setGunColor(Color)"/>
+        /// <seealso cref="setRadarColor(Color)"/>
+        /// <seealso cref="setScanColor(Color)"/>
+        /// <seealso cref="Color"/>
         /// </summary>
+        /// <param name="color">the new bullet color</param>
         void setBulletColor(Color color);
 
         /// <summary>
@@ -603,8 +534,8 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// A null indicates the default (blue) color.
         /// <p/>
-        /// <pre>
         /// <example>
+        /// <pre>
         ///   // Don't forget to using java.awt.Color at the top...
         ///   using java.awt.Color;
         ///   ...
@@ -614,38 +545,36 @@ namespace robocode.robotinterfaces.peer
         ///       ...
         ///   }
         /// </pre>
-        ///
-        /// <param name="color the new Scan arc color
-        /// <seealso cref="setBodyColor(Color)
-        /// <seealso cref="setGunColor(Color)
-        /// <seealso cref="setRadarColor(Color)
-        /// <seealso cref="setBulletColor(Color)
-        /// <seealso cref="Color
-        /// @since 1.1.2
+        /// </example>
+        /// <seealso cref="setBodyColor(Color)"/>
+        /// <seealso cref="setGunColor(Color)"/>
+        /// <seealso cref="setRadarColor(Color)"/>
+        /// <seealso cref="setBulletColor(Color)"/>
+        /// <seealso cref="Color"/>
         /// </summary>
+        /// <param name="color">the new Scan arc color</param>
         void setScanColor(Color color);
 
         /// <summary>
         /// This call <em>must</em> be made from a robot call to inform the game
-        /// that the robot made a {@code get*} call like e.g. <see cref="getX()} or
-        /// <see cref="getVelocity()}.
+        /// that the robot made a get* call like e.g. <see cref="getX()"/> or
+        /// <see cref="getVelocity()"/>.
         /// <p/>
         /// This method is used by the game to determine if the robot is inactive or
-        /// not. Note: You should only make this call once in a {@code get*} method!
-        ///
-        /// <seealso cref="setCall()
+        /// not. Note: You should only make this call once in a get* method!
+        /// <seealso cref="setCall()"/>
         /// </summary>
         void getCall();
 
         /// <summary>
         /// This call <em>must</em> be made from a robot call to inform the game
-        /// that the robot made a {@code set*} call like e.g. {@link
-        /// #SetFire(double)} or <see cref="setBodyColor(Color)}.
+        /// that the robot made a set* call like e.g. <see cref="setFire(double)"/>
+        /// or <see cref="setBodyColor(Color)"/>.
         /// <p/>
         /// This method is used by the game to determine if the robot is inactive or
-        /// not. Note: You should only make this call once in a {@code set*} method!
+        /// not. Note: You should only make this call once in a set* method!
         ///
-        /// <seealso cref="getCall()
+        /// <seealso cref="getCall()"/>
         /// </summary>
         void setCall();
 
@@ -664,10 +593,7 @@ namespace robocode.robotinterfaces.peer
         /// paint items fits for the Robocode coordinate system where (0, 0) is at
         /// the bottom left corner of the battlefield, where X is towards right and Y
         /// is upwards.
-        ///
-        /// @return a graphics context used for painting graphical items for the robot.
-        /// <seealso cref="robocode.robotinterfaces.IPaintEvents#OnPaint(Graphics)
-        /// @since 1.6.1
+        /// <seealso cref="robocode.robotinterfaces.IPaintEvents.OnPaint(IGraphics)"/>
         /// </summary>
         IGraphics getGraphics();
 
@@ -677,12 +603,10 @@ namespace robocode.robotinterfaces.peer
         /// This method is very useful when debugging or reviewing your robot as you
         /// will be able to see this property displayed in the robot console for your
         /// robots under the Debug Properties tab page.
-        ///
-        /// <param name="key the name/key of the debug property.
-        /// <param name="value the new value of the debug property, where null or
-        ///              the empty string is used for removing this debug property. 
-        /// @since 1.6.2
         /// </summary>
+        /// <param name="key">the name/key of the debug property.</param>
+        /// <param name="value"> the new value of the debug property, where null or
+        ///              the empty string is used for removing this debug property. </param>
         void setDebugProperty(string key, string value);
 
         /// <summary>
@@ -690,28 +614,25 @@ namespace robocode.robotinterfaces.peer
         /// as long as the robot is moving, turning its body, turning its gun, or
         /// turning its radar.
         /// <p/>
-        /// Rescan will cause <see cref="IBasicEvents#OnScannedRobot(ScannedRobotEvent)
-        /// OnScannedRobot(ScannedRobotEvent)} to be called if you see a robot.
+        /// Rescan will cause <see cref="IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
+        /// to be called if you see a robot.
         /// <p/>
-        /// There are 2 reasons to call {@code rescan()} manually:
+        /// There are 2 reasons to call rescan() manually:
         /// <ol>
-        /// <li>You want to Scan after you Stop moving.
-        /// <li>You want to interrupt the {@code OnScannedRobot} evnt. This is more
-        /// likely. If you are in {@code OnScannedRobot} and call {@code Scan()},
+        /// <li>You want to Scan after you Stop moving.</li>
+        /// <li>You want to interrupt the OnScannedRobot evnt. This is more
+        /// likely. If you are in OnScannedRobot and call Scan(),
         /// and you still see a robot, then the system will interrupt your
-        /// {@code OnScannedRobot} evnt immediately and start it from the top.
+        /// OnScannedRobot event immediately and start it from the top.</li>
         /// </ol>
         /// <p/>
         /// This call executes immediately.
         ///
-        /// <seealso cref="IBasicEvents#OnScannedRobot(ScannedRobotEvent)
-        ///      OnScannedRobot(ScannedRobotEvent)
-        /// <seealso cref="ScannedRobotEvent
-        ///
-        /// @since 1.7.2
+        /// <seealso cref="IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
+        /// <seealso cref="ScannedRobotEvent"/>
         /// </summary>
         void rescan();
     }
 }
 
-//happy
+//doc

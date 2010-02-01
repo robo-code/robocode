@@ -1,34 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Added SetColors(Color, Color, Color, Color, Color), SetAllColors(),
- *       setBodyColor(), setGunColor(), setRadarColor(), setBulletColor(), and
- *       setScanColor()
- *     - Updated Javadocs
- *     - The finalize() is now protected instead of public
- *     - Added OnKeyPressed(), OnKeyReleased(), OnKeyTyped() events
- *     - Added OnMouseMoved(), OnMouseClicked(), OnMouseReleased(),
- *       OnMouseEntered(), OnMouseExited(), OnMouseDragged(), OnMouseWheelMoved()
- *       events
- *     - The UninitializedException() method does not need a method name as input
- *       parameter anymore
- *     - The TextWriter 'out' has been moved to the new _RobotBase class
- *     Matthew Reeder
- *     - Fix for HyperThreading hang issue
- *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
- *     - Added OnPaint() method for painting the robot
- *     Pavel Savara
- *     - Re-work of robot interfaces
- *     - Added getGraphics()
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using System.Drawing;
 using System.IO;

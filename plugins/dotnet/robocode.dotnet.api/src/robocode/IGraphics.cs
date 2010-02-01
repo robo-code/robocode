@@ -1,4 +1,14 @@
-﻿using System.Drawing;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+using System.Drawing;
 
 namespace robocode
 {
@@ -7,6 +17,8 @@ namespace robocode
     /// </summary>
     public interface IGraphics
     {
+#pragma warning disable 1591
+        //TODO xml doc
         void DrawLine(Pen pen, float x1, float y1, float x2, float y2);
         void DrawLine(Pen pen, PointF pt1, PointF pt2);
         void DrawLine(Pen pen, int x1, int y1, int x2, int y2);

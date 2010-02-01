@@ -1,16 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 namespace robocode.robotinterfaces
 {
     /// <summary>
@@ -42,7 +39,7 @@ namespace robocode.robotinterfaces
         /// <summary>
         /// This method is called when a custom condition is met.
         /// <p/>
-        /// See the sample robots for examples of use, e.g. the {@code sample.Target}
+        /// See the sample robots for examples of use, e.g. the sample.Target
         /// robot.
         /// <seealso cref="robocode.AdvancedRobot.AddCustomEvent(Condition)"/>
         /// <seealso cref="robocode.CustomEvent"/>

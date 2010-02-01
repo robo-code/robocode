@@ -1,50 +1,45 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 namespace robocode.robotinterfaces.peer
 {
     /// <summary>
-    /// The standard robot peer for standard robot types like <see cref="robocode.Robot},
-    /// <see cref="robocode.AdvancedRobot}, and <see cref="robocode.TeamRobot}.
+    /// The standard robot peer for standard robot types like <see cref="robocode.Robot"/>,
+    /// <see cref="robocode.AdvancedRobot"/>, and <see cref="robocode.TeamRobot"/>.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
-    ///
-    /// <seealso cref="IBasicRobotPeer
-    /// <seealso cref="IAdvancedRobotPeer
-    /// <seealso cref="ITeamRobotPeer
-    /// <seealso cref="IJuniorRobotPeer
+    /// <seealso cref="IBasicRobotPeer"/>
+    /// <seealso cref="IAdvancedRobotPeer"/>
+    /// <seealso cref="ITeamRobotPeer"/>
+    /// <seealso cref="IJuniorRobotPeer"/>
     /// </summary>
     public interface IStandardRobotPeer : IBasicRobotPeer
     {
         /// <summary>
         /// Immediately stops all movement, and saves it for a call to
-        /// <see cref="Resume()}. If there is already movement saved from a previous
+        /// <see cref="resume()"/>. If there is already movement saved from a previous
         /// Stop, you can overwrite it by calling Stop(true).
-        ///
-        /// <param name="overwrite If there is already movement saved from a previous Stop,
-        ///                  you can overwrite it by calling Stop(true).
-        /// <seealso cref="Resume()
+        /// <seealso cref="resume()"/>
         /// </summary>
+        /// <param name="overwrite">If there is already movement saved from a previous Stop,
+        ///                  you can overwrite it by calling Stop(true).</param>
         void stop(bool overwrite);
 
         /// <summary>
-        /// Immediately resumes the movement you stopped by <see cref="Stop(bool)},
+        /// Immediately resumes the movement you stopped by <see cref="stop(bool)"/>,
         /// if any.
         /// <p/>
         /// This call executes immediately, and does not return until it is complete.
         ///
-        /// <seealso cref="Stop(bool)
+        /// <seealso cref="stop(bool)"/>
         /// </summary>
         void resume();
 
@@ -66,15 +61,15 @@ namespace robocode.robotinterfaces.peer
         ///   // Afterwards, turn the robot's radar 90 degrees to the left
         ///   turnRadar(-Math.PI / 2);
         /// </pre>
-        ///
-        /// <param name="radians the amount of radians to turn the robot's radar.
-        ///                If radians > 0 the robot's radar is set to turn right.
-        ///                If radians < 0 the robot's radar is set to turn left.
-        ///                If radians = 0 the robot's radar is set to Stop turning.
-        /// <seealso cref="turnBody(double)
-        /// <seealso cref="turnGun(double)
-        /// <seealso cref="move(double)
+        /// </example>
+        /// <seealso cref="IBasicRobotPeer.turnBody(double)"/>
+        /// <seealso cref="IBasicRobotPeer.turnGun(double)"/>
+        /// <seealso cref="IBasicRobotPeer.move(double)"/>
         /// </summary>
+        /// <param name="radians">the amount of radians to turn the robot's radar.
+        ///                If radians &gt; 0 the robot's radar is set to turn right.
+        ///                If radians &lt; 0 the robot's radar is set to turn left.
+        ///                If radians = 0 the robot's radar is set to Stop turning.</param>
         void turnRadar(double radians);
 
         /// <summary>
@@ -83,7 +78,7 @@ namespace robocode.robotinterfaces.peer
         /// Ok, so this needs some explanation: The gun is mounted on the robot's
         /// body. So, normally, if the robot turns 90 degrees to the right, then the
         /// gun will turn with it as it is mounted on top of the robot's body. To
-        /// compensate for this, you can call {@code setAdjustGunForBodyTurn(true)}.
+        /// compensate for this, you can call IsAdjustGunForBodyTurn(true).
         /// When this is set, the gun will turn independent from the robot's turn,
         /// i.e. the gun will compensate for the robot's body turn.
         /// <p/>
@@ -112,12 +107,11 @@ namespace robocode.robotinterfaces.peer
         /// </pre>
         /// <p/>
         /// Note: The gun compensating this way does count as "turning the gun".
-        /// See <see cref="setAdjustRadarForGunTurn(bool)} for details.
-        ///
-        /// <param name="independent {@code true} if the gun must turn independent from the
-        ///                    robot's turn; {@code false} if the gun must turn with the robot's turn.
-        /// <seealso cref="setAdjustRadarForGunTurn(bool)
+        /// See <see cref="setAdjustRadarForGunTurn(bool)"/> for details.
+        /// <seealso cref="setAdjustRadarForGunTurn(bool)"/>
         /// </summary>
+        /// <param name="independent">true if the gun must turn independent from the
+        ///                    robot's turn; false if the gun must turn with the robot's turn.</param>
         void setAdjustGunForBodyTurn(bool independent);
 
         /// <summary>
@@ -126,7 +120,7 @@ namespace robocode.robotinterfaces.peer
         /// Ok, so this needs some explanation: The radar is mounted on the robot's
         /// gun. So, normally, if the gun turns 90 degrees to the right, then the
         /// radar will turn with it as it is mounted on top of the gun. To compensate
-        /// for this, you can call {@code setAdjustRadarForGunTurn(true)}. When this
+        /// for this, you can call isAdjustRadarForGunTurn(true). When this
         /// is set, the radar will turn independent from the robot's turn, i.e. the
         /// radar will compensate for the gun's turn.
         /// <p/>
@@ -149,17 +143,16 @@ namespace robocode.robotinterfaces.peer
         ///   TurnGunRight(Math.PI / 2);
         ///   // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
         /// </pre>
-        /// Note: Calling {@code setAdjustRadarForGunTurn(bool)} will
-        /// automatically call <see cref="setAdjustRadarForBodyTurn(bool)} with the
+        /// Note: Calling isAdjustRadarForGunTurn(bool) will
+        /// automatically call <see cref="setAdjustRadarForBodyTurn(bool)"/> with the
         /// same value, unless you have already called it earlier. This behavior is
         /// primarily for backward compatibility with older Robocode robots.
-        ///
-        /// <param name="independent {@code true} if the radar must turn independent from
-        ///                    the gun's turn; {@code false} if the radar must turn with the gun's
-        ///                    turn.
-        /// <seealso cref="setAdjustRadarForBodyTurn(bool)
-        /// <seealso cref="setAdjustGunForBodyTurn(bool)
+        /// <seealso cref="setAdjustRadarForBodyTurn(bool)"/>
+        /// <seealso cref="setAdjustGunForBodyTurn(bool)"/>
         /// </summary>
+        /// <param name="independent">true if the radar must turn independent from
+        ///                    the gun's turn; false if the radar must turn with the gun's
+        ///                    turn.</param>
         void setAdjustRadarForGunTurn(bool independent);
 
         /// <summary>
@@ -170,7 +163,7 @@ namespace robocode.robotinterfaces.peer
         /// 90 degrees to the right, the gun turns, as does the radar. Hence, if the
         /// robot turns 90 degrees to the right, then the gun and radar will turn
         /// with it as the radar is mounted on top of the gun. To compensate for
-        /// this, you can call {@code setAdjustRadarForBodyTurn(true)}. When this is
+        /// this, you can call isAdjustRadarForBodyTurn(true). When this is
         /// set, the radar will turn independent from the robot's turn, i.e. the
         /// radar will compensate for the robot's turn.
         /// <p/>
@@ -194,29 +187,24 @@ namespace robocode.robotinterfaces.peer
         ///   TurnRight(Math.PI / 2);
         ///   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
         /// </pre>
-        ///
-        /// <param name="independent {@code true} if the radar must turn independent from
-        ///                    the robots's turn; {@code false} if the radar must turn with the robot's
-        ///                    turn.
-        /// <seealso cref="setAdjustGunForBodyTurn(bool)
-        /// <seealso cref="setAdjustRadarForGunTurn(bool)
+        /// <seealso cref="setAdjustGunForBodyTurn(bool)"/>
+        /// <seealso cref="setAdjustRadarForGunTurn(bool)"/>
         /// </summary>
+        /// <param name="independent">true if the radar must turn independent from
+        ///                    the robots's turn; false if the radar must turn with the robot's
+        ///                    turn.</param>
         void setAdjustRadarForBodyTurn(bool independent);
 
         /// <summary>
         /// Checks if the gun is set to adjust for the robot turning, i.e. to turn
         /// independent from the robot's body turn.
         /// <p/>
-        /// This call returns {@code true} if the gun is set to turn independent of
-        /// the turn of the robot's body. Otherwise, {@code false} is returned,
+        /// This call returns true if the gun is set to turn independent of
+        /// the turn of the robot's body. Otherwise, false is returned,
         /// meaning that the gun is set to turn with the robot's body turn.
-        ///
-        /// @return {@code true} if the gun is set to turn independent of the robot
-        ///         turning; {@code false} if the gun is set to turn with the robot
-        ///         turning
-        /// <seealso cref="setAdjustGunForBodyTurn(bool) setAdjustGunForBodyTurn(bool)
-        /// <seealso cref="isAdjustRadarForBodyTurn()
-        /// <seealso cref="isAdjustRadarForGunTurn()
+        /// <seealso cref="isAdjustGunForBodyTurn()"/>
+        /// <seealso cref="isAdjustRadarForBodyTurn()"/>
+        /// <seealso cref="isAdjustRadarForGunTurn()"/>
         /// </summary>
         bool isAdjustGunForBodyTurn();
 
@@ -224,16 +212,12 @@ namespace robocode.robotinterfaces.peer
         /// Checks if the radar is set to adjust for the robot turning, i.e. to turn
         /// independent from the robot's body turn.
         /// <p/>
-        /// This call returns {@code true} if the radar is set to turn independent of
-        /// the turn of the robot. Otherwise, {@code false} is returned, meaning that
+        /// This call returns true if the radar is set to turn independent of
+        /// the turn of the robot. Otherwise, false is returned, meaning that
         /// the radar is set to turn with the robot's turn.
-        ///
-        /// @return {@code true} if the radar is set to turn independent of the robot
-        ///         turning; {@code false} if the radar is set to turn with the robot
-        ///         turning
-        /// <seealso cref="setAdjustRadarForBodyTurn(bool) setAdjustRadarForBodyTurn(bool)
-        /// <seealso cref="isAdjustGunForBodyTurn()
-        /// <seealso cref="isAdjustRadarForGunTurn()
+        /// <seealso cref="isAdjustRadarForBodyTurn()"/>
+        /// <seealso cref="isAdjustGunForBodyTurn()"/>
+        /// <seealso cref="isAdjustRadarForGunTurn()"/>
         /// </summary>
         bool isAdjustRadarForGunTurn();
 
@@ -241,16 +225,12 @@ namespace robocode.robotinterfaces.peer
         /// Checks if the radar is set to adjust for the gun turning, i.e. to turn
         /// independent from the gun's turn.
         /// <p/>
-        /// This call returns {@code true} if the radar is set to turn independent of
-        /// the turn of the gun. Otherwise, {@code false} is returned, meaning that
+        /// This call returns true if the radar is set to turn independent of
+        /// the turn of the gun. Otherwise, false is returned, meaning that
         /// the radar is set to turn with the gun's turn.
-        ///
-        /// @return {@code true} if the radar is set to turn independent of the gun
-        ///         turning; {@code false} if the radar is set to turn with the gun
-        ///         turning
-        /// <seealso cref="setAdjustRadarForGunTurn(bool) setAdjustRadarForGunTurn(bool)
-        /// <seealso cref="isAdjustGunForBodyTurn()
-        /// <seealso cref="isAdjustRadarForBodyTurn()
+        /// <seealso cref="isAdjustRadarForGunTurn()"/>
+        /// <seealso cref="isAdjustGunForBodyTurn()"/>
+        /// <seealso cref="isAdjustRadarForBodyTurn()"/>
         /// </summary>
         bool isAdjustRadarForBodyTurn();
     }

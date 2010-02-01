@@ -54,7 +54,7 @@ namespace net.sf.robocode.nio
         LITTLE_ENDIAN,
     }
 
-    /**
+    /*
      * A byte buffer.
      *
      * <p> This class defines six categories of operations upon

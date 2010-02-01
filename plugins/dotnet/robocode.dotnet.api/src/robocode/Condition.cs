@@ -1,20 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Updated Javadocs
- *     Nathaniel Troutman
- *     - Added cleanup() method for cleaning up references to internal classes
- *       to prevent circular references causing memory leaks
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using net.sf.robocode.io;
 
@@ -22,7 +15,7 @@ namespace robocode
 {
     /// <summary>
     /// Condition is used to define custom  <see cref="AdvancedRobot.WaitFor(Condition)"/> 
-    /// and custom events for an {@link AdvancedRobot}. The code
+    /// and custom events for an AdvancedRobot. The code
     /// below is taken from the sample robot named samplecs.Target. See the
     /// samplecs/Target.cs for details.
     /// <pre>
@@ -34,9 +27,6 @@ namespace robocode
     ///       }
     ///   );
     /// </pre>
-    /// You should note that by extending Condition this way, you are actually
-    /// creating an inner class -- so if you distribute your robot, there will be
-    /// multiple class files. (i.e. {@code Target$1.class})
     /// <see cref="AdvancedRobot.WaitFor(Condition)"/>
     /// <see cref="AdvancedRobot.AddCustomEvent(Condition)"/>
     /// <see cref="AdvancedRobot.RemoveCustomEvent(Condition)"/>
@@ -147,7 +137,7 @@ namespace robocode
         /// <summary>
         /// Overriding the Test() method is the point of a Condition.
         /// The game will call your Test() function, and take action if it returns
-        /// {@code true}. This is valid for both <see cref="AdvancedRobot.WaitFor"/> and
+        /// true. This is valid for both <see cref="AdvancedRobot.WaitFor"/> and
         /// <see cref="AdvancedRobot.AddCustomEvent(Condition)"/>
         /// <p/>
         /// You may not take any actions inside of Test().

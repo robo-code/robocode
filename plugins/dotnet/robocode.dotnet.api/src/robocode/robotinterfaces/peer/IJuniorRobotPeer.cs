@@ -1,31 +1,25 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
+
 namespace robocode.robotinterfaces.peer
 {
     /// <summary>
-    /// The junior robot peer for junior robot types like <see cref="robocode.JuniorRobot}.
+    /// The junior robot peer for junior robot types like <see cref="robocode.JuniorRobot"/>.
     /// <p/>
     /// A robot peer is the obj that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
-    ///
-    /// @author Pavel Savara (original)
-    /// @author Flemming N. Larsen (javadoc)
-    /// <seealso cref="IBasicRobotPeer
-    /// <seealso cref="IStandardRobotPeer
-    /// <seealso cref="IAdvancedRobotPeer
-    /// <seealso cref="ITeamRobotPeer
-    /// @since 1.6
+    /// <seealso cref="IBasicRobotPeer"/>
+    /// <seealso cref="IStandardRobotPeer"/>
+    /// <seealso cref="IAdvancedRobotPeer"/>
+    /// <seealso cref="ITeamRobotPeer"/>
     /// </summary>
     public interface IJuniorRobotPeer : IBasicRobotPeer
     {
@@ -41,33 +35,32 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// Note that both positive and negative values can be given as input:
         /// <ul>
-        /// <li>If the {@code distance} parameter is set to a positive value, it
+        /// <li>If the distance parameter is set to a positive value, it
         /// means that the robot is set to move forward, and a negative value means
         /// that the robot is set to move backward. If set to 0, the robot will not
-        /// move, but will be able to turn.
+        /// move, but will be able to turn.</li>
         /// <li>If the radians parameter is set to a positive value, it means
         /// that the robot is set to turn to the right, and a negative value means
         /// that the robot is set to turn to the left. If set to 0, the robot will
-        /// not turn, but will be able to move.
+        /// not turn, but will be able to move.</li>
         /// </ul>
-        ///
-        /// <param name="distance the distance to move measured in pixels.
-        ///                 If {@code distance} > 0 the robot is set to move forward.
-        ///                 If {@code distance} < 0 the robot is set to move backward.
-        ///                 If {@code distance} = 0 the robot will not move anywhere, but just
-        ///                 finish its turn.
-        /// <param name="radians  the amount of radians to turn the robot's body.
-        ///                 If radians > 0 the robot's body is set to turn right.
-        ///                 If radians < 0 the robot's body is set to turn left.
-        ///                 If radians = 0 the robot's body is set to Stop turning.
-        /// <seealso cref="IBasicRobotPeer#move(double) move(double)
-        /// <seealso cref="IBasicRobotPeer#turnBody(double) turnBody(double)
-        /// <seealso cref="IBasicRobotPeer#getBodyHeading() getBodyHeading()
-        /// <seealso cref="IBasicRobotPeer#getX() getX()
-        /// <seealso cref="IBasicRobotPeer#getY() getY()
+        /// <seealso cref="IBasicRobotPeer.move(double)"/>
+        /// <seealso cref="IBasicRobotPeer.turnBody(double)"/>
+        /// <seealso cref="IBasicRobotPeer.getBodyHeading()"/>
+        /// <seealso cref="IBasicRobotPeer.getX()"/>
+        /// <seealso cref="IBasicRobotPeer.getY()"/>
         /// </summary>
+        /// <param name="distance">the distance to move measured in pixels.
+        ///                 If distance &gt; 0 the robot is set to move forward.
+        ///                 If distance &lt; 0 the robot is set to move backward.
+        ///                 If distance = 0 the robot will not move anywhere, but just
+        ///                 finish its turn.</param>
+        /// <param name="radians">the amount of radians to turn the robot's body.
+        ///                 If radians &gt; 0 the robot's body is set to turn right.
+        ///                 If radians &lt; 0 the robot's body is set to turn left.
+        ///                 If radians = 0 the robot's body is set to Stop turning.</param>
         void turnAndMove(double distance, double radians);
     }
 }
 
-//happy
+//doc

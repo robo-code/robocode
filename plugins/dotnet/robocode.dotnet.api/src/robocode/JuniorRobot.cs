@@ -1,18 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Nutch Poovarawan from Cubic Creative
- *     - The design and ideas for the JuniorRobot class
- *     Flemming N. Larsen
- *     - Implementor of the JuniorRobot
- *     Pavel Savara
- *     - Re-work of robot interfaces
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using System.Drawing;
 using System.IO;
@@ -173,7 +168,7 @@ namespace robocode
 
         /// <summary>
         /// Flag specifying if the gun is ready to Fire, i.e. gun heat &lt;= 0.
-        /// {@code true} means that the gun is able to Fire; {@code false}
+        /// true means that the gun is able to Fire; false
         /// means that the gun cannot Fire yet as it still needs to cool down.
         ///
         /// <seealso cref="Fire()"/>
@@ -459,7 +454,7 @@ namespace robocode
 
         /// <summary>
         /// Flag specifying if the gun is ready to Fire, i.e. gun heat &lt;= 0.
-        /// {@code true} means that the gun is able to Fire; {@code false}
+        /// true means that the gun is able to Fire; false
         /// means that the gun cannot Fire yet as it still needs to cool down.
         ///
         /// <seealso cref="Fire()"/>

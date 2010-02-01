@@ -1,24 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Optimized for Java 5
- *     - Updated Javadocs
- *     - Removed try-catch(ClassCastException) from compareTo()
- *     - Changed compareTo() to first and foremost compare the events based on
- *       their evnt times, and secondly to compare the priorities if the event
- *       times are equals. Previously, the priorities were compared first, and
- *       secondly the evnt times if the priorities were equal.
- *       This change was made to sort the evnt queues of the robots in
- *       chronological so that the older events are listed before newer events
- *******************************************************************************/
+#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Common Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/cpl-v10.html
+
+#endregion
+
 using System;
 using System.Collections.Generic;
 using net.sf.robocode.io;
@@ -146,6 +135,9 @@ namespace robocode
             addedToQueue = true;
         }
 
+        /// <summary>
+        /// This is how event gets dispatched to robot
+        /// </summary>
         internal virtual void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
         }

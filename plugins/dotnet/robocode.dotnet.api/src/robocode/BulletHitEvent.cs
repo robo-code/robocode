@@ -31,7 +31,7 @@ namespace robocode
         private Bullet bullet;
 
         ///<summary>
-        ///  Called by the game to create a new {@code BulletHitEvent}.
+        ///  Called by the game to create a new BulletHitEvent.
         ///</summary>
         public BulletHitEvent(string name, double energy, Bullet bullet)
         {
