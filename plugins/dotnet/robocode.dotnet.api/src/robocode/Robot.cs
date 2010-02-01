@@ -42,10 +42,8 @@ namespace robocode
     ///  Positive X is right.
     ///  <br />
     ///  Positive Y is up.
-    ///  <see href="http://robocode.sourceforge.net">
-    ///    robocode.sourceforge.net
-    ///  </see>
-    ///  <see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
+    ///  <br /><see href="http://robocode.sourceforge.net"/>
+    ///  <br /><see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
     ///    Building your first robot
     ///  </see>
     ///  <seealso cref="JuniorRobot" />

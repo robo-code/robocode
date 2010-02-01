@@ -22,14 +22,14 @@ namespace robocode
     ///   custom events, and writes to the filesystem.
     ///   <p />
     ///   If you have not already, you should create a <see cref="Robot"/> first.
-    ///   <see href="http://robocode.sourceforge.net" />
-    ///   <see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
+    ///   <br/><see href="http://robocode.sourceforge.net" />
+    ///   <br/><see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
     ///     Building your first robot
     ///   </see>
-    ///   <see cref="JuniorRobot" />
-    ///   <see cref="Robot" />
-    ///   <see cref="TeamRobot" />
-    ///   <see cref="IDroid" />
+    ///   <seealso cref="JuniorRobot" />
+    ///   <seealso cref="Robot" />
+    ///   <seealso cref="TeamRobot" />
+    ///   <seealso cref="IDroid" />
     /// </summary>
     public abstract class AdvancedRobot : Robot, IAdvancedRobot, IAdvancedEvents
     {
