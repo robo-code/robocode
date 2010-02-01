@@ -36,7 +36,12 @@ namespace samplecs
             // Initially, we'll move when life hits 80
             trigger = 80;
             // Add a custom event named "trigger hit",
-            AddCustomEvent(new Condition("triggerhit", (c) => Energy <= trigger));
+            AddCustomEvent(
+                new Condition("triggerhit",
+                              (c) =>
+                                  {
+                                      return Energy <= trigger;
+                                  }));
         }
 
         /// <summary>

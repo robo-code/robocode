@@ -42,7 +42,7 @@ namespace robocode
         /// Returns the bearing to the bullet, relative to your robot's heading,
         /// in degrees (-180 &lt; getBearing() &lt;= 180)
         /// <p/>
-        /// If you were to TurnRight(e.getBearing()), you would be facing the
+        /// If you were to TurnRight(e.Bearing), you would be facing the
         /// direction the bullet came from. The calculation used here is:
         /// (bullet's heading in degrees + 180) - (your heading in degrees)
         /// </summary>
@@ -55,7 +55,7 @@ namespace robocode
         /// Returns the bearing to the bullet, relative to your robot's heading,
         /// in radians (-Math.PI &lt; getBearingRadians() &lt;= Math.PI)
         /// <p/>
-        /// If you were to TurnRightRadians(e.getBearingRadians()), you would be
+        /// If you were to TurnRightRadians(e.BearingRadians), you would be
         /// facing the direction the bullet came from. The calculation used here is:
         /// (bullet's heading in radians + Math.PI) - (your heading in radians)
         /// </summary>

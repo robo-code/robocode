@@ -19,12 +19,13 @@ namespace robocode.robotinterfaces
         /// This method is called after the end of a round.
         /// You should override it in your robot if you want to be informed of this event.
         /// <p/>
-        /// Example:
+        /// <example>
         /// <pre>
-        ///   public void onRoundEnded(RoundEndedEvent event) {
-        ///       out.println("The round has ended");
+        ///   public void OnRoundEnded(RoundEndedEvent event) {
+        ///       Out.WriteLine("The round has ended");
         ///   }
         /// </pre>
+        /// </example>
         /// <seealso cref="RoundEndedEvent"/>
         /// <seealso cref="IBasicEvents2.OnBattleEnded(BattleEndedEvent)"/>
         /// <seealso cref="robocode.WinEvent"/>

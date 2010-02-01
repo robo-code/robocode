@@ -262,7 +262,7 @@ namespace robocode.robotinterfaces.peer
         ///                   // Without setInterruptible(true), we wouldn't
         ///                   // receive Scan events at all!
         ///       // We'll only get here if we don't see a robot during the move.
-        ///       getOut().println("Ok, I can't see anyone");
+        ///       getOut().WriteLine("Ok, I can't see anyone");
         ///   }
         /// </pre>
         /// </example>
@@ -365,12 +365,12 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   // Create the condition for our custom event
-        ///   Condition triggerHitCondition = new Condition("triggerhit") {
-        ///       public bool Test() {
-        ///           return (getEnergy() &lt;= trigger);
-        ///       };
-        ///   }
+        /// AddCustomEvent(
+        ///    new Condition("triggerhit",
+        ///                  (c) =>
+        ///         {
+        ///             return Energy &lt;= trigger;
+        ///         }));
         /// <p/>
         ///   // Add our custom evnt based on our condition
         ///   <b>AddCustomEvent(triggerHitCondition);</b>
@@ -388,12 +388,12 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   // Create the condition for our custom event
-        ///   Condition triggerHitCondition = new Condition("triggerhit") {
-        ///       public bool Test() {
-        ///           return (getEnergy() &lt;= trigger);
-        ///       };
-        ///   }
+        /// AddCustomEvent(
+        ///    new Condition("triggerhit",
+        ///                  (c) =>
+        ///         {
+        ///             return Energy &lt;= trigger;
+        ///         }));
         /// <p/>
         ///   // Add our custom evnt based on our condition
         ///   AddCustomEvent(triggerHitCondition);
@@ -424,7 +424,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (Event evnt : GetAllEvents()) {
+        ///   foreach (Event evnt in GetAllEvents()) {
         ///       if (event instanceof HitRobotEvent) {
         ///           <i>// do something with the event</i>
         ///       } else if (event instanceof HitByBulletEvent) {
@@ -450,7 +450,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (StatusEvent evnt : GetStatusEvents()) {
+        ///   foreach (StatusEvent evnt inGetStatusEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
@@ -468,7 +468,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (BulletMissedEvent evnt : GetBulletMissedEvents()) {
+        ///   foreach (BulletMissedEvent evnt inGetBulletMissedEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
@@ -486,7 +486,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (BulletHitBulletEvent evnt : GetBulletHitBulletEvents()) {
+        ///   foreach (BulletHitBulletEvent evnt inGetBulletHitBulletEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
@@ -503,7 +503,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (BulletHitEvent event: GetBulletHitEvents()) {
+        ///   foreach (BulletHitEvent event: GetBulletHitEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
@@ -521,7 +521,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (HitByBulletEvent evnt : GetHitByBulletEvents()) {
+        ///   foreach (HitByBulletEvent evnt inGetHitByBulletEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
@@ -538,7 +538,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (HitRobotEvent evnt : GetHitRobotEvents()) {
+        ///   foreach (HitRobotEvent evnt inGetHitRobotEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
@@ -555,7 +555,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (HitWallEvent evnt : GetHitWallEvents()) {
+        ///   foreach (HitWallEvent evnt inGetHitWallEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
@@ -572,7 +572,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (RobotDeathEvent evnt : GetRobotDeathEvents()) {
+        ///   foreach (RobotDeathEvent evnt inGetRobotDeathEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>
@@ -590,7 +590,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (ScannedRobotEvent evnt : GetScannedRobotEvents()) {
+        ///   foreach (ScannedRobotEvent evnt inGetScannedRobotEvents()) {
         ///       <i>// do something with the event</i>
         ///   }
         /// </pre>

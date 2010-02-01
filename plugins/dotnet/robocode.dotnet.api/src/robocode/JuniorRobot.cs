@@ -342,7 +342,7 @@ namespace robocode
         /// <pre>
         ///   // Print Out a line each time my robot hits another robot
         ///   public void OnHitRobot(HitRobotEvent e) {
-        ///       Out.println("I hit a robot!  My energy: " + getEnergy() + " his energy: " + e.getEnergy());
+        ///       Out.WriteLine("I hit a robot!  My energy: " + Energy + " his energy: " + e.Energy);
         ///   }
         /// </pre>
         /// </example>
@@ -1296,6 +1296,7 @@ namespace robocode
             {
             }
 
+            // ReSharper disable FunctionNeverReturns
             public void Run()
             {
                 robot.fieldWidth = (int) (robot.peer.getBattleFieldWidth() + 0.5);
@@ -1318,6 +1319,7 @@ namespace robocode
                 }
             }
         }
+        // ReSharper restore FunctionNeverReturns
     }
 }
 //doc

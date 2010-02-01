@@ -63,7 +63,7 @@ namespace robocode
         /// <p/>
         /// <example>
         /// <pre>
-        ///   for (MessageEvent e : GetMessageEvents()) {
+        ///   foreach (MessageEvent e in GetMessageEvents()) {
         ///      // do something with e
         ///   }
         /// </pre>
@@ -97,8 +97,8 @@ namespace robocode
         ///       // Prints Out all teammates
         ///       string[] teammates = getTeammates();
         ///       if (teammates != null) {
-        ///           for (string member : teammates) {
-        ///               Out.println(member);
+        ///           foreach (string member in teammates) {
+        ///               Out.WriteLine(member);
         ///           }
         ///       }
         ///   }
@@ -127,7 +127,7 @@ namespace robocode
         /// <example>
         /// <pre>
         ///   public void OnScannedRobot(ScannedRobotEvent e) {
-        ///       if (IsTeammate(e.getName()) {
+        ///       if (IsTeammate(e.Name) {
         ///           return;
         ///       }
         ///       Fire(1);

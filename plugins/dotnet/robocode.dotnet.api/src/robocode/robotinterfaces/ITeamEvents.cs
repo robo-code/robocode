@@ -25,7 +25,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   public void OnMessageReceived(MessageEvent evnt) {
-        ///       Out.println(event.getSender() + " sent me: " + evnt.getMessage());
+        ///       Out.WriteLine(event.Sender + " sent me: " + evnt.Message);
         ///   }
         /// </pre>
         /// </example>

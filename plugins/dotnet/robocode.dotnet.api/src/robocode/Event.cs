@@ -87,19 +87,19 @@ namespace robocode
             {
                 if (addedToQueue)
                 {
-                    LoggerN.printlnToRobotsConsole("SYSTEM: After the evnt was added to queue, priority can't be changed.");
+                    LoggerN.WriteLineToRobotsConsole("SYSTEM: After the evnt was added to queue, priority can't be changed.");
                     return;
                 }
                 if (value < 0)
                 {
-                    LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
-                    LoggerN.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 0");
+                    LoggerN.WriteLineToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
+                    LoggerN.WriteLineToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 0");
                     value = 0;
                 }
                 else if (value > 99)
                 {
-                    LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
-                    LoggerN.printlnToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 99");
+                    LoggerN.WriteLineToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
+                    LoggerN.WriteLineToRobotsConsole("SYSTEM: Priority for " + GetType().Name + " will be 99");
                     value = 99;
                 }
                 priority = value;
@@ -120,7 +120,7 @@ namespace robocode
                 }
                 else
                 {
-                    LoggerN.printlnToRobotsConsole("SYSTEM: After the event was added to queue, time can't be changed.");
+                    LoggerN.WriteLineToRobotsConsole("SYSTEM: After the event was added to queue, time can't be changed.");
                 }
             }
         }

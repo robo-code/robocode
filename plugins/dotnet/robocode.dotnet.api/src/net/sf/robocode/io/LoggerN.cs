@@ -111,7 +111,7 @@ namespace net.sf.robocode.io
             }
         }
 
-        public static void printlnToRobotsConsole(string s)
+        public static void WriteLineToRobotsConsole(string s)
         {
             if (robotOut != null)
             {

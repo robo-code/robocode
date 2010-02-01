@@ -67,8 +67,8 @@ namespace robocode
         /// evnt.
         /// <pre>
         ///   public void OnCustomEvent(CustomEvent evnt) {
-        ///       if (event.getCondition().getName().equals("mycondition")) {
-        ///           RemoveCustomEvent(event.getCondition());
+        ///       if (event.Condition.Name. == "mycondition") {
+        ///           RemoveCustomEvent(event.Condition);
         ///           <i>// do something else</i>
         ///       }
         ///   }

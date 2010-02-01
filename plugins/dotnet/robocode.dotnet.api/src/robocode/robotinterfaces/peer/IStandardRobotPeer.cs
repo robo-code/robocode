@@ -87,7 +87,8 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming both the robot and gun start Out facing up (0 degrees):
+        /// <example>
+        /// Assuming both the robot and gun start Out facing up (0 degrees):
         /// <pre>
         ///   // Set gun to turn with the robot's turn
         ///   setAdjustGunForBodyTurn(false); // This is the default
@@ -105,6 +106,7 @@ namespace robocode.robotinterfaces.peer
         ///   turnBodyLeft(Math.PI / 2);
         ///   // Both are Back to 0 degrees.
         /// </pre>
+        /// </example>
         /// <p/>
         /// Note: The gun compensating this way does count as "turning the gun".
         /// See <see cref="setAdjustRadarForGunTurn(bool)"/> for details.
@@ -129,7 +131,8 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming both the gun and radar start Out facing up (0 degrees):
+        /// <example>
+        /// Assuming both the gun and radar start Out facing up (0 degrees):
         /// <pre>
         ///   // Set radar to turn with the gun's turn
         ///   setAdjustRadarForGunTurn(false); // This is the default
@@ -143,6 +146,7 @@ namespace robocode.robotinterfaces.peer
         ///   TurnGunRight(Math.PI / 2);
         ///   // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
         /// </pre>
+        /// </example>
         /// Note: Calling isAdjustRadarForGunTurn(bool) will
         /// automatically call <see cref="setAdjustRadarForBodyTurn(bool)"/> with the
         /// same value, unless you have already called it earlier. This behavior is
@@ -172,7 +176,8 @@ namespace robocode.robotinterfaces.peer
         /// then capped by the physics of the game. If you turn infinite, then the
         /// adjust is ignored (and hence overridden).
         /// <p/>
-        /// Example, assuming the robot, gun, and radar all start Out facing up (0
+        /// <example>
+        /// Assuming the robot, gun, and radar all start Out facing up (0
         /// degrees):
         /// <pre>
         ///   // Set radar to turn with the robots's turn
@@ -187,6 +192,7 @@ namespace robocode.robotinterfaces.peer
         ///   TurnRight(Math.PI / 2);
         ///   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
         /// </pre>
+        /// </example>
         /// <seealso cref="setAdjustGunForBodyTurn(bool)"/>
         /// <seealso cref="setAdjustRadarForGunTurn(bool)"/>
         /// </summary>
@@ -236,4 +242,4 @@ namespace robocode.robotinterfaces.peer
     }
 }
 
-//happy
+//doc

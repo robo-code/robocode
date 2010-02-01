@@ -45,7 +45,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   public void OnBulletHit(BulletHitEvent evnt) {
-        ///       Out.println("I hit " + evnt.getName() + "!");
+        ///       Out.WriteLine("I hit " + evnt.Name + "!");
         ///   }
         /// </pre>
         /// </example>
@@ -62,7 +62,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   public void OnBulletHitBullet(BulletHitBulletEvent evnt) {
-        ///       Out.println("I hit a bullet fired by " + evnt.getBullet().getName() + "!");
+        ///       Out.WriteLine("I hit a bullet fired by " + evnt.Bullet.Name + "!");
         ///   }
         /// </pre>
         ///</example>
@@ -79,7 +79,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   public void OnBulletMissed(BulletMissedEvent evnt) {
-        ///       Out.println("Drat, I missed.");
+        ///       Out.WriteLine("Drat, I missed.");
         ///   }
         /// </pre>
         ///</example>
@@ -110,7 +110,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   void OnHitByBullet(HitByBulletEvent evnt) {
-        ///       Out.println(event.getRobotName() + " hit me!");
+        ///       Out.WriteLine(event.RobotName + " hit me!");
         ///   }
         /// </pre>
         ///</example>
@@ -127,7 +127,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   void OnHitRobot(HitRobotEvent evnt) {
-        ///       if (event.getBearing() > -90 &amp;&amp; evnt.getBearing() &lt;= 90) {
+        ///       if (event.Bearing > -90 &amp;&amp; evnt.Bearing &lt;= 90) {
         ///           Back(100);
         ///       } else {
         ///           Ahead(100);
@@ -137,7 +137,7 @@ namespace robocode.robotinterfaces
         ///   -- or perhaps, for a more advanced robot --
         /// <p/>
         ///   public void OnHitRobot(HitRobotEvent evnt) {
-        ///       if (event.getBearing() > -90 &amp;&amp; evnt.getBearing() &lt;= 90) {
+        ///       if (event.Bearing > -90 &amp;&amp; evnt.Bearing &lt;= 90) {
         ///           SetBack(100);
         ///       } else {
         ///           SetAhead(100);
@@ -173,7 +173,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   void OnHitWall(HitWallEvent evnt) {
-        ///       Out.println("Ouch, I hit a wall bearing " + evnt.Bearing + " degrees.");
+        ///       Out.WriteLine("Ouch, I hit a wall bearing " + evnt.Bearing + " degrees.");
         ///   }
         /// </pre>
         /// </example>
@@ -201,7 +201,7 @@ namespace robocode.robotinterfaces
         /// <pre>
         ///   void OnScannedRobot(ScannedRobotEvent evnt) {
         ///       // Assuming radar and gun are aligned...
-        ///       if (event.getDistance() &lt; 100) {
+        ///       if (event.Distance &lt; 100) {
         ///           Fire(3);
         ///       } else {
         ///           Fire(1);
@@ -252,4 +252,4 @@ namespace robocode.robotinterfaces
     }
 }
 
-//happy
+//doc

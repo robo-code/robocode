@@ -19,13 +19,12 @@ namespace robocode
     /// below is taken from the sample robot named samplecs.Target. See the
     /// samplecs/Target.cs for details.
     /// <pre>
-    ///   AddCustomEvent(
-    ///       new Condition("triggerhit") {
-    ///           public boolean test() {
-    ///               return (getEnergy() &lt;= trigger);
-    ///           };
-    ///       }
-    ///   );
+    /// AddCustomEvent(
+    ///    new Condition("triggerhit",
+    ///                  (c) =>
+    ///         {
+    ///             return Energy &lt;= trigger;
+    ///         }));
     /// </pre>
     /// <see cref="AdvancedRobot.WaitFor(Condition)"/>
     /// <see cref="AdvancedRobot.AddCustomEvent(Condition)"/>
@@ -101,14 +100,14 @@ namespace robocode
             this.name = name;
             if (priority < 0)
             {
-                LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99.");
-                LoggerN.printlnToRobotsConsole("SYSTEM: Priority for condition " + name + " will be 0.");
+                LoggerN.WriteLineToRobotsConsole("SYSTEM: Priority must be between 0 and 99.");
+                LoggerN.WriteLineToRobotsConsole("SYSTEM: Priority for condition " + name + " will be 0.");
                 priority = 0;
             }
             else if (priority > 99)
             {
-                LoggerN.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99.");
-                LoggerN.printlnToRobotsConsole("SYSTEM: Priority for condition " + name + " will be 99.");
+                LoggerN.WriteLineToRobotsConsole("SYSTEM: Priority must be between 0 and 99.");
+                LoggerN.WriteLineToRobotsConsole("SYSTEM: Priority for condition " + name + " will be 99.");
                 priority = 99;
             }
             this.priority = priority;
@@ -153,8 +152,8 @@ namespace robocode
     }
 
     /// <summary>
-    /// Sugnature for Test method of <see cref="Condition"/>
+    /// Method signature for Test method of <see cref="Condition"/>
     /// </summary>
     public delegate bool ConditionTest(Condition condition);
 }
-//happy
+//doc

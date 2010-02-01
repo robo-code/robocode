@@ -75,7 +75,7 @@ namespace robocode
                 {
                     string message = "Preventing " + HiddenAccessN.GetRobotName() + "from thread creation. You may only create 5 threads at same time.";
                     LoggerN.logError(message);
-                    LoggerN.printlnToRobotsConsole(message);
+                    LoggerN.WriteLineToRobotsConsole(message);
                     throw new AccessViolationException(message);
                 }
                 runningCounter++;

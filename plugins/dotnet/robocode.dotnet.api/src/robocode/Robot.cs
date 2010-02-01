@@ -73,7 +73,7 @@ namespace robocode
         ///     <pre>
         ///       // Print Out a line each time my robot hits another robot
         ///       public void OnHitRobot(HitRobotEvent e) {
-        ///       Out.println("I hit a robot!  My energy: " + Energy + " his energy: " + e.Energy);
+        ///       Out.WriteLine("I hit a robot!  My energy: " + Energy + " his energy: " + e.Energy);
         ///       }
         ///     </pre>
         ///   </example>
@@ -961,7 +961,8 @@ namespace robocode
         ///   then capped by the physics of the game. If you turn infinite, then the
         ///   adjust is ignored (and hence overridden).
         ///   <p />
-        ///   Example, assuming both the robot and gun start Out facing up (0 degrees):
+        /// <example>
+        ///   Assuming both the robot and gun start Out facing up (0 degrees):
         ///   <pre>
         ///     // Set gun to turn with the robot's turn
         ///     setAdjustGunForRobotTurn(false); // This is the default
@@ -979,6 +980,7 @@ namespace robocode
         ///     TurnLeft(90);
         ///     // Both are Back to 0 degrees.
         ///   </pre>
+        /// </example>
         ///   <p />
         ///   Note: The gun compensating this way does count as "turning the gun".
         ///   <seealso cref="IsAdjustRadarForGunTurn" />
@@ -1026,7 +1028,8 @@ namespace robocode
         ///   then capped by the physics of the game. If you turn infinite, then the
         ///   adjust is ignored (and hence overridden).
         ///   <p />
-        ///   Example, assuming the robot, gun, and radar all start Out facing up (0
+        /// <example>
+        ///   Assuming the robot, gun, and radar all start Out facing up (0
         ///   degrees):
         ///   <pre>
         ///     // Set radar to turn with the robots's turn
@@ -1041,6 +1044,7 @@ namespace robocode
         ///     TurnRight(90);
         ///     // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
         ///   </pre>
+        /// </example>
         ///   <seealso cref="IsAdjustGunForRobotTurn" />
         ///   <seealso cref="IsAdjustRadarForGunTurn" />
         /// </summary>
@@ -1085,7 +1089,8 @@ namespace robocode
         ///   then capped by the physics of the game. If you turn infinite, then the
         ///   adjust is ignored (and hence overridden).
         ///   <p />
-        ///   Example, assuming both the gun and radar start Out facing up (0 degrees):
+        /// <example>
+        ///   Assuming both the gun and radar start Out facing up (0 degrees):
         ///   <pre>
         ///     // Set radar to turn with the gun's turn
         ///     setAdjustRadarForGunTurn(false); // This is the default
@@ -1099,6 +1104,7 @@ namespace robocode
         ///     TurnGunRight(90);
         ///     // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
         ///   </pre>
+        /// </example>
         ///   Note: Calling
         ///   <see cref="IsAdjustRadarForGunTurn" />
         ///   will

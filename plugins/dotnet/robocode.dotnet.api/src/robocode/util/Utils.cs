@@ -206,4 +206,4 @@ namespace robocode.util
     }
 }
 
-//happy
+//doc

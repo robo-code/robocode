@@ -351,7 +351,7 @@ namespace robocode.robotinterfaces.peer
         /// <p/>
         ///       // Get the velocity of the bullet
         ///       if (bullet != null) {
-        ///           double bulletVelocity = bullet.getVelocity();
+        ///           double bulletVelocity = bullet.Velocity;
         ///       }
         ///   }
         /// </pre>
@@ -408,7 +408,7 @@ namespace robocode.robotinterfaces.peer
         ///   ...
         ///   // Get the velocity of the bullet
         ///   if (bullet != null) {
-        ///       double bulletVelocity = bullet.getVelocity();
+        ///       double bulletVelocity = bullet.Velocity;
         ///   }
         /// </pre>
         /// </example>

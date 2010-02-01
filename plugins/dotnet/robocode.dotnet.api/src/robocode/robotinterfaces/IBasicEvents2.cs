@@ -22,7 +22,7 @@ namespace robocode.robotinterfaces
         /// <example>
         /// <pre>
         ///   public void OnBattleEnded(BattleEndedEvent evnt) {
-        ///       Out.println("The battle has ended");
+        ///       Out.WriteLine("The battle has ended");
         ///   }
         /// </pre>
         /// </example>
