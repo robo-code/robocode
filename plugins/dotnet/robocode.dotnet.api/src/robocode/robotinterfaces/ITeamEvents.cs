@@ -15,12 +15,8 @@ namespace robocode.robotinterfaces
 {
     /// <summary>
     /// An evnt interface for receiving robot team events with an
-    /// <see cref="ITeamRobot}.
-    ///
-    /// @author Pavel Savara (original)
-    /// @author Flemming N. Larsen (javadoc)
-    /// <seealso cref="ITeamRobot
-    /// @since 1.6
+    /// <see cref="ITeamRobot"/>.
+    /// <seealso cref="ITeamRobot"/>
     /// </summary>
     public interface ITeamEvents
     {
@@ -35,13 +31,12 @@ namespace robocode.robotinterfaces
         ///       Out.println(event.getSender() + " sent me: " + evnt.getMessage());
         ///   }
         /// </pre>
-        ///
-        /// <param name="evnt the message evnt sent by the game
-        /// <seealso cref="robocode.MessageEvent
-        /// <seealso cref="robocode.Event
+        /// </example>
+        /// <seealso cref="robocode.MessageEvent"/>
+        /// <seealso cref="robocode.Event"/>
         /// </summary>
+        /// <param name="evnt">the message evnt sent by the game</param>
         void OnMessageReceived(MessageEvent evnt);
     }
 }
-
-//happy
+//doc

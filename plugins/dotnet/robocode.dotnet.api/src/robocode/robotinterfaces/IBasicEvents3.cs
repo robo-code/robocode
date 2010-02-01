@@ -11,32 +11,27 @@
 namespace robocode.robotinterfaces
 {
     /// <summary>
-    /// Second extended version of the <see cref="IBasicEvents} interface.
-    /// @author Flemming N. Larsen (original)
-    /// @since 1.7.2
+    /// Second extended version of the <see cref="IBasicEvents"/> interface.
     /// </summary>
     public interface IBasicEvents3 : IBasicEvents2
     {
-        /**
-	     * This method is called after the end of a round.
-	     * You should override it in your robot if you want to be informed of this event.
-	     * <p/>
-	     * Example:
-	     * <pre>
-	     *   public void onRoundEnded(RoundEndedEvent event) {
-	     *       out.println("The round has ended");
-	     *   }
-	     * </pre>
-	     *
-	     * <param name="event the RoundEndedEvent event set by the game
-	     * <seealso cref="RoundEndedEvent
-	     * <seealso cref="onBattleEnded(BattleEndedEvent)
-	     * <seealso cref="robocode.WinEvent
-	     * <seealso cref="robocode.DeathEvent
-	     * <seealso cref="robocode.Event
-	     * 
-	     * @since 1.7.2
-	     */
+        /// <summary>
+        /// This method is called after the end of a round.
+        /// You should override it in your robot if you want to be informed of this event.
+        /// <p/>
+        /// Example:
+        /// <pre>
+        ///   public void onRoundEnded(RoundEndedEvent event) {
+        ///       out.println("The round has ended");
+        ///   }
+        /// </pre>
+        /// <seealso cref="RoundEndedEvent"/>
+        /// <seealso cref="IBasicEvents2.OnBattleEnded(BattleEndedEvent)"/>
+        /// <seealso cref="robocode.WinEvent"/>
+        /// <seealso cref="robocode.DeathEvent"/>
+        /// <seealso cref="robocode.Event"/>
+        /// </summary>
+        /// <param name="evnt"></param>
         void OnRoundEnded(RoundEndedEvent evnt);
     }
 }

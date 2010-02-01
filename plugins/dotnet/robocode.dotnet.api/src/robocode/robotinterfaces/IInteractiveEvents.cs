@@ -15,11 +15,11 @@ namespace robocode.robotinterfaces
 {
     /// <summary>
     /// An evnt interface for receiving interactive events with an
-    /// <see cref="IInteractiveRobot}.
+    /// <see cref="IInteractiveRobot"/>.
     ///
     /// @author Pavel Savara (original)
     /// @author Flemming N. Larsen (javadoc)
-    /// <seealso cref="IInteractiveRobot
+    /// <seealso cref="IInteractiveRobot"/>
     /// @since 1.6
     /// </summary>
     public interface IInteractiveEvents
@@ -29,13 +29,10 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// key events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.KeyListener#keyPressed(KeyEvent)
-        /// <seealso cref="OnKeyReleased(KeyEvent)
-        /// <seealso cref="OnKeyTyped(KeyEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnKeyReleased(KeyEvent)"/>
+        /// <seealso cref="OnKeyTyped(KeyEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnKeyPressed(KeyEvent evnt);
 
         /// <summary>
@@ -43,13 +40,10 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// key events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.KeyListener#keyReleased(KeyEvent)
-        /// <seealso cref="OnKeyPressed(KeyEvent)
-        /// <seealso cref="OnKeyTyped(KeyEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnKeyPressed(KeyEvent)"/>
+        /// <seealso cref="OnKeyTyped(KeyEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnKeyReleased(KeyEvent evnt);
 
         /// <summary>
@@ -57,13 +51,10 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// key events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.KeyListener#keyTyped(KeyEvent)
-        /// <seealso cref="OnKeyPressed(KeyEvent)
-        /// <seealso cref="OnKeyReleased(KeyEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnKeyPressed(KeyEvent)"/>
+        /// <seealso cref="OnKeyReleased(KeyEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnKeyTyped(KeyEvent evnt);
 
         /// <summary>
@@ -72,18 +63,15 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// mouse events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.MouseListener#mouseClicked(MouseEvent)
-        /// <seealso cref="OnMouseMoved(MouseEvent)
-        /// <seealso cref="OnMousePressed(MouseEvent)
-        /// <seealso cref="OnMouseReleased(MouseEvent)
-        /// <seealso cref="OnMouseEntered(MouseEvent)
-        /// <seealso cref="OnMouseExited(MouseEvent)
-        /// <seealso cref="OnMouseDragged(MouseEvent)
-        /// <seealso cref="OnMouseWheelMoved(MouseWheelEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnMouseMoved(MouseEvent)"/>
+        /// <seealso cref="OnMousePressed(MouseEvent)"/>
+        /// <seealso cref="OnMouseReleased(MouseEvent)"/>
+        /// <seealso cref="OnMouseEntered(MouseEvent)"/>
+        /// <seealso cref="OnMouseExited(MouseEvent)"/>
+        /// <seealso cref="OnMouseDragged(MouseEvent)"/>
+        /// <seealso cref="OnMouseWheelMoved(MouseWheelMovedEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnMouseClicked(MouseEvent evnt);
 
         /// <summary>
@@ -91,18 +79,15 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// mouse events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.MouseListener#mouseEntered(MouseEvent)
-        /// <seealso cref="OnMouseMoved(MouseEvent)
-        /// <seealso cref="OnMousePressed(MouseEvent)
-        /// <seealso cref="OnMouseReleased(MouseEvent)
-        /// <seealso cref="OnMouseClicked(MouseEvent)
-        /// <seealso cref="OnMouseExited(MouseEvent)
-        /// <seealso cref="OnMouseDragged(MouseEvent)
-        /// <seealso cref="OnMouseWheelMoved(MouseWheelEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnMouseMoved(MouseEvent)"/>
+        /// <seealso cref="OnMousePressed(MouseEvent)"/>
+        /// <seealso cref="OnMouseReleased(MouseEvent)"/>
+        /// <seealso cref="OnMouseClicked(MouseEvent)"/>
+        /// <seealso cref="OnMouseExited(MouseEvent)"/>
+        /// <seealso cref="OnMouseDragged(MouseEvent)"/>
+        /// <seealso cref="OnMouseWheelMoved(MouseWheelMovedEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnMouseEntered(MouseEvent evnt);
 
         /// <summary>
@@ -110,18 +95,15 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// mouse events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.MouseListener#mouseExited(MouseEvent)
-        /// <seealso cref="OnMouseMoved(MouseEvent)
-        /// <seealso cref="OnMousePressed(MouseEvent)
-        /// <seealso cref="OnMouseReleased(MouseEvent)
-        /// <seealso cref="OnMouseClicked(MouseEvent)
-        /// <seealso cref="OnMouseEntered(MouseEvent)
-        /// <seealso cref="OnMouseDragged(MouseEvent)
-        /// <seealso cref="OnMouseWheelMoved(MouseWheelEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnMouseMoved(MouseEvent)"/>
+        /// <seealso cref="OnMousePressed(MouseEvent)"/>
+        /// <seealso cref="OnMouseReleased(MouseEvent)"/>
+        /// <seealso cref="OnMouseClicked(MouseEvent)"/>
+        /// <seealso cref="OnMouseEntered(MouseEvent)"/>
+        /// <seealso cref="OnMouseDragged(MouseEvent)"/>
+        /// <seealso cref="OnMouseWheelMoved(MouseWheelMovedEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnMouseExited(MouseEvent evnt);
 
         /// <summary>
@@ -129,18 +111,15 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// mouse events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.MouseListener#mousePressed(MouseEvent)
-        /// <seealso cref="OnMouseMoved(MouseEvent)
-        /// <seealso cref="OnMouseReleased(MouseEvent)
-        /// <seealso cref="OnMouseClicked(MouseEvent)
-        /// <seealso cref="OnMouseEntered(MouseEvent)
-        /// <seealso cref="OnMouseExited(MouseEvent)
-        /// <seealso cref="OnMouseDragged(MouseEvent)
-        /// <seealso cref="OnMouseWheelMoved(MouseWheelEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnMouseMoved(MouseEvent)"/>
+        /// <seealso cref="OnMouseReleased(MouseEvent)"/>
+        /// <seealso cref="OnMouseClicked(MouseEvent)"/>
+        /// <seealso cref="OnMouseEntered(MouseEvent)"/>
+        /// <seealso cref="OnMouseExited(MouseEvent)"/>
+        /// <seealso cref="OnMouseDragged(MouseEvent)"/>
+        /// <seealso cref="OnMouseWheelMoved(MouseWheelMovedEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnMousePressed(MouseEvent evnt);
 
         /// <summary>
@@ -148,18 +127,15 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// mouse events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.MouseListener#mouseReleased(MouseEvent)
-        /// <seealso cref="OnMouseMoved(MouseEvent)
-        /// <seealso cref="OnMousePressed(MouseEvent)
-        /// <seealso cref="OnMouseClicked(MouseEvent)
-        /// <seealso cref="OnMouseEntered(MouseEvent)
-        /// <seealso cref="OnMouseExited(MouseEvent)
-        /// <seealso cref="OnMouseDragged(MouseEvent)
-        /// <seealso cref="OnMouseWheelMoved(MouseWheelEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnMouseMoved(MouseEvent)"/>
+        /// <seealso cref="OnMousePressed(MouseEvent)"/>
+        /// <seealso cref="OnMouseClicked(MouseEvent)"/>
+        /// <seealso cref="OnMouseEntered(MouseEvent)"/>
+        /// <seealso cref="OnMouseExited(MouseEvent)"/>
+        /// <seealso cref="OnMouseDragged(MouseEvent)"/>
+        /// <seealso cref="OnMouseWheelMoved(MouseWheelMovedEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnMouseReleased(MouseEvent evnt);
 
         /// <summary>
@@ -167,18 +143,15 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// mouse events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.MouseMotionListener#mouseMoved(MouseEvent)
-        /// <seealso cref="OnMousePressed(MouseEvent)
-        /// <seealso cref="OnMouseReleased(MouseEvent)
-        /// <seealso cref="OnMouseClicked(MouseEvent)
-        /// <seealso cref="OnMouseEntered(MouseEvent)
-        /// <seealso cref="OnMouseExited(MouseEvent)
-        /// <seealso cref="OnMouseDragged(MouseEvent)
-        /// <seealso cref="OnMouseWheelMoved(MouseWheelEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnMousePressed(MouseEvent)"/>
+        /// <seealso cref="OnMouseReleased(MouseEvent)"/>
+        /// <seealso cref="OnMouseClicked(MouseEvent)"/>
+        /// <seealso cref="OnMouseEntered(MouseEvent)"/>
+        /// <seealso cref="OnMouseExited(MouseEvent)"/>
+        /// <seealso cref="OnMouseDragged(MouseEvent)"/>
+        /// <seealso cref="OnMouseWheelMoved(MouseWheelMovedEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnMouseMoved(MouseEvent evnt);
 
         /// <summary>
@@ -187,18 +160,15 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// mouse events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.MouseMotionListener#mouseDragged(MouseEvent)
-        /// <seealso cref="OnMouseMoved(MouseEvent)
-        /// <seealso cref="OnMousePressed(MouseEvent)
-        /// <seealso cref="OnMouseReleased(MouseEvent)
-        /// <seealso cref="OnMouseClicked(MouseEvent)
-        /// <seealso cref="OnMouseEntered(MouseEvent)
-        /// <seealso cref="OnMouseExited(MouseEvent)
-        /// <seealso cref="OnMouseWheelMoved(MouseWheelEvent)
-        /// @since 1.3.4
+        /// <seealso cref="OnMouseMoved(MouseEvent)"/>
+        /// <seealso cref="OnMousePressed(MouseEvent)"/>
+        /// <seealso cref="OnMouseReleased(MouseEvent)"/>
+        /// <seealso cref="OnMouseClicked(MouseEvent)"/>
+        /// <seealso cref="OnMouseEntered(MouseEvent)"/>
+        /// <seealso cref="OnMouseExited(MouseEvent)"/>
+        /// <seealso cref="OnMouseWheelMoved(MouseWheelMovedEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnMouseDragged(MouseEvent evnt);
 
         /// <summary>
@@ -206,17 +176,15 @@ namespace robocode.robotinterfaces
         /// <p/>
         /// See the {@code sample.Interactive} robot for an example of how to use
         /// mouse events.
-        ///
-        /// <param name="evnt holds details about current event
-        /// <seealso cref="java.awt.event.MouseWheelListener#mouseWheelMoved(MouseWheelEvent)
-        /// <seealso cref="OnMouseMoved(MouseEvent)
-        /// <seealso cref="OnMousePressed(MouseEvent)
-        /// <seealso cref="OnMouseReleased(MouseEvent)
-        /// <seealso cref="OnMouseClicked(MouseEvent)
-        /// <seealso cref="OnMouseEntered(MouseEvent)
-        /// <seealso cref="OnMouseExited(MouseEvent)
-        /// <seealso cref="OnMouseDragged(MouseEvent)
+        /// <seealso cref="OnMouseMoved(MouseEvent)"/>
+        /// <seealso cref="OnMousePressed(MouseEvent)"/>
+        /// <seealso cref="OnMouseReleased(MouseEvent)"/>
+        /// <seealso cref="OnMouseClicked(MouseEvent)"/>
+        /// <seealso cref="OnMouseEntered(MouseEvent)"/>
+        /// <seealso cref="OnMouseExited(MouseEvent)"/>
+        /// <seealso cref="OnMouseDragged(MouseEvent)"/>
         /// </summary>
+        /// <param name="evnt">holds details about current event</param>
         void OnMouseWheelMoved(MouseWheelMovedEvent evnt);
     }
 }

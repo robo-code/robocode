@@ -34,34 +34,33 @@ namespace robocode.robotinterfaces.peer
     public interface IAdvancedRobotPeer : IStandardRobotPeer
     {
         /// <summary>
-        /// This call is identical to <see cref="IStandardRobotPeer#Stop(bool)
-        /// Stop(bool)}, but returns immediately, and will not Execute until you
-        /// call <see cref="IBasicRobotPeer#Execute() Execute()} or take an action that executes.
+        /// This call is identical to <see cref="IStandardRobotPeer.stop(bool)"/>
+        /// , but returns immediately, and will not Execute until you
+        /// call <see cref="IBasicRobotPeer.execute()"/> or take an action that executes.
         /// <p/>
         /// If there is already movement saved from a previous Stop, you can
         /// overwrite it by calling {@code SetStop(true)}.
-        ///
-        /// <param name="overwrite {@code true} if the movement saved from a previous Stop
-        ///                  should be overwritten; {@code false} otherwise.
-        /// <seealso cref="IStandardRobotPeer#Stop(bool) Stop(bool)
-        /// <seealso cref="IStandardRobotPeer#Resume() Resume()
-        /// <seealso cref="SetResume()
-        /// <seealso cref="IBasicRobotPeer#Execute() Execute()
+        /// <seealso cref="IStandardRobotPeer.stop(bool)"/>
+        /// <seealso cref="IStandardRobotPeer.resume()"/>
+        /// <seealso cref="setResume()"/>
+        /// <seealso cref="IBasicRobotPeer.execute()"/>
         /// </summary>
+        /// <param name="overwrite">{@code true} if the movement saved from a previous Stop
+        ///                  should be overwritten; {@code false} otherwise.</param> 
         void setStop(bool overwrite);
 
         /// <summary>
         /// Sets the robot to Resume the movement stopped by
-        /// <see cref="IStandardRobotPeer#Stop(bool) Stop(bool)} or
-        /// <see cref="SetStop(bool)}, if any.
+        /// <see cref="IStandardRobotPeer.stop(bool)"/> or
+        /// <see cref="setStop(bool)"/>, if any.
         /// <p/>
         /// This call returns immediately, and will not Execute until you call
-        /// <see cref="IBasicRobotPeer#Execute() Execute()} or take an action that executes.
+        /// <see cref="IBasicRobotPeer.execute()"/> or take an action that executes.
         ///
-        /// <seealso cref="IStandardRobotPeer#Resume() Resume()
-        /// <seealso cref="IStandardRobotPeer#Stop(bool) Stop(bool)
-        /// <seealso cref="SetStop(bool)
-        /// <seealso cref="IBasicRobotPeer#Execute() Execute()
+        /// <seealso cref="IStandardRobotPeer.resume()"/>
+        /// <seealso cref="IStandardRobotPeer.stop(bool)"/>
+        /// <seealso cref="setStop(bool)"/>
+        /// <seealso cref="IBasicRobotPeer.execute()"/>
         /// </summary>
         void setResume();
 
@@ -70,7 +69,7 @@ namespace robocode.robotinterfaces.peer
         /// when the next execution takes place.
         /// <p/>
         /// This call returns immediately, and will not Execute until you call
-        /// <see cref="IBasicRobotPeer#Execute() Execute()} or take an action that executes.
+        /// <see cref="IBasicRobotPeer.execute()"/> or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot is set to move forward, and negative
@@ -92,17 +91,17 @@ namespace robocode.robotinterfaces.peer
         ///   // Executes the last setMove()
         ///   Execute();
         /// </pre>
-        ///
-        /// <param name="distance the distance to move measured in pixels.
+        /// </example>
+        /// <seealso cref="IBasicRobotPeer.move(double)"/>
+        /// <seealso cref="setMaxVelocity(double)"/>
+        /// <seealso cref="setTurnBody(double)"/>
+        /// <seealso cref="setTurnGun(double)"/>
+        /// <seealso cref="setTurnRadar(double)"/>
+        /// </summary>
+        /// <param name="distance"> the distance to move measured in pixels.
         ///                 If {@code distance} > 0 the robot is set to move forward.
         ///                 If {@code distance} < 0 the robot is set to move backward.
-        ///                 If {@code distance} = 0 the robot is set to Stop its movement.
-        /// <seealso cref="IBasicRobotPeer#move(double) move(double)
-        /// <seealso cref="setMaxVelocity(double)
-        /// <seealso cref="setTurnBody(double)
-        /// <seealso cref="setTurnGun(double)
-        /// <seealso cref="setTurnRadar(double)
-        /// </summary>
+        ///                 If {@code distance} = 0 the robot is set to Stop its movement.</param>
         void setMove(double distance);
 
         /// <summary>
@@ -110,7 +109,7 @@ namespace robocode.robotinterfaces.peer
         /// execution takes place.
         /// <p/>
         /// This call returns immediately, and will not Execute until you call
-        /// <see cref="IBasicRobotPeer#Execute() Execute()} or take an action that
+        /// <see cref="IBasicRobotPeer.Execute() Execute()} or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
@@ -136,7 +135,7 @@ namespace robocode.robotinterfaces.peer
         ///                If radians > 0 the robot's body is set to turn right.
         ///                If radians < 0 the robot's body is set to turn left.
         ///                If radians = 0 the robot's body is set to Stop turning.
-        /// <seealso cref="IBasicRobotPeer#turnBody(double) turnBody(double)
+        /// <seealso cref="IBasicRobotPeer.turnBody(double) turnBody(double)
         /// <seealso cref="setTurnGun(double)
         /// <seealso cref="setTurnRadar(double)
         /// <seealso cref="setMaxTurnRate(double)
@@ -149,7 +148,7 @@ namespace robocode.robotinterfaces.peer
         /// execution takes place.
         /// <p/>
         /// This call returns immediately, and will not Execute until you call
-        /// <see cref="IBasicRobotPeer#Execute() Execute()} or take an action that
+        /// <see cref="IBasicRobotPeer.Execute() Execute()} or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
@@ -175,7 +174,7 @@ namespace robocode.robotinterfaces.peer
         ///                If radians > 0 the robot's gun is set to turn right.
         ///                If radians < 0 the robot's gun is set to turn left.
         ///                If radians = 0 the robot's gun is set to Stop turning.
-        /// <seealso cref="IBasicRobotPeer#turnGun(double) turnGun(double)
+        /// <seealso cref="IBasicRobotPeer.turnGun(double) turnGun(double)
         /// <seealso cref="setTurnBody(double)
         /// <seealso cref="setTurnRadar(double)
         /// <seealso cref="setMove(double)
@@ -187,7 +186,7 @@ namespace robocode.robotinterfaces.peer
         /// execution takes place.
         /// <p/>
         /// This call returns immediately, and will not Execute until you call
-        /// <see cref="IBasicRobotPeer#Execute() Execute()} or take an action that
+        /// <see cref="IBasicRobotPeer.Execute() Execute()} or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
@@ -213,7 +212,7 @@ namespace robocode.robotinterfaces.peer
         ///                If radians > 0 the robot's radar is set to turn right.
         ///                If radians < 0 the robot's radar is set to turn left.
         ///                If radians = 0 the robot's radar is set to Stop turning.
-        /// <seealso cref="IStandardRobotPeer#turnRadar(double) turnRadar(double)
+        /// <seealso cref="IStandardRobotPeer.turnRadar(double) turnRadar(double)
         /// <seealso cref="setTurnBody(double)
         /// <seealso cref="setTurnGun(double)
         /// <seealso cref="setMove(double)
@@ -226,7 +225,7 @@ namespace robocode.robotinterfaces.peer
         ///
         /// <param name="newMaxTurnRate the new maximum turn rate of the robot measured in
         ///                       degrees. Valid values are 0 - <see cref="Rules#MAX_TURN_RATE}
-        /// <seealso cref="IBasicRobotPeer#turnBody(double) turnBody(double)
+        /// <seealso cref="IBasicRobotPeer.turnBody(double) turnBody(double)
         /// <seealso cref="setTurnBody(double)
         /// <seealso cref="setMaxVelocity(double)
         /// </summary>
@@ -238,7 +237,7 @@ namespace robocode.robotinterfaces.peer
         ///
         /// <param name="newMaxVelocity the new maximum turn rate of the robot measured in
         ///                       pixels/turn. Valid values are 0 - <see cref="Rules#MAX_VELOCITY}
-        /// <seealso cref="IBasicRobotPeer#move(double) move(double)
+        /// <seealso cref="IBasicRobotPeer.move(double) move(double)
         /// <seealso cref="setMove(double)
         /// <seealso cref="setMaxTurnRate(double)
         /// </summary>

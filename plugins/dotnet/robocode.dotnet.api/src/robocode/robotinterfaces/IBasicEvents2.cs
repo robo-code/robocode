@@ -14,10 +14,7 @@
 namespace robocode.robotinterfaces
 {
     /// <summary>
-    /// First extended version of the <see cref="IBasicEvents} interface.
-    ///
-    /// @author Pavel Savara (original)
-    /// @since 1.6.1
+    /// First extended version of the <see cref="IBasicEvents"/> interface.
     /// </summary>
     public interface IBasicEvents2 : IBasicEvents
     {
@@ -31,15 +28,14 @@ namespace robocode.robotinterfaces
         ///       Out.println("The battle has ended");
         ///   }
         /// </pre>
-        ///
-        /// <param name="evnt the battle-ended evnt set by the game
-        /// <seealso cref="BattleEndedEvent
-        /// <seealso cref="robocode.WinEvent
-        /// <seealso cref="robocode.DeathEvent
-        /// <seealso cref="robocode.Event
+        /// </example>
+        /// <seealso cref="BattleEndedEvent"/>
+        /// <seealso cref="robocode.WinEvent"/>
+        /// <seealso cref="robocode.DeathEvent"/>
+        /// <seealso cref="robocode.Event"/>
         /// </summary>
         void OnBattleEnded(BattleEndedEvent evnt);
     }
 }
 
-//happy
+//doc
