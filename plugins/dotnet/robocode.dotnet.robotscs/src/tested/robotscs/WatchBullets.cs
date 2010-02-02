@@ -87,7 +87,7 @@ namespace tested.robotscs
             if (bullet != null)
             {
                 Out.WriteLine(
-                    Time + " " + bullet.X.ToString("F5") + " " + bullet.Y.ToString("F5") + " " + bullet.Heading.ToString("F5") + " "
+                    Time + " " + bullet.X.ToString("F5", CultureInfo.InvariantCulture) + " " + bullet.Y.ToString("F5", CultureInfo.InvariantCulture) + " " + bullet.Heading.ToString("F5", CultureInfo.InvariantCulture) + " "
                     + bullet.IsActive);
             }
         }
