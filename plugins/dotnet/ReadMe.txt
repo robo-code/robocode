@@ -6,7 +6,8 @@ This is guide to build Robocode for .NET
 Best option is to install Visual Studio C# Express 2008
 http://www.microsoft.com/express/Downloads/#2008-Visual-CS
 
-3) Make sure you have csc.exe on PATH
+3) Make sure you have csc.exe on PATH and also the absolute path to the root directory
+   where mvn.cmd is located.
 
 4) Make sure you have JAVA_HOME set to proper version of Java (64/32 bit)
 
