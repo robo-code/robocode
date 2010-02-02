@@ -16,11 +16,11 @@ http://www.microsoft.com/express/Downloads/#2008-Visual-CS
  - http://msdn.microsoft.com/en-us/library/ms669985(VS.85).aspx
  - make sure that installation set SHFBROOT properly
 
-6) run plugins\dotnet\tools\keys\gennetkey.cmd 
+6) run plugins\dotnet\tools\loadTools.cmd 
 
-7) run plugins\dotnet\tools\loadTools.cmd 
+7) run plugins\dotnet\tools\keys\gennetkey.cmd 
 
-7) run mvnassembly.cmd from \plugins\dotnet\ folder
+8) run mvnassembly.cmd from \plugins\dotnet\ folder
 
-
+9) find the results in \plugins\dotnet\target\robocode.dotnet-x.x.x.x-setup.jar
 
