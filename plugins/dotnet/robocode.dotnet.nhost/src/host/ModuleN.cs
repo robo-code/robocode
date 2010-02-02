@@ -8,6 +8,8 @@
 
 #endregion
 
+using System.Globalization;
+using System.Windows.Forms;
 using net.sf.jni4net;
 using net.sf.robocode.core;
 using net.sf.robocode.dotnet.peer;
@@ -25,6 +27,8 @@ namespace net.sf.robocode.dotnet.nhost
     {
         public static void InitN()
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             HiddenAccessN.init();
             LoggerN.IsSafeThread = true;
             LoggerN.setLogListener(new Logger(true));

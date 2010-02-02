@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Threading;
@@ -82,6 +83,8 @@ namespace net.sf.robocode.dotnet.host.seed
                 robotProxy.initializeRound(commands, status);
 
                 robotThread = new Thread(RobotMain);
+                robotThread.CurrentCulture = CultureInfo.InvariantCulture;
+                robotThread.CurrentUICulture = CultureInfo.InvariantCulture;
                 robotThread.Start(null);
                 robotThread.Name = "Robot: "+robotProxy.getStatics().getName();
             }

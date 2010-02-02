@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using Robocode;
 using Robocode.Util;
 

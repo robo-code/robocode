@@ -25,8 +25,9 @@ namespace net.sf.robocode.dotnet
         [TestFixtureSetUp]
         public virtual void Setup()
         {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-            var setup = new BridgeSetup(false) {Verbose = true, Debug = true};
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            var setup = new BridgeSetup(false) { Verbose = true, Debug = true };
             string prefix;
             if (Environment.CurrentDirectory.EndsWith("target"))
             {
