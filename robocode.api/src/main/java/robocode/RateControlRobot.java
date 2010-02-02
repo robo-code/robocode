@@ -45,7 +45,7 @@ import static java.lang.Math.toDegrees;
  * @author Joshua Galecki
  * @since 1.7.1.3
  */
-public class RateControlRobot extends AdvancedRobot {
+public class RateControlRobot extends TeamRobot {
 
 	private double velocityRate; // Pixels per turn
 	private double turnRate; // Radians per turn
