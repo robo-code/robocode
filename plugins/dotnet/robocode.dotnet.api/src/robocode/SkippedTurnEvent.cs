@@ -44,6 +44,24 @@ namespace Robocode
     {
         private const int DEFAULT_PRIORITY = 100; // System evnt -> cannot be changed!;
 
+        private readonly long skippedTurn;
+
+        /// <summary>
+        /// Called by the game to create a new SkippedTurnEvent.
+        /// </summary>
+        public SkippedTurnEvent(long skippedTurn)
+        {
+            this.skippedTurn = skippedTurn;
+        }
+
+        /// <summary>
+        /// Returns the turn that was skipped.
+        /// </summary>
+        public long SkippedTurn
+        {
+            get { return skippedTurn; }
+        }
+
         /// <inheritdoc />
         public override int Priority
         {
@@ -91,16 +109,21 @@ namespace Robocode
         {
             public int sizeOf(RbSerializerN serializer, object objec)
             {
-                return RbSerializerN.SIZEOF_TYPEINFO;
+                return RbSerializerN.SIZEOF_TYPEINFO + RbSerializerN.SIZEOF_LONG;
             }
 
             public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
+                var obj = (SkippedTurnEvent)objec;
+
+                serializer.serialize(buffer, obj.skippedTurn);
             }
 
             public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
-                return new SkippedTurnEvent();
+                long skippedTurn = buffer.getLong();
+
+                return new SkippedTurnEvent(skippedTurn);
             }
         }
     }

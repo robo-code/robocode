@@ -706,7 +706,7 @@ namespace net.sf.robocode.dotnet.host.events
             registerNamedEvent(new PaintEvent());
             registerNamedEvent(new RobotDeathEvent(null));
             registerNamedEvent(dummyScannedRobotEvent);
-            registerNamedEvent(new SkippedTurnEvent());
+            registerNamedEvent(new SkippedTurnEvent(0));
             registerNamedEvent(new StatusEvent(null));
             registerNamedEvent(new WinEvent());
 
