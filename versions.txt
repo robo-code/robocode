@@ -1,4 +1,5 @@
 Version 1.7.2.0 Alpha
+The ".NET robots are now supported" release
 ---------------
 = Bugfixes =
 * Bug [2930266] - Robot static data isn't being GCed after battle.
@@ -7,6 +8,7 @@ Version 1.7.2.0 Alpha
 * Fixed a NullPointerException occuring when Robocode is (re)loading the robot repository after a developer path has been removed.
 * Bug [2935451] - Version ordering is somewhat strange with letters.
 * Bug [2930256] - Robot console text sometimes disappears.
+* Bug [2928688] - morbid.MorbidPriest_1.0 fails to load.
 
 = New features =
 * .NET Robocode plugin. It is now possible to code robots in .NET and let them engage in Robocode battles. :-)

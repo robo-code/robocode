@@ -113,7 +113,9 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 *
 	 * @return the time this event occurred.
 	 */
-	public final long getTime() {
+	// We rolled back the use of 'final' here due to Bug [2928688], where some old robots do override getTime()
+	// with their own events that inherits from robocode.Event.
+	public /* final*/long getTime() {
 		return time;
 	}
 
