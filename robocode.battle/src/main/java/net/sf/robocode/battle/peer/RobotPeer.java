@@ -67,7 +67,6 @@ package net.sf.robocode.battle.peer;
 
 
 import static net.sf.robocode.io.Logger.logMessage;
-import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BoundingRectangle;
 import net.sf.robocode.host.IHostManager;
@@ -666,16 +665,16 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (battle.isDebugging() || isPaintEnabled()) {
 			skippedTurns = 0;
 		} else {
-			println("SYSTEM: you skipped turn");
+			println("SYSTEM: " + getShortName() + " skipped turn " + battle.getTime());
 			skippedTurns++;
 			events.get().clear(false);
 			if (!isDead()) {
-				addEvent(new SkippedTurnEvent());
+				addEvent(new SkippedTurnEvent(battle.getTime()));
 			}
 
 			if ((!isIORobot && (skippedTurns > MAX_SKIPPED_TURNS))
 					|| (isIORobot && (skippedTurns > MAX_SKIPPED_TURNS_WITH_IO))) {
-				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
+				println("SYSTEM: " + getShortName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
 				waitWakeupNoWait();
@@ -1134,7 +1133,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			if ((queue.size() > EventManager.MAX_QUEUE_SIZE)
 					&& !(event instanceof DeathEvent || event instanceof WinEvent || event instanceof SkippedTurnEvent)) {
 				println(
-						"Not adding to " + statics.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
+						"Not adding to " + statics.getShortName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
 						+ " events in queue.");
 				// clean up old stuff                
 				queue.clear(battle.getTime() - EventManager.MAX_EVENT_STACK);

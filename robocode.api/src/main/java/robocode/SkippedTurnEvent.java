@@ -61,13 +61,29 @@ public final class SkippedTurnEvent extends Event {
 	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
 
+	private final long skippedTurn;
+
 	/**
 	 * Called by the game to create a new SkippedTurnEvent.
+	 *
+	 * @param skippedTurn the skipped turn
 	 */
-	public SkippedTurnEvent() {
+	public SkippedTurnEvent(long skippedTurn) {
 		super();
+		this.skippedTurn = skippedTurn;
 	}
 
+	/**
+	 * Returns the turn that was skipped.
+	 *
+	 * @return the turn that was skipped.
+	 *
+	 * @since 1.7.2.0
+	 */
+	public long getSkippedTurn() {
+		return skippedTurn;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -123,10 +139,16 @@ public final class SkippedTurnEvent extends Event {
 			return RbSerializer.SIZEOF_TYPEINFO;
 		}
 
-		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {}
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			SkippedTurnEvent obj = (SkippedTurnEvent) object;
+
+			serializer.serialize(buffer, obj.skippedTurn);
+		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
-			return new SkippedTurnEvent();
+			long skippedTurn = buffer.getLong();
+
+			return new SkippedTurnEvent(skippedTurn);
 		}
 	}
 }
