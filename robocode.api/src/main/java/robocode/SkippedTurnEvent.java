@@ -136,7 +136,7 @@ public final class SkippedTurnEvent extends Event {
 
 	private static class SerializableHelper implements ISerializableHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
-			return RbSerializer.SIZEOF_TYPEINFO;
+			return RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_LONG;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
