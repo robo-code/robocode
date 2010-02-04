@@ -61,7 +61,7 @@ namespace Robocode
     ///   in order to see how to use this
     ///   robot type.
     /// </summary>
-    public abstract class RateControlRobot : AdvancedRobot
+    public abstract class RateControlRobot : TeamRobot
     {
         private double velocityRate; // Pixels per turn
         private double turnRate; // Radians per turn
