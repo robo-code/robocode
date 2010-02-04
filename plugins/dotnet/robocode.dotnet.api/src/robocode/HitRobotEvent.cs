@@ -19,7 +19,7 @@ namespace Robocode
     /// <summary>
     /// A HitRobotEvent is sent to <see cref="Robot.OnHitRobot(HitRobotEvent)"/>
     /// when your robot collides with another robot.
-    /// You can use the information contained in this evnt to determine what to do.
+    /// You can use the information contained in this event to determine what to do.
     /// </summary>
     [Serializable]
     public sealed class HitRobotEvent : Event

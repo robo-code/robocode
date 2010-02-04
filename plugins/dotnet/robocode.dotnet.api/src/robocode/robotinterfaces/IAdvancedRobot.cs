@@ -25,7 +25,7 @@ namespace Robocode.RobotInterfaces
     {
         /// <summary>
         /// This method is called by the game to notify this robot about advanced
-        /// robot evnt. Hence, this method must be implemented so it returns your
+        /// robot event. Hence, this method must be implemented so it returns your
         /// <see cref="IAdvancedEvents"/> listener.
         /// </summary>
         IAdvancedEvents GetAdvancedEventListener();

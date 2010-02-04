@@ -16,7 +16,7 @@ using Robocode.RobotInterfaces;
 namespace Robocode
 {
     /// <summary>
-    /// This evnt is sent to <see cref="Robot.OnStatus(StatusEvent)"/> every
+    /// This event is sent to <see cref="Robot.OnStatus(StatusEvent)"/> every
     /// turn in a battle to provide the status of the robot.
     /// </summary>
     [Serializable]

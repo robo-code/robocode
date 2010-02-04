@@ -18,7 +18,7 @@ using Robocode.RobotInterfaces;
 namespace Robocode
 {
     ///<summary>
-    ///  This evnt is sent to <see cref="Robot.OnBulletHit(BulletHitEvent)"/>
+    ///  This event is sent to <see cref="Robot.OnBulletHit(BulletHitEvent)"/>
     ///  when one of your bullets has hit another robot.
     ///</summary>
     [Serializable]

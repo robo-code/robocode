@@ -341,7 +341,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// Note that the gun cannot Fire if the gun is overheated, meaning that
         /// <see cref="GetGunHeat"/> returns a value &gt; 0.
         /// <p/>
-        /// A evnt is generated when the bullet hits a robot
+        /// An event is generated when the bullet hits a robot
         /// (<see cref="BulletHitEvent"/>"/>, wall (<see cref="BulletMissedEvent"/>), or another
         /// bullet (<see cref="BulletHitBulletEvent"/>).
         /// <p/>
@@ -393,7 +393,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// Note that the gun cannot Fire if the gun is overheated, meaning that
         /// <see cref="GetGunHeat"/> returns a value &gt; 0.
         /// <p/>
-        /// A evnt is generated when the bullet hits a robot
+        /// An event is generated when the bullet hits a robot
         /// (<see cref="BulletHitEvent"/>), wall (<see cref="BulletMissedEvent"/>), or another
         /// bullet (<see cref="BulletHitBulletEvent"/>).
         /// <p/>
@@ -647,7 +647,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// There are 2 reasons to call Rescan() manually:
         /// <ol>
         /// <li>You want to Scan after you Stop moving.</li>
-        /// <li>You want to interrupt the OnScannedRobot evnt. This is more
+        /// <li>You want to interrupt the OnScannedRobot event. This is more
         /// likely. If you are in OnScannedRobot and call Scan(),
         /// and you still see a robot, then the system will interrupt your
         /// OnScannedRobot event immediately and start it from the top.</li>

@@ -25,31 +25,31 @@ namespace Robocode
     {
         private const int DEFAULT_PRIORITY = 80;
 
-        // time is valid only after adding to evnt manager on proxy side, we do not update it on Battle side
+        // time is valid only after adding to event manager on proxy side, we do not update it on Battle side
         private volatile bool addedToQueue;
         private long time;
         private int priority;
 
         /// <summary>
-        /// Compares this evnt to another evnt regarding precedence.
-        /// The evnt precedence is first and foremost determined by the evnt time,
-        /// secondly the evnt priority, and lastly specific evnt information.
+        /// Compares this event to another event regarding precedence.
+        /// The event precedence is first and foremost determined by the event time,
+        /// secondly the event priority, and lastly specific event information.
         /// <p/>
-        /// This method will first compare the time of each evnt. If the evnt time
+        /// This method will first compare the time of each event. If the event time
         /// is the same for both events, then this method compared the priority of
-        /// each evnt. If the evnt priorities are equals, then this method will
-        /// compare the two evnt based on specific evnt information.
+        /// each event. If the event priorities are equals, then this method will
+        /// compare the two events based on specific event information.
         /// <p/>
-        /// This method is called by the game in order to sort the evnt queue of a
+        /// This method is called by the game in order to sort the event queue of a
         /// robot to make sure the events are listed in chronological order.
         /// <p/>
         ///
-        /// Returns a negative value if this evnt has higher precedence, i.e. must
-        ///         be listed before the specified evnt. A positive value if this event
-        ///         has a lower precedence, i.e. must be listed after the specified evnt.
+        /// Returns a negative value if this event has higher precedence, i.e. must
+        ///         be listed before the specified event. A positive value if this event
+        ///         has a lower precedence, i.e. must be listed after the specified event.
         ///         0 means that the precedence of the two events are equal.
         /// </summary>
-        /// <param name="evnt">the evnt to compare to this evnt.</param>
+        /// <param name="evnt">the event to compare to this event.</param>
         public virtual int CompareTo(Event evnt)
         {
             // Compare the time difference which has precedence over priority.
@@ -68,7 +68,7 @@ namespace Robocode
                 return priorityDiff; // Priority differ
             }
 
-            // Same time and priority -> Compare specific evnt types
+            // Same time and priority -> Compare specific event types
             // look at overrides in ScannedRobotEvent and HitRobotEvent
 
             // No difference found
@@ -76,8 +76,8 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Returns the priority of this evnt.
-        /// An evnt priority is a value from 0 - 99. The higher value, the higher
+        /// Returns the priority of this event.
+        /// An event priority is a value from 0 - 99. The higher value, the higher
         /// priority. The default priority is 80.
         /// </summary>
         public virtual int Priority
@@ -87,7 +87,7 @@ namespace Robocode
             {
                 if (addedToQueue)
                 {
-                    LoggerN.WriteLineToRobotsConsole("SYSTEM: After the evnt was added to queue, priority can't be changed.");
+                    LoggerN.WriteLineToRobotsConsole("SYSTEM: After the event was added to queue, priority can't be changed.");
                     return;
                 }
                 if (value < 0)
@@ -107,7 +107,7 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Returns the time this evnt occurred.
+        /// Returns the time this event occurred.
         /// </summary>
         public long Time
         {
@@ -154,7 +154,7 @@ namespace Robocode
 
         internal virtual byte SerializationType
         {
-            get { throw new System.Exception("Serialization not supported on this evnt type"); }
+            get { throw new System.Exception("Serialization not supported on this event type"); }
         }
 
         internal virtual void UpdateBullets(Dictionary<int, Bullet> bullets)

@@ -34,7 +34,7 @@ namespace Robocode
     /// </pre>
     /// </example>
     /// <p/>
-    /// This evnt may also be generated if you are simply doing too much processing
+    /// This event may also be generated if you are simply doing too much processing
     /// between actions, that is using too much processing power for the calculations
     /// etc. in your robot.
     /// <seealso cref="AdvancedRobot.OnSkippedTurn(SkippedTurnEvent)"/>
@@ -42,7 +42,7 @@ namespace Robocode
     /// </summary>
     public sealed class SkippedTurnEvent : Event
     {
-        private const int DEFAULT_PRIORITY = 100; // System evnt -> cannot be changed!;
+        private const int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
 
         private readonly long skippedTurn;
 

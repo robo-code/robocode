@@ -17,7 +17,7 @@ namespace Robocode
     /// <summary>
     /// A MessageEvent is sent to <see cref="TeamRobot.OnMessageReceived(MessageEvent)"/>
     /// when a teammate sends a message to your robot.
-    /// You can use the information contained in this evnt to determine what to do.
+    /// You can use the information contained in this event to determine what to do.
     /// </summary>
     [Serializable]
     public sealed class MessageEvent : Event
@@ -75,7 +75,7 @@ namespace Robocode
 
         internal override byte SerializationType
         {
-            get { throw new System.Exception("Serialization of evnt type not supported"); }
+            get { throw new System.Exception("Serialization of event type not supported"); }
         }
     }
 }

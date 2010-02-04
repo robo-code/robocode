@@ -18,7 +18,7 @@ using Robocode.RobotInterfaces;
 namespace Robocode
 {
     ///<summary>
-    ///  This evnt is sent to <see cref="Robot.OnBulletMissed(BulletMissedEvent)"/>
+    ///  This event is sent to <see cref="Robot.OnBulletMissed(BulletMissedEvent)"/>
     ///  when one of your bullets has missed, i.e. when the bullet has
     ///  reached the border of the battlefield.
     ///</summary>

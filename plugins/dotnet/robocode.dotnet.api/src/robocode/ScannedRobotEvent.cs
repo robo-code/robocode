@@ -19,10 +19,10 @@ namespace Robocode
     /// <summary>
     /// A ScannedRobotEvent is sent to <see cref="Robot.OnScannedRobot(ScannedRobotEvent)"/>
     /// OnScannedRobot()} when you Scan a robot.
-    /// You can use the information contained in this evnt to determine what to do.
+    /// You can use the information contained in this event to determine what to do.
     /// <p/>
-    /// <b>Note</b>: You should not inherit from this class in your own evnt class!
-    /// The internal logic of this evnt class might change. Hence, your robot might
+    /// <b>Note</b>: You should not inherit from this class in your own event class!
+    /// The internal logic of this event class might change. Hence, your robot might
     /// not work in future Robocode versions, if you choose to inherit from this class.
     /// </summary>
     public class ScannedRobotEvent : Event

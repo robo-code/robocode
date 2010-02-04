@@ -13,7 +13,7 @@ using Robocode;
 namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// An evnt interface for receiving interactive events with an
+    /// An event interface for receiving interactive events with an
     /// <see cref="IInteractiveRobot"/>.
     /// <seealso cref="IInteractiveRobot"/>
     /// </summary>

@@ -13,7 +13,7 @@ using Robocode;
 namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// An evnt interface for receiving basic robot events with an
+    /// An event interface for receiving basic robot events with an
     /// <see cref="IBasicRobot"/>.
     /// <seealso cref="IBasicRobot"/>
     /// </summary>
@@ -42,7 +42,7 @@ namespace Robocode.RobotInterfaces
         /// <summary>
         /// This method is called when one of your bullets hits another robot.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -59,7 +59,7 @@ namespace Robocode.RobotInterfaces
         /// <summary>
         /// This method is called when one of your bullets hits another bullet.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -76,7 +76,7 @@ namespace Robocode.RobotInterfaces
         /// <summary>
         /// This method is called when one of your bullets misses, i.e. hits a wall.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -94,7 +94,7 @@ namespace Robocode.RobotInterfaces
         /// This method is called if your robot dies.
         /// <p/>
         /// You should override it in your robot if you want to be informed of this
-        /// evnt. Actions will have no effect if called from this section. The
+        /// event. Actions will have no effect if called from this section. The
         /// intent is to allow you to perform calculations or print something out
         /// when the robot is killed.
         /// <seealso cref="DeathEvent"/>
@@ -107,7 +107,7 @@ namespace Robocode.RobotInterfaces
         /// <summary>
         /// This method is called when your robot is hit by a bullet.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -124,7 +124,7 @@ namespace Robocode.RobotInterfaces
         /// <summary>
         /// This method is called when your robot collides with another robot.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -151,11 +151,11 @@ namespace Robocode.RobotInterfaces
         /// The angle is relative to your robot's facing. So 0 is straight Ahead of
         /// you.
         /// <p/>
-        /// This evnt can be generated if another robot hits you, in which case
+        /// This event can be generated if another robot hits you, in which case
         /// <see cref="HitRobotEvent.IsMyFault()"/> will return
         /// false. In this case, you will not be automatically stopped by the
         /// game -- but if you continue moving toward the robot you will hit it (and
-        /// generate another evnt). If you are moving away, then you won't hit it.
+        /// generate another event). If you are moving away, then you won't hit it.
         /// <seealso cref="HitRobotEvent"/>
         /// <seealso cref="Event"/>
         /// </summary>
@@ -164,10 +164,10 @@ namespace Robocode.RobotInterfaces
         /// <summary>
         /// This method is called when your robot collides with a wall.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt.
+        /// event.
         /// <p/>
         /// The wall at the top of the screen is 0 degrees, right is 90 degrees,
-        /// bottom is 180 degrees, left is 270 degrees. But this evnt is relative to
+        /// bottom is 180 degrees, left is 270 degrees. But this event is relative to
         /// your heading, so: The bearing is such that <see cref="Robot.TurnRight(double)"/>
         /// <see cref="HitWallEvent.Bearing"/> will
         /// point you perpendicular to the wall.
@@ -188,9 +188,9 @@ namespace Robocode.RobotInterfaces
         /// This method is called when your robot sees another robot, i.e. when the
         /// robot's radar Scan "hits" another robot.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt. (Almost all robots should override this!)
+        /// event. (Almost all robots should override this!)
         /// <p/>
-        /// This evnt is automatically called if there is a robot in range of your
+        /// This event is automatically called if there is a robot in range of your
         /// radar.
         /// <p/>
         /// Note that the robot's radar can only see robot within the range defined
@@ -216,7 +216,7 @@ namespace Robocode.RobotInterfaces
         /// The game assists Robots in firing, as follows:
         /// <ul>
         /// <li>If the gun and radar are aligned (and were aligned last turn),</li>
-        /// <li>and the evnt is current,</li>
+        /// <li>and the event is current,</li>
         /// <li>and you call Fire() before taking any other actions, Robot.Fire(double) will Fire directly at the robot.</li>
         /// </ul>
         /// <p/>
@@ -224,9 +224,9 @@ namespace Robocode.RobotInterfaces
         /// then Fire will hit it.
         /// <p/>
         /// AdvancedRobots will NOT be assisted in this manner, and are expected to
-        /// examine the evnt to determine if <see cref="Robot.Fire(double)"/> would
+        /// examine the event to determine if <see cref="Robot.Fire(double)"/> would
         /// hit. (i.e. you are spinning your gun around, but by the time you get the
-        /// evnt, your gun is 5 degrees past the robot).
+        /// event, your gun is 5 degrees past the robot).
         /// <seealso cref="ScannedRobotEvent"/>
         /// <seealso cref="Event"/>
         /// <seealso cref="Rules.RADAR_SCAN_RADIUS"/>
@@ -236,7 +236,7 @@ namespace Robocode.RobotInterfaces
         /// <summary>
         /// This method is called when another robot dies.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt.
+        /// event.
         /// <seealso cref="RobotDeathEvent"/>
         /// <seealso cref="Event"/>
         /// </summary>

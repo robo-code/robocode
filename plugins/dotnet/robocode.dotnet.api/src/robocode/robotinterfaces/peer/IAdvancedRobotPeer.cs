@@ -248,8 +248,8 @@ namespace Robocode.RobotInterfaces.Peer
         void WaitFor(Condition condition);
 
         /// <summary>
-        /// Call this during an evnt handler to allow new events of the same
-        /// priority to restart the evnt handler.
+        /// Call this during an event handler to allow new events of the same
+        /// priority to restart the event handler.
         /// <p/>
         /// <p/>
         /// <example>
@@ -269,7 +269,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="SetEventPriority"/>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
         /// </summary>
-        /// <param name="interruptible">true if the evnt handler should be
+        /// <param name="interruptible">true if the event handler should be
         ///                      interrupted if new events of the same priority occurs; false
         ///                      otherwise</param>
         void SetInterruptible(bool interruptible);
@@ -311,20 +311,20 @@ namespace Robocode.RobotInterfaces.Peer
         /// </pre>
         /// <p/>
         /// Note that you cannot change the priority for events with the special
-        /// priority value -1 or 100 (reserved) as these evnt are system events.
+        /// priority value -1 or 100 (reserved) as these event are system events.
         /// Also note that you cannot change the priority of CustomEvent.
         /// Instead you must change the priority of the condition(s) for your custom
         /// event(s).
         /// <seealso cref="GetEventPriority"/>
         /// <seealso cref="SetInterruptible"/>
         /// </summary>
-        /// <param name="eventClass">the name of the evnt class (string) to set the priority for</param>
-        /// <param name="priority">the new priority for that evnt class</param>
+        /// <param name="eventClass">the name of the event class (string) to set the priority for</param>
+        /// <param name="priority">the new priority for that event class</param>
         void SetEventPriority(string eventClass, int priority);
 
         /// <summary>
         /// Returns the current priority of a class of events.
-        /// An evnt priority is a value from 0 - 99. The higher value, the higher
+        /// An event priority is a value from 0 - 99. The higher value, the higher
         /// priority.
         /// <p/>
         /// <example>
@@ -355,11 +355,11 @@ namespace Robocode.RobotInterfaces.Peer
         /// </pre>
         /// <seealso cref="SetEventPriority"/>
         /// </summary>
-        /// <param name="eventClass">the name of the evnt class (string) </param>
+        /// <param name="eventClass">the name of the event class (string) </param>
         int GetEventPriority(string eventClass);
 
         /// <summary>
-        /// Registers a custom evnt to be called when a condition is met.
+        /// Registers a custom event to be called when a condition is met.
         /// When you are finished with your condition or just want to remove it you
         /// must call <see cref="RemoveCustomEvent"/>.
         /// <p/>
@@ -372,7 +372,7 @@ namespace Robocode.RobotInterfaces.Peer
         ///             return Energy &lt;= trigger;
         ///         }));
         /// <p/>
-        ///   // Add our custom evnt based on our condition
+        ///   // Add our custom event based on our condition
         ///   <b>AddCustomEvent(triggerHitCondition);</b>
         /// </pre>
         ///</example>
@@ -383,7 +383,7 @@ namespace Robocode.RobotInterfaces.Peer
         void AddCustomEvent(Condition condition);
 
         /// <summary>
-        /// Removes a custom evnt that was previously added by calling
+        /// Removes a custom event that was previously added by calling
         /// <see cref="AddCustomEvent"/>.
         /// <p/>
         /// <example>
@@ -395,12 +395,12 @@ namespace Robocode.RobotInterfaces.Peer
         ///             return Energy &lt;= trigger;
         ///         }));
         /// <p/>
-        ///   // Add our custom evnt based on our condition
+        ///   // Add our custom event based on our condition
         ///   AddCustomEvent(triggerHitCondition);
         ///   ...
         ///   <i>do something with your robot</i>
         ///   ...
-        ///   // Remove the custom evnt based on our condition
+        ///   // Remove the custom event based on our condition
         ///   <b>RemoveCustomEvent(triggerHitCondition);</b>
         /// </pre>
         /// </example>
@@ -412,7 +412,7 @@ namespace Robocode.RobotInterfaces.Peer
         void RemoveCustomEvent(Condition condition);
 
         /// <summary>
-        /// Clears Out any pending events in the robot's evnt queue immediately.
+        /// Clears Out any pending events in the robot's event queue immediately.
         ///
         /// <seealso cref="GetAllEvents"/>
         /// </summary>
@@ -420,7 +420,7 @@ namespace Robocode.RobotInterfaces.Peer
 
         /// <summary>
         /// Returns a vector containing all events currently in the robot's queue.
-        /// You might, for example, call this while processing another evnt.
+        /// You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -446,7 +446,7 @@ namespace Robocode.RobotInterfaces.Peer
 
         /// <summary>
         /// Returns a vector containing all StatusEvents currently in the robot's
-        /// queue. You might, for example, call this while processing another evnt.
+        /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -464,7 +464,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <summary>
         /// Returns a vector containing all BulletMissedEvents currently in the
         /// robot's queue. You might, for example, call this while processing another
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -482,7 +482,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <summary>
         /// Returns a vector containing all BulletHitBulletEvents currently in the
         /// robot's queue. You might, for example, call this while processing another
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -499,7 +499,7 @@ namespace Robocode.RobotInterfaces.Peer
 
         /// <summary>
         /// Returns a vector containing all BulletHitEvents currently in the robot's
-        /// queue. You might, for example, call this while processing another evnt.
+        /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -517,7 +517,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <summary>
         /// Returns a vector containing all HitByBulletEvents currently in the
         /// robot's queue. You might, for example, call this while processing
-        /// another evnt.
+        /// another event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -534,7 +534,7 @@ namespace Robocode.RobotInterfaces.Peer
 
         /// <summary>
         /// Returns a vector containing all HitRobotEvents currently in the robot's
-        /// queue. You might, for example, call this while processing another evnt.
+        /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -551,7 +551,7 @@ namespace Robocode.RobotInterfaces.Peer
 
         /// <summary>
         /// Returns a vector containing all HitWallEvents currently in the robot's
-        /// queue. You might, for example, call this while processing another evnt.
+        /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -568,7 +568,7 @@ namespace Robocode.RobotInterfaces.Peer
 
         /// <summary>
         /// Returns a vector containing all RobotDeathEvents currently in the robot's
-        /// queue. You might, for example, call this while processing another evnt.
+        /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -586,7 +586,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <summary>
         /// Returns a vector containing all ScannedRobotEvents currently in the
         /// robot's queue. You might, for example, call this while processing another
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>

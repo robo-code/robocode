@@ -15,7 +15,7 @@ using Robocode.RobotInterfaces;
 namespace Robocode
 {
     /// <summary>
-    /// This evnt is sent to <see cref="AdvancedRobot.OnCustomEvent(CustomEvent)"/>
+    /// This event is sent to <see cref="AdvancedRobot.OnCustomEvent(CustomEvent)"/>
     /// when a custom condition is met. Be sure to reset or remove
     /// the custom condition to avoid having it recurring repeatedly (see the
     /// example for the <see cref="Condition"/> method.
@@ -42,8 +42,8 @@ namespace Robocode
 
         /// <summary>
         /// Called by the game to create a new CustomEvent when a condition is met.
-        /// The evnt will have the given priority.
-        /// An evnt priority is a value from 0 - 99. The higher value, the higher
+        /// The event will have the given priority.
+        /// An event priority is a value from 0 - 99. The higher value, the higher
         /// priority. The default priority is 80.
         /// <p/>
         /// This is equivalent to calling <see cref="Robocode.Condition.Priority"/> on the
@@ -62,9 +62,9 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Returns the condition that fired, causing this evnt to be generated.
+        /// Returns the condition that fired, causing this event to be generated.
         /// Use this to determine which condition fired, and to remove the custom
-        /// evnt.
+        /// event.
         /// <pre>
         ///   public void OnCustomEvent(CustomEvent evnt) {
         ///       if (event.Condition.Name. == "mycondition") {
@@ -123,7 +123,7 @@ namespace Robocode
         /// <inheritdoc />
         internal override byte SerializationType
         {
-            get { throw new System.Exception("Serialization not supported on this evnt type"); }
+            get { throw new System.Exception("Serialization not supported on this event type"); }
         }
     }
 }

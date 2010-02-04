@@ -17,13 +17,13 @@ using Robocode.RobotInterfaces;
 namespace Robocode
 {
     /// <summary>
-    /// This evnt is sent to <see cref="Robot.OnDeath(DeathEvent)"/> when your
+    /// This event is sent to <see cref="Robot.OnDeath(DeathEvent)"/> when your
     /// robot dies.
     /// </summary>
     [Serializable]
     public sealed class DeathEvent : Event
     {
-        private const int DEFAULT_PRIORITY = -1; // System evnt -> cannot be changed!;
+        private const int DEFAULT_PRIORITY = -1; // System event -> cannot be changed!;
 
         /// <inheritdoc />
         public override int Priority

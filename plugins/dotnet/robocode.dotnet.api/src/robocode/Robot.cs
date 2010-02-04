@@ -922,7 +922,7 @@ namespace Robocode
         ///      ,
         ///      and you still see a robot, then the system will interrupt your
         ///      <see cref="OnScannedRobot(ScannedRobotEvent)" />
-        ///      evnt immediately and start it from the top.
+        ///      event immediately and start it from the top.
         ///    </li>
         ///  </ol>
         ///  <p />

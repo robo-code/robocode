@@ -59,7 +59,7 @@ namespace Robocode
 
         /// <summary>
         /// Returns a vector containing all MessageEvents currently in the robot's
-        /// queue. You might, for example, call this while processing another evnt.
+        /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
         /// <pre>

@@ -327,7 +327,7 @@ namespace Robocode
         private int hitWallBearing = -1;
 
         /// <summary>
-        /// The robot evnt handler for this robot.
+        /// The robot event handler for this robot.
         /// </summary>
         private InnerEventHandler innerEventHandler;
 
@@ -815,8 +815,8 @@ namespace Robocode
         }
 
         /// <summary>
-        /// This evnt methods is called from the game when this robot has been hit
-        /// by another robot's bullet. When this evnt occurs the
+        /// This event method is called from the game when this robot has been hit
+        /// by another robot's bullet. When this event occurs the
         /// <see cref="hitByBulletAngle"/> and <see cref="hitByBulletBearing"/> fields values
         /// are automatically updated.
         ///
@@ -828,8 +828,8 @@ namespace Robocode
         }
 
         /// <summary>
-        /// This evnt methods is called from the game when a bullet from this robot
-        /// has hit another robot. When this evnt occurs the <see cref="hitRobotAngle"/>
+        /// This event method is called from the game when a bullet from this robot
+        /// has hit another robot. When this event occurs the <see cref="hitRobotAngle"/>
         /// and <see cref="hitRobotBearing"/> fields values are automatically updated.
         ///
         /// <seealso cref="hitRobotAngle"/>
@@ -840,8 +840,8 @@ namespace Robocode
         }
 
         /// <summary>
-        /// This evnt methods is called from the game when this robot has hit a wall.
-        /// When this evnt occurs the <see cref="hitWallAngle"/> and <see cref="hitWallBearing"/>
+        /// This event method is called from the game when this robot has hit a wall.
+        /// When this event occurs the <see cref="hitWallAngle"/> and <see cref="hitWallBearing"/>
         /// fields values are automatically updated.
         ///
         /// <seealso cref="hitWallAngle"/>
@@ -852,8 +852,8 @@ namespace Robocode
         }
 
         /// <summary>
-        /// This evnt method is called from the game when the radar detects another
-        /// robot. When this evnt occurs the <see cref="scannedDistance"/>,
+        /// This event method is called from the game when the radar detects another
+        /// robot. When this event occurs the <see cref="scannedDistance"/>,
         /// <see cref="scannedAngle"/>, <see cref="scannedBearing"/>, and <see cref="scannedEnergy"/>
         /// field values are automatically updated.
         /// <seealso cref="scannedDistance"/>
@@ -1162,7 +1162,7 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Returns the evnt handler of this robot.
+        /// Returns the event handler of this robot.
         /// </summary>
         private InnerEventHandler getEventHandler()
         {
@@ -1174,8 +1174,8 @@ namespace Robocode
         }
 
         /// <summary>
-        /// The JuniorRobot evnt handler, which  :  the basic robot events,
-        /// JuniorRobot evnt, and IRunnable.
+        /// The JuniorRobot event handler, which extends the basic robot events,
+        /// JuniorRobot event, and IRunnable.
         /// </summary>
         private sealed class InnerEventHandler : IBasicEvents, IRunnable
         {
@@ -1277,7 +1277,7 @@ namespace Robocode
                     }
                 }
 
-                // Reset evnt data
+                // Reset event data
                 robot.scannedDistance = -1;
                 robot.scannedAngle = -1;
                 robot.scannedBearing = -1;

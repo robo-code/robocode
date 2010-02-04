@@ -13,7 +13,7 @@ using Robocode;
 namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// An evnt interface for receiving paint events with an
+    /// An event interface for receiving paint events with an
     /// <see cref="IPaintRobot"/>.
     /// <seealso cref="IPaintRobot"/>
     /// </summary>

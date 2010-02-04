@@ -403,7 +403,7 @@ namespace Robocode
         ///  Note that the gun cannot Fire if the gun is overheated, meaning that
         ///  <see cref="Robot.GunHeat"/> returns a value &gt; 0.
         ///  <p />
-        ///  An evnt is generated when the bullet hits a robot, wall, or another
+        ///  An event is generated when the bullet hits a robot, wall, or another
         ///  bullet.
         ///  <p />
         ///  <example>
@@ -463,7 +463,7 @@ namespace Robocode
         ///  Note that the gun cannot Fire if the gun is overheated, meaning that
         ///  <see cref="Robot.GunHeat"/> returns a value &gt; 0.
         ///  <p />
-        ///  A evnt is generated when the bullet hits a robot
+        ///  An event is generated when the bullet hits a robot
         ///  (<see cref="BulletHitEvent"/>), wall (<see cref="BulletMissedEvent"/>), or another
         ///  bullet (<see cref="BulletHitBulletEvent"/>).
         ///  <p />
@@ -512,7 +512,7 @@ namespace Robocode
         }
 
         ///<summary>
-        ///  Registers a custom evnt to be called when a condition is met.
+        ///  Registers a custom event to be called when a condition is met.
         ///  When you are finished with your condition or just want to remove it you
         ///  must call <see cref="RemoveCustomEvent(Condition)"/>.
         ///  <p />
@@ -525,7 +525,7 @@ namespace Robocode
         ///      };
         ///    }
         ///    <p />
-        ///    // Add our custom evnt based on our condition
+        ///    // Add our custom event based on our condition
         ///    <b>
         ///      AddCustomEvent(triggerHitCondition);
         ///    </b>
@@ -565,7 +565,7 @@ namespace Robocode
 
         
         ///<summary>
-        ///  Removes a custom evnt that was previously added by calling
+        ///  Removes a custom event that was previously added by calling
         ///  <see cref="AddCustomEvent(Condition)"/>.
         ///  <p />
         ///  <example>
@@ -577,14 +577,14 @@ namespace Robocode
         ///      };
         ///    }
         ///    <p />
-        ///    // Add our custom evnt based on our condition
+        ///    // Add our custom event based on our condition
         ///    AddCustomEvent(triggerHitCondition);
         ///    ...
         ///    <i>
         ///      do something with your robot
         ///    </i>
         ///    ...
-        ///    // Remove the custom evnt based on our condition
+        ///    // Remove the custom event based on our condition
         ///    <b>
         ///      RemoveCustomEvent(triggerHitCondition);
         ///    </b>
@@ -613,7 +613,7 @@ namespace Robocode
         }
 
         ///<summary>
-        ///  Clears Out any pending events in the robot's evnt queue immediately.
+        ///  Clears Out any pending events in the robot's event queue immediately.
         ///
         ///  <seealso cref="GetAllEvents()"/>
         ///</summary>
@@ -850,7 +850,7 @@ namespace Robocode
 
         ///<summary>        
         ///  Returns the current priority of a class of events.
-        ///  An evnt priority is a value from 0 - 99. The higher value, the higher
+        ///  An event priority is a value from 0 - 99. The higher value, the higher
         ///  priority.
         ///  <p />
         ///  <example>
@@ -882,7 +882,7 @@ namespace Robocode
         ///  <seealso cref="SetEventPriority(string, int)"/>
         ///</summary>
         ///  <param name="eventClass">
-        ///    the name of the evnt class (string)
+        ///    the name of the event class (string)
         ///  </param>
         public int GetEventPriority(string eventClass)
         {
@@ -1098,17 +1098,17 @@ namespace Robocode
         ///  </pre>
         ///  <p />
         ///  Note that you cannot change the priority for events with the special
-        ///  priority value -1 or 100 (reserved) as these evnt are system events.
+        ///  priority value -1 or 100 (reserved) as these events are system events.
         ///  Also note that you cannot change the priority of CustomEvent.
         ///  Instead you must change the priority of the condition(s) for your custom
         ///  event(s).
         ///  <seealso cref="GetEventPriority(string)"/>
         ///</summary>
         ///  <param name="eventClass">
-        ///    the name of the evnt class (string) to set the priority for
+        ///    the name of the event class (string) to set the priority for
         ///  </param>
         ///  <param name="priority">
-        ///    the new priority for that evnt class
+        ///    the new priority for that event class
         ///  </param>
         public void SetEventPriority(string eventClass, int priority)
         {
@@ -1123,8 +1123,8 @@ namespace Robocode
         }
 
         ///<summary>        
-        ///  Call this during an evnt handler to allow new events of the same
-        ///  priority to restart the evnt handler.
+        ///  Call this during an event handler to allow new events of the same
+        ///  priority to restart the event handler.
         ///  <p />
         ///  <p />
         ///  <example>
@@ -1564,7 +1564,7 @@ namespace Robocode
         ///  This method is called if your robot dies.
         ///  <p />
         ///  You should override it in your robot if you want to be informed of this
-        ///  evnt. Actions will have no effect if called from this section. The
+        ///  event. Actions will have no effect if called from this section. The
         ///  intent is to allow you to perform calculations or print something out
         ///  when the robot is killed.
         ///  <seealso cref="DeathEvent"/>

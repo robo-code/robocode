@@ -19,7 +19,7 @@ namespace Robocode
     ///<summary>
     ///  A BattleEndedEvent is sent to <see cref="Robot.OnBattleEnded(BattleEndedEvent)"/>
     ///  when the battle is ended.
-    ///  You can use the information contained in this evnt to determine if the
+    ///  You can use the information contained in this event to determine if the
     ///  battle was aborted and also get the results of the battle.
     ///  <seealso cref="BattleResults"/>
     ///  <seealso cref="Robot.OnBattleEnded(BattleEndedEvent)"/>
@@ -27,7 +27,7 @@ namespace Robocode
     [Serializable]
     public sealed class BattleEndedEvent : Event
     {
-        private const int DEFAULT_PRIORITY = 100; // System evnt -> cannot be changed!;
+        private const int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
 
         private readonly bool aborted;
         private readonly BattleResults results;

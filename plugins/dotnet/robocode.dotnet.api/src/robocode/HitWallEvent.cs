@@ -19,7 +19,7 @@ namespace Robocode
     /// <summary>
     /// A HitWallEvent is sent to <see cref="Robot.OnHitWall(HitWallEvent)"/>
     /// when you collide a wall.
-    /// You can use the information contained in this evnt to determine what to do.
+    /// You can use the information contained in this event to determine what to do.
     /// </summary>
     [Serializable]
     public sealed class HitWallEvent : Event

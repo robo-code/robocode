@@ -15,10 +15,10 @@ using Robocode.RobotInterfaces;
 namespace Robocode
 {
     /// <summary>
-    /// This evnt occurs when your robot should paint, where the 
+    /// This event occurs when your robot should paint, where the 
     /// <see cref="Robot.OnPaint(IGraphics)"/> is called on your robot.
     /// <p/>
-    /// You can use this evnt for setting the evnt priority by calling
+    /// You can use this event for setting the event priority by calling
     /// <see cref="AdvancedRobot.SetEventPriority(string, int)"/>
     /// </summary>
     [Serializable]

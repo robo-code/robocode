@@ -19,7 +19,7 @@ namespace tested.robotscs
             // noinspection InfiniteLoopStatement
             for (;;)
             {
-                Ahead(10); // make sure we evntually hits a wall to receive onHitWall
+                Ahead(10); // make sure we eventually hits a wall to receive onHitWall
             }
         }
 

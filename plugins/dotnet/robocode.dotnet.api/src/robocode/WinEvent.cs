@@ -17,13 +17,13 @@ using Robocode.RobotInterfaces;
 namespace Robocode
 {
     ///<summary>
-    ///  This evnt is sent to <see cref="Robot.OnWin(WinEvent)"/> when your robot
+    ///  This event is sent to <see cref="Robot.OnWin(WinEvent)"/> when your robot
     ///  wins the round in a battle.
     ///</summary>
     [Serializable]
     public sealed class WinEvent : Event
     {
-        private const int DEFAULT_PRIORITY = 100; // System evnt -> cannot be changed!;
+        private const int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
 
         /// <inheritdoc />
         public override int Priority

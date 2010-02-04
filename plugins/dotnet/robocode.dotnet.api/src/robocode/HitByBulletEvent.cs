@@ -19,7 +19,7 @@ namespace Robocode
     /// <summary>
     /// A HitByBulletEvent is sent to <see cref="Robot.OnHitByBullet(HitByBulletEvent)"/>
     /// when your robot has been hit by a bullet.
-    /// You can use the information contained in this evnt to determine what to do.
+    /// You can use the information contained in this event to determine what to do.
     /// </summary>
     [Serializable]
     public sealed class HitByBulletEvent : Event

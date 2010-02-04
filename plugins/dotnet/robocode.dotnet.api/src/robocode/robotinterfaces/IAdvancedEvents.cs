@@ -13,7 +13,7 @@ using Robocode;
 namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// An evnt interface for receiving advanced robot events with an
+    /// An event interface for receiving advanced robot events with an
     /// <see cref="IAdvancedRobot"/>
     /// <seealso cref="IAdvancedRobot"/>
     /// </summary>
@@ -21,13 +21,13 @@ namespace Robocode.RobotInterfaces
     {
         /// <summary>
         /// This method is called if the robot is using too much time between
-        /// actions. When this evnt occur, the robot's turn is skipped, meaning that
+        /// actions. When this event occur, the robot's turn is skipped, meaning that
         /// it cannot take action anymore in this turn.
         /// <p/>
-        /// If you receive 30 skipped turn evnt, your robot will be removed from the
+        /// If you receive 30 skipped turn event, your robot will be removed from the
         /// round and loose the round.
         /// <p/>
-        /// You will only receive this evnt after taking an action. So a robot in an
+        /// You will only receive this event after taking an action. So a robot in an
         /// infinite loop will not receive any events, and will simply be stopped.
         /// <p/>
         /// No correctly working, reasonable robot should ever receive this event
@@ -35,7 +35,7 @@ namespace Robocode.RobotInterfaces
         /// <seealso cref="Robocode.SkippedTurnEvent"/>
         /// <seealso cref="Robocode.Event"/>
         /// </summary>
-        /// <param name="evnt">the skipped turn evnt set by the game</param>
+        /// <param name="evnt">the skipped turn event set by the game</param>
         void OnSkippedTurn(SkippedTurnEvent evnt);
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Robocode.RobotInterfaces
         /// <seealso cref="Robocode.CustomEvent"/>
         /// <seealso cref="Robocode.Event"/>
         /// </summary>
-        /// <param name="evnt"> the custom evnt that occurred</param>
+        /// <param name="evnt"> the custom event that occurred</param>
         void OnCustomEvent(CustomEvent evnt);
     }
 }

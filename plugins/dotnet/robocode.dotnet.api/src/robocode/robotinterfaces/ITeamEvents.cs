@@ -13,7 +13,7 @@ using Robocode;
 namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// An evnt interface for receiving robot team events with an
+    /// An event interface for receiving robot team events with an
     /// <see cref="ITeamRobot"/>.
     /// <seealso cref="ITeamRobot"/>
     /// </summary>
@@ -22,7 +22,7 @@ namespace Robocode.RobotInterfaces
         /// <summary>
         /// This method is called when your robot receives a message from a teammate.
         /// You should override it in your robot if you want to be informed of this
-        /// evnt.
+        /// event.
         /// <p/>
         /// <example>
         /// <pre>
@@ -34,7 +34,7 @@ namespace Robocode.RobotInterfaces
         /// <seealso cref="Robocode.MessageEvent"/>
         /// <seealso cref="Robocode.Event"/>
         /// </summary>
-        /// <param name="evnt">the message evnt sent by the game</param>
+        /// <param name="evnt">the message event sent by the game</param>
         void OnMessageReceived(MessageEvent evnt);
     }
 }
