@@ -58,7 +58,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <param name="radians">the amount of radians to turn the robot's body.
         ///                 If radians &gt; 0 the robot's body is set to turn right.
         ///                 If radians &lt; 0 the robot's body is set to turn left.
-        ///                 If radians = 0 the robot's body is set to Stop turning.</param>
+        ///                 If radians = 0 the robot's body is set to stop turning.</param>
         void TurnAndMove(double distance, double radians);
     }
 }

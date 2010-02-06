@@ -17,7 +17,7 @@ namespace SampleCs
     /// <summary>
     ///   Corners - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
     ///   <p />
-    ///   This robot moves to a corner, then swings the gun Back and forth.
+    ///   This robot moves to a corner, then swings the gun back and forth.
     ///   If it dies, it tries a new corner in the next round.
     /// </summary>
     public class Corners : Robot
@@ -48,7 +48,7 @@ namespace SampleCs
             // Initialize gun turn speed to 3
             int gunIncrement = 3;
 
-            // Spin gun Back and forth
+            // Spin gun back and forth
             while (true)
             {
                 for (int i = 0; i < 30; i++)

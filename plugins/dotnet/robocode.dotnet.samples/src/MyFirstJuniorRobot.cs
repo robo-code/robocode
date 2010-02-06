@@ -32,9 +32,9 @@ namespace SampleCs
             // Seesaw forever
             while (true)
             {
-                Ahead(100); // Move Ahead 100
+                Ahead(100); // Move ahead 100
                 TurnGunRight(360); // Spin gun around
-                Back(100); // Move Back 100
+                Back(100); // Move back 100
                 TurnGunRight(360); // Spin gun around
             }
         }
@@ -57,7 +57,7 @@ namespace SampleCs
         /// </summary>
         public override void OnHitByBullet()
         {
-            // Move Ahead 100 and in the same time turn left papendicular to the bullet
+            // Move ahead 100 and in the same time turn left papendicular to the bullet
             TurnAheadLeft(100, 90 - HitByBulletBearing);
         }
     }

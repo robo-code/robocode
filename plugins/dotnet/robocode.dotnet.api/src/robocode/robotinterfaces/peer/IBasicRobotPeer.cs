@@ -271,7 +271,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's body is set to turn right, and
         /// negative values means that the robot's body is set to turn left.
-        /// If 0 is given as input, the robot's body will Stop turning.
+        /// If 0 is given as input, the robot's body will stop turning.
         /// <p/>
         /// <example>
         /// <pre>
@@ -289,7 +289,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <param name="radians">the amount of radians to turn the robot's body.
         ///                If radians &gt; 0 the robot's body is set to turn right.
         ///                If radians &lt; 0 the robot's body is set to turn left.
-        ///                If radians = 0 the robot's body is set to Stop turning.</param>
+        ///                If radians = 0 the robot's body is set to stop turning.</param>
         void TurnBody(double radians);
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's gun is set to turn right, and
         /// negative values means that the robot's gun is set to turn left.
-        /// If 0 is given as input, the robot's gun will Stop turning.
+        /// If 0 is given as input, the robot's gun will stop turning.
         /// <p/>
         /// <example>
         /// <pre>
@@ -318,7 +318,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <param name="radians">the amount of radians to turn the robot's gun.
         ///                If radians &gt; 0 the robot's gun is set to turn right.
         ///                If radians &lt; 0 the robot's gun is set to turn left.
-        ///                If radians = 0 the robot's gun is set to Stop turning.</param>
+        ///                If radians = 0 the robot's gun is set to stop turning.</param>
         void TurnGun(double radians);
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <p/>
         /// The bullet will do (4 * power) damage if it hits another robot. If power
         /// is greater than 1, it will do an additional 2 * (power - 1) damage.
-        /// You will get (3 * power) Back if you hit the other robot. You can call
+        /// You will get (3 * power) back if you hit the other robot. You can call
         /// <see cref="Rules.GetBulletDamage(double)"/> for getting the damage that a
         /// bullet with a specific bullet power will do.
         /// <p/>
@@ -374,7 +374,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// Sets the gun to Fire a bullet when the next execution takes place.
         /// The bullet will travel in the direction the gun is pointing.
         /// <p/>
-        /// This call returns immediately, and will not Execute until you call
+        /// This call returns immediately, and will not execute until you call
         /// Execute() or take an action that executes.
         /// <p/>
         /// The specified bullet power is an amount of energy that will be taken from
@@ -383,7 +383,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <p/>
         /// The bullet will do (4 * power) damage if it hits another robot. If power
         /// is greater than 1, it will do an additional 2 * (power - 1) damage.
-        /// You will get (3 * power) Back if you hit the other robot. You can call
+        /// You will get (3 * power) back if you hit the other robot. You can call
         /// <see cref="Rules.GetBulletDamage(double)"/> for getting the damage that a
         /// bullet with a specific bullet power will do.
         /// <p/>
@@ -552,7 +552,7 @@ namespace Robocode.RobotInterfaces.Peer
         Color GetBulletColor();
 
         /// <summary>
-        /// Sets the color of the robot's Scan arc.
+        /// Sets the color of the robot's scan arc.
         /// <p/>
         /// A null indicates the default (blue) color.
         /// <p/>
@@ -574,7 +574,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="SetBulletColor"/>
         /// <seealso cref="Color"/>
         /// </summary>
-        /// <param name="color">the new Scan arc color</param>
+        /// <param name="color">the new scan arc color</param>
         void SetScanColor(Color color);
 
         /// <summary>
@@ -646,7 +646,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <p/>
         /// There are 2 reasons to call Rescan() manually:
         /// <ol>
-        /// <li>You want to Scan after you Stop moving.</li>
+        /// <li>You want to scan after you stop moving.</li>
         /// <li>You want to interrupt the OnScannedRobot event. This is more
         /// likely. If you are in OnScannedRobot and call Scan(),
         /// and you still see a robot, then the system will interrupt your

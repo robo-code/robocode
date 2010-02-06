@@ -31,9 +31,9 @@ namespace tested.robotscs
             // noinspection InfiniteLoopStatement
             while (true)
             {
-                peer.Move(100); // Move Ahead 100
+                peer.Move(100); // Move ahead 100
                 peer.TurnGun(Math.PI*2); // Spin gun around
-                peer.Move(-100); // Move Back 100
+                peer.Move(-100); // Move back 100
                 peer.TurnGun(Math.PI*2); // Spin gun around
             }
         }

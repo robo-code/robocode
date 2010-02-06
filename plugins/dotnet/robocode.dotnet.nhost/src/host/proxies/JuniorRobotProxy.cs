@@ -60,7 +60,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             int turns = 0; // number of turns to it will take to move the distance
 
             // Calculate the amount of turn it will take to accelerate + decelerate
-            // up to the max. velocity, but Stop if the distance for used for
+            // up to the max. velocity, but stop if the distance for used for
             // acceleration + deceleration gets bigger than the total distance to move
             for (int t = 1; t < maxVelocity; t++)
             {

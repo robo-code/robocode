@@ -24,23 +24,21 @@ namespace Robocode
     ///<summary>
     ///  The basic robot class that you will extend to create your own robots.
     ///  <p />
-    ///  <p />
     ///  Please note the following standards will be used:
-    ///  <br />
+    ///  <p />
     ///  heading - absolute angle in degrees with 0 facing up the screen,
     ///  positive clockwise. 0 &lt;= heading &lt; 360.
-    ///  <br />
+    ///  <p />
     ///  bearing - relative angle to some obj from your robot's heading,
     ///  positive clockwise. -180 &lt; bearing &lt;= 180
-    ///  <br />
+    ///  <p />
     ///  All coordinates are expressed as (x,y).
-    ///  <br />
     ///  All coordinates are positive.
-    ///  <br />
+    ///  <p />
     ///  The origin (0,0) is at the bottom left of the screen.
-    ///  <br />
+    ///  <p />
     ///  Positive X is right.
-    ///  <br />
+    ///  <p />
     ///  Positive Y is up.
     ///  <br /><see href="http://robocode.sourceforge.net"/>
     ///  <br /><see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
@@ -68,12 +66,13 @@ namespace Robocode
         ///   right side of the battle window.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Print Out a line each time my robot hits another robot
-        ///       public void OnHitRobot(HitRobotEvent e) {
-        ///       Out.WriteLine("I hit a robot!  My energy: " + Energy + " his energy: " + e.Energy);
-        ///       }
-        ///     </pre>
+        ///     <code>
+        ///     // Print Out a line each time my robot hits another robot
+        ///     public void OnHitRobot(HitRobotEvent e)
+        ///     {
+        ///         Out.WriteLine("I hit a robot!  My energy: " + Energy + " his energy: " + e.Energy);
+        ///     }
+        ///     </code>
         ///   </example>
         /// </summary>
         public TextWriter Out
@@ -94,8 +93,8 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Throws a RobotException. This method should be called when the robot's peer
-        ///   is uninitialized.
+        ///   Throws a RobotException.
+        ///   This method should be called when the robot's peer is uninitialized.
         /// </summary>
         internal static void UninitializedException()
         {
@@ -128,7 +127,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Immediately moves your robot Ahead (forward) by distance measured in
+        ///   Immediately moves your robot ahead (forward) by distance measured in
         ///   pixels.
         ///   <p />
         ///   This call executes immediately, and does not return until it is complete,
@@ -143,18 +142,18 @@ namespace Robocode
         ///   instead of forward.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Move the robot 100 pixels forward
-        ///       Ahead(100);
-        ///       <p />
-        ///       // Afterwards, move the robot 50 pixels backward
-        ///       Ahead(-50);
-        ///     </pre>
+        ///     <code>
+        ///     // Move the robot 100 pixels forward
+        ///     Ahead(100);
+        ///
+        ///     // Afterwards, move the robot 50 pixels backward
+        ///     Ahead(-50);
+        ///     </code>
         ///   </example>
         /// </summary>
         /// <param name="distance">
-        ///   the distance to move Ahead measured in pixels.
-        ///   If this value is negative, the robot will move Back instead of Ahead.
+        ///   The distance to move ahead measured in pixels.
+        ///   If this value is negative, the robot will move back instead of ahead.
         /// </param>
         /// <seealso cref="Back(double)" />
         /// <seealso cref="OnHitWall(HitWallEvent)" />
@@ -186,21 +185,21 @@ namespace Robocode
         ///   of backward.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Move the robot 100 pixels backward
-        ///       Back(100);
-        ///       <p />
-        ///       // Afterwards, move the robot 50 pixels forward
-        ///       Back(-50);
-        ///     </pre>
+        ///     <code>
+        ///     // Move the robot 100 pixels backward
+        ///     Back(100);
+        ///
+        ///     // Afterwards, move the robot 50 pixels forward
+        ///     Back(-50);
+        ///     </code>
         ///   </example>
         ///   <seealso cref="Ahead(double)" />
         ///   <seealso cref="OnHitWall(HitWallEvent)" />
         ///   <seealso cref="OnHitRobot(HitRobotEvent)" />
         /// </summary>
         /// <param name="distance">
-        ///   the distance to move Back measured in pixels.
-        ///   If this value is negative, the robot will move Ahead instead of Back.
+        ///   The distance to move back measured in pixels.
+        ///   If this value is negative, the robot will move ahead instead of back.
         /// </param>
         public void Back(double distance)
         {
@@ -327,8 +326,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Returns the X position of the robot. (0,0) is at the bottom left of the
-        ///   battlefield.
+        ///   Returns the X position of the robot. (0,0) is at the bottom left of the battlefield.
         ///   <seealso cref="Y" />
         /// </summary>
         public double X
@@ -345,8 +343,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Returns the Y position of the robot. (0,0) is at the bottom left of the
-        ///   battlefield.
+        ///   Returns the Y position of the robot. (0,0) is at the bottom left of the battlefield.
         ///   <seealso cref="X" />
         /// </summary>
         public double Y
@@ -367,15 +364,17 @@ namespace Robocode
         ///   robot's basic behavior.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // A basic robot that moves around in a square
-        ///       public void Run() {
-        ///       while (true) {
-        ///       Ahead(100);
-        ///       TurnRight(90);
-        ///       }
-        ///       }
-        ///     </pre>
+        ///     <code>
+        ///     // A basic robot that moves around in a square
+        ///     public void Run()
+        ///     {
+        ///         while (true)
+        ///         {
+        ///             Ahead(100);
+        ///             TurnRight(90);
+        ///         }
+        ///     }
+        ///     </code>
         ///   </example>
         /// </summary>
         public virtual void Run()
@@ -393,13 +392,13 @@ namespace Robocode
         ///   instead of left.
         ///   <p />
         ///   <example>
-        ///     <pre>
+        ///     <code>
         ///       // Turn the robot 180 degrees to the left
         ///       TurnLeft(180);
-        ///       <p />
+        ///
         ///       // Afterwards, turn the robot 90 degrees to the right
         ///       TurnLeft(-90);
-        ///     </pre>
+        ///     </code>
         ///   </example>
         ///   <seealso cref="TurnRight(double)" />
         ///   <seealso cref="TurnGunLeft(double)" />
@@ -408,16 +407,10 @@ namespace Robocode
         ///   <seealso cref="TurnRadarRight(double)" />
         /// </summary>
         /// <param name="degrees">
-        ///   the amount of degrees to turn the robot's body to the left.
-        ///   If
-        ///   <pre>degrees</pre>
-        ///   &gt; 0 the robot will turn left.
-        ///   If
-        ///   <pre>degrees</pre>
-        ///   &lt; 0 the robot will turn right.
-        ///   If
-        ///   <pre>degrees</pre>
-        ///   = 0 the robot will not turn, but Execute.
+        ///   The amount of degrees to turn the robot's body to the left.
+        ///   If degrees &gt; 0 the robot will turn left.
+        ///   If degrees &lt; 0 the robot will turn right.
+        ///   If degrees = 0 the robot will not turn, but execute.
         /// </param>
         public void TurnLeft(double degrees)
         {
@@ -442,13 +435,13 @@ namespace Robocode
         ///  instead of right.
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Turn the robot 180 degrees to the right
-        ///      TurnRight(180);
-        ///      <p />
-        ///      // Afterwards, turn the robot 90 degrees to the left
-        ///      TurnRight(-90);
-        ///    </pre>
+        ///    <code>
+        ///    // Turn the robot 180 degrees to the right
+        ///    TurnRight(180);
+        ///
+        ///    // Afterwards, turn the robot 90 degrees to the left
+        ///    TurnRight(-90);
+        ///    </code>
         ///  </example>
         ///
         ///  <seealso cref="TurnLeft(double)" />
@@ -458,16 +451,10 @@ namespace Robocode
         ///  <seealso cref="TurnRadarRight(double)" />
         ///</summary>
         ///<param name="degrees">
-        ///  the amount of degrees to turn the robot's body to the right.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  &gt; 0 the robot will turn right.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  &lt; 0 the robot will turn left.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  = 0 the robot will not turn, but Execute.
+        ///  The amount of degrees to turn the robot's body to the right.
+        ///  If degrees &gt; 0 the robot will turn right.
+        ///  If degrees &lt; 0 the robot will turn left.
+        ///  If degrees = 0 the robot will not turn, but execute.
         ///</param>
         public void TurnRight(double degrees)
         {
@@ -509,38 +496,30 @@ namespace Robocode
         ///   <p />
         ///   The bullet will do (4 * power) damage if it hits another robot. If power
         ///   is greater than 1, it will do an additional 2 * (power - 1) damage.
-        ///   You will get (3 * power) Back if you hit the other robot. You can call
+        ///   You will get (3 * power) back if you hit the other robot. You can call
         ///   <see cref="Rules.GetBulletDamage(double)" />
         ///   for getting the damage that a
         ///   bullet with a specific bullet power will do.
         ///   <p />
-        ///   The specified bullet power should be between
-        ///   <see cref="Rules.MIN_BULLET_POWER" />
-        ///   and
-        ///   <see cref="Rules.MAX_BULLET_POWER" />
-        ///   .
+        ///   The specified bullet power should be between <see cref="Rules.MIN_BULLET_POWER" />
+        ///   and <see cref="Rules.MAX_BULLET_POWER" />.
         ///   <p />
         ///   Note that the gun cannot Fire if the gun is overheated, meaning that
         ///   <see cref="GunHeat" />
         ///   returns a value &gt; 0.
         ///   <p />
-        ///   A event is generated when the bullet hits a robot
-        ///   (
-        ///   <see cref="BulletHitEvent" />
-        ///   ), wall (
-        ///   <see cref="BulletMissedEvent" />
-        ///   ), or another
-        ///   bullet (
-        ///   <see cref="BulletHitBulletEvent" />
-        ///   ).
+        ///   A event is generated when the bullet hits a robot (<see cref="BulletHitEvent" />),
+        ///   wall (<see cref="BulletMissedEvent" />), or another bullet
+        ///   (<see cref="BulletHitBulletEvent" />).
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Fire a bullet with maximum power if the gun is ready
-        ///       if (GetGunHeat() == 0) {
-        ///       Fire(Rules.MAX_BULLET_POWER);
-        ///       }
-        ///     </pre>
+        ///     <code>
+        ///     // Fire a bullet with maximum power if the gun is ready
+        ///     if (GetGunHeat() == 0)
+        ///     {
+        ///         Fire(Rules.MAX_BULLET_POWER);
+        ///     }
+        ///     </code>
         ///   </example>
         ///   <seealso cref="FireBullet(double)" />
         ///   <seealso cref="GunHeat" />
@@ -550,7 +529,7 @@ namespace Robocode
         ///   <seealso cref="OnBulletMissed(BulletMissedEvent)" />
         /// </summary>
         /// <param name="power">
-        ///   the amount of energy given to the bullet, and subtracted from the robot's energy.
+        ///   The amount of energy given to the bullet, and subtracted from the robot's energy.
         /// </param>
         public void Fire(double power)
         {
@@ -576,51 +555,41 @@ namespace Robocode
         ///  <p />
         ///  The bullet will do (4 * power) damage if it hits another robot. If power
         ///  is greater than 1, it will do an additional 2 * (power - 1) damage.
-        ///  You will get (3 * power) Back if you hit the other robot. You can call
+        ///  You will get (3 * power) back if you hit the other robot. You can call
         ///  <see cref="Rules.GetBulletDamage(double)" />
         ///  for getting the damage that a
         ///  bullet with a specific bullet power will do.
         ///  <p />
-        ///  The specified bullet power should be between
-        ///  <see cref="Rules.MIN_BULLET_POWER" />
-        ///  and
-        ///  <see cref="Rules.MAX_BULLET_POWER" />
-        ///  .
+        ///  The specified bullet power should be between <see cref="Rules.MIN_BULLET_POWER" />
+        ///  and <see cref="Rules.MAX_BULLET_POWER" />.
         ///  <p />
         ///  Note that the gun cannot Fire if the gun is overheated, meaning that
-        ///  <see cref="GunHeat" />
-        ///  returns a value &gt; 0.
+        ///  <see cref="GunHeat" /> returns a value &gt; 0.
         ///  <p />
-        ///  A event is generated when the bullet hits a robot
-        ///  (
-        ///  <see cref="BulletHitEvent" />
-        ///  ), wall (
-        ///  <see cref="BulletMissedEvent" />
-        ///  ), or another
-        ///  bullet (
-        ///  <see cref="BulletHitBulletEvent" />
-        ///  ).
+        ///  A event is generated when the bullet hits a robot (<see cref="BulletHitEvent" />),
+        ///  wall (<see cref="BulletMissedEvent" />), or another bullet
+        ///  (<see cref="BulletHitBulletEvent" />).
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Fire a bullet with maximum power if the gun is ready
-        ///      if (GetGunHeat() == 0) {
-        ///      Bullet bullet = FireBullet(Rules.MAX_BULLET_POWER);
-        ///      <p />
-        ///      // Get the velocity of the bullet
-        ///      if (bullet != null) {
-        ///      double bulletVelocity = bullet.Velocity;
-        ///      }
-        ///      }
-        ///    </pre>
+        ///    <code>
+        ///    // Fire a bullet with maximum power if the gun is ready
+        ///    if (GetGunHeat() == 0)
+        ///    {
+        ///        Bullet bullet = FireBullet(Rules.MAX_BULLET_POWER);
+        ///
+        ///        // Get the velocity of the bullet
+        ///        if (bullet != null)
+        ///        {
+        ///            double bulletVelocity = bullet.Velocity;
+        ///        }
+        ///    }
+        ///    </code>
         ///  </example>
         ///  Returns a
         ///  <see cref="Bullet" />
-        ///  that contains information about the bullet if it
-        ///  was actually fired, which can be used for tracking the bullet after it
-        ///  has been fired. If the bullet was not fired,
-        ///  <pre>null</pre>
-        ///  is returned.
+        ///  That contains information about the bullet if it  was actually fired,
+        ///  which can be used for tracking the bullet after it has been fired.
+        ///  If the bullet was not fired, null is returned.
         ///  <seealso cref="Fire(double)" />
         ///  <seealso cref="Bullet" />
         ///  <seealso cref="GunHeat" />
@@ -692,14 +661,11 @@ namespace Robocode
         ///   0. (Calls to Fire will succeed, but will not actually Fire unless
         ///   GetGunHeat() == 0).
         ///   <p />
-        ///   The amount of gun heat generated when the gun is fired is
-        ///   1 + (firePower / 5). Each turn the gun heat drops by the amount returned
-        ///   by
-        ///   <see cref="GunCoolingRate" />
-        ///   , which is a battle setup.
+        ///   The amount of gun heat generated when the gun is fired is 1 + (firePower / 5).
+        ///   Each turn the gun heat drops by the amount returned   by <see cref="GunCoolingRate" />,
+        ///   which is a battle setup.
         ///   <p />
-        ///   Note that all guns are "hot" at the start of each round, where the gun
-        ///   heat is 3.
+        ///   Note that all guns are "hot" at the start of each round, where the gun heat is 3.
         ///   <seealso cref="GunCoolingRate" />
         ///   <seealso cref="Fire(double)" />
         ///   <seealso cref="FireBullet(double)" />
@@ -773,10 +739,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Returns the current round number (0 to
-        ///   <see cref="NumRounds" />
-        ///   - 1) of
-        ///   the battle.
+        ///   Returns the current round number (0 to <see cref="NumRounds" /> - 1) of the battle.
         ///   <seealso cref="NumRounds" />
         /// </summary>
         public int RoundNum
@@ -816,8 +779,7 @@ namespace Robocode
         /// <summary>
         ///   Returns the velocity of the robot measured in pixels/turn.
         ///   <p />
-        ///   The maximum velocity of a robot is defined by
-        ///   <see cref="Rules.MAX_VELOCITY" />
+        ///   The maximum velocity of a robot is defined by <see cref="Rules.MAX_VELOCITY" />
         ///   (8 pixels / turn).
         ///   <seealso cref="Rules.MAX_VELOCITY" />
         /// </summary>
@@ -900,29 +862,21 @@ namespace Robocode
         ///  as long as the robot is moving, turning its body, turning its gun, or
         ///  turning its radar.
         ///  <p />
-        ///  Scan will cause
-        ///  <see cref="OnScannedRobot(ScannedRobotEvent)" />
+        ///  Scan will cause <see cref="OnScannedRobot(ScannedRobotEvent)" />
         ///  to be called if you see a robot.
         ///  <p />
-        ///  There are 2 reasons to call
-        ///  <see cref="Scan()" />
-        ///  manually:
+        ///  There are 2 reasons to call <see cref="Scan()" /> manually:
         ///  <ol>
         ///    <li>
-        ///      You want to Scan after you Stop moving.
+        ///      You want to scan after you stop moving.
         ///    </li>
         ///    <li>
-        ///      You want to interrupt the
-        ///      <see cref="OnScannedRobot(ScannedRobotEvent)" />
-        ///      event. This is more
-        ///      likely. If you are in
-        ///      <see cref="OnScannedRobot(ScannedRobotEvent)" />
-        ///      and call
-        ///      <see cref="Scan()" />
-        ///      ,
-        ///      and you still see a robot, then the system will interrupt your
-        ///      <see cref="OnScannedRobot(ScannedRobotEvent)" />
-        ///      event immediately and start it from the top.
+        ///      You want to interrupt the <see cref="OnScannedRobot(ScannedRobotEvent)" />
+        ///      event. This is more likely. If you are in
+        ///      <see cref="OnScannedRobot(ScannedRobotEvent)" /> and call
+        ///      <see cref="Scan()" />, and you still see a robot, then the system will interrupt your
+        ///      <see cref="OnScannedRobot(ScannedRobotEvent)" />  event immediately and start it
+        ///      from the top.
         ///    </li>
         ///  </ol>
         ///  <p />
@@ -949,8 +903,7 @@ namespace Robocode
         ///   body. So, normally, if the robot turns 90 degrees to the right, then the
         ///   gun will turn with it as it is mounted on top of the robot's body. To
         ///   compensate for this, you can call
-        ///   <see cref="IsAdjustGunForRobotTurn" />
-        ///   .
+        ///   <see cref="IsAdjustGunForRobotTurn" />.
         ///   When this is set, the gun will turn independent from the robot's turn,
         ///   i.e. the gun will compensate for the robot's body turn.
         ///   <p />
@@ -961,23 +914,23 @@ namespace Robocode
         ///   <p />
         /// <example>
         ///   Assuming both the robot and gun start Out facing up (0 degrees):
-        ///   <pre>
-        ///     // Set gun to turn with the robot's turn
-        ///     setAdjustGunForRobotTurn(false); // This is the default
-        ///     TurnRight(90);
-        ///     // At this point, both the robot and gun are facing right (90 degrees)
-        ///     TurnLeft(90);
-        ///     // Both are Back to 0 degrees
-        ///     <p />
-        ///     -- or --
-        ///     <p />
-        ///     // Set gun to turn independent from the robot's turn
-        ///     setAdjustGunForRobotTurn(true);
-        ///     TurnRight(90);
-        ///     // At this point, the robot is facing right (90 degrees), but the gun is still facing up.
-        ///     TurnLeft(90);
-        ///     // Both are Back to 0 degrees.
-        ///   </pre>
+        ///   <code>
+        ///   // Set gun to turn with the robot's turn
+        ///   setAdjustGunForRobotTurn(false); // This is the default
+        ///   TurnRight(90);
+        ///   // At this point, both the robot and gun are facing right (90 degrees)
+        ///   TurnLeft(90);
+        ///   // Both are back to 0 degrees
+        ///   </code>
+        ///   -- or --
+        ///   <code>
+        ///   // Set gun to turn independent from the robot's turn
+        ///   setAdjustGunForRobotTurn(true);
+        ///   TurnRight(90);
+        ///   // At this point, the robot is facing right (90 degrees), but the gun is still facing up.
+        ///   TurnLeft(90);
+        ///   // Both are back to 0 degrees.
+        ///   </code>
         /// </example>
         ///   <p />
         ///   Note: The gun compensating this way does count as "turning the gun".
@@ -1015,11 +968,9 @@ namespace Robocode
         ///   90 degrees to the right, the gun turns, as does the radar. Hence, if the
         ///   robot turns 90 degrees to the right, then the gun and radar will turn
         ///   with it as the radar is mounted on top of the gun. To compensate for
-        ///   this, you can call
-        ///   <see cref="IsAdjustRadarForRobotTurn" />
-        ///   = true. When this is
-        ///   set, the radar will turn independent from the robot's turn, i.e. the
-        ///   radar will compensate for the robot's turn.
+        ///   this, you can call <see cref="IsAdjustRadarForRobotTurn" /> = true.
+        ///   When this is set, the radar will turn independent from the robot's turn,
+        ///   i.e. the radar will compensate for the robot's turn.
         ///   <p />
         ///   Note: This method is additive until you reach the maximum the radar can
         ///   turn. The "adjust" is added to the amount you set for turning the robot,
@@ -1029,19 +980,19 @@ namespace Robocode
         /// <example>
         ///   Assuming the robot, gun, and radar all start Out facing up (0
         ///   degrees):
-        ///   <pre>
-        ///     // Set radar to turn with the robots's turn
-        ///     setAdjustRadarForRobotTurn(false); // This is the default
-        ///     TurnRight(90);
-        ///     // At this point, the body, gun, and radar are all facing right (90 degrees);
-        ///     <p />
-        ///     -- or --
-        ///     <p />
-        ///     // Set radar to turn independent from the robot's turn
-        ///     setAdjustRadarForRobotTurn(true);
-        ///     TurnRight(90);
-        ///     // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
-        ///   </pre>
+        ///   <code>
+        ///   // Set radar to turn with the robots's turn
+        ///   setAdjustRadarForRobotTurn(false); // This is the default
+        ///   TurnRight(90);
+        ///   // At this point, the body, gun, and radar are all facing right (90 degrees);
+        ///   </code>
+        ///   -- or --
+        ///   <code>
+        ///   // Set radar to turn independent from the robot's turn
+        ///   setAdjustRadarForRobotTurn(true);
+        ///   TurnRight(90);
+        ///   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
+        ///   </code>
         /// </example>
         ///   <seealso cref="IsAdjustGunForRobotTurn" />
         ///   <seealso cref="IsAdjustRadarForGunTurn" />
@@ -1076,11 +1027,9 @@ namespace Robocode
         ///   Ok, so this needs some explanation: The radar is mounted on the robot's
         ///   gun. So, normally, if the gun turns 90 degrees to the right, then the
         ///   radar will turn with it as it is mounted on top of the gun. To compensate
-        ///   for this, you can call
-        ///   <see cref="IsAdjustRadarForGunTurn" />
-        ///   = (true). When this
-        ///   is set, the radar will turn independent from the robot's turn, i.e. the
-        ///   radar will compensate for the gun's turn.
+        ///   for this, you can call <see cref="IsAdjustRadarForGunTurn" /> = (true).
+        ///   When this is set, the radar will turn independent from the robot's turn,
+        ///   i.e. the radar will compensate for the gun's turn.
         ///   <p />
         ///   Note: This method is additive until you reach the maximum the radar can
         ///   turn. The "adjust" is added to the amount you set for turning the gun,
@@ -1089,28 +1038,24 @@ namespace Robocode
         ///   <p />
         /// <example>
         ///   Assuming both the gun and radar start Out facing up (0 degrees):
-        ///   <pre>
-        ///     // Set radar to turn with the gun's turn
-        ///     SetAdjustRadarForGunTurn(false); // This is the default
-        ///     TurnGunRight(90);
-        ///     // At this point, both the radar and gun are facing right (90 degrees);
-        ///     <p />
-        ///     -- or --
-        ///     <p />
-        ///     // Set radar to turn independent from the gun's turn
-        ///     SetAdjustRadarForGunTurn(true);
-        ///     TurnGunRight(90);
-        ///     // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
-        ///   </pre>
+        ///   <code>
+        ///   // Set radar to turn with the gun's turn
+        ///   SetAdjustRadarForGunTurn(false); // This is the default
+        ///   TurnGunRight(90);
+        ///   // At this point, both the radar and gun are facing right (90 degrees);
+        ///   </code>
+        ///   -- or --
+        ///   </code>
+        ///   // Set radar to turn independent from the gun's turn
+        ///   SetAdjustRadarForGunTurn(true);
+        ///   TurnGunRight(90);
+        ///   // At this point, the gun is facing right (90 degrees), but the radar is still facing up.
+        ///   </code>
         /// </example>
-        ///   Note: Calling
-        ///   <see cref="IsAdjustRadarForGunTurn" />
-        ///   will
-        ///   automatically call
-        ///   <see cref="IsAdjustRadarForRobotTurn" />
-        ///   with the
-        ///   same value, unless you have already called it earlier. This behavior is
-        ///   primarily for backward compatibility with older Robocode robots.
+        ///   Note: Calling <see cref="IsAdjustRadarForGunTurn" /> will automatically call
+        ///   <see cref="IsAdjustRadarForRobotTurn" /> with the same value, unless you have
+        ///   already called it earlier. This behavior is primarily for backward compatibility
+        ///   with older Robocode robots.
         ///   <seealso cref="IsAdjustRadarForRobotTurn" />
         ///   <seealso cref="IsAdjustGunForRobotTurn" />
         /// </summary>
@@ -1141,21 +1086,21 @@ namespace Robocode
         /// <summary>
         ///   Sets the color of the robot's body, gun, and radar in the same time.
         ///   <p />
-        ///   You may only call this method one time per battle. A
-        ///   <pre>null</pre>
+        ///   You may only call this method one time per battle. A <em>null</en>
         ///   indicates the default (blue) color.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Don't forget to using java.awt.Color at the top...
-        ///       using java.awt.Color;
-        ///       ...
-        ///       <p />
-        ///       public void Run() {
-        ///       SetColors(null, Color.RED, new Color(150, 0, 150));
-        ///       ...
-        ///       }
-        ///     </pre>
+        ///     <code>
+        ///     // Don't forget to using System.Drawing at the top...
+        ///     using System.Drawing;
+        ///     ...
+        ///
+        ///     public void Run()
+        ///     {
+        ///         SetColors(null, Color.Red, Color.fromArgb(150, 0, 150));
+        ///         ...
+        ///     }
+        ///     </code>
         ///   </example>
         ///   <seealso cref="SetColors(Color, Color, Color, Color, Color)" />
         ///   <seealso cref="SetAllColors(Color)" />
@@ -1166,9 +1111,9 @@ namespace Robocode
         ///   <seealso cref="ScanColor" />
         ///   <seealso cref="Color" />
         /// </summary>
-        /// <param name="bodyColor">the new body color</param>
-        /// <param name="gunColor">the new gun color</param>
-        /// <param name="radarColor">the new radar color</param>
+        /// <param name="bodyColor">The new body color</param>
+        /// <param name="gunColor">The new gun color</param>
+        /// <param name="radarColor">The new radar color</param>
         public void SetColors(Color bodyColor, Color gunColor, Color radarColor)
         {
             if (peer != null)
@@ -1184,25 +1129,26 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Sets the color of the robot's body, gun, radar, bullet, and Scan arc in
+        ///   Sets the color of the robot's body, gun, radar, bullet, and scan arc in
         ///   the same time.
         ///   <p />
-        ///   You may only call this method one time per battle. A
-        ///   <pre>null</pre>
-        ///   indicates the default (blue) color for the body, gun, radar, and Scan
+        ///   You may only call this method one time per battle. A <em>null</en>
+        ///   indicates the default (blue) color for the body, gun, radar, and scan
         ///   arc, but white for the bullet color.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Don't forget to using java.awt.Color at the top...
-        ///       using java.awt.Color;
-        ///       ...
-        ///       <p />
-        ///       public void Run() {
-        ///       SetColors(null, Color.RED, Color.GREEN, null, new Color(150, 0, 150));
-        ///       ...
-        ///       }
-        ///     </pre>
+        ///     <code>
+        ///     <code>
+        ///     // Don't forget to using System.Drawing at the top...
+        ///     using System.Drawing;
+        ///     ...
+        ///
+        ///     public void Run()
+        ///     {
+        ///         SetColors(null, Color.Red, Color.Greeen, null, Color.fromArgb(150, 0, 150));
+        ///         ...
+        ///     }
+        ///     </code>
         ///   </example>
         ///   <seealso cref="SetColors(Color, Color, Color)" />
         ///   <seealso cref="SetAllColors(Color)" />
@@ -1213,13 +1159,11 @@ namespace Robocode
         ///   <seealso cref="ScanColor" />
         ///   <seealso cref="Color" />
         /// </summary>
-        /// <param name="bodyColor">the new body color</param>
-        /// <param name="gunColor">the new gun color</param>
-        /// <param name="radarColor">the new radar color</param>
-        /// <param name="bulletColor">the new bullet color</param>
-        /// <param name="scanArcColor">
-        ///   the new Scan arc color
-        /// </param>
+        /// <param name="bodyColor">The new body color</param>
+        /// <param name="gunColor">The new gun color</param>
+        /// <param name="radarColor">The new radar color</param>
+        /// <param name="bulletColor">The new bullet color</param>
+        /// <param name="scanArcColor">The new scan arc color</param>
         public void SetColors(Color bodyColor, Color gunColor, Color radarColor, Color bulletColor, Color scanArcColor)
         {
             if (peer != null)
@@ -1238,24 +1182,24 @@ namespace Robocode
 
         /// <summary>
         ///   Sets all the robot's color to the same color in the same time, i.e. the
-        ///   color of the body, gun, radar, bullet, and Scan arc.
+        ///   color of the body, gun, radar, bullet, and scan arc.
         ///   <p />
-        ///   You may only call this method one time per battle. A
-        ///   <pre>null</pre>
-        ///   indicates the default (blue) color for the body, gun, radar, and Scan
+        ///   You may only call this method one time per battle. A <em>null</en>
+        ///   indicates the default (blue) color for the body, gun, radar, and scan
         ///   arc, but white for the bullet color.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Don't forget to using java.awt.Color at the top...
-        ///       using java.awt.Color;
-        ///       ...
-        ///       <p />
-        ///       public void Run() {
-        ///       SetAllColors(Color.RED);
-        ///       ...
-        ///       }
-        ///     </pre>
+        ///     <code>
+        ///     // Don't forget to using System.Drawing at the top...
+        ///     using System.Drawing;
+        ///     ...
+        ///
+        ///     public void Run()
+        ///     {
+        ///         SetAllColors(Color.Red);
+        ///         ...
+        ///     }
+        ///     </code>
         ///   </example>
         ///   <seealso cref="SetColors(Color, Color, Color)" />
         ///   <seealso cref="SetColors(Color, Color, Color, Color, Color)" />
@@ -1266,9 +1210,7 @@ namespace Robocode
         ///   <seealso cref="ScanColor" />
         ///   <seealso cref="Color" />
         /// </summary>
-        /// <param name="color">
-        ///   the new color for all the colors of the robot
-        /// </param>
+        /// <param name="color">The new color for all the colors of the robot</param>
         public void SetAllColors(Color color)
         {
             if (peer != null)
@@ -1288,21 +1230,20 @@ namespace Robocode
         /// <summary>
         ///   Sets the color of the robot's body.
         ///   <p />
-        ///   A
-        ///   <pre>null</pre>
-        ///   indicates the default (blue) color.
+        ///   A <em>null</en> indicates the default (blue) color.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Don't forget to using java.awt.Color at the top...
-        ///       using java.awt.Color;
-        ///       ...
-        ///       <p />
-        ///       public void Run() {
-        ///       SetBodyColor(Color.BLACK);
-        ///       ...
-        ///       }
-        ///     </pre>
+        ///     <code>
+        ///     // Don't forget to using System.Drawing at the top...
+        ///     using System.Drawing;
+        ///     ...
+        ///
+        ///     public void Run()
+        ///     {
+        ///         SetBodyColor(Color.Black);
+        ///         ...
+        ///     }
+        ///     </code>
         ///   </example>
         ///   <seealso cref="SetColors(Color, Color, Color)" />
         ///   <seealso cref="SetColors(Color, Color, Color, Color, Color)" />
@@ -1341,21 +1282,20 @@ namespace Robocode
         ///<summary>
         ///  Sets the color of the robot's gun.
         ///  <p />
-        ///  A
-        ///  <pre>null</pre>
-        ///  indicates the default (blue) color.
+        ///  A <em>null</en> indicates the default (blue) color.
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Don't forget to using java.awt.Color at the top...
-        ///      using java.awt.Color;
-        ///      ...
-        ///      <p />
-        ///      public void Run() {
-        ///      SetGunColor(Color.RED);
-        ///      ...
-        ///      }
-        ///    </pre>
+        ///    <code>
+        ///    // Don't forget to using System.Drawing at the top...
+        ///    using System.Drawing;
+        ///    ...
+        ///
+        ///    public void Run()
+        ///    {
+        ///        SetGunColor(Color.Red);
+        ///        ...
+        ///    }
+        ///    </code>
         ///  </example>
         ///
         ///  <seealso cref="SetColors(Color, Color, Color)" />
@@ -1395,21 +1335,20 @@ namespace Robocode
         ///<summary>
         ///  Sets the color of the robot's radar.
         ///  <p />
-        ///  A
-        ///  <pre>null</pre>
-        ///  indicates the default (blue) color.
+        ///  A <em>null</en> indicates the default (blue) color.
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Don't forget to using java.awt.Color at the top...
-        ///      using java.awt.Color;
-        ///      ...
-        ///      <p />
-        ///      public void Run() {
-        ///      SetRadarColor(Color.YELLOW);
-        ///      ...
-        ///      }
-        ///    </pre>
+        ///    <code>
+        ///    // Don't forget to using System.Drawing at the top...
+        ///    using System.Drawing;
+        ///    ...
+        ///
+        ///    public void Run()
+        ///    {
+        ///        SetRadarColor(Color.Yellow);
+        ///        ...
+        ///    }
+        ///    </code>
         ///  </example>
         ///
         ///  <seealso cref="SetColors(Color, Color, Color)" />
@@ -1449,21 +1388,20 @@ namespace Robocode
         ///<summary>
         ///  Sets the color of the robot's bullets.
         ///  <p />
-        ///  A
-        ///  <pre>null</pre>
-        ///  indicates the default white color.
+        ///  A <em>null</en> indicates the default white color.
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Don't forget to using java.awt.Color at the top...
-        ///      using java.awt.Color;
-        ///      ...
-        ///      <p />
-        ///      public void Run() {
-        ///      SetBulletColor(Color.GREEN);
-        ///      ...
-        ///      }
-        ///    </pre>
+        ///    <code>
+        ///    // Don't forget to using System.Drawing at the top...
+        ///    using System.Drawing;
+        ///    ...
+        ///
+        ///    public void Run()
+        ///    {
+        ///        SetBulletColor(Color.Green);
+        ///        ...
+        ///    }
+        ///    </code>
         ///  </example>
         ///
         ///  <seealso cref="SetColors(Color, Color, Color)" />
@@ -1501,23 +1439,22 @@ namespace Robocode
 
         /// 
         ///<summary>
-        ///  Sets the color of the robot's Scan arc.
+        ///  Sets the color of the robot's scan arc.
         ///  <p />
-        ///  A
-        ///  <pre>null</pre>
-        ///  indicates the default (blue) color.
+        ///  A <em>null</en> indicates the default (blue) color.
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Don't forget to using java.awt.Color at the top...
-        ///      using java.awt.Color;
-        ///      ...
-        ///      <p />
-        ///      public void Run() {
-        ///      SetScanColor(Color.WHITE);
-        ///      ...
-        ///      }
-        ///    </pre>
+        ///    <code>
+        ///    // Don't forget to using System.Drawing at the top...
+        ///    using System.Drawing;
+        ///    ...
+        ///
+        ///    public void Run()
+        ///    {
+        ///        SetScanColor(Color.White);
+        ///        ...
+        ///    }
+        ///    </code>
         ///  </example>
         ///
         ///  <seealso cref="SetColors(Color, Color, Color)" />
@@ -1555,14 +1492,10 @@ namespace Robocode
 
         /// 
         ///<summary>
-        ///  Immediately stops all movement, and saves it for a call to
-        ///  <see cref="Resume()" />
-        ///  . If there is already movement saved from a previous
-        ///  Stop, this will have no effect.
+        ///  Immediately stops all movement, and saves it for a call to <see cref="Resume()" />.
+        ///  If there is already movement saved from a previous stop, this will have no effect.
         ///  <p />
-        ///  This method is equivalent to
-        ///  <see cref="Stop(bool)">Stop(false)</see>
-        ///  .
+        ///  This method is equivalent to <see cref="Stop(bool)">Stop(false)</see>.
         ///  <seealso cref="Resume()" />
         ///  <seealso cref="Stop(bool)" />
         ///</summary>
@@ -1572,20 +1505,15 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Immediately stops all movement, and saves it for a call to
-        ///   <see cref="Resume()" />
-        ///   . If there is already movement saved from a previous
-        ///   Stop, you can overwrite it by calling
-        ///   <see cref="Stop(bool)">Stop(true)</see>
-        ///   .
+        ///   Immediately stops all movement, and saves it for a call to <see cref="Resume()" />.
+        ///   If there is already movement saved from a previous stop, you can overwrite it by
+        ///   calling <see cref="Stop(bool)">Stop(true)</see>.
         ///   <seealso cref="Resume()" />
         ///   <seealso cref="Stop()" />
         /// </summary>
         /// <param name="overwrite">
-        ///   If there is already movement saved from a previous Stop,
-        ///   you can overwrite it by calling
-        ///   <see cref="Stop(bool)">Stop(true)</see>
-        ///   .
+        ///   If there is already movement saved from a previous stop, you can overwrite it by
+        ///   calling <see cref="Stop(bool)">Stop(true)</see>.
         /// </param>
         public void Stop(bool overwrite)
         {
@@ -1600,9 +1528,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Immediately resumes the movement you stopped by
-        ///   <see cref="Stop()" />
-        ///   , if any.
+        ///   Immediately resumes the movement you stopped by <see cref="Stop()" />, if any.
         ///   <p />
         ///   This call executes immediately, and does not return until it is complete.
         ///   <seealso cref="Stop()" />
@@ -1632,12 +1558,12 @@ namespace Robocode
         ///  instead of left.
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Turn the robot's gun 180 degrees to the left
-        ///      TurnGunLeft(180);
-        ///      <p />
-        ///      // Afterwards, turn the robot's gun 90 degrees to the right
-        ///      TurnGunLeft(-90);
+        ///    <code>
+        ///    // Turn the robot's gun 180 degrees to the left
+        ///    TurnGunLeft(180);
+        ///
+        ///    // Afterwards, turn the robot's gun 90 degrees to the right
+        ///    TurnGunLeft(-90);
         ///    </pre>
         ///  </example>
         ///
@@ -1649,16 +1575,10 @@ namespace Robocode
         ///  <seealso cref="IsAdjustGunForRobotTurn" />
         ///</summary>
         ///<param name="degrees">
-        ///  the amount of degrees to turn the robot's gun to the left.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  &gt; 0 the robot's gun will turn left.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  &lt; 0 the robot's gun will turn right.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  = 0 the robot's gun will not turn, but Execute.
+        ///  The amount of degrees to turn the robot's gun to the left.
+        ///  If degrees &gt; 0 the robot's gun will turn left.
+        ///  If degrees &lt; 0 the robot's gun will turn right.
+        ///  If degrees = 0 the robot's gun will not turn, but execute.
         ///</param>
         public void TurnGunLeft(double degrees)
         {
@@ -1683,13 +1603,13 @@ namespace Robocode
         ///  instead of right.
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Turn the robot's gun 180 degrees to the right
-        ///      TurnGunRight(180);
-        ///      <p />
-        ///      // Afterwards, turn the robot's gun 90 degrees to the left
-        ///      TurnGunRight(-90);
-        ///    </pre>
+        ///    <code>
+        ///    // Turn the robot's gun 180 degrees to the right
+        ///    TurnGunRight(180);
+        ///
+        ///    // Afterwards, turn the robot's gun 90 degrees to the left
+        ///    TurnGunRight(-90);
+        ///    </code>
         ///  </example>
         ///
         ///  <seealso cref="TurnGunLeft(double)" />
@@ -1700,16 +1620,10 @@ namespace Robocode
         ///  <seealso cref="IsAdjustGunForRobotTurn" />
         ///</summary>
         ///<param name="degrees">
-        ///  the amount of degrees to turn the robot's gun to the right.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  &gt; 0 the robot's gun will turn right.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  &lt; 0 the robot's gun will turn left.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  = 0 the robot's gun will not turn, but Execute.
+        ///  The amount of degrees to turn the robot's gun to the right.
+        ///  If degrees &gt; 0 the robot's gun will turn right.
+        ///  If degrees &lt; 0 the robot's gun will turn left.
+        ///  If degrees = 0 the robot's gun will not turn, but execute.
         ///</param>
         public void TurnGunRight(double degrees)
         {
@@ -1734,13 +1648,13 @@ namespace Robocode
         ///   instead of left.
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Turn the robot's radar 180 degrees to the left
-        ///       TurnRadarLeft(180);
-        ///       <p />
-        ///       // Afterwards, turn the robot's radar 90 degrees to the right
-        ///       TurnRadarLeft(-90);
-        ///     </pre>
+        ///     <code>
+        ///     // Turn the robot's radar 180 degrees to the left
+        ///     TurnRadarLeft(180);
+        ///
+        ///     // Afterwards, turn the robot's radar 90 degrees to the right
+        ///     TurnRadarLeft(-90);
+        ///     </code>
         ///   </example>
         ///   <seealso cref="TurnRadarRight(double)" />
         ///   <seealso cref="TurnLeft(double)" />
@@ -1751,16 +1665,10 @@ namespace Robocode
         ///   <seealso cref="IsAdjustRadarForGunTurn" />
         /// </summary>
         /// <param name="degrees">
-        ///   the amount of degrees to turn the robot's radar to the left.
-        ///   If
-        ///   <pre>degrees</pre>
-        ///   &gt; 0 the robot's radar will turn left.
-        ///   If
-        ///   <pre>degrees</pre>
-        ///   &lt; 0 the robot's radar will turn right.
-        ///   If
-        ///   <pre>degrees</pre>
-        ///   = 0 the robot's radar will not turn, but Execute.
+        ///   The amount of degrees to turn the robot's radar to the left.
+        ///   If degrees &gt; 0 the robot's radar will turn left.
+        ///   If degrees &lt; 0 the robot's radar will turn right.
+        ///   If degrees = 0 the robot's radar will not turn, but execute.
         /// </param>
         public void TurnRadarLeft(double degrees)
         {
@@ -1785,13 +1693,13 @@ namespace Robocode
         ///  instead of right.
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Turn the robot's radar 180 degrees to the right
-        ///      TurnRadarRight(180);
-        ///      <p />
-        ///      // Afterwards, turn the robot's radar 90 degrees to the left
-        ///      TurnRadarRight(-90);
-        ///    </pre>
+        ///    <code>
+        ///    // Turn the robot's radar 180 degrees to the right
+        ///    TurnRadarRight(180);
+        ///
+        ///    // Afterwards, turn the robot's radar 90 degrees to the left
+        ///    TurnRadarRight(-90);
+        ///    </code>
         ///  </example>
         ///
         ///  <seealso cref="TurnRadarLeft(double)" />
@@ -1803,16 +1711,10 @@ namespace Robocode
         ///  <seealso cref="IsAdjustRadarForGunTurn" />
         ///</summary>
         ///<param name="degrees">
-        ///  the amount of degrees to turn the robot's radar to the right.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  &gt; 0 the robot's radar will turn right.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  &lt; 0 the robot's radar will turn left.
-        ///  If
-        ///  <pre>degrees</pre>
-        ///  = 0 the robot's radar will not turn, but Execute.
+        ///  The amount of degrees to turn the robot's radar to the right.
+        ///  If degrees &gt; 0 the robot's radar will turn right.
+        ///  If degrees &lt; 0 the robot's radar will turn left.
+        ///  If degrees = 0 the robot's radar will not turn, but execute.
         ///</param>
         public void TurnRadarRight(double degrees)
         {
@@ -1915,7 +1817,7 @@ namespace Robocode
             ///   the empty string is used for removing this debug property.
             /// </summary>
             /// <param name="key">
-            ///   the name/key of the debug property
+            ///   The name/key of the debug property
             /// </param>
             /// <returns></returns>
             public string this[string key]

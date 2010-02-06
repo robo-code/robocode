@@ -42,7 +42,7 @@ namespace Robocode.RobotInterfaces
         IBasicEvents GetBasicEventListener();
 
         /// <summary>
-        /// Do not call this method! Your robot will simply Stop interacting with
+        /// Do not call this method! Your robot will simply stop interacting with
         /// the game.
         /// <p/>
         /// This method is called by the game. A robot peer is the object that deals

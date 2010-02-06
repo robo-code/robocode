@@ -148,7 +148,7 @@ namespace Robocode.RobotInterfaces
         /// </pre>
         /// </example>
         /// <p/>
-        /// The angle is relative to your robot's facing. So 0 is straight Ahead of
+        /// The angle is relative to your robot's facing. So 0 is straight ahead of
         /// you.
         /// <p/>
         /// This event can be generated if another robot hits you, in which case
@@ -186,7 +186,7 @@ namespace Robocode.RobotInterfaces
 
         /// <summary>
         /// This method is called when your robot sees another robot, i.e. when the
-        /// robot's radar Scan "hits" another robot.
+        /// robot's radar scan "hits" another robot.
         /// You should override it in your robot if you want to be informed of this
         /// event. (Almost all robots should override this!)
         /// <p/>

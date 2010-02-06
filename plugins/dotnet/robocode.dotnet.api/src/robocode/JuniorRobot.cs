@@ -30,7 +30,7 @@ namespace Robocode
     /// robot etc.
     /// <p/>
     /// All methods on this class are blocking calls, i.e. they do not return before
-    /// their action has been completed and will at least take one turn to Execute.
+    /// their action has been completed and will at least take one turn to execute.
     /// However, setting colors is executed immediately and does not cost a turn to
     /// perform.
     /// <seealso cref="Robot"/>
@@ -915,7 +915,7 @@ namespace Robocode
         /// <param name="gunColor">the RGB color value for the gun</param>
         /// <param name="radarColor">the RGB color value for the radar</param>
         /// <param name="bulletColor">  the RGB color value for the bullets</param>
-        /// <param name="scanArcColor"> the RGB color value for the Scan arc</param>
+        /// <param name="scanArcColor"> the RGB color value for the scan arc</param>
         public void SetColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor)
         {
             if (peer != null)
@@ -1309,7 +1309,7 @@ namespace Robocode
 
                     robot.Run(); // Run the code in the JuniorRobot
 
-                    // Make sure that we Rescan if the robot did not Execute anything this turn.
+                    // Make sure that we Rescan if the robot did not execute anything this turn.
                     // When the robot executes the currentTurn will automatically be increased by 1,
                     // So when the turn stays the same, the robot did not take any action this turn.
                     if (lastTurn == currentTurn)

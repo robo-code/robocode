@@ -74,9 +74,9 @@ namespace tested.robotscs
             {
                 TurnGunRight(bearingFromGun);
             }
-            // Generates another Scan Event if we see a robot.
+            // Generates another scan event if we see a robot.
             // We only need to call this if the gun (and therefore radar)
-            // are not turning.  Otherwise, Scan is called automatically.
+            // are not turning.  Otherwise, scan is called automatically.
             if (bearingFromGun == 0)
             {
                 Scan();

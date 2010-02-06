@@ -28,17 +28,17 @@ namespace Robocode.RobotInterfaces.Peer
     {
         /// <summary>
         /// This call is identical to <see cref="IStandardRobotPeer.Stop"/>
-        /// , but returns immediately, and will not Execute until you
+        /// , but returns immediately, and will not execute until you
         /// call <see cref="IBasicRobotPeer.Execute"/> or take an action that executes.
         /// <p/>
-        /// If there is already movement saved from a previous Stop, you can
+        /// If there is already movement saved from a previous stop, you can
         /// overwrite it by calling SetStop(true).
         /// <seealso cref="IStandardRobotPeer.Stop"/>
         /// <seealso cref="IStandardRobotPeer.Resume"/>
         /// <seealso cref="SetResume"/>
         /// <seealso cref="IBasicRobotPeer.Execute"/>
         /// </summary>
-        /// <param name="overwrite">true if the movement saved from a previous Stop
+        /// <param name="overwrite">true if the movement saved from a previous stop
         ///                  should be overwritten; false otherwise.</param> 
         void SetStop(bool overwrite);
 
@@ -47,7 +47,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <see cref="IStandardRobotPeer.Stop"/> or
         /// <see cref="SetStop"/>, if any.
         /// <p/>
-        /// This call returns immediately, and will not Execute until you call
+        /// This call returns immediately, and will not execute until you call
         /// <see cref="IBasicRobotPeer.Execute"/> or take an action that executes.
         ///
         /// <seealso cref="IStandardRobotPeer.Resume"/>
@@ -61,14 +61,14 @@ namespace Robocode.RobotInterfaces.Peer
         /// Sets the robot to move forward or backward by distance measured in pixels
         /// when the next execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not Execute until you call
+        /// This call returns immediately, and will not execute until you call
         /// <see cref="IBasicRobotPeer.Execute"/> or take an action that executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot is set to move forward, and negative
         /// values means that the robot is set to move backward. If 0 is given as
-        /// input, the robot will Stop its movement, but will have to decelerate
-        /// till it stands still, and will thus not be able to Stop its movement
+        /// input, the robot will stop its movement, but will have to decelerate
+        /// till it stands still, and will thus not be able to stop its movement
         /// immediately, but eventually.
         /// <p/>
         /// <example>
@@ -94,21 +94,21 @@ namespace Robocode.RobotInterfaces.Peer
         /// <param name="distance"> the distance to move measured in pixels.
         ///                 If distance &gt; 0 the robot is set to move forward.
         ///                 If distance &lt; 0 the robot is set to move backward.
-        ///                 If distance = 0 the robot is set to Stop its movement.</param>
+        ///                 If distance = 0 the robot is set to stop its movement.</param>
         void SetMove(double distance);
 
         /// <summary>
         /// Sets the robot's body to turn right or left by radians when the next
         /// execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not Execute until you call
+        /// This call returns immediately, and will not execute until you call
         /// <see cref="IBasicRobotPeer.Execute"/> or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's body is set to turn right, and
         /// negative values means that the robot's body is set to turn left.
-        /// If 0 is given as input, the robot's body will Stop turning.
+        /// If 0 is given as input, the robot's body will stop turning.
         /// <p/>
         /// <example>
         /// <pre>
@@ -133,21 +133,21 @@ namespace Robocode.RobotInterfaces.Peer
         /// <param name="radians">the amount of radians to turn the robot's body.
         ///                If radians &gt; 0 the robot's body is set to turn right.
         ///                If radians &lt; 0 the robot's body is set to turn left.
-        ///                If radians = 0 the robot's body is set to Stop turning.</param>         void SetTurnBody(double radians);
+        ///                If radians = 0 the robot's body is set to stop turning.</param>         void SetTurnBody(double radians);
         void SetTurnBody(double radians);
 
         /// <summary>
         /// Sets the robot's gun to turn right or left by radians when the next
         /// execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not Execute until you call
+        /// This call returns immediately, and will not execute until you call
         /// <see cref="IBasicRobotPeer.Execute"/> or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's gun is set to turn right, and
         /// negative values means that the robot's gun is set to turn left.
-        /// If 0 is given as input, the robot's gun will Stop turning.
+        /// If 0 is given as input, the robot's gun will stop turning.
         /// <p/>
         /// <example>
         /// <pre>
@@ -171,21 +171,21 @@ namespace Robocode.RobotInterfaces.Peer
         /// <param name="radians">the amount of radians to turn the robot's gun.
         ///                If radians &gt; 0 the robot's gun is set to turn right.
         ///                If radians &lt; 0 the robot's gun is set to turn left.
-        ///                If radians = 0 the robot's gun is set to Stop turning.</param>
+        ///                If radians = 0 the robot's gun is set to stop turning.</param>
         void SetTurnGun(double radians);
 
         /// <summary>
         /// Sets the robot's radar to turn right or left by radians when the next
         /// execution takes place.
         /// <p/>
-        /// This call returns immediately, and will not Execute until you call
+        /// This call returns immediately, and will not execute until you call
         /// <see cref="IBasicRobotPeer.Execute"/>  or take an action that
         /// executes.
         /// <p/>
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's radar is set to turn right, and
         /// negative values means that the robot's radar is set to turn left.
-        /// If 0 is given as input, the robot's radar will Stop turning.
+        /// If 0 is given as input, the robot's radar will stop turning.
         /// <p/>
         /// <example>
         /// <pre>
@@ -209,7 +209,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <param name="radians">the amount of radians to turn the robot's radar.
         ///                If radians &gt; 0 the robot's radar is set to turn right.
         ///                If radians &lt; 0 the robot's radar is set to turn left.
-        ///                If radians = 0 the robot's radar is set to Stop turning.</param>
+        ///                If radians = 0 the robot's radar is set to stop turning.</param>
         void SetTurnRadar(double radians);
 
         /// <summary>
@@ -257,10 +257,10 @@ namespace Robocode.RobotInterfaces.Peer
         ///   public void OnScannedRobot(ScannedRobotEvent e) {
         ///       Fire(1);
         ///       <b>SetInterruptible(true);</b>
-        ///       move(100);  // If you see a robot while moving Ahead,
+        ///       move(100);  // If you see a robot while moving ahead,
         ///                   // this handler will start from the top
         ///                   // Without SetInterruptible(true), we wouldn't
-        ///                   // receive Scan events at all!
+        ///                   // receive scan events at all!
         ///       // We'll only get here if we don't see a robot during the move.
         ///       getOut().WriteLine("Ok, I can't see anyone");
         ///   }

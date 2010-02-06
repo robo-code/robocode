@@ -18,9 +18,9 @@ namespace tested.robotscs
         {
             while (true)
             {
-                Ahead(1); // Move Ahead 100
+                Ahead(1); // Move ahead 100
                 TurnGunRight(360); // Spin gun around
-                Back(1); // Move Back 100
+                Back(1); // Move back 100
                 TurnGunRight(360); // Spin gun around
             }
         }

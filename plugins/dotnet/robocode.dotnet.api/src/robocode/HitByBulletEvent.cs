@@ -109,7 +109,7 @@ namespace Robocode
         /// <summary>
         /// Returns the power of this bullet. The damage you take (in fact, already
         /// took) is 4 * power, plus 2 * (power-1) if power > 1. The robot that fired
-        /// the bullet receives 3 * power Back.
+        /// the bullet receives 3 * power back.
         /// </summary>
         public double Power
         {

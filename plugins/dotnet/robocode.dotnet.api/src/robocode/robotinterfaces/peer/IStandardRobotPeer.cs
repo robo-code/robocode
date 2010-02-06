@@ -26,10 +26,10 @@ namespace Robocode.RobotInterfaces.Peer
         /// <summary>
         /// Immediately stops all movement, and saves it for a call to
         /// <see cref="Resume"/>. If there is already movement saved from a previous
-        /// Stop, you can overwrite it by calling Stop(true).
+        /// stop, you can overwrite it by calling Stop(true).
         /// <seealso cref="Resume"/>
         /// </summary>
-        /// <param name="overwrite">If there is already movement saved from a previous Stop,
+        /// <param name="overwrite">If there is already movement saved from a previous stop,
         ///                  you can overwrite it by calling Stop(true).</param>
         void Stop(bool overwrite);
 
@@ -51,7 +51,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// Note that both positive and negative values can be given as input, where
         /// positive values means that the robot's radar is set to turn right, and
         /// negative values means that the robot's radar is set to turn left.
-        /// If 0 is given as input, the robot's radar will Stop turning.
+        /// If 0 is given as input, the robot's radar will stop turning.
         /// <p/>
         /// <example>
         /// <pre>
@@ -69,7 +69,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// <param name="radians">the amount of radians to turn the robot's radar.
         ///                If radians &gt; 0 the robot's radar is set to turn right.
         ///                If radians &lt; 0 the robot's radar is set to turn left.
-        ///                If radians = 0 the robot's radar is set to Stop turning.</param>
+        ///                If radians = 0 the robot's radar is set to stop turning.</param>
         void TurnRadar(double radians);
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Robocode.RobotInterfaces.Peer
         ///   turnBodyRight(Math.PI / 2);
         ///   // At this point, both the robot and gun are facing right (90 degrees)
         ///   turnBodyLeft(Math.PI / 2);
-        ///   // Both are Back to 0 degrees
+        ///   // Both are back to 0 degrees
         /// <p/>
         ///   -- or --
         /// <p/>
@@ -104,7 +104,7 @@ namespace Robocode.RobotInterfaces.Peer
         ///   turnBodyRight(Math.PI / 2);
         ///   // At this point, the robot is facing right (90 degrees), but the gun is still facing up.
         ///   turnBodyLeft(Math.PI / 2);
-        ///   // Both are Back to 0 degrees.
+        ///   // Both are back to 0 degrees.
         /// </pre>
         /// </example>
         /// <p/>

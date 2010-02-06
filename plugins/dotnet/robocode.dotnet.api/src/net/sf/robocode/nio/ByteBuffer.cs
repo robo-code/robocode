@@ -323,7 +323,7 @@ namespace net.sf.robocode.nio
      * its {@link #arrayOffset </code>array offset<code>} will be zero.  </p>
      *
      * @param  array
-     *         The array that will Back the new buffer
+     *         The array that will back the new buffer
      *
      * @param  offset
      *         The offset of the subarray to be used; must be non-negative and
@@ -368,7 +368,7 @@ namespace net.sf.robocode.nio
      * be zero.  </p> 
      *
      * @param  array
-     *         The array that will Back this buffer
+     *         The array that will back this buffer
      *
      * @return  The new byte buffer
      */

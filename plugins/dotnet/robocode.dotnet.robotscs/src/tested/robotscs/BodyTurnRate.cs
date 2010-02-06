@@ -21,7 +21,7 @@ namespace tested.robotscs
     {
         public override void Run()
         {
-            // Test turn rate at all speed moving Ahead and turning left
+            // Test turn rate at all speed moving ahead and turning left
 
             SetAhead(1000);
             SetTurnLeft(360);
@@ -29,7 +29,7 @@ namespace tested.robotscs
 
             stopMoving();
 
-            // Test turn rate at all speed moving Ahead and turning right
+            // Test turn rate at all speed moving ahead and turning right
 
             SetAhead(1000);
             SetTurnRight(360);
@@ -37,7 +37,7 @@ namespace tested.robotscs
 
             stopMoving();
 
-            // Test turn rate at all speed moving Back and turning right
+            // Test turn rate at all speed moving back and turning right
 
             SetBack(1000);
             SetTurnRight(360);
@@ -45,7 +45,7 @@ namespace tested.robotscs
 
             stopMoving();
 
-            // Test turn rate at all speed moving Back and turning left
+            // Test turn rate at all speed moving back and turning left
 
             SetBack(1000);
             SetTurnLeft(360);

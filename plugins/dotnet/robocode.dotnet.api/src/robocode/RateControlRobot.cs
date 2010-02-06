@@ -32,9 +32,9 @@ namespace Robocode
     ///     </li>
     ///   </ul>
     ///   When you set a rate for one of the above movements, the movement will continue the move by
-    ///   specified rate for ever, until the rate is changed. In order to move Ahead or right, the
+    ///   specified rate for ever, until the rate is changed. In order to move ahead or right, the
     ///   rate must be set to a positive value. If a negative value is used instead, the movement
-    ///   will go Back or to the left. In order to Stop the movement, the rate must be
+    ///   will go back or to the left. In order to stop the movement, the rate must be
     ///   set to 0.
     /// 
     ///   Note: When calling
@@ -72,7 +72,7 @@ namespace Robocode
         ///<summary>
         ///  Sets the speed the robot will move (forward), in pixels per turn.
         ///  <p />
-        ///  This call returns immediately, and will not Execute until you call
+        ///  This call returns immediately, and will not execute until you call
         ///  Execute() or take an action that executes.
         ///  <p />
         ///  Note that both positive and negative values can be given as input,
@@ -113,7 +113,7 @@ namespace Robocode
         ///<summary>
         ///  Sets the robot's clockwise (right) rotation per turn, in degrees.
         ///  <p />
-        ///  This call returns immediately, and will not Execute until you call
+        ///  This call returns immediately, and will not execute until you call
         ///  Execute() or take an action that executes.
         ///  <p />
         ///  Note that both positive and negative values can be given as input,
@@ -149,7 +149,7 @@ namespace Robocode
         /// <summary>
         ///   Sets the robot's clockwise (right) rotation per turn, in radians.
         ///   <p />
-        ///   This call returns immediately, and will not Execute until you call
+        ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
         ///   <p />
         ///   Note that both positive and negative values can be given as input,
@@ -186,7 +186,7 @@ namespace Robocode
         /// <summary>
         ///   Sets the gun's clockwise (right) rotation per turn, in degrees.
         ///   <p />
-        ///   This call returns immediately, and will not Execute until you call
+        ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
         ///   <p />
         ///   Note that both positive and negative values can be given as input,
@@ -222,7 +222,7 @@ namespace Robocode
         /// <summary>
         ///   Sets the gun's clockwise (right) rotation per turn, in radians.
         ///   <p />
-        ///   This call returns immediately, and will not Execute until you call
+        ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
         ///   <p />
         ///   Note that both positive and negative values can be given as input,
@@ -258,7 +258,7 @@ namespace Robocode
         /// <summary>
         ///   Sets the radar's clockwise (right) rotation per turn, in degrees.
         ///   <p />
-        ///   This call returns immediately, and will not Execute until you call
+        ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
         ///   <p />
         ///   Note that both positive and negative values can be given as input,
@@ -294,7 +294,7 @@ namespace Robocode
         /// <summary>
         ///   Sets the radar's clockwise (right) rotation per turn, in radians.
         ///   <p />
-        ///   This call returns immediately, and will not Execute until you call
+        ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
         ///   <p />
         ///   Note that both positive and negative values can be given as input,

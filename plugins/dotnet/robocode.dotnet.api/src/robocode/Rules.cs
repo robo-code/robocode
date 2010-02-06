@@ -41,7 +41,7 @@ namespace Robocode
         public static readonly double MAX_VELOCITY = 8;
 
         /// <summary>
-        /// The radar Scan radius, which is 1200 pixels.
+        /// The radar scan radius, which is 1200 pixels.
         /// Robots which is more than 1200 pixels away cannot be seen on the radar.
         /// </summary>
         public static readonly double RADAR_SCAN_RADIUS = 1200;

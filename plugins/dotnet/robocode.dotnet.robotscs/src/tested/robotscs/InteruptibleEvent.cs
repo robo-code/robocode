@@ -16,7 +16,7 @@ namespace tested.robotscs
     {
         public override void Run()
         {
-            SetEventPriority("HitWallEvent", GetEventPriority("ScannedRobotEvent")); // make same as Scan
+            SetEventPriority("HitWallEvent", GetEventPriority("ScannedRobotEvent")); // make same as scan
 
             // noinspection InfiniteLoopStatement
             for (;;)
