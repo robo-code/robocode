@@ -45,28 +45,28 @@ namespace Robocode
             this.totalTurns = totalTurns;
         }
 
-        /// <returns>
+        /// <value>
         ///   the round that ended (zero-indexed).
-        /// </returns>
-        public int getRound()
+        /// </value>
+        public int Round
         {
-            return round;
+            get { return round; }
         }
 
-        /// <returns>
+        /// <value>
         ///   the number of turns that this round reached.
-        /// </returns>
-        public int getTurns()
+        /// </value>
+        public int Turns
         {
-            return turns;
+            get { return turns; }
         }
 
-        /// <returns>
+        /// <value>
         ///   the total number of turns reached in the battle when this round ended.
-        /// </returns>
-        public int getTotalTurns()
+        /// </value>
+        public int TotalTurns
         {
-            return totalTurns;
+            get { return totalTurns; }
         }
 
         /// <inheritdoc />
