@@ -46,52 +46,52 @@ namespace Robocode
         /// <summary>
         /// The color black (0x000000)
         /// </summary>
-        public const int black=0;
+        public const int BLACK=0;
 
         /// <summary>
         /// The color white (0xFFFFFF)
         /// </summary>
-        public const int white = 0xFFFFFF;
+        public const int WHITE = 0xFFFFFF;
 
         /// <summary>
-        /// The color red  (0xFF0000)
+        /// The color red (0xFF0000)
         /// </summary>
-        public const int red = 0xFF0000;
+        public const int RED = 0xFF0000;
 
         /// <summary>
         /// The color orange (0xFFA500)
         /// </summary>
-        public const int orange = 0xFFA500;
+        public const int ORANGE = 0xFFA500;
 
         /// <summary>
         /// The color yellow (0xFFFF00)
         /// </summary>
-        public const int yellow = 0xFFFF00;
+        public const int YELLOW = 0xFFFF00;
 
         /// <summary>
         /// The color green (0x008000)
         /// </summary>
-        public const int green = 0x008000;
+        public const int GREEN = 0x008000;
 
         /// <summary>
         /// The color blue (0x0000FF)
         /// </summary>
-        public const int blue = 0x0000FF;
+        public const int BLUE = 0x0000FF;
 
         /// <summary>
         /// The color purple (0x800080)
         /// </summary>
-        public const int purple = 0x800080;
+        public const int PURPLE = 0x800080;
 
         /// <summary>
         /// The color brown (0x8B4513)
         /// </summary>
-        public const int brown = 0x8B4513;
+        public const int BROWN = 0x8B4513;
 
         /// <summary>
         /// The color gray (0x808080)
         /// </summary>
-        public const int gray = 0x808080;
+        public const int GRAY = 0x808080;
 
         /// <summary>
         /// Contains the width of the battlefield.
