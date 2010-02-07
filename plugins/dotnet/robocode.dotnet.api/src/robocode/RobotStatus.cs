@@ -18,7 +18,7 @@ namespace Robocode
 {
     /// <summary>
     /// Contains the status of a robot for a specific time/turn returned by
-    /// <see cref="StatusEvent.Status"/>
+    /// <see cref="StatusEvent.Status"/>.
     /// </summary>
     [Serializable]
     public sealed class RobotStatus
@@ -155,9 +155,9 @@ namespace Robocode
         /// <summary>
         /// Returns the angle remaining in the robots's turn, in radians.
         /// <p/>
-        /// This call returns both positive and negative values. Positive values
-        /// means that the robot is currently turning to the right. Negative values
-        /// means that the robot is currently turning to the left.
+        /// This call returns both positive and negative values.
+        /// Positive values means that the robot is currently turning to the right.
+        /// Negative values means that the robot is currently turning to the left.
         /// </summary>
         public double TurnRemainingRadians
         {
@@ -167,9 +167,9 @@ namespace Robocode
         /// <summary>
         /// Returns the angle remaining in the robots's turn, in degrees.
         /// <p/>
-        /// This call returns both positive and negative values. Positive values
-        /// means that the robot is currently turning to the right. Negative values
-        /// means that the robot is currently turning to the left.
+        /// This call returns both positive and negative values.
+        /// Positive values means that the robot is currently turning to the right.
+        /// Negative values means that the robot is currently turning to the left.
         /// </summary>
         public double TurnRemaining
         {
@@ -179,9 +179,9 @@ namespace Robocode
         /// <summary>
         /// Returns the angle remaining in the radar's turn, in radians.
         /// <p/>
-        /// This call returns both positive and negative values. Positive values
-        /// means that the radar is currently turning to the right. Negative values
-        /// means that the radar is currently turning to the left.
+        /// This call returns both positive and negative values.
+        /// Positive values means that the radar is currently turning to the right.
+        /// Negative values means that the radar is currently turning to the left.
         /// </summary>
         public double RadarTurnRemainingRadians
         {
@@ -191,9 +191,9 @@ namespace Robocode
         /// <summary>
         /// Returns the angle remaining in the radar's turn, in degrees.
         /// <p/>
-        /// This call returns both positive and negative values. Positive values
-        /// means that the radar is currently turning to the right. Negative values
-        /// means that the radar is currently turning to the left.
+        /// This call returns both positive and negative values.
+        /// Positive values means that the radar is currently turning to the right.
+        /// Negative values means that the radar is currently turning to the left.
         /// </summary>
         public double RadarTurnRemaining
         {
@@ -203,9 +203,9 @@ namespace Robocode
         /// <summary>
         /// Returns the angle remaining in the gun's turn, in radians.
         /// <p/>
-        /// This call returns both positive and negative values. Positive values
-        /// means that the gun is currently turning to the right. Negative values
-        /// means that the gun is currently turning to the left.
+        /// This call returns both positive and negative values.
+        /// Positive values means that the gun is currently turning to the right.
+        /// Negative values means that the gun is currently turning to the left.
         /// </summary>
         public double GunTurnRemainingRadians
         {
@@ -215,9 +215,9 @@ namespace Robocode
         /// <summary>
         /// Returns the angle remaining in the gun's turn, in degrees.
         /// <p/>
-        /// This call returns both positive and negative values. Positive values
-        /// means that the gun is currently turning to the right. Negative values
-        /// means that the gun is currently turning to the left.
+        /// This call returns both positive and negative values.
+        /// Positive values means that the gun is currently turning to the right.
+        /// Negative values means that the gun is currently turning to the left.
         /// </summary>
         public double GunTurnRemaining
         {
@@ -228,9 +228,9 @@ namespace Robocode
         /// Returns the distance remaining in the robot's current move measured in
         /// pixels.
         /// <p/>
-        /// This call returns both positive and negative values. Positive values
-        /// means that the robot is currently moving forwards. Negative values means
-        /// that the robot is currently moving backwards.
+        /// This call returns both positive and negative values.
+        /// Positive values means that the robot is currently moving forwards.
+        /// Negative values means that the robot is currently moving backwards.
         /// </summary>
         public double DistanceRemaining
         {

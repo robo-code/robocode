@@ -17,7 +17,7 @@ namespace Robocode.RobotInterfaces.Peer
     /// The advanced robot peer for advanced robot types like
     /// <see cref="Robocode.AdvancedRobot"/> and <see cref="Robocode.TeamRobot"/>.
     /// <p/>
-    /// A robot peer is the obj that deals with game mechanics and rules, and
+    /// A robot peer is the object that deals with game mechanics and rules, and
     /// makes sure your robot abides by them.
     /// <seealso cref="IBasicRobotPeer"/>
     /// <seealso cref="IStandardRobotPeer"/>
@@ -27,8 +27,8 @@ namespace Robocode.RobotInterfaces.Peer
     public interface IAdvancedRobotPeer : IStandardRobotPeer
     {
         /// <summary>
-        /// This call is identical to <see cref="IStandardRobotPeer.Stop"/>
-        /// , but returns immediately, and will not execute until you
+        /// This call is identical to <see cref="IStandardRobotPeer.Stop"/>,
+        /// but returns immediately, and will not execute until you
         /// call <see cref="IBasicRobotPeer.Execute"/> or take an action that executes.
         /// <p/>
         /// If there is already movement saved from a previous stop, you can
@@ -43,9 +43,8 @@ namespace Robocode.RobotInterfaces.Peer
         void SetStop(bool overwrite);
 
         /// <summary>
-        /// Sets the robot to Resume the movement stopped by
-        /// <see cref="IStandardRobotPeer.Stop"/> or
-        /// <see cref="SetStop"/>, if any.
+        /// Sets the robot to Resume the movement stopped by <see cref="IStandardRobotPeer.Stop"/>
+        /// or <see cref="SetStop"/>, if any.
         /// <p/>
         /// This call returns immediately, and will not execute until you call
         /// <see cref="IBasicRobotPeer.Execute"/> or take an action that executes.
@@ -72,18 +71,18 @@ namespace Robocode.RobotInterfaces.Peer
         /// immediately, but eventually.
         /// <p/>
         /// <example>
-        /// <pre>
+        ///   <code>
         ///   // Set the robot to move 50 pixels forward
         ///   SetMove(50);
-        /// <p/>
+        ///
         ///   // Set the robot to move 100 pixels backward
         ///   // (overrides the previous order)
         ///   SetMove(-100);
-        /// <p/>
+        ///
         ///   ...
         ///   // Executes the last SetMove()
         ///   Execute();
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="IBasicRobotPeer.Move"/>
         /// <seealso cref="SetMaxVelocity"/>
@@ -91,10 +90,12 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="SetTurnGun"/>
         /// <seealso cref="SetTurnRadar"/>
         /// </summary>
-        /// <param name="distance"> the distance to move measured in pixels.
-        ///                 If distance &gt; 0 the robot is set to move forward.
-        ///                 If distance &lt; 0 the robot is set to move backward.
-        ///                 If distance = 0 the robot is set to stop its movement.</param>
+        /// <param name="distance">
+        ///   The distance to move measured in pixels.
+        ///   If distance &gt; 0 the robot is set to move forward.
+        ///   If distance &lt; 0 the robot is set to move backward.
+        ///   If distance = 0 the robot is set to stop its movement.
+        /// </param>
         void SetMove(double distance);
 
         /// <summary>
@@ -111,18 +112,18 @@ namespace Robocode.RobotInterfaces.Peer
         /// If 0 is given as input, the robot's body will stop turning.
         /// <p/>
         /// <example>
-        /// <pre>
+        ///   <code>
         ///   // Set the robot's body to turn 180 degrees to the right
         ///   SetTurnBody(Math.PI);
-        /// <p/>
+        ///
         ///   // Set the robot's body to turn 90 degrees to the left instead of right
         ///   // (overrides the previous order)
         ///   SetTurnBody(-Math.PI / 2);
-        /// <p/>
+        ///
         ///   ...
         ///   // Executes the last SetTurnBody()
         ///   Execute();
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="IBasicRobotPeer.TurnBody"/>
         /// <seealso cref="SetTurnGun"/>
@@ -130,10 +131,12 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="SetMaxTurnRate"/>
         /// <seealso cref="SetMove"/>
         /// </summary>
-        /// <param name="radians">the amount of radians to turn the robot's body.
-        ///                If radians &gt; 0 the robot's body is set to turn right.
-        ///                If radians &lt; 0 the robot's body is set to turn left.
-        ///                If radians = 0 the robot's body is set to stop turning.</param>         void SetTurnBody(double radians);
+        /// <param name="radians">T
+        ///   The amount of radians to turn the robot's body.
+        ///   If radians &gt; 0 the robot's body is set to turn right.
+        ///   If radians &lt; 0 the robot's body is set to turn left.
+        ///   If radians = 0 the robot's body is set to stop turning.
+        /// </param>
         void SetTurnBody(double radians);
 
         /// <summary>
@@ -150,28 +153,30 @@ namespace Robocode.RobotInterfaces.Peer
         /// If 0 is given as input, the robot's gun will stop turning.
         /// <p/>
         /// <example>
-        /// <pre>
+        ///   <code>
         ///   // Set the robot's gun to turn 180 degrees to the right
         ///   SetTurnGun(Math.PI);
-        /// <p/>
+        ///
         ///   // Set the robot's gun to turn 90 degrees to the left instead of right
         ///   // (overrides the previous order)
         ///   SetTurnGun(-Math.PI / 2);
-        /// <p/>
+        ///
         ///   ...
         ///   // Executes the last setTurnFun()
         ///   Execute();
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="IBasicRobotPeer.TurnGun"/>
         /// <seealso cref="SetTurnBody"/>
         /// <seealso cref="SetTurnRadar"/>
         /// <seealso cref="SetMove"/>
         /// </summary>
-        /// <param name="radians">the amount of radians to turn the robot's gun.
-        ///                If radians &gt; 0 the robot's gun is set to turn right.
-        ///                If radians &lt; 0 the robot's gun is set to turn left.
-        ///                If radians = 0 the robot's gun is set to stop turning.</param>
+        /// <param name="radians">
+        ///   The amount of radians to turn the robot's gun.
+        ///   If radians &gt; 0 the robot's gun is set to turn right.
+        ///   If radians &lt; 0 the robot's gun is set to turn left.
+        ///   If radians = 0 the robot's gun is set to stop turning.
+        /// </param>
         void SetTurnGun(double radians);
 
         /// <summary>
@@ -188,28 +193,30 @@ namespace Robocode.RobotInterfaces.Peer
         /// If 0 is given as input, the robot's radar will stop turning.
         /// <p/>
         /// <example>
-        /// <pre>
+        ///   <code>
         ///   // Set the robot's radar to turn 180 degrees to the right
         ///   SetTurnRadar(Math.PI);
-        /// <p/>
+        ///
         ///   // Set the robot's radar to turn 90 degrees to the left instead of right
         ///   // (overrides the previous order)
         ///   SetTurnRadar(-Math.PI / 2);
-        /// <p/>
+        ///
         ///   ...
         ///   // Executes the last SetTurnRadar()
         ///   Execute();
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="IStandardRobotPeer.TurnRadar"/>
         /// <seealso cref="SetTurnBody"/>
         /// <seealso cref="SetTurnGun"/>
         /// <seealso cref="SetMove"/>
         /// </summary>
-        /// <param name="radians">the amount of radians to turn the robot's radar.
-        ///                If radians &gt; 0 the robot's radar is set to turn right.
-        ///                If radians &lt; 0 the robot's radar is set to turn left.
-        ///                If radians = 0 the robot's radar is set to stop turning.</param>
+        /// <param name="radians">
+        ///   The amount of radians to turn the robot's radar.
+        ///   If radians &gt; 0 the robot's radar is set to turn right.
+        ///   If radians &lt; 0 the robot's radar is set to turn left.
+        ///   If radians = 0 the robot's radar is set to stop turning.
+        /// </param>
         void SetTurnRadar(double radians);
 
         /// <summary>
@@ -219,8 +226,10 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="SetTurnBody"/>
         /// <seealso cref="SetMaxVelocity"/>
         /// </summary>
-        /// <param name="newMaxTurnRate">the new maximum turn rate of the robot measured in
-        /// degrees. Valid values are 0 - <see cref="Rules.MAX_TURN_RATE"/></param>
+        /// <param name="newMaxTurnRate">
+        ///   The new maximum turn rate of the robot measured in degrees.
+        ///   Valid values are 0 - <see cref="Rules.MAX_TURN_RATE"/>
+        /// </param>
         void SetMaxTurnRate(double newMaxTurnRate);
 
         /// <summary>
@@ -230,48 +239,50 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="SetMove"/>
         /// <seealso cref="SetMaxTurnRate"/>
         /// </summary>
-        /// <param name="newMaxVelocity">the new maximum turn rate of the robot measured in
-        ///                       pixels/turn. Valid values are 0 - <see cref="Rules.MAX_VELOCITY"/></param>
+        /// <param name="newMaxVelocity">
+        ///   The new maximum turn rate of the robot measured in pixels/turn.
+        ///   Valid values are 0 - <see cref="Rules.MAX_VELOCITY"/>
+        /// </param>
         void SetMaxVelocity(double newMaxVelocity);
 
         /// <summary>
-        /// Does not return until a condition is met, i.e. when a
-        /// <see cref="Condition.Test()"/> returns true.
+        /// Does not return until a condition is met, i.e. when a <see cref="Condition.Test()"/> returns true.
         /// <p/>
         /// This call executes immediately.
         /// <p/>
-        /// See the sample.Crazy robot for how this method can be used.
+        /// See the Sample.Crazy robot for how this method can be used.
         /// <seealso cref="Condition"/>
         /// <seealso cref="Condition.Test()"/>
         /// </summary>
-        /// <param name="condition">the condition that must be met before this call returns</param>
+        /// <param name="condition">The condition that must be met before this call returns</param>
         void WaitFor(Condition condition);
 
         /// <summary>
         /// Call this during an event handler to allow new events of the same
         /// priority to restart the event handler.
         /// <p/>
-        /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void OnScannedRobot(ScannedRobotEvent e) {
+        ///   <code>
+        ///   public void OnScannedRobot(ScannedRobotEvent e)
+        ///   {
         ///       Fire(1);
-        ///       <b>SetInterruptible(true);</b>
-        ///       move(100);  // If you see a robot while moving ahead,
+        ///       SetInterruptible(true);
+        ///       Move(100);  // If you see a robot while moving ahead,
         ///                   // this handler will start from the top
         ///                   // Without SetInterruptible(true), we wouldn't
         ///                   // receive scan events at all!
         ///       // We'll only get here if we don't see a robot during the move.
-        ///       getOut().WriteLine("Ok, I can't see anyone");
+        ///       Out().WriteLine("Ok, I can't see anyone");
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="SetEventPriority"/>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
         /// </summary>
-        /// <param name="interruptible">true if the event handler should be
-        ///                      interrupted if new events of the same priority occurs; false
-        ///                      otherwise</param>
+        /// <param name="interruptible">
+        ///   true if the event handler should be interrupted if new events of
+        ///   the same priority occurs; false otherwise
+        /// </param>
         void SetInterruptible(bool interruptible);
 
         /// <summary>
@@ -284,13 +295,13 @@ namespace Robocode.RobotInterfaces.Peer
         /// priority.
         /// <p/>
         /// <example>
-        /// <pre>
+        ///   <code>
         ///   SetEventPriority("RobotDeathEvent", 15);
-        /// </pre>
+        ///   </code>
         /// <p/>
         /// </example>
         /// The default priorities are, from highest to lowest:
-        /// <pre>
+        ///   <code>
         ///   <see cref="BattleEndedEvent"/>:     100 (reserved)
         ///   <see cref="WinEvent"/>:             100 (reserved)
         ///   <see cref="SkippedTurnEvent"/>:     100 (reserved)
@@ -308,7 +319,7 @@ namespace Robocode.RobotInterfaces.Peer
         ///   <see cref="ScannedRobotEvent"/>:     10
         ///   <see cref="PaintEvent"/>:             5
         ///   <see cref="DeathEvent"/>:            -1 (reserved)
-        /// </pre>
+        ///   </code>
         /// <p/>
         /// Note that you cannot change the priority for events with the special
         /// priority value -1 or 100 (reserved) as these event are system events.
@@ -318,8 +329,8 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="GetEventPriority"/>
         /// <seealso cref="SetInterruptible"/>
         /// </summary>
-        /// <param name="eventClass">the name of the event class (string) to set the priority for</param>
-        /// <param name="priority">the new priority for that event class</param>
+        /// <param name="eventClass">The name of the event class (string) to set the priority for</param>
+        /// <param name="priority">The new priority for that event class</param>
         void SetEventPriority(string eventClass, int priority);
 
         /// <summary>
@@ -328,13 +339,13 @@ namespace Robocode.RobotInterfaces.Peer
         /// priority.
         /// <p/>
         /// <example>
-        /// <pre>
+        ///   <code>
         ///   int myHitRobotPriority = GetEventPriority("HitRobotEvent");
-        /// </pre>
+        ///   </code>
         /// <p/>
         /// </example>
         /// The default priorities are, from highest to lowest:
-        /// <pre>
+        ///   <code>
         ///   <see cref="BattleEndedEvent"/>:     100 (reserved)
         ///   <see cref="WinEvent"/>:             100 (reserved)
         ///   <see cref="SkippedTurnEvent"/>:     100 (reserved)
@@ -352,10 +363,10 @@ namespace Robocode.RobotInterfaces.Peer
         ///   <see cref="ScannedRobotEvent"/>:     10
         ///   <see cref="PaintEvent"/>:             5
         ///   <see cref="DeathEvent"/>:            -1 (reserved)
-        /// </pre>
+        ///   </code>
         /// <seealso cref="SetEventPriority"/>
         /// </summary>
-        /// <param name="eventClass">the name of the event class (string) </param>
+        /// <param name="eventClass">The name of the event class (string) </param>
         int GetEventPriority(string eventClass);
 
         /// <summary>
@@ -364,51 +375,49 @@ namespace Robocode.RobotInterfaces.Peer
         /// must call <see cref="RemoveCustomEvent"/>.
         /// <p/>
         /// <example>
-        /// <pre>
-        /// AddCustomEvent(
-        ///    new Condition("triggerhit",
-        ///                  (c) =>
-        ///         {
-        ///             return Energy &lt;= trigger;
-        ///         }));
-        /// <p/>
+        ///   <code>
+        ///   AddCustomEvent(
+        ///       new Condition("triggerhit", (c) =>
+        ///       {
+        ///          return Energy &lt;= trigger;
+        ///       }));
+        ///
         ///   // Add our custom event based on our condition
-        ///   <b>AddCustomEvent(triggerHitCondition);</b>
-        /// </pre>
+        ///   AddCustomEvent(triggerHitCondition);
+        ///   </code>
         ///</example>
         /// <seealso cref="Condition"/>
         /// <seealso cref="RemoveCustomEvent"/>
         /// </summary>
-        /// <param name="condition">the condition that must be met.</param>
+        /// <param name="condition">The condition that must be met.</param>
         void AddCustomEvent(Condition condition);
 
         /// <summary>
-        /// Removes a custom event that was previously added by calling
-        /// <see cref="AddCustomEvent"/>.
+        /// Removes a custom event that was previously added by calling <see cref="AddCustomEvent"/>.
         /// <p/>
         /// <example>
-        /// <pre>
-        /// AddCustomEvent(
-        ///    new Condition("triggerhit",
-        ///                  (c) =>
-        ///         {
-        ///             return Energy &lt;= trigger;
-        ///         }));
-        /// <p/>
+        ///   <code>
+        ///   AddCustomEvent(
+        ///       new Condition("triggerhit", (c) =>
+        ///       {
+        ///          return Energy &lt;= trigger;
+        ///       }));
+        ///
         ///   // Add our custom event based on our condition
         ///   AddCustomEvent(triggerHitCondition);
         ///   ...
-        ///   <i>do something with your robot</i>
+        ///   // do something with your robot
         ///   ...
         ///   // Remove the custom event based on our condition
-        ///   <b>RemoveCustomEvent(triggerHitCondition);</b>
-        /// </pre>
+        ///   RemoveCustomEvent(triggerHitCondition);
+        ///   </code>
         /// </example>
         /// <seealso cref="Condition"/>
         /// <seealso cref="AddCustomEvent"/>
         /// </summary>
-        /// <param name="condition">the condition that was previous added and that must be
-        ///                  removed now.</param>
+        /// <param name="condition">
+        ///   The condition that was previous added and that must be removed now.
+        /// </param>
         void RemoveCustomEvent(Condition condition);
 
         /// <summary>
@@ -419,19 +428,23 @@ namespace Robocode.RobotInterfaces.Peer
         void clearAllEvents();
 
         /// <summary>
-        /// Returns a vector containing all events currently in the robot's queue.
+        /// Returns a list containing all events currently in the robot's queue.
         /// You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (Event evnt in GetAllEvents()) {
-        ///       if (event instanceof HitRobotEvent) {
-        ///           <i>// do something with the event</i>
-        ///       } else if (event instanceof HitByBulletEvent) {
-        ///           <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (Event evnt in GetAllEvents())
+        ///   {
+        ///       if (event is HitRobotEvent)
+        ///       {
+        ///           // do something with the event
+        ///       }
+        ///       else if (event is HitByBulletEvent)
+        ///       {
+        ///           // do something with the event
         ///       }
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Event"/>
         /// <seealso cref="clearAllEvents()"/>
@@ -445,15 +458,16 @@ namespace Robocode.RobotInterfaces.Peer
         IList<Event> GetAllEvents();
 
         /// <summary>
-        /// Returns a vector containing all StatusEvents currently in the robot's
+        /// Returns a list containing all StatusEvents currently in the robot's
         /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (StatusEvent evnt inGetStatusEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (StatusEvent evnt inGetStatusEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnStatus(StatusEvent)"/>
         /// <seealso cref="StatusEvent"/>
@@ -462,16 +476,17 @@ namespace Robocode.RobotInterfaces.Peer
         IList<StatusEvent> GetStatusEvents();
 
         /// <summary>
-        /// Returns a vector containing all BulletMissedEvents currently in the
+        /// Returns a list containing all BulletMissedEvents currently in the
         /// robot's queue. You might, for example, call this while processing another
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (BulletMissedEvent evnt inGetBulletMissedEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (BulletMissedEvent evnt inGetBulletMissedEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletMissed(BulletMissedEvent)"/>
         /// <seealso cref="BulletMissedEvent"/>
@@ -480,16 +495,17 @@ namespace Robocode.RobotInterfaces.Peer
         IList<BulletMissedEvent> GetBulletMissedEvents();
 
         /// <summary>
-        /// Returns a vector containing all BulletHitBulletEvents currently in the
+        /// Returns a list containing all BulletHitBulletEvents currently in the
         /// robot's queue. You might, for example, call this while processing another
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (BulletHitBulletEvent evnt inGetBulletHitBulletEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (BulletHitBulletEvent evnt inGetBulletHitBulletEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletHitBullet(BulletHitBulletEvent)"/>
         /// <seealso cref="BulletHitBulletEvent"/>
@@ -498,15 +514,16 @@ namespace Robocode.RobotInterfaces.Peer
         IList<BulletHitBulletEvent> GetBulletHitBulletEvents();
 
         /// <summary>
-        /// Returns a vector containing all BulletHitEvents currently in the robot's
+        /// Returns a list containing all BulletHitEvents currently in the robot's
         /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (BulletHitEvent event: GetBulletHitEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (BulletHitEvent event: GetBulletHitEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnBulletHit(BulletHitEvent)"/>
         /// <seealso cref="BulletHitEvent"/>
@@ -515,16 +532,17 @@ namespace Robocode.RobotInterfaces.Peer
         IList<BulletHitEvent> GetBulletHitEvents();
 
         /// <summary>
-        /// Returns a vector containing all HitByBulletEvents currently in the
+        /// Returns a list containing all HitByBulletEvents currently in the
         /// robot's queue. You might, for example, call this while processing
         /// another event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (HitByBulletEvent evnt inGetHitByBulletEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (HitByBulletEvent evnt inGetHitByBulletEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnHitByBullet(HitByBulletEvent)"/>
         /// <seealso cref="HitByBulletEvent"/>
@@ -533,15 +551,16 @@ namespace Robocode.RobotInterfaces.Peer
         IList<HitByBulletEvent> GetHitByBulletEvents();
 
         /// <summary>
-        /// Returns a vector containing all HitRobotEvents currently in the robot's
+        /// Returns a list containing all HitRobotEvents currently in the robot's
         /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (HitRobotEvent evnt inGetHitRobotEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (HitRobotEvent evnt inGetHitRobotEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnHitRobot(HitRobotEvent)"/>
         /// <seealso cref="HitRobotEvent"/>
@@ -550,15 +569,16 @@ namespace Robocode.RobotInterfaces.Peer
         IList<HitRobotEvent> GetHitRobotEvents();
 
         /// <summary>
-        /// Returns a vector containing all HitWallEvents currently in the robot's
+        /// Returns a list containing all HitWallEvents currently in the robot's
         /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (HitWallEvent evnt inGetHitWallEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (HitWallEvent evnt inGetHitWallEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnHitWall(HitWallEvent)"/>
         /// <seealso cref="HitWallEvent"/>
@@ -567,15 +587,16 @@ namespace Robocode.RobotInterfaces.Peer
         IList<HitWallEvent> GetHitWallEvents();
 
         /// <summary>
-        /// Returns a vector containing all RobotDeathEvents currently in the robot's
+        /// Returns a list containing all RobotDeathEvents currently in the robot's
         /// queue. You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (RobotDeathEvent evnt inGetRobotDeathEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (RobotDeathEvent evnt inGetRobotDeathEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnRobotDeath(RobotDeathEvent)"/>
         /// <seealso cref="RobotDeathEvent"/>
@@ -584,16 +605,17 @@ namespace Robocode.RobotInterfaces.Peer
         IList<RobotDeathEvent> GetRobotDeathEvents();
 
         /// <summary>
-        /// Returns a vector containing all ScannedRobotEvents currently in the
+        /// Returns a list containing all ScannedRobotEvents currently in the
         /// robot's queue. You might, for example, call this while processing another
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (ScannedRobotEvent evnt inGetScannedRobotEvents()) {
-        ///       <i>// do something with the event</i>
+        ///   <code>
+        ///   foreach (ScannedRobotEvent evnt inGetScannedRobotEvents())
+        ///   {
+        ///       // do something with the event
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.RobotInterfaces.IBasicEvents.OnScannedRobot(ScannedRobotEvent)"/>
         /// <seealso cref="ScannedRobotEvent"/>
@@ -620,11 +642,11 @@ namespace Robocode.RobotInterfaces.Peer
         /// Please notice that the max. size of your data file is set to 200000
         /// (~195 KB).
         /// <p/>
-        /// See the sample.SittingDuck to see an example of how to use this
+        /// See the Sample.SittingDuck to see an example of how to use this
         /// method.
         /// <seealso cref="GetDataDirectory"/>
         /// </summary>
-        /// <param name="filename">the file name of the data file for your robot</param>
+        /// <param name="filename">The file name of the data file for your robot</param>
         Stream GetDataFile(string filename);
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace Robocode
     {
         private const int DEFAULT_PRIORITY = 80;
 
-        // time is valid only after adding to event manager on proxy side, we do not update it on Battle side
+        // time is valid only after adding to event manager on proxy side, we do not update it on battle side
         private volatile bool addedToQueue;
         private long time;
         private int priority;
@@ -43,11 +43,10 @@ namespace Robocode
         /// This method is called by the game in order to sort the event queue of a
         /// robot to make sure the events are listed in chronological order.
         /// <p/>
-        ///
         /// Returns a negative value if this event has higher precedence, i.e. must
-        ///         be listed before the specified event. A positive value if this event
-        ///         has a lower precedence, i.e. must be listed after the specified event.
-        ///         0 means that the precedence of the two events are equal.
+        /// be listed before the specified event. A positive value if this event
+        /// has a lower precedence, i.e. must be listed after the specified event.
+        /// 0 means that the precedence of the two events are equal.
         /// </summary>
         /// <param name="evnt">the event to compare to this event.</param>
         public virtual int CompareTo(Event evnt)

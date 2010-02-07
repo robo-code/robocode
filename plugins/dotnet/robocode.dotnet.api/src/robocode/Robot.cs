@@ -38,7 +38,6 @@ namespace Robocode
     ///  The origin (0,0) is at the bottom left of the screen.
     ///  <p />
     ///  Positive X is right.
-    ///  <p />
     ///  Positive Y is up.
     ///  <br /><see href="http://robocode.sourceforge.net"/>
     ///  <br /><see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
@@ -471,8 +470,7 @@ namespace Robocode
         /// <summary>
         ///   Do nothing this turn, meaning that the robot will skip it's turn.
         ///   <p />
-        ///   This call executes immediately, and does not return until the turn is
-        ///   over.
+        ///   This call executes immediately, and does not return until the turn is over.
         /// </summary>
         public void DoNothing()
         {
@@ -1086,7 +1084,7 @@ namespace Robocode
         /// <summary>
         ///   Sets the color of the robot's body, gun, and radar in the same time.
         ///   <p />
-        ///   You may only call this method one time per battle. A <em>null</en>
+        ///   You may only call this method one time per battle. A <em>null</em>
         ///   indicates the default (blue) color.
         ///   <p />
         ///   <example>
@@ -1132,12 +1130,11 @@ namespace Robocode
         ///   Sets the color of the robot's body, gun, radar, bullet, and scan arc in
         ///   the same time.
         ///   <p />
-        ///   You may only call this method one time per battle. A <em>null</en>
+        ///   You may only call this method one time per battle. A <em>null</em>
         ///   indicates the default (blue) color for the body, gun, radar, and scan
         ///   arc, but white for the bullet color.
         ///   <p />
         ///   <example>
-        ///     <code>
         ///     <code>
         ///     // Don't forget to using System.Drawing at the top...
         ///     using System.Drawing;
@@ -1184,7 +1181,7 @@ namespace Robocode
         ///   Sets all the robot's color to the same color in the same time, i.e. the
         ///   color of the body, gun, radar, bullet, and scan arc.
         ///   <p />
-        ///   You may only call this method one time per battle. A <em>null</en>
+        ///   You may only call this method one time per battle. A <em>null</em>
         ///   indicates the default (blue) color for the body, gun, radar, and scan
         ///   arc, but white for the bullet color.
         ///   <p />
@@ -1230,7 +1227,7 @@ namespace Robocode
         /// <summary>
         ///   Sets the color of the robot's body.
         ///   <p />
-        ///   A <em>null</en> indicates the default (blue) color.
+        ///   A <em>null</em> indicates the default (blue) color.
         ///   <p />
         ///   <example>
         ///     <code>
@@ -1282,7 +1279,7 @@ namespace Robocode
         ///<summary>
         ///  Sets the color of the robot's gun.
         ///  <p />
-        ///  A <em>null</en> indicates the default (blue) color.
+        ///  A <em>null</em> indicates the default (blue) color.
         ///  <p />
         ///  <example>
         ///    <code>
@@ -1335,7 +1332,7 @@ namespace Robocode
         ///<summary>
         ///  Sets the color of the robot's radar.
         ///  <p />
-        ///  A <em>null</en> indicates the default (blue) color.
+        ///  A <em>null</em> indicates the default (blue) color.
         ///  <p />
         ///  <example>
         ///    <code>
@@ -1388,7 +1385,7 @@ namespace Robocode
         ///<summary>
         ///  Sets the color of the robot's bullets.
         ///  <p />
-        ///  A <em>null</en> indicates the default white color.
+        ///  A <em>null</em> indicates the default white color.
         ///  <p />
         ///  <example>
         ///    <code>
@@ -1441,7 +1438,7 @@ namespace Robocode
         ///<summary>
         ///  Sets the color of the robot's scan arc.
         ///  <p />
-        ///  A <em>null</en> indicates the default (blue) color.
+        ///  A <em>null</em> indicates the default (blue) color.
         ///  <p />
         ///  <example>
         ///    <code>
@@ -1564,7 +1561,7 @@ namespace Robocode
         ///
         ///    // Afterwards, turn the robot's gun 90 degrees to the right
         ///    TurnGunLeft(-90);
-        ///    </pre>
+        ///    </code>
         ///  </example>
         ///
         ///  <seealso cref="TurnGunRight(double)" />

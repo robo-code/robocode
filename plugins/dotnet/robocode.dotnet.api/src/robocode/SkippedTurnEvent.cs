@@ -20,18 +20,19 @@ namespace Robocode
     /// OnSkippedTurn()} when your robot is forced to skipping a turn.
     /// You must take an action every turn in order to participate in the game.
     /// <example>
-    /// <pre>
-    /// Thread.Sleep(1000);
-    /// </pre>
-    /// will cause many SkippedTurnEvents, because you are not responding to the game.
-    /// If you receive 30 SkippedTurnEvents, you will be removed from the round.
-    /// <p/>
-    /// Instead, you should do something such as:
-    /// <pre>
-    ///     for (int i = 0; i &lt; 30; i++) {
-    ///         DoNothing(); // or perhaps Scan();
-    ///     }
-    /// </pre>
+    ///   <code>
+    ///   Thread.Sleep(1000);
+    ///   </code>
+    ///   will cause many SkippedTurnEvents, because you are not responding to the game.
+    ///   If you receive 30 SkippedTurnEvents, you will be removed from the round.
+    ///   <p/>
+    ///   Instead, you should do something such as:
+    ///   <code>
+    ///   for (int i = 0; i &lt; 30; i++)
+    ///   {
+    ///       DoNothing(); // or perhaps Scan();
+    ///   }
+    ///   </code>
     /// </example>
     /// <p/>
     /// This event may also be generated if you are simply doing too much processing

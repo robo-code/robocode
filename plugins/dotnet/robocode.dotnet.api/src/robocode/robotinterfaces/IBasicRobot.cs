@@ -28,9 +28,8 @@ namespace Robocode.RobotInterfaces
     public interface IBasicRobot
     {
         /// <summary>
-        /// This method is called by the game to invoke the
-        /// <see cref="IRunnable.Run()"/> method of your robot, where the program
-        /// of your robot is implemented.
+        /// This method is called by the game to invoke the <see cref="IRunnable.Run()"/>
+        /// method of your robot, where the program of your robot is implemented.
         /// </summary>
         IRunnable GetRobotRunnable();
 

@@ -39,7 +39,7 @@ namespace Robocode
         }
 
         /// <summary>
-        /// char of they key pressed
+        /// Char of they key pressed
         /// </summary>
         public char KeyChar
         {

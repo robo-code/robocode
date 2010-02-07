@@ -339,12 +339,13 @@ namespace Robocode
         /// right side of the battle window.
         /// <p/>
         /// <example>
-        /// <pre>
+        ///   <code>
         ///   // Print Out a line each time my robot hits another robot
-        ///   public void OnHitRobot(HitRobotEvent e) {
+        ///   public void OnHitRobot(HitRobotEvent e)
+        ///   {
         ///       Out.WriteLine("I hit a robot!  My energy: " + Energy + " his energy: " + e.Energy);
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// </summary>
         public TextWriter Out
@@ -355,7 +356,7 @@ namespace Robocode
         /// <summary>
         /// Contains the width of the battlefield.
         ///
-        /// <seealso cref="fieldWidth"/>
+        /// <seealso cref="FieldHeight"/>
         /// </summary>
         public int FieldWidth
         {
@@ -365,7 +366,7 @@ namespace Robocode
         /// <summary>
         /// Contains the height of the battlefield.
         ///
-        /// <seealso cref="fieldWidth"/>
+        /// <seealso cref="FieldWidth"/>
         /// </summary>
         public int FieldHeight
         {
@@ -391,7 +392,7 @@ namespace Robocode
         /// <summary>
         /// Current horizontal location of this robot (in pixels).
         ///
-        /// <seealso cref="robotY"/>
+        /// <seealso cref="RobotY"/>
         /// </summary>
         public int RobotX
         {
@@ -401,7 +402,7 @@ namespace Robocode
         /// <summary>
         /// Current vertical location of this robot (in pixels).
         ///
-        /// <seealso cref="robotX"/>
+        /// <seealso cref="RobotX"/>
         /// </summary>
         public int RobotY
         {
@@ -427,7 +428,7 @@ namespace Robocode
         /// <summary>
         /// Current gun heading angle of this robot (in degrees).
         ///
-        /// <seealso cref="gunBearing"/>
+        /// <seealso cref="GunBearing"/>
         /// <seealso cref="TurnGunLeft(int)"/>
         /// <seealso cref="TurnGunRight(int)"/>
         /// <seealso cref="TurnGunTo(int)"/>
@@ -441,7 +442,7 @@ namespace Robocode
         /// <summary>
         /// Current gun heading angle of this robot compared to its body (in degrees).
         ///
-        /// <seealso cref="gunHeading"/>
+        /// <seealso cref="GunHeading"/>
         /// <seealso cref="TurnGunLeft(int)"/>
         /// <seealso cref="TurnGunRight(int)"/>
         /// <seealso cref="TurnGunTo(int)"/>
@@ -471,11 +472,11 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnScannedRobot()"/> event is active.
         ///
         /// <seealso cref="OnScannedRobot()"/>
-        /// <seealso cref="scannedAngle"/>
-        /// <seealso cref="scannedBearing"/>
-        /// <seealso cref="scannedEnergy"/>
-        /// <seealso cref="scannedVelocity"/>
-        /// <seealso cref="scannedHeading"/>
+        /// <seealso cref="ScannedAngle"/>
+        /// <seealso cref="ScannedBearing"/>
+        /// <seealso cref="ScannedEnergy"/>
+        /// <seealso cref="ScannedVelocity"/>
+        /// <seealso cref="ScannedHeading"/>
         /// </summary>
         public int ScannedDistance
         {
@@ -488,11 +489,11 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnScannedRobot()"/> event is active.
         ///
         /// <seealso cref="OnScannedRobot()"/>
-        /// <seealso cref="scannedDistance"/>
-        /// <seealso cref="scannedBearing"/>
-        /// <seealso cref="scannedEnergy"/>
-        /// <seealso cref="scannedVelocity"/>
-        /// <seealso cref="scannedHeading"/>
+        /// <seealso cref="ScannedDistance"/>
+        /// <seealso cref="ScannedBearing"/>
+        /// <seealso cref="ScannedEnergy"/>
+        /// <seealso cref="ScannedVelocity"/>
+        /// <seealso cref="ScannedHeading"/>
         /// </summary>
         public int ScannedAngle
         {
@@ -506,11 +507,11 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnScannedRobot()"/> event is active.
         ///
         /// <seealso cref="OnScannedRobot()"/>
-        /// <seealso cref="scannedDistance"/>
-        /// <seealso cref="scannedAngle"/>
-        /// <seealso cref="scannedEnergy"/>
-        /// <seealso cref="scannedVelocity"/>
-        /// <seealso cref="scannedHeading"/>
+        /// <seealso cref="ScannedDistance"/>
+        /// <seealso cref="ScannedAngle"/>
+        /// <seealso cref="ScannedEnergy"/>
+        /// <seealso cref="ScannedVelocity"/>
+        /// <seealso cref="ScannedHeading"/>
         /// </summary>
         public int ScannedBearing
         {
@@ -526,11 +527,11 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnScannedRobot()"/> event is active.
         ///
         /// <seealso cref="OnScannedRobot()"/>
-        /// <seealso cref="scannedDistance"/>
-        /// <seealso cref="scannedAngle"/>
-        /// <seealso cref="scannedBearing"/>
-        /// <seealso cref="scannedEnergy"/>
-        /// <seealso cref="scannedHeading"/>
+        /// <seealso cref="ScannedDistance"/>
+        /// <seealso cref="ScannedAngle"/>
+        /// <seealso cref="ScannedBearing"/>
+        /// <seealso cref="ScannedEnergy"/>
+        /// <seealso cref="ScannedHeading"/>
         /// </summary>
         public int ScannedVelocity
         {
@@ -543,11 +544,11 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnScannedRobot()"/> event is active.
         ///
         /// <seealso cref="OnScannedRobot()"/>
-        /// <seealso cref="scannedDistance"/>
-        /// <seealso cref="scannedAngle"/>
-        /// <seealso cref="scannedBearing"/>
-        /// <seealso cref="scannedEnergy"/>
-        /// <seealso cref="scannedVelocity"/>
+        /// <seealso cref="ScannedDistance"/>
+        /// <seealso cref="ScannedAngle"/>
+        /// <seealso cref="ScannedBearing"/>
+        /// <seealso cref="ScannedEnergy"/>
+        /// <seealso cref="ScannedVelocity"/>
         /// </summary>
         public int ScannedHeading
         {
@@ -560,10 +561,10 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnScannedRobot()"/> event is active.
         ///
         /// <seealso cref="OnScannedRobot()"/>
-        /// <seealso cref="scannedDistance"/>
-        /// <seealso cref="scannedAngle"/>
-        /// <seealso cref="scannedBearing"/>
-        /// <seealso cref="scannedVelocity"/>
+        /// <seealso cref="ScannedDistance"/>
+        /// <seealso cref="ScannedAngle"/>
+        /// <seealso cref="ScannedBearing"/>
+        /// <seealso cref="ScannedVelocity"/>
         /// </summary>
         public int ScannedEnergy
         {
@@ -576,7 +577,7 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnHitByBullet()"/> event is active.
         ///
         /// <seealso cref="OnHitByBullet()"/>
-        /// <seealso cref="hitByBulletBearing"/>
+        /// <seealso cref="HitByBulletBearing"/>
         /// </summary>
         public int HitByBulletAngle
         {
@@ -590,7 +591,7 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnHitByBullet()"/> event is active.
         ///
         /// <seealso cref="OnHitByBullet()"/>
-        /// <seealso cref="hitByBulletAngle"/>
+        /// <seealso cref="HitByBulletAngle"/>
         /// </summary>
         public int HitByBulletBearing
         {
@@ -603,7 +604,7 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnHitRobot()"/> event is active.
         ///
         /// <seealso cref="OnHitRobot()"/>
-        /// <seealso cref="hitRobotBearing"/>
+        /// <seealso cref="HitRobotBearing"/>
         /// </summary>
         public int HitRobotAngle
         {
@@ -617,7 +618,7 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnHitRobot()"/> event is active.
         ///
         /// <seealso cref="OnHitRobot()"/>
-        /// <seealso cref="hitRobotAngle"/>
+        /// <seealso cref="HitRobotAngle"/>
         /// </summary>
         public int HitRobotBearing
         {
@@ -630,7 +631,7 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnHitWall()"/> event is active.
         ///
         /// <seealso cref="OnHitWall()"/>
-        /// <seealso cref="hitWallBearing"/>
+        /// <seealso cref="HitWallBearing"/>
         /// </summary>
         public int HitWallAngle
         {
@@ -644,7 +645,7 @@ namespace Robocode
         /// This field will not be updated while <see cref="OnHitWall()"/> event is active.
         ///
         /// <seealso cref="OnHitWall()"/>
-        /// <seealso cref="hitWallAngle"/>
+        /// <seealso cref="HitWallAngle"/>
         /// </summary>
         public int HitWallBearing
         {
@@ -689,10 +690,10 @@ namespace Robocode
         /// <summary>
         /// Moves this robot forward by pixels.
         /// <seealso cref="Back(int)"/>
-        /// <seealso cref="robotX"/>
-        /// <seealso cref="robotY"/>
+        /// <seealso cref="RobotX"/>
+        /// <seealso cref="RobotY"/>
         /// </summary>
-        /// <param name="distance">the amount of pixels to move forward</param> 
+        /// <param name="distance">The amount of pixels to move forward</param> 
         public void Ahead(int distance)
         {
             if (peer != null)
@@ -709,8 +710,8 @@ namespace Robocode
         /// Moves this robot backward by pixels.
         ///
         /// <seealso cref="Ahead(int)"/>
-        /// <seealso cref="robotX"/>
-        /// <seealso cref="robotY"/>
+        /// <seealso cref="RobotX"/>
+        /// <seealso cref="RobotY"/>
         /// </summary>
         /// <param name="distance"> the amount of pixels to move backward</param> 
         public void Back(int distance)
@@ -721,8 +722,8 @@ namespace Robocode
         /// <summary>
         /// Turns the gun to the specified angle (in degrees) relative to body of this robot.
         /// The gun will turn to the side with the shortest delta angle to the specified angle.
-        /// <seealso cref="gunHeading"/>
-        /// <seealso cref="gunBearing"/>
+        /// <seealso cref="GunHeading"/>
+        /// <seealso cref="GunBearing"/>
         /// <seealso cref="TurnGunLeft(int)"/>
         /// <seealso cref="TurnGunRight(int)"/>
         /// <seealso cref="TurnGunTo(int)"/>
@@ -761,7 +762,7 @@ namespace Robocode
         /// Skips the specified number of turns.
         /// <seealso cref="DoNothing()"/>
         /// </summary>
-        /// <param name="turns">the number of turns to skip</param>
+        /// <param name="turns">The number of turns to skip</param>
         public void DoNothing(int turns)
         {
             if (turns <= 0)
@@ -786,7 +787,7 @@ namespace Robocode
         /// If the gun heat is more than 0 and hence cannot Fire, this method will
         /// suspend until the gun is ready to Fire, and then Fire a bullet.
         ///
-        /// <seealso cref="gunReady"/>
+        /// <seealso cref="GunReady"/>
         /// </summary>
         public void Fire()
         {
@@ -798,9 +799,9 @@ namespace Robocode
         /// where 3 is the maximum bullet power.
         /// If the gun heat is more than 0 and hence cannot Fire, this method will
         /// suspend until the gun is ready to Fire, and then Fire a bullet.
-        /// <seealso cref="gunReady"/>
+        /// <seealso cref="GunReady"/>
         /// </summary>
-        /// <param name="power">between 0.1 and 3</param>
+        /// <param name="power">Between 0.1 and 3</param>
         public void Fire(double power)
         {
             if (peer != null)
@@ -817,11 +818,11 @@ namespace Robocode
         /// <summary>
         /// This event method is called from the game when this robot has been hit
         /// by another robot's bullet. When this event occurs the
-        /// <see cref="hitByBulletAngle"/> and <see cref="hitByBulletBearing"/> fields values
+        /// <see cref="HitByBulletAngle"/> and <see cref="HitByBulletBearing"/> fields values
         /// are automatically updated.
         ///
-        /// <seealso cref="hitByBulletAngle"/>
-        /// <seealso cref="hitByBulletBearing"/>
+        /// <seealso cref="HitByBulletAngle"/>
+        /// <seealso cref="HitByBulletBearing"/>
         /// </summary>
         public virtual void OnHitByBullet()
         {
@@ -829,11 +830,11 @@ namespace Robocode
 
         /// <summary>
         /// This event method is called from the game when a bullet from this robot
-        /// has hit another robot. When this event occurs the <see cref="hitRobotAngle"/>
-        /// and <see cref="hitRobotBearing"/> fields values are automatically updated.
+        /// has hit another robot. When this event occurs the <see cref="HitRobotAngle"/>
+        /// and <see cref="HitRobotBearing"/> fields values are automatically updated.
         ///
-        /// <seealso cref="hitRobotAngle"/>
-        /// <seealso cref="hitRobotBearing"/>
+        /// <seealso cref="HitRobotAngle"/>
+        /// <seealso cref="HitRobotBearing"/>
         /// </summary>
         public virtual void OnHitRobot()
         {
@@ -841,11 +842,11 @@ namespace Robocode
 
         /// <summary>
         /// This event method is called from the game when this robot has hit a wall.
-        /// When this event occurs the <see cref="hitWallAngle"/> and <see cref="hitWallBearing"/>
-        /// fields values are automatically updated.
+        /// When this event occurs the <see cref="HitWallAngle"/> and
+        /// <see cref="HitWallBearing"/> fields values are automatically updated.
         ///
-        /// <seealso cref="hitWallAngle"/>
-        /// <seealso cref="hitWallBearing"/>
+        /// <seealso cref="HitWallAngle"/>
+        /// <seealso cref="HitWallBearing"/>
         /// </summary>
         public virtual void OnHitWall()
         {
@@ -853,13 +854,13 @@ namespace Robocode
 
         /// <summary>
         /// This event method is called from the game when the radar detects another
-        /// robot. When this event occurs the <see cref="scannedDistance"/>,
-        /// <see cref="scannedAngle"/>, <see cref="scannedBearing"/>, and <see cref="scannedEnergy"/>
+        /// robot. When this event occurs the <see cref="ScannedDistance"/>,
+        /// <see cref="ScannedAngle"/>, <see cref="ScannedBearing"/>, and <see cref="ScannedEnergy"/>
         /// field values are automatically updated.
-        /// <seealso cref="scannedDistance"/>
-        /// <seealso cref="scannedAngle"/>
-        /// <seealso cref="scannedBearing"/>
-        /// <seealso cref="scannedEnergy"/>
+        /// <seealso cref="ScannedDistance"/>
+        /// <seealso cref="ScannedAngle"/>
+        /// <seealso cref="ScannedBearing"/>
+        /// <seealso cref="ScannedEnergy"/>
         /// </summary>
         public virtual void OnScannedRobot()
         {
@@ -870,13 +871,14 @@ namespace Robocode
         /// robot's basic behavior.
         /// <p/>
         /// <example>
-        /// <pre>
+        ///   <code>
         ///   // A basic robot that moves around in a square
-        ///   public void Run() {
+        ///   public void Run()
+        ///   {
         ///       Ahead(100);
         ///       TurnRight(90);
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// This method is automatically re-called when it has returned.
         /// </summary>
@@ -889,9 +891,9 @@ namespace Robocode
         /// You can use the colors that are already defined for this class.
         /// <seealso cref="SetColors(int, int, int, int, int)"/>
         /// </summary>
-        /// <param name="bodyColor">the RGB color value for the body</param>
-        /// <param name="gunColor">the RGB color value for the gun</param>
-        /// <param name="radarColor">the RGB color value for the radar</param>
+        /// <param name="bodyColor">The RGB color value for the body</param>
+        /// <param name="gunColor">The RGB color value for the gun</param>
+        /// <param name="radarColor">The RGB color value for the radar</param>
         public void SetColors(int bodyColor, int gunColor, int radarColor)
         {
             if (peer != null)
@@ -911,11 +913,11 @@ namespace Robocode
         /// You can use the colors that are already defined for this class.
         /// <seealso cref="SetColors(int, int, int)"/>
         /// </summary>
-        /// <param name="bodyColor">the RGB color value for the body</param>
-        /// <param name="gunColor">the RGB color value for the gun</param>
-        /// <param name="radarColor">the RGB color value for the radar</param>
-        /// <param name="bulletColor">  the RGB color value for the bullets</param>
-        /// <param name="scanArcColor"> the RGB color value for the scan arc</param>
+        /// <param name="bodyColor">The RGB color value for the body</param>
+        /// <param name="gunColor">The RGB color value for the gun</param>
+        /// <param name="radarColor">The RGB color value for the radar</param>
+        /// <param name="bulletColor">The RGB color value for the bullets</param>
+        /// <param name="scanArcColor">The RGB color value for the scan arc</param>
         public void SetColors(int bodyColor, int gunColor, int radarColor, int bulletColor, int scanArcColor)
         {
             if (peer != null)
@@ -940,9 +942,9 @@ namespace Robocode
         /// Note that the max. velocity and max. turn rate is automatically adjusted,
         /// which means that the robot will move slower the sharper the turn is
         /// compared to the distance.
-        /// <seealso cref="heading"/>
-        /// <seealso cref="robotX"/>
-        /// <seealso cref="robotY"/>
+        /// <seealso cref="Heading"/>
+        /// <seealso cref="RobotX"/>
+        /// <seealso cref="RobotY"/>
         /// <seealso cref="TurnLeft(int)"/>
         /// <seealso cref="TurnRight(int)"/>
         /// <seealso cref="TurnTo(int)"/>
@@ -950,8 +952,8 @@ namespace Robocode
         /// <seealso cref="TurnBackLeft(int, int)"/>
         /// <seealso cref="TurnBackRight(int, int)"/>
         /// </summary>
-        /// <param name="distance">the amount of pixels to move forward</param>
-        /// <param name="degrees">the amount of degrees to turn to the left</param>
+        /// <param name="distance">The amount of pixels to move forward</param>
+        /// <param name="degrees">The amount of degrees to turn to the left</param>
         public void TurnAheadLeft(int distance, int degrees)
         {
             TurnAheadRight(distance, -degrees);
@@ -965,9 +967,9 @@ namespace Robocode
         /// Note that the max. velocity and max. turn rate is automatically adjusted,
         /// which means that the robot will move slower the sharper the turn is
         /// compared to the distance.
-        /// <seealso cref="heading"/>
-        /// <seealso cref="robotX"/>
-        /// <seealso cref="robotY"/>
+        /// <seealso cref="Heading"/>
+        /// <seealso cref="RobotX"/>
+        /// <seealso cref="RobotY"/>
         /// <seealso cref="TurnLeft(int)"/>
         /// <seealso cref="TurnRight(int)"/>
         /// <seealso cref="TurnTo(int)"/>
@@ -975,8 +977,8 @@ namespace Robocode
         /// <seealso cref="TurnBackLeft(int, int)"/>
         /// <seealso cref="TurnBackRight(int, int)"/>
         /// </summary>
-        /// <param name="distance"> the amount of pixels to move forward</param>
-        /// <param name="degrees">  the amount of degrees to turn to the right</param>
+        /// <param name="distance">The amount of pixels to move forward</param>
+        /// <param name="degrees">The amount of degrees to turn to the right</param>
         public void TurnAheadRight(int distance, int degrees)
         {
             if (peer != null)
@@ -997,9 +999,9 @@ namespace Robocode
         /// Note that the max. velocity and max. turn rate is automatically adjusted,
         /// which means that the robot will move slower the sharper the turn is
         /// compared to the distance.
-        /// <seealso cref="heading"/>
-        /// <seealso cref="robotX"/>
-        /// <seealso cref="robotY"/>
+        /// <seealso cref="Heading"/>
+        /// <seealso cref="RobotX"/>
+        /// <seealso cref="RobotY"/>
         /// <seealso cref="TurnLeft(int)"/>
         /// <seealso cref="TurnRight(int)"/>
         /// <seealso cref="TurnTo(int)"/>
@@ -1007,8 +1009,8 @@ namespace Robocode
         /// <seealso cref="TurnAheadRight(int, int)"/>
         /// <seealso cref="TurnBackRight(int, int)"/>
         /// </summary>
-        /// <param name="distance">the amount of pixels to move backward</param>
-        /// <param name="degrees">the amount of degrees to turn to the left</param>
+        /// <param name="distance">The amount of pixels to move backward</param>
+        /// <param name="degrees">The amount of degrees to turn to the left</param>
         public void TurnBackLeft(int distance, int degrees)
         {
             TurnAheadRight(-distance, degrees);
@@ -1022,9 +1024,9 @@ namespace Robocode
         /// Note that the max. velocity and max. turn rate is automatically adjusted,
         /// which means that the robot will move slower the sharper the turn is
         /// compared to the distance.
-        /// <seealso cref="heading"/>
-        /// <seealso cref="robotX"/>
-        /// <seealso cref="robotY"/>
+        /// <seealso cref="Heading"/>
+        /// <seealso cref="RobotX"/>
+        /// <seealso cref="RobotY"/>
         /// <seealso cref="TurnLeft(int)"/>
         /// <seealso cref="TurnRight(int)"/>
         /// <seealso cref="TurnTo(int)"/>
@@ -1032,8 +1034,8 @@ namespace Robocode
         /// <seealso cref="TurnAheadRight(int, int)"/>
         /// <seealso cref="TurnBackLeft(int, int)"/>
         /// </summary>
-        /// <param name="distance">the amount of pixels to move backward</param>
-        /// <param name="degrees">the amount of degrees to turn to the right</param>
+        /// <param name="distance">The amount of pixels to move backward</param>
+        /// <param name="degrees">The amount of degrees to turn to the right</param>
         public void TurnBackRight(int distance, int degrees)
         {
             TurnAheadRight(-distance, -degrees);
@@ -1041,13 +1043,13 @@ namespace Robocode
 
         /// <summary>
         /// Turns the gun left by degrees.
-        /// <seealso cref="gunHeading"/>
-        /// <seealso cref="gunBearing"/>
+        /// <seealso cref="GunHeading"/>
+        /// <seealso cref="GunBearing"/>
         /// <seealso cref="TurnGunRight(int)"/>
         /// <seealso cref="TurnGunTo(int)"/>
         /// <seealso cref="BearGunTo(int)"/>
         /// </summary>
-        /// <param name="degrees">the amount of degrees to turn the gun to the left</param>
+        /// <param name="degrees">The amount of degrees to turn the gun to the left</param>
         public void TurnGunLeft(int degrees)
         {
             TurnGunRight(-degrees);
@@ -1055,13 +1057,13 @@ namespace Robocode
 
         /// <summary>
         /// Turns the gun right by degrees.
-        /// <seealso cref="gunHeading"/>
-        /// <seealso cref="gunBearing"/>
+        /// <seealso cref="GunHeading"/>
+        /// <seealso cref="GunBearing"/>
         /// <seealso cref="TurnGunLeft(int)"/>
         /// <seealso cref="TurnGunTo(int)"/>
         /// <seealso cref="BearGunTo(int)"/>
         /// </summary>
-        /// <param name="degrees">the amount of degrees to turn the gun to the right</param>
+        /// <param name="degrees">The amount of degrees to turn the gun to the right</param>
         public void TurnGunRight(int degrees)
         {
             if (peer != null)
@@ -1078,13 +1080,13 @@ namespace Robocode
         /// Turns the gun to the specified angle (in degrees).
         /// The gun will turn to the side with the shortest delta angle to the
         /// specified angle.
-        /// <seealso cref="gunHeading"/>
-        /// <seealso cref="gunBearing"/>
+        /// <seealso cref="GunHeading"/>
+        /// <seealso cref="GunBearing"/>
         /// <seealso cref="TurnGunLeft(int)"/>
         /// <seealso cref="TurnGunRight(int)"/>
         /// <seealso cref="BearGunTo(int)"/>
         /// </summary>
-        /// <param name="angle">the angle to turn the gun to</param>
+        /// <param name="angle">The angle to turn the gun to</param>
         public void TurnGunTo(int angle)
         {
             if (peer != null)
@@ -1099,7 +1101,7 @@ namespace Robocode
 
         /// <summary>
         /// Turns this robot left by degrees.
-        /// <seealso cref="heading"/>
+        /// <seealso cref="Heading"/>
         /// <seealso cref="TurnRight(int)"/>
         /// <seealso cref="TurnTo(int)"/>
         /// <seealso cref="TurnAheadLeft(int, int)"/>
@@ -1107,7 +1109,7 @@ namespace Robocode
         /// <seealso cref="TurnBackLeft(int, int)"/>
         /// <seealso cref="TurnBackRight(int, int)"/>
         /// </summary>
-        /// <param name="degrees">the amount of degrees to turn to the left</param>
+        /// <param name="degrees">The amount of degrees to turn to the left</param>
         public void TurnLeft(int degrees)
         {
             TurnRight(-degrees);
@@ -1115,7 +1117,7 @@ namespace Robocode
 
         /// <summary>
         /// Turns this robot right by degrees.
-        /// <seealso cref="heading"/>
+        /// <seealso cref="Heading"/>
         /// <seealso cref="TurnLeft(int)"/>
         /// <seealso cref="TurnTo(int)"/>
         /// <seealso cref="TurnAheadLeft(int, int)"/>
@@ -1123,7 +1125,7 @@ namespace Robocode
         /// <seealso cref="TurnBackLeft(int, int)"/>
         /// <seealso cref="TurnBackRight(int, int)"/>
         /// </summary>
-        /// <param name="degrees">the amount of degrees to turn to the right</param>
+        /// <param name="degrees">The amount of degrees to turn to the right</param>
         public void TurnRight(int degrees)
         {
             if (peer != null)
@@ -1140,7 +1142,7 @@ namespace Robocode
         /// Turns this robot to the specified angle (in degrees).
         /// The robot will turn to the side with the shortest delta angle to the
         /// specified angle.
-        /// <seealso cref="heading"/>
+        /// <seealso cref="Heading"/>
         /// <seealso cref="TurnLeft(int)"/>
         /// <seealso cref="TurnRight(int)"/>
         /// <seealso cref="TurnAheadLeft(int, int)"/>
@@ -1148,7 +1150,7 @@ namespace Robocode
         /// <seealso cref="TurnBackLeft(int, int)"/>
         /// <seealso cref="TurnBackRight(int, int)"/>
         /// </summary>
-        /// <param name="angle">the angle to turn this robot to</param>
+        /// <param name="angle">The angle to turn this robot to</param>
         public void TurnTo(int angle)
         {
             if (peer != null)
@@ -1175,7 +1177,7 @@ namespace Robocode
 
         /// <summary>
         /// The JuniorRobot event handler, which extends the basic robot events,
-        /// JuniorRobot event, and IRunnable.
+        /// IBasicEvents, and IRunnable.
         /// </summary>
         private sealed class InnerEventHandler : IBasicEvents, IRunnable
         {

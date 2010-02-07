@@ -49,12 +49,12 @@ namespace Robocode
         /// <summary>
         /// Called by the game to create a new ScannedRobotEvent.
         /// </summary>
-        /// <param name="name">the name of the scanned robot</param>
-        /// <param name="energy">   the energy of the scanned robot</param>
-        /// <param name="bearing">  the bearing of the scanned robot, in radians</param>
-        /// <param name="distance"> the distance from your robot to the scanned robot</param>
-        /// <param name="heading">  the heading of the scanned robot</param>
-        /// <param name="velocity"> the velocity of the scanned robot</param>
+        /// <param name="name">The name of the scanned robot</param>
+        /// <param name="energy">The energy of the scanned robot</param>
+        /// <param name="bearing">The bearing of the scanned robot, in radians</param>
+        /// <param name="distance">The distance from your robot to the scanned robot</param>
+        /// <param name="heading">The heading of the scanned robot</param>
+        /// <param name="velocity">The velocity of the scanned robot</param>
         public ScannedRobotEvent(string name, double energy, double bearing, double distance, double heading,
                                  double velocity)
         {

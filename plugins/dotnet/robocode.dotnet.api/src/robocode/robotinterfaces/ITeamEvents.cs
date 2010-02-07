@@ -13,8 +13,7 @@ using Robocode;
 namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// An event interface for receiving robot team events with an
-    /// <see cref="ITeamRobot"/>.
+    /// An event interface for receiving robot team events with an <see cref="ITeamRobot"/>.
     /// <seealso cref="ITeamRobot"/>
     /// </summary>
     public interface ITeamEvents
@@ -25,16 +24,17 @@ namespace Robocode.RobotInterfaces
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void OnMessageReceived(MessageEvent evnt) {
+        ///   <code>
+        ///   public void OnMessageReceived(MessageEvent evnt)
+        ///   {
         ///       Out.WriteLine(event.Sender + " sent me: " + evnt.Message);
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Robocode.MessageEvent"/>
         /// <seealso cref="Robocode.Event"/>
         /// </summary>
-        /// <param name="evnt">the message event sent by the game</param>
+        /// <param name="evnt">The message event sent by the game</param>
         void OnMessageReceived(MessageEvent evnt);
     }
 }

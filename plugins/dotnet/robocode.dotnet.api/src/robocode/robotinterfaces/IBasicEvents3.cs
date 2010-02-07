@@ -22,11 +22,12 @@ namespace Robocode.RobotInterfaces
         /// You should override it in your robot if you want to be informed of this event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void OnRoundEnded(RoundEndedEvent event) {
+        ///   <code>
+        ///   public void OnRoundEnded(RoundEndedEvent event)
+        ///   {
         ///       Out.WriteLine("The round has ended");
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="RoundEndedEvent"/>
         /// <seealso cref="IBasicEvents2.OnBattleEnded(BattleEndedEvent)"/>

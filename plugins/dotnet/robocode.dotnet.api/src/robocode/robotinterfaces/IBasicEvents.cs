@@ -45,11 +45,12 @@ namespace Robocode.RobotInterfaces
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void OnBulletHit(BulletHitEvent evnt) {
+        ///   <code>
+        ///   public void OnBulletHit(BulletHitEvent evnt)
+        ///   {
         ///       Out.WriteLine("I hit " + evnt.Name + "!");
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="BulletHitEvent"/>
         /// <seealso cref="Event"/>
@@ -62,11 +63,12 @@ namespace Robocode.RobotInterfaces
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void OnBulletHitBullet(BulletHitBulletEvent evnt) {
+        ///   <code>
+        ///   public void OnBulletHitBullet(BulletHitBulletEvent evnt)
+        ///   {
         ///       Out.WriteLine("I hit a bullet fired by " + evnt.Bullet.Name + "!");
         ///   }
-        /// </pre>
+        ///   </code>
         ///</example>
         /// <seealso cref="BulletHitBulletEvent"/>
         /// <seealso cref="Event"/>
@@ -79,11 +81,12 @@ namespace Robocode.RobotInterfaces
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void OnBulletMissed(BulletMissedEvent evnt) {
+        ///   <code>
+        ///   public void OnBulletMissed(BulletMissedEvent evnt)
+        ///   {
         ///       Out.WriteLine("Drat, I missed.");
         ///   }
-        /// </pre>
+        ///   </code>
         ///</example>
         /// <seealso cref="BulletMissedEvent"/>
         /// <seealso cref="Event"/>
@@ -110,11 +113,12 @@ namespace Robocode.RobotInterfaces
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   void OnHitByBullet(HitByBulletEvent evnt) {
+        ///   <code>
+        ///   void OnHitByBullet(HitByBulletEvent evnt)
+        ///   {
         ///       Out.WriteLine(event.RobotName + " hit me!");
         ///   }
-        /// </pre>
+        ///   </code>
         ///</example>
         /// <seealso cref="HitByBulletEvent"/>
         /// <seealso cref="Event"/>
@@ -127,34 +131,42 @@ namespace Robocode.RobotInterfaces
         /// event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   void OnHitRobot(HitRobotEvent evnt) {
-        ///       if (event.Bearing > -90 &amp;&amp; evnt.Bearing &lt;= 90) {
+        ///   <code>
+        ///   void OnHitRobot(HitRobotEvent evnt)
+        ///   {
+        ///       if (event.Bearing > -90 &amp;&amp; evnt.Bearing &lt;= 90)
+        ///       {
         ///           Back(100);
-        ///       } else {
+        ///       }
+        ///       else
+        ///       {
         ///           Ahead(100);
         ///       }
         ///   }
-        /// <p/>
+        ///   </code>
         ///   -- or perhaps, for a more advanced robot --
-        /// <p/>
-        ///   public void OnHitRobot(HitRobotEvent evnt) {
-        ///       if (event.Bearing > -90 &amp;&amp; evnt.Bearing &lt;= 90) {
+        ///   <code>
+        ///   public void OnHitRobot(HitRobotEvent evnt)
+        ///   {
+        ///       if (event.Bearing > -90 &amp;&amp; evnt.Bearing &lt;= 90)
+        ///       {
         ///           SetBack(100);
-        ///       } else {
+        ///       }
+        ///       else
+        ///       {
         ///           SetAhead(100);
         ///       }
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <p/>
         /// The angle is relative to your robot's facing. So 0 is straight ahead of
         /// you.
         /// <p/>
         /// This event can be generated if another robot hits you, in which case
-        /// <see cref="HitRobotEvent.IsMyFault()"/> will return
-        /// false. In this case, you will not be automatically stopped by the
-        /// game -- but if you continue moving toward the robot you will hit it (and
+        /// <see cref="HitRobotEvent.IsMyFault()"/> will return false.
+        /// In this case, you will not be automatically stopped by the game --
+        /// but if you continue moving toward the robot you will hit it (and
         /// generate another event). If you are moving away, then you won't hit it.
         /// <seealso cref="HitRobotEvent"/>
         /// <seealso cref="Event"/>
@@ -169,15 +181,15 @@ namespace Robocode.RobotInterfaces
         /// The wall at the top of the screen is 0 degrees, right is 90 degrees,
         /// bottom is 180 degrees, left is 270 degrees. But this event is relative to
         /// your heading, so: The bearing is such that <see cref="Robot.TurnRight(double)"/>
-        /// <see cref="HitWallEvent.Bearing"/> will
-        /// point you perpendicular to the wall.
+        /// <see cref="HitWallEvent.Bearing"/> will point you perpendicular to the wall.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   void OnHitWall(HitWallEvent evnt) {
+        ///   <code>
+        ///   void OnHitWall(HitWallEvent evnt)
+        ///   {
         ///       Out.WriteLine("Ouch, I hit a wall bearing " + evnt.Bearing + " degrees.");
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="HitWallEvent"/>
         /// <seealso cref="Event"/>
@@ -200,16 +212,20 @@ namespace Robocode.RobotInterfaces
         /// robot's heading.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   void OnScannedRobot(ScannedRobotEvent evnt) {
+        ///   <code>
+        ///   void OnScannedRobot(ScannedRobotEvent evnt)
+        ///   {
         ///       // Assuming radar and gun are aligned...
-        ///       if (event.Distance &lt; 100) {
+        ///       if (event.Distance &lt; 100)
+        ///       {
         ///           Fire(3);
-        ///       } else {
+        ///       }
+        ///       else
+        ///       {
         ///           Fire(1);
         ///       }
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <p/>
         /// <b>Note:</b><br/>

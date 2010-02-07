@@ -40,9 +40,9 @@ namespace Robocode
 
         /// <summary>
         /// Returns the bearing to the bullet, relative to your robot's heading,
-        /// in degrees (-180 &lt; getBearing() &lt;= 180)
+        /// in degrees (-180 &lt; getBearing() &lt;= 180).
         /// <p/>
-        /// If you were to TurnRight(e.Bearing), you would be facing the
+        /// If you were to TurnRight(event.Bearing), you would be facing the
         /// direction the bullet came from. The calculation used here is:
         /// (bullet's heading in degrees + 180) - (your heading in degrees)
         /// </summary>
@@ -53,9 +53,9 @@ namespace Robocode
 
         /// <summary>
         /// Returns the bearing to the bullet, relative to your robot's heading,
-        /// in radians (-Math.PI &lt; getBearingRadians() &lt;= Math.PI)
+        /// in radians (-Math.PI &lt; getBearingRadians() &lt;= Math.PI).
         /// <p/>
-        /// If you were to TurnRightRadians(e.BearingRadians), you would be
+        /// If you were to TurnRightRadians(event.BearingRadians), you would be
         /// facing the direction the bullet came from. The calculation used here is:
         /// (bullet's heading in radians + Math.PI) - (your heading in radians)
         /// </summary>
@@ -74,7 +74,7 @@ namespace Robocode
 
         /// <summary>
         /// Returns the heading of the bullet when it hit you, in degrees
-        /// (0 &lt;= getHeading() &lt; 360)
+        /// (0 &lt;= getHeading() &lt; 360).
         /// <p/>
         /// Note: This is not relative to the direction you are facing. The robot
         /// that fired the bullet was in the opposite direction of getHeading() when
@@ -87,7 +87,7 @@ namespace Robocode
 
         /// <summary>
         /// Returns the heading of the bullet when it hit you, in radians
-        /// (0 &lt;= getHeadingRadians() &lt; 2 * PI)
+        /// (0 &lt;= getHeadingRadians() &lt; 2 * PI).
         /// <p/>
         /// Note: This is not relative to the direction you are facing. The robot
         /// that fired the bullet was in the opposite direction of

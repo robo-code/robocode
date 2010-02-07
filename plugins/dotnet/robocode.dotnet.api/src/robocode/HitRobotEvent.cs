@@ -79,7 +79,7 @@ namespace Robocode
         /// <summary>
         /// Checks if your robot was moving towards the robot that was hit.
         /// <p/>
-        /// If isMyFault() returns true then your robot's movement (including
+        /// If <see cref="#IsMyFault"/> returns true then your robot's movement (including
         /// turning) will have stopped and been marked complete.
         /// <p/>
         /// Note: If two robots are moving toward each other and collide, they will
@@ -101,7 +101,7 @@ namespace Robocode
                 return res;
             }
 
-            // Compare the isMyFault, if the events are HitRobotEvents
+            // Compare the IsMyFault, if the events are HitRobotEvents
             // The isMyFault has higher priority when it is set compared to when it is not set
             if (evnt is HitRobotEvent)
             {

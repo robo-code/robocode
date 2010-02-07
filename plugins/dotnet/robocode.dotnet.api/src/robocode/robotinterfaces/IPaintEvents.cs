@@ -13,8 +13,7 @@ using Robocode;
 namespace Robocode.RobotInterfaces
 {
     /// <summary>
-    /// An event interface for receiving paint events with an
-    /// <see cref="IPaintRobot"/>.
+    /// An event interface for receiving paint events with an <see cref="IPaintRobot"/>.
     /// <seealso cref="IPaintRobot"/>
     /// </summary>
     public interface IPaintEvents
@@ -38,7 +37,7 @@ namespace Robocode.RobotInterfaces
         /// is upwards.
         /// <seealso cref="System.Drawing.Graphics"/>
         /// </summary>
-        /// <param name="graphics">the graphics context to use for painting graphical items for the robot</param>
+        /// <param name="graphics">The graphics context to use for painting graphical items for the robot</param>
         void OnPaint(IGraphics graphics);
     }
 }

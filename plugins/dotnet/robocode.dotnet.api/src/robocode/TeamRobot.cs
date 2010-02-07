@@ -15,7 +15,7 @@ using Robocode.RobotInterfaces.Peer;
 namespace Robocode
 {
     /// <summary>
-    /// An an advanced type of robot that supports sending messages between team
+    /// An advanced type of robot that supports sending messages between team
     /// mates in a robot team.
     /// <p/>
     /// If you have not done already, you should create a <see cref="Robot"/> or
@@ -32,15 +32,16 @@ namespace Robocode
         /// Broadcasts a message to all teammates.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void Run() {
+        ///   <code>
+        ///   public void Run()
+        ///   {
         ///       BroadcastMessage("I'm here!");
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// </summary>
-        /// <param name="message">message the message to broadcast to all teammates
-        /// if the message could not be broadcasted to the teammates
+        /// <param name="message">The message to broadcast to all teammates
+        /// if the message could not be broadcasted to the teammates.
         /// </param>
         /// <seealso cref="IsTeammate(string)"/>
         /// <seealso cref="Teammates()"/>
@@ -58,15 +59,16 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Returns a vector containing all MessageEvents currently in the robot's
-        /// queue. You might, for example, call this while processing another event.
+        /// Returns a list containing all MessageEvents currently in the robot's queue.
+        /// You might, for example, call this while processing another event.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   foreach (MessageEvent e in GetMessageEvents()) {
-        ///      // do something with e
+        ///   <code>
+        ///   foreach (MessageEvent e in GetMessageEvents())
+        ///   {
+        ///       // do something with e
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="OnMessageReceived(MessageEvent)"/>
         /// <seealso cref="MessageEvent"/>
@@ -88,21 +90,24 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Returns the names of all teammates, or null there is no
-        /// teammates. The length of the string array is equal to the number of teammates.
+        /// Returns the names of all teammates, or null there is no teammates.
+        /// The length of the string array is equal to the number of teammates.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void Run() {
+        ///   <code>
+        ///   public void Run()
+        ///   {
         ///       // Prints Out all teammates
         ///       string[] teammates = GetTeammates();
-        ///       if (teammates != null) {
-        ///           foreach (string member in teammates) {
+        ///       if (teammates != null)
+        ///       {
+        ///           foreach (string member in teammates)
+        ///           {
         ///               Out.WriteLine(member);
         ///           }
         ///       }
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="IsTeammate(string)"/>
         /// <seealso cref="BroadcastMessage(object)"/>
@@ -125,20 +130,22 @@ namespace Robocode
         /// Checks if a given robot name is the name of one of your teammates.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void OnScannedRobot(ScannedRobotEvent e) {
-        ///       if (IsTeammate(e.Name) {
+        ///   <code>
+        ///   public void OnScannedRobot(ScannedRobotEvent e)
+        ///   {
+        ///       if (IsTeammate(e.Name)
+        ///       {
         ///           return;
         ///       }
         ///       Fire(1);
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="Teammates"/>
         /// <seealso cref="BroadcastMessage(object)"/>
         /// <seealso cref="SendMessage(string, object)"/>
         /// </summary>
-        /// <param name="name">the robot name to check</param> 
+        /// <param name="name">The robot name to check</param> 
         public bool IsTeammate(string name)
         {
             if (peer != null)
@@ -158,18 +165,19 @@ namespace Robocode
         /// Sends a message to one (or more) teammates.
         /// <p/>
         /// <example>
-        /// <pre>
-        ///   public void Run() {
-        ///       SendMessage("sample.DroidBot", "I'm here!");
+        ///   <code>
+        ///   public void Run()
+        ///   {
+        ///       SendMessage("Sample.DroidBot", "I'm here!");
         ///   }
-        /// </pre>
+        ///   </code>
         /// </example>
         /// <seealso cref="IsTeammate(string)"/>
         /// <seealso cref="Teammates"/>
         /// <seealso cref="BroadcastMessage(object)"/>
         /// </summary>
-        /// <param name="name">the name of the intended recipient of the message</param>
-        /// <param name="message">the message to send</param>
+        /// <param name="name">The name of the intended recipient of the message</param>
+        /// <param name="message">The message to send</param>
         public void SendMessage(string name, object message)
         {
             if (peer != null)

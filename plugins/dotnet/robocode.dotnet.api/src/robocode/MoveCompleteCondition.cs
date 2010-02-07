@@ -11,8 +11,7 @@
 namespace Robocode
 {
     /// <summary>
-    /// A prebuilt condition you can use that indicates your robot has finished
-    /// moving.
+    /// A prebuilt condition you can use that indicates your robot has finished moving.
     /// <seealso cref="Condition"/>
     /// </summary>
     public class MoveCompleteCondition : Condition
@@ -23,7 +22,7 @@ namespace Robocode
         /// Creates a new MoveCompleteCondition with default priority.
         /// The default priority is 80.
         /// </summary>
-        /// <param name="robot"> your robot, which must be a <see cref="AdvancedRobot"/></param>
+        /// <param name="robot">Your robot, which must be a <see cref="AdvancedRobot"/></param>
         public MoveCompleteCondition(AdvancedRobot robot)
         {
             this.robot = robot;
@@ -35,8 +34,8 @@ namespace Robocode
         /// higher priority. The default priority is 80.
         /// <seealso cref="Condition.Priority"/>
         /// </summary>
-        /// <param name="robot"> your robot, which must be a <see cref="AdvancedRobot"/></param>
-        /// <param name="priority"> the priority of this condition</param>
+        /// <param name="robot">Your robot, which must be a <see cref="AdvancedRobot"/></param>
+        /// <param name="priority">The priority of this condition</param>
         public MoveCompleteCondition(AdvancedRobot robot, int priority)
         {
             this.robot = robot;

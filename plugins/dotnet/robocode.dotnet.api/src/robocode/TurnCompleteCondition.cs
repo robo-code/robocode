@@ -22,7 +22,7 @@ namespace Robocode
         /// Creates a new TurnCompleteCondition with default priority.
         /// The default priority is 80.
         /// </summary>
-        /// <param name="robot">your robot, which must be a <see cref="AdvancedRobot"/></param>
+        /// <param name="robot">Your robot, which must be an <see cref="AdvancedRobot"/></param>
         public TurnCompleteCondition(AdvancedRobot robot)
         {
             this.robot = robot;
@@ -33,8 +33,8 @@ namespace Robocode
         /// A condition priority is a value from 0 - 99. The higher value, the
         /// higher priority. The default priority is 80.
         /// </summary>
-        /// <param name="robot">your robot, which must be a <see cref="AdvancedRobot"/></param>
-        /// <param name="priority">the priority of this condition</param>
+        /// <param name="robot">Your robot, which must be an <see cref="AdvancedRobot"/></param>
+        /// <param name="priority">The priority of this condition</param>
         /// <seealso cref="Condition.Priority"/>
         public TurnCompleteCondition(AdvancedRobot robot, int priority)
         {

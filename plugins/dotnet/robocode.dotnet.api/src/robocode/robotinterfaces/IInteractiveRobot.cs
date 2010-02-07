@@ -15,7 +15,7 @@ namespace Robocode.RobotInterfaces
     /// <see cref="Robocode.Robot"/> and <see cref="Robocode.AdvancedRobot"/> that is able to
     /// receive interactive events from the keyboard or mouse.
     /// If a robot is directly inherited from this class it will behave as similar to
-    /// a <see cref="IBasicRobot"/>. If you need it to behave similar to a
+    /// a <see cref="IBasicRobot"/>. If you need it to behave similar to an
     /// <see cref="IAdvancedRobot"/> or <see cref="ITeamRobot"/>, you should inherit from these
     /// interfaces instead, as these are inherited from this interface.
     /// <seealso cref="Robocode.Robot"/>

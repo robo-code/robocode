@@ -35,19 +35,19 @@ namespace Robocode.RobotInterfaces
         /// <seealso cref="Robocode.SkippedTurnEvent"/>
         /// <seealso cref="Robocode.Event"/>
         /// </summary>
-        /// <param name="evnt">the skipped turn event set by the game</param>
+        /// <param name="evnt">The skipped turn event set by the game</param>
         void OnSkippedTurn(SkippedTurnEvent evnt);
 
         /// <summary>
         /// This method is called when a custom condition is met.
         /// <p/>
-        /// See the sample robots for examples of use, e.g. the sample.Target
+        /// See the sample robots for examples of use, e.g. the Sample.Target
         /// robot.
         /// <seealso cref="Robocode.AdvancedRobot.AddCustomEvent(Condition)"/>
         /// <seealso cref="Robocode.CustomEvent"/>
         /// <seealso cref="Robocode.Event"/>
         /// </summary>
-        /// <param name="evnt"> the custom event that occurred</param>
+        /// <param name="evnt">The custom event that occurred</param>
         void OnCustomEvent(CustomEvent evnt);
     }
 }

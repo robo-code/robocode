@@ -606,7 +606,7 @@ namespace Robocode
         ///     SetAhead(100);
         ///     Execute();
         ///
-        ///     while (DistanceRemaining > 0 &amp;&amp; gTurnRemaining > 0)
+        ///     while (DistanceRemaining > 0 &amp;&amp; TurnRemaining > 0)
         ///     {
         ///         Execute();
         ///     }
@@ -765,7 +765,7 @@ namespace Robocode
         ///  Please notice that the max. size of your data file is set to 200000 bytes
         ///  (~195 KB).
         ///  <p />
-        ///  See the sample.SittingDuck to see an example of how to use this
+        ///  See the Sample.SittingDuck to see an example of how to use this
         ///  method.
         ///  <seealso cref="GetDataDirectory()"/>
         ///</summary>
@@ -1080,7 +1080,7 @@ namespace Robocode
         ///                    // Without IsInterruptible (true), we wouldn't
         ///                    // receive scan events at all!
         ///                    // We'll only get here if we don't see a robot during the move.
-        ///        Out.println("Ok, I can't see anyone");
+        ///        Out.WriteLine("Ok, I can't see anyone");
         ///    }
         ///    </code>
         ///  </example>
@@ -1446,7 +1446,7 @@ namespace Robocode
         ///  <p />
         ///  This call executes immediately.
         ///  <p />
-        ///  See the sample.Crazy robot for how this method can be used.
+        ///  See the Sample.Crazy robot for how this method can be used.
         ///  <seealso cref="Condition"/>
         ///  <seealso cref="Condition.Test()"/>
         ///</summary>

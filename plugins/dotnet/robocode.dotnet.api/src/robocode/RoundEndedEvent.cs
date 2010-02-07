@@ -33,11 +33,9 @@ namespace Robocode
         /// <summary>
         ///   Called by the game to create a new RoundEndedEvent.
         /// </summary>
-        /// <param name="round">
-        ///   the round that has ended (zero-indexed)
-        /// </param>
-        /// <param name="turns">the number of turns that this round reached</param>
-        /// <param name="totalTurns">the total number of turns reached in the battle when this round ended</param>
+        /// <param name="round">The round that has ended (zero-indexed)</param>
+        /// <param name="turns">The number of turns that this round reached</param>
+        /// <param name="totalTurns">The total number of turns reached in the battle when this round ended</param>
         public RoundEndedEvent(int round, int turns, int totalTurns)
         {
             this.round = round;
@@ -46,7 +44,7 @@ namespace Robocode
         }
 
         /// <value>
-        ///   the round that ended (zero-indexed).
+        ///   The round that ended (zero-indexed).
         /// </value>
         public int Round
         {
@@ -54,7 +52,7 @@ namespace Robocode
         }
 
         /// <value>
-        ///   the number of turns that this round reached.
+        ///   The number of turns that this round reached.
         /// </value>
         public int Turns
         {
@@ -62,7 +60,7 @@ namespace Robocode
         }
 
         /// <value>
-        ///   the total number of turns reached in the battle when this round ended.
+        ///   The total number of turns reached in the battle when this round ended.
         /// </value>
         public int TotalTurns
         {

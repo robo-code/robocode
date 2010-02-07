@@ -50,15 +50,18 @@ namespace Robocode.RobotInterfaces.Peer
         /// <seealso cref="IBasicRobotPeer.GetX"/>
         /// <seealso cref="IBasicRobotPeer.GetY"/>
         /// </summary>
-        /// <param name="distance">the distance to move measured in pixels.
-        ///                 If distance &gt; 0 the robot is set to move forward.
-        ///                 If distance &lt; 0 the robot is set to move backward.
-        ///                 If distance = 0 the robot will not move anywhere, but just
-        ///                 finish its turn.</param>
-        /// <param name="radians">the amount of radians to turn the robot's body.
-        ///                 If radians &gt; 0 the robot's body is set to turn right.
-        ///                 If radians &lt; 0 the robot's body is set to turn left.
-        ///                 If radians = 0 the robot's body is set to stop turning.</param>
+        /// <param name="distance">
+        ///   The distance to move measured in pixels.
+        ///   If distance &gt; 0 the robot is set to move forward.
+        ///   If distance &lt; 0 the robot is set to move backward.
+        ///   If distance = 0 the robot will not move anywhere, but just finish its turn.
+        /// </param>
+        /// <param name="radians">
+        ///   The amount of radians to turn the robot's body.
+        ///   If radians &gt; 0 the robot's body is set to turn right.
+        ///   If radians &lt; 0 the robot's body is set to turn left.
+        ///   If radians = 0 the robot's body is set to stop turning.
+        /// </param>
         void TurnAndMove(double distance, double radians);
     }
 }

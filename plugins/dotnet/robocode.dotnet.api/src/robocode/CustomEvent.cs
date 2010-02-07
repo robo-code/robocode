@@ -16,9 +16,8 @@ namespace Robocode
 {
     /// <summary>
     /// This event is sent to <see cref="AdvancedRobot.OnCustomEvent(CustomEvent)"/>
-    /// when a custom condition is met. Be sure to reset or remove
-    /// the custom condition to avoid having it recurring repeatedly (see the
-    /// example for the <see cref="Condition"/> method.
+    /// when a custom condition is met. Be sure to reset or remove the custom condition to avoid
+    /// having it recurring repeatedly (see the example for the <see cref="Condition"/> method.
     /// <seealso cref="Condition"/>
     /// </summary>
     [Serializable]
@@ -49,8 +48,8 @@ namespace Robocode
         /// This is equivalent to calling <see cref="Robocode.Condition.Priority"/> on the
         /// Condition.
         /// </summary>
-        /// <param name="condition">the condition that must be met</param>
-        /// <param name="priority">  the priority of the condition</param>
+        /// <param name="condition">The condition that must be met</param>
+        /// <param name="priority">The priority of the condition</param>
         public CustomEvent(Condition condition, int priority)
         {
             this.condition = condition;
@@ -63,16 +62,19 @@ namespace Robocode
 
         /// <summary>
         /// Returns the condition that fired, causing this event to be generated.
-        /// Use this to determine which condition fired, and to remove the custom
-        /// event.
-        /// <pre>
-        ///   public void OnCustomEvent(CustomEvent evnt) {
-        ///       if (event.Condition.Name. == "mycondition") {
+        /// Use this to determine which condition fired, and to remove the custom event.
+        /// <example>
+        ///   <code>
+        ///   public void OnCustomEvent(CustomEvent evnt)
+        ///   {
+        ///       if (event.Condition.Name == "mycondition")
+        ///       {
         ///           RemoveCustomEvent(event.Condition);
-        ///           <i>// do something else</i>
+        ///           // do something else
         ///       }
         ///   }
-        /// </pre>
+        ///   </code>
+        /// </example>
         /// </summary>
         public Condition Condition
         {
@@ -100,21 +102,21 @@ namespace Robocode
         }
 
         /// <inheritdoc />
-        // final to disable overrides
+        // sealed to disable overrides
         public override sealed int CompareTo(Event evnt)
         {
             return base.CompareTo(evnt);
         }
 
         /// <inheritdoc />
-        // final to disable overrides
+        // sealed to disable overrides
         internal override bool IsCriticalEvent
         {
             get { return false; }
         }
 
         /// <inheritdoc />
-        // final to disable overrides
+        // sealed to disable overrides
         public sealed override int Priority
         {
             get { return base.Priority; }

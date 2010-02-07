@@ -37,7 +37,7 @@ namespace Robocode
         internal int thirds;
 
         ///<summary>
-        ///  Constructs this BattleResults objec.
+        ///  Constructs this BattleResults object.
         ///</summary>
         public BattleResults(
             string teamLeaderName,

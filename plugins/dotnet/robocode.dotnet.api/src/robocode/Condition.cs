@@ -15,17 +15,17 @@ namespace Robocode
 {
     /// <summary>
     /// Condition is used to define custom  <see cref="AdvancedRobot.WaitFor(Condition)"/> 
-    /// and custom events for an AdvancedRobot. The code
-    /// below is taken from the sample robot named samplecs.Target. See the
-    /// samplecs/Target.cs for details.
-    /// <pre>
-    /// AddCustomEvent(
-    ///    new Condition("triggerhit",
-    ///                  (c) =>
-    ///         {
-    ///             return Energy &lt;= trigger;
-    ///         }));
-    /// </pre>
+    /// and custom events for an AdvancedRobot. The code below is taken from the sample robot
+    /// named samplecs.Target. See the samplecs/Target.cs for details.
+    /// <example>
+    ///   <code>
+    ///   AddCustomEvent(
+    ///       new Condition("triggerhit", (c) =>
+    ///       {
+    ///           return Energy &lt;= trigger;
+    ///       }));
+    ///   </code>
+    /// </example>
     /// <see cref="AdvancedRobot.WaitFor(Condition)"/>
     /// <see cref="AdvancedRobot.AddCustomEvent(Condition)"/>
     /// <see cref="AdvancedRobot.RemoveCustomEvent(Condition)"/>
@@ -46,7 +46,7 @@ namespace Robocode
         public string name;
 
         /// <summary>
-        /// Convinience constructor, alows t pass delegate to method, instead of overriding Test method.
+        /// Convinience constructor, allows to pass delegate to method, instead of overriding Test() method.
         /// </summary>
         public Condition(string name, int priority, ConditionTest test)
             : this(name, priority)
@@ -55,7 +55,7 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Convinience constructor, alows t pass delegate to method, instead of overriding Test method.
+        /// Convinience constructor, allows to pass delegate to method, instead of overriding Test() method.
         /// </summary>
         public Condition(string name, ConditionTest test)
             : this(name)
@@ -64,7 +64,7 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Convinience constructor, alows t pass delegate to method, instead of overriding Test method.
+        /// Convinience constructor, allows to pass delegate to method, instead of overriding Test() method.
         /// </summary>
         public Condition(ConditionTest test)
         {
@@ -79,10 +79,9 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Creates a new Condition with the specified name, and default priority,
-        /// which is 80.
+        /// Creates a new Condition with the specified name, and default priority, which is 80.
         /// </summary>
-        /// <param name="name">the name for the new Condition</param>
+        /// <param name="name">The name for the new Condition</param>
         protected Condition(string name)
         {
             this.name = name;
@@ -93,8 +92,8 @@ namespace Robocode
         /// A condition priority is a value from 0 - 99. The higher value, the
         /// higher priority. The default priority is 80.
         /// </summary>
-        /// <param name="name">the name for the new condition</param>
-        /// <param name="priority">the priority of the new condition</param>
+        /// <param name="name">The name for the new condition</param>
+        /// <param name="priority">The priority of the new condition</param>
         protected Condition(string name, int priority)
         {
             this.name = name;
@@ -135,15 +134,15 @@ namespace Robocode
 
         /// <summary>
         /// Overriding the Test() method is the point of a Condition.
-        /// The game will call your Test() function, and take action if it returns
-        /// true. This is valid for both <see cref="AdvancedRobot.WaitFor"/> and
+        /// The game will call your Test() function, and take action if it returns true.
+        /// This is valid for both <see cref="AdvancedRobot.WaitFor"/> and
         /// <see cref="AdvancedRobot.AddCustomEvent(Condition)"/>
         /// <p/>
         /// You may not take any actions inside of Test().
         /// </summary>
         public virtual bool Test()
         {
-            if (test!=null)
+            if (test != null)
             {
                 return test(this);
             }

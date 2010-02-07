@@ -18,47 +18,26 @@ namespace Robocode
     ///   <p />
     ///   You can set the rate for:
     ///   <ul>
-    ///     <li>
-    ///       velocity - pixels per turn
-    ///     </li>
-    ///     <li>
-    ///       robot turn - radians per turn
-    ///     </li>
-    ///     <li>
-    ///       gun rotation - radians per turn
-    ///     </li>
-    ///     <li>
-    ///       radar rotation - radians per turn
-    ///     </li>
+    ///     <li>velocity - pixels per turn</li>
+    ///     <li>robot turn - radians per turn</li>
+    ///     <li>gun rotation - radians per turn</li>
+    ///     <li>radar rotation - radians per turn</li>
     ///   </ul>
     ///   When you set a rate for one of the above movements, the movement will continue the move by
     ///   specified rate for ever, until the rate is changed. In order to move ahead or right, the
     ///   rate must be set to a positive value. If a negative value is used instead, the movement
     ///   will go back or to the left. In order to stop the movement, the rate must be
     ///   set to 0.
-    /// 
-    ///   Note: When calling
-    ///   <see cref="VelocityRate" />
-    ///   ,
-    ///   <see cref="TurnRate" />
-    ///   ,
-    ///   <see cref="GunRotationRate" />
-    ///   ,
-    ///   <see cref="RadarRotationRate" />
-    ///   and variants, Any previous calls to "movement" functions outside of
-    ///   <see cref="RateControlRobot" />
-    ///   , such as
-    ///   <see cref="AdvancedRobot.SetAhead(double)" />
-    ///   ,
-    ///   <see cref="AdvancedRobot.SetTurnLeft(double)" />
-    ///   ,
-    ///   <see cref="AdvancedRobot.SetTurnRadarRightRadians(double)" />
-    ///   and similar will be overridden when calling the
-    ///   <see cref="Execute()" />
-    ///   on this robot class.
-    /// 
-    ///   Look into the source code for the samplecs.VelociRobot
-    ///   in order to see how to use this
+    ///   <para />
+    ///   Note: When calling <see cref="VelocityRate" />, <see cref="TurnRate" />,
+    ///   <see cref="GunRotationRate" />, <see cref="RadarRotationRate" /> and variants,
+    ///   any previous calls to "movement" functions outside of <see cref="RateControlRobot" />,
+    ///   such as <see cref="AdvancedRobot.SetAhead(double)" />,
+    ///   <see cref="AdvancedRobot.SetTurnLeft(double)" />,
+    ///   <see cref="AdvancedRobot.SetTurnRadarRightRadians(double)" />  and similar will be
+    ///   overridden when calling the <see cref="Execute()" /> on this robot class.
+    ///   <p />
+    ///   Look into the source code for the samplecs.VelociRobot in order to see how to use this
     ///   robot type.
     /// </summary>
     public abstract class RateControlRobot : TeamRobot
@@ -70,7 +49,7 @@ namespace Robocode
 
         /// 
         ///<summary>
-        ///  Sets the speed the robot will move (forward), in pixels per turn.
+        ///  The speed the robot will move (forward), in pixels per turn.
         ///  <p />
         ///  This call returns immediately, and will not execute until you call
         ///  Execute() or take an action that executes.
@@ -79,22 +58,20 @@ namespace Robocode
         ///  where negative values means that the robot will move backwards
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Set the robot to move forward 2 pixels per turn
-        ///      setVelocityRate(2);
+        ///    <code>
+        ///    // Set the robot to move forward 2 pixels per turn
+        ///    VelocityRate = 2;
         ///
-        ///      // Set the robot to move backwards 8 pixels per turn
-        ///      // (overrides the previous order)
-        ///      setVelocityRate(-8);
+        ///    // Set the robot to move backwards 8 pixels per turn
+        ///    // (overrides the previous order)
+        ///    VelocityRate = -8;
         ///
-        ///      ...
-        ///      // Executes the last setVelocityRate()
-        ///      Execute();
-        ///    </pre>
+        ///    ...
+        ///    // Executes the last VelocityRate
+        ///    Execute();
+        ///    </code>
         ///  </example>
-        ///  Note: This method overrules
-        ///  <see cref="AdvancedRobot.SetAhead(double)" />
-        ///  and
+        ///  Note: This method overrules <see cref="AdvancedRobot.SetAhead(double)" /> and
         ///  <see cref="AdvancedRobot.SetBack(double)" />
         ///  <seealso cref="VelocityRate" />
         ///  <seealso cref="TurnRate" />
@@ -111,7 +88,7 @@ namespace Robocode
 
         /// 
         ///<summary>
-        ///  Sets the robot's clockwise (right) rotation per turn, in degrees.
+        ///  The robot's clockwise (right) rotation per turn, in degrees.
         ///  <p />
         ///  This call returns immediately, and will not execute until you call
         ///  Execute() or take an action that executes.
@@ -120,18 +97,18 @@ namespace Robocode
         ///  where negative values means that the robot turns counterclockwise (left)
         ///  <p />
         ///  <example>
-        ///    <pre>
-        ///      // Set the robot to turn right 10 degrees per turn
-        ///      setTurnRate(10);
+        ///    <code>
+        ///    // Set the robot to turn right 10 degrees per turn
+        ///    TurnRate = 10;
         ///
-        ///      // Set the robot to turn left 4 degrees per turn
-        ///      // (overrides the previous order)
-        ///      setTurnRate(-5);
+        ///    // Set the robot to turn left 4 degrees per turn
+        ///    // (overrides the previous order)
+        ///    TurnRate = -5;
         ///
-        ///      ...
-        ///      // Executes the last setTurnRate()
-        ///      Execute();
-        ///    </pre>
+        ///    ...
+        ///    // Executes the last TurnRate
+        ///    Execute();
+        ///    </code>
         ///  </example>
         ///  <seealso cref="TurnRate" />
         ///  <seealso cref="VelocityRate" />
@@ -147,7 +124,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Sets the robot's clockwise (right) rotation per turn, in radians.
+        ///   The robot's clockwise (right) rotation per turn, in radians.
         ///   <p />
         ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
@@ -156,18 +133,18 @@ namespace Robocode
         ///   where negative values means that the robot turns counterclockwise (left)
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Set the robot to turn right pi / 32 radians per turn
-        ///       setTurnRateRadians(Math.PI / 32);
-        ///       <p />
-        ///       // Set the robot to turn left pi / 20 radians per turn
-        ///       // (overrides the previous order)
-        ///       setTurnRateRadians(-Math.PI / 20);
-        ///       <p />
-        ///       ...
-        ///       // Executes the last setTurnRateRadians()
-        ///       Execute();
-        ///     </pre>
+        ///     <code>
+        ///     // Set the robot to turn right pi / 32 radians per turn
+        ///     TurnRateRadians = Math.PI / 32;
+        ///
+        ///     // Set the robot to turn left pi / 20 radians per turn
+        ///     // (overrides the previous order)
+        ///     TurnRateRadians = -Math.PI / 20;
+        ///
+        ///     ...
+        ///     // Executes the last TurnRateRadians
+        ///     Execute();
+        ///     </code>
         ///   </example>
         /// 
         ///   <seealso cref="TurnRateRadians" />
@@ -184,7 +161,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Sets the gun's clockwise (right) rotation per turn, in degrees.
+        ///   The gun's clockwise (right) rotation per turn, in degrees.
         ///   <p />
         ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
@@ -193,18 +170,18 @@ namespace Robocode
         ///   where negative values means that the gun turns counterclockwise (left)
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Set the gun to turn right 15 degrees per turn
-        ///       setGunRotationRate(15);
-        ///       <p />
-        ///       // Set the gun to turn left 9 degrees per turn
-        ///       // (overrides the previous order)
-        ///       setGunRotationRate(-9);
-        ///       <p />
-        ///       ...
-        ///       // Executes the last setGunRotationRate()
-        ///       Execute();
-        ///     </pre>
+        ///     <code>
+        ///     // Set the gun to turn right 15 degrees per turn
+        ///     GunRotationRate = 15;
+        ///
+        ///     // Set the gun to turn left 9 degrees per turn
+        ///     // (overrides the previous order)
+        ///     GunRotationRate = -9;
+        ///
+        ///     ...
+        ///     // Executes the last GunRotationRate()
+        ///     Execute();
+        ///     </code>
         ///   </example>
         ///   <seealso cref="GunRotationRate" />
         ///   <seealso cref="VelocityRate" />
@@ -220,7 +197,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Sets the gun's clockwise (right) rotation per turn, in radians.
+        ///   The gun's clockwise (right) rotation per turn, in radians.
         ///   <p />
         ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
@@ -229,18 +206,18 @@ namespace Robocode
         ///   where negative values means that the gun turns counterclockwise (left)
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Set the gun to turn right pi / 16 radians per turn
-        ///       setGunRotationRateRadians(Math.PI / 16);
-        ///       <p />
-        ///       // Set the gun to turn left pi / 12 radians per turn
-        ///       // (overrides the previous order)
-        ///       setGunRotationRateRadians(-Math.PI / 12);
-        ///       <p />
-        ///       ...
-        ///       // Executes the last setGunRotationRateRadians()
-        ///       Execute();
-        ///     </pre>
+        ///     <code>
+        ///     // Set the gun to turn right pi / 16 radians per turn
+        ///     GunRotationRateRadians = Math.PI / 16;
+        ///
+        ///     // Set the gun to turn left pi / 12 radians per turn
+        ///     // (overrides the previous order)
+        ///     GunRotationRateRadians = -Math.PI / 12;
+        ///
+        ///     ...
+        ///     // Executes the last GunRotationRateRadians
+        ///     Execute();
+        ///     </code>
         ///   </example>
         ///   <seealso cref="GunRotationRateRadians()" />
         ///   <seealso cref="VelocityRate" />
@@ -256,7 +233,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Sets the radar's clockwise (right) rotation per turn, in degrees.
+        ///   The radar's clockwise (right) rotation per turn, in degrees.
         ///   <p />
         ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
@@ -265,18 +242,18 @@ namespace Robocode
         ///   where negative values means that the radar turns counterclockwise (left)
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Set the radar to turn right 45 degrees per turn
-        ///       setRadarRotationRate(45);
-        ///       <p />
-        ///       // Set the radar to turn left 15 degrees per turn
-        ///       // (overrides the previous order)
-        ///       setRadarRotationRate(-15);
-        ///       <p />
-        ///       ...
-        ///       // Executes the last setRadarRotationRate()
-        ///       Execute();
-        ///     </pre>
+        ///     <code>
+        ///     // Set the radar to turn right 45 degrees per turn
+        ///     RadarRotationRate = 45;
+        ///
+        ///     // Set the radar to turn left 15 degrees per turn
+        ///     // (overrides the previous order)
+        ///     RadarRotationRate = -15;
+        ///
+        ///     ...
+        ///     // Executes the last RadarRotationRate
+        ///     Execute();
+        ///     </code>
         ///   </example>
         ///   <seealso cref="RadarRotationRate()" />
         ///   <seealso cref="VelocityRate" />
@@ -292,7 +269,7 @@ namespace Robocode
         }
 
         /// <summary>
-        ///   Sets the radar's clockwise (right) rotation per turn, in radians.
+        ///   The radar's clockwise (right) rotation per turn, in radians.
         ///   <p />
         ///   This call returns immediately, and will not execute until you call
         ///   Execute() or take an action that executes.
@@ -301,18 +278,18 @@ namespace Robocode
         ///   where negative values means that the radar turns counterclockwise (left)
         ///   <p />
         ///   <example>
-        ///     <pre>
-        ///       // Set the radar to turn right pi / 4 radians per turn
-        ///       setRadarRotationRateRadians(Math.PI / 4);
-        ///       <p />
-        ///       // Set the radar to turn left pi / 8 radians per turn
-        ///       // (overrides the previous order)
-        ///       setRadarRotationRateRadians(-Math.PI / 8);
-        ///       <p />
-        ///       ...
-        ///       // Executes the last setRadarRotationRateRadians()
-        ///       Execute();
-        ///     </pre>
+        ///     <code>
+        ///     // Set the radar to turn right pi / 4 radians per turn
+        ///     RadarRotationRateRadians = Math.PI / 4;
+        ///
+        ///     // Set the radar to turn left pi / 8 radians per turn
+        ///     // (overrides the previous order)
+        ///     RadarRotationRateRadians = -Math.PI / 8;
+        ///
+        ///     ...
+        ///     // Executes the last RadarRotationRateRadians
+        ///     Execute();
+        ///     </code>
         ///   </example>
         ///   <seealso cref="RadarRotationRateRadians" />
         ///   <seealso cref="VelocityRate" />
@@ -327,43 +304,33 @@ namespace Robocode
             set { radarRotationRate = value; }
         }
 
-        /// 
         ///<summary>
         ///  Executes any pending actions, or continues executing actions that are
         ///  in process. This call returns after the actions have been started.
         ///  <p />
-        ///  Note that advanced robots
-        ///  <em>must</em>
-        ///  call this function in order to
-        ///  Execute pending set* calls like e.g.
-        ///  <see cref="VelocityRate" />
-        ///  ,
-        ///  <see cref="AdvancedRobot.SetFire(double)" />
-        ///  ,
-        ///  <see cref="TurnRate" />
+        ///  Note that advanced robots <em>must</em> call this function in order to
+        ///  Execute pending set* calls like e.g. <see cref="VelocityRate" />,
+        ///  <see cref="AdvancedRobot.SetFire(double)" />, <see cref="TurnRate" />
         ///  etc. Otherwise, these calls will never get executed.
         ///  <p />
         ///  Any previous calls to "movement" functions outside of
-        ///  <see cref="RateControlRobot" />
-        ///  ,
-        ///  such as
-        ///  <see cref="AdvancedRobot.SetAhead(double)" />
-        ///  ,
-        ///  <see cref="AdvancedRobot.SetTurnLeft(double)" />
-        ///  ,
+        ///  <see cref="RateControlRobot" />, such as
+        ///  <see cref="AdvancedRobot.SetAhead(double)" />,
+        ///  <see cref="AdvancedRobot.SetTurnLeft(double)" />,
         ///  <see cref="AdvancedRobot.SetTurnRadarLeftRadians(double)" />
         ///  etc. will be overridden when this method is called on this robot class.
         ///  <p />
         ///  <example>
         ///    In this example the robot will move while turning:
-        ///    <pre>
-        ///      setVelocityRate(6);
-        ///      setTurnRate(7);
+        ///    <code>
+        ///    VelocityRate = 6;
+        ///    TurnRate = 7;
         ///
-        ///      while (true) {
-        ///      Execute();
-        ///      }
-        ///    </pre>
+        ///    while (true)
+        ///    {
+        ///        Execute();
+        ///    }
+        ///    </code>
         ///  </example>
         ///</summary>
         public override void Execute()

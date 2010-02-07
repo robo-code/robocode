@@ -41,7 +41,7 @@ namespace Robocode
         }
 
         /// <summary>
-        /// Number of button
+        /// Number of the button
         /// </summary>
         public int Button
         {
