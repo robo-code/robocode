@@ -30,7 +30,7 @@ public class Robocode {
 	 * Use the command-line to start Robocode.
 	 * The command is:
 	 * <pre>
-	 *    java -Xmx512M -Dsun.io.useCanonCaches=false -jar libs/robocode.jar
+	 *    java -Xmx512M -Dsun.io.useCanonCaches=false -cp libs/robocode.jar robocode.Robocode
 	 * </pre>
 	 *
 	 * @param args an array of command-line arguments

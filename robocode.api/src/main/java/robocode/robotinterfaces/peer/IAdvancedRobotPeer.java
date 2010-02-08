@@ -138,11 +138,11 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * <pre>
 	 *   // Set the robot to move 50 pixels forward
 	 *   setMove(50);
-	 * <p/>
+	 *
 	 *   // Set the robot to move 100 pixels backward
 	 *   // (overrides the previous order)
 	 *   setMove(-100);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setMove()
 	 *   execute();
@@ -177,11 +177,11 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * <pre>
 	 *   // Set the robot's body to turn 180 degrees to the right
 	 *   setTurnBody(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the robot's body to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnBody(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnBody()
 	 *   execute();
@@ -216,11 +216,11 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * <pre>
 	 *   // Set the robot's gun to turn 180 degrees to the right
 	 *   setTurnGun(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the robot's gun to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnGun(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnFun()
 	 *   execute();
@@ -254,11 +254,11 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * <pre>
 	 *   // Set the robot's radar to turn 180 degrees to the right
 	 *   setTurnRadar(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the robot's radar to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnRadar(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRadar()
 	 *   execute();
@@ -444,7 +444,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *           return (getEnergy() <= trigger);
 	 *       };
 	 *   }
-	 * <p/>
+	 *
 	 *   // Add our custom event based on our condition
 	 *   <b>addCustomEvent(triggerHitCondition);</b>
 	 * </pre>
@@ -469,7 +469,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *           return (getEnergy() <= trigger);
 	 *       };
 	 *   }
-	 * <p/>
+	 *
 	 *   // Add our custom event based on our condition
 	 *   addCustomEvent(triggerHitCondition);
 	 *   ...

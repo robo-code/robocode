@@ -124,7 +124,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <pre>
 	 *   // Move the robot 100 pixels forward
 	 *   ahead(100);
-	 * <p/>
+	 *
 	 *   // Afterwards, move the robot 50 pixels backward
 	 *   ahead(-50);
 	 * </pre>
@@ -161,7 +161,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <pre>
 	 *   // Move the robot 100 pixels backward
 	 *   back(100);
-	 * <p/>
+	 *
 	 *   // Afterwards, move the robot 50 pixels forward
 	 *   back(-50);
 	 * </pre>
@@ -333,7 +333,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <pre>
 	 *   // Turn the robot 180 degrees to the left
 	 *   turnLeft(180);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot 90 degrees to the right
 	 *   turnLeft(-90);
 	 * </pre>
@@ -369,7 +369,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <pre>
 	 *   // Turn the robot 180 degrees to the right
 	 *   turnRight(180);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot 90 degrees to the left
 	 *   turnRight(-90);
 	 * </pre>
@@ -485,7 +485,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
 	 *       Bullet bullet = fireBullet(Rules.MAX_BULLET_POWER);
-	 * <p/>
+	 *
 	 *       // Get the velocity of the bullet
 	 *       if (bullet != null) {
 	 *           double bulletVelocity = bullet.getVelocity();
@@ -787,9 +787,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // At this point, both the robot and gun are facing right (90 degrees)
 	 *   turnLeft(90);
 	 *   // Both are back to 0 degrees
-	 * <p/>
+	 *
 	 *   -- or --
-	 * <p/>
+	 *
 	 *   // Set gun to turn independent from the robot's turn
 	 *   setAdjustGunForRobotTurn(true);
 	 *   turnRight(90);
@@ -837,9 +837,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   setAdjustRadarForRobotTurn(false); // This is the default
 	 *   turnRight(90);
 	 *   // At this point, the body, gun, and radar are all facing right (90 degrees);
-	 * <p/>
+	 *
 	 *   -- or --
-	 * <p/>
+	 *
 	 *   // Set radar to turn independent from the robot's turn
 	 *   setAdjustRadarForRobotTurn(true);
 	 *   turnRight(90);
@@ -881,9 +881,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   setAdjustRadarForGunTurn(false); // This is the default
 	 *   turnGunRight(90);
 	 *   // At this point, both the radar and gun are facing right (90 degrees);
-	 * <p/>
+	 *
 	 *   -- or --
-	 * <p/>
+	 *
 	 *   // Set radar to turn independent from the gun's turn
 	 *   setAdjustRadarForGunTurn(true);
 	 *   turnGunRight(90);
@@ -919,7 +919,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 *
 	 *   public void run() {
 	 *       setColors(null, Color.RED, new Color(150, 0, 150));
 	 *       ...
@@ -961,7 +961,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 *
 	 *   public void run() {
 	 *       setColors(null, Color.RED, Color.GREEN, null, new Color(150, 0, 150));
 	 *       ...
@@ -1008,7 +1008,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 *
 	 *   public void run() {
 	 *       setAllColors(Color.RED);
 	 *       ...
@@ -1048,7 +1048,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 *
 	 *   public void run() {
 	 *       setBodyColor(Color.BLACK);
 	 *       ...
@@ -1084,7 +1084,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 *
 	 *   public void run() {
 	 *       setGunColor(Color.RED);
 	 *       ...
@@ -1120,7 +1120,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 *
 	 *   public void run() {
 	 *       setRadarColor(Color.YELLOW);
 	 *       ...
@@ -1156,7 +1156,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 *
 	 *   public void run() {
 	 *       setBulletColor(Color.GREEN);
 	 *       ...
@@ -1192,7 +1192,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 *
 	 *   public void run() {
 	 *       setScanColor(Color.WHITE);
 	 *       ...
@@ -1280,7 +1280,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <pre>
 	 *   // Turn the robot's gun 180 degrees to the left
 	 *   turnGunLeft(180);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's gun 90 degrees to the right
 	 *   turnGunLeft(-90);
 	 * </pre>
@@ -1317,7 +1317,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <pre>
 	 *   // Turn the robot's gun 180 degrees to the right
 	 *   turnGunRight(180);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's gun 90 degrees to the left
 	 *   turnGunRight(-90);
 	 * </pre>
@@ -1355,7 +1355,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <pre>
 	 *   // Turn the robot's radar 180 degrees to the left
 	 *   turnRadarLeft(180);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's radar 90 degrees to the right
 	 *   turnRadarLeft(-90);
 	 * </pre>
@@ -1393,7 +1393,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <pre>
 	 *   // Turn the robot's radar 180 degrees to the right
 	 *   turnRadarRight(180);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's radar 90 degrees to the left
 	 *   turnRadarRight(-90);
 	 * </pre>

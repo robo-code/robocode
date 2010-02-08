@@ -170,11 +170,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the robot to move 50 pixels ahead
 	 *   setAhead(50);
-	 * <p/>
+	 *
 	 *   // Set the robot to move 100 pixels back
 	 *   // (overrides the previous order)
 	 *   setAhead(-100);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setAhead()
 	 *   execute();
@@ -214,11 +214,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the robot to move 50 pixels back
 	 *   setBack(50);
-	 * <p/>
+	 *
 	 *   // Set the robot to move 100 pixels ahead
 	 *   // (overrides the previous order)
 	 *   setBack(-100);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setBack()
 	 *   execute();
@@ -255,11 +255,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the robot to turn 180 degrees to the left
 	 *   setTurnLeft(180);
-	 * <p/>
+	 *
 	 *   // Set the robot to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnLeft(-90);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnLeft()
 	 *   execute();
@@ -300,11 +300,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the robot to turn 180 degrees to the right
 	 *   setTurnRight(180);
-	 * <p/>
+	 *
 	 *   // Set the robot to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnRight(-90);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRight()
 	 *   execute();
@@ -463,9 +463,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   Condition triggerHitCondition = new Condition("triggerhit") {
 	 *       public boolean test() {
 	 *           return (getEnergy() <= trigger);
-	 *       };
+	 *       }
 	 *   }
-	 * <p/>
+	 *
 	 *   // Add our custom event based on our condition
 	 *   <b>addCustomEvent(triggerHitCondition);</b>
 	 * </pre>
@@ -497,9 +497,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   Condition triggerHitCondition = new Condition("triggerhit") {
 	 *       public boolean test() {
 	 *           return (getEnergy() <= trigger);
-	 *       };
+	 *       }
 	 *   }
-	 * <p/>
+	 *
 	 *   // Add our custom event based on our condition
 	 *   addCustomEvent(triggerHitCondition);
 	 *   ...
@@ -554,7 +554,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   setTurnRight(90);
 	 *   setAhead(100);
 	 *   execute();
-	 * <p/>
+	 *
 	 *   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
 	 *       execute();
 	 *   }
@@ -1224,11 +1224,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the gun to turn 180 degrees to the left
 	 *   setTurnGunLeft(180);
-	 * <p/>
+	 *
 	 *   // Set the gun to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnGunLeft(-90);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnGunLeft()
 	 *   execute();
@@ -1270,11 +1270,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the gun to turn 180 degrees to the right
 	 *   setTurnGunRight(180);
-	 * <p/>
+	 *
 	 *   // Set the gun to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnGunRight(-90);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnGunRight()
 	 *   execute();
@@ -1316,11 +1316,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the radar to turn 180 degrees to the left
 	 *   setTurnRadarLeft(180);
-	 * <p/>
+	 *
 	 *   // Set the radar to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnRadarLeft(-90);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRadarLeft()
 	 *   execute();
@@ -1363,11 +1363,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the radar to turn 180 degrees to the right
 	 *   setTurnRadarRight(180);
-	 * <p/>
+	 *
 	 *   // Set the radar to turn 90 degrees to the right instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnRadarRight(-90);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRadarRight()
 	 *   execute();
@@ -1466,11 +1466,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the robot to turn 180 degrees to the left
 	 *   setTurnLeftRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the robot to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnLeftRadians(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnLeftRadians()
 	 *   execute();
@@ -1507,11 +1507,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the robot to turn 180 degrees to the right
 	 *   setTurnRightRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the robot to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnRightRadians(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRightRadians()
 	 *   execute();
@@ -1547,7 +1547,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Turn the robot 180 degrees to the left
 	 *   turnLeftRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot 90 degrees to the right
 	 *   turnLeftRadians(-Math.PI / 2);
 	 * </pre>
@@ -1586,7 +1586,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Turn the robot 180 degrees to the right
 	 *   turnRightRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot 90 degrees to the left
 	 *   turnRightRadians(-Math.PI / 2);
 	 * </pre>
@@ -1659,11 +1659,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the gun to turn 180 degrees to the left
 	 *   setTurnGunLeftRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the gun to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnGunLeftRadians(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnGunLeftRadians()
 	 *   execute();
@@ -1701,11 +1701,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the gun to turn 180 degrees to the right
 	 *   setTurnGunRightRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the gun to turn 90 degrees to the left instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnGunRightRadians(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnGunRightRadians()
 	 *   execute();
@@ -1743,11 +1743,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the radar to turn 180 degrees to the left
 	 *   setTurnRadarLeftRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the radar to turn 90 degrees to the right instead of left
 	 *   // (overrides the previous order)
 	 *   setTurnRadarLeftRadians(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRadarLeftRadians()
 	 *   execute();
@@ -1786,11 +1786,11 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Set the radar to turn 180 degrees to the right
 	 *   setTurnRadarRightRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Set the radar to turn 90 degrees to the right instead of right
 	 *   // (overrides the previous order)
 	 *   setTurnRadarRightRadians(-Math.PI / 2);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRadarRightRadians()
 	 *   execute();
@@ -1828,7 +1828,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Turn the robot's gun 180 degrees to the left
 	 *   turnGunLeftRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's gun 90 degrees to the right
 	 *   turnGunLeftRadians(-Math.PI / 2);
 	 * </pre>
@@ -1867,7 +1867,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Turn the robot's gun 180 degrees to the right
 	 *   turnGunRightRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's gun 90 degrees to the left
 	 *   turnGunRightRadians(-Math.PI / 2);
 	 * </pre>
@@ -1907,7 +1907,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Turn the robot's radar 180 degrees to the left
 	 *   turnRadarLeftRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's radar 90 degrees to the right
 	 *   turnRadarLeftRadians(-Math.PI / 2);
 	 * </pre>
@@ -1947,7 +1947,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <pre>
 	 *   // Turn the robot's radar 180 degrees to the right
 	 *   turnRadarRightRadians(Math.PI);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's radar 90 degrees to the left
 	 *   turnRadarRightRadians(-Math.PI / 2);
 	 * </pre>
