@@ -79,7 +79,7 @@ namespace Robocode
         /// <summary>
         /// Checks if your robot was moving towards the robot that was hit.
         /// <p/>
-        /// If <see cref="#IsMyFault"/> returns true then your robot's movement (including
+        /// If <see cref="IsMyFault"/> returns true then your robot's movement (including
         /// turning) will have stopped and been marked complete.
         /// <p/>
         /// Note: If two robots are moving toward each other and collide, they will
