@@ -27,7 +27,7 @@ namespace SampleCs
         public override void Run()
         {
             // Set robot colors
-            SetColors(green, black, blue);
+            SetColors(GREEN, BLACK, BLUE);
 
             // Seesaw forever
             while (true)
