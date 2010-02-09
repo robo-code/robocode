@@ -12,15 +12,15 @@
 package net.sf.robocode.host;
 
 
+import net.sf.robocode.core.BaseModule;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.security.ThreadManager;
-import net.sf.robocode.host.JavaHost;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class Module {
+public class Module extends BaseModule {
 	static {
 		Container.cache.addComponent(IHostManager.class, HostManager.class);
 		Container.cache.addComponent(ICpuManager.class, CpuManager.class);

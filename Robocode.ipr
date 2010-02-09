@@ -340,12 +340,16 @@
       <module fileurl="file://$PROJECT_DIR$/robocode.content/robocode.content.iml" filepath="$PROJECT_DIR$/robocode.content/robocode.content.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/robocode.core/robocode.core.iml" filepath="$PROJECT_DIR$/robocode.core/robocode.core.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.api/robocode.dotnet.api.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.api/robocode.dotnet.api.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.ntests/robocode.dotnet.ntests.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.ntests/robocode.dotnet.ntests.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.repository/robocode.dotnet.repository.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.repository/robocode.dotnet.repository.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.robotscs/robocode.dotnet.robotscs.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.robotscs/robocode.dotnet.robotscs.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.samples/robocode.dotnet.samples.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.tests/robocode.dotnet.tests.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.tests/robocode.dotnet.tests.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/robocode.host/robocode.host.iml" filepath="$PROJECT_DIR$/robocode.host/robocode.host.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/robocode.installer/robocode.installer.iml" filepath="$PROJECT_DIR$/robocode.installer/robocode.installer.iml" group="robocode and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/js/robocode.js.iml" filepath="$PROJECT_DIR$/plugins/js/robocode.js.iml" group="robocode.js and modules" />
@@ -574,17 +578,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt-macosx-universal/1.0b05/gluegen-rt-macosx-universal-1.0b05-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: net.sf.jni4net:jni4net.j:0.2.0.0">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.2.0.0/jni4net.j-0.2.0.0-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: org.scala-lang:scala-library:2.7.3">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.3/scala-library-2.7.3.jar!/" />
@@ -605,6 +598,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.sf.jni4net:jni4net.j:0.6.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.6.0.0/jni4net.j-0.6.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.6.0.0/jni4net.j-0.6.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.6.0.0/jni4net.j-0.6.0.0-sources.jar!/" />
       </SOURCES>
     </library>
   </component>

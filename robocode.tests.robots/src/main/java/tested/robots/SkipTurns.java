@@ -23,27 +23,27 @@ import robocode.StatusEvent;
 public class SkipTurns extends AdvancedRobot {
 	private volatile int skipped = 0;
 
-	final int limit = 5;
+	static final int LIMIT = 5;
 
 	@Override
 	public void run() {
 		// noinspection InfiniteLoopStatement
 		for (;;) {
-			if (skipped > limit) {
+			if (skipped > LIMIT) {
 				throw new Error("satisfied, end battle please");
 			}
 			turnLeft(10);
-			if (skipped > limit) {
+			if (skipped > LIMIT) {
 				// satisfied, end battle please
 				throw new Error();
 			}
 			ahead(1);
-			if (skipped > limit) {
+			if (skipped > LIMIT) {
 				// satisfied, end battle please
 				throw new Error();
 			}
 			turnLeft(10);
-			if (skipped > limit) {
+			if (skipped > LIMIT) {
 				// satisfied, end battle please
 				throw new Error();
 			}

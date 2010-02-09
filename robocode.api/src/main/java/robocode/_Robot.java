@@ -83,7 +83,7 @@ public abstract class _Robot extends _RobotBase {
 	}
 
 	/**
-	 * @return the current round number of the battle
+	 * @return the current round number of the battle (zero indexed).
 	 * @deprecated Use {@link Robot#getRoundNum() getRoundNum()} instead.
 	 */
 	@Deprecated

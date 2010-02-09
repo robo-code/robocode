@@ -122,7 +122,7 @@ public class WindowPositionManager implements ComponentListener {
 
 			getWindowPositions().store(out, "Robocode window sizes");
 		} catch (IOException e) {
-			Logger.logError("Warning:  Unable to save window positions: ", e);
+			Logger.logWarning("Unable to save window positions: " + e);
 		} finally {
 			if (out != null) {
 				try {

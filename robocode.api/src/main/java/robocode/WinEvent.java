@@ -32,7 +32,7 @@ import java.nio.ByteBuffer;
  */
 public final class WinEvent extends Event {
 	private static final long serialVersionUID = 1L;
-	private final static int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!;
+	private final static int DEFAULT_PRIORITY = 100; // System event -> cannot be changed!
 
 	/**
 	 * Called by the game to create a new WinEvent.

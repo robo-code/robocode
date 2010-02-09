@@ -32,6 +32,24 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add(EngineClassLoader.class.getName());
 		exclusions.add(Container.class.getName());
 		exclusions.add(RobocodeMainBase.class.getName());
+
+		// .NET proxies and their interfaces must be loaded in system class loader in order to call native methods
+		exclusions.add("net.sf.robocode.host.IHost");
+		exclusions.add("net.sf.robocode.host.IHostManager");
+		exclusions.add("net.sf.robocode.host.proxies.IHostingRobotProxy");
+		exclusions.add("net.sf.robocode.peer.IRobotPeer");
+		exclusions.add("net.sf.robocode.repository.IRobotRepositoryItem");
+		exclusions.add("net.sf.robocode.repository.RobotType");
+		exclusions.add("net.sf.robocode.host.RobotStatics");
+        exclusions.add("net.sf.robocode.peer.BadBehavior");
+		exclusions.add("net.sf.robocode.dotnet.host.DotnetHost");
+		exclusions.add("net.sf.robocode.dotnet.repository.root.DllRootHelper");
+		exclusions.add("net.sf.robocode.dotnet.nhost.ModuleN");
+		exclusions.add("net.sf.robocode.host.proxies.__IHostingRobotProxy");
+	}
+
+	public static void addExclusion(String classFullName) {
+		exclusions.add(classFullName);
 	}
 
 	public EngineClassLoader(ClassLoader parent) {
@@ -60,7 +78,7 @@ public class EngineClassLoader extends URLClassLoader {
 		// it is robot API
 		// or java class
 		// or security is off
-		// so we delegate to parrent classloader
+		// so we delegate to parent classloader
 		return super.loadClass(name, resolve);
 	}
 

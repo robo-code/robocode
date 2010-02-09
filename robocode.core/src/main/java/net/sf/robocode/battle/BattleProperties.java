@@ -202,7 +202,7 @@ public class BattleProperties implements Serializable {
 	 * @param robots The robots to set
 	 */
 	public void setSelectedRobots(RobotSpecification[] robots) {
-		String robotString = "";
+		StringBuffer robotString = new StringBuffer();
 		RobotSpecification robot;
 
 		for (int i = 0; i < robots.length; i++) {
@@ -211,17 +211,17 @@ public class BattleProperties implements Serializable {
 				continue;
 			}
 
-			robotString += robot.getClassName();
+			robotString.append(robot.getClassName());
 
 			if (!(robot.getVersion() == null || robot.getVersion().length() == 0)) {
-				robotString += " " + robot.getVersion();
+				robotString.append(' ').append(robot.getVersion());
 			}
 
 			if (i < robots.length - 1) {
-				robotString += ",";
+				robotString.append(',');
 			}
 		}
-		setSelectedRobots(robotString);
+		setSelectedRobots(robotString.toString());
 	}
 
 	/**

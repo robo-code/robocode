@@ -41,8 +41,6 @@ public interface IWindowManager extends IWindowManagerBase {
 
 	void cleanup();
 
-	boolean isIconified();
-
 	JFrame getRobocodeFrame();
 
 	void setBusyPointer(boolean enabled);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  *     Pavel Savara
  *     - Initial implementation
  *     Flemming N. Larsen
- *     - Javadocs
+ *     - Javadocs + added getTotalTurns() method
  *******************************************************************************/
 package robocode.control.events;
 
@@ -29,23 +29,27 @@ package robocode.control.events;
 public class RoundEndedEvent extends BattleEvent {
 	private final int round;
 	private final int turns;
+	private final int totalTurns;
 
 	/**
-	 * Creates a new RoundEndedEvent.
+	 * Called by the game to create a new RoundEndedEvent.
+	 * Please don't use this constructor as it might change.
 	 *
-	 * @param round the round number that was ended.
+	 * @param round the round number that was ended (zero indexed).
 	 * @param turns the number of turns that this round reached.
+	 * @param totalTurns the total number of turns reached in the battle when this round ended.
 	 */
-	public RoundEndedEvent(int round, int turns) {
+	public RoundEndedEvent(int round, int turns, int totalTurns) {
 		super();
 		this.round = round;
 		this.turns = turns;
+		this.totalTurns = totalTurns;
 	}
 
 	/**
-	 * Returns the round number that was ended.
+	 * Returns the round number that was ended (zero indexed).
 	 *
-	 * @return the round number that was ended.
+	 * @return the round number that was ended (zero indexed).
 	 */
 	public int getRound() {
 		return round;
@@ -58,5 +62,16 @@ public class RoundEndedEvent extends BattleEvent {
 	 */
 	public int getTurns() {
 		return turns;
+	}
+
+	/**
+	 * Returns the total number of turns reached in the battle when this round ended. 
+	 *
+	 * @return the total number of turns reached in the battle when this round ended.
+	 *
+	 * @since 1.7.2
+	 */
+	public int getTotalTurns() {
+		return totalTurns;
 	}
 }

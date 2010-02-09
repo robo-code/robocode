@@ -69,8 +69,6 @@ public class GunTurnRate extends robocode.AdvancedRobot {
 
 		double turnRate = robocode.util.Utils.normalRelativeAngleDegrees(getGunHeading() - lastHeading);
 
-		lastHeading = getGunHeading();
-
 		out.println(getTime() + ": " + turnRate);
 	}
 }

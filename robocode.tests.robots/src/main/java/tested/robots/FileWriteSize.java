@@ -34,9 +34,8 @@ public class FileWriteSize extends AdvancedRobot {
 
 		try {
 			file = getDataFile("test");
-			file.delete();
-
 			out.println("Data file: " + file.getCanonicalPath());
+			file.delete();
 
 			rfos = new RobocodeFileOutputStream(file);
 
@@ -50,11 +49,13 @@ public class FileWriteSize extends AdvancedRobot {
 				try {
 					rfos.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					e.printStackTrace(out);
 				}
 			}
 			if (file != null) {
-				file.delete();
+				if (!file.delete()) {
+					out.println("Could not delete the file: " + file);
+				}
 			}
 		}
 	}

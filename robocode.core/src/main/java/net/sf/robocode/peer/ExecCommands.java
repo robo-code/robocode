@@ -257,6 +257,9 @@ public final class ExecCommands implements Serializable {
 		final String out = outputText;
 
 		outputText = "";
+		if (out == null) {
+			return "";
+		}
 		return out;
 	}
 

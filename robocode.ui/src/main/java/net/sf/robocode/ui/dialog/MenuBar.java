@@ -68,6 +68,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem battleSaveRecordAsMenuItem;
 	private JMenuItem battleExportRecordMenuItem;
 	private JMenuItem battleImportRecordMenuItem;
+	private JMenuItem battleTakeScreenshotMenuItem;
 
 	// Robot menu
 	private JMenu robotMenu;
@@ -120,6 +121,8 @@ public class MenuBar extends JMenuBar {
 				battleSaveRecordAsActionPerformed();
 			} else if (source == mb.getBattleExportRecordMenuItem()) {
 				battleExportRecordActionPerformed();
+			} else if (source == mb.getBattleTakeScreenshotMenuItem()) {
+				battleTakeScreenshotActionPerformed();
 			} else if (source == mb.getBattleExitMenuItem()) {
 				battleExitActionPerformed();
 
@@ -375,6 +378,10 @@ public class MenuBar extends JMenuBar {
 		}
 	}
 
+	private void battleTakeScreenshotActionPerformed() {
+		robocodeFrame.takeScreenshot();
+	}
+
 	private JMenuItem getBattleExitMenuItem() {
 		if (battleExitMenuItem == null) {
 			battleExitMenuItem = new JMenuItem();
@@ -401,6 +408,8 @@ public class MenuBar extends JMenuBar {
 			battleMenu.add(getBattleSaveRecordAsMenuItem());
 			battleMenu.add(getBattleImportRecordMenuItem());
 			battleMenu.add(getBattleExportRecordMenuItem());
+			battleMenu.add(new JSeparator());
+			battleMenu.add(getBattleTakeScreenshotMenuItem());
 			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleExitMenuItem());
 			battleMenu.addMenuListener(eventHandler);
@@ -535,6 +544,18 @@ public class MenuBar extends JMenuBar {
 			});
 		}
 		return battleExportRecordMenuItem;
+	}
+
+	private JMenuItem getBattleTakeScreenshotMenuItem() {
+		if (battleTakeScreenshotMenuItem == null) {
+			battleTakeScreenshotMenuItem = new JMenuItem();
+			battleTakeScreenshotMenuItem.setText("Take Screenshot");
+			battleTakeScreenshotMenuItem.setMnemonic('T');
+			battleTakeScreenshotMenuItem.setAccelerator(
+					KeyStroke.getKeyStroke(KeyEvent.VK_T, MENU_SHORTCUT_KEY_MASK, false));
+			battleTakeScreenshotMenuItem.addActionListener(eventHandler);
+		}
+		return battleTakeScreenshotMenuItem;
 	}
 
 	private JMenuItem getHelpAboutMenuItem() {

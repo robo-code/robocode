@@ -41,7 +41,8 @@ public class JsScriptHandler extends ItemHandler {
 			item = (JsRobotItem) db.getItem(itemURL.toString());
 		}
 		if (item == null) {
-			item = new JsRobotItem(itemURL, null, root);
+			item = new JsRobotItem(root);
+            item.setClassPathURL(itemURL);
 		} else {
 			item.setClassUrl(itemURL);
 		}

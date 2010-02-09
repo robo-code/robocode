@@ -54,7 +54,6 @@ public class BattlesRunner {
 	private String game;
 	private static RobotResults[] lastResults;
 	private static IRobocodeEngine engine;
-	public static String version;
 
 	public BattlesRunner(String propertiesfile) {
 		// Read parameters
@@ -83,6 +82,10 @@ public class BattlesRunner {
 		}
 	}
 
+	public String getVersion() {
+		return (engine != null) ? engine.getVersion() : null;
+	}
+	
 	public void runBattlesImpl(boolean melee) {
 		// Initialize objects
 		BattlefieldSpecification field = new BattlefieldSpecification(fieldlen, fieldhei);
@@ -134,8 +137,6 @@ public class BattlesRunner {
 			}
 			index++;
 		}
-
-		version = engine.getVersion();
 
 		// close
 		outtxt.close();

@@ -110,11 +110,6 @@ public class ConsoleScrollPane extends JScrollPane {
 	}
 
 	public void scrollToBottom() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				getViewport().scrollRectToVisible(new Rectangle(0, 32767, 1, 1));
-				getViewport().repaint();
-			}
-		});
+		textArea.setCaretPosition(textArea.getDocument().getLength());
 	}
 }

@@ -109,4 +109,88 @@ public class RobotResults extends BattleResults {
 		}
 		return resultsConv;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+
+		temp = Double.doubleToLongBits(bulletDamage);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(bulletDamageBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + firsts;
+		temp = Double.doubleToLongBits(lastSurvivorBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(ramDamage);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(ramDamageBonus);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + rank;
+		temp = Double.doubleToLongBits(score);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + seconds;
+		temp = Double.doubleToLongBits(survival);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((teamLeaderName == null) ? 0 : teamLeaderName.hashCode());
+		result = prime * result + thirds;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		RobotResults other = (RobotResults) obj;
+
+		if (Double.doubleToLongBits(bulletDamage) != Double.doubleToLongBits(other.bulletDamage)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(bulletDamageBonus) != Double.doubleToLongBits(other.bulletDamageBonus)) {
+			return false;
+		}
+		if (firsts != other.firsts) {
+			return false;
+		}
+		if (Double.doubleToLongBits(lastSurvivorBonus) != Double.doubleToLongBits(other.lastSurvivorBonus)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(ramDamage) != Double.doubleToLongBits(other.ramDamage)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(ramDamageBonus) != Double.doubleToLongBits(other.ramDamageBonus)) {
+			return false;
+		}
+		if (rank != other.rank) {
+			return false;
+		}
+		if (Double.doubleToLongBits(score) != Double.doubleToLongBits(other.score)) {
+			return false;
+		}
+		if (seconds != other.seconds) {
+			return false;
+		}
+		if (Double.doubleToLongBits(survival) != Double.doubleToLongBits(other.survival)) {
+			return false;
+		}
+		if (teamLeaderName == null) {
+			if (other.teamLeaderName != null) {
+				return false;
+			}
+		} else if (!teamLeaderName.equals(other.teamLeaderName)) {
+			return false;
+		}
+		if (thirds != other.thirds) {
+			return false;
+		}
+		return true;
+	}
 }

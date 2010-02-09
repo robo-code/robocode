@@ -81,7 +81,7 @@ public class URLJarCollector {
 	}
 
 	public static synchronized URLConnection openConnection(URL url) throws IOException {
-		// Logger.logMessage("open " + url);
+		// Logger.logMessage("Open connection to URL: " + url);
 		final URLConnection urlConnection = url.openConnection();
 
 		if (sunJVM) {

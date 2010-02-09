@@ -86,12 +86,12 @@ public class JavaDocument extends PlainDocument {
 			if (elementText.indexOf("}") >= 0) {
 				tabCount--;
 			}
-			String tabs = "";
+			StringBuffer tabs = new StringBuffer();
 
 			for (int i = 0; i < tabCount; i++) {
-				tabs += "\t";
+				tabs.append('\t');
 			}
-			super.insertString(offs, str + tabs, a);
+			super.insertString(offs, str + tabs.toString(), a);
 		} else {
 			super.insertString(offs, str, a);
 		}

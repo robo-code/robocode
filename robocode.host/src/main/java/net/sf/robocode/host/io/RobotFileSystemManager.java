@@ -170,7 +170,7 @@ public class RobotFileSystemManager {
 
 		if (dataDirectory != null && dataDirectory.exists()) {
 			File[] dataFiles = dataDirectory.listFiles();
-	
+
 			for (File file : dataFiles) {
 				quotaUsed += file.length();
 			}
@@ -263,8 +263,10 @@ public class RobotFileSystemManager {
 
 		final File parent = getWritableDirectory();
 
-		parent.mkdirs();
-		
+		if (!parent.exists() && !parent.mkdirs()) {
+			throw new IOException("Could not create writeable directory for " + robotProxy.getStatics().getName());
+		}
+
 		InputStream is = null;
 		OutputStream os = null;
 

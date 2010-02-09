@@ -45,22 +45,6 @@ public class Logger {
 		logMessage(s, true);
 	}
 
-	public static void logMessage(Throwable e) {
-		logMessage(toStackTraceString(e));
-	}
-
-	public static void logMessage(String message, Throwable t) {
-		logMessage(message + ":\n" + toStackTraceString(t));
-	}
-
-	public static void logError(String message, Throwable t) {
-		logError(message + ":\n" + toStackTraceString(t));
-	}
-
-	public static void logError(Throwable t) {
-		logError(toStackTraceString(t));
-	}
-
 	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
 			if (newline) {
@@ -83,6 +67,18 @@ public class Logger {
 				}
 			}
 		}
+	}
+
+	public static void logWarning(String s) {
+		logMessage("Warning: " + s, true);
+	}
+
+	public static void logError(String message, Throwable t) {
+		logError(message + ":\n" + toStackTraceString(t));
+	}
+
+	public static void logError(Throwable t) {
+		logError(toStackTraceString(t));
 	}
 
 	public static void logError(String s) {

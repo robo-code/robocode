@@ -12,9 +12,8 @@
 package net.sf.robocode.test.robots;
 
 
+import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import static org.hamcrest.CoreMatchers.is;
-import org.junit.Assert;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.events.TurnEndedEvent;
@@ -52,11 +51,11 @@ public class TestScoring extends RobocodeTestBed {
 		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 			// Notice that the is no such thing as a 'current total last
 			// survivor bonus'
-			int currentScore = (int) (0.5 + score.getCurrentSurvivalScore() + score.getCurrentBulletDamageScore()
+			double currentScore = score.getCurrentSurvivalScore() + score.getCurrentBulletDamageScore()
 					+ score.getCurrentBulletKillBonus() + score.getCurrentRammingDamageScore()
-					+ score.getCurrentRammingKillBonus() + score.getCurrentSurvivalBonus());
+					+ score.getCurrentRammingKillBonus() + score.getCurrentSurvivalBonus();
 
-			Assert.assertThat(score.getName(), currentScore, is((int) (0.5 + score.getCurrentScore())));
+			Assert.assertNear(currentScore, score.getCurrentScore());
 		}
 	}
 
@@ -66,11 +65,11 @@ public class TestScoring extends RobocodeTestBed {
 
 		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 
-			int totalScore = (int) (0.5 + score.getTotalSurvivalScore() + score.getTotalLastSurvivorBonus()
+			double totalScore = score.getTotalSurvivalScore() + score.getTotalLastSurvivorBonus()
 					+ score.getTotalBulletDamageScore() + score.getTotalBulletKillBonus() + score.getTotalRammingDamageScore()
-					+ score.getTotalRammingKillBonus());
+					+ score.getTotalRammingKillBonus();
 
-			Assert.assertThat(score.getName(), totalScore, is((int) (0.5 + score.getTotalScore())));
+			Assert.assertNear(totalScore, score.getTotalScore());
 		}
 	}
 
@@ -78,11 +77,11 @@ public class TestScoring extends RobocodeTestBed {
 	public void onBattleFinished(BattleFinishedEvent event) {
 		for (IScoreSnapshot score : lastTurnSnapshot.getSortedTeamScores()) {
 
-			int totalScore = (int) (0.5 + score.getTotalSurvivalScore() + score.getTotalLastSurvivorBonus()
+			double totalScore = score.getTotalSurvivalScore() + score.getTotalLastSurvivorBonus()
 					+ score.getTotalBulletDamageScore() + score.getTotalBulletKillBonus() + score.getTotalRammingDamageScore()
-					+ score.getTotalRammingKillBonus());
+					+ score.getTotalRammingKillBonus();
 
-			Assert.assertThat(totalScore, is((int) (0.5 + score.getTotalScore())));
+			Assert.assertNear(totalScore, score.getTotalScore());
 		}
 	}
 }

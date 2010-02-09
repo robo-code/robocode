@@ -15,16 +15,23 @@ package net.sf.robocode.host;
 import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.serialization.ISerializableHelper;
+import net.sf.robocode.serialization.RbSerializer;
 import robocode.BattleRules;
 import robocode.control.RobotSpecification;
 
+import java.io.Serializable;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public final class RobotStatics implements IRobotStatics {
+public final class RobotStatics implements IRobotStatics, Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private final boolean isJuniorRobot;
 	private final boolean isInteractiveRobot;
 	private final boolean isPaintRobot;
@@ -86,6 +93,30 @@ public final class RobotStatics implements IRobotStatics {
 			teammates = null;
 			this.teamName = name;
 		}
+	}
+
+	RobotStatics(boolean isJuniorRobot, boolean isInteractiveRobot, boolean isPaintRobot, boolean isAdvancedRobot,
+			boolean isTeamRobot, boolean isTeamLeader, boolean isDroid, String name, String shortName,
+			String veryShortName, String fullClassName, String shortClassName, BattleRules battleRules,
+			String[] teammates, String teamName, int index, int contestantIndex) {
+		this.isJuniorRobot = isJuniorRobot;
+		this.isInteractiveRobot = isInteractiveRobot;
+		this.isPaintRobot = isPaintRobot;
+		this.isAdvancedRobot = isAdvancedRobot;
+		this.isTeamRobot = isTeamRobot;
+		this.isTeamLeader = isTeamLeader;
+		this.isDroid = isDroid;
+		this.name = name;
+		this.shortName = shortName;
+		this.veryShortName = veryShortName;
+		this.fullClassName = fullClassName;
+		this.shortClassName = shortClassName;
+		this.battleRules = battleRules;
+		this.teammates = teammates;
+		this.teamName = teamName;
+		this.index = index;
+		this.contestantIndex = contestantIndex;
+
 	}
 
 	public boolean isJuniorRobot() {
@@ -155,4 +186,100 @@ public final class RobotStatics implements IRobotStatics {
 	public int getContestIndex() {
 		return contestantIndex;
 	}
+
+	static ISerializableHelper createHiddenSerializer() {
+		return new SerializableHelper();
+	}
+
+	private static class SerializableHelper implements ISerializableHelper {
+		public int sizeOf(RbSerializer serializer, Object object) {
+			RobotStatics obj = (RobotStatics) object;
+			int size = RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_BOOL * 7 + serializer.sizeOf(obj.name)
+					+ serializer.sizeOf(obj.shortName) + serializer.sizeOf(obj.veryShortName)
+					+ serializer.sizeOf(obj.fullClassName) + serializer.sizeOf(obj.shortClassName)
+					+ RbSerializer.SIZEOF_INT * 5 + RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_LONG;
+
+			if (obj.teammates != null) {
+				for (String mate : obj.teammates) {
+					size += serializer.sizeOf(mate);
+				}
+			}
+			size += RbSerializer.SIZEOF_INT;
+			size += serializer.sizeOf(obj.teamName);
+
+			return size;
+		}
+
+		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
+			RobotStatics obj = (RobotStatics) object;
+
+			serializer.serialize(buffer, obj.isJuniorRobot);
+			serializer.serialize(buffer, obj.isInteractiveRobot);
+			serializer.serialize(buffer, obj.isPaintRobot);
+			serializer.serialize(buffer, obj.isAdvancedRobot);
+			serializer.serialize(buffer, obj.isTeamRobot);
+			serializer.serialize(buffer, obj.isTeamLeader);
+			serializer.serialize(buffer, obj.isDroid);
+			serializer.serialize(buffer, obj.name);
+			serializer.serialize(buffer, obj.shortName);
+			serializer.serialize(buffer, obj.veryShortName);
+			serializer.serialize(buffer, obj.fullClassName);
+			serializer.serialize(buffer, obj.shortClassName);
+			serializer.serialize(buffer, obj.battleRules.getBattlefieldWidth());
+			serializer.serialize(buffer, obj.battleRules.getBattlefieldHeight());
+			serializer.serialize(buffer, obj.battleRules.getNumRounds());
+			serializer.serialize(buffer, obj.battleRules.getGunCoolingRate());
+			serializer.serialize(buffer, obj.battleRules.getInactivityTime());
+			if (obj.teammates != null) {
+				for (String mate : obj.teammates) {
+					serializer.serialize(buffer, mate);
+				}
+			}
+			buffer.putInt(-1);
+			serializer.serialize(buffer, obj.teamName);
+			serializer.serialize(buffer, obj.index);
+			serializer.serialize(buffer, obj.contestantIndex);
+		}
+
+		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
+
+			boolean isJuniorRobot = serializer.deserializeBoolean(buffer);
+			boolean isInteractiveRobot = serializer.deserializeBoolean(buffer);
+			boolean isPaintRobot = serializer.deserializeBoolean(buffer);
+			boolean isAdvancedRobot = serializer.deserializeBoolean(buffer);
+			boolean isTeamRobot = serializer.deserializeBoolean(buffer);
+			boolean isTeamLeader = serializer.deserializeBoolean(buffer);
+			boolean isDroid = serializer.deserializeBoolean(buffer);
+			String name = serializer.deserializeString(buffer);
+			String shortName = serializer.deserializeString(buffer);
+			String veryShortName = serializer.deserializeString(buffer);
+			String fullClassName = serializer.deserializeString(buffer);
+			String shortClassName = serializer.deserializeString(buffer);
+			BattleRules battleRules = HiddenAccess.createRules(serializer.deserializeInt(buffer),
+					serializer.deserializeInt(buffer), serializer.deserializeInt(buffer), serializer.deserializeDouble(buffer),
+					serializer.deserializeLong(buffer));
+
+			List<String> teammates = new ArrayList<String>();
+			Object item = serializer.deserializeString(buffer);
+
+			if (item == null) {
+				teammates = null;
+			}
+			while (item != null) {
+				if (item instanceof String) {
+					teammates.add((String) item);
+				}
+				item = serializer.deserializeString(buffer);
+			}
+
+			String teamName = serializer.deserializeString(buffer);
+			int index = serializer.deserializeInt(buffer);
+			int contestantIndex = serializer.deserializeInt(buffer);
+
+			return new RobotStatics(isJuniorRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot, isTeamRobot,
+					isTeamLeader, isDroid, name, shortName, veryShortName, fullClassName, shortClassName, battleRules,
+					teammates.toArray(new String[teammates.size()]), teamName, index, contestantIndex);
+		}
+	}
+
 }

@@ -40,7 +40,7 @@ public final class RbSerializer {
 	public final static int SIZEOF_LONG = 8;
 	public final static int SIZEOF_DOUBLE = 8;
 
-	public final static byte TERMINATOR_TYPE = -128;
+	public final static byte TERMINATOR_TYPE = -1;
 	public final static byte ExecCommands_TYPE = 1;
 	public final static byte BulletCommand_TYPE = 2;
 	public final static byte TeamMessage_TYPE = 3;
@@ -50,7 +50,8 @@ public final class RbSerializer {
 	public final static byte BulletStatus_TYPE = 7;
 	public final static byte BattleResults_TYPE = 8;
 	public final static byte Bullet_TYPE = 9;
-	
+	public final static byte RobotStatics_TYPE = 10;
+
 	public final static byte BattleEndedEvent_TYPE = 32;
 	public final static byte BulletHitBulletEvent_TYPE = 33;
 	public final static byte BulletHitEvent_TYPE = 34;
@@ -74,6 +75,7 @@ public final class RbSerializer {
 	public final static byte MousePressedEvent_TYPE = 52;
 	public final static byte MouseReleasedEvent_TYPE = 53;
 	public final static byte MouseWheelMovedEvent_TYPE = 54;
+	public final static byte RoundEndedEvent_TYPE = 55;
 
 	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
 	private static Dictionary<Class<?>, Byte> classToType = new Hashtable<Class<?>, Byte>();
@@ -81,7 +83,7 @@ public final class RbSerializer {
 	private final CharsetEncoder encoder;
 	private final CharsetDecoder decoder;
 
-	private final int byteOrder = 0xC0DEDEA1;
+	private static final int BYTE_ORDER = 0xC0DEDEA1;
 	private final int currentVersion;
 
 	static {
@@ -110,7 +112,7 @@ public final class RbSerializer {
 		// header
 		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT);
 
-		buffer.putInt(byteOrder);
+		buffer.putInt(BYTE_ORDER);
 		buffer.putInt(currentVersion);
 		buffer.putInt(length);
 		target.write(buffer.array());
@@ -128,9 +130,26 @@ public final class RbSerializer {
 		int length = sizeOf(type, object);
 
 		// header
-		ByteBuffer buffer = ByteBuffer.allocate(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
+		ByteBuffer buffer = ByteBuffer.allocateDirect(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
 
-		buffer.putInt(byteOrder);
+		buffer.putInt(BYTE_ORDER);
+		buffer.putInt(currentVersion);
+		buffer.putInt(length);
+
+		// body
+		serialize(buffer, type, object);
+		if (buffer.remaining() != 0) {
+			throw new IOException("Serialization failed: bad size");
+		}
+		return buffer;
+	}
+
+	public ByteBuffer serializeToBuffer(ByteBuffer buffer, byte type, Object object) throws IOException {
+		int length = sizeOf(type, object);
+
+		buffer.limit(SIZEOF_INT + SIZEOF_INT + SIZEOF_INT + length);
+
+		buffer.putInt(BYTE_ORDER);
 		buffer.putInt(currentVersion);
 		buffer.putInt(length);
 
@@ -150,7 +169,7 @@ public final class RbSerializer {
 		buffer.flip();
 		int bo = buffer.getInt();
 
-		if (bo != byteOrder) {
+		if (bo != BYTE_ORDER) {
 			throw new IOException("Different byte order is not supported");
 		}
 		int version = buffer.getInt();
@@ -175,7 +194,7 @@ public final class RbSerializer {
 	public Object deserialize(final ByteBuffer buffer) throws IOException {
 		int bo = buffer.getInt();
 
-		if (bo != byteOrder) {
+		if (bo != BYTE_ORDER) {
 			throw new IOException("Different byte order is not supported");
 		}
 
@@ -420,6 +439,10 @@ public final class RbSerializer {
 
 	public double deserializeDouble(ByteBuffer buffer) {
 		return buffer.getDouble();
+	}
+
+	public long deserializeLong(ByteBuffer buffer) {
+		return buffer.getLong();
 	}
 
 	public int sizeOf(String data) {

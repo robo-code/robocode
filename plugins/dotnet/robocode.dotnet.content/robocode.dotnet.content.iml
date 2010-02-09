@@ -9,11 +9,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.6.0.0" level="project" />
     <orderEntry type="module" module-name="robocode.dotnet.host" exported="" />
     <orderEntry type="module" module-name="robocode.host" exported="" />
     <orderEntry type="module" module-name="robocode.core" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.2.0.0" level="project" />
+    <orderEntry type="module" module-name="robocode.repository" exported="" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
+    <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
+    <orderEntry type="module" module-name="robocode.dotnet.api" exported="" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.6.0.0" level="project" />
   </component>
 </module>
 

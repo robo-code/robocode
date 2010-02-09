@@ -29,7 +29,7 @@ import java.util.Vector;
 
 
 /**
- * An an advanced type of robot that supports sending messages between team
+ * An advanced type of robot that supports sending messages between team
  * mates in a robot team.
  * <p/>
  * If you have not done already, you should create a {@link Robot} or

@@ -55,6 +55,7 @@ public final class Container extends ContainerBase {
 	public static final ClassLoader systemLoader;
 	public static final ClassLoader engineLoader;
 	private static Set<String> known = new HashSet<String>();
+	public static final List<IModule> modules = new ArrayList<IModule>();
 
 	static {
 		instance = new Container();
@@ -71,14 +72,26 @@ public final class Container extends ContainerBase {
 		cache = new DefaultClassLoadingPicoContainer(engineLoader, new Caching(), null);
 		factory = new DefaultClassLoadingPicoContainer(engineLoader, new OptInCaching(), cache);
 		loadModule("net.sf.robocode.api", systemLoader);
-		for (String path : classPath.split(File.pathSeparator)) {
+		final String[] cp = classPath.split(File.pathSeparator);
+
+		// load core first
+		for (String path : cp) {
+			if (path.toLowerCase().contains("robocode.core")) {
+				loadFromPath(path);
+			}
+		}
+		for (String path : cp) {
 			loadFromPath(path);
 		}
 
 		if (known.size() < 2) {
-			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size());
-			Logger.logError("ClassPath : " + classPath);
+			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size() + " modules");
+			Logger.logError("Class path: " + classPath);
 			throw new Error("Main modules not loaded");
+		}
+
+		for (IModule module : modules) {
+			module.afterLoaded(modules);
 		}
 	}
 
@@ -139,7 +152,11 @@ public final class Container extends ContainerBase {
 			}
 			Class<?> modClass = loader.loadClass(module + ".Module");
 
-			modClass.newInstance();
+			final Object moduleInstance = modClass.newInstance();
+
+			if (moduleInstance instanceof IModule) {
+				modules.add((IModule) moduleInstance);
+			}
 			Logger.logMessage("Loaded " + module);
 			known.add(module);
 			return true;
@@ -226,6 +243,10 @@ public final class Container extends ContainerBase {
 
 	public static <T> T getComponent(java.lang.Class<T> tClass) {
 		return cache.getComponent(tClass);
+	}
+
+	public static <T> T getComponent(String name) {
+		return (T) cache.getComponent(name);
 	}
 
 	public static <T> T getComponent(java.lang.Class<T> tClass, String className) {

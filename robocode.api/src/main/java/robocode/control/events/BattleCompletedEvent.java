@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2008 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,8 @@ public class BattleCompletedEvent extends BattleEvent {
 	private final BattleResults[] results;
 
 	/**
-	 * Creates a new BattleCompletedEvent.
+	 * Called by the game to create a new BattleCompletedEvent.
+	 * Please don't use this constructor as it might change.
 	 *
 	 * @param battleRules the rules that was used in the battle.
 	 * @param results the indexed results of the battle. These are unsorted, but using robot indexes.

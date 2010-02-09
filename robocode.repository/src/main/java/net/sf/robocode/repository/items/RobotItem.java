@@ -58,8 +58,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	// private final static String ROBOT_AUTHOR_WEBSITE = "robot.author.website";
 	private final static String ROBOT_JAVA_SOURCE_INCLUDED = "robot.java.source.included";
 	private final static String ROBOT_VERSION = "robot.version";
-	private final static String ROBOT_LANGUAGE = "robot.language";
-	private final static String ROBOT_CLASSNAME = "robot.classname";
+	protected final static String ROBOT_LANGUAGE = "robot.language";
+	protected final static String ROBOT_CLASSNAME = "robot.classname";
 	private final static String ROBOT_WEBPAGE = "robot.webpage";
 	private final static String ROBOCODE_VERSION = "robocode.version";
 
@@ -70,7 +70,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private boolean isExpectedRobot;
 	private boolean isClassURL;
 	private boolean isPropertiesURL;
-	private boolean isPropertiesLoaded;
+	protected boolean isPropertiesLoaded;
 
 	private boolean alwaysUseCacheForData = System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals("true");
 
@@ -354,22 +354,20 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			}
 
 			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
-				final String message = "Robot " + fullClassName + " has package name too long.  "
-						+ MAX_FULL_PACKAGE_NAME_LENGTH + " characters maximum please.";
-
 				if (!silent) {
-					logError(message);
+					logError(
+							"Robot " + fullClassName + " has package name too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+							+ " characters maximum please.");
 				}
 				return false;
 			}
 		}
 
 		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
-			final String message = "Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
-					+ " characters maximum please.";
-
 			if (!silent) {
-				logError(message);
+				logError(
+						"Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+						+ " characters maximum please.");
 			}
 			return false;
 		}
@@ -490,7 +488,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			String jarFile = getClassPathURL().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			return FileUtil.getRobotCacheDir() + File.separator + jarFile + "_" + File.separator + getRootPackage();
+			return FileUtil.getRobotsDataDir() + File.separator + jarFile + "_" + File.separator + getRootPackage();
 		} else {
 			return getClassPathURL().getFile() + getRootPackage();
 		}
@@ -504,13 +502,13 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			String jarFile = getClassPathURL().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			return FileUtil.getRobotCacheDir() + File.separator + jarFile + "_" + File.separator
+			return FileUtil.getRobotsDataDir() + File.separator + jarFile + "_" + File.separator
 					+ getFullPackage().replace('.', File.separatorChar);
 		} else {
 			File vroot;
 
 			if (alwaysUseCacheForData) {
-				vroot = FileUtil.getRobotCacheDir();
+				vroot = FileUtil.getRobotsDataDir();
 			} else {
 				vroot = root.getRootPath();
 			}

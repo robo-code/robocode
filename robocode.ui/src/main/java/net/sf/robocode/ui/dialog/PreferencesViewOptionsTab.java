@@ -74,6 +74,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JButton fastTpsButton;
 	private JButton maxTpsButton;
 
+	private JCheckBox preventSpeedupWhenMinimizedCheckBox;
+
 	private final ISettingsManager properties;
 
 	private class EventHandler implements ActionListener, DocumentListener {
@@ -119,9 +121,6 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private void defaultViewOptionsButtonActionPerformed() {
 		setAllViewOptionsButtonsEnabled(true);
 		getVisibleScanArcsCheckBox().setSelected(false);
-		getVisibleExplosionsCheckBox().setSelected(false);
-		getVisibleGroundCheckBox().setSelected(false);
-		getVisibleExplosionDebrisCheckBox().setSelected(false);
 	}
 
 	private void setAllViewOptionsButtonsEnabled(boolean enabled) {
@@ -148,7 +147,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private void defaultTpsButtonActionPerformed() {
 		getDesiredTpsTextField().setText("" + DEFAULT_TPS);
 	}
-
+	
 	private JButton getDefaultViewOptionsButton() {
 		if (defaultViewOptionsButton == null) {
 			defaultViewOptionsButton = new JButton("Defaults");
@@ -272,21 +271,27 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		return fastTpsButton;
 	}
 
+	private JCheckBox getPreventSpeedupWhenMinimizedCheckBox() {
+		if (preventSpeedupWhenMinimizedCheckBox == null) {
+			preventSpeedupWhenMinimizedCheckBox = new JCheckBox("Prevent speedup when minimized");
+		}
+		return preventSpeedupWhenMinimizedCheckBox;
+	}
+	
 	private JPanel getTpsOptionsPanel() {
 		if (tpsOptionsPanel == null) {
 			tpsOptionsPanel = new JPanel();
 			tpsOptionsPanel.setBorder(
 					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Turns Per Second (TPS)"));
-
 			tpsOptionsPanel.setLayout(new GridBagLayout());
+
 			GridBagConstraints c = new GridBagConstraints();
 
-			c.fill = 1;
-			c.weightx = 1;
 			c.anchor = GridBagConstraints.NORTHWEST;
+			c.gridwidth = 4;
 
-			c.gridwidth = GridBagConstraints.REMAINDER;
 			tpsOptionsPanel.add(getDisplayTpsCheckBox(), c);
+			c.gridy = 1;
 			tpsOptionsPanel.add(getDisplayFpsCheckBox(), c);
 
 			JPanel tpsPanel = new JPanel();
@@ -294,17 +299,30 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			tpsPanel.add(getDesiredTpsLabel());
 			tpsPanel.add(getDesiredTpsTextField());
 
-			c.insets = new Insets(10, 0, 0, 10);
-			c.fill = 0;
-			tpsOptionsPanel.add(tpsPanel, c);	
+			c.fill = GridBagConstraints.VERTICAL;
+			c.gridy = 2;
+			c.insets = new Insets(10, 0, 0, 0);
+			tpsOptionsPanel.add(tpsPanel, c);
 
+			c.fill = GridBagConstraints.NONE;
+			c.gridx = 0;
+			c.gridy = 3;
 			c.gridwidth = 1;
-			c.weighty = 1;
-			c.weightx = 0;
+			c.weightx = 0.25;
 			tpsOptionsPanel.add(getMinTpsButton(), c);
+			c.gridx = 1;
 			tpsOptionsPanel.add(getDefaultTpsButton(), c);
+			c.gridx = 2;
 			tpsOptionsPanel.add(getFastTpsButton(), c);
+			c.gridx = 3;
 			tpsOptionsPanel.add(getMaxTpsButton(), c);
+
+			c.insets = new Insets(20, 0, 0, 0);
+			c.gridwidth = 4;
+			c.gridx = 0;
+			c.gridy = 4;
+			c.weighty = 1;
+			tpsOptionsPanel.add(getPreventSpeedupWhenMinimizedCheckBox(), c);
 		}
 		return tpsOptionsPanel;
 	}
@@ -317,11 +335,10 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 			GridBagConstraints c = new GridBagConstraints();
 
-			c.fill = 1;
-			c.weightx = 1;
 			c.anchor = GridBagConstraints.NORTHWEST;
-
 			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.weightx = 1;
+
 			visibleOptionsPanel.add(getVisibleRobotEnergyCheckBox(), c);
 			visibleOptionsPanel.add(getVisibleRobotNameCheckBox(), c);
 			visibleOptionsPanel.add(getVisibleScanArcsCheckBox(), c);
@@ -331,7 +348,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 
 			c.insets = new Insets(10, 0, 0, 10);
 			c.gridwidth = 1;
-			c.fill = 0;
+			c.fill = GridBagConstraints.NONE;
 			c.weighty = 1;
 			c.weightx = 0;
 			visibleOptionsPanel.add(getEnableAllViewOptionsButton(), c);
@@ -422,6 +439,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getVisibleGroundCheckBox().setSelected(robocodeProperties.getOptionsViewGround());
 		getVisibleExplosionDebrisCheckBox().setSelected(robocodeProperties.getOptionsViewExplosionDebris());
 		getDesiredTpsTextField().setText("" + robocodeProperties.getOptionsBattleDesiredTPS());
+		getPreventSpeedupWhenMinimizedCheckBox().setSelected(
+				robocodeProperties.getOptionsViewPreventSpeedupWhenMinimized());
 	}
 
 	public void storePreferences() {
@@ -436,6 +455,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		props.setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
 		props.setOptionsViewExplosionDebris(getVisibleExplosionDebrisCheckBox().isSelected());
 		props.setOptionsBattleDesiredTPS(Integer.parseInt(getDesiredTpsTextField().getText()));
+		props.setOptionsViewPreventSpeedupWhenMinimized(getPreventSpeedupWhenMinimizedCheckBox().isSelected());
 		properties.saveProperties();
 	}
 

@@ -145,13 +145,23 @@ public class BattleView extends Canvas {
 		}
 	}
 
+	public BufferedImage getScreenshot() {
+		BufferedImage screenshot = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
+
+		if (windowManager.getLastSnapshot() == null) {
+			paintRobocodeLogo((Graphics2D) screenshot.getGraphics());		
+		} else {
+			screenshot.getGraphics().drawImage(offscreenImage, 0, 0, null);
+		}
+		return screenshot;
+	}
+
 	private void update(ITurnSnapshot snapshot) {
 		if (!initialized) {
 			initialize();
 		}
 
-		if (windowManager.isIconified() || offscreenImage == null || !isDisplayable() || (getWidth() <= 0)
-				|| (getHeight() <= 0)) {
+		if (offscreenImage == null || !isDisplayable() || (getWidth() <= 0) || (getHeight() <= 0)) {
 			return;
 		}
 

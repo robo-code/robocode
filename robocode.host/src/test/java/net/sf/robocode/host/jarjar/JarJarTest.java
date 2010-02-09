@@ -48,7 +48,9 @@ public class JarJarTest {
 		InputStreamReader isr = new InputStreamReader(inputStream);
 		char[] c = new char[4];
 
-		isr.read(c);
+		int len = isr.read(c);
+
+		Assert.assertEquals(len, 4);
 		Assert.assertEquals('T', c[0]);
 		Assert.assertEquals('e', c[1]);
 		Assert.assertEquals('s', c[2]);

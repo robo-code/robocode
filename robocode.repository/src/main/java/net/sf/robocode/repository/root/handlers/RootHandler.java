@@ -26,6 +26,11 @@ import java.util.List;
  */
 public abstract class RootHandler {
 	public abstract void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid);
+    public void open(){
+    }
+    public void close(){
+    }
+
 
 	public static void visitDirectories(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
 		// walk thru all plugins
@@ -35,4 +40,22 @@ public abstract class RootHandler {
 			handler.visitDirectory(dir, isDevel, newroots, roots, db, updateInvalid);
 		}
 	}
+
+    public static void openHandlers() {
+        // walk thru all plugins
+        final List<RootHandler> itemHandlerList = Container.getComponents(RootHandler.class);
+
+        for (RootHandler handler : itemHandlerList) {
+            handler.open();
+        }
+    }
+
+    public static void closeHandlers() {
+        // walk thru all plugins
+        final List<RootHandler> itemHandlerList = Container.getComponents(RootHandler.class);
+
+        for (RootHandler handler : itemHandlerList) {
+            handler.close();
+        }
+    }
 }

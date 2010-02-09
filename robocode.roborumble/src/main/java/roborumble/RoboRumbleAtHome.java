@@ -62,6 +62,7 @@ public class RoboRumbleAtHome {
 		long lastdownload = 0;
 		boolean ratingsdownloaded = false;
 		boolean participantsdownloaded;
+		String version = null;
 
 		do {
 			System.out.println("Iteration number " + iterations);
@@ -128,14 +129,15 @@ public class RoboRumbleAtHome {
 
 					BattlesRunner engine = new BattlesRunner(parameters);
 
+					version = engine.getVersion();
 					engine.runBattlesImpl(isMelee);
 				}
 			}
 
 			// Upload results
-			if (uploads.equals("YES")) {
+			if (uploads.equals("YES") && version != null) {
 				System.out.println("Uploading results ...");
-				ResultsUpload upload = new ResultsUpload(parameters, BattlesRunner.version);
+				ResultsUpload upload = new ResultsUpload(parameters, version);
 
 				// Uploads the results to the server
 				upload.uploadResults();

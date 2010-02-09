@@ -66,6 +66,7 @@
 package net.sf.robocode.battle.peer;
 
 
+import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BoundingRectangle;
 import net.sf.robocode.host.IHostManager;
@@ -74,7 +75,6 @@ import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.host.events.EventQueue;
 import net.sf.robocode.host.proxies.IHostingRobotProxy;
 import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
@@ -126,8 +126,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
 			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
 
-	private static final int maxSkippedTurns = 30;
-	private static final int maxSkippedTurnsWithIO = 240;
+	private static final int MAX_SKIPPED_TURNS = 30;
+	private static final int MAX_SKIPPED_TURNS_WITH_IO = 240;
 
 	private Battle battle;
 	private RobotStatistics statistics;
@@ -188,12 +188,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private RobotState state;
 	private final Arc2D scanArc;
 	private final BoundingRectangle boundingBox;
+	private final RbSerializer rbSerializer;
 
 	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
 		super();
 		if (team != null) {
 			team.add(this);
 		}
+
+		rbSerializer = new RbSerializer();
 
 		this.battle = battle;
 		boundingBox = new BoundingRectangle();
@@ -461,18 +464,32 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// execute
 	// -----------
 
-	public ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException {
-		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
-		final ExecResults results = executeImpl(commands);
+	ByteBuffer bidirectionalBuffer;
 
-		return RbSerializer.serializeToBuffer(results);
+	public void setupBuffer(ByteBuffer bidirectionalBuffer) {
+		this.bidirectionalBuffer = bidirectionalBuffer;
 	}
 
-	public ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException {
-		ExecCommands commands = RbSerializer.deserializeFromBuffer(newCommands);
+    public void setupThread() {
+        Thread.currentThread().setName(getName());
+    }
+
+	public void executeImplSerial() throws IOException {
+		ExecCommands commands = (ExecCommands) rbSerializer.deserialize(bidirectionalBuffer);
+
+		final ExecResults results = executeImpl(commands);
+
+		bidirectionalBuffer.clear();
+		rbSerializer.serializeToBuffer(bidirectionalBuffer, RbSerializer.ExecResults_TYPE, results);
+	}
+
+	public void waitForBattleEndImplSerial() throws IOException {
+		ExecCommands commands = (ExecCommands) rbSerializer.deserialize(bidirectionalBuffer);
+
 		final ExecResults results = waitForBattleEndImpl(commands);
 
-		return RbSerializer.serializeToBuffer(results);
+		bidirectionalBuffer.clear();
+		rbSerializer.serializeToBuffer(bidirectionalBuffer, RbSerializer.ExecResults_TYPE, results);
 	}
 
 	public final ExecResults executeImpl(ExecCommands newCommands) {
@@ -648,16 +665,16 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (battle.isDebugging() || isPaintEnabled()) {
 			skippedTurns = 0;
 		} else {
-			println("SYSTEM: you skipped turn");
+			println("SYSTEM: " + getShortName() + " skipped turn " + battle.getTime());
 			skippedTurns++;
 			events.get().clear(false);
 			if (!isDead()) {
-				addEvent(new SkippedTurnEvent());
+				addEvent(new SkippedTurnEvent(battle.getTime()));
 			}
 
-			if ((!isIORobot && (skippedTurns > maxSkippedTurns))
-					|| (isIORobot && (skippedTurns > maxSkippedTurnsWithIO))) {
-				println("SYSTEM: " + getName() + " has not performed any actions in a reasonable amount of time.");
+			if ((!isIORobot && (skippedTurns > MAX_SKIPPED_TURNS))
+					|| (isIORobot && (skippedTurns > MAX_SKIPPED_TURNS_WITH_IO))) {
+				println("SYSTEM: " + getShortName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
 				waitWakeupNoWait();
@@ -731,9 +748,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		skippedTurns = 0;
 
 		status = new AtomicReference<RobotStatus>();
+
 		readoutEvents();
 		readoutTeamMessages();
 		readoutBullets();
+
 		battleText.setLength(0);
 		proxyText.setLength(0);
 
@@ -788,7 +807,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				Thread.currentThread().interrupt();
 			}
 		}
-		if (!(isSleeping() || battle.isDebugging())) {
+		if (!isSleeping() && !battle.isDebugging()) {
 			logMessage("\n" + getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
 		}
 	}
@@ -1114,7 +1133,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			if ((queue.size() > EventManager.MAX_QUEUE_SIZE)
 					&& !(event instanceof DeathEvent || event instanceof WinEvent || event instanceof SkippedTurnEvent)) {
 				println(
-						"Not adding to " + statics.getName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
+						"Not adding to " + statics.getShortName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
 						+ " events in queue.");
 				// clean up old stuff                
 				queue.clear(battle.getTime() - EventManager.MAX_EVENT_STACK);
@@ -1549,19 +1568,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * Clean things up removing all references to the robot.
 	 */
 	public void cleanup() {
-		if (statistics != null) {
-			statistics.cleanup();
-			statistics = null;
-		}
-
 		battle = null;
 
 		if (robotProxy != null) {
 			robotProxy.cleanup();
+            robotProxy = null;
 		}
 
-		// Cleanup robot proxy
-		robotProxy = null;
+        if (statistics != null) {
+            statistics.cleanup();
+            statistics = null;
+        }
 
 		status = null;
 		commands = null;

@@ -274,7 +274,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 	}
 
 
-	class BattleRulesWrapper implements IXmlSerializable {
+	private static class BattleRulesWrapper implements IXmlSerializable {
 		BattleRulesWrapper(BattleRecordInfo recinfo) {
 			this.recinfo = recinfo;
 		}

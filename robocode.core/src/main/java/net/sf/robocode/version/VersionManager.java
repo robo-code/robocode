@@ -15,6 +15,7 @@ package net.sf.robocode.version;
 import net.sf.robocode.io.FileUtil;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logWarning;
 import net.sf.robocode.settings.ISettingsManager;
 
 import java.io.*;
@@ -31,6 +32,7 @@ import java.net.URLConnection;
  */
 public final class VersionManager implements IVersionManager {
 
+	private static final String VERSIONS_TXT = "versions.txt";
 	private static final String UNKNOWN_VERSION = "unknown";
 
 	private static Version version;
@@ -63,11 +65,11 @@ public final class VersionManager implements IVersionManager {
 			urlConnection.setConnectTimeout(5000);
 
 			if (urlConnection instanceof HttpURLConnection) {
-				net.sf.robocode.io.Logger.logMessage("Update checking with http.");
+				logMessage("Update checking with http.");
 				HttpURLConnection h = (HttpURLConnection) urlConnection;
 
 				if (h.usingProxy()) {
-					net.sf.robocode.io.Logger.logMessage("http using proxy.");
+					logMessage("http using proxy.");
 				}
 			}
 			inputStream = urlConnection.getInputStream();
@@ -109,6 +111,11 @@ public final class VersionManager implements IVersionManager {
 		return versionChanged;
 	}
 
+	public String getVersionN(){
+		Version v = getVersionInstance();
+		return v.getMajor() + "." + v.getMinor() + "." + v.getRevision() + "." + v.getBuild();
+	}
+
 	public int getVersionAsInt() {
 		Version v = getVersionInstance();
 
@@ -121,10 +128,10 @@ public final class VersionManager implements IVersionManager {
 		BufferedReader in = null;
 
 		try {
-			URL versionsUrl = VersionManager.class.getResource("/versions.txt");
+			URL versionsUrl = VersionManager.class.getResource("/" + VERSIONS_TXT);
 
 			if (versionsUrl == null) {
-				logMessage("The URL for the versions.txt was not found");
+				logError("The URL for the " + VERSIONS_TXT + " was not found");
 				versionString = UNKNOWN_VERSION;
 			} else {
 				final URLConnection connection = versionsUrl.openConnection();
@@ -140,10 +147,10 @@ public final class VersionManager implements IVersionManager {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			logError("No versions.txt file in robocode.jar");
+			logError("No " + VERSIONS_TXT + " file in robocode.jar");
 			versionString = UNKNOWN_VERSION;
 		} catch (IOException e) {
-			logError("IO Exception reading versions.txt from robocode.jar" + e);
+			logError("Error while reading " + VERSIONS_TXT + " from robocode.jar: " + e);
 			versionString = UNKNOWN_VERSION;
 		} finally {
 			if (in != null) {
@@ -161,7 +168,7 @@ public final class VersionManager implements IVersionManager {
 			} catch (Exception ignore) {}
 		}
 		if (version.equals(UNKNOWN_VERSION)) {
-			logMessage("Warning: Getting version from file");
+			logWarning("Getting version from file");
 			return getVersionFromFile();
 		}
 		return version;
@@ -179,15 +186,15 @@ public final class VersionManager implements IVersionManager {
 			if (System.getProperty("TESTING", "false").equals("true")) {
 				dir = dir.getParentFile().getParentFile().getParentFile();
 			}
-			fileReader = new FileReader(new File(dir, "versions.txt"));
+			fileReader = new FileReader(new File(dir, VERSIONS_TXT));
 			in = new BufferedReader(fileReader);
 
 			versionString = in.readLine();
 		} catch (FileNotFoundException e) {
-			logError("No versions.txt file.");
+			logError("No " + VERSIONS_TXT + " file.");
 			versionString = UNKNOWN_VERSION;
 		} catch (IOException e) {
-			logError("IO Exception reading versions.txt" + e);
+			logError("IO Exception reading " + VERSIONS_TXT, e);
 			versionString = UNKNOWN_VERSION;
 		} finally {
 			if (fileReader != null) {

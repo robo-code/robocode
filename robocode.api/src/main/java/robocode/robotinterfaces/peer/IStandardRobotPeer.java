@@ -66,7 +66,7 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 * <pre>
 	 *   // Turn the robot's radar 180 degrees to the right
 	 *   turnRadar(Math.PI);
-	 * <p/>
+	 *
 	 *   // Afterwards, turn the robot's radar 90 degrees to the left
 	 *   turnRadar(-Math.PI / 2);
 	 * </pre>
@@ -104,9 +104,9 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 *   // At this point, both the robot and gun are facing right (90 degrees)
 	 *   turnBodyLeft(Math.PI / 2);
 	 *   // Both are back to 0 degrees
-	 * <p/>
+	 *
 	 *   -- or --
-	 * <p/>
+	 *
 	 *   // Set gun to turn independent from the robot's turn
 	 *   setAdjustGunForBodyTurn(true);
 	 *   turnBodyRight(Math.PI / 2);
@@ -145,9 +145,9 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 *   setAdjustRadarForGunTurn(false); // This is the default
 	 *   turnGunRight(Math.PI / 2);
 	 *   // At this point, both the radar and gun are facing right (90 degrees);
-	 * <p/>
+	 *
 	 *   -- or --
-	 * <p/>
+	 *
 	 *   // Set radar to turn independent from the gun's turn
 	 *   setAdjustRadarForGunTurn(true);
 	 *   turnGunRight(Math.PI / 2);
@@ -190,9 +190,9 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 *   setAdjustRadarForBodyTurn(false); // This is the default
 	 *   turnRight(Math.PI / 2);
 	 *   // At this point, the body, gun, and radar are all facing right (90 degrees);
-	 * <p/>
+	 *
 	 *   -- or --
-	 * <p/>
+	 *
 	 *   // Set radar to turn independent from the robot's turn
 	 *   setAdjustRadarForBodyTurn(true);
 	 *   turnRight(Math.PI / 2);

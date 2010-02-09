@@ -45,7 +45,7 @@ import static java.lang.Math.toDegrees;
  * @author Joshua Galecki
  * @since 1.7.1.3
  */
-public class RateControlRobot extends AdvancedRobot {
+public class RateControlRobot extends TeamRobot {
 
 	private double velocityRate; // Pixels per turn
 	private double turnRate; // Radians per turn
@@ -168,11 +168,11 @@ public class RateControlRobot extends AdvancedRobot {
 	 * <pre>
 	 *   // Set the robot to turn right pi / 32 radians per turn
 	 *   setTurnRateRadians(Math.PI / 32);
-	 * <p/>
+	 *
 	 *   // Set the robot to turn left pi / 20 radians per turn
 	 *   // (overrides the previous order)
 	 *   setTurnRateRadians(-Math.PI / 20);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setTurnRateRadians()
 	 *   execute();
@@ -218,11 +218,11 @@ public class RateControlRobot extends AdvancedRobot {
 	 * <pre>
 	 *   // Set the gun to turn right 15 degrees per turn
 	 *   setGunRotationRate(15);
-	 * <p/>
+	 *
 	 *   // Set the gun to turn left 9 degrees per turn
 	 *   // (overrides the previous order)
 	 *   setGunRotationRate(-9);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setGunRotationRate()
 	 *   execute();
@@ -268,11 +268,11 @@ public class RateControlRobot extends AdvancedRobot {
 	 * <pre>
 	 *   // Set the gun to turn right pi / 16 radians per turn
 	 *   setGunRotationRateRadians(Math.PI / 16);
-	 * <p/>
+	 *
 	 *   // Set the gun to turn left pi / 12 radians per turn
 	 *   // (overrides the previous order)
 	 *   setGunRotationRateRadians(-Math.PI / 12);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setGunRotationRateRadians()
 	 *   execute();
@@ -318,11 +318,11 @@ public class RateControlRobot extends AdvancedRobot {
 	 * <pre>
 	 *   // Set the radar to turn right 45 degrees per turn
 	 *   setRadarRotationRate(45);
-	 * <p/>
+	 *
 	 *   // Set the radar to turn left 15 degrees per turn
 	 *   // (overrides the previous order)
 	 *   setRadarRotationRate(-15);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setRadarRotationRate()
 	 *   execute();
@@ -368,11 +368,11 @@ public class RateControlRobot extends AdvancedRobot {
 	 * <pre>
 	 *   // Set the radar to turn right pi / 4 radians per turn
 	 *   setRadarRotationRateRadians(Math.PI / 4);
-	 * <p/>
+	 *
 	 *   // Set the radar to turn left pi / 8 radians per turn
 	 *   // (overrides the previous order)
 	 *   setRadarRotationRateRadians(-Math.PI / 8);
-	 * <p/>
+	 *
 	 *   ...
 	 *   // Executes the last setRadarRotationRateRadians()
 	 *   execute();

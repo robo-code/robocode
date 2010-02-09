@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B3487E2D-2737-4C04-AA71-B9A726B3F787}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>net.sf.robocode.dotnet</RootNamespace>
+    <AssemblyName>robocode.dotnet.robotscs-1.7.2.0</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\tools\keys\robocode.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\target\</OutputPath>
+    <IntermediateOutputPath>..\target\obj\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\target\</OutputPath>
+    <IntermediateOutputPath>..\target\obj\</IntermediateOutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
+      <Project>{7E0900D3-6E8F-48EB-86DB-AA767AA90B84}</Project>
+      <Name>robocode.dotnet.api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NoPackageButReallyLongNameIWouldSayTooLongMaybeEventLongerCs.cs" />
+    <Compile Include="NoPackageShortNameCs.cs" />
+    <Compile Include="robocode\BadNamespaceCs.cs" />
+    <Compile Include="tested\robotscs\Ahead.cs" />
+    <Compile Include="tested\robotscs\FormsAttack.cs" />
+    <Compile Include="tested\robotscs\BadFirePower.cs" />
+    <Compile Include="tested\robotscs\BattleLost.cs" />
+    <Compile Include="tested\robotscs\BattleWin.cs" />
+    <Compile Include="tested\robotscs\BodyTurnRate.cs" />
+    <Compile Include="tested\robotscs\CustomEvents.cs" />
+    <Compile Include="tested\robotscs\DieFast.cs" />
+    <Compile Include="tested\robotscs\EnvAttack.cs" />
+    <Compile Include="tested\robotscs\EventPriorityFilter.cs" />
+    <Compile Include="tested\robotscs\FairPlay.cs" />
+    <Compile Include="tested\robotscs\FileAttack.cs" />
+    <Compile Include="tested\robotscs\FileWriteSize.cs" />
+    <Compile Include="tested\robotscs\GunHeat.cs" />
+    <Compile Include="tested\robotscs\GunTurnRate.cs" />
+    <Compile Include="tested\robotscs\HttpAttack.cs" />
+    <Compile Include="tested\robotscs\InteruptibleEvent.cs" />
+    <Compile Include="tested\robotscs\JuniorEvents.cs" />
+    <Compile Include="tested\robotscs\MaxTurnRate.cs" />
+    <Compile Include="tested\robotscs\MaxVelocity.cs" />
+    <Compile Include="tested\robotscs\PrivateConstructor.cs" />
+    <Compile Include="tested\robotscs\RadarTurnRateAndSetAdjust.cs" />
+    <Compile Include="tested\robotscs\Random.cs" />
+    <Compile Include="tested\robotscs\RateControl.cs" />
+    <Compile Include="tested\robotscs\ReflectionAttack.cs" />
+    <Compile Include="tested\robotscs\RobotDeathEvents.cs" />
+    <Compile Include="tested\robotscs\SkipTurns.cs" />
+    <Compile Include="tested\robotscs\ThreadAttack.cs" />
+    <Compile Include="tested\robotscs\TooLongNameThisIsReallyTooLongNameCs.cs" />
+    <Compile Include="tested\robotscs\UndeadThread.cs" />
+    <Compile Include="tested\robotscs\WatchBullets.cs" />
+    <Compile Include="tooLongNamespaceThisIsReallyTooLongNamespace\TooLongNamespaceCs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tested\robotscs\TestTeam.team">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
+echo [assembly: System.Reflection.AssemblyVersion("0.0.0.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+</PreBuildEvent>
+  </PropertyGroup>
+</Project>
