@@ -13,6 +13,8 @@ package net.sf.robocode.battle.events;
 
 
 import static net.sf.robocode.io.Logger.logError;
+
+import net.sf.robocode.io.Logger;
 import robocode.control.events.*;
 
 import java.util.List;
@@ -148,7 +150,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattleError(event);
 			} catch (Throwable ex) {
-				logError("onBattleError " + listener.getClass(), ex);
+                Logger.realErr.println(listener.getClass() + " " + ex.getMessage());
 			}
 		}
 	}
