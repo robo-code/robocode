@@ -23,11 +23,11 @@ namespace net.sf.robocode.dotnet.repository.root {
     #endregion
     
     #region Component Designer generated code 
-    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper))]
-    [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper))]
+    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper), typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper_))]
+    [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper), typeof(global::net.sf.robocode.dotnet.repository.root.DllRootHelper_))]
     internal sealed partial class @__DllRootHelper : global::java.lang.Object {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         private @__DllRootHelper(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
@@ -90,7 +90,7 @@ namespace net.sf.robocode.dotnet.repository.root {
             return @__return;
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.dotnet.repository.root.@__DllRootHelper(@__env);

@@ -27,7 +27,7 @@
                 <extensions>true</extensions>
                 <version>0.17robocode</version>
                 <configuration>
-                    <aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:${basedir}/../tools/keys/robocode.snk
+                    <aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:"${basedir}/../tools/keys/robocode.snk"
                     </aditionalOptions>
                     <finalName>robocode.dll</finalName>
                 </configuration>

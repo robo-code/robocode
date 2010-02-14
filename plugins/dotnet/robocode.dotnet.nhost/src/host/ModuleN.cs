@@ -19,7 +19,7 @@ using net.sf.robocode.manager;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
 using Robocode;
-using Robocode.control;
+using robocode.control;
 
 namespace net.sf.robocode.dotnet.nhost
 {

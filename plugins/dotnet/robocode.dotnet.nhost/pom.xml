@@ -21,7 +21,7 @@
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.n</artifactId>
-            <version>0.6.0.0</version>
+            <version>0.7.0.0</version>
             <type>dotnet:library</type>
         </dependency>
         <dependency>
@@ -40,7 +40,7 @@
                 <extensions>true</extensions>
                 <version>0.17robocode</version>
                 <configuration>
-                    <aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:${basedir}/../tools/keys/robocode.snk
+                    <aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:"${basedir}/../tools/keys/robocode.snk"
                     </aditionalOptions>
                 </configuration>
             </plugin>

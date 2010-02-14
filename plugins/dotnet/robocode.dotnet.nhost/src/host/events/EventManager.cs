@@ -15,6 +15,7 @@ using System.Security.Permissions;
 using net.sf.robocode.dotnet.host.proxies;
 using net.sf.robocode.security;
 using Robocode;
+using robocode.exception;
 using Robocode.Exception;
 using Robocode.RobotInterfaces;
 

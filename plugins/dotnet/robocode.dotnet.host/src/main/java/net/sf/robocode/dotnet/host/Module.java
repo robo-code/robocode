@@ -40,7 +40,7 @@ public class Module extends BaseModule {
 			final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersionN();
 
 			final java.security.CodeSource source = Module.class.getProtectionDomain().getCodeSource();
-			final File file = new File(source.getLocation().getFile()).getCanonicalFile();
+			final File file = new File(source.getLocation().toURI()).getCanonicalFile();
 
 			if (file.getName().equals("classes")) {
 				libsDir = file.getParent();
@@ -54,9 +54,9 @@ public class Module extends BaseModule {
 
 			// Bridge.setVerbose(true);
 			// Bridge.setDebug(true);
-			Bridge.init(new File(libsDir).getCanonicalPath());
+			Bridge.init(new File(libsDir));
 			Bridge.SetSystemClassLoader(Container.engineLoader);
-			Bridge.LoadAndRegisterAssembly(new File(nhost).getCanonicalPath());
+			Bridge.LoadAndRegisterAssemblyFrom(new File(nhost));
 
 			Container.cache.addComponent("DllItemHandler", DllHandler.class);
 			Container.cache.addComponent("CsPropertiesHandler", DotnetPropertiesHandler.class);

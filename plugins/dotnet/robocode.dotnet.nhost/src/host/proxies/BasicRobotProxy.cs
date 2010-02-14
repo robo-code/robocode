@@ -22,6 +22,7 @@ using net.sf.robocode.repository;
 using net.sf.robocode.security;
 using net.sf.robocode.serialization;
 using Robocode;
+using robocode.exception;
 using Robocode.Exception;
 using Robocode.RobotInterfaces.Peer;
 using Robocode.Util;

@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Robocode.control
+namespace robocode.control
 {
     /*
     [Serializable]

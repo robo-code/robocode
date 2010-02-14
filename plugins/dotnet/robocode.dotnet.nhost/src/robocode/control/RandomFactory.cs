@@ -11,7 +11,7 @@
 using System;
 using net.sf.robocode.security;
 
-namespace Robocode.control
+namespace robocode.control
 {
     partial class RandomFactory : IHiddenRandomHelper
     {

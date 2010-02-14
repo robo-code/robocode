@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Robocode.Exception {
+namespace robocode.exception {
     
     
     #region Component Designer generated code 
@@ -16,7 +16,7 @@ namespace Robocode.Exception {
     [global::System.SerializableAttribute()]
     public partial class DisabledException : global::java.lang.Error {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId @__ctorDisabledException0;
         
@@ -26,14 +26,14 @@ namespace Robocode.Exception {
         public DisabledException(global::java.lang.String par0) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::Robocode.Exception.DisabledException.staticClass, global::Robocode.Exception.DisabledException.@__ctorDisabledException0, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
+            @__env.NewObject(global::robocode.exception.DisabledException.staticClass, global::robocode.exception.DisabledException.@__ctorDisabledException0, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public DisabledException() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            @__env.NewObject(global::Robocode.Exception.DisabledException.staticClass, global::Robocode.Exception.DisabledException.@__ctorDisabledException1, this);
+            @__env.NewObject(global::robocode.exception.DisabledException.staticClass, global::robocode.exception.DisabledException.@__ctorDisabledException1, this);
         }
         
         protected DisabledException(global::net.sf.jni4net.jni.JNIEnv @__env) : 
@@ -46,20 +46,20 @@ namespace Robocode.Exception {
         
         public new static global::java.lang.Class _class {
             get {
-                return global::Robocode.Exception.DisabledException.staticClass;
+                return global::robocode.exception.DisabledException.staticClass;
             }
         }
         
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
-            global::Robocode.Exception.DisabledException.staticClass = @__class;
-            global::Robocode.Exception.DisabledException.@__ctorDisabledException0 = @__env.GetMethodID(global::Robocode.Exception.DisabledException.staticClass, "<init>", "(Ljava/lang/String;)V");
-            global::Robocode.Exception.DisabledException.@__ctorDisabledException1 = @__env.GetMethodID(global::Robocode.Exception.DisabledException.staticClass, "<init>", "()V");
+            global::robocode.exception.DisabledException.staticClass = @__class;
+            global::robocode.exception.DisabledException.@__ctorDisabledException0 = @__env.GetMethodID(global::robocode.exception.DisabledException.staticClass, "<init>", "(Ljava/lang/String;)V");
+            global::robocode.exception.DisabledException.@__ctorDisabledException1 = @__env.GetMethodID(global::robocode.exception.DisabledException.staticClass, "<init>", "()V");
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
-                return new global::Robocode.Exception.DisabledException(@__env);
+                return new global::robocode.exception.DisabledException(@__env);
             }
         }
     }

@@ -40,11 +40,11 @@ namespace net.sf.robocode.serialization {
     #endregion
     
     #region Component Designer generated code 
-    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.serialization.ISerializableHelper))]
-    [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.serialization.ISerializableHelper))]
+    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.serialization.ISerializableHelper), typeof(global::net.sf.robocode.serialization.ISerializableHelper_))]
+    [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.serialization.ISerializableHelper), typeof(global::net.sf.robocode.serialization.ISerializableHelper_))]
     internal sealed partial class @__ISerializableHelper : global::java.lang.Object, global::net.sf.robocode.serialization.ISerializableHelper {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _sizeOf0;
         
@@ -125,7 +125,7 @@ namespace net.sf.robocode.serialization {
             return @__return;
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.serialization.@__ISerializableHelper(@__env);

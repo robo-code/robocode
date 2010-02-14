@@ -41,11 +41,11 @@ namespace net.sf.robocode.peer {
     #endregion
     
     #region Component Designer generated code 
-    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.peer.IRobotStatics))]
-    [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.peer.IRobotStatics))]
+    [global::net.sf.jni4net.attributes.JavaProxyAttribute(typeof(global::net.sf.robocode.peer.IRobotStatics), typeof(global::net.sf.robocode.peer.IRobotStatics_))]
+    [global::net.sf.jni4net.attributes.ClrWrapperAttribute(typeof(global::net.sf.robocode.peer.IRobotStatics), typeof(global::net.sf.robocode.peer.IRobotStatics_))]
     internal sealed partial class @__IRobotStatics : global::java.lang.Object, global::net.sf.robocode.peer.IRobotStatics {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _isInteractiveRobot0;
         
@@ -145,7 +145,7 @@ namespace net.sf.robocode.peer {
             return @__return;
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.peer.@__IRobotStatics(@__env);

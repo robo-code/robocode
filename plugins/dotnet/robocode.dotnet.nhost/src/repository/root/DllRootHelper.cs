@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using net.sf.robocode.dotnet.host;
 using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.repository;
 
@@ -32,7 +31,7 @@ namespace net.sf.robocode.dotnet.repository.root
 
         public static string[] findItems(string dllPath)
         {
-            string file = dllPath.Substring("file:/".Length);
+            string file = new Uri(dllPath).LocalPath;
             if (!File.Exists(file))
             {
                 throw new ArgumentException();
@@ -73,8 +72,9 @@ namespace net.sf.robocode.dotnet.repository.root
 
         public static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
         {
-            string url = robotRepositoryItem.getClassPathURL().getFile();
-            return url.Substring(1, url.LastIndexOf(".dll!/") + 3);
+            string uriString = robotRepositoryItem.getClassPathURL().toURI().toString();
+            string trim = uriString.Substring(0, uriString.LastIndexOf(".dll!/") + 4);
+            return new Uri(trim).LocalPath;
         }
     }
 }

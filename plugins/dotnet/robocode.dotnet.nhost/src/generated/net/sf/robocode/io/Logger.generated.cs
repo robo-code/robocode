@@ -15,7 +15,7 @@ namespace net.sf.robocode.io {
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
     public partial class Logger : global::java.lang.Object, global::net.sf.robocode.io.ILoggerN {
         
-        internal static global::java.lang.Class staticClass;
+        internal new static global::java.lang.Class staticClass;
         
         internal static global::net.sf.jni4net.jni.MethodId _setLogListener0;
         
@@ -135,7 +135,7 @@ namespace net.sf.robocode.io {
             @__env.CallStaticVoidMethod(global::net.sf.robocode.io.Logger.staticClass, global::net.sf.robocode.io.Logger._printlnToRobotsConsole7, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
         }
         
-        internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
+        new internal sealed class ContructionHelper : global::net.sf.jni4net.utils.IConstructionHelper {
             
             public global::net.sf.jni4net.jni.IJvmProxy CreateProxy(global::net.sf.jni4net.jni.JNIEnv @__env) {
                 return new global::net.sf.robocode.io.Logger(@__env);

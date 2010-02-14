@@ -40,9 +40,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="jni4net.n-0.6.0.0, Version=0.6.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
+    <Reference Include="jni4net.n-0.7.0.0, Version=0.7.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\lib\jni4net.n-0.6.0.0.dll</HintPath>
+      <HintPath>..\..\tools\lib\jni4net.n-0.7.0.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -185,8 +185,8 @@
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
 echo [assembly: System.Reflection.AssemblyVersion("1.7.2.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
-    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)\robocode.dotnet.host\target
-copy $(SolutionDir)\tools\lib\*.dll $(TargetDir)
-copy $(SolutionDir)\tools\lib\*.dll $(SolutionDir)\robocode.dotnet.host\target</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\robocode.dotnet.host\target"
+copy "$(SolutionDir)\tools\lib\*.dll" "$(TargetDir)"
+copy "$(SolutionDir)\tools\lib\*.dll" "$(SolutionDir)\robocode.dotnet.host\target"</PostBuildEvent>
   </PropertyGroup>
 </Project>

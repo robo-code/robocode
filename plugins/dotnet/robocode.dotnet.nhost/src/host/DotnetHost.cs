@@ -18,7 +18,7 @@ using net.sf.robocode.host.proxies;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using net.sf.robocode.security;
-using Robocode.control;
+using robocode.control;
 
 namespace net.sf.robocode.dotnet.host
 {

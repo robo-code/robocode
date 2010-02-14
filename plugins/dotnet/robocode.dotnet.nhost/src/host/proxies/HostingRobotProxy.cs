@@ -24,6 +24,7 @@ using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using Robocode;
+using robocode.exception;
 using Robocode.Exception;
 using Robocode.RobotInterfaces;
 using Robocode.RobotInterfaces.Peer;

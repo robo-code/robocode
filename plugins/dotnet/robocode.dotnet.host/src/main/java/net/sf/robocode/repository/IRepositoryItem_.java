@@ -45,6 +45,18 @@ class __IRepositoryItem extends system.Object implements net.sf.robocode.reposit
     @net.sf.jni4net.attributes.ClrMethod("()J")
     public native long getLastModified();
     
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getDescription();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getRobocodeVersion();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
+    public native java.net.URL getWebpage();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getAuthorName();
+    
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isTeam();
     
@@ -53,15 +65,6 @@ class __IRepositoryItem extends system.Object implements net.sf.robocode.reposit
     
     @net.sf.jni4net.attributes.ClrMethod("(Z)V")
     public native void setValid(boolean par0);
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getDescription();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getAuthorName();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
-    public native java.net.URL getWebpage();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean getJavaSourceIncluded();
@@ -77,9 +80,6 @@ class __IRepositoryItem extends system.Object implements net.sf.robocode.reposit
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isDevelopmentVersion();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getRobocodeVersion();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getFullPackage();

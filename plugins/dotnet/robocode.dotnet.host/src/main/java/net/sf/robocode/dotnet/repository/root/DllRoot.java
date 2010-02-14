@@ -18,7 +18,6 @@
 package net.sf.robocode.dotnet.repository.root;
 
 
-import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
 import net.sf.robocode.repository.root.BaseRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.Database;
@@ -27,11 +26,12 @@ import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.ui.IWindowManager;
-import net.sf.jni4net.Bridge;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.io.File;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.lang.String;
 
@@ -44,6 +44,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 
 	private URL dllUrl;
 	private String dllNoSeparator;
+    private String dllNoURLEnc;
 	private long lastModified;
 
 	public DllRoot(Database db, File rootPath) {
@@ -56,6 +57,14 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
+
+        try {
+            dllNoURLEnc = URLDecoder.decode(dllNoSeparator, "UTF8");
+        } catch (UnsupportedEncodingException e) {
+            Logger.logError(e);
+            dllNoURLEnc = dllNoSeparator;
+        }
+
 	}
 
 	public void update(boolean updateInvalid) {
@@ -78,7 +87,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IItem> items) {
-		final String[] dllitems = DllRootHelper.findItems(dllNoSeparator);
+        final String[] dllitems = DllRootHelper.findItems(dllNoURLEnc);
 
 		for (String url : dllitems) {
 			createItem(items, dllUrl, url);
