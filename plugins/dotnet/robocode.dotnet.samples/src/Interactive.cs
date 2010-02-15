@@ -15,41 +15,36 @@ using Robocode.Util;
 
 namespace SampleCs
 {
-    /**
-     * Interactive - a sample robot by Flemming N. Larsen.
-     * <p/>
-     * This is a robot that is controlled using the arrow keys and mouse only.
-     * <p/>
-     * Keys:
-     * - Arrow up:    Move forward
-     * - Arrow down:  Move backward
-     * - Arrow right: Turn right
-     * - Arrow left:  Turn left
-     * Mouse:
-     * - Moving:      Moves the aim, which the gun will follow
-     * - Wheel up:    Move forward
-     * - Wheel down:  Move backward
-     * - Button 1:    Fire a bullet with power = 1
-     * - Button 2:    Fire a bullet with power = 2
-     * - Button 3:    Fire a bullet with power = 3
-     * <p/>
-     * The bullet color depends on the Fire power:
-     * - Power = 1:   Yellow
-     * - Power = 2:   Orange
-     * - Power = 3:   Red
-     * <p/>
-     * Note that the robot will continue firing as long as the mouse button is
-     * pressed down.
-     * <p/>
-     * By enabling the "Paint" button on the robot console window for this robot,
-     * a cross hair will be painted for the robots current aim (controlled by the
-     * mouse).
-     *
-     * @author Flemming N. Larsen
-     * @version 1.1
-     * @since 1.3.4
-     */
-
+    /// <summary>
+    /// Interactive - a sample robot by Flemming N. Larsen.
+    /// <p/>
+    /// This is a robot that is controlled using the arrow keys and mouse only.
+    /// <p/>
+    /// Keys:
+    /// - Arrow up:    Move forward
+    /// - Arrow down:  Move backward
+    /// - Arrow right: Turn right
+    /// - Arrow left:  Turn left
+    /// Mouse:
+    /// - Moving:      Moves the aim, which the gun will follow
+    /// - Wheel up:    Move forward
+    /// - Wheel down:  Move backward
+    /// - Button 1:    Fire a bullet with power = 1
+    /// - Button 2:    Fire a bullet with power = 2
+    /// - Button 3:    Fire a bullet with power = 3
+    /// <p/>
+    /// The bullet color depends on the Fire power:
+    /// - Power = 1:   Yellow
+    /// - Power = 2:   Orange
+    /// - Power = 3:   Red
+    /// <p/>
+    /// Note that the robot will continue firing as long as the mouse button is
+    /// pressed down.
+    /// <p/>
+    /// By enabling the "Paint" button on the robot console window for this robot,
+    /// a cross hair will be painted for the robots current aim (controlled by the
+    /// mouse).
+    /// </summary>
     public class Interactive : AdvancedRobot
     {
         // Move direction: 1 = move forward, 0 = stand still, -1 = move backward

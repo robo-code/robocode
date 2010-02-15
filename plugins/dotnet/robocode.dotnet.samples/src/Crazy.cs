@@ -61,20 +61,18 @@ namespace SampleCs
             }
         }
 
-        /**
-         * onHitWall:  Handle collision with wall.
-         */
-
+        /// <summary>
+        /// onHitWall:  Handle collision with wall.
+        /// </summary>
         public override void OnHitWall(HitWallEvent e)
         {
             // Bounce off!
             reverseDirection();
         }
 
-        /**
-         * reverseDirection:  Switch from ahead to back & vice versa
-         */
-
+        /// <summary>
+        /// reverseDirection:  Switch from ahead to back & vice versa
+        /// </summary>
         public void reverseDirection()
         {
             if (movingForward)
@@ -89,10 +87,9 @@ namespace SampleCs
             }
         }
 
-        /**
-         * onScannedRobot:  Fire!
-         */
-
+        /// <summary>
+        /// onScannedRobot:  Fire!
+        /// </summary>
         public override void OnScannedRobot(ScannedRobotEvent e)
         {
             Fire(1);
