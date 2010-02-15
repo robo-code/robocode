@@ -34,32 +34,33 @@ public class TestFileWriteSize extends RobocodeTestBed {
 	boolean messageQuotaReached;
 	boolean robotTerminated;
 	
-    @Test
-    public void run() {
-        super.run();
-    }
+	@Test
+	public void run() {
+		super.run();
+	}
 
 	@Override
 	public String getRobotNames() {
 		return "tested.robotscs.FileWriteSize,SampleCs.Target";
 	}
 	
-    File file;
-    @Override
-    protected void runSetup() {
-        final IVersionManager vm = new VersionManager(null);
-        file = new File(robotsPath + "\\target\\classes\\.data\\_\\tested\\robotscs\\test.txt");
-        if (file.exists()) {
-            if (!file.delete()) {
-                Logger.logError("Can't delete" + file);
-            }
-        }
-    }
+	File file;
+	@Override
+	protected void runSetup() {
+		final IVersionManager vm = new VersionManager(null);
 
-    @Override
-    protected int getExpectedErrors() {
-        return 1;
-    }
+		file = new File(robotsPath + "\\target\\classes\\.data\\_\\tested\\robotscs\\test.txt");
+		if (file.exists()) {
+			if (!file.delete()) {
+				Logger.logError("Can't delete" + file);
+			}
+		}
+	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 1;
+	}
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
@@ -90,9 +91,9 @@ public class TestFileWriteSize extends RobocodeTestBed {
 		Assert.assertTrue("Data directory path is wrong", messagedDataDirectory);
 		Assert.assertTrue("Error must be output that file quota has been exceeded", messageQuotaReached);
 		Assert.assertTrue("Game must terminate the robot", robotTerminated);
-        Assert.assertTrue(file.exists());
-        if (!file.delete()) {
-            Logger.logError("Can't delete" + file);
-        }
+		Assert.assertTrue(file.exists());
+		if (!file.delete()) {
+			Logger.logError("Can't delete" + file);
+		}
 	}
 }

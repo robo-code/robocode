@@ -26,8 +26,8 @@ public class DotNetRobotItem extends RobotItem {
 
 	public DotNetRobotItem(IRepositoryRoot root, URL classUrl) {
 		super(root);
-        url=classUrl;
-        init();
+		url = classUrl;
+		init();
 	}
 
 	@Override
@@ -35,9 +35,10 @@ public class DotNetRobotItem extends RobotItem {
 		if (properties.getProperty(ROBOT_CLASSNAME) == null && url != null) {
 			final String file = url.getFile();
 			final String clazz = file.substring(file.lastIndexOf("!/") + 2);
-            if (clazz.length()>0){
-                properties.setProperty(ROBOT_CLASSNAME, clazz);
-            }
+
+			if (clazz.length() > 0) {
+				properties.setProperty(ROBOT_CLASSNAME, clazz);
+			}
 		}
 		isPropertiesLoaded = true; // TODO something real ?
 	}

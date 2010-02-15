@@ -28,7 +28,7 @@ import robocode.control.snapshot.IRobotSnapshot;
 public class TestWin extends RobocodeTestBed {
 	private int win = 0;
 	private int end = 0;
-    private int rend = 0;
+	private int rend = 0;
 	private BattleResults[] results;
 
 	@Test
@@ -58,9 +58,9 @@ public class TestWin extends RobocodeTestBed {
 		if (streamSnapshot.contains("BattleEnded!")) {
 			end++;
 		}
-        if (streamSnapshot.contains("RoundEnded!")) {
-            rend++;
-        }
+		if (streamSnapshot.contains("RoundEnded!")) {
+			rend++;
+		}
 	}
 
 	public void onBattleCompleted(BattleCompletedEvent event) {
@@ -71,7 +71,7 @@ public class TestWin extends RobocodeTestBed {
 	protected void runTeardown() {
 		Assert.assertThat("always should win", win, is(getNumRounds()));
 		Assert.assertThat("should get BattleEnded event", end, is(1));
-        Assert.assertThat("should get RoundEnded event", rend, is(5));
+		Assert.assertThat("should get RoundEnded event", rend, is(5));
 		Assert.assertThat("always should be FIRST", results[0].getTeamLeaderName(), is("tested.robotscs.BattleWin"));
 		Assert.assertThat("always should get score", results[0].getScore(), is(897));
 	}

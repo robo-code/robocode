@@ -33,7 +33,7 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 	private IRobotSnapshot[] robots;
 	private BattleResults[] results;
 
-    @Test
+	@Test
 	public void run() {
 		super.run();
 	}
@@ -78,7 +78,8 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-        int lastTurn = event.getTurnSnapshot().getTurn();
+		int lastTurn = event.getTurnSnapshot().getTurn();
+
 		robots = event.getTurnSnapshot().getRobots();
 
 		if (lastTurn == 1) {
@@ -103,14 +104,14 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 			net.sf.robocode.test.helpers.Assert.assertNear(333.1785378, robots[7].getX());
 		}
 
-        Assert.assertFalse("skipped", robots[0].getOutputStreamSnapshot().contains("skipped"));
-        Assert.assertFalse("skipped", robots[1].getOutputStreamSnapshot().contains("skipped"));
-        Assert.assertFalse("skipped", robots[2].getOutputStreamSnapshot().contains("skipped"));
-        Assert.assertFalse("skipped", robots[3].getOutputStreamSnapshot().contains("skipped"));
-        Assert.assertFalse("skipped", robots[4].getOutputStreamSnapshot().contains("skipped"));
-        Assert.assertFalse("skipped", robots[5].getOutputStreamSnapshot().contains("skipped"));
-        Assert.assertFalse("skipped", robots[6].getOutputStreamSnapshot().contains("skipped"));
-        Assert.assertFalse("skipped", robots[7].getOutputStreamSnapshot().contains("skipped"));
+		Assert.assertFalse("skipped", robots[0].getOutputStreamSnapshot().contains("skipped"));
+		Assert.assertFalse("skipped", robots[1].getOutputStreamSnapshot().contains("skipped"));
+		Assert.assertFalse("skipped", robots[2].getOutputStreamSnapshot().contains("skipped"));
+		Assert.assertFalse("skipped", robots[3].getOutputStreamSnapshot().contains("skipped"));
+		Assert.assertFalse("skipped", robots[4].getOutputStreamSnapshot().contains("skipped"));
+		Assert.assertFalse("skipped", robots[5].getOutputStreamSnapshot().contains("skipped"));
+		Assert.assertFalse("skipped", robots[6].getOutputStreamSnapshot().contains("skipped"));
+		Assert.assertFalse("skipped", robots[7].getOutputStreamSnapshot().contains("skipped"));
 	}
 
 	@Override

@@ -111,8 +111,9 @@ public final class VersionManager implements IVersionManager {
 		return versionChanged;
 	}
 
-	public String getVersionN(){
+	public String getVersionN() {
 		Version v = getVersionInstance();
+
 		return v.getMajor() + "." + v.getMinor() + "." + v.getRevision() + "." + v.getBuild();
 	}
 

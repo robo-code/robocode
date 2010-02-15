@@ -35,7 +35,7 @@ public class TestReflectionAttack extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-        if (out.contains("System.Security.SecurityException")) {
+		if (out.contains("System.Security.SecurityException")) {
 			messagedAccessDenied = true;	
 		}	
 	}

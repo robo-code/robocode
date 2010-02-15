@@ -150,7 +150,7 @@ public class BattleEventDispatcher implements IBattleListener {
 			try {
 				listener.onBattleError(event);
 			} catch (Throwable ex) {
-                Logger.realErr.println(listener.getClass() + " " + ex.getMessage());
+				Logger.realErr.println(listener.getClass() + " " + ex.getMessage());
 			}
 		}
 	}

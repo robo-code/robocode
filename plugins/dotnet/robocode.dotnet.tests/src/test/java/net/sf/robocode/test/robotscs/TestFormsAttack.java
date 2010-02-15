@@ -22,36 +22,36 @@ import robocode.control.events.TurnEndedEvent;
  * @author Pavel Savara (original)
  */
 public class TestFormsAttack extends RobocodeTestBed {
-    // in case: boolean messagedAttack;
-    boolean messagedViolation;
+	// in case: boolean messagedAttack;
+	boolean messagedViolation;
 
-    @Test
-    public void run() {
-        super.run();
-    }
+	@Test
+	public void run() {
+		super.run();
+	}
 
-    @Override
-    public String getRobotNames() {
-        return "tested.robotscs.BattleLost,tested.robotscs.FormsAttack";
-    }
+	@Override
+	public String getRobotNames() {
+		return "tested.robotscs.BattleLost,tested.robotscs.FormsAttack";
+	}
 
-    @Override
-    public void onTurnEnded(TurnEndedEvent event) {
-        super.onTurnEnded(event);
-        final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
+	@Override
+	public void onTurnEnded(TurnEndedEvent event) {
+		super.onTurnEnded(event);
+		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
 
-        if (out.contains("System.Security.Permissions.UIPermission")) {
-            messagedViolation = true;
-        }
-    }
+		if (out.contains("System.Security.Permissions.UIPermission")) {
+			messagedViolation = true;
+		}
+	}
 
-    @Override
-    protected int getExpectedErrors() {
-        return 1;
-    }
+	@Override
+	protected int getExpectedErrors() {
+		return 1;
+	}
 
-    @Override
-    protected void runTeardown() {
-        Assert.assertTrue(messagedViolation);
-    }
+	@Override
+	protected void runTeardown() {
+		Assert.assertTrue(messagedViolation);
+	}
 }

@@ -35,7 +35,7 @@ public class TestHttpAttack extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-        if (out.contains("System.Net.WebPermission")) {
+		if (out.contains("System.Net.WebPermission")) {
 			messagedAccessDenied = true;	
 		}	
 	}

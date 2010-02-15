@@ -515,7 +515,8 @@ public final class Battle extends BaseBattle {
 				boolean leaderFirsts = false;
 				TeamPeer winningTeam = null;
 
-				final robocode.RoundEndedEvent roundEndedEvent = new robocode.RoundEndedEvent(getRoundNum(), currentTime, totalTurns); 
+				final robocode.RoundEndedEvent roundEndedEvent = new robocode.RoundEndedEvent(getRoundNum(), currentTime,
+						totalTurns); 
 
 				for (RobotPeer robotPeer : getRobotsAtRandom()) {
 					robotPeer.addEvent(roundEndedEvent);
@@ -751,8 +752,8 @@ public final class Battle extends BaseBattle {
 				if (robotPeer.isAlive()) {
 					if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
 						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
-					} else if (currentTime == 1){
-						robotPeer.waitSleeping(millisWait*10, 1);
+					} else if (currentTime == 1) {
+						robotPeer.waitSleeping(millisWait * 10, 1);
 					} else {
 						robotPeer.waitSleeping(millisWait, microWait);
 					}

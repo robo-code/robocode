@@ -44,7 +44,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 
 	private URL dllUrl;
 	private String dllNoSeparator;
-    private String dllNoURLEnc;
+	private String dllNoURLEnc;
 	private long lastModified;
 
 	public DllRoot(Database db, File rootPath) {
@@ -58,12 +58,12 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 			Logger.logError(e);
 		}
 
-        try {
-            dllNoURLEnc = URLDecoder.decode(dllNoSeparator, "UTF8");
-        } catch (UnsupportedEncodingException e) {
-            Logger.logError(e);
-            dllNoURLEnc = dllNoSeparator;
-        }
+		try {
+			dllNoURLEnc = URLDecoder.decode(dllNoSeparator, "UTF8");
+		} catch (UnsupportedEncodingException e) {
+			Logger.logError(e);
+			dllNoURLEnc = dllNoSeparator;
+		}
 
 	}
 
@@ -87,7 +87,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IItem> items) {
-        final String[] dllitems = DllRootHelper.findItems(dllNoURLEnc);
+		final String[] dllitems = DllRootHelper.findItems(dllNoURLEnc);
 
 		for (String url : dllitems) {
 			createItem(items, dllUrl, url);

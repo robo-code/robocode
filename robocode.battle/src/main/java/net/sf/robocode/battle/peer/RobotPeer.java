@@ -470,9 +470,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		this.bidirectionalBuffer = bidirectionalBuffer;
 	}
 
-    public void setupThread() {
-        Thread.currentThread().setName(getName());
-    }
+	public void setupThread() {
+		Thread.currentThread().setName(getName());
+	}
 
 	public void executeImplSerial() throws IOException {
 		ExecCommands commands = (ExecCommands) rbSerializer.deserialize(bidirectionalBuffer);
@@ -1572,13 +1572,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		if (robotProxy != null) {
 			robotProxy.cleanup();
-            robotProxy = null;
+			robotProxy = null;
 		}
 
-        if (statistics != null) {
-            statistics.cleanup();
-            statistics = null;
-        }
+		if (statistics != null) {
+			statistics.cleanup();
+			statistics = null;
+		}
 
 		status = null;
 		commands = null;

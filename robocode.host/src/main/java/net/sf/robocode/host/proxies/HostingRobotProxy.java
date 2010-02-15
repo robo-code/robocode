@@ -321,7 +321,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		logError(message);
 		println("SYSTEM: " + message);
-        peer.drainEnergy();
+		peer.drainEnergy();
 		peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
 	}
 }

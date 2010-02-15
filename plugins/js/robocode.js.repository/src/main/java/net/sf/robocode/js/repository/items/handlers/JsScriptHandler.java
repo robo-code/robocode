@@ -42,7 +42,7 @@ public class JsScriptHandler extends ItemHandler {
 		}
 		if (item == null) {
 			item = new JsRobotItem(root);
-            item.setClassPathURL(itemURL);
+			item.setClassPathURL(itemURL);
 		} else {
 			item.setClassUrl(itemURL);
 		}

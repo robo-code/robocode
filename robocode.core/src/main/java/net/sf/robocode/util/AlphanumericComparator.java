@@ -183,7 +183,7 @@ public class AlphanumericComparator implements Comparator<String>, java.io.Seria
 	 "beta"
 	 ""
 	 <null>
-	*/
+	 */
 	public static void main(String... args) {
 		// Our unsorted strings that must be sorted
 		final String[] strings = {

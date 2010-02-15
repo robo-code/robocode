@@ -34,7 +34,8 @@ public class TestPrivateConstructor extends RobocodeTestBed {
 		super.onTurnEnded(event);                          
 		final IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[1];
 
-		if (robot.getOutputStreamSnapshot().contains("tested.robotscs.PrivateConstructor No parameterless constructor defined for this object.")) {
+		if (robot.getOutputStreamSnapshot().contains(
+				"tested.robotscs.PrivateConstructor No parameterless constructor defined for this object.")) {
 			messaged = true;
 		}
 		Assert.assertNear(0, robot.getEnergy());

@@ -34,38 +34,41 @@ import java.util.Hashtable;
  * @author Pavel Savara (original)
  */
 public class DllHandler extends RootHandler {
-    public void open(){
-        DllRootHelper.Refresh();
-    }
+	public void open() {
+		DllRootHelper.Refresh();
+	}
     
-    public void close(){
-        DllRootHelper.Refresh();
-    }
+	public void close() {
+		DllRootHelper.Refresh();
+	}
 
 	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
 		// find dll files
-		final File[] dlls = dir.listFiles(new FileFilter() {
+		final File[] dlls = dir.listFiles(
+				new FileFilter() {
 			public boolean accept(File pathname) {
 				final String low = pathname.toString().toLowerCase();
 
-				return pathname.isFile() && low.endsWith(".dll") && !low.endsWith("robocode.dll") && !low.contains("jni4net");
-            }
-        });
-        if (dlls != null) {
-            // update DLL files
-            for (File dll : dlls) {
-                final String key = dll.toURI().toString();
-                IRepositoryRoot root = roots.get(key);
+				return pathname.isFile() && low.endsWith(".dll") && !low.endsWith("robocode.dll")
+						&& !low.contains("jni4net");
+			}
+		});
 
-                if (root == null) {
-                    root = new DllRoot(db, dll);
-                } else {
-                    roots.remove(key);
-                }
+		if (dlls != null) {
+			// update DLL files
+			for (File dll : dlls) {
+				final String key = dll.toURI().toString();
+				IRepositoryRoot root = roots.get(key);
 
-                root.update(updateInvalid);
-                newroots.put(dll.toURI().toString(), root);
-            }
-        }
-    }
+				if (root == null) {
+					root = new DllRoot(db, dll);
+				} else {
+					roots.remove(key);
+				}
+
+				root.update(updateInvalid);
+				newroots.put(dll.toURI().toString(), root);
+			}
+		}
+	}
 }
