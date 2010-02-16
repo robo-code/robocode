@@ -1,3 +1,9 @@
+Version 1.7.2.0
+The ".NET robots are now supported" release
+---------------
+= Bugfixes =
+* Bug [2952496] - Installer installs AutoExtract$1.class
+
 Version 1.7.2.0 Beta
 The ".NET robots are now supported" release
 ---------------

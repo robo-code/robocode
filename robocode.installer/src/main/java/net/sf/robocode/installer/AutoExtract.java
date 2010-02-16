@@ -43,16 +43,10 @@ public class AutoExtract implements ActionListener {
 	private boolean accepted;
 	private final String[] spinner = { "-", "\\", "|", "/"};
 	private String message = "";
+	private static File installDir;
 	private static final String osName = System.getProperty("os.name");
 	private static final double osVersion = doubleValue(System.getProperty("os.version"));
 	private static final String javaVersion = System.getProperty("java.version");
-
-	/**
-	 * AutoExtract constructor.
-	 */
-	public AutoExtract() {
-		super();
-	}
 
 	private static double doubleValue(String s) {
 		int p = s.indexOf(".");
@@ -306,6 +300,14 @@ public class AutoExtract implements ActionListener {
 		} else {
 			message = "Installation cancelled";
 		}
+
+		// Delete the class file with the installer and it's parent folders in the robocode home dir
+		if (installDir != null) {
+			String installerPath = AutoExtract.class.getName().replaceAll("\\.", "/") + "$1.class";
+
+			deleteFileAndParentDirsIfEmpty(new File(installDir, installerPath));		
+		}
+
 		JOptionPane.showMessageDialog(null, message);
 	}
 	
@@ -330,8 +332,6 @@ public class AutoExtract implements ActionListener {
 		AutoExtract extractor = new AutoExtract();
 
 		if (extractor.acceptLicense()) {
-			File installDir = null;
-
 			boolean done = false;
 
 			while (!done) {
@@ -407,7 +407,7 @@ public class AutoExtract implements ActionListener {
 		}
 	}
 
-	public static boolean deleteDir(File dir) {
+	private static boolean deleteDir(File dir) {
 		if (dir.isDirectory()) {
 			for (File file : dir.listFiles()) {
 				if (file.isDirectory()) {
@@ -640,5 +640,37 @@ public class AutoExtract implements ActionListener {
 				? "command.com"
 				: "cmd.exe")
 						+ " /C ";
+	}
+
+	/**
+	 * Deletes a file and afterwards deletes the parent directories that are empty.
+	 *
+	 * @param file the file or directory to delete
+	 * @return true if success
+	 */
+	private static boolean deleteFileAndParentDirsIfEmpty(final File file) {
+		boolean wasDeleted = false;
+
+		if (file != null && file.exists()) {
+			if (file.isDirectory()) {
+				wasDeleted = deleteDir(file);
+			} else {
+				wasDeleted = file.delete();
+
+				File parent = file;
+				
+				while (wasDeleted && (parent = parent.getParentFile()) != null) {
+					// Delete parent directory, but only if it is empty
+					File[] files = parent.listFiles();
+
+					if (files != null && files.length == 0) {
+						wasDeleted = deleteDir(parent);
+					} else {
+						wasDeleted = false;
+					}
+				}
+			}
+		}
+		return wasDeleted;
 	}
 }

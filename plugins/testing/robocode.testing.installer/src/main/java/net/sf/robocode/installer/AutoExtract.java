@@ -42,6 +42,7 @@ public class AutoExtract implements ActionListener {
 	private boolean accepted;
 	private final String[] spinner = { "-", "\\", "|", "/"};
 	private String message = "";
+	private static String installDir;
 	private static final String javaVersion = System.getProperty("java.version");
 
 	/**
@@ -316,6 +317,80 @@ public class AutoExtract implements ActionListener {
 		} else {
 			JOptionPane.showMessageDialog(null, "Installation cancelled.");
 		}
+
+		// Delete the class file with the installer and it's parent folders in the robocode home dir
+		if (installDir != null) {
+			String installerPath = AutoExtract.class.getName().replaceAll("\\.", "/") + "$1.class";
+
+			deleteFileAndParentDirsIfEmpty(new File(installDir, installerPath));		
+		}
+
 		System.exit(0);
+	}
+
+	private static boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			for (File file : dir.listFiles()) {
+				if (file.isDirectory()) {
+					// Skip directories ending with ".data" 
+					if (file.getName().endsWith(".data")) {
+						continue;
+					}
+					try {
+						// Test for symlink and ignore.
+						// Robocode won't create one, but just in case a user does...
+						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
+							deleteDir(file);
+							if (file.exists() && !file.delete()) {
+								System.err.println("Can't delete: " + file);
+							}
+						} else {
+							System.out.println("Warning: " + file + " may be a symlink. It has been ignored");
+						}
+					} catch (IOException e) {
+						System.out.println(
+								"Warning: Cannot determine canonical file for " + file + ". It has been ignored");
+					}
+				} else {
+					if (file.exists() && !file.delete()) {
+						System.err.println("Can't delete: " + file);
+					}
+				}
+			}
+			return dir.delete();
+		}
+		return false;
+	}
+
+	/**
+	 * Deletes a file and afterwards deletes the parent directories that are empty.
+	 *
+	 * @param file the file or directory to delete
+	 * @return true if success
+	 */
+	private static boolean deleteFileAndParentDirsIfEmpty(final File file) {
+		boolean wasDeleted = false;
+
+		if (file != null && file.exists()) {
+			if (file.isDirectory()) {
+				wasDeleted = deleteDir(file);
+			} else {
+				wasDeleted = file.delete();
+
+				File parent = file;
+				
+				while (wasDeleted && (parent = parent.getParentFile()) != null) {
+					// Delete parent directory, but only if it is empty
+					File[] files = parent.listFiles();
+
+					if (files != null && files.length == 0) {
+						wasDeleted = deleteDir(parent);
+					} else {
+						wasDeleted = false;
+					}
+				}
+			}
+		}
+		return wasDeleted;
 	}
 }
