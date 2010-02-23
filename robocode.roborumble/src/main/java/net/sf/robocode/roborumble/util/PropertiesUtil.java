@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2008 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2010 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/cpl-v10.html
+ * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
  *     Flemming N. Larsen

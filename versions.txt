@@ -4,6 +4,9 @@ The ".NET robots are now supported" release
 = Bugfixes =
 * Bug [2952496] - Installer installs AutoExtract$1.class
 
+= License Change =
+* We have changed license from Common Public License (CPL) v1.0 into Eclipse Puplic License (EPL) v1.0.
+
 Version 1.7.2.0 Beta
 The ".NET robots are now supported" release
 ---------------
