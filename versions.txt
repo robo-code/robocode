@@ -2,7 +2,7 @@ Version 1.7.2.0
 The ".NET robots are now supported" release
 ---------------
 = Bugfixes =
-* Bug [2952543] - rc.yoda.Yoda 1.0.6c gives NullPointerException
+* Bug [2952549] - yk.JahRoslav 1.1 throws WinException
 * Bug [2952496] - Installer installs AutoExtract$1.class
 
 = License Change =

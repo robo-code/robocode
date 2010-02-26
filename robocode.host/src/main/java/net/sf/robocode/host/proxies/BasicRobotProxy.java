@@ -418,7 +418,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			try {
 				eventManager.processEvents();
 			} catch (DeathException ignore) {// This one is expected to occur, and must be handled
-			} catch (WinException ignore) {// Bug fix [2952543]. Must be handled.
+			} catch (WinException ignore) {// Bug fix [2952549]. Must be handled.
 			}
 
 			commands.setOutputText(out.readAndReset());
