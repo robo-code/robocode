@@ -28,6 +28,7 @@ import robocode.Event;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
+import robocode.exception.WinException;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 import robocode.util.Utils;
 
@@ -417,6 +418,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			try {
 				eventManager.processEvents();
 			} catch (DeathException ignore) {// This one is expected to occur, and must be handled
+			} catch (WinException ignore) {// Bug fix [2952543]. Must be handled.
 			}
 
 			commands.setOutputText(out.readAndReset());
