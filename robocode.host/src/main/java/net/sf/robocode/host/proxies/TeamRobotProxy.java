@@ -46,15 +46,17 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 
 	public boolean isTeammate(String name) {
 		getCall();
-		if (name.equals(statics.getName())) {
-			return true;
-		}
-		final String[] teammates = statics.getTeammates();
-
-		if (teammates != null) {
-			for (String mate : teammates) {
-				if (mate.equals(name)) {
-					return true;
+		if (name != null) { // Bugfix [2960870]
+			if (name.equals(statics.getName())) {
+				return true;
+			}
+			final String[] teammates = statics.getTeammates();
+	
+			if (teammates != null) {
+				for (String mate : teammates) {
+					if (mate.equals(name)) {
+						return true;
+					}
 				}
 			}
 		}
