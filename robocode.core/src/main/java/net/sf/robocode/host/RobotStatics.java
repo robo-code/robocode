@@ -80,7 +80,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		this.contestantIndex = contestantIndex;
 
 		if (teamMembers != null) {
-			teammates = new String[teamMembers.size() - 1];
+			teammates = new String[teamMembers.size()];
 			int i = 0;
 
 			for (String mate : teamMembers) {
