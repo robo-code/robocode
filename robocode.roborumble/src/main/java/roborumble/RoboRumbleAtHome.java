@@ -65,6 +65,12 @@ public class RoboRumbleAtHome {
 		String version = null;
 
 		do {
+			final BattlesRunner engine = new BattlesRunner(parameters);
+
+			if (version == null) {
+				version = engine.getVersion();
+			}
+
 			System.out.println("Iteration number " + iterations);
 
 			// Download data from Internet if downloads is YES and it has not been download for two hours
@@ -127,9 +133,6 @@ public class RoboRumbleAtHome {
 						System.out.println("Executing battles ...");
 					}
 
-					BattlesRunner engine = new BattlesRunner(parameters);
-
-					version = engine.getVersion();
 					engine.runBattlesImpl(isMelee);
 				}
 			}
