@@ -197,23 +197,32 @@ public class BattlesRunner {
 	}
 
 	private void dumpResults(PrintStream outtxt, RobotResults[] results, String last, boolean melee) {
+		final String BOT_INDEX_PATTERN = "\\[.*\\]";
+
 		for (int i = 0; i < results.length; i++) {
 			for (int j = 0; j < results.length; j++) {
 				if (i < j) {
-					final String botOne = results[i].getRobot().getNameAndVersion();
-					final String botTwo = results[j].getRobot().getNameAndVersion();
-					final int pointsOne = results[i].getScore();
-					final int pointsTwo = results[j].getScore();
-					final int bulletsOne = results[i].getBulletDamage();
-					final int bulletsTwo = results[j].getBulletDamage();
-					final int survivalOne = results[i].getFirsts();
-					final int survivalTwo = results[j].getFirsts();
+					RobotSpecification bot1 = results[i].getRobot();
+					RobotSpecification bot2 = results[j].getRobot();
+
+					String name1 = bot1.getTeamId() != null
+							? bot1.getTeamId().replaceAll(BOT_INDEX_PATTERN, "")
+							: bot1.getNameAndVersion();
+					String name2 = bot2.getTeamId() != null
+							? bot2.getTeamId().replaceAll(BOT_INDEX_PATTERN, "")
+							: bot2.getNameAndVersion();
+					int points1 = results[i].getScore();
+					int points2 = results[j].getScore();
+					int bullets1 = results[i].getBulletDamage();
+					int bullets2 = results[j].getBulletDamage();
+					int survival1 = results[i].getFirsts();
+					int survival2 = results[j].getFirsts();
 
 					outtxt.println(
 							game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + ","
 							+ System.currentTimeMillis() + "," + last);
-					outtxt.println(botOne + "," + pointsOne + "," + bulletsOne + "," + survivalOne);
-					outtxt.println(botTwo + "," + pointsTwo + "," + bulletsTwo + "," + survivalTwo);
+					outtxt.println(name1 + "," + points1 + "," + bullets1 + "," + survival1);
+					outtxt.println(name2 + "," + points2 + "," + bullets2 + "," + survival2);
 				}
 			}
 		}
@@ -222,23 +231,13 @@ public class BattlesRunner {
 					"RESULT = " + results[0].getRobot().getNameAndVersion() + " wins, "
 					+ results[1].getRobot().getNameAndVersion() + " is second.");
 		} else {
-			RobotSpecification robotSpec = results[0].getRobot();
-
-			String nameAndVersion;
-
-			if (robotSpec.getTeamId() != null) {
-				nameAndVersion = robotSpec.getTeamId();
-				int splitIndex = nameAndVersion.indexOf('[');
-
-				if (splitIndex > 0) {
-					nameAndVersion = nameAndVersion.substring(0, splitIndex);
-				}
-			} else {
-				nameAndVersion = robotSpec.getNameAndVersion(); 
-			}
+			RobotSpecification winnerBot = results[0].getRobot();
+			String winnerBotName = winnerBot.getTeamId() != null
+					? winnerBot.getTeamId().replaceAll(BOT_INDEX_PATTERN, "")
+					: winnerBot.getNameAndVersion(); 
 
 			System.out.println(
-					"RESULT = " + nameAndVersion + " wins " + results[0].getScore() + " to " + results[1].getScore());
+					"RESULT = " + winnerBotName + " wins " + results[0].getScore() + " to " + results[1].getScore());
 		}
 	}
 
