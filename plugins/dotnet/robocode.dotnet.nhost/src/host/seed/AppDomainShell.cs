@@ -111,6 +111,7 @@ namespace net.sf.robocode.dotnet.host.seed
 
             domain = AppDomain.CreateDomain(name, securityInfo, domainSetup, permissionSet, trustAssemblies);
             domain.SetData("fullBind", fullBind);
+            domain.SetData("JavaHome", Bridge.Setup.JavaHome);
             domain.DoCallBack(AppDomainSeed.Bind);
         }
 

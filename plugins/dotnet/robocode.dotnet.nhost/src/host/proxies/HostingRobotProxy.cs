@@ -251,13 +251,13 @@ namespace net.sf.robocode.dotnet.host.proxies
                 }
                 catch (SecurityException e)
                 {
-                    punishSecurityViolation(statics.getName() + " " + e.Message);
+                    punishSecurityViolation(statics.getName() + " Exception: " + e);
                 }
                 catch (Exception e)
                 {
                     if (e.InnerException is SecurityException)
                     {
-                        punishSecurityViolation(statics.getName() + " " + e.InnerException +" "+ e.Message);
+                        punishSecurityViolation(statics.getName() + " " + e.InnerException + " Exception: " + e);
                     }
                     else
                     {

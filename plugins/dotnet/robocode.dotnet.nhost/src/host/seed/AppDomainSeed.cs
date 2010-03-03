@@ -99,6 +99,7 @@ namespace net.sf.robocode.dotnet.host.seed
                     setup.BindCoreOnly = true;
                     setup.BindNative = false;
                     setup.BindStatic = false;
+                    setup.JavaHome = (string)domain.GetData("JavaHome");
                     Bridge.CreateJVM(setup);
                     JNIEnv env = JNIEnv.ThreadEnv;
                     Registry.RegisterType(typeof(ByteBuffer), true, env);
