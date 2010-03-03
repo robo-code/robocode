@@ -427,8 +427,11 @@ namespace net.sf.robocode.dotnet.host.events
             // remove too old stuff
             eventQueue.clear(getTime() - MAX_EVENT_STACK);
 
+            //copy prior iterration, because user could call RemoveCustomEvent
+            List<Condition> eventsCopy = new List<Condition>(customEvents);
+
             // Process custom events
-            foreach (Condition customEvent in customEvents)
+            foreach (Condition customEvent in eventsCopy)
             {
                 bool conditionSatisfied = CallUserCode(customEvent);
                 if (conditionSatisfied)
