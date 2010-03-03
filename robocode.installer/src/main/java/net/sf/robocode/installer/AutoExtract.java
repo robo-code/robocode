@@ -395,7 +395,7 @@ public class AutoExtract implements ActionListener {
 				public boolean accept(File dir, String name) {
 					String test = name.toLowerCase();
 
-					return test.endsWith(".jar");
+					return test.endsWith(".jar") || test.endsWith(".dll");
 				}
 			});
 
