@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{80857B97-6397-487B-A9F5-B07026DCB666}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>samplecs</RootNamespace>
+    <RootNamespace>SampleCs</RootNamespace>
     <AssemblyName>samplescs-1.7.2.0</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\</OutputPath>
+    <OutputPath>.\</OutputPath>
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\</OutputPath>
+    <OutputPath>.\</OutputPath>
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
     <DefineConstants>
     </DefineConstants>
@@ -40,7 +40,7 @@
   <ItemGroup>
     <Reference Include="robocode, Version=1.7.2.0, Culture=neutral, PublicKeyToken=e58e8a3c73c4b22d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\libs\robocode.dll</HintPath>
+      <HintPath>..\libs\robocode.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,27 +53,28 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Corners.cs" />
-    <Compile Include="Crazy.cs" />
-    <Compile Include="Fire.cs" />
-    <Compile Include="Interactive.cs" />
-    <Compile Include="MyFirstDroid.cs" />
-    <Compile Include="MyFirstJuniorRobot.cs" />
-    <Compile Include="MyFirstLeader.cs" />
-    <Compile Include="MyFirstRobot.cs" />
-    <Compile Include="PaintingRobot.cs" />
-    <Compile Include="RamFire.cs" />
-    <Compile Include="RobotColors.cs" />
-    <Compile Include="SittingDuck.cs" />
-    <Compile Include="SpinBot.cs" />
-    <Compile Include="Target.cs" />
-    <Compile Include="Tracker.cs" />
-    <Compile Include="TrackFire.cs" />
-    <Compile Include="VelociRobot.cs" />
-    <Compile Include="Walls.cs" />
+    <Compile Include="SamplesCsTeam\MyFirstDroid.cs" />
+    <Compile Include="SamplesCsTeam\MyFirstLeader.cs" />
+    <Compile Include="SamplesCs\Corners.cs" />
+    <Compile Include="SamplesCs\Crazy.cs" />
+    <Compile Include="SamplesCs\Fire.cs" />
+    <Compile Include="SamplesCs\Interactive.cs" />
+    <Compile Include="SamplesCs\MyFirstJuniorRobot.cs" />
+    <Compile Include="SamplesCs\MyFirstRobot.cs" />
+    <Compile Include="SamplesCs\PaintingRobot.cs" />
+    <Compile Include="SamplesCs\PointD.cs" />
+    <Compile Include="SamplesCs\RamFire.cs" />
+    <Compile Include="SamplesCs\RobotColors.cs" />
+    <Compile Include="SamplesCs\SittingDuck.cs" />
+    <Compile Include="SamplesCs\SpinBot.cs" />
+    <Compile Include="SamplesCs\Target.cs" />
+    <Compile Include="SamplesCs\Tracker.cs" />
+    <Compile Include="SamplesCs\TrackFire.cs" />
+    <Compile Include="SamplesCs\VelociRobot.cs" />
+    <Compile Include="SamplesCs\Walls.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="samplecs.MyCsTeam.team">
+    <None Include="SamplesCsTeam\MyCsTeam.team">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

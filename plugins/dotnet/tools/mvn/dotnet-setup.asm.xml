@@ -139,7 +139,7 @@
                 <exclude>**/obj/**</exclude>
             </excludes>
             <directory>/robocode.dotnet.samples/src</directory>
-            <outputDirectory>robots/samplescs</outputDirectory>
+            <outputDirectory>robots</outputDirectory>
         </fileSet>
     </fileSets>
     <files>

@@ -48,34 +48,34 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Corners.cs" />
-    <Compile Include="Crazy.cs" />
-    <Compile Include="Fire.cs" />
-    <Compile Include="Interactive.cs" />
-    <Compile Include="MyFirstDroid.cs" />
-    <Compile Include="MyFirstJuniorRobot.cs" />
-    <Compile Include="MyFirstLeader.cs" />
-    <Compile Include="MyFirstRobot.cs" />
-    <Compile Include="PaintingRobot.cs" />
-    <Compile Include="PointD.cs" />
-    <Compile Include="RamFire.cs" />
-    <Compile Include="RobotColors.cs" />
-    <Compile Include="SittingDuck.cs" />
-    <Compile Include="SpinBot.cs" />
-    <Compile Include="Target.cs" />
-    <Compile Include="Tracker.cs" />
-    <Compile Include="TrackFire.cs" />
-    <Compile Include="VelociRobot.cs" />
-    <Compile Include="Walls.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
       <Project>{7E0900D3-6E8F-48EB-86DB-AA767AA90B84}</Project>
       <Name>robocode.dotnet.api</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SampleCs.MyCsTeam.team">
+    <Compile Include="SamplesCsTeam\MyFirstDroid.cs" />
+    <Compile Include="SamplesCsTeam\MyFirstLeader.cs" />
+    <Compile Include="SamplesCs\Corners.cs" />
+    <Compile Include="SamplesCs\Crazy.cs" />
+    <Compile Include="SamplesCs\Fire.cs" />
+    <Compile Include="SamplesCs\Interactive.cs" />
+    <Compile Include="SamplesCs\MyFirstJuniorRobot.cs" />
+    <Compile Include="SamplesCs\MyFirstRobot.cs" />
+    <Compile Include="SamplesCs\PaintingRobot.cs" />
+    <Compile Include="SamplesCs\PointD.cs" />
+    <Compile Include="SamplesCs\RamFire.cs" />
+    <Compile Include="SamplesCs\RobotColors.cs" />
+    <Compile Include="SamplesCs\SittingDuck.cs" />
+    <Compile Include="SamplesCs\SpinBot.cs" />
+    <Compile Include="SamplesCs\Target.cs" />
+    <Compile Include="SamplesCs\Tracker.cs" />
+    <Compile Include="SamplesCs\TrackFire.cs" />
+    <Compile Include="SamplesCs\VelociRobot.cs" />
+    <Compile Include="SamplesCs\Walls.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SamplesCsTeam\MyCsTeam.team">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
