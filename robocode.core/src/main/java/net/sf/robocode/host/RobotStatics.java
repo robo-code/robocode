@@ -80,14 +80,14 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		this.contestantIndex = contestantIndex;
 
 		if (teamMembers != null) {
-			teammates = new String[teamMembers.size()];
-			int i = 0;
+			List<String> list = new ArrayList<String>();
 
 			for (String mate : teamMembers) {
 				if (!name.equals(mate)) {
-					teammates[i++] = mate;
+					list.add(mate);
 				}
 			}
+			teammates = list.toArray(new String[] {});
 			this.teamName = teamName;
 		} else {
 			teammates = null;
