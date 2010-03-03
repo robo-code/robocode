@@ -47,7 +47,7 @@ public class TestFormsAttack extends RobocodeTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 1;
+		return 2;
 	}
 
 	@Override
