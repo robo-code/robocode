@@ -97,7 +97,7 @@ public class RobotFileSystemManager {
 				robotProxy.println("SYSTEM: " + msg);
 				quotaMessagePrinted = true;
 			}
-			throw new SecurityException(msg);
+			throw new IOException(msg); // Must be IOException due to bug fix [2960894]
 		}
 	}
 

@@ -8,6 +8,7 @@ The ".NET robots are now supported" release
 * Bug [2961489] - ArrayIndexOutOfBoundsException when starting team battle.
 * Bug [2952496] - Installer installs AutoExtract$1.class.
 * Bug [2952549] - yk.JahRoslav 1.1 throws WinException.
+* Bug [2960894] - jlm.javaDisturbance loses substantial score in 1.7.2 Beta.
 
 = License Change =
 * We have changed license from Common Public License (CPL) v1.0 into Eclipse Puplic License (EPL) v1.0.
