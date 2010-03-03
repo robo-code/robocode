@@ -25,15 +25,15 @@ namespace robocode.control {
         
         internal static global::net.sf.jni4net.jni.MethodId _getVersion3;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getNameAndVersion4;
+        internal static global::net.sf.jni4net.jni.MethodId _getDescription4;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getDescription5;
+        internal static global::net.sf.jni4net.jni.MethodId _getAuthorName5;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getRobocodeVersion6;
+        internal static global::net.sf.jni4net.jni.MethodId _getWebpage6;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getWebpage7;
+        internal static global::net.sf.jni4net.jni.MethodId _getRobocodeVersion7;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getAuthorName8;
+        internal static global::net.sf.jni4net.jni.MethodId _getNameAndVersion8;
         
         internal static global::net.sf.jni4net.jni.MethodId _getTeamId9;
         
@@ -53,11 +53,11 @@ namespace robocode.control {
             global::robocode.control.RobotSpecification._getClassName1 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getClassName", "()Ljava/lang/String;");
             global::robocode.control.RobotSpecification._getJarFile2 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getJarFile", "()Ljava/io/File;");
             global::robocode.control.RobotSpecification._getVersion3 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getVersion", "()Ljava/lang/String;");
-            global::robocode.control.RobotSpecification._getNameAndVersion4 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getNameAndVersion", "()Ljava/lang/String;");
-            global::robocode.control.RobotSpecification._getDescription5 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getDescription", "()Ljava/lang/String;");
-            global::robocode.control.RobotSpecification._getRobocodeVersion6 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getRobocodeVersion", "()Ljava/lang/String;");
-            global::robocode.control.RobotSpecification._getWebpage7 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getWebpage", "()Ljava/lang/String;");
-            global::robocode.control.RobotSpecification._getAuthorName8 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getAuthorName", "()Ljava/lang/String;");
+            global::robocode.control.RobotSpecification._getDescription4 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getDescription", "()Ljava/lang/String;");
+            global::robocode.control.RobotSpecification._getAuthorName5 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getAuthorName", "()Ljava/lang/String;");
+            global::robocode.control.RobotSpecification._getWebpage6 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getWebpage", "()Ljava/lang/String;");
+            global::robocode.control.RobotSpecification._getRobocodeVersion7 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getRobocodeVersion", "()Ljava/lang/String;");
+            global::robocode.control.RobotSpecification._getNameAndVersion8 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getNameAndVersion", "()Ljava/lang/String;");
             global::robocode.control.RobotSpecification._getTeamId9 = @__env.GetMethodID(global::robocode.control.RobotSpecification.staticClass, "getTeamId", "()Ljava/lang/String;");
         }
         
@@ -86,33 +86,33 @@ namespace robocode.control {
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
-        public virtual global::java.lang.String getNameAndVersion() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getNameAndVersion4));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         public virtual global::java.lang.String getDescription() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getDescription5));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
-        public virtual global::java.lang.String getRobocodeVersion() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getRobocodeVersion6));
-        }
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
-        public virtual global::java.lang.String getWebpage() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getWebpage7));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getDescription4));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         public virtual global::java.lang.String getAuthorName() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getAuthorName8));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getAuthorName5));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
+        public virtual global::java.lang.String getWebpage() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getWebpage6));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
+        public virtual global::java.lang.String getRobocodeVersion() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getRobocodeVersion7));
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
+        public virtual global::java.lang.String getNameAndVersion() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.RobotSpecification._getNameAndVersion8));
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]

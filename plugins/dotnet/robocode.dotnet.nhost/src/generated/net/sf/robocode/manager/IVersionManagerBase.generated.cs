@@ -18,11 +18,11 @@ namespace net.sf.robocode.manager {
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         global::java.lang.String getVersion();
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
-        int getVersionAsInt();
-        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         global::java.lang.String getVersionN();
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
+        int getVersionAsInt();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isLastRunVersionChanged();
@@ -49,9 +49,9 @@ namespace net.sf.robocode.manager {
         
         internal static global::net.sf.jni4net.jni.MethodId _getVersion0;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getVersionAsInt1;
+        internal static global::net.sf.jni4net.jni.MethodId _getVersionN1;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getVersionN2;
+        internal static global::net.sf.jni4net.jni.MethodId _getVersionAsInt2;
         
         internal static global::net.sf.jni4net.jni.MethodId _isLastRunVersionChanged3;
         
@@ -62,8 +62,8 @@ namespace net.sf.robocode.manager {
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
             global::net.sf.robocode.manager.@__IVersionManagerBase.staticClass = @__class;
             global::net.sf.robocode.manager.@__IVersionManagerBase._getVersion0 = @__env.GetMethodID(global::net.sf.robocode.manager.@__IVersionManagerBase.staticClass, "getVersion", "()Ljava/lang/String;");
-            global::net.sf.robocode.manager.@__IVersionManagerBase._getVersionAsInt1 = @__env.GetMethodID(global::net.sf.robocode.manager.@__IVersionManagerBase.staticClass, "getVersionAsInt", "()I");
-            global::net.sf.robocode.manager.@__IVersionManagerBase._getVersionN2 = @__env.GetMethodID(global::net.sf.robocode.manager.@__IVersionManagerBase.staticClass, "getVersionN", "()Ljava/lang/String;");
+            global::net.sf.robocode.manager.@__IVersionManagerBase._getVersionN1 = @__env.GetMethodID(global::net.sf.robocode.manager.@__IVersionManagerBase.staticClass, "getVersionN", "()Ljava/lang/String;");
+            global::net.sf.robocode.manager.@__IVersionManagerBase._getVersionAsInt2 = @__env.GetMethodID(global::net.sf.robocode.manager.@__IVersionManagerBase.staticClass, "getVersionAsInt", "()I");
             global::net.sf.robocode.manager.@__IVersionManagerBase._isLastRunVersionChanged3 = @__env.GetMethodID(global::net.sf.robocode.manager.@__IVersionManagerBase.staticClass, "isLastRunVersionChanged", "()Z");
         }
         
@@ -72,14 +72,14 @@ namespace net.sf.robocode.manager {
             return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.manager.@__IVersionManagerBase._getVersion0));
         }
         
-        public int getVersionAsInt() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.manager.@__IVersionManagerBase._getVersionAsInt1)));
-        }
-        
         public global::java.lang.String getVersionN() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.manager.@__IVersionManagerBase._getVersionN2));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.manager.@__IVersionManagerBase._getVersionN1));
+        }
+        
+        public int getVersionAsInt() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.manager.@__IVersionManagerBase._getVersionAsInt2)));
         }
         
         public bool isLastRunVersionChanged() {
@@ -91,8 +91,8 @@ namespace net.sf.robocode.manager {
             global::System.Type @__type = typeof(__IVersionManagerBase);
             global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> methods = new global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod>();
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getVersion", "getVersion0", "()Ljava/lang/String;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getVersionAsInt", "getVersionAsInt1", "()I"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getVersionN", "getVersionN2", "()Ljava/lang/String;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getVersionN", "getVersionN1", "()Ljava/lang/String;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getVersionAsInt", "getVersionAsInt2", "()I"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isLastRunVersionChanged", "isLastRunVersionChanged3", "()Z"));
             return methods;
         }
@@ -109,19 +109,7 @@ namespace net.sf.robocode.manager {
             return @__return;
         }
         
-        private static int getVersionAsInt1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
-            // ()I
-            // ()I
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            int @__return = default(int);
-            try {
-            global::net.sf.robocode.manager.IVersionManagerBase @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.manager.IVersionManagerBase>(@__env, @__obj);
-            @__return = ((int)(@__real.getVersionAsInt()));
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return @__return;
-        }
-        
-        private static global::net.sf.jni4net.utils.JniHandle getVersionN2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getVersionN1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -129,6 +117,18 @@ namespace net.sf.robocode.manager {
             try {
             global::net.sf.robocode.manager.IVersionManagerBase @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.manager.IVersionManagerBase>(@__env, @__obj);
             @__return = global::net.sf.jni4net.utils.Convertor.StrongCp2J(@__real.getVersionN());
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return @__return;
+        }
+        
+        private static int getVersionAsInt2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()I
+            // ()I
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            int @__return = default(int);
+            try {
+            global::net.sf.robocode.manager.IVersionManagerBase @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.manager.IVersionManagerBase>(@__env, @__obj);
+            @__return = ((int)(@__real.getVersionAsInt()));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return @__return;
         }

@@ -44,6 +44,36 @@
                     </aditionalOptions>
                 </configuration>
             </plugin>
+	          <plugin>
+	              <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
+	              <artifactId>maven-antrun-extended-plugin</artifactId>
+	              <version>1.39</version>
+	              <executions>
+	                  <execution>
+	                      <phase>process-classes</phase>
+	                      <configuration>
+	                          <tasks>
+	                              <resolveArtifact property="jni4net.n" 
+	                                               groupId="net.sf.jni4net"
+	                                               artifactId="jni4net.n" 
+	                                               version="0.7.1.0"
+	                                               type="dotnet:library"/>
+	                              <copy file="${jni4net.n}" todir="target"/>
+	
+	                              <resolveArtifact property="robocode.dotnet.api" 
+	                                               groupId="net.sf.robocode"
+	                                               artifactId="robocode.dotnet.api" 
+	                                               version="${robocode.nversion}"
+	                                               type="dotnet:library"/>
+	                              <copy file="${robocode.dotnet.api}" tofile="target/robocode.dll"/>
+	                          </tasks>
+	                      </configuration>
+	                      <goals>
+	                          <goal>run</goal>
+	                      </goals>
+	                  </execution>
+	              </executions>
+	          </plugin>
         </plugins>
     </build>
 </project>
