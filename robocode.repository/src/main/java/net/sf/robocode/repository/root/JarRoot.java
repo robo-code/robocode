@@ -103,7 +103,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 
 			if (!entry.isDirectory()) {
 				if (!name.contains(".data/") && !name.contains(".robotcache/")) {
-					if (name.endsWith(".jar")) {
+					if (name.endsWith(".jar") || name.endsWith(".zip")) {
 						JarInputStream inner = null;
 
 						try {

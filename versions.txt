@@ -4,6 +4,7 @@ The ".NET robots are now supported" release
 = Bugfixes =
 * Bug [2953599] - Roborumble doesn't upload with EXECUTE=NOT.
 * Bug [2960836] - Team RoboRumble uploading is broken.
+* Bug [2964559] - TeamRumble: Cannot find robot in nested .jar files.
 * Bug [2960870] - isTeammate() called on null gives NullPointerException.
 * Bug [2961489] - ArrayIndexOutOfBoundsException when starting team battle.
 * Bug [2952496] - Installer installs AutoExtract$1.class.

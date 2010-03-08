@@ -63,22 +63,24 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private final static String ROBOT_WEBPAGE = "robot.webpage";
 	private final static String ROBOCODE_VERSION = "robocode.version";
 
+	// File extensions
 	private static final String CLASS_EXTENSION = ".class";
+	private static final String PROPERTIES_EXTENSION = ".properties";
+	private static final String HTML_EXTENSION = ".html";
+
+	private static final boolean ALWAYS_USE_CACHE_FOR_DATA = System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals(
+			"true");
 
 	RobotType robotType;
 
-	private boolean isExpectedRobot;
-	private boolean isClassURL;
-	private boolean isPropertiesURL;
-	protected boolean isPropertiesLoaded;
-
-	private boolean alwaysUseCacheForData = System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals("true");
+	private URL classPathURL;
+	private Set<URL> sourcePathURLs; // This is a Set in order to avoid duplicates
 
 	private URL classURL;
 	private URL propertiesURL;
 
-	private URL classPathURL;
-	private Set<URL> sourcePathURLs; // This is a Set in order to avoid duplicates
+	private String className;
+	protected boolean isPropertiesLoaded;
 
 	public RobotItem(IRepositoryRoot root) {
 		super(root.getRootUrl(), root);
@@ -87,27 +89,22 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 		classPathURL = root.getRootUrl();
 		sourcePathURLs = new HashSet<URL>();
-
-		init();
 	}
 
-	protected void init() {
-		propsUrlFromClassUrl();
-		classUrlFromProperties();
-		classUrlFromPropertiesUrl();
-		classNameFromClassUrl(root);
+	private void populate() {
+		populatePropertiesURLFromClassURL();
+		populateClassURLFromPropertiesURL();
+		loadProperties();
 	}
-
+	
 	public void setClassUrl(URL classUrl) {
 		this.classURL = classUrl;
-		isClassURL = (classUrl != null);
-		init();
+		populate();
 	}
 
 	public void setPropertiesUrl(URL propertiesUrl) {
 		this.propertiesURL = propertiesUrl;
-		isPropertiesURL = (propertiesUrl != null);
-		init();
+		populate();
 	}
 
 	public void setClassPathURL(URL classPathUrl) {
@@ -118,100 +115,91 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		sourcePathURLs.add(sourcePathUrl);
 	}
 
-	// / -------------------------------------
-	// / url initialization
-	// / -------------------------------------
+	// -------------------------------------
+	// URL initialization
+	// -------------------------------------
 
-	private void propsUrlFromClassUrl() {
-		if (propertiesURL == null && isClassURL) {
-			final String pUrl = classURL.toString().replaceAll("\\" + CLASS_EXTENSION, ".properties");
+	private void populatePropertiesURLFromClassURL() {
+		if (propertiesURL == null && classURL != null) {
+			final String path = classURL.toString().replaceFirst("\\" + CLASS_EXTENSION, PROPERTIES_EXTENSION);
 
 			try {
-				propertiesURL = new URL(pUrl);
-				loadProperties();
+				propertiesURL = new URL(path);
 			} catch (MalformedURLException e) {
 				Logger.logError(e);
+			}
+			if (isInvalidURL(propertiesURL)) {
+				propertiesURL = null;
 			}
 		}
 	}
 
-	private void classUrlFromProperties() {
-		if (classURL == null && isPropertiesURL) {
-			if (!loadProperties()) {
-				isValid = false;
+	private void populateClassURLFromPropertiesURL() {
+		if (classURL == null && propertiesURL != null) {
+			final String path = propertiesURL.toString().replaceAll("\\" + PROPERTIES_EXTENSION, CLASS_EXTENSION);
+
+			try {
+				classURL = new URL(path);
+			} catch (MalformedURLException e) {
+				Logger.logError(e);
+			}
+			if (isInvalidURL(classURL)) {
+				classURL = null;
+			}
+		}
+	}
+
+	private void populateClassNameFromClassURL() {
+		populate();
+
+		if (className == null && classURL != null) {
+			String pathNoType = classURL.toString();
+
+			pathNoType = pathNoType.substring(0, pathNoType.lastIndexOf('.'));
+
+			if (pathNoType.lastIndexOf('!') > 0) {
+				className = pathNoType.substring(pathNoType.lastIndexOf('!') + 2);
 			} else {
-				final String cn = properties.getProperty(ROBOT_CLASSNAME, null);
-
-				if (cn != null) {
-					isExpectedRobot = true;
-					try {
-						final String cUrl = root.getRootUrl().toString() + cn.replace('.', '/') + CLASS_EXTENSION;
-
-						classURL = new URL(cUrl);
-					} catch (MalformedURLException e) {
-						Logger.logError(e);
-					}
-				} else {
-					isValid = false;
-				}
+				className = pathNoType.substring(root.toString().length());
 			}
+			className = className.replaceAll("[\\\\\\/]", ".");	
 		}
 	}
 
-	private void classUrlFromPropertiesUrl() {
-		if (isPropertiesURL) {
+	private void populateHtmlURL() {
+		populate();
+
+		if (htmlUrl == null && classURL != null) {
 			try {
-				final String pUrl = propertiesURL.toString();
-				final String cUrl = pUrl.substring(0, pUrl.lastIndexOf('.')) + CLASS_EXTENSION;
-
-				classURL = new URL(cUrl);
-			} catch (MalformedURLException e) {
-				Logger.logError(e);
-			}
+				htmlUrl = new URL(classURL.toString().replaceFirst(CLASS_EXTENSION, HTML_EXTENSION));
+			} catch (MalformedURLException ignore) {}
 		}
-	}
-
-	private void classNameFromClassUrl(IRepositoryRoot root) {
-		if (getFullClassName() == null && isClassURL) {
-			String cUrl = classURL.toString();
-
-			cUrl = cUrl.substring(0, cUrl.lastIndexOf('.'));
-			final String cn = cUrl.substring(root.getRootUrl().toString().length()).replace('/', '.').replace('\\', '.');
-
-			properties.setProperty(ROBOT_CLASSNAME, cn);
+		if (htmlUrl == null && propertiesURL != null) {
+			try {
+				htmlUrl = new URL(propertiesURL.toString().replaceFirst(PROPERTIES_EXTENSION, HTML_EXTENSION));
+			} catch (MalformedURLException ignore) {}
 		}
-	}
-
-	private void htmlUrlFromPropertiesUrl() {
-		try {
-			if (propertiesURL != null) {
-				htmlUrl = new URL(propertiesURL.toString().replaceAll("\\.properties", ".html"));
-				// test that html file exists
-				final URLConnection conn = URLJarCollector.openConnection(htmlUrl);
-
-				conn.getInputStream().close();
-			}
-		} catch (IOException ignored) {
-			// doesn't exist
+		if (isInvalidURL(htmlUrl)) {
 			htmlUrl = null;
 		}
 	}
 
-	private void htmlUrlFromClassUrl() {
-		if (htmlUrl == null) {
-			try {
-				if (classURL != null) {
-					htmlUrl = new URL(classURL.toString().replaceAll("\\.class", ".html"));
-					// test that html file exists
-					final URLConnection conn = URLJarCollector.openConnection(htmlUrl);
+	private boolean isInvalidURL(URL url) {
+		if (url != null) {
+			InputStream is = null;
 
-					conn.getInputStream().close();
-				}
-			} catch (IOException ignored) {
-				// doesn't exist
-				htmlUrl = null;
+			try {
+				URLConnection conn = URLJarCollector.openConnection(url);
+
+				is = conn.getInputStream();
+				return false;
+			} catch (IOException e) {
+				return true;
+			} finally {
+				FileUtil.cleanupStream(is);
 			}
 		}
+		return true;
 	}
 
 	// / -------------------------------------
@@ -223,19 +211,23 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	public URL getHtmlUrl() {
-		// lazy
+		// Lazy
 		if (htmlUrl == null) {
-			htmlUrlFromPropertiesUrl();
-			htmlUrlFromClassUrl();
+			populateHtmlURL();
 		}
 		return htmlUrl;
 	}
 
 	public URL getPropertiesUrl() {
+		if (propertiesURL == null) {
+			populatePropertiesURLFromClassURL();
+		}
 		return propertiesURL;
 	}
 
 	public List<String> getFriendlyUrls() {
+		populate();
+
 		final ArrayList<String> urls = new ArrayList<String>();
 
 		if (propertiesURL != null) {
@@ -270,7 +262,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			}
 
 			// trying to guess all correct file locations
-			init();
+			populate();
 
 			this.lastModified = lastModified;
 			if (classURL == null) {
@@ -290,22 +282,26 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	protected void validateType(boolean resolve) {
+		populate();
+
 		final IHostManager hostManager = Container.getComponent(IHostManager.class);
 
-		robotType = hostManager.getRobotType(this, resolve, isExpectedRobot || isClassURL);
+		robotType = hostManager.getRobotType(this, resolve, classURL != null);
 		if (!robotType.isValid()) {
 			isValid = false;
 		}
 	}
 
-	// stronger than update
+	// Stronger than update
 	public boolean validate() {
 		validateType(true);
 		return isValid;
 	}
 
+	// Note that ROBOCODE_CLASSNAME can be invalid, an hence can't be trusted when loaded!
+	// Hence, we read the fullClassName field instead and NOT the ROBOCODE_CLASSNAME property.
 	private boolean loadProperties() {
-		if (propertiesURL != null) {
+		if (!isPropertiesLoaded && propertiesURL != null) {
 			InputStream ios = null;
 
 			try {
@@ -328,7 +324,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		String robotName = getFullClassName();
 		String shortClassName = getShortClassName();
 
-		final boolean valid = verifyRobotName(robotName, shortClassName, isExpectedRobot);
+		final boolean valid = verifyRobotName(robotName, shortClassName, false);
 
 		if (!valid) {
 			isValid = false;
@@ -382,6 +378,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	public void storeProperties(OutputStream os, URL web, String desc, String author, String version, boolean sourceIncluded) throws IOException {
 		Properties copy = (Properties) properties.clone();
 
+		if (className != null) {
+			copy.setProperty(ROBOT_CLASSNAME, className);
+		}
 		if (version != null) {
 			copy.setProperty(ROBOT_VERSION, version);
 		}
@@ -399,6 +398,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		final IVersionManager vm = Container.getComponent(IVersionManager.class);
 
 		copy.setProperty(ROBOCODE_VERSION, vm.getVersion());
+
 		copy.store(os, "Robocode Robot");
 	}
 
@@ -443,7 +443,11 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	}
 
 	public String getFullClassName() {
-		return properties.getProperty(ROBOT_CLASSNAME, null);
+		// Lazy
+		if (className == null) {
+			populateClassNameFromClassURL();
+		}
+		return className;
 	}
 
 	public String getVersion() {
@@ -507,7 +511,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		} else {
 			File vroot;
 
-			if (alwaysUseCacheForData) {
+			if (ALWAYS_USE_CACHE_FOR_DATA) {
 				vroot = FileUtil.getRobotsDataDir();
 			} else {
 				vroot = root.getRootPath();

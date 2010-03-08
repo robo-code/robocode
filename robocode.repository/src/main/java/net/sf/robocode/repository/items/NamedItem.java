@@ -60,7 +60,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public boolean isDevelopmentVersion() {
-		return (!getFullClassName().startsWith("sample")) && root.isDevel();
+		return root.isDevel() && !getFullClassName().startsWith("sample");
 	}
 
 	public String getRootFile() {
@@ -93,10 +93,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	public String getRelativePath() {
 		final int index = getFullClassName().lastIndexOf('.');
 
-		if (index == -1) {
-			return "";
-		}
-		return getFullClassName().substring(0, index).replace('.', '/');
+		return (index < 0) ? "" : getFullClassName().substring(0, index).replaceAll("\\.", "/");
 	}
 
 	public String getShortClassName() {
@@ -112,63 +109,59 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public String getFullClassNameWithVersion() {
-		if (getVersion() == null) {
-			return getFullClassName();
-		} else {
-			return getFullClassName() + " " + getVersion();
+		String fullClassName = getFullClassName();
+
+		if (getVersion() != null) {
+			fullClassName += " " + getVersion();
 		}
+		return fullClassName;
 	}
 
 	public String getUniqueFullClassNameWithVersion() {
-		if (getVersion() == null) {
-			return getFullClassName();
-		} else {
-			if (!isDevelopmentVersion()) {
-				return getFullClassNameWithVersion();
-			} else {
-				return getFullClassNameWithVersion() + "*";
-			}
+		String uniqueFullClassName = (getVersion() == null) ? getFullClassName() : getFullClassNameWithVersion();
+
+		if (isDevelopmentVersion()) {
+			uniqueFullClassName += '*';
 		}
+		return uniqueFullClassName;
 	}
 
 	public String getUniqueShortClassNameWithVersion() {
-		if (getVersion() == null) {
-			return getShortClassName();
-		} else {
-			if (!isDevelopmentVersion()) {
-				return getShortClassNameWithVersion();
-			} else {
-				return getShortClassNameWithVersion() + "*";
-			}
+		String uniqueShortClassName = (getVersion() == null) ? getShortClassName() : getShortClassNameWithVersion();
+
+		if (isDevelopmentVersion()) {
+			uniqueShortClassName += '*';
 		}
+		return uniqueShortClassName;
 	}
 
 	public String getUniqueVeryShortClassNameWithVersion() {
-		if (getVersion() == null) {
-			return getVeryShortClassName();
-		} else {
-			if (!isDevelopmentVersion()) {
-				return getVeryShortClassNameWithVersion();
-			} else {
-				return getVeryShortClassNameWithVersion() + "*";
-			}
+		String veryShortClassName = (getVersion() == null)
+				? getVeryShortClassName()
+				: getVeryShortClassNameWithVersion();
+
+		if (isDevelopmentVersion()) {
+			veryShortClassName += '*';
 		}
+		return veryShortClassName;
 	}
 
 	public String getShortClassNameWithVersion() {
-		if (getVersion() == null) {
-			return getShortClassName();
-		} else {
-			return getShortClassName() + " " + getVersion();
+		String shortClassName = getShortClassName();
+
+		if (getVersion() != null) {
+			shortClassName += " " + getVersion();
 		}
+		return shortClassName;
 	}
 
 	public String getVeryShortClassNameWithVersion() {
-		if (getVersion() == null) {
-			return getVeryShortClassName();
-		} else {
-			return  getVeryShortClassName() + " " + getVersion();
+		String veryShortClassName = getVeryShortClassName();
+
+		if (getVersion() != null) {
+			veryShortClassName += " " + getVersion();
 		}
+		return veryShortClassName;
 	}
 
 	public String getVeryShortClassName() {
