@@ -376,6 +376,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	 */
 	private static boolean isSystemClass(String className) {
 		return className.startsWith("java.") || className.startsWith("javax.") || className.startsWith("robocode.")
-				|| className.startsWith("net.sf.robocode.");
+				|| className.startsWith("net.sf.robocode.") || className.startsWith("tested.robots.");
 	}
 }
