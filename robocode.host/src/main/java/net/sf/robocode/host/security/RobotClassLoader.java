@@ -33,12 +33,12 @@ import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
-import static net.sf.robocode.io.Logger.logError;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -46,14 +46,16 @@ import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.security.*;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 /**
- * This classloader is used by robots. It isolates classes which belong to robot and load them localy.
- * General java clasees or robocode.api classes are loaded by parent loader and shared with robocode engine.
- * Attempts to load classes of robocode engine are blocked. 
+ * This class loader is used by robots. It isolates classes which belong to robot and load them locally.
+ * General java classes or robocode.api classes are loaded by parent loader and shared with Robocode engine.
+ * Attempts to load classes of Robocode engine are blocked. 
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -62,24 +64,28 @@ import java.util.Set;
  * @author Nathaniel Troutman (contributor)
  */
 public class RobotClassLoader extends URLClassLoader implements IRobotClassLoader {
-	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
-	private Field classesField = null;
-	protected Class<?> robotClass;
-	protected final String fullClassName;
-	private PermissionCollection emptyPermissions;
-	private IHostedThread robotProxy;
-	private CodeSource codeSource;
-	protected URL robotClassPath;
-	private Set<String> referencedClasses = new HashSet<String>();
+
 	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
+
+	private static final boolean IS_SECURITY_ON = !System.getProperty("NOSECURITY", "false").equals("true");
+
+	private static final PermissionCollection EMPTY_PERMISSIONS = new Permissions();
+
+	protected final URL robotClassPath;
+	protected final String fullClassName;
+
 	private ClassLoader parent;
+	private CodeSource codeSource;
+
+	private IHostedThread robotProxy;
+	protected Class<?> robotClass;
+
+	private Set<String> referencedClasses = new HashSet<String>();
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		super(new URL[] { robotClassPath}, Container.systemLoader);
-		prepareForCleanup();
 		fullClassName = robotFullClassName;
 		this.robotClassPath = robotClassPath;
-		emptyPermissions = new Permissions();
 		parent = getParent();
 		try {
 			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
@@ -100,15 +106,15 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			// we always delegate java.lang stuff to parent loader
 			return super.loadClass(name, resolve);
 		}
-		if (isSecutityOn) {
+		if (IS_SECURITY_ON) {
 			testPackages(name);
 		}
 		if (!name.startsWith("robocode")) {
 			final Class<?> result = loadRobotClassLocaly(name, resolve);
 
 			if (result != null) {
-				// yes, it is in robot's classpath
-				// we loaded it localy
+				// yes, it is in robot's class path
+				// we loaded it locally
 				return result;
 			}
 		}
@@ -116,7 +122,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		// it is robot API
 		// or java class
 		// or security is off
-		// so we delegate to parent classloader
+		// so we delegate to parent class loader
 		return parent.loadClass(name);
 	}
 
@@ -130,13 +136,13 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		if (name.startsWith("robocode.control")) {
 			final String message = "Robots are not allowed to reference Robocode engine in package: robocode.control";
 
-			punishSecurityViolation(message);			
+			punishSecurityViolation(message);
 			throw new ClassNotFoundException(message);
 		}
-		if (isSecutityOn && name.startsWith("javax.swing")) {
+		if (IS_SECURITY_ON && name.startsWith("javax.swing")) {
 			final String message = "Robots are not allowed to reference Robocode engine in package: javax.swing";
 
-			punishSecurityViolation(message);			
+			punishSecurityViolation(message);
 			throw new ClassNotFoundException(message);
 		}
 	}
@@ -163,7 +169,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	private ByteBuffer findLocalResource(final String name) {
 		return AccessController.doPrivileged(new PrivilegedAction<ByteBuffer>() {
 			public ByteBuffer run() {
-				// try to find it in robot's classpath
+				// try to find it in robot's class path
 				// this is URL, don't change to File.pathSeparator
 				String path = name.replace('.', '/').concat(".class");
 
@@ -194,7 +200,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 							if (!done) {
 								result = ByteBuffer.allocate(result.capacity() * 2).put(result);
 							}
-						}while (!done);
+						} while (!done);
 
 					} catch (IOException e) {
 						Logger.logError(e);
@@ -215,8 +221,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	}
 
 	protected PermissionCollection getPermissions(CodeSource codesource) {
-		if (isSecutityOn) {
-			return emptyPermissions;
+		if (IS_SECURITY_ON) {
+			return EMPTY_PERMISSIONS;
 		}
 		return super.getPermissions(codesource);
 	}
@@ -240,14 +246,14 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 					// resolve methods to see more referenced classes
 					robotClass.getMethods();
 
-					// itterate thru dependencies until we didn't found any new
+					// iterate thru dependencies until we didn't found any new
 					HashSet<String> clone;
 
 					do {
 						clone = new HashSet<String>(referencedClasses);
 						for (String reference : clone) {
 							testPackages(reference);
-							if (!reference.startsWith("java.") && !reference.startsWith("robocode.")) {
+							if (!isSystemClass(reference)) {
 								loadClass(reference, true);
 							}
 						}
@@ -267,34 +273,109 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	}
 
 	public void cleanup() {
+		// Bug fix [2930266] - Robot static data isn't being GCed after battle
+		for (String className : getReferencedClasses()) {		
+			cleanStaticFields(className);
+		}
+
+		parent = null;
+		codeSource = null;
+		robotProxy = null;
+		robotClass = null;
 		referencedClasses = null;
-		// Set ClassLoader.class.classes to null to prevent memory leaks
-		if (classesField != null) {
-			try {
-				// don't do that Internal Error (44494354494F4E4152590E4350500100)
-				// classesField.setAccessible(true);
-				classesField.set(this, null);
-			} catch (IllegalArgumentException e) {// logError(e);
-			} catch (IllegalAccessException e) {// logError(e);
+	}
+
+	/**
+	 * Cleans all static fields on a class.
+	 *
+	 * @param className the name of the class containing the fields to clean.
+	 * @throws  
+	 */
+	private void cleanStaticFields(String className) {
+		if (isSystemClass(className)) {
+			return;
+		}
+
+		Class<?> type = null;
+
+		try {
+			type = loadRobotClassLocaly(className, false);
+		} catch (Throwable t) {
+			// t.printStackTrace(); // for debugging
+			return;
+		}
+
+		if (type != null) {
+			for (Field field : getAllFields(new ArrayList<Field>(), type)) {
+				cleanIfStaticField(type, field);
 			}
 		}
 	}
 
-	private void prepareForCleanup() {
-		// Deep within the class loader is a vector of classes, and is VM
-		// implementation specific, so its not in every VM. However, if a VM
-		// does have it then we have to make sure we clear it during cleanup().
-		Field[] fields = ClassLoader.class.getDeclaredFields();
+	/**
+	 * Cleans a field on a class if it is static, even if it is 'private static final'
+	 *
+	 * @param type the class containing the field to clean.
+	 * @param field the field to clean, if it is static.
+	 * @throws Exception
+	 */
+	private void cleanIfStaticField(Class<?> type, Field field) {
+		if ((field.getModifiers() & Modifier.STATIC) == 0 || field.getType().isPrimitive() || field.isEnumConstant()
+				|| field.isSynthetic()) {
+			return;
+		}
 
-		for (Field field : fields) {
-			if (field.getName().equals("classes")) {
-				classesField = field;
-				break;
+		field.setAccessible(true);
+
+		Field modifiersField;
+
+		try {
+			// In order to set a 'private static field', we need to fix the modifier, i.e. use magic! ;-)
+			modifiersField = Field.class.getDeclaredField("modifiers");
+			modifiersField.setAccessible(true);
+			final int modifiers = modifiersField.getInt(field);
+
+			modifiersField.setInt(field, modifiers & ~Modifier.FINAL); // Remove the FINAL modifier
+			field.set(null, null);
+		} catch (Throwable ignore) {// ignore.printStackTrace(); // for debugging
+		}
+	}
+
+	/**
+	 * Gets all fields of a class (public, protected, private) and the ones inherited from all super classes.
+	 * @param fields the list where the fields will be added as a result of calling this method.
+	 * @param type the class to retrieve all the fields from
+	 * @return the list specified as input parameter containing all the retrieved fields
+	 */
+	public static List<Field> getAllFields(List<Field> fields, Class<?> type) {
+		if (type == null || isSystemClass(type.getName())) {
+			return fields;
+		}
+
+		try {
+			for (Field field: type.getDeclaredFields()) {
+				fields.add(field);
 			}
+		} catch (Throwable ignore) {// NoClassDefFoundError does occur with some robots, e.g. sgp.Drunken [1.12]
+			// We ignore all exceptions and errors here so we can proceed to retrieve
+			// field from super classes.
+			// ignore.printStackTrace(); // for debugging
 		}
 
-		if (classesField == null) {
-			logError("RobotClassLoader: Failed to find classes field in: " + this);
+		if (type.getSuperclass() != null) {
+			fields = getAllFields(fields, type.getSuperclass());
 		}
+
+		return fields;
+	}
+
+	/**
+	 * Checks if a specified class name is a Java system class or internal Robocode class.
+	 * @param className the class name to check.
+	 * @return true if the class name is a system class; false otherwise.
+	 */
+	private static boolean isSystemClass(String className) {
+		return className.startsWith("java.") || className.startsWith("javax.") || className.startsWith("robocode.")
+				|| className.startsWith("net.sf.robocode.");
 	}
 }
