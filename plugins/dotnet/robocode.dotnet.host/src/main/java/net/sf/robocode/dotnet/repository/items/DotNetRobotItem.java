@@ -30,7 +30,6 @@ public class DotNetRobotItem extends RobotItem {
 		init();
 	}
 
-	@Override
 	protected void init() {
 		if (properties.getProperty(ROBOT_CLASSNAME) == null && url != null) {
 			final String file = url.getFile();
