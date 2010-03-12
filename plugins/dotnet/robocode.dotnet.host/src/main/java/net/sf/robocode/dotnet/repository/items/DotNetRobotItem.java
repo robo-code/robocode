@@ -20,6 +20,7 @@ import java.net.URL;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class DotNetRobotItem extends RobotItem {
 	private static final long serialVersionUID = 1L;
@@ -27,19 +28,7 @@ public class DotNetRobotItem extends RobotItem {
 	public DotNetRobotItem(IRepositoryRoot root, URL classUrl) {
 		super(root);
 		url = classUrl;
-		init();
-	}
-
-	protected void init() {
-		if (properties.getProperty(ROBOT_CLASSNAME) == null && url != null) {
-			final String file = url.getFile();
-			final String clazz = file.substring(file.lastIndexOf("!/") + 2);
-
-			if (clazz.length() > 0) {
-				properties.setProperty(ROBOT_CLASSNAME, clazz);
-			}
-		}
-		isPropertiesLoaded = true; // TODO something real ?
+		isPropertiesLoaded = true;
 	}
 
 	@Override

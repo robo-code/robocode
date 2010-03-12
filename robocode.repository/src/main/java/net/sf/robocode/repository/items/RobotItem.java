@@ -155,18 +155,24 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		if (className == null && classURL != null) {
 			final String path = classURL.toString();
 
-			// Class within archive or regular file path?
-
-			int index = path.lastIndexOf('!'); 
+			// .dll file?
+			int index = (path.toLowerCase().indexOf(".dll!/"));
 
 			if (index > 0) {
-				// Path to class in .jar or .dll file:
-				// Remove the archive path from the class name.
+				className = path.substring(index + 6);
+				return;
+			}
+
+			// Class within .jar or regular file path?
+
+			index = path.lastIndexOf('!');
+
+			if (index > 0) {
+				// .jar file
 				className = path.substring(index + 2);
 			} else {
-				// File class path:
-				// Remove the file root path from the class name.
-				className = path.substring(root.toString().length());
+				// file path
+				className = path.substring(root.getRootUrl().toString().length());
 			}
 
 			// Remove the file extension from the class name
