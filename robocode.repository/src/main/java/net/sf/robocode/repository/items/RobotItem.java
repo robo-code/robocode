@@ -396,7 +396,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		properties.store(os, "Robocode Robot");
 	}
 
-	public void storeProperties(OutputStream os, URL web, String desc, String author, String version, boolean sourceIncluded) throws IOException {
+	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
 		Properties copy = (Properties) properties.clone();
 
 		if (className != null) {
@@ -414,11 +414,9 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		if (web != null) {
 			copy.setProperty(ROBOT_WEBPAGE, web.toString());
 		}
-		copy.setProperty(ROBOT_JAVA_SOURCE_INCLUDED, "" + sourceIncluded);
-		
-		final IVersionManager vm = Container.getComponent(IVersionManager.class);
+		copy.setProperty(ROBOT_JAVA_SOURCE_INCLUDED, "" + isJavaSourceIncluded());
 
-		copy.setProperty(ROBOCODE_VERSION, vm.getVersion());
+		copy.setProperty(ROBOCODE_VERSION, Container.getComponent(IVersionManager.class).getVersion());
 
 		copy.store(os, "Robocode Robot");
 	}
@@ -497,8 +495,10 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		}
 	}
 
-	public boolean getJavaSourceIncluded() {
-		return properties.getProperty(ROBOT_JAVA_SOURCE_INCLUDED, "false").toLowerCase().equals("true");
+	public boolean isJavaSourceIncluded() {
+		// return properties.getProperty(ROBOT_JAVA_SOURCE_INCLUDED, "false").toLowerCase().equals("true");
+		
+		return sourcePathURLs.size() > 0;
 	}
 
 	public String getRobocodeVersion() {

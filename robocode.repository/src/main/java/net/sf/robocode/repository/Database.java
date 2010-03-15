@@ -179,7 +179,7 @@ public class Database {
 			if (!item.isValid()) {
 				continue;
 			}
-			if (onlyWithSource && !spec.getJavaSourceIncluded()) {
+			if (onlyWithSource && !spec.isJavaSourceIncluded()) {
 				continue;
 			}
 			if (onlyWithPackage && spec.getFullPackage() == null) {

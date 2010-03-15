@@ -42,7 +42,6 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 	private final static String TEAM_VERSION = "team.version";
 	private final static String TEAM_WEBPAGE = "team.webpage";
 	private final static String TEAM_MEMBERS = "team.members";
-	private final static String TEAM_JAVA_SOURCE_INCLUDED = "team.java.source.included";
 	private final static String ROBOCODE_VERSION = "robocode.version";
 
 	private final String teamFullName;
@@ -160,8 +159,8 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		}
 	}
 
-	public boolean getJavaSourceIncluded() {
-		return properties.getProperty(TEAM_JAVA_SOURCE_INCLUDED, "false").toLowerCase().equals("true");
+	public boolean isJavaSourceIncluded() {
+		return false;
 	}
 
 	public String getRobocodeVersion() {
@@ -176,7 +175,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		properties.store(os, "Robocode Robot Team");
 	}
 
-	public void storeProperties(OutputStream os, URL web, String desc, String author, String version, boolean sourceIncluded) throws IOException {
+	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
 		Properties copy = (Properties) properties.clone();
 
 		if (version != null) {

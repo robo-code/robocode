@@ -39,7 +39,7 @@ public interface IRepositoryItem extends Comparable<Object> {
 
 	URL getWebpage();
 
-	boolean getJavaSourceIncluded();
+	boolean isJavaSourceIncluded();
 
 	String getRootFile();
 
@@ -75,5 +75,5 @@ public interface IRepositoryItem extends Comparable<Object> {
 	
 	void storeProperties(OutputStream os) throws IOException;
 
-	void storeProperties(OutputStream os, URL web, String desc, String author, String version, boolean sourceIncluded) throws IOException;
+	void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException;
 }

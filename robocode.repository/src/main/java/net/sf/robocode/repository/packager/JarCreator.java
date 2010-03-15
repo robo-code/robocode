@@ -60,7 +60,7 @@ public class JarCreator {
 					jarout.putNextEntry(jt);
 					entries.add(teamEntry); // called here, as an exception might occur before this line
 					try {
-						team.storeProperties(jarout, web, desc, author, version, includeSources);
+						team.storeProperties(jarout, web, desc, author, version);
 					} finally {
 						jarout.closeEntry();
 					}
@@ -76,7 +76,7 @@ public class JarCreator {
 					jarout.putNextEntry(jt);
 					entries.add(propsEntry); // called here, as an exception might occur before this line
 					try {
-						robot.storeProperties(jarout, web, desc, author, version, includeSources);
+						robot.storeProperties(jarout, web, desc, author, version);
 					} finally {
 						jarout.closeEntry();
 					}
