@@ -1,4 +1,10 @@
-Version 1.7.2.0 Beta 2
+Version 1.7.2.1 Alpha
+(19-Mar-2010)
+---------------
+= Changes =
+* Req [2815450] - Move away from Jikes towards ECJ. Jikes has been replaced with the Eclipse Compiler for Java (ECJ)
+
+Version 1.7.2.0
 The ".NET robots are now supported" release
 (15-Mar-2010)
 ---------------
