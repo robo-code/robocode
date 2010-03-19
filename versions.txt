@@ -1,9 +1,10 @@
-Version 1.7.2.0 Beta 2
+Version 1.7.2.0
 The ".NET robots are now supported" release
-(15-Mar-2010)
+(20-Mar-2010)
 ---------------
 = Bugfixes =
 * Bug [2964562] - Cannot extract downloaded robot for editing in Robot Editor.
+* Bug [2972932] - Strange issue first time running roborumble in 1.7.2.0 Beta2.
 
 Version 1.7.2.0 Beta 2
 The ".NET robots are now supported" release
