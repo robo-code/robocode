@@ -19,7 +19,7 @@
 
 		<!-- Copy ECJ compiler into launch dir -->
 		<copy todir="${launch-dir}/compilers">
-			<fileset file="${basedir}/robocode.content/target/classes/compilers/ecj*.jar"/>
+			<fileset file="${basedir}/robocode.content/target/classes/compilers/ecj.jar"/>
 		</copy>		
 	</target>
 

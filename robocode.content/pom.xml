@@ -55,6 +55,7 @@
 								<type>jar</type>
 								<overWrite>false</overWrite>
 								<outputDirectory>${project.build.directory}/classes/compilers</outputDirectory>
+								 <destFileName>ecj.jar</destFileName>
 							</artifactItem>
 						</artifactItems>
 					</configuration>
