@@ -30,7 +30,6 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	void refresh(String file);
 
-	boolean refresh();
 	boolean refresh(boolean updateInvalid);
 	void reload(boolean forced);
 

@@ -253,7 +253,10 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #getLocalRepository(String)
 	 */
 	public RobotSpecification[] getLocalRepository() {
-		return ContainerBase.getComponent(IRepositoryManagerBase.class).getSpecifications();
+		final IRepositoryManagerBase repository = ContainerBase.getComponent(IRepositoryManagerBase.class);
+
+		repository.refresh(); // Bug fix [2972932]
+		return repository.getSpecifications();
 	}
 
 	/**
@@ -278,6 +281,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	public RobotSpecification[] getLocalRepository(String selectedRobots) {
 		final IRepositoryManagerBase repository = ContainerBase.getComponent(IRepositoryManagerBase.class);
 
+		repository.refresh(); // Bug fix [2972932]
 		return repository.loadSelectedRobots(selectedRobots);
 	}
 
