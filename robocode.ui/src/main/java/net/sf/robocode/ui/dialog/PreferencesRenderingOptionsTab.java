@@ -188,7 +188,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 	private JComboBox getOptionsRenderingNoBuffersComboBox() {
 		if (optionsRenderingNoBuffersComboBox == null) {
 			optionsRenderingNoBuffersComboBox = new JComboBox(
-					new String[] { "Single buffering", "Double buffering", "Tripple buffering"});
+					new String[] { "Single buffering", "Double buffering", "Triple buffering"});
 			optionsRenderingNoBuffersComboBox.addActionListener(eventHandler);
 		}
 		return optionsRenderingNoBuffersComboBox;
