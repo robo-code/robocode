@@ -88,7 +88,7 @@ public class SettingsManager implements ISettingsManager {
 			optionsRenderingAntialiasing = 0, // 0 = default, 1 = on, 2 = off
 			optionsRenderingTextAntialiasing = 0, // 0 = default, 1 = on, 2 = off
 			optionsRenderingMethod = 0, // 0 = default, 1 = speed, 2 = quality
-			optionsRenderingNoBuffers = 2, // 1 = single buffering, 2 = double buffering, 3 = tripple buffering
+			optionsRenderingNoBuffers = 2, // 1 = single buffering, 2 = double buffering, 3 = triple buffering
 			optionsBattleDesiredTPS = 30;
 
 	private boolean
