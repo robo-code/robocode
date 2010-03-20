@@ -509,37 +509,41 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		if (getRootPackage() == null) {
 			return null;
 		}
+		String dir;
+
 		if (root.isJar()) {
 			String jarFile = getClassPathURL().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			return FileUtil.getRobotsDataDir() + File.separator + jarFile + "_" + File.separator + getRootPackage();
+			dir = FileUtil.getRobotsDataDir().getPath();
+			if (jarFile.length() > 0) {
+				dir += File.separator + jarFile + '_';
+			}
+			dir += File.separator;
 		} else {
-			return getClassPathURL().getFile() + getRootPackage();
+			dir = getClassPathURL().getFile();
 		}
+		return dir + getRootPackage();
 	}
 
 	public String getWritableDirectory() {
 		if (getRootPackage() == null) {
 			return null;
 		}
+		File dir;
+
 		if (root.isJar()) {
 			String jarFile = getClassPathURL().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			return FileUtil.getRobotsDataDir() + File.separator + jarFile + "_" + File.separator
-					+ getFullPackage().replace('.', File.separatorChar);
-		} else {
-			File vroot;
-
-			if (ALWAYS_USE_CACHE_FOR_DATA) {
-				vroot = FileUtil.getRobotsDataDir();
-			} else {
-				vroot = root.getRootPath();
+			dir = FileUtil.getRobotsDataDir();
+			if (jarFile.length() > 0) {
+				dir = new File(dir, File.separator + jarFile + '_');
 			}
-			// to cacheDir
-			return vroot + File.separator + getFullPackage().replace('.', File.separatorChar);
+		} else {
+			dir = ALWAYS_USE_CACHE_FOR_DATA ? FileUtil.getRobotsDataDir() : root.getRootPath();
 		}
+		return dir + File.separator + getFullPackage().replace('.', File.separatorChar);
 	}
 
 	public RobotSpecification createRobotSpecification(RobotSpecification battleRobotSpec, String teamId) {

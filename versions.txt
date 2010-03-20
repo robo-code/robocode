@@ -1,5 +1,5 @@
 Version 1.7.2.1 Alpha
-(19-Mar-2010)
+(20-Mar-2010)
 ---------------
 = Changes =
 * Req [2815450] - Move away from Jikes towards ECJ. Jikes 1.22 has been replaced with the Eclipse Compiler for Java (ECJ) 3.5.2.
@@ -10,7 +10,8 @@ The ".NET robots are now supported" release
 ---------------
 = Bugfixes =
 * Bug [2964562] - Cannot extract downloaded robot for editing in Robot Editor.
-* Bug [2972932] - Strange issue first time running roborumble in 1.7.2.0 Beta2.
+* Bug [2972932] - Strange issue first time running roborumble in 1.7.2.0 Beta 2.
+* Files in /robots/.data or /robots/.robotcache dir were put into a underscore sub-directory.
 
 Version 1.7.2.0 Beta 2
 The ".NET robots are now supported" release

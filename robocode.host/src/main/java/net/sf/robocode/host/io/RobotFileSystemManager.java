@@ -111,9 +111,7 @@ public class RobotFileSystemManager {
 
 	public File getReadableDirectory() {
 		try {
-			final String dir = readableRootDirectory;
-
-			return (dir == null) ? null : new File(dir).getCanonicalFile();
+			return (readableRootDirectory == null) ? null : new File(readableRootDirectory).getCanonicalFile();
 		} catch (IOException e) {
 			return null;
 		}
@@ -121,9 +119,7 @@ public class RobotFileSystemManager {
 
 	public File getWritableDirectory() {
 		try {
-			final String dir = writableRootDirectory;
-
-			return (dir == null)
+			return (writableRootDirectory == null)
 					? null
 					: new File(writableRootDirectory, robotProxy.getStatics().getShortClassName() + ".data").getCanonicalFile();
 		} catch (IOException e) {
