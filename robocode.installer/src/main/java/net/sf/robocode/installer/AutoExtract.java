@@ -371,12 +371,28 @@ public class AutoExtract implements ActionListener {
 			deleteOldLibs(installDir);
 
 			// The .robotcache has been renamed to .data
-			File robotCacheDir = new File(installDir, "robots/.robotcache");
+			File robotsCacheDir = new File(installDir, "robots/.robotcache");
+			File robotsDataDir = new File(installDir, "robots/.data");
 
-			if (robotCacheDir.exists()) {
-				robotCacheDir.renameTo(new File(installDir, "robots/.data"));
+			if (robotsCacheDir.exists()) {
+				// Rename ".robotcache" into ".data" 
+				robotsCacheDir.renameTo(robotsDataDir);
+			}
+			
+			// Fix problem with .data starting with a underscore dir by
+			// renaming files containing ".data/_" into ".data"
+			if (robotsDataDir.exists()) {
+				File underScoreDir = new File(robotsDataDir, "_");
+
+				for (String fileName : underScoreDir.list()) {
+					File file = new File(underScoreDir, fileName);
+
+					file.renameTo(new File(robotsDataDir, fileName));
+				}
+				underScoreDir.delete();
 			}
 
+			// Create shortcuts and file associations
 			if (extractor.extract(installDir)) {
 				extractor.createShortcuts(installDir, "robocode.bat", "Robocode", "Robocode");
 				extractor.createFileAssociations(installDir);
