@@ -33,7 +33,7 @@ import java.io.InputStreamReader;
 @SuppressWarnings("serial")
 public class ConsoleScrollPane extends JScrollPane {
 
-	private static final int MAX_ROWS = 5;
+	private static final int MAX_ROWS = 500;
 	private static final String TEXT_TRUNCATED_MSG = "^^^ TEXT TRUNCATED ^^^";
 
 	private JTextArea textArea;
