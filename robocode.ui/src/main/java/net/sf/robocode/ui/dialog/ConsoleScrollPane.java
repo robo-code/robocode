@@ -32,7 +32,10 @@ import java.io.InputStreamReader;
  */
 @SuppressWarnings("serial")
 public class ConsoleScrollPane extends JScrollPane {
-	private final int MAX_ROWS = 500;
+
+	private static final int MAX_ROWS = 5;
+	private static final String TEXT_TRUNCATED_MSG = "^^^ TEXT TRUNCATED ^^^";
+
 	private JTextArea textArea;
 	private int lines;
 	private int maxRows;
@@ -40,7 +43,6 @@ public class ConsoleScrollPane extends JScrollPane {
 	public ConsoleScrollPane() {
 		super();
 		setViewportView(getTextPane());
-		lines = 0;
 	}
 
 	public JTextArea getTextPane() {
@@ -60,22 +62,48 @@ public class ConsoleScrollPane extends JScrollPane {
 		return textArea;
 	}
 
-	public void append(String text) {
-		lines++;
-		getTextPane().append(text);
-		if (lines > MAX_ROWS) {
-			lines = 0;
-			final String[] rows = getText().split("\n");
-			StringBuilder sb = new StringBuilder();
-			final int from = Math.min(rows.length, Math.max((MAX_ROWS / 2), rows.length - (MAX_ROWS / 2)));
-
-			for (int i = from; i < rows.length; i++) {
-				sb.append(rows[i]);
-				sb.append('\n');
-				lines++;
-			}
-			setText(sb.toString());
+	public void append(String str) {
+		// Return if the string is null or empty
+		if (str == null || str.length() == 0) {
+			return;
 		}
+		// Append the new string to the text pane
+		getTextPane().append(str);
+
+		// Count number of new lines, i.e. lines ended with '\n'
+		int numNewLines = str.replaceAll("[^\\n]", "").length();
+
+		// Increment the current number of lines with the new lines
+		lines += numNewLines;
+
+		// Calculate number lines exceeded compared to the max. number of lines
+		int linesExceeded = lines - MAX_ROWS;
+
+		// Check if we exceeded the number of max. lines
+		if (linesExceeded > 0) {
+			// We use a rolling buffer so that the oldest lines are removed first.
+			// Remove the number of lines we are exceeding in the beginning of the contained text.
+
+			// Cut down the number of lines to max. number of lines
+			lines = MAX_ROWS;
+
+			// Find the index where to cut the number of exceeding lines in the beginning of the text
+			String text = getText();
+			int cutIndex = -1;
+
+			for (int c = 0; c < linesExceeded; c++) {
+				cutIndex = text.indexOf('\n', cutIndex + 1);
+			}
+			// Replace the first lines of the contained text till the cut index
+			textArea.replaceRange(null, 0, cutIndex + 1);
+
+			// Replace first line with a message that text has been truncated
+			textArea.replaceRange(TEXT_TRUNCATED_MSG, 0, getText().indexOf('\n'));
+		}
+
+		// Set the max. number of lines text pane
+		maxRows = Math.max(maxRows, lines);
+		textArea.setRows(maxRows);
 	}
 
 	public String getSelectedText() {
@@ -86,12 +114,42 @@ public class ConsoleScrollPane extends JScrollPane {
 		return getTextPane().getText();
 	}
 
-	public void setText(String text) {
-		final JTextArea textArea = getTextPane();
+	public void setText(String t) {
+		// Return if the string is null or empty
+		if (t == null || t.length() == 0) {
+			return;
+		}
+		// Calculate and set the new number of lines for the text pane
+		lines = t.replaceAll("[^\\n]", "").length();
 
-		textArea.setText(text);
+		// Calculate number lines exceeded compared to the max. number of lines
+		int linesExceeded = lines - MAX_ROWS;
 
-		maxRows = Math.max(maxRows, textArea.getLineCount());
+		// Check if we exceeded the number of max. lines
+		if (linesExceeded > 0) {
+			// We use a rolling buffer so that the oldest lines are removed first.
+			// Remove the number of lines we are exceeding in the beginning of the contained text.
+
+			// Cut down the number of lines to max. number of lines
+			lines = MAX_ROWS;
+
+			// Find the index where to cut the number of exceeding lines in the beginning of the text
+			int index = -1;
+
+			for (int c = 0; c < linesExceeded; c++) {
+				index = t.indexOf('\n', index + 1);
+			}
+			// Replace the first lines of the contained text till the cut index
+			t = t.substring(index + 1);
+
+			// Replace first line with a message that text has been truncated
+			t = TEXT_TRUNCATED_MSG + t.substring(t.indexOf('\n') + 1);
+		}
+		// Set the text on the text pane
+		textArea.setText(t);
+
+		// Set the max. number of lines text pane
+		maxRows = Math.max(maxRows, lines);
 		textArea.setRows(maxRows);
 	}
 
