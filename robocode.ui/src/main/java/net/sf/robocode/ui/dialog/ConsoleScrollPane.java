@@ -117,33 +117,36 @@ public class ConsoleScrollPane extends JScrollPane {
 	public void setText(String t) {
 		// Return if the string is null or empty
 		if (t == null || t.length() == 0) {
-			return;
-		}
-		// Calculate and set the new number of lines for the text pane
-		lines = t.replaceAll("[^\\n]", "").length();
-
-		// Calculate number lines exceeded compared to the max. number of lines
-		int linesExceeded = lines - MAX_ROWS;
-
-		// Check if we exceeded the number of max. lines
-		if (linesExceeded > 0) {
-			// We use a rolling buffer so that the oldest lines are removed first.
-			// Remove the number of lines we are exceeding in the beginning of the contained text.
-
-			// Cut down the number of lines to max. number of lines
-			lines = MAX_ROWS;
-
-			// Find the index where to cut the number of exceeding lines in the beginning of the text
-			int index = -1;
-
-			for (int c = 0; c < linesExceeded; c++) {
-				index = t.indexOf('\n', index + 1);
+			t = null;
+			lines = 0;
+			maxRows = 0;
+		} else {
+			// Calculate and set the new number of lines for the text pane
+			lines = t.replaceAll("[^\\n]", "").length();
+	
+			// Calculate number lines exceeded compared to the max. number of lines
+			int linesExceeded = lines - MAX_ROWS;
+	
+			// Check if we exceeded the number of max. lines
+			if (linesExceeded > 0) {
+				// We use a rolling buffer so that the oldest lines are removed first.
+				// Remove the number of lines we are exceeding in the beginning of the contained text.
+	
+				// Cut down the number of lines to max. number of lines
+				lines = MAX_ROWS;
+	
+				// Find the index where to cut the number of exceeding lines in the beginning of the text
+				int index = -1;
+	
+				for (int c = 0; c < linesExceeded; c++) {
+					index = t.indexOf('\n', index + 1);
+				}
+				// Replace the first lines of the contained text till the cut index
+				t = t.substring(index + 1);
+	
+				// Replace first line with a message that text has been truncated
+				t = TEXT_TRUNCATED_MSG + t.substring(t.indexOf('\n') + 1);
 			}
-			// Replace the first lines of the contained text till the cut index
-			t = t.substring(index + 1);
-
-			// Replace first line with a message that text has been truncated
-			t = TEXT_TRUNCATED_MSG + t.substring(t.indexOf('\n') + 1);
 		}
 		// Set the text on the text pane
 		textArea.setText(t);
