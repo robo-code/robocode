@@ -64,7 +64,7 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     public native java.net.URL getWebpage();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean getJavaSourceIncluded();
+    public native boolean isJavaSourceIncluded();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getRootFile();
@@ -111,8 +111,8 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     @net.sf.jni4net.attributes.ClrMethod("()Lrobocode/control/RobotSpecification;")
     public native robocode.control.RobotSpecification createRobotSpecification();
     
-    @net.sf.jni4net.attributes.ClrMethod("(Ljava/io/OutputStream;Ljava/net/URL;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V")
-    public native void storeProperties(java.io.OutputStream par0, java.net.URL par1, java.lang.String par2, java.lang.String par3, java.lang.String par4, boolean par5);
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/io/OutputStream;Ljava/net/URL;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")
+    public native void storeProperties(java.io.OutputStream par0, java.net.URL par1, java.lang.String par2, java.lang.String par3, java.lang.String par4);
     
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/io/OutputStream;)V")
     public native void storeProperties(java.io.OutputStream par0);
