@@ -40,7 +40,7 @@ public class TestFileWrite extends RobocodeTestBed {
 
 	@Override
 	protected void runSetup() {
-		file = new File("../../../robocode.tests.robots/target/classes/.data/_/SampleCs/count.dat");
+		file = new File("../../../robocode.tests.robots/target/classes/.data/SampleCs/count.dat");
 		if (file.exists()) {
 			if (!file.delete()) {
 				Logger.logError("Can't delete" + file);
