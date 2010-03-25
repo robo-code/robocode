@@ -25,6 +25,7 @@ import net.sf.robocode.robotpaint.IGraphicsProxy;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.Event;
+import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.DisabledException;
 import robocode.exception.RobotException;
@@ -62,6 +63,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	private boolean testingCondition;
 	private double firedEnergy;
 	private double firedHeat;
+	private boolean isDisabled;
 
 	public BasicRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
@@ -177,20 +179,26 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	// counters
 	public void setCall() {
-		final int res = setCallCount.incrementAndGet();
+		if (!isDisabled) {
+			final int res = setCallCount.incrementAndGet();
 
-		if (res >= MAX_SET_CALL_COUNT) {
-			println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
-			throw new DisabledException("Too many calls to setXX methods");
+			if (res >= MAX_SET_CALL_COUNT) {
+				isDisabled = true;
+				println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
+				throw new DisabledException("Too many calls to setXX methods");
+			}
 		}
 	}
 
 	public void getCall() {
-		final int res = getCallCount.incrementAndGet();
+		if (!isDisabled) {
+			final int res = getCallCount.incrementAndGet();
 
-		if (res >= MAX_GET_CALL_COUNT) {
-			println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
-			throw new DisabledException("Too many calls to getXX methods");
+			if (res >= MAX_GET_CALL_COUNT) {
+				isDisabled = true;
+				println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
+				throw new DisabledException("Too many calls to getXX methods");
+			}
 		}
 	}
 
@@ -414,11 +422,15 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		eventManager.clearAllEvents(false);
 		graphicsProxy.setPaintingEnabled(false);
 		do {
-			// Make sure remaining system events like e.g. DeathEvent are processed this round
+			// Make sure remaining system events like e.g. are processed this round
 			try {
 				eventManager.processEvents();
-			} catch (DeathException ignore) {// This one is expected to occur, and must be handled
-			} catch (WinException ignore) {// Bug fix [2952549]. Must be handled.
+
+				// The exceptions below are expected to occur, and has already been logged in the robot console,
+				// but still exists in the robot's event queue. Hence we just ignore these!
+				// Look in the HostingRobotProxy.run() to see which robot errors that are already handled.
+			} catch (DeathException ignore) {} catch (WinException ignore) {// Bug fix [2952549]
+			} catch (AbortedException ignore) {} catch (DisabledException ignore) {// Bug fix [2976258]
 			}
 
 			commands.setOutputText(out.readAndReset());
