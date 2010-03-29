@@ -59,11 +59,11 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		if (duplicate >= 0) {
 			String countString = " (" + (duplicate + 1) + ')';
 
-			name = specification.getFullClassNameWithVersion() + countString;
+			name = specification.getUniqueFullClassNameWithVersion() + countString;
 			shortName = specification.getUniqueShortClassNameWithVersion() + countString;
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion() + countString;
 		} else {
-			name = specification.getFullClassNameWithVersion();
+			name = specification.getUniqueFullClassNameWithVersion();
 			shortName = specification.getUniqueShortClassNameWithVersion();
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion();
 		}
