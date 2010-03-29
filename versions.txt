@@ -1,13 +1,14 @@
 Version 1.7.2.0
 The ".NET robots are now supported" release
-(25-Mar-2010)
+(29-Mar-2010)
 ---------------
 = Bugfixes =
 * Bug [2964562] - Cannot extract downloaded robot for editing in Robot Editor.
 * Bug [2972932] - Strange issue first time running roborumble in 1.7.2.0 Beta 2.
+* Bug [2976258] - Strange thread exceptions with kid.DeltaSquad in 1.7.
+* Bug [2978825] - isTeammate() sometimes returns false with teammates.
 * Bug [2970414] - Occasionally losing the bit of text in the robot console.
 * Bug [2954723] - java.lang.Error: Interrupted attempt to aquire read lock.
-* Bug [2976258] - Strange thread exceptions with kid.DeltaSquad in 1.7.
 * Files in /robots/.data or /robots/.robotcache dir were put into a underscore sub-directory.
 
 = Changes =

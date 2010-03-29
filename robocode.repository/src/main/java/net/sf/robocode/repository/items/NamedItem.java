@@ -60,7 +60,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}
 
 	public boolean isDevelopmentVersion() {
-		return root.isDevel() && !getFullClassName().startsWith("sample");
+		return root.isDevel() && !(getFullClassName().startsWith("sample") || getFullClassName().startsWith("tested.")); 
 	}
 
 	public String getRootFile() {
@@ -174,7 +174,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}	
 
 	public RobotSpecification createRobotSpecification() {
-		return HiddenAccess.createSpecification(this, getFullClassName(), getAuthorName(),
+		return HiddenAccess.createSpecification(this, getUniqueFullClassNameWithVersion(), getAuthorName(),
 				(getWebpage() != null) ? getWebpage().toString() : null, getVersion(), getRobocodeVersion(),
 				root.getRootUrl().toString(), getFullClassName(), getDescription());
 	}
