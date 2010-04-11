@@ -1,6 +1,6 @@
 Version 1.7.2.0
 The ".NET robots are now supported" release
-(29-Mar-2010)
+(11-Apr-2010)
 ---------------
 = Bugfixes =
 * Bug [2964562] - Cannot extract downloaded robot for editing in Robot Editor.
@@ -9,7 +9,8 @@ The ".NET robots are now supported" release
 * Bug [2978825] - isTeammate() sometimes returns false with teammates.
 * Bug [2970414] - Occasionally losing the bit of text in the robot console.
 * Bug [2954723] - java.lang.Error: Interrupted attempt to aquire read lock.
-* Files in /robots/.data or /robots/.robotcache dir were put into a underscore sub-directory.
+* Bug: Teams with versions could not be found in a development path.
+* Bug: Files in /robots/.data or /robots/.robotcache dir were put into a underscore sub-directory.
 
 = Changes =
 * The robot console now uses a rolling buffer so when the number of lines in the robot console exceeds the max. number of lines (500), the oldest lines are removed, and "^^^ TEXT TRUNCATED ^^^" is written in the top. Previously half of the text was truncated when the max. number of lines was reached.
