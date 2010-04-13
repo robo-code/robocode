@@ -147,7 +147,10 @@ public class Database {
 
 		while (teamTokenizer.hasMoreTokens()) {
 			String botNameAndVersion = teamTokenizer.nextToken();
-			String botPath = botNameAndVersion.substring(0, botNameAndVersion.indexOf(' ')).replace('.', '/');
+			int versionIndex = botNameAndVersion.indexOf(' ');
+			String botPath = versionIndex < 0 ? botNameAndVersion : botNameAndVersion.substring(0, versionIndex);
+
+			botPath = botPath.replace('.', '/');
 
 			// first load from same classPath
 			String teamBot = team.getRoot().getRootUrl() + botPath;
