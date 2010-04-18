@@ -32,8 +32,6 @@ import robocode.exception.WinException;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -82,9 +80,6 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 
 	public void cleanup() {
-		// Clear all static field on the robot (at class level)
-		cleanupStaticFields();
-
 		robot = null;
 
 		// Remove the file system and the manager
@@ -103,34 +98,6 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		if (robotClassLoader != null) {
 			robotClassLoader.cleanup();
 			robotClassLoader = null;
-		}
-	}
-
-	private void cleanupStaticFields() {
-		if (robot == null) {
-			return;
-		}
-
-		Field[] fields = new Field[0];
-
-		// This try-catch-throwable must be here, as it is not always possible to get the
-		// declared fields without getting a Throwable like java.lang.NoClassDefFoundError.
-		try {
-			fields = robot.getClass().getDeclaredFields();
-		} catch (Throwable t) {// Do nothing
-		}
-
-		for (Field f : fields) {
-			int m = f.getModifiers();
-
-			if (Modifier.isStatic(m) && !(Modifier.isFinal(m) || f.getType().isPrimitive())) {
-				try {
-					f.setAccessible(true);
-					f.set(robot, null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 
