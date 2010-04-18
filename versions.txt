@@ -1,6 +1,6 @@
 Version 1.7.2.0
 The ".NET robots are now supported" release
-(13-Apr-2010)
+(18-Apr-2010)
 ---------------
 = Bugfixes =
 * Bug [2964562] - Cannot extract downloaded robot for editing in Robot Editor.
