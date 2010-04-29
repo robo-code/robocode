@@ -1,6 +1,6 @@
 Version 1.7.2.0 Beta 3
 The ".NET robots are now supported" release
-(28-Apr-2010)
+(29-Apr-2010)
 ---------------
 Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving these. :-)
 
@@ -18,7 +18,7 @@ Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving 
 * Bug: The "Kill Robot" button in the robot console windows was often disabled.
 
 = Changes =
-* The robot console now uses a rolling buffer so when the number of lines in the robot console exceeds the max. number of lines (500), the oldest lines are removed, and "^^^ TEXT TRUNCATED ^^^" is written in the top. Previously half of the text was truncated when the max. number of lines was reached.
+* The robot console now uses a rolling buffer so when the number of lines in the robot console exceeds the max number of lines (500), the oldest lines are removed, and "^^^ TEXT TRUNCATED ^^^" is written in the top. Previously half of the text was truncated when the max number of lines was reached.
 
 Version 1.7.2.0 Beta 2
 The ".NET robots are now supported" release
