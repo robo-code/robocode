@@ -128,6 +128,8 @@ public class RobotFileSystemManager {
 	}
 
 	public File getDataFile(String filename) {
+		filename = filename.replaceAll("\\*", "");
+
 		final File parent = getWritableDirectory();
 		File file = new File(parent, filename);
 
