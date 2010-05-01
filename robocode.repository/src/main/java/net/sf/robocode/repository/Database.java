@@ -146,10 +146,14 @@ public class Database {
 		StringTokenizer teamTokenizer = new StringTokenizer(team.getMembers(), ",");
 
 		while (teamTokenizer.hasMoreTokens()) {
-			final String botName = teamTokenizer.nextToken();
+			String botNameAndVersion = teamTokenizer.nextToken();
+			int versionIndex = botNameAndVersion.indexOf(' ');
+			String botPath = versionIndex < 0 ? botNameAndVersion : botNameAndVersion.substring(0, versionIndex);
+
+			botPath = botPath.replace('.', '/');
 
 			// first load from same classPath
-			String teamBot = team.getRoot().getRootUrl() + botName.replace('.', '/');
+			String teamBot = team.getRoot().getRootUrl() + botPath;
 			IItem res = getItem(teamBot);
 
 			if (res != null && res instanceof RobotItem) {
@@ -158,14 +162,14 @@ public class Database {
 			}
 
 			// try general search
-			res = getItem(botName);
+			res = getItem(botNameAndVersion);
 			if (res != null && res instanceof RobotItem) {
 				result.add((RobotItem) res);
 				continue;
 			}
 
 			// no found
-			Logger.logError("Can't find robot: " + botName);
+			Logger.logError("Can't find robot: " + botNameAndVersion);
 		}
 		return result;
 	}

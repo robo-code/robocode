@@ -661,8 +661,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void setSkippedTurns() {
-
-		if (battle.isDebugging() || isPaintEnabled()) {
+		if (isSleeping() || !isRunning() || battle.isDebugging() || isPaintEnabled()) {
 			skippedTurns = 0;
 		} else {
 			println("SYSTEM: " + getShortName() + " skipped turn " + battle.getTime());

@@ -1,24 +1,30 @@
 Version 1.7.2.1 Alpha
-(29-Mar-2010)
+(01-May-2010)
 ---------------
 = Changes =
 * Req [2815450] - Move away from Jikes towards ECJ. Jikes 1.22 has been replaced with the Eclipse Compiler for Java (ECJ) 3.5.2.
 
-Version 1.7.2.0
+Version 1.7.2.0 Beta 3
 The ".NET robots are now supported" release
-(29-Mar-2010)
+(29-Apr-2010)
 ---------------
+Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving these. :-)
+
 = Bugfixes =
-* Bug [2964562] - Cannot extract downloaded robot for editing in Robot Editor.
+* Bug [2976754] - Battle engine consumes more CPU power over time
 * Bug [2972932] - Strange issue first time running roborumble in 1.7.2.0 Beta 2.
-* Bug [2976258] - Strange thread exceptions with kid.DeltaSquad in 1.7.
 * Bug [2978825] - isTeammate() sometimes returns false with teammates.
+* Bug [2964562] - Cannot extract downloaded robot for editing in Robot Editor.
+* Bug [2976258] - Strange thread exceptions with kid.DeltaSquad in 1.7.
+* Bug [2974178] - Krabb.sliNk.Garm 0.9u freezes often in 1.7.
 * Bug [2970414] - Occasionally losing the bit of text in the robot console.
 * Bug [2954723] - java.lang.Error: Interrupted attempt to aquire read lock.
-* Files in /robots/.data or /robots/.robotcache dir were put into a underscore sub-directory.
+* Bug: Teams with versions could not be found in a development path.
+* Bug: Files in /robots/.data or /robots/.robotcache dir were put into a underscore sub-directory.
+* Bug: The "Kill Robot" button in the robot console windows was often disabled.
 
 = Changes =
-* The robot console now uses a rolling buffer so when the number of lines in the robot console exceeds the max. number of lines (500), the oldest lines are removed, and "^^^ TEXT TRUNCATED ^^^" is written in the top. Previously half of the text was truncated when the max. number of lines was reached.
+* The robot console now uses a rolling buffer so when the number of lines in the robot console exceeds the max number of lines (500), the oldest lines are removed, and "^^^ TEXT TRUNCATED ^^^" is written in the top. Previously half of the text was truncated when the max number of lines was reached.
 
 Version 1.7.2.0 Beta 2
 The ".NET robots are now supported" release

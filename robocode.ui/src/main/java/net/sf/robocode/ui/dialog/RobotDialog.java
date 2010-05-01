@@ -60,7 +60,7 @@ public class RobotDialog extends JFrame {
 	private boolean isListening;
 	private int robotIndex;
 	private IRobotSnapshot lastSnapshot;
-	private boolean paintSnapshot;
+	private boolean printSnapshot;
 	private boolean grayGreenButton;
 	private final Hashtable<String, String> debugProperties = new Hashtable<String, String>();
 
@@ -105,6 +105,12 @@ public class RobotDialog extends JFrame {
 			isListening = false;
 		}
 		robotButton.detach();
+		
+		getPauseButton().setEnabled(false);
+		getKillButton().setEnabled(false);
+
+		lastSnapshot = null;
+		printSnapshot();
 	}
 
 	public void attach(RobotButton robotButton) {
@@ -114,6 +120,10 @@ public class RobotDialog extends JFrame {
 			isListening = true;
 			windowManager.addBattleListener(battleObserver);
 		}
+		getPauseButton().setEnabled(true);
+		if (!windowManager.isSlave()) {
+			getKillButton().setEnabled(true);
+	}
 	}
 
 	public void reset() {
@@ -197,16 +207,16 @@ public class RobotDialog extends JFrame {
 
 			tabbedPane.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
-					paintSnapshot = (tabbedPane.getSelectedIndex() == 1);
-					paintSnapshot();
+					printSnapshot = (tabbedPane.getSelectedIndex() == 1);
+					printSnapshot();
 				}
 			});
 		}
 		return tabbedPane;
 	}
 
-	private void paintSnapshot() {
-		if (paintSnapshot) {
+	private void printSnapshot() {
+		if (printSnapshot) {
 			String text = null;
 
 			if (lastSnapshot != null) {
@@ -417,20 +427,6 @@ public class RobotDialog extends JFrame {
 	private class BattleObserver extends BattleAdaptor {
 
 		@Override
-		public void onBattleStarted(BattleStartedEvent event) {
-			getPauseButton().setEnabled(true);
-			getKillButton().setEnabled(true);
-		}
-
-		@Override
-		public void onBattleFinished(BattleFinishedEvent event) {
-			lastSnapshot = null;
-			paintSnapshot();
-			getPauseButton().setEnabled(false);
-			getKillButton().setEnabled(false);
-		}
-
-		@Override
 		public void onBattlePaused(BattlePausedEvent event) {
 			getPauseButton().setSelected(true);
 		}
@@ -461,8 +457,7 @@ public class RobotDialog extends JFrame {
 				getPaintButton().setBackground(grayGreen);
 			}
 
-			paintSnapshot();
+			printSnapshot();
 		}
-
 	}
 }

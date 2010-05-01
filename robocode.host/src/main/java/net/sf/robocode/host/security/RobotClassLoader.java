@@ -35,6 +35,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import robocode.robotinterfaces.IBasicRobot;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -176,19 +177,21 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 				final URL url = findResource(path);
 				ByteBuffer result = null;
 				InputStream is = null;
+				BufferedInputStream bis = null;
 
 				if (url != null) {
 					try {
 						final URLConnection connection = URLJarCollector.openConnection(url);
 
 						is = connection.getInputStream();
+						bis = new BufferedInputStream(is);
 
 						result = ByteBuffer.allocate(1024 * 8);
 						boolean done = false;
 
 						do {
 							do {
-								int res = is.read(result.array(), result.position(), result.remaining());
+								int res = bis.read(result.array(), result.position(), result.remaining());
 
 								if (res == -1) {
 									done = true;
@@ -206,6 +209,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 						Logger.logError(e);
 						return null;
 					} finally {
+						FileUtil.cleanupStream(bis);
 						FileUtil.cleanupStream(is);
 					}
 				}
@@ -259,6 +263,14 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 						}
 					} while (referencedClasses.size() != clone.size());
 				}
+			} else {
+				// Make sure all static fields with robot instances are cleared!
+				// Otherwise these instances cannot be reached by the garbage collector.
+				// It was implemented due to this bug:
+				// Bug [2976754] - Battle engine consumes more CPU power over time
+				for (String className : referencedClasses) {		
+					cleanStaticRobotInstanceFields(className);
+			}
 			}
 		} catch (Throwable e) {
 			robotClass = null;
@@ -289,7 +301,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	 * Cleans all static fields on a class.
 	 *
 	 * @param className the name of the class containing the fields to clean.
-	 * @throws  
 	 */
 	private void cleanStaticFields(String className) {
 		if (isSystemClass(className)) {
@@ -301,13 +312,44 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		try {
 			type = loadRobotClassLocaly(className, false);
 		} catch (Throwable t) {
-			// t.printStackTrace(); // for debugging
 			return;
 		}
 
 		if (type != null) {
 			for (Field field : getAllFields(new ArrayList<Field>(), type)) {
-				cleanIfStaticField(type, field);
+				if (isStaticField(field)) {
+					cleanStaticField(field);
+			}
+		}
+	}
+	}
+
+	/**
+	 * Cleans all static fields on a class that is a IBasicRobot type.
+	 * This must be done in order to have the referenced robot(s) garbage collected.
+	 * It was implemented due to this bug:
+	 * Bug [2976754] - Battle engine consumes more CPU power over time
+	 *
+	 * @param className the name of the class containing the fields to clean.
+	 */
+	private void cleanStaticRobotInstanceFields(String className) {
+		if (isSystemClass(className)) {
+			return;
+		}
+
+		Class<?> type = null;
+
+		try {
+			type = loadRobotClassLocaly(className, false);
+		} catch (Throwable t) {
+			return;
+		}
+
+		if (type != null) {
+			for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
+				if (isStaticField(field) && IBasicRobot.class.isAssignableFrom(field.getType())) {
+					cleanStaticField(field);
+				}
 			}
 		}
 	}
@@ -315,31 +357,22 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	/**
 	 * Cleans a field on a class if it is static, even if it is 'private static final'
 	 *
-	 * @param type the class containing the field to clean.
 	 * @param field the field to clean, if it is static.
-	 * @throws Exception
 	 */
-	private void cleanIfStaticField(Class<?> type, Field field) {
-		if ((field.getModifiers() & Modifier.STATIC) == 0 || field.getType().isPrimitive() || field.isEnumConstant()
-				|| field.isSynthetic()) {
-			return;
-		}
-
+	private void cleanStaticField(Field field) {
 		field.setAccessible(true);
-
-		Field modifiersField;
 
 		try {
 			// In order to set a 'private static field', we need to fix the modifier, i.e. use magic! ;-)
-			modifiersField = Field.class.getDeclaredField("modifiers");
+			Field modifiersField = Field.class.getDeclaredField("modifiers");
+
 			modifiersField.setAccessible(true);
 			final int modifiers = modifiersField.getInt(field);
 
 			modifiersField.setInt(field, modifiers & ~Modifier.FINAL); // Remove the FINAL modifier
 			field.set(null, null);
-		} catch (Throwable ignore) {// ignore.printStackTrace(); // for debugging
+		} catch (Throwable ignore) {}
 		}
-	}
 
 	/**
 	 * Gets all fields of a class (public, protected, private) and the ones inherited from all super classes.
@@ -347,7 +380,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	 * @param type the class to retrieve all the fields from
 	 * @return the list specified as input parameter containing all the retrieved fields
 	 */
-	public static List<Field> getAllFields(List<Field> fields, Class<?> type) {
+	private static List<Field> getAllFields(List<Field> fields, Class<?> type) {
 		if (type == null || isSystemClass(type.getName())) {
 			return fields;
 		}
@@ -359,7 +392,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		} catch (Throwable ignore) {// NoClassDefFoundError does occur with some robots, e.g. sgp.Drunken [1.12]
 			// We ignore all exceptions and errors here so we can proceed to retrieve
 			// field from super classes.
-			// ignore.printStackTrace(); // for debugging
 		}
 
 		if (type.getSuperclass() != null) {
@@ -377,5 +409,16 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	private static boolean isSystemClass(String className) {
 		return className.startsWith("java.") || className.startsWith("javax.") || className.startsWith("robocode.")
 				|| className.startsWith("net.sf.robocode.") || className.startsWith("tested.robots.");
+	}
+
+	/**
+	 * Checks if a specified field is a true static field we can modify.
+	 *
+	 * @param field the field to check.
+	 * @return true if the field is truly a static field; false otherwise. 
+	 */
+	private static boolean isStaticField(Field field) {
+		return !((field.getModifiers() & Modifier.STATIC) == 0 || field.getType().isPrimitive()
+				|| field.isEnumConstant() || field.isSynthetic());
 	}
 }
