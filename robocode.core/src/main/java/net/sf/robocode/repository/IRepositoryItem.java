@@ -61,6 +61,8 @@ public interface IRepositoryItem extends Comparable<Object> {
 
 	String getFullClassNameWithVersion();
 
+	String getUniqueFullClassName();
+
 	String getUniqueFullClassNameWithVersion();
 
 	String getUniqueShortClassNameWithVersion();

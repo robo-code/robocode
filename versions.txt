@@ -1,3 +1,11 @@
+Version 1.7.2.0
+The ".NET robots are now supported" release
+(04-May-2010)
+---------------
+= Bugfixes =
+* Bug [2994724] - Duplicate version numbers prevents uploading.
+* Bug: A security exception was thrown with development robots trying to access their data directory.
+
 Version 1.7.2.0 Beta 3
 The ".NET robots are now supported" release
 (29-Apr-2010)
@@ -5,7 +13,7 @@ The ".NET robots are now supported" release
 Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving these. :-)
 
 = Bugfixes =
-* Bug [2976754] - Battle engine consumes more CPU power over time
+* Bug [2976754] - Battle engine consumes more CPU power over time.
 * Bug [2972932] - Strange issue first time running roborumble in 1.7.2.0 Beta 2.
 * Bug [2978825] - isTeammate() sometimes returns false with teammates.
 * Bug [2964562] - Cannot extract downloaded robot for editing in Robot Editor.
