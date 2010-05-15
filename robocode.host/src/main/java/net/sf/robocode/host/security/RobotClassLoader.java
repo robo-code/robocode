@@ -268,11 +268,11 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 					warnIfStaticRobotInstanceFields();
 				}
 			} else {
-				// Make sure all static fields with robot instances are cleared!
-				// Otherwise these instances cannot be reached by the garbage collector.
-				// It was implemented due to this bug:
 				// Bug [2976754] - Battle engine consumes more CPU power over time
-				cleanStaticRobotInstanceFields();
+				// TODO: Fix this hack later, when kid.DeltaSquad has been fixed.
+				if (fullClassName.startsWith("kid.DeltaSquad.")) {
+					cleanStaticRobotInstanceFields();
+				}
 			}
 		} catch (Throwable e) {
 			robotClass = null;
