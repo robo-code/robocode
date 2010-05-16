@@ -40,8 +40,8 @@ import javax.swing.UIManager;
  */
 public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
-	private static final int INITIAL_BUFFER_SIZE = 2 * 1024;  
-	private static final int MAX_BUFFER_SIZE = 64 * 1024;  
+	private static final int INITIAL_BUFFER_SIZE = 2 * 1024;
+	private static final int MAX_BUFFER_SIZE = 64 * 1024;
 
 	private final Method[] methods = Method.class.getEnumConstants();
 
@@ -1846,29 +1846,29 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		case 1:
 			return new Arc2D.Double(calls.getDouble(), // x
 					calls.getDouble(), // y
-					calls.getDouble(), // w
-					calls.getDouble(), // h
-					calls.getDouble(), // start
-					calls.getDouble(), // extended
-					calls.getInt());
+					calls.getDouble(), // width
+					calls.getDouble(), // height
+					calls.getDouble(), // angle start
+					calls.getDouble(), // angle extended
+					calls.getInt()); // arc type
 
 		case 2:
 			return new Line2D.Double(calls.getDouble(), // x1
-					calls.getDouble(), // y2
+					calls.getDouble(), // y1
 					calls.getDouble(), // x2
 					calls.getDouble()); // y2
 
 		case 3:
 			return new Rectangle2D.Double(calls.getDouble(), // x
 					calls.getDouble(), // y
-					calls.getDouble(), // w
-					calls.getDouble()); // h
+					calls.getDouble(), // width
+					calls.getDouble()); // height
 
 		case 4:
 			return new Ellipse2D.Double(calls.getDouble(), // x
 					calls.getDouble(), // y
-					calls.getDouble(), // w
-					calls.getDouble()); // h
+					calls.getDouble(), // width
+					calls.getDouble()); // height
 
 		case 0:
 			DeserializePathIterator pai = new DeserializePathIterator();
@@ -1992,43 +1992,42 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 	}
 
-	private void put(Shape clip) {
-		if (clip instanceof Arc2D) {
-			Arc2D arc = (Arc2D) clip;
-			final Rectangle bounds = arc.getBounds();
-
+	private void put(Shape shape) {
+		if (shape instanceof Arc2D) {
 			put((byte) 1);
-			put(bounds.getMinX());
-			put(bounds.getMinY());
-			put(bounds.getWidth());
-			put(bounds.getHeight());
+			Arc2D arc = (Arc2D) shape;
+
+			put(arc.getX());
+			put(arc.getY());
+			put(arc.getWidth());
+			put(arc.getHeight());
 			put(arc.getAngleStart());
 			put(arc.getAngleExtent());
 			put(arc.getArcType());
-		} else if (clip instanceof Line2D) {
+		} else if (shape instanceof Line2D) {
 			put((byte) 2);
-			Line2D line = (Line2D) clip;
+			Line2D line = (Line2D) shape;
 
 			put(line.getX1());
 			put(line.getY1());
 			put(line.getX2());
 			put(line.getY2());
-		} else if (clip instanceof Rectangle2D) {
+		} else if (shape instanceof Rectangle2D) {
 			put((byte) 3);
-			Rectangle2D rect = (Rectangle2D) clip;
+			Rectangle2D rect = (Rectangle2D) shape;
 
-			put(rect.getMinX());
-			put(rect.getMinY());
-			put(rect.getHeight());
+			put(rect.getX());
+			put(rect.getY());
 			put(rect.getWidth());
-		} else if (clip instanceof Ellipse2D) {
+			put(rect.getHeight());
+		} else if (shape instanceof Ellipse2D) {
 			put((byte) 4);
-			Ellipse2D elipse = (Ellipse2D) clip;
+			Ellipse2D elipse = (Ellipse2D) shape;
 
-			put(elipse.getMinX());
-			put(elipse.getMinY());
-			put(elipse.getHeight());
+			put(elipse.getX());
+			put(elipse.getY());
 			put(elipse.getWidth());
+			put(elipse.getHeight());
 		} else {
 			put((byte) 0);
 
@@ -2036,7 +2035,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			int count = 0;
 
 			// count them first
-			PathIterator pi = clip.getPathIterator(null);
+			PathIterator pi = shape.getPathIterator(null);
 
 			while (!pi.isDone()) {
 				count++;
@@ -2045,7 +2044,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			put(count);
 
 			// write them
-			pi = clip.getPathIterator(null);
+			pi = shape.getPathIterator(null);
 			put(pi.getWindingRule());
 			while (!pi.isDone()) {
 				int type = pi.currentSegment(coords);

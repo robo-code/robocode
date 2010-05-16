@@ -1,10 +1,11 @@
 Version 1.7.2.0
 The ".NET robots are now supported" release
-(15-May-2010)
+(16-May-2010)
 ---------------
 = Bugfixes =
 * Bug [2994724] - Duplicate version numbers prevents uploading.
 * Bug [2994732] - tzu.TheArtOfWar 1.2 gets NullPointerExceptions.
+* Bug [2999719] - Problems with Graphics2D.fill/draw(Shape).
 * Bug: A security exception was thrown with development robots trying to access their data directory.
 
 = Changes =
