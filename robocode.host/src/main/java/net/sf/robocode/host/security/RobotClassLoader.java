@@ -48,6 +48,7 @@ import java.nio.ByteBuffer;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,6 +72,9 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	private static final boolean IS_SECURITY_ON = !System.getProperty("NOSECURITY", "false").equals("true");
 
 	private static final PermissionCollection EMPTY_PERMISSIONS = new Permissions();
+
+	private static final List<String> staticRobotReferenceWarnCache = Collections.synchronizedList(
+			new ArrayList<String>());
 
 	protected final URL robotClassPath;
 	protected final String fullClassName;
@@ -238,15 +242,13 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	public synchronized Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException {
 		try {
 			if (robotClass == null) {
-				robotClass = loadClass(fullClassName, false);
+				robotClass = loadClass(fullClassName, resolve);
 
 				if (!IBasicRobot.class.isAssignableFrom(robotClass)) {
 					// that's not robot
 					return null;
 				}
 				if (resolve) {
-					robotClass = loadClass(fullClassName, true);
-
 					// resolve methods to see more referenced classes
 					robotClass.getMethods();
 
@@ -262,15 +264,15 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 							}
 						}
 					} while (referencedClasses.size() != clone.size());
+
+					warnIfStaticRobotInstanceFields();
 				}
 			} else {
-				// Make sure all static fields with robot instances are cleared!
-				// Otherwise these instances cannot be reached by the garbage collector.
-				// It was implemented due to this bug:
 				// Bug [2976754] - Battle engine consumes more CPU power over time
-				for (String className : referencedClasses) {		
-					cleanStaticRobotInstanceFields(className);
-			}
+				// TODO: Fix this hack later, when kid.DeltaSquad has been fixed.
+				if (fullClassName.startsWith("kid.DeltaSquad.")) {
+					cleanStaticRobotInstanceFields();
+				}
 			}
 		} catch (Throwable e) {
 			robotClass = null;
@@ -287,7 +289,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	public void cleanup() {
 		// Bug fix [2930266] - Robot static data isn't being GCed after battle
 		for (String className : getReferencedClasses()) {		
-			cleanStaticFields(className);
+			cleanStaticReferences(className);
 		}
 
 		parent = null;
@@ -298,11 +300,11 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	}
 
 	/**
-	 * Cleans all static fields on a class.
+	 * Cleans all static field references on a class.
 	 *
-	 * @param className the name of the class containing the fields to clean.
+	 * @param className the name of the class containing the static references to clean.
 	 */
-	private void cleanStaticFields(String className) {
+	private void cleanStaticReferences(String className) {
 		if (isSystemClass(className)) {
 			return;
 		}
@@ -317,49 +319,96 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 		if (type != null) {
 			for (Field field : getAllFields(new ArrayList<Field>(), type)) {
-				if (isStaticField(field)) {
-					cleanStaticField(field);
-			}
-		}
-	}
-	}
-
-	/**
-	 * Cleans all static fields on a class that is a IBasicRobot type.
-	 * This must be done in order to have the referenced robot(s) garbage collected.
-	 * It was implemented due to this bug:
-	 * Bug [2976754] - Battle engine consumes more CPU power over time
-	 *
-	 * @param className the name of the class containing the fields to clean.
-	 */
-	private void cleanStaticRobotInstanceFields(String className) {
-		if (isSystemClass(className)) {
-			return;
-		}
-
-		Class<?> type = null;
-
-		try {
-			type = loadRobotClassLocaly(className, false);
-		} catch (Throwable t) {
-			return;
-		}
-
-		if (type != null) {
-			for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
-				if (isStaticField(field) && IBasicRobot.class.isAssignableFrom(field.getType())) {
-					cleanStaticField(field);
+				if (isStaticReference(field)) {
+					cleanStaticReference(field);
 				}
 			}
 		}
 	}
 
 	/**
-	 * Cleans a field on a class if it is static, even if it is 'private static final'
+	 * Cleans all static fields on a class that is a IBasicRobot type.
+	 * It was implemented due to this bug:
+	 * Bug [2976754] - Battle engine consumes more CPU power over time
 	 *
-	 * @param field the field to clean, if it is static.
+	 * @param className the name of the class containing the fields to clean.
 	 */
-	private void cleanStaticField(Field field) {
+	private void cleanStaticRobotInstanceFields() {
+		for (String className : referencedClasses) {
+			if (isSystemClass(className)) {
+				continue;
+			}
+	
+			Class<?> type = null;
+	
+			try {
+				type = loadRobotClassLocaly(className, false);
+			} catch (Throwable t) {
+				continue;
+			}
+
+			if (type != null) {
+				for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
+					if (isStaticReference(field) && IBasicRobot.class.isAssignableFrom(field.getType())) {
+						cleanStaticReference(field);
+					}
+				}
+			}
+		}
+	}
+
+	private void warnIfStaticRobotInstanceFields() {	
+		List<Field> staticRobotReferences = new ArrayList<Field>();
+
+		for (String className : referencedClasses) {
+			if (isSystemClass(className)) {
+				continue;
+			}
+	
+			Class<?> type = null;
+	
+			try {
+				type = loadRobotClassLocaly(className, false);
+			} catch (Throwable t) {
+				continue;
+			}
+
+			if (type != null) {
+				for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
+					if (isStaticReference(field) && IBasicRobot.class.isAssignableFrom(field.getType())) {
+						String fullFieldName = field.getDeclaringClass().getName() + '.' + field.getName();
+
+						if (!staticRobotReferenceWarnCache.contains(fullFieldName)) {
+							staticRobotReferenceWarnCache.add(fullFieldName);
+
+							staticRobotReferences.add(field);
+						}
+					}
+				}
+			}
+		}
+
+		if (staticRobotReferences.size() > 0) {
+			StringBuilder buf = new StringBuilder();
+
+			buf.append(fullClassName + " uses static reference to a robot with the following field(s):");
+
+			for (Field field : staticRobotReferences) {
+				buf.append("\n\t").append(field.getDeclaringClass().getName()).append('.').append(field.getName()).append(", which points to a ").append(
+						field.getType().getName());
+			}
+			Logger.logWarning(buf.toString());
+			Logger.logWarning("Static references to robots can cause unwanted behaviour with the robot using these.");
+			Logger.logWarning("Please change static robot references to non-static references and recompile the robot.");
+		}
+	}
+
+	/**
+	 * Cleans a static field reference class, even when it is 'private static final'
+	 *
+	 * @param field the field to clean, if it is a static reference.
+	 */
+	private void cleanStaticReference(Field field) {
 		field.setAccessible(true);
 
 		try {
@@ -372,7 +421,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			modifiersField.setInt(field, modifiers & ~Modifier.FINAL); // Remove the FINAL modifier
 			field.set(null, null);
 		} catch (Throwable ignore) {}
-		}
+	}
 
 	/**
 	 * Gets all fields of a class (public, protected, private) and the ones inherited from all super classes.
@@ -412,13 +461,13 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	}
 
 	/**
-	 * Checks if a specified field is a true static field we can modify.
+	 * Checks if a specified field is a static reference.
 	 *
 	 * @param field the field to check.
-	 * @return true if the field is truly a static field; false otherwise. 
+	 * @return true if the field is static reference; false otherwise. 
 	 */
-	private static boolean isStaticField(Field field) {
-		return !((field.getModifiers() & Modifier.STATIC) == 0 || field.getType().isPrimitive()
-				|| field.isEnumConstant() || field.isSynthetic());
+	private static boolean isStaticReference(Field field) {
+		return Modifier.isStatic(field.getModifiers())
+				&& !(field.getType().isPrimitive() || field.isEnumConstant() || field.isSynthetic());
 	}
 }

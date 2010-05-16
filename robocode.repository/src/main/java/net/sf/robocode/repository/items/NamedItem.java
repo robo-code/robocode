@@ -117,6 +117,15 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 		return fullClassName;
 	}
 
+	public String getUniqueFullClassName() {
+		String uniqueFullClassName = getFullClassName();
+
+		if (isDevelopmentVersion()) {
+			uniqueFullClassName += '*';
+		}
+		return uniqueFullClassName;
+	}
+
 	public String getUniqueFullClassNameWithVersion() {
 		String uniqueFullClassName = (getVersion() == null) ? getFullClassName() : getFullClassNameWithVersion();
 
@@ -174,7 +183,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	}	
 
 	public RobotSpecification createRobotSpecification() {
-		return HiddenAccess.createSpecification(this, getUniqueFullClassNameWithVersion(), getAuthorName(),
+		return HiddenAccess.createSpecification(this, getUniqueFullClassName(), getAuthorName(),
 				(getWebpage() != null) ? getWebpage().toString() : null, getVersion(), getRobocodeVersion(),
 				root.getRootUrl().toString(), getFullClassName(), getDescription());
 	}
