@@ -32,6 +32,8 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -171,6 +173,13 @@ public class AvailableRobotsPanel extends JPanel {
 		if (availableRobotsScrollPane == null) {
 			availableRobotsScrollPane = new JScrollPane();
 			availableRobotsScrollPane.setViewportView(getAvailableRobotsList());
+
+			// Bug fix [2975871] - Minor visual bug - Currently selected robot gets covered
+			availableRobotsScrollPane.addComponentListener(new ComponentAdapter() {
+				public void componentResized(ComponentEvent e) {
+					getAvailableRobotsList().ensureIndexIsVisible(getAvailableRobotsList().getSelectedIndex());
+				}
+			});
 		}
 		return availableRobotsScrollPane;
 	}
