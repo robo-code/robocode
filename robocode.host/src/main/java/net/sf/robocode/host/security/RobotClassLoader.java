@@ -267,12 +267,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 					warnIfStaticRobotInstanceFields();
 				}
-			} else {
-				// Bug [2976754] - Battle engine consumes more CPU power over time
-				// TODO: Fix this hack later, when kid.DeltaSquad has been fixed.
-				if (fullClassName.startsWith("kid.DeltaSquad.")) {
-					cleanStaticRobotInstanceFields();
-				}
 			}
 		} catch (Throwable e) {
 			robotClass = null;
@@ -321,37 +315,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			for (Field field : getAllFields(new ArrayList<Field>(), type)) {
 				if (isStaticReference(field)) {
 					cleanStaticReference(field);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Cleans all static fields on a class that is a IBasicRobot type.
-	 * It was implemented due to this bug:
-	 * Bug [2976754] - Battle engine consumes more CPU power over time
-	 *
-	 * @param className the name of the class containing the fields to clean.
-	 */
-	private void cleanStaticRobotInstanceFields() {
-		for (String className : referencedClasses) {
-			if (isSystemClass(className)) {
-				continue;
-			}
-	
-			Class<?> type = null;
-	
-			try {
-				type = loadRobotClassLocaly(className, false);
-			} catch (Throwable t) {
-				continue;
-			}
-
-			if (type != null) {
-				for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
-					if (isStaticReference(field) && IBasicRobot.class.isAssignableFrom(field.getType())) {
-						cleanStaticReference(field);
-					}
 				}
 			}
 		}
