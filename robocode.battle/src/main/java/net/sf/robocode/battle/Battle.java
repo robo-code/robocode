@@ -758,9 +758,7 @@ public final class Battle extends BaseBattle {
 						robotPeer.waitSleeping(millisWait, microWait);
 					}
 				}
-				if (robotPeer.isRunning() && robotPeer.isAlive() && !robotPeer.isSleeping()) {
-					robotPeer.setSkippedTurns();
-				}
+				robotPeer.setSkippedTurns();
 			}
 		}
 	}
@@ -781,7 +779,7 @@ public final class Battle extends BaseBattle {
 			}
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
-			if (robotPeer.isRunning() && robotPeer.isAlive() && !robotPeer.isSleeping()) {
+			if (robotPeer.isAlive()) {
 				robotPeer.setSkippedTurns();
 			}
 		}

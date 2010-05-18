@@ -1470,7 +1470,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
-		StringBuffer message = new StringBuffer(repositoryItem.getFullClassNameWithVersion()).append(' ');
+		StringBuffer message = new StringBuffer(getName()).append(' ');
 
 		boolean disableInRepository = false; // Per default, robots are not disabled in the repository
 

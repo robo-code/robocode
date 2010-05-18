@@ -1,8 +1,9 @@
 Version 1.7.2.0
 The ".NET robots are now supported" release
-(17-May-2010)
+(18-May-2010)
 ---------------
 = Bugfixes =
+* Bug: Robots were disabled when skipping 30 skipping non-consecutive turns (or 120 turns when performing I/O operations). Now, Robocode is only disabling robots when the robot skips 30 consecutive turns, which is the original behavior, and which has been broken since version 1.6.1.4.
 * Bug [2994724] - Duplicate version numbers prevents uploading.
 * Bug [2994732] - tzu.TheArtOfWar 1.2 gets NullPointerExceptions.
 * Bug [2999719] - Problems with Graphics2D.fill/draw(Shape).
