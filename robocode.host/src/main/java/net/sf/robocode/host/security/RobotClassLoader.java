@@ -48,7 +48,6 @@ import java.nio.ByteBuffer;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,9 +72,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 	private static final PermissionCollection EMPTY_PERMISSIONS = new Permissions();
 
-	private static final List<String> staticRobotReferenceWarnCache = Collections.synchronizedList(
-			new ArrayList<String>());
-
 	protected final URL robotClassPath;
 	protected final String fullClassName;
 
@@ -86,6 +82,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	protected Class<?> robotClass;
 
 	private Set<String> referencedClasses = new HashSet<String>();
+
+	private String[] staticRobotInstanceWarning; // cached warning messages  
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		super(new URL[] { robotClassPath}, Container.systemLoader);
@@ -264,9 +262,9 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 							}
 						}
 					} while (referencedClasses.size() != clone.size());
-
-					warnIfStaticRobotInstanceFields();
 				}
+			} else {
+				warnIfStaticRobotInstanceFields();
 			}
 		} catch (Throwable e) {
 			robotClass = null;
@@ -320,49 +318,58 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		}
 	}
 
-	private void warnIfStaticRobotInstanceFields() {	
-		List<Field> staticRobotReferences = new ArrayList<Field>();
-
-		for (String className : referencedClasses) {
-			if (isSystemClass(className)) {
-				continue;
-			}
+	private void warnIfStaticRobotInstanceFields() {
+		if (staticRobotInstanceWarning == null) {
+			List<Field> staticRobotReferences = new ArrayList<Field>();
 	
-			Class<?> type = null;
+			for (String className : referencedClasses) {
+				if (isSystemClass(className)) {
+					continue;
+				}
+		
+				Class<?> type = null;
+		
+				try {
+					type = loadRobotClassLocaly(className, false);
+				} catch (Throwable t) {
+					continue;
+				}
 	
-			try {
-				type = loadRobotClassLocaly(className, false);
-			} catch (Throwable t) {
-				continue;
-			}
-
-			if (type != null) {
-				for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
-					if (isStaticReference(field) && IBasicRobot.class.isAssignableFrom(field.getType())) {
-						String fullFieldName = field.getDeclaringClass().getName() + '.' + field.getName();
-
-						if (!staticRobotReferenceWarnCache.contains(fullFieldName)) {
-							staticRobotReferenceWarnCache.add(fullFieldName);
-
+				if (type != null) {
+					for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
+						if (isStaticReference(field) && IBasicRobot.class.isAssignableFrom(field.getType())) {
 							staticRobotReferences.add(field);
 						}
 					}
 				}
 			}
+	
+			if (staticRobotReferences.size() > 0) {
+				StringBuilder buf = new StringBuilder();
+	
+				buf.append(fullClassName + " uses static reference to a robot with the following field(s):");
+	
+				for (Field field : staticRobotReferences) {
+					buf.append("\n\t").append(field.getDeclaringClass().getName()).append('.').append(field.getName()).append(", which points to a ").append(
+							field.getType().getName());
+				}
+
+				staticRobotInstanceWarning = new String[] {
+					buf.toString(),
+					"Static references to robots can cause unwanted behaviour with the robot using these.",
+					"Please change static robot references to non-static references and recompile the robot."};
+			} else {
+				staticRobotInstanceWarning = new String[] {}; // Signal that there is no warnings to cache
+			}
+		} else if (staticRobotInstanceWarning.length == 0) {
+			return; // Return, as no warnings should be written out in the robot console
 		}
 
-		if (staticRobotReferences.size() > 0) {
-			StringBuilder buf = new StringBuilder();
-
-			buf.append(fullClassName + " uses static reference to a robot with the following field(s):");
-
-			for (Field field : staticRobotReferences) {
-				buf.append("\n\t").append(field.getDeclaringClass().getName()).append('.').append(field.getName()).append(", which points to a ").append(
-						field.getType().getName());
+		// Write out warnings to the robot console
+		if (robotProxy != null) {
+			for (String line : staticRobotInstanceWarning) {
+				robotProxy.getOut().println("SYSTEM: " + line);
 			}
-			Logger.logWarning(buf.toString());
-			Logger.logWarning("Static references to robots can cause unwanted behaviour with the robot using these.");
-			Logger.logWarning("Please change static robot references to non-static references and recompile the robot.");
 		}
 	}
 

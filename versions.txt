@@ -1,6 +1,6 @@
 Version 1.7.2.0
 The ".NET robots are now supported" release
-(19-May-2010)
+(20-May-2010)
 ---------------
 = Bugfixes =
 * Bug: Robots were disabled when skipping 30 skipping non-consecutive turns (or 120 turns when performing I/O operations). Now, Robocode is only disabling robots when the robot skips 30 consecutive turns, which is the original behavior, and which has been broken since version 1.6.1.4.
@@ -12,7 +12,7 @@ The ".NET robots are now supported" release
 * Bug: A security exception was thrown with development robots trying to access their data directory.
 
 = Changes =
-* Robocode will now write out a warning in the main console when a robot is detected that uses static references to a robot, i.e. static fields that are declared as e.g. a Robot, AdvancedRobot, TeamRobot etc. (typically references to the robot itself). A static reference to a robot can cause unwanted behavior with the robot accessing these. It is strongly recommended that static robot references in a robot class or within its helper classes are changed into non-static references and that the robot is recompiled afterwards. In every round, Robocode is creating new instances of the individual robot, meaning that static references to former Robot objects points to "dead" objects that are not used anymore in the game, and which cannot be garbage collected during the battle.
+* Robocode will now write out a warning in the robot console when a robot is detected that uses static references to a robot, i.e. static fields that are declared as e.g. a Robot, AdvancedRobot, TeamRobot etc. (typically references to the robot itself). A static reference to a robot can cause unwanted behavior with the robot accessing these. Hence, it is strongly recommended that static robot references in a robot class or within its helper classes are changed into non-static references and that the robot is recompiled afterwards. In every round, Robocode is creating new instances of the individual robot, meaning that static references to former Robot objects points to "dead" objects that are not used anymore in the game, and which cannot be garbage collected during the battle when there is static references to these.
 
 Version 1.7.2.0 Beta 3
 The ".NET robots are now supported" release

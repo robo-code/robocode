@@ -384,6 +384,7 @@ public class AutoExtract implements ActionListener {
 			if (robotsDataDir.exists()) {
 				File underScoreDir = new File(robotsDataDir, "_");
 				String[] list = underScoreDir.list(); 
+
 				if (list != null) {
 					for (String fileName : list) {
 						File file = new File(underScoreDir, fileName);
