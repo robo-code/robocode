@@ -383,13 +383,15 @@ public class AutoExtract implements ActionListener {
 			// renaming files containing ".data/_" into ".data"
 			if (robotsDataDir.exists()) {
 				File underScoreDir = new File(robotsDataDir, "_");
-
-				for (String fileName : underScoreDir.list()) {
-					File file = new File(underScoreDir, fileName);
-
-					file.renameTo(new File(robotsDataDir, fileName));
+				String[] list = underScoreDir.list(); 
+				if (list != null) {
+					for (String fileName : list) {
+						File file = new File(underScoreDir, fileName);
+	
+						file.renameTo(new File(robotsDataDir, fileName));
+					}
+					underScoreDir.delete();
 				}
-				underScoreDir.delete();
 			}
 
 			// Create shortcuts and file associations
