@@ -757,8 +757,8 @@ public final class Battle extends BaseBattle {
 					} else {
 						robotPeer.waitSleeping(millisWait, microWait);
 					}
+					robotPeer.setSkippedTurns();
 				}
-				robotPeer.setSkippedTurns();
 			}
 		}
 	}
