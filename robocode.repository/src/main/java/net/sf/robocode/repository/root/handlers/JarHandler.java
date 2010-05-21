@@ -39,6 +39,10 @@ public class JarHandler extends RootHandler {
 				}
 			});
 
+			if (jars == null) {
+				return; // Avoid NPE by returning
+			}
+
 			// update jar files
 			for (File jar : jars) {
 				final String key = jar.toURI().toString();

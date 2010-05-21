@@ -8,6 +8,7 @@ The ".NET robots are now supported" release
 * Bug [2994732] - tzu.TheArtOfWar 1.2 gets NullPointerExceptions.
 * Bug [3003721] - Attempting to install robocode over an existing install NPEs.
 * Bug [2999719] - Problems with Graphics2D.fill/draw(Shape).
+* Bug [3005111] - NPE when uploading results.
 * Bug [2994560] - "Ignoring" messages in rumble are duplicated.
 * Bug [2975871] - Minor visual bug - Currently selected robot gets covered.
 * Bug: A security exception was thrown with development robots trying to access their data directory.
