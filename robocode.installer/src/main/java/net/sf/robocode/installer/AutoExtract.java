@@ -210,9 +210,9 @@ public class AutoExtract implements ActionListener {
 
 			jarIS = new JarInputStream(is);
 
-			JarEntry entry = jarIS.getNextJarEntry();
+			JarEntry entry;
 
-			while (entry != null) {
+			while ((entry = jarIS.getNextJarEntry()) != null) {
 				int spin = 0;
 
 				entryName = entry.getName();
@@ -224,10 +224,33 @@ public class AutoExtract implements ActionListener {
 							System.err.println("Can't create dir: " + dir);
 						}
 					}
-				} else {
-					if (!entryName.equals(name)) {
-						status.setText(entryName + " " + spinner[spin++]);
+				} else if (!entryName.equals(name)) {
 
+					// Skip .bat, .sh, and .command files depending on which OS Robocode is installed
+
+					final String entryNameLC = entryName.toLowerCase();
+
+					boolean skipEntry = false;
+
+					final boolean isBatFile = entryNameLC.length() > ".bat".length() && entryNameLC.endsWith(".bat");
+					final boolean isShFile = entryNameLC.length() > ".sh".length() && entryNameLC.endsWith(".sh");
+					final boolean isCommandFile = entryNameLC.length() > ".command".length()
+							&& entryNameLC.endsWith(".command");
+
+					// Unix systems and Mac OS X
+					if (File.separatorChar == '/') {
+						// Skip .bat files under Unix and Mac OS X
+						// Skip .command files under Unix
+						skipEntry = isBatFile || (isCommandFile && !isMacOSX());
+					} else {
+						// Under Windows the .sh and .command files are skipped
+						skipEntry = isShFile || isCommandFile;
+					}
+
+					// If we are not skipping the entry, then copy from our .jar into the installation dir
+					if (!skipEntry) {
+						status.setText(entryName + " " + spinner[spin++]);
+	
 						File out = new File(dest, entry.getName());
 						File parentDirectory = new File(out.getParent());
 
@@ -254,8 +277,10 @@ public class AutoExtract implements ActionListener {
 						}
 						fos.close();
 
-						if (entryName.length() > 3 && entryName.substring(entryName.length() - 3).equals(".sh")) {
-							if (File.separatorChar == '/') {
+						// Set file permissions for .sh and .command files under Unix and Mac OS X
+						if (File.separatorChar == '/') {
+							if (isShFile || isCommandFile) {
+								// Grant read and execute access for everyone and also write access for the owner of the file
 								Runtime.getRuntime().exec("chmod 755 " + out.toString());
 							}
 						}
@@ -263,7 +288,6 @@ public class AutoExtract implements ActionListener {
 						status.setText(entryName + " " + spinner[spin] + " (" + index + " bytes)");
 					}
 				}
-				entry = jarIS.getNextJarEntry();
 			}
 			statusDialog.dispose();
 			return true;
@@ -651,7 +675,11 @@ public class AutoExtract implements ActionListener {
 	private static boolean isWindowsOS() {
 		return osName.startsWith("Windows ");
 	}
-	
+
+	private static boolean isMacOSX() {
+		return osName.startsWith("Mac OS X");
+	}
+
 	private static String getWindowsCmd() {
 		String os = System.getProperty("os.name");
 
