@@ -94,6 +94,9 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     public native java.lang.String getFullClassNameWithVersion();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getUniqueFullClassName();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getUniqueFullClassNameWithVersion();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
