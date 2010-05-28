@@ -1,21 +1,21 @@
 Version 1.7.2.0
 The ".NET robots are now supported" release
-(20-May-2010)
+(28-May-2010)
 ---------------
 = Bugfixes =
 * Bug: Robots were disabled when skipping 30 skipping non-consecutive turns (or 120 turns when performing I/O operations). Now, Robocode is only disabling robots when the robot skips 30 consecutive turns, which is the original behavior, and which has been broken since version 1.6.1.4.
 * Bug [2994724] - Duplicate version numbers prevents uploading.
 * Bug [2994732] - tzu.TheArtOfWar 1.2 gets NullPointerExceptions.
-* Bug [3003721] - Attempting to install robocode over an existing install NPEs.
+* Bug [3003721] - Attempting to install Robocode over an existing install NPEs.
 * Bug [3005547] - The robocode.command is missing the execute permissions bit.
 * Bug [2999719] - Problems with Graphics2D.fill/draw(Shape).
 * Bug [3005111] - NPE when uploading results.
-* Bug [2994560] - "Ignoring" messages in rumble are duplicated.
+* Bug [2994560] - "Ignoring" messages in rumble is duplicated.
 * Bug [2975871] - Minor visual bug - Currently selected robot gets covered.
 * Bug: A security exception was thrown with development robots trying to access their data directory.
 
 = Changes =
-* Robocode will now only install batch files relevant to the hosting system, e.g., .bat files are not installed under Unix/Linux/Mac OS X, and .sh files are not installed under Windows. Futhermore, .command files are only installed under Mac OS X, and has now the execution permission bit set (due to bug [3005547]).
+* Robocode will now only install batch files relevant to the hosting system, e.g., .bat files are not installed under Unix/Linux/Mac OS X, and .sh files are not installed under Windows. Furthermore, .command files are only installed under Mac OS X, and has now the execution permission bit set (due to bug [3005547]).
 * Robocode will now write out a warning in the robot console when a robot is detected that uses static references to a robot, i.e. static fields that are declared as e.g. a Robot, AdvancedRobot, TeamRobot etc. (typically references to the robot itself). A static reference to a robot can cause unwanted behavior with the robot accessing these. Hence, it is strongly recommended that static robot references in a robot class or within its helper classes are changed into non-static references and that the robot is recompiled afterwards. In every round, Robocode is creating new instances of the individual robot, meaning that static references to former Robot objects points to "dead" objects that are not used anymore in the game, and which cannot be garbage collected during the battle when there is static references to these.
 
 Version 1.7.2.0 Beta 3
@@ -32,7 +32,7 @@ Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving 
 * Bug [2976258] - Strange thread exceptions with kid.DeltaSquad in 1.7.
 * Bug [2974178] - Krabb.sliNk.Garm 0.9u freezes often in 1.7.
 * Bug [2970414] - Occasionally losing the bit of text in the robot console.
-* Bug [2954723] - java.lang.Error: Interrupted attempt to aquire read lock.
+* Bug [2954723] - java.lang.Error: Interrupted attempt to acquire read lock.
 * Bug: Teams with versions could not be found in a development path.
 * Bug: Files in /robots/.data or /robots/.robotcache dir were put into a underscore sub-directory.
 * Bug: The "Kill Robot" button in the robot console windows was often disabled.
@@ -78,14 +78,14 @@ The ".NET robots are now supported" release
 * The robocode.control.RoundEndedEvent in the Control API has been extended with a new method named getTotalTurns() similar to the new robocode.RoundEndedEvent for the Robot API.
 * Req [2931696] - RateControlRobot vs. TeamRobot. The RateControlRobot is now a TeamRobot meaning that it can participate in team battles.
 * Req [2931684] - Skipped turn events. Added getSkippedTurn() method on the SkippedTurnEvent class, which returns the turn that was skipped. The getTime() returns the time when the SkippedTurnEvent was processed by the robot, which is always later when the robot is skipping turns. The message "SYSTEM: you skipped turn" has been improved, so it will tell which turn that was skipped like "SYSTEM: john.Doh skipped turn 43".
-* Req [2342293] - Screenshot of battleview. Press Ctrl+T on Windows and Linux, and Command+T for Mac OS in order to take a screenshot of the battleview. The screenshot will be saved in the Robocode folder named "screenshots", and the filename will be a timestamp for when the screenshot was taken.
+* Req [2342293] - Screenshot of battleview. Press Ctrl+T on Windows and Linux, and Command+T for Mac OS in order to take a screenshot of the battle view. The screenshot will be saved in the Robocode folder named "screenshots", and the filename will be a timestamp for when the screenshot was taken.
 * Req [2496661] - Launch Robocode from .battle (battle specification) and .br (battle record) files.
 * Req [2659612] - Add option to prevent speedup when minimized. This new View Option can now be set in the Preferences by putting a check mark into "Prevent speedup when minimized".
 * Req [2643438] - Renamed /robots/.robotcache to /robots/.data
 
 = Changes =
 * Browser support has been improved for Mac OS, Unix and Linux, which in most cases did not work properly.
-  - In previous versions of Robocode, the browser.sh was used to start up the user's prefered browser. The browser.sh file is not being used anymore. Hence, this file can safely be removed from your robocode installation dir.
+  - In previous versions of Robocode, the browser.sh was used to start up the user's preferred browser. The browser.sh file is not being used anymore. Hence, this file can safely be removed from your Robocode installation dir.
   - Now, Robocode will start up a browser under Mac OS, Unix and Linux with no use of scripts.
 * The Development Options dialog in the Preferences has been improved:
   - Changed from using single interval selection to multi selection interval.
