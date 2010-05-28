@@ -16,6 +16,11 @@
 
 		<!-- Create libs/robocode.jar file (for Robot Editor etc.) -->
 		<jar destfile="${launch-dir}/libs/robocode.jar" basedir="${basedir}/robocode.api/target/classes"/>
+
+		<!-- Copy ECJ compiler into launch dir -->
+		<copy todir="${launch-dir}/compilers">
+			<fileset file="${basedir}/robocode.content/target/classes/compilers/ecj.jar"/>
+		</copy>		
 	</target>
 
 	<target name="clean">

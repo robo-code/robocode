@@ -35,7 +35,7 @@
             <uniqueVersion>false</uniqueVersion>
             <id>net.sf.robocode-upload</id>
             <name>robocode release repository</name>
-            <url>sftp://fln,robocode@web.sourceforge.net/home/groups/r/ro/robocode/htdocs/maven2</url>
+            <url>sftp://fnl,robocode@web.sourceforge.net/home/groups/r/ro/robocode/htdocs/maven2</url>
         </repository>
     </distributionManagement>
     <repositories>
