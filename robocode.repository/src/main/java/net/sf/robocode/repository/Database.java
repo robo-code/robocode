@@ -300,7 +300,7 @@ public class Database {
 
 			for (IRepositoryRoot root : uniqueroots) {
 				((BaseRoot) root).setDatabase(res);
-				res.roots.put(root.toString(), root);
+				res.roots.put(root.getRootUrl().toString(), root);
 			}
 			for (IItem item : uniqueitems) {
 				res.putItem(item.getFullUrl().toString(), item);
