@@ -179,7 +179,7 @@ public class URLJarCollector {
 
 				Logger.logMessage("urlCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
 			}
-			Logger.logMessage("urlCache size: " + fileCache.size());
+			Logger.logMessage("urlCache size: " + urlCache.size());
 		}
 	}
 }
