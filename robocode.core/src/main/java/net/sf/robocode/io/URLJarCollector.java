@@ -158,14 +158,28 @@ public class URLJarCollector {
 		}
 	}
 
-	public static void dump() {
+	public static void dumpSunFileCache() {
 		if (sunJVM) {
-			for (Object u : fileCache.keySet()) {
-				final JarFile o = (JarFile) fileCache.get(u);
+			Logger.logMessage("Dumping fileCache...");
+			for (Object url : fileCache.keySet()) {
+				final JarFile jarFile = (JarFile) fileCache.get(url);
 
-				Logger.logMessage("remain " + u.toString() + " " + o.getName());
+				Logger.logMessage("fileCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
 			}
-			Logger.logMessage("count " + fileCache.size());
+			Logger.logMessage("fileCache size: " + fileCache.size());
+		}
+	}
+
+	public static void dumpSunUrlCache() {
+		if (sunJVM) {
+			Logger.logMessage("Dumping urlCache...");
+			for (Object urlJarFile : urlCache.keySet()) {
+				final URL url = (URL) urlCache.get(urlJarFile);
+				final JarFile jarFile = (JarFile) urlJarFile;
+
+				Logger.logMessage("urlCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
+			}
+			Logger.logMessage("urlCache size: " + fileCache.size());
 		}
 	}
 }
