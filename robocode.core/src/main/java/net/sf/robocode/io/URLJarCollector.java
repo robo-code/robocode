@@ -41,7 +41,7 @@ public class URLJarCollector {
 	static Field jarFileURL;
 	static boolean sunJVM;
 	static boolean enabled;
-	static Set<URL> urlToClean = new HashSet<URL>();
+	static Set<URL> urlsToClean = new HashSet<URL>();
 
 	static {
 		try {
@@ -101,26 +101,28 @@ public class URLJarCollector {
 		if (sunJVM) {
 			// Close all JarURLConnections if garbage collection is enabled
 			if (enabled) {
-				for (URL url : urlToClean) {
+				for (URL url : urlsToClean) {
 					closeJarURLConnection(url);
 				}
-				urlToClean.clear();
-			} else {
-				// Else, remove all cache entries to temporary jar cache files created
-				// for connections using the jarjar protocol that get stuck up.
-				for (Iterator<?> it = fileCache.keySet().iterator(); it.hasNext();) {
-					Object urlJarFile = it.next();
+				urlsToClean.clear();
+			}
 
-					final JarFile jarFile = (JarFile) fileCache.get(urlJarFile);
+			// Bug fix [2867326] - Lockup on start if too many bots in robots dir (cont'd).
 
-					String filename = jarFile.getName();
+			// Remove all cache entries to temporary jar cache files created
+			// for connections using the jarjar protocol that get stuck up.
+			for (Iterator<?> it = fileCache.keySet().iterator(); it.hasNext();) {
+				Object urlJarFile = it.next();
 
-					filename = filename.substring(filename.lastIndexOf(File.separatorChar) + 1).toLowerCase();
+				final JarFile jarFile = (JarFile) fileCache.get(urlJarFile);
 
-					if (filename.startsWith("jar_cache")) {
-						it.remove();
-						urlCache.remove(jarFile);
-					}
+				String filename = jarFile.getName();
+
+				filename = filename.substring(filename.lastIndexOf(File.separatorChar) + 1).toLowerCase();
+
+				if (filename.startsWith("jar_cache")) {
+					it.remove();
+					urlCache.remove(jarFile);
 				}
 			}
 		}
@@ -134,25 +136,41 @@ public class URLJarCollector {
 				try {
 					final URL url = (URL) jarFileURL.get(conn);
 
-					if (!urlToClean.contains(url)) {
-						urlToClean.add(url);
+					if (!urlsToClean.contains(url)) {
+						urlsToClean.add(url);
 					}
 				} catch (IllegalAccessException ignore) {}
 			}
 		}
 	}
 
-	public static void closeJarURLConnection(URL url) {
+	// Added due to bug fix [2867326] - Lockup on start if too many bots in robots dir (cont'd).
+	public synchronized static void closeJarURLConnection(URL url) {
 		if (url != null) {
-			JarFile jarFile = (JarFile) fileCache.get(url);
+			for (Iterator<?> it = fileCache.keySet().iterator(); it.hasNext();) {
+				Object urlJarFile = it.next();
 
-			if (jarFile != null) {
-				fileCache.remove(url);
-				urlCache.remove(jarFile);
+				final JarFile jarFile = (JarFile) fileCache.get(urlJarFile);
+
+				File urlFile;
+
 				try {
-					jarFile.close();
-				} catch (IOException e) {
-					Logger.logError(e);
+					urlFile = new File(url.toURI());
+				} catch (Exception e) {
+					urlFile = new File(url.getPath());
+				}
+
+				String jarFileName = jarFile.getName();
+				String urlFileName = urlFile.getPath();
+
+				if (urlFileName.equals(jarFileName)) {
+					it.remove();
+					urlCache.remove(jarFile);
+					try {
+						jarFile.close();
+					} catch (IOException e) {
+						Logger.logError(e);
+					}
 				}
 			}
 		}

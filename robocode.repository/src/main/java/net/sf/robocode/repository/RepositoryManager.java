@@ -108,6 +108,10 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public void reload(boolean forced) {
+		// Bug fix [2867326] - Lockup on start if too many bots in robots dir (cont'd).
+		URLJarCollector.enableGc(true);
+		URLJarCollector.gc();
+
 		if (forced) {
 			db = new Database(this);
 			Logger.logMessage("Rebuilding robot database...");
