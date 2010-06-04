@@ -17,6 +17,7 @@ package net.sf.robocode.io;
 
 import java.net.URLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.jar.JarFile;
@@ -152,13 +153,13 @@ public class URLJarCollector {
 
 				final JarFile jarFile = (JarFile) fileCache.get(urlJarFile);
 
-				File urlFile;
+				String urlPath = url.getPath();
 
 				try {
-					urlFile = new File(url.toURI());
-				} catch (Exception e) {
-					urlFile = new File(url.getPath());
-				}
+					urlPath = URLDecoder.decode(urlPath, "UTF-8");
+				} catch (java.io.UnsupportedEncodingException ignore) {}
+
+				File urlFile = new File(urlPath);
 
 				String jarFileName = jarFile.getName();
 				String urlFileName = urlFile.getPath();

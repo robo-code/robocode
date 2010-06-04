@@ -23,8 +23,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.StringTokenizer;
 
 
@@ -187,7 +190,18 @@ public class RobotDescriptionPanel extends JPanel {
 			final URL url = robotSpecification.getFullUrl();
 
 			if (url != null) {
-				getFilePathLabel().setText(url.toString());
+				String path = url.getPath().replace("file:", "").replace("jar:", "");
+
+				if (path.startsWith("/") && File.separatorChar == '\\') {
+					path = path.substring(1);
+				}
+				while (path.endsWith("/") || path.endsWith("!")) {
+					path = path.substring(0, path.length() - 1);
+				}
+				try {
+					path = URLDecoder.decode(path, "UTF-8");
+				} catch (UnsupportedEncodingException ignore) {}
+				getFilePathLabel().setText(path);
 			} else {
 				getFilePathLabel().setText("");
 			}
