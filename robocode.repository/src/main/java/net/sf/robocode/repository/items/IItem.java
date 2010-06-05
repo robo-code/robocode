@@ -22,11 +22,11 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public interface IItem extends Comparable<Object> {
-	URL getFullUrl();
-	List<String> getFriendlyUrls();
+	URL getItemURL();
 	IRepositoryRoot getRoot();
-	long getLastModified();
+	List<String> getFriendlyURLs();
 
 	void update(long lastModified, boolean force);
+	long getLastModified();
 	boolean isValid();
 }

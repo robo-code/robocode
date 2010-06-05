@@ -55,7 +55,7 @@ public class PropertiesHandler extends ItemHandler {
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
 		final RobotItem robotItem = new RobotItem(root);
 
-		robotItem.setPropertiesUrl(itemURL);
+		robotItem.setPropertiesURL(itemURL);
 
 		final String lang = robotItem.getRobotLanguage();
 

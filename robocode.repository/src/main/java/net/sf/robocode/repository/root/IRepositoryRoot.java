@@ -22,12 +22,12 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public interface IRepositoryRoot {
+	URL getURL();
+	File getPath();
 	void update(boolean updateInvalid);
 	void update(IItem item, boolean force);
 	boolean isChanged(IItem item);
-	URL getRootUrl();
-	File getRootPath();
-	boolean isJar();
-	boolean isDevel();
-	void extractJar();
+	boolean isJAR();
+	boolean isDevelopmentRoot();
+	void extractJAR();
 }

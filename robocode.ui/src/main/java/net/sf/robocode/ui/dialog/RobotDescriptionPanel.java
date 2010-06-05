@@ -187,7 +187,7 @@ public class RobotDescriptionPanel extends JPanel {
 				name += " by " + s;
 			}
 			getRobotNameLabel().setText(name);
-			final URL url = robotSpecification.getFullUrl();
+			final URL url = robotSpecification.getItemURL();
 
 			if (url != null) {
 				String path = url.getPath().replace("file:", "").replace("jar:", "");

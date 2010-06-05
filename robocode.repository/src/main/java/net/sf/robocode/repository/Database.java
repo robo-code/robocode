@@ -74,7 +74,7 @@ public class Database {
 		if (itemKey != null) {
 			items.put(itemKey, item);
 		}
-		final List<String> friendlyUrls = item.getFriendlyUrls();
+		final List<String> friendlyUrls = item.getFriendlyURLs();
 
 		if (friendlyUrls != null) {
 			for (String friendly : friendlyUrls) {
@@ -153,7 +153,7 @@ public class Database {
 			botPath = botPath.replace('.', '/');
 
 			// first load from same classPath
-			String teamBot = team.getRoot().getRootUrl() + botPath;
+			String teamBot = team.getRoot().getURL() + botPath;
 			IItem res = getItem(teamBot);
 
 			if (res != null && res instanceof RobotItem) {
@@ -189,7 +189,7 @@ public class Database {
 			if (onlyWithPackage && spec.getFullPackage() == null) {
 				continue;
 			}
-			if (onlyInJar && !spec.isInJar()) {
+			if (onlyInJar && !spec.isInJAR()) {
 				continue;
 			}
 			if (onlyRobots && !(item instanceof RobotItem)) {
@@ -300,10 +300,10 @@ public class Database {
 
 			for (IRepositoryRoot root : uniqueroots) {
 				((BaseRoot) root).setDatabase(res);
-				res.roots.put(root.getRootUrl().toString(), root);
+				res.roots.put(root.getURL().toString(), root);
 			}
 			for (IItem item : uniqueitems) {
-				res.putItem(item.getFullUrl().toString(), item);
+				res.putItem(item.getItemURL().toString(), item);
 			}
 			return res;
 		} catch (Throwable t) {

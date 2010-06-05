@@ -70,7 +70,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 		robotFileSystemManager = new RobotFileSystemManager(this, hostManager.getRobotFilesystemQuota(),
 				robotSpecification.getWritableDirectory(), robotSpecification.getReadableDirectory(),
-				robotSpecification.getRootFile());
+				robotSpecification.getRootPath());
 
 		robotFileSystemManager.initialize();
 	}

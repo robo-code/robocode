@@ -93,22 +93,22 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	public void update(IItem item, boolean force) {
-		File f = new File(item.getFullUrl().toString());
+		File f = new File(item.getItemURL().toString());
 
 		item.update(f.lastModified(), force);
 	}
 
 	public boolean isChanged(IItem item) {
-		File f = new File(item.getFullUrl().toString());
+		File f = new File(item.getItemURL().toString());
 
 		return f.lastModified() > item.getLastModified();
 	}
 
-	public boolean isDevel() {
+	public boolean isDevelopmentRoot() {
 		return true;
 	}
 
-	public boolean isJar() {
+	public boolean isJAR() {
 		return false;
 	}
 

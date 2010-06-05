@@ -44,45 +44,46 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 	private final static String TEAM_MEMBERS = "team.members";
 	private final static String ROBOCODE_VERSION = "robocode.version";
 
-	private final String teamFullName;
+	private final String fullTeamName;
 
-	public TeamItem(URL url, IRepositoryRoot root) {
-		super(url, root);
-		String tUrl = url.toString();
+	public TeamItem(URL itemURL, IRepositoryRoot root) {
+		super(itemURL, root);
+		String tUrl = itemURL.toString();
 
 		tUrl = tUrl.substring(0, tUrl.lastIndexOf(".team"));
 		final int versionSeparator = tUrl.lastIndexOf(" ");
-		final int rootLen = root.getRootUrl().toString().length();
+		final int rootLen = root.getURL().toString().length();
 
 		if (versionSeparator != -1) {
-			teamFullName = tUrl.substring(rootLen, versionSeparator).replace('/', '.').replace('\\', '.');
+			fullTeamName = tUrl.substring(rootLen, versionSeparator).replace('/', '.').replace('\\', '.');
 		} else {
-			teamFullName = tUrl.substring(rootLen).replace('/', '.').replace('\\', '.');
+			fullTeamName = tUrl.substring(rootLen).replace('/', '.').replace('\\', '.');
 		}
 		if (loadProperties()) {
 			isValid = true;
 		}
 	}
 
-	private void htmlUrlFromPropertiesUrl() {
+	private void htmlURLFromPropertiesURL() {
 		try {
-			htmlUrl = new URL(url.toString().replaceAll("\\.team", ".html"));
+			htmlURL = new URL(itemURL.toString().replaceAll("\\.team", ".html"));
+
 			// test that html file exists
-			final URLConnection conn = URLJarCollector.openConnection(htmlUrl);
+			final URLConnection conn = URLJarCollector.openConnection(htmlURL);
 
 			conn.getInputStream().close();
 		} catch (IOException ignored) {
 			// doesn't exist
-			htmlUrl = null;
+			htmlURL = null;
 		}
 	}
 
-	public List<String> getFriendlyUrls() {
+	public List<String> getFriendlyURLs() {
 		final ArrayList<String> urls = new ArrayList<String>();
-		final String tUrl = url.toString();
+		final String tUrl = itemURL.toString();
 
 		urls.add(tUrl.substring(0, tUrl.lastIndexOf('.')));
-		urls.add(url.getFile());
+		urls.add(itemURL.getFile());
 		urls.add(getFullClassName());
 		urls.add(getUniqueFullClassNameWithVersion());
 		return urls;
@@ -96,11 +97,11 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 	}
 
 	private boolean loadProperties() {
-		if (url != null) {
+		if (itemURL != null) {
 			InputStream ios = null;
 
 			try {
-				final URLConnection connection = URLJarCollector.openConnection(url);
+				final URLConnection connection = URLJarCollector.openConnection(itemURL);
 
 				ios = connection.getInputStream();
 				
@@ -115,16 +116,16 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		return false;
 	}
 
-	public URL getHtmlUrl() {
+	public URL getHtmlURL() {
 		// lazy
-		if (htmlUrl == null) {
-			htmlUrlFromPropertiesUrl();
+		if (htmlURL == null) {
+			htmlURLFromPropertiesURL();
 		}
-		return htmlUrl;
+		return htmlURL;
 	}
 
-	public URL getPropertiesUrl() {
-		return url;
+	public URL getPropertiesURL() {
+		return itemURL;
 	}
 
 	public boolean isTeam() {
@@ -132,7 +133,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 	}
 
 	public String getFullClassName() {
-		return teamFullName;
+		return fullTeamName;
 	}
 
 	public String getMembers() {
@@ -168,7 +169,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 	}
 
 	public String toString() {
-		return url.toString();
+		return itemURL.toString();
 	}
 
 	public void storeProperties(OutputStream os) throws IOException {
@@ -200,7 +201,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		FileOutputStream os = null;
 
 		try {
-			Properties team = loadTeamProps(target);
+			Properties team = loadTeamProperties(target);
 
 			if (robocodeVersion != null) {
 				team.setProperty(ROBOCODE_VERSION, robocodeVersion);
@@ -228,7 +229,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		}
 	}
 
-	private static Properties loadTeamProps(File target) {
+	private static Properties loadTeamProperties(File target) {
 		Properties team = new Properties();
 
 		if (target.exists()) {

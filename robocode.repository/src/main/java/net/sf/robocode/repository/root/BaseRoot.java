@@ -46,7 +46,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 		this.rootURL = url;
 	}
 
-	public URL getRootUrl() {
+	public URL getURL() {
 		try {
 			return rootPath != null ? rootPath.toURI().toURL() : null;
 		} catch (MalformedURLException e) {
@@ -54,7 +54,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 		}
 	}
 
-	public File getRootPath() {
+	public File getPath() {
 		return rootPath;
 	}
 
@@ -66,7 +66,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 		return rootURL != null ? rootURL.toString() : null;
 	}
 
-	public void extractJar() {
+	public void extractJAR() {
 		throw new UnsupportedOperationException();
 	}
 }

@@ -248,10 +248,10 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public int extractJar(IRepositoryItem item) {
-		if (!item.isInJar()) {
+		if (!item.isInJAR()) {
 			return -2;
 		}
-		((BaseItem) item).getRoot().extractJar();
+		((BaseItem) item).getRoot().extractJAR();
 		return 0; 
 	}
 

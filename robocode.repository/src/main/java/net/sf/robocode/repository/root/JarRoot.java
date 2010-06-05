@@ -149,19 +149,19 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		return rootPath.lastModified() > lastModified;
 	}
 
-	public URL getRootUrl() {
+	public URL getURL() {
 		return jarUrl;
 	}
 
-	public boolean isDevel() {
+	public boolean isDevelopmentRoot() {
 		return false;
 	}
 
-	public boolean isJar() {
+	public boolean isJAR() {
 		return true;
 	}
 
-	public void extractJar() {
+	public void extractJAR() {
 		JarExtractor.extractJar(rootURL);
 	}
 

@@ -27,7 +27,7 @@ public interface IRepositoryItem extends Comparable<Object> {
 
 	boolean isTeam();
 
-	boolean isInJar();
+	boolean isInJAR();
 
 	void setValid(boolean value);
 
@@ -41,11 +41,11 @@ public interface IRepositoryItem extends Comparable<Object> {
 
 	boolean isJavaSourceIncluded();
 
-	String getRootFile();
+	String getRootPath();
 
-	URL getFullUrl();
+	URL getItemURL();
 
-	URL getPropertiesUrl();
+	URL getPropertiesURL();
 
 	long getLastModified();
 

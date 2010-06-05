@@ -31,14 +31,14 @@ import java.util.StringTokenizer;
 public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	private static final long serialVersionUID = 1L;
 
-	public NamedItem(URL url, IRepositoryRoot root) {
-		super(url, root);
+	protected Properties properties = new Properties();
+	protected URL htmlURL;
+
+	public NamedItem(URL itemURL, IRepositoryRoot root) {
+		super(itemURL, root);
 	}
 
-	protected Properties properties = new Properties();
-	protected URL htmlUrl;
-
-	public abstract URL getPropertiesUrl();
+	public abstract URL getPropertiesURL();
 
 	public abstract String getFullClassName();
 
@@ -52,19 +52,20 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 
 	public abstract String getDescription();
 
-	public abstract URL getHtmlUrl();
+	public abstract URL getHtmlURL();
 
 	public void storeHtml(OutputStream os) throws IOException {
-		if (htmlUrl != null) {// TODO ZAMO
+		if (htmlURL != null) {// TODO ZAMO
 		}
 	}
 
 	public boolean isDevelopmentVersion() {
-		return root.isDevel() && !(getFullClassName().startsWith("sample") || getFullClassName().startsWith("tested.")); 
+		return root.isDevelopmentRoot()
+				&& !(getFullClassName().startsWith("sample") || getFullClassName().startsWith("tested.")); 
 	}
 
-	public String getRootFile() {
-		return root.getRootUrl().toString();
+	public String getRootPath() {
+		return root.getURL().toString();
 	}
 
 	public String getRootPackage() {
@@ -185,7 +186,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 	public RobotSpecification createRobotSpecification() {
 		return HiddenAccess.createSpecification(this, getUniqueFullClassName(), getAuthorName(),
 				(getWebpage() != null) ? getWebpage().toString() : null, getVersion(), getRobocodeVersion(),
-				root.getRootUrl().toString(), getFullClassName(), getDescription());
+				root.getURL().toString(), getFullClassName(), getDescription());
 	}
 
 	public int compareTo(Object other) {

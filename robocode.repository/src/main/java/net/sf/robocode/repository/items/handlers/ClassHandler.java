@@ -46,8 +46,8 @@ public class ClassHandler extends ItemHandler {
 		if (item == null) {
 			item = new RobotItem(root);
 		}
-		item.setClassPathURL(root.getRootUrl());
-		item.setClassUrl(itemURL);
+		item.setClassPathURL(root.getURL());
+		item.setClassURL(itemURL);
 
 		db.putItem(itemKey, item);
 		return item;

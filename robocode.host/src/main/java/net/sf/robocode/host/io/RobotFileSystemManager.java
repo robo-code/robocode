@@ -44,15 +44,15 @@ public class RobotFileSystemManager {
 	private final long maxQuota;
 	private final String writableRootDirectory;
 	private final String readableRootDirectory;
-	private final String rootFile;
+	private final String rootPath;
 	private final String dataDir;
 
-	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String writableRootDirectory, String readableRootDirectory, String rootFile) {
+	public RobotFileSystemManager(IHostedThread robotProxy, long maxQuota, String writableRootDirectory, String readableRootDirectory, String rootPath) {
 		this.robotProxy = robotProxy;
 		this.maxQuota = maxQuota;
 		this.writableRootDirectory = writableRootDirectory;
 		this.readableRootDirectory = readableRootDirectory;
-		this.rootFile = rootFile;
+		this.rootPath = rootPath;
 
 		this.dataDir = robotProxy.getStatics().getFullClassName().replace('.', '/') + ".data/";
 	}
@@ -143,7 +143,7 @@ public class RobotFileSystemManager {
 			OutputStream os = null;
 
 			try {
-				URL unUrl = new URL(rootFile + dataDir + filename);
+				URL unUrl = new URL(rootPath + dataDir + filename);
 				final URLConnection connection = unUrl.openConnection();
 
 				connection.setUseCaches(false);
@@ -241,7 +241,7 @@ public class RobotFileSystemManager {
 
 	private void updateDataFiles() {
 		try {
-			if (rootFile.startsWith("jar:")) {
+			if (rootPath.startsWith("jar:")) {
 				updateDataFilesFromJar();
 			}
 		} catch (IOException e) {
@@ -250,7 +250,7 @@ public class RobotFileSystemManager {
 	}
 
 	private void updateDataFilesFromJar() throws IOException {
-		URL url = new URL(rootFile);
+		URL url = new URL(rootPath);
 		JarURLConnection jarConnection = (JarURLConnection) url.openConnection();
 
 		jarConnection.setUseCaches(false);
