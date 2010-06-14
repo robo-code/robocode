@@ -25,8 +25,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -79,14 +81,23 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 	}
 
 	public List<String> getFriendlyURLs() {
-		final ArrayList<String> urls = new ArrayList<String>();
-		final String tUrl = itemURL.toString();
+		final Set<String> urls = new HashSet<String>();
 
-		urls.add(tUrl.substring(0, tUrl.lastIndexOf('.')));
-		urls.add(itemURL.getFile());
-		urls.add(getFullClassName());
+		final String tUrl = itemURL.toString();
+		final String noType = tUrl.substring(0, tUrl.lastIndexOf('.'));
+
+		urls.add(tUrl);
+		urls.add(noType);
+		urls.add(itemURL.getPath());
+
+		if (System.getProperty("TESTING", "false").equals("true")) {
+			urls.add(getFullClassName());
+		} else {
+			urls.add(getUniqueFullClassName());
+		}
 		urls.add(getUniqueFullClassNameWithVersion());
-		return urls;
+
+		return new ArrayList<String>(urls);
 	}
 
 	public void update(long lastModified, boolean force) {
