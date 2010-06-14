@@ -34,17 +34,14 @@ public class TeamHandler extends ItemHandler {
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		final String itemKey = itemURL.toString();
+		final String itemKey = itemURL.getPath();
 
-		TeamItem item = (TeamItem) db.getOldItem(itemKey);
+		TeamItem item = (TeamItem) db.getItem(itemKey);
 
-		if (item == null) {
-			item = (TeamItem) db.getItem(itemKey);
-		}
 		if (item == null) {
 			item = new TeamItem(itemURL, root);
 		}
-		db.putItem(itemKey, item);
+		db.putItem(item);
 		return item;
 	}
 }

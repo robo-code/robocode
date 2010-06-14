@@ -22,6 +22,7 @@ import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.handlers.RootHandler;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.util.*;
 
 
@@ -38,30 +39,35 @@ public class Database {
 		this.manager = manager;
 	}
 
-	public boolean update(File robotsDir, List<File> devDirs, boolean updateInvalid) {
+	public boolean update(File robotsDir, List<File> devDirs, boolean force) {
 		final int prev = items.size();
-		Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
 
 		RootHandler.openHandlers();
-		RootHandler.visitDirectories(robotsDir, false, newroots, roots, this, updateInvalid);
+
+		Hashtable<String, IRepositoryRoot> newroots = new Hashtable<String, IRepositoryRoot>();
+
+		RootHandler.visitDirectories(robotsDir, false, newroots, roots, this, force);
 		for (File dir : devDirs) {
-			RootHandler.visitDirectories(dir, true, newroots, roots, this, updateInvalid);
+			RootHandler.visitDirectories(dir, true, newroots, roots, this, force);
 		}
 
 		// removed roots
 		for (IRepositoryRoot oldRoot : roots.values()) {
-			moveOldItems(oldRoot);
+			if (!newroots.containsKey(oldRoot.getURL().toString())) {
+				moveOldItems(oldRoot);
+			}
 		}
+
 		roots = newroots;
 		oldItems = new Hashtable<String, IItem>();
 
 		RootHandler.closeHandlers();
-		System.gc();
+
 		return prev != items.size();
 	}
 
-	public boolean update(String itemKey, boolean force) {
-		final IItem item = items.get(itemKey);
+	public boolean update(String file, boolean force) {
+		final IItem item = items.get(file);
 
 		if (item != null) {
 			item.getRoot().update(item, force);
@@ -70,10 +76,7 @@ public class Database {
 		return false; 
 	}
 
-	public void putItem(String itemKey, IItem item) {
-		if (itemKey != null) {
-			items.put(itemKey, item);
-		}
+	public void putItem(IItem item) {
 		final List<String> friendlyUrls = item.getFriendlyURLs();
 
 		if (friendlyUrls != null) {
@@ -94,12 +97,13 @@ public class Database {
 		}
 	}
 
-	public IItem getItem(String itemKey) {
-		return items.get(itemKey);
-	}
+	public IItem getItem(String file) {
+		IItem item = oldItems.get(file);
 
-	public IItem getOldItem(String itemKey) {
-		return oldItems.get(itemKey);
+		if (item == null) {
+			item = items.get(file);
+		}
+		return item;
 	}
 
 	public void moveOldItems(IRepositoryRoot root) {
@@ -300,10 +304,14 @@ public class Database {
 
 			for (IRepositoryRoot root : uniqueroots) {
 				((BaseRoot) root).setDatabase(res);
-				res.roots.put(root.getURL().toString(), root);
+				String key = root.getURL().toString();
+
+				key = URLDecoder.decode(key, "UTF-8");
+
+				res.roots.put(key, root);
 			}
 			for (IItem item : uniqueitems) {
-				res.putItem(item.getItemURL().toString(), item);
+				res.putItem(item);
 			}
 			return res;
 		} catch (Throwable t) {

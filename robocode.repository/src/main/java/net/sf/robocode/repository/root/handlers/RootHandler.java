@@ -17,26 +17,26 @@ import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.io.File;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public abstract class RootHandler {
-	public abstract void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid);
+	public abstract void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force);
 
 	public void open() {}
 
 	public void close() {}
 
-	public static void visitDirectories(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
+	public static void visitDirectories(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {
 		// walk thru all plugins
 		final List<RootHandler> itemHandlerList = Container.getComponents(RootHandler.class);
 
 		for (RootHandler handler : itemHandlerList) {
-			handler.visitDirectory(dir, isDevel, newroots, roots, db, updateInvalid);
+			handler.visitDirectory(dir, isDevel, newroots, roots, db, force);
 		}
 	}
 

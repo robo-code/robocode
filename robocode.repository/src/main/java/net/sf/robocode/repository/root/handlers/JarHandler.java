@@ -21,14 +21,14 @@ import net.sf.robocode.io.URLJarCollector;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.MalformedURLException;
-import java.util.Hashtable;
+import java.util.Map;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class JarHandler extends RootHandler {
-	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
+	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {
 		if (!isDevel) {
 			// find jar files
 			final File[] jars = dir.listFiles(new FileFilter() {
@@ -45,7 +45,14 @@ public class JarHandler extends RootHandler {
 
 			// update jar files
 			for (File jar : jars) {
-				final String key = jar.toURI().toString();
+				String key;
+
+				try {
+					key = "jar:" + jar.toURI().toURL().toString() + "!/";
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+					continue;
+				}
 				IRepositoryRoot root = roots.get(key);
 
 				if (root == null) {
@@ -54,7 +61,7 @@ public class JarHandler extends RootHandler {
 					roots.remove(key);
 				}
 
-				root.update(updateInvalid);
+				root.update(force);
 				newroots.put(key, root);
 
 				try {

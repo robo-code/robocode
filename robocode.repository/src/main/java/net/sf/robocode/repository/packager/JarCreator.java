@@ -33,6 +33,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.net.URL;
+import java.net.URLDecoder;
 
 
 /**
@@ -155,7 +156,10 @@ public class JarCreator {
 
 		if (includeSource && !entries.contains(javaFileName) && !name.contains("$")) {
 			for (URL sourcePathURL : robot.getSourcePathURLs()) {
-				File javaFile = new File(sourcePathURL.getFile(), javaFileName);
+				String sourcePath = sourcePathURL.getPath();
+
+				sourcePath = URLDecoder.decode(sourcePath, "UTF-8");
+				File javaFile = new File(sourcePath, javaFileName);
 
 				if (javaFile.exists()) {
 					JarEntry je = new JarEntry(javaFileName);
@@ -170,7 +174,10 @@ public class JarCreator {
 				}
 			}
 		}
-		File classFile = new File(robot.getClassPathURL().getFile(), classFileName);
+		String classPath = robot.getClassPathURL().getPath();
+
+		classPath = URLDecoder.decode(classPath, "UTF-8");
+		File classFile = new File(classPath, classFileName);
 
 		if (classFile.exists() && !entries.contains(classFileName)) {
 			JarEntry je = new JarEntry(classFileName);

@@ -24,7 +24,7 @@ import java.net.URL;
 public interface IRepositoryRoot {
 	URL getURL();
 	File getPath();
-	void update(boolean updateInvalid);
+	void update(boolean force);
 	void update(IItem item, boolean force);
 	boolean isChanged(IItem item);
 	boolean isJAR();

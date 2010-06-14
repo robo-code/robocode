@@ -36,20 +36,15 @@ public class ClassHandler extends ItemHandler {
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		final String itemKey = getItemKey(itemURL, root);
-
-		RobotItem item = (RobotItem) db.getOldItem(itemKey);
+		RobotItem item = (RobotItem) db.getItem(itemURL.toString());
 
 		if (item == null) {
-			item = (RobotItem) db.getItem(itemKey);
-		}
-		if (item == null) {
-			item = new RobotItem(root);
+			item = new RobotItem(itemURL, root);
 		}
 		item.setClassPathURL(root.getURL());
 		item.setClassURL(itemURL);
 
-		db.putItem(itemKey, item);
+		db.putItem(item);
 		return item;
 	}
 }

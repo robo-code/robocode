@@ -190,17 +190,22 @@ public class RobotDescriptionPanel extends JPanel {
 			final URL url = robotSpecification.getItemURL();
 
 			if (url != null) {
-				String path = url.getPath().replace("file:", "").replace("jar:", "");
+				String path = url.toString();
 
+				// Replace protocol names
+				path = path.replace("file:", "").replace("jarjar:", "").replace("jar:", "");
+
+				// Replace jar and jarjar separators
+				path = path.replace("!/", "/").replace("^", "/");
+
+				// Replace starting / under Windows
 				if (path.startsWith("/") && File.separatorChar == '\\') {
 					path = path.substring(1);
-				}
-				while (path.endsWith("/") || path.endsWith("!")) {
-					path = path.substring(0, path.length() - 1);
 				}
 				try {
 					path = URLDecoder.decode(path, "UTF-8");
 				} catch (UnsupportedEncodingException ignore) {}
+
 				getFilePathLabel().setText(path);
 			} else {
 				getFilePathLabel().setText("");

@@ -93,8 +93,8 @@ public class RepositoryManager implements IRepositoryManager {
 		return refresh(false);
 	}
 
-	public boolean refresh(boolean updateInvalid) {
-		boolean refreshed = db.update(getRobotsDirectory(), getDevelDirectories(), updateInvalid);
+	public boolean refresh(boolean force) {
+		boolean refreshed = db.update(getRobotsDirectory(), getDevelDirectories(), force);
 
 		if (refreshed) {
 			setStatus("Saving robot database");
@@ -113,8 +113,8 @@ public class RepositoryManager implements IRepositoryManager {
 		URLJarCollector.gc();
 
 		if (forced) {
-			db = new Database(this);
 			Logger.logMessage("Rebuilding robot database...");
+			db = new Database(this);
 		} else if (db == null) {
 			setStatus("Reading robot database");
 			db = Database.load(this);

@@ -22,7 +22,7 @@ import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.Hashtable;
+import java.util.Map;
 
 
 /**
@@ -32,7 +32,7 @@ import java.util.Hashtable;
  * @author Flemming N. Larsen (contributor)
  */
 public class ClassPathHandler extends RootHandler {
-	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {	
+	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {	
 		if (isDevel) {
 			File classpathFile = new File(dir, ".classpath");
 
@@ -42,7 +42,7 @@ public class ClassPathHandler extends RootHandler {
 				boolean parsed = true;
 
 				try {
-					classpathParser.parse(classpathFile.toURL());
+					classpathParser.parse(classpathFile.toURI().toURL());
 				} catch (MalformedURLException e) {
 					parsed = false;
 				}
@@ -52,14 +52,14 @@ public class ClassPathHandler extends RootHandler {
 					if (classPath != null) {
 						File classPathDir = new File(dir, classPath);
 
-						handleDirectory(classPathDir, dir, newroots, roots, db, updateInvalid);			
+						handleDirectory(classPathDir, dir, newroots, roots, db, force);			
 					}
 
 					for (String sourcePath : classpathParser.getSourcePaths()) {
 						if (sourcePath != null) {
 							File sourcePathDir = new File(dir, sourcePath);
 
-							handleDirectory(sourcePathDir, dir, newroots, roots, db, updateInvalid);			
+							handleDirectory(sourcePathDir, dir, newroots, roots, db, force);			
 						}
 					}
 
@@ -67,11 +67,18 @@ public class ClassPathHandler extends RootHandler {
 				}
 			}
 		}
-		handleDirectory(dir, null, newroots, roots, db, updateInvalid);
+		handleDirectory(dir, null, newroots, roots, db, force);
 	}
 
-	private void handleDirectory(File dir, File parentDir, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
-		final String key = dir.toURI().toString();
+	private void handleDirectory(File dir, File parentDir, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {
+		String key;
+
+		try {
+			key = dir.toURI().toURL().toString();
+		} catch (MalformedURLException e) {
+			return;
+		}
+
 		IRepositoryRoot root = roots.get(key);
 
 		if (root == null) {
@@ -79,7 +86,7 @@ public class ClassPathHandler extends RootHandler {
 		} else {
 			roots.remove(key);
 		}
-		root.update(updateInvalid);
-		newroots.put(dir.toURI().toString(), root);
+		root.update(force);
+		newroots.put(key, root);
 	}
 }

@@ -83,8 +83,8 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private String className;
 	protected boolean isPropertiesLoaded;
 
-	public RobotItem(IRepositoryRoot root) {
-		super(root.getURL(), root);
+	public RobotItem(URL itemURL, IRepositoryRoot root) {
+		super(itemURL, root);
 
 		isValid = true;
 
@@ -97,7 +97,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		populateClassURLFromPropertiesURL();
 		loadProperties();
 	}
-	
+
 	public void setClassURL(URL classUrl) {
 		this.classURL = classUrl;
 		populate();
@@ -250,7 +250,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	public List<String> getFriendlyURLs() {
 		populate();
 
-		final ArrayList<String> urls = new ArrayList<String>();
+		final Set<String> urls = new HashSet<String>();
 
 		if (propertiesURL != null) {
 			final String pUrl = propertiesURL.toString();
@@ -258,23 +258,29 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 			urls.add(pUrl);
 			urls.add(noType);
-			urls.add(propertiesURL.getFile());
+			urls.add(propertiesURL.getPath());
 		}
 		if (classURL != null) {
 			final String cUrl = classURL.toString();
 			final String noType = cUrl.substring(0, cUrl.lastIndexOf('.'));
 
+			urls.add(cUrl);
 			urls.add(noType);
-			urls.add(classURL.getFile());
+			urls.add(classURL.getPath());
 		}
 		if (getFullClassName() != null) {
-			urls.add(getFullClassName());
+			if (System.getProperty("TESTING", "false").equals("true")) {
+				urls.add(getFullClassName());
+			} else {
+				urls.add(getUniqueFullClassName());
+			}
 			urls.add(getUniqueFullClassNameWithVersion());
 		}
 		if (root.isJAR()) {
 			urls.add(root.getURL().toString());
 		}
-		return urls;
+
+		return new ArrayList<String>(urls);
 	}
 
 	public void update(long lastModified, boolean force) {
