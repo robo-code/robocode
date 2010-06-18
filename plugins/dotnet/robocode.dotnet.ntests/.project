@@ -1,0 +1,12 @@
+<projectDescription>
+  <name>robocode.dotnet.ntests</name>
+  <comment>.NET ntests for Robocode</comment>
+  <projects>
+    <project>robocode.dotnet.api</project>
+    <project>robocode.dotnet.nhost</project>
+    <project>robocode.dotnet.robotscs</project>
+    <project>robocode.dotnet.samples</project>
+  </projects>
+  <buildSpec/>
+  <natures/>
+</projectDescription>

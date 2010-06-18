@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="**/_svn/**|**/.svn/**|**/*.java" kind="src" path="src/main/resources"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/jni4net/jni4net.j/0.7.1.0/jni4net.j-0.7.1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/jni4net/jni4net.n/0.7.1.0/jni4net.n-0.7.1.0.dll"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/jni4net/jni4net.n.w32/0.7.1.0/jni4net.n.w32-0.7.1.0.dll"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/jni4net/jni4net.n.w64/0.7.1.0/jni4net.n.w64-0.7.1.0.dll"/>
+	<classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.core/1.7.2.1-Alpha-1/robocode.core-1.7.2.1-Alpha-1.jar"/>
+	<classpathentry kind="src" path="/robocode.dotnet.host"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.host/1.7.2.1-Alpha-1/robocode.host-1.7.2.1-Alpha-1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.repository/1.7.2.1-Alpha-1/robocode.repository-1.7.2.1-Alpha-1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

@@ -1,0 +1,9 @@
+<projectDescription>
+  <name>robocode.dotnet.robotscs</name>
+  <comment>.NET test robots for Robocode</comment>
+  <projects>
+    <project>robocode.dotnet.api</project>
+  </projects>
+  <buildSpec/>
+  <natures/>
+</projectDescription>

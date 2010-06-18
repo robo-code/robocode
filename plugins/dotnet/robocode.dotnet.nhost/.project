@@ -1,0 +1,9 @@
+<projectDescription>
+  <name>robocode.dotnet.nhost</name>
+  <comment>.NET nhost for Robocode</comment>
+  <projects>
+    <project>robocode.dotnet.api</project>
+  </projects>
+  <buildSpec/>
+  <natures/>
+</projectDescription>

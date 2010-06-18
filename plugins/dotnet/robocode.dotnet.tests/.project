@@ -1,0 +1,19 @@
+<projectDescription>
+  <name>robocode.dotnet.tests</name>
+  <comment/>
+  <projects>
+    <project>robocode.dotnet.api</project>
+    <project>robocode.dotnet.host</project>
+    <project>robocode.dotnet.nhost</project>
+    <project>robocode.dotnet.robotscs</project>
+    <project>robocode.dotnet.samples</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
