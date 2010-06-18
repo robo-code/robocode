@@ -19,7 +19,6 @@ import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.dotnet.repository.items.DotNetRobotItem;
 import net.sf.robocode.dotnet.repository.root.DllRoot;
-import net.sf.robocode.core.Container;
 
 import java.net.URL;
 import java.io.File;
@@ -41,19 +40,12 @@ public class DotnetPropertiesHandler extends PropertiesHandler {
 	}
 
 	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		final String itemKey = itemURL.toString();
-		RobotItem item = (RobotItem) db.getOldItem(itemKey);
+		RobotItem item = (RobotItem) db.getItem(itemURL.toString());
 
 		if (item == null) {
-			item = (RobotItem) db.getItem(itemKey);
+			item = createItem(itemURL, root, db);
 		}
-		if (item == null) {
-			item = new DotNetRobotItem(root, itemURL);
-			item.setClassUrl(itemURL);
-		} else {
-			item.setClassUrl(itemURL);
-		}
-		db.putItem(itemKey, item);
+		db.putItem(item);
 		return item;
 	}
 
@@ -62,7 +54,7 @@ public class DotnetPropertiesHandler extends PropertiesHandler {
 		final File file = new File(itemURL.toString().replace(".properties", ".dll"));
 		final DotNetRobotItem item = new DotNetRobotItem(new DllRoot(db, file), itemURL);
 
-		item.setClassUrl(itemURL);
+		item.setClassURL(itemURL);
 		return item;
 	}
 }

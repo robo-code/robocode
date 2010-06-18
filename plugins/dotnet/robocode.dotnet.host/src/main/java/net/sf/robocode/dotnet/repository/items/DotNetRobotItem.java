@@ -25,9 +25,8 @@ import java.net.URL;
 public class DotNetRobotItem extends RobotItem {
 	private static final long serialVersionUID = 1L;
 
-	public DotNetRobotItem(IRepositoryRoot root, URL classUrl) {
-		super(root);
-		url = classUrl;
+	public DotNetRobotItem(IRepositoryRoot root, URL itemURL) {
+		super(itemURL, root);
 		isPropertiesLoaded = true;
 	}
 

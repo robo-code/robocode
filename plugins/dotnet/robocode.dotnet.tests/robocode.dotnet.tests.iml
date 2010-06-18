@@ -10,20 +10,20 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.tests:1.7.2.0-Beta" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.tests.robots:1.7.2.0-Beta" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.tests:1.7.2.1-Beta" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.tests.robots:1.7.2.1-Beta" level="project" />
     <orderEntry type="module" module-name="robocode.dotnet.host" exported="" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.host:1.7.2.0-Beta" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.repository:1.7.2.0-Beta" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.host:1.7.2.1-Beta" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.repository:1.7.2.1-Beta" level="project" />
     <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
     <orderEntry type="module" module-name="robocode.dotnet.api" exported="" />
     <orderEntry type="library" exported="" name="Maven: net.sf.jni4net:jni4net.j:0.7.1.0" level="project" />
     <orderEntry type="module" module-name="robocode.dotnet.samples" exported="" />
     <orderEntry type="module" module-name="robocode.dotnet.robotscs" exported="" />
     <orderEntry type="library" exported="" name="Maven: junit:junit:4.5" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.core:1.7.2.0-Beta" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.samples:1.7.2.0-Beta" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.battle:1.7.2.0-Beta" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.core:1.7.2.1-Beta" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.samples:1.7.2.1-Beta" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:robocode.battle:1.7.2.1-Beta" level="project" />
   </component>
 </module>
 

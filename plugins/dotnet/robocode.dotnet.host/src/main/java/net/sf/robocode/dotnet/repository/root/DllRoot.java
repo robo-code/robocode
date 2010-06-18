@@ -42,29 +42,24 @@ import java.lang.String;
 public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	private URL dllUrl;
-	private String dllNoSeparator;
-	private String dllNoURLEnc;
+	private URL dllURL;
+	private String dllUrlNoSeparator;
 	private long lastModified;
 
 	public DllRoot(Database db, File rootPath) {
 		super(db, rootPath);
 		try {
-			dllNoSeparator = rootPath.toURI().toString();
-
-			dllUrl = new URL(dllNoSeparator + "!/");
-			rootURL = rootPath.toURI().toURL();
+			dllUrlNoSeparator = rootPath.toURI().toString();
+			dllURL = new URL(dllUrlNoSeparator + "!/");
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
 
 		try {
-			dllNoURLEnc = URLDecoder.decode(dllNoSeparator, "UTF8");
+			dllUrlNoSeparator = URLDecoder.decode(dllUrlNoSeparator, "UTF8");
 		} catch (UnsupportedEncodingException e) {
 			Logger.logError(e);
-			dllNoURLEnc = dllNoSeparator;
 		}
-
 	}
 
 	public void update(boolean updateInvalid) {
@@ -87,10 +82,10 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IItem> items) {
-		final String[] dllitems = DllRootHelper.findItems(dllNoURLEnc);
+		final String[] dllitems = DllRootHelper.findItems(dllUrlNoSeparator);
 
 		for (String url : dllitems) {
-			createItem(items, dllUrl, url);
+			createItem(items, dllURL, url);
 		}
 	}
 
@@ -118,14 +113,14 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	public URL getRootUrl() {
-		return dllUrl;
+		return dllURL;
 	}
 
-	public boolean isDevel() {
+	public boolean isDevelopmentRoot() {
 		return false;
 	}
 
-	public boolean isJar() {
+	public boolean isJAR() {
 		return true;
 	}
 
@@ -134,5 +129,4 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 			windowManager.setStatus(message);
 		}
 	}
-
 }

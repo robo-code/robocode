@@ -49,7 +49,7 @@ class __IRepositoryItem extends system.Object implements net.sf.robocode.reposit
     public native boolean isTeam();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isInJar();
+    public native boolean isInJAR();
     
     @net.sf.jni4net.attributes.ClrMethod("(Z)V")
     public native void setValid(boolean par0);
@@ -67,13 +67,13 @@ class __IRepositoryItem extends system.Object implements net.sf.robocode.reposit
     public native boolean isJavaSourceIncluded();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getRootFile();
+    public native java.lang.String getRootPath();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
-    public native java.net.URL getFullUrl();
+    public native java.net.URL getItemURL();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
-    public native java.net.URL getPropertiesUrl();
+    public native java.net.URL getPropertiesURL();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isDevelopmentVersion();

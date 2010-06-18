@@ -21,13 +21,12 @@ package net.sf.robocode.dotnet.repository.root.handlers;
 import net.sf.robocode.dotnet.repository.root.DllRootHelper;
 import net.sf.robocode.repository.root.handlers.RootHandler;
 import net.sf.robocode.repository.root.IRepositoryRoot;
-import net.sf.robocode.repository.root.JarRoot;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.dotnet.repository.root.DllRoot;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.Hashtable;
+import java.util.Map;
 
 
 /**
@@ -42,7 +41,7 @@ public class DllHandler extends RootHandler {
 		DllRootHelper.Refresh();
 	}
 
-	public void visitDirectory(File dir, boolean isDevel, Hashtable<String, IRepositoryRoot> newroots, Hashtable<String, IRepositoryRoot> roots, Database db, boolean updateInvalid) {
+	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {
 		// find dll files
 		final File[] dlls = dir.listFiles(
 				new FileFilter() {
@@ -66,7 +65,7 @@ public class DllHandler extends RootHandler {
 					roots.remove(key);
 				}
 
-				root.update(updateInvalid);
+				root.update(force);
 				newroots.put(dll.toURI().toString(), root);
 			}
 		}
