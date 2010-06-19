@@ -191,19 +191,8 @@ public class RobotDescriptionPanel extends JPanel {
 
 			if (url != null) {
 				String path = url.toString();
-
-				// Replace protocol names
-				path = path.replace("file:", "").replace("jarjar:", "").replace("jar:", "");
-
-				// Replace jar and jarjar separators
-				path = path.replace("!/", "/").replace("^", "/");
-
-				// Replace starting / under Windows
-				if (path.startsWith("/") && File.separatorChar == '\\') {
-					path = path.substring(1);
-				}
 				try {
-					path = URLDecoder.decode(path, "UTF-8");
+					path = URLDecoder.decode(url.toString(), "UTF-8");
 				} catch (UnsupportedEncodingException ignore) {}
 
 				getFilePathLabel().setText(path);

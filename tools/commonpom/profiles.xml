@@ -9,7 +9,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <robocode.version>1.7.2.1-Alpha-1</robocode.version>
+                <robocode.version>1.7.2.1-Beta</robocode.version>
                 <robocode.nversion>1.7.2.1</robocode.nversion>
             </properties>
         </profile>

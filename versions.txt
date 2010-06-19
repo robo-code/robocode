@@ -1,5 +1,5 @@
-Version 1.7.2.1 Alpha
-(14-Jun-2010)
+Version 1.7.2.1 Beta
+(19-Jun-2010)
 ---------------
 = Bugfixes =
 * Bug [2867326] - Lockup on start if too many bots in robots dir (cont'd).
@@ -7,7 +7,6 @@ Version 1.7.2.1 Alpha
 
 = Changes =
 * Req [2815450] - Move away from Jikes towards ECJ. Jikes 1.22 has been replaced with the Eclipse Compiler for Java (ECJ) 3.5.2.
-* The file path with the robot description, e.g. on the New Battle and Robot Packager dialogs, has been changed to be more readable.
 
 Version 1.7.2.0
 The ".NET robots are now supported" release
