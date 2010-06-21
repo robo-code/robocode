@@ -23,7 +23,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -191,6 +190,7 @@ public class RobotDescriptionPanel extends JPanel {
 
 			if (url != null) {
 				String path = url.toString();
+
 				try {
 					path = URLDecoder.decode(url.toString(), "UTF-8");
 				} catch (UnsupportedEncodingException ignore) {}

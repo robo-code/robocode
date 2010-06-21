@@ -728,7 +728,7 @@ public class SettingsManager implements ISettingsManager {
 	private class SortedProperties extends Properties {
 		private static final long serialVersionUID = 1L;
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public Enumeration<Object> keys() {
 			Enumeration<Object> keysEnum = super.keys();
