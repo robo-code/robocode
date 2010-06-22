@@ -193,18 +193,10 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			dis.readFully(buff);
 			template = new String(buff);
 		} catch (IOException e) {
-			template = "Unable to read template file: " + FileUtil.getCwd() + File.pathSeparatorChar + templateName;
+			template = "Unable to read template file: " + FileUtil.getCwd() + File.separatorChar + templateName;
 		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException ignored) {}
-			}
-			if (dis != null) {
-				try {
-					dis.close();
-				} catch (IOException ignored) {}
-			}
+			FileUtil.cleanupStream(fis);
+			FileUtil.cleanupStream(dis);
 		}
 
 		String name = "MyClass";
@@ -235,14 +227,22 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 	}
 
 	public void createNewRobot() {
-		String message = "Enter the name of your new robot.\nExample: MyFirstRobot";
+		createNewRobot("Robot");
+	}
+
+	public void createNewJuniorRobot() {
+		createNewRobot("JuniorRobot");
+	}
+
+	private void createNewRobot(final String robotType) {
+		String message = "Enter the name of your new robot.\nExample: MyFirst" + robotType;
 		String name = "";
 
 		boolean done = false;
 
 		while (!done) {
-			name = (String) JOptionPane.showInputDialog(this, message, "New Robot", JOptionPane.PLAIN_MESSAGE, null,
-					null, name);
+			name = (String) JOptionPane.showInputDialog(this, message, "New " + robotType, JOptionPane.PLAIN_MESSAGE,
+					null, null, name);
 			if (name == null) {
 				return;
 			}
@@ -372,7 +372,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		editWindow.setRobotName(name);
 		editWindow.setModified(false);
 
-		String templateName = "templates" + File.separatorChar + "newrobot.tpt";
+		String templateName = "templates" + File.separatorChar + "new" + robotType.toLowerCase() + ".tpt";
 
 		String template = "";
 
@@ -386,21 +386,12 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			fis = new FileInputStream(f);
 			dis = new DataInputStream(fis);
 			dis.readFully(buff);
-			dis.close();
 			template = new String(buff);
 		} catch (IOException e) {
-			template = "Unable to read template file: " + FileUtil.getCwd() + File.pathSeparatorChar + templateName;
+			template = "Unable to read template file: " + FileUtil.getCwd() + File.separatorChar + templateName;
 		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException ignored) {}
-			}
-			if (dis != null) {
-				try {
-					dis.close();
-				} catch (IOException ignored) {}
-			}
+			FileUtil.cleanupStream(fis);
+			FileUtil.cleanupStream(dis);
 		}
 
 		int index = template.indexOf("$");

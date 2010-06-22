@@ -1,3 +1,10 @@
+Version 1.7.2.2 Alpha
+(22-Jun-2010)
+---------------
+= Changes =
+* Req [2974806] - Provide JuniorRobot template for inexperienced users.
+
+
 Version 1.7.2.1 Beta
 (19-Jun-2010)
 ---------------

@@ -191,6 +191,7 @@ public class RobotDescriptionPanel extends JPanel {
 
 			if (url != null) {
 				String path = url.toString();
+
 				try {
 					path = URLDecoder.decode(url.toString(), "UTF-8");
 				} catch (UnsupportedEncodingException ignore) {}
