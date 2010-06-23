@@ -1,10 +1,15 @@
-Version 1.7.2.1 Beta
+Version 1.7.2.1
 (23-Jun-2010)
 ---------------
 = Bugfixes =
 * Bug [2828479] - Missed onRobotDeath events. Thanks goes to ForNeVeR for finding and solving this bug.
-* Bug [2867326] - Lockup on start if too many bots in robots dir (cont'd).
 * Bug [3019854] - Cannot see robot with no package in New Battle dialog.
+
+Version 1.7.2.1 Beta
+(19-Jun-2010)
+---------------
+= Bugfixes =
+* Bug [2867326] - Lockup on start if too many bots in robots dir (cont'd).
 * Fixed some issues with the robot repository when file URLs contains spaces, where robots were sometimes disappearing from the repository.
 
 = Changes =
