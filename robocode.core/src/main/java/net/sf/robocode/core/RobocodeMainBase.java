@@ -13,11 +13,12 @@ package net.sf.robocode.core;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.security.LoggingThreadGroup;
+import net.sf.robocode.io.Logger;
 import robocode.control.events.IBattleListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 
 /**
@@ -42,7 +43,15 @@ public abstract class RobocodeMainBase implements Runnable {
 		RobocodeMainBase main = Container.getComponent(RobocodeMainBase.class);
 
 		main.loadSetup((String[]) args);
-		ThreadGroup group = new LoggingThreadGroup("Robocode thread group");
+
+		// Make sure ALL uncaught exceptions are logged
+		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void uncaughtException(Thread t, Throwable e) {
+				Logger.logError("UncaughtException on thread " + t.getClass(), e);
+			}
+		});
+
+		ThreadGroup group = new ThreadGroup("Robocode thread group");
 
 		new Thread(group, main, "Robocode main thread").start();
 	}
