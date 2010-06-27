@@ -1,7 +1,8 @@
 Version 1.7.2.1
-(23-Jun-2010)
+(28-Jun-2010)
 ---------------
 = Bugfixes =
+* Bug [3021140] - Possible for robot to kill other robot threads.
 * Bug [2828479] - Missed onRobotDeath events. Thanks goes to ForNeVeR for finding and solving this bug.
 * Bug [3019854] - Cannot see robot with no package in New Battle dialog.
 

@@ -280,15 +280,21 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		// We only want the a specific type of security violation logged once so we only get one error
 		// per security violation.
 		synchronized (securityViolations) {
-			if (securityViolations.contains(message)) {
-				return;
-			}
-			securityViolations.add(message);
-		}
+			String key = message;
 
-		logError(message);
-		println("SYSTEM: " + message);
-		peer.drainEnergy();
-		peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
+			if (key.startsWith("Preventing Thread-")) {
+				key = key.replaceAll("\\d+", "X");
+			}
+			if (!securityViolations.contains(key)) {
+				securityViolations.add(key);
+				logError(message);
+				println("SYSTEM: " + message);
+
+				if (securityViolations.size() == 1) {
+					peer.drainEnergy();
+					peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
+				}
+			}
+		}
 	}
 }
