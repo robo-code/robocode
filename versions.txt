@@ -1,10 +1,11 @@
 Version 1.7.2.1
-(28-Jun-2010)
+(29-Jun-2010)
 ---------------
 = Bugfixes =
 * Bug [3021140] - Possible for robot to kill other robot threads.
 * Bug [2828479] - Missed onRobotDeath events. Thanks goes to ForNeVeR for finding and solving this bug.
 * Bug [3019854] - Cannot see robot with no package in New Battle dialog.
+* Sometimes the compiler window was hanging for several seconds, even though the compiler had finished compiling.
 
 Version 1.7.2.1 Beta
 (19-Jun-2010)
