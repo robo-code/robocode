@@ -104,6 +104,10 @@ public interface IBulletSnapshot {
 	 */
 	int getExplosionImageIndex();
 
-	// TODO DOC
+	/**
+	 * Returns the ID of the bullet used for identifying the bullet in a collection of bullets.
+	 *
+	 * @return the ID of the bullet
+	 */
 	int getBulletId();
 }
