@@ -40,6 +40,7 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 
 import java.awt.*;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -111,7 +112,9 @@ public class SettingsManager implements ISettingsManager {
 			optionsSoundEnableMixerPan = true;
 
 	// Development Options
-	private String optionsDevelopmentPath = "";
+	private Collection<String>
+		optionsDevelopmentPaths = new HashSet<String>(),
+		optionsExcludedDevelopmentPaths = new HashSet<String>();
 
 	// Common Options
 	private boolean
@@ -557,13 +560,30 @@ public class SettingsManager implements ISettingsManager {
 		props.setProperty(CPU_CONSTANT, "" + cpuConstant);
 	}
 
-	public String getOptionsDevelopmentPath() {
-		return optionsDevelopmentPath;
+	public Collection<String> getOptionsDevelopmentPaths() {
+		return new HashSet<String>(optionsDevelopmentPaths);
 	}
 
-	public void setOptionsDevelopmentPath(String optionsDevelopmentPath) {
-		this.optionsDevelopmentPath = optionsDevelopmentPath;
-		props.setProperty(OPTIONS_DEVELOPMENT_PATH, optionsDevelopmentPath);
+	public void setOptionsDevelopmentPaths(Collection<String> paths) {
+		this.optionsDevelopmentPaths = new HashSet<String>(paths);
+
+		props.setProperty(OPTIONS_DEVELOPMENT_PATH, toCommaSeparatedString(paths));
+	}
+
+	public Collection<String> getOptionsExcludedDevelopmentPaths() {
+		return new HashSet<String>(optionsExcludedDevelopmentPaths);
+	}
+
+	public void setOptionsExcludedDevelopmentPaths(Collection<String> paths) {
+		this.optionsExcludedDevelopmentPaths = new HashSet<String>(paths);
+
+		props.setProperty(OPTIONS_DEVELOPMENT_PATH_EXCLUDED, toCommaSeparatedString(paths));
+	}
+
+	public Collection<String> getOptionsEnabledDevelopmentPaths() {
+		Collection<String> paths = getOptionsDevelopmentPaths();
+		paths.removeAll(getOptionsExcludedDevelopmentPaths());
+		return paths;
 	}
 
 	public boolean getOptionsCommonShowResults() {
@@ -653,7 +673,8 @@ public class SettingsManager implements ISettingsManager {
 		optionsSoundEnableMixerVolume = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "true"));
 		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true"));
 
-		optionsDevelopmentPath = props.getProperty(OPTIONS_DEVELOPMENT_PATH, "");
+		optionsDevelopmentPaths = fromCommaSeparatedString(props.getProperty(OPTIONS_DEVELOPMENT_PATH, ""));
+		optionsExcludedDevelopmentPaths = fromCommaSeparatedString(props.getProperty(OPTIONS_DEVELOPMENT_PATH_EXCLUDED, ""));
 
 		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true"));
 		optionsCommonAppendWhenSavingResults = Boolean.valueOf(
@@ -718,6 +739,37 @@ public class SettingsManager implements ISettingsManager {
 				Logger.logError(e);
 			}
 		}
+	}
+
+	/**
+	 * Returns a comma-separated string from a collection of strings.
+	 */
+	private static String toCommaSeparatedString(Collection<String> strings) {
+		if (strings == null || strings.size() == 0) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (String s : strings) {
+			sb.append(s).append(',');
+		}
+		String line = sb.toString();
+		return line.substring(0, line.length() - 1);
+	}
+
+	/**
+	 * Returns a collection of strings from a comma-separated string.
+	 */
+	private static Collection<String> fromCommaSeparatedString(String line) {
+		if (line == null || line.trim().length() == 0) {
+			return new HashSet<String>();
+		}
+		Set<String> set = new HashSet<String>(); 
+		String splitExpr = File.pathSeparatorChar == ':' ? "[,:]+" : "[,;]+";
+		String[] strings = line.split(splitExpr);
+		for (String s : strings) {
+			set.add(s);
+		}
+		return set;
 	}
 
 	/**

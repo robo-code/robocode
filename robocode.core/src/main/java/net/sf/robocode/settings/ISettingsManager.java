@@ -16,6 +16,7 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -165,9 +166,15 @@ public interface ISettingsManager {
 
 	void setCpuConstant(long cpuConstant);
 
-	String getOptionsDevelopmentPath();
+	Collection<String> getOptionsDevelopmentPaths();
 
-	void setOptionsDevelopmentPath(String optionsDevelopmentPath);
+	void setOptionsDevelopmentPaths(Collection<String> paths);
+
+	Collection<String> getOptionsExcludedDevelopmentPaths();
+
+	void setOptionsExcludedDevelopmentPaths(Collection<String> excludedPaths);
+
+	Collection<String> getOptionsEnabledDevelopmentPaths();
 
 	boolean getOptionsCommonShowResults();
 
@@ -240,6 +247,9 @@ public interface ISettingsManager {
 
 			OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots",
 
+			OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path",
+			OPTIONS_DEVELOPMENT_PATH_EXCLUDED = "robocode.options.development.path.excluded",
+
 			FILE_THEME_MUSIC = "robocode.file.music.theme",
 			FILE_BACKGROUND_MUSIC = "robocode.file.music.background",
 			FILE_END_OF_BATTLE_MUSIC = "robocode.file.music.endOfBattle",
@@ -251,7 +261,6 @@ public interface ISettingsManager {
 			FILE_BULLET_HITS_ROBOT_SFX = "robocode.file.sfx.bulletHitsRobot",
 			FILE_BULLET_HITS_BULLET_SFX = "robocode.file.sfx.bulletHitsBullet",
 
-			OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path",
 			VERSIONCHECKED = "robocode.versionchecked",
 			ROBOT_FILESYSTEM_QUOTA = "robocode.robot.filesystem.quota",
 			CONSOLE_QUOTA = "robocode.console.quota",

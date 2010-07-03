@@ -19,7 +19,7 @@ package net.sf.robocode.ui.dialog;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
-import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.ui.CheckList;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -28,9 +28,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.Collection;
 
 
 /**
@@ -45,7 +43,7 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 
 	private JButton addButton;
 	private JButton removeButton;
-	private JList pathList;
+	private CheckList pathList;
 
 	public final ISettingsManager properties;
 
@@ -53,32 +51,10 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 
 	private class EventHandler implements ActionListener, ListSelectionListener {
 		public void actionPerformed(ActionEvent e) {
-
 			if (e.getSource() == getAddButton()) {
-				JFileChooser chooser = new JFileChooser();
-
-				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				if (chooser.showOpenDialog(optionsPanel) == JFileChooser.APPROVE_OPTION) {
-					String path = chooser.getSelectedFile().getAbsolutePath();
-
-					DefaultListModel model = getDefaultListModel();
-
-					if (!model.contains(path)) {
-						((DefaultListModel) getPathList().getModel()).addElement(path);
-
-						sort();
-					}
-				}
-				updateRemoveButton();
-
+				handleAddAction();
 			} else if (e.getSource() == getRemoveButton()) {
-				DefaultListModel model = getDefaultListModel();
-				int[] indices = getPathList().getSelectedIndices();
-
-				for (int i = indices.length - 1; i >= 0; i--) {
-					model.remove(i);
-				}
-				updateRemoveButton();
+				handleRemoveAction();
 			}
 		}
 
@@ -119,27 +95,32 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 
 			optionsPanel.add(
 					new JLabel(
-							"If you are using an external IDE to develop robots, you may enter the classpath to those robots here."),
+							"If you are using an external IDE to develop robots, you may enter the classpath(s) to those robots here."),
 							c);
-			c.gridy = 2;
+			c.gridy++;
 			optionsPanel.add(
 					new JLabel(
-							"If you are using Eclipse, you can enter paths to robot projects inside a workspace as well (recommended)"),
+							"If you are using Eclipse, you can enter the root dir of robot projects inside a workspace as well (recommended)"),
+							c);
+			c.gridy++;
+			optionsPanel.add(
+					new JLabel(
+							"Double-click the path(s) the enable or disable it (checked means enabled)"),
 							c);
 
 			c.gridwidth = 1;
-			c.gridy = 3;
+			c.gridy++;
 			c.insets = new Insets(3, 3, 3, 3);
 			optionsPanel.add(getAddButton(), c);
 
-			c.gridy = 4;
+			c.gridy++;
 			optionsPanel.add(getRemoveButton(), c);
 
 			c.fill = GridBagConstraints.BOTH;
 			c.weightx = 1;
 			c.weighty = 1;
 			c.gridx = 1;
-			c.gridy = 3;
+			c.gridy--;
 			c.gridheight = 3;
 			c.insets = new Insets(5, 5, 5, 5);
 			JScrollPane pathListScroller = new JScrollPane(getPathList());
@@ -167,9 +148,9 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 		return removeButton;
 	}
 
-	private JList getPathList() {
+	private CheckList getPathList() {
 		if (pathList == null) {
-			pathList = new JList(new DefaultListModel());
+			pathList = new CheckList();
 			pathList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			pathList.setLayoutOrientation(JList.VERTICAL);
 			pathList.setVisibleRowCount(-1);
@@ -179,54 +160,28 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	}
 
 	private void loadPreferences(ISettingsManager robocodeProperties) {
-		DefaultListModel model = getDefaultListModel();
+		getPathList().clear();
 
-		model.clear();
-
-		StringTokenizer tokenizer = new StringTokenizer(robocodeProperties.getOptionsDevelopmentPath(),
-				File.pathSeparator);
-
-		while (tokenizer.hasMoreTokens()) {
-			model.addElement(tokenizer.nextToken());
+		for (String path : robocodeProperties.getOptionsDevelopmentPaths()) {
+			getPathList().add(path);
+		}
+		for (String excludedPath : robocodeProperties.getOptionsExcludedDevelopmentPaths()) {
+			getPathList().setChecked(excludedPath, false);
 		}
 		updateRemoveButton();
 	}
 
 	public void storePreferences() {
-		String oldPaths = properties.getOptionsDevelopmentPath();
-		String newPaths = "";
-		DefaultListModel model = getDefaultListModel();
+		final Collection<String> oldPaths = properties.getOptionsEnabledDevelopmentPaths();
 
-		for (int i = 0; i < model.getSize(); i++) {
-			newPaths += model.getElementAt(i) + File.pathSeparator;
-		}
-		properties.setOptionsDevelopmentPath(newPaths);
+		properties.setOptionsDevelopmentPaths(getPathList().getAll());
+		properties.setOptionsExcludedDevelopmentPaths(getPathList().getUnchecked());
 		properties.saveProperties();
 
-		// If the development path has changed, i.e. if a path has been added or removed,
-		// then the robot repository needs to be updated.
+		final Collection<String> newPaths = properties.getOptionsEnabledDevelopmentPaths();
 
 		if (!newPaths.equals(oldPaths)) {
-			// The paths has been changed -> Force rebuild of the repository if we removed a path; otherwise just reload it
-
-			boolean forceRebuild = false;
-			String[] paths = oldPaths.split("\\" + File.pathSeparator);
-
-			for (String path : paths) {
-				if (path.length() > 0 && !model.contains(path)) {
-					forceRebuild = true;
-					break;
-				}
-			}
-
-			final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
-
-			try {
-				windowManager.setBusyPointer(true);
-				Container.getComponent(IRepositoryManager.class).reload(forceRebuild);
-			} finally {
-				windowManager.setBusyPointer(false);
-			}
+			Container.getComponent(IRepositoryManager.class).reload(true);			
 		}
 	}
 
@@ -235,28 +190,31 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 		return true;
 	}
 
-	private DefaultListModel getDefaultListModel() {
-		return (DefaultListModel) getPathList().getModel();
-	}
+	private void handleAddAction() {
+		JFileChooser chooser = new JFileChooser();
 
-	private void updateRemoveButton() {
-		getRemoveButton().setEnabled(getPathList().getSelectedIndex() >= 0);
-	}
-	
-	private void sort() {
-		DefaultListModel model = getDefaultListModel();
-		
-		int size = model.getSize();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (chooser.showOpenDialog(optionsPanel) == JFileChooser.APPROVE_OPTION) {
+			String path = chooser.getSelectedFile().getAbsolutePath();
 
-		if (size > 0) {
-			String[] items = new String[size];
-
-			model.copyInto(items);
-			Arrays.sort(items);
-	
-			for (int i = 0; i < items.length; i++) {
-				model.setElementAt(items[i], i);
+			if (!getPathList().contains(path)) {
+				getPathList().add(path);
+				getPathList().sort();
 			}
 		}
+		updateRemoveButton();
+	}
+
+	private void handleRemoveAction() {
+		int[] indices = getPathList().getSelectedIndices();
+
+		for (int i = indices.length - 1; i >= 0; i--) {
+			getPathList().remove(indices[i]);
+		}
+		updateRemoveButton();
+	}
+	
+	private void updateRemoveButton() {
+		getRemoveButton().setEnabled(getPathList().getSelectedIndex() >= 0);
 	}
 }

@@ -1,8 +1,9 @@
 Version 1.7.2.2 Alpha
-(22-Jun-2010)
+(04-Jul-2010)
 ---------------
 = Changes =
 * Req [2974806] - Provide JuniorRobot template for inexperienced users.
+* Req [2973605] - Enable/disable development paths.
 
 Version 1.7.2.1
 (29-Jun-2010)
