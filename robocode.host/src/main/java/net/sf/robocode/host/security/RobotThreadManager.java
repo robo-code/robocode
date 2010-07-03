@@ -31,7 +31,6 @@ import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import static net.sf.robocode.io.Logger.logWarning;
-import net.sf.robocode.security.LoggingThreadGroup;
 import robocode.exception.RobotException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -49,7 +48,7 @@ public class RobotThreadManager {
 
 	private final IHostedThread robotProxy;
 	private Thread runThread;
-	private LoggingThreadGroup runThreadGroup;
+	private ThreadGroup runThreadGroup;
 	private Object awtForThreadGroup;
 	private final Map<Thread, Disposal> disposeAppContextThreadMap = new HashMap<Thread, Disposal>();
 
@@ -247,7 +246,7 @@ public class RobotThreadManager {
 	}
 
 	private void createThreadGroup() {
-		runThreadGroup = new LoggingThreadGroup(robotProxy.getStatics().getName());
+		runThreadGroup = new ThreadGroup(robotProxy.getStatics().getName());
 
 		// bit lower than battle have
 		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY - 1);

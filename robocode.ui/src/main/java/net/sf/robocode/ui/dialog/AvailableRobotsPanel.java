@@ -252,7 +252,7 @@ public class AvailableRobotsPanel extends JPanel {
 				getRobotNameCellRenderer().setUseShortName(useShortName);
 
 				if ((robotItem.getFullPackage() == null && selectedPackage.equals("(No package)"))
-						|| robotItem.getFullPackage().equals(selectedPackage)) {
+						|| selectedPackage.equals(robotItem.getFullPackage())) {
 					availableRobots.add(new ItemWrapper(robotItem));
 				}
 			}

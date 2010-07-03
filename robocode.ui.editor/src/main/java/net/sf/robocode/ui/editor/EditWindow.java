@@ -174,11 +174,18 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			error("You must save before compiling.");
 			return;
 		}
-		RobocodeCompiler compiler = editor.getCompiler();
-
-		if (compiler != null) {
-			compiler.compile(fileName);
-			repositoryManager.refresh(fileName);
+		if (editor.getCompiler() != null) {
+			// The compiler + refresh of the repository is done in a thread in order to avoid the compiler
+			// window hanging while compiling. The SwingUtilities.invokeLater() does not do a good job here
+			// (window is still hanging). Hence, a real thread running beside the EDT is used, which does a
+			// great job, where each each new print from the compiler is written out as soon as it is ready
+			// in the output stream.
+			new Thread(new Runnable() {
+				public void run() {
+					editor.getCompiler().compile(fileName);
+					repositoryManager.refresh(fileName);					
+				}
+			}).start();
 		} else {
 			JOptionPane.showMessageDialog(editor, "No compiler installed.", "Error", JOptionPane.ERROR_MESSAGE);
 		}

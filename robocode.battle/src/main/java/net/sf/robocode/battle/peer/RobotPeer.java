@@ -1464,7 +1464,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void punishBadBehavior(BadBehavior badBehavior) {
-		setState(RobotState.DEAD);
+		kill(); // Bug fix [2828479] - Missed onRobotDeath events
+
 		statistics.setInactive();
 
 		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(

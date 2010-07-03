@@ -24,13 +24,12 @@ import javax.swing.text.Segment;
  * @author Flemming N. Larsen (contributor)
  */
 public final class Keywords {
-	// TODO: Must be updated for Java 5?
 	private final static String KEYWORDS[] = {
-		"abstract", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue", "default", "do",
-		"double", "else", "extends", "final", "finally", "float", "for", "goto", "if", "implements", "import",
-		"instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public", "return",
-		"short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "try",
-		"void", "volatile", "while", "true", "false"
+		"abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue",
+		"default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "goto", "if",
+		"implements", "import", "instanceof", "int", "interface", "long", "native", "new", "package", "private",
+		"protected", "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized", "this",
+		"throw", "throws", "transient", "try", "void", "volatile", "while", "true", "false"
 	};
 
 	public static boolean isKeyword(Segment seg) {

@@ -245,6 +245,7 @@ public final class Container extends ContainerBase {
 		return cache.getComponent(tClass);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T getComponent(String name) {
 		return (T) cache.getComponent(name);
 	}

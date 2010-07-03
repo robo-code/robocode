@@ -84,10 +84,7 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 		}
 		final int index = getFullClassName().lastIndexOf('.');
 
-		if (index == -1) {
-			return "";
-		}
-		return getFullClassName().substring(0, index);
+		return (index >= 0) ? getFullClassName().substring(0, index) : null;
 	}
 
 	// same as package but with slash

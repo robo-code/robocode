@@ -56,7 +56,7 @@ public final class AboutBox extends JDialog {
 			+ "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT
 			+ "\"><table width=\"600 px\"><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
 			+ "\"></td><td><table width=\"100%\"><tr><td><b>Robocode</b><br><br>"
-			+ "&copy;&nbsp;Copyright 2001, 2009<br>Mathew A. Nelson and Robocode contributors</td><td align=\"right\"><b>Version: "
+			+ "&copy;&nbsp;Copyright 2001, 2010<br>Mathew A. Nelson and Robocode contributors</td><td align=\"right\"><b>Version: "
 			+ TAG_ROBOCODE_VERSION
 			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">Robocode Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"http://robowiki.net\">RoboWiki</a><br>&nbsp;</td></tr></table><center>"
 			+ "<b>Original Author</b><br>Designed and programmed by <b><font color=\"green\">Mathew A. Nelson</font></b><br>"
@@ -82,7 +82,8 @@ public final class AboutBox extends JDialog {
 			+ "<b><font color=\"green\">Jerome Lavigne</font></b> (added \"Smart Battles\" to MeleeRumble), "
 			+ "<b><font color=\"green\">Ruben Moreno Montoliu</font></b> (added list paths with buttons to Developement Options), "
 			+ "<b><font color=\"green\">Joshua Galecki</font></b> (the implementation of the RateControlRobot), "
-			+ "<b><font color=\"green\">Patrick Cupka, Julian Kent, Nat Pavasant and \"Positive\"</font></b> (new robot movement method)<br><br>"
+			+ "<b><font color=\"green\">Patrick Cupka, Julian Kent, Nat Pavasant and \"Positive\"</font></b> (new robot movement method), "
+			+ "<b><font color=\"green\">Alexander Schultz</font></b> (reporting lots of bugs and solutions for fixing these)<br><br>"
 			+ "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
 			+ "</center></td></tr></table></body>";
 	
