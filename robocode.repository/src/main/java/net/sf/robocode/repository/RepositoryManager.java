@@ -46,13 +46,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public RepositoryManager(ISettingsManager properties) {
 		this.properties = properties;
-		properties.addPropertyListener(new ISettingsListener() {
-			public void settingChanged(String property) {
-				if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)) {
-					reload(false);
-				}
-			}
-		});
+		properties.addPropertyListener(new SettingsListener());
 	}
 
 	// ------------------------------------------
@@ -291,6 +285,28 @@ public class RepositoryManager implements IRepositoryManager {
 	private void checkDbExists() {
 		if (db == null) {
 			reload(false);
+		}
+	}
+
+	// ------------------------------------------
+	// settings listener
+	// ------------------------------------------
+
+	private class SettingsListener implements ISettingsListener {
+
+		private Collection<String> lastEnabledDevelPaths;
+
+		public void settingChanged(String property) {
+			if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)
+					|| property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH_EXCLUDED)) {
+
+				Collection<String> enabledDevelPaths = properties.getOptionsEnabledDevelopmentPaths();
+
+				if (lastEnabledDevelPaths == null || !enabledDevelPaths.equals(lastEnabledDevelPaths)) {
+					lastEnabledDevelPaths = enabledDevelPaths;
+					reload(false);
+				}
+			}
 		}
 	}
 }

@@ -16,8 +16,6 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.core.Container;
-import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.CheckList;
 
@@ -28,7 +26,6 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
 
 
 /**
@@ -103,10 +100,7 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 							"If you are using Eclipse, you can enter the root dir of robot projects inside a workspace as well (recommended)"),
 							c);
 			c.gridy++;
-			optionsPanel.add(
-					new JLabel(
-							"Double-click the path(s) the enable or disable it (checked means enabled)"),
-							c);
+			optionsPanel.add(new JLabel("Double-click the path(s) the enable or disable it (checked means enabled)"), c);
 
 			c.gridwidth = 1;
 			c.gridy++;
@@ -172,17 +166,9 @@ public class PreferencesDevelopmentOptionsTab extends WizardPanel {
 	}
 
 	public void storePreferences() {
-		final Collection<String> oldPaths = properties.getOptionsEnabledDevelopmentPaths();
-
 		properties.setOptionsDevelopmentPaths(getPathList().getAll());
 		properties.setOptionsExcludedDevelopmentPaths(getPathList().getUnchecked());
 		properties.saveProperties();
-
-		final Collection<String> newPaths = properties.getOptionsEnabledDevelopmentPaths();
-
-		if (!newPaths.equals(oldPaths)) {
-			Container.getComponent(IRepositoryManager.class).reload(true);			
-		}
 	}
 
 	@Override
