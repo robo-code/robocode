@@ -203,6 +203,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 		setup.tps = properties.getOptionsBattleDesiredTPS();
 
+		// Disable canonical file path cache under Windows as it causes trouble when returning
+		// paths with differently-capitalized file names.
+		if (System.getProperty("os.name").toLowerCase().startsWith("windows ")) {
+			System.setProperty("sun.io.useCanonCaches", "false");
+		}
+
 		// Initialize the system property so the AWT does not use headless mode meaning that the
 		// GUI (Awt and Swing) is enabled per default when running starting Robocode.
 		// It might be set to true later, if the -nodisplay option is set (in the setEnableGUI method).

@@ -1,9 +1,10 @@
 Version 1.7.2.2 Alpha
-(04-Jul-2010)
+(05-Jul-2010)
 ---------------
 = Changes =
 * Req [2974806] - Provide JuniorRobot template for inexperienced users.
 * Req [2973605] - Enable/disable development paths.
+* It is not necessary to specify -Dsun.io.useCanonCaches=false anymore with the startup scripts for Robocode and RoboRumble as Robocode sets this internally when running under Windows. Hence, this property has been removed from all .bat, .sh, and .command files for Robocode.
 
 Version 1.7.2.1
 (29-Jun-2010)
