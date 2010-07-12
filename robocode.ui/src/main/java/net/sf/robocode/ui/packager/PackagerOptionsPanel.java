@@ -56,6 +56,8 @@ public class PackagerOptionsPanel extends WizardPanel {
 	private JTextField webpageField;
 	private JLabel webpageHelpLabel;
 
+	private List<IRepositoryItem> currentSelectedRobots;
+
 	private class EventHandler implements ComponentListener, KeyListener, DocumentListener {
 		public void insertUpdate(DocumentEvent e) {
 			fireStateChanged();
@@ -76,76 +78,80 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentShown(ComponentEvent e) {
 			List<IRepositoryItem> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
-			if (selectedRobots != null) {
-				if (selectedRobots.size() == 1) {
-					IRepositoryItem fileSpecification = selectedRobots.get(0);
-					String v = fileSpecification.getVersion();
+			// Make sure we don't reset content. Bug fix [3026856]
+			if (selectedRobots == null || selectedRobots.equals(currentSelectedRobots)) {
+				return;
+			}
+			currentSelectedRobots = selectedRobots; // Bug fix [3026856]
 
-					if (v == null || v.length() == 0) {
-						getVersionHelpLabel().setVisible(false);
-						v = "1.0";
-					} else {
-						if (v.length() == 10) {
-							v = v.substring(0, 9);
-						}
-						v += "*";
-						getVersionHelpLabel().setVisible(true);
-					}
-					getVersionField().setText(v);
-					String d = fileSpecification.getDescription();
+			if (selectedRobots.size() == 1) {
+				IRepositoryItem fileSpecification = selectedRobots.get(0);
+				String v = fileSpecification.getVersion();
 
-					if (d == null) {
-						d = "";
-					}
-					getDescriptionArea().setText(d);
-					String a = fileSpecification.getAuthorName();
-
-					if (a == null) {
-						a = "";
-					}
-					getAuthorField().setText(a);
-					URL u = fileSpecification.getWebpage();
-
-					if (u == null) {
-						getWebpageField().setText("");
-					} else {
-						getWebpageField().setText(u.toString());
-					}
-
-					String fullPackage = fileSpecification.getFullPackage();
-
-					String text = "";
-
-					if (fullPackage != null && fullPackage.indexOf(".") != -1) {
-						String htmlfn = fullPackage.substring(0, fullPackage.lastIndexOf(".")) + ".html";
-
-						text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
-					}
-					getWebpageHelpLabel().setText(text);
-
-					getVersionLabel().setVisible(true);
-					getVersionField().setVisible(true);
-					getAuthorLabel().setVisible(true);
-					getAuthorField().setVisible(true);
-					getWebpageLabel().setVisible(true);
-					getWebpageField().setVisible(true);
-					getWebpageHelpLabel().setVisible(true);
-					getDescriptionLabel().setText(
-							"Please enter a short description of your robot (up to 3 lines of 72 chars each).");
-				} else if (selectedRobots.size() > 1) {
-					getVersionLabel().setVisible(false);
-					getVersionField().setVisible(false);
+				if (v == null || v.length() == 0) {
 					getVersionHelpLabel().setVisible(false);
-					getAuthorLabel().setVisible(false);
-					getAuthorField().setVisible(false);
-					getWebpageLabel().setVisible(false);
-					getWebpageField().setVisible(false);
-					getWebpageHelpLabel().setVisible(false);
-					getDescriptionLabel().setText(
-							"Please enter a short description of this robot collection (up to 3 lines of 72 chars each).");
-					if (getDescriptionArea().getText() == null || getDescriptionArea().getText().length() == 0) {
-						getDescriptionArea().setText("(Example)This robot comes from the ... robot collection\n");
+					v = "1.0";
+				} else {
+					if (v.length() == 10) {
+						v = v.substring(0, 9);
 					}
+					v += "*";
+					getVersionHelpLabel().setVisible(true);
+				}
+				getVersionField().setText(v);
+				String d = fileSpecification.getDescription();
+
+				if (d == null) {
+					d = "";
+				}
+				getDescriptionArea().setText(d);
+				String a = fileSpecification.getAuthorName();
+
+				if (a == null) {
+					a = "";
+				}
+				getAuthorField().setText(a);
+				URL u = fileSpecification.getWebpage();
+
+				if (u == null) {
+					getWebpageField().setText("");
+				} else {
+					getWebpageField().setText(u.toString());
+				}
+
+				String fullPackage = fileSpecification.getFullPackage();
+
+				String text = "";
+
+				if (fullPackage != null && fullPackage.indexOf(".") != -1) {
+					String htmlfn = fullPackage.substring(0, fullPackage.lastIndexOf(".")) + ".html";
+
+					text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
+				}
+				getWebpageHelpLabel().setText(text);
+
+				getVersionLabel().setVisible(true);
+				getVersionField().setVisible(true);
+				getAuthorLabel().setVisible(true);
+				getAuthorField().setVisible(true);
+				getWebpageLabel().setVisible(true);
+				getWebpageField().setVisible(true);
+				getWebpageHelpLabel().setVisible(true);
+				getDescriptionLabel().setText(
+						"Please enter a short description of your robot (up to 3 lines of 72 chars each).");
+			} else if (selectedRobots.size() > 1) {
+				getVersionLabel().setVisible(false);
+				getVersionField().setVisible(false);
+				getVersionHelpLabel().setVisible(false);
+				getAuthorLabel().setVisible(false);
+				getAuthorField().setVisible(false);
+				getWebpageLabel().setVisible(false);
+				getWebpageField().setVisible(false);
+				getWebpageHelpLabel().setVisible(false);
+				getDescriptionLabel().setText(
+						"Please enter a short description of this robot collection (up to 3 lines of 72 chars each).");
+				if (getDescriptionArea().getText() == null || getDescriptionArea().getText().length() == 0) {
+					getDescriptionArea().setText("(Example)This robot comes from the ... robot collection\n");
 				}
 			}
 		}
