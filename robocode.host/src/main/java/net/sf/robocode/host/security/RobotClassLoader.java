@@ -322,7 +322,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		if (staticRobotInstanceWarning == null) {
 			List<Field> staticRobotReferences = new ArrayList<Field>();
 	
-			for (String className : referencedClasses) {
+			for (String className : getReferencedClasses()) { // Bug fix [3028102] - ConcurrentModificationException
 				if (isSystemClass(className)) {
 					continue;
 				}

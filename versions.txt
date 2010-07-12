@@ -7,6 +7,7 @@ Version 1.7.2.1
 * Bug [3019854] - Cannot see robot with no package in New Battle dialog.
 * Bug [3026855] - Robot Packager doesn't package source file in Eclipse proj.
 * Bug [3026856] - Robot Packaging Wizard doesn't save value for Next & Back.
+* Bug [3028102] - ClassNotFoundException at RobotClassLoader.java:271.
 * Sometimes the compiler window was hanging for several seconds, even though the compiler had finished compiling.
 
 = Changes =
