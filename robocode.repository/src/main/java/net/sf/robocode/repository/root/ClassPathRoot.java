@@ -21,6 +21,7 @@ import net.sf.robocode.ui.IWindowManager;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -31,11 +32,11 @@ import java.util.ArrayList;
 public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	private final File parentPath;
+	private final File projectPath;
 
-	public ClassPathRoot(Database db, File rootPath, File parentPath) {
+	public ClassPathRoot(Database db, File rootPath, File projectPath) {
 		super(db, rootPath);
-		this.parentPath = parentPath;
+		this.projectPath = projectPath;
 	}
 
 	public void update(boolean force) {
@@ -112,13 +113,23 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		return false;
 	}
 
-	public File getParentPath() {
-		return parentPath;
-	}
-
 	private void setStatus(IWindowManager windowManager, String message) {
 		if (windowManager != null) {
 			windowManager.setStatus(message);
 		}
+	}
+
+	public String getFriendlyProjectURL(URL itemURL) {
+		String noType = null;
+
+		if (projectPath != null) {
+			try {
+				String rootPath = projectPath.toURI().toURL().toString();
+				String itemPath = itemURL.toString().substring(getURL().toString().length());
+
+				noType = rootPath + itemPath.substring(0, itemPath.lastIndexOf('.'));
+			} catch (MalformedURLException ignore) {}
+		}
+		return noType;
 	}
 }

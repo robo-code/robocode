@@ -70,7 +70,7 @@ public class ClassPathHandler extends RootHandler {
 		handleDirectory(dir, null, newroots, roots, db, force);
 	}
 
-	private void handleDirectory(File dir, File parentDir, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {
+	private void handleDirectory(File dir, File projectDir, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {
 		String key;
 
 		try {
@@ -82,7 +82,7 @@ public class ClassPathHandler extends RootHandler {
 		IRepositoryRoot root = roots.get(key);
 
 		if (root == null) {
-			root = new ClassPathRoot(db, dir, parentDir);
+			root = new ClassPathRoot(db, dir, projectDir);
 		} else {
 			roots.remove(key);
 		}
