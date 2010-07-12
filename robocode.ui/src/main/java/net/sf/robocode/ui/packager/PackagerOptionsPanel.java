@@ -260,34 +260,9 @@ public class PackagerOptionsPanel extends WizardPanel {
 	@Override
 	public boolean isReady() {
 		if (getVersionLabel().isVisible()) {
-			if (getVersionField().getText().length() == 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf(",") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf(" ") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("*") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("(") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf(")") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("[") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("]") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("{") >= 0) {
-				return false;
-			}
-			if (getVersionField().getText().indexOf("}") >= 0) {
+			String text = getVersionField().getText();
+
+			if (text.length() == 0 || !text.matches("(\\w|\\.)*\\w+")) {
 				return false;
 			}
 		}
@@ -360,7 +335,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 	private JLabel getVersionLabel() {
 		if (versionLabel == null) {
 			versionLabel = new JLabel(
-					"Please enter a version number for this robot (up to 10 chars, no spaces,commas,asterisks, or brackets).");
+					"Please enter a version number for this robot (up to 10 chars: letters, digits, dots, underscores, no spaces).");
 			versionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return versionLabel;
