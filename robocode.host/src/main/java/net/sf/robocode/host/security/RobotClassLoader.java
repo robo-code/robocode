@@ -322,7 +322,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		if (staticRobotInstanceWarning == null) {
 			List<Field> staticRobotReferences = new ArrayList<Field>();
 	
-			for (String className : referencedClasses) {
+			for (String className : getReferencedClasses()) { // Bug fix [3028102] - ConcurrentModificationException
 				if (isSystemClass(className)) {
 					continue;
 				}
@@ -337,7 +337,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	
 				if (type != null) {
 					for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
-						if (isStaticReference(field) && IBasicRobot.class.isAssignableFrom(field.getType())) {
+						if (isStaticReference(field) && IBasicRobot.class.isAssignableFrom(field.getType())
+								&& field.getAnnotation(robocode.annotation.SafeStatic.class) == null) {
 							staticRobotReferences.add(field);
 						}
 					}
@@ -347,8 +348,9 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			if (staticRobotReferences.size() > 0) {
 				StringBuilder buf = new StringBuilder();
 	
-				buf.append(fullClassName + " uses static reference to a robot with the following field(s):");
-	
+				buf.append("Warning: ").append(fullClassName).append(
+						" uses static reference to a robot with the following field(s):");
+
 				for (Field field : staticRobotReferences) {
 					buf.append("\n\t").append(field.getDeclaringClass().getName()).append('.').append(field.getName()).append(", which points to a ").append(
 							field.getType().getName());

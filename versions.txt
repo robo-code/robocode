@@ -7,13 +7,25 @@ Version 1.7.2.2 Alpha
 * It is not necessary to specify -Dsun.io.useCanonCaches=false anymore with the startup scripts for Robocode and RoboRumble as Robocode sets this internally when running under Windows. Hence, this property has been removed from all .bat, .sh, and .command files for Robocode.
 
 Version 1.7.2.1
-(29-Jun-2010)
+(13-Jul-2010)
 ---------------
 = Bugfixes =
 * Bug [3021140] - Possible for robot to kill other robot threads.
 * Bug [2828479] - Missed onRobotDeath events. Thanks goes to ForNeVeR for finding and solving this bug.
 * Bug [3019854] - Cannot see robot with no package in New Battle dialog.
+* Bug [3026855] - Robot Packager doesn't package source file in Eclipse proj.
+* Bug [3026856] - Robot Packaging Wizard doesn't save value for Next & Back.
+* Bug [3028102] - ClassNotFoundException at RobotClassLoader.java:271.
 * Sometimes the compiler window was hanging for several seconds, even though the compiler had finished compiling.
+
+= Changes =
+* The Robot Packing Wizard will now only allow word characters (letters, digits, dots, but no spaces) with the version field.
+* Added robocode.annotation.SafeStatic, which can be used to suppress warnings in the robot console for a robot uses static reference to a robot on a field. Note that this means that you need to clean the static field, when a new round is started. This annotation was suggested by Nat Pavasant. The annotation is used like this:
+
+  @SafeStatic
+  private static AdvancedRobot robot;
+
+* Added syntax highlightning on Java annotations for the Robot Editor.  
 
 Version 1.7.2.1 Beta
 (19-Jun-2010)
