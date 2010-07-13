@@ -8,6 +8,8 @@
  * Contributors:
  *     Mathew A. Nelson
  *     - Initial API and implementation
+ *     Flemming N. Larsen
+ *     - Added syntax highlightning for annotations
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
@@ -19,17 +21,21 @@ import java.awt.*;
 
 /**
  * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeView extends PlainView {
 	public final static Color commentColor = new Color(0, 150, 0);
 	public final static Color stringColor = new Color(0, 150, 150);
 	public final static Color keywordColor = new Color(0, 0, 150);
+	public final static Color annotationColor = new Color(150, 0, 150);
 	public final static Color textColor = Color.black;
+
 	public final static int TEXT = 0;
 	public final static int KEYWORD = 1;
 	public final static int COMMENT = 2;
 	public final static int STRING = 3;
 	public final static int MULTILINECOMMENT = 4;
+	public final static int ANNOTATION = 5; 
 
 	public RobocodeView(Element elem) {
 		super(elem);
@@ -79,22 +85,27 @@ public class RobocodeView extends PlainView {
 					left = i;
 					state = KEYWORD;
 				} // Do nothing
-				else {
-					if (segment.array[i + segment.offset] == '/') {
-						// flush now
-						g.setColor(textColor);
-						doc.getText(p0 + left, i - left, token);
-						x = Utilities.drawTabbedText(token, x, y, g, this, p0 + left);
-						left = i;
-						state = COMMENT;
-					} else if (segment.array[i + segment.offset] == '"') {
-						// flush now
-						g.setColor(textColor);
-						doc.getText(p0 + left, i - left, token);
-						x = Utilities.drawTabbedText(token, x, y, g, this, p0 + left);
-						left = i;
-						state = STRING;
-					}
+				else if (segment.array[i + segment.offset] == '/') {
+					// flush now
+					g.setColor(textColor);
+					doc.getText(p0 + left, i - left, token);
+					x = Utilities.drawTabbedText(token, x, y, g, this, p0 + left);
+					left = i;
+					state = COMMENT;
+				} else if (segment.array[i + segment.offset] == '"') {
+					// flush now
+					g.setColor(textColor);
+					doc.getText(p0 + left, i - left, token);
+					x = Utilities.drawTabbedText(token, x, y, g, this, p0 + left);
+					left = i;
+					state = STRING;
+				} else if (segment.array[i + segment.offset] == '@') {
+					// flush now
+					g.setColor(textColor);
+					doc.getText(p0 + left, i - left, token);
+					x = Utilities.drawTabbedText(token, x, y, g, this, p0 + left);
+					left = i;
+					state = ANNOTATION;
 				}
 			} else if (state == KEYWORD) {
 				// Still
@@ -142,6 +153,15 @@ public class RobocodeView extends PlainView {
 					left = i + 1;
 					state = TEXT;
 				}
+			} else if (state == ANNOTATION) {
+				if (!Character.isJavaIdentifierPart(segment.array[i + segment.offset + 1])) {
+					// flush now
+					doc.getText(p0 + left, i + 1 - left, token);
+					g.setColor(annotationColor);
+					x = Utilities.drawTabbedText(token, x, y, g, this, p0 + left);
+					left = i + 1;
+					state = TEXT;
+				}
 			}
 			// Starting not in token
 		} // end loop
@@ -159,6 +179,8 @@ public class RobocodeView extends PlainView {
 			g.setColor(commentColor);
 		} else if (state == MULTILINECOMMENT) {
 			g.setColor(commentColor);
+		} else if (state == ANNOTATION) {
+			g.setColor(annotationColor);
 		} else {
 			g.setColor(textColor);
 		}

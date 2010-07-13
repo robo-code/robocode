@@ -17,6 +17,8 @@ Version 1.7.2.1
   @SafeStatic
   private static AdvancedRobot robot;
 
+* Added syntax highlightning on Java annotations for the Robot Editor.  
+
 Version 1.7.2.1 Beta
 (19-Jun-2010)
 ---------------
