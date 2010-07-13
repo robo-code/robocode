@@ -262,7 +262,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 		if (getVersionLabel().isVisible()) {
 			String text = getVersionField().getText();
 
-			if (text.length() == 0 || !text.matches("(\\w|\\.)*\\w+")) {
+			if (text.length() == 0 || !text.matches("([a-zA-Z0-9.])*[a-zA-Z0-9]+")) {
 				return false;
 			}
 		}
@@ -335,7 +335,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 	private JLabel getVersionLabel() {
 		if (versionLabel == null) {
 			versionLabel = new JLabel(
-					"Please enter a version number for this robot (up to 10 chars: letters, digits, dots, underscores, no spaces).");
+					"Please enter a version number for this robot (up to 10 word chars: letters, digits, dots, but no spaces).");
 			versionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		}
 		return versionLabel;

@@ -11,7 +11,7 @@ Version 1.7.2.1
 * Sometimes the compiler window was hanging for several seconds, even though the compiler had finished compiling.
 
 = Changes =
-* The Robot Packing Wizard will now only allow word characters (letters, digits, dots, underscores) and no spaces with the version field.
+* The Robot Packing Wizard will now only allow word characters (letters, digits, dots, but no spaces) with the version field.
 
 Version 1.7.2.1 Beta
 (19-Jun-2010)
