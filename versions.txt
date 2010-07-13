@@ -12,6 +12,10 @@ Version 1.7.2.1
 
 = Changes =
 * The Robot Packing Wizard will now only allow word characters (letters, digits, dots, but no spaces) with the version field.
+* Added robocode.annotation.SafeStatic, which can be used to suppress warnings in the robot console for a robot uses static reference to a robot on a field. Note that this means that you need to clean the static field, when a new round is started. This annotation was suggested by Nat Pavasant. The annotation is used like this:
+
+  @SafeStatic
+  private static AdvancedRobot robot;
 
 Version 1.7.2.1 Beta
 (19-Jun-2010)
