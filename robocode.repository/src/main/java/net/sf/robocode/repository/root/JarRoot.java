@@ -23,6 +23,7 @@ import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.ui.IWindowManager;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,19 +79,22 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private void visitItems(ArrayList<IItem> items) {
 		final String root = jarNoSeparator;
 		InputStream is = null;
+		BufferedInputStream bis = null;
 		JarInputStream jarIS = null;
 
 		try {
 			final URLConnection con = URLJarCollector.openConnection(rootURL);
 
 			is = con.getInputStream();
-			jarIS = new JarInputStream(is);
+			bis = new BufferedInputStream(is);
+			jarIS = new JarInputStream(bis);
 			readJarStream(items, root, jarIS);
 
 		} catch (Exception e) {
 			Logger.logError(rootURL + " is probably corrupted (" + e.getClass().getName() + " " + e.getMessage() + ")");
 		} finally {
 			FileUtil.cleanupStream(jarIS);
+			FileUtil.cleanupStream(bis);
 			FileUtil.cleanupStream(is);
 		}
 	}
@@ -102,7 +106,9 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			String name = entry.getName().toLowerCase();
 
 			if (!entry.isDirectory()) {
-				if (!name.contains(".data/") && !name.contains(".robotcache/")) {
+				if (name.contains(".data/") && !name.contains(".robotcache/")) {
+					JarExtractor.extractFile(FileUtil.getRobotsDataDir(), jarIS, entry);
+				} else {
 					if (name.endsWith(".jar") || name.endsWith(".zip")) {
 						JarInputStream inner = null;
 
@@ -144,7 +150,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	public void update(IItem item, boolean force) {
 		item.update(rootPath.lastModified(), force);
 	}
-	
+
 	public boolean isChanged(IItem item) {
 		return rootPath.lastModified() > lastModified;
 	}

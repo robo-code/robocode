@@ -16,6 +16,8 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
@@ -33,13 +35,15 @@ public class JarExtractor {
 	public static void extractJar(URL url) {
 		File dest = FileUtil.getRobotsDir();
 		InputStream is = null;
+		BufferedInputStream bis = null;
 		JarInputStream jarIS = null;
 
 		try {
 			final URLConnection con = URLJarCollector.openConnection(url);
 
 			is = con.getInputStream();
-			jarIS = new JarInputStream(is);
+			bis = new BufferedInputStream(is);
+			jarIS = new JarInputStream(bis);
 
 			JarEntry entry = jarIS.getNextJarEntry();
 
@@ -59,11 +63,12 @@ public class JarExtractor {
 			Logger.logError(e);
 		} finally {
 			FileUtil.cleanupStream(jarIS);
+			FileUtil.cleanupStream(bis);
 			FileUtil.cleanupStream(is);
 		}
 	}
 
-	private static void extractFile(File dest, JarInputStream jarIS, JarEntry entry) throws IOException {
+	public static void extractFile(File dest, JarInputStream jarIS, JarEntry entry) throws IOException {
 		File out = new File(dest, entry.getName());
 		File parentDirectory = new File(out.getParent());
 
@@ -71,19 +76,21 @@ public class JarExtractor {
 			Logger.logError("Cannot create dir: " + parentDirectory);
 		}
 		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
 		byte buf[] = new byte[2048];
 
 		try {
 			fos = new FileOutputStream(out);
+			bos = new BufferedOutputStream(fos);
 
 			int num;
 
 			while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-				fos.write(buf, 0, num);
+				bos.write(buf, 0, num);
 			}
 		} finally {
+			FileUtil.cleanupStream(bos);
 			FileUtil.cleanupStream(fos);
 		}
 	}
-
 }

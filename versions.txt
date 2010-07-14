@@ -1,11 +1,12 @@
 Version 1.7.2.1
-(13-Jul-2010)
+(15-Jul-2010)
 ---------------
 = Bugfixes =
 * Bug [3021140] - Possible for robot to kill other robot threads.
+* Bug [3029344] - Zipped robots data files are not extracted.
+* Bug [3026855] - Robot Packager doesn't package source file in Eclipse proj.
 * Bug [2828479] - Missed onRobotDeath events. Thanks goes to ForNeVeR for finding and solving this bug.
 * Bug [3019854] - Cannot see robot with no package in New Battle dialog.
-* Bug [3026855] - Robot Packager doesn't package source file in Eclipse proj.
 * Bug [3026856] - Robot Packaging Wizard doesn't save value for Next & Back.
 * Bug [3028102] - ClassNotFoundException at RobotClassLoader.java:271.
 * Sometimes the compiler window was hanging for several seconds, even though the compiler had finished compiling.

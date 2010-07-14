@@ -146,7 +146,7 @@ public class FileUtil {
 	 * Deletes a directory.
 	 *
 	 * @param dir the file for the directory to delete
-	 * @return true if susscess
+	 * @return true if success
 	 */
 	public static boolean deleteDir(File dir) {
 		if (dir.isDirectory()) {
