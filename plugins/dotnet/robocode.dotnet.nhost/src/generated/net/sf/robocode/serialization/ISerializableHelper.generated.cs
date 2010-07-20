@@ -15,9 +15,6 @@ namespace net.sf.robocode.serialization {
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
     public partial interface ISerializableHelper {
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I")]
-        int sizeOf(global::net.sf.robocode.serialization.RbSerializer par0, global::java.lang.Object par1);
-        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Obje" +
             "ct;)V")]
         void serialize(global::net.sf.robocode.serialization.RbSerializer par0, global::java.nio.ByteBuffer par1, global::java.lang.Object par2);
@@ -25,6 +22,9 @@ namespace net.sf.robocode.serialization {
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;)Ljava/lang/Obj" +
             "ect;")]
         global::java.lang.Object deserialize(global::net.sf.robocode.serialization.RbSerializer par0, global::java.nio.ByteBuffer par1);
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I")]
+        int sizeOf(global::net.sf.robocode.serialization.RbSerializer par0, global::java.lang.Object par1);
     }
     #endregion
     
@@ -46,11 +46,11 @@ namespace net.sf.robocode.serialization {
         
         internal new static global::java.lang.Class staticClass;
         
-        internal static global::net.sf.jni4net.jni.MethodId _sizeOf0;
+        internal static global::net.sf.jni4net.jni.MethodId _serialize0;
         
-        internal static global::net.sf.jni4net.jni.MethodId _serialize1;
+        internal static global::net.sf.jni4net.jni.MethodId _deserialize1;
         
-        internal static global::net.sf.jni4net.jni.MethodId _deserialize2;
+        internal static global::net.sf.jni4net.jni.MethodId _sizeOf2;
         
         private @__ISerializableHelper(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
@@ -58,52 +58,40 @@ namespace net.sf.robocode.serialization {
         
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
             global::net.sf.robocode.serialization.@__ISerializableHelper.staticClass = @__class;
-            global::net.sf.robocode.serialization.@__ISerializableHelper._sizeOf0 = @__env.GetMethodID(global::net.sf.robocode.serialization.@__ISerializableHelper.staticClass, "sizeOf", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I");
-            global::net.sf.robocode.serialization.@__ISerializableHelper._serialize1 = @__env.GetMethodID(global::net.sf.robocode.serialization.@__ISerializableHelper.staticClass, "serialize", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Obje" +
+            global::net.sf.robocode.serialization.@__ISerializableHelper._serialize0 = @__env.GetMethodID(global::net.sf.robocode.serialization.@__ISerializableHelper.staticClass, "serialize", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Obje" +
                     "ct;)V");
-            global::net.sf.robocode.serialization.@__ISerializableHelper._deserialize2 = @__env.GetMethodID(global::net.sf.robocode.serialization.@__ISerializableHelper.staticClass, "deserialize", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;)Ljava/lang/Obj" +
+            global::net.sf.robocode.serialization.@__ISerializableHelper._deserialize1 = @__env.GetMethodID(global::net.sf.robocode.serialization.@__ISerializableHelper.staticClass, "deserialize", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;)Ljava/lang/Obj" +
                     "ect;");
-        }
-        
-        public int sizeOf(global::net.sf.robocode.serialization.RbSerializer par0, global::java.lang.Object par1) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.@__ISerializableHelper._sizeOf0, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1))));
+            global::net.sf.robocode.serialization.@__ISerializableHelper._sizeOf2 = @__env.GetMethodID(global::net.sf.robocode.serialization.@__ISerializableHelper.staticClass, "sizeOf", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I");
         }
         
         public void serialize(global::net.sf.robocode.serialization.RbSerializer par0, global::java.nio.ByteBuffer par1, global::java.lang.Object par2) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.@__ISerializableHelper._serialize1, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par2));
+            @__env.CallVoidMethod(this, global::net.sf.robocode.serialization.@__ISerializableHelper._serialize0, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par2));
         }
         
         public global::java.lang.Object deserialize(global::net.sf.robocode.serialization.RbSerializer par0, global::java.nio.ByteBuffer par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.@__ISerializableHelper._deserialize2, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1)));
+            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.serialization.@__ISerializableHelper._deserialize1, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1)));
+        }
+        
+        public int sizeOf(global::net.sf.robocode.serialization.RbSerializer par0, global::java.lang.Object par1) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            return ((int)(@__env.CallIntMethod(this, global::net.sf.robocode.serialization.@__ISerializableHelper._sizeOf2, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1))));
         }
         
         private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv @__env, global::java.lang.Class @__class) {
             global::System.Type @__type = typeof(__ISerializableHelper);
             global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> methods = new global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod>();
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "sizeOf", "sizeOf0", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "serialize", "serialize1", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Obje" +
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "serialize", "serialize0", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Obje" +
                         "ct;)V"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "deserialize", "deserialize2", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;)Ljava/lang/Obj" +
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "deserialize", "deserialize1", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;)Ljava/lang/Obj" +
                         "ect;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "sizeOf", "sizeOf2", "(Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I"));
             return methods;
         }
         
-        private static int sizeOf0(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, global::net.sf.jni4net.utils.JniLocalHandle par1) {
-            // (Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I
-            // (Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            int @__return = default(int);
-            try {
-            global::net.sf.robocode.serialization.ISerializableHelper @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.serialization.ISerializableHelper>(@__env, @__obj);
-            @__return = ((int)(@__real.sizeOf(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.serialization.RbSerializer>(@__env, par0), global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, par1))));
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return @__return;
-        }
-        
-        private static void serialize1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, global::net.sf.jni4net.utils.JniLocalHandle par1, global::net.sf.jni4net.utils.JniLocalHandle par2) {
+        private static void serialize0(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, global::net.sf.jni4net.utils.JniLocalHandle par1, global::net.sf.jni4net.utils.JniLocalHandle par2) {
             // (Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Object;)V
             // (Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Object;)V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -113,7 +101,7 @@ namespace net.sf.robocode.serialization {
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         
-        private static global::net.sf.jni4net.utils.JniHandle deserialize2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, global::net.sf.jni4net.utils.JniLocalHandle par1) {
+        private static global::net.sf.jni4net.utils.JniHandle deserialize1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, global::net.sf.jni4net.utils.JniLocalHandle par1) {
             // (Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;)Ljava/lang/Object;
             // (Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;)Ljava/lang/Object;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -121,6 +109,18 @@ namespace net.sf.robocode.serialization {
             try {
             global::net.sf.robocode.serialization.ISerializableHelper @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.serialization.ISerializableHelper>(@__env, @__obj);
             @__return = global::net.sf.jni4net.utils.Convertor.FullC2J<global::java.lang.Object>(@__env, @__real.deserialize(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.serialization.RbSerializer>(@__env, par0), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.nio.ByteBuffer>(@__env, par1)));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return @__return;
+        }
+        
+        private static int sizeOf2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, global::net.sf.jni4net.utils.JniLocalHandle par1) {
+            // (Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I
+            // (Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            int @__return = default(int);
+            try {
+            global::net.sf.robocode.serialization.ISerializableHelper @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.serialization.ISerializableHelper>(@__env, @__obj);
+            @__return = ((int)(@__real.sizeOf(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::net.sf.robocode.serialization.RbSerializer>(@__env, par0), global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, par1))));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return @__return;
         }

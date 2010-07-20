@@ -135,6 +135,13 @@
 	                                               version="${robocode.nversion}"
 	                                               type="dotnet:library"/>
 	                              <copy file="${robocode.dotnet.api}" tofile="target/robocode.dll"/>
+
+	                              <resolveArtifact property="robocode.dotnet.control.api" 
+	                                               groupId="net.sf.robocode"
+	                                               artifactId="robocode.dotnet.control.api" 
+	                                               version="${robocode.nversion}"
+	                                               type="dotnet:library"/>
+	                              <copy file="${robocode.dotnet.control.api}" tofile="target/robocode.control.dll"/>
 	                          </tasks>
 	                      </configuration>
 	                      <goals>

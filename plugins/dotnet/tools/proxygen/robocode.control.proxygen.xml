@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<jni4net-proxygen xmlns="http://jni4net.sf.net/0.8.0.0/toolConfig.xsd">
+  <TargetDirJvm>robocode.dotnet.host/src/main/java</TargetDirJvm>
+  <TargetDirClr>robocode.dotnet.control.api/src/generated</TargetDirClr>
+
+  <ClassPath Path="../../robocode.api/target/classes"/>
+  <!--
+  <AssemblyReference Assembly="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  -->
+  <AssemblyReference Assembly="robocode.dotnet.api\target\robocode.dll" />
+
+  <JavaClass TypeName="robocode.control.BattleSpecification"/>
+  <JavaClass TypeName="robocode.control.BattlefieldSpecification"/>
+  <JavaClass TypeName="robocode.control.RobocodeEngine"/>
+  <JavaClass TypeName="robocode.control.RobotResults"/>
+  <JavaClass TypeName="robocode.control.RobotSpecification"/>
+  <JavaClass TypeName="robocode.control.RobotResults"/>
+  <JavaClass TypeName="robocode.control.RandomFactory"/>
+  <JavaClass TypeName="java.util.Random"/>
+
+  <JavaClass TypeName="robocode.control.snapshot.BulletState"/>
+  <JavaClass TypeName="robocode.control.snapshot.RobotState"/>
+  <JavaClass TypeName="robocode.control.snapshot.IBulletSnapshot"/>
+  <JavaClass TypeName="robocode.control.snapshot.IDebugProperty"/>
+  <JavaClass TypeName="robocode.control.snapshot.IRobotSnapshot"/>
+  <JavaClass TypeName="robocode.control.snapshot.IScoreSnapshot"/>
+  <JavaClass TypeName="robocode.control.snapshot.ITurnSnapshot"/>
+  
+  <JavaClass TypeName="robocode.control.events.IBattleListener"/>
+  <JavaClass TypeName="robocode.control.events.BattleCompletedEvent"/>
+  <JavaClass TypeName="robocode.control.events.BattleErrorEvent"/>
+  <JavaClass TypeName="robocode.control.events.BattleEvent"/>
+  <JavaClass TypeName="robocode.control.events.BattleFinishedEvent"/>
+  <JavaClass TypeName="robocode.control.events.BattleMessageEvent"/>
+  <JavaClass TypeName="robocode.control.events.BattlePausedEvent"/>
+  <JavaClass TypeName="robocode.control.events.BattleResumedEvent"/>
+  <JavaClass TypeName="robocode.control.events.BattleStartedEvent"/>
+  <JavaClass TypeName="robocode.control.events.RoundEndedEvent"/>
+  <JavaClass TypeName="robocode.control.events.RoundEndedEvent"/>
+  <JavaClass TypeName="robocode.control.events.RoundEndedEvent"/>
+  <JavaClass TypeName="robocode.control.events.RoundStartedEvent"/>
+  <JavaClass TypeName="robocode.control.events.TurnEndedEvent"/>
+  <JavaClass TypeName="robocode.control.events.TurnStartedEvent"/>
+
+</jni4net-proxygen>

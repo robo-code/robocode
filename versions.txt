@@ -7,6 +7,7 @@ Version 1.7.2.2 Alpha
 * It is not necessary to specify -Dsun.io.useCanonCaches=false anymore with the startup scripts for Robocode and RoboRumble as Robocode sets this internally when running under Windows. Hence, this property has been removed from all .bat, .sh, and .command files for Robocode.
 * Upgrade to jni4net v 0.8 and CLR 4.0 support
 * SampleFs created with VS2010 project file
+* Implemented Control API for .NET - robocode.control.dll
 
 Version 1.7.2.1
 (15-Jul-2010)

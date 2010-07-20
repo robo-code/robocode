@@ -50,13 +50,15 @@ public class Module extends BaseModule {
 				throw new Error("Can't find " + file);
 			}
 
-			final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
-
-			// Bridge.setVerbose(true);
-			// Bridge.setDebug(true);
-			Bridge.init(new File(libsDir));
-			Bridge.SetSystemClassLoader(Container.engineLoader);
-			Bridge.LoadAndRegisterAssemblyFrom(new File(nhost));
+  			final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
+  			final String ncontrol = libsDir + "/robocode.control.dll";
+	
+				Bridge.init(new File(libsDir));
+				// Bridge.setVerbose(true);
+				// Bridge.setDebug(true);
+				Bridge.SetSystemClassLoader(Container.engineLoader);
+			  Bridge.LoadAndRegisterAssemblyFrom(new File(ncontrol));
+			  Bridge.LoadAndRegisterAssemblyFrom(new File(nhost));
 
 			Container.cache.addComponent("DllItemHandler", DllHandler.class);
 			Container.cache.addComponent("CsPropertiesHandler", DotnetPropertiesHandler.class);

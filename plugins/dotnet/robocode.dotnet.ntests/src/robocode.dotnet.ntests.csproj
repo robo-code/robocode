@@ -8,13 +8,15 @@
     <ProjectGuid>{B3487E2D-2737-4C04-AA71-B9A726B3F781}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>net.sf.robocode.dotnet</RootNamespace>
-    <AssemblyName>robocode.dotnet.ntests-1.7.2.1</AssemblyName>
+    <AssemblyName>robocode.dotnet.ntests-1.7.2.2</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\tools\keys\robocode.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,9 +42,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="jni4net.n-0.7.1.0, Version=0.7.1.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
+    <Reference Include="jni4net.n-0.8.0.0, Version=0.8.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\lib\jni4net.n-0.7.1.0.dll</HintPath>
+      <HintPath>..\..\tools\lib\jni4net.n-0.8.0.0.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework-2.4.3.0, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -62,6 +64,10 @@
     <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
       <Project>{7E0900D3-6E8F-48EB-86DB-AA767AA90B84}</Project>
       <Name>robocode.dotnet.api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\robocode.dotnet.control.api\src\robocode.dotnet.control.api.csproj">
+      <Project>{674AED55-B9EC-4C7D-8E0B-1B2471C578B2}</Project>
+      <Name>robocode.dotnet.control.api</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\robocode.dotnet.nhost\src\robocode.dotnet.nhost.csproj">
       <Project>{674AED55-B9EC-4C7D-8E0B-1B2481C578B2}</Project>
@@ -93,5 +99,8 @@
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
 echo [assembly: System.Reflection.AssemblyVersion("0.0.0.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
+    <PostBuildEvent>copy "$(SolutionDir)\tools\lib\*.dll" "$(TargetDir)"
+copy "$(SolutionDir)\tools\lib\*.jar" "$(TargetDir)"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

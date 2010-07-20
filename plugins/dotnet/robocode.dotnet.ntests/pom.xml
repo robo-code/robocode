@@ -26,6 +26,12 @@
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.control.api</artifactId>
+            <version>${robocode.nversion}</version>
+            <type>dotnet:library</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.nhost</artifactId>
             <version>${robocode.nversion}</version>
             <type>dotnet:library</type>

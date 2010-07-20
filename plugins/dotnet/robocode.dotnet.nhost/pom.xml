@@ -30,6 +30,12 @@
             <version>${robocode.nversion}</version>
             <type>dotnet:library</type>
         </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.control.api</artifactId>
+            <version>${robocode.nversion}</version>
+            <type>dotnet:library</type>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -66,6 +72,13 @@
 	                                               version="${robocode.nversion}"
 	                                               type="dotnet:library"/>
 	                              <copy file="${robocode.dotnet.api}" tofile="target/robocode.dll"/>
+
+	                              <resolveArtifact property="robocode.dotnet.control.api" 
+	                                               groupId="net.sf.robocode"
+	                                               artifactId="robocode.dotnet.control.api" 
+	                                               version="${robocode.nversion}"
+	                                               type="dotnet:library"/>
+	                              <copy file="${robocode.dotnet.control.api}" tofile="target/robocode.control.dll"/>
 	                          </tasks>
 	                      </configuration>
 	                      <goals>

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robocode.dotnet.ntests", "r
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robocode.dotnet.robotscs", "robocode.dotnet.robotscs\src\robocode.dotnet.robotscs.csproj", "{B3487E2D-2737-4C04-AA71-B9A726B3F787}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robocode.dotnet.control.api", "robocode.dotnet.control.api\src\robocode.dotnet.control.api.csproj", "{674AED55-B9EC-4C7D-8E0B-1B2471C578B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{B3487E2D-2737-4C04-AA71-B9A726B3F787}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3487E2D-2737-4C04-AA71-B9A726B3F787}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3487E2D-2737-4C04-AA71-B9A726B3F787}.Release|Any CPU.Build.0 = Release|Any CPU
+		{674AED55-B9EC-4C7D-8E0B-1B2471C578B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{674AED55-B9EC-4C7D-8E0B-1B2471C578B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{674AED55-B9EC-4C7D-8E0B-1B2471C578B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{674AED55-B9EC-4C7D-8E0B-1B2471C578B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

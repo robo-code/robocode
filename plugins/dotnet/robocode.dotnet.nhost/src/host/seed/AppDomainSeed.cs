@@ -26,6 +26,7 @@ using Buffer = java.nio.Buffer;
 using ByteBuffer = java.nio.ByteBuffer;
 using Exception = System.Exception;
 using StringBuilder = System.Text.StringBuilder;
+using robocode.control;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
@@ -65,6 +66,7 @@ namespace net.sf.robocode.dotnet.host.seed
                                  Path.GetFullPath(robotAssemblyShadowFileName).ToLower();
             if (args.LoadedAssembly != typeof(Bridge).Assembly &&
                 args.LoadedAssembly != typeof(AppDomainSeed).Assembly &&
+                args.LoadedAssembly != typeof(RobocodeEngine).Assembly &&
                 !knownLocation &&
                 !args.LoadedAssembly.GlobalAssemblyCache)
             {

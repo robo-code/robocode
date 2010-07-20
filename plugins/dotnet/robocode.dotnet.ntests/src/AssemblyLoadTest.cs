@@ -40,5 +40,6 @@ namespace net.sf.robocode.dotnet
             Assert.AreEqual(RobotType.STANDARD, type);
             shell.Dispose();
         }
+
     }
 }

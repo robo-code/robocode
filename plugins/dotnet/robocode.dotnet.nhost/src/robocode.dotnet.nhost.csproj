@@ -8,7 +8,7 @@
     <ProjectGuid>{674AED55-B9EC-4C7D-8E0B-1B2481C578B2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>net.sf.robocode.dotnet</RootNamespace>
-    <AssemblyName>robocode.dotnet.nhost-1.7.2.1</AssemblyName>
+    <AssemblyName>robocode.dotnet.nhost-1.7.2.2</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
@@ -40,9 +40,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="jni4net.n-0.7.1.0, Version=0.7.1.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
+    <Reference Include="jni4net.n-0.8.0.0, Version=0.8.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\lib\jni4net.n-0.7.1.0.dll</HintPath>
+      <HintPath>..\..\tools\lib\jni4net.n-0.8.0.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -55,9 +55,6 @@
   <ItemGroup>
     <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
       <Link>generated\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="generated\java\util\Random.generated.cs">
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="generated\net\sf\robocode\core\ContainerBase.generated.cs">
       <SubType>Code</SubType>
@@ -113,12 +110,6 @@
     <Compile Include="generated\net\sf\robocode\serialization\RbSerializer.generated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="generated\robocode\control\RandomFactory.generated.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="generated\robocode\control\RobotSpecification.generated.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="generated\robocode\exception\AbortedException.generated.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -159,8 +150,6 @@
     <Compile Include="peer\TeamMessage.cs" />
     <Compile Include="repository\RobotType.cs" />
     <Compile Include="repository\root\DllRootHelper.cs" />
-    <Compile Include="robocode\control\RandomFactory.cs" />
-    <Compile Include="robocode\control\RobotSpecification.cs" />
     <Compile Include="serialization\RbSerializer.cs" />
     <Compile Include="utils\Reflection.cs" />
     <Compile Include="utils\Reflection.security.cs" />
@@ -171,6 +160,10 @@
     <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
       <Project>{7E0900D3-6E8F-48EB-86DB-AA767AA90B84}</Project>
       <Name>robocode.dotnet.api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\robocode.dotnet.control.api\src\robocode.dotnet.control.api.csproj">
+      <Project>{674AED55-B9EC-4C7D-8E0B-1B2471C578B2}</Project>
+      <Name>robocode.dotnet.control.api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -183,7 +176,7 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
-echo [assembly: System.Reflection.AssemblyVersion("1.7.2.1")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+echo [assembly: System.Reflection.AssemblyVersion("1.7.2.2")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\robocode.dotnet.host\target"
 copy "$(SolutionDir)\tools\lib\*.dll" "$(TargetDir)"
