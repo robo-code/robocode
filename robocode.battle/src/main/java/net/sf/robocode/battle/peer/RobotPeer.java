@@ -526,7 +526,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 		}
 
-		waitForNextRound();
+		waitForNextTurn();
 
 		// from battle to robot
 		final ExecCommands resCommands = new ExecCommands(this.commands.get(), false);
@@ -544,7 +544,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			commands.set(new ExecCommands(newCommands, true));
 			printProxy(newCommands.getOutputText());
 
-			waitForNextRound();
+			waitForNextTurn();
 		}
 		// from battle to robot
 		final ExecCommands resCommands = new ExecCommands(this.commands.get(), false);
@@ -582,7 +582,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return bulletUpdates.getAndSet(new ArrayList<BulletStatus>());
 	}
 
-	private void waitForNextRound() {
+	private void waitForNextTurn() {
 		synchronized (isSleeping) {
 			// Notify the battle that we are now asleep.
 			// This ends any pending wait() call in battle.runRound().
@@ -636,7 +636,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void waitSleeping(long millisWait, int microWait) {
+	public void waitSleeping(long millisWait, int nanosWait) {
 		synchronized (isSleeping) {
 			// It's quite possible for simple robots to
 			// complete their processing before we get here,
@@ -647,8 +647,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					for (long i = millisWait; i > 0 && !isSleeping() && isRunning(); i--) {
 						isSleeping.wait(0, 999999);
 					}
-					if (!isSleeping()) {
-						isSleeping.wait(0, microWait);
+					if (!isSleeping() && isRunning()) {
+						isSleeping.wait(0, nanosWait);
 					}
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
@@ -774,31 +774,31 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return true;
 	}
 
-	public void startRound(long waitTime) {
+	public void startRound(long waitMillis, int waitNanos) {
+		Logger.logMessage(".", false);
+
+		statistics.initialize();
+
+		ExecCommands newExecCommands = new ExecCommands();
+
+		// Copy the colors from the last commands.
+		// Bugfix [2628217] - Robot Colors don't stick between rounds.
+		newExecCommands.copyColors(commands.get());
+
+		currentCommands = newExecCommands;
+		int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
+		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
+				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
+				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
+				battle.getRoundNum(), battle.getNumRounds(), battle.getTime());
+
+		status.set(stat);
+		robotProxy.startRound(currentCommands, stat);
+
 		synchronized (isSleeping) {
 			try {
-				Logger.logMessage(".", false);
-
-				ExecCommands newExecCommands = new ExecCommands();
-
-				// Copy the colors from the last commands.
-				// Bugfix [2628217] - Robot Colors don't stick between rounds.
-				newExecCommands.copyColors(commands.get());
-
-				currentCommands = newExecCommands;
-				int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
-				RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading,
-						velocity, currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
-						currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
-						battle.getRoundNum(), battle.getNumRounds(), battle.getTime());
-
-				status.set(stat);
-				robotProxy.startRound(currentCommands, stat);
-
-				if (!battle.isDebugging()) {
-					// Wait for the robot to go to sleep (take action)
-					isSleeping.wait(waitTime / 1000000, (int) (waitTime % 1000000));
-				}
+				// Wait for the robot to go to sleep (take action)
+				isSleeping.wait(waitMillis, waitNanos);
 			} catch (InterruptedException e) {
 				logMessage("Wait for " + getName() + " interrupted.");
 
@@ -807,7 +807,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 		}
 		if (!isSleeping() && !battle.isDebugging()) {
-			logMessage("\n" + getName() + " still has not started after " + (waitTime / 100000) + " ms... giving up.");
+			logMessage("\n" + getName() + " still has not started after " + waitMillis + " ms... giving up.");
 		}
 	}
 
