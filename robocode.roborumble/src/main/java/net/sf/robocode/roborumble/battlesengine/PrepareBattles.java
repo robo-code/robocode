@@ -24,6 +24,7 @@ package net.sf.robocode.roborumble.battlesengine;
 
 
 import net.sf.robocode.io.Logger;
+import static net.sf.robocode.roborumble.util.ExcludesUtil.*;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
@@ -36,7 +37,7 @@ import java.util.Vector;
  * PrepareBattles is used for preparing battles.
  * Controlled by properties files.
  *
- * @author Albert Perez (original)
+ * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  * @author Jerome Lavigne (contributor)
  */
@@ -75,6 +76,9 @@ public class PrepareBattles {
 		microratings = getProperties(parameters.getProperty("RATINGS.MICROBOTS", ""));
 		nanoratings = getProperties(parameters.getProperty("RATINGS.NANOBOTS", ""));
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
+
+		// Read and prepare exclude filters
+		setExcludes(parameters);
 	}
 
 	public boolean createBattlesList() {
@@ -88,11 +92,15 @@ public class PrepareBattles {
 			FileReader fr = new FileReader(participantsfile);
 
 			br = new BufferedReader(fr);
-			String record;
+			String participant;
 
-			while ((record = br.readLine()) != null) {
-				if (record.indexOf(",") != -1) {
-					String name = record.substring(0, record.indexOf(","));
+			while ((participant = br.readLine()) != null) {
+				if (participant.indexOf(",") != -1) {
+					String name = participant.substring(0, participant.indexOf(","));
+
+					if (isExcluded(name)) {
+						continue; // ignore excluded participant
+					}
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
 
@@ -164,11 +172,15 @@ public class PrepareBattles {
 			FileReader fr = new FileReader(participantsfile);
 
 			br = new BufferedReader(fr);
-			String record;
+			String participant;
 
-			while ((record = br.readLine()) != null) {
-				if (record.indexOf(",") != -1) {
-					String name = record.substring(0, record.indexOf(","));
+			while ((participant = br.readLine()) != null) {
+				if (participant.indexOf(",") != -1) {
+					String name = participant.substring(0, participant.indexOf(","));
+
+					if (isExcluded(name)) {
+						continue; // ignore excluded participant
+					}
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
 
@@ -348,11 +360,15 @@ public class PrepareBattles {
 			FileReader fr = new FileReader(participantsfile);
 
 			br = new BufferedReader(fr);
-			String record;
+			String participant;
 
-			while ((record = br.readLine()) != null) {
-				if (record.indexOf(",") != -1) {
-					String name = record.substring(0, record.indexOf(","));
+			while ((participant = br.readLine()) != null) {
+				if (participant.indexOf(",") != -1) {
+					String name = participant.substring(0, participant.indexOf(","));
+
+					if (isExcluded(name)) {
+						continue; // ignore excluded participant
+					}
 					String jar = name.replace(' ', '_') + ".jar";
 					boolean exists = (new File(botsrepository + jar)).exists();
 

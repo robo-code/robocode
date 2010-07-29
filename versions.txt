@@ -1,5 +1,5 @@
 Version 1.7.2.1
-(28-Jul-2010)
+(30-Jul-2010)
 ---------------
 = Bugfixes =
 * Bug [3021140] - Possible for robot to kill other robot threads.
@@ -10,6 +10,7 @@ Version 1.7.2.1
 * Bug [3026856] - Robot Packaging Wizard doesn't save value for Next & Back.
 * Bug [3028102] - ClassNotFoundException at RobotClassLoader.java:271.
 * Bug [3032423] - "skipped" turns at start with -Ddebug=true
+* Bug [3032843] - Exclude filters not working.
 * Sometimes the compiler window was hanging for several seconds, even though the compiler had finished compiling.
 
 = Changes =
