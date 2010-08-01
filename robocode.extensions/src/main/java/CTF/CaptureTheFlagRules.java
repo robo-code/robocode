@@ -72,6 +72,14 @@ public class CaptureTheFlagRules extends CustomRules {
 	private CaptureTheFlagExtensionApi exApi;
 	private int captures = 0;
 
+	public CaptureTheFlagRules(){}	//generic constructor might be required for construction via reflection in BattleManager
+//	public CaptureTheFlagRules(String dummyString){}
+	
+	public CustomRules getCustomRules()
+	{
+		return (CustomRules) this;
+	}
+	
 	public boolean isGameOver(int activeRobots, List<RobotPeer> robots, 
 			List<RobjectPeer> robjects) {
 	
@@ -587,5 +595,10 @@ public class CaptureTheFlagRules extends CustomRules {
 				e.printStackTrace();
 			}
 			return initialRobotPositions;
+		}
+		
+		public String getStatisticsBinarayName()
+		{
+			return "CTF.CaptureTheFlagRobotStatistics";
 		}
 }

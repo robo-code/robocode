@@ -45,6 +45,7 @@ import java.net.MalformedURLException;
  * 2) Container.factory will create always new instance of component 
  *
  * @author Pavel Savara (original)
+ * @author Joshua Galecki (modified for extensions)
  */
 public final class Container extends ContainerBase {
 	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
@@ -119,6 +120,18 @@ public final class Container extends ContainerBase {
 		}
 	}
 
+	public static void loadJars(File pathf, String className) {
+		final File[] files = pathf.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.toLowerCase().startsWith("robocode") && name.toLowerCase().endsWith(".jar");
+			}
+		});
+
+		for (File file : files) {
+			loadModule(getModuleName(file.toString() + "\\" + className), engineLoader);
+		}
+	}
+
 	private static void loadJars(File pathf) {
 		final File[] files = pathf.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
@@ -137,7 +150,17 @@ public final class Container extends ContainerBase {
 				// Logger.logMessage("already loaded " + module);
 				return false;
 			}
-			Class<?> modClass = loader.loadClass(module + ".Module");
+			
+			Class<?> modClass; 
+			
+			if (module.startsWith("CTF"))		//hack 3/3 - Josh
+			{
+				modClass = loader.loadClass(module);
+			}
+			else
+			{
+				modClass = loader.loadClass(module + ".Module");
+			}
 
 			modClass.newInstance();
 			Logger.logMessage("Loaded " + module);
@@ -156,6 +179,11 @@ public final class Container extends ContainerBase {
 	private static String getModuleName(String path) {
 		final String test = path.toLowerCase();
 
+		if (path.indexOf("CTF") != -1)
+		{
+			return path.substring(path.indexOf("CTF")); //Hack 1/3 - Josh
+		}
+		
 		if (test.endsWith("robocode.jar") || test.contains("robocode.api")) {
 			return null;
 		}

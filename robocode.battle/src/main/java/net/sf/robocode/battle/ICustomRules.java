@@ -56,6 +56,8 @@ public interface ICustomRules {
 	
 	IContestantStatistics getEmptyStatistics();
 	
+	String getStatisticsBinarayName();
+	
 	IExtensionApi getExtensionApi();
 	
 	/**

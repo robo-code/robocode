@@ -56,6 +56,7 @@ package net.sf.robocode.battle;
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.core.Container;
+import net.sf.robocode.core.EngineClassLoader;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
@@ -222,36 +223,43 @@ public class BattleManager implements IBattleManager {
 		try {
 			// TODO: For convenience, I've hardcoded the extension package strings here.
 			// This should be cleaned later.
-			String extensionPackagename = "CTF.CaptureTheFlagRules";
+			String customRulesClassname = "CTF.CaptureTheFlagRules";
 			// extensionPackagename = battleProperties.getExtensionPackage();
-			String extensionFilename = "ex.jar";
+			String extensionFilename = "robocode.extensions-2.0.0.0-Alpha.jar";
 			// extensionFilename = battleProperties.getExtensionFilename();
 			
 			File jarFile = new File(FileUtil.getExtensionsDir(), extensionFilename);
-			URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[] { jarFile.toURI().toURL() },
-					getClass().getClassLoader());
-			Class<?> unknownClass = Class.forName(extensionPackagename, true, urlClassLoader);
-			Class<?> loadingCustomRules = unknownClass.asSubclass(ICustomRules.class);
-			// Told to avoid Class.newInstance() -- http://stackoverflow.com/questions/194698/how-to-load-a-jar-file-at-runtime.
-			Constructor<?> ctor = loadingCustomRules.getConstructor();
-
-			return (ICustomRules) ctor.newInstance((Object[]) null);
 			
+			if (jarFile.exists())
+			{
+				//Add the url of the jar to the engine class loader
+				((EngineClassLoader)Container.engineLoader).addURL(jarFile.toURI().toURL());
+	
+				//Add the custom rules class to the engine class loader
+				Container.loadJars(FileUtil.getExtensionsDir(), customRulesClassname);
+				
+				//Instantiate custom rules 
+				Class<?> loadedCustomRules = 
+					(Class<?>) Class.forName(customRulesClassname, true, Container.engineLoader);
+				
+				ICustomRules newInstance = (ICustomRules)loadedCustomRules.newInstance();
+				
+				//Add the custom statistics to the engine class loader
+				Container.loadJars(FileUtil.getExtensionsDir(), newInstance.getStatisticsBinarayName());
+				
+				return newInstance;
+			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
 			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
 		

@@ -45,6 +45,8 @@ public abstract class CustomRules implements ICustomRules {
 
 	IContestantStatistics statistics = null;
 	
+	public CustomRules(){}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -263,5 +265,13 @@ public abstract class CustomRules implements ICustomRules {
 			}
 		}
 		return robjects;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getStatisticsBinarayName()
+	{
+		return null;
 	}
 }

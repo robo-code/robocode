@@ -91,6 +91,11 @@ public class EngineClassLoader extends URLClassLoader {
 				}
 			});
 		}
+		if (name.startsWith("CTF"))	//hack 2/3 - Josh
+		{
+			return true;
+		}
+		
 		return false;
 	}
 }
