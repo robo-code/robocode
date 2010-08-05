@@ -1,5 +1,5 @@
 Version 1.7.2.1
-(30-Jul-2010)
+(05-Aug-2010)
 ---------------
 = Bugfixes =
 * Bug [3021140] - Possible for robot to kill other robot threads.
