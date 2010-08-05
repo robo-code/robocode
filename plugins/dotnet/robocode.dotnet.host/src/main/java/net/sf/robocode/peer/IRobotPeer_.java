@@ -42,6 +42,9 @@ class __IRobotPeer extends system.Object implements net.sf.robocode.peer.IRobotP
     @net.sf.jni4net.attributes.ClrMethod("(Z)V")
     public native void setRunning(boolean par0);
     
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isRunning();
+    
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;)Ljava/lang/Object;")
     public native net.sf.robocode.peer.ExecResults waitForBattleEndImpl(net.sf.robocode.peer.ExecCommands par0);
     
