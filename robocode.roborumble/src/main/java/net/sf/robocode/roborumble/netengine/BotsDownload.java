@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert Pï¿½rez
+ *     Albert Pérez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
@@ -27,6 +27,7 @@ package net.sf.robocode.roborumble.netengine;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.roborumble.battlesengine.CompetitionsSelector;
 import static net.sf.robocode.roborumble.netengine.FileTransfer.DownloadStatus;
+import static net.sf.robocode.roborumble.util.ExcludesUtil.*;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
@@ -47,7 +48,7 @@ import java.util.zip.ZipEntry;
  * Manages the download operations (participants and JAR files).
  * Controlled by properties files.
  *
- * @author Albert Pï¿½rez (original)
+ * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class BotsDownload {
@@ -71,7 +72,6 @@ public class BotsDownload {
 	private final String microbotsfile;
 	private final String nanobotsfile;
 	private final String removeboturl;
-	private String[] excludes;
 
 	public BotsDownload(String propertiesfile) {
 		// Read parameters
@@ -106,23 +106,7 @@ public class BotsDownload {
 		removeboturl = parameters.getProperty("UPDATEBOTSURL", "");
 
 		// Read and prepare exclude filters
-		String exclude = parameters.getProperty("EXCLUDE");
-
-		if (exclude != null) {
-			// Convert into regular expression
-
-			// Dots must be dots, not "any character" in the regular expression
-			exclude = exclude.replaceAll("\\.", "\\\\.");
-
-			// The wildcard character ? corresponds to the regular expression .?
-			exclude = exclude.replaceAll("\\?", ".?");
-
-			// The wildcard character * corresponds to the regular expression .*
-			exclude = exclude.replaceAll("\\*", ".*");
-
-			// Split the exclude line into independent exclude filters that are trimmed for white-spaces
-			excludes = exclude.split("[\\s,;]+");
-		}
+		setExcludes(parameters);
 	}
 
 	public boolean downloadRatings() {
@@ -206,19 +190,24 @@ public class BotsDownload {
 
 			in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
 
-			for (String particiant; (particiant = in.readLine()) != null;) {
-
-				if (particiant.indexOf(begin) >= 0) {
+			for (String participant; (participant = in.readLine()) != null;) {
+				if (participant.indexOf(begin) >= 0) {
 					arebots = true;
-				} else if (particiant.indexOf(end) >= 0) {
+				} else if (participant.indexOf(end) >= 0) {
 					arebots = false;
 				} else if (arebots) {
-					if (isExcludedPartificant(particiant) == false && verifyParticipantFormat(particiant) == false) {
-						if (particiant.trim().length() > 0) {
-							System.out.println("Participant ignored due to invalid line: '" + particiant + '\'');
+					String bot = participant.split("[,]")[0];
+
+					if (!isExcluded(bot)) {
+						if (!verifyParticipantFormat(participant)) {
+							if (participant.trim().length() > 0) {
+								System.out.println("Participant ignored due to invalid line: " + bot);
+							}
+						} else {
+							bots.add(participant);
 						}
 					} else {
-						bots.add(particiant);
+						System.out.println("Ignored excluded: " + bot);
 					}
 				}
 			}
@@ -609,33 +598,6 @@ public class BotsDownload {
 				} catch (IOException ignored) {}
 			}
 		}
-	}
-
-	// Checks if a participant must be excluded
-	private boolean isExcludedPartificant(String participant) {
-		return (excludes != null) ? isExcluded(participant.split("[,]")[0].trim()) : false;
-	}
-
-	// Checks if a robot name is in the exclude list
-	private boolean isExcluded(String bot) {
-		if (excludes == null) {
-			return false;
-		}
-
-		// Check the name against all exclude filters
-		for (int i = excludes.length - 1; i >= 0; i--) {
-			try {
-				if (bot.matches(excludes[i])) {
-					return true;
-				}
-			} catch (java.util.regex.PatternSyntaxException e) {
-				// Clear the current exclude if the syntax is illegal (for next time this method is called)
-				excludes[i] = "";
-			}
-		}
-
-		// Not excluded
-		return false;
 	}
 
 	// Checks if a participant format from the participant list is valid

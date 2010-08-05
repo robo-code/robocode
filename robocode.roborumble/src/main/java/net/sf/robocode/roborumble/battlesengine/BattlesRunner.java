@@ -40,7 +40,7 @@ import java.util.*;
  * Reads a file with the battles to be runned and outputs the results in another file.
  * Controlled by properties files.
  *
- * @author Albert Perez (original)
+ * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  * @author Joachim Hofer (contributor)
  */

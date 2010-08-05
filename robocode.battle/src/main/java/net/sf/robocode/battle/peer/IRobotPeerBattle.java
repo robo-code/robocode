@@ -53,7 +53,7 @@ public interface IRobotPeerBattle extends ContestantPeer {
 
 	void waitWakeup();
 
-	void waitSleeping(long millisWait, int microWait);
+	void waitSleeping(long millisWait, int nanosWait);
 
 	void waitForStop();
 
@@ -61,7 +61,7 @@ public interface IRobotPeerBattle extends ContestantPeer {
 
 	void initializeRound(List<RobotPeer> robots, double[][] initialRobotPositions);
 
-	void startRound(long waitTime);
+	void startRound(long millisWait, int nanosWait);
 
 	void setSkippedTurns();
 

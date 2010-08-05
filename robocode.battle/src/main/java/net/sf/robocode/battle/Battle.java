@@ -137,6 +137,8 @@ import java.util.regex.Pattern;
  */
 public final class Battle extends BaseBattle {
 
+	private static final int DEBUG_TURN_WAIT_MILLIS = 10 * 60 * 1000; // 10 seconds
+
 	private final IHostManager hostManager;
 	private final long cpuConstant;
 
@@ -146,7 +148,6 @@ public final class Battle extends BaseBattle {
 
 	// Turn skip related items
 	private boolean parallelOn;
-	static final int DEBUG_TURN_WAIT = 10 * 60 * 1000;
 	private long millisWait;
 	private int microWait;
 
@@ -438,16 +439,29 @@ public final class Battle extends BaseBattle {
 	@Override
 	protected void initializeRound() {
 		super.initializeRound();
+
 		inactiveTurnCount = 0;
 
-		// start robots
-		final long waitTime = Math.min(300 * cpuConstant, 10000000000L);
+		// Start robots
+
+		long waitMillis;
+		int waitNanos;
+
+		if (isDebugging) {
+			waitMillis = DEBUG_TURN_WAIT_MILLIS;
+			waitNanos = 0;
+		} else {
+			long waitTime = Math.min(300 * cpuConstant, 10000000000L);
+
+			waitMillis = waitTime / 1000000;
+			waitNanos = (int) (waitTime % 1000000);
+		}
 
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
-			robotPeer.getRobotStatistics().initialize();
-			robotPeer.startRound(waitTime);
+			robotPeer.startRound(waitMillis, waitNanos);
 		}
-		Logger.logMessage(""); // puts in a new-line
+
+		Logger.logMessage(""); // puts in a new-line in the log message
 
 		final ITurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
 
@@ -477,7 +491,6 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void runTurn() {
-
 		super.runTurn();
 
 		loadCommands();
@@ -751,7 +764,7 @@ public final class Battle extends BaseBattle {
 
 				if (robotPeer.isAlive()) {
 					if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
-						robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
+						robotPeer.waitSleeping(DEBUG_TURN_WAIT_MILLIS, 1);
 					} else if (currentTime == 1) {
 						robotPeer.waitSleeping(millisWait * 10, 1);
 					} else {
@@ -772,7 +785,9 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning() && robotPeer.isAlive()) {
 				if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
-					robotPeer.waitSleeping(DEBUG_TURN_WAIT, 1);
+					robotPeer.waitSleeping(DEBUG_TURN_WAIT_MILLIS, 1);
+				} else if (currentTime == 1) {
+					robotPeer.waitSleeping(millisWait * 10, 1);
 				} else {
 					robotPeer.waitSleeping(millisWait, microWait);
 				}

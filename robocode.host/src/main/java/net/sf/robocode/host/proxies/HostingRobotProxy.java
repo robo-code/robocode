@@ -204,15 +204,10 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			robotThreadManager.initAWT();
 		}
 
-		peer.setRunning(true);
-
-		if (!robotSpecification.isValid() || !loadRobotRound()) {
-			drainEnergy();
-			peer.punishBadBehavior(BadBehavior.CANNOT_START);
-			waitForBattleEndImpl();
-		} else {
+		if (robotSpecification.isValid() && loadRobotRound()) {
 			try {
 				if (robot != null) {
+					peer.setRunning(true);
 
 					// Process all events for the first turn.
 					// This is done as the first robot status event must occur before the robot
@@ -225,9 +220,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 						runnable.run();
 					}
 				}
-
-				// noinspection InfiniteLoopStatement
-				for (;;) {
+				while (peer.isRunning()) {
 					executeImpl();
 				}
 			} catch (WinException e) {// Do nothing
@@ -260,11 +253,16 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			} finally {
 				waitForBattleEndImpl();
 			}
+		} else {
+			drainEnergy();
+			peer.punishBadBehavior(BadBehavior.CANNOT_START);
+			waitForBattleEndImpl();
 		}
+
+		peer.setRunning(false);
 
 		// If battle is waiting for us, well, all done!
 		synchronized (this) {
-			peer.setRunning(false);
 			notifyAll();
 		}
 	}
