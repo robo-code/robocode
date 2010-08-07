@@ -15,6 +15,7 @@ package CTF;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -55,7 +56,18 @@ import net.sf.robocode.io.FileUtil;
  * @author Joshua Galecki (original)
  *
  */
-public class CaptureTheFlagRules extends CustomRules {
+/*******************************************************************************
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ * 		Joshua Galecki
+ * 		-Initial implementation
+  *******************************************************************************/
+public class CaptureTheFlagRules extends CustomRules  {
 	
 	//TODO: refactor team rosters, flags, and bases into a single object
 	List<List<String>> teams;
@@ -69,11 +81,11 @@ public class CaptureTheFlagRules extends CustomRules {
 	FlagPeer secondFlag;
 	BasePeer firstBase;
 	BasePeer secondBase;
-	private CaptureTheFlagExtensionApi exApi;
+//	private CaptureTheFlagExtensionApi exApi;
 	private int captures = 0;
 
 	public CaptureTheFlagRules(){}	//generic constructor might be required for construction via reflection in BattleManager
-//	public CaptureTheFlagRules(String dummyString){}
+	public CaptureTheFlagRules(String dummyString){}
 	
 	public CustomRules getCustomRules()
 	{
@@ -87,7 +99,7 @@ public class CaptureTheFlagRules extends CustomRules {
 			return true;
 		}
 		
-		return captures > 0;
+		return captures > 2;
 	}
 	
 	@Override
@@ -103,6 +115,19 @@ public class CaptureTheFlagRules extends CustomRules {
 				//exApi.updateFlag((Flag)robject);
 				for (RobjectPeer otherRobject : robjects)
 				{
+					if (flag.getHolder() != null && flag.getHolderTeamNumber() == -1)
+					{
+						int teamHolding;
+						if (teams.get(flag.getTeam()).contains(flag.getHolder().getName()))
+						{
+							teamHolding = flag.getTeam();
+						}
+						else
+						{
+							teamHolding = (flag.getTeam() + 1) % 2;
+						}
+						flag.setHolderTeamNumber(teamHolding);
+					}
 					if (otherRobject.getType().equals("base") &&
 							flag.getTeam() != otherRobject.getTeam() &&
 							otherRobject.getBoundaryRect().contains(flag.getBoundaryRect()))
@@ -187,6 +212,7 @@ public class CaptureTheFlagRules extends CustomRules {
 			if (robject.getType().equals("flag"))
 			{
 				updateFlag((FlagPeer)robject);
+				((FlagPeer)robject).roundStarted();
 			}
 			if (robject.getType().equals("base"))
 			{
@@ -304,13 +330,36 @@ public class CaptureTheFlagRules extends CustomRules {
 	}
 	
 	@Override
-	public IExtensionApi getExtensionApi()
+	public List<String> getBattlefieldState()
 	{
-		if (exApi == null)
+		List<String> state = new ArrayList<String>();
+		
+		state.add(String.valueOf(teams.get(0).size()));
+		for (int nameIndex = 0; nameIndex < teams.get(0).size(); nameIndex++)
 		{
-			exApi = new CaptureTheFlagExtensionApi(this);
+			state.add(teams.get(0).get(nameIndex));
 		}
-		return exApi;
+		state.add(String.valueOf(teams.get(1).size()));
+		for (int nameIndex = 0; nameIndex < teams.get(1).size(); nameIndex++)
+		{
+			state.add(teams.get(1).get(nameIndex));
+		}
+		
+		state.add(String.valueOf(firstFlag.getBoundaryRect().getCenterX()));
+		state.add(String.valueOf(firstFlag.getBoundaryRect().getCenterY()));
+		state.add(String.valueOf(secondFlag.getBoundaryRect().getCenterX()));
+		state.add(String.valueOf(secondFlag.getBoundaryRect().getCenterY()));
+
+		state.add(String.valueOf(firstBase.getX()));
+		state.add(String.valueOf(firstBase.getY()));
+		state.add(String.valueOf(firstBase.getWidth()));
+		state.add(String.valueOf(firstBase.getHeight()));
+		state.add(String.valueOf(secondBase.getX()));
+		state.add(String.valueOf(secondBase.getY()));
+		state.add(String.valueOf(secondBase.getWidth()));
+		state.add(String.valueOf(secondBase.getHeight()));
+		
+		return state;
 	}
 	
 	public List<List<String>> getTeams()
@@ -318,151 +367,72 @@ public class CaptureTheFlagRules extends CustomRules {
 		return teams;
 	}
 
-	/**
-	 * 
-	 * @param message
-	 * @param sender
-	 * @param receiver null indicates a team broadcast
-	 */
-	public void broadcastMessage(Serializable message, String senderName, String receiver) {
-		List<String> team = null;
-		RobotPeer sender = null;
-		Random random = new Random();
-		for (List<String> teamList : teams)
-		{
-			if (teamList.contains(senderName))
-			{
-				team = teamList; 
-			}
-		}
-		for (RobotPeer robot : robotsInTeams)
-		{
-			if (robot.getName().equals(senderName))
-			{
-				sender = robot;
-			}
-		}
-		if (team == null || sender == null) return;
-		if (receiver == null)
-		{
-			for(RobotPeer robot : robotsInTeams)
-			{
-				if (team.contains(robot.getName()) && !robot.getName().equals(senderName))
-				{
-					attemptBroadcast(message, robot, sender, random);
-				}
-			}
-		}
-		else
-		{
-			for(RobotPeer robot : robotsInTeams)
-			{
-				if (team.contains(robot.getName()) && robot.getName().equals(receiver))
-				{
-					attemptBroadcast(message, robot, sender, random);
-				}
-			}
-		}
-	}
-	
-	private void attemptBroadcast(Serializable message, RobotPeer robot, RobotPeer sender, Random random)
-	{
-		boolean fail = false;
-		Line2D transmissionLine = new Line2D.Double(robot.getX(), robot.getY(), sender.getX(), sender.getY());
-		
-		for (RobjectPeer robject : robjects)
-		{
-			if (transmissionLine.intersects(robject.getBoundaryRect()))
-			{
-				fail = true;
-			}
-		}
-		
-		double rand = random.nextInt(1000) / 1000.0;
-		double distance = new Point2D.Double(robot.getX(), robot.getY()).distance(
-				new Point2D.Double(sender.getX(), sender.getY()));
-		if (rand > messageProbability(distance))
-		{
-			fail = true;
-		}
-		
-		if (!fail)
-		{
-			robot.addEvent(new MessageEvent(sender.getName(), message));
-		}
-	}
-	
-	private double messageProbability(double distance)
-	{
-		return 1 / (Math.pow(distance / messageDecayStart, messageDecayExp));
-	}
-
-	public BasePeer getOwnBase(String ownName) {
+	public Rectangle2D getOwnBase(String ownName) {
 		for (List<String> team : teams)
 		{
 			if (team.contains(ownName))
 			{
 				if (teams.indexOf(team) == 0)
 				{
-					return firstBase;
+					return firstBase.getBoundaryRect();
 				}
 				else if (teams.indexOf(team) == 1)
 				{
-					return secondBase;
+					return secondBase.getBoundaryRect();
 				}
 			}
 		}
 		return null;
 	}
 
-	public FlagPeer getOwnFlag(String ownName) {
+	public Point2D getOwnFlag(String ownName) {
 		for (List<String> team : teams)
 		{
 			if (team.contains(ownName))
 			{
 				if (teams.indexOf(team) == 0)
 				{
-					return firstFlag;
+					return new Point2D.Double(firstFlag.getBoundaryRect().getCenterX(), firstFlag.getBoundaryRect().getCenterY());
 				}
 				else if (teams.indexOf(team) == 1)
 				{
-					return secondFlag;
+					return new Point2D.Double(secondFlag.getBoundaryRect().getCenterX(), secondFlag.getBoundaryRect().getCenterY());
 				}
 			}
 		}
 		return null;
 	}
 
-	public FlagPeer getEnemyFlag(String ownName) {
+	public Point2D getEnemyFlag(String ownName) {
 		for (List<String> team : teams)
 		{
 			if (team.contains(ownName))
 			{
 				if (teams.indexOf(team) == 1)
 				{
-					return firstFlag;
+					return new Point2D.Double(firstFlag.getBoundaryRect().getCenterX(), firstFlag.getBoundaryRect().getCenterY());
 				}
 				else if (teams.indexOf(team) == 0)
 				{
-					return secondFlag;
+					return new Point2D.Double(secondFlag.getBoundaryRect().getCenterX(), secondFlag.getBoundaryRect().getCenterY());
 				}
 			}
 		}
 		return null;
 	}
 
-	public BasePeer getEnemyBase(String ownName) {
+	public Rectangle2D getEnemyBase(String ownName) {
 		for (List<String> team : teams)
 		{
 			if (team.contains(ownName))
 			{
 				if (teams.indexOf(team) == 1)
 				{
-					return firstBase;
+					return firstBase.getBoundaryRect();
 				}
 				else if (teams.indexOf(team) == 0)
 				{
-					return secondBase;
+					return secondBase.getBoundaryRect();
 				}
 			}
 		}
@@ -595,10 +565,5 @@ public class CaptureTheFlagRules extends CustomRules {
 				e.printStackTrace();
 			}
 			return initialRobotPositions;
-		}
-		
-		public String getStatisticsBinarayName()
-		{
-			return "CTF.CaptureTheFlagRobotStatistics";
 		}
 }

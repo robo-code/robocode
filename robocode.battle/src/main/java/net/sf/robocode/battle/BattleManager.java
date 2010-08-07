@@ -76,11 +76,7 @@ import robocode.control.events.BattleResumedEvent;
 import robocode.control.events.IBattleListener;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -219,36 +215,33 @@ public class BattleManager implements IBattleManager {
 	 * battleProperties. The CustomRulesApi is also loaded at this point.
 	 * @return the custom rules to be used for the game
 	 */
-	private ICustomRules getCustomRules() {
+	private CustomRules getCustomRules() {
 		try {
 			// TODO: For convenience, I've hardcoded the extension package strings here.
 			// This should be cleaned later.
-			String customRulesClassname = "CTF.CaptureTheFlagRules";
+			String extensionPackagename = "CTF";
+			String extensionClassname = "CaptureTheFlagRules";
 			// extensionPackagename = battleProperties.getExtensionPackage();
 			String extensionFilename = "robocode.extensions-2.0.0.0-Alpha.jar";
 			// extensionFilename = battleProperties.getExtensionFilename();
 			
+			//Make sure engineLoader knows about the extension being used
 			File jarFile = new File(FileUtil.getExtensionsDir(), extensionFilename);
+			((EngineClassLoader) Container.engineLoader).addURL(jarFile.toURI().toURL() );
 			
-			if (jarFile.exists())
-			{
-				//Add the url of the jar to the engine class loader
-				((EngineClassLoader)Container.engineLoader).addURL(jarFile.toURI().toURL());
-	
-				//Add the custom rules class to the engine class loader
-				Container.loadJars(FileUtil.getExtensionsDir(), customRulesClassname);
-				
-				//Instantiate custom rules 
-				Class<?> loadedCustomRules = 
-					(Class<?>) Class.forName(customRulesClassname, true, Container.engineLoader);
-				
-				ICustomRules newInstance = (ICustomRules)loadedCustomRules.newInstance();
-				
-				//Add the custom statistics to the engine class loader
-				Container.loadJars(FileUtil.getExtensionsDir(), newInstance.getStatisticsBinarayName());
-				
-				return newInstance;
-			}
+			//Register extension custom rules with the engine loader 
+			Container.loadJars(FileUtil.getExtensionsDir());
+
+			Class<?> loadedCustomRules = 
+				(Class<?>) Class.forName(extensionPackagename + "." + extensionClassname,
+						true, Container.engineLoader);
+			
+			
+			
+			CustomRules newInstance = (CustomRules) loadedCustomRules.newInstance(); 
+
+			return newInstance;
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {

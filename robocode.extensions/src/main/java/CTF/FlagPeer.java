@@ -14,6 +14,7 @@ public class FlagPeer extends RobjectPeer{
 	private RobotPeer holder;
 	private double initialX;
 	private double initialY;
+	private int holderTeamNumber;
 	
 	public FlagPeer(int x, int y, int teamNumber) {
 		super("flag", x, y, 10, 10, false, false, false,
@@ -21,6 +22,7 @@ public class FlagPeer extends RobjectPeer{
 		holder = null;
 		initialX = x;
 		initialY = y;
+		holderTeamNumber = -1;
 		if (teamNumber != 0)
 		{
 			setTeam(teamNumber);
@@ -66,6 +68,17 @@ public class FlagPeer extends RobjectPeer{
 		setRobotConscious(true);
 		setX(initialX);
 		setY(initialY);
+		holderTeamNumber = -1;
+	}
+	
+	public void setHolderTeamNumber(int teamHolding)
+	{
+		holderTeamNumber = teamHolding;
+	}
+	
+	public int getHolderTeamNumber()
+	{
+		return holderTeamNumber;
 	}
 	
 	@Override
@@ -73,12 +86,19 @@ public class FlagPeer extends RobjectPeer{
 	{
 		if (holder != null)
 		{
-			setX(holder.getX());
-			setY(holder.getY());
-			if (holder.isDead())
+			if (holderTeamNumber == teamNumber)
 			{
-				holder = null;
-				setRobotConscious(true);
+				roundStarted();
+			}
+			else
+			{
+				setX(holder.getX());
+				setY(holder.getY());
+				if (holder.isDead())
+				{
+					holder = null;
+					setRobotConscious(true);
+				}
 			}
 		}
 	}

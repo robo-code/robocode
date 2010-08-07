@@ -45,7 +45,6 @@ import java.net.MalformedURLException;
  * 2) Container.factory will create always new instance of component 
  *
  * @author Pavel Savara (original)
- * @author Joshua Galecki (modified for extensions)
  */
 public final class Container extends ContainerBase {
 	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
@@ -120,19 +119,7 @@ public final class Container extends ContainerBase {
 		}
 	}
 
-	public static void loadJars(File pathf, String className) {
-		final File[] files = pathf.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.toLowerCase().startsWith("robocode") && name.toLowerCase().endsWith(".jar");
-			}
-		});
-
-		for (File file : files) {
-			loadModule(getModuleName(file.toString() + "\\" + className), engineLoader);
-		}
-	}
-
-	private static void loadJars(File pathf) {
+	public static void loadJars(File pathf) {
 		final File[] files = pathf.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().startsWith("robocode") && name.toLowerCase().endsWith(".jar");
@@ -151,11 +138,10 @@ public final class Container extends ContainerBase {
 				return false;
 			}
 			
-			Class<?> modClass; 
-			
-			if (module.startsWith("CTF"))		//hack 3/3 - Josh
+			Class<?> modClass;
+			if (module.startsWith("CTF"))	//More hacks - Josh
 			{
-				modClass = loader.loadClass(module);
+				modClass = loader.loadClass("CTF.CaptureTheFlagRules");
 			}
 			else
 			{
@@ -179,12 +165,12 @@ public final class Container extends ContainerBase {
 	private static String getModuleName(String path) {
 		final String test = path.toLowerCase();
 
-		if (path.indexOf("CTF") != -1)
+		if (test.endsWith("alpha.jar"))
 		{
-			return path.substring(path.indexOf("CTF")); //Hack 1/3 - Josh
+			return "CTF.CaptureTheFlagRules";
 		}
 		
-		if (test.endsWith("robocode.jar") || test.contains("robocode.api")) {
+		if (test.endsWith("robocode.jar") || (test.contains("robocode.api"))) {
 			return null;
 		}
 		int i = test.lastIndexOf("robocode.");

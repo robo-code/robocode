@@ -36,6 +36,4 @@ public interface IRobotPeer {
 	ByteBuffer executeImplSerial(ByteBuffer newCommands) throws IOException;
 	
 	ByteBuffer waitForBattleEndImplSerial(ByteBuffer newCommands) throws IOException;
-
-	IExtensionApi getExtensionApi();
 }

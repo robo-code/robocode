@@ -56,9 +56,7 @@ public interface ICustomRules {
 	
 	IContestantStatistics getEmptyStatistics();
 	
-	String getStatisticsBinarayName();
-	
-	IExtensionApi getExtensionApi();
+	List<String> getBattlefieldState();
 	
 	/**
 	 * Decides where each robot will start off. If there are more robots than starting

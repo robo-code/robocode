@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import CTFApi.CaptureTheFlagApi;
 import CTFApi.ICaptureTheFlagApi;
 
 import robocode.AdvancedRobot;
@@ -16,35 +17,62 @@ import robocode.robotinterfaces.IObjectRobot;
 
 public class FlagSeeker extends AdvancedRobot implements IObjectEvents, IObjectRobot{
 	
-	ICaptureTheFlagApi capApi;
+	CaptureTheFlagApi capApi;
 	List<String> team = null;
 
 	Point2D enemyFlag;
 	Rectangle2D homeBase;
+	
+	boolean getEnemyFlag;
 
 	Point2D destination;
 	int skipGoTo = 20;
 	
 	public void run() {
-		capApi = (ICaptureTheFlagApi)getExtensionApi();
+		capApi = new CaptureTheFlagApi(this.getName());
+		getEnemyFlag = true;
 		
-		team = capApi.getTeammates(getName());
-		homeBase = capApi.getOwnBase(getName());
-		enemyFlag = capApi.getEnemyFlag(getName());
-		
-		destination = new Point2D.Double(enemyFlag.getX(), enemyFlag.getY());
 		
 		while (true)
 		{
-			if (skipGoTo > 10)
+			capApi.UpdateBattlefieldState(getBattlefieldState()); 
+			
+			team = capApi.getTeammates();
+			homeBase = capApi.getOwnBase();
+			enemyFlag = capApi.getEnemyFlag();
+
+			if (homeBase == null)
 			{
-				goTo(destination);
+				//ExecResults (and therefore capApi) will not contain any information until after 
+				//the first turn. For this reason, the first turn is skipped.
+				
+				execute();
 			}
 			else
 			{
-				skipGoTo++;
+				if (enemyFlag.distance(getX(), getY()) < 50)
+				{
+					getEnemyFlag = false;
+				}
+				if (getEnemyFlag)
+				{
+					destination = enemyFlag;
+				}
+				else 
+				{
+					destination = new Point2D.Double(homeBase.getCenterX(), homeBase.getCenterY());
+				}
+				
+//				if (skipGoTo > 10)
+//				{
+					goTo(destination);
+//				}
+//				else
+//				{
+//					skipGoTo++;
+//				}
+				execute();
 			}
-			execute();
 		}
 	}
 	
@@ -57,25 +85,29 @@ public class FlagSeeker extends AdvancedRobot implements IObjectEvents, IObjectR
 			quad = -90;
 		}
 		
-		double absBearing = quad +  Math.atan(dy/dx) * -180 / Math.PI;
+		double absBearing = quad - Math.atan(dy/dx) * 180 / Math.PI;
 		double bearing = absBearing - getHeading();
+		while (bearing > 180)
+		{
+			bearing -= 360;
+		}
+		while (bearing < -180)
+		{
+			bearing += 360;
+		}
 		setTurnRight(bearing);
 		setAhead(100);
 	}
 	
 	public void onHitObject(HitObjectEvent event) {
-		if (event.getType().equals("flag"))
+		if (event.getType().equals("flag") && enemyFlag.distance(getX(), getY()) < 50)
 		{
-			destination = new Point2D.Double(homeBase.getX(), homeBase.getY());
-			setTurnRight(180);
-			setAhead(10);
+			getEnemyFlag = false;
 			skipGoTo = 0;
 		}
 		else if (event.getType().equals("base") && homeBase.contains(new Point2D.Double(getX(), getY())))
 		{
-			destination = enemyFlag;
-			setTurnRight(180);
-			setAhead(10);
+			getEnemyFlag = true;
 			skipGoTo = 0;
 		}
 	}

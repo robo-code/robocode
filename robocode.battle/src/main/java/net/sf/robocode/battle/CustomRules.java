@@ -169,7 +169,7 @@ public abstract class CustomRules implements ICustomRules {
 		return new ClassicRobotStatistics();
 	}
 	
-	public IExtensionApi getExtensionApi() {
+	public List<String> getBattlefieldState() {
 		return null;
 	}
 	
@@ -265,13 +265,5 @@ public abstract class CustomRules implements ICustomRules {
 			}
 		}
 		return robjects;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public String getStatisticsBinarayName()
-	{
-		return null;
 	}
 }

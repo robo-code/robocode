@@ -34,8 +34,12 @@ public class ExecResults implements Serializable {
 	private boolean halt;
 	private boolean shouldWait;
 	private boolean paintEnabled;
+	
+	private List<String> battlefieldState;
 
-	public ExecResults(ExecCommands commands, RobotStatus status, List<Event> events, List<TeamMessage> teamMessages, List<BulletStatus> bulletUpdates, boolean halt, boolean shouldWait, boolean paintEnabled) {
+	public ExecResults(ExecCommands commands, RobotStatus status, List<Event> events, 
+			List<TeamMessage> teamMessages, List<BulletStatus> bulletUpdates, boolean halt, 
+			boolean shouldWait, boolean paintEnabled, List<String> battlefieldState) {
 		this.commands = commands;
 		this.status = status;
 		this.events = events;
@@ -44,6 +48,7 @@ public class ExecResults implements Serializable {
 		this.halt = halt;
 		this.shouldWait = shouldWait;
 		this.paintEnabled = paintEnabled;
+		this.battlefieldState = battlefieldState;
 	}
 
 	public static long getSerialVersionUID() {
@@ -112,6 +117,16 @@ public class ExecResults implements Serializable {
 
 	public void setPaintEnabled(boolean paintEnabled) {
 		this.paintEnabled = paintEnabled;
+	}
+	
+	public List<String> getBattlefieldState()
+	{
+		return battlefieldState;
+	}
+	
+	public void setBattlefieldState(List<String> state)
+	{
+		battlefieldState = state;
 	}
 
 	private ExecResults() {}

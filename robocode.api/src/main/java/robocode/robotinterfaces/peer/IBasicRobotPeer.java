@@ -22,6 +22,7 @@ import robocode.*;
 import robocode.robotinterfaces.IBasicEvents;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 
 /**
@@ -716,6 +717,6 @@ public interface IBasicRobotPeer {
 	 * @since 1.7.2
 	 */
 	void rescan();
-
-	IExtensionApi getExtensionApi();
+	
+	ArrayList<String> getBattlefieldState();
 }

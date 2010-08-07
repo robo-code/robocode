@@ -38,6 +38,7 @@ import robocode.robotinterfaces.*;
 import robocode.robotinterfaces.peer.IStandardRobotPeer;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 
 /**
@@ -207,14 +208,6 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 		}
 		uninitializedException();
 		return 0; // never called
-	}
-	
-	public IExtensionApi getExtensionApi() {
-		if (peer != null) {
-			return peer.getExtensionApi();
-		}
-		uninitializedException();
-		return null;
 	}
 
 	/**
@@ -1563,4 +1556,13 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@inheritDoc}
 	 */
 	public void onStatus(StatusEvent e) {}
+	
+	public ArrayList<String> getBattlefieldState()
+	{
+		if (peer != null) {
+			return peer.getBattlefieldState();
+		}
+		uninitializedException();
+		return null;
+	}
 }

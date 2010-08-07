@@ -33,6 +33,8 @@ import robocode.util.Utils;
 import java.awt.*;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -69,7 +71,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy = new Graphics2DSerialized();
 
 		// dummy
-		execResults = new ExecResults(null, null, null, null, null, false, false, false);
+		execResults = new ExecResults(null, null, null, null, null, false, false, false, null);
 
 		setSetCallCount(0);
 		setGetCallCount(0);
@@ -324,6 +326,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	// implementations
 	// -----------
 
+	public ArrayList<String> getBattlefieldState()
+	{
+		return (ArrayList<String>) execResults.getBattlefieldState();
+	}
+	
 	public long getTimeImpl() {
 		return status.getTime();
 	}
@@ -561,9 +568,5 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	public String toString() {
 		return statics.getShortName() + "(" + (int) status.getEnergy() + ") X" + (int) status.getX() + " Y"
 				+ (int) status.getY();
-	}
-
-	public IExtensionApi getExtensionApi() {
-		return peer.getExtensionApi();
 	}
 }

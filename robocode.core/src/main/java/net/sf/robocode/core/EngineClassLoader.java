@@ -77,21 +77,23 @@ public class EngineClassLoader extends URLClassLoader {
 	}
 
 	private boolean isEngineClass(String name) {
-		if (name.startsWith("net.sf.robocode") || name.startsWith("robocode.control")) {
+		if (name.startsWith("net.sf.robocode") || (name.startsWith("robocode.control") &&
+				!name.endsWith("alpha.jar"))) {
 			if (exclusions.contains(name)) {
 				return false;
 			}
 			// try to find it in engine's classpath
 			// this is URL, don't change to File.pathSeparator
 			final String path = name.replace('.', '/').concat(".class");
-
+			
 			return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
 				public Boolean run() {
 					return findResource(path) != null;
 				}
 			});
 		}
-		if (name.startsWith("CTF"))	//hack 2/3 - Josh
+
+		if (name.startsWith("CTF"))	//hacked in for now - Josh'
 		{
 			return true;
 		}

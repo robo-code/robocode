@@ -7,29 +7,22 @@ import java.util.List;
 
 import robocode.IExtensionApi;
 
-//import extensions.Base;
-//import extensions.Flag;
-
 
 public interface ICaptureTheFlagApi extends IExtensionApi {
 
-	public List<String> getTeammates(String ownName);
+	public List<String> getTeammates();
 	
-	public boolean isTeammate(String otherName, String ownName);
+	public boolean isTeammate(String otherName);
 	
-	public void broadcastMessage(Serializable message, String ownName);
+	public Point2D getOwnFlag();
 	
-	public void sendMessage(String ownName, String otherName, Serializable message);
+	public Rectangle2D getOwnBase();
 	
-	public Point2D getOwnFlag(String ownName);
+	public boolean isOwnFlagAtBase();
 	
-	public Rectangle2D getOwnBase(String ownName);
+	public Point2D getEnemyFlag();
 	
-	public boolean isOwnFlagAtBase(String ownName);
+	public Rectangle2D getEnemyBase();
 	
-	public Point2D getEnemyFlag(String ownName);
-	
-	public Rectangle2D getEnemyBase(String ownName);
-	
-	public boolean isEnemyFlagAtBase(String ownName);
+	public boolean isEnemyFlagAtBase();
 }

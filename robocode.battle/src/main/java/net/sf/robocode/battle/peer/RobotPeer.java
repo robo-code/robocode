@@ -326,10 +326,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public int getContestIndex() {
 		return statics.getContestIndex();
 	}
-	
-	public IExtensionApi getExtensionApi() {
-		return battle.getCustomRules().getExtensionApi();
-	}
 
 	// -------------------
 	// status 
@@ -540,7 +536,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
 
 		return new ExecResults(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(),
-				getHalt(), shouldWait, isPaintEnabled() || isPaintRecorded);
+				getHalt(), shouldWait, isPaintEnabled() || isPaintRecorded, battle.getCustomRules().getBattlefieldState());
 	}
 
 	public final ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
@@ -560,7 +556,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		readoutTeamMessages(); // throw away
 		
 		return new ExecResults(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),
-				getHalt(), shouldWait, false);
+				getHalt(), shouldWait, false, battle.getCustomRules().getBattlefieldState());
 	}
 
 	private void validateCommands(ExecCommands newCommands) {
