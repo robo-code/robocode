@@ -22,19 +22,19 @@ package robocode;
 
 
 /**
- * @exclude
- *
  * This class is used by the system, as well as being a placeholder for all deprecated
  * (meaning, you should not use them) calls for {@link Robot}.
  * <p/>
  * You should create a {@link Robot} instead.
- * <p/>
- * There is no guarantee that this class will exist in future versions of Robocode.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
  * @see Robot
+ * @see JuniorRobot
+ * @see AdvancedRobot
+ * @see TeamRobot
+ * @see RateControlRobot
  */
 public abstract class _Robot extends _RobotBase {
 	private String robotImageName;

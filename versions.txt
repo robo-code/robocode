@@ -1,6 +1,9 @@
 Version 1.7.2.2 Alpha
-(15-Jul-2010)
+(12-Aug-2010)
 ---------------
+= Bugfixes =
+* Bug [3043932] - JavaDoc missing _Robot and similar.
+
 = Changes =
 * Req [2974806] - Provide JuniorRobot template for inexperienced users.
 * Req [2973605] - Enable/disable development paths.
