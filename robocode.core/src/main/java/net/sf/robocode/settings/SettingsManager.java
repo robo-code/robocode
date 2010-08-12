@@ -113,8 +113,8 @@ public class SettingsManager implements ISettingsManager {
 
 	// Development Options
 	private Collection<String>
-		optionsDevelopmentPaths = new HashSet<String>(),
-		optionsExcludedDevelopmentPaths = new HashSet<String>();
+			optionsDevelopmentPaths = new HashSet<String>(),
+			optionsExcludedDevelopmentPaths = new HashSet<String>();
 
 	// Common Options
 	private boolean
@@ -582,6 +582,7 @@ public class SettingsManager implements ISettingsManager {
 
 	public Collection<String> getOptionsEnabledDevelopmentPaths() {
 		Collection<String> paths = getOptionsDevelopmentPaths();
+
 		paths.removeAll(getOptionsExcludedDevelopmentPaths());
 		return paths;
 	}
@@ -674,7 +675,8 @@ public class SettingsManager implements ISettingsManager {
 		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true"));
 
 		optionsDevelopmentPaths = fromCommaSeparatedString(props.getProperty(OPTIONS_DEVELOPMENT_PATH, ""));
-		optionsExcludedDevelopmentPaths = fromCommaSeparatedString(props.getProperty(OPTIONS_DEVELOPMENT_PATH_EXCLUDED, ""));
+		optionsExcludedDevelopmentPaths = fromCommaSeparatedString(
+				props.getProperty(OPTIONS_DEVELOPMENT_PATH_EXCLUDED, ""));
 
 		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true"));
 		optionsCommonAppendWhenSavingResults = Boolean.valueOf(
@@ -749,10 +751,12 @@ public class SettingsManager implements ISettingsManager {
 			return "";
 		}
 		StringBuilder sb = new StringBuilder();
+
 		for (String s : strings) {
 			sb.append(s).append(',');
 		}
 		String line = sb.toString();
+
 		return line.substring(0, line.length() - 1);
 	}
 
@@ -766,6 +770,7 @@ public class SettingsManager implements ISettingsManager {
 		Set<String> set = new HashSet<String>(); 
 		String splitExpr = File.pathSeparatorChar == ':' ? "[,:]+" : "[,;]+";
 		String[] strings = line.split(splitExpr);
+
 		for (String s : strings) {
 			set.add(s);
 		}

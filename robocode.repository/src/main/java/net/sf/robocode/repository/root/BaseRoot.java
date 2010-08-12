@@ -65,4 +65,11 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	public void extractJAR() {
 		throw new UnsupportedOperationException();
 	}
+
+	public boolean equals(Object obj) {
+		if (obj instanceof IRepositoryRoot) {
+			return ((IRepositoryRoot) obj).getURL().equals(rootURL);
+		}
+		return false;
+	}
 }

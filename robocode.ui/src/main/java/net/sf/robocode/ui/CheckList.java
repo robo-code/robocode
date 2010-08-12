@@ -99,6 +99,7 @@ public class CheckList extends JList {
 		}
 		for (int i = 0; i < model.getSize(); i++) {
 			CheckListItem item = (CheckListItem) model.getElementAt(i);
+
 			if (label.equals(item.toString())) {
 				return true;
 			}
@@ -125,6 +126,7 @@ public class CheckList extends JList {
 		if (label != null) {
 			for (int i = 0; i < model.getSize(); i++) {
 				CheckListItem item = (CheckListItem) model.getElementAt(i);
+
 				if (label.equals(item.toString())) {
 					item.setSelected(isChecked);
 					break;
@@ -138,6 +140,7 @@ public class CheckList extends JList {
 
 		for (int i = 0; i < model.getSize(); i++) {
 			CheckListItem item = (CheckListItem) model.getElementAt(i);
+
 			if (!item.isSelected()) {
 				unchecked.add(item.toString());
 			}
@@ -147,13 +150,16 @@ public class CheckList extends JList {
 	
 	public Collection<String> getAll() {
 		Collection<String> all = new HashSet<String>();
+
 		for (int i = 0; i < model.getSize(); i++) {
 			CheckListItem item = (CheckListItem) model.getElementAt(i);
+
 			all.add(item.toString());
 		}
 		return all;
 	}
 }
+
 
 /**
  * Represents items in the list that can be selected.

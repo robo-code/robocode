@@ -117,6 +117,7 @@ public class Database {
 
 		for (Map.Entry<String, IItem> entry : move) {
 			String key = entry.getKey();
+
 			oldItems.put(key, entry.getValue());
 			items.remove(key);
 		}
