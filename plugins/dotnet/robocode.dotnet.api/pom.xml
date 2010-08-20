@@ -60,4 +60,10 @@
 	          </plugin>
         </plugins>
     </build>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>m.g.o-public</id>
+      <url>http://maven.glassfish.org/content/groups/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
 </project>
