@@ -83,7 +83,8 @@ public final class AboutBox extends JDialog {
 			+ "<b><font color=\"green\">Ruben Moreno Montoliu</font></b> (added list paths with buttons to Developement Options), "
 			+ "<b><font color=\"green\">Joshua Galecki</font></b> (the implementation of the RateControlRobot), "
 			+ "<b><font color=\"green\">Patrick Cupka, Julian Kent, Nat Pavasant and \"Positive\"</font></b> (new robot movement method), "
-			+ "<b><font color=\"green\">Alexander Schultz</font></b> (reporting lots of bugs and solutions for fixing these)<br><br>"
+			+ "<b><font color=\"green\">Alexander Schultz</font></b> (reporting lots of bugs and solutions for fixing these), "
+			+ "<b><font color=\"green\">Tuan Anh Nguyen</font></b> (Interactive_v2 sample robot)<br><br>"
 			+ "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
 			+ "</center></td></tr></table></body>";
 	
