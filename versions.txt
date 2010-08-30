@@ -5,18 +5,20 @@ Version 1.7.2.2 Alpha
 * Bug [3043884] - Development Options remove wrong item.
 * Bug [3043932] - JavaDoc missing _Robot and similar.
 
-= New sample robot =
+= New sample robots =
 * Tuan Anh Nguyen provided a modified version of the Interactive sample robot named Interactive_v2, which use absolute movement (up, left, down, right) on the screen, which can be easier to control than the original Interactive sample robot. Both Interactive robots now use both the arrow keys and the W, A, S, D key for moving the robot.
+* SampleFs (written for .NET with the #F langugage) has been added along with the Visual Studio 2010 project file for it.
+
+= New features =
+* Robocode has been upgraded to use jni4net v0.8 with CLR 4.0 support.
+* Implemented Control API for .NET - robocode.control.dll
+* Req [2973605] - Enable/disable development paths.
+* Req [2974806] - Provide JuniorRobot template for inexperienced users.
 
 = Changes =
-* Req [2974806] - Provide JuniorRobot template for inexperienced users.
-* Req [2973605] - Enable/disable development paths.
 * It is not necessary to specify -Dsun.io.useCanonCaches=false anymore with the startup scripts for Robocode and RoboRumble as Robocode sets this internally when running under Windows. Hence, this property has been removed from all .bat, .sh, and .command files for Robocode.
-* Upgrade to jni4net v 0.8 and CLR 4.0 support
-* SampleFs created with VS2010 project file
-* Implemented Control API for .NET - robocode.control.dll
-* The tabs for the Common and Development Options in the Preferences window are now the first tabs.
 * Robocode will not notify about Beta versions anymore per default. However, a new option in the Common Options (under Preferences) makes it possible to enable/disable notifications about new Beta versions.
+* The tabs for the Common and Development Options in the Preferences window are now the first tabs.
 
 Version 1.7.2.1
 (05-Aug-2010)
