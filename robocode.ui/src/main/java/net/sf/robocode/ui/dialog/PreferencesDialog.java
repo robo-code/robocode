@@ -40,11 +40,11 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 	private WizardTabbedPane tabbedPane;
 	private WizardController buttonsPanel;
 
+	private PreferencesCommonOptionsTab commonOptionsTab;
+	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
 	private PreferencesViewOptionsTab viewOptionsTab;
 	private PreferencesRenderingOptionsTab renderingOptionsTab;
 	private PreferencesSoundOptionsTab soundOptionsTab;
-	private PreferencesDevelopmentOptionsTab developmentOptionsTab;
-	private PreferencesCommonOptionsTab commonOptionsTab;
 
 	private final ISettingsManager properties;
 	private final IImageManager imageManager;
@@ -88,27 +88,43 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		if (tabbedPane == null) {
 			tabbedPane = new WizardTabbedPane(this);
 
-			tabbedPane.insertTab("View Options", null, getViewOptionsTab(), null, 0);
-			tabbedPane.setMnemonicAt(0, KeyEvent.VK_W);
-			tabbedPane.setDisplayedMnemonicIndexAt(0, 3);
+			int tabIndex = 0;
 
-			tabbedPane.insertTab("Rendering Options", null, getRenderingOptionsTab(), null, 1);
-			tabbedPane.setMnemonicAt(1, KeyEvent.VK_R);
-			tabbedPane.setDisplayedMnemonicIndexAt(1, 0);
+			tabbedPane.insertTab("Common Options", null, getCommonOptionsTab(), null, tabIndex);
+			tabbedPane.setMnemonicAt(tabIndex, KeyEvent.VK_O);
+			tabbedPane.setDisplayedMnemonicIndexAt(tabIndex++, 1);
 
-			tabbedPane.insertTab("Sound Options", null, getSoundOptionsTab(), null, 2);
-			tabbedPane.setMnemonicAt(2, KeyEvent.VK_S);
-			tabbedPane.setDisplayedMnemonicIndexAt(2, 0);
+			tabbedPane.insertTab("Development Options", null, getDevelopmentOptionsTab(), null, tabIndex);
+			tabbedPane.setMnemonicAt(tabIndex, KeyEvent.VK_D);
+			tabbedPane.setDisplayedMnemonicIndexAt(tabIndex++, 0);
 
-			tabbedPane.insertTab("Development Options", null, getDevelopmentOptionsTab(), null, 3);
-			tabbedPane.setMnemonicAt(3, KeyEvent.VK_D);
-			tabbedPane.setDisplayedMnemonicIndexAt(3, 0);
+			tabbedPane.insertTab("View Options", null, getViewOptionsTab(), null, tabIndex);
+			tabbedPane.setMnemonicAt(tabIndex, KeyEvent.VK_W);
+			tabbedPane.setDisplayedMnemonicIndexAt(tabIndex++, 3);
 
-			tabbedPane.insertTab("Common Options", null, getCommonOptionsTab(), null, 4);
-			tabbedPane.setMnemonicAt(4, KeyEvent.VK_O);
-			tabbedPane.setDisplayedMnemonicIndexAt(4, 1);
+			tabbedPane.insertTab("Rendering Options", null, getRenderingOptionsTab(), null, tabIndex);
+			tabbedPane.setMnemonicAt(tabIndex, KeyEvent.VK_R);
+			tabbedPane.setDisplayedMnemonicIndexAt(tabIndex++, 0);
+
+			tabbedPane.insertTab("Sound Options", null, getSoundOptionsTab(), null, tabIndex);
+			tabbedPane.setMnemonicAt(tabIndex, KeyEvent.VK_S);
+			tabbedPane.setDisplayedMnemonicIndexAt(tabIndex++, 0);
 		}
 		return tabbedPane;
+	}
+
+	private JPanel getCommonOptionsTab() {
+		if (commonOptionsTab == null) {
+			commonOptionsTab = new PreferencesCommonOptionsTab(properties);
+		}
+		return commonOptionsTab;
+	}
+
+	private JPanel getDevelopmentOptionsTab() {
+		if (developmentOptionsTab == null) {
+			developmentOptionsTab = new PreferencesDevelopmentOptionsTab(properties);
+		}
+		return developmentOptionsTab;
 	}
 
 	private JPanel getViewOptionsTab() {
@@ -132,26 +148,12 @@ public class PreferencesDialog extends JDialog implements WizardListener {
 		return soundOptionsTab;
 	}
 
-	private JPanel getDevelopmentOptionsTab() {
-		if (developmentOptionsTab == null) {
-			developmentOptionsTab = new PreferencesDevelopmentOptionsTab(properties);
-		}
-		return developmentOptionsTab;
-	}
-
-	private JPanel getCommonOptionsTab() {
-		if (commonOptionsTab == null) {
-			commonOptionsTab = new PreferencesCommonOptionsTab(properties);
-		}
-		return commonOptionsTab;
-	}
-
 	public void finishButtonActionPerformed() {
+		commonOptionsTab.storePreferences();
+		developmentOptionsTab.storePreferences();
 		viewOptionsTab.storePreferences();
 		renderingOptionsTab.storePreferences();
 		soundOptionsTab.storePreferences();
-		developmentOptionsTab.storePreferences();
-		commonOptionsTab.storePreferences();
 
 		dispose();
 	}
