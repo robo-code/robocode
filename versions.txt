@@ -16,6 +16,7 @@ Version 1.7.2.2 Alpha
 * SampleFs created with VS2010 project file
 * Implemented Control API for .NET - robocode.control.dll
 * The tabs for the Common and Development Options in the Preferences window are now the first tabs.
+* Robocode will not notify about Beta versions anymore per default. However, a new option in the Common Options (under Preferences) makes it possible to enable/disable notifications about new Beta versions.
 
 Version 1.7.2.1
 (05-Aug-2010)

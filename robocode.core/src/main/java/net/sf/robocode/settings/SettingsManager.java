@@ -118,6 +118,7 @@ public class SettingsManager implements ISettingsManager {
 
 	// Common Options
 	private boolean
+			optionsCommonNotifyAboutNewBetaVersions = false,
 			optionsCommonShowResults = true,
 			optionsCommonAppendWhenSavingResults = true,
 			optionsCommonDontHideRankings = true,
@@ -623,6 +624,15 @@ public class SettingsManager implements ISettingsManager {
 		props.setProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "" + enable);
 	}
 
+	public void setOptionsCommonNotifyAboutNewBetaVersions(boolean enable) {
+		this.optionsCommonNotifyAboutNewBetaVersions = enable;
+		props.setProperty(OPTIONS_COMMON_NOTIFY_ABOUT_NEW_BETA_VERSIONS, "" + enable);
+	}
+
+	public boolean getOptionsCommonNotifyAboutNewBetaVersions() {
+		return optionsCommonNotifyAboutNewBetaVersions;
+	}
+
 	public int getNumberOfRounds() {
 		return numberOfRounds;
 	}
@@ -678,6 +688,8 @@ public class SettingsManager implements ISettingsManager {
 		optionsExcludedDevelopmentPaths = fromCommaSeparatedString(
 				props.getProperty(OPTIONS_DEVELOPMENT_PATH_EXCLUDED, ""));
 
+		optionsCommonNotifyAboutNewBetaVersions = Boolean.valueOf(
+				props.getProperty(OPTIONS_COMMON_NOTIFY_ABOUT_NEW_BETA_VERSIONS, "false"));
 		optionsCommonShowResults = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_SHOW_RESULTS, "true"));
 		optionsCommonAppendWhenSavingResults = Boolean.valueOf(
 				props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true"));

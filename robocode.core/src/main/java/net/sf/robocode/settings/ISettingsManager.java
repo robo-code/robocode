@@ -192,6 +192,10 @@ public interface ISettingsManager {
 
 	void setOptionsCommonEnableReplayRecording(boolean enable);
 
+	void setOptionsCommonNotifyAboutNewBetaVersions(boolean enable);
+
+	boolean getOptionsCommonNotifyAboutNewBetaVersions();
+
 	int getNumberOfRounds();
 
 	void setNumberOfRounds(int numberOfRounds);
@@ -239,7 +243,8 @@ public interface ISettingsManager {
 			OPTIONS_SOUND_MIXER = "robocode.options.sound.mixer",
 			OPTIONS_SOUND_ENABLEMIXERVOLUME = "robocode.options.sound.enableMixerVolume",
 			OPTIONS_SOUND_ENABLEMIXERPAN = "robocode.options.sound.enableMixerPan",
-
+	
+			OPTIONS_COMMON_NOTIFY_ABOUT_NEW_BETA_VERSIONS = "robocode.options.common.notifyAboutNewBetaVersions",
 			OPTIONS_COMMON_SHOW_RESULTS = "robocode.options.common.showResults",
 			OPTIONS_COMMON_DONT_HIDE_RANKINGS = "robocode.options.common.dontHideRankings",
 			OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS = "robocode.options.common.appendWhenSavingResults",
