@@ -1,200 +1,222 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/epl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Robocode.Control.Snapshot
 {
-    /**
-     * Interface of a robot snapshot at a specific time instant in a battle.
-     * 
-     * @author Pavel Savara (original)
-     * @author Flemming N. Larsen (contributor)
-     *
-     * @since 1.6.2
-     */
+    /// <summary>
+    /// Interface of a robot snapshot at a specific time in a battle.
+    /// </summary>
     public interface IRobotSnapshot
     {
-        /**
-         * Returns the name of the robot.
-         *
-         * @return the name of the robot.
-         */
+        /// <summary>
+        /// Contains the name of the robot.
+        /// </summary>
+        /// <value>
+        /// The name of the robot.
+        /// </value>
         string Name { get; }
 
-        /**
-         * Returns the short name of the robot.
-         *
-         * @return the short name of the robot.
-         */
+        /// <summary>
+        /// Contains the short name of the robot.
+        /// </summary>
+        /// <value>
+        /// The short name of the robot.
+        /// </value>
         string ShortName { get; }
 
-        /**
-         * Returns the very short name of the robot.
-         *
-         * @return the very short name of the robot.
-         */
+        /// <summary>
+        /// Contains the very short name of the robot.
+        /// </summary>
+        /// <value>
+        /// The very short name of the robot.
+        /// </value>
         string VeryShortName { get; }
 
-        /**
-         * Returns the name of the team, which can be the name of a robot if the contestant is not a team, but a robot.  
-         *
-         * @return the name of the team.
-         */
+        /// <summary>
+        /// Contains the name of the team, which can be the name of a robot if the contestant is not a team, but a robot.
+        /// </summary>
+        /// <value>
+        /// The name of the team.
+        /// </value>
         string TeamName { get; }
 
-        /**
-         * Returns the contestant index, which will not be changed during a battle.
-         *
-         * @return the contestant index.
-         */
+        /// <summary>
+        /// Contains the contestant index of the robot, which is constant during a battle.
+        /// </summary>
+        /// <value>
+        /// The contestant index of the robot.
+        /// </value>
         int ContestantIndex { get; }
 
-        /**
-         * Returns the robot state.
-         *
-         * @return the robot state.
-         */
+        /// <summary>
+        /// Contains the robot state.
+        /// </summary>
+        /// <value>
+        /// The robot state.
+        /// </value>
         RobotState State { get; }
 
-        /**
-         * Returns the energy level of the robot.
-         *
-         * @return the energy level of the robot.
-         */
+        /// <summary>
+        /// Contains the energy level of the robot.
+        /// </summary>
+        /// <value>
+        /// The energy level of the robot.
+        /// </value>
         double Energy { get; }
 
-        /**
-         * Returns the velocity of the robot.
-         *
-         * @return the velocity of the robot.
-         */
+        /// <summary>
+        /// Contains the velocity of the robot.
+        /// </summary>
+        /// <value>
+        /// The velocity of the robot.
+        /// </value>
         double Velocity { get; }
 
-        /**
-         * Returns the body heading in radians.
-         *
-         * @return the body heading in radians.
-         */
+        /// <summary>
+        /// Contains the body heading of the robot in radians.
+        /// </summary>
+        /// <value>
+        /// The body heading of the robot in radians.
+        /// </value>
         double BodyHeading { get; }
 
-        /**
-         * Returns the gun heading in radians.
-         *
-         * @return the gun heading in radians.
-         */
+        /// <summary>
+        /// Contains the gun heading of the robot in radians.
+        /// </summary>
+        /// <value>
+        /// The gun heading of the robot in radians.
+        /// </value>
         double GunHeading { get; }
 
-        /**
-         * Returns the radar heading in radians.
-         *
-         * @return the radar heading in radians.
-         */
+        /// <summary>
+        /// Contains the radar heading of the robot in radians.
+        /// </summary>
+        /// <value>
+        /// The radar heading of the robot in radians.
+        /// </value>
         double RadarHeading { get; }
 
-        /**
-         * Returns the gun heat of the robot.
-         *
-         * @return the gun heat of the robot.
-         */
+        /// <summary>
+        /// Contains the gun heat of the robot.
+        /// </summary>
+        /// <value>
+        /// The gun heat of the robot.
+        /// </value>
         double GunHeat { get; }
 
-        /**
-         * Returns the X position of the robot.
-         *
-         * @return the X position of the robot.
-         */
+        /// <summary>
+        /// Contains the X position of the robot.
+        /// </summary>
+        /// <value>
+        /// The X position of the robot.
+        /// </value>
         double X { get; }
 
-        /**
-         * Returns the Y position of the robot.
-         *
-         * @return the Y position of the robot.
-         */
+        /// <summary>
+        /// Contains the Y position of the robot.
+        /// </summary>
+        /// <value>
+        /// The Y position of the robot.
+        /// </value>
         double Y { get; }
 
-        /**
-         * Returns the color of the body.
-         *
-         * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
-         * 
-         * @see java.awt.Color#getRGB()
-         */
+        /// <summary>
+        /// Contains the color of the body.
+        /// </summary>
+        /// <value>
+        /// An ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+        /// </value>
         int BodyColor { get; }
 
-        /**
-         * Returns the color of the gun.
-         *
-         * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
-         * 
-         * @see java.awt.Color#getRGB()
-         */
+        /// <summary>
+        /// Contains the color of the gun.
+        /// </summary>
+        /// <value>
+        /// An ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+        /// </value>
         int GunColor { get; }
 
-        /**
-         * Returns the color of the radar.
-         *
-         * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
-         * 
-         * @see java.awt.Color#getRGB()
-         */
+        /// <summary>
+        /// Contains the color of the radar.
+        /// </summary>
+        /// <value>
+        /// An ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+        /// </value>
         int RadarColor { get; }
 
-        /**
-         * Returns the color of the scan arc.
-         *
-         * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
-         * 
-         * @see java.awt.Color#getRGB()
-         */
+        /// <summary>
+        /// Contains the color of the scan arc.
+        /// </summary>
+        /// <value>
+        /// An ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+        /// </value>
         int ScanColor { get; }
 
-        /**
-         * Checks if this robot is a {@link robocode.Droid Droid}.
-         *
-         * @return {@code true} if this robot is a Droid; {@code false} otherwise.
-         */
-//        bool IsDroid { get; }
+        /// <summary>
+        /// Flag specifying if this robot is an <see cref="Robocode.IDroid"/>.
+        /// </summary>
+        /// <value>
+        /// <em>true</em> if this robot is an <see cref="Robocode.IDroid"/>; <em>false</em> otherwise.
+        /// </value>
+        bool IsDroid { get; }
 
-        /**
-         * Checks if this robot is a {@link robocode.robotinterfaces.IPaintRobot IPaintRobot} or is invoking getGraphics()
-         *
-         * @return {@code true} if this robot is a painting; {@code false} otherwise.
-         */
-//        bool IsPaintRobot { get; }
+        /// <summary>
+        /// Flag specifying if this robot is an <see cref="Robocode.RobotInterfaces.IPaintRobot"/>.
+        /// </summary>
+        /// <value>
+        /// <em>true</em> if this robot is an <see cref="Robocode.RobotInterfaces.IPaintRobot"/>; <em>false</em> otherwise.
+        /// </value>
+        bool IsPaintRobot { get; }
 
-        /**
-         * Checks if painting is enabled for this robot.
-         *
-         * @return {@code true} if painting is enabled for this robot; {@code false} otherwise.
-         */
-//        bool IsPaintEnabled { get; }
+        /// <summary>
+        /// Flag specifying if painting is enabled for this robot.
+        /// </summary>
+        /// <value>
+        /// <em>true</em> if painting is enabled for this robot; <em>false</em> otherwise.
+        /// </value>
+        bool IsPaintEnabled { get; }
 
-        /**
-         * Checks if RobocodeSG painting is enabled for this robot.
-         *
-         * @return {@code true} if RobocodeSG painting is enabled for this robot; {@code false} otherwise.
-         */
-//        bool IsSGPaintEnabled { get; }
+        /// <summary>
+        /// Flag specifying if RobocodeSG painting (the point (0,0) is in the upper left corner) is enabled for this robot.
+        /// </summary>
+        /// <value>
+        /// <em>true</em> if RobocodeSG painting is enabled for this robot; <em>false</em> otherwise.
+        /// </value>
+        bool IsSGPaintEnabled { get; }
 
-        /**
-         * Returns snapshot of debug properties.
-         * 
-         * @return snapshot of debug properties.
-         */
+        /// <summary>
+        /// Contains a snapshot of debug properties.
+        /// </summary>
+        /// <value>
+        /// A snapshot of debug properties.
+        /// </value>
         IDebugProperty[] DebugProperties { get; }
 
-        /**
-         * Returns snapshot of the output print stream for this robot.
-         *
-         * @return a string containing the snapshot of the output print stream.
-         */
+        /// <summary>
+        /// Contains a snapshot of the output print stream for this robot.
+        /// </summary>
+        /// <value>
+        /// A string containing the snapshot of the output print stream.
+        /// </value>
         string OutputStreamSnapshot { get; }
 
-        /**
-         * Returns snapshot of the current score for this robot.
-         *
-         * @return snapshot of the current score for this robot.
-         */
+        /// <summary>
+        /// Contains a snapshot of the current score for this robot.
+        /// </summary>
+        /// <value>
+        /// A snapshot of the current score for this robot.
+        /// </value>
         IScoreSnapshot ScoreSnapshot { get; }
     }
 }

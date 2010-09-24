@@ -1,44 +1,45 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/epl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Robocode.Control.Events
 {
-    /**
-     * A BattleErrorEvent is sent to {@link IBattleListener#onBattleError(BattleErrorEvent)
-     * onBattleError()} when an error message is sent from the game in the during the battle. 
-     * 
-     * @see IBattleListener
-     * @see BattleMessageEvent
-     *
-     * @author Pavel Savara (original)
-     * @author Flemming N. Larsen (contributor)
-     *
-     * @since 1.6.2
-     */
+    /// <summary>
+    /// Contains information about a <see cref="IRobocodeEngine.BattleError"/> event that is
+    /// triggered when an error message is sent from the game in the during the battle.
+    /// </summary>
+    /// <seealso cref="BattleMessageEvent"/>
     public class BattleErrorEvent : BattleEvent
     {
-	    private readonly string error;
+        private readonly string error;
 
-	    /**
-	     * Called by the game to create a new BattleErrorEvent.
-	     * Please don't use this constructor as it might change.
-	     *
-	     * @param error the error message.
-	     */
-	    public BattleErrorEvent(string error) : base()
+        // Called by the game to create an instance of this event.
+        // Note: This constructor should not be available in the API.
+        internal BattleErrorEvent(string error)
+            : base()
         {
-		    this.error = error;
-	    }
+            this.error = error;
+        }
 
-	    /**
-	     * Returns the error message.
-	     *
-	     * @return the error message.
-	     */
-	    public string Error
+        /// <summary>
+        /// Contains the error message.
+        /// </summary>
+        /// <value>
+        /// The error message that was sent from the game during the battle.
+        /// </value>
+        public string Error
         {
             get { return error; }
-	    }
+        }
     }
 }

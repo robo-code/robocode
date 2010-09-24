@@ -1,11 +1,4 @@
-﻿//
-// TODO:
-// =====
-// - Results must be sorted. Some .NET Comparator must be implemented for sorting an array of BattleResult instances.
-//
-
-
-#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 
 // Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
 // All rights reserved. This program and the accompanying materials
@@ -25,67 +18,68 @@ using net.sf.robocode.security;
 
 namespace Robocode.Control
 {
-    /**
-     * The RobocodeEngine is the interface provided for external applications
-     * in order to let these applications run battles within the Robocode application,
-     * and to get the results from these battles.
-     * </p>
-     * This class in the main class of the {@code robocode.control} package, and the
-     * reason for having this control package.
-     * </p>
-     * The RobocodeEngine is used by RoboRumble@Home, which is integrated in
-     * Robocode, but also RoboLeague and RobocodeJGAP. In addition, the
-     * RobocodeEngine is also used by the test units for testing the Robocode
-     * application itself.
-     *
-     * @author Mathew A. Nelson (original)
-     * @author Flemming N. Larsen (contributor)
-     * @author Robert D. Maupin (contributor)
-     * @author Nathaniel Troutman (contributor)
-     * @author Joachim Hofer (contributor)
-     * @author Pavel Savara (contributor)
-     */
+    /// <summary>
+    /// The RobocodeEngine is the interface provided for external applications
+    /// in order to let these applications run battles within the Robocode application,
+    /// and to get the results from these battles.
+    /// <p/>
+    /// This class in the main entry class of the <see cref="Robocode.Control"/> namespace.
+    /// <p/>
+    /// The RobocodeEngine is used by e.g. RoboRumble@Home client, which is integrated in
+    /// Robocode. In addition, the RobocodeEngine is also used by the test units for
+    /// testing the Robocode application itself.
+    /// </summary>
     public class RobocodeEngine : IRobocodeEngine
     {
+        /// <inheritdoc/>
         public event BattleStartedEventHandler BattleStarted;
+        /// <inheritdoc/>
         public event BattleFinishedEventHandler BattleFinished;
+        /// <inheritdoc/>
         public event BattleCompletedEventHandler BattleCompleted;
+        /// <inheritdoc/>
         public event BattlePausedEventHandler BattlePaused;
+        /// <inheritdoc/>
         public event BattleResumedEventHandler BattleResumed;
+        /// <inheritdoc/>
         public event RoundStartedEventHandler RoundStarted;
+        /// <inheritdoc/>
         public event RoundEndedEventHandler RoundEnded;
+        /// <inheritdoc/>
         public event TurnStartedEventHandler TurnStarted;
+        /// <inheritdoc/>
         public event TurnEndedEventHandler TurnEnded;
+        /// <inheritdoc/>
         public event BattleMessageEventHandler BattleMessage;
+        /// <inheritdoc/>
         public event BattleErrorEventHandler BattleError;
 
+        // The internal hidden engine that has been generated based on the Java version of the engine
         private robocode.control.RobocodeEngine engine;
+        // The internal robocode.control.events.IBattleListener
         private BattleObserver battleObserver;
+        // Flag specifying if the Robocode window is currently visible
         private bool isVisible;
 
         #region Public API
 
-        /**
-	     * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
-	     * Robocode is used to determine the root directory of Robocode.
-	     *
-	     * @see #RobocodeEngine(File)
-	     * @see #close()
-	     * @since 1.6.2
-	     */
-	    public RobocodeEngine() :
+        /// <summary>
+        /// Creates a new RobocodeEngine for controlling Robocode.
+        /// In order for this constructor to work, the current working directory must be the
+        /// home directory directory of Robocode, e.g. C:\Robocode
+        /// </summary>
+        /// <seealso cref="Close()"/>
+        public RobocodeEngine() :
             this(AppDomain.CurrentDomain.BaseDirectory)
         {
-	    }
+        }
 
-        /**
-         * Creates a new RobocodeEngine for controlling Robocode.
-         *
-         * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
-         * @see #RobocodeEngine()
-         * @see #close()
-         * @since 1.6.2
-         */
+        /// <summary>
+        /// Creates a new RobocodeEngine for controlling Robocode, where the home directory
+        /// of Robocode is specified.
+        /// </summary>
+        /// <param name="robocodeHome">The root directory of Robocode, e.g. "C:\Robocode".</param>
+        /// <seealso cref="Close()"/>
         public RobocodeEngine(string robocodeHome)
         {
             robocode.control.RobocodeEngine.Init(robocodeHome);
@@ -100,56 +94,41 @@ namespace Robocode.Control
             Close();
         }
 
-        /**
-         * Closes the RobocodeEngine and releases any allocated resources.
-         * You should call this when you have finished using the RobocodeEngine.
-         * This method automatically disposes the Robocode window if it open.
-         */
+        /// <inheritdoc/>
         public void Close()
         {
             engine.close();
         }
 
-        /**
-         * Returns the installed version of Robocode.
-         *
-         * @return the installed version of Robocode.
-         */
+        /// <inheritdoc/>
         public string Version
         {
             get { return engine.getVersion(); }
         }
 
-        /**
-         * Returns the current working directory.
-         *
-         * @return a File for the current working directory.
-         *
-         * @since 1.7.1
-         */
+        /// <summary>
+        /// Returns the current working directory for Robocode.
+        /// </summary>
+        /// <returns>
+        /// The name of the current working directory.
+        /// </returns>
         public static string CurrentWorkingDir
         {
             get { return robocode.control.RobocodeEngine.getCurrentWorkingDir().getAbsolutePath(); }
         }
 
-        /**
-         * Returns the directory containing the robots.
-         *
-         * @return a File that is the directory containing the robots.
-         *
-         * @since 1.7.1
-         */
+        /// <summary>
+        /// Returns the directory containing the robots.
+        /// </summary>
+        /// <returns>
+        /// The name of the robot directory containing all robots.
+        /// </returns>
         public static string RobotsDir
         {
             get { return robocode.control.RobocodeEngine.getRobotsDir().getAbsolutePath(); }
         }
 
-        /**
-         * Shows or hides the Robocode window.
-         *
-         * @param visible {@code true} if the Robocode window must be set visible;
-         *                {@code false} otherwise.
-         */
+        /// <inheritdoc/>
         public bool Visible
         {
             set
@@ -163,121 +142,52 @@ namespace Robocode.Control
             }
         }
 
-        /**
-         * Returns all robots available from the local robot repository of Robocode.
-         * These robots must exists in the /robocode/robots directory, and must be
-         * compiled in advance.
-         *
-         * @return an array of all available robots from the local robot repository.
-         * @see RobotSpecification
-         * @see #getLocalRepository(String)
-         */
+        /// <inheritdoc/>
         public RobotSpecification[] GetLocalRepository()
         {
             return MapRobotSpecifications(engine.getLocalRepository());
         }
 
-        /**
-         * Returns a selection of robots available from the local robot repository
-         * of Robocode. These robots must exists in the /robocode/robots directory,
-         * and must be compiled in advance.
-         * </p>
-         * Notice: If a specified robot cannot be found in the repository, it will
-         * not be returned in the array of robots returned by this method.
-         *
-         * @param selectedRobots a comma or space separated list of robots to
-         *                          return. The full class name must be used for
-         *                          specifying the individual robot, e.g.
-         *                          "sample.Corners, sample.Crazy"
-         * @return an array containing the available robots from the local robot
-         *         repository based on the selected robots specified with the
-         *         {@code selectedRobotList} parameter.
-         * @see RobotSpecification
-         * @see #getLocalRepository()
-         * @since 1.6.2
-         */
+        /// <inheritdoc/>
         public RobotSpecification[] GetLocalRepository(string selectedRobots)
         {
             return MapRobotSpecifications(engine.getLocalRepository(selectedRobots));
         }
 
-        /**
-         * Runs the specified battle.
-         *
-         * @param battleSpecification the specification of the battle to play including the
-         *                            participation robots.
-         * @see #runBattle(BattleSpecification, boolean)
-         * @see BattleSpecification
-         * @see #getLocalRepository()
-         */
+        /// <inheritdoc/>
         public void RunBattle(BattleSpecification battleSpecification)
         {
             RunBattle(battleSpecification, null, false);
         }
 
-        /**
-         * Runs the specified battle.
-         *
-         * @param battleSpecification	   the specification of the battle to run including the
-         *                     participating robots.
-         * @param waitTillOver will block caller till end of battle if set
-         * @see #runBattle(BattleSpecification)
-         * @see BattleSpecification
-         * @see #getLocalRepository()
-         * @since 1.6.2
-         */
+        /// <inheritdoc/>
         public void RunBattle(BattleSpecification battleSpecification, bool waitTillOver)
         {
             RunBattle(battleSpecification, "", waitTillOver);
         }
 
-        /**
-         * Runs the specified battle.
-         *
-         * @param battleSpecification the specification of the battle to run including the
-         *                     participating robots.
-         * @param initialPositions a comma or space separated list like: x1,y1,heading1,
-         *        x2,y2,heading2, which are the coordinates and heading of robot #1 and #2.
-         *        So e.g. (0,0,180), (50,80,270) means that robot #1 has position (0,0) and
-         *        heading 180, and robot #2 has position (50,80) and heading 270.
-         * @param waitTillOver will block caller till end of battle if set
-         * @see #runBattle(BattleSpecification)
-         * @see BattleSpecification
-         * @see #getLocalRepository()
-         * @since 1.7.1.2
-         */
+        /// <inheritdoc/>
         public void RunBattle(BattleSpecification battleSpecification, string initialPositions, bool waitTillOver)
         {
             engine.runBattle(MapBattleSpecification(battleSpecification), initialPositions, waitTillOver);
         }
 
-        /**
-         * Will block caller until current battle is over 
-         * @see #runBattle(BattleSpecification)
-         * @see #runBattle(BattleSpecification, boolean)
-         * @since 1.6.2
-         */
+        /// <inheritdoc/>
         public void WaitTillBattleOver()
         {
             engine.waitTillBattleOver();
         }
 
-        /**
-         * Aborts the current battle if it is running.
-         *
-         * @see #runBattle(BattleSpecification)
-         */
+        /// <inheritdoc/>
         public void AbortCurrentBattle()
         {
             engine.abortCurrentBattle();
         }
 
-        /**
-         * Print out all running threads to standard system out.
-         *
-         * @since 1.6.2
-         */
-	    public static void PrintRunningThreads()
+        /// <summary>
+        /// Prints out all running threads to standard system out.
+        /// </summary>
+        public static void PrintRunningThreads()
         {
             robocode.control.RobocodeEngine.printRunningThreads();
         }
@@ -286,67 +196,67 @@ namespace Robocode.Control
 
         #region Event dispatchers
 
-        protected void OnBattleStarted(BattleStartedEvent e)
+        private void OnBattleStarted(BattleStartedEvent e)
         {
             if (BattleStarted != null)
                 BattleStarted(e);
         }
 
-        protected void OnBattleFinished(BattleFinishedEvent e)
+        private void OnBattleFinished(BattleFinishedEvent e)
         {
             if (BattleFinished != null)
                 BattleFinished(e);
         }
 
-        protected void OnBattleCompleted(BattleCompletedEvent e)
+        private void OnBattleCompleted(BattleCompletedEvent e)
         {
             if (BattleCompleted != null)
                 BattleCompleted(e);
         }
 
-        protected void OnBattlePaused(BattlePausedEvent e)
+        private void OnBattlePaused(BattlePausedEvent e)
         {
             if (BattlePaused != null)
                 BattlePaused(e);
         }
 
-        protected void OnBattleResumed(BattleResumedEvent e)
+        private void OnBattleResumed(BattleResumedEvent e)
         {
             if (BattleResumed != null)
                 BattleResumed(e);
         }
 
-        protected void OnRoundStarted(RoundStartedEvent e)
+        private void OnRoundStarted(RoundStartedEvent e)
         {
             if (RoundStarted != null)
                 RoundStarted(e);
         }
 
-        protected void OnRoundEnded(Robocode.Control.Events.RoundEndedEvent e)
+        private void OnRoundEnded(Robocode.Control.Events.RoundEndedEvent e)
         {
             if (RoundEnded != null)
                 RoundEnded(e);
         }
 
-        protected void OnTurnStarted(TurnStartedEvent e)
+        private void OnTurnStarted(TurnStartedEvent e)
         {
             if (TurnStarted != null)
                 TurnStarted(e);
         }
 
-        protected void OnTurnEnded(TurnEndedEvent e)
+        private void OnTurnEnded(TurnEndedEvent e)
         {
             if (TurnEnded != null)
                 TurnEnded(e);
         }
 
-        protected void OnBattleMessage(BattleMessageEvent e)
+        private void OnBattleMessage(BattleMessageEvent e)
         {
             if (BattleMessage != null)
                 BattleMessage(e);
         }
 
-        protected void OnBattleError(BattleErrorEvent e)
+        private void OnBattleError(BattleErrorEvent e)
         {
             if (BattleError != null)
                 BattleError(e);
@@ -847,6 +757,10 @@ namespace Robocode.Control
             private int? gunColor;
             private int? radarColor;
             private int? scanColor;
+            private bool? isDroid;
+            private bool? isPaintRobot;
+            private bool? isPaintEnabled;
+            private bool? isSGPaintEnabled;
             private IDebugProperty[] debugProperties;
             private string outputStreamSnapshot;
             private IScoreSnapshot scoreSnapshot;
@@ -1069,6 +983,54 @@ namespace Robocode.Control
                         scanColor = robotSnapshot.getScanColor();
                     }
                     return scanColor.Value;
+                }
+            }
+
+            public bool IsDroid
+            {
+                get
+                {
+                    if (isDroid == null)
+                    {
+                        isDroid = robotSnapshot.isDroid();
+                    }
+                    return isDroid.Value;
+                }
+            }
+
+            public bool IsPaintRobot
+            {
+                get
+                {
+                    if (isPaintRobot == null)
+                    {
+                        isPaintRobot = robotSnapshot.isPaintRobot();
+                    }
+                    return isPaintRobot.Value;
+                }
+            }
+
+            public bool IsPaintEnabled
+            {
+                get
+                {
+                    if (isPaintEnabled == null)
+                    {
+                        isPaintEnabled = robotSnapshot.isPaintEnabled();
+                    }
+                    return isPaintEnabled.Value;
+                }
+            }
+
+            public bool IsSGPaintEnabled
+            {
+                get
+                {
+                    if (isSGPaintEnabled == null)
+                    {
+                        isSGPaintEnabled = robotSnapshot.isSGPaintEnabled();
+                    }
+                    return isSGPaintEnabled.Value;
                 }
             }
 
@@ -1565,7 +1527,7 @@ namespace Robocode.Control
             private readonly string fullClassName;
             private readonly string description;
             private readonly string teamId;
-                
+
             public RobotSpecificationWrapper(string name, string author, string webpage, string version,
                 string robocodeVersion, string archiveFilePath, string fullClassName, string description, string teamId)
                 : base(null)

@@ -46,7 +46,6 @@
                     <finalName>robocode.control.dll</finalName>
                 </configuration>
             </plugin>
-						 <!-- 
              <plugin>
 	              <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
 	              <artifactId>maven-antrun-extended-plugin</artifactId>
@@ -58,10 +57,10 @@
 	                          <tasks>
 	                              <copy file="target/comments.xml" tofile="target/robocode.control.xml"/>
 	                              
-	                              < ! - - 
+	                              <!-- 
 	                              for this to run, one must have SHFBROOT environment variable set properly. 
 	                              it comes with installation of SHFB
-	                               - - >
+	                              -->
 																<exec dir="target" executable="cmd.exe" failonerror="false">
 																  <arg line="/c %SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe /p:Configuration=Release ../controlAPI.shfbproj"/>
 																</exec>	                              
@@ -73,7 +72,6 @@
 	                  </execution>
 	              </executions>
 	          </plugin>
-	          -->
         </plugins>
     </build>
 </project>

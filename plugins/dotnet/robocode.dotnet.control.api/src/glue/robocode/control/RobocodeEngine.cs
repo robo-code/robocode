@@ -22,8 +22,7 @@ namespace robocode.control
             BridgeSetup bridgeSetup = new BridgeSetup();
             bridgeSetup.BindStatic = true;
             bridgeSetup.BindNative = true;
-//            bridgeSetup.AddAllJarsClassPath(Path.Combine(robocodeHome, "libs"));
-            bridgeSetup.AddAllJarsClassPath(Path.Combine(robocodeHome, "."));
+            bridgeSetup.AddAllJarsClassPath(Path.Combine(robocodeHome, "libs"));
             Bridge.CreateJVM(bridgeSetup);
             Bridge.LoadAndRegisterAssemblyByName(typeof(RobocodeEngine).Assembly.FullName);
             //Bridge.Setup.BindNative = true;

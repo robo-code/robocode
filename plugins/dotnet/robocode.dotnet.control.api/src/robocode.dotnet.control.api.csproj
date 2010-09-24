@@ -136,9 +136,6 @@
     <Compile Include="generated\robocode\control\snapshot\RobotState.generated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="glue\robocode\control\events\BattleAdaptor.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="glue\robocode\control\RandomFactory.cs">
       <SubType>Code</SubType>
     </Compile>

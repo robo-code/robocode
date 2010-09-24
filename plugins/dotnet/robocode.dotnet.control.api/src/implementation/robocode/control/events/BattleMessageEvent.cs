@@ -1,43 +1,45 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/epl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Robocode.Control.Events
 {
-    /**
-     * A BattleMessageEvent is sent to {@link IBattleListener#onBattleMessage(BattleMessageEvent)
-     * onBattleMessage()} when an information message is sent from the game in the during the battle. 
-     *
-     * @see IBattleListener
-     * @see BattleErrorEvent
-     * 
-     * @author Pavel Savara (original)
-     * @author Flemming N. Larsen (contributor)
-     *
-     * @since 1.6.2
-     */
+    /// <summary>
+    /// Contains information about a <see cref="IRobocodeEngine.BattleMessage"/> event that is
+    /// triggered when an informal message is sent from the game in the during the battle.
+    /// </summary>
+    /// <seealso cref="BattleMessageError"/>
     public class BattleMessageEvent : BattleEvent
     {
-	    private readonly string message;
+        private readonly string message;
 
-	    /**
-	     * Called by the game to create a new BattleMessageEvent.
-	     * Please don't use this constructor as it might change.
-	     *
-	     * @param message the information message.
-	     */
-	    public BattleMessageEvent(string message) : base()
+        // Called by the game to create an instance of this event.
+        // Note: This constructor should not be available in the API.
+        internal BattleMessageEvent(string message)
+            : base()
         {
-		    this.message = message;
-	    }
+            this.message = message;
+        }
 
-	    /**
-	     * Returns the information message.
-	     *
-	     * @return the information message.
-	     */
-	    public string Message {
+        /// <summary>
+        /// Contains the informal message.
+        /// </summary>
+        /// <value>
+        /// The informal message that was sent from the game during the battle.
+        /// </value>
+        public string Message
+        {
             get { return message; }
-	    }
+        }
     }
 }

@@ -1,104 +1,124 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/epl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Robocode.Control.Snapshot
 {
-    /**
-     * Interface of a bullet snapshot at a specific time instant in a battle.
-     * 
-     * @author Pavel Savara (original)
-     * @author Flemming N. Larsen (contributor)
-     *
-     * @since 1.6.2
-     */
+    /// <summary>
+    /// Interface of a bullet snapshot at a specific time in a battle.
+    /// </summary>
     public interface IBulletSnapshot
     {
-        /**
-         * Returns the bullet state.
-         *
-         * @return the bullet state.
-         */
+        /// <summary>
+        /// Contains the bullet state.
+        /// </summary>
+        /// <value>
+        /// The bullet state.
+        /// </value>
         BulletState State { get; }
 
-        /**
-         * Returns the bullet power.
-         *
-         * @return the bullet power.
-         */
+        /// <summary>
+        /// Contains the bullet power.
+        /// </summary>
+        /// <value>
+        /// The bullet power.
+        /// </value>
         double Power { get; }
 
-        /**
-         * Returns the X position of the bullet.
-         *
-         * @return the X position of the bullet.
-         */
+        /// <summary>
+        /// Contains the X position of the bullet.
+        /// </summary>
+        /// <value>
+        /// The X position of the bullet.
+        /// </value>
         double X { get; }
 
-        /**
-         * Returns the Y position of the bullet.
-         *
-         * @return the Y position of the bullet.
-         */
+        /// <summary>
+        /// Contains the Y position of the bullet.
+        /// </summary>
+        /// <value>
+        /// The Y position of the bullet.
+        /// </value>
         double Y { get; }
 
-        /**
-         * Returns the X painting position of the bullet.
-         * Note that this is not necessarily equal to the X position of the bullet, even though
-         * it will be in most cases. The painting position of the bullet is needed as the bullet
-         * will "stick" to its victim, but only visually. 
-         *
-         * @return the X painting position of the bullet.
-         */
+        /// <summary>
+        /// Contains the X painting position of the bullet.
+        /// Note that this is not necessarily equal to the X position of the bullet, even though
+        /// it will be in most cases. The painting position of the bullet is needed as the bullet
+        /// will "stick" to its victim when it has been hit, but only visually. 
+        /// </summary>
+        /// <value>
+        /// The X painting position of the bullet.
+        /// </value>
         double PaintX { get; }
 
-        /**
-         * Returns the Y painting position of the bullet.
-         * Note that this is not necessarily equal to the Y position of the bullet, even though
-         * it will be in most cases. The painting position of the bullet is needed as the bullet
-         * will "stick" to its victim, but only visually. 
-         *
-         * @return the Y painting position of the bullet.
-         */
+        /// <summary>
+        /// Contains the Y painting position of the bullet.
+        /// Note that this is not necessarily equal to the Y position of the bullet, even though
+        /// it will be in most cases. The painting position of the bullet is needed as the bullet
+        /// will "stick" to its victim when it has been hit, but only visually. 
+        /// </summary>
+        /// <value>
+        /// The Y painting position of the bullet.
+        /// </value>
         double PaintY { get; }
 
-        /**
-         * Returns the color of the bullet.
-         *
-         * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
-         * 
-         * @see java.awt.Color#getRGB()
-         */
+        /// <summary>
+        /// Contains the color of the bullet.
+        /// </summary>
+        /// <value>
+        /// An ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+        /// </value>
         int Color { get; }
 
-        /**
-         * Returns the frame number to display, i.e. when the bullet explodes.
-         *
-         * @return the frame number.
-         */
+        /// <summary>
+        /// Contains the current frame number to display, i.e. when the bullet explodes.
+        /// </summary>
+        /// <value>
+        /// The current frame number.
+        /// </value>
+        /// <seealso cref="IsExplosion"/>
+        /// <seealso cref="ExplosionImageIndex"/>
         int Frame { get; }
 
-        /**
-         * Checks if the bullet has become an explosion.
-         *
-         * @return {@code true} if the bullet is an explosion; {@code false} otherwise.
-         */
+        /// <summary>
+        /// Flag specifying if the bullet has become an explosion.
+        /// </summary>
+        /// <value>
+        /// <em>true</em> if the bullet is an explosion; <em>false</em> otherwise.
+        /// </value>
+        /// <seealso cref="Frame"/>
+        /// <seealso cref="ExplosionImageIndex"/>
         bool IsExplosion { get; }
 
-        /**
-         * Returns the explosion image index, which is different depending on the type of explosion.
-         * E.g. if it is a small explosion on a robot that has been hit by this bullet,
-         * or a big explosion when a robot dies.
-         *
-         * @return the explosion image index.
-         */
+        /// <summary>
+        /// Contains the explosion image index, which is different depending on the type of explosion.
+        /// E.g. if it is a small explosion on a robot that has been hit by this bullet,
+        /// or a big explosion when a robot dies.
+        /// </summary>
+        /// <value>
+        /// The explosion image index.
+        /// </value>
+        /// <seealso cref="Frame"/>
+        /// <seealso cref="IsExplosion"/>
         int ExplosionImageIndex { get; }
 
-        /**
-         * Returns the ID of the bullet used for identifying the bullet in a collection of bullets.
-         *
-         * @return the ID of the bullet
-         */
+        /// <summary>
+        /// Contains the ID of the bullet used for identifying the bullet in a collection of bullets.
+        /// </summary>
+        /// <value>
+        /// The ID of the bullet.
+        /// </value>
         int BulletId { get; }
     }
 }

@@ -25,7 +25,10 @@
     <FrameworkVersion>2.0.50727</FrameworkVersion>
     <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <ApiFilter>
-    </ApiFilter>
+      <Filter entryType="Namespace" fullName="java.util" isExposed="False" />
+<Filter entryType="Namespace" fullName="robocode.control" isExposed="False" />
+<Filter entryType="Namespace" fullName="robocode.control.events" isExposed="False" />
+<Filter entryType="Namespace" fullName="robocode.control.snapshot" isExposed="False" /></ApiFilter>
     <VisibleItems>InheritedMembers, Protected, SealedProtected</VisibleItems>
     <NamespaceSummaries>
     </NamespaceSummaries>

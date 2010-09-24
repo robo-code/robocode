@@ -15,13 +15,10 @@ using System.Text;
 
 namespace Robocode.Control
 {
-    /**
-     * Defines the properties of a robot, which is returned from
-     * {@link RobocodeEngine#getLocalRepository()} or
-     *
-     * @author Mathew A. Nelson (original)
-     * @author Flemming N. Larsen (contributor)
-     */
+    /// <summary>
+    /// Defines the properties of a robot, which is returned from
+    /// <see cref="RobocodeEngine.GetLocalRepository()"/>.
+    /// </summary>
     [Serializable]
     public class RobotSpecification
     {
@@ -32,108 +29,118 @@ namespace Robocode.Control
             this.robotSpecification = robotSpecification;
         }
 
-        /**
-         * Returns the name of this robot or team.
-         *
-         * @return the name of this robot or team.
-         * @see #getVersion()
-         * @see #getNameAndVersion()
-         */
+        /// <summary>
+        /// Contains the name of this robot or team.
+        /// </summary>
+        /// <value>
+        /// The name of this robot or team.
+        /// </value>
+        /// <seealso cref="P:Version"/>
+        /// <seealso cref="P:NameAndVersion"/>
         public string Name
         {
             get { return robotSpecification.getName(); }
         }
 
-        /**
-         * Returns the version of this robot or team.
-         *
-         * @return the version of this robot or team.
-         * @see #getName()
-         * @see #getNameAndVersion()
-         */
+        /// <summary>
+        /// Contains the version of this robot or team.
+        /// </summary>
+        /// <value>
+        /// The version of this robot or team.
+        /// </value>
+        /// <seealso cref="P:Name"/>
+        /// <seealso cref="P:NameAndVersion"/>
         public string Version
         {
             get { return robotSpecification.getVersion(); }
         }
 
-        /**
-         * Returns the name and version of this robot or team.
-         *
-         * @return the name and version of this robot or team.
-         * @see #getName()
-         * @see #getVersion()
-         * @since 1.3
-         */
+        /// <summary>
+        /// Contains the name and version of this robot or team.
+        /// </summary>
+        /// <value>
+        /// The name and version of this robot or team.
+        /// </value>
+        /// <seealso cref="P:Name"/>
+        /// <seealso cref="P:Version"/>
         private string NameAndVersion
         {
             get { return robotSpecification.getNameAndVersion(); }
         }
 
-        /**
-         * Returns the full class name of this robot or team.
-         *
-         * @return the full class name of this robot or team.
-         */
+        /// <summary>
+        /// Contains the full class name of this robot or team.
+        /// </summary>
+        /// <value>
+        /// The full class name of this robot or team.
+        /// </value>
         public string ClassName
         {
             get { return robotSpecification.getClassName(); }
         }
 
-        /**
-         * Returns the JAR file containing this robot or team, or {@code null} if it
-         * does not come from a JAR file (could be class files instead).
-         *
-         * @return the JAR file containing this robot or team, or {@code null} if it
-         *         does not come from a JAR file (could be class files instead).
-         */
+        /// <summary>
+        /// Contains the path of the archive file containing this robot or team.
+        /// </summary>
+        /// <value>
+        /// The path of the archive file containing this robot or team or <em>null</em>
+        /// if it does not come from an archive file (could be class files instead).
+        /// </value>
         public string ArchiveFilePath
         {
             get { return robotSpecification.getJarFile().getAbsolutePath(); }
         }
 
-        /**
-         * Returns the description provided by the author of this robot.
-         *
-         * @return the description provided by the author of this robot.
-         */
+        /// <summary>
+        /// Contains the description provided by the author of this robot or team.
+        /// </summary>
+        /// <value>
+        /// The description provided by the author of this robot or team.
+        /// </value>
         public string Description
         {
             get { return robotSpecification.getDescription(); }
         }
 
-        /**
-         * Returns the version of Robocode this robot was based on.
-         *
-         * @return the version of Robocode this robot was based on.
-         */
+        /// <summary>
+        /// Contains the version of Robocode this robot or team was build with.
+        /// </summary>
+        /// <value>
+        /// The version of Robocode this robot or team was build with.
+        /// </value>
         public string RobocodeVersion
         {
             get { return robotSpecification.getRobocodeVersion(); }
         }
 
-        /**
-         * Returns the web page for this robot.
-         *
-         * @return the web page for this robot.
-         */
+        /// <summary>
+        /// Contains the link to the web page for this robot or team.
+        /// </summary>
+        /// <value>
+        /// The link to the web page for this robot or team.
+        /// </value>
         public string Webpage
         {
             get { return robotSpecification.getWebpage(); }
         }
 
-        /**
-         * Returns the name of this robot's author.
-         *
-         * @return the name of this robot's author.
-         */
+        /// <summary>
+        /// Contains the name of the author of this robot or team.
+        /// </summary>
+        /// <value>
+        /// The name of the author of this robot or team.
+        /// </value>
         public string AuthorName
         {
             get { return robotSpecification.getAuthorName(); }
         }
 
-        /**
-         * @return id of the team in current battle
-         */
+        /// <summary>
+        /// Contains the id of the robot team.
+        /// </summary>
+        /// <value>
+        /// The id of the robot team.
+        /// </value>
         public string TeamId
         {
             get { return robotSpecification.getTeamId(); }

@@ -1,28 +1,42 @@
-﻿using System;
+﻿#region Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/epl-v10.html
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Robocode.Control.Snapshot
 {
-    /**
-     * Defines a robot state, where the robot can be: active on the battlefield, hitting a wall or robot this second,
-     * or dead.
-     *
-     * @author Flemming N. Larsen (original)
-     * @since 1.6.2
-     */
+    /// <summary>
+    /// Defines a robot state, which can be: active on the battlefield, hitting a wall or robot this turn, or dead.
+    /// </summary>
     public enum RobotState
     {
-        /** The robot is active on the battlefield and has not hit the wall or a robot at this time. */
+        /// <summary>
+        /// The robot is active on the battlefield and has not hit the wall or a robot at this turn.
+        /// </summary>
         Active = 0,
 
-        /** The robot has hit a wall, i.e. one of the four borders, at this time. This state only last one turn. */
+        /// <summary>
+        /// The robot has hit a wall, i.e. one of the four borders, at this turn. This state only last one turn.
+        /// </summary>
         HitWall = 1,
 
-        /** The robot has hit another robot at this time. This state only last one turn. */
+        /// <summary>
+        /// The robot has hit another robot at this turn. This state only last one turn.
+        /// </summary>
         HitRobot = 2,
 
-        /** The robot is dead. */
+        /// <summary>
+        /// The robot is dead.
+        /// </summary>
         Dead = 3
     }
 }
