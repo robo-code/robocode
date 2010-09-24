@@ -16,7 +16,7 @@ package robocode.control.events;
 
 /**
  * A BattlePausedEvent is sent to {@link IBattleListener#onBattlePaused(BattlePausedEvent)
- * onBattlePaused()} when the battle has been paused. 
+ * onBattlePaused()} when a battle has been paused. 
  *
  * @see IBattleListener
  * @see BattleResumedEvent

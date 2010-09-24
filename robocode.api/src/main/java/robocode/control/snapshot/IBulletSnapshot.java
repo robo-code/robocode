@@ -15,7 +15,7 @@ package robocode.control.snapshot;
 
 
 /**
- * Interface of a bullet snapshot at a specific time instant in a battle.
+ * Interface of a bullet snapshot at a specific time in a battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -56,7 +56,7 @@ public interface IBulletSnapshot {
 	 * Returns the X painting position of the bullet.
 	 * Note that this is not necessarily equal to the X position of the bullet, even though
 	 * it will be in most cases. The painting position of the bullet is needed as the bullet
-	 * will "stick" to its victim, but only visually. 
+	 * will "stick" to its victim when it has been hit, but only visually. 
 	 *
 	 * @return the X painting position of the bullet.
 	 */
@@ -66,7 +66,7 @@ public interface IBulletSnapshot {
 	 * Returns the Y painting position of the bullet.
 	 * Note that this is not necessarily equal to the Y position of the bullet, even though
 	 * it will be in most cases. The painting position of the bullet is needed as the bullet
-	 * will "stick" to its victim, but only visually. 
+	 * will "stick" to its victim when it has been hit, but only visually. 
 	 *
 	 * @return the Y painting position of the bullet.
 	 */
@@ -75,23 +75,29 @@ public interface IBulletSnapshot {
 	/**
 	 * Returns the color of the bullet.
 	 *
-	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return an ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
 	int getColor();
 
 	/**
-	 * Returns the frame number to display, i.e. when the bullet explodes.
+	 * Returns the current frame number to display, i.e. when the bullet explodes.
 	 *
-	 * @return the frame number.
+	 * @return the current frame number.
+	 * 
+	 * @see #isExplosion()
+	 * @see #getExplosionImageIndex()
 	 */
 	int getFrame();
 
 	/**
-	 * Checks if the bullet has become an explosion.
+	 * Checks if the bullet has become an explosion, i.e. when it a robot or bullet has been hit.
 	 *
 	 * @return {@code true} if the bullet is an explosion; {@code false} otherwise.
+	 * 
+	 * @see #getFrame()
+	 * @see #getExplosionImageIndex()
 	 */
 	boolean isExplosion();
 
@@ -101,13 +107,16 @@ public interface IBulletSnapshot {
 	 * or a big explosion when a robot dies.
 	 *
 	 * @return the explosion image index.
+	 * 
+	 * @see #isExplosion()
+	 * @see #getExplosionImageIndex()
 	 */
 	int getExplosionImageIndex();
 
 	/**
 	 * Returns the ID of the bullet used for identifying the bullet in a collection of bullets.
 	 *
-	 * @return the ID of the bullet
+	 * @return the ID of the bullet.
 	 */
 	int getBulletId();
 }

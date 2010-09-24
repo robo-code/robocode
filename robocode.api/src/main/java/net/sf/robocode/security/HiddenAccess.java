@@ -211,9 +211,9 @@ public class HiddenAccess {
 		bulletHelper.update(bullet, x, y, victimName, isActive);
 	}
 
-	public static RobotSpecification createSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
-		return specificationHelper.createSpecification(fileSpecification, name, author, webpage, version,
-				robocodeVersion, jarFile, fullClassName, description);
+	public static RobotSpecification createSpecification(String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
+		return specificationHelper.createSpecification(name, author, webpage, version, robocodeVersion, jarFile,
+				fullClassName, description);
 	}
 
 	public static Object getFileSpecification(RobotSpecification specification) {

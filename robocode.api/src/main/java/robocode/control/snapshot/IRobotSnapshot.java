@@ -15,7 +15,7 @@ package robocode.control.snapshot;
 
 
 /**
- * Interface of a robot snapshot at a specific time instant in a battle.
+ * Interface of a robot snapshot at a specific time in a battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -53,9 +53,9 @@ public interface IRobotSnapshot {
 	String getTeamName();
 
 	/**
-	 * Returns the contestant index, which will not be changed during a battle.
+	 * Returns the contestant index of the robot, which is constant during a battle.
 	 *
-	 * @return the contestant index.
+	 * @return the contestant index of the robot.
 	 */
 	int getContestantIndex();
 
@@ -81,23 +81,23 @@ public interface IRobotSnapshot {
 	double getVelocity();
 
 	/**
-	 * Returns the body heading in radians.
+	 * Returns the body heading of the robot in radians.
 	 *
-	 * @return the body heading in radians.
+	 * @return the body heading of the robot in radians.
 	 */
 	double getBodyHeading();
 
 	/**
-	 * Returns the gun heading in radians.
+	 * Returns the gun heading of the robot in radians.
 	 *
-	 * @return the gun heading in radians.
+	 * @return the gun heading of the robot in radians.
 	 */
 	double getGunHeading();
 
 	/**
-	 * Returns the radar heading in radians.
+	 * Returns the radar heading of the robot in radians.
 	 *
-	 * @return the radar heading in radians.
+	 * @return the radar heading of the robot in radians.
 	 */
 	double getRadarHeading();
 
@@ -125,7 +125,7 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the color of the body.
 	 *
-	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return an ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
@@ -134,7 +134,7 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the color of the gun.
 	 *
-	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return an ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
@@ -143,7 +143,7 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the color of the radar.
 	 *
-	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return an ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
@@ -152,7 +152,7 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the color of the scan arc.
 	 *
-	 * @return a ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
+	 * @return an ARGB color value. (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue)
 	 * 
 	 * @see java.awt.Color#getRGB()
 	 */
@@ -180,30 +180,30 @@ public interface IRobotSnapshot {
 	boolean isPaintEnabled();
 
 	/**
-	 * Checks if RobocodeSG painting is enabled for this robot.
+	 * Checks if RobocodeSG painting (the point (0,0) is in the upper left corner) is enabled for this robot.
 	 *
 	 * @return {@code true} if RobocodeSG painting is enabled for this robot; {@code false} otherwise.
 	 */
 	boolean isSGPaintEnabled();
 
 	/**
-	 * Returns snapshot of debug properties.
+	 * Returns a snapshot of debug properties.
 	 * 
-	 * @return snapshot of debug properties.
+	 * @return a snapshot of debug properties.
 	 */
 	IDebugProperty[] getDebugProperties();
 
 	/**
-	 * Returns snapshot of the output print stream for this robot.
+	 * Returns a snapshot of the output print stream for this robot.
 	 *
 	 * @return a string containing the snapshot of the output print stream.
 	 */
 	String getOutputStreamSnapshot();
 
 	/**
-	 * Returns snapshot of the current score for this robot.
+	 * Returns a snapshot of the current score for this robot.
 	 *
-	 * @return snapshot of the current score for this robot.
+	 * @return a snapshot of the current score for this robot.
 	 */
 	IScoreSnapshot getScoreSnapshot();
 }

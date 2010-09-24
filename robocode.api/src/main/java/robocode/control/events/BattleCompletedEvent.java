@@ -29,6 +29,7 @@ import java.util.List;
  * will not occur if the battle is terminated or aborted by the user before the battle is completed.
  *
  * @see IBattleListener
+ * @see IBattleListener#onBattleCompleted(BattleCompletedEvent)
  * @see BattleStartedEvent
  * @see BattleFinishedEvent
  * 
@@ -55,18 +56,20 @@ public class BattleCompletedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the rules that was used in the battle.
+	 * Returns the rules used in the battle.
 	 *
-	 * @return the rules of the battle.
+	 * @return the rules used in the battle.
 	 */
 	public BattleRules getBattleRules() {
 		return battleRules;
 	}
 
 	/**
-	 * Returns the battle results sorted on score, meaning that robot indexes cannot be used.
+	 * Returns the battle results sorted on score.
+	 * Note that the robot index cannot be used to determine the score with the sorted results.
 	 *
-	 * @return a sorted array of BattleResults, where the results with the biggest score are placed first in the list.
+	 * @return an array of sorted BattleResults, where the results with the bigger score are placed first in the list.
+	 * @see #getIndexedResults()
 	 */
 	public BattleResults[] getSortedResults() {
 		List<BattleResults> copy = new ArrayList<BattleResults>(Arrays.asList(results));
@@ -77,9 +80,11 @@ public class BattleCompletedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the unsorted battle results so that robot indexes can be used.
+	 * Returns the battle results that can be used to determine the score for the individual robot based
+	 * on the robot index.
 	 *
-	 * @return an unsorted array of BattleResults, where each index matches an index of a specific robot.
+	 * @return an array of indexed BattleResults, where each index matches an index of a specific robot.
+	 * @see #getSortedResults()
 	 */
 	public BattleResults[] getIndexedResults() {
 		BattleResults[] copy = new BattleResults[results.length];

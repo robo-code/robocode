@@ -70,7 +70,7 @@ public class BattleStartedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Checks if this battle is a replay or real battle.
+	 * Checks if this battle is a replay or a new battle.
 	 *
 	 * @return {@code true} if the battle is a replay; {@code false} otherwise.
 	 */

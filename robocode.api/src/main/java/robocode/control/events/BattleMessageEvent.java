@@ -16,7 +16,7 @@ package robocode.control.events;
 
 /**
  * A BattleMessageEvent is sent to {@link IBattleListener#onBattleMessage(BattleMessageEvent)
- * onBattleMessage()} when an information message is sent from the game in the during the battle. 
+ * onBattleMessage()} when an informal message is sent from the game in the during the battle. 
  *
  * @see IBattleListener
  * @see BattleErrorEvent
@@ -33,7 +33,7 @@ public class BattleMessageEvent extends BattleEvent {
 	 * Called by the game to create a new BattleMessageEvent.
 	 * Please don't use this constructor as it might change.
 	 *
-	 * @param message the information message.
+	 * @param message the informal message from the game.
 	 */
 	public BattleMessageEvent(String message) {
 		super();
@@ -41,9 +41,9 @@ public class BattleMessageEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the information message.
+	 * Returns the informal message.
 	 *
-	 * @return the information message.
+	 * @return the informal message that was sent from the game during the battle.
 	 */
 	public String getMessage() {
 		return message;

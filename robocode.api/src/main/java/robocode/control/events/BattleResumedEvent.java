@@ -16,7 +16,7 @@ package robocode.control.events;
 
 /**
  * A BattleResumedEvent is sent to {@link IBattleListener#onBattleResumed(BattleResumedEvent)
- * onBattleResumed()} when the battle has been resumed (after having been paused). 
+ * onBattleResumed()} when a battle has been resumed (after having been paused). 
  *
  * @see IBattleListener
  * @see BattlePausedEvent

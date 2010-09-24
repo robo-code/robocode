@@ -15,7 +15,7 @@ package robocode.control.snapshot;
 
 
 /**
- * Interface of a battle turn snapshot at a specific time instant in a battle.
+ * Interface of a battle turn snapshot at a specific time in a battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -39,9 +39,9 @@ public interface ITurnSnapshot {
 	IBulletSnapshot[] getBullets();
 
 	/**
-	 * Returns the current TPS (turns per second).
+	 * Returns the current TPS (turns per second) rate.
 	 *
-	 * @return the current TPS (turns per second).
+	 * @return the current TPS (turns per second) rate.
 	 */
 	int getTPS();
 
@@ -60,16 +60,22 @@ public interface ITurnSnapshot {
 	int getTurn();
 
 	/**
-	 * Returns a list of sorted scores grouped by teams, ordered by position.
+	 * Returns an array of sorted scores grouped by teams, ordered by position.
+	 * Note that the team index cannot be used to determine the score with the sorted scores.
 	 *
-	 * @return a list of sorted scores grouped by teams, ordered by position.
+	 * @return an array of sorted IScoreSnapshots, where the bigger scores are placed first in the list.
+	 * 
+	 * @see #getIndexedTeamScores()
 	 */
 	IScoreSnapshot[] getSortedTeamScores();
 
 	/**
-	 * Returns a list of indexed scores grouped by teams, i.e. unordered.
+	 * Returns an array of indexed scores grouped by teams that can be used to determine the score
+	 * for the individual team based on the team index.
 	 *
-	 * @return a list of indexed scores grouped by teams, i.e. unordered.
+	 * @return an array of indexed IScoreSnapshots, where each index matches an index of a specific team.
+	 * 
+	 * @see #getSortedTeamScores()
 	 */
 	IScoreSnapshot[] getIndexedTeamScores();
 }

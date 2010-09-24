@@ -33,7 +33,7 @@ public class BattleErrorEvent extends BattleEvent {
 	 * Called by the game to create a new BattleErrorEvent.
 	 * Please don't use this constructor as it might change.
 	 *
-	 * @param error the error message.
+	 * @param error the error message from the game.
 	 */
 	public BattleErrorEvent(String error) {
 		super();
@@ -43,7 +43,7 @@ public class BattleErrorEvent extends BattleEvent {
 	/**
 	 * Returns the error message.
 	 *
-	 * @return the error message.
+	 * @return the error message that was sent from the game during the battle.
 	 */
 	public String getError() {
 		return error;

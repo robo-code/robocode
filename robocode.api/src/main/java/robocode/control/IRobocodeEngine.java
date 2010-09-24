@@ -42,16 +42,16 @@ public interface IRobocodeEngine {
 	void removeBattleListener(IBattleListener listener);
 
 	/**
-	 * Closes the RobocodeEngine and releases any allocated resources.
+	 * Closes the RobocodeEngine and releases any allocated resources it holds.
 	 * You should call this when you have finished using the RobocodeEngine.
 	 * This method automatically disposes the Robocode window if it open.
 	 */
 	void close();
 
 	/**
-	 * Returns the installed version of Robocode.
+	 * Returns the installed version of Robocode controlled by this RobocodeEngine.
 	 *
-	 * @return the installed version of Robocode.
+	 * @return the installed version of Robocode controlled by this RobocodeEngine.
 	 */
 	String getVersion();
 
@@ -66,7 +66,7 @@ public interface IRobocodeEngine {
 	/**
 	 * Returns all robots available from the local robot repository of Robocode.
 	 * These robots must exists in the /robocode/robots directory, and must be
-	 * compiled in advance.
+	 * compiled in advance, before these robot are returned with this method.
 	 *
 	 * @return an array of all available robots from the local robot repository.
 	 * @see robocode.control.RobotSpecification
@@ -77,15 +77,15 @@ public interface IRobocodeEngine {
 	/**
 	 * Returns a selection of robots available from the local robot repository
 	 * of Robocode. These robots must exists in the /robocode/robots directory,
-	 * and must be compiled in advance.
-	 * </p>
+	 * and must be compiled in advance, before these robot are returned with this method.
+	 * <p/>
 	 * Notice: If a specified robot cannot be found in the repository, it will
 	 * not be returned in the array of robots returned by this method.
 	 *
 	 * @param selectedRobotList a comma or space separated list of robots to
 	 *                          return. The full class name must be used for
 	 *                          specifying the individual robot, e.g.
-	 *                          "sample.Corners, sample.Crazy"
+	 *                          "sample.Corners, sample.Crazy".
 	 * @return an array containing the available robots from the local robot
 	 *         repository based on the selected robots specified with the
 	 *         {@code selectedRobotList} parameter.
@@ -98,7 +98,7 @@ public interface IRobocodeEngine {
 	/**
 	 * Runs the specified battle.
 	 *
-	 * @param battleSpecification the specification of the battle to play including the
+	 * @param battleSpecification the specification of the battle to run including the
 	 *                            participation robots.
 	 * @see #runBattle(robocode.control.BattleSpecification, boolean)
 	 * @see robocode.control.BattleSpecification
@@ -137,7 +137,7 @@ public interface IRobocodeEngine {
 	void runBattle(BattleSpecification battleSpecification, String initialPositions, boolean waitTillOver);
 
 	/**
-	 * Will block caller until current battle is over
+	 * Will block caller until current battle is over.
 	 * @see #runBattle(robocode.control.BattleSpecification)
 	 * @see #runBattle(robocode.control.BattleSpecification, boolean)
 	 * @since 1.6.2

@@ -32,13 +32,13 @@ import static java.lang.Math.toDegrees;
  * rate must be set to a positive value. If a negative value is used instead, the movement
  * will go back or to the left. In order to stop the movement, the rate must be
  * set to 0.
- * </p>
+ * <p/>
  * Note: When calling {@code setVelocityRate()}, {@code setTurnRate()}, {@code setGunRotationRate()},
  * {@code setRadarRotationRate()} and variants, Any previous calls to "movement" functions outside of
  * {@code RateControlRobot}, such as {@code setAhead()}, {@code setTurnLeft()},
  * {@code setTurnRadarRightRadians()} and similar will be overridden when calling the
  * {@link #execute() execute()} on this robot class.
- * </p>
+ * <p/>
  * Look into the source code for the {@code sample.VelociRobot} in order to see how to use this
  * robot type. 
  *
