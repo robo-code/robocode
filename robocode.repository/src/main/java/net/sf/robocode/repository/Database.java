@@ -238,7 +238,7 @@ public class Database {
 		StringTokenizer tokenizer = new StringTokenizer(selectedRobots, ",");
 
 		while (tokenizer.hasMoreTokens()) {
-			String bot = tokenizer.nextToken();
+			String bot = tokenizer.nextToken().trim();
 			final IItem item = getItem(bot);
 
 			if (item != null) {
