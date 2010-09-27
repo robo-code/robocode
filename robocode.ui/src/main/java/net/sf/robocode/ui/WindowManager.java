@@ -248,6 +248,10 @@ public class WindowManager implements IWindowManagerExt {
 				+ "index.html");
 	}
 
+	public void showReadMe() {
+		showInBrowser("file://" + new File(FileUtil.getCwd(), "ReadMe.html").getAbsoluteFile());
+	}
+
 	public void showFaq() {
 		showInBrowser("http://robowiki.net/w/index.php?title=Robocode/FAQ");
 	}
