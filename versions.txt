@@ -1,5 +1,5 @@
 Version 1.7.2.2 Alpha
-(30-Aug-2010)
+(28-Sep-2010)
 ---------------
 = Bugfixes =
 * Bug [3043884] - Development Options remove wrong item.
@@ -11,7 +11,8 @@ Version 1.7.2.2 Alpha
 
 = New features =
 * Robocode has been upgraded to use jni4net v0.8 with CLR 4.0 support.
-* Implemented Control API for .NET - robocode.control.dll
+* Implemented Robocode .NET Control API plug-in (robocode.control.dll) with documentation.
+* Req [2932291] - Added ReadMe.txt (using Markdown syntax) and ReadMe.html. The ReadMe is also available from the Help menu.
 * Req [2973605] - Enable/disable development paths.
 * Req [2974806] - Provide JuniorRobot template for inexperienced users.
 
