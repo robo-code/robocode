@@ -21,6 +21,8 @@ package robocode.control;
 
 import java.io.File;
 
+import net.sf.robocode.security.IHiddenSpecificationHelper;
+
 
 /**
  * Defines the properties of a robot, which is returned from
@@ -33,6 +35,7 @@ public class RobotSpecification implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private final Object fileSpecification;
 	private final String name;
 	private final String author;
 	private final String webpage;
@@ -43,7 +46,8 @@ public class RobotSpecification implements java.io.Serializable {
 	private final String description;
 	private String teamId;
 
-	private RobotSpecification(String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
+	private RobotSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
+		this.fileSpecification = fileSpecification;
 		this.name = name;
 		this.author = author;
 		this.webpage = webpage;
@@ -157,5 +161,29 @@ public class RobotSpecification implements java.io.Serializable {
 	 */
 	public String getTeamId() {
 		return teamId != null ? teamId : getNameAndVersion();
+	}
+
+	static IHiddenSpecificationHelper createHiddenHelper() {
+		return new HiddenHelper();
+	}
+
+	private static class HiddenHelper implements IHiddenSpecificationHelper {
+
+		public RobotSpecification createSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
+			return new RobotSpecification(fileSpecification, name, author, webpage, version, robocodeVersion, jarFile,
+					fullClassName, description);
+		}
+
+		public Object getFileSpecification(RobotSpecification specification) {
+			return specification.fileSpecification;
+		}
+
+		public void setTeamName(RobotSpecification specification, String teamName) {
+			specification.teamId = teamName;
+		}
+
+		public String getTeamName(RobotSpecification specification) {
+			return specification.teamId;
+		}
 	}
 }
