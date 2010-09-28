@@ -2,9 +2,10 @@ Version 1.7.2.2 Alpha
 (28-Sep-2010)
 ---------------
 = Bugfixes =
+* Bug [3043944] - Robot PrintStream doesn't handle write in a portable fashion.
+* Bug [3077562] - Wrong headings with the JuniorRobot.
 * Bug [3043884] - Development Options remove wrong item.
 * Bug [3043932] - JavaDoc missing _Robot and similar.
-* Bug [3077562] - Wrong headings with the JuniorRobot.
 
 = New sample robots =
 * Tuan Anh Nguyen provided a modified version of the Interactive sample robot named Interactive_v2, which use absolute movement (up, left, down, right) on the screen, which can be easier to control than the original Interactive sample robot. Both Interactive robots now use both the arrow keys and the W, A, S, D key for moving the robot.
