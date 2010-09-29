@@ -1,6 +1,6 @@
 ## ReadMe for Robocode
 
-Updated 28-Sep-2010 by Flemming N. Larsen
+Updated 29-Sep-2010 by Flemming N. Larsen
 
 Send all feedback, comments, and problems to the tracker at the
 [Robocode project](http://sourceforge.net/tracker/?group_id=37202) at
@@ -131,15 +131,11 @@ You can read more details from here:
 
 -   [System Requirements](http://robowiki.net/wiki/Robocode/System_Requirements)
 
-If you want to program robots in .NET, you need to install the Robocode 
-.NET API plug-in on top of Robocode. The plug-in is installed by 
-double-clicking the `robocode.dotnet-xxx-setup.jar` the same way as 
-Robocode itself is installed. 
-
-It is also possible to control Robocode from a .NET application. This is 
-achived by installing the Robocode .NET Control API plug-in on top of 
-Robocode, which is installed by double-clicking the 
-´robocode.dotnet.control-xxx-setup.jar`. 
+If you want to program robots in .NET or control Robocode from a .NET 
+application, you need to install the Robocode .NET API plug-in on top of 
+Robocode. The plug-in is installed by double-clicking the 
+`robocode.dotnet-xxx-setup.jar` the same way as Robocode itself is 
+installed.
 
 ### 4. GETTING STARTED
 
