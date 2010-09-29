@@ -49,7 +49,8 @@ public class RoundStartedEvent extends BattleEvent {
 	/**
 	 * Returns the start snapshot of the participating robots, initial starting positions etc.
 	 *
-	 * @return a {@see robocode.control.ITurnSnapshot} that serves as the start snapshot of the round.
+	 * @return a {@link robocode.control.snapshot.ITurnSnapshot} that serves as the start snapshot of
+	 *         the round.
 	 */
 	public ITurnSnapshot getStartSnapshot() {
 		return startSnapshot;
