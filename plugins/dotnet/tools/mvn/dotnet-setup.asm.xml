@@ -181,7 +181,6 @@
         <file>
             <source>robocode.dotnet.api/target/Help/RobotAPI.chm</source>
         </file>
-        <!--
         <file>
             <source>robocode.dotnet.control.api/target/robocode.control.xml</source>
             <outputDirectory>libs</outputDirectory>
@@ -189,7 +188,6 @@
         <file>
             <source>robocode.dotnet.control.api/target/Help/ControlAPI.chm</source>
         </file>
-        -->
     </files>
 </assembly>
 
