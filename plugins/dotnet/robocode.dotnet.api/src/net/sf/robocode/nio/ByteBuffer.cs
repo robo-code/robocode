@@ -263,7 +263,7 @@ namespace net.sf.robocode.nio
         }
 
 
-        /**
+        /*
          * Allocates a new direct byte buffer.
          *
          * <p> The new buffer's position will be zero, its limit will be its
@@ -287,7 +287,7 @@ namespace net.sf.robocode.nio
         }
 
 
-        /**
+        /*
          * Allocates a new byte buffer.
          *
          * <p> The new buffer's position will be zero, its limit will be its
@@ -311,7 +311,7 @@ namespace net.sf.robocode.nio
             return new HeapByteBuffer(capacity, capacity);
         }
 
-        /**
+        /*
      * Wraps a byte array into a buffer.
      *
      * <p> The new buffer will be backed by the given byte array;
@@ -356,7 +356,7 @@ namespace net.sf.robocode.nio
             }
         }
 
-        /**
+        /*
      * Wraps a byte array into a buffer.
      *
      * <p> The new buffer will be backed by the given byte array;
@@ -379,7 +379,7 @@ namespace net.sf.robocode.nio
         }
 
 
-        /**
+        /*
      * Creates a new byte buffer whose content is a shared subsequence of
      * this buffer's content.
      *
@@ -398,7 +398,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer slice();
 
-        /**
+        /*
      * Creates a new byte buffer that shares this buffer's content.
      *
      * <p> The content of the new buffer will be that of this buffer.  Changes
@@ -415,7 +415,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer duplicate();
 
-        /**
+        /*
      * Creates a new, read-only byte buffer that shares this buffer's
      * content.
      *
@@ -438,7 +438,7 @@ namespace net.sf.robocode.nio
 
         // -- Singleton get/put methods --
 
-        /**
+        /*
      * Relative <i>get</i> method.  Reads the byte at this buffer's
      * current position, and then increments the position. </p>
      *
@@ -449,7 +449,7 @@ namespace net.sf.robocode.nio
      */
         public abstract byte get();
 
-        /**
+        /*
      * Relative <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
      * 
      * <p> Writes the given byte into this buffer at the current
@@ -468,7 +468,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer put(byte b);
 
-        /**
+        /*
      * Absolute <i>get</i> method.  Reads the byte at the given
      * index. </p>
      *
@@ -483,7 +483,7 @@ namespace net.sf.robocode.nio
      */
         public abstract byte get(int index);
 
-        /**
+        /*
      * Absolute <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
      * 
      * <p> Writes the given byte into this buffer at the given
@@ -509,7 +509,7 @@ namespace net.sf.robocode.nio
 
         // -- Bulk get operations --
 
-        /**
+        /*
      * Relative bulk <i>get</i> method.
      *
      * <p> This method transfers bytes from this buffer into the given
@@ -570,7 +570,7 @@ namespace net.sf.robocode.nio
             return this;
         }
 
-        /**
+        /*
      * Relative bulk <i>get</i> method.
      *
      * <p> This method transfers bytes from this buffer into the given
@@ -595,7 +595,7 @@ namespace net.sf.robocode.nio
 
         // -- Bulk put operations --
 
-        /**
+        /*
      * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
      *
      * <p> This method transfers the bytes remaining in the given source
@@ -649,7 +649,7 @@ namespace net.sf.robocode.nio
             return this;
         }
 
-        /**
+        /*
      * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
      *
      * <p> This method transfers bytes into this buffer from the given
@@ -711,7 +711,7 @@ namespace net.sf.robocode.nio
             return this;
         }
 
-        /**
+        /*
      * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
      *
      * <p> This method transfers the entire content of the given source
@@ -739,7 +739,7 @@ namespace net.sf.robocode.nio
 
         // -- Other stuff --
 
-        /**
+        /*
      * Tells whether or not this buffer is backed by an accessible byte
      * array.
      *
@@ -756,7 +756,7 @@ namespace net.sf.robocode.nio
             return (hb != null);
         }
 
-        /**
+        /*
      * Returns the byte array that backs this
      * buffer&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -783,7 +783,7 @@ namespace net.sf.robocode.nio
             return hb;
         }
 
-        /**
+        /*
      * Returns the offset within this buffer's backing array of the first
      * element of the buffer&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -811,7 +811,7 @@ namespace net.sf.robocode.nio
             return _offset;
         }
 
-        /**
+        /*
      * Compacts this buffer&nbsp;&nbsp;<i>(optional operation)</i>.
      *
      * <p> The bytes between the buffer's current position and its limit,
@@ -854,7 +854,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer compact();
 
-        /**
+        /*
      * Tells whether or not this byte buffer is direct. </p>
      *
      * @return  <tt>true</tt> if, and only if, this buffer is direct
@@ -862,7 +862,7 @@ namespace net.sf.robocode.nio
         public abstract bool isDirect();
 
 
-        /**
+        /*
      * Returns a string summarizing the state of this buffer.  </p>
      *
      * @return  A summary string
@@ -883,7 +883,7 @@ namespace net.sf.robocode.nio
         }
 
 
-        /**
+        /*
      * Returns the current hash code of this buffer.
      *
      * <p> The hash code of a byte buffer depends only upon its remaining
@@ -906,7 +906,7 @@ namespace net.sf.robocode.nio
             return h;
         }
 
-        /**
+        /*
      * Tells whether or not this buffer is equal to another object.
      *
      * <p> Two byte buffers are equal if, and only if,
@@ -952,7 +952,7 @@ namespace net.sf.robocode.nio
             return true;
         }
 
-        /**
+        /*
      * Compares this buffer to another.
      *
      * <p> Two byte buffers are compared by comparing their sequences of
@@ -990,7 +990,7 @@ namespace net.sf.robocode.nio
 
         //= (Bits.byteOrder() == ByteOrder.BIG_ENDIAN);
 
-        /**
+        /*
      * Retrieves this buffer's byte order.
      *
      * <p> The byte order is used when reading or writing multibyte values, and
@@ -1006,7 +1006,7 @@ namespace net.sf.robocode.nio
             return bigEndian ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
         }
 
-        /**
+        /*
      * Modifies this buffer's byte order.  </p>
      *
      * @param  bo
@@ -1031,7 +1031,7 @@ namespace net.sf.robocode.nio
         internal abstract void _put(int i, byte b); // package-private
 
 
-        /**
+        /*
      * Relative <i>get</i> method for reading a char value.
      *
      * <p> Reads the next two bytes at this buffer's current position,
@@ -1046,7 +1046,7 @@ namespace net.sf.robocode.nio
      */
         public abstract char getChar();
 
-        /**
+        /*
      * Relative <i>put</i> method for writing a char
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1068,7 +1068,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putChar(char value);
 
-        /**
+        /*
      * Absolute <i>get</i> method for reading a char value.
      *
      * <p> Reads two bytes at the given index, composing them into a
@@ -1086,7 +1086,7 @@ namespace net.sf.robocode.nio
      */
         public abstract char getChar(int index);
 
-        /**
+        /*
      * Absolute <i>put</i> method for writing a char
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1111,7 +1111,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putChar(int index, char value);
 
-        /**
+        /*
      * Creates a view of this byte buffer as a char buffer.
      *
      * <p> The content of the new buffer will start at this buffer's current
@@ -1130,7 +1130,7 @@ namespace net.sf.robocode.nio
         public abstract Buffer asCharBuffer();
 
 
-        /**
+        /*
      * Relative <i>get</i> method for reading a short value.
      *
      * <p> Reads the next two bytes at this buffer's current position,
@@ -1145,7 +1145,7 @@ namespace net.sf.robocode.nio
      */
         public abstract short getShort();
 
-        /**
+        /*
      * Relative <i>put</i> method for writing a short
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1167,7 +1167,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putShort(short value);
 
-        /**
+        /*
      * Absolute <i>get</i> method for reading a short value.
      *
      * <p> Reads two bytes at the given index, composing them into a
@@ -1185,7 +1185,7 @@ namespace net.sf.robocode.nio
      */
         public abstract short getShort(int index);
 
-        /**
+        /*
      * Absolute <i>put</i> method for writing a short
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1210,7 +1210,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putShort(int index, short value);
 
-        /**
+        /*
      * Creates a view of this byte buffer as a short buffer.
      *
      * <p> The content of the new buffer will start at this buffer's current
@@ -1229,7 +1229,7 @@ namespace net.sf.robocode.nio
         public abstract Buffer asShortBuffer();
 
 
-        /**
+        /*
      * Relative <i>get</i> method for reading an int value.
      *
      * <p> Reads the next four bytes at this buffer's current position,
@@ -1244,7 +1244,7 @@ namespace net.sf.robocode.nio
      */
         public abstract int getInt();
 
-        /**
+        /*
      * Relative <i>put</i> method for writing an int
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1266,7 +1266,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putInt(int value);
 
-        /**
+        /*
      * Absolute <i>get</i> method for reading an int value.
      *
      * <p> Reads four bytes at the given index, composing them into a
@@ -1284,7 +1284,7 @@ namespace net.sf.robocode.nio
      */
         public abstract int getInt(int index);
 
-        /**
+        /*
      * Absolute <i>put</i> method for writing an int
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1309,7 +1309,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putInt(int index, int value);
 
-        /**
+        /*
      * Creates a view of this byte buffer as an int buffer.
      *
      * <p> The content of the new buffer will start at this buffer's current
@@ -1328,7 +1328,7 @@ namespace net.sf.robocode.nio
         public abstract Buffer asIntBuffer();
 
 
-        /**
+        /*
      * Relative <i>get</i> method for reading a long value.
      *
      * <p> Reads the next eight bytes at this buffer's current position,
@@ -1343,7 +1343,7 @@ namespace net.sf.robocode.nio
      */
         public abstract long getLong();
 
-        /**
+        /*
      * Relative <i>put</i> method for writing a long
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1365,7 +1365,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putLong(long value);
 
-        /**
+        /*
      * Absolute <i>get</i> method for reading a long value.
      *
      * <p> Reads eight bytes at the given index, composing them into a
@@ -1383,7 +1383,7 @@ namespace net.sf.robocode.nio
      */
         public abstract long getLong(int index);
 
-        /**
+        /*
      * Absolute <i>put</i> method for writing a long
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1408,7 +1408,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putLong(int index, long value);
 
-        /**
+        /*
      * Creates a view of this byte buffer as a long buffer.
      *
      * <p> The content of the new buffer will start at this buffer's current
@@ -1427,7 +1427,7 @@ namespace net.sf.robocode.nio
         public abstract Buffer asLongBuffer();
 
 
-        /**
+        /*
      * Relative <i>get</i> method for reading a float value.
      *
      * <p> Reads the next four bytes at this buffer's current position,
@@ -1442,7 +1442,7 @@ namespace net.sf.robocode.nio
      */
         public abstract float getFloat();
 
-        /**
+        /*
      * Relative <i>put</i> method for writing a float
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1464,7 +1464,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putFloat(float value);
 
-        /**
+        /*
      * Absolute <i>get</i> method for reading a float value.
      *
      * <p> Reads four bytes at the given index, composing them into a
@@ -1482,7 +1482,7 @@ namespace net.sf.robocode.nio
      */
         public abstract float getFloat(int index);
 
-        /**
+        /*
      * Absolute <i>put</i> method for writing a float
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1507,7 +1507,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putFloat(int index, float value);
 
-        /**
+        /*
      * Creates a view of this byte buffer as a float buffer.
      *
      * <p> The content of the new buffer will start at this buffer's current
@@ -1526,7 +1526,7 @@ namespace net.sf.robocode.nio
         public abstract Buffer asFloatBuffer();
 
 
-        /**
+        /*
      * Relative <i>get</i> method for reading a double value.
      *
      * <p> Reads the next eight bytes at this buffer's current position,
@@ -1541,7 +1541,7 @@ namespace net.sf.robocode.nio
      */
         public abstract double getDouble();
 
-        /**
+        /*
      * Relative <i>put</i> method for writing a double
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1563,7 +1563,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putDouble(double value);
 
-        /**
+        /*
      * Absolute <i>get</i> method for reading a double value.
      *
      * <p> Reads eight bytes at the given index, composing them into a
@@ -1581,7 +1581,7 @@ namespace net.sf.robocode.nio
      */
         public abstract double getDouble(int index);
 
-        /**
+        /*
      * Absolute <i>put</i> method for writing a double
      * value&nbsp;&nbsp;<i>(optional operation)</i>.
      *
@@ -1606,7 +1606,7 @@ namespace net.sf.robocode.nio
      */
         public abstract ByteBuffer putDouble(int index, double value);
 
-        /**
+        /*
      * Creates a view of this byte buffer as a double buffer.
      *
      * <p> The content of the new buffer will start at this buffer's current
