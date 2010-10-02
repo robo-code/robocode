@@ -13,7 +13,8 @@ namespace robocode.control.snapshot {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface ITurnSnapshot {
+    internal partial interface ITurnSnapshot
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()[Lrobocode/control/snapshot/IRobotSnapshot;")]
         robocode.control.snapshot.IRobotSnapshot[] getRobots();
@@ -39,7 +40,7 @@ namespace robocode.control.snapshot {
     #endregion
     
     #region Component Designer generated code 
-    public partial class ITurnSnapshot_ {
+    internal partial class ITurnSnapshot_ {
         
         public static global::java.lang.Class _class {
             get {

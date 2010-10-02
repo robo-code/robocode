@@ -14,7 +14,7 @@ namespace net.sf.robocode.serialization
 {
 #pragma warning disable 1591
     /// <exclude/>
-    public interface ISerializableHelperN
+    internal interface ISerializableHelperN
     {
         int sizeOf(RbSerializerN serializer, object obj);
         void serialize(RbSerializerN serializer, ByteBuffer buffer, object obj);

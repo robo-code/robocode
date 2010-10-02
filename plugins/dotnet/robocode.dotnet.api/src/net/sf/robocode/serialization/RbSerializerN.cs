@@ -24,7 +24,7 @@ namespace net.sf.robocode.serialization
 #pragma warning disable 1591
     /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
-    public sealed class RbSerializerN
+    internal sealed class RbSerializerN
     {
         private const int byteOrder = -1059135839; //0xC0DEDEA1
         public static readonly int SIZEOF_TYPEINFO = 1;

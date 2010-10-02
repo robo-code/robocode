@@ -13,7 +13,7 @@ namespace net.sf.robocode.repository {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IRobotRepositoryItem : global::net.sf.robocode.repository.IRepositoryItem, global::java.lang.Comparable {
+    internal partial interface IRobotRepositoryItem : global::net.sf.robocode.repository.IRepositoryItem, global::java.lang.Comparable {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isJuniorRobot();
@@ -51,7 +51,8 @@ namespace net.sf.robocode.repository {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IRobotRepositoryItem_ {
+    internal partial class IRobotRepositoryItem_
+    {
         
         public static global::java.lang.Class _class {
             get {

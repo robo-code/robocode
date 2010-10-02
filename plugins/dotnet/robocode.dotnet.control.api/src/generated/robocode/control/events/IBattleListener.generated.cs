@@ -13,7 +13,8 @@ namespace robocode.control.events {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IBattleListener {
+    internal partial interface IBattleListener
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lrobocode/control/events/BattleStartedEvent;)V")]
         void onBattleStarted(global::robocode.control.events.BattleStartedEvent par0);
@@ -51,7 +52,8 @@ namespace robocode.control.events {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IBattleListener_ {
+    internal partial class IBattleListener_
+    {
         
         public static global::java.lang.Class _class {
             get {

@@ -48,7 +48,7 @@ namespace net.sf.robocode.nio
 #pragma warning disable 1591
 #pragma warning disable 1570
     /// <exclude/>
-    public enum ByteOrder
+    internal enum ByteOrder
     {
         BIG_ENDIAN,
         LITTLE_ENDIAN,
@@ -227,7 +227,7 @@ namespace net.sf.robocode.nio
 
     /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
-    public abstract class ByteBuffer : Buffer //, Comparable<ByteBuffer>
+    internal abstract class ByteBuffer : Buffer //, Comparable<ByteBuffer>
     {
         // These fields are declared here rather than in Heap-X-Buffer in order to
         // reduce the number of virtual method invocations needed to access these

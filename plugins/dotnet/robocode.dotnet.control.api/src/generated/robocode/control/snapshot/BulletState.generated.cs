@@ -13,7 +13,8 @@ namespace robocode.control.snapshot {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class BulletState : global::java.lang.Object {
+    internal partial class BulletState : global::java.lang.Object
+    {
         
         internal new static global::java.lang.Class staticClass;
         

@@ -18,7 +18,7 @@ namespace net.sf.robocode.security
 #pragma warning disable 1591
     /// <exclude/>
     [Serializable]
-    public sealed class RobocodeInternalPermission : CodeAccessPermission, IUnrestrictedPermission
+    internal sealed class RobocodeInternalPermission : CodeAccessPermission, IUnrestrictedPermission
     {
         private bool unrestricted;
 
@@ -133,7 +133,7 @@ namespace net.sf.robocode.security
 
     /// <exclude/>
     [AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = true)]
-    public class RobocodeInternalPermissionAttribute : CodeAccessSecurityAttribute
+    internal class RobocodeInternalPermissionAttribute : CodeAccessSecurityAttribute
     {
         public RobocodeInternalPermissionAttribute(SecurityAction action)
             : base(action)

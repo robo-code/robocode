@@ -14,7 +14,8 @@ namespace robocode.exception {
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
     [global::System.SerializableAttribute()]
-    public partial class DisabledException : global::java.lang.Error {
+    internal partial class DisabledException : global::java.lang.Error
+    {
         
         internal new static global::java.lang.Class staticClass;
         

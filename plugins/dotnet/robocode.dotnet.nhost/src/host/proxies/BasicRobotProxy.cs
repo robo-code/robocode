@@ -31,7 +31,7 @@ using Thread = System.Threading.Thread;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
-    public class BasicRobotProxy : HostingRobotProxy, IBasicRobotPeer
+    internal class BasicRobotProxy : HostingRobotProxy, IBasicRobotPeer
     {
         private const long
             MAX_SET_CALL_COUNT = 10000,

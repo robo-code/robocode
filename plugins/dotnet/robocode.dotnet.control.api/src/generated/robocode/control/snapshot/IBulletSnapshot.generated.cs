@@ -13,7 +13,8 @@ namespace robocode.control.snapshot {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IBulletSnapshot {
+    internal partial interface IBulletSnapshot
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Lrobocode/control/snapshot/BulletState;")]
         global::robocode.control.snapshot.BulletState getState();
@@ -51,7 +52,8 @@ namespace robocode.control.snapshot {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IBulletSnapshot_ {
+    internal partial class IBulletSnapshot_
+    {
         
         public static global::java.lang.Class _class {
             get {

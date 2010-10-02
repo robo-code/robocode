@@ -13,7 +13,7 @@ namespace net.sf.robocode.host {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IHostManager {
+    internal partial interface IHostManager {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         void cleanup();
@@ -50,7 +50,8 @@ namespace net.sf.robocode.host {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IHostManager_ {
+    internal partial class IHostManager_
+    {
         
         public static global::java.lang.Class _class {
             get {

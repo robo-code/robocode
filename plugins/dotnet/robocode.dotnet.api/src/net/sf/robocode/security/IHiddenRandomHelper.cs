@@ -14,7 +14,7 @@ namespace net.sf.robocode.security
 {
 #pragma warning disable 1591
     /// <exclude/>
-    public interface IHiddenRandomHelper
+    internal interface IHiddenRandomHelper
     {
         Random GetRandom();
     }

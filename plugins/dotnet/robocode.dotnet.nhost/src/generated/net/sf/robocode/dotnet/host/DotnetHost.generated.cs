@@ -12,7 +12,8 @@ namespace net.sf.robocode.dotnet.host {
     
     
     #region Component Designer generated code 
-    public partial class DotnetHost_ {
+    internal partial class DotnetHost_
+    {
         
         public static global::java.lang.Class _class {
             get {

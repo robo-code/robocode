@@ -13,7 +13,7 @@ namespace net.sf.robocode.host {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IHost {
+    internal partial interface IHost {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/host/IHostManager;Lrobocode/control/RobotSpecification;Lnet/sf/" +
             "robocode/peer/IRobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Lnet/sf/robocode/h" +
@@ -30,7 +30,8 @@ namespace net.sf.robocode.host {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IHost_ {
+    internal partial class IHost_
+    {
         
         public static global::java.lang.Class _class {
             get {

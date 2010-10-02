@@ -13,7 +13,8 @@ namespace net.sf.robocode.serialization {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface ISerializableHelper {
+    internal partial interface ISerializableHelper
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Obje" +
             "ct;)V")]
@@ -29,7 +30,8 @@ namespace net.sf.robocode.serialization {
     #endregion
     
     #region Component Designer generated code 
-    public partial class ISerializableHelper_ {
+    internal partial class ISerializableHelper_
+    {
         
         public static global::java.lang.Class _class {
             get {

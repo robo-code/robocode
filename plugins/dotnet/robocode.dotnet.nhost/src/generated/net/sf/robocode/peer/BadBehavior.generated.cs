@@ -13,7 +13,8 @@ namespace net.sf.robocode.peer {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class BadBehavior : global::java.lang.Object {
+    internal partial class BadBehavior : global::java.lang.Object
+    {
         
         internal new static global::java.lang.Class staticClass;
         

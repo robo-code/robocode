@@ -14,7 +14,7 @@ using net.sf.robocode.serialization;
 
 namespace net.sf.robocode.dotnet.peer
 {
-    public class BulletStatus
+    internal class BulletStatus
     {
         public readonly int bulletId;
         public readonly bool isActive;

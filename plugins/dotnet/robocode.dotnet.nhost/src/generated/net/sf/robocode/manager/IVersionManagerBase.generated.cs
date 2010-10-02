@@ -13,7 +13,8 @@ namespace net.sf.robocode.manager {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IVersionManagerBase {
+    internal partial interface IVersionManagerBase
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         global::java.lang.String getVersion();
@@ -30,7 +31,8 @@ namespace net.sf.robocode.manager {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IVersionManagerBase_ {
+    internal partial class IVersionManagerBase_
+    {
         
         public static global::java.lang.Class _class {
             get {

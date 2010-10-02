@@ -17,7 +17,7 @@ namespace net.sf.robocode.nio
 
     /// <exclude/>
     [Serializable]
-    public class InvalidMarkException : Exception
+    internal class InvalidMarkException : Exception
     {
         public InvalidMarkException()
         {
@@ -42,7 +42,7 @@ namespace net.sf.robocode.nio
 
     /// <exclude/>
     [Serializable]
-    public class BufferUnderflowException : Exception
+    internal class BufferUnderflowException : Exception
     {
         public BufferUnderflowException()
         {
@@ -67,7 +67,7 @@ namespace net.sf.robocode.nio
 
     /// <exclude/>
     [Serializable]
-    public class BufferOverflowException : Exception
+    internal class BufferOverflowException : Exception
     {
         public BufferOverflowException()
         {
@@ -92,7 +92,7 @@ namespace net.sf.robocode.nio
 
     /// <exclude/>
     [Serializable]
-    public class ReadOnlyBufferException : Exception
+    internal class ReadOnlyBufferException : Exception
     {
         public ReadOnlyBufferException()
         {

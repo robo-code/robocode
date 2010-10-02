@@ -13,7 +13,8 @@ namespace net.sf.robocode.io {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class Logger : global::java.lang.Object, global::net.sf.robocode.io.ILoggerN {
+    internal partial class Logger : global::java.lang.Object, global::net.sf.robocode.io.ILoggerN
+    {
         
         internal new static global::java.lang.Class staticClass;
         

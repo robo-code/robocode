@@ -32,7 +32,7 @@ namespace net.sf.robocode.dotnet.host.seed
         private static readonly Assembly jniAssembly = typeof(Bridge).Assembly;
         protected AppDomain domain;
         private string robotAssemblyFileName;
-        protected IRobotPeer robotPeer;
+        internal IRobotPeer robotPeer;
         private string robotShadow;
         private string tempDir;
 

@@ -13,7 +13,8 @@ namespace robocode.control.snapshot {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IDebugProperty {
+    internal partial interface IDebugProperty
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         global::java.lang.String getValue();
@@ -24,7 +25,8 @@ namespace robocode.control.snapshot {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IDebugProperty_ {
+    internal partial class IDebugProperty_
+    {
         
         public static global::java.lang.Class _class {
             get {

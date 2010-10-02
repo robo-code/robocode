@@ -12,7 +12,8 @@ namespace net.sf.robocode.dotnet.repository.root {
     
     
     #region Component Designer generated code 
-    public partial class DllRootHelper_ {
+    internal partial class DllRootHelper_
+    {
         
         public static global::java.lang.Class _class {
             get {

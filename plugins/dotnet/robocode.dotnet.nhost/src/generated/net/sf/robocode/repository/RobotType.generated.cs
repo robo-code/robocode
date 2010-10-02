@@ -13,7 +13,8 @@ namespace net.sf.robocode.repository {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class RobotType : global::java.lang.Object, global::java.io.Serializable {
+    public partial class RobotType : global::java.lang.Object, global::java.io.Serializable
+    {
         
         internal new static global::java.lang.Class staticClass;
         

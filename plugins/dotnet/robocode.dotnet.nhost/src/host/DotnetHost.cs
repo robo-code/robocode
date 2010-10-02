@@ -22,7 +22,7 @@ using robocode.control;
 
 namespace net.sf.robocode.dotnet.host
 {
-    public class DotnetHost : IHost
+    internal class DotnetHost : IHost
     {
         #region IHost Members
 

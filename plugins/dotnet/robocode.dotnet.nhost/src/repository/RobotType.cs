@@ -13,7 +13,7 @@ using System;
 namespace net.sf.robocode.repository
 {
     [Flags]
-    public enum RobotTypeN
+    internal enum RobotTypeN
     {
         INVALID = 0,
         JUNIOR = 1,

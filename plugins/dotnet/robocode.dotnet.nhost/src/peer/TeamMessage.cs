@@ -15,7 +15,7 @@ using net.sf.robocode.serialization;
 namespace net.sf.robocode.dotnet.peer
 {
     [Serializable]
-    public class TeamMessage
+    internal class TeamMessage
     {
         public byte[] message;
         public String recipient;

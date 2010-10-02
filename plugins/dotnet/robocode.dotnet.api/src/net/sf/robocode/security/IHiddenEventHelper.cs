@@ -17,7 +17,7 @@ namespace net.sf.robocode.security
 {
 #pragma warning disable 1591
     /// <exclude/>
-    public interface IHiddenEventHelper
+    internal interface IHiddenEventHelper
     {
         void setDefaultPriority(Event evnt);
         void setPriority(Event evnt, int newPriority);

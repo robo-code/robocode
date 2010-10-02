@@ -19,7 +19,7 @@ using Robocode;
 namespace net.sf.robocode.host
 {
     [Serializable]
-    public class RobotStatics : IRobotStaticsN
+    internal class RobotStatics : IRobotStaticsN
     {
         private readonly BattleRules battleRules;
         private readonly int contestantIndex;

@@ -34,7 +34,7 @@ using StringBuilder = System.Text.StringBuilder;
 
 namespace net.sf.robocode.dotnet.host.proxies
 {
-    public abstract class HostingRobotProxy
+    internal abstract class HostingRobotProxy
     {
         private readonly IRobotRepositoryItem robotSpecification;
         protected EventManager eventManager;

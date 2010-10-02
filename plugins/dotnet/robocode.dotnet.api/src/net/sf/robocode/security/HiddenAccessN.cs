@@ -22,7 +22,7 @@ namespace net.sf.robocode.security
 #pragma warning disable 1591
     /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
-    public class HiddenAccessN
+    internal class HiddenAccessN
     {
         private static IHiddenEventHelper eventHelper;
         private static IHiddenBulletHelper bulletHelper;

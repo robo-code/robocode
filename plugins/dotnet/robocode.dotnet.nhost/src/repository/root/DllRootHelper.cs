@@ -50,7 +50,7 @@ namespace net.sf.robocode.dotnet.repository.root
             }
         }
 
-        public static RobotType GetRobotType(IRobotRepositoryItem robotRepositoryItem)
+        internal static RobotType GetRobotType(IRobotRepositoryItem robotRepositoryItem)
         {
             string file = GetDllFileName(robotRepositoryItem);
             if (!File.Exists(file))
@@ -70,7 +70,7 @@ namespace net.sf.robocode.dotnet.repository.root
             }
         }
 
-        public static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
+        internal static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
         {
             string uriString = robotRepositoryItem.getClassPathURL().toURI().toString();
             string trim = uriString.Substring(0, uriString.LastIndexOf(".dll!/") + 4);

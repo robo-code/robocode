@@ -13,7 +13,8 @@ namespace robocode.control.events {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class RoundStartedEvent : global::robocode.control.events.BattleEvent {
+    internal partial class RoundStartedEvent : global::robocode.control.events.BattleEvent
+    {
         
         internal new static global::java.lang.Class staticClass;
         

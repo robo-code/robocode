@@ -13,7 +13,8 @@ namespace net.sf.robocode.peer {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IRobotPeer {
+    internal partial interface IRobotPeer
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         void drainEnergy();
@@ -45,7 +46,8 @@ namespace net.sf.robocode.peer {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IRobotPeer_ {
+    internal partial class IRobotPeer_
+    {
         
         public static global::java.lang.Class _class {
             get {

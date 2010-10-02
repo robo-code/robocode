@@ -56,7 +56,7 @@ namespace net.sf.robocode.dotnet
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
-            var m = new RobotFileSystemManager(null, 100, tempDir, tempDir);
+            var m = new RobotFileSystemManager(100, tempDir, tempDir);
 
             using (Stream dataFile = m.getDataFile("test.txt"))
             {
@@ -74,7 +74,7 @@ namespace net.sf.robocode.dotnet
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
-            var m = new RobotFileSystemManager(null, 100, tempDir, tempDir);
+            var m = new RobotFileSystemManager(100, tempDir, tempDir);
 
             using (Stream dataFile = m.getDataFile("test.txt"))
             {
@@ -96,7 +96,7 @@ namespace net.sf.robocode.dotnet
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
-            var m = new RobotFileSystemManager(null, 100, tempDir, tempDir);
+            var m = new RobotFileSystemManager(100, tempDir, tempDir);
 
             using (Stream dataFile = m.getDataFile("test.txt"))
             {
@@ -112,7 +112,7 @@ namespace net.sf.robocode.dotnet
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
-            var m = new RobotFileSystemManager(null, 100, tempDir, tempDir);
+            var m = new RobotFileSystemManager(100, tempDir, tempDir);
 
             using (Stream dataFile = m.getDataFile("test.txt"))
             {

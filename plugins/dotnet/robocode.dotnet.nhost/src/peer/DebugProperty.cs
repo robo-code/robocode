@@ -15,7 +15,7 @@ using net.sf.robocode.serialization;
 namespace net.sf.robocode.dotnet.peer
 {
     [Serializable]
-    public class DebugProperty
+    internal class DebugProperty
     {
         private String key;
         private String value;

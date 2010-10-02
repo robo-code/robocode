@@ -27,7 +27,12 @@ namespace net.sf.robocode.dotnet.host.security
         private string writableRootDirectory;
         private HostingRobotProxy hostingProxy;
 
-        public RobotFileSystemManager(HostingRobotProxy hostingProxy , int maxQuota, string writableRootDirectory, string readableRootDirectory)
+        public RobotFileSystemManager(int maxQuota, string writableRootDirectory, string readableRootDirectory)
+            : this(null, maxQuota, writableRootDirectory, readableRootDirectory)
+        {
+        }
+
+        internal RobotFileSystemManager(HostingRobotProxy hostingProxy , int maxQuota, string writableRootDirectory, string readableRootDirectory)
         {
             this.hostingProxy = hostingProxy;
             this.maxQuota = maxQuota;

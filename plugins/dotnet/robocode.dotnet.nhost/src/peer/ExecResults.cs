@@ -17,7 +17,7 @@ using Robocode;
 namespace net.sf.robocode.dotnet.peer
 {
     [Serializable]
-    public class ExecResults
+    internal class ExecResults
     {
         private const long serialVersionUID = 1L;
         private List<BulletStatus> bulletUpdates;

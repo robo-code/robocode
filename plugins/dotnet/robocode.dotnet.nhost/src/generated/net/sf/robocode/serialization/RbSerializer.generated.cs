@@ -13,7 +13,8 @@ namespace net.sf.robocode.serialization {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class RbSerializer : global::java.lang.Object {
+    internal partial class RbSerializer : global::java.lang.Object
+    {
         
         internal new static global::java.lang.Class staticClass;
         

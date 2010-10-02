@@ -195,7 +195,7 @@ namespace net.sf.robocode.nio
 
     /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
-    public abstract class Buffer
+    internal abstract class Buffer
     {
         // Invariants: mark <= position <= limit <= capacity
         private readonly int _capacity;

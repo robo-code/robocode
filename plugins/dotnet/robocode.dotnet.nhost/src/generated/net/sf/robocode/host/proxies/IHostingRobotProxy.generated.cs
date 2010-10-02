@@ -13,7 +13,8 @@ namespace net.sf.robocode.host.proxies {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IHostingRobotProxy {
+    internal partial interface IHostingRobotProxy
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         void cleanup();
@@ -30,7 +31,8 @@ namespace net.sf.robocode.host.proxies {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IHostingRobotProxy_ {
+    internal partial class IHostingRobotProxy_
+    {
         
         public static global::java.lang.Class _class {
             get {

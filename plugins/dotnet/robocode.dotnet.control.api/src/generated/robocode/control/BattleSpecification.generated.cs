@@ -13,7 +13,8 @@ namespace robocode.control {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class BattleSpecification : global::java.lang.Object, global::java.io.Serializable {
+    internal partial class BattleSpecification : global::java.lang.Object, global::java.io.Serializable
+    {
         
         internal new static global::java.lang.Class staticClass;
         

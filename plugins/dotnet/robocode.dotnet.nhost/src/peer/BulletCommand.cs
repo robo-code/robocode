@@ -15,7 +15,7 @@ using net.sf.robocode.serialization;
 namespace net.sf.robocode.dotnet.peer
 {
     [Serializable]
-    public class BulletCommand
+    internal class BulletCommand
     {
         private readonly int bulletId;
         private readonly double fireAssistAngle;

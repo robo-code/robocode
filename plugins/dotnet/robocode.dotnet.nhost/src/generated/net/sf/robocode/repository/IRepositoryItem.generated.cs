@@ -13,7 +13,7 @@ namespace net.sf.robocode.repository {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IRepositoryItem : global::java.lang.Comparable {
+    internal partial interface IRepositoryItem : global::java.lang.Comparable {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isValid();
@@ -103,7 +103,8 @@ namespace net.sf.robocode.repository {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IRepositoryItem_ {
+    internal partial class IRepositoryItem_
+    {
         
         public static global::java.lang.Class _class {
             get {

@@ -17,7 +17,7 @@ using Robocode;
 namespace net.sf.robocode.dotnet.peer
 {
     [Serializable]
-    public class ExecCommands
+    internal class ExecCommands
     {
         public const int defaultBodyColor = 0; //0xFF29298C;
         public const int defaultGunColor = 0; //0xFF29298C;

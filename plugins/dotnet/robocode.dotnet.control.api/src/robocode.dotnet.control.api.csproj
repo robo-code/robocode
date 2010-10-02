@@ -53,8 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
-      <Link>implementation\robocode\AssemblyInfo.cs</Link>
+      <Link>AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AssemblyInf.cs" />
     <Compile Include="generated\java\util\Random.generated.cs">
       <SubType>Code</SubType>
     </Compile>

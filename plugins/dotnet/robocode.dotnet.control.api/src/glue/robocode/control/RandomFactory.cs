@@ -39,7 +39,7 @@ namespace robocode.control
         #endregion
     }
 
-    public class RandomRedirect : Random
+    internal class RandomRedirect : Random
     {
         private java.util.Random r;
 

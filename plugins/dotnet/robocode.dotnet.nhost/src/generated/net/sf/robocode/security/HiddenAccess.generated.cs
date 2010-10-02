@@ -13,7 +13,7 @@ namespace net.sf.robocode.security {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class HiddenAccess : global::java.lang.Object {
+    internal partial class HiddenAccess : global::java.lang.Object {
         
         internal new static global::java.lang.Class staticClass;
         

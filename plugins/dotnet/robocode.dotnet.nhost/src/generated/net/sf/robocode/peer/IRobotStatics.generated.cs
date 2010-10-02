@@ -13,7 +13,8 @@ namespace net.sf.robocode.peer {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IRobotStatics {
+    internal partial interface IRobotStatics
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isInteractiveRobot();
@@ -30,7 +31,8 @@ namespace net.sf.robocode.peer {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IRobotStatics_ {
+    internal partial class IRobotStatics_
+    {
         
         public static global::java.lang.Class _class {
             get {

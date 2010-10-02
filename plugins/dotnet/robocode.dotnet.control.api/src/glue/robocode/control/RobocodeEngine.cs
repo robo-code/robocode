@@ -15,7 +15,7 @@ using File = java.io.File;
 
 namespace robocode.control
 {
-    public partial class RobocodeEngine
+    internal partial class RobocodeEngine
     {
         public static void Init(string robocodeHome)
         {

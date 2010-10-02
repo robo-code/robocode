@@ -13,7 +13,8 @@ namespace robocode.control.snapshot {
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaInterfaceAttribute()]
-    public partial interface IScoreSnapshot : global::java.lang.Comparable {
+    internal partial interface IScoreSnapshot : global::java.lang.Comparable
+    {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Ljava/lang/String;")]
         global::java.lang.String getName();
@@ -72,7 +73,8 @@ namespace robocode.control.snapshot {
     #endregion
     
     #region Component Designer generated code 
-    public partial class IScoreSnapshot_ {
+    internal partial class IScoreSnapshot_
+    {
         
         public static global::java.lang.Class _class {
             get {

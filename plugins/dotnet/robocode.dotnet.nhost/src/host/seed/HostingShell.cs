@@ -21,7 +21,7 @@ using Robocode;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
-    public class HostingShell : AppDomainShell, IHostingRobotProxy
+    internal class HostingShell : AppDomainShell, IHostingRobotProxy
     {
         private readonly RbSerializer serializer = new RbSerializer();
 

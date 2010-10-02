@@ -8,12 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace robocode.control {
     
     
     #region Component Designer generated code 
     [global::net.sf.jni4net.attributes.JavaClassAttribute()]
-    public partial class RobotSpecification : global::java.lang.Object, global::java.io.Serializable {
+    internal partial class RobotSpecification : global::java.lang.Object, global::java.io.Serializable
+    {
         
         internal new static global::java.lang.Class staticClass;
         

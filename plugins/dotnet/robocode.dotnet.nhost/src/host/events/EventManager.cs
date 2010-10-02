@@ -21,7 +21,7 @@ using Robocode.RobotInterfaces;
 
 namespace net.sf.robocode.dotnet.host.events
 {
-    public class EventManager
+    internal class EventManager
     {
         private const int MAX_PRIORITY = 100;
         public const int MAX_EVENT_STACK = 2;

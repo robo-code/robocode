@@ -14,7 +14,7 @@ namespace net.sf.robocode.security
 {
 #pragma warning disable 1591
     /// <exclude/>
-    public interface IHiddenRulesHelper
+    internal interface IHiddenRulesHelper
     {
         BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate,
                                 long inactivityTime);

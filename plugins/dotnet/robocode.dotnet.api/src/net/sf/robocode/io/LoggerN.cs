@@ -22,7 +22,7 @@ namespace net.sf.robocode.io
     ///</summary>
     /// <exclude/>
     [RobocodeInternalPermission(SecurityAction.LinkDemand)]
-    public class LoggerN
+    internal class LoggerN
     {
         public static TextWriter realOut = Console.Out;
         public static TextWriter realErr = Console.Error;
@@ -125,7 +125,7 @@ namespace net.sf.robocode.io
     }
 
     /// <exclude/>
-    public interface ILoggerN
+    internal interface ILoggerN
     {
         void logMessage(string s, bool newline);
         void logError(string s);
