@@ -81,13 +81,11 @@ namespace Robocode
             get { return condition; }
         }
 
-        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override sealed void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsAdvancedRobot())
@@ -101,28 +99,24 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
         // sealed to disable overrides
         public override sealed int CompareTo(Event evnt)
         {
             return base.CompareTo(evnt);
         }
 
-        /// <inheritdoc />
         // sealed to disable overrides
         internal override bool IsCriticalEvent
         {
             get { return false; }
         }
 
-        /// <inheritdoc />
         // sealed to disable overrides
         public sealed override int Priority
         {
             get { return base.Priority; }
         }
 
-        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { throw new System.Exception("Serialization not supported on this event type"); }

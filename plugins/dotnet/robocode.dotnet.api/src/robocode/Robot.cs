@@ -101,25 +101,25 @@ namespace Robocode
                 "You cannot call the methods before your Run() method is called, or you are using a Robot object that the game doesn't know about.");
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IBasicRobot.GetRobotRunnable()"/>
         IRunnable IBasicRobot.GetRobotRunnable()
         {
             return this;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IBasicRobot.GetBasicEventListener()" />
         IBasicEvents IBasicRobot.GetBasicEventListener()
         {
             return this;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IInteractiveRobot.GetInteractiveEventListener()"/>
         IInteractiveEvents IInteractiveRobot.GetInteractiveEventListener()
         {
             return this;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IPaintRobot.GetPaintEventListener()"/>
         IPaintEvents IPaintRobot.GetPaintEventListener()
         {
             return this;
@@ -1043,7 +1043,7 @@ namespace Robocode
         ///   // At this point, both the radar and gun are facing right (90 degrees);
         ///   </code>
         ///   -- or --
-        ///   </code>
+        ///   <code>
         ///   // Set radar to turn independent from the gun's turn
         ///   SetAdjustRadarForGunTurn(true);
         ///   TurnGunRight(90);

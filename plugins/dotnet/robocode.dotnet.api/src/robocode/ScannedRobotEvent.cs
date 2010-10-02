@@ -153,13 +153,11 @@ namespace Robocode
             return 0;
         }
 
-        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             IBasicEvents listener = robot.GetBasicEventListener();
@@ -170,7 +168,6 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.ScannedRobotEvent_TYPE; }

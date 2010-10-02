@@ -2216,7 +2216,7 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAdvancedRobot.GetAdvancedEventListener()"/>
         IAdvancedEvents IAdvancedRobot.GetAdvancedEventListener()
         {
             return this; // this robot is listening

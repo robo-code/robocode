@@ -69,13 +69,11 @@ namespace Robocode
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsAdvancedRobot())
@@ -89,13 +87,11 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
         internal override bool IsCriticalEvent
         {
             get { return true; }
         }
 
-        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.SkippedTurnEvent_TYPE; }

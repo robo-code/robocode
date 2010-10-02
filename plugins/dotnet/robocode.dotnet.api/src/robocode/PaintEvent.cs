@@ -26,13 +26,11 @@ namespace Robocode
     {
         private const int DEFAULT_PRIORITY = 5;
 
-        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsPaintRobot())
@@ -46,7 +44,6 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { throw new System.Exception("Serialization of this type is not supported"); }

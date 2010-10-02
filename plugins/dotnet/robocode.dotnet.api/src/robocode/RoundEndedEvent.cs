@@ -67,7 +67,6 @@ namespace Robocode
             get { return totalTurns; }
         }
 
-        /// <inheritdoc />
         internal override sealed int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }

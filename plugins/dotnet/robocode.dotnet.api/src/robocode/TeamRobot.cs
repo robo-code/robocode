@@ -83,7 +83,7 @@ namespace Robocode
             return null; // never called
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="ITeamRobot.GetTeamEventListener()"/>
         ITeamEvents ITeamRobot.GetTeamEventListener()
         {
             return this; // this robot is listening

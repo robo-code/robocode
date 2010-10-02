@@ -652,13 +652,13 @@ namespace Robocode
             get { return hitWallBearing; }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IBasicRobot.SetOut(TextWriter)"/>
         void IBasicRobot.SetOut(TextWriter outpt)
         {
             _output = outpt;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IBasicRobot.SetPeer(IBasicRobotPeer)" />
         void IBasicRobot.SetPeer(IBasicRobotPeer per)
         {
             peer = per;
@@ -674,13 +674,13 @@ namespace Robocode
                 "You cannot call the methods before your Run() method is called, or you are using a Robot object that the game doesn't know about.");
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IBasicRobot.GetRobotRunnable()"/>
         IRunnable IBasicRobot.GetRobotRunnable()
         {
             return getEventHandler();
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IBasicRobot.GetBasicEventListener()"/>
         IBasicEvents IBasicRobot.GetBasicEventListener()
         {
             return getEventHandler();

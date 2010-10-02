@@ -41,13 +41,11 @@ namespace Robocode
         {
         }
 
-        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (statics.IsInteractiveRobot())
@@ -61,7 +59,6 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.MousePressedEvent_TYPE; }

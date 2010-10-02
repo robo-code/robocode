@@ -65,13 +65,11 @@ namespace Robocode
             get { return name; }
         }
 
-        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             IBasicEvents listener = robot.GetBasicEventListener();
@@ -82,14 +80,12 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
         internal override void UpdateBullets(Dictionary<int, Bullet> bullets)
         {
             // we need to pass same instance
             bullet = bullets[bullet.getBulletId()];
         }
 
-        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.BulletHitEvent_TYPE; }

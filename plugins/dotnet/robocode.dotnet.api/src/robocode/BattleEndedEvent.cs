@@ -59,7 +59,6 @@ namespace Robocode
             get { return results; }
         }
 
-        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
@@ -71,7 +70,6 @@ namespace Robocode
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             if (robot != null)
@@ -84,13 +82,11 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
         internal override bool IsCriticalEvent
         {
             get { return true; }
         }
 
-        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { return RbSerializerN.BattleEndedEvent_TYPE; }

@@ -46,13 +46,11 @@ namespace Robocode
             get { return status; }
         }
 
-        /// <inheritdoc />
         internal override int DefaultPriority
         {
             get { return DEFAULT_PRIORITY; }
         }
 
-        /// <inheritdoc />
         internal override void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
             IBasicEvents listener = robot.GetBasicEventListener();
@@ -63,7 +61,6 @@ namespace Robocode
             }
         }
 
-        /// <inheritdoc />
         internal override byte SerializationType
         {
             get { throw new System.Exception("Serialization of this type is not supported"); }

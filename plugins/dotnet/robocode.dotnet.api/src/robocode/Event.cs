@@ -134,9 +134,7 @@ namespace Robocode
             addedToQueue = true;
         }
 
-        /// <summary>
-        /// This is how event gets dispatched to robot
-        /// </summary>
+        // This is how event gets dispatched to robot
         internal virtual void Dispatch(IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
         }
