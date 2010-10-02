@@ -71,7 +71,7 @@
       <HintPath>..\tools\lib\jni4net.n-0.8.0.0.dll</HintPath>
     </Reference>
     <Reference Include="robocode">
-      <HintPath>..\target\robocode.dotnet-1.7.2.2-Alpha-setup\libs\robocode.dll</HintPath>
+      <HintPath>..\robocode.dotnet.api\target\robocode.dll</HintPath>
     </Reference>
   </ItemGroup>
   <!-- Import the SHFB build targets -->
