@@ -32,8 +32,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.StringTokenizer;
 
 
 /**
@@ -46,13 +46,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public RepositoryManager(ISettingsManager properties) {
 		this.properties = properties;
-		properties.addPropertyListener(new ISettingsListener() {
-			public void settingChanged(String property) {
-				if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)) {
-					reload(false);
-				}
-			}
-		});
+		properties.addPropertyListener(new SettingsListener());
 	}
 
 	// ------------------------------------------
@@ -64,19 +58,13 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public List<File> getDevelDirectories() {
-		List<File> develDirectories;
+		List<File> develDirectories = new ArrayList<File>();
 
-		develDirectories = new ArrayList<File>();
-		String externalPath = properties.getOptionsDevelopmentPath();
-		StringTokenizer tokenizer = new StringTokenizer(externalPath, File.pathSeparator);
-
-		while (tokenizer.hasMoreTokens()) {
+		for (String path : properties.getOptionsEnabledDevelopmentPaths()) {
 			try {
-				File f = new File(tokenizer.nextToken()).getCanonicalFile();
-
-				develDirectories.add(f);
+				develDirectories.add(new File(path).getCanonicalFile());
 			} catch (IOException e) {
-				throw new Error(e);
+				Logger.logError(e);
 			}
 		}
 		return develDirectories;
@@ -129,8 +117,8 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public RobotSpecification[] getSpecifications() {
 		checkDbExists();
-		final List<IRepositoryItem> list = db.getAllSpecifications();
-		List<RobotSpecification> res = new ArrayList<RobotSpecification>();
+		final Collection<IRepositoryItem> list = db.getAllSpecifications();
+		Collection<RobotSpecification> res = new ArrayList<RobotSpecification>();
 
 		for (IRepositoryItem s : list) {
 			res.add(s.createRobotSpecification());
@@ -145,7 +133,7 @@ public class RepositoryManager implements IRepositoryManager {
 	 */
 	public RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots) {
 		checkDbExists();
-		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
 		int teamNum = 0;
 
 		for (RobotSpecification spec: selectedRobots) {
@@ -167,8 +155,8 @@ public class RepositoryManager implements IRepositoryManager {
 	 */
 	public RobotSpecification[] loadSelectedRobots(String selectedRobots) {
 		checkDbExists();
-		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
+		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		final Collection<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
 		int teamNum = 0;
 
 		for (IRepositoryItem item: list) {
@@ -178,13 +166,13 @@ public class RepositoryManager implements IRepositoryManager {
 		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
 	}
 
-	private boolean loadItem(List<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
+	private boolean loadItem(Collection<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
 		String teamId = String.format("%4d", teamNum);
 
 		if (item != null) {
 			if (item.isTeam()) {
 				teamId = item.getFullClassNameWithVersion() + "[" + teamId + "]";
-				final List<RobotItem> members = db.expandTeam((TeamItem) item);
+				final Collection<RobotItem> members = db.expandTeam((TeamItem) item);
 
 				for (IRepositoryItem member : members) {
 					final RobotItem robot = (RobotItem) member;
@@ -223,8 +211,8 @@ public class RepositoryManager implements IRepositoryManager {
 	 */
 	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
 		checkDbExists();
-		List<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final List<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
+		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
+		final Collection<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
 
 		for (IRepositoryItem item: list) {
 			battlingRobotsList.add(item.createRobotSpecification());
@@ -297,6 +285,28 @@ public class RepositoryManager implements IRepositoryManager {
 	private void checkDbExists() {
 		if (db == null) {
 			reload(false);
+		}
+	}
+
+	// ------------------------------------------
+	// settings listener
+	// ------------------------------------------
+
+	private class SettingsListener implements ISettingsListener {
+
+		private Collection<String> lastEnabledDevelPaths;
+
+		public void settingChanged(String property) {
+			if (property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH)
+					|| property.equals(ISettingsManager.OPTIONS_DEVELOPMENT_PATH_EXCLUDED)) {
+
+				Collection<String> enabledDevelPaths = properties.getOptionsEnabledDevelopmentPaths();
+
+				if (lastEnabledDevelPaths == null || !enabledDevelPaths.equals(lastEnabledDevelPaths)) {
+					lastEnabledDevelPaths = enabledDevelPaths;
+					reload(false);
+				}
+			}
 		}
 	}
 }

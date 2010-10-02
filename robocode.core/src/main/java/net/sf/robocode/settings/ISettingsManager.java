@@ -16,6 +16,7 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -165,9 +166,15 @@ public interface ISettingsManager {
 
 	void setCpuConstant(long cpuConstant);
 
-	String getOptionsDevelopmentPath();
+	Collection<String> getOptionsDevelopmentPaths();
 
-	void setOptionsDevelopmentPath(String optionsDevelopmentPath);
+	void setOptionsDevelopmentPaths(Collection<String> paths);
+
+	Collection<String> getOptionsExcludedDevelopmentPaths();
+
+	void setOptionsExcludedDevelopmentPaths(Collection<String> excludedPaths);
+
+	Collection<String> getOptionsEnabledDevelopmentPaths();
 
 	boolean getOptionsCommonShowResults();
 
@@ -184,6 +191,10 @@ public interface ISettingsManager {
 	boolean getOptionsCommonEnableReplayRecording();
 
 	void setOptionsCommonEnableReplayRecording(boolean enable);
+
+	void setOptionsCommonNotifyAboutNewBetaVersions(boolean enable);
+
+	boolean getOptionsCommonNotifyAboutNewBetaVersions();
 
 	int getNumberOfRounds();
 
@@ -232,13 +243,17 @@ public interface ISettingsManager {
 			OPTIONS_SOUND_MIXER = "robocode.options.sound.mixer",
 			OPTIONS_SOUND_ENABLEMIXERVOLUME = "robocode.options.sound.enableMixerVolume",
 			OPTIONS_SOUND_ENABLEMIXERPAN = "robocode.options.sound.enableMixerPan",
-
+	
+			OPTIONS_COMMON_NOTIFY_ABOUT_NEW_BETA_VERSIONS = "robocode.options.common.notifyAboutNewBetaVersions",
 			OPTIONS_COMMON_SHOW_RESULTS = "robocode.options.common.showResults",
 			OPTIONS_COMMON_DONT_HIDE_RANKINGS = "robocode.options.common.dontHideRankings",
 			OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS = "robocode.options.common.appendWhenSavingResults",
 			OPTIONS_COMMON_ENABLE_REPLAY_RECORDING = "robocode.options.common.enableReplayRecording",
 
 			OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots",
+
+			OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path",
+			OPTIONS_DEVELOPMENT_PATH_EXCLUDED = "robocode.options.development.path.excluded",
 
 			FILE_THEME_MUSIC = "robocode.file.music.theme",
 			FILE_BACKGROUND_MUSIC = "robocode.file.music.background",
@@ -251,7 +266,6 @@ public interface ISettingsManager {
 			FILE_BULLET_HITS_ROBOT_SFX = "robocode.file.sfx.bulletHitsRobot",
 			FILE_BULLET_HITS_BULLET_SFX = "robocode.file.sfx.bulletHitsBullet",
 
-			OPTIONS_DEVELOPMENT_PATH = "robocode.options.development.path",
 			VERSIONCHECKED = "robocode.versionchecked",
 			ROBOT_FILESYSTEM_QUOTA = "robocode.robot.filesystem.quota",
 			CONSOLE_QUOTA = "robocode.console.quota",

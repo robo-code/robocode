@@ -20,14 +20,16 @@ using net.sf.robocode.io;
 using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using Robocode;
+using robocode.control;
 
 namespace net.sf.robocode.dotnet.host.seed
 {
     public class AppDomainShell : IDisposable
     {
         private static readonly Assembly robocodeAssembly = typeof (Robot).Assembly;
-        private static readonly Assembly hostAssembly = typeof (AppDomainShell).Assembly;
-        private static readonly Assembly jniAssembly = typeof (Bridge).Assembly;
+        private static readonly Assembly controlAssembly = typeof (RobocodeEngine).Assembly;
+        private static readonly Assembly hostAssembly = typeof(AppDomainShell).Assembly;
+        private static readonly Assembly jniAssembly = typeof(Bridge).Assembly;
         protected AppDomain domain;
         private string robotAssemblyFileName;
         protected IRobotPeer robotPeer;
@@ -77,16 +79,19 @@ namespace net.sf.robocode.dotnet.host.seed
             tempDir = Path.Combine(Path.GetTempPath(), name);
             string robocodeShadow = Path.Combine(tempDir, Path.GetFileName(robocodeAssembly.Location));
             string hostShadow = Path.Combine(tempDir, Path.GetFileName(hostAssembly.Location));
+            string controlShadow = Path.Combine(tempDir, Path.GetFileName(controlAssembly.Location));
             string jniShadow = Path.Combine(tempDir, Path.GetFileName(jniAssembly.Location));
 
             Directory.CreateDirectory(tempDir);
             File.Copy(robocodeAssembly.Location, robocodeShadow);
+            File.Copy(controlAssembly.Location, controlShadow);
             File.Copy(hostAssembly.Location, hostShadow);
             File.Copy(jniAssembly.Location, jniShadow);
 
             var trustAssemblies = new[]
                                       {
                                           Reflection.GetStrongName(robocodeAssembly),
+                                          Reflection.GetStrongName(controlAssembly),
                                           Reflection.GetStrongName(hostAssembly),
                                           Reflection.GetStrongName(jniAssembly),
                                       };

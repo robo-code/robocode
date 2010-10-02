@@ -15,7 +15,7 @@ using Robocode.Util;
 
 namespace tested.robotscs
 {
-    /**
+    /*
      * @author Pavel Savara (original)
      */
 

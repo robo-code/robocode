@@ -37,7 +37,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onBattleStarted(final BattleStartedEvent event);
+	void onBattleStarted(final BattleStartedEvent event);
 
 	/**
 	 * This method is called when the battle has finished. This event is always sent as the last battle event,
@@ -52,7 +52,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onBattleFinished(final BattleFinishedEvent event);
+	void onBattleFinished(final BattleFinishedEvent event);
 
 	/**
 	 * This method is called when the battle has completed successfully and results are available.
@@ -66,7 +66,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onBattleCompleted(final BattleCompletedEvent event);
+	void onBattleCompleted(final BattleCompletedEvent event);
 
 	/**
 	 * This method is called when the battle has been paused, either by the user or the game.  
@@ -78,7 +78,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onBattlePaused(final BattlePausedEvent event);
+	void onBattlePaused(final BattlePausedEvent event);
 
 	/**
 	 * This method is called when the battle has been resumed (after having been paused).  
@@ -90,7 +90,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onBattleResumed(final BattleResumedEvent event);
+	void onBattleResumed(final BattleResumedEvent event);
 
 	/**
 	 * This method is called when a new round in a battle has started.
@@ -102,7 +102,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onRoundStarted(final RoundStartedEvent event);
+	void onRoundStarted(final RoundStartedEvent event);
 
 	/**
 	 * This method is called when the current round of a battle has ended. 
@@ -114,7 +114,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onRoundEnded(final RoundEndedEvent event);
+	void onRoundEnded(final RoundEndedEvent event);
 
 	/**
 	 * This method is called when a new turn in a battle round has started. 
@@ -126,7 +126,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onTurnStarted(final TurnStartedEvent event);
+	void onTurnStarted(final TurnStartedEvent event);
 
 	/**
 	 * This method is called when the current turn in a battle round is ended. 
@@ -138,7 +138,7 @@ public interface IBattleListener {
 	 *
 	 * @param event the event details.
 	 */
-	public void onTurnEnded(final TurnEndedEvent event);
+	void onTurnEnded(final TurnEndedEvent event);
 
 	/**
 	 * This method is called when the game has sent a new information message.

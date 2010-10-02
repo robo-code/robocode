@@ -1,3 +1,28 @@
+Version 1.7.2.2 Beta
+(02-Oct-2010)
+---------------
+= Bugfixes =
+* Bug [3043944] - Robot PrintStream doesn't handle write in a portable fashion.
+* Bug [3077562] - Wrong headings with the JuniorRobot. Thanks goes to Mr. Kschan for finding and providing a fix for this bug. :-)
+* Bug [3043884] - Development Options remove wrong item.
+* Bug [3043932] - JavaDoc missing _Robot and similar.
+
+= New sample robots =
+* Tuan Anh Nguyen provided a modified version of the Interactive sample robot named Interactive_v2, which use absolute movement (up, left, down, right) on the screen, which can be easier to control than the original Interactive sample robot. Both Interactive robots now use both the arrow keys and the W, A, S, D key for moving the robot.
+* SampleFs (written for .NET with the #F langugage) has been added along with the Visual Studio 2010 project file for it. This is available with the .NET plug-in.
+
+= New features =
+* Robocode has been upgraded to use jni4net v0.8 with CLR 4.0 support.
+* Implemented Robocode .NET Control API plug-in (robocode.control.dll) with documentation.
+* Req [2932291] - Added ReadMe.txt (using Markdown syntax) and ReadMe.html. The ReadMe is also available from the Help menu.
+* Req [2973605] - Enable/disable development paths.
+* Req [2974806] - Provide JuniorRobot template for inexperienced users.
+
+= Changes =
+* It is not necessary to specify -Dsun.io.useCanonCaches=false anymore with the startup scripts for Robocode and RoboRumble as Robocode sets this internally when running under Windows. Hence, this property has been removed from all .bat, .sh, and .command files for Robocode.
+* Robocode will not notify about Beta versions anymore per default. However, a new option in the Common Options (under Preferences) makes it possible to enable/disable notifications about new Beta versions.
+* The tabs for the Common and Development Options in the Preferences window are now the first tabs.
+
 Version 1.7.2.1
 (05-Aug-2010)
 ---------------
@@ -107,7 +132,7 @@ The ".NET robots are now supported" release
 * Bug [2928688] - morbid.MorbidPriest_1.0 fails to load.
 
 = New features =
-* .NET Robocode plugin. It is now possible to code robots in .NET and let them engage in Robocode battles. :-)
+* .NET Robocode plug-in. It is now possible to code robots in .NET and let them engage in Robocode battles. :-)
 * Req [2816882] - onRoundEnded(). It is now possible for robots to get notified when a round has ended. The onRoundEnded() event handler received a new RoundEndedEvent that contains information about the number of turns in the round and total turns in the whole battle when the event occurred.
 * The robocode.control.RoundEndedEvent in the Control API has been extended with a new method named getTotalTurns() similar to the new robocode.RoundEndedEvent for the Robot API.
 * Req [2931696] - RateControlRobot vs. TeamRobot. The RateControlRobot is now a TeamRobot meaning that it can participate in team battles.

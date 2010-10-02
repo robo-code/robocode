@@ -13,18 +13,18 @@ package robocode.control.snapshot;
 
 
 /**
- * Defines a bullet state, where the robot can be: just fired, moving somewhere, hitting a victim,
- * hitting another bullet, hitting the wall, exploded, or inactive when it done an inactivated.
+ * Defines a bullet state, which can be: just fired, moving somewhere, hitting a victim,
+ * hitting another bullet, hitting the wall, exploded, or inactive.
  *
  * @author Flemming N. Larsen (original)
  * @since 1.6.2
  */
 public enum BulletState {
 
-	/** The bullet has just been fired this second and hence just been created. This state only last one turn. */
+	/** The bullet has just been fired this turn and hence just been created. This state only last one turn. */
 	FIRED(0),
 
-	/** The bullet is now moving across the battlefield, but has not hit anything so far. */
+	/** The bullet is now moving across the battlefield, but has not hit anything yet. */
 	MOVING(1),
 
 	/** The bullet has hit a robot victim. */
@@ -33,7 +33,7 @@ public enum BulletState {
 	/** The bullet has hit another bullet. */
 	HIT_BULLET(3),
 
-	/** The bullet has the wall, i.e. one of the four borders. */
+	/** The bullet has the wall, i.e. one of the four borders of the battlefield. */
 	HIT_WALL(4),
 
 	/** The bullet currently represents a robot explosion, i.e. a robot death. */

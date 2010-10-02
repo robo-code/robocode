@@ -22,7 +22,6 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 import robocode.util.Utils;
 
 import java.awt.*;
-import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
 
@@ -858,9 +857,9 @@ public class JuniorRobot extends _RobotBase implements IJuniorRobot {
 			energy = Math.max(1, (int) (s.getEnergy() + 0.5));
 			robotX = (int) (s.getX() + 0.5);
 			robotY = (int) (s.getY() + 0.5);
-			heading = (int) (toDegrees(s.getHeading()) + 0.5);
-			gunHeading = (int) (toDegrees(s.getGunHeading()) + 0.5);
-			gunBearing = (int) (toDegrees(Utils.normalRelativeAngle(s.getGunHeading() - s.getHeading())) + 0.5);
+			heading = (int) (s.getHeading() + 0.5);
+			gunHeading = (int) (s.getGunHeading() + 0.5);
+			gunBearing = (int) (Utils.normalRelativeAngle(s.getGunHeading() - s.getHeading()) + 0.5);
 			gunReady = (s.getGunHeat() <= 0);
 
 			currentTurn = e.getTime();

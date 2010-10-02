@@ -58,6 +58,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			
 			if (source == RobocodeEditorMenuBar.this.getFileNewRobotMenuItem()) {
 				fileNewRobotActionPerformed();
+			} else if (source == RobocodeEditorMenuBar.this.getFileNewJuniorRobotMenuItem()) {
+				fileNewJuniorRobotActionPerformed();
 			} else if (source == RobocodeEditorMenuBar.this.getFileNewJavaFileMenuItem()) {
 				fileNewJavaFileActionPerformed();
 			} else if (source == RobocodeEditorMenuBar.this.getFileOpenMenuItem()) {
@@ -118,6 +120,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem fileNewJavaFileMenuItem;
 	private JMenu fileNewMenu;
 	private JMenuItem fileNewRobotMenuItem;
+	private JMenuItem fileNewJuniorRobotMenuItem;
 	private JMenu helpMenu;
 	private JMenuItem helpRobocodeApiMenuItem;
 
@@ -189,6 +192,13 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void fileNewRobotActionPerformed() {
 		editor.createNewRobot();
+
+		getFileSaveMenuItem().setEnabled(true);
+		getFileSaveAsMenuItem().setEnabled(true);
+	}
+
+	private void fileNewJuniorRobotActionPerformed() {
+		editor.createNewJuniorRobot();
 
 		getFileSaveMenuItem().setEnabled(true);
 		getFileSaveAsMenuItem().setEnabled(true);
@@ -399,6 +409,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileNewMenu.setText("New");
 			fileNewMenu.setMnemonic('N');
 			fileNewMenu.add(getFileNewRobotMenuItem());
+			fileNewMenu.add(getFileNewJuniorRobotMenuItem());
 			fileNewMenu.add(getFileNewJavaFileMenuItem());
 		}
 		return fileNewMenu;
@@ -413,6 +424,17 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileNewRobotMenuItem.addActionListener(eventHandler);
 		}
 		return fileNewRobotMenuItem;
+	}
+
+	private JMenuItem getFileNewJuniorRobotMenuItem() {
+		if (fileNewJuniorRobotMenuItem == null) {
+			fileNewJuniorRobotMenuItem = new JMenuItem();
+			fileNewJuniorRobotMenuItem.setText("JuniorRobot");
+			fileNewJuniorRobotMenuItem.setMnemonic('J');
+			fileNewJuniorRobotMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J, MENU_SHORTCUT_KEY_MASK));
+			fileNewJuniorRobotMenuItem.addActionListener(eventHandler);
+		}
+		return fileNewJuniorRobotMenuItem;
 	}
 
 	private JMenuItem getFileOpenMenuItem() {

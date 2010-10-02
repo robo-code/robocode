@@ -47,9 +47,9 @@ public class RoundEndedEvent extends BattleEvent {
 	}
 
 	/**
-	 * Returns the round number that was ended (zero indexed).
+	 * Returns the round number that has ended.
 	 *
-	 * @return the round number that was ended (zero indexed).
+	 * @return the round number that has ended, which is zero indexed.
 	 */
 	public int getRound() {
 		return round;
@@ -59,6 +59,8 @@ public class RoundEndedEvent extends BattleEvent {
 	 * Returns the number of turns that this round reached.
 	 *
 	 * @return the number of turns that this round reached.
+	 *
+	 * @see #getTotalTurns()
 	 */
 	public int getTurns() {
 		return turns;
@@ -68,6 +70,8 @@ public class RoundEndedEvent extends BattleEvent {
 	 * Returns the total number of turns reached in the battle when this round ended. 
 	 *
 	 * @return the total number of turns reached in the battle when this round ended.
+	 *
+	 * @see #getTurns()
 	 *
 	 * @since 1.7.2
 	 */

@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>robocode.dotnet</artifactId>
+        <groupId>net.sf.robocode</groupId>
+        <version>${robocode.version}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sf.robocode</groupId>
+    <artifactId>robocode.dotnet.control.api</artifactId>
+    <version>${robocode.nversion}</version>
+    <packaging>dotnet:library</packaging>
+    <name>.NET Robocode Control API </name>
+    <description>.NET Control API for Robocode</description>
+    <organization>
+        <name>Robocode</name>
+        <url>http://robocode.sf.net</url>
+    </organization>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.jni4net</groupId>
+            <artifactId>jni4net.n</artifactId>
+            <version>0.8.0.0</version>
+            <type>dotnet:library</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.api</artifactId>
+            <version>${robocode.nversion}</version>
+            <type>dotnet:library</type>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>robocode.control</finalName>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.nmaven.plugins</groupId>
+                <artifactId>maven-dotnet-compiler-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>0.17robocode</version>
+                <configuration>
+                    <aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:"${basedir}/../tools/keys/robocode.snk"
+                    </aditionalOptions>
+                    <finalName>robocode.control.dll</finalName>
+                </configuration>
+            </plugin>
+             <plugin>
+	              <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
+	              <artifactId>maven-antrun-extended-plugin</artifactId>
+	              <version>1.39</version>
+	              <executions>
+	                  <execution>
+	                      <phase>process-classes</phase>
+	                      <configuration>
+	                          <tasks>
+	                              <copy file="target/comments.xml" tofile="target/robocode.control.xml"/>
+	                              
+	                              <!-- 
+	                              for this to run, one must have SHFBROOT environment variable set properly. 
+	                              it comes with installation of SHFB
+	                              -->
+																<exec dir="target" executable="cmd.exe" failonerror="false">
+																  <arg line="/c %SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe /p:Configuration=Release ../controlAPI.shfbproj"/>
+																</exec>	                              
+	                          </tasks>
+	                      </configuration>
+	                      <goals>
+	                          <goal>run</goal>
+	                      </goals>
+	                  </execution>
+	              </executions>
+	          </plugin>
+        </plugins>
+    </build>
+</project>

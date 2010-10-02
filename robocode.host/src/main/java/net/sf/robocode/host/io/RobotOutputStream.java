@@ -16,7 +16,6 @@ package net.sf.robocode.host.io;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Arrays;
 
 
 /**
@@ -228,10 +227,17 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	@Override
 	public void write(byte[] buf) {
+		write(buf, 0, buf.length);
+	}
+
+	@Override
+	public void write(byte[] buf, int off, int len) {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
-				text.append(Arrays.toString(buf));
 				if (buf != null) {
+					for (int i = 0; i < len; i++) {
+						text.append((char) buf[off + i]);
+					}
 					count += (buf.length / 1000);
 				}
 			}
@@ -242,7 +248,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 	public void write(int b) {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
-				text.append(b);
+				text.append((char) b);
 			}
 		}
 	}

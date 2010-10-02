@@ -19,14 +19,14 @@
 package robocode.control;
 
 
-import net.sf.robocode.security.IHiddenSpecificationHelper;
-
 import java.io.File;
+
+import net.sf.robocode.security.IHiddenSpecificationHelper;
 
 
 /**
  * Defines the properties of a robot, which is returned from
- * {@link RobocodeEngine#getLocalRepository()} or
+ * {@link RobocodeEngine#getLocalRepository()}.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -36,7 +36,6 @@ public class RobotSpecification implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final Object fileSpecification;
-	private String teamName;
 	private final String name;
 	private final String author;
 	private final String webpage;
@@ -45,6 +44,7 @@ public class RobotSpecification implements java.io.Serializable {
 	private final String jarFile;
 	private final String fullClassName;
 	private final String description;
+	private String teamId;
 
 	private RobotSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
 		this.fileSpecification = fileSpecification;
@@ -93,7 +93,7 @@ public class RobotSpecification implements java.io.Serializable {
 		String version = getVersion();
 
 		if (version != null && version.trim().length() > 0) {
-			nameAndVersion += ' ' + version;
+			nameAndVersion += ' ' + version.trim();
 		}
 		return nameAndVersion;
 	}
@@ -119,46 +119,48 @@ public class RobotSpecification implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the description provided by the author of this robot.
+	 * Returns the description provided by the author of this robot or team.
 	 *
-	 * @return the description provided by the author of this robot.
+	 * @return the description provided by the author of this robot or team.
 	 */
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * Returns the version of Robocode this robot was based on.
+	 * Returns the version of Robocode this robot or team was build with.
 	 *
-	 * @return the version of Robocode this robot was based on.
+	 * @return the version of Robocode this robot or team was build with.
 	 */
 	public String getRobocodeVersion() {
 		return robocodeVersion;
 	}
 
 	/**
-	 * Returns the web page for this robot.
+	 * Returns the link to the web page for this robot or team.
 	 *
-	 * @return the web page for this robot.
+	 * @return the link to the web page for this robot or team.
 	 */
 	public String getWebpage() {
 		return webpage;
 	}
 
 	/**
-	 * Returns the name of this robot's author.
+	 * Returns the name of the author of this robot or team.
 	 *
-	 * @return the name of this robot's author.
+	 * @return the name of the author of this robot or team.
 	 */
 	public String getAuthorName() {
 		return author;
 	}
 
 	/**
-	 * @return id of the team in current battle
+	 * Returns id of the team in current battle.
+	 *
+	 * @return id of the team in current battle.
 	 */
 	public String getTeamId() {
-		return teamName;
+		return teamId != null ? teamId : getNameAndVersion();
 	}
 
 	static IHiddenSpecificationHelper createHiddenHelper() {
@@ -177,12 +179,11 @@ public class RobotSpecification implements java.io.Serializable {
 		}
 
 		public void setTeamName(RobotSpecification specification, String teamName) {
-			specification.teamName = teamName;
+			specification.teamId = teamName;
 		}
 
 		public String getTeamName(RobotSpecification specification) {
-			return specification.teamName;
+			return specification.teamId;
 		}
 	}
-
 }

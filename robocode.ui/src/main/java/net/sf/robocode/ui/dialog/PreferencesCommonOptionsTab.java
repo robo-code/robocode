@@ -26,6 +26,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 
 	private JPanel optionsPanel;
 
+	private JCheckBox notifyAboutBetaVersionsCheckBox;
 	private JCheckBox showResultsCheckBox;
 	private JCheckBox dontHideRankingsCheckBox;
 	private JCheckBox appendWhenSavingResultsCheckBox;
@@ -50,6 +51,8 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 			optionsPanel = new JPanel();
 			optionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Common"));
 			optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+			optionsPanel.add(getNotifyAboutBetaVersionsCheckBox());
+			optionsPanel.add(new JLabel(" "));
 			optionsPanel.add(getShowResultsCheckBox());
 			optionsPanel.add(getDontHideRankingsCheckBox());
 			optionsPanel.add(getAppendWhenSavingResultsCheckBox());
@@ -57,6 +60,15 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 			optionsPanel.add(getEnableReplayRecordingCheckBox());
 		}
 		return optionsPanel;
+	}
+	
+	private JCheckBox getNotifyAboutBetaVersionsCheckBox() {
+		if (notifyAboutBetaVersionsCheckBox == null) {
+			notifyAboutBetaVersionsCheckBox = new JCheckBox("Notify about new Beta versions of Robocode");
+			notifyAboutBetaVersionsCheckBox.setMnemonic('n');
+			notifyAboutBetaVersionsCheckBox.setDisplayedMnemonicIndex(0);
+		}
+		return notifyAboutBetaVersionsCheckBox;
 	}
 
 	private JCheckBox getShowResultsCheckBox() {
@@ -93,16 +105,18 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 		return enableReplayRecordingCheckBox;
 	}
 
-	private void loadPreferences(ISettingsManager robocodeProperties) {
-		getShowResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonShowResults());
-		getDontHideRankingsCheckBox().setSelected(robocodeProperties.getOptionsCommonDontHideRankings());
-		getAppendWhenSavingResultsCheckBox().setSelected(robocodeProperties.getOptionsCommonAppendWhenSavingResults());
-		getEnableReplayRecordingCheckBox().setSelected(robocodeProperties.getOptionsCommonEnableReplayRecording());
+	private void loadPreferences(ISettingsManager props) {
+		getNotifyAboutBetaVersionsCheckBox().setSelected(props.getOptionsCommonNotifyAboutNewBetaVersions());
+		getShowResultsCheckBox().setSelected(props.getOptionsCommonShowResults());
+		getDontHideRankingsCheckBox().setSelected(props.getOptionsCommonDontHideRankings());
+		getAppendWhenSavingResultsCheckBox().setSelected(props.getOptionsCommonAppendWhenSavingResults());
+		getEnableReplayRecordingCheckBox().setSelected(props.getOptionsCommonEnableReplayRecording());
 	}
 
 	public void storePreferences() {
 		ISettingsManager props = properties;
 
+		props.setOptionsCommonNotifyAboutNewBetaVersions(getNotifyAboutBetaVersionsCheckBox().isSelected());
 		props.setOptionsCommonShowResults(getShowResultsCheckBox().isSelected());
 		props.setOptionsCommonDontHideRankings(getDontHideRankingsCheckBox().isSelected());
 		props.setOptionsCommonAppendWhenSavingResults(getAppendWhenSavingResultsCheckBox().isSelected());

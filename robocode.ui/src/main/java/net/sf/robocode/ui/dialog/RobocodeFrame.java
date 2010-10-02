@@ -40,6 +40,7 @@ import net.sf.robocode.ui.battleview.InteractiveHandler;
 import net.sf.robocode.ui.battleview.ScreenshotUtil;
 import net.sf.robocode.ui.gfx.ImageUtil;
 import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.version.Version;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -190,13 +191,15 @@ public class RobocodeFrame extends JFrame {
 		boolean newVersionAvailable = false;
 
 		if (newVersion != null && currentVersion != null) {
-			if (versionManager.compare(newVersion, currentVersion) > 0) {
+			if (Version.compare(newVersion, currentVersion) > 0) {
 				newVersionAvailable = true;
-
-				showNewVersion(newVersion);
+				if (Version.isFinal(newVersion)
+						|| (Version.isBeta(newVersion) && properties.getOptionsCommonNotifyAboutNewBetaVersions())) {
+					showNewVersion(newVersion);
+				}
 			}
 		}
-		if (!newVersionAvailable && notifyNoUpdate) {
+		if (notifyNoUpdate && !newVersionAvailable) {
 			showLatestVersion(currentVersion);
 		}
 		return true;
@@ -227,7 +230,7 @@ public class RobocodeFrame extends JFrame {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open browser!",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
-		} else if (versionManager.isFinal(newVersion)) {
+		} else if (Version.isFinal(newVersion)) {
 			JOptionPane.showMessageDialog(this,
 					"It is highly recommended that you always download the latest version.  You may get it at " + INSTALL_URL,
 					"Update when you can!", JOptionPane.INFORMATION_MESSAGE);

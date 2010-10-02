@@ -26,6 +26,12 @@
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.control.api</artifactId>
+            <version>${robocode.nversion}</version>
+            <type>dotnet:library</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.nhost</artifactId>
             <version>${robocode.nversion}</version>
             <type>dotnet:library</type>
@@ -51,7 +57,7 @@
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.n</artifactId>
-            <version>0.7.1.0</version>
+            <version>0.8.0.0</version>
             <type>dotnet:library</type>
         </dependency>
     </dependencies>

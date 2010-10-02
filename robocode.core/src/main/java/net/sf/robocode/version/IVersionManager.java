@@ -17,9 +17,8 @@ import net.sf.robocode.manager.IVersionManagerBase;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public interface IVersionManager extends IVersionManagerBase {
-	int compare(String a, String b);
-	boolean isFinal(String version);
 	String checkForNewVersion();
 }

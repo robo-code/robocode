@@ -16,6 +16,7 @@
             <binaries>
                 <excludes>
                     <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
+                    <exclude>net.sf.robocode:robocode.dotnet.control.api</exclude>
                     <exclude>net.sf.robocode:robocode.api</exclude>
                     <exclude>net.sf.robocode:robocode.host</exclude>
                     <exclude>net.sf.robocode:robocode.repository</exclude>
@@ -24,6 +25,29 @@
                     <exclude>org.picocontainer:picocontainer</exclude>
                 </excludes>
                 <outputFileNameMapping>robocode.${module.extension}</outputFileNameMapping>
+                <includeDependencies>false</includeDependencies>
+                <outputDirectory>libs</outputDirectory>
+                <unpack>false</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- robocode.dotnet.control.api renamed to robocode.control.dll -->
+        <moduleSet>
+            <includes>
+                <include>net.sf.robocode:robocode.dotnet.control.api</include>
+            </includes>
+            <binaries>
+                <excludes>
+                    <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
+                    <exclude>net.sf.robocode:robocode.dotnet.control.api</exclude>
+                    <exclude>net.sf.robocode:robocode.api</exclude>
+                    <exclude>net.sf.robocode:robocode.host</exclude>
+                    <exclude>net.sf.robocode:robocode.repository</exclude>
+                    <exclude>net.sf.robocode:robocode.core</exclude>
+                    <exclude>net.sf.robocode:codesize</exclude>
+                    <exclude>org.picocontainer:picocontainer</exclude>
+                </excludes>
+                <outputFileNameMapping>robocode.control.${module.extension}</outputFileNameMapping>
                 <includeDependencies>false</includeDependencies>
                 <outputDirectory>libs</outputDirectory>
                 <unpack>false</unpack>
@@ -39,6 +63,7 @@
             <binaries>
                 <excludes>
                     <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
+                    <exclude>net.sf.robocode:robocode.dotnet.control.api</exclude>
                     <exclude>net.sf.robocode:robocode.api</exclude>
                     <exclude>net.sf.robocode:robocode.host</exclude>
                     <exclude>net.sf.robocode:robocode.repository</exclude>
@@ -71,13 +96,16 @@
 				                    <exclude>net.sf.robocode:codesize</exclude>
 				                    <exclude>org.picocontainer:picocontainer</exclude>
                             <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
+				                    <exclude>net.sf.robocode:robocode.dotnet.control.api</exclude>
                             <exclude>net.sf.robocode:robocode.dotnet.samples</exclude>
                             <exclude>net.sf.robocode:robocode.dotnet.nhost</exclude>
                             <exclude>net.sf.robocode:robocode.dotnet.host</exclude>
                             <exclude>net.sf.jni4net:jni4net.j</exclude>
                             <exclude>net.sf.jni4net:jni4net.n</exclude>
-                            <exclude>net.sf.jni4net:jni4net.n.w32</exclude>
-                            <exclude>net.sf.jni4net:jni4net.n.w64</exclude>
+                            <exclude>net.sf.jni4net:jni4net.n.w32.v20</exclude>
+                            <exclude>net.sf.jni4net:jni4net.n.w64.v20</exclude>
+                            <exclude>net.sf.jni4net:jni4net.n.w32.v40</exclude>
+                            <exclude>net.sf.jni4net:jni4net.n.w64.v40</exclude>
                         </excludes>
                         <unpack>true</unpack>
                         <unpackOptions>
@@ -107,12 +135,15 @@
                   <exclude>net.sf.robocode:codesize</exclude>
                   <exclude>org.picocontainer:picocontainer</exclude>
                   <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
+                  <exclude>net.sf.robocode:robocode.dotnet.control.api</exclude>
                   <exclude>net.sf.robocode:robocode.dotnet.nhost</exclude>
                   <exclude>net.sf.robocode:robocode.dotnet.host</exclude>
                   <exclude>net.sf.jni4net:jni4net.j</exclude>
                   <exclude>net.sf.jni4net:jni4net.n</exclude>
-                  <exclude>net.sf.jni4net:jni4net.n.w32</exclude>
-                  <exclude>net.sf.jni4net:jni4net.n.w64</exclude>
+                  <exclude>net.sf.jni4net:jni4net.n.w32.v20</exclude>
+                  <exclude>net.sf.jni4net:jni4net.n.w64.v20</exclude>
+                  <exclude>net.sf.jni4net:jni4net.n.w32.v40</exclude>
+                  <exclude>net.sf.jni4net:jni4net.n.w64.v40</exclude>
                 </excludes>
 								<outputFileNameMapping>samplescs-${robocode.nversion}.${module.extension}</outputFileNameMapping>
                 <outputDirectory>robots</outputDirectory>
@@ -149,6 +180,13 @@
         </file>
         <file>
             <source>robocode.dotnet.api/target/Help/RobotAPI.chm</source>
+        </file>
+        <file>
+            <source>robocode.dotnet.control.api/target/robocode.control.xml</source>
+            <outputDirectory>libs</outputDirectory>
+        </file>
+        <file>
+            <source>robocode.dotnet.control.api/target/Help/ControlAPI.chm</source>
         </file>
     </files>
 </assembly>

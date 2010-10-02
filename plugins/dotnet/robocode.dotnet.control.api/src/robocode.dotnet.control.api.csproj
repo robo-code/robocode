@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{674AED55-B9EC-4C7D-8E0B-1B2471C578B2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Robocode.Control</RootNamespace>
+    <AssemblyName>robocode.control</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\tools\keys\robocode.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>
+    </StartupObject>
+    <ApplicationIcon>robocode.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\target\</OutputPath>
+    <IntermediateOutputPath>..\target\obj\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\target\</OutputPath>
+    <IntermediateOutputPath>..\target\obj\</IntermediateOutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="jni4net.n-0.8.0.0, Version=0.8.0.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\lib\jni4net.n-0.8.0.0.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
+      <Link>implementation\robocode\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="generated\java\util\Random.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\BattlefieldSpecification.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\BattleSpecification.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\BattleCompletedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\BattleErrorEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\BattleEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\BattleFinishedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\BattleMessageEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\BattlePausedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\BattleResumedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\BattleStartedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\IBattleListener.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\RoundEndedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\RoundStartedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\TurnEndedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\events\TurnStartedEvent.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\RandomFactory.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\RobocodeEngine.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\RobotResults.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\RobotSpecification.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\snapshot\BulletState.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\snapshot\IBulletSnapshot.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\snapshot\IDebugProperty.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\snapshot\IRobotSnapshot.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\snapshot\IScoreSnapshot.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\snapshot\ITurnSnapshot.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="generated\robocode\control\snapshot\RobotState.generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="glue\robocode\control\RandomFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="glue\robocode\control\RobocodeEngine.cs" />
+    <Compile Include="implementation\robocode\control\BattlefieldSpecification.cs" />
+    <Compile Include="implementation\robocode\control\BattleSpecification.cs" />
+    <Compile Include="implementation\robocode\control\events\BattleCompletedEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\BattleErrorEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\BattleEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\BattleFinishedEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\BattleMessageEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\BattlePausedEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\BattleResumedEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\BattleStartedEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\RoundEndedEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\RoundStartedEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\TurnEndedEvent.cs" />
+    <Compile Include="implementation\robocode\control\events\TurnStartedEvent.cs" />
+    <Compile Include="implementation\robocode\control\IRobocodeEngine.cs" />
+    <Compile Include="implementation\robocode\control\RobocodeEngine.cs" />
+    <Compile Include="implementation\robocode\control\RobotSpecification.cs" />
+    <Compile Include="implementation\robocode\control\snapshot\BulletState.cs" />
+    <Compile Include="implementation\robocode\control\snapshot\IBulletSnapshot.cs" />
+    <Compile Include="implementation\robocode\control\snapshot\IDebugProperty.cs" />
+    <Compile Include="implementation\robocode\control\snapshot\IRobotSnapshot.cs" />
+    <Compile Include="implementation\robocode\control\snapshot\IScoreSnapshot.cs" />
+    <Compile Include="implementation\robocode\control\snapshot\ITurnSnapshot.cs" />
+    <Compile Include="implementation\robocode\control\snapshot\RobotState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
+      <Project>{7E0900D3-6E8F-48EB-86DB-AA767AA90B84}</Project>
+      <Name>robocode.dotnet.api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="robocode.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
+echo [assembly: System.Reflection.AssemblyVersion("1.7.2.2")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+</PreBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\robocode.dotnet.host\target"
+copy "$(SolutionDir)\tools\lib\*.dll" "$(TargetDir)"
+copy "$(SolutionDir)\tools\lib\*.jar" "$(TargetDir)"
+copy "$(SolutionDir)\tools\lib\*.dll" "$(SolutionDir)\robocode.dotnet.host\target"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

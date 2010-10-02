@@ -30,16 +30,16 @@ import java.util.*;
  * @author Pavel Savara (original)
  */
 public class Database {
-	private Hashtable<String, IRepositoryRoot> roots = new Hashtable<String, IRepositoryRoot>();
-	private Hashtable<String, IItem> items = new Hashtable<String, IItem>();
-	private Hashtable<String, IItem> oldItems = new Hashtable<String, IItem>();
+	private Map<String, IRepositoryRoot> roots = new Hashtable<String, IRepositoryRoot>();
+	private Map<String, IItem> items = new Hashtable<String, IItem>();
+	private Map<String, IItem> oldItems = new Hashtable<String, IItem>();
 	private final IRepositoryManager manager;
 
 	public Database(IRepositoryManager manager) {
 		this.manager = manager;
 	}
 
-	public boolean update(File robotsDir, List<File> devDirs, boolean force) {
+	public boolean update(File robotsDir, Collection<File> devDirs, boolean force) {
 		final int prev = items.size();
 
 		RootHandler.openHandlers();
@@ -77,7 +77,7 @@ public class Database {
 	}
 
 	public void putItem(IItem item) {
-		final List<String> friendlyUrls = item.getFriendlyURLs();
+		final Collection<String> friendlyUrls = item.getFriendlyURLs();
 
 		if (friendlyUrls != null) {
 			for (String friendly : friendlyUrls) {
@@ -107,21 +107,23 @@ public class Database {
 	}
 
 	public void moveOldItems(IRepositoryRoot root) {
-		List<Map.Entry<String, IItem>> move = new ArrayList<Map.Entry<String, IItem>>();
+		Collection<Map.Entry<String, IItem>> move = new ArrayList<Map.Entry<String, IItem>>();
 
 		for (Map.Entry<String, IItem> entry : items.entrySet()) {
-			if (entry.getValue().getRoot() == root) {
+			if (entry.getValue().getRoot().equals(root)) {
 				move.add(entry);
 			}
 		}
 
 		for (Map.Entry<String, IItem> entry : move) {
-			oldItems.put(entry.getKey(), entry.getValue());
-			items.remove(entry.getKey());
+			String key = entry.getKey();
+
+			oldItems.put(key, entry.getValue());
+			items.remove(key);
 		}
 	}
 
-	public List<TeamItem> filterTeams(List<IRepositoryItem> selectedRobots) {
+	public List<TeamItem> filterTeams(Collection<IRepositoryItem> selectedRobots) {
 		List<TeamItem> result = new ArrayList<TeamItem>();
 
 		for (IRepositoryItem item : selectedRobots) {
@@ -132,7 +134,7 @@ public class Database {
 		return result;
 	}
 
-	public List<RobotItem> expandTeams(List<IRepositoryItem> selectedRobots) {
+	public List<RobotItem> expandTeams(Collection<IRepositoryItem> selectedRobots) {
 		List<RobotItem> result = new ArrayList<RobotItem>();
 
 		for (IRepositoryItem item : selectedRobots) {
@@ -145,8 +147,8 @@ public class Database {
 		return result;
 	}
 
-	public List<RobotItem> expandTeam(TeamItem team) {
-		List<RobotItem> result = new ArrayList<RobotItem>();
+	public Collection<RobotItem> expandTeam(TeamItem team) {
+		Collection<RobotItem> result = new ArrayList<RobotItem>();
 		StringTokenizer teamTokenizer = new StringTokenizer(team.getMembers(), ",");
 
 		while (teamTokenizer.hasMoreTokens()) {
@@ -179,7 +181,7 @@ public class Database {
 	}
 
 	public List<IRepositoryItem> filterSpecifications(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean onlyInJar) {
-		final ArrayList<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+		final List<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
 
 		for (IItem item : items.values()) {
 			final IRepositoryItem spec = (IRepositoryItem) item;
@@ -214,7 +216,7 @@ public class Database {
 		return res;
 	}
 
-	public List<IRepositoryItem> getAllSpecifications() {
+	public Collection<IRepositoryItem> getAllSpecifications() {
 		final ArrayList<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
 
 		for (IItem item : items.values()) {
@@ -236,7 +238,7 @@ public class Database {
 		StringTokenizer tokenizer = new StringTokenizer(selectedRobots, ",");
 
 		while (tokenizer.hasMoreTokens()) {
-			String bot = tokenizer.nextToken();
+			String bot = tokenizer.nextToken().trim();
 			final IItem item = getItem(bot);
 
 			if (item != null) {
@@ -250,12 +252,11 @@ public class Database {
 			}
 		}
 		return result;
-
 	}
 
 	public void save() {
-		List<IItem> uniqueitems = new LinkedList<IItem>();
-		List<IRepositoryRoot> uniqueroots = new LinkedList<IRepositoryRoot>();
+		Collection<IItem> uniqueitems = new LinkedList<IItem>();
+		Collection<IRepositoryRoot> uniqueroots = new LinkedList<IRepositoryRoot>();
 
 		for (IItem item : items.values()) {
 			if (!uniqueitems.contains(item)) {
@@ -285,8 +286,8 @@ public class Database {
 
 	@SuppressWarnings({ "unchecked"})
 	public static Database load(IRepositoryManager manager) {
-		List<IItem> uniqueitems;
-		List<IRepositoryRoot> uniqueroots;
+		Collection<IItem> uniqueitems;
+		Collection<IRepositoryRoot> uniqueroots;
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 
@@ -298,8 +299,8 @@ public class Database {
 			}
 			fis = new FileInputStream(file);
 			ois = new ObjectInputStream(fis);
-			uniqueroots = (List<IRepositoryRoot>) ois.readObject();
-			uniqueitems = (List<IItem>) ois.readObject();
+			uniqueroots = (Collection<IRepositoryRoot>) ois.readObject();
+			uniqueitems = (Collection<IItem>) ois.readObject();
 			Database res = new Database(manager);
 
 			for (IRepositoryRoot root : uniqueroots) {

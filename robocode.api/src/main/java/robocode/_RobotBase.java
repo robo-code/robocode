@@ -20,15 +20,11 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
 
 
 /**
- * @exclude
- *
- * This is the base class of all robots used by the system. You should not base
- * your robots on this class.
+ * This is the base class of all robots used by the system.
+ * You should not inherit your robot on this class.
  * <p/>
- * You should create a robot that is derived from the {@link Robot} or
- * {@link JuniorRobot} class instead.
- * <p/>
- * There is no guarantee that this class will exist in future versions of Robocode.
+ * You should create a robot that is derived from the {@link Robot}, {@link AdvancedRobot},
+ * {@link JuniorRobot}, {@link TeamRobot}, or {@link RateControlRobot} class instead.
  *
  * @author Flemming N. Larsen (original)
  * @author Pavel Savara (contributor)
@@ -36,6 +32,7 @@ import robocode.robotinterfaces.peer.IBasicRobotPeer;
  * @see JuniorRobot
  * @see AdvancedRobot
  * @see TeamRobot
+ * @see RateControlRobot
  * @since 1.4
  */
 public abstract class _RobotBase implements IBasicRobot, Runnable {

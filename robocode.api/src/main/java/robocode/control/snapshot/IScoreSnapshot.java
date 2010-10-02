@@ -15,7 +15,7 @@ package robocode.control.snapshot;
 
 
 /**
- * Interface of a score snapshot at a specific time instant in a battle.
+ * Interface of a score snapshot at a specific time in a battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)

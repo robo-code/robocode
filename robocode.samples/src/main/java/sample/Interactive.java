@@ -29,10 +29,10 @@ import java.awt.event.MouseWheelEvent;
  * This is a robot that is controlled using the arrow keys and mouse only.
  * <p/>
  * Keys:
- * - Arrow up:    Move forward
- * - Arrow down:  Move backward
- * - Arrow right: Turn right
- * - Arrow left:  Turn left
+ * - W or arrow up:    Move forward
+ * - S or arrow down:  Move backward
+ * - A or arrow right: Turn right
+ * - D or arrow left:  Turn left
  * Mouse:
  * - Moving:      Moves the aim, which the gun will follow
  * - Wheel up:    Move forward
@@ -54,7 +54,7 @@ import java.awt.event.MouseWheelEvent;
  * mouse).
  *
  * @author Flemming N. Larsen
- * @version 1.1
+ * @version 1.2
  * @since 1.3.4
  */
 public class Interactive extends AdvancedRobot {
@@ -118,23 +118,27 @@ public class Interactive extends AdvancedRobot {
 	public void onKeyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case VK_UP:
+		case VK_W:
 			// Arrow up key: move direction = forward (infinitely)
 			moveDirection = 1;
 			moveAmount = Double.POSITIVE_INFINITY;
 			break;
 
 		case VK_DOWN:
+		case VK_S:
 			// Arrow down key: move direction = backward (infinitely)
 			moveDirection = -1;
 			moveAmount = Double.POSITIVE_INFINITY;
 			break;
 
 		case VK_RIGHT:
+		case VK_D:
 			// Arrow right key: turn direction = right
 			turnDirection = 1;
 			break;
 
 		case VK_LEFT:
+		case VK_A:
 			// Arrow left key: turn direction = left
 			turnDirection = -1;
 			break;
@@ -145,14 +149,18 @@ public class Interactive extends AdvancedRobot {
 	public void onKeyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case VK_UP:
+		case VK_W:
 		case VK_DOWN:
+		case VK_S:
 			// Arrow up and down keys: move direction = stand still
 			moveDirection = 0;
 			moveAmount = 0;
 			break;
 
 		case VK_RIGHT:
+		case VK_D:
 		case VK_LEFT:
+		case VK_A:
 			// Arrow right and left keys: turn direction = stop turning
 			turnDirection = 0;
 			break;

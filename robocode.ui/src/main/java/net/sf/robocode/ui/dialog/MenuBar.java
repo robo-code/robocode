@@ -87,6 +87,7 @@ public class MenuBar extends JMenuBar {
 
 	// Help Menu
 	private JMenu helpMenu;
+	private JMenuItem helpReadMeMenuItem;
 	private JMenuItem helpOnlineHelpMenuItem;
 	private JMenuItem helpCheckForNewVersionMenuItem;
 	private JMenuItem helpVersionsTxtMenuItem;
@@ -151,6 +152,8 @@ public class MenuBar extends JMenuBar {
 				optionsCleanRobotCachePerformed();
 
 				// Help menu
+			} else if (source == mb.getReadMeMenuItem()) {
+				helpReadMeActionPerformed();
 			} else if (source == mb.getHelpOnlineHelpMenuItem()) {
 				helpOnlineHelpActionPerformed();
 			} else if (source == mb.getHelpRobocodeApiMenuItem()) {
@@ -584,16 +587,17 @@ public class MenuBar extends JMenuBar {
 			helpMenu = new JMenu();
 			helpMenu.setText("Help");
 			helpMenu.setMnemonic('H');
-			helpMenu.add(getHelpOnlineHelpMenuItem());
+			helpMenu.add(getReadMeMenuItem());
 			helpMenu.add(getHelpRobocodeApiMenuItem());
+			helpMenu.add(getHelpJavaDocumentationMenuItem());
+			helpMenu.add(new JSeparator());
+			helpMenu.add(getHelpOnlineHelpMenuItem());
 			helpMenu.add(getHelpRoboWikiMenuItem());
 			helpMenu.add(getHelpYahooGroupRobocodeMenuItem());
 			helpMenu.add(getHelpFaqMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpRobocodeMenuItem());
 			helpMenu.add(getHelpRobocodeRepositoryMenuItem());
-			helpMenu.add(new JSeparator());
-			helpMenu.add(getHelpJavaDocumentationMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpCheckForNewVersionMenuItem());
 			helpMenu.add(getHelpVersionsTxtMenuItem());
@@ -613,6 +617,17 @@ public class MenuBar extends JMenuBar {
 			helpFaqMenuItem.addActionListener(eventHandler);
 		}
 		return helpFaqMenuItem;
+	}
+
+	private JMenuItem getReadMeMenuItem() {
+		if (helpReadMeMenuItem == null) {
+			helpReadMeMenuItem = new JMenuItem();
+			helpReadMeMenuItem.setText("ReadMe");
+			helpReadMeMenuItem.setMnemonic('M');
+			helpReadMeMenuItem.setDisplayedMnemonicIndex(4);
+			helpReadMeMenuItem.addActionListener(eventHandler);
+		}
+		return helpReadMeMenuItem;
 	}
 
 	private JMenuItem getHelpOnlineHelpMenuItem() {
@@ -843,6 +858,10 @@ public class MenuBar extends JMenuBar {
 
 	private void helpFaqActionPerformed() {
 		windowManager.showFaq();
+	}
+
+	private void helpReadMeActionPerformed() {
+		windowManager.showReadMe();
 	}
 
 	private void helpOnlineHelpActionPerformed() {

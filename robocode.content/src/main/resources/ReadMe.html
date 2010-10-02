@@ -1,0 +1,650 @@
+<div id="readme-for-robocode"
+><h2
+  >ReadMe for Robocode</h2
+  ><p
+  >Updated 29-Sep-2010 by Flemming N. Larsen</p
+  ><p
+  >Send all feedback, comments, and problems to the tracker at the <a href="http://sourceforge.net/tracker/?group_id=37202"
+    >Robocode project</a
+    > at SourceForge.net.</p
+  ><p
+  >Home page: <a href="http://robocode.sourceforge.net/"
+    >http://robocode.sourceforge.net/</a
+    ></p
+  ><div id="table-of-contents"
+  ><h3
+    >TABLE OF CONTENTS</h3
+    ><ol style="list-style-type: decimal;"
+    ><li
+      ><a href="#what-is-robocode"
+	>What is Robocode?</a
+	></li
+      ><li
+      ><a href="#history-of-robocode"
+	>History of Robocode</a
+	></li
+      ><li
+      ><a href="#system-requirements"
+	>System Requirements</a
+	></li
+      ><li
+      ><a href="#getting-started"
+	>Getting Started</a
+	></li
+      ><li
+      ><a href="#robocode-api"
+	>Robocode API</a
+	></li
+      ><li
+      ><a href="#robocode-repository"
+	>Robocode Repository</a
+	></li
+      ><li
+      ><a href="#community"
+	>Community</a
+	></li
+      ><li
+      ><a href="#challenges"
+	>Challenges</a
+	></li
+      ><li
+      ><a href="#competition"
+	>Competition</a
+	></li
+      ><li
+      ><a href="#command-line"
+	>Command Line</a
+	></li
+      ><li
+      ><a href="#links"
+	>Links</a
+	></li
+      ><li
+      ><a href="#reporting-defects"
+	>Reporting Defects</a
+	></li
+      ><li
+      ><a href="#feature-requests"
+	>Feature Requests</a
+	></li
+      ><li
+      ><a href="#versions"
+	>Versions</a
+	></li
+      ><li
+      ><a href="#news"
+	>News</a
+	></li
+      ><li
+      ><a href="#how-to-contribute"
+	>How to contribute</a
+	></li
+      ></ol
+    ></div
+  ><div id="what-is-robocode"
+  ><h3
+    >1. WHAT IS ROBOCODE?</h3
+    ><p
+    >Robocode is a programming game, where the goal is to develop a robot battle tank to battle against other tanks in Java or .NET. The robot battles are running in real-time and on-screen.</p
+    ><p
+    >The motto of Robocode is: Build the best, destroy the rest!</p
+    ><p
+    >Besides being a programming game, Robocode is used for learning how to program, primarily in the Java language, but other languages like C# and Scala are becoming popular as well.</p
+    ><p
+    >Schools and universities are using Robocode as part of teaching how to program, but also for studying artificial intelligence (AI). The concept of Robocode is easy to understand, and a fun way to learn how to program.</p
+    ><p
+    >Robocode comes with its own installer, built-in robot editor and Java compiler, and only pre-requires a Java Virtual Machine (JVM) to exist on the system where it must be installed. Hence, everything a robot developer needs to get started is provided with the main Robocode distribution file (<code
+      >robocode-xxx-setup.jar</code
+      >). Robocode also supports developing robots using external IDEs like e.g. <a href="http://www.eclipse.org/downloads/"
+      >Eclipse</a
+      >, <a href="http://www.jetbrains.com/idea/"
+      >IntelliJ IDEA</a
+      >, <a href="http://netbeans.org/"
+      >NetBeans</a
+      >, <a href="http://msdn.microsoft.com/en-gb/vstudio/"
+      >Visual Studio</a
+      > etc., which supports the developer much better than the robot editor in Robocode.</p
+    ><p
+    >The fact that Robocode runs on the Java platform makes it possible to run it on any operating system with Java pre-installed, meaning that it will be able to run on Windows, Linux, Mac OS, but also UNIX and variants of UNIX. Note that Java 5.0 or newer must be installed on the system before Robocode is able to run. See the <a href="#system-requirements"
+      >System Requirements</a
+      > for more information.</p
+    ><p
+    >Be aware that many users of Robocode (aka Robocoders) find Robocode to be very fun, but also very addictive. :-)</p
+    ><p
+    >Robocode comes free of charge and is being developed as a spare-time project where no money is involved. The developers of Robocode are developing on Robocode because they think it is fun, and because they improve themselves as developers this way.</p
+    ><p
+    >Robocode is an Open Source project, which means that all sources are open to everybody. In addition, Robocode is provided under the terms of <a href="http://www.eclipse.org/legal/epl-v10.html"
+      >EPL</a
+      > (Eclipse Public License).</p
+    ></div
+  ><div id="history-of-robocode"
+  ><h3
+    >2. HISTORY OF ROBOCODE</h3
+    ><p
+    >The Robocode game was originally started by Matthew A. Nelson, aka Mat Nelson, as a personal endeavor in late 2000 and became a professional one when he brought it to IBM, in the form of an AlphaWorks download, in July 2001.</p
+    ><p
+    >In the beginning of 2005, Robocode was brought to SourceForge as Open Source with Robocode version 1.0.7. At this point, the development of Robocode had somewhat stopped. In the meanwhile, the community around Robocode began to develop their own versions of Robocode in order to get rid of bugs and also to put new features into Robocode, the Contributions for Open Source Robocode and later on the RobocodeNG project by Flemming N. Larsen.</p
+    ><p
+    >As nothing seemed to happen with Robocode in more than a year, Flemming N. Larsen took over the Robocode project at SourceForge as administrator and developer in July 2006. The RobocodeNG project was dropped, but the Robocode 2006 variant, which contained a lot of contributions from the Robocode community, was merged into the official Robocode with version 1.1. Since then, lots of new versions of Robocode have been released with more and more features and contributions from the community.</p
+    ><p
+    >Recently (from version 1.7.2.0), the .NET platform is supported through a .NET plug-in provided by Pavel Savara based on <a href="http://jni4net.sourceforge.net/"
+      >jni4net</a
+      >, also developed by Pavel Savara.</p
+    ></div
+  ><div id="system-requirements"
+  ><h3
+    >3. SYSTEM REQUIREMENTS</h3
+    ><p
+    >In order to run Robocode, Java 5.0 Standard Edition (SE) or a newer version of Java must be installed on your system. Both the Java Runtime Environment (JRE) and the Java Developer Kit (JDK) can be used. Note that the JRE does not include the standard Java compiler (javac), but the JDK does. However, Robocode comes with a built-in compiler (ECJ). Hence, it is sufficient running Robocode on the JRE.</p
+    ><p
+    >Also note that it is important that these environment variables have been set up prior to running Robocode:</p
+    ><ul
+    ><li
+      ><p
+	><code
+	  >JAVA_HOME</code
+	  > must be setup to point at the home directory for Java (JDK or JRE).<br
+	   /> Windows example: <code
+	  >JAVA_HOME=C:\Program Files\Java\jdk1.5.0_22</code
+	  ><br
+	   /> UNIX, Linux, Mac OS example: <code
+	  >JAVA_HOME=/usr/local/jdk1.5.0_22</code
+	  ></p
+	></li
+      ><li
+      ><p
+	><code
+	  >PATH</code
+	  > must include the path to the <code
+	  >bin</code
+	  > of the Java home directory (<code
+	  >JAVA_HOME</code
+	  >) that includes <code
+	  >java.exe</code
+	  > for starting the Java virtual Machine (JVM).<br
+	   /> Windows example: <code
+	  >PATH=%PATH%;%JAVA_HOME%</code
+	  ><br
+	   /> UNIX, Linux, Mac OS example: <code
+	  >PATH=${PATH}:${JAVA_HOME}/bin</code
+	  ></p
+	></li
+      ></ul
+    ><p
+    >You can read more details from here:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/wiki/Robocode/System_Requirements"
+	>System Requirements</a
+	></li
+      ></ul
+    ><p
+    >If you want to program robots in .NET or control Robocode from a .NET application, you need to install the Robocode .NET API plug-in on top of Robocode. The plug-in is installed by double-clicking the <code
+      >robocode.dotnet-xxx-setup.jar</code
+      > the same way as Robocode itself is installed.</p
+    ></div
+  ><div id="getting-started"
+  ><h3
+    >4. GETTING STARTED</h3
+    ><p
+    >Most documentation about Robocode is provided thru the <a href="http://robowiki.net"
+      >RoboWiki</a
+      >, which contains the official documentation about Robocode, but which also hosts the community around Robocode. It is highly recommended to read the articles on the RoboWiki for getting started with Robocode. These articles are provided from here:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/wiki/Robocode/Getting_Started"
+	>Getting Started</a
+	></li
+      ></ul
+    ><p
+    >You should read about the anatomy of a robot, the game physics, scoring etc.</p
+    ><p
+    >To learn more about developing robots for .NET, these articles are a good starting point:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/wiki/Robocode/.NET/Create_a_.NET_robot_with_Visual_Studio"
+	>Create a .NET robot with Visual Studio</a
+	></li
+      ><li
+      ><a href="http://robowiki.net/wiki/Robocode/.NET/Debug_a_.NET_robot_in_Visual_Studio"
+	>Debug a .NET robot with Visual Studio</a
+	></li
+      ></ul
+    ></div
+  ><div id="robocode-api"
+  ><h3
+    >5. ROBOCODE API</h3
+    ><p
+    >The Robocode API is provided as HTML pages for both the Java and .NET platform.</p
+    ><ul
+    ><li
+      ><a href="http://robocode.sourceforge.net/docs/robocode/"
+	>Java API</a
+	></li
+      ><li
+      ><a href="http://robocode.sourceforge.net/docs/robocode.dotnet/Index.html"
+	>.NET API</a
+	></li
+      ><li
+      ><a href="http://robocode.sourceforge.net/docs/robocode.dotnet.control/Index.html"
+	>.NET Control API</a
+	></li
+      ></ul
+    ><p
+    >The Robocode API actually consists of 3 different APIs.</p
+    ><ul
+    ><li
+      ><p
+	><strong
+	  >Robot API</strong
+	  >: Within the Java package <code
+	  >robocode</code
+	  > and .NET namespace <code
+	  >Robocode</code
+	  >.<br
+	   /> The Robot API is used for developing robots, and is the only part of the API that robots are allowed to access.</p
+	></li
+      ><li
+      ><p
+	><strong
+	  >Robot Interfaces</strong
+	  >: Within the Java package <code
+	  >robocode.robotinterfaces</code
+	  > and .NET namespace <code
+	  >Robocode.RobotInterfaces</code
+	  >.<br
+	   /> The Robot Interfaces are used for developing new robot types with a different API that the standard Robot API.<br
+	   /> <em
+	  ><strong
+	    >Note:</strong
+	    > The game rules and robot behaviors cannot be changed.</em
+	  ></p
+	></li
+      ><li
+      ><p
+	><strong
+	  >Control API</strong
+	  >: Within the Java package <code
+	  >robocode.control</code
+	  > and .NET namespace <code
+	  >Robocode.Control</code
+	  >.<br
+	   /> The Control API is used for letting another application start up battles with selected robots in Robocode and retrieve the results. It is also possible to get snapshots of robots and bullets (like position, heading, energy level etc.) at a specific time in a battle.</p
+	></li
+      ></ul
+    ></div
+  ><div id="robocode-repository"
+  ><h3
+    >6. ROBOCODE REPOSITORY</h3
+    ><p
+    >If you want to try out new robots than the sample robots that come with Robocode, you should visit the <a href="http://robocoderepository.com/"
+      >Robocode Repository</a
+      >.</p
+    ><p
+    >Robots are available under the <a href="http://robocoderepository.com/Categories.jsp"
+      >Bots</a
+      > section of the repository.</p
+    ><p
+    >The Robocode Repository is developed and maintained by David Lynn as a project independently of the Robocode project.</p
+    ></div
+  ><div id="community"
+  ><h3
+    >7. COMMUNITY</h3
+    ><p
+    >The community around Robocode is using the RoboWiki as communication channel. At the RoboWiki, people share new ideas, code snippets, algorithms, strategies, and lots of other stuff about Robocode. New official documentation from the developers of Robocode will be put at the RoboWiki as well.</p
+    ><p
+    >On the RoboWiki, these strategies are provided:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/wiki/Radar"
+	>Radar</a
+	></li
+      ><li
+      ><a href="http://robowiki.net/wiki/Category:Movement"
+	>Movement</a
+	></li
+      ><li
+      ><a href="http://robowiki.net/wiki/Category:Targeting"
+	>Targeting</a
+	></li
+      ></ul
+    ><p
+    >The code snippets are also provided on the RoboWiki:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/wiki/Category:Code_Snippets"
+	>Code Snippets</a
+	></li
+      ></ul
+    ></div
+  ><div id="challenges"
+  ><h3
+    >8. CHALLENGES</h3
+    ><p
+    >A good way to improve you self as a robot developer is to try out some real challenges. On the RoboWiki, two famous challenges exist for testing/studying a robots movement, targeting, and gun abilities:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/wiki/Movement_Challenge_(original)"
+	>Movement Challenge</a
+	></li
+      ><li
+      ><a href="http://robowiki.net/wiki/Targeting_Challenge_(original)"
+	>Targeting Challenge</a
+	></li
+      ><li
+      ><a href="hhttp://robowiki.net/wiki/RoboRumble_Gun_Challenge"
+	>RoboRumble Gun Challenge</a
+	></li
+      ></ul
+    ></div
+  ><div id="competition"
+  ><h3
+    >9. COMPETITION</h3
+    ><p
+    >If you want to challenge your robot(s) and yourself as robot developer, the <a href="http://robowiki.net/wiki/RoboRumble"
+      >RoboRumble@Home</a
+      > is the best way to do it. RoboRumble is the ultimate collaborative effort to have a live, up-to-date ranking of Robocode bots. It uses the power of available Robocoders' computers to distribute the effort of running battles and building the rankings.</p
+    ><p
+    >RoboRumble is actually 3 different rumbles:</p
+    ><ul
+    ><li
+      ><strong
+	>RoboRumble</strong
+	> (aka 1v1): One robot versus another robot - both picked at random. These two robots a alone on the battle field.</li
+      ><li
+      ><strong
+	>MeleeRumble</strong
+	>: Ten robots picked at random all battle against each other..</li
+      ><li
+      ><strong
+	>TeamRumble</strong
+	>: One team versus another team - both picked at random. Each team consists of five or less robots.</li
+      ></ul
+    ><p
+    >In order to get started with RoboRumble, you should read this page:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/wiki/RoboRumble/Starting_With_RoboRumble"
+	>Starting With RoboRumble</a
+	></li
+      ></ul
+    ><p
+    >Note that the RoboRumble@Home client is built into Robocode and can be started using the batch/shell/command files:</p
+    ><table
+    ><thead
+      ><tr class="header"
+	><th align="left"
+	  ></th
+	  ><th align="left"
+	  >Windows</th
+	  ><th align="left"
+	  >UNIX / Linux</th
+	  ><th align="left"
+	  >Mac OS</th
+	  ></tr
+	></thead
+      ><tbody
+      ><tr class="odd"
+	><td align="left"
+	  ><strong
+	    >RoboRumble</strong
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >roborumble.bat</code
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >roborumble.sh</code
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >roborumble.command</code
+	    ></td
+	  ></tr
+	><tr class="even"
+	><td align="left"
+	  ><strong
+	    >MeleeRumble</strong
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >meleerumble.bat</code
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >meleerumble.sh</code
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >meleerumble.command</code
+	    ></td
+	  ></tr
+	><tr class="odd"
+	><td align="left"
+	  ><strong
+	    >TeamRumble</strong
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >teamrumble.bat</code
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >teamrumble.sh</code
+	    ></td
+	  ><td align="left"
+	  ><code
+	    >teamrumble.command</code
+	    ></td
+	  ></tr
+	></tbody
+      ></table
+    ><p
+    >Two other competitions exists which are:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/wiki/Twin_Duel"
+	>Twin Duel</a
+	>: Two teams battle on an 800x800 field. Each team consists of two robots (twins).</li
+      ><li
+      ><a href="http://robowiki.net/wiki/Hat_League"
+	>Hat League</a
+	>: Two teams not knowing each other are paired together at random (like drawing names from a hat). Each team consists of two robots. These two teams must work together and defeat two other teams that have also been picked at random.</li
+      ></ul
+    ></div
+  ><div id="command-line"
+  ><h3
+    >10. COMMAND LINE</h3
+    ><p
+    >It is possible to specify options and predefined properties from the command-line when running Robocode. The usage of these can be listed by writing this from a command prompt or shell:</p
+    ><pre
+    ><code
+      >robocode -help
+</code
+      ></pre
+    ><p
+    >For example, it is possible to:</p
+    ><ul
+    ><li
+      >disable the graphical user interface (GUI).</li
+      ><li
+      >disable security that is specific to Robocode (but does not override the security that comes with the JVM).</li
+      ><li
+      >enable/disable the debugging mode, useful when debugging robots.</li
+      ><li
+      >play a battle based on an existing Robocode .battle file.</li
+      ><li
+      >replay a recorded battle visually.</li
+      ><li
+      >save the results of battles in a comma-separated file.</li
+      ></ul
+    ><p
+    >You can read more details here:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/w/index.php?title=Robocode/Console_Usage"
+	>Console Usage</a
+	></li
+      ></ul
+    ></div
+  ><div id="links"
+  ><h3
+    >11. LINKS</h3
+    ><p
+    >Links relevant to Robocode are provided on the home page of Robocode:</p
+    ><ul
+    ><li
+      ><a href="http://robocode.sourceforge.net/"
+	>Home Page of Robocode</a
+	></li
+      ></ul
+    ><p
+    >Other links are provided from the RoboWiki - especially for challenges and competitions:</p
+    ><ul
+    ><li
+      ><a href="http://robowiki.net/"
+	>RoboWiki</a
+	></li
+      ></ul
+    ><p
+    >The is also a Wikipedia page available about Robocode, which provides good links to movement and targeting strategies, competitions, and other sites about Robocode:</p
+    ><ul
+    ><li
+      ><a href="http://en.wikipedia.org/wiki/Robocode"
+	>Robocode on Wikipedia</a
+	></li
+      ></ul
+    ></div
+  ><div id="reporting-defects"
+  ><h3
+    >12. REPORTING DEFECTS</h3
+    ><p
+    >If you discover a defect (bug) in Robocode you are encouraged to report the issue as soon as you discover it - the sooner the better.</p
+    ><p
+    >A bug report should be put on the <a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=37202&amp;atid=419486&amp;status=1"
+      >Bug Tracker</a
+      > on the SourceForge site for Robocode. Each bug report will be prioritized among other bug reports depending on its impact on the game.</p
+    ><p
+    >It will be a great help if you describe how to see or which steps to do in order to reproduce the defect. You are very welcome to provide a screen shot, source code or anything else that will show the bug. It is also a very good idea to write which system and version of Robocode and Java you are using.</p
+    ><p
+    >If you are a registered user at SourceForge (register <a href="http://sourceforge.net/account/registration/"
+      >here</a
+      >) you will be able to add a &quot;monitor&quot; on your bug report. This way you will be able to receive notifications when someone add comments to your report, but will also be able to better track the current status of the bug, e.g. when the bug is fixed and with which version of Robocode the fix is available.</p
+    ><p
+    >If you are a developer yourself, and have a good idea of how the bug could be fixed, you are more than welcome to do so. By fixing the bug, you will become a contributor of Robocode yourself. You can learn more about how to contribute <a href="#how-to-contribute"
+      >here</a
+      >. Note that we accept bug fixes under the terms of <a href="http://www.eclipse.org/legal/epl-v10.html"
+      >EPL</a
+      >.</p
+    ></div
+  ><div id="feature-requests"
+  ><h3
+    >13. FEATURE REQUESTS</h3
+    ><p
+    >If you got an idea for a new feature or improvement for Robocode, you are very welcome to share your idea by summiting a feature request.</p
+    ><p
+    >A feature request should be put on the <a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=37202&amp;atid=419489&amp;status=1"
+      >Feature Requests Tracker</a
+      > on the SourceForge site for Robocode. Each feature request will be prioritized among other feature requests.</p
+    ><p
+    >It will be a great help if you describe your idea in detail, and how you think it could be implemented into Robocode. For example, will it be possible to extend an existing feature with your idea?</p
+    ><p
+    >If you are a registered user at SourceForge (register <a href="http://sourceforge.net/account/registration/"
+      >here</a
+      >) you will be able to add a &quot;monitor&quot; on your request. This way you will be able to receive notifications when someone add comments to your request entry, but will also be able to better track the current status of your entry, e.g. when the feature has been implemented and with which version of Robocode it will be available.</p
+    ><p
+    >If you are a developer yourself, and have a good idea of how the feature could be implemented, you are more than welcome to do so if the feature is being accepted. By implementing the feature, you will become a contributor of Robocode yourself. You can learn more about how to contribute <a href="#how-to-contribute"
+      >here</a
+      >. Note that we accept implementations under the terms of <a href="http://www.eclipse.org/legal/epl-v10.html"
+      >EPL</a
+      >.</p
+    ></div
+  ><div id="versions"
+  ><h3
+    >14. VERSIONS</h3
+    ><p
+    >Robocode is continuously under development, and you should be aware that three different release types exist for Robocode:</p
+    ><ul
+    ><li
+      ><p
+	><strong
+	  >Alpha</strong
+	  > version is an unofficial &quot;snapshot&quot; version of Robocode that is under development and not feature complete yet. It is normally provided for the person that has put a bug report or feature request on the tracker for Robocode, which needs to be verified. Alpha versions are not meant to be redistributed at all.</p
+	></li
+      ><li
+      ><p
+	><strong
+	  >Beta</strong
+	  > version is an official release that is considered feature complete, and which intended for everybody to try out and test regarding all new features and changes, but which is also considered &quot;unstable&quot;, and might contain some unwanted side-effects due to the changes made to this version compared to the last final version of Robocode. Defects or undesired behaviors should be reported as soon as they are discovered so the issues can be fixed before the final release. Everybody is encouraged to take part in the testing Beta versions of Robocode.</p
+	></li
+      ><li
+      ><p
+	><strong
+	  >Final</strong
+	  > version is (as it says) the final version of a specific and official release of Robocode, and where new features and bug fixes have been tested. Note, that the release will not state &quot;final&quot; on the distribution files for Robocode like it is the case for Alpha and Beta versions.</p
+	></li
+      ></ul
+    ></div
+  ><div id="news"
+  ><h3
+    >15. NEWS</h3
+    ><p
+    >News about Robocode is put on the blog spot for Robocode. Here it is possible subscribe to a RSS feed to receive news about Robocode.</p
+    ><ul
+    ><li
+      ><a href="http://robo-code.blogspot.com/"
+	>Robocode News</a
+	></li
+      ></ul
+    ><p
+    >You can also follow Robocode on Twitter and Facebook here:</p
+    ><ul
+    ><li
+      ><a href="http://twitter.com/robocode"
+	>Twitter for Robocode</a
+	></li
+      ><li
+      ><a href="http://www.facebook.com/group.php?gid=129627130234"
+	>Robocode on Facebook</a
+	></li
+      ></ul
+    ><p
+    >The RoboWiki can be followed on Twitter as well:</p
+    ><ul
+    ><li
+      ><a href="http://twitter.com/robowiki"
+	>Twitter for RoboRumble</a
+	></li
+      ></ul
+    ></div
+  ><div id="how-to-contribute"
+  ><h3
+    >16. HOW TO CONTRIBUTE</h3
+    ><p
+    >If you want to contribute to Robocode with e.g. a new feature or bug fix, you should read the <a href="http://robowiki.net/wiki/Robocode/Developers_Guide_for_building_Robocode"
+      >Developers Guide for building Robocode.</a
+      ></p
+    ><p
+    >Note that we accept code changes under the terms of <a href="http://www.eclipse.org/legal/epl-v10.html"
+      >EPL</a
+      >.</p
+    ><p
+    >There exist no or little documentation about the internals of Robocode, and the code base will need to be examined by a contributor in order to get an insight of how Robocode is implemented. Thus, it required a skilled Java developer to figure out how Robocode is put together.</p
+    ><p
+    >Robocode is divided into several modules. You can read Pavel Savara's blog to get a good overview of Robocode here:</p
+    ><ul
+    ><li
+      ><a href="http://zamboch.blogspot.com/2009/06/robocode-modules-as-in-version-17.html"
+	>Robocode modules</a
+	></li
+      ></ul
+    ><p
+    >Help for Robocode internals can be provided through the <a href="http://groups.google.com/group/robocode-developers"
+      >Robocode Developers Discussion Group</a
+      > where you can register yourself, and start up a new topic. This is the best way of getting information and asking about details for the internals in Robocode.</p
+    ><p
+    >If a contribution is a somewhat small change to involves under 10 files, then the preferred way is to provide the contribution as a patch file that can be applied to the existing Robocode sources. Otherwise, you can be granted a Subversion branch for your work, where you can commit your changes. Later, this branch needs to be merged into the trunk be the administrators of Robocode and tested carefully. Additional work might be done by other Robocode developers to finalize the work.</p
+    ></div
+  ></div
+>

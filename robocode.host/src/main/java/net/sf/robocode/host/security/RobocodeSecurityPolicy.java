@@ -293,7 +293,6 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	@Override
 	public void refresh() {
-		// TODO: call reload when robot development directories are changed in settings
 		initUrls();
 		parentPolicy.refresh();
 	}

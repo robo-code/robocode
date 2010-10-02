@@ -29,6 +29,8 @@ public interface IWindowManagerExt extends IWindowManager {
 
 	String saveBattleDialog(String path, String defExt, String name);
 
+	void showReadMe();
+	
 	void showVersionsTxt();
 
 	void showHelpApi();
