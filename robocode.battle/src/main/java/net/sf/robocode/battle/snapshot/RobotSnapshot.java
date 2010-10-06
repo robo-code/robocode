@@ -19,6 +19,7 @@ import net.sf.robocode.peer.DebugProperty;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
+import net.sf.robocode.serialization.XmlSerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
@@ -27,7 +28,6 @@ import robocode.control.snapshot.RobotState;
 import java.awt.geom.Arc2D;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Dictionary;
 import java.util.List;
 
 
@@ -404,22 +404,25 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	/**
 	 * {@inheritDoc}
 	 */
-	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
-		writer.startElement("robot"); {
-			final Object details = options == null ? null : options.get("skipDetails");
-
-			writer.writeAttribute("vsName", veryShortName);
-			writer.writeAttribute("state", state.toString());
-			writer.writeAttribute("energy", energy);
-			writer.writeAttribute("x", x);
-			writer.writeAttribute("y", y);
-			writer.writeAttribute("bodyHeading", bodyHeading);
-			writer.writeAttribute("gunHeading", gunHeading);
-			writer.writeAttribute("radarHeading", radarHeading);
-			writer.writeAttribute("gunHeat", gunHeat);
-			writer.writeAttribute("velocity", velocity);
-			writer.writeAttribute("teamName", teamName);
-			if (details == null) {
+	public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+		writer.startElement(options.shortAttributes ? "r" : "robot"); {
+            if (!options.skipNames) {
+			    writer.writeAttribute("vsName", veryShortName);
+            }
+            writer.writeAttribute("ix", contestantIndex);
+            if (!options.skipExploded) {
+                writer.writeAttribute("state", state.toString());
+            }
+			writer.writeAttribute(options.shortAttributes ? "e" : "energy", energy, options.trimPrecision);
+			writer.writeAttribute("x", x, options.trimPrecision);
+			writer.writeAttribute("y", y, options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "b" : "bodyHeading", bodyHeading, options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "g" : "gunHeading", gunHeading, options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "r" : "radarHeading", radarHeading, options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "h" : "gunHeat", gunHeat, options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "v" : "velocity", velocity, options.trimPrecision);
+			if (!options.skipNames) {
+                writer.writeAttribute("teamName", teamName);
 				writer.writeAttribute("name", name);
 				writer.writeAttribute("sName", shortName);
 				if (isDroid) {
@@ -438,18 +441,21 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 					writer.writeAttribute("scanColor", Integer.toHexString(scanColor).toUpperCase());
 				}
 			}
-			writer.writeAttribute("ver", serialVersionUID);
-			if (outputStreamSnapshot != null && outputStreamSnapshot.length() != 0) {
-				writer.writeAttribute("out", outputStreamSnapshot);
-			}
-
-			if (debugProperties != null) {
-				writer.startElement("debugProperties"); {
-					for (DebugProperty prop : debugProperties) {
-						prop.writeXml(writer, options);
-					}
-				}
-				writer.endElement();
+            if (!options.skipVersion) {
+			    writer.writeAttribute("ver", serialVersionUID);
+            }
+			if (!options.skipDebug) {
+                if(outputStreamSnapshot != null && outputStreamSnapshot.length() != 0){
+                    writer.writeAttribute("out", outputStreamSnapshot);
+                }
+                if (debugProperties != null) {
+                    writer.startElement("debugProperties"); {
+                        for (DebugProperty prop : debugProperties) {
+                            prop.writeXml(writer, options);
+                        }
+                    }
+                    writer.endElement();
+                }
 			}
 
 			((ScoreSnapshot) robotScoreSnapshot).writeXml(writer, options);

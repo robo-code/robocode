@@ -122,6 +122,7 @@ public class SettingsManager implements ISettingsManager {
 			optionsCommonShowResults = true,
 			optionsCommonAppendWhenSavingResults = true,
 			optionsCommonDontHideRankings = true,
+            optionsCommonEnableAutoRecording = false,
 			optionsCommonEnableReplayRecording = false;
 
 	// Team Options
@@ -624,6 +625,15 @@ public class SettingsManager implements ISettingsManager {
 		props.setProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "" + enable);
 	}
 
+    public boolean getOptionsCommonEnableAutoRecording() {
+        return optionsCommonEnableAutoRecording;
+    }
+
+    public void setOptionsCommonEnableAutoRecording(boolean enable) {
+        this.optionsCommonEnableAutoRecording = enable;
+        props.setProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "" + enable);
+    }
+
 	public void setOptionsCommonNotifyAboutNewBetaVersions(boolean enable) {
 		this.optionsCommonNotifyAboutNewBetaVersions = enable;
 		props.setProperty(OPTIONS_COMMON_NOTIFY_ABOUT_NEW_BETA_VERSIONS, "" + enable);
@@ -696,6 +706,8 @@ public class SettingsManager implements ISettingsManager {
 		optionsCommonDontHideRankings = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_DONT_HIDE_RANKINGS, "true"));
 		optionsCommonEnableReplayRecording = Boolean.valueOf(
 				props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "false"));
+        optionsCommonEnableAutoRecording = Boolean.valueOf(
+                props.getProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "false"));
 
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false"));
 

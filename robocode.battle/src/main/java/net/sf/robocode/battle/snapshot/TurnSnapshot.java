@@ -19,11 +19,9 @@ import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
+import net.sf.robocode.serialization.XmlSerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
-import robocode.control.snapshot.IBulletSnapshot;
-import robocode.control.snapshot.IRobotSnapshot;
-import robocode.control.snapshot.IScoreSnapshot;
-import robocode.control.snapshot.ITurnSnapshot;
+import robocode.control.snapshot.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -175,22 +173,30 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 	/**
 	 * {@inheritDoc}
 	 */
-	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
-		writer.startElement("turn"); {
-			writer.writeAttribute("round", round);
-			writer.writeAttribute("turn", turn);
-			writer.writeAttribute("ver", serialVersionUID);
+	public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+		writer.startElement(options.shortAttributes ? "t" : "turn"); {
+			writer.writeAttribute(options.shortAttributes ? "ro" : "round", round);
+			writer.writeAttribute(options.shortAttributes ? "tu" : "turn", turn);
+            if (!options.skipVersion){
+                writer.writeAttribute("ver", serialVersionUID);
+            }
 
-			writer.startElement("robots"); {
+			writer.startElement(options.shortAttributes ? "rs" : "robots"); {
 				for (IRobotSnapshot r : robots) {
-					((RobotSnapshot) r).writeXml(writer, options);
+                    final RobotSnapshot rs = (RobotSnapshot) r;
+                    if (!options.skipExploded || rs.getState() != RobotState.DEAD) {
+                        rs.writeXml(writer, options);
+                    }
 				}
 			}
 			writer.endElement();
 
-			writer.startElement("bullets"); {
+			writer.startElement(options.shortAttributes ? "bs" : "bullets"); {
 				for (IBulletSnapshot b : bullets) {
-					((BulletSnapshot) b).writeXml(writer, options);
+                    final BulletSnapshot bs = (BulletSnapshot) b;
+                    if (!options.skipExploded || bs.getState()==BulletState.MOVING || bs.getState()==BulletState.FIRED || bs.getFrame() == 0) {
+                        bs.writeXml(writer, options);
+                    }
 				}
 			}
 			writer.endElement();

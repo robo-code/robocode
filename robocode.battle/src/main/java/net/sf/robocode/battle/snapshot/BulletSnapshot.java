@@ -19,12 +19,12 @@ import net.sf.robocode.battle.peer.ExplosionPeer;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
+import net.sf.robocode.serialization.XmlSerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.IBulletSnapshot;
 
 import java.io.IOException;
-import java.util.Dictionary;
 
 
 /**
@@ -182,26 +182,36 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 	/**
 	 * {@inheritDoc}
 	 */
-	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
-		writer.startElement("bullet"); {
-			writer.writeAttribute("state", state.toString());
-			writer.writeAttribute("power", power);
-			writer.writeAttribute("x", paintX);
-			writer.writeAttribute("y", paintY);
-			if (color != ExecCommands.defaultBulletColor) {
-				writer.writeAttribute("color", Integer.toHexString(color).toUpperCase());
-			}
-			if (frame != 0) {
-				writer.writeAttribute("frame", frame);
-			}
-			if (isExplosion) {
-				writer.writeAttribute("isExplosion", true);
-				writer.writeAttribute("explosion", explosionImageIndex);
-			}
-			writer.writeAttribute("ver", serialVersionUID);
-		}
-		writer.endElement();
-	}
+    public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+        writer.startElement(options.shortAttributes ? "b" : "bullet");
+        {
+            if (!options.skipExploded || state!=BulletState.MOVING) {
+                writer.writeAttribute(options.shortAttributes ? "s" : "state", state.toString());
+            }
+            writer.writeAttribute("id", bulletId);
+            writer.writeAttribute(options.shortAttributes ? "p" : "power", power, options.trimPrecision);
+            writer.writeAttribute("x", paintX, options.trimPrecision);
+            writer.writeAttribute("y", paintY, options.trimPrecision);
+            if (!options.skipNames) {
+                if (color != ExecCommands.defaultBulletColor) {
+                    writer.writeAttribute(options.shortAttributes ? "c" : "color", Integer.toHexString(color).toUpperCase());
+                }
+            }
+            if (!options.skipExploded) {
+                if (frame != 0) {
+                    writer.writeAttribute("frame", frame);
+                }
+                if (isExplosion) {
+                    writer.writeAttribute("isExplosion", true);
+                    writer.writeAttribute("explosion", explosionImageIndex);
+                }
+            }
+            if (!options.skipVersion) {
+                writer.writeAttribute("ver", serialVersionUID);
+            }
+        }
+        writer.endElement();
+    }
 
 	/**
 	 * {@inheritDoc}

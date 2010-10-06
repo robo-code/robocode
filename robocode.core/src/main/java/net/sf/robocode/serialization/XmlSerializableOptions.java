@@ -11,16 +11,27 @@
  *******************************************************************************/
 package net.sf.robocode.serialization;
 
-
-import java.io.IOException;
-import java.util.Dictionary;
-
-
 /**
  * @author Pavel Savara (original)
  */
-public interface IXmlSerializable {
-	void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException;
+public class XmlSerializableOptions {
+    public boolean skipExploded;
+    public boolean skipNames;
+    public boolean skipVersion;
+    public boolean skipDebug;
+    public boolean skipTotal;
+    public boolean trimPrecision;
+    public boolean shortAttributes;
 
-	XmlReader.Element readXml(XmlReader reader);
+    public XmlSerializableOptions(boolean skipAllDetails) {
+        if (skipAllDetails) {
+            skipExploded = true;
+            skipNames = true;
+            skipVersion = true;
+            skipDebug = true;
+            skipTotal = true;
+            trimPrecision = true;
+            shortAttributes = true;
+        }
+    }
 }
