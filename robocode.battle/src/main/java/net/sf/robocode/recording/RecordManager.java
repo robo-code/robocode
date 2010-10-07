@@ -40,6 +40,9 @@ import java.util.zip.ZipOutputStream;
  * @author Pavel Savara (original)
  */
 public class RecordManager implements IRecordManager {
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+    private static final Calendar calendar = Calendar.getInstance();
+
     private final ISettingsManager properties;
 
 	private File tempFile;
@@ -296,8 +299,6 @@ public class RecordManager implements IRecordManager {
         final boolean isbin = format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP;
         final boolean isxml = format == BattleRecordFormat.XML || format == BattleRecordFormat.XML_ZIP;
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss");
-        Calendar cal = Calendar.getInstance();
 		try {
 			fos = new FileOutputStream(recordFilename);
 			bos = new BufferedOutputStream(fos, 1024 * 1024);
@@ -306,7 +307,7 @@ public class RecordManager implements IRecordManager {
 				oos = new ObjectOutputStream(bos);
 			} else if (format == BattleRecordFormat.BINARY_ZIP) {
 				zos = new ZipOutputStream(bos);
-				zos.putNextEntry(new ZipEntry(sdf.format(cal.getTime())+"-robocode.br"));
+				zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime())+"-robocode.br"));
 				oos = new ObjectOutputStream(zos);
 			} else if (format == BattleRecordFormat.XML) {
 				final Charset utf8 = Charset.forName("UTF-8");
@@ -317,7 +318,7 @@ public class RecordManager implements IRecordManager {
                 final Charset utf8 = Charset.forName("UTF-8");
 
                 zos = new ZipOutputStream(bos);
-                zos.putNextEntry(new ZipEntry(sdf.format(cal.getTime())+"-robocode.xml"));
+                zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime())+"-robocode.xml"));
 
                 osw = new OutputStreamWriter(zos, utf8);
                 xwr = new XmlWriter(osw, false);

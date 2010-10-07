@@ -27,7 +27,7 @@ import java.util.Stack;
  */
 
 public class XmlWriter {
-    DecimalFormat df = new DecimalFormat("#.####", new DecimalFormatSymbols(Locale.US));
+    private static final DecimalFormat decimalFormat = new DecimalFormat("#.####", new DecimalFormatSymbols(Locale.US));
     final Writer writer;
 	final Stack<String> elements = new Stack<String>();
 	boolean headClosed = true;
@@ -73,7 +73,7 @@ public class XmlWriter {
 
 	public void writeAttribute(String name, double value, boolean trim) throws IOException {
         if (trim){
-            writeAttribute(name, df.format(value));
+            writeAttribute(name, decimalFormat.format(value));
         }
         else{
             writeAttribute(name, Double.toString(value));
