@@ -420,6 +420,9 @@ public class RecordManager implements IRecordManager {
 			if (time != recordInfo.turnsInRounds[round]) {
 				throw new Error("Something rotten");
 			}
+            if (time == 0) {
+                objectWriteStream.reset();
+            }
 			recordInfo.turnsInRounds[round]++;
 			recordInfo.roundsCount = round + 1;
 			objectWriteStream.writeObject(turn);
