@@ -114,8 +114,8 @@ public class BattleRecorder {
                 name.append(FileUtil.getBattlesDir().getCanonicalPath());
                 name.append(File.separator);
 
-                Calendar cal = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss");
+                Calendar cal = Calendar.getInstance();
                 name.append(sdf.format(cal.getTime()));
                 name.append('-');
                 for (BattleResults r : results) {

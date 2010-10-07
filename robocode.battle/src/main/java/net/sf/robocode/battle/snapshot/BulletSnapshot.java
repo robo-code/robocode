@@ -16,6 +16,7 @@ package net.sf.robocode.battle.snapshot;
 
 import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.ExplosionPeer;
+import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
@@ -71,6 +72,10 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 
 	private int bulletId;
 
+    private int victimIndex;
+    
+    private int ownerIndex;
+
 	/**
 	 * Creates a snapshot of a bullet that must be filled out with data later.
 	 */
@@ -100,6 +105,13 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 		explosionImageIndex = bullet.getExplosionImageIndex();
 
 		bulletId = bullet.getBulletId();
+
+        final RobotPeer victim = bullet.getVictim();
+        if (victim!=null){
+            victimIndex = victim.getContestIndex();
+        }
+
+        ownerIndex = bullet.getOwner().getContestIndex();
 	}
 
 	/**
@@ -185,11 +197,17 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
     public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
         writer.startElement(options.shortAttributes ? "b" : "bullet");
         {
+            writer.writeAttribute("id", ownerIndex + "-" + bulletId);
             if (!options.skipExploded || state!=BulletState.MOVING) {
                 writer.writeAttribute(options.shortAttributes ? "s" : "state", state.toString());
+                writer.writeAttribute(options.shortAttributes ? "p" : "power", power, options.trimPrecision);
             }
-            writer.writeAttribute("id", bulletId);
-            writer.writeAttribute(options.shortAttributes ? "p" : "power", power, options.trimPrecision);
+            if (state==BulletState.HIT_VICTIM){
+                writer.writeAttribute(options.shortAttributes ? "v" : "victim", victimIndex);
+            }
+            if (state==BulletState.FIRED){
+                writer.writeAttribute(options.shortAttributes ? "o" : "owner", ownerIndex);
+            }
             writer.writeAttribute("x", paintX, options.trimPrecision);
             writer.writeAttribute("y", paintY, options.trimPrecision);
             if (!options.skipNames) {

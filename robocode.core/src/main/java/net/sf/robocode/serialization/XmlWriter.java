@@ -27,7 +27,7 @@ import java.util.Stack;
  */
 
 public class XmlWriter {
-    DecimalFormat df = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US));
+    DecimalFormat df = new DecimalFormat("#.####", new DecimalFormatSymbols(Locale.US));
     final Writer writer;
 	final Stack<String> elements = new Stack<String>();
 	boolean headClosed = true;

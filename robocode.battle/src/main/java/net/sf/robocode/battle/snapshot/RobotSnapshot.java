@@ -406,12 +406,12 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 */
 	public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
 		writer.startElement(options.shortAttributes ? "r" : "robot"); {
+            writer.writeAttribute("id", contestantIndex);
             if (!options.skipNames) {
 			    writer.writeAttribute("vsName", veryShortName);
             }
-            writer.writeAttribute("ix", contestantIndex);
-            if (!options.skipExploded) {
-                writer.writeAttribute("state", state.toString());
+            if (!options.skipExploded || state != RobotState.ACTIVE) {
+                writer.writeAttribute(options.shortAttributes ? "s" : "state", state.toString());
             }
 			writer.writeAttribute(options.shortAttributes ? "e" : "energy", energy, options.trimPrecision);
 			writer.writeAttribute("x", x, options.trimPrecision);

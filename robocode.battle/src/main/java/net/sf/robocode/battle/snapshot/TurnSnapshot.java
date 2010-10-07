@@ -181,25 +181,32 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
                 writer.writeAttribute("ver", serialVersionUID);
             }
 
-			writer.startElement(options.shortAttributes ? "rs" : "robots"); {
-				for (IRobotSnapshot r : robots) {
+            writer.startElement(options.shortAttributes ? "rs" : "robots");
+            {
+                XmlSerializableOptions op=options;
+                if (turn == 0){
+                    op=new XmlSerializableOptions(options);
+                    op.skipNames = false;
+                }
+                for (IRobotSnapshot r : robots) {
                     final RobotSnapshot rs = (RobotSnapshot) r;
                     if (!options.skipExploded || rs.getState() != RobotState.DEAD) {
-                        rs.writeXml(writer, options);
+                        rs.writeXml(writer, op);
                     }
-				}
-			}
-			writer.endElement();
+                }
+            }
+            writer.endElement();
 
-			writer.startElement(options.shortAttributes ? "bs" : "bullets"); {
-				for (IBulletSnapshot b : bullets) {
-                    final BulletSnapshot bs = (BulletSnapshot) b;
-                    if (!options.skipExploded || bs.getState()==BulletState.MOVING || bs.getState()==BulletState.FIRED || bs.getFrame() == 0) {
-                        bs.writeXml(writer, options);
-                    }
-				}
-			}
-			writer.endElement();
+              writer.startElement(options.shortAttributes ? "bs" : "bullets"); {
+                  for (IBulletSnapshot b : bullets) {
+                      final BulletSnapshot bs = (BulletSnapshot) b;
+                      final BulletState state = bs.getState();
+                      if (!options.skipExploded || (state != BulletState.EXPLODED && state != BulletState.INACTIVE && (bs.getFrame() == 0 || state == BulletState.MOVING))) {
+                          bs.writeXml(writer, options);
+                      }
+                  }
+              }
+              writer.endElement();
 		}
 		writer.endElement();
 	}

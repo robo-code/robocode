@@ -100,7 +100,7 @@ public class BulletPeer {
 
 	public BulletPeer(RobotPeer owner, BattleRules battleRules, int bulletId) {
 		super();
-
+        frame=-1;
 		this.owner = owner;
 		this.battleRules = battleRules;
 		this.bulletId = bulletId;
@@ -222,6 +222,7 @@ public class BulletPeer {
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
 			owner.addEvent(new BulletMissedEvent(createBullet()));
+            frame=0;
 		}
 	}
 
@@ -307,6 +308,7 @@ public class BulletPeer {
 
 	public void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		if (isActive()) {
+            frame++;
 			updateMovement();
 			if (bullets != null) {
 				checkBulletCollision(bullets);
@@ -327,9 +329,10 @@ public class BulletPeer {
 	protected void updateBulletState() {
 		switch (state) {
 		case FIRED:
-			state = BulletState.MOVING;
+            if (frame==1){
+			    state = BulletState.MOVING;
+            }
 			break;
-
 		case HIT_BULLET:
 		case HIT_VICTIM:
 		case EXPLODED:
