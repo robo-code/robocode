@@ -45,7 +45,7 @@ public class ExplosionPeer extends BulletPeer {
 
 	public ExplosionPeer(RobotPeer owner, BattleRules battleRules) {
 		super(owner, battleRules, -1);
-
+		frame = 0;
 		x = owner.getX();
 		y = owner.getY();
 		victim = owner;
