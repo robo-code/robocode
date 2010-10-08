@@ -1,11 +1,11 @@
 Version 1.7.2.2
-(07-Oct-2010)
+(09-Oct-2010)
 ---------------
 = Bugfixes =
 * Bug [2832113] - the gun shot sound isn't working
 
 = New features =
-* Added robocode.options.common.enableAutoRecording option, which generates XML_ZIP record for every battle automatically. Works only when enableReplayRecording is true.
+* Added "Enable auto recording" option to the Common Options, which automatically generates a zipped XML record for every battle. Works only when "Enable replay recording" is enabled (is automatically set when enabling auto recording).
 
 Version 1.7.2.2 Beta
 (02-Oct-2010)

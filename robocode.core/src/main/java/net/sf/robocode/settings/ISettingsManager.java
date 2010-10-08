@@ -194,6 +194,8 @@ public interface ISettingsManager {
 
 	void setOptionsCommonEnableReplayRecording(boolean enable);
 
+	void setOptionsCommonEnableAutoRecording(boolean enable);
+
 	void setOptionsCommonNotifyAboutNewBetaVersions(boolean enable);
 
 	boolean getOptionsCommonNotifyAboutNewBetaVersions();
