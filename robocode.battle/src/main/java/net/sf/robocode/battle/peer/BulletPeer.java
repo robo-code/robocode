@@ -109,12 +109,15 @@ public class BulletPeer {
 
 	private void checkBulletCollision(List<BulletPeer> bullets) {
 		for (BulletPeer b : bullets) {
-			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
+			if (b != null && b != this && b.isActive() && intersect(b.boundingLine)) {
 				state = BulletState.HIT_BULLET;
-				b.setState(state);
+				b.state = BulletState.HIT_BULLET;
+                b.frame = 0;
 				frame = 0;
 				x = lastX;
 				y = lastY;
+                b.x = b.lastX;
+                b.y = b.lastY;
 				owner.addEvent(new BulletHitBulletEvent(createBullet(), b.createBullet()));
 				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(), createBullet()));
 				break;

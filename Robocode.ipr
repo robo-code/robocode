@@ -342,6 +342,7 @@
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.api/robocode.dotnet.api.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.api/robocode.dotnet.api.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.content/robocode.dotnet.content.iml" group="robocode.dotnet and modules" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.control.api/robocode.dotnet.control.api.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.control.api/robocode.dotnet.control.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.host/robocode.dotnet.host.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.installer/robocode.dotnet.installer.iml" group="robocode.dotnet and modules" />
       <module fileurl="file://$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" filepath="$PROJECT_DIR$/plugins/dotnet/robocode.dotnet.nhost/robocode.dotnet.nhost.iml" group="robocode.dotnet and modules" />
@@ -599,28 +600,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/rhino/js/1.7R1/js-1.7R1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: net.sf.robocode:robocode.host:1.7.2.0-Beta">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.host/1.7.2.0-Beta/robocode.host-1.7.2.0-Beta.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.host/1.7.2.0-Beta/robocode.host-1.7.2.0-Beta-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.host/1.7.2.0-Beta/robocode.host-1.7.2.0-Beta-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.robocode:robocode.repository:1.7.2.0-Beta">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.repository/1.7.2.0-Beta/robocode.repository-1.7.2.0-Beta.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.repository/1.7.2.0-Beta/robocode.repository-1.7.2.0-Beta-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.repository/1.7.2.0-Beta/robocode.repository-1.7.2.0-Beta-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: net.sf.jni4net:jni4net.j:0.8.0.0">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.8.0.0/jni4net.j-0.8.0.0.jar!/" />
@@ -630,61 +609,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/net/sf/jni4net/jni4net.j/0.8.0.0/jni4net.j-0.8.0.0-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.robocode:robocode.tests:1.7.2.0-Beta">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.tests/1.7.2.0-Beta/robocode.tests-1.7.2.0-Beta.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.tests/1.7.2.0-Beta/robocode.tests-1.7.2.0-Beta-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.tests/1.7.2.0-Beta/robocode.tests-1.7.2.0-Beta-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.robocode:robocode.tests.robots:1.7.2.0-Beta">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.tests.robots/1.7.2.0-Beta/robocode.tests.robots-1.7.2.0-Beta.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.tests.robots/1.7.2.0-Beta/robocode.tests.robots-1.7.2.0-Beta-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.tests.robots/1.7.2.0-Beta/robocode.tests.robots-1.7.2.0-Beta-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.robocode:robocode.core:1.7.2.0-Beta">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.core/1.7.2.0-Beta/robocode.core-1.7.2.0-Beta.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.core/1.7.2.0-Beta/robocode.core-1.7.2.0-Beta-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.core/1.7.2.0-Beta/robocode.core-1.7.2.0-Beta-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.robocode:robocode.samples:1.7.2.0-Beta">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.samples/1.7.2.0-Beta/robocode.samples-1.7.2.0-Beta.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.samples/1.7.2.0-Beta/robocode.samples-1.7.2.0-Beta-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.samples/1.7.2.0-Beta/robocode.samples-1.7.2.0-Beta-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: net.sf.robocode:robocode.battle:1.7.2.0-Beta">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.battle/1.7.2.0-Beta/robocode.battle-1.7.2.0-Beta.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.battle/1.7.2.0-Beta/robocode.battle-1.7.2.0-Beta-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/robocode/robocode.battle/1.7.2.0-Beta/robocode.battle-1.7.2.0-Beta-sources.jar!/" />
       </SOURCES>
     </library>
   </component>

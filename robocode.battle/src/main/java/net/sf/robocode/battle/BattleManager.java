@@ -175,10 +175,6 @@ public class BattleManager implements IBattleManager {
 
 		realBattle.setup(battlingRobotsList, battleProperties, isPaused());
 
-		if (recording && !properties.getOptionsCommonEnableAutoRecording()) {
-			realBattle.setAllPaintRecorded(true);
-		}
-
 		battle = realBattle;
 
 		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), realBattle);

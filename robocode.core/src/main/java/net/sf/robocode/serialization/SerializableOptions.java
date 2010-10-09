@@ -14,18 +14,7 @@ package net.sf.robocode.serialization;
 /**
  * @author Pavel Savara (original)
  */
-public class XmlSerializableOptions {
-    public static XmlSerializableOptions ALL;
-    public static XmlSerializableOptions NAMES;
-    public static XmlSerializableOptions NONE;
-
-    static {
-        ALL = new XmlSerializableOptions(false);
-        NONE = new XmlSerializableOptions(true);
-        NAMES = new XmlSerializableOptions(false);
-        NAMES.skipNames = false;
-    }
-
+public class SerializableOptions {
     public boolean skipExploded;
     public boolean skipNames;
     public boolean skipVersion;
@@ -34,7 +23,7 @@ public class XmlSerializableOptions {
     public boolean trimPrecision;
     public boolean shortAttributes;
 
-    public XmlSerializableOptions(XmlSerializableOptions src) {
+    public SerializableOptions(SerializableOptions src) {
         skipExploded = src.skipExploded ;
         skipNames = src.skipNames ;
         skipVersion = src.skipVersion ;
@@ -44,7 +33,7 @@ public class XmlSerializableOptions {
         shortAttributes = src.shortAttributes ;
     }
 
-    public XmlSerializableOptions(boolean skipAllDetails) {
+    public SerializableOptions(boolean skipAllDetails) {
         if (skipAllDetails) {
             skipExploded = true;
             skipNames = true;

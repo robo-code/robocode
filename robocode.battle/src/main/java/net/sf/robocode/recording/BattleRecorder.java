@@ -15,6 +15,7 @@ package net.sf.robocode.recording;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.BattleResults;
 import robocode.control.events.*;
@@ -90,7 +91,7 @@ public class BattleRecorder {
 		public void onBattleCompleted(BattleCompletedEvent event) {
 			recordmanager.updateRecordInfoResults(Arrays.asList(event.getIndexedResults()));
 
-            if (properties.getOptionsCommonEnableReplayRecording()) {
+            if (properties.getOptionsCommonEnableAutoRecording()) {
                 writeAutoRecord(event);
             }
 		}
@@ -123,8 +124,14 @@ public class BattleRecorder {
                     name.append('-');
                 }
                 name.setLength(name.length() - 1);
-                name.append(".xml.zip");
-                recordmanager.saveRecord(name.toString(), BattleRecordFormat.XML_ZIP);
+                if (properties.getOptionsCommonAutoRecordingXML()){
+                    name.append(".xml.zip");
+                    recordmanager.saveRecord(name.toString(), BattleRecordFormat.XML_ZIP, new SerializableOptions(true));
+                }
+                else{
+                    name.append(".zip.br");
+                    recordmanager.saveRecord(name.toString(), BattleRecordFormat.BINARY_ZIP, new SerializableOptions(true));
+                }
             } catch (IOException e) {
                 Logger.logError(e);
             }

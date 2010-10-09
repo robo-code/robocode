@@ -14,6 +14,7 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.serialization.IXmlSerializable;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.control.events.*;
@@ -195,7 +196,7 @@ public class BattleDialog extends JFrame {
 				final XmlWriter xmlWriter = new XmlWriter(writer, true);
 
 				try {
-					((IXmlSerializable) lastSnapshot).writeXml(xmlWriter, null);
+					((IXmlSerializable) lastSnapshot).writeXml(xmlWriter, new SerializableOptions(false));
 					writer.close();
 				} catch (IOException e) {
 					Logger.logError(e);

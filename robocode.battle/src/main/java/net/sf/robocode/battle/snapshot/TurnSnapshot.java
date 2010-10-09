@@ -19,7 +19,7 @@ import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.XmlSerializableOptions;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.*;
 
@@ -170,10 +170,17 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		return scores.toArray(new IScoreSnapshot[scores.size()]);
 	}
 
+    public void stripDetails(SerializableOptions options){
+        for(IRobotSnapshot r : getRobots()){
+            ((RobotSnapshot) r).stripDetails(options);
+        }
+    }
+
+
 	/**
 	 * {@inheritDoc}
 	 */
-	public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement(options.shortAttributes ? "t" : "turn"); {
 			writer.writeAttribute(options.shortAttributes ? "ro" : "round", round);
 			writer.writeAttribute(options.shortAttributes ? "tu" : "turn", turn);
@@ -183,9 +190,9 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 
             writer.startElement(options.shortAttributes ? "rs" : "robots");
             {
-                XmlSerializableOptions op=options;
+                SerializableOptions op=options;
                 if (turn == 0){
-                    op=new XmlSerializableOptions(options);
+                    op=new SerializableOptions(options);
                     op.skipNames = false;
                 }
                 for (IRobotSnapshot r : robots) {

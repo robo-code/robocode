@@ -171,7 +171,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private boolean turnedRadarWithGun; // last round
 
 	private boolean isIORobot;
-	private boolean isPaintRecorded;
 	private boolean isPaintEnabled;
 	private boolean sgPaintEnabled;
 
@@ -322,14 +321,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public void setPaintEnabled(boolean enabled) {
 		isPaintEnabled = enabled;
-	}
-
-	public void setPaintRecorded(boolean enabled) {
-		isPaintRecorded = enabled;
-	}
-
-	public boolean isPaintRecorded() {
-		return isPaintRecorded;
 	}
 
 	public boolean isPaintEnabled() {
@@ -535,7 +526,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
 
 		return new ExecResults(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(),
-				getHalt(), shouldWait, isPaintEnabled() || isPaintRecorded);
+				getHalt(), shouldWait, isPaintEnabled());
 	}
 
 	public final ExecResults waitForBattleEndImpl(ExecCommands newCommands) {

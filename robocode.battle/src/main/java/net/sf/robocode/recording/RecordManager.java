@@ -13,17 +13,19 @@ package net.sf.robocode.recording;
 
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.serialization.IXmlSerializable;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.XmlSerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.BattleResults;
 import robocode.BattleRules;
+import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 
 import java.io.*;
@@ -245,7 +247,7 @@ public class RecordManager implements IRecordManager {
 		public final RecordRoot me;
 		public BattleRecordInfo recordInfo;
 
-		public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {}
+		public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect("record", new XmlReader.Element() {
@@ -283,7 +285,7 @@ public class RecordManager implements IRecordManager {
 		}
 	}
 
-	public void saveRecord(String recordFilename, BattleRecordFormat format) {
+	public void saveRecord(String recordFilename, BattleRecordFormat format, SerializableOptions options) {
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
 		ZipOutputStream zos = null;
@@ -294,7 +296,6 @@ public class RecordManager implements IRecordManager {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		ObjectInputStream ois = null;
-		XmlSerializableOptions xmlOptions;
 
         final boolean isbin = format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP;
         final boolean isxml = format == BattleRecordFormat.XML || format == BattleRecordFormat.XML_ZIP;
@@ -324,7 +325,6 @@ public class RecordManager implements IRecordManager {
                 xwr = new XmlWriter(osw, false);
             }
 
-            xmlOptions = new XmlSerializableOptions(format == BattleRecordFormat.XML_ZIP);
             if (isbin) {
 				oos.writeObject(recordInfo);
             } else if (isxml) {
@@ -332,7 +332,7 @@ public class RecordManager implements IRecordManager {
                 xwr.startElement("record");
                 xwr.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
                 xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecord.xsd");
-                recordInfo.writeXml(xwr, xmlOptions);
+                recordInfo.writeXml(xwr, options);
                 xwr.startElement("turns");
             }
 
@@ -352,9 +352,10 @@ public class RecordManager implements IRecordManager {
 								}
 
 								if (isbin) {
+                                    turn.stripDetails(options);
 									oos.writeObject(turn);
 								} else if (isxml) {
-									turn.writeXml(xwr, xmlOptions);
+									turn.writeXml(xwr, options);
 								}
 							} catch (ClassNotFoundException e) {
 								logError(e);

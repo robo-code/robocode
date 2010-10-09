@@ -763,7 +763,7 @@ public final class Battle extends BaseBattle {
 				robotPeer.waitWakeup();
 
 				if (robotPeer.isAlive()) {
-					if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
+					if (isDebugging || robotPeer.isPaintEnabled()) {
 						robotPeer.waitSleeping(DEBUG_TURN_WAIT_MILLIS, 1);
 					} else if (currentTime == 1) {
 						robotPeer.waitSleeping(millisWait * 10, 1);
@@ -784,7 +784,7 @@ public final class Battle extends BaseBattle {
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning() && robotPeer.isAlive()) {
-				if (isDebugging || robotPeer.isPaintEnabled() || robotPeer.isPaintRecorded()) {
+				if (isDebugging || robotPeer.isPaintEnabled()) {
 					robotPeer.waitSleeping(DEBUG_TURN_WAIT_MILLIS, 1);
 				} else if (currentTime == 1) {
 					robotPeer.waitSleeping(millisWait * 10, 1);
@@ -922,10 +922,6 @@ public final class Battle extends BaseBattle {
 		sendCommand(new EnableRobotPaintCommand(robotIndex, enable));
 	}
 
-	public void setAllPaintRecorded(boolean enable) {
-		sendCommand(new AllRobotsPaintRecordCommand(enable));
-	}
-
 	public void setSGPaintEnabled(int robotIndex, boolean enable) {
 		sendCommand(new EnableRobotSGPaintCommand(robotIndex, enable));
 	}
@@ -943,22 +939,6 @@ public final class Battle extends BaseBattle {
 			robots.get(robotIndex).kill();
 		}
 	}
-
-
-	private class AllRobotsPaintRecordCommand extends Command {
-		final boolean enablePaintRecord;
-
-		AllRobotsPaintRecordCommand(boolean enablePaintRecord) {
-			this.enablePaintRecord = enablePaintRecord;
-		}
-
-		public void execute() {
-			for (RobotPeer robot : robots) {
-				robot.setPaintRecorded(enablePaintRecord);
-			}
-		}
-	}
-
 
 	private class EnableRobotPaintCommand extends RobotCommand {
 		final boolean enablePaint;

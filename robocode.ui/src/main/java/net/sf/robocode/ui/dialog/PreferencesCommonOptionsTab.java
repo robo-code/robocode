@@ -111,7 +111,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 
 	private JCheckBox getEnableAutoRecordingCheckBox() {
 		if (enableAutoRecordingCheckBox == null) {
-			enableAutoRecordingCheckBox = new JCheckBox("Enable auto recording (every battle is automatically saved as zipped XML)");
+			enableAutoRecordingCheckBox = new JCheckBox("Enable auto recording (every finished battle is automatically into battles folder)");
 			enableAutoRecordingCheckBox.setMnemonic('u');
 			enableAutoRecordingCheckBox.setDisplayedMnemonicIndex(8);
 

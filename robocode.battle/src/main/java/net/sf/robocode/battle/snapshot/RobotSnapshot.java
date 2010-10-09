@@ -19,7 +19,7 @@ import net.sf.robocode.peer.DebugProperty;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.XmlSerializableOptions;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
@@ -376,6 +376,21 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		this.outputStreamSnapshot = outputStreamSnapshot;
 	}
 
+    void stripDetails(SerializableOptions options){
+        if (options.skipDebug){
+            graphicsCalls=null;
+            debugProperties=null;
+            outputStreamSnapshot=null;
+            isPaintEnabled=false;
+            isSGPaintEnabled=false;
+        }
+        if (options.skipNames){
+            name=veryShortName;
+            shortName=veryShortName;
+            teamName=veryShortName;
+        }
+    }
+    
 	/**
 	 * {@inheritDoc}
 	 */
@@ -404,7 +419,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	/**
 	 * {@inheritDoc}
 	 */
-	public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement(options.shortAttributes ? "r" : "robot"); {
             writer.writeAttribute("id", contestantIndex);
             if (!options.skipNames) {

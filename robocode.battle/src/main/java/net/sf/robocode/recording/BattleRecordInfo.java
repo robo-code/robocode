@@ -15,8 +15,8 @@ package net.sf.robocode.recording;
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.IXmlSerializable;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.XmlSerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.BattleResults;
 import robocode.BattleRules;
@@ -40,7 +40,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 	public Integer[] turnsInRounds;
 	public List<BattleResults> results;
 
-	public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement("recordInfo"); {
 			writer.writeAttribute("robotCount", robotCount);
 			writer.writeAttribute("roundsCount", roundsCount);
@@ -141,7 +141,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		private final String name;
 		public int intValue;
 
-		public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {}
+		public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect(name, new XmlReader.Element() {
@@ -182,7 +182,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 					results.getThirds());
 		}
 
-		public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+		public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 			writer.startElement("result"); {
 				writer.writeAttribute("teamLeaderName", teamLeaderName);
 				writer.writeAttribute("rank", rank);
@@ -285,7 +285,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		final BattleProperties props = new BattleProperties();
 		final BattleRecordInfo recinfo;
 
-		public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {}
+		public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect("rules",

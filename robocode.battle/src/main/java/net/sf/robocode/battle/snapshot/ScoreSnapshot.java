@@ -17,7 +17,7 @@ package net.sf.robocode.battle.snapshot;
 import net.sf.robocode.battle.peer.RobotStatistics;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.XmlSerializableOptions;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.IScoreSnapshot;
 
@@ -298,7 +298,7 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	/**
 	 * {@inheritDoc}
 	 */
-	public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement(options.shortAttributes ? "sc" : "score"); {
             if (!options.skipNames){
 			    writer.writeAttribute("name", name);
