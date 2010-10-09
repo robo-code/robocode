@@ -41,7 +41,7 @@ import java.util.List;
  */
 public final class RobotSnapshot implements Serializable, IXmlSerializable, IRobotSnapshot {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/** The name of the robot */
 	private String name;

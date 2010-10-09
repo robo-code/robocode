@@ -32,7 +32,7 @@
                                 <xs:attribute name="firsts" type="xs:int" use="required"/>
                                 <xs:attribute name="seconds" type="xs:int" use="required"/>
                                 <xs:attribute name="thirds" type="xs:int" use="required"/>
-                                <xs:attribute name="ver" type="xs:int" use="required"/>
+                                <xs:attribute name="ver" type="xs:int" use="optional"/>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
@@ -41,62 +41,62 @@
         </xs:sequence>
         <xs:attribute name="robotCount" type="xs:int" use="required"/>
         <xs:attribute name="roundsCount" type="xs:int" use="required"/>
-        <xs:attribute name="ver" type="xs:int" use="required"/>
+        <xs:attribute name="ver" type="xs:int" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="score">
-        <xs:attribute name="name" type="xs:string" use="required"/>
-        <xs:attribute name="totalScore" type="xs:decimal" use="required"/>
-        <xs:attribute name="totalSurvivalScore" type="xs:decimal" use="required"/>
-        <xs:attribute name="totalLastSurvivorBonus" type="xs:decimal" use="required"/>
-        <xs:attribute name="totalBulletDamageScore" type="xs:decimal" use="required"/>
-        <xs:attribute name="totalBulletKillBonus" type="xs:decimal" use="required"/>
-        <xs:attribute name="totalRammingDamageScore" type="xs:decimal" use="required"/>
-        <xs:attribute name="totalRammingKillBonus" type="xs:decimal" use="required"/>
-        <xs:attribute name="totalFirsts" type="xs:int" use="required"/>
-        <xs:attribute name="totalSeconds" type="xs:int" use="required"/>
-        <xs:attribute name="totalThirds" type="xs:int" use="required"/>
-        <xs:attribute name="currentScore" type="xs:decimal" use="required"/>
-        <xs:attribute name="currentSurvivalScore" type="xs:decimal" use="required"/>
-        <xs:attribute name="currentBulletDamageScore" type="xs:decimal" use="required"/>
-        <xs:attribute name="currentBulletKillBonus" type="xs:decimal" use="required"/>
-        <xs:attribute name="currentRammingDamageScore" type="xs:decimal" use="required"/>
-        <xs:attribute name="currentRammingKillBonus" type="xs:decimal" use="required"/>
-        <xs:attribute name="ver" type="xs:int" use="required"/>
+        <xs:attribute name="name" type="xs:string" use="optional"/>
+        <xs:attribute name="t" type="xs:decimal" use="optional"/>
+        <xs:attribute name="tss" type="xs:decimal" use="optional"/>
+        <xs:attribute name="tls" type="xs:decimal" use="optional"/>
+        <xs:attribute name="tbd" type="xs:decimal" use="optional"/>
+        <xs:attribute name="tbk" type="xs:decimal" use="optional"/>
+        <xs:attribute name="trd" type="xs:decimal" use="optional"/>
+        <xs:attribute name="trk" type="xs:decimal" use="optional"/>
+        <xs:attribute name="t1" type="xs:int" use="optional"/>
+        <xs:attribute name="t2" type="xs:int" use="optional"/>
+        <xs:attribute name="t3" type="xs:int" use="optional"/>
+        <xs:attribute name="c" type="xs:decimal" use="required"/>
+        <xs:attribute name="ss" type="xs:decimal" use="required"/>
+        <xs:attribute name="bd" type="xs:decimal" use="required"/>
+        <xs:attribute name="bk" type="xs:decimal" use="required"/>
+        <xs:attribute name="rd" type="xs:decimal" use="required"/>
+        <xs:attribute name="rk" type="xs:decimal" use="required"/>
+        <xs:attribute name="ver" type="xs:int" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="robot">
         <xs:sequence>
-            <xs:element name="score" type="score"/>
+            <xs:element name="sc" type="score"/>
         </xs:sequence>
         <xs:attribute name="id" type="xs:unsignedByte" use="required" />
-        <xs:attribute name="ver" type="xs:int" use="required"/>
-        <xs:attribute name="name" type="xs:string" use="required"/>
-        <xs:attribute name="sName" type="xs:string" use="required"/>
-        <xs:attribute name="vsName" type="xs:string" use="required"/>
-        <xs:attribute name="teamName" type="xs:string" use="required"/>
-        <xs:attribute name="state" type="xs:string" use="required"/>
-        <xs:attribute name="energy" type="xs:decimal" use="required"/>
-        <xs:attribute name="velocity" type="xs:decimal" use="required"/>
-        <xs:attribute name="bodyHeading" type="xs:decimal" use="required"/>
-        <xs:attribute name="gunHeading" type="xs:decimal" use="required"/>
-        <xs:attribute name="radarHeading" type="xs:decimal" use="required"/>
+        <xs:attribute name="ver" type="xs:int" use="optional"/>
+        <xs:attribute name="name" type="xs:string" use="optional"/>
+        <xs:attribute name="sName" type="xs:string" use="optional"/>
+        <xs:attribute name="vsName" type="xs:string" use="optional"/>
+        <xs:attribute name="teamName" type="xs:string" use="optional"/>
+        <xs:attribute name="s" type="xs:string" use="optional"/>
+        <xs:attribute name="e" type="xs:decimal" use="required"/>
+        <xs:attribute name="v" type="xs:decimal" use="required"/>
+        <xs:attribute name="b" type="xs:decimal" use="required"/>
+        <xs:attribute name="g" type="xs:decimal" use="required"/>
+        <xs:attribute name="r" type="xs:decimal" use="required"/>
         <xs:attribute name="x" type="xs:decimal" use="required"/>
         <xs:attribute name="y" type="xs:decimal" use="required"/>
-        <xs:attribute name="out" type="xs:string" use="required"/>
-        <xs:attribute name="gunHeat" type="xs:string" use="optional"/>
+        <xs:attribute name="out" type="xs:string" use="optional"/>
+        <xs:attribute name="h" type="xs:string" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="bullet">
 				<xs:attribute name="id" type="xs:string" use="required" />
-        <xs:attribute name="ver" type="xs:int" use="required"/>
-        <xs:attribute name="state" type="xs:string" use="required"/>
-        <xs:attribute name="power" type="xs:decimal" use="required"/>
-        <xs:attribute name="color" type="xs:int" use="required"/>
+        <xs:attribute name="ver" type="xs:int" use="optional"/>
+        <xs:attribute name="state" type="xs:string" use="optional"/>
+        <xs:attribute name="power" type="xs:decimal" use="optional"/>
+        <xs:attribute name="color" type="xs:int" use="optional"/>
         <xs:attribute name="x" type="xs:decimal" use="required"/>
         <xs:attribute name="y" type="xs:decimal" use="required"/>
-        <xs:attribute name="frame" type="xs:int" use="required"/>
-        <xs:attribute name="isExplosion" type="xs:boolean" use="required"/>
+        <xs:attribute name="frame" type="xs:int" use="optional"/>
+        <xs:attribute name="isExplosion" type="xs:boolean" use="optional"/>
         <xs:attribute name="explosion" type="xs:int" use="optional"/>
         <xs:attribute name="heading" type="xs:decimal" use="optional"/>
         <xs:attribute name="owner" type="xs:unsignedByte" use="optional" />
@@ -105,25 +105,25 @@
 
     <xs:complexType name="turn">
         <xs:sequence>
-            <xs:element name="robots">
+            <xs:element name="rs">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element maxOccurs="unbounded" name="robot" type="robot">
+                        <xs:element maxOccurs="unbounded" name="r" type="robot">
                         </xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="bullets">
+            <xs:element name="bs">
                 <xs:complexType>
                     <xs:sequence minOccurs="0">
-                        <xs:element maxOccurs="unbounded" name="bullet" type="bullet"/>
+                        <xs:element maxOccurs="unbounded" name="b" type="bullet"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="round" type="xs:int" use="required"/>
-        <xs:attribute name="turn" type="xs:int" use="required"/>
-        <xs:attribute name="ver" type="xs:int" use="required"/>
+        <xs:attribute name="ro" type="xs:int" use="required"/>
+        <xs:attribute name="tu" type="xs:int" use="required"/>
+        <xs:attribute name="ver" type="xs:int" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="record">

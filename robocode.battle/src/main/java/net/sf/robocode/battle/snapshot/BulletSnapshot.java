@@ -38,7 +38,7 @@ import java.io.IOException;
  */
 public final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, IBulletSnapshot {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/** The bullet state */
 	private BulletState state;

@@ -331,7 +331,12 @@ public class RecordManager implements IRecordManager {
                 xwr.startDocument();
                 xwr.startElement("record");
                 xwr.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-                xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecord.xsd");
+                if (options.shortAttributes){
+                    xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecordS.xsd");
+                }
+                else{
+                    xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecord.xsd");
+                }
                 recordInfo.writeXml(xwr, options);
                 xwr.startElement("turns");
             }
