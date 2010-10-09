@@ -71,20 +71,8 @@
                 </reportSets>
                 <configuration>
                   <excludePackageNames>robocode.exception:net.sf.robocode.*</excludePackageNames>
-                  <doclet>com.sixlegs.misc.ExcludeDoclet</doclet>
-                  <docletArtifact>
-                    <groupId>com.sixlegs.misc</groupId>
-                    <artifactId>exclude-doclet</artifactId>
-                    <version>0.0.0</version>
-                  </docletArtifact>
                 </configuration>
             </plugin>
         </plugins>
     </reporting>
-    <repositories>
-        <repository>
-            <id>com.sixlegs.misc.ExcludeDoclet</id>
-            <url>http://www2.caret.cam.ac.uk/maven2/</url>
-        </repository>
-    </repositories>
 </project>
