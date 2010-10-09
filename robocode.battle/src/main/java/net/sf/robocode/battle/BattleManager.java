@@ -175,7 +175,7 @@ public class BattleManager implements IBattleManager {
 
 		realBattle.setup(battlingRobotsList, battleProperties, isPaused());
 
-		if (recording && !properties.getOptionsCommonEnableAutoRecording()) {
+		if (recording) {
 			realBattle.setAllPaintRecorded(true);
 		}
 

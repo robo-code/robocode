@@ -92,7 +92,7 @@ public class BulletPeer {
 
 	private final Line2D.Double boundingLine = new Line2D.Double();
 
-	protected int frame = -1;
+	protected int frame;
 
 	private final int color;
 
@@ -100,6 +100,7 @@ public class BulletPeer {
 
 	public BulletPeer(RobotPeer owner, BattleRules battleRules, int bulletId) {
 		super();
+
 		this.owner = owner;
 		this.battleRules = battleRules;
 		this.bulletId = bulletId;
@@ -220,7 +221,6 @@ public class BulletPeer {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
-            frame=0;
 			owner.addEvent(new BulletMissedEvent(createBullet()));
 		}
 	}
@@ -307,7 +307,6 @@ public class BulletPeer {
 
 	public void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		if (isActive()) {
-            frame++;
 			updateMovement();
 			if (bullets != null) {
 				checkBulletCollision(bullets);
@@ -328,10 +327,9 @@ public class BulletPeer {
 	protected void updateBulletState() {
 		switch (state) {
 		case FIRED:
-            if (frame==1){
-			    state = BulletState.MOVING;
-            }
+			state = BulletState.MOVING;
 			break;
+
 		case HIT_BULLET:
 		case HIT_VICTIM:
 		case EXPLODED:

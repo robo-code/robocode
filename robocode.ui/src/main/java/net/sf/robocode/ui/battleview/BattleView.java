@@ -538,16 +538,16 @@ public class BattleView extends Canvas {
 
 		double x, y;
 
-		for (IBulletSnapshot bulletSnapshot : snapShot.getBullets()) {
-			x = bulletSnapshot.getPaintX();
-			y = battleField.getHeight() - bulletSnapshot.getPaintY();
+		for (IBulletSnapshot IBulletSnapshot : snapShot.getBullets()) {
+			x = IBulletSnapshot.getPaintX();
+			y = battleField.getHeight() - IBulletSnapshot.getPaintY();
 
 			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
-			if (bulletSnapshot.getState().getValue() <= BulletState.MOVING.getValue()) {
+			if (IBulletSnapshot.getState().getValue() <= BulletState.MOVING.getValue()) {
 
 				// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
-				double scale = max(2 * sqrt(2.5 * bulletSnapshot.getPower()), 2 / this.scale);
+				double scale = max(2 * sqrt(2.5 * IBulletSnapshot.getPower()), 2 / this.scale);
 
 				at.scale(scale, scale);
 				Area bulletArea = BULLET_AREA.createTransformedArea(at);
@@ -557,20 +557,20 @@ public class BattleView extends Canvas {
 				if (properties.getOptionsRenderingForceBulletColor()) {
 					bulletColor = Color.WHITE;
 				} else {
-					bulletColor = new Color(bulletSnapshot.getColor());
+					bulletColor = new Color(IBulletSnapshot.getColor());
 				}
 				g.setColor(bulletColor);
 				g.fill(bulletArea);
 
 			} else if (drawExplosions) {
-				if (!bulletSnapshot.isExplosion()) {
-					double scale = sqrt(1000 * bulletSnapshot.getPower()) / 128;
+				if (!IBulletSnapshot.isExplosion()) {
+					double scale = sqrt(1000 * IBulletSnapshot.getPower()) / 128;
 
 					at.scale(scale, scale);
 				}
 
 				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(
-						bulletSnapshot.getExplosionImageIndex(), bulletSnapshot.getFrame());
+						IBulletSnapshot.getExplosionImageIndex(), IBulletSnapshot.getFrame());
 
 				explosionRenderImage.setTransform(at);
 				explosionRenderImage.paint(g);

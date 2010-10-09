@@ -13,13 +13,14 @@ package net.sf.robocode.serialization;
 
 
 import java.io.IOException;
+import java.util.Dictionary;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public interface IXmlSerializable {
-	void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException;
+	void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException;
 
 	XmlReader.Element readXml(XmlReader reader);
 }

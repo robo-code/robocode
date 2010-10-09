@@ -16,7 +16,6 @@ import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.XmlSerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.BattleResults;
 import robocode.BattleRules;
@@ -24,6 +23,7 @@ import robocode.BattleRules;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
 
 
@@ -40,18 +40,17 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 	public Integer[] turnsInRounds;
 	public List<BattleResults> results;
 
-	public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 		writer.startElement("recordInfo"); {
 			writer.writeAttribute("robotCount", robotCount);
 			writer.writeAttribute("roundsCount", roundsCount);
-            if (!options.skipVersion){
-			    writer.writeAttribute("ver", serialVersionUID);
-            }
+			writer.writeAttribute("ver", serialVersionUID);
+
 			writer.startElement("rules"); {
 				writer.writeAttribute("battlefieldWidth", battleRules.getBattlefieldWidth());
 				writer.writeAttribute("battlefieldHeight", battleRules.getBattlefieldHeight());
 				writer.writeAttribute("numRounds", battleRules.getNumRounds());
-				writer.writeAttribute("gunCoolingRate", battleRules.getGunCoolingRate(), options.trimPrecision);
+				writer.writeAttribute("gunCoolingRate", battleRules.getGunCoolingRate());
 				writer.writeAttribute("inactivityTime", battleRules.getInactivityTime());
 				writer.writeAttribute("ver", serialVersionUID);
 			}
@@ -141,7 +140,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		private final String name;
 		public int intValue;
 
-		public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {}
+		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect(name, new XmlReader.Element() {
@@ -182,23 +181,21 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 					results.getThirds());
 		}
 
-		public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {
+		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
 			writer.startElement("result"); {
 				writer.writeAttribute("teamLeaderName", teamLeaderName);
 				writer.writeAttribute("rank", rank);
-				writer.writeAttribute("score", score, options.trimPrecision);
-				writer.writeAttribute("survival", survival, options.trimPrecision);
-				writer.writeAttribute("lastSurvivorBonus", lastSurvivorBonus, options.trimPrecision);
-				writer.writeAttribute("bulletDamage", bulletDamage, options.trimPrecision);
-				writer.writeAttribute("bulletDamageBonus", bulletDamageBonus, options.trimPrecision);
-				writer.writeAttribute("ramDamage", ramDamage, options.trimPrecision);
-				writer.writeAttribute("ramDamageBonus", ramDamageBonus, options.trimPrecision);
+				writer.writeAttribute("score", score);
+				writer.writeAttribute("survival", survival);
+				writer.writeAttribute("lastSurvivorBonus", lastSurvivorBonus);
+				writer.writeAttribute("bulletDamage", bulletDamage);
+				writer.writeAttribute("bulletDamageBonus", bulletDamageBonus);
+				writer.writeAttribute("ramDamage", ramDamage);
+				writer.writeAttribute("ramDamageBonus", ramDamageBonus);
 				writer.writeAttribute("firsts", firsts);
 				writer.writeAttribute("seconds", seconds);
 				writer.writeAttribute("thirds", thirds);
-                if (!options.skipVersion){
-    				writer.writeAttribute("ver", serialVersionUID);
-                }
+				writer.writeAttribute("ver", serialVersionUID);
 			}
 			writer.endElement();
 		}
@@ -285,7 +282,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		final BattleProperties props = new BattleProperties();
 		final BattleRecordInfo recinfo;
 
-		public void writeXml(XmlWriter writer, XmlSerializableOptions options) throws IOException {}
+		public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect("rules",

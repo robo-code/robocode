@@ -15,10 +15,7 @@ package net.sf.robocode.serialization;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.CharacterIterator;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.StringCharacterIterator;
-import java.util.Locale;
 import java.util.Stack;
 
 
@@ -27,8 +24,7 @@ import java.util.Stack;
  */
 
 public class XmlWriter {
-    private static final DecimalFormat decimalFormat = new DecimalFormat("#.####", new DecimalFormatSymbols(Locale.US));
-    final Writer writer;
+	final Writer writer;
 	final Stack<String> elements = new Stack<String>();
 	boolean headClosed = true;
 	boolean innerElement = false;
@@ -71,13 +67,8 @@ public class XmlWriter {
 		writeAttribute(name, Long.toString(value));
 	}
 
-	public void writeAttribute(String name, double value, boolean trim) throws IOException {
-        if (trim){
-            writeAttribute(name, decimalFormat.format(value));
-        }
-        else{
-            writeAttribute(name, Double.toString(value));
-        }
+	public void writeAttribute(String name, double value) throws IOException {
+		writeAttribute(name, Double.toString(value));
 	}
 
 	public void endElement() throws IOException {
