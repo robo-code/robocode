@@ -33,7 +33,6 @@ import java.util.Calendar;
  */
 public class BattleRecorder {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-    private static final Calendar calendar = Calendar.getInstance();
 
 	private final RecordManager recordmanager;
     private final ISettingsManager properties;
@@ -117,6 +116,7 @@ public class BattleRecorder {
                 name.append(FileUtil.getBattlesDir().getCanonicalPath());
                 name.append(File.separator);
 
+                Calendar calendar = Calendar.getInstance();
                 name.append(dateFormat.format(calendar.getTime()));
                 name.append('-');
                 for (BattleResults r : results) {

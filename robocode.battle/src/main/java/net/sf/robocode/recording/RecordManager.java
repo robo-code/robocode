@@ -43,7 +43,6 @@ import java.util.zip.ZipOutputStream;
  */
 public class RecordManager implements IRecordManager {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-    private static final Calendar calendar = Calendar.getInstance();
 
     private final ISettingsManager properties;
 
@@ -299,6 +298,7 @@ public class RecordManager implements IRecordManager {
 
         final boolean isbin = format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP;
         final boolean isxml = format == BattleRecordFormat.XML || format == BattleRecordFormat.XML_ZIP;
+        Calendar calendar = Calendar.getInstance();
 
 		try {
 			fos = new FileOutputStream(recordFilename);
