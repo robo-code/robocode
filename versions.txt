@@ -1,12 +1,16 @@
 Version 1.7.2.2
 (14-Oct-2010)
 ---------------
+* Fixed "3 * PI / 4 means West." in the Robot API, which should be "3 * PI / 2 means West.". Thanks goes to Gottl Johannes for pointing this out.
+
+Version 1.7.2.2 Beta
+(02-Oct-2010)
+---------------
 = Bugfixes =
 * Bug [3043944] - Robot PrintStream doesn't handle write in a portable fashion.
 * Bug [3077562] - Wrong headings with the JuniorRobot. Thanks goes to Mr. Kschan for finding and providing a fix for this bug. :-)
 * Bug [3043884] - Development Options remove wrong item.
 * Bug [3043932] - JavaDoc missing _Robot and similar.
-* Fixed "3 * PI / 4 means West." in the Robot API, which should be "3 * PI / 2 means West.". Thanks goes to Gottl Johannes for pointing this out.
 
 = New sample robots =
 * Tuan Anh Nguyen provided a modified version of the Interactive sample robot named Interactive_v2, which use absolute movement (up, left, down, right) on the screen, which can be easier to control than the original Interactive sample robot. Both Interactive robots now use both the arrow keys and the W, A, S, D key for moving the robot.
