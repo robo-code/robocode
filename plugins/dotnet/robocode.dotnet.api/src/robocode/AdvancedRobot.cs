@@ -1490,7 +1490,7 @@ namespace Robocode
         ///  The value returned will be between 0 and 2 * PI (is excluded).
         ///  <p />
         ///  Note that the heading in Robocode is like a compass, where 0 means North,
-        ///  PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+        ///  PI / 2 means East, PI means South, and 3 * PI / 2 means West.
         ///  <seealso cref="Robot.Heading"/>
         ///  <seealso cref="GunHeadingRadians"/>
         ///  <seealso cref="RadarHeadingRadians"/>
@@ -1706,7 +1706,7 @@ namespace Robocode
         ///  The value returned will be between 0 and 2 * PI (is excluded).
         ///  <p />
         ///  Note that the heading in Robocode is like a compass, where 0 means North,
-        ///  PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+        ///  PI / 2 means East, PI means South, and 3 * PI / 2 means West.
         ///  <seealso cref="Robot.GunHeading"/>
         ///  <seealso cref="HeadingRadians"/>
         ///  <seealso cref="RadarHeadingRadians"/>
@@ -1729,7 +1729,7 @@ namespace Robocode
         ///  The value returned will be between 0 and 2 * PI (is excluded).
         ///  <p />
         ///  Note that the heading in Robocode is like a compass, where 0 means North,
-        ///  PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+        ///  PI / 2 means East, PI means South, and 3 * PI / 2 means West.
         ///  <seealso cref="Robot.RadarHeading"/>
         ///  <seealso cref="HeadingRadians"/>
         ///  <seealso cref="GunHeadingRadians"/>

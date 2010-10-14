@@ -1440,7 +1440,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * The value returned will be between 0 and 2 * PI (is excluded).
 	 * <p/>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
 	 * @return the direction that the robot's body is facing, in radians.
 	 * @see #getHeadingDegrees()
@@ -1617,7 +1617,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * The value returned will be between 0 and 2 * PI (is excluded).
 	 * <p/>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
 	 * @return the direction that the robot's gun is facing, in radians.
 	 * @see #getGunHeadingDegrees()
@@ -1633,7 +1633,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * The value returned will be between 0 and 2 * PI (is excluded).
 	 * <p/>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
-	 * PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
 	 * @return the direction that the robot's radar is facing, in radians.
 	 * @see #getRadarHeadingDegrees()

@@ -74,7 +74,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// The value returned will be between 0 and 2 * PI (is excluded).
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
-        /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+        /// PI / 2 means East, PI means South, and 3 * PI / 2 means West.
         /// <seealso cref="GetGunHeading"/>
         /// <seealso cref="GetRadarHeading"/>
         /// </summary>
@@ -85,7 +85,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// The value returned will be between 0 and 2 * PI (is excluded).
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
-        /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+        /// PI / 2 means East, PI means South, and 3 * PI / 2 means West.
         /// <seealso cref="GetBodyHeading"/>
         /// <seealso cref="GetRadarHeading"/>
         /// </summary>
@@ -96,7 +96,7 @@ namespace Robocode.RobotInterfaces.Peer
         /// The value returned will be between 0 and 2 * PI (is excluded).
         /// <p/>
         /// Note that the heading in Robocode is like a compass, where 0 means North,
-        /// PI / 2 means East, PI means South, and 3 * PI / 4 means West.
+        /// PI / 2 means East, PI means South, and 3 * PI / 2 means West.
         /// <seealso cref="GetBodyHeading"/>
         /// <seealso cref="GetGunHeading"/>
         /// </summary>
