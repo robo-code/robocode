@@ -12,7 +12,6 @@
 package net.sf.robocode.repository.packager;
 
 
-import codesize.Codesize;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
@@ -40,6 +39,7 @@ import java.net.URLDecoder;
  * @author Pavel Savara (original)
  */
 public class JarCreator {
+
 	public static String createPackage(File target, boolean includeSources, List<RobotItem> robots, List<TeamItem> teams, URL web, String desc, String author, String version) {
 		final IHostManager host = Container.getComponent(IHostManager.class);
 		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
@@ -98,29 +98,37 @@ public class JarCreator {
 			sb.append('\n');
 		}
 
-		codeSize(target, sb);
+		appendCodeSize(target, sb);
 
 		return sb.toString();
 	}
 
-	private static void codeSize(File target, StringBuilder sb) {
-		Codesize.Item item = Codesize.processZipFile(target);
-		int codesize = item.getCodeSize();
-		String weightClass;
+	private static void appendCodeSize(File target, StringBuilder sb) {
+		int size = -1;
 
-		if (codesize >= 1500) {
-			weightClass = "MegaBot  (codesize >= 1500 bytes)";
-		} else if (codesize > 750) {
-			weightClass = "MiniBot  (codesize < 1500 bytes)";
-		} else if (codesize > 250) {
-			weightClass = "MicroBot  (codesize < 750 bytes)";
-		} else {
-			weightClass = "NanoBot  (codesize < 250 bytes)";
+		try {
+			// Call the codesize utility using reflection
+			Object item = Class.forName("codesize.Codesize").getMethod("processZipFile", new Class[] { File.class}).invoke(
+					null, target);
+
+			size = (Integer) item.getClass().getMethod("getCodeSize", (Class[]) null).invoke(item, (Object[]) null);
+		} catch (Exception ignore) {}
+		if (size >= 0) {
+			String weightClass = null;
+
+			if (size >= 1500) {
+				weightClass = "MegaBot  (codesize >= 1500 bytes)";
+			} else if (size > 750) {
+				weightClass = "MiniBot  (codesize < 1500 bytes)";
+			} else if (size > 250) {
+				weightClass = "MicroBot (codesize < 750 bytes)";
+			} else {
+				weightClass = "NanoBot  (codesize < 250 bytes)";
+			}
+			sb.append("\n\n---- Codesize ----\n");
+			sb.append("Codesize: ").append(size).append(" bytes\n");
+			sb.append("Robot weight class: ").append(weightClass).append('\n');
 		}
-
-		sb.append("\n\n---- Codesize ----\n");
-		sb.append("Codesize: ").append(codesize).append(" bytes\n");
-		sb.append("Robot weight class: ").append(weightClass).append('\n');
 	}
 
 	private static Manifest createManifest(List<RobotItem> robots) {
