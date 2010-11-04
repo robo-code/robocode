@@ -1,6 +1,7 @@
 Version 1.7.2.2
-(14-Oct-2010)
+(04-Nov-2010)
 ---------------
+= Bugfixes =
 * Fixed "3 * PI / 4 means West." in the Robot API, which should be "3 * PI / 2 means West.". Thanks goes to Gottl Johannes for pointing this out.
 
 Version 1.7.2.2 Beta
