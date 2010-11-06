@@ -167,7 +167,8 @@ public class RobotPackager extends JDialog implements WizardListener {
 		if (robotSelectionPanel == null) {
 			robotSelectionPanel = net.sf.robocode.core.Container.createComponent(RobotSelectionPanel.class);
 			robotSelectionPanel.setup(minRobots, maxRobots, false, "Select the robot or team you would like to package.", /* true */
-					false, false, false/* true */, true, false, true, null);
+					false,
+					false, false/* true */, true, false, true, null);
 		}
 		return robotSelectionPanel;
 	}

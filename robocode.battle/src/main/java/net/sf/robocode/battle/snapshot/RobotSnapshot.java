@@ -376,20 +376,20 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		this.outputStreamSnapshot = outputStreamSnapshot;
 	}
 
-    void stripDetails(SerializableOptions options){
-        if (options.skipDebug){
-            graphicsCalls=null;
-            debugProperties=null;
-            outputStreamSnapshot=null;
-            isPaintEnabled=false;
-            isSGPaintEnabled=false;
-        }
-        if (options.skipNames){
-            name=veryShortName;
-            shortName=veryShortName;
-            teamName=veryShortName;
-        }
-    }
+	void stripDetails(SerializableOptions options) {
+		if (options.skipDebug) {
+			graphicsCalls = null;
+			debugProperties = null;
+			outputStreamSnapshot = null;
+			isPaintEnabled = false;
+			isSGPaintEnabled = false;
+		}
+		if (options.skipNames) {
+			name = veryShortName;
+			shortName = veryShortName;
+			teamName = veryShortName;
+		}
+	}
     
 	/**
 	 * {@inheritDoc}
@@ -421,13 +421,13 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 */
 	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement(options.shortAttributes ? "r" : "robot"); {
-            writer.writeAttribute("id", contestantIndex);
-            if (!options.skipNames) {
-			    writer.writeAttribute("vsName", veryShortName);
-            }
-            if (!options.skipExploded || state != RobotState.ACTIVE) {
-                writer.writeAttribute(options.shortAttributes ? "s" : "state", state.toString());
-            }
+			writer.writeAttribute("id", contestantIndex);
+			if (!options.skipNames) {
+				writer.writeAttribute("vsName", veryShortName);
+			}
+			if (!options.skipExploded || state != RobotState.ACTIVE) {
+				writer.writeAttribute(options.shortAttributes ? "s" : "state", state.toString());
+			}
 			writer.writeAttribute(options.shortAttributes ? "e" : "energy", energy, options.trimPrecision);
 			writer.writeAttribute("x", x, options.trimPrecision);
 			writer.writeAttribute("y", y, options.trimPrecision);
@@ -437,7 +437,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 			writer.writeAttribute(options.shortAttributes ? "h" : "gunHeat", gunHeat, options.trimPrecision);
 			writer.writeAttribute(options.shortAttributes ? "v" : "velocity", velocity, options.trimPrecision);
 			if (!options.skipNames) {
-                writer.writeAttribute("teamName", teamName);
+				writer.writeAttribute("teamName", teamName);
 				writer.writeAttribute("name", name);
 				writer.writeAttribute("sName", shortName);
 				if (isDroid) {
@@ -456,21 +456,21 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 					writer.writeAttribute("scanColor", Integer.toHexString(scanColor).toUpperCase());
 				}
 			}
-            if (!options.skipVersion) {
-			    writer.writeAttribute("ver", serialVersionUID);
-            }
+			if (!options.skipVersion) {
+				writer.writeAttribute("ver", serialVersionUID);
+			}
 			if (!options.skipDebug) {
-                if(outputStreamSnapshot != null && outputStreamSnapshot.length() != 0){
-                    writer.writeAttribute("out", outputStreamSnapshot);
-                }
-                if (debugProperties != null) {
-                    writer.startElement("debugProperties"); {
-                        for (DebugProperty prop : debugProperties) {
-                            prop.writeXml(writer, options);
-                        }
-                    }
-                    writer.endElement();
-                }
+				if (outputStreamSnapshot != null && outputStreamSnapshot.length() != 0) {
+					writer.writeAttribute("out", outputStreamSnapshot);
+				}
+				if (debugProperties != null) {
+					writer.startElement("debugProperties"); {
+						for (DebugProperty prop : debugProperties) {
+							prop.writeXml(writer, options);
+						}
+					}
+					writer.endElement();
+				}
 			}
 
 			((ScoreSnapshot) robotScoreSnapshot).writeXml(writer, options);

@@ -122,9 +122,9 @@ public class SettingsManager implements ISettingsManager {
 			optionsCommonShowResults = true,
 			optionsCommonAppendWhenSavingResults = true,
 			optionsCommonDontHideRankings = true,
-            optionsCommonEnableAutoRecording = false,
-            optionsCommonAutoRecordingXML = false,
-            optionsCommonEnableReplayRecording = false;
+			optionsCommonEnableAutoRecording = false,
+			optionsCommonAutoRecordingXML = false,
+			optionsCommonEnableReplayRecording = false;
 
 	// Team Options
 	private boolean optionsTeamShowTeamRobots = false;
@@ -626,23 +626,23 @@ public class SettingsManager implements ISettingsManager {
 		props.setProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "" + enable);
 	}
 
-    public boolean getOptionsCommonEnableAutoRecording() {
-        return optionsCommonEnableAutoRecording;
-    }
+	public boolean getOptionsCommonEnableAutoRecording() {
+		return optionsCommonEnableAutoRecording;
+	}
 
-    public boolean getOptionsCommonAutoRecordingXML() {
-        return optionsCommonAutoRecordingXML;
-    }
+	public boolean getOptionsCommonAutoRecordingXML() {
+		return optionsCommonAutoRecordingXML;
+	}
 
-    public void setOptionsCommonEnableAutoRecording(boolean enable) {
-        this.optionsCommonEnableAutoRecording = enable;
-        props.setProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "" + enable);
-    }
+	public void setOptionsCommonEnableAutoRecording(boolean enable) {
+		this.optionsCommonEnableAutoRecording = enable;
+		props.setProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "" + enable);
+	}
 
-    public void setOptionsCommonEnableAutoRecordingXML(boolean enable) {
-        this.optionsCommonAutoRecordingXML = enable;
-        props.setProperty(OPTIONS_COMMON_AUTO_RECORDING_XML, "" + enable);
-    }
+	public void setOptionsCommonEnableAutoRecordingXML(boolean enable) {
+		this.optionsCommonAutoRecordingXML = enable;
+		props.setProperty(OPTIONS_COMMON_AUTO_RECORDING_XML, "" + enable);
+	}
 
 	public void setOptionsCommonNotifyAboutNewBetaVersions(boolean enable) {
 		this.optionsCommonNotifyAboutNewBetaVersions = enable;
@@ -716,10 +716,9 @@ public class SettingsManager implements ISettingsManager {
 		optionsCommonDontHideRankings = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_DONT_HIDE_RANKINGS, "true"));
 		optionsCommonEnableReplayRecording = Boolean.valueOf(
 				props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "false"));
-        optionsCommonEnableAutoRecording = Boolean.valueOf(
-                props.getProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "false"));
-        optionsCommonAutoRecordingXML = Boolean.valueOf(
-                props.getProperty(OPTIONS_COMMON_AUTO_RECORDING_XML, "false"));
+		optionsCommonEnableAutoRecording = Boolean.valueOf(
+				props.getProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "false"));
+		optionsCommonAutoRecordingXML = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_AUTO_RECORDING_XML, "false"));
 
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false"));
 

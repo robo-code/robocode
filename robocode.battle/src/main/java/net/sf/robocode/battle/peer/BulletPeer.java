@@ -112,12 +112,12 @@ public class BulletPeer {
 			if (b != null && b != this && b.isActive() && intersect(b.boundingLine)) {
 				state = BulletState.HIT_BULLET;
 				b.state = BulletState.HIT_BULLET;
-                b.frame = 0;
+				b.frame = 0;
 				frame = 0;
 				x = lastX;
 				y = lastY;
-                b.x = b.lastX;
-                b.y = b.lastY;
+				b.x = b.lastX;
+				b.y = b.lastY;
 				owner.addEvent(new BulletHitBulletEvent(createBullet(), b.createBullet()));
 				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(), createBullet()));
 				break;
@@ -223,7 +223,7 @@ public class BulletPeer {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
-            frame=0;
+			frame = 0;
 			owner.addEvent(new BulletMissedEvent(createBullet()));
 		}
 	}
@@ -310,7 +310,7 @@ public class BulletPeer {
 
 	public void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		if (isActive()) {
-            frame++;
+			frame++;
 			updateMovement();
 			if (bullets != null) {
 				checkBulletCollision(bullets);
@@ -331,10 +331,11 @@ public class BulletPeer {
 	protected void updateBulletState() {
 		switch (state) {
 		case FIRED:
-            if (frame==1){
-			    state = BulletState.MOVING;
-            }
+			if (frame == 1) {
+				state = BulletState.MOVING;
+			}
 			break;
+
 		case HIT_BULLET:
 		case HIT_VICTIM:
 		case EXPLODED:

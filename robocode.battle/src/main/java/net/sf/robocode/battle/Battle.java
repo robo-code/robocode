@@ -940,6 +940,7 @@ public final class Battle extends BaseBattle {
 		}
 	}
 
+
 	private class EnableRobotPaintCommand extends RobotCommand {
 		final boolean enablePaint;
 

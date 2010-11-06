@@ -300,30 +300,41 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	 */
 	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement(options.shortAttributes ? "sc" : "score"); {
-            if (!options.skipNames){
-			    writer.writeAttribute("name", name);
-            }
-            if (!options.skipTotal){
-                writer.writeAttribute(options.shortAttributes ? "t" : "totalScore", totalScore, options.trimPrecision);
-                writer.writeAttribute(options.shortAttributes ? "tss" : "totalSurvivalScore", totalSurvivalScore, options.trimPrecision);
-                writer.writeAttribute(options.shortAttributes ? "tls" : "totalLastSurvivorBonus", totalLastSurvivorBonus, options.trimPrecision);
-                writer.writeAttribute(options.shortAttributes ? "tbd" : "totalBulletDamageScore", totalBulletDamageScore, options.trimPrecision);
-                writer.writeAttribute(options.shortAttributes ? "tbk" : "totalBulletKillBonus", totalBulletKillBonus, options.trimPrecision);
-                writer.writeAttribute(options.shortAttributes ? "trd" : "totalRammingDamageScore", totalRammingDamageScore, options.trimPrecision);
-                writer.writeAttribute(options.shortAttributes ? "trk" : "totalRammingKillBonus", totalRammingKillBonus, options.trimPrecision);
-                writer.writeAttribute(options.shortAttributes ? "t1" : "totalFirsts", totalFirsts);
-                writer.writeAttribute(options.shortAttributes ? "t2" : "totalSeconds", totalSeconds);
-                writer.writeAttribute(options.shortAttributes ? "t3" : "totalThirds", totalThirds);
-            }
+			if (!options.skipNames) {
+				writer.writeAttribute("name", name);
+			}
+			if (!options.skipTotal) {
+				writer.writeAttribute(options.shortAttributes ? "t" : "totalScore", totalScore, options.trimPrecision);
+				writer.writeAttribute(options.shortAttributes ? "tss" : "totalSurvivalScore", totalSurvivalScore,
+						options.trimPrecision);
+				writer.writeAttribute(options.shortAttributes ? "tls" : "totalLastSurvivorBonus", totalLastSurvivorBonus,
+						options.trimPrecision);
+				writer.writeAttribute(options.shortAttributes ? "tbd" : "totalBulletDamageScore", totalBulletDamageScore,
+						options.trimPrecision);
+				writer.writeAttribute(options.shortAttributes ? "tbk" : "totalBulletKillBonus", totalBulletKillBonus,
+						options.trimPrecision);
+				writer.writeAttribute(options.shortAttributes ? "trd" : "totalRammingDamageScore",
+						totalRammingDamageScore, options.trimPrecision);
+				writer.writeAttribute(options.shortAttributes ? "trk" : "totalRammingKillBonus", totalRammingKillBonus,
+						options.trimPrecision);
+				writer.writeAttribute(options.shortAttributes ? "t1" : "totalFirsts", totalFirsts);
+				writer.writeAttribute(options.shortAttributes ? "t2" : "totalSeconds", totalSeconds);
+				writer.writeAttribute(options.shortAttributes ? "t3" : "totalThirds", totalThirds);
+			}
 			writer.writeAttribute(options.shortAttributes ? "c" : "currentScore", currentScore, options.trimPrecision);
-			writer.writeAttribute(options.shortAttributes ? "ss" : "currentSurvivalScore", currentSurvivalScore, options.trimPrecision);
-			writer.writeAttribute(options.shortAttributes ? "bd" : "currentBulletDamageScore", currentBulletDamageScore, options.trimPrecision);
-			writer.writeAttribute(options.shortAttributes ? "bk" : "currentBulletKillBonus", currentBulletKillBonus, options.trimPrecision);
-			writer.writeAttribute(options.shortAttributes ? "rd" : "currentRammingDamageScore", currentRammingDamageScore, options.trimPrecision);
-			writer.writeAttribute(options.shortAttributes ? "rk" : "currentRammingKillBonus", currentRammingKillBonus, options.trimPrecision);
-            if (!options.skipVersion){
-			    writer.writeAttribute("ver", serialVersionUID);
-            }
+			writer.writeAttribute(options.shortAttributes ? "ss" : "currentSurvivalScore", currentSurvivalScore,
+					options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "bd" : "currentBulletDamageScore", currentBulletDamageScore,
+					options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "bk" : "currentBulletKillBonus", currentBulletKillBonus,
+					options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "rd" : "currentRammingDamageScore",
+					currentRammingDamageScore, options.trimPrecision);
+			writer.writeAttribute(options.shortAttributes ? "rk" : "currentRammingKillBonus", currentRammingKillBonus,
+					options.trimPrecision);
+			if (!options.skipVersion) {
+				writer.writeAttribute("ver", serialVersionUID);
+			}
 
 		}
 		writer.endElement();

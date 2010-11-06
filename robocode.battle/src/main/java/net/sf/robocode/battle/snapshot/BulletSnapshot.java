@@ -72,11 +72,11 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 
 	private int bulletId;
 
-    private int victimIndex = -1;
+	private int victimIndex = -1;
     
-    private int ownerIndex;
+	private int ownerIndex;
 
-    private double heading;
+	private double heading;
 
 	/**
 	 * Creates a snapshot of a bullet that must be filled out with data later.
@@ -108,14 +108,15 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 
 		bulletId = bullet.getBulletId();
 
-        final RobotPeer victim = bullet.getVictim();
-        if (victim!=null){
-            victimIndex = victim.getContestIndex();
-        }
+		final RobotPeer victim = bullet.getVictim();
 
-        ownerIndex = bullet.getOwner().getContestIndex();
+		if (victim != null) {
+			victimIndex = victim.getContestIndex();
+		}
 
-        heading = bullet.getHeading();
+		ownerIndex = bullet.getOwner().getContestIndex();
+
+		heading = bullet.getHeading();
 	}
 
 	/**
@@ -195,67 +196,67 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 		return explosionImageIndex;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public double getHeading() {
-        return heading;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int getVictimIndex() {
-        return victimIndex;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int getOwnerIndex() {
-        return ownerIndex;
-    }
-
-    /**
+	/**
 	 * {@inheritDoc}
 	 */
-    public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
-        writer.startElement(options.shortAttributes ? "b" : "bullet");
-        {
-            writer.writeAttribute("id", ownerIndex + "-" + bulletId);
-            if (!options.skipExploded || state!=BulletState.MOVING) {
-                writer.writeAttribute(options.shortAttributes ? "s" : "state", state.toString());
-                writer.writeAttribute(options.shortAttributes ? "p" : "power", power, options.trimPrecision);
-            }
-            if (state==BulletState.HIT_VICTIM){
-                writer.writeAttribute(options.shortAttributes ? "v" : "victim", victimIndex);
-            }
-            if (state==BulletState.FIRED){
-                writer.writeAttribute(options.shortAttributes ? "o" : "owner", ownerIndex);
-                writer.writeAttribute(options.shortAttributes ? "h" : "heading", heading, options.trimPrecision);
-            }
-            writer.writeAttribute("x", paintX, options.trimPrecision);
-            writer.writeAttribute("y", paintY, options.trimPrecision);
-            if (!options.skipNames) {
-                if (color != ExecCommands.defaultBulletColor) {
-                    writer.writeAttribute(options.shortAttributes ? "c" : "color", Integer.toHexString(color).toUpperCase());
-                }
-            }
-            if (!options.skipExploded) {
-                if (frame != 0) {
-                    writer.writeAttribute("frame", frame);
-                }
-                if (isExplosion) {
-                    writer.writeAttribute("isExplosion", true);
-                    writer.writeAttribute("explosion", explosionImageIndex);
-                }
-            }
-            if (!options.skipVersion) {
-                writer.writeAttribute("ver", serialVersionUID);
-            }
-        }
-        writer.endElement();
-    }
+	public double getHeading() {
+		return heading;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getVictimIndex() {
+		return victimIndex;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getOwnerIndex() {
+		return ownerIndex;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
+		writer.startElement(options.shortAttributes ? "b" : "bullet"); {
+			writer.writeAttribute("id", ownerIndex + "-" + bulletId);
+			if (!options.skipExploded || state != BulletState.MOVING) {
+				writer.writeAttribute(options.shortAttributes ? "s" : "state", state.toString());
+				writer.writeAttribute(options.shortAttributes ? "p" : "power", power, options.trimPrecision);
+			}
+			if (state == BulletState.HIT_VICTIM) {
+				writer.writeAttribute(options.shortAttributes ? "v" : "victim", victimIndex);
+			}
+			if (state == BulletState.FIRED) {
+				writer.writeAttribute(options.shortAttributes ? "o" : "owner", ownerIndex);
+				writer.writeAttribute(options.shortAttributes ? "h" : "heading", heading, options.trimPrecision);
+			}
+			writer.writeAttribute("x", paintX, options.trimPrecision);
+			writer.writeAttribute("y", paintY, options.trimPrecision);
+			if (!options.skipNames) {
+				if (color != ExecCommands.defaultBulletColor) {
+					writer.writeAttribute(options.shortAttributes ? "c" : "color",
+							Integer.toHexString(color).toUpperCase());
+				}
+			}
+			if (!options.skipExploded) {
+				if (frame != 0) {
+					writer.writeAttribute("frame", frame);
+				}
+				if (isExplosion) {
+					writer.writeAttribute("isExplosion", true);
+					writer.writeAttribute("explosion", explosionImageIndex);
+				}
+			}
+			if (!options.skipVersion) {
+				writer.writeAttribute("ver", serialVersionUID);
+			}
+		}
+		writer.endElement();
+	}
 
 	/**
 	 * {@inheritDoc}

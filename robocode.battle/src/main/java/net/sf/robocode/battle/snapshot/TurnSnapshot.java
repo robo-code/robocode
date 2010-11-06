@@ -170,12 +170,11 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		return scores.toArray(new IScoreSnapshot[scores.size()]);
 	}
 
-    public void stripDetails(SerializableOptions options){
-        for(IRobotSnapshot r : getRobots()){
-            ((RobotSnapshot) r).stripDetails(options);
-        }
-    }
-
+	public void stripDetails(SerializableOptions options) {
+		for (IRobotSnapshot r : getRobots()) {
+			((RobotSnapshot) r).stripDetails(options);
+		}
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -184,36 +183,40 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 		writer.startElement(options.shortAttributes ? "t" : "turn"); {
 			writer.writeAttribute(options.shortAttributes ? "ro" : "round", round);
 			writer.writeAttribute(options.shortAttributes ? "tu" : "turn", turn);
-            if (!options.skipVersion){
-                writer.writeAttribute("ver", serialVersionUID);
-            }
+			if (!options.skipVersion) {
+				writer.writeAttribute("ver", serialVersionUID);
+			}
 
-            writer.startElement(options.shortAttributes ? "rs" : "robots");
-            {
-                SerializableOptions op=options;
-                if (turn == 0){
-                    op=new SerializableOptions(options);
-                    op.skipNames = false;
-                }
-                for (IRobotSnapshot r : robots) {
-                    final RobotSnapshot rs = (RobotSnapshot) r;
-                    if (!options.skipExploded || rs.getState() != RobotState.DEAD) {
-                        rs.writeXml(writer, op);
-                    }
-                }
-            }
-            writer.endElement();
+			writer.startElement(options.shortAttributes ? "rs" : "robots"); {
+				SerializableOptions op = options;
 
-              writer.startElement(options.shortAttributes ? "bs" : "bullets"); {
-                  for (IBulletSnapshot b : bullets) {
-                      final BulletSnapshot bs = (BulletSnapshot) b;
-                      final BulletState state = bs.getState();
-                      if (!options.skipExploded || (state != BulletState.EXPLODED && state != BulletState.INACTIVE && (bs.getFrame() == 0 || state == BulletState.MOVING))) {
-                          bs.writeXml(writer, options);
-                      }
-                  }
-              }
-              writer.endElement();
+				if (turn == 0) {
+					op = new SerializableOptions(options);
+					op.skipNames = false;
+				}
+				for (IRobotSnapshot r : robots) {
+					final RobotSnapshot rs = (RobotSnapshot) r;
+
+					if (!options.skipExploded || rs.getState() != RobotState.DEAD) {
+						rs.writeXml(writer, op);
+					}
+				}
+			}
+			writer.endElement();
+
+			writer.startElement(options.shortAttributes ? "bs" : "bullets"); {
+				for (IBulletSnapshot b : bullets) {
+					final BulletSnapshot bs = (BulletSnapshot) b;
+					final BulletState state = bs.getState();
+
+					if (!options.skipExploded
+							|| (state != BulletState.EXPLODED && state != BulletState.INACTIVE
+							&& (bs.getFrame() == 0 || state == BulletState.MOVING))) {
+						bs.writeXml(writer, options);
+					}
+				}
+			}
+			writer.endElement();
 		}
 		writer.endElement();
 	}

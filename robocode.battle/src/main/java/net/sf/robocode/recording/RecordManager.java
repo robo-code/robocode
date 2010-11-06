@@ -40,9 +40,9 @@ import java.util.zip.ZipOutputStream;
  * @author Pavel Savara (original)
  */
 public class RecordManager implements IRecordManager {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
-    private final ISettingsManager properties;
+	private final ISettingsManager properties;
 
 	private File tempFile;
 	private BattleRecorder recorder;
@@ -57,7 +57,7 @@ public class RecordManager implements IRecordManager {
 	private ObjectInputStream objectReadStream;
 
 	public RecordManager(ISettingsManager properties) {
-        this.properties=properties;
+		this.properties = properties;
 		recorder = new BattleRecorder(this, properties);
 	}
 
@@ -294,9 +294,9 @@ public class RecordManager implements IRecordManager {
 		BufferedInputStream bis = null;
 		ObjectInputStream ois = null;
 
-        final boolean isbin = format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP;
-        final boolean isxml = format == BattleRecordFormat.XML || format == BattleRecordFormat.XML_ZIP;
-        Calendar calendar = Calendar.getInstance();
+		final boolean isbin = format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP;
+		final boolean isxml = format == BattleRecordFormat.XML || format == BattleRecordFormat.XML_ZIP;
+		Calendar calendar = Calendar.getInstance();
 
 		try {
 			fos = new FileOutputStream(recordFilename);
@@ -306,40 +306,39 @@ public class RecordManager implements IRecordManager {
 				oos = new ObjectOutputStream(bos);
 			} else if (format == BattleRecordFormat.BINARY_ZIP) {
 				zos = new ZipOutputStream(bos);
-				zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime())+"-robocode.br"));
+				zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime()) + "-robocode.br"));
 				oos = new ObjectOutputStream(zos);
 			} else if (format == BattleRecordFormat.XML) {
 				final Charset utf8 = Charset.forName("UTF-8");
 
 				osw = new OutputStreamWriter(bos, utf8);
 				xwr = new XmlWriter(osw, true);
-            } else if (format == BattleRecordFormat.XML_ZIP) {
-                final Charset utf8 = Charset.forName("UTF-8");
+			} else if (format == BattleRecordFormat.XML_ZIP) {
+				final Charset utf8 = Charset.forName("UTF-8");
 
-                zos = new ZipOutputStream(bos);
-                zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime())+"-robocode.xml"));
+				zos = new ZipOutputStream(bos);
+				zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime()) + "-robocode.xml"));
 
-                osw = new OutputStreamWriter(zos, utf8);
-                xwr = new XmlWriter(osw, false);
-            }
+				osw = new OutputStreamWriter(zos, utf8);
+				xwr = new XmlWriter(osw, false);
+			}
 
-            if (isbin) {
+			if (isbin) {
 				oos.writeObject(recordInfo);
-            } else if (isxml) {
-                xwr.startDocument();
-                xwr.startElement("record");
-                xwr.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-                if (options.shortAttributes){
-                    xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecordS.xsd");
-                }
-                else{
-                    xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecord.xsd");
-                }
-                recordInfo.writeXml(xwr, options);
-                xwr.startElement("turns");
-            }
+			} else if (isxml) {
+				xwr.startDocument();
+				xwr.startElement("record");
+				xwr.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+				if (options.shortAttributes) {
+					xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecordS.xsd");
+				} else {
+					xwr.writeAttribute("xsi:noNamespaceSchemaLocation", "battleRecord.xsd");
+				}
+				recordInfo.writeXml(xwr, options);
+				xwr.startElement("turns");
+			}
 
-            if (recordInfo.turnsInRounds != null) {
+			if (recordInfo.turnsInRounds != null) {
 				fis = new FileInputStream(tempFile);
 				bis = new BufferedInputStream(fis, 1024 * 1024);
 				ois = new ObjectInputStream(bis);
@@ -355,7 +354,7 @@ public class RecordManager implements IRecordManager {
 								}
 
 								if (isbin) {
-                                    turn.stripDetails(options);
+									turn.stripDetails(options);
 									oos.writeObject(turn);
 								} else if (isxml) {
 									turn.writeXml(xwr, options);
@@ -429,9 +428,9 @@ public class RecordManager implements IRecordManager {
 			if (time != recordInfo.turnsInRounds[round]) {
 				throw new Error("Something rotten");
 			}
-            if (time == 0) {
-                objectWriteStream.reset();
-            }
+			if (time == 0) {
+				objectWriteStream.reset();
+			}
 			recordInfo.turnsInRounds[round]++;
 			recordInfo.roundsCount = round + 1;
 			objectWriteStream.writeObject(turn);

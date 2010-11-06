@@ -116,6 +116,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 				getAuthorField().setText(a);
 				URL u = fileSpecification.getWebpage();
 				String wp = (u != null) ? u.toString() : "";		
+
 				getWebpageField().setText(wp);
 
 				String fullPackage = fileSpecification.getFullPackage();

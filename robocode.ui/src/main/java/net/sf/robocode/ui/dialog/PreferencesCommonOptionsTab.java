@@ -111,15 +111,19 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 
 	private JCheckBox getEnableAutoRecordingCheckBox() {
 		if (enableAutoRecordingCheckBox == null) {
-			enableAutoRecordingCheckBox = new JCheckBox("Enable auto recording (every finished battle is automatically saved into battles folder)");
+			enableAutoRecordingCheckBox = new JCheckBox(
+					"Enable auto recording (every finished battle is automatically saved into battles folder)");
 			enableAutoRecordingCheckBox.setMnemonic('u');
 			enableAutoRecordingCheckBox.setDisplayedMnemonicIndex(8);
 
-			enableAutoRecordingCheckBox.addActionListener(new ActionListener() {
+			enableAutoRecordingCheckBox.addActionListener(
+					new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					boolean isSelected = enableAutoRecordingCheckBox.isSelected();
+
 					enableReplayRecordingCheckBox.setEnabled(!isSelected);
-					enableReplayRecordingCheckBox.setSelected(isSelected ? true : properties.getOptionsCommonEnableReplayRecording());
+					enableReplayRecordingCheckBox.setSelected(
+							isSelected ? true : properties.getOptionsCommonEnableReplayRecording());
 				}
 			});
 		}

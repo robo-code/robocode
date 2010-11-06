@@ -373,7 +373,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 				printResultsData(event);
 			}
 			if (setup.recordFilename != null) {
-				recordManager.saveRecord(setup.recordFilename, BattleRecordFormat.BINARY_ZIP, new SerializableOptions(false));
+				recordManager.saveRecord(setup.recordFilename, BattleRecordFormat.BINARY_ZIP,
+						new SerializableOptions(false));
 			}
 			if (setup.recordXmlFilename != null) {
 				recordManager.saveRecord(setup.recordXmlFilename, BattleRecordFormat.XML, new SerializableOptions(false));

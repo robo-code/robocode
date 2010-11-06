@@ -44,9 +44,9 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		writer.startElement("recordInfo"); {
 			writer.writeAttribute("robotCount", robotCount);
 			writer.writeAttribute("roundsCount", roundsCount);
-            if (!options.skipVersion){
-			    writer.writeAttribute("ver", serialVersionUID);
-            }
+			if (!options.skipVersion) {
+				writer.writeAttribute("ver", serialVersionUID);
+			}
 			writer.startElement("rules"); {
 				writer.writeAttribute("battlefieldWidth", battleRules.getBattlefieldWidth());
 				writer.writeAttribute("battlefieldHeight", battleRules.getBattlefieldHeight());
@@ -196,9 +196,9 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 				writer.writeAttribute("firsts", firsts);
 				writer.writeAttribute("seconds", seconds);
 				writer.writeAttribute("thirds", thirds);
-                if (!options.skipVersion){
-    				writer.writeAttribute("ver", serialVersionUID);
-                }
+				if (!options.skipVersion) {
+					writer.writeAttribute("ver", serialVersionUID);
+				}
 			}
 			writer.endElement();
 		}

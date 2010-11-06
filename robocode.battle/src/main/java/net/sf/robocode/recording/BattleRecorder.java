@@ -32,15 +32,15 @@ import java.util.Calendar;
  * @author Flemming N. Larsen (original)
  */
 public class BattleRecorder {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
 	private final RecordManager recordmanager;
-    private final ISettingsManager properties;
+	private final ISettingsManager properties;
 	private BattleObserver battleObserver;
 
 	public BattleRecorder(RecordManager recordmanager, ISettingsManager properties) {
 		this.recordmanager = recordmanager;
-        this.properties=properties;
+		this.properties = properties;
 	}
 
 	public void attachRecorder(BattleEventDispatcher battleEventDispatcher) {
@@ -90,12 +90,12 @@ public class BattleRecorder {
 		public void onBattleCompleted(BattleCompletedEvent event) {
 			recordmanager.updateRecordInfoResults(Arrays.asList(event.getIndexedResults()));
 
-            if (properties.getOptionsCommonEnableAutoRecording()) {
-                writeAutoRecord(event);
-            }
+			if (properties.getOptionsCommonEnableAutoRecording()) {
+				writeAutoRecord(event);
+			}
 		}
 
-        @Override
+		@Override
 		public void onRoundStarted(RoundStartedEvent event) {
 			currentRound = event.getRound();
 			currentTurn = 0;
@@ -108,33 +108,34 @@ public class BattleRecorder {
 			recordmanager.writeTurn(event.getTurnSnapshot(), currentRound, currentTurn);
 		}
 
-        private void writeAutoRecord(BattleCompletedEvent event) {
-            try {
-                final BattleResults[] results = event.getIndexedResults();
-                StringBuilder name = new StringBuilder();
+		private void writeAutoRecord(BattleCompletedEvent event) {
+			try {
+				final BattleResults[] results = event.getIndexedResults();
+				StringBuilder name = new StringBuilder();
 
-                name.append(FileUtil.getBattlesDir().getCanonicalPath());
-                name.append(File.separator);
+				name.append(FileUtil.getBattlesDir().getCanonicalPath());
+				name.append(File.separator);
 
-                Calendar calendar = Calendar.getInstance();
-                name.append(dateFormat.format(calendar.getTime()));
-                name.append('-');
-                for (BattleResults r : results) {
-                    name.append(r.getTeamLeaderName());
-                    name.append('-');
-                }
-                name.setLength(name.length() - 1);
-                if (properties.getOptionsCommonAutoRecordingXML()){
-                    name.append(".xml.zip");
-                    recordmanager.saveRecord(name.toString(), BattleRecordFormat.XML_ZIP, new SerializableOptions(true));
-                }
-                else{
-                    name.append(".zip.br");
-                    recordmanager.saveRecord(name.toString(), BattleRecordFormat.BINARY_ZIP, new SerializableOptions(true));
-                }
-            } catch (IOException e) {
-                Logger.logError(e);
-            }
-        }
+				Calendar calendar = Calendar.getInstance();
+
+				name.append(dateFormat.format(calendar.getTime()));
+				name.append('-');
+				for (BattleResults r : results) {
+					name.append(r.getTeamLeaderName());
+					name.append('-');
+				}
+				name.setLength(name.length() - 1);
+				if (properties.getOptionsCommonAutoRecordingXML()) {
+					name.append(".xml.zip");
+					recordmanager.saveRecord(name.toString(), BattleRecordFormat.XML_ZIP, new SerializableOptions(true));
+				} else {
+					name.append(".zip.br");
+					recordmanager.saveRecord(name.toString(), BattleRecordFormat.BINARY_ZIP,
+							new SerializableOptions(true));
+				}
+			} catch (IOException e) {
+				Logger.logError(e);
+			}
+		}
 	}
 }

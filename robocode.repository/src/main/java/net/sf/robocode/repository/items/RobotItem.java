@@ -438,6 +438,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private void saveProperties() {
 		File file = new File(root.getPath(), className.replaceAll("\\.", "/") + PROPERTIES_EXTENSION);
 		FileOutputStream fos = null;
+
 		try {
 			fos = new FileOutputStream(file);
 			saveProperties(fos);
