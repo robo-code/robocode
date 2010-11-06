@@ -86,6 +86,9 @@ public class PackagerOptionsPanel extends WizardPanel {
 
 			if (selectedRobots.size() == 1) {
 				IRepositoryItem fileSpecification = selectedRobots.get(0);
+
+				getIncludeSource().setSelected(fileSpecification.getIncludeSource());
+
 				String v = fileSpecification.getVersion();
 
 				if (v == null || v.length() == 0) {
@@ -112,12 +115,8 @@ public class PackagerOptionsPanel extends WizardPanel {
 				}
 				getAuthorField().setText(a);
 				URL u = fileSpecification.getWebpage();
-
-				if (u == null) {
-					getWebpageField().setText("");
-				} else {
-					getWebpageField().setText(u.toString());
-				}
+				String wp = (u != null) ? u.toString() : "";		
+				getWebpageField().setText(wp);
 
 				String fullPackage = fileSpecification.getFullPackage();
 
