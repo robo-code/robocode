@@ -35,7 +35,8 @@ public class Version implements Comparable<Object> {
 		if (!version.matches("\\s*[0-9]+\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?(\\s?(([aA]lpha)|([bB]eta))(\\s?[0-9]+)?)?\\s*")) {
 			throw new IllegalArgumentException("The format of the version string is not a valid");
 		}
-		this.version = version.trim();
+		version = version.trim();
+		this.version = version;
 
 		// Split the version number into its integer numbers
 		final String[] numbers = version.split("\\.");
