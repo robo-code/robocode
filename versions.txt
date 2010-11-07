@@ -3,6 +3,7 @@ Version 1.7.3.0 Alpha
 ---------------
 = Bugfixes =
 * Bug [2832113] - The gun shot sound isn't working
+* Fixed typo in the documentation with valid range of values for the battlefield width and height. Thanks goes to Tamás Balog for pointing this out.
 
 = New features =
 * Added "Enable auto recording" option to the Common Options, which automatically generates a zipped XML record for every battle. Works only when "Enable replay recording" is enabled (is automatically set when enabling auto recording).
