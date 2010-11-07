@@ -209,13 +209,13 @@ public final class Rules {
 	}
 
 	/**
-	 * Returns the speed of a bullet given a specific bullet power measured in
-	 * pixels/turn
+	 * Returns the speed of a bullet given a specific bullet power measured in pixels/turn.
 	 *
 	 * @param bulletPower the energy power of the bullet.
 	 * @return bullet speed in pixels/turn
 	 */
 	public static double getBulletSpeed(double bulletPower) {
+		bulletPower = Math.min(Math.max(bulletPower, MIN_BULLET_POWER), MAX_BULLET_POWER);
 		return 20 - 3 * bulletPower;
 	}
 

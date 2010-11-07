@@ -200,7 +200,8 @@ namespace Robocode
         /// <param name="bulletPower">the energy power of the bullet.</param>
         public static double GetBulletSpeed(double bulletPower)
         {
-            return 20 - 3*bulletPower;
+			bulletPower = Math.Min(Math.Max(bulletPower, MIN_BULLET_POWER), MAX_BULLET_POWER);
+			return 20 - 3 * bulletPower;
         }
 
         /// <summary>
