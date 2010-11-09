@@ -8,8 +8,8 @@
 
 #endregion
 
+using System;
 using System.IO;
-using java.lang;
 using net.sf.jni4net;
 using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.dotnet.repository.root;
@@ -19,6 +19,8 @@ using net.sf.robocode.peer;
 using net.sf.robocode.repository;
 using net.sf.robocode.security;
 using robocode.control;
+using Object = java.lang.Object;
+using String = java.lang.String;
 
 namespace net.sf.robocode.dotnet.host
 {
@@ -26,8 +28,7 @@ namespace net.sf.robocode.dotnet.host
     {
         #region IHost Members
 
-        public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification,
-                                                   IRobotStatics statics, IRobotPeer peer)
+        public IHostingRobotProxy createRobotProxy(IHostManager hostManager, Object robotSpecification, IRobotStatics statics, IRobotPeer peer)
         {
             Object s = HiddenAccess.getFileSpecification(robotSpecification);
             var itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);

@@ -44,7 +44,7 @@ namespace robocode.exception {
                 base(info, context) {
         }
         
-        public new static global::java.lang.Class _class {
+        public static global::java.lang.Class _class {
             get {
                 return global::robocode.exception.DeathException.staticClass;
             }

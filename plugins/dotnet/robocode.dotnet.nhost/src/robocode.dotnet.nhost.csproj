@@ -56,6 +56,7 @@
     <Compile Include="..\target\build-sources\generated-sources\META-INF\AssemblyInfo.cs">
       <Link>generated\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="generated\java\lang\Comparable.generated.cs" />
     <Compile Include="generated\net\sf\robocode\core\ContainerBase.generated.cs">
       <SubType>Code</SubType>
     </Compile>

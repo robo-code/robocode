@@ -192,7 +192,7 @@ namespace net.sf.robocode.serialization {
                 base(@__env) {
         }
         
-        public new static global::java.lang.Class _class {
+        public static global::java.lang.Class _class {
             get {
                 return global::net.sf.robocode.serialization.RbSerializer.staticClass;
             }

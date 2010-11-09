@@ -7,12 +7,8 @@
   <ClassPath Path="robocode.dotnet.host/target/classes"/>
   <ClassPath Path="../../robocode.api/target/classes"/>
   <ClassPath Path="../../robocode.host/target/classes"/>
-  <AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.dotnet.nhost-1.7.2.2.dll" />
-  <!-- 
-  -->
 
   <!-- java -->
-  
   <JavaClass TypeName="net.sf.robocode.security.HiddenAccess"/>
   <JavaClass TypeName="net.sf.robocode.host.IHost"/>
   <JavaClass TypeName="net.sf.robocode.host.IHostManager"/>
@@ -35,12 +31,6 @@
   <JavaClass TypeName="robocode.exception.AbortedException"/>
   <JavaClass TypeName="robocode.exception.DeathException"/>
   <JavaClass TypeName="robocode.exception.DisabledException"/>
+  <JavaClass TypeName="java.lang.Comparable"/>
   
-  <!-- .NET -->
-  <ClrType TypeName="net.sf.robocode.dotnet.host.DotnetHost"/>
-  <ClrType TypeName="net.sf.robocode.dotnet.repository.root.DllRootHelper"/>
-  <ClrType TypeName="net.sf.robocode.dotnet.nhost.ModuleN"/>
-  
-
-
 </jni4net-proxygen>

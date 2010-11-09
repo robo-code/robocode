@@ -30,10 +30,10 @@ public class DllRootHelper extends system.Object {
     public native static java.lang.String[] findItems(java.lang.String dllPath);
     
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/RobotType;")
-    public native static net.sf.robocode.repository.RobotType GetRobotType(net.sf.robocode.repository.IRobotRepositoryItem robotRepositoryItem);
+    public native static system.Object GetRobotType(java.lang.Comparable robotRepositoryItem);
     
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)LSystem/String;")
-    public native static java.lang.String GetDllFileName(net.sf.robocode.repository.IRobotRepositoryItem robotRepositoryItem);
+    public native static java.lang.String GetDllFileName(java.lang.Comparable robotRepositoryItem);
     
     public static system.Type typeof() {
         return net.sf.robocode.dotnet.repository.root.DllRootHelper.staticType;
