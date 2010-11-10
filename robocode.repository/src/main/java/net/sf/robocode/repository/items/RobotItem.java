@@ -56,7 +56,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 	private final static String ROBOT_CLASSNAME = "robot.classname";
 	private final static String ROBOT_VERSION = "robot.version";
-	private final static String ROBOT_LANGUAGE = "robot.language";
+	protected final static String ROBOT_LANGUAGE = "robot.language";
 	private final static String ROBOT_DESCRIPTION = "robot.description";
 	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
 	private final static String ROBOT_WEBPAGE = "robot.webpage";
