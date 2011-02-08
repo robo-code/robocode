@@ -64,7 +64,8 @@ public class SettingsManager implements ISettingsManager {
 			DEFAULT_FILE_WALL_COLLISION_SFX = DEFAULT_FILE_ROBOT_COLLISION_SFX,
 			DEFAULT_FILE_ROBOT_DEATH_SFX = "/net/sf/robocode/sound/sounds/explode.wav",
 			DEFAULT_FILE_BULLET_HITS_ROBOT_SFX = "/net/sf/robocode/sound/sounds/shellhit.wav",
-			DEFAULT_FILE_BULLET_HITS_BULLET_SFX = DEFAULT_FILE_BULLET_HITS_ROBOT_SFX;
+			DEFAULT_FILE_BULLET_HITS_BULLET_SFX = DEFAULT_FILE_BULLET_HITS_ROBOT_SFX,
+			DEFAULT_IMAGE_TYPE = "naval";
 
 	// View Options (Arena)
 	private boolean
@@ -825,5 +826,10 @@ public class SettingsManager implements ISettingsManager {
 			}
 			return res;
 		}
+	}
+
+	// Get the type of images (Standard/Naval/etc)
+	public String getImagesType() {
+		return DEFAULT_IMAGE_TYPE;
 	}
 }

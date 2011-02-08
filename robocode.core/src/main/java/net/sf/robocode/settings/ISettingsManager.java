@@ -25,6 +25,8 @@ import java.util.Date;
  */
 public interface ISettingsManager {
 	void saveProperties();
+	
+	String getImagesType();
 
 	boolean getOptionsViewRobotNames();
 
