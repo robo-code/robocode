@@ -390,7 +390,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		if (execResults.getEvents() != null) {
 			for (Event event : execResults.getEvents()) {
 				eventManager.add(event);
-				HiddenAccess.updateBullets(event, bullets);
 			}
 		}
 

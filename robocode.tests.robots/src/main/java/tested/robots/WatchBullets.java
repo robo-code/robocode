@@ -36,13 +36,6 @@ public class WatchBullets extends AdvancedRobot {
 	}
 
 	@Override
-	public void onBulletHit(BulletHitEvent event) {
-		if (bullet != event.getBullet()) {
-			out.println("Failed bullet identity");
-		}
-	}
-
-	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// Calculate exact location of the robot
 		double absoluteBearing = getHeading() + e.getBearing();

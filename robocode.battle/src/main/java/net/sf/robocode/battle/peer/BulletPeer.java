@@ -118,8 +118,12 @@ public class BulletPeer {
 				y = lastY;
 				b.x = b.lastX;
 				b.y = b.lastY;
-				owner.addEvent(new BulletHitBulletEvent(createBullet(), b.createBullet()));
-				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(), createBullet()));
+
+				Bullet thisBullet = createBullet();
+				Bullet otherBullet = b.createBullet();
+
+				owner.addEvent(new BulletHitBulletEvent(thisBullet, otherBullet));
+				b.owner.addEvent(new BulletHitBulletEvent(otherBullet, thisBullet));
 				break;
 			}
 		}
@@ -184,17 +188,15 @@ public class BulletPeer {
 				}
 				owner.updateEnergy(Rules.getBulletHitBonus(power));
 
-				HitByBulletEvent event = new HitByBulletEvent(
-						robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()),
-						createBullet());
+				Bullet bullet = createBullet();
 
-				otherRobot.addEvent(event);
+				otherRobot.addEvent(
+						new HitByBulletEvent(
+								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()), bullet));
 
 				state = BulletState.HIT_VICTIM;
-				final BulletHitEvent bhe = new BulletHitEvent(otherRobot.getName(), otherRobot.getEnergy(),
-						createBullet());
 
-				owner.addEvent(bhe);
+				owner.addEvent(new BulletHitEvent(otherRobot.getName(), otherRobot.getEnergy(), bullet));
 				frame = 0;
 				victim = otherRobot;
 

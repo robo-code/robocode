@@ -13,12 +13,10 @@ package net.sf.robocode.security;
 
 
 import net.sf.robocode.peer.IRobotStatics;
-import robocode.Bullet;
 import robocode.Event;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
-import java.util.Hashtable;
 
 
 /**
@@ -30,6 +28,5 @@ public interface IHiddenEventHelper {
 	void setTime(Event event, long newTime);
 	boolean isCriticalEvent(Event event);
 	void dispatch(Event event, IBasicRobot robot, IRobotStatics statics, Graphics2D graphics);
-	void updateBullets(Event event, Hashtable<Integer, Bullet> bullets);
 	byte getSerializationType(Event event);
 }

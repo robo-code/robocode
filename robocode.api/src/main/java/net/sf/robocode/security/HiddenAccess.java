@@ -34,7 +34,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 
 /**
@@ -201,10 +200,6 @@ public class HiddenAccess {
 
 	public static byte getSerializationType(Event e) {
 		return eventHelper.getSerializationType(e);
-	}
-
-	public static void updateBullets(Event e, Hashtable<Integer, Bullet> bullets) {
-		eventHelper.updateBullets(e, bullets);
 	}
 
 	public static void update(Bullet bullet, double x, double y, String victimName, boolean isActive) {

@@ -23,8 +23,6 @@ import robocode.control.snapshot.IRobotSnapshot;
  * @author Pavel Savara (original)
  */
 public class TestWatchBullet extends RobocodeTestBed {
-	boolean messagedIdentity;
-
 	@Test
 	public void run() {
 		super.run();
@@ -45,15 +43,6 @@ public class TestWatchBullet extends RobocodeTestBed {
 		test(out, time, 45, "45 455.5520553019654 261.3965198594347 347.8464407127698 true");
 		test(out, time, 51, "51 441.6569110163638 325.91725269224054 347.8464407127698 true");
 		test(out, time, 52, "52 439.34105363543017 336.67070816437484 347.8464407127698 false");
-
-		if (out.contains("Failed bullet identity")) {
-			messagedIdentity = true;
-		}
-	}
-
-	@Override
-	protected void runTeardown() {
-		net.sf.robocode.test.helpers.Assert.assertFalse(messagedIdentity);
 	}
 
 	private void test(String out, int timecurr, int timeWatch, String in) {
