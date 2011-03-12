@@ -118,7 +118,7 @@ public class EventManager implements IEventManager {
 
 	public void clearAllEvents(boolean includingSystemEvents) {
 		eventQueue.clear(includingSystemEvents);
-		customEvents.clear();
+		// customEvents.clear(); // Custom event should not be cleared here
 	}
 
 	public void cleanup() {
