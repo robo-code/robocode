@@ -38,32 +38,30 @@ namespace net.sf.robocode.security {
         
         internal static global::net.sf.jni4net.jni.MethodId _getSerializationType10;
         
-        internal static global::net.sf.jni4net.jni.MethodId _updateBullets11;
+        internal static global::net.sf.jni4net.jni.MethodId _createSpecification11;
         
-        internal static global::net.sf.jni4net.jni.MethodId _createSpecification12;
+        internal static global::net.sf.jni4net.jni.MethodId _getFileSpecification12;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getFileSpecification13;
+        internal static global::net.sf.jni4net.jni.MethodId _getRobotTeamName13;
         
-        internal static global::net.sf.jni4net.jni.MethodId _getRobotTeamName14;
+        internal static global::net.sf.jni4net.jni.MethodId _setTeamId14;
         
-        internal static global::net.sf.jni4net.jni.MethodId _setTeamId15;
+        internal static global::net.sf.jni4net.jni.MethodId _createStatus15;
         
-        internal static global::net.sf.jni4net.jni.MethodId _createStatus16;
+        internal static global::net.sf.jni4net.jni.MethodId _createRules16;
         
-        internal static global::net.sf.jni4net.jni.MethodId _createRules17;
+        internal static global::net.sf.jni4net.jni.MethodId _isSafeThread17;
         
-        internal static global::net.sf.jni4net.jni.MethodId _isSafeThread18;
+        internal static global::net.sf.jni4net.jni.MethodId _initContainerForRobotEngine18;
         
-        internal static global::net.sf.jni4net.jni.MethodId _initContainerForRobotEngine19;
-        
-        internal static global::net.sf.jni4net.jni.MethodId @__ctorHiddenAccess20;
+        internal static global::net.sf.jni4net.jni.MethodId @__ctorHiddenAccess19;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
         public HiddenAccess() : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            @__env.NewObject(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess.@__ctorHiddenAccess20, this);
+            @__env.NewObject(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess.@__ctorHiddenAccess19, this);
             }
         }
         
@@ -91,18 +89,17 @@ namespace net.sf.robocode.security {
             global::net.sf.robocode.security.HiddenAccess._setEventPriority8 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "setEventPriority", "(Lrobocode/Event;I)V");
             global::net.sf.robocode.security.HiddenAccess._setDefaultPriority9 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "setDefaultPriority", "(Lrobocode/Event;)V");
             global::net.sf.robocode.security.HiddenAccess._getSerializationType10 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "getSerializationType", "(Lrobocode/Event;)B");
-            global::net.sf.robocode.security.HiddenAccess._updateBullets11 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "updateBullets", "(Lrobocode/Event;Ljava/util/Hashtable;)V");
-            global::net.sf.robocode.security.HiddenAccess._createSpecification12 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "createSpecification", "(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/la" +
+            global::net.sf.robocode.security.HiddenAccess._createSpecification11 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "createSpecification", "(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/la" +
                     "ng/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Strin" +
                     "g;)Lrobocode/control/RobotSpecification;");
-            global::net.sf.robocode.security.HiddenAccess._getFileSpecification13 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "getFileSpecification", "(Lrobocode/control/RobotSpecification;)Ljava/lang/Object;");
-            global::net.sf.robocode.security.HiddenAccess._getRobotTeamName14 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "getRobotTeamName", "(Lrobocode/control/RobotSpecification;)Ljava/lang/String;");
-            global::net.sf.robocode.security.HiddenAccess._setTeamId15 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "setTeamId", "(Lrobocode/control/RobotSpecification;Ljava/lang/String;)V");
-            global::net.sf.robocode.security.HiddenAccess._createStatus16 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "createStatus", "(DDDDDDDDDDDDIIIJ)Lrobocode/RobotStatus;");
-            global::net.sf.robocode.security.HiddenAccess._createRules17 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "createRules", "(IIIDJ)Lrobocode/BattleRules;");
-            global::net.sf.robocode.security.HiddenAccess._isSafeThread18 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "isSafeThread", "()Z");
-            global::net.sf.robocode.security.HiddenAccess._initContainerForRobotEngine19 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "initContainerForRobotEngine", "(Ljava/io/File;Lrobocode/control/events/IBattleListener;)V");
-            global::net.sf.robocode.security.HiddenAccess.@__ctorHiddenAccess20 = @__env.GetMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "<init>", "()V");
+            global::net.sf.robocode.security.HiddenAccess._getFileSpecification12 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "getFileSpecification", "(Lrobocode/control/RobotSpecification;)Ljava/lang/Object;");
+            global::net.sf.robocode.security.HiddenAccess._getRobotTeamName13 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "getRobotTeamName", "(Lrobocode/control/RobotSpecification;)Ljava/lang/String;");
+            global::net.sf.robocode.security.HiddenAccess._setTeamId14 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "setTeamId", "(Lrobocode/control/RobotSpecification;Ljava/lang/String;)V");
+            global::net.sf.robocode.security.HiddenAccess._createStatus15 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "createStatus", "(DDDDDDDDDDDDIIIJ)Lrobocode/RobotStatus;");
+            global::net.sf.robocode.security.HiddenAccess._createRules16 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "createRules", "(IIIDJ)Lrobocode/BattleRules;");
+            global::net.sf.robocode.security.HiddenAccess._isSafeThread17 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "isSafeThread", "()Z");
+            global::net.sf.robocode.security.HiddenAccess._initContainerForRobotEngine18 = @__env.GetStaticMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "initContainerForRobotEngine", "(Ljava/io/File;Lrobocode/control/events/IBattleListener;)V");
+            global::net.sf.robocode.security.HiddenAccess.@__ctorHiddenAccess19 = @__env.GetMethodID(global::net.sf.robocode.security.HiddenAccess.staticClass, "<init>", "()V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lrobocode/Event;Lrobocode/robotinterfaces/IBasicRobot;Lnet/sf/robocode/peer/IRob" +
@@ -194,21 +191,13 @@ namespace net.sf.robocode.security {
             }
         }
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lrobocode/Event;Ljava/util/Hashtable;)V")]
-        public static void updateBullets(global::java.lang.Object par0, global::java.util.Hashtable par1) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 14)){
-            @__env.CallStaticVoidMethod(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._updateBullets11, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1));
-            }
-        }
-        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/la" +
             "ng/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Strin" +
             "g;)Lrobocode/control/RobotSpecification;")]
         public static global::java.lang.Object createSpecification(global::java.lang.Object par0, global::java.lang.String par1, global::java.lang.String par2, global::java.lang.String par3, global::java.lang.String par4, global::java.lang.String par5, global::java.lang.String par6, global::java.lang.String par7, global::java.lang.String par8) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 28)){
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._createSpecification12, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par2), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par3), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par4), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par5), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par6), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par7), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par8)));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._createSpecification11, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par2), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par3), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par4), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par5), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par6), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par7), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par8)));
             }
         }
         
@@ -216,7 +205,7 @@ namespace net.sf.robocode.security {
         public static global::java.lang.Object getFileSpecification(global::java.lang.Object par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
-            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._getFileSpecification13, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._getFileSpecification12, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
             }
         }
         
@@ -224,7 +213,7 @@ namespace net.sf.robocode.security {
         public static global::java.lang.String getRobotTeamName(global::java.lang.Object par0) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._getRobotTeamName14, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._getRobotTeamName13, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0)));
             }
         }
         
@@ -232,7 +221,7 @@ namespace net.sf.robocode.security {
         public static void setTeamId(global::java.lang.Object par0, global::java.lang.String par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 14)){
-            @__env.CallStaticVoidMethod(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._setTeamId15, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1));
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._setTeamId14, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1));
             }
         }
         
@@ -256,7 +245,7 @@ namespace net.sf.robocode.security {
                     long par15) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 42)){
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._createStatus16, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par5), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par6), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par7), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par8), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par9), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par10), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par11), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par12), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par13), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par14), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par15)));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._createStatus15, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par5), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par6), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par7), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par8), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par9), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par10), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par11), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par12), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par13), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par14), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par15)));
             }
         }
         
@@ -264,7 +253,7 @@ namespace net.sf.robocode.security {
         public static global::java.lang.Object createRules(int par0, int par1, int par2, double par3, long par4) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 20)){
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._createRules17, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4)));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Object>(@__env, @__env.CallStaticObjectMethodPtr(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._createRules16, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4)));
             }
         }
         
@@ -272,7 +261,7 @@ namespace net.sf.robocode.security {
         public static bool isSafeThread() {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((bool)(@__env.CallStaticBooleanMethod(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._isSafeThread18)));
+            return ((bool)(@__env.CallStaticBooleanMethod(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._isSafeThread17)));
             }
         }
         
@@ -280,7 +269,7 @@ namespace net.sf.robocode.security {
         public static void initContainerForRobotEngine(global::java.io.File par0, global::java.lang.Object par1) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 14)){
-            @__env.CallStaticVoidMethod(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._initContainerForRobotEngine19, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1));
+            @__env.CallStaticVoidMethod(global::net.sf.robocode.security.HiddenAccess.staticClass, global::net.sf.robocode.security.HiddenAccess._initContainerForRobotEngine18, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1));
             }
         }
         
