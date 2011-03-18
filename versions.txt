@@ -1,5 +1,5 @@
 Version 1.7.3.0 Alpha
-(10-Mar-2011)
+(18-Mar-2011)
 ---------------
 = Bugfixes =
 * Bug [2832113] - The gun shot sound isn't working.
@@ -11,6 +11,9 @@ Version 1.7.3.0 Alpha
 * Added "Enable auto recording" option to the Common Options, which automatically generates a zipped XML record for every battle. Works only when "Enable replay recording" is enabled (is automatically set when enabling auto recording).
 * Req [3026852] - Ability to save the properties file for robots in dev. path.
 * Req [3066647] - Rules.getBulletSpeed(). Keep bullet power within 0.1 - 3.0, even when input is lesser or greater than this valid range.
+
+= Changes =
+* Upgraded to use jni4net v0.8.3.
 
 Version 1.7.2.2
 (04-Nov-2010)
