@@ -34,7 +34,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 
 /**
@@ -203,10 +202,6 @@ public class HiddenAccess {
 		return eventHelper.getSerializationType(e);
 	}
 
-	public static void updateBullets(Event e, Hashtable<Integer, Bullet> bullets) {
-		eventHelper.updateBullets(e, bullets);
-	}
-
 	public static void update(Bullet bullet, double x, double y, String victimName, boolean isActive) {
 		bulletHelper.update(bullet, x, y, victimName, isActive);
 	}
@@ -234,8 +229,9 @@ public class HiddenAccess {
 				numRounds, time);
 	}
 
-	public static BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime) {
-		return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
+	public static BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames) {
+		return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime,
+				hideEnemyNames);
 	}
 
 	public static boolean isSafeThread() {

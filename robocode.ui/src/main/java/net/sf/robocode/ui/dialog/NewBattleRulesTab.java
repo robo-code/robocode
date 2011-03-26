@@ -28,10 +28,9 @@ public class NewBattleRulesTab extends JPanel {
 	private JTextField gunCoolingRateField;
 	private JLabel inactivityTimeLabel;
 	private JTextField inactivityTimeField;
+	private JLabel hideEnemyNamesLabel;
+	private JCheckBox hideEnemyNamesCheckBox;
 
-	/**
-	 * NewBattleRulesTab constructor
-	 */
 	public NewBattleRulesTab() {
 		super();
 		initialize();
@@ -41,11 +40,6 @@ public class NewBattleRulesTab extends JPanel {
 		return Double.parseDouble(getGunCoolingRateField().getText());
 	}
 
-	/**
-	 * Return the gunRechargeRateField
-	 *
-	 * @return JTextField
-	 */
 	private JTextField getGunCoolingRateField() {
 		if (gunCoolingRateField == null) {
 			gunCoolingRateField = new JTextField();
@@ -53,11 +47,6 @@ public class NewBattleRulesTab extends JPanel {
 		return gunCoolingRateField;
 	}
 
-	/**
-	 * Return the gunCoolingRateLabel
-	 *
-	 * @return JLabel
-	 */
 	private JLabel getGunCoolingRateLabel() {
 		if (gunCoolingRateLabel == null) {
 			gunCoolingRateLabel = new JLabel();
@@ -73,11 +62,6 @@ public class NewBattleRulesTab extends JPanel {
 		return Long.parseLong(getInactivityTimeField().getText());
 	}
 
-	/**
-	 * Return the inactivityTimeField
-	 *
-	 * @return JTextField
-	 */
 	private JTextField getInactivityTimeField() {
 		if (inactivityTimeField == null) {
 			inactivityTimeField = new JTextField();
@@ -85,11 +69,6 @@ public class NewBattleRulesTab extends JPanel {
 		return inactivityTimeField;
 	}
 
-	/**
-	 * Return the inactivityTimeLabel
-	 *
-	 * @return JLabel
-	 */
 	private JLabel getInactivityTimeLabel() {
 		if (inactivityTimeLabel == null) {
 			inactivityTimeLabel = new JLabel();
@@ -99,18 +78,37 @@ public class NewBattleRulesTab extends JPanel {
 		return inactivityTimeLabel;
 	}
 
-	/**
-	 * Initialize the class.
-	 */
+	public boolean getHideEnemyNames() {
+		return getHideEnemyNamesCheckBox().isSelected();
+	}
+
+	private JCheckBox getHideEnemyNamesCheckBox() {
+		if (hideEnemyNamesCheckBox == null) {
+			hideEnemyNamesCheckBox = new JCheckBox();
+		}
+		return hideEnemyNamesCheckBox;
+	}
+
+	private JLabel getHideEnemyNamesLabel() {
+		if (hideEnemyNamesLabel == null) {
+			hideEnemyNamesLabel = new JLabel();
+			hideEnemyNamesLabel.setText("Hide Enemy Names:");
+			hideEnemyNamesLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
+		return hideEnemyNamesLabel;
+	}
+
 	private void initialize() {
 		JPanel j = new JPanel();
 
-		j.setLayout(new GridLayout(4, 2, 5, 5));
+		j.setLayout(new GridLayout(3, 2, 5, 5));
 		j.setBorder(BorderFactory.createEtchedBorder());
 		j.add(getGunCoolingRateLabel(), getGunCoolingRateLabel().getName());
 		j.add(getGunCoolingRateField(), getGunCoolingRateField().getName());
 		j.add(getInactivityTimeLabel(), getInactivityTimeLabel().getName());
 		j.add(getInactivityTimeField(), getInactivityTimeField().getName());
+		j.add(getHideEnemyNamesLabel(), getHideEnemyNamesLabel().getName());
+		j.add(getHideEnemyNamesCheckBox(), getHideEnemyNamesCheckBox().getName());
 		add(j);
 	}
 
@@ -120,5 +118,9 @@ public class NewBattleRulesTab extends JPanel {
 
 	public void setInactivityTime(long inactivityTime) {
 		getInactivityTimeField().setText("" + inactivityTime);
+	}
+
+	public void setHideEnemyNames(boolean hideEnemyNames) {
+		getHideEnemyNamesCheckBox().setSelected(hideEnemyNames);
 	}
 }

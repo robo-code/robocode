@@ -9,10 +9,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="robocode.api" exported="" />
-    <orderEntry type="module" module-name="robocode.core" exported="" />
-    <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
+    <orderEntry type="module" module-name="robocode.api" />
+    <orderEntry type="module" module-name="robocode.core" />
+    <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
   </component>
 </module>
 

@@ -22,7 +22,6 @@ import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 import java.nio.ByteBuffer;
-import java.util.Hashtable;
 
 
 /**
@@ -74,15 +73,6 @@ public final class BulletMissedEvent extends Event {
 		if (listener != null) {
 			listener.onBulletMissed(this);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	final void updateBullets(Hashtable<Integer, Bullet> bullets) {
-		// we need to pass same instance
-		bullet = bullets.get(bullet.getBulletId());
 	}
 
 	/**

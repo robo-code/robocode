@@ -36,6 +36,15 @@ class __IHostManager extends system.Object implements net.sf.robocode.host.IHost
     @net.sf.jni4net.attributes.ClrMethod("()V")
     public native void cleanup();
     
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;Ljava/lang/Object;Lnet/sf/robocode/peer/IRobotPeer;)Ljava/lang/Object;")
+    public native java.lang.Object createRobotProxy(robocode.control.RobotSpecification par0, net.sf.robocode.host.RobotStatics par1, net.sf.robocode.peer.IRobotPeer par2);
+    
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;")
+    public native java.lang.String[] getReferencedClasses(net.sf.robocode.repository.IRobotRepositoryItem par0);
+    
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;")
+    public native net.sf.robocode.repository.RobotType getRobotType(net.sf.robocode.repository.IRobotRepositoryItem par0, boolean par1, boolean par2);
+    
     @net.sf.jni4net.attributes.ClrMethod("()V")
     public native void initSecurity();
     
@@ -53,14 +62,5 @@ class __IHostManager extends system.Object implements net.sf.robocode.host.IHost
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/io/PrintStream;")
     public native java.io.PrintStream getRobotOutputStream();
-    
-    @net.sf.jni4net.attributes.ClrMethod("(Lrobocode/control/RobotSpecification;Ljava/lang/Object;Lnet/sf/robocode/peer/IRobotPeer;)Ljava/lang/Object;")
-    public native java.lang.Object createRobotProxy(robocode.control.RobotSpecification par0, net.sf.robocode.host.RobotStatics par1, net.sf.robocode.peer.IRobotPeer par2);
-    
-    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;")
-    public native java.lang.String[] getReferencedClasses(net.sf.robocode.repository.IRobotRepositoryItem par0);
-    
-    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;")
-    public native net.sf.robocode.repository.RobotType getRobotType(net.sf.robocode.repository.IRobotRepositoryItem par0, boolean par1, boolean par2);
 }
 //</generated-proxy>

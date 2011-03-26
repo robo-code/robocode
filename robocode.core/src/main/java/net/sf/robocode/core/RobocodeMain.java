@@ -38,6 +38,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
@@ -372,10 +373,11 @@ public final class RobocodeMain extends RobocodeMainBase {
 				printResultsData(event);
 			}
 			if (setup.recordFilename != null) {
-				recordManager.saveRecord(setup.recordFilename, BattleRecordFormat.BINARY_ZIP);
+				recordManager.saveRecord(setup.recordFilename, BattleRecordFormat.BINARY_ZIP,
+						new SerializableOptions(false));
 			}
 			if (setup.recordXmlFilename != null) {
-				recordManager.saveRecord(setup.recordXmlFilename, BattleRecordFormat.XML);
+				recordManager.saveRecord(setup.recordXmlFilename, BattleRecordFormat.XML, new SerializableOptions(false));
 			}
 		}
 

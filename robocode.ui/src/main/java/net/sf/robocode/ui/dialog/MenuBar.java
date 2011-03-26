@@ -31,6 +31,7 @@ import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManagerExt;
@@ -349,7 +350,7 @@ public class MenuBar extends JMenuBar {
 				if (path != null) {
 					try {
 						robocodeFrame.setBusyPointer(true);
-						recordManager.saveRecord(path, BattleRecordFormat.BINARY_ZIP);
+						recordManager.saveRecord(path, BattleRecordFormat.BINARY_ZIP, new SerializableOptions(false));
 					} finally {
 						robocodeFrame.setBusyPointer(false);
 					}
@@ -370,7 +371,7 @@ public class MenuBar extends JMenuBar {
 				if (path != null) {
 					try {
 						robocodeFrame.setBusyPointer(true);
-						recordManager.saveRecord(path, BattleRecordFormat.XML);
+						recordManager.saveRecord(path, BattleRecordFormat.XML, new SerializableOptions(false));
 					} finally {
 						robocodeFrame.setBusyPointer(false);
 					}

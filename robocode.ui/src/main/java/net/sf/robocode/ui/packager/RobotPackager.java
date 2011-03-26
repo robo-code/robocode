@@ -225,12 +225,12 @@ public class RobotPackager extends JDialog implements WizardListener {
 			}
 		}
 		final String desc = getPackagerOptionsPanel().getDescriptionArea().getText();
-		final String autor = getPackagerOptionsPanel().getAuthorField().getText();
+		final String author = getPackagerOptionsPanel().getAuthorField().getText();
 		final String version = getPackagerOptionsPanel().getVersionField().getText();
 		final boolean source = getPackagerOptionsPanel().getIncludeSource().isSelected();
 		final java.util.List<IRepositoryItem> robots = getRobotSelectionPanel().getSelectedRobots();
 
-		final String res = repositoryManager.createPackage(f, web, desc, autor, version, source, robots);
+		final String res = repositoryManager.createPackage(f, web, desc, author, version, source, robots);
 		ConsoleDialog d = new ConsoleDialog(windowManager.getRobocodeFrame(), "Packaging results", false);
 
 		d.setText(res);

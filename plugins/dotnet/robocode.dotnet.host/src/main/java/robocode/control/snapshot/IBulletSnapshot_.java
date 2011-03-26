@@ -65,5 +65,14 @@ class __IBulletSnapshot extends system.Object implements robocode.control.snapsh
     
     @net.sf.jni4net.attributes.ClrMethod("()I")
     public native int getBulletId();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()D")
+    public native double getHeading();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()I")
+    public native int getVictimIndex();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()I")
+    public native int getOwnerIndex();
 }
 //</generated-proxy>

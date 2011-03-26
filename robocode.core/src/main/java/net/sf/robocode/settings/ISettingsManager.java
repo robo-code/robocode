@@ -190,7 +190,15 @@ public interface ISettingsManager {
 
 	boolean getOptionsCommonEnableReplayRecording();
 
+	boolean getOptionsCommonEnableAutoRecording();
+
+	boolean getOptionsCommonAutoRecordingXML();
+
 	void setOptionsCommonEnableReplayRecording(boolean enable);
+
+	void setOptionsCommonEnableAutoRecording(boolean enable);
+
+	void setOptionsCommonEnableAutoRecordingXML(boolean enable);
 
 	void setOptionsCommonNotifyAboutNewBetaVersions(boolean enable);
 
@@ -249,6 +257,8 @@ public interface ISettingsManager {
 			OPTIONS_COMMON_DONT_HIDE_RANKINGS = "robocode.options.common.dontHideRankings",
 			OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS = "robocode.options.common.appendWhenSavingResults",
 			OPTIONS_COMMON_ENABLE_REPLAY_RECORDING = "robocode.options.common.enableReplayRecording",
+			OPTIONS_COMMON_ENABLE_AUTO_RECORDING = "robocode.options.common.enableAutoRecording",
+			OPTIONS_COMMON_AUTO_RECORDING_XML = "robocode.options.common.autoRecordingXML",
 
 			OPTIONS_TEAM_SHOWTEAMROBOTS = "robocode.options.team.showTeamRobots",
 

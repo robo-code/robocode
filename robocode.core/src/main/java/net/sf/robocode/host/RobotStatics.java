@@ -116,7 +116,10 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		this.teamName = teamName;
 		this.index = index;
 		this.contestantIndex = contestantIndex;
+	}
 
+	public String getAnonymousName() {
+		return "#" + index;
 	}
 
 	public boolean isJuniorRobot() {
@@ -257,7 +260,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 			String shortClassName = serializer.deserializeString(buffer);
 			BattleRules battleRules = HiddenAccess.createRules(serializer.deserializeInt(buffer),
 					serializer.deserializeInt(buffer), serializer.deserializeInt(buffer), serializer.deserializeDouble(buffer),
-					serializer.deserializeLong(buffer));
+					serializer.deserializeLong(buffer), serializer.deserializeBoolean(buffer));
 
 			List<String> teammates = new ArrayList<String>();
 			Object item = serializer.deserializeString(buffer);

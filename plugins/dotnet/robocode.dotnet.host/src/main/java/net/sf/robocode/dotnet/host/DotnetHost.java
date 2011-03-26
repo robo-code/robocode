@@ -37,6 +37,9 @@ public class DotnetHost extends system.Object implements net.sf.robocode.host.IH
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;")
     public native net.sf.robocode.repository.RobotType getRobotType(net.sf.robocode.repository.IRobotRepositoryItem par0, boolean par1, boolean par2);
     
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/host/IHostManager;Ljava/lang/Object;Lnet/sf/robocode/peer/IRobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Lnet/sf/robocode/host/proxies/IHostingRobotProxy;")
+    public native net.sf.robocode.host.proxies.IHostingRobotProxy createRobotProxy(net.sf.robocode.host.IHostManager hostManager, java.lang.Object robotSpecification, net.sf.robocode.peer.IRobotStatics statics, net.sf.robocode.peer.IRobotPeer peer);
+    
     public static system.Type typeof() {
         return net.sf.robocode.dotnet.host.DotnetHost.staticType;
     }

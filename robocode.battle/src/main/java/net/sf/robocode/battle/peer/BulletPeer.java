@@ -92,7 +92,7 @@ public class BulletPeer {
 
 	private final Line2D.Double boundingLine = new Line2D.Double();
 
-	protected int frame;
+	protected int frame = -1;
 
 	private final int color;
 
@@ -100,7 +100,6 @@ public class BulletPeer {
 
 	public BulletPeer(RobotPeer owner, BattleRules battleRules, int bulletId) {
 		super();
-
 		this.owner = owner;
 		this.battleRules = battleRules;
 		this.bulletId = bulletId;
@@ -110,14 +109,21 @@ public class BulletPeer {
 
 	private void checkBulletCollision(List<BulletPeer> bullets) {
 		for (BulletPeer b : bullets) {
-			if (!(b == null || b == this) && b.isActive() && intersect(b.boundingLine)) {
+			if (b != null && b != this && b.isActive() && intersect(b.boundingLine)) {
 				state = BulletState.HIT_BULLET;
-				b.setState(state);
+				b.state = BulletState.HIT_BULLET;
+				b.frame = 0;
 				frame = 0;
 				x = lastX;
 				y = lastY;
-				owner.addEvent(new BulletHitBulletEvent(createBullet(), b.createBullet()));
-				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(), createBullet()));
+				b.x = b.lastX;
+				b.y = b.lastY;
+
+				Bullet thisBullet = createBullet();
+				Bullet otherBullet = b.createBullet();
+
+				owner.addEvent(new BulletHitBulletEvent(thisBullet, otherBullet));
+				b.owner.addEvent(new BulletHitBulletEvent(otherBullet, thisBullet));
 				break;
 			}
 		}
@@ -175,24 +181,23 @@ public class BulletPeer {
 
 							if (bonus > 0) {
 								owner.println(
-										"SYSTEM: Bonus for killing " + (otherRobot.getName() + ": " + (int) (bonus + .5)));
+										"SYSTEM: Bonus for killing "
+												+ (owner.getNameForEvent(otherRobot) + ": " + (int) (bonus + .5)));
 							}
 						}
 					}
 				}
 				owner.updateEnergy(Rules.getBulletHitBonus(power));
 
-				HitByBulletEvent event = new HitByBulletEvent(
-						robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()),
-						createBullet());
+				Bullet bullet = createBullet();
 
-				otherRobot.addEvent(event);
+				otherRobot.addEvent(
+						new HitByBulletEvent(
+								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()), bullet));
 
 				state = BulletState.HIT_VICTIM;
-				final BulletHitEvent bhe = new BulletHitEvent(otherRobot.getName(), otherRobot.getEnergy(),
-						createBullet());
 
-				owner.addEvent(bhe);
+				owner.addEvent(new BulletHitEvent(otherRobot.getName(), otherRobot.getEnergy(), bullet));
 				frame = 0;
 				victim = otherRobot;
 
@@ -221,6 +226,7 @@ public class BulletPeer {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
+			frame = 0;
 			owner.addEvent(new BulletMissedEvent(createBullet()));
 		}
 	}
@@ -307,6 +313,7 @@ public class BulletPeer {
 
 	public void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
 		if (isActive()) {
+			frame++;
 			updateMovement();
 			if (bullets != null) {
 				checkBulletCollision(bullets);
@@ -327,7 +334,9 @@ public class BulletPeer {
 	protected void updateBulletState() {
 		switch (state) {
 		case FIRED:
-			state = BulletState.MOVING;
+			if (frame == 1) {
+				state = BulletState.MOVING;
+			}
 			break;
 
 		case HIT_BULLET:

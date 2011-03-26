@@ -38,17 +38,17 @@ namespace Robocode.Control
         /// <summary>
         /// Creates a battlefield of the specified width and height.
         /// </summary>
-        /// <param name="width">The width of the battlefield, where 400 &gt;= width &lt;= 5000.</param>
-        /// <param name="height">The height of the battlefield, where 400 &gt;= height &lt;= 5000.</param>
+        /// <param name="width">The width of the battlefield, where 400 &lt;= width &lt;= 5000.</param>
+        /// <param name="height">The height of the battlefield, where 400 &lt;= height &lt;= 5000.</param>
         /// <exception cref="ArgumentException">Thrown when the width or height is &lt; 400 or &gt; 5000.
         /// </exception>
         public BattlefieldSpecification(int width, int height)
         {
             if (width < 400 || width > 5000)
-                throw new ArgumentException("width must be: 400 >= width <= 5000");
+                throw new ArgumentException("width must be: 400 <= width <= 5000");
 
             if (height < 400 || height > 5000)
-                throw new ArgumentException("height must be: 400 >= height <= 5000");
+                throw new ArgumentException("height must be: 400 <= height <= 5000");
 
             this.width = width;
             this.height = height;

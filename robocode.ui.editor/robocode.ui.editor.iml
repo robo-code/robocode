@@ -9,15 +9,15 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="robocode.ui" exported="" />
-    <orderEntry type="module" module-name="robocode.api" exported="" />
-    <orderEntry type="module" module-name="robocode.core" exported="" />
-    <orderEntry type="library" exported="" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
-    <orderEntry type="module" module-name="robocode.battle" exported="" />
-    <orderEntry type="module" module-name="robocode.host" exported="" />
-    <orderEntry type="module" module-name="robocode.repository" exported="" scope="RUNTIME" />
-    <orderEntry type="library" exported="" scope="RUNTIME" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
-    <orderEntry type="module" module-name="robocode.sound" exported="" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.ui" />
+    <orderEntry type="module" module-name="robocode.api" />
+    <orderEntry type="module" module-name="robocode.core" />
+    <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
+    <orderEntry type="module" module-name="robocode.battle" />
+    <orderEntry type="module" module-name="robocode.host" />
+    <orderEntry type="module" module-name="robocode.repository" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
+    <orderEntry type="module" module-name="robocode.sound" scope="RUNTIME" />
   </component>
 </module>
 

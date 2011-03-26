@@ -39,7 +39,9 @@ public interface IRepositoryItem extends Comparable<Object> {
 
 	URL getWebpage();
 
-	boolean isJavaSourceIncluded();
+	boolean getIncludeSource();
+
+	boolean isSourceIncluded();
 
 	String getRootPath();
 
@@ -74,8 +76,6 @@ public interface IRepositoryItem extends Comparable<Object> {
 	String getShortClassName();
 
 	RobotSpecification createRobotSpecification();
-	
-	void storeProperties(OutputStream os) throws IOException;
 
-	void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException;
+	void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web) throws IOException;
 }

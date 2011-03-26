@@ -138,6 +138,7 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setGunCoolingRate(spec.getGunCoolingRate());
 		battleProperties.setInactivityTime(spec.getInactivityTime());
 		battleProperties.setNumRounds(spec.getNumRounds());
+		battleProperties.setHideEnemyNames(spec.getHideEnemyNames());
 		battleProperties.setSelectedRobots(spec.getRobots());
 		battleProperties.setInitialPositions(initialPositions);
 
@@ -174,10 +175,6 @@ public class BattleManager implements IBattleManager {
 		Battle realBattle = Container.createComponent(Battle.class);
 
 		realBattle.setup(battlingRobotsList, battleProperties, isPaused());
-
-		if (recording) {
-			realBattle.setAllPaintRecorded(true);
-		}
 
 		battle = realBattle;
 

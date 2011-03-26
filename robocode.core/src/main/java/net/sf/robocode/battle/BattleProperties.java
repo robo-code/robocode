@@ -41,6 +41,7 @@ public class BattleProperties implements Serializable {
 			BATTLE_NUMROUNDS = "robocode.battle.numRounds",
 			BATTLE_GUNCOOLINGRATE = "robocode.battle.gunCoolingRate",
 			BATTLE_RULES_INACTIVITYTIME = "robocode.battle.rules.inactivityTime",
+			BATTLE_HIDE_ENEMY_NAMES = "robocode.battle.hideEnemyNames",
 			BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots",
 			BATTLE_INITIAL_POSITIONS = "robocode.battle.initialPositions";
 
@@ -49,6 +50,7 @@ public class BattleProperties implements Serializable {
 	private int numRounds = 10;
 	private double gunCoolingRate = 0.1;
 	private long inactivityTime = 450;
+	private boolean hideEnemyNames;
 	private String selectedRobots;
 	private String initialPositions;
 
@@ -178,6 +180,23 @@ public class BattleProperties implements Serializable {
 	}
 
 	/**
+	 * Sets the flag defining if enemy names are hidden for robots during a battle.
+	 *
+	 * @param hideEnemyNames true if the enemy names must be hidden for a robot; false otherwise.
+	 */
+	public void setHideEnemyNames(boolean hideEnemyNames) {
+		this.hideEnemyNames = hideEnemyNames;
+		props.setProperty(BATTLE_HIDE_ENEMY_NAMES, "" + hideEnemyNames);
+	}
+
+	/**
+	 * Returns true if the enemy names are hidden for robots during a battle; false otherwise.
+	 */
+	public boolean getHideEnemyNames() {
+		return hideEnemyNames;
+	}
+
+	/**
 	 * Gets the selectedRobots.
 	 *
 	 * @return Returns a String
@@ -247,6 +266,7 @@ public class BattleProperties implements Serializable {
 		battlefieldHeight = Integer.parseInt(props.getProperty(BATTLEFIELD_HEIGHT, "600"));
 		gunCoolingRate = Double.parseDouble(props.getProperty(BATTLE_GUNCOOLINGRATE, "0.1"));
 		inactivityTime = Long.parseLong(props.getProperty(BATTLE_RULES_INACTIVITYTIME, "450"));
+		hideEnemyNames = Boolean.parseBoolean(props.getProperty(BATTLE_HIDE_ENEMY_NAMES, "false"));
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");

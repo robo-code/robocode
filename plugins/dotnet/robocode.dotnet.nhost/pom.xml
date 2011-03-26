@@ -21,12 +21,18 @@
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.n</artifactId>
-            <version>0.8.0.0</version>
+            <version>0.8.3.0</version>
             <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.api</artifactId>
+            <version>${robocode.nversion}</version>
+            <type>dotnet:library</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.dotnet.control.api</artifactId>
             <version>${robocode.nversion}</version>
             <type>dotnet:library</type>
         </dependency>
@@ -62,7 +68,7 @@
 	                              <resolveArtifact property="jni4net.n" 
 	                                               groupId="net.sf.jni4net"
 	                                               artifactId="jni4net.n" 
-	                                               version="0.8.0.0"
+	                                               version="0.8.3.0"
 	                                               type="dotnet:library"/>
 	                              <copy file="${jni4net.n}" todir="target"/>
 	

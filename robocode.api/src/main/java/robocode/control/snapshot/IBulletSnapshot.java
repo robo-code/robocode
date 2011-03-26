@@ -119,4 +119,19 @@ public interface IBulletSnapshot {
 	 * @return the ID of the bullet.
 	 */
 	int getBulletId();
+
+	/**
+	 * @return heading of the bullet
+	 */
+	double getHeading();
+
+	/**
+	 * @return contestantIndex of the victim, or -1 if still in air
+	 */
+	int getVictimIndex();
+
+	/**
+	 * @return contestantIndex of the owner
+	 */
+	int getOwnerIndex();
 }

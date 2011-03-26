@@ -18,7 +18,6 @@ import robocode.control.snapshot.IDebugProperty;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-import java.util.Dictionary;
 
 
 /**
@@ -37,7 +36,7 @@ public class DebugProperty implements Serializable, IXmlSerializable, IDebugProp
 	private String key;
 	private String value;
 
-	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
+	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement("debug"); {
 			writer.writeAttribute("key", getKey());
 			writer.writeAttribute("value", getValue());

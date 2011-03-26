@@ -16,15 +16,16 @@ package net.sf.robocode.battle.snapshot;
 
 import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.ExplosionPeer;
+import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
+import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlWriter;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.IBulletSnapshot;
 
 import java.io.IOException;
-import java.util.Dictionary;
 
 
 /**
@@ -37,7 +38,7 @@ import java.util.Dictionary;
  */
 public final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, IBulletSnapshot {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/** The bullet state */
 	private BulletState state;
@@ -71,6 +72,12 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 
 	private int bulletId;
 
+	private int victimIndex = -1;
+    
+	private int ownerIndex;
+
+	private double heading;
+
 	/**
 	 * Creates a snapshot of a bullet that must be filled out with data later.
 	 */
@@ -100,6 +107,16 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 		explosionImageIndex = bullet.getExplosionImageIndex();
 
 		bulletId = bullet.getBulletId();
+
+		final RobotPeer victim = bullet.getVictim();
+
+		if (victim != null) {
+			victimIndex = victim.getContestIndex();
+		}
+
+		ownerIndex = bullet.getOwner().getContestIndex();
+
+		heading = bullet.getHeading();
 	}
 
 	/**
@@ -182,23 +199,61 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 	/**
 	 * {@inheritDoc}
 	 */
-	public void writeXml(XmlWriter writer, Dictionary<String, Object> options) throws IOException {
-		writer.startElement("bullet"); {
-			writer.writeAttribute("state", state.toString());
-			writer.writeAttribute("power", power);
-			writer.writeAttribute("x", paintX);
-			writer.writeAttribute("y", paintY);
-			if (color != ExecCommands.defaultBulletColor) {
-				writer.writeAttribute("color", Integer.toHexString(color).toUpperCase());
+	public double getHeading() {
+		return heading;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getVictimIndex() {
+		return victimIndex;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getOwnerIndex() {
+		return ownerIndex;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
+		writer.startElement(options.shortAttributes ? "b" : "bullet"); {
+			writer.writeAttribute("id", ownerIndex + "-" + bulletId);
+			if (!options.skipExploded || state != BulletState.MOVING) {
+				writer.writeAttribute(options.shortAttributes ? "s" : "state", state.toString());
+				writer.writeAttribute(options.shortAttributes ? "p" : "power", power, options.trimPrecision);
 			}
-			if (frame != 0) {
-				writer.writeAttribute("frame", frame);
+			if (state == BulletState.HIT_VICTIM) {
+				writer.writeAttribute(options.shortAttributes ? "v" : "victim", victimIndex);
 			}
-			if (isExplosion) {
-				writer.writeAttribute("isExplosion", true);
-				writer.writeAttribute("explosion", explosionImageIndex);
+			if (state == BulletState.FIRED) {
+				writer.writeAttribute(options.shortAttributes ? "o" : "owner", ownerIndex);
+				writer.writeAttribute(options.shortAttributes ? "h" : "heading", heading, options.trimPrecision);
 			}
-			writer.writeAttribute("ver", serialVersionUID);
+			writer.writeAttribute("x", paintX, options.trimPrecision);
+			writer.writeAttribute("y", paintY, options.trimPrecision);
+			if (!options.skipNames) {
+				if (color != ExecCommands.defaultBulletColor) {
+					writer.writeAttribute(options.shortAttributes ? "c" : "color",
+							Integer.toHexString(color).toUpperCase());
+				}
+			}
+			if (!options.skipExploded) {
+				if (frame != 0) {
+					writer.writeAttribute("frame", frame);
+				}
+				if (isExplosion) {
+					writer.writeAttribute("isExplosion", true);
+					writer.writeAttribute("explosion", explosionImageIndex);
+				}
+			}
+			if (!options.skipVersion) {
+				writer.writeAttribute("ver", serialVersionUID);
+			}
 		}
 		writer.endElement();
 	}

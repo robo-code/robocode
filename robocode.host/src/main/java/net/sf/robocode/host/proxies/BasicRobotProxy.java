@@ -54,7 +54,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected ExecCommands commands;
 	private ExecResults execResults;
 	private final Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>();
-	private int bulletCounter; 
+	private int bulletCounter = -1; 
 
 	private final AtomicInteger setCallCount = new AtomicInteger(0);
 	private final AtomicInteger getCallCount = new AtomicInteger(0);
@@ -390,7 +390,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		if (execResults.getEvents() != null) {
 			for (Event event : execResults.getEvents()) {
 				eventManager.add(event);
-				HiddenAccess.updateBullets(event, bullets);
 			}
 		}
 

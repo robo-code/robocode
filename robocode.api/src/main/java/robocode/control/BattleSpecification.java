@@ -33,6 +33,7 @@ public class BattleSpecification implements java.io.Serializable {
 	private final int numRounds;
 	private final double gunCoolingRate;
 	private final long inactivityTime;
+	private final boolean hideEnemyNames;
 	private final RobotSpecification[] robots;
 
 	/**
@@ -59,12 +60,29 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @param robots		  the robots participating in this battle
 	 */
 	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots) {
+		this(numRounds, inactivityTime, gunCoolingRate, false, battlefieldSize, robots);
+	}
+
+	/**
+	 * Creates a new BattleSpecification with the given settings.
+	 *
+	 * @param numRounds	   the number of rounds in this battle
+	 * @param inactivityTime  the inactivity time allowed for the robots before
+	 *                        they will loose energy
+	 * @param gunCoolingRate  the gun cooling rate for the robots
+	 * @param hideEnemyNames  flag specifying if enemy names are hidden from robots
+	 * @param battlefieldSize the battlefield size
+	 * @param robots		  the robots participating in this battle
+	 * 
+	 * @since 1.7.3
+	 */
+	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, boolean hideEnemyNames, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots) {
 		this.numRounds = numRounds;
 		this.inactivityTime = inactivityTime;
 		this.gunCoolingRate = gunCoolingRate;
+		this.hideEnemyNames = hideEnemyNames;
 		this.battlefieldWidth = battlefieldSize.getWidth();
 		this.battlefieldHeight = battlefieldSize.getHeight();
-
 		this.robots = robots;
 	}
 
@@ -102,6 +120,17 @@ public class BattleSpecification implements java.io.Serializable {
 	 */
 	public int getNumRounds() {
 		return numRounds;
+	}
+
+	/**
+	 * Flag specifying if the enemy names must be hidden from events sent to robots.
+	 *
+	 * @return true if the enemy names must be hidden; false otherwise.
+	 * 
+	 * @since 1.7.3
+	 */
+	public boolean getHideEnemyNames() {
+		return hideEnemyNames;
 	}
 
 	/**

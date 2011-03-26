@@ -11,6 +11,9 @@
         <name>Robocode</name>
         <url>http://robocode.sf.net</url>
     </organization>
+	<properties>
+		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
+	</properties>
     <repositories>
         <repository>
             <id>net.sf.robocode</id>

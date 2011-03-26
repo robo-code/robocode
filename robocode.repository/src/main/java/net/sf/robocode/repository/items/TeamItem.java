@@ -171,7 +171,11 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		}
 	}
 
-	public boolean isJavaSourceIncluded() {
+	public boolean getIncludeSource() {
+		return false;
+	}
+
+	public boolean isSourceIncluded() {
 		return false;
 	}
 
@@ -183,29 +187,22 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 		return itemURL.toString();
 	}
 
-	public void storeProperties(OutputStream os) throws IOException {
-		properties.store(os, "Robocode Robot Team");
-	}
-
-	public void storeProperties(OutputStream os, URL web, String desc, String author, String version) throws IOException {
-		Properties copy = (Properties) properties.clone();
-
+	public void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web) throws IOException {
 		if (version != null) {
-			copy.setProperty(TEAM_VERSION, version);
+			properties.setProperty(TEAM_VERSION, version);
 		}
 		if (desc != null) {
-			copy.setProperty(TEAM_DESCRIPTION, desc);
+			properties.setProperty(TEAM_DESCRIPTION, desc);
 		}
 		if (author != null) {
-			copy.setProperty(TEAM_AUTHOR_NAME, author);
+			properties.setProperty(TEAM_AUTHOR_NAME, author);
 		}
 		if (web != null) {
-			copy.setProperty(TEAM_WEBPAGE, web.toString());
+			properties.setProperty(TEAM_WEBPAGE, web.toString());
 		}
-		final IVersionManager vm = Container.getComponent(IVersionManager.class);
+		properties.setProperty(ROBOCODE_VERSION, Container.getComponent(IVersionManager.class).getVersion());
 
-		copy.setProperty(ROBOCODE_VERSION, vm.getVersion());
-		copy.store(os, "Robocode Robot");
+		properties.store(os, "Robocode Robot Team");
 	}
 
 	public static void createOrUpdateTeam(File target, URL web, String desc, String author, String members, String teamVersion, String robocodeVersion) throws IOException {
