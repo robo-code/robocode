@@ -178,7 +178,7 @@ public final class Battle extends BaseBattle {
 		isPaused = paused;
 		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
 				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
-				battleProperties.getInactivityTime());
+				battleProperties.getInactivityTime(), battleProperties.getHideEnemyNames());
 		robotsCount = battlingRobotsList.length;
 		computeInitialPositions(battleProperties.getInitialPositions());
 		createPeers(battlingRobotsList);
@@ -537,7 +537,7 @@ public final class Battle extends BaseBattle {
 						if (!robotPeer.isWinner()) {
 							robotPeer.getRobotStatistics().scoreLastSurvivor();
 							robotPeer.setWinner(true);
-							robotPeer.println("SYSTEM: " + robotPeer.getName() + " wins the round.");
+							robotPeer.println("SYSTEM: " + robotPeer.getNameForEvent(robotPeer) + " wins the round.");
 							robotPeer.addEvent(new WinEvent());
 							if (robotPeer.getTeamPeer() != null) {
 								if (robotPeer.isTeamLeader()) {
@@ -714,7 +714,7 @@ public final class Battle extends BaseBattle {
 			// Publish death to live robots
 			for (RobotPeer robotPeer : getRobotsAtRandom()) {
 				if (!robotPeer.isDead()) {
-					robotPeer.addEvent(new RobotDeathEvent(deadRobot.getName()));
+					robotPeer.addEvent(new RobotDeathEvent(robotPeer.getNameForEvent(deadRobot)));
 
 					if (robotPeer.getTeamPeer() == null || robotPeer.getTeamPeer() != deadRobot.getTeamPeer()) {
 						robotPeer.getRobotStatistics().scoreSurvival();

@@ -299,6 +299,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return statics.getName();
 	}
 
+	public String getAnonymousName() {
+		return statics.getAnonymousName();
+	}
+
 	public String getShortName() {
 		return statics.getShortName();
 	}
@@ -451,6 +455,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return statics.isTeamLeader();
 	}
 
+	public boolean isTeamMate(RobotPeer otherRobot) {
+		if (getTeamPeer() != null) {
+			for (RobotPeer mate : getTeamPeer()) {
+				if (otherRobot == mate) {
+					return true;
+				}
+			}	
+		}
+		return false;
+	}
+	
 	// -----------
 	// execute
 	// -----------
@@ -968,6 +983,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return false;
 	}
 
+	public String getNameForEvent(RobotPeer otherRobot) {
+		if (battleRules.getHideEnemyNames() && !isTeamMate(otherRobot)) {
+			return otherRobot.getAnonymousName();
+		}
+		return otherRobot.getName();
+	}		
+
 	private void checkRobotCollision(List<RobotPeer> robots) {
 		inCollision = false;
 
@@ -1010,18 +1032,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 								if (bonus > 0) {
 									println(
-											"SYSTEM: Ram bonus for killing " + otherRobot.getName() + ": "
+											"SYSTEM: Ram bonus for killing " + this.getNameForEvent(otherRobot) + ": "
 											+ (int) (bonus + .5));
 								}
 							}
 						}
 					}
 					addEvent(
-							new HitRobotEvent(otherRobot.getName(), normalRelativeAngle(angle - bodyHeading),
+							new HitRobotEvent(getNameForEvent(otherRobot), normalRelativeAngle(angle - bodyHeading),
 							otherRobot.energy, atFault));
 					otherRobot.addEvent(
-							new HitRobotEvent(getName(), normalRelativeAngle(PI + angle - otherRobot.getBodyHeading()), energy,
-							false));
+							new HitRobotEvent(getNameForEvent(this),
+							normalRelativeAngle(PI + angle - otherRobot.getBodyHeading()), energy, false));
 				}
 			}
 		}
@@ -1417,7 +1439,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				double angle = atan2(dx, dy);
 				double dist = Math.hypot(dx, dy);
 
-				final ScannedRobotEvent event = new ScannedRobotEvent(otherRobot.getName(), otherRobot.energy,
+				final ScannedRobotEvent event = new ScannedRobotEvent(getNameForEvent(otherRobot), otherRobot.energy,
 						normalRelativeAngle(angle - getBodyHeading()), dist, otherRobot.getBodyHeading(),
 						otherRobot.getVelocity());
 

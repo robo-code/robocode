@@ -109,6 +109,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());
 		battleProperties.setGunCoolingRate(getRulesTab().getGunCoolingRate());
 		battleProperties.setInactivityTime(getRulesTab().getInactivityTime());
+		battleProperties.setHideEnemyNames(getRulesTab().getHideEnemyNames());
 
 		// Dispose this dialog before starting the battle due to pause/resume battle state
 		dispose();
@@ -256,6 +257,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		getBattleFieldTab().setBattleFieldHeight(battleProperties.getBattlefieldHeight());
 		getRulesTab().setGunCoolingRate(battleProperties.getGunCoolingRate());
 		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
+		getRulesTab().setHideEnemyNames(battleProperties.getHideEnemyNames());
 
 		// When opening a battle, we use the 'number of rounds' from the battle properties.
 		// When starting a new battle, we use the 'number of rounds' from the settings manager instead.

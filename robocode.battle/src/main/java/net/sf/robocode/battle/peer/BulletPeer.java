@@ -181,7 +181,8 @@ public class BulletPeer {
 
 							if (bonus > 0) {
 								owner.println(
-										"SYSTEM: Bonus for killing " + (otherRobot.getName() + ": " + (int) (bonus + .5)));
+										"SYSTEM: Bonus for killing "
+												+ (owner.getNameForEvent(otherRobot) + ": " + (int) (bonus + .5)));
 							}
 						}
 					}

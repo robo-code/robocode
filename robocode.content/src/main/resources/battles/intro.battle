@@ -1,5 +1,4 @@
 #Battle Properties
-#Thu Apr 12 21:49:42 CEST 2007
 robocode.battleField.width=800
 robocode.battleField.height=600
 robocode.battle.numRounds=1

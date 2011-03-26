@@ -25,6 +25,7 @@ namespace Robocode.Control
         private readonly int numRounds;
         private readonly double gunCoolingRate;
         private readonly long inactivityTime;
+        private readonly bool hideEnemyNames;
         private readonly RobotSpecification[] robots;
 
         /// <summary>
@@ -49,11 +50,27 @@ namespace Robocode.Control
         /// <param name="gunCoolingRate">The gun cooling rate for the robots.</param>
         /// <param name="battlefieldSize">The battlefield size.</param>
         /// <param name="robots">The robots participating in this battle.</param>
-        public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots)
+        public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots) :
+            this(numRounds, inactivityTime, gunCoolingRate, false, battlefieldSize, robots)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new BattleSpecification with the given settings.
+        /// </summary>
+        /// <param name="numRounds">The number of rounds in this battle.</param>
+        /// <param name="inactivityTime">The inactivity time allowed for the robots before
+        /// they will loose energy.</param>
+        /// <param name="gunCoolingRate">The gun cooling rate for the robots.</param>
+        /// <param name="hideEnemyNames">Flag specifying if enemy names are hidden from robots.</param>
+        /// <param name="battlefieldSize">The battlefield size.</param>
+        /// <param name="robots">The robots participating in this battle.</param>
+        public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, bool hideEnemyNames, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots)
         {
             this.numRounds = numRounds;
             this.inactivityTime = inactivityTime;
             this.gunCoolingRate = gunCoolingRate;
+            this.hideEnemyNames = hideEnemyNames;
             this.battlefieldWidth = battlefieldSize.Width;
             this.battlefieldHeight = battlefieldSize.Height;
             this.robots = robots;
@@ -101,6 +118,17 @@ namespace Robocode.Control
         public int NumRounds
         {
             get { return numRounds; }
+        }
+
+        /// <summary>
+        /// Flag specifying if the enemy names must be hidden from events sent to robots.
+        /// </summary>
+        /// <value>
+        /// true if the enemy names must be hidden; false otherwise.
+        /// </value>
+        public bool HideEnemyNames
+        {
+            get { return hideEnemyNames; }
         }
 
         /// <summary>

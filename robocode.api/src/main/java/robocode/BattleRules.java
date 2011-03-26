@@ -37,6 +37,7 @@ public final class BattleRules implements java.io.Serializable {
 	private final int numRounds;
 	private final double gunCoolingRate;
 	private final long inactivityTime;
+	private final boolean hideEnemyNames;
 
 	/**
 	 * Returns the battlefield width.
@@ -100,16 +101,20 @@ public final class BattleRules implements java.io.Serializable {
 		return inactivityTime;
 	}
 
-	/* public BattleField getBattleField() {
-	 return new DefaultBattleField(battlefieldWidth, battlefieldHeight);
-	 }*/
+	/**
+	 * Returns true if the enemy names are hidden, i.e. anonymous; false otherwise.
+	 */
+	public boolean getHideEnemyNames() {
+		return hideEnemyNames;
+	}
 
-	private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime) {
+	private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames) {
 		this.battlefieldWidth = battlefieldWidth;
 		this.battlefieldHeight = battlefieldHeight;
 		this.numRounds = numRounds;
 		this.gunCoolingRate = gunCoolingRate;
 		this.inactivityTime = inactivityTime;
+		this.hideEnemyNames = hideEnemyNames;
 	}
 
 	static IHiddenRulesHelper createHiddenHelper() {
@@ -118,8 +123,9 @@ public final class BattleRules implements java.io.Serializable {
 
 	private static class HiddenHelper implements IHiddenRulesHelper {
 
-		public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime) {
-			return new BattleRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
+		public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames) {
+			return new BattleRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime,
+					hideEnemyNames);
 		}
 	}
 

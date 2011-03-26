@@ -138,6 +138,7 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setGunCoolingRate(spec.getGunCoolingRate());
 		battleProperties.setInactivityTime(spec.getInactivityTime());
 		battleProperties.setNumRounds(spec.getNumRounds());
+		battleProperties.setHideEnemyNames(spec.getHideEnemyNames());
 		battleProperties.setSelectedRobots(spec.getRobots());
 		battleProperties.setInitialPositions(initialPositions);
 
