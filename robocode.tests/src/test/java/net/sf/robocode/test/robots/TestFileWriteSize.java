@@ -12,6 +12,8 @@
 package net.sf.robocode.test.robots;
 
 
+import java.io.File;
+
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import robocode.control.events.TurnEndedEvent;
@@ -37,28 +39,25 @@ public class TestFileWriteSize extends RobocodeTestBed {
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
 
-		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
+		String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
+		String path = robotsPath;
 
+		if (File.separatorChar == '\\') {
+			out = out.replaceAll("[\\\\]", "/");
+			path = path.replaceAll("[\\\\]", "/");
+		}
 		if (out.contains("Data quota: 200000\n")) {
 			messagedDataQuota = true;
 		}
-
-		if (out.contains("Data directory: " + robotsPath + "\\target\\classes\\tested\\robots\\FileWriteSize.data")) {
-			messagedDataDirectory = true;	
-		} else if (out.contains("Data directory: " + robotsPath + "/target/classes/tested/robots/FileWriteSize.data")) {
+		if (out.contains("Data directory: " + path + "/target/classes/tested/robots/FileWriteSize.data")) {
 			messagedDataDirectory = true;	
 		}
-
-		if (out.contains("Data file: " + robotsPath + "\\target\\classes\\tested\\robots\\FileWriteSize.data\\test")) {
-			messagedDataFile = true;	
-		} else if (out.contains("Data files: " + robotsPath + "/target/classes/tested/robots/FileWriteSize.data/test")) {
+		if (out.contains("Data file: " + path + "/target/classes/tested/robots/FileWriteSize.data/test")) {
 			messagedDataFile = true;	
 		}
-		
 		if (out.contains("You have reached your filesystem quota of: 200000 bytes")) {
 			messageQuotaReached = true;
 		}
-		
 		if (event.getTurnSnapshot().getRobots()[0].getEnergy() == 0) {
 			robotTerminated = true;
 		}
