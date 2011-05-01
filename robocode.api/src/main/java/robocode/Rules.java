@@ -156,7 +156,7 @@ public final class Rules {
 	 * @see #getTurnRateRadians(double)
 	 */
 	public static double getTurnRate(double velocity) {
-		return MAX_TURN_RATE - 0.75 * velocity;
+		return MAX_TURN_RATE - 0.75 * abs(velocity);
 	}
 
 	/**
