@@ -149,7 +149,7 @@ public final class Battle extends BaseBattle {
 	// Turn skip related items
 	private boolean parallelOn;
 	private long millisWait;
-	private int microWait;
+	private int nanoWait;
 
 	// Objects in the battle
 	private int robotsCount;
@@ -385,13 +385,13 @@ public final class Battle extends BaseBattle {
 			final long waitTime = (long) (cpuConstant * parallelConstant);
 
 			millisWait = waitTime / 1000000;
-			microWait = (int) (waitTime % 1000000);
+			nanoWait = (int) (waitTime % 1000000);
 		} else {
 			millisWait = cpuConstant / 1000000;
-			microWait = (int) (cpuConstant % 1000000);
+			nanoWait = (int) (cpuConstant % 1000000);
 		}
-		if (microWait == 0) {
-			microWait = 1;
+		if (nanoWait == 0) {
+			nanoWait = 1;
 		}
 	}
 
@@ -768,7 +768,7 @@ public final class Battle extends BaseBattle {
 					} else if (currentTime == 1) {
 						robotPeer.waitSleeping(millisWait * 10, 1);
 					} else {
-						robotPeer.waitSleeping(millisWait, microWait);
+						robotPeer.waitSleeping(millisWait, nanoWait);
 					}
 					robotPeer.setSkippedTurns();
 				}
@@ -789,7 +789,7 @@ public final class Battle extends BaseBattle {
 				} else if (currentTime == 1) {
 					robotPeer.waitSleeping(millisWait * 10, 1);
 				} else {
-					robotPeer.waitSleeping(millisWait, microWait);
+					robotPeer.waitSleeping(millisWait, nanoWait);
 				}
 			}
 		}

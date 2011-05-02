@@ -46,7 +46,7 @@ public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPee
 
 		// -- Calculate max. velocity for moving perfect in a circle --
 
-		// maxTurnRate = 10 * 0.75 * velocity  (Robocode rule), and
+		// maxTurnRate = 10 * 0.75 * abs(velocity)  (Robocode rule), and
 		// maxTurnRate = velocity * degrees / distance  (curve turn rate)
 		//
 		// Hence, max. velocity = 10 / (degrees / distance + 0.75)
