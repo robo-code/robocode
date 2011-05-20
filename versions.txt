@@ -1,8 +1,9 @@
 Version 1.7.3.0
-(01-May-2011)
+(20-May-2011)
 ---------------
 = Bugfixes =
 * Bug [3293679] - getTurnRateRadians incorrect for negative velocity.
+* Fixed issues with unit-testing and building Robocode on Linux.
 
 Version 1.7.3.0 Beta
 (26-Mar-2011)
