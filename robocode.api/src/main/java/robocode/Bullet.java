@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2011 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,15 +60,23 @@ public class Bullet implements Serializable {
 	 */
 	public Bullet(double heading, double x, double y, double power, String ownerName, String victimName, boolean isActive, int bulletId) {
 		this.headingRadians = heading;
-		this.bulletId = bulletId;
 		this.x = x;
 		this.y = y;
 		this.power = power;
 		this.ownerName = ownerName;
 		this.victimName = victimName;
 		this.isActive = isActive; 
+		this.bulletId = bulletId;
 	}
 
+	public boolean equals(Object obj) {
+		if (obj instanceof Bullet) {
+			Bullet bullet = (Bullet) obj;
+			return bullet.bulletId == bulletId;
+		}
+		return equals(obj);
+	}
+	
 	/**
 	 * Returns the direction the bullet is/was heading, in degrees
 	 * (0 <= getHeading() < 360). This is not relative to the direction you are
@@ -217,7 +225,7 @@ public class Bullet implements Serializable {
 			Bullet obj = (Bullet) object;
 
 			return RbSerializer.SIZEOF_TYPEINFO + 4 * RbSerializer.SIZEOF_DOUBLE + serializer.sizeOf(obj.ownerName)
-					+ serializer.sizeOf(obj.victimName) + RbSerializer.SIZEOF_BOOL;
+					+ serializer.sizeOf(obj.victimName) + RbSerializer.SIZEOF_BOOL + RbSerializer.SIZEOF_INT;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
@@ -230,6 +238,7 @@ public class Bullet implements Serializable {
 			serializer.serialize(buffer, obj.ownerName);
 			serializer.serialize(buffer, obj.victimName);
 			serializer.serialize(buffer, obj.isActive);
+			serializer.serialize(buffer, obj.bulletId);
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
@@ -240,8 +249,9 @@ public class Bullet implements Serializable {
 			String ownerName = serializer.deserializeString(buffer);
 			String victimName = serializer.deserializeString(buffer);
 			boolean isActive = serializer.deserializeBoolean(buffer);
+			int bulletId = serializer.deserializeInt(buffer);
 
-			return new Bullet(headingRadians, x, y, power, ownerName, victimName, isActive, -1);
+			return new Bullet(headingRadians, x, y, power, ownerName, victimName, isActive, bulletId);
 		}
 	}
 }
