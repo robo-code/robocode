@@ -1,3 +1,9 @@
+Version 1.7.3.1 Alpha
+(07-Jun-2011)
+---------------
+= Bugfixes =
+* Bug [3312402] - Bullet.equals semantic has been change in 1.7.3.0 version.
+
 Version 1.7.3.0
 (20-May-2011)
 ---------------
