@@ -69,14 +69,22 @@ public class Bullet implements Serializable {
 		this.bulletId = bulletId;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Bullet) {
-			Bullet bullet = (Bullet) obj;
-			return bullet.bulletId == bulletId;
+		if (this == obj) {
+			return true;
 		}
-		return equals(obj);
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		return bulletId == ((Bullet) obj).bulletId;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return bulletId;
+	}
+
 	/**
 	 * Returns the direction the bullet is/was heading, in degrees
 	 * (0 <= getHeading() < 360). This is not relative to the direction you are
