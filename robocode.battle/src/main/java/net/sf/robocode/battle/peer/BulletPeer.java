@@ -111,31 +111,38 @@ public class BulletPeer {
 		for (BulletPeer b : bullets) {
 			if (b != null && b != this && b.isActive() && intersect(b.boundingLine)) {
 				state = BulletState.HIT_BULLET;
-				b.state = BulletState.HIT_BULLET;
-				b.frame = 0;
 				frame = 0;
 				x = lastX;
 				y = lastY;
+
+				b.state = BulletState.HIT_BULLET;
+				b.frame = 0;
 				b.x = b.lastX;
 				b.y = b.lastY;
 
-				Bullet thisBullet = createBullet();
-				Bullet otherBullet = b.createBullet();
-
-				owner.addEvent(new BulletHitBulletEvent(thisBullet, otherBullet));
-				b.owner.addEvent(new BulletHitBulletEvent(otherBullet, thisBullet));
+				owner.addEvent(new BulletHitBulletEvent(createBullet(false), b.createBullet(true)));
+				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(false), createBullet(true)));
 				break;
 			}
 		}
 	}
 
-	private Bullet createBullet() {
-		return new Bullet(heading, x, y, power, owner == null ? null : owner.getName(),
-				victim == null ? null : victim.getName(), isActive(), bulletId);
+	private Bullet createBullet(boolean hideOwnerName) {
+		String ownerName = (owner == null) ? null : (hideOwnerName ? getNameForEvent(owner) : owner.getName());
+		String victimName = (victim == null) ? null : (hideOwnerName ? victim.getName() : getNameForEvent(victim));
+
+		return new Bullet(heading, x, y, power, ownerName, victimName, isActive(), bulletId);
 	}
 
 	private BulletStatus createStatus() {
-		return new BulletStatus(bulletId, x, y, victim == null ? null : victim.getName(), isActive());
+		return new BulletStatus(bulletId, x, y, victim == null ? null : getNameForEvent(victim), isActive());
+	}
+
+	private String getNameForEvent(RobotPeer otherRobot) {
+		if (battleRules.getHideEnemyNames() && !owner.isTeamMate(otherRobot)) {
+			return otherRobot.getAnnonymousName();
+		}
+		return otherRobot.getName();
 	}
 
 	// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6457965
@@ -158,8 +165,12 @@ public class BulletPeer {
 		for (RobotPeer otherRobot : robots) {
 			if (!(otherRobot == null || otherRobot == owner || otherRobot.isDead())
 					&& otherRobot.getBoundingBox().intersectsLine(boundingLine)) {
-				double damage = Rules.getBulletDamage(power);
 
+				state = BulletState.HIT_VICTIM;
+				frame = 0;
+				victim = otherRobot;
+
+				double damage = Rules.getBulletDamage(power);
 				double score = damage;
 
 				if (score > otherRobot.getEnergy()) {
@@ -189,17 +200,13 @@ public class BulletPeer {
 				}
 				owner.updateEnergy(Rules.getBulletHitBonus(power));
 
-				Bullet bullet = createBullet();
+				Bullet bullet = createBullet(false);
 
 				otherRobot.addEvent(
 						new HitByBulletEvent(
 								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()), bullet));
 
-				state = BulletState.HIT_VICTIM;
-
-				owner.addEvent(new BulletHitEvent(otherRobot.getName(), otherRobot.getEnergy(), bullet));
-				frame = 0;
-				victim = otherRobot;
+				owner.addEvent(new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(), bullet));
 
 				double newX, newY;
 
@@ -227,7 +234,7 @@ public class BulletPeer {
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
 			frame = 0;
-			owner.addEvent(new BulletMissedEvent(createBullet()));
+			owner.addEvent(new BulletMissedEvent(createBullet(false)));
 		}
 	}
 

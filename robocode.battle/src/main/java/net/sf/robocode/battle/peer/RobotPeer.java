@@ -299,8 +299,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return statics.getName();
 	}
 
-	public String getAnonymousName() {
-		return statics.getAnonymousName();
+	public String getAnnonymousName() {
+		return statics.getAnnonymousName();
 	}
 
 	public String getShortName() {
@@ -985,7 +985,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public String getNameForEvent(RobotPeer otherRobot) {
 		if (battleRules.getHideEnemyNames() && !isTeamMate(otherRobot)) {
-			return otherRobot.getAnonymousName();
+			return otherRobot.getAnnonymousName();
 		}
 		return otherRobot.getName();
 	}		

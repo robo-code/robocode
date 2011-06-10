@@ -118,7 +118,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		this.contestantIndex = contestantIndex;
 	}
 
-	public String getAnonymousName() {
+	public String getAnnonymousName() {
 		return "#" + index;
 	}
 

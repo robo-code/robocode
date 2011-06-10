@@ -394,13 +394,14 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		}
 
 		if (execResults.getBulletUpdates() != null) {
-			for (BulletStatus s : execResults.getBulletUpdates()) {
-				final Bullet bullet = bullets.get(s.bulletId);
+			for (BulletStatus bulletStatus : execResults.getBulletUpdates()) {
+				final Bullet bullet = bullets.get(bulletStatus.bulletId);
 
 				if (bullet != null) {
-					HiddenAccess.update(bullet, s.x, s.y, s.victimName, s.isActive);
-					if (!s.isActive) {
-						bullets.remove(s.bulletId);
+					HiddenAccess.update(bullet, bulletStatus.x, bulletStatus.y, bulletStatus.victimName,
+							bulletStatus.isActive);
+					if (!bulletStatus.isActive) {
+						bullets.remove(bulletStatus.bulletId);
 					}
 				}
 			}
