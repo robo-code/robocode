@@ -84,7 +84,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		DRAW_IMAGE_7, // drawImage(Image, AffineTransform, ImageObserver)
 		DRAW_IMAGE_8, // drawImage(BufferedImage, BufferedImageOp, int, int)
 		DRAW_RENDERED_IMAGE, // drawRenderedImage(RenderedImage, AffineTransform)
-		DRAW_RENDERABLE_IMGAGE, // drawRenderableImage(RenderableImage, AffineTransform)
+		DRAW_RENDERABLE_IMAGE, // drawRenderableImage(RenderableImage, AffineTransform)
 		DRAW_STRING_FLOAT, // drawString(String, float, float)
 		DRAW_STRING_ACI_FLOAT, // drawString(AttributedCharacterIterator, float, float)
 		DRAW_GLYPH_VECTOR, // drawGlyphVector(GlyphVector gv, float x, float y)
@@ -1607,7 +1607,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		case DRAW_IMAGE_7:
 		case DRAW_IMAGE_8:
 		case DRAW_RENDERED_IMAGE:
-		case DRAW_RENDERABLE_IMGAGE:
+		case DRAW_RENDERABLE_IMAGE:
 		case SET_RENDERING_HINT:
 		case SET_RENDERING_HINTS:
 		case ADD_RENDERING_HINTS:
@@ -1624,7 +1624,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private void processSetColor(Graphics2D g) {
 		// setColor(Color)
-		g.setColor(new Color(calls.getInt(), true));
+		g.setColor(readColor());
 	}
 
 	private void processSetPaintMode(Graphics2D g) {
@@ -1634,12 +1634,16 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private void processSetXORMode(Graphics2D g) {
 		// setXORMode(Color)
-		g.setXORMode(new Color(calls.getInt(), true));
+		g.setXORMode(readColor());
 	}
 
 	private void processSetFont(Graphics2D g) {
+		Font font = calls.get() == 0
+				? null
+				: new Font(serializer.deserializeString(calls), calls.getInt(), calls.getInt()); 
+
 		// setFont(Font)
-		g.setFont(new Font(serializer.deserializeString(calls), calls.getInt(), calls.getInt()));
+		g.setFont(font);
 	}
 
 	private void processClipRect(Graphics2D g) {
@@ -1821,19 +1825,17 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private void processTransform(Graphics2D g) {
 		// transform(AffineTransform)
-		final AffineTransform transform = getAffineTransform();
-
-		g.transform(transform);
+		g.transform(readAffineTransform());
 	}
 
 	private void processSetTransform(Graphics2D g) {
 		// setTransform(AffineTransform)
-		g.setTransform(getAffineTransform());
+		g.setTransform(readAffineTransform());
 	}
 
 	private void processSetBackground(Graphics2D g) {
 		// setBackground(Color)
-		g.setBackground(new Color(calls.getInt(), true));
+		g.setBackground(readColor());
 	}
 
 	private void processClip(Graphics2D g) {
@@ -1843,6 +1845,9 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private Shape readShape() {
 		switch (calls.get()) {
+		case 0:
+			return null;
+
 		case 1:
 			return new Arc2D.Double(calls.getDouble(), // x
 					calls.getDouble(), // y
@@ -1870,15 +1875,11 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 					calls.getDouble(), // width
 					calls.getDouble()); // height
 
-		case 0:
-			DeserializePathIterator pai = new DeserializePathIterator();
+		case 5:
 			GeneralPath path = new GeneralPath();
 
-			path.append(pai, false);
+			path.append(new DeserializePathIterator(), false);
 			return path;
-
-		default:
-			break;
 		}
 		notSupported();
 		return null;
@@ -1993,7 +1994,9 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private void put(Shape shape) {
-		if (shape instanceof Arc2D) {
+		if (shape == null) {
+			put((byte) 0);
+		} else if (shape instanceof Arc2D) {
 			put((byte) 1);
 			Arc2D arc = (Arc2D) shape;
 
@@ -2029,7 +2032,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			put(elipse.getWidth());
 			put(elipse.getHeight());
 		} else {
-			put((byte) 0);
+			put((byte) 5);
 
 			double coords[] = new double[6];
 			int count = 0;
@@ -2058,18 +2061,20 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private Composite readComposite() {
 		switch (calls.get()) {
+		case 0:
+			return null;
+
 		case 1:
 			return AlphaComposite.getInstance(calls.getInt());
-
-		default:
-			break;
 		}
 		notSupported();
 		return null;
 	}
 
 	private void put(Composite comp) {
-		if (comp instanceof AlphaComposite) {
+		if (comp == null) {
+			put((byte) 0);
+		} else if (comp instanceof AlphaComposite) {
 			AlphaComposite composite = (AlphaComposite) comp;
 
 			put((byte) 1);
@@ -2081,18 +2086,20 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private Paint readPaint() {
 		switch (calls.get()) {
+		case 0:
+			return null;
+
 		case 1:
 			return new Color(calls.getInt(), true);
-
-		default:
-			break;
 		}
 		notSupported();
 		return null;
 	}
 
 	private void put(Paint paint) {
-		if (paint instanceof Color) {
+		if (paint == null) {
+			put((byte) 0);
+		} else if (paint instanceof Color) {
 			Color color = (Color) paint;
 
 			put((byte) 1);
@@ -2104,19 +2111,21 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	private Stroke readStroke() {
 		switch (calls.get()) {
+		case 0:
+			return null;
+
 		case 1:
 			return new BasicStroke(calls.getFloat(), calls.getInt(), calls.getInt(), calls.getFloat(),
 					serializer.deserializeFloats(calls), calls.getFloat());
-
-		default:
-			break;
 		}
 		notSupported();
 		return null;
 	}
 
 	private void put(Stroke stroke) {
-		if (stroke instanceof BasicStroke) {
+		if (stroke == null) {
+			put((byte) 0);
+		} else if (stroke instanceof BasicStroke) {
 			BasicStroke bs = (BasicStroke) stroke;
 
 			put((byte) 1);
@@ -2131,16 +2140,30 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 	}
 
-	private AffineTransform getAffineTransform() {
-		return new AffineTransform(serializer.deserializeDoubles(calls));
+	private AffineTransform readAffineTransform() {
+		switch (calls.get()) {
+		case 0:
+			return null;
+
+		case 1:
+			return new AffineTransform(serializer.deserializeDoubles(calls));
+		}
+		notSupported();
+		return null;		
 	}
 
 	private void put(AffineTransform tx) {
-		double[] m = new double[6];
+		if (tx == null) {
+			put((byte) 0);
+		} else {
+			double[] m = new double[6];
 
-		tx.getMatrix(m);
-		put(m);
-		put(tx.getType());
+			tx.getMatrix(m);
+
+			put((byte) 1);
+			put(m);
+			put(tx.getType());
+		}
 	}
 
 	private Method readMethod() {
@@ -2165,12 +2188,16 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private void put(AttributedCharacterIterator iterator) {
-		StringBuilder sb = new StringBuilder();
-
-		for (char c = iterator.first(); c != CharacterIterator.DONE; c = iterator.next()) {
-			sb.append(c);
+		if (iterator == null) {
+			put((String) null);
+		} else {
+			StringBuilder sb = new StringBuilder();
+	
+			for (char c = iterator.first(); c != CharacterIterator.DONE; c = iterator.next()) {
+				sb.append(c);
+			}
+			put(sb.toString());
 		}
-		put(sb.toString());
 	}
 
 	private void put(String value) {
@@ -2217,14 +2244,28 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		calls.putFloat(value);
 	}
 
+	private Color readColor() {
+		return calls.get() == 0 ? null : new Color(calls.getInt(), true);
+	}
+	
 	private void put(Color value) {
-		calls.putInt(value.getRGB());
+		if (value == null) {
+			calls.put((byte) 0);
+		} else {
+			calls.put((byte) 1);
+			calls.putInt(value.getRGB());
+		}
 	}
 
 	private void put(Font font) {
-		serializer.serialize(calls, font.getFontName());
-		calls.putInt(font.getStyle());
-		calls.putInt(font.getSize());
+		if (font == null) {
+			calls.put((byte) 0);
+		} else {
+			calls.put((byte) 1);		
+			serializer.serialize(calls, font.getFontName());
+			calls.putInt(font.getStyle());
+			calls.putInt(font.getSize());
+		}
 	}
 
 	// --------------------------------------------------------------------------
