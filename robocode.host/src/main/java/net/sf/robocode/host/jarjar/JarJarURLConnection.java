@@ -57,12 +57,12 @@ public class JarJarURLConnection extends URLConnection {
 	private static boolean registered = false;
 
 	public JarJarURLConnection(URL url)
-			throws IOException {
+		throws IOException {
 		super(url);
 		final String file = url.getFile();
 		URL inner = new URL(file);
 
-		//this is same as
+		// this is same as
 		// connection = inner.openConnection()
 		// we just cache the connection in URLJarCollector 
 		// because we need to be able to close it to release jar files
@@ -117,9 +117,9 @@ public class JarJarURLConnection extends URLConnection {
 			return -1;
 		}
 
-		@SuppressWarnings({"deprecation"})
+		@SuppressWarnings({ "deprecation"})
 		protected void parseURL(URL url, String spec,
-								int start, int limit) {
+				int start, int limit) {
 			String file = null;
 			String ref = null;
 			// first figure out if there is an anchor
@@ -159,7 +159,7 @@ public class JarJarURLConnection extends URLConnection {
 			setURL(url, "jarjar", "", -1, file, ref);
 		}
 
-		@SuppressWarnings({"UnusedAssignment", "UnusedDeclaration"})
+		@SuppressWarnings({ "UnusedAssignment", "UnusedDeclaration"})
 		private String parseAbsoluteSpec(String spec) {
 			@SuppressWarnings("unused")
 			URL url = null;
