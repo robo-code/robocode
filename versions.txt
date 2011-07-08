@@ -5,6 +5,7 @@ Version 1.7.3.1 Alpha
 * Bug [3312341] - Hide enemy name implementation bug.
 * Bug [3312402] - Bullet.equals semantic has been change in 1.7.3.0 version.
 * Bug [3317837] - setColor(null) causes NPE.
+* Bug [3355603] - Rumble sh scripts for launching do not handle spaces in path.
 * BulletHitEvent.getBullet().getVictim() always returned null.
 
 = Changes =
