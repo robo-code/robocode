@@ -67,8 +67,8 @@
     <None Include="Introduction.aml" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="jni4net.n-0.8.3.0">
-      <HintPath>..\tools\lib\jni4net.n-0.8.3.0.dll</HintPath>
+    <Reference Include="jni4net.n-0.8.4.0">
+      <HintPath>..\tools\lib\jni4net.n-0.8.4.0.dll</HintPath>
     </Reference>
     <Reference Include="robocode">
       <HintPath>..\robocode.dotnet.api\target\robocode.dll</HintPath>

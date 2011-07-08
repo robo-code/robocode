@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="jni4net.n-0.8.3.0, Version=0.8.3.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
+    <Reference Include="jni4net.n-0.8.4.0, Version=0.8.4.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\robocode\libs\jni4net.n-0.8.3.0.dll</HintPath>
+      <HintPath>C:\robocode\libs\jni4net.n-0.8.4.0.dll</HintPath>
     </Reference>
     <Reference Include="robocode, Version=1.7.2.2, Culture=neutral, PublicKeyToken=43c1c8ae0e25a953, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
