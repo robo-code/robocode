@@ -195,16 +195,16 @@ public class PrepareBattles {
 						if (size.checkCompetitorsForSize(name, name, 250)) {
 							namesnano.add(name);
 						}
-						if (robothaspriority(name, generalratings)) {
+						if (robotHasPriority(name, generalratings)) {
 							priorityall.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 1500) && robothaspriority(name, miniratings)) {
+						if (size.checkCompetitorsForSize(name, name, 1500) && robotHasPriority(name, miniratings)) {
 							prioritymini.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 750) && robothaspriority(name, microratings)) {
+						if (size.checkCompetitorsForSize(name, name, 750) && robotHasPriority(name, microratings)) {
 							prioritymicro.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 250) && robothaspriority(name, nanoratings)) {
+						if (size.checkCompetitorsForSize(name, name, 250) && robotHasPriority(name, nanoratings)) {
 							prioritynano.add(name);
 						}
 					}
@@ -325,20 +325,24 @@ public class PrepareBattles {
 		return bots;
 	}
 
-	private boolean robothaspriority(String name, Properties ratings) {
-		if (ratings == null) {
+	private boolean robotHasPriority(String name, Properties ratings) {
+		if (name == null || ratings == null) {
 			return false;
 		}
 		String bot = name.replaceAll(" ", "_");
 		String values = ratings.getProperty(bot);
 
 		if (values == null) {
-			return true;
+			return false;
 		}
 		String[] value = values.split(",");
-		double battles = Double.parseDouble(value[1]);
 
-		return (battles < prioritynum);
+		if (value != null && value.length >= 2) {
+			double battles = Double.parseDouble(value[1]);
+
+			return (battles < prioritynum);
+		}
+		return false;
 	}
 
 	public boolean createMeleeBattlesList() {
@@ -383,16 +387,16 @@ public class PrepareBattles {
 						if (size.checkCompetitorsForSize(name, name, 250)) {
 							namesnano.add(name);
 						}
-						if (robothaspriority(name, generalratings)) {
+						if (robotHasPriority(name, generalratings)) {
 							priorityall.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 1500) && robothaspriority(name, miniratings)) {
+						if (size.checkCompetitorsForSize(name, name, 1500) && robotHasPriority(name, miniratings)) {
 							prioritymini.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 750) && robothaspriority(name, microratings)) {
+						if (size.checkCompetitorsForSize(name, name, 750) && robotHasPriority(name, microratings)) {
 							prioritymicro.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 250) && robothaspriority(name, nanoratings)) {
+						if (size.checkCompetitorsForSize(name, name, 250) && robotHasPriority(name, nanoratings)) {
 							prioritynano.add(name);
 						}
 					}
