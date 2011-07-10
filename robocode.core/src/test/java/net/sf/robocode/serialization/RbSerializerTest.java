@@ -36,6 +36,8 @@ import java.io.IOException;
  */
 public class RbSerializerTest {
 
+	Exception exception = null;
+	
 	@BeforeClass
 	public static void init() {
 		// we need to switch off engine classloader for this test
@@ -219,11 +221,17 @@ public class RbSerializerTest {
 		sg.setColor(Color.MAGENTA);
 		sg.fill(new RoundRectangle2D.Double(110, 70, 30, 50, 13.5, 16.1));
 
+		exception = null;
+		
 		Canvas d = new Canvas() {
 			@Override
 			public void paint(Graphics g) {
 				synchronized (this) {
-					sg.processTo((Graphics2D) g);
+					try {
+						sg.processTo((Graphics2D) g);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						exception = e;
+					}
 				}
 			}
 		};
@@ -238,6 +246,8 @@ public class RbSerializerTest {
 		f.setFocusable(true);
 		Thread.sleep(100);
 		f.setVisible(false);
+
+		Assert.assertNull("Exception occured: " + exception, exception);
 	}
 
 	public static void assertNear(double v1, double v2) {
