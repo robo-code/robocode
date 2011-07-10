@@ -229,7 +229,7 @@ public class RbSerializerTest {
 				synchronized (this) {
 					try {
 						sg.processTo((Graphics2D) g);
-					} catch (ArrayIndexOutOfBoundsException e) {
+					} catch (Exception e) {
 						exception = e;
 					}
 				}
