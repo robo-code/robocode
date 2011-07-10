@@ -1360,7 +1360,9 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 			isInitialized = true;
 		}
-		calls.flip();
+
+		flipQueue();
+
 		while (calls.remaining() > 0) {
 			processQueuedCall(g);
 		}
@@ -1371,8 +1373,13 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
 	}
 
+	public void flipQueue() {
+		calls.flip();
+		calls.order(calls.get() == 1 ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN);
+	}
+	
 	public void processTo(Graphics2D g, Object graphicsCalls) {
-		calls.clear();
+		clearQueue();
 
 		calls.mark(); // Mark for rollback
 		try {
@@ -1383,15 +1390,10 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 				processTo(g, graphicsCalls);
 				return; // must exit here
 			}
-			calls.clear();
+			clearQueue();
 		}
 
-		calls.flip();
-		if (calls.get() == 1) {
-			calls.order(ByteOrder.BIG_ENDIAN);
-		} else {
-			calls.order(ByteOrder.LITTLE_ENDIAN);
-		}
+		flipQueue();
 
 		while (calls.remaining() > 0) {
 			try {
@@ -1410,10 +1412,10 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 		byte[] res = new byte[calls.position()];
 
-		calls.flip();
+		flipQueue();
 		calls.get(res);
-		calls.clear();
-		calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
+		clearQueue();
+
 		return res;
 	}
 
@@ -1916,7 +1918,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			// Copy all bytes contained in the current buffer to the new buffer
 
 			byte[] copiedBytes = new byte[calls.position()];
-					
+
 			calls.clear();
 			calls.get(copiedBytes);
 
