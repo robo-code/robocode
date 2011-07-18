@@ -42,10 +42,12 @@ import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.sound.ISoundManager;
 import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.util.StringUtil;
 import net.sf.robocode.version.IVersionManager;
 import robocode.control.events.*;
 
 import java.awt.Toolkit;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -331,34 +333,34 @@ public final class RobocodeMain extends RobocodeMainBase {
 		PrintStream out = null;
 		FileOutputStream fos = null;
 
-		if (setup.resultsFilename == null) {
-			out = Logger.realOut;
-		} else {
-			File f = new File(setup.resultsFilename);
-
-			try {
-				fos = new FileOutputStream(f);
-				out = new PrintStream(fos);
-			} catch (IOException e) {
-				Logger.logError(e);
+		try {
+			if (setup.resultsFilename == null) {
+				out = Logger.realOut;
+			} else {
+				File f = new File(setup.resultsFilename);
+	
+				try {
+					fos = new FileOutputStream(f);
+					out = new PrintStream(fos);
+				} catch (IOException e) {
+					Logger.logError(e);
+				}
 			}
-		}
+			if (out != null) {
+				BattleResultsTableModel resultsTable = new BattleResultsTableModel(event.getSortedResults(),
+						event.getBattleRules().getNumRounds());
 
-		BattleResultsTableModel resultsTable = new BattleResultsTableModel(event.getSortedResults(),
-				event.getBattleRules().getNumRounds());
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-		if (out != null) {
-			resultsTable.print(out);
-			out.close();
-		}
-		if (fos != null) {
-			try {
-				fos.close();
-			} catch (IOException e) {// swallow
+				resultsTable.print(new PrintStream(baos));
+				out.append(StringUtil.toBasicLatin(baos.toString()));
 			}
+		} finally {
+			FileUtil.cleanupStream(out);
+			FileUtil.cleanupStream(fos);			
 		}
 	}
-
+	
 	private class BattleObserver extends BattleAdaptor {
 		boolean isReplay;
 

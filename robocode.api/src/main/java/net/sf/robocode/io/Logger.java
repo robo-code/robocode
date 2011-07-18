@@ -16,6 +16,7 @@ package net.sf.robocode.io;
 
 
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.util.StringUtil;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;
 import robocode.control.events.IBattleListener;
@@ -47,6 +48,7 @@ public class Logger {
 
 	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
+			s = StringUtil.toBasicLatin(s);
 			if (newline) {
 				realOut.println(s);
 			} else {
@@ -83,6 +85,7 @@ public class Logger {
 
 	public static void logError(String s) {
 		if (logListener == null) {
+			s = StringUtil.toBasicLatin(s);
 			realErr.println(s);
 		} else {
 			logListener.onBattleError(new BattleErrorEvent(s));
