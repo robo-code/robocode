@@ -40,11 +40,13 @@ public class URLJarCollector {
 	static HashMap<?, ?> fileCache;
 	static HashMap<?, ?> urlCache;
 	static Field jarFileURL;
-	static boolean sunJVM;
+	static final boolean sunJVM;
 	static boolean enabled;
 	static Set<URL> urlsToClean = new HashSet<URL>();
 
 	static {
+		boolean localSunJVM = false;
+
 		try {
 			final Class<?> jarConn = ClassLoader.getSystemClassLoader().loadClass(
 					"sun.net.www.protocol.jar.JarURLConnection");
@@ -71,7 +73,7 @@ public class URLJarCollector {
 			jarFileURL = jarURLConnection.getDeclaredField("jarFileURL");
 			jarFileURL.setAccessible(true);
 
-			sunJVM = true;
+			localSunJVM = true;
 		} catch (ClassNotFoundException ignore) {
 			Logger.logError(ignore);
 		} catch (NoSuchFieldException ignore) {
@@ -79,6 +81,7 @@ public class URLJarCollector {
 		} catch (IllegalAccessException ignore) {
 			Logger.logError(ignore);
 		}
+		sunJVM = localSunJVM;
 	}
 
 	public static synchronized URLConnection openConnection(URL url) throws IOException {
@@ -102,10 +105,12 @@ public class URLJarCollector {
 		if (sunJVM) {
 			// Close all JarURLConnections if garbage collection is enabled
 			if (enabled) {
-				for (URL url : urlsToClean) {
-					closeJarURLConnection(url);
+				synchronized (urlsToClean) {
+					for (URL url : urlsToClean) {
+						closeJarURLConnection(url);
+					}
+					urlsToClean.clear();
 				}
-				urlsToClean.clear();
 			}
 
 			// Bug fix [2867326] - Lockup on start if too many bots in robots dir (cont'd).
@@ -123,7 +128,9 @@ public class URLJarCollector {
 
 				if (filename.startsWith("jar_cache")) {
 					it.remove();
-					urlCache.remove(jarFile);
+					synchronized (urlCache) {
+						urlCache.remove(jarFile);
+					}
 				}
 			}
 		}
@@ -138,7 +145,9 @@ public class URLJarCollector {
 					final URL url = (URL) jarFileURL.get(conn);
 
 					if (!urlsToClean.contains(url)) {
-						urlsToClean.add(url);
+						synchronized (urlsToClean) {
+							urlsToClean.add(url);
+						}
 					}
 				} catch (IllegalAccessException ignore) {}
 			}
@@ -166,7 +175,9 @@ public class URLJarCollector {
 
 				if (urlFileName.equals(jarFileName)) {
 					it.remove();
-					urlCache.remove(jarFile);
+					synchronized (urlCache) {
+						urlCache.remove(jarFile);
+					}
 					try {
 						jarFile.close();
 					} catch (IOException e) {

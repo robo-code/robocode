@@ -8,6 +8,7 @@ Version 1.7.3.1 Alpha
 * Bug [3355603] - Rumble sh scripts for launching do not handle spaces in path.
 * Bug [3350136] - Teamrumble priority battles bug.
 * Bug [3367452] - Console output cannot handle non-ascii names.
+* Bug [3370431] - ConcurrentModificationException in URLJarCollector.
 * BulletHitEvent.getBullet().getVictim() always returned null.
 
 = New features =
