@@ -1,5 +1,5 @@
 Version 1.7.3.1 Alpha
-(18-Jul-2011)
+(23-Jul-2011)
 ---------------
 = Bugfixes =
 * Bug [3312341] - Hide enemy name implementation bug.
@@ -15,6 +15,7 @@ Version 1.7.3.1 Alpha
 * Req [3360953] - Twin Duel configuration files for the RoboRumble client are now included.
 
 = Changes =
+* The Robot Editor is now saving and loading source files in UTF-8 (Unicode).
 * Upgraded to use jni4net v0.8.4.
 
 Version 1.7.3.0

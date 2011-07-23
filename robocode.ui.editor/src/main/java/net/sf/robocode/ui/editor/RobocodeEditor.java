@@ -612,14 +612,18 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 
 			editorDirectory = chooser.getSelectedFile().getParentFile();
 
-			FileReader fileReader = null;
+			BufferedReader bufferedReader = null;
+			InputStreamReader inputStreamReader = null;
+			FileInputStream fileInputStream = null;
 
 			try {
-				fileReader = new FileReader(robotFilename);
+				fileInputStream = new FileInputStream(robotFilename);
+				inputStreamReader = new InputStreamReader(fileInputStream, "UTF8");
+				bufferedReader = new BufferedReader(inputStreamReader);
 
 				EditWindow editWindow = new EditWindow(repositoryManager, this, robotsDirectory);
 
-				editWindow.getEditorPane().read(fileReader, new File(robotFilename));
+				editWindow.getEditorPane().read(bufferedReader, new File(robotFilename));
 				editWindow.getEditorPane().setCaretPosition(0);
 				editWindow.setFileName(robotFilename);
 				editWindow.setModified(false);
@@ -633,11 +637,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 				JOptionPane.showMessageDialog(this, e.toString());
 				Logger.logError(e);
 			} finally {
-				if (fileReader != null) {
-					try {
-						fileReader.close();
-					} catch (IOException ignored) {}
-				}
+				FileUtil.cleanupStream(bufferedReader);
 			}
 		}
 	}
