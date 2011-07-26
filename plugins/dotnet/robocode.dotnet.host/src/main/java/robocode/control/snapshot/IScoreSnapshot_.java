@@ -34,7 +34,7 @@ class __IScoreSnapshot extends system.Object implements robocode.control.snapsho
     }
     
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/lang/Object;)I")
-    public native int compareTo(robocode.control.snapshot.IScoreSnapshot par0);
+    public native int compareTo(java.lang.Object par0);
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getName();

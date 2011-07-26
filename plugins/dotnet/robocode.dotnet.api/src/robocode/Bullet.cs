@@ -46,13 +46,23 @@ namespace Robocode
                       bool isActive, int bulletId)
         {
             headingRadians = heading;
-            this.bulletId = bulletId;
             this.x = x;
             this.y = y;
             this.power = power;
             this.ownerName = ownerName;
             this.victimName = victimName;
             _isActive = isActive;
+            this.bulletId = bulletId;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj is Bullet)
+            {
+                Bullet bullet = (Bullet)obj;
+                return bullet.bulletId == bulletId;
+            }
+            return Equals(obj);
         }
 
         ///<summary>
@@ -171,15 +181,15 @@ namespace Robocode
 
             public int sizeOf(RbSerializerN serializer, object objec)
             {
-                var obj = (Bullet) objec;
+                var obj = (Bullet)objec;
 
-                return RbSerializerN.SIZEOF_TYPEINFO + 4*RbSerializerN.SIZEOF_DOUBLE + serializer.sizeOf(obj.ownerName)
-                       + serializer.sizeOf(obj.victimName) + RbSerializerN.SIZEOF_BOOL;
+                return RbSerializerN.SIZEOF_TYPEINFO + 4 * RbSerializerN.SIZEOF_DOUBLE + serializer.sizeOf(obj.ownerName)
+                       + serializer.sizeOf(obj.victimName) + RbSerializerN.SIZEOF_BOOL + RbSerializerN.SIZEOF_INT;
             }
 
             public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
             {
-                var obj = (Bullet) objec;
+                var obj = (Bullet)objec;
 
                 serializer.serialize(buffer, obj.headingRadians);
                 serializer.serialize(buffer, obj.x);
@@ -188,6 +198,7 @@ namespace Robocode
                 serializer.serialize(buffer, obj.ownerName);
                 serializer.serialize(buffer, obj.victimName);
                 serializer.serialize(buffer, obj._isActive);
+                serializer.serialize(buffer, obj.bulletId);
             }
 
             public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
@@ -199,8 +210,9 @@ namespace Robocode
                 string ownerName = serializer.deserializeString(buffer);
                 string victimName = serializer.deserializeString(buffer);
                 bool isActive = serializer.deserializeBoolean(buffer);
+                int bulletId = serializer.deserializeInt(buffer);
 
-                return new Bullet(headingRadians, x, y, power, ownerName, victimName, isActive, -1);
+                return new Bullet(headingRadians, x, y, power, ownerName, victimName, isActive, bulletId);
             }
         }
     }
