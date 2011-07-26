@@ -1,5 +1,5 @@
 Version 1.7.3.1 Alpha
-(23-Jul-2011)
+(27-Jul-2011)
 ---------------
 = Bugfixes =
 * Bug [3312341] - Hide enemy name implementation bug.
@@ -9,6 +9,7 @@ Version 1.7.3.1 Alpha
 * Bug [3350136] - Teamrumble priority battles bug.
 * Bug [3367452] - Console output cannot handle non-ascii names.
 * Bug [3370431] - ConcurrentModificationException in URLJarCollector.
+* Bug [3375882] - Robot in development generates * into filename.
 * BulletHitEvent.getBullet().getVictim() always returned null.
 
 = New features =

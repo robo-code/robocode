@@ -121,7 +121,12 @@ public class BattleRecorder {
 				name.append(dateFormat.format(calendar.getTime()));
 				name.append('-');
 				for (BattleResults r : results) {
-					name.append(r.getTeamLeaderName());
+					String teamLeaderName = r.getTeamLeaderName();
+
+					if (teamLeaderName.contains("*")) { // Development version of robot indicated with * in name
+						teamLeaderName = teamLeaderName.replace("*", ""); // Remove the star (*)
+					}
+					name.append(teamLeaderName);
 					name.append('-');
 				}
 				name.setLength(name.length() - 1);
