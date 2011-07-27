@@ -367,7 +367,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return isSleeping.get();
 	}
 
-	public boolean getHalt() {
+	public boolean isHalt() {
 		return halt.get();
 	}
 
@@ -523,7 +523,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			isExecFinishedAndDisabled = true;
 			throw new DeathException();
 		}
-		if (getHalt()) {
+		if (isHalt()) {
 			isExecFinishedAndDisabled = true;
 			if (isWinner) {
 				throw new WinException();
@@ -541,11 +541,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
 
 		return new ExecResults(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(),
-				getHalt(), shouldWait, isPaintEnabled());
+				isHalt(), shouldWait, isPaintEnabled());
 	}
 
 	public final ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
-		if (!getHalt()) {
+		if (!isHalt()) {
 			// from robot to battle
 			commands.set(new ExecCommands(newCommands, true));
 			printProxy(newCommands.getOutputText());
@@ -561,7 +561,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		readoutTeamMessages(); // throw away
 		
 		return new ExecResults(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),
-				getHalt(), shouldWait, false);
+				isHalt(), shouldWait, false);
 	}
 
 	private void validateCommands(ExecCommands newCommands) {
@@ -667,7 +667,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void setSkippedTurns() {
-		if (isSleeping() || !isRunning() || battle.isDebugging() || isPaintEnabled()) {
+		if (isHalt() || isSleeping() || !isRunning() || battle.isDebugging() || isPaintEnabled()) {
 			skippedTurns = 0;
 		} else {
 			println("SYSTEM: " + getShortName() + " skipped turn " + battle.getTime());
@@ -1654,6 +1654,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	@Override
 	public String toString() {
 		return statics.getShortName() + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString()
-				+ (isSleeping() ? " sleeping " : "") + (isRunning() ? " running" : "") + (getHalt() ? " halted" : "");
+				+ (isSleeping() ? " sleeping " : "") + (isRunning() ? " running" : "") + (isHalt() ? " halted" : "");
 	}
 }

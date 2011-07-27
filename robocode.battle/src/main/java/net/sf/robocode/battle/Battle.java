@@ -758,8 +758,7 @@ public final class Battle extends BaseBattle {
 	private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning()) {
-				// This call blocks until the
-				// robot's thread actually wakes up.
+				// This call blocks until the robot's thread actually wakes up.
 				robotPeer.waitWakeup();
 
 				if (robotPeer.isAlive()) {
@@ -779,6 +778,7 @@ public final class Battle extends BaseBattle {
 	private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning()) {
+				// This call blocks until the robot's thread actually wakes up.
 				robotPeer.waitWakeup();
 			}
 		}
