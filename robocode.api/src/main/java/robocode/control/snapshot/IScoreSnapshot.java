@@ -22,7 +22,7 @@ package robocode.control.snapshot;
  *
  * @since 1.6.2
  */
-public interface IScoreSnapshot extends Comparable<IScoreSnapshot> {
+public interface IScoreSnapshot extends Comparable<Object> {
 
 	/**
 	 * Returns the name of the contestant, i.e. a robot or team.
