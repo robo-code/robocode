@@ -200,6 +200,18 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 					if (!options.skipExploded || rs.getState() != RobotState.DEAD) {
 						rs.writeXml(writer, op);
 					}
+                    else{
+                        boolean writeFirstExplosionFrame=false;
+                        for (IBulletSnapshot b : bullets) {
+                            if (b.isExplosion() && b.getFrame()==0 && b.getVictimIndex() == r.getContestantIndex()){
+                                writeFirstExplosionFrame=true;
+                                break;
+                            }
+                        }
+                        if(writeFirstExplosionFrame){
+                            rs.writeXml(writer, op);
+                        }
+                    }
 				}
 			}
 			writer.endElement();
