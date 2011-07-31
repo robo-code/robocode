@@ -1,5 +1,5 @@
-Version 1.7.3.1 Alpha
-(18-Jul-2011)
+Version 1.7.3.1
+(28-Jul-2011)
 ---------------
 = Bugfixes =
 * Bug [3312341] - Hide enemy name implementation bug.
@@ -7,14 +7,16 @@ Version 1.7.3.1 Alpha
 * Bug [3317837] - setColor(null) causes NPE.
 * Bug [3355603] - Rumble sh scripts for launching do not handle spaces in path.
 * Bug [3350136] - Teamrumble priority battles bug.
-* Bug [3367452] - Console output cannot handle non-ascii names.
 * Bug [3370431] - ConcurrentModificationException in URLJarCollector.
+* Bug [3375882] - Robot in development generates * into filename.
+* Bug [3376501] - Interface Robot skips turns at end of round.
 * BulletHitEvent.getBullet().getVictim() always returned null.
 
 = New features =
 * Req [3360953] - Twin Duel configuration files for the RoboRumble client are now included.
 
 = Changes =
+* The Robot Editor is now saving and loading source files in UTF-8 (Unicode).
 * Upgraded to use jni4net v0.8.4.
 
 Version 1.7.3.0

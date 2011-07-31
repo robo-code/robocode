@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @author Flemming N. Larsen (contributor)
  * @since 1.6.1
  */
-public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializable, IXmlSerializable, IScoreSnapshot {
+public final class ScoreSnapshot implements Serializable, IXmlSerializable, IScoreSnapshot {
 
 	private static final long serialVersionUID = 1L;
 
@@ -279,18 +279,19 @@ public final class ScoreSnapshot implements Comparable<IScoreSnapshot>, Serializ
 	/**
 	 * {@inheritDoc}
 	 */
-	public int compareTo(IScoreSnapshot o) {
-		double myScore = getTotalScore();
-		double hisScore = o.getTotalScore();
+	public int compareTo(Object obj) {
+		if (obj instanceof IScoreSnapshot) {
+			IScoreSnapshot scoreSnapshot = (IScoreSnapshot) obj;
+			
+			double myScore = getTotalScore() + getCurrentScore();
+			double hisScore = scoreSnapshot.getTotalScore() + scoreSnapshot.getCurrentScore();
 
-		myScore += getCurrentScore();
-		hisScore += o.getCurrentScore();
-
-		if (myScore < hisScore) {
-			return -1;
-		}
-		if (myScore > hisScore) {
-			return 1;
+			if (myScore < hisScore) {
+				return -1;
+			}
+			if (myScore > hisScore) {
+				return 1;
+			}
 		}
 		return 0;
 	}
