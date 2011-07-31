@@ -104,6 +104,23 @@ public final class RobocodeMain extends RobocodeMainBase {
 		this.versionManager = versionManager;
 	}
 
+    public RobocodeMain(ISettingsManager properties,
+            IHostManager hostManager,
+            IWindowManager windowManager,
+            IBattleManager battleManager,
+            IRecordManager recordManager,
+            IVersionManager versionManager
+            ) {
+        setup = new Setup();
+        this.properties = properties;
+        this.hostManager = hostManager;
+        this.windowManager = windowManager;
+        this.soundManager = null;
+        this.battleManager = battleManager;
+        this.recordManager = recordManager;
+        this.versionManager = versionManager;
+    }
+
 	public RobocodeMain(ISettingsManager properties,
 			IHostManager hostManager,
 			IBattleManager battleManager,
@@ -125,14 +142,14 @@ public final class RobocodeMain extends RobocodeMainBase {
 			hostManager.initSecurity();
 
 			// Set the Look and Feel (LAF)
-			if (windowManager.isGUIEnabled()) {
+			if (windowManager!=null && windowManager.isGUIEnabled()) {
 				windowManager.setLookAndFeel();
 			}
 			properties.setOptionsBattleDesiredTPS(setup.tps);
 
 			battleManager.addListener(battleObserver);
 
-			if (windowManager.isGUIEnabled()) {
+			if (windowManager!=null && windowManager.isGUIEnabled()) {
 				if (!setup.minimize && setup.battleFilename == null && soundManager != null) {
 					soundManager.playThemeMusic();
 					windowManager.showSplashScreen();
