@@ -10,10 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="robocode.dotnet.api" exported="" />
-    <orderEntry type="module" module-name="robocode.dotnet.nhost" exported="" />
-    <orderEntry type="module" module-name="robocode.dotnet.robotscs" exported="" />
-    <orderEntry type="module" module-name="robocode.dotnet.samples" exported="" />
   </component>
 </module>
 
