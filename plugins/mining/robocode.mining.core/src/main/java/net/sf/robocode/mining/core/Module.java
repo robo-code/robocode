@@ -16,13 +16,17 @@ import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.core.BaseModule;
 import net.sf.robocode.core.Container;
+import net.sf.robocode.core.IModule;
+
+import java.util.List;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class Module extends BaseModule {
-	static {
+
+    public void afterLoaded(List<IModule> allModules) {
         IBattleManagerBase battleManager = Container.cache.getComponent(IBattleManagerBase.class);
         battleManager.addListener(new MiningListener());
     }
