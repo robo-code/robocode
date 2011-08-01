@@ -39,6 +39,7 @@ public class XmlReader {
 	final Stack<Dictionary<String, Element>> elementNames = new Stack<Dictionary<String, Element>>();
 	final Stack<Dictionary<String, Attribute>> attributeNames = new Stack<Dictionary<String, Attribute>>();
 	IXmlSerializable result;
+	Hashtable<String, Object> context = new Hashtable<String, Object>();
 
 	public XmlReader(InputStream input) throws SAXException, ParserConfigurationException {
 		this.input = input;
@@ -133,13 +134,29 @@ public class XmlReader {
 
 	}
 
+	public Hashtable<String, Object> getContext() {
+		return context;
+	}
+
 	public Element expect(String name, Element element) {
 		elementNames.peek().put(name, element);
 		return element;
 	}
 
+	public Element expect(String name, String altName, Element element) {
+		elementNames.peek().put(name, element);
+		elementNames.peek().put(altName, element);
+		return element;
+	}
+
 	public Attribute expect(String name, Attribute attribute) {
 		attributeNames.peek().put(name, attribute);
+		return attribute;
+	}
+
+	public Attribute expect(String name, String altName, Attribute attribute) {
+		attributeNames.peek().put(name, attribute);
+		attributeNames.peek().put(altName, attribute);
 		return attribute;
 	}
 

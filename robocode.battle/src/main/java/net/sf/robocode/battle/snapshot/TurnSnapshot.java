@@ -199,19 +199,19 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 
 					if (!options.skipExploded || rs.getState() != RobotState.DEAD) {
 						rs.writeXml(writer, op);
+					} else {
+						boolean writeFirstExplosionFrame = false;
+
+						for (IBulletSnapshot b : bullets) {
+							if (b.isExplosion() && b.getFrame() == 0 && b.getVictimIndex() == r.getContestantIndex()) {
+								writeFirstExplosionFrame = true;
+								break;
+							}
+						}
+						if (writeFirstExplosionFrame) {
+							rs.writeXml(writer, op);
+						}
 					}
-                    else{
-                        boolean writeFirstExplosionFrame=false;
-                        for (IBulletSnapshot b : bullets) {
-                            if (b.isExplosion() && b.getFrame()==0 && b.getVictimIndex() == r.getContestantIndex()){
-                                writeFirstExplosionFrame=true;
-                                break;
-                            }
-                        }
-                        if(writeFirstExplosionFrame){
-                            rs.writeXml(writer, op);
-                        }
-                    }
 				}
 			}
 			writer.endElement();
@@ -236,23 +236,23 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 	/**
 	 * {@inheritDoc}
 	 */
-	public XmlReader.Element readXml(XmlReader reader) {
-		return reader.expect("turn", new XmlReader.Element() {
-			public IXmlSerializable read(XmlReader reader) {
+	public XmlReader.Element readXml(final XmlReader reader) {
+		return reader.expect("turn", "t", new XmlReader.Element() {
+			public IXmlSerializable read(final XmlReader reader) {
 				final TurnSnapshot snapshot = new TurnSnapshot();
 
-				reader.expect("turn", new XmlReader.Attribute() {
+				reader.expect("turn", "tu", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.turn = Integer.parseInt(value);
 					}
 				});
-				reader.expect("round", new XmlReader.Attribute() {
+				reader.expect("round", "ro", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.round = Integer.parseInt(value);
 					}
 				});
 
-				reader.expect("robots", new XmlReader.ListElement() {
+				reader.expect("robots", "rs", new XmlReader.ListElement() {
 					public IXmlSerializable read(XmlReader reader) {
 						snapshot.robots = new ArrayList<IRobotSnapshot>();
 						// prototype
@@ -263,10 +263,26 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 						snapshot.robots.add((RobotSnapshot) child);
 					}
 
-					public void close() {}
+					public void close() {
+						// allows loading of minimalistic XML, which skips dead robots, but GUI expects them
+						Hashtable<String, Object> context = reader.getContext();
+						Integer robotCount = (Integer) context.get("robots");
+						boolean[] present = new boolean[robotCount];
+
+						for (IRobotSnapshot robot : snapshot.robots) {
+							present[robot.getContestantIndex()] = true;
+						}
+						for (int i = 0; i < robotCount; i++) {
+							if (!present[i]) {
+								String name = (String) context.get(Integer.toString(i));
+
+								snapshot.robots.add(new RobotSnapshot(name, i, RobotState.DEAD));
+							}
+						}
+					}
 				});
 
-				reader.expect("bullets", new XmlReader.ListElement() {
+				reader.expect("bullets", "bs", new XmlReader.ListElement() {
 					public IXmlSerializable read(XmlReader reader) {
 						snapshot.bullets = new ArrayList<IBulletSnapshot>();
 						// prototype

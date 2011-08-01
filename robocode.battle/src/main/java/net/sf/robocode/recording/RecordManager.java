@@ -162,6 +162,7 @@ public class RecordManager implements IRecordManager {
 		BufferedInputStream bis = null;
 		ZipInputStream zis = null;
 		ObjectInputStream ois = null;
+		InputStream xis = null;
 
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
@@ -178,6 +179,12 @@ public class RecordManager implements IRecordManager {
 				zis = new ZipInputStream(bis);
 				zis.getNextEntry();
 				ois = new ObjectInputStream(zis);
+			} else if (format == BattleRecordFormat.XML_ZIP) {
+				zis = new ZipInputStream(bis);
+				zis.getNextEntry();
+				xis = zis;
+			} else if (format == BattleRecordFormat.XML) {
+				xis = bis;
 			}
 			if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
 				recordInfo = (BattleRecordInfo) ois.readObject();
@@ -204,7 +211,7 @@ public class RecordManager implements IRecordManager {
 				fos = new FileOutputStream(tempFile);
 				bos = new BufferedOutputStream(fos, 1024 * 1024);
 				root.oos = new ObjectOutputStream(bos);
-				XmlReader.deserialize(bis, root);
+				XmlReader.deserialize(xis, root);
 				if (root.lastException != null) {
 					logError(root.lastException);
 				}
@@ -248,14 +255,18 @@ public class RecordManager implements IRecordManager {
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect("record", new XmlReader.Element() {
-				public IXmlSerializable read(XmlReader reader) {
+				public IXmlSerializable read(final XmlReader reader) {
 
 					final XmlReader.Element element = (new BattleRecordInfo()).readXml(reader);
 
-					reader.expect("recordInfo", new XmlReader.Element() {
+					reader.expect("recordInfo", new XmlReader.ElementClose() {
 						public IXmlSerializable read(XmlReader reader) {
 							recordInfo = (BattleRecordInfo) element.read(reader);
 							return recordInfo;
+						}
+
+						public void close() {
+							reader.getContext().put("robots", recordInfo.robotCount);
 						}
 					});
 
