@@ -26,8 +26,9 @@ import java.util.List;
  */
 public class Module extends BaseModule {
 
-    public void afterLoaded(List<IModule> allModules) {
-        IBattleManagerBase battleManager = Container.cache.getComponent(IBattleManagerBase.class);
-        battleManager.addListener(new MiningListener());
-    }
+	public void afterLoaded(List<IModule> allModules) {
+		IBattleManagerBase battleManager = Container.cache.getComponent(IBattleManagerBase.class);
+
+		battleManager.addListener(new MiningListener());
+	}
 }
