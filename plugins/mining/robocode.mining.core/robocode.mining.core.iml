@@ -12,6 +12,10 @@
     <orderEntry type="module" module-name="robocode.core" />
     <orderEntry type="module" module-name="robocode.api" />
     <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.6" level="project" />
+    <orderEntry type="module" module-name="robocode.battle" />
+    <orderEntry type="module" module-name="robocode.host" />
+    <orderEntry type="module" module-name="robocode.repository" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.robocode:codesize:1.1" level="project" />
   </component>
 </module>
 

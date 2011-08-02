@@ -17,5 +17,10 @@
             <artifactId>robocode.core</artifactId>
             <version>${robocode.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.battle</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
     </dependencies>
 </project>
