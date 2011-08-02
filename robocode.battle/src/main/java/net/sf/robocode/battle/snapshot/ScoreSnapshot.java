@@ -150,6 +150,11 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 		currentRammingKillBonus = score1.getCurrentBulletKillBonus() + score2.getCurrentBulletKillBonus();
 	}
 
+	@Override
+	public String toString() {
+		return this.totalScore+ "/" + this.currentScore;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

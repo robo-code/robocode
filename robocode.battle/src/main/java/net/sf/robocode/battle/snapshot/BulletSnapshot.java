@@ -83,6 +83,11 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 	 */
 	public BulletSnapshot() {
 		state = BulletState.MOVING;
+		ownerIndex = -1;
+		victimIndex = -1;
+		explosionImageIndex = -1;
+		heading = Double.NaN;
+		power = Double.NaN;
 	}
 
 	/**
@@ -119,6 +124,11 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 		ownerIndex = bullet.getOwner().getContestIndex();
 
 		heading = bullet.getHeading();
+	}
+
+	@Override
+	public String toString() {
+		return ownerIndex+ "-"+bulletId + " (" + (int) power + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
 	}
 
 	/**
@@ -268,6 +278,14 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 			public IXmlSerializable read(XmlReader reader) {
 				final BulletSnapshot snapshot = new BulletSnapshot();
 
+				reader.expect("id", new XmlReader.Attribute() {
+					public void read(String value) {
+						String[] parts = value.split("-");
+						snapshot.ownerIndex = Integer.parseInt(parts[0]);
+						snapshot.bulletId = Integer.parseInt(parts[1]);
+					}
+				});
+
 				reader.expect("state", "s", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.state = BulletState.valueOf(value);
@@ -277,6 +295,24 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 				reader.expect("power", "p", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.power = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("heading", "h", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.heading = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("victim", "v", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.victimIndex = Integer.parseInt(value);
+					}
+				});
+
+				reader.expect("owner", "o", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.ownerIndex = Integer.parseInt(value);
 					}
 				});
 

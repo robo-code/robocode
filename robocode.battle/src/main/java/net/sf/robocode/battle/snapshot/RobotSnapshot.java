@@ -187,7 +187,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 
 	@Override
 	public String toString() {
-		return shortName + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
+		return shortName + " (" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
 	}
 
 	/**
