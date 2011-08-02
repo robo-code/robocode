@@ -576,7 +576,7 @@ public class WindowManager implements IWindowManagerExt {
 	 * system's LAF. If this fails, it try to use the cross platform LAF.
 	 * If this also fails, the LAF will not be changed.
 	 */
-	public void setLookAndFeel() {
+	public void init() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable t) {
@@ -591,6 +591,8 @@ public class WindowManager implements IWindowManagerExt {
 				System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
 			}
 		}
+
+		awtAdaptor.subscribe(isGUIEnabled);
 	}
 
 	public void runIntroBattle() {
@@ -619,7 +621,7 @@ public class WindowManager implements IWindowManagerExt {
 			setEnableGUI(true);
 
 			// Set the Look and Feel (LAF)
-			setLookAndFeel();
+			init();
 		}
 
 		if (isGUIEnabled()) {

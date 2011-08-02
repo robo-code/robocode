@@ -143,7 +143,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 			// Set the Look and Feel (LAF)
 			if (windowManager != null && windowManager.isGUIEnabled()) {
-				windowManager.setLookAndFeel();
+				windowManager.init();
 			}
 			properties.setOptionsBattleDesiredTPS(setup.tps);
 

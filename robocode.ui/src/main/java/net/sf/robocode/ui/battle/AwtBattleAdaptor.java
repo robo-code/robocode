@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Pavel Savara (original)
  */
 public final class AwtBattleAdaptor {
+	private boolean isEnabled;
 	private final IBattleManager battleManager;
 	private final BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
 	private final BattleObserver observer;
@@ -58,7 +59,6 @@ public final class AwtBattleAdaptor {
 		lastMajorEvent = new AtomicInteger(0);
 
 		observer = new BattleObserver();
-		battleManager.addListener(observer);
 	}
 
 	protected void finalize() throws Throwable {
@@ -67,6 +67,17 @@ public final class AwtBattleAdaptor {
 			battleManager.removeListener(observer);
 		} finally {
 			super.finalize();
+		}
+	}
+
+	public void subscribe(boolean isEnabled) {
+		if (this.isEnabled && !isEnabled) {
+			battleManager.removeListener(observer);
+			timerTask.stop();
+			isEnabled = false;
+		} else if (!this.isEnabled && isEnabled) {
+			battleManager.addListener(observer);
+			isEnabled = true;
 		}
 	}
 

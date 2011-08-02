@@ -547,7 +547,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			// Set the Look and Feel (LAF)
 			final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
 
-			windowManager.setLookAndFeel();
+			windowManager.init();
 
 			RobocodeEditor robocodeEditor = Container.getComponent(RobocodeEditor.class);
 
