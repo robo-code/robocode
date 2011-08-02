@@ -37,12 +37,13 @@ public final class BattlePlayer extends BaseBattle {
 	public BattlePlayer(ISettingsManager properties, IBattleManager battleManager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) {
 		super(properties, battleManager, eventDispatcher);
 		this.recordManager = recordManager;
-		recordManager.prepareInputStream();
 	}
 
 	@Override
 	protected void initializeBattle() {
 		super.initializeBattle();
+
+		recordManager.prepareInputStream();
 
 		battleRules = recordManager.recordInfo.battleRules;
 		paint = new boolean[recordManager.recordInfo.robotCount];
@@ -124,6 +125,12 @@ public final class BattlePlayer extends BaseBattle {
 			}
 		}
 		return (isAborted || end);
+	}
+
+	@Override
+	public void cleanup() {
+		super.cleanup();
+		recordManager.cleanupStreams();
 	}
 
 	public void setPaintEnabled(int robotIndex, boolean enable) {
