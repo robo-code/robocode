@@ -64,6 +64,7 @@ public class WindowManager implements IWindowManagerExt {
 	private final ICpuManager cpuManager;
 	private final IRepositoryManager repositoryManager;
 	private final IVersionManager versionManager;
+	private final IImageManager imageManager;
 	private IRobotDialogManager robotDialogManager;
 	private RobocodeFrame robocodeFrame;
 
@@ -79,6 +80,7 @@ public class WindowManager implements IWindowManagerExt {
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
 		this.versionManager = versionManager;
+		this.imageManager = imageManager;
 		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have
@@ -90,8 +92,6 @@ public class WindowManager implements IWindowManagerExt {
 				}
 			}
 		});
-
-		imageManager.initialize(); // Make sure this one is initialized so all images are available
 	}
 
 	public void setBusyPointer(boolean enabled) {
@@ -592,6 +592,7 @@ public class WindowManager implements IWindowManagerExt {
 			}
 		}
 
+		imageManager.initialize(); // Make sure this one is initialized so all images are available
 		awtAdaptor.subscribe(isGUIEnabled);
 	}
 
