@@ -1,3 +1,9 @@
+Version 1.7.3.2 Alpha
+(09-Aug-2011)
+---------------
+= Bugfixes =
+* Bug [3383580] - Enabling Paint Freezes Robocode.
+
 Version 1.7.3.1
 (28-Jul-2011)
 ---------------

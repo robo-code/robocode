@@ -1361,25 +1361,15 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			isInitialized = true;
 		}
 
-		flipQueue();
+		calls.flip();
 
 		while (calls.remaining() > 0) {
 			processQueuedCall(g);
 		}
 	}
 
-	public void clearQueue() {
-		calls.clear();
-		calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
-	}
-
-	public void flipQueue() {
-		calls.flip();
-		calls.order(calls.get() == 1 ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN);
-	}
-	
 	public void processTo(Graphics2D g, Object graphicsCalls) {
-		clearQueue();
+		calls.clear();
 
 		calls.mark(); // Mark for rollback
 		try {
@@ -1390,10 +1380,11 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 				processTo(g, graphicsCalls);
 				return; // must exit here
 			}
-			clearQueue();
+			calls.clear();
 		}
 
-		flipQueue();
+		calls.flip();
+		calls.order(calls.get() == 1 ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN);
 
 		while (calls.remaining() > 0) {
 			try {
@@ -1412,9 +1403,11 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 		byte[] res = new byte[calls.position()];
 
-		flipQueue();
+		calls.flip();
 		calls.get(res);
-		clearQueue();
+
+		calls.clear();
+		calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
 
 		return res;
 	}
