@@ -26,9 +26,12 @@ public class BulletAggregation {
 
 	public int OwnerIndex;
 	public int VictimIndex;
+	public int Round;
 
 	// first frame
 	public IBulletSnapshot First;
+	public int TurnFirst;
+	public double LateralVelocityFirst;
 
 	// hit or passed
 	public IBulletSnapshot Last;
@@ -43,14 +46,21 @@ public class BulletAggregation {
 
 	// frame  0, bullet visible
 	public IRobotSnapshot DetectVictim;
-	public int TurnDetect;
-        
+
 	// last frame, hit or passed
 	public IRobotSnapshot LastVictim;
+	public IRobotSnapshot LastOwner;
 	public int TurnLast;
 
 	public List<BulletAggregation> PrevFlying;
 	public List<BulletAggregation> NextFlying;
+
+
+
+
+
+	public double DistanceFirst;
+	public double DistanceLast;
 
 	// maximum escape angle, radians
 	public double MaxEscapeAngle;

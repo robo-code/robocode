@@ -28,7 +28,8 @@ public class Module extends BaseModule {
 
 	public void afterLoaded(List<IModule> allModules) {
 		IBattleManagerBase battleManager = Container.cache.getComponent(IBattleManagerBase.class);
-
-		battleManager.addListener(new MiningListener());
+		MiningListener miningListener = new MiningListener();
+		Container.cache.addComponent(miningListener);
+		battleManager.addListener(miningListener);
 	}
 }

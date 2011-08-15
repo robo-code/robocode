@@ -12,21 +12,27 @@
 
 package net.sf.robocode.mining.core;
 
+import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.core.Container;
-import net.sf.robocode.core.RobocodeMainBase;
 import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.recording.BattleRecordFormat;
+import net.sf.robocode.recording.DirectPlayer;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.security.HiddenAccess;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.nio.channels.NonWritableChannelException;
 
 public class MiningMain {
     public static void main(String[] args){
         System.setProperty("NOSECURITY", "true");
         HiddenAccess.init();
-	    IRecordManager recordManager = Container.getComponent(IRecordManager.class);
+
+	    DirectPlayer dp= new DirectPlayer();
+	    MiningListener miningListener = new MiningListener ();
+	    BattleEventDispatcher eventDispatcher=new BattleEventDispatcher();
+	    eventDispatcher.addListener(miningListener);
 
 	    String path="d:\\Robocode\\battles\\";
 	    File pathF = new File(path);
@@ -37,10 +43,12 @@ public class MiningMain {
 	    });
 
 	    for(File rec:files){
-		    recordManager.loadRecord(rec.getAbsolutePath(), BattleRecordFormat.XML_ZIP);
-		    BattlePlayer player=Container.createComponent(BattlePlayer.class);
-	        player.run();
-		    player.cleanup();
+		    System.out.println(rec.getAbsolutePath());
+		    File done = new File(rec.getParentFile(), "done\\" + rec.getName());
+		    rec.renameTo(done);
+		    miningListener.outputFileName =rec.getAbsolutePath()+".csv";
+
+		    dp.playRecord(done.getAbsolutePath(), BattleRecordFormat.XML_ZIP, eventDispatcher);
 	    }
     }
 }
