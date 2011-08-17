@@ -1338,6 +1338,8 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	public void processTo(Graphics2D g) {
 		if (!isInitialized) {
+			calls = ByteBuffer.allocate(INITIAL_BUFFER_SIZE);
+
 			// Make sure the transform is not null
 			transform = g.getTransform();
 			transform = transform == null ? new AffineTransform() : new AffineTransform(transform);
