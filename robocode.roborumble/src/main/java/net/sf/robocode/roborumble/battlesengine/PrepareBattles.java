@@ -238,13 +238,15 @@ public class PrepareBattles {
 				if (items.length == 3) {
 					// Check that competitors exist
 					String jar1 = items[0].replace(' ', '_') + ".jar";
-					boolean exists1 = (new File(botsrepository + jar1)).exists();
+					boolean exists1 = (new File(botsrepository + jar1)).exists() && namesall.contains(items[0]);
 					String jar2 = items[1].replace(' ', '_') + ".jar";
-					boolean exists2 = (new File(botsrepository + jar2)).exists();
+					boolean exists2 = (new File(botsrepository + jar2)).exists() && namesall.contains(items[1]);
 
 					// Add battles to prioritary battles vector
-					if (exists1 && exists2) {
+					if (exists1 && exists2 && !prioritarybattles.contains(record)) {
 						prioritarybattles.add(record);
+					} else {
+					    System.out.println("Ignoring: " + record);
 					}
 				}
 			}
@@ -326,23 +328,19 @@ public class PrepareBattles {
 	}
 
 	private boolean robotHasPriority(String name, Properties ratings) {
-		if (name == null || ratings == null) {
+		if (ratings == null) {
 			return false;
 		}
 		String bot = name.replaceAll(" ", "_");
 		String values = ratings.getProperty(bot);
 
 		if (values == null) {
-			return false;
+			return true;
 		}
 		String[] value = values.split(",");
+		double battles = Double.parseDouble(value[1]);
 
-		if (value != null && value.length >= 2) {
-			double battles = Double.parseDouble(value[1]);
-
-			return (battles < prioritynum);
-		}
-		return false;
+		return (battles < prioritynum);
 	}
 
 	public boolean createMeleeBattlesList() {
@@ -430,12 +428,12 @@ public class PrepareBattles {
 				if (items.length == 3) {
 					// Check that competitors exist
 					String jar1 = items[0].replace(' ', '_') + ".jar";
-					boolean exists1 = (new File(botsrepository + jar1)).exists();
+					boolean exists1 = (new File(botsrepository + jar1)).exists() && namesall.contains(items[0]);
 					String jar2 = items[1].replace(' ', '_') + ".jar";
-					boolean exists2 = (new File(botsrepository + jar2)).exists();
+					boolean exists2 = (new File(botsrepository + jar2)).exists() && namesall.contains(items[1]);
 
 					// Add battles to prioritary battles vector
-					if (exists1 && exists2) {
+					if (exists1 && exists2 && !prioritypairs.contains(items)) {
 						prioritypairs.add(items);
 					}
 				}

@@ -34,6 +34,7 @@ import java.util.Properties;
  *
  * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Jerome Lavigne (contributor)
  */
 public class RoboRumbleAtHome {
 
@@ -113,10 +114,10 @@ public class RoboRumbleAtHome {
 					final boolean isSmartBattles = ratingsdownloaded && runonly.equals("SERVER");
 
 					if (isSmartBattles) {
-						System.out.print("Preparing battles list using smart battles...");
+						System.out.println("Preparing battles list using smart battles...");
 						ready = battles.createSmartBattlesList();
 					} else {
-						System.out.print("Preparing battles list...");
+						System.out.println("Preparing battles list...");
 						ready = battles.createBattlesList();
 					}
 				}

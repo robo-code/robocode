@@ -1,5 +1,5 @@
 Version 1.7.3.2 Alpha
-(19-Aug-2011)
+(20-Aug-2011)
 ---------------
 = Bugfixes =
 * Bug [3383580] - Enabling Paint Freezes Robocode.
@@ -12,6 +12,11 @@ Version 1.7.3.2 Alpha
 = Changes =
 * Various optimizations to let RoboRumble start up and run faster. E.g. sound module and image loading is disabled when running the rumble.
 * Imroved XML deserialization.
+* Patch [3365528] by Jerome Lavigne aka. Darkcanuck - Improved priority battle handling in RoboRumble:
+  - This change will help improve the efficiency of the RoboRumble system and allow battles to be distributed more evenly + fix some inconsistent console output.
+  - Improves RoboRumble client-side processing of priority battles received from the rumble server. Specifically:
+    1. Priority battles will be discarded for bots that the client knows are no longer in the participants list (the client is aware of bot removals before the server is).
+    2. Duplicate priority battles received from the server will be discarded (the server does not maintain state of which battles are sent to specific clients, so duplicates can be common).
 
 Version 1.7.3.1
 (28-Jul-2011)
