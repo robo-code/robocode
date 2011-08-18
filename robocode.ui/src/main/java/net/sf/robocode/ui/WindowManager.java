@@ -64,6 +64,7 @@ public class WindowManager implements IWindowManagerExt {
 	private final ICpuManager cpuManager;
 	private final IRepositoryManager repositoryManager;
 	private final IVersionManager versionManager;
+	private final IImageManager imageManager;
 	private IRobotDialogManager robotDialogManager;
 	private RobocodeFrame robocodeFrame;
 
@@ -79,6 +80,7 @@ public class WindowManager implements IWindowManagerExt {
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
 		this.versionManager = versionManager;
+		this.imageManager = imageManager;
 		awtAdaptor = new AwtBattleAdaptor(battleManager, TIMER_TICKS_PER_SECOND, true);
 
 		// we will set UI better priority than robots and battle have
@@ -90,8 +92,6 @@ public class WindowManager implements IWindowManagerExt {
 				}
 			}
 		});
-
-		imageManager.initialize(); // Make sure this one is initialized so all images are available
 	}
 
 	public void setBusyPointer(boolean enabled) {
@@ -571,12 +571,18 @@ public class WindowManager implements IWindowManagerExt {
 		return robotDialogManager;
 	}
 
+	public void init() {
+		setLookAndFeel();
+		imageManager.initialize(); // Make sure this one is initialized so all images are available
+		awtAdaptor.subscribe(isGUIEnabled);
+	}
+
 	/**
 	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
 	 * system's LAF. If this fails, it try to use the cross platform LAF.
 	 * If this also fails, the LAF will not be changed.
 	 */
-	public void setLookAndFeel() {
+	private void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable t) {
@@ -619,7 +625,7 @@ public class WindowManager implements IWindowManagerExt {
 			setEnableGUI(true);
 
 			// Set the Look and Feel (LAF)
-			setLookAndFeel();
+			init();
 		}
 
 		if (isGUIEnabled()) {

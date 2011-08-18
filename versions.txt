@@ -1,8 +1,17 @@
 Version 1.7.3.2 Alpha
-(09-Aug-2011)
+(19-Aug-2011)
 ---------------
 = Bugfixes =
 * Bug [3383580] - Enabling Paint Freezes Robocode.
+* Fixed problem with XML serialization of just killed robot.
+* Fixed bug in temporary record cleanup.
+
+= New features =
+* Implemented deserialization of XML with short tags. The command line argument for replay now supports zipped XML.
+
+= Changes =
+* Various optimizations to let RoboRumble start up and run faster. E.g. sound module and image loading is disabled when running the rumble.
+* Imroved XML deserialization.
 
 Version 1.7.3.1
 (28-Jul-2011)

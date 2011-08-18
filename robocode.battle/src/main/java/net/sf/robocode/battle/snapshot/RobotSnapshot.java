@@ -28,6 +28,8 @@ import robocode.control.snapshot.RobotState;
 import java.awt.geom.Arc2D;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 
@@ -127,7 +129,9 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	/**
 	 * Creates a snapshot of a robot that must be filled out with data later.
 	 */
-	public RobotSnapshot() {}
+	public RobotSnapshot() {
+		state = RobotState.ACTIVE;
+	}
 
 	/**
 	 * Creates a snapshot of a robot.
@@ -183,7 +187,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 
 	@Override
 	public String toString() {
-		return shortName + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
+		return shortName + " (" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
 	}
 
 	/**
@@ -479,17 +483,66 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 
 	}
 
+	// allows loading of minimalistic XML
+	RobotSnapshot(String robotName, int index, RobotState state) {
+		this.state = state;
+		shortName = robotName;
+		veryShortName = robotName;
+		teamName = robotName;
+		name = robotName;
+		contestantIndex = index;
+		robotScoreSnapshot = new ScoreSnapshot(robotName);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public XmlReader.Element readXml(XmlReader reader) {
-		return reader.expect("robot", new XmlReader.Element() {
-			public IXmlSerializable read(XmlReader reader) {
+		return reader.expect("robot", "r", new XmlReader.Element() {
+			public IXmlSerializable read(final XmlReader reader) {
 				final RobotSnapshot snapshot = new RobotSnapshot();
+
+				reader.expect("id", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.contestantIndex = Integer.parseInt(value);
+
+						// allows loading of minimalistic XML, which robot names for subsequent turns
+						Hashtable<String, Object> context = reader.getContext();
+
+						if (context.containsKey(value)) {
+							String n = (String) context.get(value);
+
+							if (snapshot.shortName == null) {
+								snapshot.name = n;
+							}
+							if (snapshot.shortName == null) {
+								snapshot.shortName = n;
+							}
+							if (snapshot.teamName == null) {
+								snapshot.teamName = n;
+							}
+							if (snapshot.veryShortName == null) {
+								snapshot.veryShortName = n;
+							}
+						}
+					}
+				});
 
 				reader.expect("name", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.name = value;
+						Hashtable<String, Object> context = reader.getContext();
+
+						context.put(Integer.toString(snapshot.contestantIndex), value);
+						if (snapshot.shortName == null) {
+							snapshot.shortName = value;
+						}
+						if (snapshot.teamName == null) {
+							snapshot.teamName = value;
+						}
+						if (snapshot.veryShortName == null) {
+							snapshot.veryShortName = value;
+						}
 					}
 				});
 
@@ -511,7 +564,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 					}
 				});
 
-				reader.expect("state", new XmlReader.Attribute() {
+				reader.expect("state", "s", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.state = RobotState.valueOf(value);
 					}
@@ -547,37 +600,37 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 					}
 				});
 
-				reader.expect("energy", new XmlReader.Attribute() {
+				reader.expect("energy", "e", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.energy = Double.parseDouble(value);
 					}
 				});
 
-				reader.expect("velocity", new XmlReader.Attribute() {
+				reader.expect("velocity", "v", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.velocity = Double.parseDouble(value);
 					}
 				});
 
-				reader.expect("gunHeat", new XmlReader.Attribute() {
+				reader.expect("gunHeat", "h", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.gunHeat = Double.parseDouble(value);
 					}
 				});
 
-				reader.expect("bodyHeading", new XmlReader.Attribute() {
+				reader.expect("bodyHeading", "b", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.bodyHeading = Double.parseDouble(value);
 					}
 				});
 
-				reader.expect("gunHeading", new XmlReader.Attribute() {
+				reader.expect("gunHeading", "g", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.gunHeading = Double.parseDouble(value);
 					}
 				});
 
-				reader.expect("radarHeading", new XmlReader.Attribute() {
+				reader.expect("radarHeading", "r", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.radarHeading = Double.parseDouble(value);
 					}
@@ -605,7 +658,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 
 				final XmlReader.Element element = (new ScoreSnapshot()).readXml(reader);
 
-				reader.expect("score", new XmlReader.Element() {
+				reader.expect("score", "sc", new XmlReader.Element() {
 					public IXmlSerializable read(XmlReader reader) {
 						snapshot.robotScoreSnapshot = (IScoreSnapshot) element.read(reader);
 						return (ScoreSnapshot) snapshot.robotScoreSnapshot;

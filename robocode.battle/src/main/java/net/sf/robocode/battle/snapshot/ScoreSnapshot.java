@@ -150,6 +150,11 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 		currentRammingKillBonus = score1.getCurrentBulletKillBonus() + score2.getCurrentBulletKillBonus();
 	}
 
+	@Override
+	public String toString() {
+		return this.totalScore+ "/" + this.currentScore;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -341,11 +346,16 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 		writer.endElement();
 	}
 
+	// allows loading of minimalistic XML
+	ScoreSnapshot(String contestantName) {
+		this.name = contestantName;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public XmlReader.Element readXml(XmlReader reader) {
-		return reader.expect("score", new XmlReader.Element() {
+		return reader.expect("score", "sc", new XmlReader.Element() {
 			public IXmlSerializable read(XmlReader reader) {
 				final ScoreSnapshot snapshot = new ScoreSnapshot();
 
@@ -354,82 +364,82 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 						snapshot.name = value;
 					}
 				});
-				reader.expect("totalScore", new XmlReader.Attribute() {
+				reader.expect("totalScore", "t", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("totalSurvivalScore", new XmlReader.Attribute() {
+				reader.expect("totalSurvivalScore", "tss", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalSurvivalScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("totalLastSurvivorBonus", new XmlReader.Attribute() {
+				reader.expect("totalLastSurvivorBonus", "tls", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalLastSurvivorBonus = Double.parseDouble(value);
 					}
 				});
-				reader.expect("totalBulletDamageScore", new XmlReader.Attribute() {
+				reader.expect("totalBulletDamageScore", "tbd", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalBulletDamageScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("totalBulletKillBonus", new XmlReader.Attribute() {
+				reader.expect("totalBulletKillBonus", "tbk", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalBulletKillBonus = Double.parseDouble(value);
 					}
 				});
-				reader.expect("totalRammingDamageScore", new XmlReader.Attribute() {
+				reader.expect("totalRammingDamageScore", "trd", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalRammingDamageScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("totalRammingKillBonus", new XmlReader.Attribute() {
+				reader.expect("totalRammingKillBonus", "trk", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalRammingKillBonus = Double.parseDouble(value);
 					}
 				});
-				reader.expect("totalFirsts", new XmlReader.Attribute() {
+				reader.expect("totalFirsts", "t1", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalFirsts = Integer.parseInt(value);
 					}
 				});
-				reader.expect("totalSeconds", new XmlReader.Attribute() {
+				reader.expect("totalSeconds", "t2", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalSeconds = Integer.parseInt(value);
 					}
 				});
-				reader.expect("totalThirds", new XmlReader.Attribute() {
+				reader.expect("totalThirds", "t3", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.totalThirds = Integer.parseInt(value);
 					}
 				});
-				reader.expect("currentScore", new XmlReader.Attribute() {
+				reader.expect("currentScore", "c", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.currentScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("currentSurvivalScore", new XmlReader.Attribute() {
+				reader.expect("currentSurvivalScore", "ss", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.currentSurvivalScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("currentBulletDamageScore", new XmlReader.Attribute() {
+				reader.expect("currentBulletDamageScore", "bd", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.currentBulletDamageScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("currentBulletKillBonus", new XmlReader.Attribute() {
+				reader.expect("currentBulletKillBonus", "bk", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.currentBulletKillBonus = Double.parseDouble(value);
 					}
 				});
-				reader.expect("currentRammingDamageScore", new XmlReader.Attribute() {
+				reader.expect("currentRammingDamageScore", "rd", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.currentRammingDamageScore = Double.parseDouble(value);
 					}
 				});
-				reader.expect("currentRammingKillBonus", new XmlReader.Attribute() {
+				reader.expect("currentRammingKillBonus", "rk", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.currentRammingKillBonus = Double.parseDouble(value);
 					}

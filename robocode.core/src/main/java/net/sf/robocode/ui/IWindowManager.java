@@ -23,6 +23,8 @@ import javax.swing.*;
  * @author Pavel Savara (original)
  */
 public interface IWindowManager extends IWindowManagerBase {
+	void init();
+
 	void setEnableGUI(boolean enable);
 
 	boolean isGUIEnabled();
@@ -54,8 +56,6 @@ public interface IWindowManager extends IWindowManagerBase {
 	void addBattleListener(IBattleListener listener);
 
 	void removeBattleListener(IBattleListener listener);
-
-	void setLookAndFeel();
 
 	void runIntroBattle();
 }

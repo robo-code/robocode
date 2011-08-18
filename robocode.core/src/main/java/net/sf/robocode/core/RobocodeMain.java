@@ -106,18 +106,21 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	public RobocodeMain(ISettingsManager properties,
 			IHostManager hostManager,
+			IWindowManager windowManager,
 			IBattleManager battleManager,
 			IRecordManager recordManager,
 			IVersionManager versionManager
 			) {
-		setup = new Setup();
-		this.properties = properties;
-		this.hostManager = hostManager;
-		this.windowManager = null;
-		this.soundManager = null;
-		this.battleManager = battleManager;
-		this.recordManager = recordManager;
-		this.versionManager = versionManager;
+		this(properties, hostManager, windowManager, null, battleManager, recordManager, versionManager);
+	}
+
+	public RobocodeMain(ISettingsManager properties,
+			IHostManager hostManager,
+			IBattleManager battleManager,
+			IRecordManager recordManager,
+			IVersionManager versionManager
+			) {
+		this(properties, hostManager, null, battleManager, recordManager, versionManager);
 	}
 
 	public void run() {
@@ -125,14 +128,14 @@ public final class RobocodeMain extends RobocodeMainBase {
 			hostManager.initSecurity();
 
 			// Set the Look and Feel (LAF)
-			if (windowManager.isGUIEnabled()) {
-				windowManager.setLookAndFeel();
+			if (windowManager != null && windowManager.isGUIEnabled()) {
+				windowManager.init();
 			}
 			properties.setOptionsBattleDesiredTPS(setup.tps);
 
 			battleManager.addListener(battleObserver);
 
-			if (windowManager.isGUIEnabled()) {
+			if (windowManager != null && windowManager.isGUIEnabled()) {
 				if (!setup.minimize && setup.battleFilename == null && soundManager != null) {
 					soundManager.playThemeMusic();
 					windowManager.showSplashScreen();
@@ -167,8 +170,11 @@ public final class RobocodeMain extends RobocodeMainBase {
 				}
 			} else if (setup.replayFilename != null) {
 				setup.exitOnComplete = true;
-
-				recordManager.loadRecord(setup.replayFilename, BattleRecordFormat.BINARY_ZIP);
+				if (setup.replayFilename.toLowerCase().endsWith("xml.zip")) {
+					recordManager.loadRecord(setup.replayFilename, BattleRecordFormat.XML_ZIP);
+				} else {
+					recordManager.loadRecord(setup.replayFilename, BattleRecordFormat.BINARY_ZIP);
+				}
 
 				if (new File(setup.replayFilename).exists()) {
 					battleManager.replay();

@@ -81,7 +81,14 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 	/**
 	 * Creates a snapshot of a bullet that must be filled out with data later.
 	 */
-	public BulletSnapshot() {}
+	public BulletSnapshot() {
+		state = BulletState.MOVING;
+		ownerIndex = -1;
+		victimIndex = -1;
+		explosionImageIndex = -1;
+		heading = Double.NaN;
+		power = Double.NaN;
+	}
 
 	/**
 	 * Creates a snapshot of a bullet.
@@ -117,6 +124,11 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 		ownerIndex = bullet.getOwner().getContestIndex();
 
 		heading = bullet.getHeading();
+	}
+
+	@Override
+	public String toString() {
+		return ownerIndex+ "-"+bulletId + " (" + (int) power + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
 	}
 
 	/**
@@ -262,19 +274,45 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 	 * {@inheritDoc}
 	 */
 	public XmlReader.Element readXml(XmlReader reader) {
-		return reader.expect("bullet", new XmlReader.Element() {
+		return reader.expect("bullet", "b", new XmlReader.Element() {
 			public IXmlSerializable read(XmlReader reader) {
 				final BulletSnapshot snapshot = new BulletSnapshot();
 
-				reader.expect("state", new XmlReader.Attribute() {
+				reader.expect("id", new XmlReader.Attribute() {
+					public void read(String value) {
+						String[] parts = value.split("-");
+						snapshot.ownerIndex = Integer.parseInt(parts[0]);
+						snapshot.bulletId = Integer.parseInt(parts[1]);
+					}
+				});
+
+				reader.expect("state", "s", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.state = BulletState.valueOf(value);
 					}
 				});
 
-				reader.expect("power", new XmlReader.Attribute() {
+				reader.expect("power", "p", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.power = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("heading", "h", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.heading = Double.parseDouble(value);
+					}
+				});
+
+				reader.expect("victim", "v", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.victimIndex = Integer.parseInt(value);
+					}
+				});
+
+				reader.expect("owner", "o", new XmlReader.Attribute() {
+					public void read(String value) {
+						snapshot.ownerIndex = Integer.parseInt(value);
 					}
 				});
 
@@ -292,7 +330,7 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 					}
 				});
 
-				reader.expect("color", new XmlReader.Attribute() {
+				reader.expect("color", "c", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.color = Long.valueOf(value.toUpperCase(), 16).intValue();
 					}
@@ -301,6 +339,9 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 				reader.expect("isExplosion", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.isExplosion = Boolean.parseBoolean(value);
+						if (snapshot.isExplosion && snapshot.state == null) {
+							snapshot.state = BulletState.EXPLODED;
+						}
 					}
 				});
 
