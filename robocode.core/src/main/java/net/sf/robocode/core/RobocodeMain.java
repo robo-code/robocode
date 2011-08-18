@@ -111,14 +111,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			IRecordManager recordManager,
 			IVersionManager versionManager
 			) {
-		setup = new Setup();
-		this.properties = properties;
-		this.hostManager = hostManager;
-		this.windowManager = windowManager;
-		this.soundManager = null;
-		this.battleManager = battleManager;
-		this.recordManager = recordManager;
-		this.versionManager = versionManager;
+		this(properties, hostManager, windowManager, null, battleManager, recordManager, versionManager);
 	}
 
 	public RobocodeMain(ISettingsManager properties,
@@ -127,14 +120,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			IRecordManager recordManager,
 			IVersionManager versionManager
 			) {
-		setup = new Setup();
-		this.properties = properties;
-		this.hostManager = hostManager;
-		this.windowManager = null;
-		this.soundManager = null;
-		this.battleManager = battleManager;
-		this.recordManager = recordManager;
-		this.versionManager = versionManager;
+		this(properties, hostManager, null, battleManager, recordManager, versionManager);
 	}
 
 	public void run() {

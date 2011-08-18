@@ -571,12 +571,18 @@ public class WindowManager implements IWindowManagerExt {
 		return robotDialogManager;
 	}
 
+	public void init() {
+		setLookAndFeel();
+		imageManager.initialize(); // Make sure this one is initialized so all images are available
+		awtAdaptor.subscribe(isGUIEnabled);
+	}
+
 	/**
 	 * Sets the Look and Feel (LAF). This method first try to set the LAF to the
 	 * system's LAF. If this fails, it try to use the cross platform LAF.
 	 * If this also fails, the LAF will not be changed.
 	 */
-	public void init() {
+	private void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable t) {
@@ -591,9 +597,6 @@ public class WindowManager implements IWindowManagerExt {
 				System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
 			}
 		}
-
-		imageManager.initialize(); // Make sure this one is initialized so all images are available
-		awtAdaptor.subscribe(isGUIEnabled);
 	}
 
 	public void runIntroBattle() {
