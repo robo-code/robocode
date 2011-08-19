@@ -34,7 +34,7 @@ public class MiningMain {
 	    BattleEventDispatcher eventDispatcher=new BattleEventDispatcher();
 	    eventDispatcher.addListener(miningListener);
 
-	    String path="d:\\Robocode\\battles\\";
+	    String path=args[0];
 	    File pathF = new File(path);
 	    File[] files = pathF.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -46,7 +46,9 @@ public class MiningMain {
 		    System.out.println(rec.getAbsolutePath());
 		    File done = new File(rec.getParentFile(), "done\\" + rec.getName());
 		    rec.renameTo(done);
-		    miningListener.outputFileName =rec.getAbsolutePath()+".csv";
+
+		    File csv = new File(rec.getParentFile(), "csv\\" + rec.getName() + ".csv");
+		    miningListener.outputFileName =csv.getAbsolutePath();
 
 		    dp.playRecord(done.getAbsolutePath(), BattleRecordFormat.XML_ZIP, eventDispatcher);
 	    }

@@ -12,6 +12,7 @@
     <orderEntry type="module" module-name="robocode.repository" />
     <orderEntry type="module" module-name="robocode.roborumble" />
     <orderEntry type="module" module-name="robocode.ui" />
+    <orderEntry type="module" module-name="robocode.mining.core" />
   </component>
 </module>
 

@@ -4,4 +4,4 @@ call "%~dp0\tools\loadTools.cmd"
 
 :mvn
 @call "%~dp0\tools\bin\mvn.bat" ant:ant
-@call "%~dp0\tools\bin\mvn.bat" -Dmaven.test.skip=false install assembly:assembly %*
+@call "%~dp0\tools\bin\mvn.bat" -Dmaven.test.skip=true install assembly:assembly %*
