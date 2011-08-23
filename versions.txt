@@ -1,7 +1,8 @@
-Version 1.7.3.2 Alpha
-(20-Aug-2011)
+Version 1.7.3.2
+(23-Aug-2011)
 ---------------
 = Bugfixes =
+* Bug [3387632] - Robocode .NET does not work on Java 7. - Robocode .NET does not work on Java 7.
 * Bug [3383580] - Enabling Paint Freezes Robocode.
 * Fixed problem with XML serialization of just killed robot.
 * Fixed bug in temporary record cleanup.
@@ -17,6 +18,7 @@ Version 1.7.3.2 Alpha
   - Improves RoboRumble client-side processing of priority battles received from the rumble server. Specifically:
     1. Priority battles will be discarded for bots that the client knows are no longer in the participants list (the client is aware of bot removals before the server is).
     2. Duplicate priority battles received from the server will be discarded (the server does not maintain state of which battles are sent to specific clients, so duplicates can be common).
+* Upgraded to jni4net 0.8.5.1 (fixes bug bug [3387632] - Robocode .NET does not work on Java 7)
 
 Version 1.7.3.1
 (28-Jul-2011)
