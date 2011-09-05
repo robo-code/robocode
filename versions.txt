@@ -1,3 +1,9 @@
+Version 1.7.3.3 Alpha
+(05-Sep-2011)
+---------------
+= Bugfixes =
+* Bug [3400398] - Unable to change drawing color in .NET (C#)
+
 Version 1.7.3.2
 (23-Aug-2011)
 ---------------

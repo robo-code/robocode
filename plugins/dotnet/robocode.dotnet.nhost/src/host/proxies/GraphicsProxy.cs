@@ -1019,8 +1019,10 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             calls.flip();
             calls.get(res);
+
             calls.clear();
             calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
+
             return res;
         }
 
@@ -1083,7 +1085,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             // Allocate new buffer
             ByteBuffer newBuffer = ByteBuffer.allocate(bufferSize);
-            newBuffer.order(ByteOrder.LITTLE_ENDIAN);
+//            newBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
             if (calls != null)
             {
@@ -1111,14 +1113,14 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             if (!recovered)
             {
-                calls.clear(); // Make sure the buffer is cleared as BufferUnderflowExceptions will occur otherwise!
-                calls.put(calls.order() == ByteOrder.BIG_ENDIAN ? (byte) 1 : (byte) 0);
-
-                if (unrecoveredBufferOverflowCount++%500 == 0)
+                if (unrecoveredBufferOverflowCount++ == 1)
                 {
                     // Prevent spamming 
                     java.lang.System.@out.println(
-                        "SYSTEM: This robot is painting too much between actions.  Max. capacity has been reached.");
+                        "SYSTEM: This robot is painting too much between actions.\n"
+                        + "SYSTEM: Max. buffer capacity ("
+                        + MAX_BUFFER_SIZE + " bytes per turn) has been reached.\n"
+                        + "SYSTEM: Last painting operations are being dropped.\n");
                 }
             }
             return recovered;
@@ -1188,14 +1190,30 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         private void put(Color value)
         {
-            calls.putInt(value.ToArgb());
+            if (value == null)
+            {
+                calls.put((byte)0);
+            }
+            else
+            {
+                calls.put((byte)1);
+                calls.putInt(value.ToArgb());
+            }
         }
 
         private void put(Font font)
         {
-            serializer.serialize(calls, font.Name);
-            calls.putInt((int) font.Style);
-            calls.putInt((int) font.Size);
+            if (font == null)
+            {
+                calls.put((byte)0);
+            }
+            else
+            {
+                calls.put((byte)1);
+                serializer.serialize(calls, font.Name);
+                calls.putInt((int)font.Style);
+                calls.putInt((int)font.Size);
+            }
         }
 
         #endregion
@@ -1242,7 +1260,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             DRAW_IMAGE_7, // drawImage(Image, AffineTransform, ImageObserver)
             DRAW_IMAGE_8, // drawImage(BufferedImage, BufferedImageOp, int, int)
             DRAW_RENDERED_IMAGE, // drawRenderedImage(RenderedImage, AffineTransform)
-            DRAW_RENDERABLE_IMGAGE, // drawRenderableImage(RenderableImage, AffineTransform)
+            DRAW_RENDERABLE_IMAGE, // drawRenderableImage(RenderableImage, AffineTransform)
             DRAW_STRING_FLOAT, // drawString(String, float, float)
             DRAW_STRING_ACI_FLOAT, // drawString(AttributedCharacterIterator, float, float)
             DRAW_GLYPH_VECTOR, // drawGlyphVector(GlyphVector gv, float x, float y)
