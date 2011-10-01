@@ -2,13 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>robocode.dotnet.ntests</artifactId>
-    <packaging>dotnet:library</packaging>
-    <name>.NET Robocode nTests</name>
-    <description>.NET ntests for Robocode</description>
+    <artifactId>robocode.dotnet.distribution</artifactId>
+    <name>.NET Robocode Distribution</name>
     <parent>
-        <artifactId>robocode.dotnet</artifactId>
         <groupId>net.sf.robocode</groupId>
+        <artifactId>robocode.dotnet</artifactId>
         <version>1.7.3.3</version>
     </parent>
     <dependencies>
@@ -26,15 +24,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.dotnet.nhost</artifactId>
+            <artifactId>robocode.dotnet.installer</artifactId>
             <version>${project.version}</version>
-            <type>dotnet:library</type>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.dotnet.robotscs</artifactId>
+            <artifactId>robocode.dotnet.content</artifactId>
             <version>${project.version}</version>
-            <type>dotnet:library</type>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -42,28 +40,36 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
             <version>${project.version}</version>
             <type>dotnet:library</type>
         </dependency>
-        <dependency>
-            <groupId>org.nunit</groupId>
-            <artifactId>nunit.framework</artifactId>
-            <version>2.4.3.0</version>
-            <type>dotnet:library</type>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jni4net</groupId>
-            <artifactId>jni4net.n</artifactId>
-            <version>0.8.5.1</version>
-            <type>dotnet:library</type>
-        </dependency>
     </dependencies>
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.sonatype.nmaven.plugins</groupId>
                 <artifactId>maven-dotnet-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <aditionalOptions>/warn:0</aditionalOptions>
+                    <finalName>${project.parent.artifactId}-${project.version}</finalName>
+                    <ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
+                    <descriptors>
+                        <descriptor>dotnet-setup.asm.xml</descriptor>
+                    </descriptors>
+                    <archive>
+                        <manifest>
+                            <mainClass>net.sf.robocode.installer.AutoExtract</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

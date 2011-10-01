@@ -1,22 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>robocode</artifactId>
-        <groupId>net.sf.robocode</groupId>
-        <version>${robocode.version}</version>
-    </parent>
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.api</artifactId>
-    <version>${robocode.version}</version>
     <name>Robocode API</name>
+    <parent>
+        <groupId>net.sf.robocode</groupId>
+        <artifactId>robocode</artifactId>
+        <version>1.7.3.3</version>
+    </parent>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.2</version>
                 <configuration>
                     <finalName>robocode</finalName>
                     <archive>
@@ -29,7 +26,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.5</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -39,40 +35,25 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <windowtitle>Robocode ${version} API</windowtitle>
+                    <windowtitle>Robocode ${project.version} API</windowtitle>
                     <docfilessubdirs>true</docfilessubdirs>
-                    <doctitle><![CDATA[<h1>Robocode ${version} API</h1>]]></doctitle>
+                    <doctitle>
+                        <![CDATA[<h1>Robocode ${project.version} API</h1>]]>
+</doctitle>
                     <links>
                         <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
                     </links>
                     <use>false</use>
+                    <excludePackageNames>robocode.exception:net.sf.robocode.*</excludePackageNames>
                 </configuration>
             </plugin>
             <plugin>
-               <artifactId>maven-deploy-plugin</artifactId>
-               <version>2.5</version>
-               <configuration>
-                 <skip>false</skip>
-              </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-    <reporting>
-        <plugins>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.4</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-                <configuration>
-                  <excludePackageNames>robocode.exception:net.sf.robocode.*</excludePackageNames>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
 </project>

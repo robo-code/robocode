@@ -4,14 +4,13 @@
         <format>dir</format>
         <format>zip</format>
     </formats>
-
     <fileSets>
         <fileSet>
+			<directory>..</directory>
             <excludes>
                 <exclude>plugins/battleview3d/**</exclude>
                 <exclude>plugins/js/**</exclude>
                 <exclude>plugins/scala/**</exclude>
-
                 <exclude>**/_ReSharper*/**</exclude>
                 <exclude>**/_ReSharper.*/**</exclude>
                 <exclude>**/Debug/**</exclude>
@@ -19,7 +18,6 @@
                 <exclude>**/obj/**</exclude>
                 <exclude>**/target/**</exclude>
                 <exclude>**/lib/**</exclude>
-
                 <exclude>**/*.suo</exclude>
                 <exclude>**/*.user</exclude>
                 <exclude>**/*.log</exclude>

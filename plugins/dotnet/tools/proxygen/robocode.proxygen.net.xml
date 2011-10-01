@@ -9,7 +9,7 @@
   <ClassPath Path="../../robocode.host/target/classes"/>
   <AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.dll" />
   <AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.control.dll" />
-  <AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.dotnet.nhost-1.7.3.2.dll" />
+  <AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.dotnet.nhost-1.7.3.3.dll" />
 
   <ClrType TypeName="net.sf.robocode.dotnet.host.DotnetHost"/>
   <ClrType TypeName="net.sf.robocode.dotnet.repository.root.DllRootHelper"/>

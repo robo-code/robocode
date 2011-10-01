@@ -1,22 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>robocode</artifactId>
-        <groupId>net.sf.robocode</groupId>
-        <version>${robocode.version}</version>
-    </parent>
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.roborumble</artifactId>
-    <version>${robocode.version}</version>
-    <name>Roborumble</name>
+    <name>Roborumble Client</name>
+    <parent>
+        <groupId>net.sf.robocode</groupId>
+        <artifactId>robocode</artifactId>
+        <version>1.7.3.3</version>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>codesize</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.battle</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.2</version>
                 <configuration>
                     <finalName>roborumble</finalName>
                     <archive>
@@ -28,22 +43,4 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.api</artifactId>
-            <version>${robocode.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>codesize</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.battle</artifactId>
-            <version>${robocode.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-    </dependencies>
 </project>

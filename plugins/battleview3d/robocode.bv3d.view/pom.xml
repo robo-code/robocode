@@ -4,18 +4,18 @@
     <parent>
         <artifactId>robocode.bv3d</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>${robocode.version}</version>
+        <version>1.7.3.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.bv3d.view</artifactId>
-    <version>${robocode.version}</version>
+    <version>1.7.3.3</version>
     <name>3D Battle View for Robocode</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.ui</artifactId>
-            <version>${robocode.version}</version>
+            <version>1.7.3.3</version>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jogl</groupId>

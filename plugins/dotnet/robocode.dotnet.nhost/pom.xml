@@ -1,22 +1,16 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>robocode.dotnet.nhost</artifactId>
+    <name>.NET Robocode nHost</name>
+    <description>.NET nhost for Robocode</description>
+    <packaging>dotnet:library</packaging>
     <parent>
         <artifactId>robocode.dotnet</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>${robocode.version}</version>
+        <version>1.7.3.3</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.dotnet.nhost</artifactId>
-    <version>${robocode.nversion}</version>
-    <packaging>dotnet:library</packaging>
-    <name>.NET Robocode nhost</name>
-    <description>.NET nhost for Robocode</description>
-    <organization>
-        <name>Robocode</name>
-        <url>http://robocode.sf.net</url>
-    </organization>
     <dependencies>
         <dependency>
             <groupId>net.sf.jni4net</groupId>
@@ -27,19 +21,19 @@
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.api</artifactId>
-            <version>${robocode.nversion}</version>
+            <version>${project.version}</version>
             <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.control.api</artifactId>
-            <version>${robocode.nversion}</version>
+            <version>${project.version}</version>
             <type>dotnet:library</type>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.control.api</artifactId>
-            <version>${robocode.nversion}</version>
+            <version>${project.version}</version>
             <type>dotnet:library</type>
         </dependency>
     </dependencies>
@@ -49,50 +43,36 @@
             <plugin>
                 <groupId>org.sonatype.nmaven.plugins</groupId>
                 <artifactId>maven-dotnet-compiler-plugin</artifactId>
-                <extensions>true</extensions>
-                <version>0.17robocode</version>
                 <configuration>
-                    <aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:"${basedir}/../tools/keys/robocode.snk"
-                    </aditionalOptions>
+                    <aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:"${basedir}/../tools/keys/robocode.snk"</aditionalOptions>
                 </configuration>
             </plugin>
-	          <plugin>
-	              <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
-	              <artifactId>maven-antrun-extended-plugin</artifactId>
-	              <version>1.39</version>
-	              <executions>
-	                  <execution>
-	                      <phase>process-classes</phase>
-	                      <configuration>
-	                          <tasks>
-	                              <resolveArtifact property="jni4net.n" 
-	                                               groupId="net.sf.jni4net"
-	                                               artifactId="jni4net.n" 
-	                                               version="0.8.5.1"
-	                                               type="dotnet:library"/>
-	                              <copy file="${jni4net.n}" todir="target"/>
-	
-	                              <resolveArtifact property="robocode.dotnet.api" 
-	                                               groupId="net.sf.robocode"
-	                                               artifactId="robocode.dotnet.api" 
-	                                               version="${robocode.nversion}"
-	                                               type="dotnet:library"/>
-	                              <copy file="${robocode.dotnet.api}" tofile="target/robocode.dll"/>
-
-	                              <resolveArtifact property="robocode.dotnet.control.api" 
-	                                               groupId="net.sf.robocode"
-	                                               artifactId="robocode.dotnet.control.api" 
-	                                               version="${robocode.nversion}"
-	                                               type="dotnet:library"/>
-	                              <copy file="${robocode.dotnet.control.api}" tofile="target/robocode.control.dll"/>
-	                          </tasks>
-	                      </configuration>
-	                      <goals>
-	                          <goal>run</goal>
-	                      </goals>
-	                  </execution>
-	              </executions>
-	          </plugin>
+            <plugin>
+                <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
+                <artifactId>maven-antrun-extended-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <tasks>
+                                <resolveArtifact property="jni4net.n" groupId="net.sf.jni4net" artifactId="jni4net.n"
+                                version="0.8.5.1" type="dotnet:library" />
+                                <copy file="${jni4net.n}" todir="target" />
+                                <resolveArtifact property="robocode.dotnet.api" groupId="net.sf.robocode"
+                                artifactId="robocode.dotnet.api" version="${project.version}" type="dotnet:library" />
+                                <copy file="${robocode.dotnet.api}" tofile="target/robocode.dll" />
+                                <resolveArtifact property="robocode.dotnet.control.api" groupId="net.sf.robocode"
+                                artifactId="robocode.dotnet.control.api" version="${project.version}"
+                                type="dotnet:library" />
+                                <copy file="${robocode.dotnet.control.api}" tofile="target/robocode.control.dll" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

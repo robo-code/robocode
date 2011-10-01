@@ -1,61 +1,49 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>robocode.testing.samples</artifactId>
+    <name>Robot Testing Framework Samples</name>
     <parent>
         <artifactId>robocode.testing</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>${robocode.version}</version>
+        <version>1.7.3.3</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.testing.samples</artifactId>
-    <version>${robocode.version}</version>
-    <name>testing samples for Robocode</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.api</artifactId>
-            <version>${robocode.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.testing.api</artifactId>
-            <version>${robocode.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.tests</artifactId>
-            <version>${robocode.version}</version>
- 						<scope>test</scope>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.5</version>
+            <version>4.9</version>
         </dependency>
     </dependencies>
     <build>
         <plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-surefire-plugin</artifactId>
-							<configuration>
-			          <systemProperties>
-			            <property>
-			              <name>robocode.home</name>
-			              <value>${project.build.directory}/../../../../robocode.tests/target/classes</value>
-			            </property>
-			          </systemProperties>
-							</configuration>
-						</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.2</version>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                    </archive>
+                    <systemProperties>
+                        <property>
+                            <name>robocode.home</name>
+                            <value>${project.build.directory}/../../../../robocode.tests/target/classes</value>
+                        </property>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>
@@ -70,8 +58,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
-                <includes>
-                </includes>
+                <includes></includes>
             </resource>
         </resources>
     </build>

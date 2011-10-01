@@ -4,18 +4,18 @@
     <parent>
         <artifactId>robocode.js</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>${robocode.version}</version>
+        <version>1.7.3.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.robocode</groupId>
     <artifactId>robocode.js.host</artifactId>
-    <version>${robocode.version}</version>
+    <version>1.7.3.3</version>
     <name>Js host for Robocode</name>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
-            <version>${robocode.version}</version>
+            <version>1.7.3.3</version>
         </dependency>
 		<dependency>
 		    <groupId>rhino</groupId>

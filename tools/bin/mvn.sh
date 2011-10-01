@@ -156,7 +156,7 @@ fi
 
 exec "$JAVACMD" \
   $MAVEN_OPTS \
-  -classpath $PWD/tools/lib/classworlds-1.1.jar:$PWD/tools/lib/maven-2.0.9-uber.jar \
+  -classpath $PWD/tools/lib/classworlds-1.1.jar:$PWD/tools/lib/maven-2.2.1-uber.jar \
   "-Dclassworlds.conf=$PWD/tools/bin/m2.conf" \
   ${CLASSWORLDS_LAUNCHER} $QUOTED_ARGS
 

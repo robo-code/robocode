@@ -1,38 +1,33 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>robocode.dotnet.samples</artifactId>
+    <name>.NET Robocode Samples</name>
+    <packaging>dotnet:library</packaging>
     <parent>
         <artifactId>robocode.dotnet</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>${robocode.version}</version>
+        <version>1.7.3.3</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>net.sf.robocode</groupId>
-    <artifactId>robocode.dotnet.samples</artifactId>
-    <version>${robocode.nversion}</version>
-    <name>.NET Robocode samples</name>
-    <packaging>dotnet:library</packaging>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.api</artifactId>
-            <version>${robocode.nversion}</version>
+            <version>${project.version}</version>
             <type>dotnet:library</type>
         </dependency>
     </dependencies>
     <build>
-        <finalName>samplescs-${robocode.nversion}</finalName>
+        <finalName>samplescs-${project.version}</finalName>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.sonatype.nmaven.plugins</groupId>
                 <artifactId>maven-dotnet-compiler-plugin</artifactId>
-                <extensions>true</extensions>
-                <version>0.17robocode</version>
                 <configuration>
-                    <aditionalOptions>/warn:0
-                    </aditionalOptions>
-                    <finalName>samplescs-${robocode.nversion}.dll</finalName>
+                    <aditionalOptions>/warn:0</aditionalOptions>
+                    <finalName>samplescs-${project.version}.dll</finalName>
                 </configuration>
             </plugin>
         </plugins>
