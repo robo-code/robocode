@@ -1,10 +1,14 @@
 Version 1.7.3.3 Alpha
-(05-Sep-2011)
+(01-Oct-2011)
 ---------------
 = Bugfixes =
 * Bug [3400398] - Unable to change drawing color in .NET (C#)
 
-Version 1.7.3.3
+= Changes =
+* Upgraded to Maven 2.2.1 for building Robocode.
+* Upgraded Eclipse Compiler for Java (ECJ) to version 3.7.
+
+Version 1.7.3.2
 (23-Aug-2011)
 ---------------
 = Bugfixes =
