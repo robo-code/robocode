@@ -15,7 +15,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <dependency>
             <groupId>net.sf.jni4net</groupId>
             <artifactId>jni4net.n</artifactId>
-            <version>0.8.5.1</version>
+            <version>0.8.6.0</version>
             <type>dotnet:library</type>
         </dependency>
         <dependency>
@@ -56,7 +56,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                         <configuration>
                             <tasks>
                                 <resolveArtifact property="jni4net.n" groupId="net.sf.jni4net" artifactId="jni4net.n"
-                                version="0.8.5.1" type="dotnet:library" />
+                                version="0.8.6.0" type="dotnet:library" />
                                 <copy file="${jni4net.n}" todir="target" />
                                 <resolveArtifact property="robocode.dotnet.api" groupId="net.sf.robocode"
                                 artifactId="robocode.dotnet.api" version="${project.version}" type="dotnet:library" />
