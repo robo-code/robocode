@@ -8,7 +8,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <parent>
         <artifactId>robocode.dotnet</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>1.7.3.3</version>
+        <version>${robocode.nversion}</version>
     </parent>
     <dependencies>
         <dependency>

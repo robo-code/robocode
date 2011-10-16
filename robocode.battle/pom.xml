@@ -7,28 +7,28 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <parent>
         <groupId>net.sf.robocode</groupId>
         <artifactId>robocode</artifactId>
-        <version>1.7.3.3</version>
+        <version>${robocode.version}</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.api</artifactId>
-            <version>1.7.3.3</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.core</artifactId>
-            <version>1.7.3.3</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.host</artifactId>
-            <version>1.7.3.3</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.repository</artifactId>
-            <version>1.7.3.3</version>
+            <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

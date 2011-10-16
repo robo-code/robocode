@@ -7,23 +7,48 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <parent>
         <artifactId>robocode.dotnet</artifactId>
         <groupId>net.sf.robocode</groupId>
-        <version>1.7.3.3</version>
+        <version>${robocode.nversion}</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.core</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.host</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.battle</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.repository</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.samples</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.tests</artifactId>
-            <version>${project.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.tests.robots</artifactId>
-            <version>${project.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.dotnet.host</artifactId>
-            <version>${project.version}</version>
+            <version>${robocode.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -41,31 +66,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.9</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.samples</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.host</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.battle</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode.repository</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
