@@ -3,8 +3,8 @@
 	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
 	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/junit/junit/4.5/junit-4.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.9/junit-4.9.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.8/picocontainer-2.8.jar"/>
 	<classpathentry kind="src" path="/robocode.api"/>
 	<classpathentry kind="src" path="/robocode.battle"/>
 	<classpathentry kind="src" path="/robocode.core"/>

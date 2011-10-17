@@ -28,7 +28,6 @@ import robocode.control.snapshot.RobotState;
 import java.awt.geom.Arc2D;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 

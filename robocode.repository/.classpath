@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
-  <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar"/>
-  <classpathentry kind="src" path="/robocode.api"/>
-  <classpathentry kind="src" path="/robocode.core"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.8/picocontainer-2.8.jar"/>
+	<classpathentry kind="src" path="/robocode.api"/>
+	<classpathentry kind="src" path="/robocode.core"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
