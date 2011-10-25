@@ -235,7 +235,8 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 	}
 
 	private void createNewRobot(final String robotType) {
-		String message = "Enter the name of your new robot.\nExample: MyFirst" + robotType;
+		String message = "Enter the name of your new robot.\nExample: MyFirst" + robotType
+				+ "\nNote that the name cannot contain spaces.";
 		String name = "";
 
 		boolean done = false;
@@ -243,44 +244,56 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		while (!done) {
 			name = (String) JOptionPane.showInputDialog(this, message, "New " + robotType, JOptionPane.PLAIN_MESSAGE,
 					null, null, name);
-			if (name == null) {
-				return;
-			}
-			name = name.trim();
+			name = (name == null) ? "" : name.trim();
 			if (name.length() == 0) {
 				return;
 			}
 			if (name.length() > MAX_ROBOT_NAME_LENGTH) {
 				name = name.substring(0, MAX_ROBOT_NAME_LENGTH);
-				message = "Please choose a shorter name (" + MAX_ROBOT_NAME_LENGTH + " characters or less)";
-				continue;
-			}
-
-			final char firstLetter = name.charAt(0);
-
-			if (!Character.isJavaIdentifierStart(firstLetter) || Character.isLowerCase(firstLetter)
-					|| firstLetter == '$') {
-				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				message = "Please start your robot name with a big letter (A-Z),\nas should the first letter of every word in the name.\nExample: MyFirstRobot";
+				message = "Please choose a shorter name (up to " + MAX_ROBOT_NAME_LENGTH + " characters)";
 				continue;
 			}
 
 			done = true;
-			for (int i = 1; i < name.length(); i++) {
-				char ch = name.charAt(i);
 
-				if (!Character.isJavaIdentifierPart(ch) || ch == '$') {
+			char firstLetter = name.charAt(0);
+
+			if (firstLetter == '$' || firstLetter == '_') {
+				name = name.substring(1);
+				done = false;
+			}
+			int firstLetterCodePoint = name.codePointAt(0); // used for supporting Unicode methods
+
+			if (!Character.isJavaIdentifierStart(firstLetterCodePoint) || Character.isLowerCase(firstLetterCodePoint)) {
+				name = (char) Character.toUpperCase(firstLetterCodePoint) + name.substring(1);
+				done = false;
+			}
+			if (!done) {
+				message = "Please start your robot name with a big letter,\n"
+						+ "as should the first letter of every word in the name.\nExample: MyFirstRobot";
+				continue;
+			}
+
+			char ch = 0;
+
+			for (int i = 1; i < name.length(); i++) {
+				ch = name.charAt(i);
+				int codePoint = name.codePointAt(i);
+
+				if (!Character.isJavaIdentifierPart(codePoint) || ch == '$') {
 					done = false;
 					break;
 				}
 			}
 			if (!done) {
-				message = "Your robot name contains an invalid character.\nPlease use only letters, digits, combination marks and underscores";
+				message = "Your robot name contains an invalid character: '" + ch
+						+ "'\nPlease use only letters and digits.";
 				continue;
 			}
 		}
 
-		message = "Enter a short package name for your new robot. Your initials will work well here.\n"
+		message = "Enter a short package name for your new robot written in lower cases and without spaces.\n"
+				+ "Your initials will work well here.\n"
 				+ "Your robot will be put into this package to avoid name conflict with other robots.\n"
 				+ "The package name is used to identify your robot(s) in the game, especially if you\n"
 				+ "want to let your robot(s) participate in competitions like e.g. RoboRumble@Home.\n"
@@ -292,52 +305,55 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		while (!done) {
 			packageName = (String) JOptionPane.showInputDialog(this, message, "Package name for " + name,
 					JOptionPane.PLAIN_MESSAGE, null, null, packageName);
-
-			if (packageName == null) {
-				return;
-			}
-			packageName = packageName.trim();
+			packageName = (packageName == null) ? "" : packageName.trim();
 			if (packageName.length() == 0) {
 				return;
 			}
 			if (packageName.length() > MAX_PACKAGE_NAME_LENGTH) {
 				packageName = packageName.substring(0, MAX_PACKAGE_NAME_LENGTH);
-				message = "Please choose a shorter name (" + MAX_PACKAGE_NAME_LENGTH + " characters or less)";
-				continue;
-			}
-
-			final char firstLetter = packageName.charAt(0);
-
-			if (!Character.isJavaIdentifierStart(firstLetter) || firstLetter == '$') {
-				packageName = packageName.toLowerCase();
-				message = "Please start the package name with a small letter (a-z)";
+				message = "Please choose a shorter name (up to " + MAX_PACKAGE_NAME_LENGTH + " characters)";
 				continue;
 			}
 
 			done = true;
-			for (int i = 1; i < name.length(); i++) {
-				char ch = name.charAt(i);
 
-				if (!(Character.isJavaIdentifierPart(ch) || ch == '.') || ch == '$') {
+			char firstLetter = packageName.charAt(0);
+
+			if (firstLetter == '$' || firstLetter == '_') {
+				packageName = packageName.substring(1);
+				done = false;
+			}
+			int firstLetterCodePoint = packageName.codePointAt(0); // used for supporting Unicode methods
+
+			if (!Character.isJavaIdentifierStart(firstLetterCodePoint)) {
+				done = false;
+			}
+			if (!done) {
+				message = "Please start the package name with a small letter.\n"
+						+ "The entire package name should be written in lower case.";
+				continue;
+			}
+
+			char ch = 0;
+
+			for (int i = 1; i < packageName.length(); i++) {
+				ch = packageName.charAt(i);
+				int codePoint = packageName.codePointAt(i);
+
+				if (!(Character.isJavaIdentifierPart(codePoint) || ch == '.') || ch == '$') {
 					done = false;
 					break;
 				}
 			}
 			if (!done) {
-				message = "Your pakage name contains an invalid character.\nPlease use only small letters, digits, combination marks and underscores";
+				message = "Your package name contains an invalid character: '" + ch
+						+ "'\nPlease use only small letters and digits.";
 				continue;
 			}
-			done = false;
-
-			// Uncommented block, as some robots seems to use upper case names for their package names/initials
-			// if (!packageName.equals(packageName.toLowerCase())) {
-			// packageName = packageName.toLowerCase();
-			// message = "Please use all small letters here.";
-			// continue;
-			// }
 
 			if (packageName.charAt(packageName.length() - 1) == '.') {
 				message = "The package name cannot end with a dot";
+				done = false;
 				continue;
 			}
 
@@ -348,13 +364,14 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 				if (packageName.charAt(i) == '.') {
 					if (i - lastDotIndex == 1) {
 						wrong_dot_combination = true;
+						break;
 					}
 					lastDotIndex = i;
-					break;
 				}
 			}
 			if (wrong_dot_combination) {
 				message = "The package name contain two dots next to each other";
+				done = false;
 				continue;
 			}
 
@@ -362,7 +379,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 				done = repositoryManager.verifyRobotName(packageName + "." + name, name);
 			}
 			if (!done) {
-				message = "This package is reserved. Please select a different package.";
+				message = "The package name is reserved:\n" + packageName + "\nPlease enter a different package name.";
 				continue;
 			}
 		}
