@@ -4,6 +4,7 @@ Version 1.7.3.3 Alpha
 = Bugfixes =
 * Bug [3400398] - Unable to change drawing color in .NET (C#)
 * Bug [3409705] - Package name allows bad chars.
+* Bug [3406423] - Installer throws NumberFormatException on Linux 3.0.
 
 = Changes =
 * Upgraded to Maven 2.2.1 for building Robocode.

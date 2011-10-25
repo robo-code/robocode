@@ -49,6 +49,8 @@ public class AutoExtract implements ActionListener {
 	private static final String javaVersion = System.getProperty("java.version");
 
 	private static double doubleValue(String s) {
+		s = s.replaceAll("[^.0-9]", ""); // Remove invalid characters, e.g. "3.0-ARCH" become "3.0"
+
 		int p = s.indexOf(".");
 
 		if (p >= 0) {
