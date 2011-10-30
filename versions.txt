@@ -8,6 +8,8 @@ Version 1.7.3.3 Alpha
 * Bug [3409844] - "About" window colors are awful.
 
 = Changes =
+* The layout of the about box has been completely redesigned.
+* If running on Java 1.6+, OS/system based font anti aliasing  will be enabled.
 * Upgraded to Maven 2.2.1 for building Robocode.
 * Upgraded Eclipse Compiler for Java (ECJ) to version 3.7.
 * Upgraded jni4net (Java <-> .NET bridge) to version 0.8.6.0

@@ -597,6 +597,14 @@ public class WindowManager implements IWindowManagerExt {
 				System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
 			}
 		}
+		// Java 1.6 provide system specific anti-aliasing. Enable it, if it has not been set
+		if (new Double(System.getProperty("java.specification.version")) >= 1.6) {
+			String aaFontSettings = System.getProperty("awt.useSystemAAFontSettings");
+
+			if (aaFontSettings == null) {
+				System.setProperty("awt.useSystemAAFontSettings", "on");
+			}
+		}
 	}
 
 	public void runIntroBattle() {
