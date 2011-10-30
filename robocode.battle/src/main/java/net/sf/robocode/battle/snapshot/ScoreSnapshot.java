@@ -152,7 +152,7 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 
 	@Override
 	public String toString() {
-		return this.totalScore+ "/" + this.currentScore;
+		return this.totalScore + "/" + this.currentScore;
 	}
 
 	/**

@@ -12,6 +12,7 @@
 
 package net.sf.robocode.recording;
 
+
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
@@ -63,12 +64,15 @@ public class DirectPlayer {
 			if (format == BattleRecordFormat.BINARY || format == BattleRecordFormat.BINARY_ZIP) {
 				recordInfo = (BattleRecordInfo) ois.readObject();
 				if (recordInfo.turnsInRounds != null) {
-					eventDispatcher.onBattleStarted(new BattleStartedEvent(recordInfo.battleRules, recordInfo.robotCount, true));
+					eventDispatcher.onBattleStarted(
+							new BattleStartedEvent(recordInfo.battleRules, recordInfo.robotCount, true));
 					int totalTurns = 0;
+
 					for (int i = 0; i < recordInfo.turnsInRounds.length; i++) {
 						for (int j = recordInfo.turnsInRounds[i] - 1; j >= 0; j--) {
 							try {
 								ITurnSnapshot turn = (ITurnSnapshot) ois.readObject();
+
 								if (turn.getTurn() == 0) {
 									eventDispatcher.onRoundStarted(new RoundStartedEvent(turn, i));
 								}
@@ -81,7 +85,9 @@ public class DirectPlayer {
 						eventDispatcher.onRoundEnded(new RoundEndedEvent(i, recordInfo.turnsInRounds[i], totalTurns));
 					}
 					eventDispatcher.onBattleFinished(new BattleFinishedEvent(false));
-					eventDispatcher.onBattleCompleted(new BattleCompletedEvent(recordInfo.battleRules, recordInfo.results.toArray(new BattleResults[recordInfo.results.size()])));
+					eventDispatcher.onBattleCompleted(
+							new BattleCompletedEvent(recordInfo.battleRules,
+							recordInfo.results.toArray(new BattleResults[recordInfo.results.size()])));
 				}
 			} else {
 				final RecordRoot root = new RecordRoot(eventDispatcher);
@@ -119,8 +125,7 @@ public class DirectPlayer {
 		private int totalTurns = 0;
 		protected final BattleEventDispatcher eventDispatcher;
 
-		public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
-		}
+		public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {}
 
 		public XmlReader.Element readXml(XmlReader reader) {
 			return reader.expect("record", new XmlReader.Element() {
@@ -148,11 +153,13 @@ public class DirectPlayer {
 
 						public void add(IXmlSerializable child) {
 							ITurnSnapshot turn = (ITurnSnapshot) child;
+
 							if (turn.getTurn() == 0) {
 								eventDispatcher.onRoundStarted(new RoundStartedEvent(turn, turn.getRound()));
 							}
 							eventDispatcher.onTurnEnded(new TurnEndedEvent(turn));
 							Integer turnsInRound = recordInfo.turnsInRounds[turn.getRound()];
+
 							if (turn.getTurn() == turnsInRound - 1) {
 								totalTurns += turnsInRound;
 								eventDispatcher.onRoundEnded(new RoundEndedEvent(turn.getRound(), turnsInRound, totalTurns));

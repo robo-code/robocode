@@ -128,7 +128,8 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 
 	@Override
 	public String toString() {
-		return ownerIndex+ "-"+bulletId + " (" + (int) power + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
+		return ownerIndex + "-" + bulletId + " (" + (int) power + ") X" + (int) x + " Y" + (int) y + " "
+				+ state.toString();
 	}
 
 	/**
@@ -281,6 +282,7 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 				reader.expect("id", new XmlReader.Attribute() {
 					public void read(String value) {
 						String[] parts = value.split("-");
+
 						snapshot.ownerIndex = Integer.parseInt(parts[0]);
 						snapshot.bulletId = Integer.parseInt(parts[1]);
 					}

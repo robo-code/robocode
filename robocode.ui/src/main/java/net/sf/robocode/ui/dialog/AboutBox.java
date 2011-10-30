@@ -23,7 +23,11 @@ import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 /**
@@ -34,66 +38,28 @@ import java.io.IOException;
  */
 @SuppressWarnings("serial")
 public final class AboutBox extends JDialog {
-	private final static Color BG_COLOR = SystemColor.controlHighlight;
-
+	// Tag used for background color replacement
+	private final static Color BG_COLOR = new Color(0xF0, 0xF0, 0xF0);
 	// Tag used for Robocode version replacement
-	private final static String TAG_ROBOCODE_VERSION = "<robocode:version>";
-
+	private final static String TAG_ROBOCODE_VERSION = "\\Q{$robocode-version}\\E";
 	// Tag used for Robocode icon source replacement
-	private final static String TAG_ROBOCODE_ICON_SRC = "<robocode:icon-src>";
-
-	// Tag used for Robocode icon source replacement
-	private final static String TAG_SYSCOLOR_CTRL_HIGHLIGHT = "<syscolor:ctrl-highlight>";
-
+	private final static String TAG_ROBOCODE_ICON_SRC = "\\Q{$robocode-icon-url}\\E";
+	// Tag used for background color replacement
+	private final static String TAG_BG_COLOR = "\\Q{$background-color}\\E";
 	// Tag used for Java version replacement
-	private final static String TAG_JAVA_VERSION = "<java:version>";
-
+	private final static String TAG_JAVA_VERSION = "\\Q{$java-version}\\E";
 	// Tag used for Java vendor replacement
-	private final static String TAG_JAVA_VENDOR = "<java:vendor>";
+	private final static String TAG_JAVA_VENDOR = "\\Q{$java-vendor}\\E";
+	// Tag used for transparent.png 1x1 px url replacement
+	private final static String TAG_TRANSPARENT = "\\Q{$transparent}\\E";
 
-	// HTML template containing text for the AboutBox
-	private final static String HTML_TEMPLATE = "<head><style type=\"text/css\">p, td {font-family: sans-serif; font-size: 10px}</style></head>"
-			+ "<body bgcolor=\"" + TAG_SYSCOLOR_CTRL_HIGHLIGHT
-			+ "\"><table width=\"600 px\"><tr><td valign=\"top\"><img src=\"" + TAG_ROBOCODE_ICON_SRC
-			+ "\"></td><td><table width=\"100%\"><tr><td><b>Robocode</b><br><br>"
-			+ "&copy;&nbsp;Copyright 2001, 2010<br>Mathew A. Nelson and Robocode contributors</td><td align=\"right\"><b>Version: "
-			+ TAG_ROBOCODE_VERSION
-			+ "</b><br><br><a href=\"http://robocode.sourceforge.net\">Robocode Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"http://robowiki.net\">RoboWiki</a><br>&nbsp;</td></tr></table><center>"
-			+ "<b>Original Author</b><br>Designed and programmed by <b><font color=\"green\">Mathew A. Nelson</font></b><br>"
-			+ "Graphics by <b><font color=\"green\">Garett S. Hourihan</font></b><br><br>"
-			+ "<b>Featuring the <a href=\"http://robowiki.net/wiki/RoboRumble\">RoboRumble@Home</a> client</b><br>Originally designed and programmed by <b><font color=\"green\">Albert Pérez</font></b><br><br>"
-			+ "<b>Main Contributors:</b><br><b><font color=\"green\">Flemming N. Larsen</font></b> (Robocode administrator, developer, integrator, lots of features),<br>"
-			+ "<b><font color=\"green\">Pavel Savara</font></b> (Robocode administrator, developer, integrator, robot interfaces, battle events, refactorings),<br><br>"
-			+ "<b>Other Contributors:</b><br>"
-			+ "<b><font color=\"green\">Cubic Creative</font></b> (the design and ideas for the JuniorRobot class), "
-			+ "<b><font color=\"green\">Christian D. Schnell</font></b> (for the Codesize utility), "
-			+ "<b><font color=\"green\">Luis Crespo</font></b> (sound engine, single-step debugging, ranking panel), "
-			+ "<b><font color=\"green\">Matthew Reeder</font></b> (editor enhancements, keyboard shortcuts, HyperThreading bugfixes), "
-			+ "<b><font color=\"green\">Titus Chen</font></b> (bugfixes for robot teleportation, bad wall collision detection, team ranking, "
-			+ "replay scores and robot color flickering), "
-			+ "<b><font color=\"green\">Robert D. Maupin</font></b> (optimizations with collections and improved CPU constant benchmark), "
-			+ "<b><font color=\"green\">Ascander Jr</font></b> (graphics for ground tiles), "
-			+ "<b><font color=\"green\">Stefan Westen</font></b> (onPaint method from RobocodeSG), "
-			+ "<b><font color=\"green\">Nathaniel Troutman</font></b> (fixing memory leaks due to circular references), "
-			+ "<b><font color=\"green\">Aaron Rotenberg</font></b> (for the Robot Cache Cleaner utility), "
-			+ "<b><font color=\"green\">Julian Kent</font></b> (nano precision timing of allowed robot time), "
-			+ "<b><font color=\"green\">Joachim Hofer</font></b> (fixing problem with wrong results in RoboRumble), "
-			+ "<b><font color=\"green\">Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh</font></b> (score % in results/rankings), "
-			+ "<b><font color=\"green\">Jerome Lavigne</font></b> (added \"Smart Battles\" to MeleeRumble), "
-			+ "<b><font color=\"green\">Ruben Moreno Montoliu</font></b> (added list paths with buttons to Developement Options), "
-			+ "<b><font color=\"green\">Joshua Galecki</font></b> (the implementation of the RateControlRobot), "
-			+ "<b><font color=\"green\">Patrick Cupka, Julian Kent, Nat Pavasant and \"Positive\"</font></b> (new robot movement method), "
-			+ "<b><font color=\"green\">Alexander Schultz</font></b> (reporting lots of bugs and solutions for fixing these), "
-			+ "<b><font color=\"green\">Tuan Anh Nguyen</font></b> (Interactive_v2 sample robot)<br><br>"
-			+ "<b>Java Runtime Environment</b><br>Java " + TAG_JAVA_VERSION + " by " + TAG_JAVA_VENDOR
-			+ "</center></td></tr></table></body>";
-	
 	// Robocode version
 	private final String robocodeVersion;
-
 	// Robocode icon URL
 	private final java.net.URL iconURL;
-
+	// Transparent URL
+	private final java.net.URL transparentURL;
+	
 	// Content pane
 	private JPanel aboutBoxContentPane;
 	// Main panel
@@ -103,7 +69,31 @@ public final class AboutBox extends JDialog {
 	// OK button
 	private JButton okButton;
 	// HTML text after tag replacements
-	private String htmlText;
+	private String html;
+
+	private static String getHtmlTemplate() {
+		URL url = AboutBox.class.getResource("/net/sf/robocode/ui/html/about.html");
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		try {
+			URLConnection connection = url.openConnection();
+			int contentLength = connection.getContentLength();
+			InputStream in = url.openStream();
+			byte[] buf = new byte[contentLength];
+			int len;
+
+			while (true) {
+				len = in.read(buf);
+				if (len == -1) {
+					break;
+				}
+				baos.write(buf, 0, len);
+			}
+			baos.close();
+		} catch (IOException ignore) {}
+		return baos.toString();
+	}
 
 	// General event handler
 	private final transient ActionListener eventHandler = new ActionListener() {
@@ -133,6 +123,7 @@ public final class AboutBox extends JDialog {
 		robocodeVersion = versionManager.getVersion();
 
 		iconURL = AboutBox.class.getResource("/net/sf/robocode/ui/icons/robocode-icon.png");
+		transparentURL = AboutBox.class.getResource("/net/sf/robocode/ui/html/transparent.png");
 
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("About Robocode");
@@ -152,7 +143,22 @@ public final class AboutBox extends JDialog {
 
 	private JEditorPane getMainPanel() {
 		if (mainPanel == null) {
-			mainPanel = new JEditorPane("text/html; charset=ISO-8859-1", getHtmlText());
+			String aaFontSettings = System.getProperty("awt.useSystemAAFontSettings");
+
+			if (aaFontSettings != null) {
+				mainPanel = new JEditorPane("text/html; charset=ISO-8859-1", getHtmlText());
+				System.out.println(aaFontSettings);
+			} else {
+				mainPanel = new JEditorPane("text/html; charset=ISO-8859-1", getHtmlText()) {
+					@Override
+					public void paintComponent(Graphics g) {
+						Graphics2D g2 = (Graphics2D) g;
+
+						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+						super.paintComponent(g);
+					}
+				};
+			}
 			mainPanel.setBackground(BG_COLOR);
 			mainPanel.setEditable(false);
 			mainPanel.addHyperlinkListener(hyperlinkHandler);
@@ -180,11 +186,16 @@ public final class AboutBox extends JDialog {
 	}
 
 	private String getHtmlText() {
-		if (htmlText == null) {
-			htmlText = HTML_TEMPLATE.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion).replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString()).replaceAll(TAG_SYSCOLOR_CTRL_HIGHLIGHT, toHtmlColor(BG_COLOR)).replaceAll(TAG_JAVA_VERSION, getJavaVersion()).replaceAll(
-					TAG_JAVA_VENDOR, System.getProperty("java.vendor"));
+		if (html == null) {
+			html = getHtmlTemplate();
+			html = html.replaceAll(TAG_ROBOCODE_VERSION, robocodeVersion);
+			html = html.replaceAll(TAG_ROBOCODE_ICON_SRC, iconURL.toString());
+			html = html.replaceAll(TAG_BG_COLOR, toHtmlColor(BG_COLOR));
+			html = html.replaceAll(TAG_JAVA_VERSION, getJavaVersion());
+			html = html.replaceAll(TAG_JAVA_VENDOR, System.getProperty("java.vendor"));
+			html = html.replaceAll(TAG_TRANSPARENT, transparentURL.toString());
 		}
-		return htmlText;
+		return html;
 	}
 
 	private static String toHtmlColor(Color color) {

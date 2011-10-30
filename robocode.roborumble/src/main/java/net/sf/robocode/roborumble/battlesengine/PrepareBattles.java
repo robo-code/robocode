@@ -246,7 +246,7 @@ public class PrepareBattles {
 					if (exists1 && exists2 && !prioritarybattles.contains(record)) {
 						prioritarybattles.add(record);
 					} else {
-					    System.out.println("Ignoring: " + record);
+						System.out.println("Ignoring: " + record);
 					}
 				}
 			}
