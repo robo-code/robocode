@@ -1,15 +1,16 @@
 Version 1.7.3.3 Alpha
-(25-Oct-2011)
+(31-Oct-2011)
 ---------------
 = Bugfixes =
 * Bug [3400398] - Unable to change drawing color in .NET (C#)
 * Bug [3409705] - Package name allows bad chars.
 * Bug [3406423] - Installer throws NumberFormatException on Linux 3.0.
 * Bug [3409844] - "About" window colors are awful.
+* Bug [3376538] - out.write(int) uses up allocated printing quickly.
 
 = Changes =
 * The layout of the about box has been completely redesigned.
-* If running on Java 1.6+, OS/system based font anti aliasing  will be enabled.
+* If running on Java 1.6+, OS/system based font antialiasing  will be enabled.
 * Upgraded to Maven 2.2.1 for building Robocode.
 * Upgraded Eclipse Compiler for Java (ECJ) to version 3.7.
 * Upgraded jni4net (Java <-> .NET bridge) to version 0.8.6.0
