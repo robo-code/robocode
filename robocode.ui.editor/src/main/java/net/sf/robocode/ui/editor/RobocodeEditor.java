@@ -292,7 +292,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			}
 		}
 
-		message = "Enter a short package name for your new robot written in lower cases and without spaces.\n"
+		message = "Enter a short package name for your new robot and without spaces (lower-case letters are prefered).\n"
 				+ "Your initials will work well here.\n"
 				+ "Your robot will be put into this package to avoid name conflict with other robots.\n"
 				+ "The package name is used to identify your robot(s) in the game, especially if you\n"
@@ -330,7 +330,8 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			}
 			if (!done) {
 				message = "Please start the package name with a small letter.\n"
-						+ "The entire package name should be written in lower case.";
+						+ "The entire package name should be written in lower-case letters\n"
+						+ "(Java convention), although Robocode will accept big case letters as well.";
 				continue;
 			}
 
