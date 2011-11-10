@@ -131,7 +131,7 @@ public class RobocodeCompilerFactory {
 		
 		if (!javacOK) {
 			compilerName = "Eclipse Compiler for Java (ECJ)";
-			compilerBinary = "java -jar compilers/ecj.jar";
+			compilerBinary = "java -cp compilers/ecj.jar org.eclipse.jdt.internal.compiler.batch.Main";
 
 			ecjOK = testCompiler("Eclipse Compiler for Java (ECJ)", compilerBinary, console);
 		}

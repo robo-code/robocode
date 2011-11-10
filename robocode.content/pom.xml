@@ -39,14 +39,17 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                                 <artifactItem>
                                     <groupId>org.eclipse.jdt.core.compiler</groupId>
                                     <artifactId>ecj</artifactId>
-                                    <version>3.7</version>
+                                    <version>3.7.1</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.build.directory}/classes/compilers</outputDirectory>
                                     <destFileName>ecj.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>
-                        </configuration>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
                     </execution>
                 </executions>
             </plugin>

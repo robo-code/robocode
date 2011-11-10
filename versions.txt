@@ -1,8 +1,11 @@
 Version 1.7.3.4 Alpha
-(09-Nov-2011)
+(10-Nov-2011)
 ---------------
 = Bugfixes =
 * Bug [3409705] - Package name allows bad chars. Corrected text regarding use of lower-case letters in package name.
+
+= Changes =
+* Upgraded Eclipse Compiler for Java (ECJ) to version 3.7.1.
 
 Version 1.7.3.3
 (05-Nov-2011)
