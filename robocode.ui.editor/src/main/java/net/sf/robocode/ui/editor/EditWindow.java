@@ -185,7 +185,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			// in the output stream.
 			new Thread(new Runnable() {
 				public void run() {
-					editor.getCompiler().compile(fileName);
+					editor.getCompiler().compile(getRobotDir(), fileName);
 					repositoryManager.refresh(fileName);					
 				}
 			}).start();
@@ -282,12 +282,8 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		return true;
 	}
 
-	public boolean fileSaveAs() {
-		String javaFileName = null;
-		String packageTree;
-
-		String fileName = robotsDirectory.getPath() + File.separatorChar;
-		String saveDir = fileName;
+	private String getRobotDir() {
+		String saveDir = robotsDirectory.getPath() + File.separatorChar;
 
 		String text = getEditorPane().getText();
 		int pIndex = text.indexOf("package ");
@@ -296,15 +292,24 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			int pEIndex = text.indexOf(";", pIndex);
 
 			if (pEIndex > 0) {
-				packageTree = text.substring(pIndex + 8, pEIndex) + File.separatorChar;
+				String packageTree = text.substring(pIndex + 8, pEIndex) + File.separatorChar;
+
 				packageTree = packageTree.replace('.', File.separatorChar);
 
-				fileName += packageTree;
-				saveDir = fileName;
+				saveDir += packageTree;
 			}
 		}
+		return saveDir;
+	}
+	
+	public boolean fileSaveAs() {
+		String javaFileName = null;
+		String saveDir = getRobotDir();
 
-		pIndex = text.indexOf("public class ");
+		String text = getEditorPane().getText();
+
+		int pIndex = text.indexOf("public class ");
+
 		if (pIndex >= 0) {
 			int pEIndex = text.indexOf(" ", pIndex + 13);
 

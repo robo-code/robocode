@@ -23,6 +23,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.ui.dialog.ConsoleDialog;
 import net.sf.robocode.ui.dialog.WindowUtil;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -45,7 +46,7 @@ public class RobocodeCompiler {
 		this.editor = editor;
 	}
 
-	public void compile(String fileName) {
+	public void compile(String directory, String fileName) {
 		fileName = FileUtil.quoteFileName(fileName);
 
 		ConsoleDialog console;
@@ -93,6 +94,38 @@ public class RobocodeCompiler {
 
 			console.append("Compile interrupted.\n");
 			console.setTitle("Compile interrupted.");
+		}
+		
+		int codesize = -1;
+
+		try {
+			File fileDir = new File(directory);
+			
+			// Call the Codesize utility using reflection
+			Object item = Class.forName("codesize.Codesize").getMethod("processDirectory", new Class[] { File.class}).invoke(
+					null, fileDir);
+
+			codesize = (Integer) item.getClass().getMethod("getCodeSize", (Class[]) null).invoke(item, (Object[]) null);
+		} catch (Exception ignore) {}
+		if (codesize >= 0) {
+			String weightClass = null;
+
+			if (codesize >= 1500) {
+				weightClass = "MegaBot  (codesize >= 1500 bytes)";
+			} else if (codesize > 750) {
+				weightClass = "MiniBot  (codesize < 1500 bytes)";
+			} else if (codesize > 250) {
+				weightClass = "MicroBot (codesize < 750 bytes)";
+			} else {
+				weightClass = "NanoBot  (codesize < 250 bytes)";
+			}
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("\n\n---- Codesize ----\n");
+			sb.append("Codesize: ").append(codesize).append(" bytes\n");
+			sb.append("Robot weight class: ").append(weightClass).append('\n');
+			
+			console.append(sb.toString());
 		}
 	}
 }

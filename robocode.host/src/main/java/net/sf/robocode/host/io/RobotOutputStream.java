@@ -63,7 +63,8 @@ public class RobotOutputStream extends java.io.PrintStream {
 			}
 			if (count > MAX_CHARS) {
 				if (!messaged) {
-					text.append("\nSYSTEM: This robot is printing too much between actions.  Output stopped until next action.\n");
+					text.append(
+							"\nSYSTEM: This robot is printing too much between actions.  Output stopped until next action.\n");
 					messaged = true;
 				}
 				return false;
@@ -78,6 +79,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				text.append(s);
 				count += text.length() - origLen;
 			}
@@ -99,6 +101,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				text.append(d);
 				count += text.length() - origLen;
 			}
@@ -110,6 +113,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				text.append(f);
 				count += text.length() - origLen;
 			}
@@ -121,6 +125,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				text.append(i);
 				count += text.length() - origLen;
 			}
@@ -132,6 +137,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				text.append(l);
 				count += text.length() - origLen;
 			}
@@ -143,8 +149,10 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				if (obj != null) {
 					String s = obj.toString();
+
 					text.append(s);
 				} else {
 					text.append((Object) null);
@@ -159,6 +167,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				text.append(s);
 				count += text.length() - origLen;
 			}
@@ -170,6 +179,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				text.append(b);
 				count += text.length() - origLen;
 			}
@@ -246,6 +256,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 			if (isOkToPrint()) {
 				if (buf != null) {
 					int origLen = text.length();
+
 					for (int i = 0; i < len; i++) {
 						text.append((char) buf[off + i]);
 					}
@@ -260,6 +271,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 		synchronized (syncRoot) {
 			if (isOkToPrint()) {
 				int origLen = text.length();
+
 				text.append((char) b);
 				count += text.length() - origLen;
 			}
@@ -277,6 +289,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 					writer.flush();
 
 					int origLen = text.length();
+
 					text.append(sw.toString());
 					count += text.length() - origLen;
 				}
