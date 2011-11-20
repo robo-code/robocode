@@ -53,7 +53,8 @@ import java.util.Random;
  */
 @SuppressWarnings("serial")
 public class BattleView extends Canvas {
-	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest";
+
+	private final static String ROBOCODE_SLOGAN = "Build the best, destroy the rest!";
 
 	private final static Color CANVAS_BG_COLOR = SystemColor.controlDkShadow;
 
@@ -97,9 +98,6 @@ public class BattleView extends Canvas {
 
 	private BufferStrategy bufferStrategy;
 
-	private Image offscreenImage;
-	private Graphics2D offscreenGfx;
-
 	private final GeneralPath robocodeTextPath = new RobocodeLogo().getRobocodeText();
 
 	private static final MirroredGraphics mirroredGraphics = new MirroredGraphics();
@@ -121,7 +119,7 @@ public class BattleView extends Canvas {
 				loadDisplayOptions();
 				if (property.startsWith("robocode.options.rendering")) {
 					initialized = false;
-					validate();
+					reinitialize();
 				}
 			}
 		});
@@ -129,9 +127,14 @@ public class BattleView extends Canvas {
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				initialized = false;
-				validate();
+				reinitialize();
 			}
 		});
+	}
+
+	@Override
+	public void update(Graphics g) {
+		paint(g);
 	}
 
 	@Override
@@ -151,7 +154,7 @@ public class BattleView extends Canvas {
 		if (windowManager.getLastSnapshot() == null) {
 			paintRobocodeLogo((Graphics2D) screenshot.getGraphics());		
 		} else {
-			screenshot.getGraphics().drawImage(offscreenImage, 0, 0, null);
+			drawBattle((Graphics2D) screenshot.getGraphics(), windowManager.getLastSnapshot());
 		}
 		return screenshot;
 	}
@@ -161,31 +164,29 @@ public class BattleView extends Canvas {
 			initialize();
 		}
 
-		if (offscreenImage == null || !isDisplayable() || (getWidth() <= 0) || (getHeight() <= 0)) {
+		if (!isDisplayable() || (getWidth() <= 0) || (getHeight() <= 0)) {
 			return;
 		}
 
-		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
-		if (offscreenGfx != null) {
-			offscreenGfx.setRenderingHints(renderingHints);
+		if (bufferStrategy != null) {
+			try {
+				Graphics2D g2 = (Graphics2D) bufferStrategy.getDrawGraphics();
 
-			drawBattle(offscreenGfx, snapshot);
-
-			if (bufferStrategy != null) {
-				Graphics2D g = null;
-
-				try {
-					g = (Graphics2D) bufferStrategy.getDrawGraphics();
-					g.drawImage(offscreenImage, 0, 0, null);
-
-					bufferStrategy.show();
-				} catch (NullPointerException e) {// Occurs sometimes for no reason?!
-				} finally {
-					if (g != null) {
-						g.dispose();
-					}
+				if (g2 != null) {
+					do {
+						try {
+							g2.setRenderingHints(renderingHints);
+	
+							drawBattle(g2, snapshot);
+						} finally {
+							g2.dispose();
+						}
+						bufferStrategy.show();
+					} while (bufferStrategy.contentsLost());
+	
+					Toolkit.getDefaultToolkit().sync(); // Update like... now!
 				}
-			}
+			} catch (NullPointerException e) {}
 		}
 	}
 
@@ -203,16 +204,13 @@ public class BattleView extends Canvas {
 		numBuffers = props.getOptionsRenderingNoBuffers();
 	}
 
+	private void reinitialize() {
+		initialized = false;
+		bufferStrategy = null;
+	}
+
 	private void initialize() {
 		loadDisplayOptions();
-
-		if (offscreenImage != null) {
-			offscreenImage.flush();
-			offscreenImage = null;
-		}
-
-		offscreenImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
-		offscreenGfx = (Graphics2D) offscreenImage.getGraphics();
 
 		if (bufferStrategy == null) {
 			createBufferStrategy(numBuffers);
@@ -226,15 +224,13 @@ public class BattleView extends Canvas {
 			// the RobocodeFrame keeps our aspect ratio intact.
 
 			scale = min((double) getWidth() / battleField.getWidth(), (double) getHeight() / battleField.getHeight());
-
-			offscreenGfx.scale(scale, scale);
 		} else {
 			scale = 1;
 		}
 
 		// Scale font
 		smallFont = new Font("Dialog", Font.PLAIN, (int) (10 / scale));
-		smallFontMetrics = offscreenGfx.getFontMetrics(smallFont);
+		smallFontMetrics = bufferStrategy.getDrawGraphics().getFontMetrics();
 
 		// Initialize ground image
 		if (drawGround) {

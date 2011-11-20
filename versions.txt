@@ -1,8 +1,9 @@
 Version 1.7.3.4 Alpha
-(15-Nov-2011)
+(20-Nov-2011)
 ---------------
 = Bugfixes =
 * Bug [3409705] - Package name allows bad chars. Corrected text regarding use of lower-case letters in package name.
+* Bug: When changing the rendering options did not take effect immediately for the battle view.
 
 = New Features =
 * Req [3349400] - Calculate codesize after compile in editor.
