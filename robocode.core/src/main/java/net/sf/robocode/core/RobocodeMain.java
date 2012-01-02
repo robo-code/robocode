@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001-2011 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ import java.io.PrintStream;
 
 /**
  * Robocode - A programming game involving battling AI tanks.<br>
- * Copyright (c) 2001-2011 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
