@@ -118,9 +118,9 @@ public class JarCreator {
 
 			if (size >= 1500) {
 				weightClass = "MegaBot  (codesize >= 1500 bytes)";
-			} else if (size > 750) {
+			} else if (size >= 750) {
 				weightClass = "MiniBot  (codesize < 1500 bytes)";
-			} else if (size > 250) {
+			} else if (size >= 250) {
 				weightClass = "MicroBot (codesize < 750 bytes)";
 			} else {
 				weightClass = "NanoBot  (codesize < 250 bytes)";
