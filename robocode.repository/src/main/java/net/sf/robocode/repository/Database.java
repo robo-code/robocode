@@ -156,7 +156,7 @@ public class Database {
 			int versionIndex = botNameAndVersion.indexOf(' ');
 			String botPath = versionIndex < 0 ? botNameAndVersion : botNameAndVersion.substring(0, versionIndex);
 
-			botPath = botPath.replace('.', '/');
+			botPath = botPath.replace('.', '/').replaceAll("\\*", "");
 
 			// first load from same classPath
 			String teamBot = team.getRoot().getURL() + botPath;

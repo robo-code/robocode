@@ -328,14 +328,14 @@ public class PrepareBattles {
 	}
 
 	private boolean robotHasPriority(String name, Properties ratings) {
-		if (ratings == null) {
+		if (name == null || ratings == null) {
 			return false;
 		}
 		String bot = name.replaceAll(" ", "_");
 		String values = ratings.getProperty(bot);
 
 		if (values == null) {
-			return true;
+			return false; // must be false (Bug 3474173)
 		}
 		String[] value = values.split(",");
 		double battles = Double.parseDouble(value[1]);
