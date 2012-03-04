@@ -1,12 +1,12 @@
 ## ReadMe for Robocode
 
-Updated 29-Sep-2010 by Flemming N. Larsen
+Updated 04-Mar-2012 by Flemming N. Larsen
 
-Send all feedback, comments, and problems to the tracker at the
+Send all feedback, comments, and issues to the tracker at the
 [Robocode project](http://sourceforge.net/tracker/?group_id=37202) at
 SourceForge.net.
 
-Home page:
+Robocode Home Page:
 [http://robocode.sourceforge.net/](http://robocode.sourceforge.net/)
 
 ### TABLE OF CONTENTS
@@ -30,7 +30,7 @@ Home page:
 
 ### 1. WHAT IS ROBOCODE?
 
-Robocode is a programming game, where the goal is to develop a robot
+Robocode is a programming game where the goal is to develop a robot
 battle tank to battle against other tanks in Java or .NET. The robot
 battles are running in real-time and on-screen.
 
@@ -433,10 +433,9 @@ blog to get a good overview of Robocode here:
 -   [Robocode modules](http://zamboch.blogspot.com/2009/06/robocode-modules-as-in-version-17.html)
 
 Help for Robocode internals can be provided through the [Robocode
-Developers Discussion
-Group](http://groups.google.com/group/robocode-developers) where you can
-register yourself, and start up a new topic. This is the best way of
-getting information and asking about details for the internals in
+Developers Discussion Group](https://groups.google.com/forum/?fromgroups#!forum/robocode-developers)
+where you can register yourself, and start up a new topic. This is the best
+way of getting information and asking about details for the internals in
 Robocode.
 
 If a contribution is a somewhat small change to involves under 10 files,
