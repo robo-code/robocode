@@ -1,9 +1,9 @@
-Version 1.7.3.5 Alpha
-(18-Jan-2012)
+Version 1.7.3.5
+(11-Mar-2012)
 ---------------
 = Bugfixes =
 * Bug [3468437] - Package of team fails to load in team battles.
-* Bug [3474173] - TeamRumble priority battles bug.
+* Fixed minor issue where the Robot Packager tells that a NanoBot can be 250 bytes and a MiniBot 750 bytes, when these must be lesser than 250 and 750 bytes.
 
 Version 1.7.3.4
 (04-Dec-2011)
