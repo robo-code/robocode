@@ -1,3 +1,9 @@
+Version 1.7.4 Alpha
+---------------
+(19-Mar-2012)
+= New features =
+* Req [3506263] - Mac ... start with icon and name
+
 Version 1.7.3.5
 (11-Mar-2012)
 ---------------
