@@ -116,25 +116,25 @@ public class BotsDownload {
 		if (generalbotsfile.length() != 0) {
 			file = new File(generalbotsfile);
 			if (file.exists() && !file.delete()) {
-				Logger.logError("Can't delete file");
+				Logger.logError("Can't delete file: " + file);
 			}
 		}
 		if (minibotsfile.length() != 0) {
 			file = new File(minibotsfile);
 			if (file.exists() && !file.delete()) {
-				Logger.logError("Can't delete file");
+				Logger.logError("Can't delete file: " + file);
 			}
 		}
 		if (microbotsfile.length() != 0) {
 			file = new File(microbotsfile);
 			if (file.exists() && !file.delete()) {
-				Logger.logError("Can't delete file");
+				Logger.logError("Can't delete file: " + file);
 			}
 		}
 		if (nanobotsfile.length() != 0) {
 			file = new File(nanobotsfile);
 			if (file.exists() && !file.delete()) {
-				Logger.logError("Can't delete file");
+				Logger.logError("Can't delete file: " + file);
 			}
 		}
 		// download new ones
@@ -222,7 +222,7 @@ public class BotsDownload {
 			final File dir = new File(participantsfile).getParentFile();
 
 			if (!dir.exists() && !dir.mkdirs()) {
-				Logger.logError("Can't create " + dir);
+				Logger.logError("Can't create directory: " + dir);
 			}
 
 			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(participantsfile)), false);
@@ -447,7 +447,7 @@ public class BotsDownload {
 			final File dir = new File(file).getParentFile();
 
 			if (!dir.exists() && !dir.mkdirs()) {
-				Logger.logError("Can't create " + dir);
+				Logger.logError("Can't create directory: " + dir);
 			}
 
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);
