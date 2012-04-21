@@ -1,6 +1,7 @@
 <head>
 <style>
 body {
+  background-color: lightgray;
   font-family:sans-serif;
   font-size:9px;
   margin-bottom:3px;
@@ -12,7 +13,7 @@ h2 {
 .title {
   font-size:10px;
 }
-.person {
+.contributor {
   font-weight:bold;
   color:green;
 }
@@ -36,9 +37,9 @@ h2 {
 <tr><td><img src="{$transparent}" width="1" height="3" border="0"></td></tr>
 </table>
 
-<strong>Original Author:</strong> <span class="person">Mathew A. Nelson</span> (2001 - 2006).
+<strong>Original Author:</strong> <span class="contributor">Mathew A. Nelson</span> (2001 - 2006).
 &nbsp;&nbsp;&nbsp;&nbsp;
-<strong>Original Graphics:</strong> <span class="person">Garett S. Hourihan</span>.
+<strong>Original Graphics:</strong> <span class="contributor">Garett S. Hourihan</span>.
 
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr><td><img src="{$transparent}" width="1" height="10" border="0"></td></tr>
@@ -64,9 +65,11 @@ Running on <strong>Java {$java-version}</strong> by {$java-vendor}&nbsp;&nbsp;|&
 &nbsp;|&nbsp;
 <a href="http://robocode.googlecode.com/svn/robocode/trunk/versions.txt">Versions</a>
 &nbsp;|&nbsp;
-<a href="http://robo-code.blogspot.com/" alt="Robocode News">News</a>
+<a href="http://robo-code.blogspot.com/">News</a>
 &nbsp;|&nbsp;
-<a href="http://robowiki.net" alt="http://robowiki.net">RoboWiki</a>
+<a href="http://robowiki.net">RoboWiki</a>
+&nbsp;|&nbsp;
+<a href="http://robocoderepository.com/">Robocode Repository</a>
 &nbsp;|&nbsp;
 <a href="http://groups.google.com/group/robocode-developers">Robocode Developers</a>
 <br>
@@ -89,29 +92,30 @@ Running on <strong>Java {$java-version}</strong> by {$java-vendor}&nbsp;&nbsp;|&
 <a href="http://sourceforge.net/tracker/?group_id=37202&atid=419489">Feature Requests</a>
 
 <h2>Main Contributors</h2>
-<span class="person">Flemming N. Larsen</span>: Administrator, developer, integrator, lots of features (2006 - 2012)<br>
-<span class="person">Pavel Savara</span>: Administrator, developer, integrator, robot interfaces, refactorings, .NET plugin (2008 - 2012)<br>
+<span class="contributor">Flemming N. Larsen</span>: Administrator, developer, integrator, lots of features (2006 - 2012)<br>
+<span class="contributor">Pavel Savara</span>: Administrator, developer, integrator, robot interfaces, refactorings, .NET plugin (2008 - 2012)<br>
 
 <h2>Contributors</h2>
-<span class="person">Aaron Rotenberg</span>: Robot Cache Cleaner utility<br>
-<span class="person">Albert Pérez</span>: RoboRumble@Home client<br>
-<span class="person">Alexander Schultz</span>: Reporting lots of bugs and good solutions for fixing these<br>
-<span class="person">Ascander Jr</span>: Graphics for background tiles<br>
-<span class="person">Christian D. Schnell</span>: Codesize 1.0 utility<br>
-<span class="person">Cubic Creative</span>: Design and ideas for the JuniorRobot class<br>
-<span class="person">Endre Palatinus</span>, <span class="person">Eniko Nagy</span>, <span class="person">Attila Csizofszki</span> and <span class="person">Laszlo Vigh</span>: Score percentage in results/rankings<br>
-<span class="person">Jerome Lavigne</span>: Added "Smart Battles" to MeleeRumble, developer and admin of the RoboRumble server<br>
-<span class="person">Joachim Hofer</span>: Fixing problem with wrong results in RoboRumble<br>
-<span class="person">Joshua Galecki</span>: Added the RateControlRobot<br>
-<span class="person">Julian Kent</span>: Nano precision timing of allowed robot time<br>
-<span class="person">Luis Crespo</span>: Sound engine, single-step debugging, ranking panel<br>
-<span class="person">Matthew Reeder</span>: Editor enhancements, keyboard shortcuts, HyperThreading bugfixes<br>
-<span class="person">Nathaniel Troutman</span>: Fixing memory leaks<br>
-<span class="person">Patrick Cupka</span>, <span class="person">Julian Kent</span>, <span class="person">Nat Pavasant</span>, and <span class="person">"Positive"</span>: Redesigned robot movement method<br><span class="person">Robert D. Maupin</span>: Optimizations with collections and improved CPU constant benchmark<br>
-<span class="person">Ruben Moreno Montoliu</span>: Added paths with buttons to Developement Options<br>
-<span class="person">Stefan Westen</span>: onPaint method from RobocodeSG<br>
-<span class="person">Titus Chen</span>: Bugfixes for robot teleportation, bad wall collision detection, team ranking, replay scores and robot color flickering<br>
-<span class="person">Tuan Anh Nguyen</span>: Interactive_v2 sample robot
+<span class="contributor">Aaron Rotenberg</span>: Robot Cache Cleaner utility<br>
+<span class="contributor">Albert Pérez</span>: RoboRumble@Home client<br>
+<span class="contributor">Alexander Schultz</span>: Reporting lots of bugs and good solutions for fixing these<br>
+<span class="contributor">Ascander Jr</span>: Graphics for background tiles<br>
+<span class="contributor">Christian D. Schnell</span>: Codesize 1.0 utility<br>
+<span class="contributor">Cubic Creative</span>: Design and ideas for the JuniorRobot class<br>
+<span class="contributor">Dan Lynn</span>: The Robocode Repository that is the central place for storing your robots and also find other robots<br>
+<span class="contributor">Endre Palatinus</span>, <span class="contributor">Eniko Nagy</span>, <span class="contributor">Attila Csizofszki</span> and <span class="contributor">Laszlo Vigh</span>: Score percentage in results/rankings<br>
+<span class="contributor">Jerome Lavigne</span>: Added "Smart Battles" to MeleeRumble, developer and admin of the RoboRumble server<br>
+<span class="contributor">Joachim Hofer</span>: Fixing problem with wrong results in RoboRumble<br>
+<span class="contributor">Joshua Galecki</span>: Added the RateControlRobot<br>
+<span class="contributor">Julian Kent</span>: Nano precision timing of allowed robot time<br>
+<span class="contributor">Luis Crespo</span>: Sound engine, single-step debugging, ranking panel<br>
+<span class="contributor">Matthew Reeder</span>: Editor enhancements, keyboard shortcuts, HyperThreading bugfixes<br>
+<span class="contributor">Nathaniel Troutman</span>: Fixing memory leaks<br>
+<span class="contributor">Patrick Cupka</span>, <span class="contributor">Julian Kent</span>, <span class="contributor">Nat Pavasant</span>, and <span class="contributor">"Positive"</span>: Redesigned robot movement method<br><span class="contributor">Robert D. Maupin</span>: Optimizations with collections and improved CPU constant benchmark<br>
+<span class="contributor">Ruben Moreno Montoliu</span>: Added paths with buttons to Developement Options<br>
+<span class="contributor">Stefan Westen</span>: onPaint method from RobocodeSG<br>
+<span class="contributor">Titus Chen</span>: Bugfixes for robot teleportation, bad wall collision detection, team ranking, replay scores and robot color flickering<br>
+<span class="contributor">Tuan Anh Nguyen</span>: Interactive_v2 sample robot
 
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr><td><img src="{$transparent}" width="1" height="10" border="0"></td></tr>
