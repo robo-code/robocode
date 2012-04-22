@@ -163,23 +163,19 @@ public class BotsDownload {
 		String end = "</" + tag + ">";
 		Vector<String> bots = new Vector<String>();
 		BufferedReader in = null;
-		HttpURLConnection urlc = null;
+		HttpURLConnection conn = null;
 
 		try {
 			URL url = new URL(participantsurl);
 
-			urlc = (HttpURLConnection) url.openConnection();
-
-			urlc.setRequestMethod("GET");
-			urlc.setDoInput(true);
-			urlc.connect();
+			conn = FileTransfer.connectTo(url, null);
 
 			// Check that we received a HTTP_OK response code.
 			// Bugfix [2779557] - Client tries to remove all participants.
-			if (urlc.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				System.out.print("Unable to retrieve participants list. Response is " + urlc.getResponseCode());
-				if (urlc.getResponseMessage() != null) {
-					System.out.print(": " + urlc.getResponseMessage());
+			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				System.out.print("Unable to retrieve participants list. Response is " + conn.getResponseCode());
+				if (conn.getResponseMessage() != null) {
+					System.out.print(": " + conn.getResponseMessage());
 				}
 				System.out.println();
 				
@@ -188,7 +184,7 @@ public class BotsDownload {
 
 			boolean arebots = false;
 
-			in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 			for (String participant; (participant = in.readLine()) != null;) {
 				if (participant.indexOf(begin) >= 0) {
@@ -242,8 +238,8 @@ public class BotsDownload {
 					in.close();
 				} catch (IOException ignored) {}
 			}
-			if (urlc != null) {
-				urlc.disconnect();
+			if (conn != null) {
+				conn.disconnect();
 			}
 		}
 		return true; // Success
@@ -438,11 +434,7 @@ public class BotsDownload {
 		try {
 			URL url = new URL(ratingsurl + "?version=1&game=" + competition);
 
-			HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-
-			urlc.setRequestMethod("GET");
-			urlc.setDoInput(true);
-			urlc.connect();
+			HttpURLConnection conn = FileTransfer.connectTo(url, null);
 
 			final File dir = new File(file).getParentFile();
 
@@ -452,12 +444,12 @@ public class BotsDownload {
 
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);
 
-			in = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 			for (String str; (str = in.readLine()) != null;) {
 				outtxt.println(str);
 			}
-			urlc.disconnect();
+			conn.disconnect();
 
 		} catch (IOException e) {
 			System.out.println("Unable to ratings for " + competition);

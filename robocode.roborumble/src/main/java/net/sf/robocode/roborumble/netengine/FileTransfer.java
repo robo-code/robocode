@@ -19,21 +19,33 @@ package net.sf.robocode.roborumble.netengine;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.Properties;
+
+import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 
 /**
  * Utility class for downloading files from the net and copying files.
- *
+ * 
  * @author Flemming N. Larsen (original)
  */
 public class FileTransfer {
 
-	private final static int CONNECTION_TIMEOUT = 5000; // 5 seconds
+	private final static int DEFAULT_CONNECTION_TIMEOUT = 10000; // 10 seconds
+	private final static int DEFAULT_READ_TIMEOUT = 10000; // 10 seconds
+	private final static int DEFAULT_SESSION_TIMEOUT = 10000; // 10 seconds
 
+	private static int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
+	private static int readTimeout = DEFAULT_READ_TIMEOUT;
+	private static int sessionTimeout = DEFAULT_SESSION_TIMEOUT;
+
+	static {
+		readProperties();
+	}
+	
 	/**
 	 * Represents the download status returned when downloading files.
-	 *
-	 * @author Flemming N. Larsen
 	 */
 	public enum DownloadStatus {
 		OK, // The download was succesful
@@ -43,10 +55,7 @@ public class FileTransfer {
 
 
 	/**
-	 * Daemon worker thread containing a 'finish' flag for waiting and notifying
-	 * when the thread has finished it's job.
-	 *
-	 * @author Flemming N. Larsen
+	 * Daemon worker thread containing a 'finish' flag for waiting and notifying when the thread has finished it's job.
 	 */
 	private static class WorkerThread extends Thread {
 
@@ -71,9 +80,9 @@ public class FileTransfer {
 	/*
 	 * Returns a session id for keeping a session on a HTTP site.
 	 *
-	 * @param url the url of the HTTP site
-	 * @return a session id for keeping a session on a HTTP site or null if no
-	 *    session is available
+	 * @param url is the url of the HTTP site.
+	 *
+	 * @return a session id for keeping a session on a HTTP site or null if no session is available.
 	 */
 	public static String getSessionId(String url) {
 		HttpURLConnection con = null;
@@ -94,7 +103,7 @@ public class FileTransfer {
 			synchronized (sessionIdThread.monitor) {
 				while (!sessionIdThread.isFinished) {
 					try {
-						sessionIdThread.monitor.wait(CONNECTION_TIMEOUT);
+						sessionIdThread.monitor.wait(sessionTimeout);
 						sessionIdThread.interrupt();
 					} catch (InterruptedException e) {
 						// Immediately reasserts the exception by interrupting the caller thread itself
@@ -121,10 +130,7 @@ public class FileTransfer {
 	}
 
 	/**
-	 * Worker thread used for getting the session id of an already open HTTP
-	 * connection.
-	 *
-	 * @author Flemming N. Larsen
+	 * Worker thread used for getting the session id of an already open HTTP connection.
 	 */
 	private final static class GetSessionIdThread extends WorkerThread {
 
@@ -158,39 +164,25 @@ public class FileTransfer {
 
 	/**
 	 * Downloads a file from a HTTP site.
-	 *
-	 * @param url       the url of the HTTP site to download the file from
-	 * @param filename  the filename of the destination file
-	 * @param sessionId an optional session id if the download is session based
-	 * @return the download status, which is DownloadStatus.OK if the download
-	 *         completed successfully; otherwise an error occurred
+	 * 
+	 * @param url is the url of the HTTP site to download the file from.
+	 * @param filename is the filename of the destination file.
+	 * @param sessionId is an optional session id if the download is session based.
+	 * @return the download status, which is DownloadStatus.OK if the download completed successfully; otherwise an
+	 * 	       error occurred.
 	 */
 	public static DownloadStatus download(String url, String filename, String sessionId) {
-		HttpURLConnection con = null;
+		HttpURLConnection conn = null;
 
 		try {
-			// Open connection
-			con = (HttpURLConnection) new URL(url).openConnection();
-			if (con == null) {
-				throw new IOException("Could not open connection to '" + url + "'");
+			// Create connection
+			conn = connectTo(new URL(url), sessionId);
+			if (conn == null) {
+				throw new IOException("Could not open connection to: " + url);
 			}
-
-			// Set the session id if it is specified
-			if (sessionId != null) {
-				con.setRequestProperty("Cookie", sessionId);
-			}
-
-			// Prepare the connection
-			con.setDoInput(true);
-			con.setDoOutput(false);
-			con.setUseCaches(false);
-
-			// Make the connection
-			con.setConnectTimeout(CONNECTION_TIMEOUT);
-			con.connect();
 
 			// Begin the download
-			final DownloadThread downloadThread = new DownloadThread(con, filename);
+			final DownloadThread downloadThread = new DownloadThread(conn, filename);
 
 			downloadThread.start();
 
@@ -215,8 +207,8 @@ public class FileTransfer {
 			// This will cause threads using the connection to throw an exception
 			// and thereby terminate if they were hanging.
 			try {
-				if (con != null) {
-					con.disconnect();
+				if (conn != null) {
+					conn.disconnect();
 				}
 			} catch (Throwable ignore) {// we expect this, right ?
 			}
@@ -224,10 +216,7 @@ public class FileTransfer {
 	}
 
 	/**
-	 * Worker thread used for downloading a file from an already open HTTP
-	 * connection.
-	 *
-	 * @author Flemming N. Larsen
+	 * Worker thread used for downloading a file from an already open HTTP connection.
 	 */
 	private final static class DownloadThread extends WorkerThread {
 
@@ -258,7 +247,7 @@ public class FileTransfer {
 				synchronized (responseThread.monitor) {
 					while (!responseThread.isFinished) {
 						try {
-							responseThread.monitor.wait(CONNECTION_TIMEOUT);
+							responseThread.monitor.wait(sessionTimeout);
 							responseThread.interrupt();
 						} catch (InterruptedException e) {
 							notifyFinish();
@@ -295,7 +284,7 @@ public class FileTransfer {
 				synchronized (contentLengthThread.monitor) {
 					while (!contentLengthThread.isFinished) {
 						try {
-							contentLengthThread.monitor.wait(CONNECTION_TIMEOUT);
+							contentLengthThread.monitor.wait(sessionTimeout);
 							contentLengthThread.interrupt();
 						} catch (InterruptedException e) {
 							notifyFinish();
@@ -337,7 +326,7 @@ public class FileTransfer {
 					synchronized (readThread.monitor) {
 						while (!readThread.isFinished) {
 							try {
-								readThread.monitor.wait(CONNECTION_TIMEOUT);
+								readThread.monitor.wait(sessionTimeout);
 								readThread.interrupt();
 							} catch (InterruptedException e) {
 								notifyFinish();
@@ -359,7 +348,7 @@ public class FileTransfer {
 					totalRead += bytesRead;
 				}
 
-				// If we reached this point, the download was succesful
+				// If we reached this point, the download was successful
 				status = DownloadStatus.OK;
 
 				notifyFinish();
@@ -389,10 +378,7 @@ public class FileTransfer {
 
 
 	/**
-	 * Worker thread used for getting the response code of an already open HTTP
-	 * connection.
-	 *
-	 * @author Flemming N. Larsen
+	 * Worker thread used for getting the response code of an already open HTTP connection.
 	 */
 	final static class GetResponseCodeThread extends WorkerThread {
 
@@ -421,10 +407,7 @@ public class FileTransfer {
 
 
 	/**
-	 * Worker thread used for getting the content length of an already open HTTP
-	 * connection.
-	 *
-	 * @author Flemming N. Larsen
+	 * Worker thread used for getting the content length of an already open HTTP connection.
 	 */
 	final static class GetContentLengthThread extends WorkerThread {
 
@@ -453,10 +436,7 @@ public class FileTransfer {
 
 
 	/**
-	 * Worker thread used for reading bytes from an already open input stream
-	 * into a byte buffer.
-	 *
-	 * @author Flemming N. Larsen
+	 * Worker thread used for reading bytes from an already open input stream into a byte buffer.
 	 */
 	final static class ReadInputStreamToBufferThread extends WorkerThread {
 
@@ -488,23 +468,22 @@ public class FileTransfer {
 	/**
 	 * Copies a file into another file.
 	 *
-	 * @param src_file  the filename of the source file to copy
-	 * @param dest_file the filename of the destination file to copy the file
-	 *                  into
+	 * @param srcFile is the filename of the source file to copy.
+	 * @param destFile is the filename of the destination file to copy the file into.
 	 * @return true if the file was copied; false otherwise
 	 */
-	public static boolean copy(String src_file, String dest_file) {
+	public static boolean copy(String srcFile, String destFile) {
 		FileInputStream in = null;
 		FileOutputStream out = null;
 
 		try {
-			if (src_file.equals(dest_file)) {
+			if (srcFile.equals(destFile)) {
 				throw new IOException("You cannot copy a file onto itself");
 			}
 			final byte[] buf = new byte[4096];
 
-			in = new FileInputStream(src_file);
-			out = new FileOutputStream(dest_file);
+			in = new FileInputStream(srcFile);
+			out = new FileOutputStream(destFile);
 
 			while (in.available() > 0) {
 				out.write(buf, 0, in.read(buf, 0, buf.length));
@@ -528,5 +507,63 @@ public class FileTransfer {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Opens and connects to a {@link java.net.HttpURLConnection} for input only, and where the connection timeout and
+	 * read timeout are read from the roborumble.properties file. If the properties file or timeout properties could
+	 * not be found, and 10 milliseconds is used as timeout value.
+	 * 
+	 * @param url is the URL to open a connection to.
+	 * @param sessionId is a optional session id.
+	 * @return a HttpURLConnection intended for reading input only.
+	 * @throws IOException if an I/O exception occurs.
+	 */
+	public static HttpURLConnection connectTo(URL url, String sessionId) throws IOException {
+
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+		conn.setRequestMethod("GET");
+		conn.setDoInput(true);
+		conn.setConnectTimeout(connectionTimeout);
+		conn.setReadTimeout(readTimeout);
+
+		if (sessionId != null) {
+			conn.setRequestProperty("Cookie", sessionId);
+		}
+
+		conn.connect();
+		return conn;
+	}
+
+	/**
+	 * Reads the roborumble.properties file and stores property values into global variables.
+	 */
+	private static void readProperties() {
+		Properties props = getProperties("./roborumble/roborumble.properties");
+
+		// Get connection timeout
+		String value = props.getProperty("connection.open.timeout");
+		if (value != null) {
+			try {
+				connectionTimeout = Integer.parseInt(value);
+			} catch (NumberFormatException ignore) {}
+		}
+
+		// Get connection read timeout
+		value = props.getProperty("connection.read.timeout");
+		if (value != null) {
+			try {
+				readTimeout = Integer.parseInt(value);
+			} catch (NumberFormatException ignore) {}
+		}
+
+		// Get download session timeout
+		value = props.getProperty("download.session.timeout");
+		if (value != null) {
+			try {
+				sessionTimeout = Integer.parseInt(value);
+			} catch (NumberFormatException ignore) {}
+		}
 	}
 }
