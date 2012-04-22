@@ -8,6 +8,9 @@ Version 1.7.3.6 Alpha
 * A new config file has been added for RoboRumble in the roborumble directory in the robocode directory named roborumble.properties. with this config file it is possible to configure the connection timeout, read timeout and session timeout used when downloading robots.
 * Req [3506263] - Mac ... start with icon and name
 
+= Changes =
+* Upgraded Eclipse Compiler for Java (ECJ) to version 3.7.2.
+
 Version 1.7.3.5
 (11-Mar-2012)
 ---------------
