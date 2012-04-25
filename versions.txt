@@ -1,11 +1,11 @@
-Version 1.7.3.6 Alpha
-(22-Apr-2012)
+Version 1.7.3.6 Alpha 2
+(25-Apr-2012)
 ---------------
 = Bugfixes =
 * Bug [3519547] - RoboRumble client has infinite timeout. Default connection timeout, read timeout and session timeout have been set to 10 seconds.
 
 = New features =
-* A new config file has been added for RoboRumble in the roborumble directory in the robocode directory named roborumble.properties. with this config file it is possible to configure the connection timeout, read timeout and session timeout used when downloading robots.
+* A new config file has been added for RoboRumble in the roborumble directory in the robocode directory named roborumble.properties. with this config file it is possible to configure the connection timeout, read timeout and session timeout used when downloading robots and uploading results.
 * Req [3506263] - Mac ... start with icon and name
 
 = Changes =
