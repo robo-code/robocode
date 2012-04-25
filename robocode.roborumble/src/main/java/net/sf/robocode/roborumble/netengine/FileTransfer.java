@@ -85,17 +85,17 @@ public class FileTransfer {
 	 * @return a session id for keeping a session on a HTTP site or null if no session is available.
 	 */
 	public static String getSessionId(String url) {
-		HttpURLConnection con = null;
+		HttpURLConnection conn = null;
 
 		try {
 			// Open connection
-			con = (HttpURLConnection) new URL(url).openConnection();
-			if (con == null) {
+			conn = FileTransfer.connectToHttpInputConnection(new URL(url));
+			if (conn == null) {
 				throw new IOException("Could not open connection to '" + url + "'");
 			}
 
 			// Get a session id if available
-			final GetSessionIdThread sessionIdThread = new GetSessionIdThread(con);
+			final GetSessionIdThread sessionIdThread = new GetSessionIdThread(conn);
 
 			sessionIdThread.start();
 
@@ -123,8 +123,8 @@ public class FileTransfer {
 			// Make sure the connection is disconnected.
 			// This will cause threads using the connection to throw an exception
 			// and thereby terminate if they were hanging.
-			if (con != null) {
-				con.disconnect();
+			if (conn != null) {
+				conn.disconnect();
 			}
 		}
 	}
@@ -176,7 +176,7 @@ public class FileTransfer {
 
 		try {
 			// Create connection
-			conn = connectTo(new URL(url), sessionId);
+			conn = connectToHttpInputConnection(new URL(url), sessionId);
 			if (conn == null) {
 				throw new IOException("Could not open connection to: " + url);
 			}
@@ -511,28 +511,66 @@ public class FileTransfer {
 
 	/**
 	 * Opens and connects to a {@link java.net.HttpURLConnection} for input only, and where the connection timeout and
-	 * read timeout are read from the roborumble.properties file. If the properties file or timeout properties could
-	 * not be found, and 10 milliseconds is used as timeout value.
+	 * read timeout are controlled by properties.
+	 * 
+	 * @param url is the URL to open a connection to.
+	 * @return a HttpURLConnection intended for reading input only.
+	 * @throws IOException if an I/O exception occurs.
+	 */
+	public static HttpURLConnection connectToHttpInputConnection(URL url) throws IOException {
+		return connectToHttpInputConnection(url, null);
+	}
+
+	/**
+	 * Opens and connects to a {@link java.net.HttpURLConnection} for input only, and where the connection timeout and
+	 * read timeout are controlled by properties.
 	 * 
 	 * @param url is the URL to open a connection to.
 	 * @param sessionId is a optional session id.
 	 * @return a HttpURLConnection intended for reading input only.
 	 * @throws IOException if an I/O exception occurs.
 	 */
-	public static HttpURLConnection connectTo(URL url, String sessionId) throws IOException {
-
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	public static HttpURLConnection connectToHttpInputConnection(URL url, String sessionId) throws IOException {
+		HttpURLConnection conn = (HttpURLConnection) openURLConnection(url, false); // not for output
 
 		conn.setRequestMethod("GET");
-		conn.setDoInput(true);
-		conn.setConnectTimeout(connectionTimeout);
-		conn.setReadTimeout(readTimeout);
-
 		if (sessionId != null) {
 			conn.setRequestProperty("Cookie", sessionId);
 		}
-
 		conn.connect();
+		return conn;
+	}
+
+	/**
+	 * Opens a {link {@link java.net.URLConnection} for output (and input) where the connection timeout and read timeout
+	 * are controlled by properties.
+	 *
+	 * @param url is the URL to open.
+	 * @return a URLConnection for output.
+	 * @throws IOException if an I/O exception occurs.
+	 */
+	public static URLConnection openOutputURLConnection(URL url) throws IOException {
+		return openURLConnection(url, true); // for output
+	}
+	
+	/**
+	 * Opens a {link {@link java.net.URLConnection} for input and optional output where the connection timeout and read
+	 * timeout are controlled by properties.
+	 *
+	 * @param url is the URL to open.
+	 * @param isOutput is a flag specifying if the opened connection is for output.
+	 * @return a URLConnection.
+	 * @throws IOException if an I/O exception occurs.
+	 */
+	public static URLConnection openURLConnection(URL url, boolean isOutput) throws IOException {
+		URLConnection conn = url.openConnection();
+
+		conn.setDoInput(true);
+		conn.setDoOutput(isOutput);
+
+		conn.setConnectTimeout(connectionTimeout);
+		conn.setReadTimeout(readTimeout);
+
 		return conn;
 	}
 
@@ -544,6 +582,7 @@ public class FileTransfer {
 
 		// Get connection timeout
 		String value = props.getProperty("connection.open.timeout");
+
 		if (value != null) {
 			try {
 				connectionTimeout = Integer.parseInt(value);

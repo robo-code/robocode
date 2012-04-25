@@ -168,7 +168,7 @@ public class BotsDownload {
 		try {
 			URL url = new URL(participantsurl);
 
-			conn = FileTransfer.connectTo(url, null);
+			conn = FileTransfer.connectToHttpInputConnection(url);
 
 			// Check that we received a HTTP_OK response code.
 			// Bugfix [2779557] - Client tries to remove all participants.
@@ -434,7 +434,7 @@ public class BotsDownload {
 		try {
 			URL url = new URL(ratingsurl + "?version=1&game=" + competition);
 
-			HttpURLConnection conn = FileTransfer.connectTo(url, null);
+			HttpURLConnection conn = FileTransfer.connectToHttpInputConnection(url);
 
 			final File dir = new File(file).getParentFile();
 
@@ -563,10 +563,8 @@ public class BotsDownload {
 
 		try {
 			// Send data
-			URL url = new URL(removeboturl);
-			URLConnection conn = url.openConnection();
+			URLConnection conn = FileTransfer.openOutputURLConnection(new URL(removeboturl));
 
-			conn.setDoOutput(true);
 			wr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream()));
 
 			wr.println(data);

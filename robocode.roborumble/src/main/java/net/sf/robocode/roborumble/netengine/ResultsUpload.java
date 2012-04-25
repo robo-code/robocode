@@ -252,10 +252,8 @@ public class ResultsUpload {
 
 		try {
 			// Send data
-			URL url = new URL(resultsurl);
-			URLConnection conn = url.openConnection();
+			URLConnection conn = FileTransfer.openOutputURLConnection(new URL(resultsurl));
 
-			conn.setDoOutput(true);
 			wr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream()));
 
 			wr.println(data);
