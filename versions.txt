@@ -1,5 +1,5 @@
-Version 1.7.3.6 Alpha 2
-(25-Apr-2012)
+Version 1.7.3.6
+(29-Apr-2012)
 ---------------
 = Bugfixes =
 * Bug [3519547] - RoboRumble client has infinite timeout. Default connection timeout, read timeout and session timeout have been set to 10 seconds.
