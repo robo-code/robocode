@@ -1,0 +1,46 @@
+/*******************************************************************************
+ * Copyright (c) 2001, 2009 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ * 		Joshua Galecki
+ * 		-Initial implementation
+ *******************************************************************************/
+
+package net.sf.robocode.battle;
+
+
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.List;
+
+import org.w3c.dom.Element;
+
+import robocode.IExtensionApi;
+
+import net.sf.robocode.battle.peer.RobjectPeer;
+import net.sf.robocode.battle.peer.RobotPeer;
+
+
+/**
+ * This interface will provide winning and losing conditions, scoring, and other rules
+ * 
+ * @author Joshua Galecki (original)
+ *
+ */
+public interface ICaptureTheFlagRules {
+	public List<List<String>> getTeams();
+	public List<String> getBattlefieldState();
+	public Rectangle2D getOwnBase(String ownName);
+	public Point2D getOwnFlag(String ownName);
+	public Point2D getEnemyFlag(String ownName);
+	public Rectangle2D getEnemyBase(String ownName);
+	public List<RobjectPeer> setupObjects(int battlefieldWidth, int battlefieldHeight);
+	
+	
+	
+
+}

@@ -1,0 +1,1888 @@
+Version 2.0.0 Alpha
+---------------
+
+Version 1.7.1.4
+(31-Aug-2009)
+---------------
+= Bugfixes =
+* Bug [2845608] - java.io.FileNotFoundException in RobotFileSystemManager.init
+* Bug [2845612] - Can't load Katana 1.0 or DrussGT 1.3.1wilo
+
+= Changes =
+* The previous 1.7.x.x versions have been very strict so that robots that could not be loaded, started, skipped too many turns etc. would be disallowed to participate in battles. With the bugfix for bug [2845612] above this policy has been changed so robots are only "banned" if the cause a security violation or they could not be loaded or started (meaning that they are not able to run). In addition, ALL security violations are always written out in both the main console and robot's console. A message will be written out in the main console like "xxx has caused a security violation. This robot has been banned and will not be allowed to participate in battles".
+
+Version 1.7.1.4 Beta
+(26-Aug-2009)
+---------------
+This version is dedicated for the RoboRumble@Home community where many issues seen with the RoboRumble client have been solved.
+Thank you all for reporting as many known issues as possible, and also help out solving these - especially with the issue seen with the robot movement that had a big impact on the scores and rankings! :-)
+
+A big thanks goes to Patrick Cupka ("Voidious"), Julian Kent ("Skilgannon"), "Positive" and Nat Pavasant ("Nat") for their combined work with developing and testing the new and improved robot movement regarding acceleration and deceleration rules (Bug [2828072]). :-)
+
+= Bugfixes =
+* Bug [2828072] - Accel/decel rules introduced in 1.7.1.3 causes trouble.
+* Bug [2828479] - Missed onRobotDeath events.
+* Bug [2819387] - Team jar files reported as corrupted.
+* Bug [2809518] - Does not extract .properties files into bot data dir. This fix did not work properly as the file sizes were truncated to 0 bytes.
+* Bug [2828614] - Sometimes too few results for robots are displayed.
+* Bug [2820434] - NullPointerException when setting classpath directory.
+* Bug [2811621] - Invalid entry point in codesize-1.1.jar.
+* Bug [2833271] - IllegalThreadStateException occurring in RoboRumble.
+* Bug [2831201] - Robocode enters infinite loop with the Restart button.
+* The RateControlRobot (Beta) returned rates in radians instead of degrees with the methods: getTurnRate(), getGunRotationRate(), and getRadarRotationRate().
+
+= Changes for RoboRumble =
+* Updated the PARTICIPANTSURL in the roborumble.txt, meleerumble.txt, and teamrumble.txt
+
+Version 1.7.1.3
+(08-Jul-2009)
+---------------
+= Bugfixes =
+* Bug [2813513] - Bullet and Ram Damage Bonuses are wrong.
+* Bug [2809518] - Does not extract .properties files into bot data dir.
+* Bug [2805858] - Access denied javax.swing -DNOSECURITY=true
+* Sometimes the "Show results when battle(s) ends" in the Common Options was disabled when running the RobocodeEngine, even though the setting had been enabled earlier.
+* Bug [2811621] - Invalid entry point in codesize-1.1.jar.
+* A NullPointerException occurred when closing the Preferences window, when no sound device is present in the system.
+
+= Changes =
+* The default font on the Graphics context when using onPaint(Graphics2D) or getGraphics() has been changed to the "Dialog" font.
+
+Version 1.7.1.3 Beta
+(08-Jun-2009)
+---------------
+= Bugfixes =
+* AdvancedRobot.setMaxTurnRate() did not work properly since version 1.5.4
+* Bug [2799165] - Wrong survival scores sent by rumble client
+* Bug [2802227] - Funny behaviors with robot graphics/paintings
+
+= New RateControlRobot (Beta) =
+* Joshua Galecki has provided a new robot type, the RateControlRobot, which is an extension of the AdvancedRobot.
+* The RateControlRobot class has been created in an attempt to allow more realistic robots. That is, many real/physical robots are given commands in terms of rates ("move forward one meter per second"). Hence, the RateControlRobot helps simulating a real robot.
+* With this release, we ask the community for feedback and we will announce it as stable in one of next major releases. So please report issues or change requests etc. for this new robot type.
+
+= Changes for RoboRumble =
+* Added validation of each of the participant lines of the participant list. If a participant line is invalid due to e.g. wrong format/syntax or bad URL, then an error message is written out and the participant is ignored.
+* The format of the lines in the participant lines is the same as usual.
+* Accepted lines must follow this format: <robot+version>,(<http-url>|<repository-id>), where <robot+version> must match the regular expression "[\\w\\.]+[ ][\\w\\.-]+", the <http-url> must be a HTTP URL pointing at the robot .jar file, and the <repository-id> must be a number. The <http-url> and <repository-id> are mutual exclusive.
+* Example of accepted lines:
+** johndoe.SomeRobot 1.0,http://somewhere.com/SomeRobot_1_0.jar
+** johndoe.SomeRobot 1.0,321
+* Removed the info message "Trying to download <botname>" from the console output.
+
+= Other changes =
+* The Development Options has become more usable, as Ruben Moreno Montoliu has added a list of paths and buttons for adding and removing directories, full resizable.
+* Updated the javadoc with a note for the setAdjust*() robot methods, which are ignored when turning with infinite values.
+
+Version 1.7.1.2
+(25-May-2009)
+---------------
+= Bugfixes =
+* Bug [2791007] - FontMetrics StackOverflowError
+* Bug [2791010] - Graphics2D.setFont() has no effect
+* Bug [2793464] - setMaxVelocity(lower than current) + reverse direction bug
+* Bug [2785448] - Wrong file path used for development bots. Refixed.
+* Bug [2795854] - Installer says to run robocode.jar
+* Bug [2795883] - Nanobot rumble not sending melee or team parameters. Thanks goes to Jerome Lavigne aka. Darkcanuck for this fix.
+* Fixed three bugs introduced with the Beta version found using new test units:
+** One bug where the speed would immediately drop to max. velocity when calling setMaxVelocity() - disregarding the acceleration and deceleration rules.
+** Another bug where the turn rate was a bit wrong when moving back and turning left in the same time.
+** A third bug where the robot continued to move backwards when it should have stopped due to setAhead(0) or setBack(0).
+
+Version 1.7.1.2 Beta
+(08-May-2009)
+---------------
+= Bugfixes =
+* Bug [2077512] - Bug in RobotPeer.updateMovement? Robocode was not moving 100% according to it's own rules. Now it is.
+* Bug [2740708] - Fair Play! With two identical robots in a battle against each other, the first robots was much more likely to win, which was not fair.
+* Bug [2779557] - Client tries to remove all participants. When RoboRumble, TeamRumble, and/or MeleeRumble downloaded the participants list and did not receive a HTTP_OK or an empty list, the participants list was emptied. This caused problems with the RoboRumble server.
+* Bug [2785448] - Wrong file path used for development bots. Added option -DALWAYSUSECACHEFORDATA for anyone who liked it better.
+* Bug [2785456] - Melee rumble doesn't use "smart battles" (aka. priority battles). Thanks goes to Jerome Lavigne aka. Darkcanuck for this fix.
+* Fixed several ArrayOutOfBoundsExceptions occurring when starting a battle with fewer robots than a battle just played with more robots.
+
+= Changes for RoboRumble =
+* The participants URL for RoboRumble, MeleeRumble, and TeamRumble have been updated to use the participant lists from the new RoboWiki:
+** RoboRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants
+** MeleeRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants/Melee
+** TeamRumble: http://robowiki.net/w/index.php?title=RoboRumble/Participants/Teams
+
+= Other changes =
+* Updated the Help menu to point at the new RoboWiki regarding the Online Help and FAQ.
+* RobocodeEngine control class: Added additional runBattle() method where it is possible to specify the initial positions of the robots when starting a battle.
+* The about box was updated, where contributors are now written in bold and in a green color.
+
+Version 1.7.1.1
+(10-Apr-2009)
+---------------
+With this release we have focused on eliminating as many problems seen with RoboRumble as possible. Hence, this version should hopefully prove stable as the new RoboRumble client.
+
+= Bugfixes for RoboRumble =
+* Bug [2727675] - Meleerumble using 2 bots instead of 10. Now the MELEEBOTS (number of robots that participate in a melee battle) works as expected.
+* Bug [2742554] - TeamRumble uploading result for Robot instead of team.
+* Bug [2727667] - Not enough java memory allocated in launch scripts. The launch scripts for RoboRumble and TeamRumble were changed so it is allowed to use up to 512 MB heap memory, and MeleeRumble is allowed to use up to 1024 MB.
+* Bug [2740403] - EOFException during repository rebuild. Exception is now reported in a simplified way.
+* Bug [2742891] - JarJar multi-registration. RoboRumble was not reusing the same RobocodeEngine instance.
+
+= Other bugfixes =
+* Bug [2627698] - pe.SandboxDT_3.02 stoped working. We had broken semantics of getTeammates() to return empty array when there is no team.
+* Bug [2738985] - Robocode API: Cannot subclass Event in 1.7.1.
+* Bug [2738993] - Errors with some robot classes when rebuilding database.
+* Bug [2711605] - Webpage button lay over robot description.
+* Bug [2723228] - Round number set by user was not saved between run.
+
+= JuniorRobot changes =
+* Bug - The event variables scannedXXX and hitXXX on the JuniorRobot was not reset to -1 (or -99) when nothing was scanned or hit.
+* Bug/Req [2500129] - Prevent JuniorRobot to be unresponsive.
+* Change: JuniorRobot will now automatically scan for enemies when it is not moving.
+
+Version 1.7.1
+(24-Mar-2009)
+---------------
+= Bugfixes =
+* Bug [2643448] - Editor UNDO does delete the line when no is undo left.
+* Bug [2664844] - Editor: Find/replace dialog (set cursor position).
+* Bug [2699018] - roborumble.sh and teamrumble.sh were broken.
+* Bug [2699028] - NullPointerException in BattlesRunner.runBattlesImpl.
+* Bug [2703301] - Custom event priority was broken.
+
+= Changes =
+* The New Battle dialog is now larger per default.
+* The layout of the View Options and Sound Options tab in the Preferences has been improved. An error dialog is shown when the input field for the desired TPS is out of range.
+
+Version 1.7.1 Beta 2
+(11-Mar-2009)
+---------------
+= Bugfixes =
+* Bug [2658090] - Typing to find bot no longer works.
+* Bug [2666598] - API: Typo in Documentation onBulletMissed(BulletMissedEvent).
+* Bug [2658167] - Put back setTime() method of Event, the security is now handled other way, not by hiding the field
+* Fixed the problem with loading team robots from nested .jar files.
+* On Ubuntu (Linux) the "Default window size" did not work properly.
+
+= Internal Changes =
+* On SUN's JVM enabled caching of .jar files opened thru URLConnection. Solved problem with closing such files by implementing URLJarCollector.
+
+Version 1.7.1 Beta
+(01-Mar-2009)
+---------------
+With this release we give BIG thanks to Nat Pavasant who have put in great effort in testing and finding as many bugs in Robocode as possible. He has been a great help with testing especially RoboRumble@Home functionality.
+
+Currently, there is one known issue, which will be fixed with the next Beta or in the final release of version 1.7.1. This is critical for e.g. the TeamRumble, so please notice the known issue below.
+
+= Known issue =
+* With this version Robocode cannot handle team packages containing robot .jar files, i.e. robot packages.
+
+= Bugfixes =
+* Bug [2626148] - Bots referencing robocode.robocodeGL broken. Now, we are now not following refrences to robocode packages.
+* Bug [2626164] - Don't ever punish robots in devel directories by removing from repository.
+* Bug [2634807], [2632874] - Robot console was wrongly synchronized with battle.
+* Bug [2634123] - Robot packager can be activated once per running.
+* Bug [2643395] - Development robots cause problems with data files.
+* Bug [2628346] - A battleview size exceed 800x600 filled with black.
+* Bug [2618169] - NullPointerException when using -battle option from the cmd-line.
+* Bug [2628217] - Robot Colors don't stick between rounds.
+* Bug [2649954] - Open battle menu dialog is not loading robots.
+* The command line usage of Robocode was not printed out at all when using the -? or -help option.
+
+= New features =
+* Added getCurrentWorkingDir() + getRobotsDir() to the robocode.control.RobocodeEngine.
+* Req [2446276] - Ranking Panel should be visible when Robocode is minimized. This feature has been added and it is possible to control the behavior from Common Options in the Preferences with the "Don't hide Rankings when main window is minimized", which is enabled per default.
+* Req [2467545] - Command Line option for saving a battle record file. Two new command line options have been added for Robocode, i.e. -record <filename> and -recordXML <filename>. The -record option records the battle as a binary and zipped battle record. Here I propose that the specified filename should is something like record.br. The -recordXML does the same as the -record option, but saves the battle record as an XML file. Here I suggest that you use a filename like record.br.xml.
+* Req [1749483] - Speedup time required for rebuilding robot database.
+
+= RoboRumble changes =
+* Changed the link for http://rumble.fervir.com/rumble into http://darkcanuck.net/rumble as the RoboRumble server fervir is down and with unstable ranking. The current ranking at Darkcanuck's server is alive. Almost all clients are point to Darkcanuck's now. Hence, it is updated now.
+
+= Internal Changes =
+* The robot repository has been updated. It is no longer extracting .jar files.
+* It also remembers last timestamp on file so detection of the changes is really fast. Only data files are extracted now.
+* Data files for non-packed robots were moved to .robotcache as well.
+* VersionManager is now able to detect if the Robocode version was upgraded since last run.
+* Blocking security issue with relative path in getDataFile() method.
+* Improved security in RobotClassLoader.
+* Reimplemented RobotPackager.
+* BulletSnapshot has now method getBulletId which gives identity of bullet for UI.
+
+Version 1.7.0.2
+(16-Feb-2009)
+---------------
+= Bugfix =
+* The fix for "Bug [2597046] Compiler classpath not quoted" backfired, as the entire text field in the window with the compiler properties would now be quoted. Hence, the compiler would not be able to compile, and it was not possible to cheage the compiler preferences from the GUI.
+
+Version 1.7.0.1
+(14-Feb-2009)
+---------------
+= Bugfixes =
+* Bug [2596947] Fix needed to Robocode.bat: Some users experienced problems with starting Robocode. Hence, all startup batch and shell files for Windows, Linux, Mac OS X etc. have been corrected.
+* Bug [2597046] Compiler classpath not quoted: When running Robocode in a folder with spaces, the compiler classpath was not quoted. Hence, the compiler would not work.
+
+Version 1.7
+(11-Feb-2009)
+---------------
+= Bugfixes =
+* Bug [2580555] Battle Results screen displaying old results. The results where not updated on the Battle Results windows between battles.
+* Bug [2585586] Robot disabled by any other than loosing energy can recover. Robots disabled due to bad behaviour could regain energy by hitting another robot by a bullet after it had been disabled. Now this is only possible when the robot has disabled itself by using all its energy, but can recover by hitting an enemy, which is allowed.
+* Bug [2585615] Team Battle. Robots like abc.Shadow 3.83, davidalves.Phoenix 1.02, and kawigi.micro.Shiz 1.1, kawigi.micro.ShizPair 1.1 caused a NullPointerException and would not show up on the battle window.
+
+Version 1.7 Beta 2
+(26-Jan-2009)
+---------------
+= Bugfixes =
+* Bug [2527112] Ubuntu throws NullPointerException in main when trying to startup Robocode.
+* Bug [2528467] Installation fail on windows if directory contain space(s).
+
+= Changes =
+* Improved the version checking for new Robocode versions available for download.
+
+Version 1.7 Beta
+(19-Jan-2009)
+---------------
+* This version represents a completely new infrastructure of Robocode making it easier to extend and maintain for the future. It does not contain new features compared to the previous version of Robocode, but focus on working the same way as the previous versions despite of all the restructurings.
+
+= Bugfixes =
+* Bug [2497164] Spammy output on robot console windows.
+
+= Internal changes =
+* Robocode was modularized using the dependency injection framework PicoContainer. This work includes introduction of many interfaces to existing components.
+* Introduced Maven2 as build setup where the whole directory layout is based on the standard Maven structure.
+* Rewritten the RobotClassLoader so it is able to load .jar file in the future.
+* Rewritten security layer to use AccessController and CodeSource for detection of trusted code.
+* Redesigned RobocodeProperties to SettingsManager and introduced ISettingsListener.
+* Implemented RbSerializer to be able to implement IPC (Inter-Process Communication) in future. This should make it possible to extend Robocode for more platforms like e.g. Microsoft .NET.
+* Redesigned RepositoryManager and nearby to hide implementation details.
+* Moved all implementation of Robocode to the package 'net.sf.robocode'. The old package 'robocode' is now used only for API to outer world in order to keep backwards compability.
+
+Version 1.6.2
+(04-Jan-2009)
+---------------
+= Bugfixes =
+* Bug [2467536] Robot name was missing when replaying XML record.
+* Bug [2465580] Junior Robot turnAheadRight() bug. When a JuniorRobot was calling turnAheadRight(), turnAheadLeft(), turnBackRight(), or turnBackLeft() - the following exception occurred causing the robot to be terminated:  java.lang.ClassCastException: robocode.peer.proxies.StandardRobotProxy
+* Bug [2449081] Exception when changing between Robot to AdvancedRobot. When a robot was changed from a Robot into an AdvancedRobot and recompiled, the game would cast a ClassCastException if a battle was started or restarted including that particular robot. However, this bug did not occur with new battles where the list of robots was refreshed (by pressing Ctrl+R).
+
+Version 1.6.2 Beta 4
+(22-Dec-2008)
+---------------
+= Bugfixes =
+* Fixed open battle dialog, which was not loading.
+* Fixed recorder NPE
+* Fixed serialization problems of scan arc (Arc2D)
+* Fixed problem with reloading robot repository on each next battle dialog
+
+Version 1.6.2 Beta 3
+(18-Dec-2008)
+---------------
+= Changes =
+* Published new battle events and battle snapshots in the Control API, i.e. in the robocode.control package.
+* Added missing javadocs (HTML documentation) to public Robocode API classes.
+
+= Bugfixes =
+* The current scoring (not the total scoring) was calculated wrong from version 1.6.1. The current Ramming Kill Bonus was set to current bullet kill bonus, which gave wrong ranking in the Ranking Panel.
+* Bug [2410856]: wrong bullet power could be reported back from Bullet.getPower(), which could be > Rules.MAX_BULLET_POWER or < Rules.MIN_BULLET_POWER.
+* Bug [2405844]: gunHeat could be negative, which should never occur.
+* Bug [2412707]: Replay exception, where an ArrayIndexOutOfBoundsException occurred in some situations.
+* Fixed problem with RobocodeEngine.setVisible(true), where the RobocodeEngine would hang forever.
+
+Version 1.6.2 Beta 2
+(07-Dec-2008)
+---------------
+= Bugfixes =
+* Fixed problem with Bullet identity.
+* Battle cleanup concurrency issue.
+* Fixed problem with robots without package.
+* AWT AppContext cleanup.
+* Fixed versions comparison problem.
+
+= Changes =
+* Mostly cleanup of code and documentation.
+* Improved compatibility with RobocodeJGAP.
+* Development robot version names were visible in the robot repository.
+
+Version 1.6.2 Beta
+(25-Nov-2008)
+---------------
+= Bugfixes =
+* Bug [2214620]: Robots were paying CPU time for painting. Now Robocode gives a robot unlimited time when painting is enabled on UI (in the robot dialog) for that robot.
+* Robocode will not load non-valid robots from repository anymore.
+* Fixed placement of the robot dialogs (aka. robot console windows).
+* Exception on robot's Condition doesn't break further processing now.
+* Bug [2335165]: RoboRumble output was spammy, outputting log after the first battle.
+* java.lang.IllegalArgumentException: Line unsupported: interface Clip supporting format could occur when starting Robocode.
+
+= New features =
+* Battle recording and replay: Saving to binary and xml file. Robot painting and debug properties are now being recorded, but robot painting is not exported to xml. Recording is slowing down the game and eats memory and disk space. You need to enable it in options.
+* New command line option -replay for replaying a battle record.
+* New dialog for battle console and battle turn snapshots.
+* Robot dialog have new tab-page with robot properties.
+* Robot dialog have green hinted button for painting robots.
+* The robot API has been extended with a new setDebugProperty() method. See the sample.PaintingRobot robot for example of usage.
+* The robocode.control package has been improved so that the RobocodeEngine is able to return much more detailed information about was is going on inside the battle for each turn, round, and battle thru a new IBattleListener interface.
+
+= Changes =
+* Redesigned RobotPeer and Battle. Now we send messages between threads instead of synchronizing indifidual properties. Code here is much more readable now. This is big change.
+* Most synchronization is now interlocked.
+* Event manager, priority and dispatch of events refactored.
+* The methods setPriority() and setTime() on the Event classes are no longer part of RobotAPI. These methods were used internally by the game. Events are final classes now.
+* More unit tests were added.
+* Graphics2DProxy optimized.
+* Interactive robots are better detected to not waste time of non-interactive robots.
+* Team messages are deserialized on receiver robot thread.
+* Got rid of robot loader thread. Now Robocode is loading on robot's thread, where we got more security.
+* Introduced new interfaces for code components.
+* Robot threads have NORM_PRIORITY - 1, AWT UI have NORM_PRIORITY + 2.
+* Feature Req [2117285]: We now upload version of client with resuts from roborumble.
+* Robots which are wrong behaving are removed from the robot repository and are not given another chance to run. This is for SkippedTurns, for unstopable robots and for robots with class loading troubles.
+* Changed the formatting of this versions.txt file in order to improve readability.
+
+Version 1.6.1.4
+(14-Nov-2008)
+---------------
+= Bugfixes =
+* Loosing robots were not receiving onBattleEnded(BattleEndedEvent) events.
+* A new security issue fix for robots that were able to execute code thru the Event Dispatch Thread (EDT). Robots that try to access the EDT will be disabled!
+* Bug [2210749]: drawArc() does not work as expected. This bug has been fixed. In addition, both drawArc() and fillArc() are now using the Robocode coordinate and angle system.
+* Bug [2157167]: Blank console window when compiling. Some systems still had this issue, so a new fix has been applied.
+
+= New feature =
+* The results and current rankings (during a battle) is now showing the score as percentage(s) in parenthesis right beside the score points like e.g. '7875 (12%)' for the total score in the results and '21 / 2900  (7 / 14%)' with the current rankings.
+* Thanks goes to Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh for this patch/contribution!
+
+= Changes =
+* The command-line option EXPERIMENTAL (true/false) allowing access to the robot interface peer is now working for the RobocodeEngine class also.
+
+Version 1.6.1.3
+(24-Oct-2008)
+---------------
+= Bugfixes =
+* [2157167] Blank console window when compiling. This bug was introduced in 1.6.1.2. When trying to compile a robot which gave a compiler error, the output console window for the compiler could be blank on Windows system, and even hang. Now the compiler error is output correctly as in previous versions.
+* [2070840] Roborumble "ITERATE" broken: When running RoboRumble with ITERATE=YES, DOWNLOAD=YES, and RUNONLY=SERVER, the ratings were only read once, not per iteration. This bugfix removes a very old bug and the need of using a batch file as workaround in order to do the loop with updated ratings.
+* [2121034] The -DROBOTPATH=<path> option did not work: Now it works.
+* [2134416] Broken .sh files: An misplaced colon character was included in the teamrumble.sh file.
+* Fixed issue with first time access to a robot's data directory after startup, where the robot was not allowed to write to it's file.
+
+= Changes =
+* [2022774] Various usability issues:
+* The list of available robots in the 'New Battle' dialog is now automatically refreshed before it is being shown, when a new robot has been compiled or a robot has been removed.
+* The 'Save' and 'Save As' in the File menu of the Robot Editor is now enabled and disabled depending if there is anything to save or not.
+
+Version 1.6.1.2
+(12-Sep-2008)
+---------------
+= Bugfixes =
+* RoboRumble: Sometimes results were given to the wrong robots, which gives a problem with the robot rankings in the RoboRumble, TeamRumble and MeleeRumble
+* Thanks goes to Joachim Hofer AKA Qohnil for fixing this issue! :-)
+* RoboRumble: Robots that read their data file got the following error message: 'Preventing unknown thread <robot name> from access: (java.io.FilePermission...'
+* ArrayOutOfBoundsException could occur when accessing the Graphics2D object returned by the getGraphics() method on the Robot.
+* The draw(Shape) method on the Graphics2D object returned by the getGraphics() method could not draw lines.
+* The onMousePressed() event was called twice instead of only one time per mouse press.
+
+Version 1.6.1.1
+(28-Aug-2008)
+---------------
+= Bugfixes =
+* Issues with the scoring. Sometimes the robots were ranked incorrectly compared to their total scores given in the battle results.
+* When disabling the security (-DNOSECURITY=true) it would not be possible to run any battles as the following error would occur: 'RobocodeFileOutputStream.threadManager cannot be null!'
+* [2066996] -battle broken: When using a battle file, the battles were not displayed one the GUI.
+* [2064834] Robot problem after Options -> Clean robot cache: Robots that tried to access their data file, like e.g. sample.SittingDuck got a java.security.AccessControlException.
+* Sometimes the compiler window would hang when trying to compile, but only when the compiler gave compilation errors.
+* IllegalArgumentException occurred when calling setStroke() or setComposite() on the Graphics2D object returned by the new getGraphics() method on the Robot.
+
+= Changes =
+* The intro battle will only be shown if a battle file has not been specified using the -battle command-line argument and Robocode is being run for the first time since installation. Previously, the intro battle was always shown even though a battle file had been specified.
+
+Version 1.6.1
+(17-Aug-2008)
+---------------
+= Changes =
+
+== New methods ==
+* Added getGraphics() to Robot and IBasicRobotPeer, meaning that a robot is now able to paint itself at any time, and not only using the onPaint() event handler.
+* Added getStatusEvents() to AdvancedRobot and IAdvancedRobotPeer, so a robot is now able to handle status events in the middle of an event handler.
+
+== New event ==
+* The new event BattleEndedEvent has been added, and will call the new event handler onBattleEnded() on the robots, when the battle is ended (Feature Req 1878233).
+* When reading the BattleEndedEvent it is possible to read out the results of the battle of the individual robot or team. In addition, it is possible to check if the battle was aborted by the game or user. The battle results will only be available if the battle is not aborted (where the results does not count).
+* The the onBattleEnded() event handler is provided through the new IBasicEvents2 class.
+
+== Paint events ==
+* Paint events are now put in the robot event queue, meaning that the robots will pay CPU time when their onPaint() event handler is called.
+* Added the PaintEvent, which makes it possible to set the event priority of paint events using the AdvancedRobot.setEventPriority().
+
+== Mouse and keyboard events ==
+* Mouse and keyboard event have also been put in the robot event queue, and thus the robots will pay CPU time when their onMouse*() and onKey*() event handlers are called.
+* Mouse and Keyboard events have been added as public classes as well.
+
+== Package name ==
+* The max. length of a robot's full package name has been extended from 16 to 32 characters (Feature Req 1954853).
+* The Robocode Repository is able to handle this (verified with Dan Lynn).
+
+== New TPS slider ==
+* The TPS slider has been redesigned to be more exponential, so it covers battle in slow speed (1-30 TPS), higher speed (30 - 120 TPS), and fast speed (120 - 1000 TPS).
+* If you set the slider to max. TPS the game will run as fast as possible. This feature already existed in earlier versions.
+* If you set the slider to minimum (0 TPS) the game will pause. This is a new feature.
+
+== The FPS (frames per second) ==
+* The max. FPS is now fixed to be max. 50 FPS allowing the TPS (turns per second) to be even faster.
+
+== New title bar ==
+* The title on the Robocode window is now showing the current turn in a battle, and is updated every half second.
+* The layout of the information shown in the title has been improved a bit.
+
+== Dialogs ==
+* The About box, New Battle Dialog, Preferences Dialog, Ranking Dialog, and the Compiler Preferences Dialog are now modal.
+* It is now possible to close the New Battle and Results Dialog by pressing the Esc key.
+
+== Ranking panel ==
+* The menu item for the Ranking Panel is now hidden when replaying a battle, and the panel is now being hidden, if it is visible, while the battle is being replayed. The reason for hiding the Ranking Panel is that the replay feature does not support displaying the current rankings during the replay, i.e. the current scores are not recorded.
+
+== Command-line options ==
+* Added the new -DPARALLEL option (set to true or false), which allows robots to run in parallel intended to take advantage of more CPU's available in the system. This option may speedup battles with multiple CPU time consuming robots. However, the time measuring is not per robot.
+* Added the new -DRANDOMSEED option (set to a random seed value), which enables the new repeatable and deterministic random generator. The benefit of using this option to make it easier to test and debug your robots, as your robots will appear in the exactly same positions, when you rerun a battle.
+* The -DPARALLEL and -DRANDOMSEED option has no effect when running RoboRumble, MeleeRumble, and TeamRumble.
+
+== New Random Generator ==
+* Added a new deterministic and repeatable random generator is used by the game and overrides the random generator used throughout the whole virtual Java machine, so methods like e.g. Math.random() will be using the exactly the same deterministic random generator forced by Robocode.
+* The new random generator will only be deterministic, if the -DRANDOMSEED option is enabled, i.e. when -DRANDOMSEED=12345678 (or another value). Otherwise the the battles will run truly randomized.
+
+== System logging ==
+* The system log output has now been split, so that logged errors are sent to System.err and logged messages are sent to System.out. This makes it possible to filter out messages from errors when reading out the logs from Robocode.
+* The system log now also includes a full stack trace when errors are logged, making it easier to determine where an error has occurred.
+
+== [2022774] Various usability issues ==
+* Added "Enable all" and "Disable all" button in the View Options of the Preferences.
+* When the TPS slider is set to 0, the game is paused, and the Pause/Resume button set to paused mode. Now, if the Pause/Resume button is pressed, the game will resume at 1 TPS, and the TPS slider will now move to 1. Previously it will set to 0.
+* In the New Battle window, the focus is now kept in the list of available robots when one of the two 'Add' buttons has been pressed. Previously the focus was lost, and you had to reselect robots in the list of available robots in order to add more robots.
+* It is now possible to add multiple robots using only the arrow keys with e.g. the Alt+A in order to add more robots to the battle.
+* Improved some menus a bit with better names, and did some rearrangements of the order of the menu items here and there.
+
+Version 1.6.0
+(01-May-2008)
+---------------
+= Bugfixes =
+* The CPU constant was not calculated the first time Robocode was started up.
+* Removed ^M characters from the buildJikes.sh file so that the Jikes compiler can be built under Unix, Linux and Mac OS X.
+* Fixed a security issue, where robot was able to access the internals of the Robocode game thru the AWT Event Queue.
+* Robots that try to access the AWT Event Queue will be disabled
+
+= Major changes =
+* A new package named robocode.robotinterfaces has been introduced, which contains pure Java robot interfaces for basic, advanced, interactive, junior and team robots. See the Javadocs (HTML) documentation for more details about these new interfaces.
+* The main purpose robot interfaces is to make it possible for developers to create robots with other programming languages that requires interfaces instead of classes. However, the provided robot interfaces obeys the rules within Robocode. But it is possible to create new robot types with other methods names etc. from the robot interfaces, and it is also possible to create ordinary robots based directly on the robot interfaces.
+* See the new 'sampleex' directory for some examples of how to use these new interfaces in Java.
+* The introduction of the new robot interfaces required a great deal of changes and cleanup of the internal structures of Robocode, but for the better.
+* A new command line option has been made for Robocode named EXPERIMENTAL, which must be set to true in order to allow the robots to access the internal robot peer with the robot interfaces for performing robot operations. If this flag is not set, you'll get a SecurityException in your robot if it is inherited from a robot interface. This option must be set in the robocode.bat/robocode.sh like -DEXPERIMENTAL=true Note that this experimental option might be removed in the future so that robots are always allowed to access the robot peer from the new robot interfaces.
+* Most work with the robot interfaces were performed by Pavel Savara that has joined the development of Robocode, and which has done a tremendous job with the new robot interfaces.
+
+= Minor changes =
+* Added a "Make all bullets white" option to the Rendering Options.
+* When this option is enabled, all bullets on the battle field will be painted in white. Use this options when you need to see all bullets on the battle field, i.e. when bullet colors are almost invisible.
+* Lots of the Javadoc (HTML) documentation for the Robocode APIs were updated.
+
+Version 1.5.4
+(15-Feb-2008)
+---------------
+= Bugfix =
+* The CPU constant was way too little compared to version 1.4.9
+* This is a critical bug when Robocode is used for competitions
+* Now the CPU calculation has been improved, where a heavy math benchmark has been adopted from Robert D. Maupin (AKA Chase-san)
+* The method for determining if a robot has exceeded it's CPU time limit has been improved to use nano second precision, to get rid of an issue with millisecond granularity. This method was created by Julian Kent (AKA Skilgannon)
+
+Version 1.5.3
+(30-Jan-2008)
+---------------
+= Bugfixes =
+* Some of the mnemonics on the menus on the Help menu did not work correctly
+* NullPointerException occurred when clicking a robot button on the right side of the battle view, when no battle was running
+
+= Changes =
+* All functions key shortcuts have been replaced to comply with OSes where the function keys (F1 - F12) are not available or have a specific purpose, and thus should not be overridden
+* The F5 shortcut key for refreshing the list of available robots in the New Battle, Robot Packager, Robot Extractor, and Team Creator window has been changed to 'modifier key' + R, i.e. Ctrl+R on Windows and Linux, and Command+R for Mac OS
+* The F6 shortcut key for 'Compile' has been changed to 'modifier key' + B, i.e. Ctrl+B on Windows and Linux, and Command+B for Mac OS
+* The F3 shortcut key for 'Find Next' has been changed to 'modifier key' + G, i.e. Ctrl+G on Windows and Linux, and Command+G for Mac OS
+* When a robot or team is being packaged an UUID is now put in the .properties and/or .team files in the newly generated robot or team archive file (.jar file)
+* The UUID is a unique identifier for the robot or team, which is generated every time a robot or team package is being created or overwritten
+* This feature has been made in advantage to support coming features provided in Robocode Repository, which is currently being updated
+
+Version 1.5.2
+(08-Jan-2008)
+---------------
+= Bugfix =
+* On some systems Robocode would not start up when trying to run robocode.bat or robocode.sh
+
+Version 1.5.1
+(12-Dec-2007)
+---------------
+= Bugfix =
+* Fixed security flaw with the Event Dispatch Thread, where robots could use the SwingUtilities.invokeLater() for running any code they should like to
+* Thanks goes to John Cleland who reported  this security flaw and provided some very good examples of robot that could do some nasty cheats
+
+Version 1.5
+(05-Dec-2007)
+---------------
+= Changes =
+* Redundant HitRobotEvents are no longer occurring when Robocode is performing collision detection between two robots
+* Previously: If a collision between a stationary robot (i.e. not moving) and another robot that was moving, then two HitRobotEvents would first be sent to each robot based on the stationary robot even though no damage was done. Next, two HitRobotEvents would be sent to each robot based on the robot that was moving, which WAS causing damage
+* Now: HitRobotEvents will only occur when damage is done to each robot, and no HitRobotEvents will be ever be sent when no damage is done, i.e. when a stationary robot is "colliding" with another robot
+* The events in the robot event queue are now sorted in chronological order so that events that occurred before newer events gets processed first
+* Previously, the event queue was ordered based on the event priorities so that the events with the highest priorities were processed first. This could cause some problems with robots with skipped turns, as their event queue would potentially contain events from different time frames
+* Now it is perfectly safe for robots to assume that events occurring before other event are processed first
+* Events occurring in the same time frame is still sorted based on their priorities so that the events with higher priorities are processed before events with lower priorities
+* The priority of the DeathEvent was changed from the reserved priority 100 to -1 in order to allow robots to process all pending events before they die
+* Previously, robots were not able to process all events when it died as the DeathEvent was having the highest possible priority
+* Now when the DeathEvent has the lowest priority, this will be the last event left on the robot's event queue before it dies. That is, all events in the event queue have already been processed when reaching the DeathEvent
+* The CPU constant is now measured in nanoseconds rather than milliseconds
+* Using the new features introduced of Java 5.0 provides more precise timing and also offer better granularity of timings
+* The "Number of Rounds" value on the New Battle Dialog is now saved and restored when the game is restarted, i.e. Robocode remember that value you used last time
+* Improved the output of the command line usage of Robocode when called from the command line with the -? or -help option
+
+= New features =
+* The Robot class has got a new onStatus(StatusEvent e) method which is automatically called for each turn of a battle, and which contain a complete snapshot of the current robot state at that specific time/turn
+* This new method makes it possible to map a specific robot field to a specific time
+* Added the Robot Cache Cleaner tool created by Aaron Rotenberg (AKA AaronR)
+* Used for cleaning the cache files for the robots, which is very useful with the RoboRumble client, where most problems can be solved by cleaning the robot cache files
+* This tool is activation by selecting "Clean Robot Cache" in the Options menu or by running the tool from a command line (standing in the robocode home directory):
+ java -cp ./libs/robocode.jar;./libs/cachecleaner.jar ar.robocode.cachecleaner.CacheCleaner
+
+Version 1.4.9
+(07-Nov-2007)
+---------------
+= Bugfixes =
+* RoboRumble participants excluded with the EXCLUDE filter were also removed from the ratings, which is not the intension.
+* In addition, if trailing white-spaces occurred with the comma-separated list for the EXCLUDE filter, the filter did not filter out participants correctly
+* With the release of 1.4.8 this bug was claimed to be fixed, but unfortunately the bugfix was missing in the build of the 1.4.8 release
+* Corrected bug seen with the JuniorRobot, when first calling turnAheadLeft(100,90) and then turnRight(90) right after this call, where the robot turn quickly to the left, but slowly to the right
+* The calculation of the possible frame rate (FPS) was calculated incorrectly causing Robocode to run with lower FPS when rendering battles on the GUI compared to was is really possible to do with the available hardware
+* With this bugfix, Robocode will render the battles even faster than before in most cases
+
+= Changes =
+* When a new CPU constant is being calculated it will now take the time granularity (OS dependent) into account. Previously, if the CPU constant was less than the time millis granularity, then skipped turns did occur on robots when the CPU constant <= Time millis granularity
+* It is strongly encouraged that you recalculate your CPU constant when running this Robocode version the first time by selecting "Recalculate CPU constant" from the Options menu
+
+Version 1.4.8
+(25-Oct-2007)
+---------------
+= Bugfixes =
+* When debugging robots or the Robocode game itself within Eclipse on Windows, the Java VM was crashing with an "Access Violation"
+* With Robocode 1.4.7 a minor bug was introduced so that the robot console printed out "Wait interrupted" when a round was completed
+
+Version 1.4.7
+(09-Oct-2007)
+---------------
+= Bugfixes =
+* Some robots did not receive any score even though they won the battle due to Robocode did not always detect correctly that the robot's thread(s) had been properly terminated.
+* Thanks goes to Eric Simonton, David Alves, and "AaronR" for help solving this issue!
+* Teams located in the .robotcache dir were still put into the robot.database file. Thus, these teams located in the .robotcache dir were shown in the New Battle dialog
+* When stopping a battle while recording was enabled and then replaying the recorded battle, Robocode would show the last rounds of the battle even though no recording occurred for these rounds, i.e. "ghost" rounds
+* When using the -battle option Robocode would run at full speed, i.e. the TPS set to maximum, even though the GUI was enabled with a predefined TPS
+* Now, the TPS is only set to maximum when the -nodisplay option is used
+* Robocode was wasting time on trying to wake up robots that was dead
+* Robocode was blocked for the amount of milliseconds specified by the CPU constant when a robot was killed in a battle, as Robocode was waiting for the dead robot to wake up for exactly this amount of time
+
+= Robocode changes =
+* The Stop button is now only enabled when a battle is running and disabled afterwards
+* When starting Robocode, and the saved window locations (x and y coordinate) of a window does not fit into any of the available screens/displays (e.g. virtual desktop), when Robocode will center that window into the current screen displayed
+
+= RoboRumble changes =
+* The configurations files roborumble.txt, meleerumble.txt, and teamrumble.txt have been improved:
+* All properties are now documented and have been grouped more logically.
+* The BATTLESPERBOT property has been raised to 2000 for the RoboRumble and MeleeRumble
+* An exclude filter has now been added, which makes it possible to exclude participants that causes trouble somehow
+* The exclude filter is controlled using the new EXCLUDE property, which takes a comma-separate list of participants where the wildcards * and ? can be used
+* Excluded participants are not added to the participants file, and will not be downloaded or take part in battles
+
+Version 1.4.6
+(25-Sep-2007)
+---------------
+= Bugfixes =
+* The coordinates of a Bullet from a bullet event like HitByBulletEvent() was not correct as the coordinates of the bullets would follow the bullet explosion on the robot it has hit.
+* Now the coordinates of the Bullet will not change when it hits a robot or another bullet, even though the coordinates of the bullet explosion will change internally, but only for painting the explosion
+* This means that the coordinates of a bullet received from a bullet event will actually by on the real bullet line
+* The initial explosion painting on a robot has also changed so it shows exactly where the bullet has hit the robot, or more precisely the bounding box of the robot, which does not rotate with the robot rotation
+* When Robocode cleaned up the robot database a NullPointerException could occur if a file was missing which the database file referred to
+* The Restart button was enabled when do battles had been started previously
+* The areas of the battle field was repainted with the black background with the Robocode logo when the game was paused, and the battle window needed to be repainted
+* When the Robocode window was minimized the actual TPS and FPS were not shown
+* When installing new versions of Robocode on top of an existing Robocode installation, the About window did not have the right height
+
+= Changes =
+* The color of each bullet is now independent on the current color set with the setBulletColor() method. Previously, all bullets were instantly changing their colors when setBulletColor() was called. Now, the color of the bullet will stick to the bullet color set when the bullet was fired
+* Improved the "Check for new version", so that is able to differ between release type as alpha, beta, and final release types
+
+Version 1.4.5
+The "Fair Play" release
+(17-Sep-2007)
+---------------
+= Bugfixes =
+* Unfair play. Two robots with the same code (but different names) would get different scores instead of a 50-50 split
+* Robots listed before other robots in a battle would gain a minor benefit compared to the other robots, especially if they killed each other at the same time. Then the robot listed first would get a "half turn" advantage over the other robot. Now, the ordering does not matter anymore, as when ever the robots are checked one at a time in sequence, then they will be checked in random order
+* ConcurrentModificationException could still occur when called one of the getXXXEvent methods with an AdvancedRobot. Now all getXXXEvent methods like e.g. getAllEvents() are all synchronized directly with the internal event queue of the robot before reading out the events
+* Test Condition flag of a robot was not reset between rounds.
+* If the robot thread was disabled while testing a condition for a custom event all following rounds will trigger a "robocode.exception.RobotException: You cannot take action inside Condition.test(). You should handleonCustomEvent instead."
+* Again, the title of Robocode was incorrectly showing round N+1 of N when a battle was ended
+* Memory leaks occurring during a round due to missing cleanup of bullets have been removed. Note that ALL bullets were actually cleaned up, when ending the battle (containing one or several rounds)
+* One good side-effect of this bugfix is that the game is speeded, especially when running in minimized mode, as the game does not have to perform unnecessary calculations on bullets that is not visible on the battle field anymore
+
+= Changes =
+* The sample robot named "sample.Interactive" has been changed so it continues moving forward or back when the UP or DOWN arrow key is being pressed down.
+* Previously, the robot would only move 50 pixel when pressing down the UP or down arrow key, which was not intuitive compared to the behaviour with traditional first person shooter games. Thus, this looked like a bug
+
+Version 1.4.4
+(09-Sep-2007)
+---------------
+= Bugfixes =
+* With version 1.4.3 a bug was introduced so that battleAborted() was called in the robocode.control.RobocodeListener when the battle was not aborted, i.e. when a battle completes successfully
+* This bug caused Robocode clients as e.g. RoboRumble to hang!
+* Removed Windows end-of-line characters from the .sh files for RoboRumble
+
+= Change =
+* Robocode now throws NullPointerException if the condition parameter has been set to null when calling addCustomEvent() or removeCustomEvent() on an AdvancedRobot
+
+Version 1.4.3
+(07-Sep-2007)
+---------------
+= Bugfixes =
+* Major bugfixes was done by Nathaniel Troutman to get rid of large memory leaks, especially when creating and destroying robocode.control.RobocodeEngine instances many times
+* Most of the memory leaks were caused by circular references between internal classes/objects in Robocode. Now, these circular references are cleaned up
+* The configuration files for RoboRumble was completely missing under the /roborumble folder, i.e. the meleerumble.txt, roborumble.txt, and teamrumble.txt
+* Fixed inconsistent behavior of the RobocodeEngine.setVisible().
+* When invoking the RobocodeEngine to directly run a battle(s) and calling RobocodeEngine.setVisible(true), and then later call RobocodeEngine.setVisible(false) the results dialog would still show up at the end of a battle
+* This fix was done by Nathaniel Troutman
+* Did another fix where a dummy AWT (GUI) component was created even though the GUI was disabled causing problems when trying to run e.g. RoboRumble remotely without the GUI enabled
+* Sometimes the "New Batle" window would show robot classes that reside in the .robotcache folder under the /robots folder. This occured when the robot database was (re)builded, e.g. if the robot.database file was missing
+* When running battles including the MyFirstJunior and the pressing the mouse button outside of the battle field a ClassCastException would occur
+* When double-clicking the Restart button for the battle window the UI could lock up completely trying to play all battles, and it would not be possible to stop the battle
+
+Version 1.4.2
+(26-Aug-2007)
+---------------
+= Bugfixes =
+* RoboRumble was invoking AWT (GUI) stuff when running, which caused problems on systems without support graphical display or running RoboRumble remotely behind a firewall
+* When running robocode.control.RobocodeEngine it caused memory leaks each time a new instance of the RobocodeEngine was created, even though the object was completely destroyed
+* The onPaint() method was invoked just before the robot got the chance of updating it's internal world model. Now the battle view is updated as the first thing right after the robots have updated their internal model
+* One ConcurrentModificationException bug did still occur with the internal EventQueue of a robot
+* The Robocode engine was halted with spurious exceptions when an exception occurred inside a onPaint() method in a robot, i.e. when the robot itself causes an exception inside onPaint(). Now, whenever an exception occurs inside the onPaint() method of a robot, the exception is now being catched by Robocode and printed out in the robot console
+* Due to the bug found above regarding exceptions occurring inside the onPaint() method of a robot, exception handlers have now been added to all onKeyXXX and onMouseXXX events, where the exceptions are now printed out into the robot console
+
+Version 1.4.1
+(19-Aug-2007)
+---------------
+= Bugfix =
+* A couple of ConcurrentModificationException bugs have been introduced with version 1.4. ConcurrentModificationException in robots could occur on some systems, which in worst case could cause a robot to loose battles or in best case give a robot a lesser score
+* Thank goes to Helge Rhodin (AKA Krabb) for help with solving the bug!
+
+Version 1.4
+(14-Aug-2007)
+The "Junior Robot" release
+---------------
+= Bugfixes =
+* Static fields on robots were not cleaned up anymore after each battle has ended
+* When printing to 'out' in onScannedRobot() event before a scan() call, the the logging to out would stop with an system error that to much is printed out
+
+= Changes =
+
+== Added JuniorRobot ==
+* This class is simpler to use than the Robot class and has a simplified model, in purpose of teaching programming skills to inexperienced in programming students
+* This new robot type has been designed by Nutch Poovarawan / Cubic Creative team
+* Added sample.MyFirstJuniorRobot
+* This robot is very similar to MyFirstRobot, but tracks it's scanned enemy better
+
+== GUI: Changed menu shortcut key ==
+* Robocode forced the use of the Ctrl key to be used as menu shortcut key. Now Robocode ask the Java VM what menu shortcut key to use
+* This change means that Mac OS X users should now use the Command key instead of the control key
+* Thanks goes to Nutch Poovarawan for the tip of how to do this! :-)
+
+== Improved battleview a bit ==
+* A red border is now painted around the battlefield, when the battleview's height and/or width is larger than the battlefield
+* Explosions are painted outside the battlefield, when the battleview is larger than the battlefield
+* The text for the Robot names and scores are now "clipped" to the width and height of the battleview instead of the battlefield
+
+== Added "Recalculate CPU constant" to the Options menu ==
+* This makes it possible to force recalculation of the CPU constant
+
+== RoboRumble changes ==
+* Redundant RoboRumble config files are now removed from the /config folder
+* Changed UPLOAD=NOT to UPLOAD=YES as default, i.e. the results are now automatically uploaded to the RoboRumble server
+
+Version 1.3.5
+(04-Jul-2007)
+The "Fast renderings" release
+---------------
+= Bugfixes =
+* The title was displaying "Playing round N+1 of N" when the battle has ended
+
+= Changes =
+
+== Faster rendering ==
+* The battle rendering is now 30-50% faster due to image buffering (uses memory)
+* A new "Buffer images" option under the Rendering Options can be enabled/disabled on the fly while playing a battle. By default, "Buffer images" is enabled which makes the rendering faster, but which also uses additional memory
+* Due to the faster renderings, explosion debris is now enabled by default
+
+== Key events ==
+* Key events are now received even though the battle view does not have the focus
+
+== Controlling Robocode ==
+* The container classes in the robocode.control package are now Serializable, which makes it easy to load and store, battle specifications, results etc., but also to send these over the network
+
+Version 1.3.4
+(27-Jun-2007)
+The "Interactive" release
+---------------
+= Bugfixes =
+* NullPointerException occurred when trying to open the Sound Options page from the Preferences when no sound card (or actually audio mixer) is present in the system
+
+= New features =
+* The Robot class has now been extended with keyboard and mouse events: onKeyTyped, onKeyPressed, onKeyReleased, onMouseMoved, onMouseClicked, onMousePressed, onMouseReleased, onMouseEntered, onMouseExited, onMouseDragged, onMouseWheelMoved()
+* These new features adds a new dimension to the game, i.e. you could make robots that must be controlled entirely manual, semi-automized robots, or press various key for changing between various robot strategies, e.g. when debugging
+* Thus, it is now possible to create robots where multiple human players battle against each other, or compete against existing legacy robots
+
+= New sample robot =
+* A new sample robot named Interactive has been added to demonstrate how to control a robot using keyboard and mouse events only
+* This robot is controlled by the arrow keys and/or the mouse wheel, and let the gun point towards the current coordinate of the mouse pointer used for aiming. Mouse buttons are used for firing bullets with various fire power
+
+= Minor changes =
+* The background Robocode logo has been changed into green and the Robocode slogan "Build the best, destroy the rest" was added
+
+Version 1.3.3
+(22-Jun-2007)
+---------------
+= Bugfixes =
+* Wrong colors when undoing and redoing multiline comment in the Robot Editor
+* When a battle was stopped a new battle could start before the previous battle was closed down
+* When restarting a battle while it was paused caused strange behaviour with new battles, and the "Next Turn" button stopped working
+* In some situations the Rankings Panel did not show the results for all robots
+* This could be seen if first playing a battle with only 2 robots, and then start a new battle with more robots. In this case, only the rankings for the top 2 robots were shown
+
+= Changes =
+* The Rankings Panel and Results Dialog are now automatically packed to fit the table containing the rankings/results
+
+Version 1.3.2
+(09-Jun-2007)
+---------------
+= Bugfixes =
+* The sample.SittingDuck would not start when no GUI is enabled
+* The Look and Feel is not set if the GUI is disabled
+* The robocode.sh ignored command line arguments (e.g. under Linux and Mac)
+* When setting the -result parameter from the command line the results file was empty
+
+= Changes =
+* When specifying the -battle parameter the .battle extension and battle directory can be omitted. Hence you can write "-battle sample" instead of "-battle battles/sample.battle"
+* If a specified battle file does not exist Robocode will now exit with an error
+* If you specify the -results parameter the last results will now always be printed out, i.e. with and without the GUI enabled. Otherwise, if the GUI is not enabled (by setting the -nodisplay parameter) then the last results will be printed out to system out
+
+Version 1.3.1
+(30-May-2007)
+---------------
+= Bugfixes =
+* When loading a battle, the robots specified in the battle file were not selected on the battle dialog
+* When the intro battle has finished the battle settings are now reset to the default battle settings. This fixes the issue were the fixed robot starting positions are still used in new battles and where the "Number of Rounds" was set to 1 instead of 10
+* The output in the robot console windows were written out in bulks instead of immediately
+* Bugs fixed in RoboRumble which could cause a java.lang.IllegalThreadStateException
+
+= Changes =
+* Robocode will now print out an error message and just proceed if problems arise with trying to set the Look and Feel (LAF) to the system LAF.
+* When stopping or restarting a battle, the battle will now stop immediately instead of continuing for a while showing robot explosions when the robots are being terminated due to the stop
+* Added confirm dialog when trying to reset the compiler preferences from the Compiler->Options->Reset Compiler in the Robocode Editor in order to prevent the compiler preferences to be reset by accident
+= New features =
+* Added link to Java 5.0 Documentation in the Help menu
+
+Version 1.3
+(17-May-2007) Now featuring the RoboRumble@Home client
+---------------
+= Bugfixes =
+* When using robocode.control.RobocodeEngine it was not possible to play team battles. Instead an ArrayOutOfBoundsException occurred
+* robocode.control.RobotResults.getRamDamage() incorrectly returned a double instead of an integer. This bug caused problems with running Robocode on RoboLeague
+* The "Enable replay recording" got set if it was not set after running Robocode without the robocode.properties file the first time
+* No sounds were played (when enabled) when Robocode was launched the second time
+* Fixed NullPointerException occurred when a robot is forced to stop
+* NullPointerException could occur when using robocode.control.RobocodeEngine and the GUI was not enabled
+* The text field for the filename in the robot packager was way too high
+* Lots of synchronizations issues and potential ConcurrentModificationExceptions have been fixed
+* In RoboRumble, the codesize of some robots were incorrectly calculated to be 0 bytes, and hence these robots was not able to participate in RoboRumble battles
+* This was due to the codesize tool, which could not analyze .jar files inside .jars
+* The Event Dispatch Thread was denied access by the RobocodeSecurityManager
+
+= Changes =
+
+== RoboRumble@Home is now built-in ==
+* RoboRumble@Home client, originally developed by Albert Prez, is now built-in
+* RoboRumble@Home is the ultimate collaborative effort to have a live, up-to-date ranking of bots. It uses the power of available robocoder's computers to distribute the effort of running battles and building the rankings
+* For more information about RoboRumble@Home you should read: http://robowiki.net/cgi-bin/robowiki?RoboRumble
+* This is an updated version of the original one that can run with the current version of Robocode and which has been ported to Java 5
+* Configuration files has been updated, and are available in the 'roborumble' folder
+* Issues with downloading robots from the Robocode Repository site has been fixed
+* Special thanks goes to Gert Heijenk (AKA GrubbmGait) who did a tremendous job with lots of alpha testing regarding the new RoboRumble@Home built into Robocode! :-D
+
+== Codesize ==
+* The codesize tool by Christian D. Schnell has been added
+* The codesize tool has been added to support the built-in RoboRumble@Home, and a new feature for getting the codesize and robot codesize class (MiniBot, MegaBot etc.) when a robot is being packaged
+* The codesize tool has been taken over by Flemming N. Larsen (agreed with Christian) and updated to version 1.1, which can handle files > 2KB, and which can analyse .jar files inside .jar files
+
+== Start positions ==
+* Added feature that allows specifying the initial start positions of the robots on the battlefield
+* By specifying positions by setting robocode.battle.initialPositions in a .battle using this format (x1,y1,heading1),(x2,y2,heading2),(?,?,?) you can specify the initial location and heading for each robot specified with robocode.battle.selectedRobots
+* One example is: (50,50,90),(100,100,?),? This means that the 1st robot starts at (50,50) with a heading of 90 degrees, the 2nd robot starts at (100,100,?) with a random heading, the 3rd (and last) robot starts at a random position with a random heading
+* See the battle/intro.battle for an example of how to use this option
+
+== Robot and Control API ==
+* Added a new method called getNameAndVersion() to the robocode.control.RobotSpecification. This method was added to better support RoboRumble and ranking programs
+* Changed the TeamRobot.broadcastMessage() so it does not throw an IOException when the = robot is not in a team
+* Changed back the TeamRobot.getTeammates() to return null if no teammates are available. This rollback was done in order to keep compatibility with old legacy robots
+
+== Improved file structure ==
+* The file structure of Robocode has been slightly improved
+* All .jar files including robocode.jar are now located in the libs folder
+* The robot.database and .robotcache files has been moved to the robots folder
+* All RoboRumble related files are located in the roborumble folder
+
+Version 1.2.6A
+(11-Mar-2007)
+---------------
+= Bugfixes =
+* A NullPointerException occured if the battle view was not initialized
+* This bug made it impossible to control Robocode via the robocode.control package when attempting to show the battle window
+
+= Changes =
+* The Ranking Panel and Battle Results are now windows instead of dialoges
+* This means that the Ranking Panel and Battle Results will still be visible when the game is running in minimized mode
+
+Version 1.2.6
+(06-Mar-2007)
+---------------
+= Bugfixes =
+* With some robots, a java.lang.NoClassDefFoundError occured when Robocode tried to cleanup the static fields occupied by the robot when the battles are over
+* AdvancedRobot.setEventPriority() did not support MessageEvent
+* The rendering options was not set correctly when loading these between battle sessions
+* When using the RobocodeEngine.setVisible(true) the Robocode window was shown with the wrong size and without the native Look & Feel
+
+= Changes =
+
+== getMessageEvents() ==
+* Added missing getMessageEvents() on the TeamRobot
+
+== Default event priorities ==
+* The changes were made as some events "shared" the same default priority, making it hard to tell which event would occur before the other
+* BulletHitBulletEvent priority was changed from 50 to 55. Previously, both BulletHitEvents and BulletHitBulletEvents used priority = 50
+* MessageEvent priority was changed from 80 to 75. Previously, both CustomEvents and MessageEvents used priority = 80
+* The Ranking Panel has been enhanced
+
+== Ranking Panel ==
+* Now the Ranking Panel contains the same columns as the Battle Results
+* Both the current scores and total scores are shown together where it makes sense
+* The column names of both the Ranking Panel and Battle Results have been improved
+
+== New Pause/Debug button ==
+* A Pause/Debug button has been added to the Robot Console window
+* This is handy if you want to pause the game when only your robot's console window is open when the game is minimized
+
+== Battle window ==
+* The Pause/Debug button on the Battle Window has been changed into a toggle button
+* The Next Turn button is now always visible, but not alvays enabled
+
+== Documentation ==
+* The documentation of the Robocode API (Javadoc) has been improved a lot
+
+== Installer ==
+* The Installer is now checking is the user is running Java 5.0 or newer
+* If the Java version is older than 5.0, then an error message will display telling the user to install at least JRE 5.0 or JDK 5.0, and the installation is terminated
+
+== robocode.sh ==
+* robocode.sh has been updated
+* Armin Voetter has contributed with an improved version of robocode.sh so that the script resolves the path to Robocode by itself
+
+Version 1.2.5A
+(19-Feb-2007)
+---------------
+= Bugfix: On some systems Robocode could not start up caused by a NullPointerException = in the internal sound manager/cache
+
+Version 1.2.5
+(18-Feb-2007)
+---------------
+= Bugfixes =
+* When two bullets collided, the one of the bullets was not destroyed, but continued
+* TeamRobot.getTeammates() returned null instead of an empty array when no teammated are available
+* Memory leak could occur on robots using large objects on static fields
+* Robocode now clean all static object fields that are not final after each battle, but not between rounds. That is, the static fields are now garbage collected
+* 3 ConcurrentModificationException issues were removed
+
+== Changes ==
+
+= Sound effects ==
+* The sound effects in Robocode can now be changed
+* This is done by specifying the file for each sound effect using the file.sfx.xxx keys in the robocode.properties file, e.g. the file.sfx.gunshot for setting the sound effect for gunshot
+* The supported sound formats can be found here: http://java.sun.com/j2se/1.5.0/docs/guide/sound/
+
+== Music support ==
+* Robocode now supports music
+* By specifying the file for each music file using the file.music.theme, file.music.background, and file.music.endOfBattle in the robocode.properties file for setting the startup theme music, background music during battles, and "end of battle" music when the battle is over
+* The supported music formats can be found here: http://java.sun.com/j2se/1.5.0/docs/guide/sound/
+
+== Misc. ==
+* The column names in the Battle Results window have been improved
+* Keys in the robocode.properties file (the configuration file) are now sorted
+* Previously the keys were put in random order each time the property file was saved
+
+Version 1.2.4
+(25-Jan-2007)
+---------------
+= Bugfixes =
+* ConcurrentModificationException sometimes occured when robots were imported, e.g. when Robocode was starting up
+* Added setting and getting the priority of BulletHitBulletEvent, which was missing completely in Robocode?!
+* Removed IndexOutOfBoundsException when replaying battles
+* Explosion debrise was shown in the lower left corner (0, 0) when starting battles and battle ground is set to visible
+* Robocode could hang when checking for a new version via Internet when no Internet connection was available. Now a 5 second timeout has been added to prevent Robocode from hanging
+
+= Changes =
+
+== Robots die faster ==
+* Robocode stops painting the battlefield and playing sounds when a battle is ended after 35 turns.
+* However, the robots still have 120 turns until they are really killed like Robocode is used to, but the battle continues like if it was running in minimized mode (fast)
+
+== Options ==
+* The common options for enabling replay recording has been changed to disabled per default. When running lots of battles in a row with replay recording enabled, Robocode runs out of memory, which causes problems when running tournaments.
+* Added "View Explosion Debris" option in the View Options
+* Explosion debris is diabled per default as this feature can slow down the game with 25% - 50% when viewing battles
+
+== Javadocs ==
+* The robocode.util.Utils class providing angle normalizing methods
+* The whole robocode.control package used for controlling Robocode externally
+
+== Files ==
+* Fixed incosistency with .jar files located in the robot folder
+* Robot packages (.jar files) is now only extracted from the root of the robots folder
+* In previous Robocode versions when starting up Robocode without a robot.database file and .robotcache directory, Robocode would extract Robot packages from the root of the robot folder, and also the sub folders. When running Robocode the first time without these files, Robots from the sub folders were shown (if available), but not the following times when Robocode was started up.
+* This fix was done by Robert D. Maupin (AKA Chase-san)
+
+Version 1.2.3B
+(14-Jan-2007)
+---------------
+= Bugfixes =
+* Titus Chen made a fix for a NullPointerException that caused a replay to stop. This occured when "Pan" was enabled for the mixer in the Sound Options during a replay
+* When using robocode databases ("robot.database") created with version 1.2.3 and earlier version in version 1.2.3A, Robocode crashed in the startup with a ClassCastException
+
+Version 1.2.3A
+(12-Jan-2007)
+---------------
+= Bugfix =
+* Removed a ConcurrentModificationException that occured when processing robot events
+
+= Changes =
+* Robert D. Maupin (AKA Chase-san) replaced all old type Java containers like Vector Hashtable, Enumeration with the newer and faster types like ArrayList, HashMap, and set
+* This improves the performance a bit, especially when running in "minimized" mode
+
+Version 1.2.3
+(10-Jan-2007)
+---------------
+= Bugfixes =
+* Removed NullPointerException when trying to restart the initial intro battle
+* Titus Chen made a fix for the "robot color flickering" bug, when the max. amount of robot colors (i.e. 256) has been exceeded
+* Minor bugfix in the Extract Results dialog, where an empty line was following each line of text
+
+= Changes =
+
+== Added replay feature ==
+* A new "Replay" button has been added to the toolbar at the buttom of the battle screen. The replay feature makes it possible to replay a battle
+* In a comming version of Robocode, it will be possible to load and save replays
+* Added "Enable replay recording" option to the Common Options for enabling and disabling replay recording as replay recording eats memory. When the replay recording is disabled, the "Replay" button will not be available
+* Bugfix done by Titus Chen for the Beta version where robot scores were incorrect
+
+== Improved the security manager ==
+* Robots are not allowed to access any internal Robocode packages anymore, except for the robocode.util package in order to let legacy robots access the robocode.util.Utils class, e.g. for calling normalRelativeAngle() etc.
+
+== New hotkey ==
+* Hotkey added for exiting Robocode quickly. It is now possible to exit from Robocode by pressing Alt+F4 in the main window of Robocode. Note that the main window must be active
+
+Version 1.2.2
+(14-Dec-2006)
+---------------
+= Bugfixes =
+* Extra hit wall events were occuring. This has been corrected by Titus Chen
+* Teams were not always ranked correctly. This was corrected by Titus Chen
+* In addition, the ranking scores and final battle results have been made consistent.
+* The radar scan arc was not painted correctly if the radar was moving towards left
+* Minor bugfix: Sometimes ArrayIndexOutOfBoundsExceptions occured when adding and/or removing robots in the robots folder
+
+= Changes ==
+* Added TPS slider to the toolbar on the battle window so the TPS can be changed quickly
+* Bullet sizes has been improved
+* Very small bullets will always be visible, even on large 5000x5000 battle fields
+* Removed the "Allow robots to change colors repeatedly" from the View Options
+* This option did not have any affect as the current rendering engine always allows robots to change colors repeatedly
+
+Version 1.2.1A
+(26-Nov-2006)
+---------------
+= Bugfixes =
+* Hitting wall with an exact angle of 0, 90, 180 or 270 degrees caused a robot to disappear from the battlefield (could be seen with the sample robots Corner and Wall)
+* The check for wall collision did not work properly in some situations due to rounding problems with float vs double precision
+* These bugs were found and corrected by Titus Chen
+
+Version 1.2.1
+(24-Nov-2006)
+---------------
+= Bugfixes =
+* The turnGun(double) method returned before the gun rotation had returned
+* Teleportation when hitting wall and abs(sin(heading)) > 0.00001 or abs(cos(heading)) > 0.00001
+* HitRobotEvent.isMyFault() returned false despite the fact that the robot was moving toward the robot it collided with. This was the case when distanceRemaining == 0 even though this could occur on purpose if the move was set to distanceRemaining
+* Bad bullet collision detection algorithm. This has been replaced with Paul Bourke's 2D line intersection algorithm
+
+Version 1.2
+(05-Nov-2006)
+---------------
+= Bugfixes =
+* Fixed a lot of bugs that was introduced with the 1.1.4 versions and version 1.1.5
+* Fixed "Robot hangs" when running long battles, which was not really fixed in 1.1.5
+* Some text fields in e.g. the "New Battle" were not tall enough to show their content on for e.g. Gnome/Linux.
+
+= Changes =
+
+== Security option =
+* The NOSECURITY option has been extended so it is now possible to access 3rd party jar files
+* If you want to access other jars in your robot you'll have to disable the security in Robocode by setting the NOSECURITY option to true, i.e. adding -DNOSECURITY=true in robocode.bat (under Windows) or robocode.sh (under Mac and Linux)
+* You'll also have to add the jar file to your CLASSPATH or put it into the /lib/ext folder of your Java Runtime Environment (JRE), if adding it to the CLASSPATH does not work
+
+== Results can be saved in CSV file ==
+* Results can now be saved in the Comma Separated Value (CSV) File Format
+* A "Save" button has been added to the battle results dialog
+
+== Battle results / Ranking panel ==
+* The rank and name of the robots in the battle results dialog and in ranking panel has been splitted up into two independent colums, i.e "Rank" and "Name"
+* This was necessary in order to save the rank and name independently in a file
+
+== Misc. ==
+* The default browser under Windows is now used when browsing e.g. the Online Help
+* The browser.bat file has been removed as there is no need for it anymore
+
+Version 1.1.5
+(22-Oct-2006)
+---------------
+= Bugfixes =
+* Fixed BulletHitBulletEvents, where half of them refered to the wrong bullet
+* The the battle results were not always ranked correctly
+
+= Change =
+* The Ranking Panel total score is now updated on the fly
+
+Version 1.1.4B
+(19-Oct-2006)
+---------------
+= Bugfixes =
+* The getName() on ScannedRobotEvent returned null
+* Fixed "Robot hangs" pausing the game
+* Fixed the robocode.sh (Unix) file which contained a ^M (Microsoft DOS/Windows character), which caused this file to be unusable for starting Robocode
+
+= Change =
+* Updated the Common Public License to the original version
+
+Version 1.1.4A
+(15-Oct-2006)
+---------------
+= Bugfixes =
+* The sounds were cut off after first round
+* The Ranking Panel position and size was not saved in the window.properties file
+* ConcurrentModificationException fixed in the robot event queue
+* Periodic NullPointerException removed from battle view
+
+Version 1.1.4
+(14-Oct-2006)
+---------------
+= Bugfixes =
+* The BattleView was not updated on the primary monitor display on a dual monitor system
+* Sounds: When enabling sounds on-the-fly when it was originally disabled, Robocode crashed/halted due to a NullPointerException
+* Runtime exception (NullPointerException) when opening a battle the first time when a new version of Robocode the first time
+* Editor: When inserting text by copy'n'paste or search'n'replace into the Editor, extra tabs were sometimes added
+
+= Changes =
+
+== Ranking Panel ==
+* Ranking Panel added to the Options menu
+* The contributor of this feature is Luis Crespo (email: lcrespom at gmail.com)
+* This panel shows the current robot rankings during battles
+
+== Single-step debugging ==
+* The contributor of this feature is Luis Crespo (email: lcrespom at gmail.com)
+* The "Pause" button has been extended into "Pause/Debug", and a "Next Turn" button is available to perform one turn at a time, which is vital for single-step debugging
+* Rules class added containing helper methods and constants for Robocode rules
+
+== New options ==
+* Common Options has been added
+* Currently contains "Show results when battle(s) ends", which enable/disable showing the results dialog when the battle(s) ends
+* A lot of internal optimizations of Robocode has been made to speed up the game
+* Robocode icons has been updated
+
+Version 1.1.3
+(20-Sep-2006)
+The "Java 5 and Sound" release
+---------------
+= Bugfixes =
+* Wrong 1st place scores for robots, which got 1 point for winning and also 1 point for the death of an enemy robot, and hence got 2 points instead of just 1 point for the 1st place
+
+= Changes =
+
+== Moved to Java 5.0 ==
+* The minimum requirement for Robocode is now Java 5 (1.5.0)
+* You must have at least a JRE 5.0 (1.5.0) or JDK 5.0.
+* Robocode has also been tested with the upcomming Java 6 (1.6.0) where it seems to run just fine
+
+== Sounds added ==
+* Sounds have been added to Robocode along with Sound Options
+* The contributor of the Sound engine is Luis Crespo (email: lcrespom at gmail.com)
+* You are able to change between available mixers (on your system)
+* Panning is supported, so that explosions in e.g. the left side of the screen is louder in the left speaker
+* Volume is supported, so that e.g. a bullet with more power makes more noise
+* Note: Some mixers performs better, but might not support volume and/or panning
+* A new command line option, -nosound, has been added in order to turn off sound support
+* This feature should prove useful on systems without sound support
+
+== Robocode versions ==
+* Improved the notification about new available Robocode versions
+* Now Robocode will only give a notification about a new available version if the version number is greater than the version retrieved from the robocode.jar file
+* The check interval has been changed from 10 days into 5 days
+
+== New setColor() methods ==
+* The setColors(bodyColor, gunColor, radarColor) has been reintroduced
+* The setColors(bodyColor, gunColor, radarColor, bulletColor, scanColor) has been added
+* The setAllColor(color) has been added
+
+== Misc. ==
+* The Robocode logo on the splash screen and battle view is now rendered using Java2D
+* The layout of the Developer Options was improved a bit
+
+Version 1.1.2
+(20-Aug-2006)
+The "Robocode is now TPS centric instead of FPS centric" release
+---------------
+= Bugfixes =
+* The buildJikes.sh contained the ^M (DOS return-carrige characters), which do not belong in a Unix/Linux file  ;-)
+* The radar color was sometimes painted with too much lumination (white)
+
+= Changes ==
+
+== TPS centric instead of FPS centric ==
+* Robocode is no longer FPS (Frames Per Second) centric, meaning that 1 turn (time unit) = 1 frame
+* Robocode is now TPS (Turns Per Second) centric, meaning that 1 turn is not necessarily equal to 1 frame anymore. You specify how many turns you want to compute every second (desired TPS), and Robocode will render as many frames as possible depending on the TPS. If the TPS is higher than the FPS, some turns are not rendered. However, this does not mean that turns are skipped
+* The higher TPS, the lower the FPS will get
+* The better graphics hardware acceleration the higher TPS and FPS
+* Replaced the -fps (Frames Per Second) command line option with the -tps (Turns Per Second)
+* Now there is an option to display both the TPS and FPS in the titlebar in the View Options
+
+== Rendering options ==
+* Added Rendering Options to the Preferences
+* It now possible to change the settings for Antialiasing, Text Antialiasing, Rendering Method, and number of rendering buffers
+
+== Explosion rendering ==
+* Explosions are no longer pre-scaled in 6 fixed sizes, but instead scaled real-time using Java2D
+* The explosion sizes are now more precise depending on bullet damage, and the memory usage for the explosions has been brought down by not using pre-scaled explosion images
+* This fixed the painting of explosions on the iMac, where explosions were painted as filled circles with version 1.1 and 1.1.1
+* Bullets are now painted as filled energy balls with a size that depends on the bullet energy
+* The size (circle area) is calculated so that:
+* A bullet with power = 0.1 (minimum power) uses 1 pixel
+* A bullet with power = 3 (maximum power) uses 30 pixels
+* In addition, explosions when a bullet hits a robot or another bullet are also depending on the bullet energy
+
+== New option ==
+* Added the option "Visible Explosions" in the View Options to the Preferences
+* This option makes it possible to enable and disable the painting of explosions
+
+== setColor methods ==
+* The setColors() method is now deprecated
+* Replaced by setBodyColor(), setRadarColor(), and setScanColor()
+* Added setBulletColor() for changing the bullet color, and setScanColor() for changing the scan color (used for drawing scan arcs)
+
+== Improved sample robots ==
+* All sample robots has been updated
+* Deprecated methods are replaced by current methods
+* Colors has been added to each robot, except for MyFirstRobot, which should be kept as simple as possible
+
+== Added Restart button ==
+* Restart button has been added in order to restart a battle
+
+== New -nodisplay option ==
+* No graphical components are loaded anymore when Robocode is run from the command line with the -nodisplay option
+* This feature has been added in order to run Robocode on Unix-like systems that don't have X installed on them
+
+== Added Browse button ==
+* Added Browse button in the Development Options
+
+== Keyboard mnemonics ==
+* Changed some keyboard mnemonics in the View Options in the Preferences
+
+Version 1.1.1
+(06-Jul-2006)
+---------------
+= Bugfixes =
+* The CPU speed detection has been changed to accept 50 times as many clock cycles than with with v1.0.7. Robots than ran fine under v1.0.6 were skipping turns like crazy under v1.0.7
+* Robot text-output error has been fixed according to the solution provided by Matt (msj(at)sysmatrix(dot)net)
+* The window position and sizes were not loaded properly from the windows.properties file
+* The state of the "View option" was not loaded correctly, and hence always set to enabled everytime Robocode was restarted
+* updateMovement() that checked for "distanceRemaining > 1" instead of "distanceRemaining > 0" when slowing down
+* The radar was not colored correctly due to a bug in the coloring filter
+* The Robocode editor's window menu did not remove closed windows properly when muliple windows were opened in the editor
+* Various part of Robocode did not work properly if installed into a folder containing spaces, e.g. compiling and viewing the API documentation did not work
+* Installing and compiling under Mac 10.3.9 was fixed.
+
+= Changes ==
+
+== 1200x1200 battle field ==
+* Added 1200x1200 battle field size as one of the standard sizes, and set the size step to 100.
+* This feature was added to accommodate RoboRumble@Home
+
+== Battle window ==
+* The battle window is no longer reset every time a new battle is started and the window size and position is saved into the windows.properties file
+
+== Robot colors ==
+* The robot colors are now painted using a true HSL color model
+* The change to use the HSL color model fixed the bug regarding none or wrong coloring.
+* Also, the lumination of the robot colors has been changed
+
+== Robocode SG suppot ==
+* Added a checkbox to enable Robocode SG painting in the robot console
+* The "Debug paint" button in the robot console has been renamed to "Paint"
+* The "Paint" button enables painting in general, and by trickering "Robocode SG", the robot (debug) painting will be rendered as Robocode SG does it
+
+== Command line / batch files ==
+* Added the "-Xmx512M" option to the batch files extending the max. memory heap size to 512 MB
+* Added the "-Dsun.io.useCanonCaches=false" which fixes some SecurityException issues on robots that read from files, and also fixed the installing and compiling problem under Mac 10.3.9
+
+Version 1.1
+(14-Jun-2006)
+The "Continuation" release
+---------------
+= Bugfixes =
+* HyperThreading issue fixed that caused hangs
+* Links in Help menu fixed, so you are able to browse the API etc.
+* Hotkeys have been added to every button, menu, and menu option
+* Help menu updated
+* Updated with links for "RoboWiki", "Yahoo Group: Robocode", and "Robocode Repository"
+* The Jikes compiler has been updated to version 1.22
+
+= Changes =
+* Added feature for Debug Painting
+* By implementing the Robot.onPaint(Graphics2D g) method of your robot(s), graphics of your choice will be rendered when enabling "Debug Paint" on the console window for that robot
+* Editor improvements
+* New "Edit" menu containing "Undo", "Redo", "Cut", "Copy", "Paste", "Delete", "Find...", "Find next", "Replace", "Select All"
+* New "Window" menu containing "Close" and "Close All" options, entries for each open window (up to 9), "More Windows" option where you can get all open windows
+* Added undo/redo stack
+* Added linenumbers
+* New rendering engine based on Java2D
+* Graphics is drawn faster as Java2D make use of hardware acceleration
+* Robot colors are now painting using the HSB color model
+* Graphics is resized when the battle window is resized
+* Added "Visible ground" option in "View Options" which will paint background tiles and explosion debrises
+* The battlefield is always centered in the battle window
+
+
+==== Robocode was release as Open Source on SourceForge ====
+==== Development was taken over by Flemming N. Larsen   ====
+
+
+Version 1.0.7
+(18-Feb-2005)
+---------------
+* Released as opensource under Common Public License
+* New explosion graphics
+* Fixed a few bugs
+** No longer possible to teleport when hitting walls
+** Docs fixed and regenerated
+** Fire assistance removed from AdvancedRobot
+* Now requires Java 1.4
+* New system for calculating CPU speed
+
+Version 1.0.6
+(17-Jul-2002)
+---------------
+* Robots that perform file I/O will be allowed 240 skipped turns in a row before being stopped
+** Other robots will still be allowed 30 in a row
+* Fixed issue with Linux where window frames were outside screen
+* Fixed reset compiler option in editor (broken in 1.0.5)
+
+Version 1.0.5
+(15-Jul-2002)
+---------------
+* Updated dialogs for: Packager, Extractor, Team Creator, Compile Options,
+** So they don't hide behind main window
+* Fixed bug where New Battle dialog would hang on some systems
+
+Version 1.0.4
+(15-Jul-2002)
+---------------
+* Raised max setXX calls before disable to 10,000
+* Moved setXX and getXX warnings to only print when max is hit
+** Previously at 300 and 3000, respectively
+* Fixed bug in clearAllEvents
+* Updated Jikes compiler to version 1.16
+** See http://oss.software.ibm.com/developerworks/opensource/jikes/
+
+Version 1.0.3
+(28-Jun-2002)
+---------------
+* Added setFire(double) and setFireBullet(double) methods to AdvancedRobot
+* Added getDataQuotaAvailable() call to AdvancedRobot
+* Fixed bug:  Robots taking action in Condition.test()
+* Implemented better method for stopping misbehaving robots
+** Basically, to help fix mistakes such as:
+   bad: while (getGunHeat() != 0) {}
+   good: while (getGunHeat() != 0) {doNothing();}
+** Robots will be disabled after 10,000 calls to getXX methods with no action
+** Robots will be disabled after 1,000 calls to setXX methods with no action
+** Only getXX and setXX in the robot itself counts (event.getXX does not)
+
+Version 1.0.2
+(21-Jun-2002)
+---------------
+* Increased default filesystem quota to 200000 bytes
+* Droid leaders now start with 220 energy.
+* Fixed bug that allowed robots to read other robots' data directories
+* Fixed bug that allowed invalid robot version strings
+* Fixed two bugs that allowed robots to exceed filesystem quota
+
+Version 1.0.1
+(23-Apr-2002)
+---------------
+* Team robots will always show in the robot selection dialog
+* Robots in .jar files without a .properties file will not show
+* The extension ".jar.zip" is now supported for cases where the browser renames .jar files.
+
+Version 1.0
+(05-Apr-2002)
+---------------
+* New online help integrated
+** http://robocode.alphaworks.ibm.com/help/index.html
+* *includes instructions for using Eclipse to build a Robot
+* onWin() is now called the moment you are the last surviving robot
+** You can now do victory dances in onWin.
+** Tracker and TrackFire updated to reflect this
+* Context assist will now work inside Eclipse
+* Fixed bug: getTeammates() returning null for last teammate
+* Fixed a few other small bugs
+
+Version 0.99.4
+(24-Mar-2002)
+---------------
+* Fixed scanning bug (missing scan events with small scanarcs)
+* Added "Import downloaded robot" tool.
+* Renamed "Packager" to "Package robot for upload"
+* Added "Extract downloaded robot for editing" to Robot Editor
+* Added "Press F5 to refresh" label to robot selection dialog
+* Added small battle demo when new version detected
+
+Version 0.99.3
+(21-Mar-2002)
+---------------
+* Fixed velocity bug
+** Movement is now more optimized
+** No more '1 2 0 -1 0 1 2 0' velocities
+* Fixed maxVelocity bug
+** setMaxVelocity can no longer be used to instantly stop
+* Fixed first turn bug (getTime returing 0 twice)
+* New, more accurate CPU benchmark.  (Updated Linpack benchmark)
+** Should fix '1ms per turn' bug on Win9X systems
+
+Version 0.99.2
+(13-Mar-2002)
+---------------
+* Added a development path to support external IDEs such as Eclipse (http://eclipse.org)
+** Found in Options->Preferences
+** Simply add the path to your robot project
+** As usual, robots will be loaded from disk at the start of each battle
+* Improved support for RoboLeague
+* Documented robocode.control package (http://robocode.alphaworks.ibm.com/docs/control)
+* Fixed bug:  sendMessage causing StringIndexOutOfBounds
+
+Version 0.99.1
+(11-Mar-2002)
+---------------
+* Fixed bug:  Some messages were delayed
+* Fixed bug:  Broken RoboLeague interoperability
+* Fixed bug:  getSender() did not show version or duplicates
+* Fixed bug:  RobotPackager not packaging teams correctly under Java2 1.3
+
+Version 0.99
+(05-Mar-2002)
+The "TEAMS" release
+---------------
+* Introducing:  Teams!
+** See sampleteam.MyFirstTeam for an example
+** Teams may consist of 2 to 10 robots
+** To use teams, first create one or more TeamRobots, then create a Team.
+** TeamRobots will not show up in the New Battle dialog by default. You can change this behavior in Options->Preferences.
+** To create a team, select Robot->Team->Create Team.
+** You can add regular robots to a team, but they will not be able to communicate.
+** The *first* robot you add to a team becomes the "team leader". Team leaders start with 200 energy. (They are superheroes) When team leaders die, all other members of the team lose 30 energy. Protect your leader!
+** Team scoring is cumulative, but similar to normal scoring: Teams receive 50 points for each surviving team member every time an enemy dies. Teams receive 10 * numEnemies points for each surviving teammate upon winning. Damage bonuses are for all damage dealt by that team Firsts, Seconds, Thirds are based on last surviving team member
+** Teammates can damage each other
+** Teams can be packaged like regular robots
+** Teammates without a version will receive the team version [enclosed in square brackets]
+** Team messages are limited to 32K per message.
+* Introducing:  Droids
+** Droids are robots without radar or scanning ability
+** simply add "implements Droid" to a TeamRobot to create a droid.
+** Droids start with 120 energy (due to weight savings on the radar)
+** Droids do not show up in the New Battle dialog by default. You can change this behavior in Options->Preferences.
+** The API is unchanged, but scanning will not work.
+** See sampleteam.MyFirstDroid for an example
+* Added new class:  TeamRobot
+** See Javadocs for details.
+** Adds messaging capability to robots
+* Added new class:  MessageEvent
+* Added new interface:  Droid
+* Fixed bug: Duplicate robots sometimes showed up in robot selection dialog
+* Fixed bug: Default Window Size not working for some battles
+
+Version 0.98.3:
+(08-Feb-2002)
+The "Everything but teams and it took too long" release
+---------------
+* setColors() now accepts any color (previously it had to be a default color)
+** Only works in the first round
+** Only the first 16 robots in a battle will get their Reqed colors
+* Robots may now extend or use classes that are not in their package
+** This allows for utility classes, when they are in the robots tree
+** If you do not wish others to extend your robot, declare your robot class final
+** If you do not with others to use classes from your package, do not declare them public
+** All referenced classes will be packaged with the robot packager
+* Robots in the robotcache directory that do not have a .properties file will not show up in the robot selection dialog (done in order to support extended robots, above)
+* You may now delete files in your data directory
+* Robocode will now always run at full speed when minimized
+* New Battle Dialog "Finish" button renamed to "Start Battle"
+* New Battle Dialog "Start Battle" button Reqs focus when enabled.
+* Robocode FAQ linked from help menu
+* Robocode now supports RoboLeague by Christian Schnell
+** http://user.cs.tu-berlin.de/~lulli/roboleague/
+* Fixed bug: Default thread priority was low
+* Fixed bug: Robots had access to peer
+* Fixed bug: Survival seconds reported as Survival firsts
+* Fixed bug: Robots did not always receive all onRobotDeath events
+* Fixed bug: getTime returning last round's end time at start of rounds
+* Editor 'Open File' now defaults to the last opened directory (per session)
+* Fixed minor editor bug when parsing for classname
+* Fixed bug: Robocode will no longer try to save the size/position of a maximized window
+* Fixed bug: Bullets hitting each other immediately with fast gun cooling rate
+* Fixed bug: Incorrect number of rounds reported when stop pressed
+* Fixed bug: Incorrect number of "seconds" and "thirds" displayed
+
+Version 0.98.2
+(28-Nov-2001)
+The "Screaming FPS" release
+---------------
+* Sped up performance when minimized
+* New license includes academic use
+* Fixed bug: disappearing energy/name strings
+
+Version 0.98.1
+(27-Nov-2001)
+The "Ok, NOW it's starting to feel real" release
+---------------
+* Fixed bug clearing scaled battles
+* Robot consoles changed back to white on dark gray
+* Fixed bug with case sensitivity in editor's suggested filename
+* Other minor tweaks and bugfixes
+* Updated Tracker and RamFire (no setInterruptible)
+* Added commentary and dates to this file
+* Added link to this file from help menu
+
+Version 0.98
+(27-Nov-2001)
+The "It's starting to feel real" release
+---------------
+* Added setColors(Color robotColor, Color gunColor, Color radarColor) to Robot
+** By default, robots are the default blue
+** Call this in your run method (no more than once per round) to set your robot's colors
+** Accepts any System default colors, i.e. Color.red
+* Robots are now instantiated each round.
+** You no longer need to re-initialize all your variables at the beginning of run()
+** ** Only static variables are persistent across rounds **
+* Graphics optimizations
+** no more rotating images at the start of each battle
+** far more memory efficient
+* New model for CPU time.
+** Robocode now uses the Linpack benchmark (http://www.netlib.org/benchmark/linpackjava/
+** Used to determine how much time each robot is allowed for processing
+* Threading changes
+** Robocode is now threadsafe (as far as I know, anyway)
+** Robot threads execute sequentially
+** No more "busy wait" enhances performance, especially on large battles
+* Minimized optimizations
+** When minimized, Robocode will not do any drawing
+** FPS can really crank up (when set in options-preferences)
+* Minor graphic changes (The gun is slightly further forward)
+* New class hierarchy, in order to clean up the javadocs
+** added _Robot and _AdvancedRobot
+** These hold deprecated methods and system-related things
+** added _AdvancedRadiansRobot to clean up the AdvancedRobot docs
+** You should still extend either Robot or AdvancedRobot
+* Battles may now consist of 1-256 robots
+** A warning confirmation will appear for > 24 robots
+** A confirmation will appear for 1 robot
+* Robots will now appear as they are loaded
+* So large battles won't appear "hung"
+* Consoles persist between battles (although they are cleared)
+* Console threading is more efficient
+* Console scrolling is crisper (bug fixed)
+* Console now has an unlimited size, once opened.
+** there is an 8K circular buffer before it is opened.
+* setInterruptible() moved to AdvancedRobot
+** deprecated version in Robot does nothing
+** Note: Balancing of the "Robot" class still needs work.
+* skipping turns may happen more often, but is not as big a deal as it used to be.
+** with the exception of your first turn
+** You will only lose events if you skip 2 in a row
+** You will not be stopped unless you skip 60 turns in a row.
+** skipped turns can be caused by loading classes from disk, writing files, etc.  If this becomes a problem, I will preload all classes.
+* Fixed bug with compiler when filename has a space
+* Fixed bug with getting BulletMissed and BulletHit events for same bullet
+* Fixed bug with editor locking up reading some files
+* Another round of major code organization
+* Again, probably more minor items that I already forgot about :)
+* (Later additions... such as:)
+** Invalid insert bug in editor
+** Copy/Paste from console
+
+Version 0.97.4
+(18-Nov-2001)
+The "finally, a single installer!" release
+---------------
+* Completely reworked install process.
+* There is no longer a setup.exe installer.
+* Jikes is now packaged with Robocode as the default compiler
+** you may use javac if you prefer, and you have it.
+* API docs now link to the Java API
+* Fixed bug:  Editor did not close files after saving
+* Fixed bug:  Unable to deselect "display robot names"
+* Fixed bug:  Shared static vars between instances of the same robot
+* Fixed a few graphics glitches
+* Minor doc updates
+
+Version 0.97.3
+(05-Nov-2001) The "hourly release" release :)
+---------------
+* Fixed nullpointer exception when loading robots with no package
+* Added robocode.robot.filesystem.quota property to robocode.properties
+** This is a temporary solution, which sets the default filesystem quota for robots
+** example:  robocode.robot.filesystem.quota=200000 for 200k.
+* Fixed bug in editor that caused it to suggest an unreasonable filename.
+
+Version 0.97.2
+(04-Nov-2001)
+---------------
+* Fixed bug that caused some robots to be stopped by the game
+* Battles/Rounds start faster (back to 0.96.2 speed)
+* More lenient on CPU use
+** You have roughly 4 whole seconds before your first move
+** You have roughly 50 + (1000 / fps) milliseconds to process each frame
+** This is more than twice what the entire game itself gets. :)
+** Failure to take action in that amount of time results in a SkippedTurnEvent
+** You will be removed from the round if you skip 30 turns in a round
+** Un-deprecated onSkippedTurn and SkippedTurnEvent
+** No reasonable robot should ever receive a SkippedTurnEvent... but now it's there just in case.
+
+Version 0.97.1
+(03-Nov-2001)
+---------------
+* Abstract classes now work properly in the selection dialog and robot database
+* Fixed a few Javadoc bugs
+* Fixed pause/resume bug
+* Javadocs have deprecated calls again
+
+Version 0.97
+(02-Nov-2001)
+The "painful but worth it" release
+---------------
+* I probably missed a few things in this list. :)
+* Introducing the Robot Packager
+** Select your robot, type in a few details, and let it figure out the rest
+** Saves details in  a .properties file (see details below)
+** Builds a .jar for you
+** Save this .jar in your robots directory (not a subdirectory, for now)
+** You may distribute this jar as a standalone robot.
+* .properties files
+** Not required unless you are packaging your robot
+** Built automatically by the packager
+** Includes:
+***  Robot version
+***  Short description
+***  Optional author name
+***  Optional webpage
+***  Robocode version
+***  Flag for source included
+* .jar files, and the robotcache
+** Simply put a robot .jar file in your robots directory
+** It will be extracted to the "robotcache"
+** Jar filename is the unique key for the robotcache
+** Do not edit files in the robotcache, they may be overwritten. Copy them to your robots directory if you like. This will be a feature in a future version of Robocode.
+* Robot Database
+** Built and maintained for you
+** Allows Robocode to remember which .class files are robots, and which not
+** Press F5 in the robot selection dialog to refresh the database.
+* Robot Selection dialog
+** Divided up into packages
+** Shows robot details (from .properties) if they exist.
+* .html files
+** Create a .html file if you like... see sample.SittingDuck
+** Linked from robot selection dialog
+* Major scoring changes
+** 50 points every time an enemy dies while you are alive
+** (10 * numOthers) points if you are the sole survivor
+** 1 point for each point of damage you do with bullets
+** 2 points for each point of damage you do by ramming (see Ramming changes, below)
+** bonus .2 * damage done to a specific enemy, if you kill that robot, or
+** bonus .3 * damage done to a specific enemy, if you kill by ramming
+* Ramming changes
+** Damage increased (from .4 to .6)
+** Only generates score if you are moving toward the enemy
+** If you are ramming, and run out of energy, you will now be disabled instead of killed
+* "Life" replaced with "Energy"
+** A more sensible name
+** All getLife() calls deprecated and replaced with getEnergy()
+* Added getEnergy() to HitRobotEvent (I can't believe it wasn't there before!)
+* Only Robots and AdvancedRobots will show in the New Battle dialog.
+** fixes known bug listed below at the end of 0.96 changes.
+* Custom events are now be cleared at the start of each round
+** However, since many robots rely on them still existing, Robocode will currently re-add any custom events that were created at the beginning of the first round, for all remaining rounds.  This is a temporary solution for backwards compatibility, and will cause a warning message in your console.
+* You may now print to System.out
+** Will automatically redirect output to your console
+* Robot Editor now supports creating normal Java files
+* Added line number display to Robot Editor
+* MoveCompleteCondition bug fixed.
+* getTurnRemaining(), getGunTurnRemaining(), getRadarTurnRemaining() now return degrees
+* getTurnRemainingRadians(), getGunTurnRemainingRadians(), getRadarTurnRemainingRadians() added.
+* Added setAdjustRadarForRobotTurn(boolean)
+** by default, set to the value of setAdjustRadarForGunTurn for backwards compatibility
+* Windows now remember their last position
+** This is based on the preferred size of the window, so that different battlefield sizes may have different window position and sizes.
+** This is stored in the file "window.properties" which you can safely delete to reset.
+* Added "Default Window Size" to Options menu
+** Resizes the window to optimal (even better than before)
+* Command-line parameters to run a battle
+** robocode -battle battles\sample.battle -results out.txt -fps 250 -minimize
+** Results will go to System.out if you do not specify a results file
+** All other Robocode output goes to System.err
+* "Activity" is now defined as loss of 10 energy in the battle
+** Inactivity Time is now the number of frames in which 10 energy must be lost
+** This does not include loss due to inactivity itself, or hitting walls
+** Prevents robots stopping the inactivity timer by calling fire(.1) every 15 seconds.
+* Compiler uses -g option for debugging.
+** This *may* help those users trying to use advanced debuggers.
+* Much improved "waiting for robots to start"
+* More lenient on "robot has not performed any actions"
+* Various javadoc fixes
+* Minor updates to template files
+
+Version 0.96.2
+(09-Oct-2001)
+---------------
+* Fixed bug in movement that allowed robots to exceed maxVelocity
+
+Version 0.96.1
+---------------
+* Added automatic version checking
+* Added getVelocity() to Robot
+* Fixed minor bug in editor (caused the "do" in "doNothing" to highlight)
+* WinException and DeathException now extend Error instead of RuntimeException.
+** So you won't catch them by mistake with catch (Exception e)
+** You still don't want to catch them, or you'll get no score.\
+* fixed minor api doc bugs
+* Added a warning when you are calling the setXXX methods too many times (300)
+** has no effect on whether the game stops you or not, it simply helps to explain why. before taking an action
+* Replaced BrowserControl with BrowserLauncher, from http://www.stanford.edu/~ejalbert/software/BrowserLauncher
+** Should work on more systems
+* Synchronized tick()
+** Two threads cannot take action at the same time.
+** This entire area needs work
+* FPS no longer displayed when Swing doublebuffering is on
+* Added getHeadingRadians() to Bullet.
+* Fixed getHeading() in Bullet to return degrees.
+
+Version 0.96
+(05-Oct-2001)
+The "Robocode is now my life" release
+---------------
+* Renamed "Battles" to "Rounds" -- a single battle consists of multiple rounds.
+* Commented and updated all sample robots
+* All sample robots are now in package "sample"
+* If the old samples exist, Robocode will ask you if it may delete them, when you first run it.
+* Only Target, Crazy, Spinbot are still AdvancedRobots
+** Target must be for the custom event
+** Crazy and Spinbot call setTurn methods.
+* SittingDuck is now an AdvancedRobot
+** SittingDuck writes to the filesystem.
+* Help system now uses system browser.  Hopefully.  Let me know of any issues.
+* API Help menu item copied to RobocodeEditor, and uses the local copy.
+* Robots may now use,extend,or inherit external classes, as long as they are in the same root package.
+** You must be in a package to use this feature
+* Added call: getDataDirectory() to AdvancedRobot -- returns java.io.File representing your data directory.
+* Added call: getDataFile(String filename) to AdvancedRobot -- returns java.io.File representing a file in your data directory.
+* AdvancedRobots may now read files that are in the same directory (or subdirectory) as their root package.
+** It is recommended that you only read from your data directory
+** You may not read another robot's data directory
+** If you extend another robot, and it calls getDataDirectory, it will get YOUR data directory.
+** If you extend another robot, and manually try to read it's data directory, it will fail.
+* Added classes: RobocodeFileOutputStream and RobocodeFileWriter
+* AdvancedRobots may now write files to their data directory
+** You must use RobocodeFileOutputStream or RobocodeFileWriter
+** Any other output stream will fail
+** You may wrapper them with other outputstreams
+** Example: PrintStream out1 = new PrintStream(new RobocodeFileOutputStream(getDataFile("my.dat")));
+** There is a quota of 100K.
+* Fixed scoring bug (as exhibited by rk.Rotator)
+* Fixed threads stuck in wait condition when new battle selected
+* Fixed threads stuck in onWin or onDeath events
+* Fixed threads not taking action
+* Fixed leftover threads
+* Fixed a half dozen other thread issues
+* Limited # of worker threads a robot may have to 5
+* Limited print/println calls to out, to 100 per turn.
+* Robots now run in their own ThreadGroup.  (You can no longer can see other robot's threads)
+* Robots now have their own Classloader.  (static variable "messages" will no longer work)
+* Fixed null pointer exception in RobocodeOutputStream
+* WinEvents or DeathEvents will now be the only thing in the event queue.
+* Reworked event handler system, should be more robust
+* Tweaked event priorities.  New default priorities are
+**	ScannedRobotEvent: 		10
+**	HitRobotEvent:     		20
+**	HitWallEvent:      		30
+**	HitByBulletEvent:  		40
+**	BulletHitEvent:    		50
+**  BulletHitBulletEvent: 50
+**	BulletMissedEvent: 		60
+**	RobotDeathEvent:   		70
+**	CustomEvent:       		80
+**	WinEvent:          		100 (cannot be modified)
+**	DeathEvent:        		100 (cannot be modified)
+* Valid priorities are 0 to 99 (100 is reserved)
+* Added new method "setInterruptible(boolean)" to Robot
+** Can only be used while handling an event
+** Always resets to false when the event ends
+** Causes event handler to restart from the top, if the same event (or another event of the same priority) is generated while in the event handler following this call.
+** This will only happen if you take an action inside an event handler, that causes the same event handler to be called.
+** This makes it possible for Robots to turn and move like AdvancedRobots...
+** This has no effect on events of higher priority
+* Calling scan() inside of onScannedRobot() can now restart onScannedRobot
+** internally calls setInterruptible(true) for itself.
+** See sample.Corners for example.
+* Robots of class Robot no longer take damage from hitting a wall
+* Robots of class AdvancedRobot take more damage from hitting a wall
+* Added isMyFault() to HitRobotEvent
+** returns true if you caused the event by moving toward the other robot
+* Revamped robot to robot collisions
+** Your movement will be marked complete if you are moving toward the other robot
+** You will not be stopped if you are moving away from the other robot
+** Collisions now cause more damage, but are easier to escape from
+** This means robots without onHitRobot handlers still have a chance...
+** An event is generated every time one robot hits another
+** If you are moving toward the other robot, you will get onHitRobotEvent with isMyFault() = true
+** If another robot is moving toward you, you will get an onHitRobotEvent with isMyFault() = false
+** If you are moving toward each other, you will get two events, with the isMyFault() = true, first.
+* Damage from robot to robot collisions is now a constant 0.4
+* Added getBearing() to onHitByBullet
+* Added a Bullet object
+** encapsulates owner, victim, power, velocity, X, and Y.
+* Bullet hitting bullet generates BulletHitBulletEvent - methods include getBullet() and getHitBullet()
+** added getBullet() to HitByBulletEvent, BulletHitEvent, BulletMissedEvent
+* Added fireBullet(), which is exactly like fire(), but returns a Bullet object
+** I could not simply add a bullet return to fire, because it broke *all* existing robot .class files.
+* You can now select from the results dialog
+* Fixed path for open/save battles on non-Windows systems
+* Fixed slashscreen for some systems
+* Fixed minor api doc bugs
+* Updated many api docs
+* Renamed and reorganized many internal classes
+* Fixed bug with allowed package names (now allows digits)
+* Windows installer now defaults to c:\
+* added getGunHeat() to Robot
+** when gunHeat is 0, you can fire.
+** gunHeat goes up by (1 + firePower / 5) when you fire.
+** this is unchanged from the v0.95
+* added getGunCoolingRate() to Robot
+* deprecated getGunCharge()
+** use getGunHeat()
+* deprecated endTurn()
+** It will still work for now, but you should replace calls to to it with execute().
+* Removed onSkippedTurn
+** your robot will simply be stopped instead.
+** The results dialog will report "not deterministic"
+** Not deterministic means that a battle started with the exact same conditions and starting positions, may not end up with the same results. (Ok, so far, you can't test that...) :)
+** Added getWaitCount() and getMaxWaitCount() to AdvancedRobot.
+* deprecated SkippedTurnEvent
+** well, it's no longer used.
+* deprecated all getRobotXXX methods
+** replaced with getXXX methods.
+* deprecated all getXXXDegrees and setXXXDegrees methods
+** just use the getXXX and setXXX methods
+* Compiler will always show output, and uses the -deprecation flag
+** so you can see that you're using a deprecated call
+** I would like to remove all deprecated calls in the next version
+* Known bug:  New battle dialog not smart enough to differentiate between Robots classes and other classes
+** You will be able to put other classes into a battle
+** They will sit there and do nothing
+
+Version 0.95
+(09-Sep-2001) "The /. release"
+---------------
+* Completely rewrote all windows and dialogs to use LayoutManagers
+* Linux support vastly improved (although fps still not great)
+* Improved framerate calculation (should be smoother on most systems)
+* Robot exceptions now all go to robot's console
+* Fixed bug in initialization - radar turn
+* Hitting a wall no longer resets inactivity counter
+* Better pause functionality (fixed bugs)
+* Known bug:  Help system still not using external browser
+* Smarter dialog locations
+
+Version 0.94
+(09-Aug-2001)
+---------------
+* Fixed a few bugs so Linux version would run
+* Known bug:  Linux version does not run well
+
+Version 0.93
+(23-Apr-2001)
+---------------
+* Completely redone graphics for tanks, guns, radar
+* Firepower adjusted.  Higher-power bullets now move slightly slower and fire slightly slower.
+* Gun must 'charge up' before firing.  This avoids the "lucky shot" syndrome at the beginning of a battle.
+* Added execute() method for AdvancedRobots.  Better name for 'endTurn'.
+* Optimized drawing of explosion graphics
+* Added buttons for selecting battle size
+* Bullets can now hit each other (not perfect yet)
+* Updated security manager to work with jdk1.4
+* Revised bounding box for new graphics.  The graphics should no longer have a 5-pixel blank area
+* Optimized scanning code
+* Added 'color mask' to determine which parts of image should be recolored
+* Replaced splashscreen and icons
+* Java-based help, api, check new version.
+* Robot menu (disabled)
+* Changed fireDelay mechanism to be gunCharge.  Still in progress.
+* Renamed to Robocode
+* Added Buttons for framerate
+* Added Buttons for battle size
+
+Version 0.92
+(Mar-2001)
+---------------
+* Added getTime() method to Robots
+* Added getFireDelay() method to Robots
+* Added explosions
+
+Version 0.91
+(Mar-2001)
+---------------
+* Fixed bug in waitFor() so that automatic scanning will not repeatedly generate events when the condition is true.
+* Fixed bugs in Tracker sample robot
+* Fixed display issues with view scan arc option
+
+Version 0.9
+(Mar-2001)
+---------------
+* Completely reworked scan() to use a sweep as the radar moves.  If the radar is not moving, the scan will be a straight line.
+* Added fire assistance to regular Robot classes (not AdvancedRobots).  If you fire at a robot you see during scan(), and gun/radar are together, and you fire() before doing anything else, you will fire at its center.
+
+Version 0.8
+(Feb-2001)
+---------------
+* Initial release
+** Robocode brought to IBM
+
+Version 0.1
+(Sep-2000)
+---------------
+* Development started
+** as late-night project

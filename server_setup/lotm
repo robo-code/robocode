@@ -1,0 +1,16 @@
+#!/bin/sh
+SERVICE='master'
+
+while true
+do 
+if ps ax | grep -v grep | grep $SERVICE > /dev/null
+then
+    date
+    echo  "Master is running"   
+else
+    date
+    echo "$SERVICE is not running"
+    ./master 
+fi
+sleep 180
+done

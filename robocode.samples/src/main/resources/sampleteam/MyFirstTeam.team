@@ -1,7 +1,0 @@
-#Robocode robot team
-#Sun Aug 20 23:26:53 EST 2006
-team.members=sampleteam.MyFirstLeader,sampleteam.MyFirstDroid,sampleteam.MyFirstDroid,sampleteam.MyFirstDroid,sampleteam.MyFirstDroid
-team.author.name=Mathew Nelson and Flemming N. Larsen
-robocode.version=1.1.2
-team.webpage=
-team.description=\                            A sample team.\n                  MyFirstLeader scans for enemies,\n                  and orders the 4 droids to fire.

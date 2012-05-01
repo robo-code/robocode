@@ -1,0 +1,15 @@
+BattleRunner##Connected to database successfully
+BattleRunner##Made an entry in processes table
+Loaded net.sf.robocode.api
+Loaded net.sf.robocode.host
+Loaded net.sf.robocode.ui.editor
+Loading plugins from /mnt/data/www/html/tankyudh_cfitbhu/virtual-combat/libs
+Module is null
+Loaded CTFApi.CaptureTheFlagApi
+Loaded net.sf.robocode.repository
+Loaded net.sf.robocode.battle
+Loaded net.sf.robocode.ui
+Loaded net.sf.robocode.core
+Loaded net.sf.robocode.sound
+I've handled enough battles, i'm too tired. So this instance is going to exit.
+PID ===== 16232

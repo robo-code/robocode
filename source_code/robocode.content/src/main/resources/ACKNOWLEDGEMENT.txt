@@ -1,0 +1,10 @@
+Acknowledgements
+================
+
+Team CodeFest extends gratitude to the following Robocode developers.
+
+Joshua Galecki				Mathew A Nelson
+Flemming N. Larsen			Garett S. Hourihan
+Pavel Savara
+
+All other Robocode contributors.
