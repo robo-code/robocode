@@ -82,7 +82,7 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 	 * Creates a snapshot of a bullet that must be filled out with data later.
 	 */
 	public BulletSnapshot() {
-		state = BulletState.MOVING;
+		state = BulletState.INACTIVE;
 		ownerIndex = -1;
 		victimIndex = -1;
 		explosionImageIndex = -1;

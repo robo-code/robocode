@@ -1,3 +1,9 @@
+Version 1.7.3.7 Alpha
+(18-May-2012)
+---------------
+= Bugfixes =
+* Bug [3526458] - Snapshot API never shows bullets in "HIT_WALL" status.
+
 Version 1.7.3.6
 (29-Apr-2012)
 ---------------

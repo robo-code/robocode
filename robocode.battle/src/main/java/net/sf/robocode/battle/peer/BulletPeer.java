@@ -283,7 +283,7 @@ public class BulletPeer {
 	}
 
 	public boolean isActive() {
-		return state.getValue() <= BulletState.MOVING.getValue();
+		return state.isActive();
 	}
 
 	public BulletState getState() {
@@ -319,20 +319,16 @@ public class BulletPeer {
 	}
 
 	public void update(List<RobotPeer> robots, List<BulletPeer> bullets) {
+		frame++;
 		if (isActive()) {
-			frame++;
 			updateMovement();
-			if (bullets != null) {
-				checkBulletCollision(bullets);
-			}
+			checkWallCollision();
 			if (isActive()) {
 				checkRobotCollision(robots);
 			}
-			if (isActive()) {
-				checkWallCollision();
+			if (isActive() && bullets != null) {
+				checkBulletCollision(bullets);
 			}
-		} else if (state == BulletState.HIT_VICTIM || state == BulletState.HIT_BULLET) {
-			frame++;
 		}
 		updateBulletState();
 		owner.addBulletStatus(createStatus());
@@ -341,21 +337,20 @@ public class BulletPeer {
 	protected void updateBulletState() {
 		switch (state) {
 		case FIRED:
-			if (frame == 1) {
+			// Note that the bullet must be in the FIRED state before it goes to the MOVING state
+			if (frame > 0) {
 				state = BulletState.MOVING;
 			}
 			break;
 
 		case HIT_BULLET:
 		case HIT_VICTIM:
+		case HIT_WALL:
 		case EXPLODED:
+			// Note that the bullet explosion must be ended before it goes into the INACTIVE state
 			if (frame >= getExplosionLength()) {
 				state = BulletState.INACTIVE;
 			}
-			break;
-
-		case HIT_WALL:
-			state = BulletState.INACTIVE;
 			break;
 		}
 	}
@@ -370,10 +365,6 @@ public class BulletPeer {
 		y += v * cos(heading);
 
 		boundingLine.setLine(lastX, lastY, x, y);
-	}
-
-	public void nextFrame() {
-		frame++;
 	}
 
 	public int getExplosionImageIndex() {

@@ -31,7 +31,6 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
 import robocode.control.events.TurnEndedEvent;
-import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -540,7 +539,7 @@ public class BattleView extends Canvas {
 
 			AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
-			if (bulletSnapshot.getState().getValue() <= BulletState.MOVING.getValue()) {
+			if (bulletSnapshot.getState().isActive()) {
 
 				// radius = sqrt(x^2 / 0.1 * power), where x is the width of 1 pixel for a minimum 0.1 bullet
 				double scale = max(2 * sqrt(2.5 * bulletSnapshot.getPower()), 2 / this.scale);

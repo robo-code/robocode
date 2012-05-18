@@ -318,10 +318,6 @@ public final class Battle extends BaseBattle {
 		return isDebugging;
 	}
 
-	public void removeBullet(BulletPeer bullet) {
-		bullets.remove(bullet);
-	}
-
 	public void addBullet(BulletPeer bullet) {
 		bullets.add(bullet);
 	}

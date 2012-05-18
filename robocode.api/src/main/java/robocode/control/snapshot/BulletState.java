@@ -33,7 +33,7 @@ public enum BulletState {
 	/** The bullet has hit another bullet. */
 	HIT_BULLET(3),
 
-	/** The bullet has the wall, i.e. one of the four borders of the battlefield. */
+	/** The bullet has hit the wall, i.e. one of the four borders of the battlefield. */
 	HIT_WALL(4),
 
 	/** The bullet currently represents a robot explosion, i.e. a robot death. */
@@ -96,5 +96,9 @@ public enum BulletState {
 		default:
 			throw new IllegalArgumentException("unknown value");
 		}
+	}
+	
+	public boolean isActive() {
+		return this == FIRED || this == MOVING;
 	}
 }
