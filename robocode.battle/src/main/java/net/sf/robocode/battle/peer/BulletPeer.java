@@ -92,11 +92,11 @@ public class BulletPeer {
 
 	private final Line2D.Double boundingLine = new Line2D.Double();
 
-	protected int frame = -1;
+	protected int frame; // Do not set to -1
 
 	private final int color;
 
-	protected int explosionImageIndex;
+	protected int explosionImageIndex; // Do not set to -1
 
 	public BulletPeer(RobotPeer owner, BattleRules battleRules, int bulletId) {
 		super();
