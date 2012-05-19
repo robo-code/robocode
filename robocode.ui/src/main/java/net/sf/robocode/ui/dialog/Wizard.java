@@ -19,21 +19,21 @@ import java.awt.*;
  * @author Mathew A. Nelson (original)
  */
 public interface Wizard {
-	public abstract void back();
+	abstract void back();
 
-	public abstract Component getCurrentPanel();
+	abstract Component getCurrentPanel();
 
-	public abstract WizardController getWizardController();
+	abstract WizardController getWizardController();
 
 	WizardListener getWizardListener();
 
-	public abstract boolean isBackAvailable();
+	abstract boolean isBackAvailable();
 
-	public abstract boolean isNextAvailable();
+	abstract boolean isNextAvailable();
 
-	public abstract boolean isReady();
+	abstract boolean isReady();
 
-	public abstract void next();
+	abstract void next();
 
 	void setWizardControllerOnPanel(WizardPanel panel);
 }

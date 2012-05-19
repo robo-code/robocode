@@ -33,7 +33,7 @@ public interface IWindowManager extends IWindowManagerBase {
 
 	boolean isShowResultsEnabled();
 
-	public void setEnableShowResults(boolean enable);
+	void setEnableShowResults(boolean enable);
 
 	void setSlave(boolean slave);
 

@@ -26,41 +26,41 @@ import robocode.BattleResults;
  * @author Flemming N. Larsen (contributor)
  */
 public interface ContestantStatistics {
-	public double getTotalScore();
+	double getTotalScore();
 
-	public double getTotalSurvivalScore();
+	double getTotalSurvivalScore();
 
-	public double getTotalLastSurvivorBonus();
+	double getTotalLastSurvivorBonus();
 
-	public double getTotalBulletDamageScore();
+	double getTotalBulletDamageScore();
 
-	public double getTotalBulletKillBonus();
+	double getTotalBulletKillBonus();
 
-	public double getTotalRammingDamageScore();
+	double getTotalRammingDamageScore();
 
-	public double getTotalRammingKillBonus();
+	double getTotalRammingKillBonus();
 
-	public int getTotalFirsts();
+	int getTotalFirsts();
 
-	public int getTotalSeconds();
+	int getTotalSeconds();
 
-	public int getTotalThirds();
+	int getTotalThirds();
 
-	public double getCurrentScore();
+	double getCurrentScore();
 
-	public double getCurrentSurvivalScore();
+	double getCurrentSurvivalScore();
 
-	public double getCurrentSurvivalBonus();
+	double getCurrentSurvivalBonus();
 
-	public double getCurrentBulletDamageScore();
+	double getCurrentBulletDamageScore();
 
-	public double getCurrentBulletKillBonus();
+	double getCurrentBulletKillBonus();
 
-	public double getCurrentRammingDamageScore();
+	double getCurrentRammingDamageScore();
 
-	public double getCurrentRammingKillBonus();
+	double getCurrentRammingKillBonus();
 
-	public BattleResults getFinalResults();
+	BattleResults getFinalResults();
 
-	public void setRank(int rank);
+	void setRank(int rank);
 }

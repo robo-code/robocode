@@ -16,5 +16,5 @@ package net.sf.robocode.ui.editor;
  * @author Pavel Savara (original)
  */
 public interface IRobocodeEditor {
-	public boolean close();
+	boolean close();
 }

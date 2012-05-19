@@ -16,7 +16,7 @@ package net.sf.robocode.ui.dialog;
  * @author Mathew A. Nelson (original)
  */
 public interface WizardListener {
-	public void cancelButtonActionPerformed();
+	void cancelButtonActionPerformed();
 
-	public void finishButtonActionPerformed();
+	void finishButtonActionPerformed();
 }
