@@ -56,8 +56,11 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	/** Very short name of the team leader robot (might be null) */
 	private String teamName;
 
-	/** The contestant index for the robot */
-	private int contestantIndex;
+	/** The unique robot index */
+	private int robotIndex;
+
+	/** The team index for the robot */
+	private int teamIndex;
 
 	/** The robot state */
 	private RobotState state;
@@ -144,7 +147,9 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		shortName = robot.getShortName();
 		veryShortName = robot.getVeryShortName();
 		teamName = robot.getTeamName();
-		contestantIndex = robot.getContestIndex();
+
+		robotIndex = robot.getRobotIndex();
+		teamIndex = robot.getTeamIndex();
 
 		state = robot.getState();
 
@@ -193,6 +198,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 * {@inheritDoc}
 	 */
 	// Used to identify buttons
+	// TODO: Fix this so that getRobotIndex() is used instead
 	public String getName() {
 		return name;
 	}
@@ -224,7 +230,21 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 * {@inheritDoc}
 	 */
 	public int getContestantIndex() {
-		return contestantIndex;
+		return teamIndex >= 0 ? teamIndex : robotIndex;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getRobotIndex() {
+		return robotIndex;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getTeamIndex() {
+		return teamIndex;
 	}
 
 	/**
@@ -424,7 +444,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 */
 	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement(options.shortAttributes ? "r" : "robot"); {
-			writer.writeAttribute("id", contestantIndex);
+			writer.writeAttribute("id", robotIndex);
 			if (!options.skipNames) {
 				writer.writeAttribute("vsName", veryShortName);
 			}
@@ -483,14 +503,14 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	}
 
 	// allows loading of minimalistic XML
-	RobotSnapshot(String robotName, int index, RobotState state) {
+	RobotSnapshot(String robotName, int robotIndex, RobotState state) {
+		this.robotIndex = robotIndex;
 		this.state = state;
-		shortName = robotName;
-		veryShortName = robotName;
-		teamName = robotName;
-		name = robotName;
-		contestantIndex = index;
-		robotScoreSnapshot = new ScoreSnapshot(robotName);
+		this.name = robotName;
+		this.teamName = robotName;
+		this.shortName = robotName;
+		this.veryShortName = robotName;
+		this.robotScoreSnapshot = new ScoreSnapshot(robotName);
 	}
 
 	/**
@@ -503,7 +523,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 
 				reader.expect("id", new XmlReader.Attribute() {
 					public void read(String value) {
-						snapshot.contestantIndex = Integer.parseInt(value);
+						snapshot.robotIndex = Integer.parseInt(value);
 
 						// allows loading of minimalistic XML, which robot names for subsequent turns
 						Hashtable<String, Object> context = reader.getContext();
@@ -532,7 +552,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 						snapshot.name = value;
 						Hashtable<String, Object> context = reader.getContext();
 
-						context.put(Integer.toString(snapshot.contestantIndex), value);
+						context.put(Integer.toString(snapshot.robotIndex), value);
 						if (snapshot.shortName == null) {
 							snapshot.shortName = value;
 						}

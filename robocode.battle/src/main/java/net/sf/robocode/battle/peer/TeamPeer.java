@@ -35,13 +35,13 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 
 	private final List<String> memberNames;
 	private final String name;
-	private final int contestIndex;
+	private final int teamIndex;
 	private RobotPeer teamLeader;
 	private final TeamStatistics teamStatistics;
 
-	public TeamPeer(String name, List<String> memberNames, int contestIndex) {
+	public TeamPeer(String name, List<String> memberNames, int teamIndex) {
 		this.name = name;
-		this.contestIndex = contestIndex;
+		this.teamIndex = teamIndex;
 		this.memberNames = memberNames;
 		this.teamStatistics = new TeamStatistics(this);
 	}
@@ -71,8 +71,16 @@ public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {
 		return name;
 	}
 
-	public int getContestIndex() {
-		return contestIndex;
+	public int getRobotIndex() {
+		return -1;
+	}
+
+	public int getTeamIndex() {
+		return teamIndex;
+	}
+
+	public int getContestantIndex() {
+		return teamIndex; // This contestant is always a team for this TeamPeer
 	}
 
 	public List<String> getMemberNames() {

@@ -47,12 +47,15 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 	private final BattleRules battleRules;
 	private final String[] teammates;
 	private final String teamName;
-	private final int index;
-	private final int contestantIndex;
+	private final int robotIndex;
+	private final int teamIndex;
 
-	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, String teamName, List<String> teamMembers, int index, int contestantIndex) {
+	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, String teamName, List<String> teamMembers, int robotIndex, int teamIndex) {
 		IRobotRepositoryItem specification = ((IRobotRepositoryItem) HiddenAccess.getFileSpecification(
 				robotSpecification));
+
+		this.robotIndex = robotIndex;
+		this.teamIndex = teamIndex;
 
 		shortClassName = specification.getShortClassName();
 		fullClassName = specification.getFullClassName();
@@ -68,16 +71,14 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 			veryShortName = specification.getUniqueVeryShortClassNameWithVersion();
 		}
 
-		isJuniorRobot = specification.isJuniorRobot();
-		isInteractiveRobot = specification.isInteractiveRobot();
-		isPaintRobot = specification.isPaintRobot();
-		isAdvancedRobot = specification.isAdvancedRobot();
-		isTeamRobot = specification.isTeamRobot();
-		isDroid = specification.isDroid();
-		isTeamLeader = isLeader;
-		battleRules = rules;
-		this.index = index;
-		this.contestantIndex = contestantIndex;
+		this.isJuniorRobot = specification.isJuniorRobot();
+		this.isInteractiveRobot = specification.isInteractiveRobot();
+		this.isPaintRobot = specification.isPaintRobot();
+		this.isAdvancedRobot = specification.isAdvancedRobot();
+		this.isTeamRobot = specification.isTeamRobot();
+		this.isDroid = specification.isDroid();
+		this.isTeamLeader = isLeader;
+		this.battleRules = rules;
 
 		if (teamMembers != null) {
 			List<String> list = new ArrayList<String>();
@@ -98,7 +99,8 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 	RobotStatics(boolean isJuniorRobot, boolean isInteractiveRobot, boolean isPaintRobot, boolean isAdvancedRobot,
 			boolean isTeamRobot, boolean isTeamLeader, boolean isDroid, String name, String shortName,
 			String veryShortName, String fullClassName, String shortClassName, BattleRules battleRules,
-			String[] teammates, String teamName, int index, int contestantIndex) {
+			String[] teammates, String teamName, int robotIndex, int teamIndex) {
+
 		this.isJuniorRobot = isJuniorRobot;
 		this.isInteractiveRobot = isInteractiveRobot;
 		this.isPaintRobot = isPaintRobot;
@@ -114,12 +116,12 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		this.battleRules = battleRules;
 		this.teammates = teammates;
 		this.teamName = teamName;
-		this.index = index;
-		this.contestantIndex = contestantIndex;
+		this.robotIndex = robotIndex;
+		this.teamIndex = teamIndex;
 	}
 
 	public String getAnnonymousName() {
-		return "#" + index;
+		return "#" + robotIndex;
 	}
 
 	public boolean isJuniorRobot() {
@@ -182,12 +184,12 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		return teamName;
 	}
 
-	public int getIndex() {
-		return index;
+	public int getRobotIndex() {
+		return robotIndex;
 	}
-
-	public int getContestIndex() {
-		return contestantIndex;
+	
+	public int getTeamIndex() {
+		return teamIndex;
 	}
 
 	static ISerializableHelper createHiddenSerializer() {
@@ -240,8 +242,8 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 			}
 			buffer.putInt(-1);
 			serializer.serialize(buffer, obj.teamName);
-			serializer.serialize(buffer, obj.index);
-			serializer.serialize(buffer, obj.contestantIndex);
+			serializer.serialize(buffer, obj.robotIndex);
+			serializer.serialize(buffer, obj.teamIndex);
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {

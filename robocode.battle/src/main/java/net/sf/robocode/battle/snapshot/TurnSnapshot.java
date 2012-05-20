@@ -149,15 +149,14 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 			results.add(null);
 		}
 		for (IRobotSnapshot robot : robots) {
-			final IScoreSnapshot snapshot = results.get(robot.getContestantIndex());
+			final int contestantIndex = robot.getContestantIndex();
+			final IScoreSnapshot snapshot = results.get(contestantIndex);
 
-			if (snapshot == null) {
-				results.set(robot.getContestantIndex(), robot.getScoreSnapshot());
-			} else {
-				final ScoreSnapshot sum = new ScoreSnapshot(robot.getTeamName(), snapshot, robot.getScoreSnapshot());
+			IScoreSnapshot score = (snapshot == null)
+					? robot.getScoreSnapshot()
+					: new ScoreSnapshot(robot.getTeamName(), snapshot, robot.getScoreSnapshot());
 
-				results.set(robot.getContestantIndex(), sum);
-			}
+			results.set(contestantIndex, score);
 		}
 		List<IScoreSnapshot> scores = new ArrayList<IScoreSnapshot>();
 
@@ -203,7 +202,7 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 						boolean writeFirstExplosionFrame = false;
 
 						for (IBulletSnapshot b : bullets) {
-							if (b.isExplosion() && b.getFrame() == 0 && b.getVictimIndex() == r.getContestantIndex()) {
+							if (b.isExplosion() && b.getFrame() == 0 && b.getVictimIndex() == r.getRobotIndex()) {
 								writeFirstExplosionFrame = true;
 								break;
 							}
@@ -270,7 +269,7 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 						boolean[] present = new boolean[robotCount];
 
 						for (IRobotSnapshot robot : snapshot.robots) {
-							present[robot.getContestantIndex()] = true;
+							present[robot.getRobotIndex()] = true;
 						}
 						for (int i = 0; i < robotCount; i++) {
 							if (!present[i]) {

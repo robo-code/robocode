@@ -273,14 +273,15 @@ public final class Battle extends BaseBattle {
 
 			String teamFullName = HiddenAccess.getRobotTeamName(specification);
 
-			int cindex = contestants.size();
+			// The team index and robot index depends on current sizes of the contestant list and robot list
+			int teamIndex = contestants.size();
+			int robotIndex = robots.size();
 
 			if (teamFullName != null) {
 				if (!namedTeams.containsKey(teamFullName)) {
-					final int teamIndex = teams.indexOf(teamFullName);
-					String newTeamName = teamDuplicates.get(teamIndex);
+					String newTeamName = teamDuplicates.get(teams.indexOf(teamFullName));
 
-					team = new TeamPeer(newTeamName, teamMembers.get(teamFullName), contestants.size());
+					team = new TeamPeer(newTeamName, teamMembers.get(teamFullName), teamIndex);
 
 					namedTeams.put(teamFullName, team);
 					contestants.add(team);
@@ -288,12 +289,12 @@ public final class Battle extends BaseBattle {
 				} else {
 					team = namedTeams.get(teamFullName);
 					if (team != null) {
-						cindex = team.getContestIndex();
+						teamIndex = team.getTeamIndex();
 					}
 				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team, robots.size(), cindex);
+			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team, robotIndex);
 
 			robots.add(robotPeer);
 			if (team == null) {
@@ -609,7 +610,7 @@ public final class Battle extends BaseBattle {
 				robotSpec = ((TeamPeer) contestant).getTeamLeader().getRobotSpecification();
 			}
 
-			results.set(contestant.getContestIndex(), new RobotResults(robotSpec, battleResults));
+			results.set(rank, new RobotResults(robotSpec, battleResults));
 		}
 
 		return results.toArray(new BattleResults[results.size()]);

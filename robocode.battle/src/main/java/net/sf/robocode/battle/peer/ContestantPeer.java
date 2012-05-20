@@ -19,11 +19,13 @@ package net.sf.robocode.battle.peer;
  * @author Flemming N. Larsen (contributor)
  */
 public interface ContestantPeer extends Comparable<ContestantPeer> {
-	public ContestantStatistics getStatistics();
+	String getName();
 
-	public String getName();
+	int getRobotIndex();
+	int getTeamIndex();
+	int getContestantIndex();
 
-	public String toString();
+	ContestantStatistics getStatistics();
 
-	public int getContestIndex();
+	String toString();
 }

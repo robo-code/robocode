@@ -189,32 +189,45 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final BoundingRectangle boundingBox;
 	private final RbSerializer rbSerializer;
 
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int index, int contestantIndex) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int robotIndex) {
 		super();
+
+		this.battle = battle;
+		this.robotSpecification = robotSpecification;
+
+		this.rbSerializer = new RbSerializer();
+
+		this.boundingBox = new BoundingRectangle();
+		this.scanArc = new Arc2D.Double();
+		this.teamPeer = team;
+		this.state = RobotState.ACTIVE;
+		this.battleRules = battle.getBattleRules();
+
 		if (team != null) {
 			team.add(this);
 		}
+		String teamName;
+		List<String> teamMembers; 
+		boolean isTeamLeader;
+		int teamIndex;
 
-		rbSerializer = new RbSerializer();
+		if (teamPeer == null) {
+			teamName = null;
+			teamMembers = null;
+			isTeamLeader = false;
+			teamIndex = -1; // Must be set to -1 when robot is not in a team
+		} else {
+			teamName = team.getName();
+			teamMembers = team.getMemberNames();
+			isTeamLeader = team.size() == 1; // That is current team size, more might follow later. First robot is leader
+			teamIndex = team.getTeamIndex();
+		}
 
-		this.battle = battle;
-		boundingBox = new BoundingRectangle();
-		scanArc = new Arc2D.Double();
-		teamPeer = team;
-		state = RobotState.ACTIVE;
-		battleRules = battle.getBattleRules();
+		this.statics = new RobotStatics(robotSpecification, duplicate, isTeamLeader, battleRules, teamName, teamMembers,
+				robotIndex, teamIndex);
+		this.statistics = new RobotStatistics(this, battle.getRobotsCount());
 
-		this.robotSpecification = robotSpecification;
-
-		boolean isLeader = teamPeer != null && teamPeer.size() == 1;
-		String teamName = team == null ? null : team.getName();
-		List<String> teamMembers = team == null ? null : team.getMemberNames(); 
-
-		statics = new RobotStatics(robotSpecification, duplicate, isLeader, battleRules, teamName, teamMembers, index,
-				contestantIndex);
-		statistics = new RobotStatistics(this, battle.getRobotsCount());
-
-		robotProxy = (IHostingRobotProxy) hostManager.createRobotProxy(robotSpecification, statics, this);
+		this.robotProxy = (IHostingRobotProxy) hostManager.createRobotProxy(robotSpecification, statics, this);
 	}
 
 	public void println(String s) {
@@ -311,12 +324,16 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return statics.getVeryShortName();
 	}
 
-	public int getIndex() {
-		return statics.getIndex();
+	public int getRobotIndex() {
+		return statics.getRobotIndex();
 	}
 
-	public int getContestIndex() {
-		return statics.getContestIndex();
+	public int getTeamIndex() {
+		return statics.getTeamIndex();
+	}
+
+	public int getContestantIndex() {
+		return getTeamIndex() >= 0 ? getTeamIndex() : getRobotIndex();
 	}
 
 	// -------------------
@@ -693,9 +710,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		boolean valid = false;
 
 		if (initialRobotPositions != null) {
+			int robotIndex = statics.getRobotIndex();
 
-			if (statics.getIndex() >= 0 && statics.getIndex() < initialRobotPositions.length) {
-				double[] pos = initialRobotPositions[statics.getIndex()];
+			if (robotIndex >= 0 && robotIndex < initialRobotPositions.length) {
+				double[] pos = initialRobotPositions[robotIndex];
 
 				x = pos[0];
 				y = pos[1];
@@ -1547,7 +1565,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			addEvent(new DeathEvent());
 			if (statics.isTeamLeader()) {
 				for (RobotPeer teammate : teamPeer) {
-					if (!(teammate.isDead() || teammate == this)) {
+					if (teammate.isAlive() && teammate != this) {
 						teammate.updateEnergy(-30);
 
 						BulletPeer sBullet = new BulletPeer(this, battleRules, -1);

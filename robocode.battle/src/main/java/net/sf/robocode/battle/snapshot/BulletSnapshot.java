@@ -118,10 +118,10 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 		final RobotPeer victim = bullet.getVictim();
 
 		if (victim != null) {
-			victimIndex = victim.getContestIndex();
+			victimIndex = victim.getRobotIndex();
 		}
 
-		ownerIndex = bullet.getOwner().getContestIndex();
+		ownerIndex = bullet.getOwner().getRobotIndex();
 
 		heading = bullet.getHeading();
 	}
