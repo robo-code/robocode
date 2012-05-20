@@ -743,7 +743,8 @@ namespace Robocode.Control
             private string shortName;
             private string veryShortName;
             private string teamName;
-            private int? contestantIndex;
+            private int? robotIndex;
+            private int? teamIndex;
             private RobotState? state;
             private double? energy;
             private double? velocity;
@@ -818,15 +819,35 @@ namespace Robocode.Control
                 }
             }
 
+            public int RobotIndex
+            {
+                get
+                {
+                    if (robotIndex == null)
+                    {
+                        robotIndex = robotSnapshot.getRobotIndex();
+                    }
+                    return robotIndex.Value;
+                }
+            }
+
+            public int TeamIndex
+            {
+                get
+                {
+                    if (teamIndex == null)
+                    {
+                        teamIndex = robotSnapshot.getTeamIndex();
+                    }
+                    return teamIndex.Value;
+                }
+            }
+
             public int ContestantIndex
             {
                 get
                 {
-                    if (contestantIndex == null)
-                    {
-                        contestantIndex = robotSnapshot.getContestantIndex();
-                    }
-                    return contestantIndex.Value;
+                    return TeamIndex >= 0 ? TeamIndex : RobotIndex;
                 }
             }
 

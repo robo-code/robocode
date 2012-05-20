@@ -39,11 +39,11 @@ class __IRepositoryItem extends system.Object implements net.sf.robocode.reposit
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isValid();
     
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getVersion();
-    
     @net.sf.jni4net.attributes.ClrMethod("()J")
     public native long getLastModified();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getVersion();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isTeam();

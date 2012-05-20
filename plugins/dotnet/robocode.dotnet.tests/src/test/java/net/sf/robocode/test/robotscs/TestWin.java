@@ -73,6 +73,6 @@ public class TestWin extends RobocodeTestBed {
 		Assert.assertThat("should get BattleEnded event", end, is(1));
 		Assert.assertThat("should get RoundEnded event", rend, is(5));
 		Assert.assertThat("always should be FIRST", results[0].getTeamLeaderName(), is("tested.robotscs.BattleWin"));
-		Assert.assertThat("always should get score", results[0].getScore(), is(897));
+		Assert.assertThat("always should get score", results[0].getScore(), is(890));
 	}
 }

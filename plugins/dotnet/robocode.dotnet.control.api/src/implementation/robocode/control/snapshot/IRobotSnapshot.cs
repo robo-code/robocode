@@ -44,7 +44,7 @@ namespace Robocode.Control.Snapshot
         string VeryShortName { get; }
 
         /// <summary>
-        /// Contains the name of the team, which can be the name of a robot if the contestant is not a team, but a robot.
+        /// Contains the name of the team, which can be the name of a robot if the contestant is not a team, but a robot.<br>
         /// </summary>
         /// <value>
         /// The name of the team.
@@ -52,11 +52,38 @@ namespace Robocode.Control.Snapshot
         string TeamName { get; }
 
         /// <summary>
-        /// Contains the contestant index of the robot, which is constant during a battle.
+        /// Contains the index of the robot, which is unique for the specific robot and constant during a battle.
+        /// <strong>Since:</strong> 1.7.4.0
         /// </summary>
         /// <value>
-        /// The contestant index of the robot.
+        /// The robot index.
         /// </value>
+        /// <seealso cref="TeamIndex"/>
+        int RobotIndex { get; }
+
+        /// <summary>
+        /// Contains the index of the team that this robot is a member of, which is unique for the specific team and constant
+        /// during a battle.
+        /// <strong>Since:</strong> 1.7.4.0
+        /// </summary>
+        /// <value>
+        /// The team index or -1 if the robot is not a member of a team.
+        /// </value>
+        /// <seealso cref="RobotIndex"/>
+        int TeamIndex { get; }
+
+        /// <summary>
+        /// Contains the contestant index, which is unique for each robot or team participating in a battle.
+        /// Note: If a team of robots is participating in a battle, this method will return the team index (see
+        /// <see cref="TeamIndex" />); otherwise the robot index (see <see cref="RobotIndex" />) is used instead.
+        /// This method is used for the battle results as scores are calculated for either a team of robots or individual
+        /// robot.
+        /// </summary>
+        /// <value>
+        /// The contestant index of the robot or team.
+        /// </value>
+        /// <seealso cref="RobotIndex"/>
+        /// <seealso cref="TeamIndex"/>
         int ContestantIndex { get; }
 
         /// <summary>

@@ -78,7 +78,7 @@ public interface IRobotSnapshot {
 	/**
 	 * Returns the contestant index, which is unique for each robot or team participating in a battle.
 	 * Note: If a team of robots is participating in a battle, this method will return the team index (see
-	 * {@link #getTeamIndex()}; otherwise the robot index (see {@link #getRobotIndex()} is used instead.
+	 * {@link #getTeamIndex()}); otherwise the robot index (see {@link #getRobotIndex()}) is used instead.
 	 * This method is used for the battle results as scores are calculated for either a team of robots or individual
 	 * robot.
 	 * 

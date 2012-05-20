@@ -55,6 +55,12 @@ class __IRobotSnapshot extends system.Object implements robocode.control.snapsho
     public native java.lang.String getVeryShortName();
     
     @net.sf.jni4net.attributes.ClrMethod("()I")
+    public native int getRobotIndex();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()I")
+    public native int getTeamIndex();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()I")
     public native int getContestantIndex();
     
     @net.sf.jni4net.attributes.ClrMethod("()D")
