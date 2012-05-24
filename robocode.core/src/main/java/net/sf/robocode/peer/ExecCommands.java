@@ -296,7 +296,6 @@ public final class ExecCommands implements Serializable {
 	}
 
 	private static class SerializableHelper implements ISerializableHelper {
-		@SuppressWarnings({ "PointlessArithmeticExpression"})
 		public int sizeOf(RbSerializer serializer, Object object) {
 			ExecCommands obj = (ExecCommands) object;
 			int size = RbSerializer.SIZEOF_TYPEINFO + 4 * RbSerializer.SIZEOF_DOUBLE;

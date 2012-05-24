@@ -112,7 +112,6 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #close()
 	 */
 	@Deprecated
-	@SuppressWarnings({ "deprecation"})
 	public RobocodeEngine(File robocodeHome, RobocodeListener listener) {
 		init(robocodeHome, listener);
 	}
@@ -131,7 +130,6 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * @see #close()
 	 */
 	@Deprecated
-	@SuppressWarnings({ "deprecation"})
 	public RobocodeEngine(RobocodeListener listener) {
 		init(null, listener);
 	}

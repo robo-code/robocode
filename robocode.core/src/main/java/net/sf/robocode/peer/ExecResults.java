@@ -121,7 +121,6 @@ public class ExecResults implements Serializable {
 	}
 
 	private static class SerializableHelper implements ISerializableHelper {
-		@SuppressWarnings({ "PointlessArithmeticExpression"})
 		public int sizeOf(RbSerializer serializer, Object object) {
 			ExecResults obj = (ExecResults) object;
 			int size = RbSerializer.SIZEOF_TYPEINFO + 3 * RbSerializer.SIZEOF_BOOL;

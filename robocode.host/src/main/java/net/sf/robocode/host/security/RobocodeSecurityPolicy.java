@@ -100,7 +100,6 @@ public class RobocodeSecurityPolicy extends Policy {
 	}
 
 	@Override
-	@SuppressWarnings({ "SimplifiableIfStatement"})
 	public boolean implies(ProtectionDomain domain, final Permission permission) {
 		if (!isSecutityOn) {
 			return true;

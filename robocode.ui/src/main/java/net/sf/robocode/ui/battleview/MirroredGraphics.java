@@ -338,7 +338,6 @@ public class MirroredGraphics extends Graphics2D {
 		g.dispose();
 	}
 
-	@SuppressWarnings({ "deprecation"})
 	@Override
 	@Deprecated
 	public Rectangle getClipRect() {
