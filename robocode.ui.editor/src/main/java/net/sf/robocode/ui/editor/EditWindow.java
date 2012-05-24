@@ -9,14 +9,10 @@
  *     Mathew A. Nelson
  *     - Initial API and implementation
  *     Matthew Reeder
- *     - Changes to facilitate Undo/Redo
- *     - Support for line numbers
  *     - Window menu
- *     - Launching the Replace dialog using ctrl+H
  *     Flemming N. Larsen
  *     - Code cleanup
- *     - Updated to use methods from the Logger, which replaces logger methods
- *       that have been (re)moved from the robocode.util.Utils class
+ *     - Rewrote most part to support improved source code editor. 
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
@@ -26,12 +22,14 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileFilter;
-import java.awt.*;
+import javax.swing.text.Document;
+
+import java.awt.Font;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,23 +40,20 @@ import java.util.StringTokenizer;
 
 /**
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder (contributor)
  * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
  */
 @SuppressWarnings("serial")
-public class EditWindow extends JInternalFrame implements CaretListener {
+public class EditWindow extends JInternalFrame {
 
 	private String fileName;
 	private String robotName;
 	public boolean modified;
 	private final RobocodeEditor editor;
 	private final IRepositoryManager repositoryManager;
-	private JEditorPane editorPane;
-	private JPanel editWindowContentPane;
 	private final File robotsDirectory;
-	private JScrollPane scrollPane;
-
-	private LineNumbers lineNumbers;
+	private EditorPanel editorPanel;
+	private EditorPane editorPane;
 
 	public EditWindow(IRepositoryManager repositoryManager, RobocodeEditor editor, File robotsDirectory) {
 		super();
@@ -68,23 +63,13 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		initialize();
 	}
 
-	public JEditorPane getEditorPane() {
+	public EditorPane getEditorPane() {
 		if (editorPane == null) {
-			editorPane = new JEditorPane();
-			editorPane.setFont(new Font("monospaced", 0, 12));
-			RobocodeEditorKit editorKit = new RobocodeEditorKit();
-
-			editorPane.setEditorKitForContentType("text/java", editorKit);
-			editorPane.setContentType("text/java");
-			editorKit.setEditWindow(this);
-			editorPane.addCaretListener(this);
-			((JavaDocument) editorPane.getDocument()).setEditWindow(this);
-
+			editorPane = editorPanel.getEditorPane();
 			InputMap im = editorPane.getInputMap();
 
-			// read: hack.
 			im.put(KeyStroke.getKeyStroke("ctrl H"), editor.getReplaceAction()); // FIXME: Replace hack with better solution?
-		}
+		}	
 		return editorPane;
 	}
 
@@ -98,7 +83,7 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 
 	private void initialize() {
 		try {
-			this.addInternalFrameListener(new InternalFrameAdapter() {
+			addInternalFrameListener(new InternalFrameAdapter() {
 				@Override
 				public void internalFrameClosing(InternalFrameEvent e) {
 					if (!modified || fileSave(true)) {
@@ -124,11 +109,32 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			setClosable(true);
 			setMaximum(false);
 			setFrameIcon(new ImageIcon(EditWindow.class.getResource("/net/sf/robocode/ui/icons/robocode-icon.png")));
-			setSize(553, 441);
+			setSize(550, 450); // Make sure it expands the whole window 
 			setMaximizable(true);
 			setTitle("Edit Window");
-			setContentPane(getEditWindowContentPane());
 			editor.addToWindowMenu(this);
+
+			Font font = new Font("Monospaced", Font.PLAIN, 14);
+
+			editorPanel = new EditorPanel();
+			editorPanel.setFont(font);
+			setContentPane(editorPanel);
+			
+			Document document = editorPanel.getEditorPane().getDocument();
+
+			document.addDocumentListener(new DocumentListener() {
+				public void removeUpdate(DocumentEvent e) {
+					setModified(true);
+				}
+
+				public void insertUpdate(DocumentEvent e) {
+					setModified(true);
+				}
+
+				public void changedUpdate(DocumentEvent e) {
+					setModified(true);					
+				}
+			});
 		} catch (Throwable e) {
 			Logger.logError(e);
 		}
@@ -139,37 +145,28 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 	}
 
 	public void setModified(boolean modified) {
-		if (modified && !this.modified) {
-			this.modified = true;
-			if (fileName != null) {
-				setTitle("Editing - " + fileName + " *");
-			} else if (robotName != null) {
-				setTitle("Editing - " + robotName + " *");
-			} else {
-				setTitle("Editing - *");
-			}
-		} else if (!modified) {
-			this.modified = false;
-			if (fileName != null) {
-				setTitle("Editing - " + fileName);
-			} else if (robotName != null) {
-				setTitle("Editing - " + robotName);
-			} else {
-				setTitle("Editing");
-			}
-		}
+		boolean updated = modified != this.modified;
 
+		if (updated) {
+			StringBuffer titleBuf = new StringBuffer("Editing");
+
+			if (fileName != null) {
+				titleBuf.append(" - ").append(fileName);
+			} else if (robotName != null) {
+				titleBuf.append(" - ").append(robotName);
+			}
+			if (modified) {
+				titleBuf.append(" *");
+			}
+			setTitle(titleBuf.toString());
+
+			this.modified = modified;
+		}
 		editor.setSaveFileMenuItemsEnabled(modified);
 	}
 
 	public void setRobotName(String newRobotName) {
 		robotName = newRobotName;
-	}
-
-	public void caretUpdate(CaretEvent e) {
-		int lineend = getEditorPane().getDocument().getDefaultRootElement().getElementIndex(e.getDot());
-
-		editor.setLineStatus(lineend);
 	}
 
 	public void compile() {
@@ -414,16 +411,6 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 		return true;
 	}
 
-	private JPanel getEditWindowContentPane() {
-		if (editWindowContentPane == null) {
-			editWindowContentPane = new JPanel();
-			editWindowContentPane.setLayout(new BorderLayout());
-			editWindowContentPane.setDoubleBuffered(true);
-			editWindowContentPane.add(getScrollPane(), "Center");
-		}
-		return editWindowContentPane;
-	}
-
 	public String getPackage() {
 		String text = getEditorPane().getText();
 		int pIndex = text.indexOf("package ");
@@ -476,31 +463,5 @@ public class EditWindow extends JInternalFrame implements CaretListener {
 			}
 		}
 		return null;
-	}
-
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setViewportView(getEditorPane());
-			scrollPane.setRowHeaderView(getLineNumbers());
-		}
-		return scrollPane;
-	}
-
-	private LineNumbers getLineNumbers() {
-		if (lineNumbers == null) {
-			lineNumbers = new LineNumbers(getEditorPane());
-		}
-		return lineNumbers;
-	}
-
-	public void undo() {
-		((JavaDocument) getEditorPane().getDocument()).undo();
-		repaint();
-	}
-
-	public void redo() {
-		((JavaDocument) getEditorPane().getDocument()).redo();
-		repaint();
 	}
 }

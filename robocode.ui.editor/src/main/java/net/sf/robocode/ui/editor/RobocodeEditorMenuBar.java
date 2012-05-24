@@ -38,9 +38,11 @@ import java.awt.event.KeyEvent;
 
 
 /**
+ * Menu bar for the Robocode source code editor.
+ * 
  * @author Mathew A. Nelson (original)
- * @author Matthew Reeder (contributor)
  * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
  */
 @SuppressWarnings("serial")
 public class RobocodeEditorMenuBar extends JMenuBar {
@@ -224,7 +226,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
-			editWindow.undo();
+			editWindow.getEditorPane().undo();
 		}
 	}
 
@@ -232,7 +234,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		EditWindow editWindow = editor.getActiveWindow();
 
 		if (editWindow != null) {
-			editWindow.redo();
+			editWindow.getEditorPane().redo();
 		}
 	}
 

@@ -35,13 +35,14 @@ import net.sf.robocode.ui.gfx.ImageUtil;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
 
 /**
+ * The source code editor window containing all components.
+ * 
  * @author Mathew A. Nelson (original)
  * @author Matthew Reeder (contributor)
  * @author Flemming N. Larsen (contributor)
@@ -216,13 +217,11 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			index = template.indexOf("$", index);
 		}
 
-		editWindow.getEditorPane().setText(template);
-		editWindow.getEditorPane().setCaretPosition(0);
-		Document d = editWindow.getEditorPane().getDocument();
+		EditorPane editorPane = editWindow.getEditorPane();
 
-		if (d instanceof JavaDocument) {
-			((JavaDocument) d).setEditing(true);
-		}
+		editorPane.setText(template);
+		editorPane.setCaretPosition(0);
+
 		addPlaceShowFocus(editWindow);
 	}
 
@@ -427,13 +426,11 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			index = template.indexOf("$", index);
 		}
 
-		editWindow.getEditorPane().setText(template);
-		editWindow.getEditorPane().setCaretPosition(0);
-		Document d = editWindow.getEditorPane().getDocument();
+		EditorPane editorPane = editWindow.getEditorPane();
 
-		if (d instanceof JavaDocument) {
-			((JavaDocument) d).setEditing(true);
-		}
+		editorPane.setText(template);
+		editorPane.setCaretPosition(0);
+
 		addPlaceShowFocus(editWindow);
 		if (repositoryManager != null) {
 			repositoryManager.refresh();
@@ -641,15 +638,14 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 
 				EditWindow editWindow = new EditWindow(repositoryManager, this, robotsDirectory);
 
-				editWindow.getEditorPane().read(bufferedReader, new File(robotFilename));
-				editWindow.getEditorPane().setCaretPosition(0);
+				EditorPane editorPane = editWindow.getEditorPane();
+
+				editorPane.read(bufferedReader, new File(robotFilename));
+				editorPane.setCaretPosition(0);
+
 				editWindow.setFileName(robotFilename);
 				editWindow.setModified(false);
-				Document d = editWindow.getEditorPane().getDocument();
 
-				if (d instanceof JavaDocument) {
-					((JavaDocument) d).setEditing(true);
-				}
 				addPlaceShowFocus(editWindow);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, e.toString());
