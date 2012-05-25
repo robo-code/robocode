@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using System.Web;
 using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.repository;
 
@@ -31,10 +32,11 @@ namespace net.sf.robocode.dotnet.repository.root
 
         public static string[] findItems(string dllPath)
         {
-            string file = new Uri(dllPath).LocalPath;
+            string uriPath = dllPath.Replace("#", "%23"); // All '#' occurrences must be replaced
+            string file = new Uri(uriPath).LocalPath;
             if (!File.Exists(file))
             {
-                throw new ArgumentException();
+                throw new FileNotFoundException("File not found: " + dllPath);
             }
 
             if (shell != null)

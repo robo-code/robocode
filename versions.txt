@@ -4,6 +4,7 @@ Version 1.7.4.0 Alpha
 = Bugfixes =
 * Bug [3526458] - Snapshot API never shows bullets in "HIT_WALL" status.
 * Bug [3520616] - Use OpenGL backend under linux. The -Dsun.java2d.opengl=True property has been set up per default in the 'robocode.sh' in order to enable OpenGL hardware acceleration per default for Linux and Solaris.
+* Bug [3482309] - Issue with the robocode.dll + # chars in the path for a dll. This goes for the .NET plug-in.
 
 = New features =
 * Req [3526450] - The snapshot API is ambiguous for bullets shot by team. Two new methods have been added for robocode.control.snapshot.IRobotSnapshot: getRobotIndex() and getTeamIndex(), where getRobotIndex() returns a unique id between all robots participating in a battle, and getTeamIndex() returns a unique id between all participating robots or -1 if a robot is not a member of a team. The existing getContestantIndex() will return the team id if it is not -1, otherwise the robot id is returned.
