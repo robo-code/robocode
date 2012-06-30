@@ -1,16 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/epl-v10.html
+ *
+ * Contributors:
+ *     Flemming N. Larsen
+ *     - Initial API and implementation
+ *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JTextPane;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 
 
-// FIXME: 'package mypackage'.. "package" in mypackage is higlighted!
+// FIXME: Column in status bar does not take tab size into account
 
 // TODO: Make it configurable to extend the Java keywords.
 // TODO: Highlight methods from Robocode API?
@@ -24,10 +44,10 @@ import javax.swing.text.*;
  * @author Flemming N. Larsen
  */
 @SuppressWarnings("serial")
-public class JavaDocument extends DefaultStyledDocument {
+public class JavaDocument extends StyledDocument {
 
 	/** The text pane this document is used with necessary for setting the caret position when auto indenting */
-	private final JTextPane textPane;
+	private final EditorPane textPane;
 
 	// Indentation //
 
@@ -40,13 +60,10 @@ public class JavaDocument extends DefaultStyledDocument {
 	/** Tab size (column width) */
 	private int tabSize = 4; // Default is every 4th column
 
-	/** Java language delimiter characters represented in a string */
-	private static final String DELIMITERS = ";:{}()[]+-/%<=>!&|^~*";
-
 	/** Java language quote delimiter characters represented in a string */
 	private static final String QUOTE_DELIMITERS = "\"'";
 
-	/** Java language keywords */
+	/** Java keywords */
 	private static final Set<String> KEYWORDS = new HashSet<String>(
 			Arrays.asList(
 					new String[] {
@@ -56,31 +73,46 @@ public class JavaDocument extends DefaultStyledDocument {
 		"protected", "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized", "this",
 		"throw", "throws", "transient", "try", "void", "volatile", "while" }));
 
+	/** Predefined Java literals */
+	private static final Set<String> PREDEFINED_LITERALS = new HashSet<String>(
+			Arrays.asList(new String[] { "false", "true", "null" }));
+
 	/** Normal text attribute set */
-	private final MutableAttributeSet normalAttrSet;
+	private final SimpleAttributeSet normalAttrSet;
 
 	/** Quoted text attribute set */
-	private final MutableAttributeSet quoteAttrSet;
+	private final SimpleAttributeSet quoteAttrSet;
 
 	/** Keyword attribute set */
-	private final MutableAttributeSet keywordAttrSet;
+	private final SimpleAttributeSet keywordAttrSet;
+
+	/** Predefined literal attribute set */
+	private final SimpleAttributeSet predefinedLiteralAttrSet;
 
 	/** Annotation attribute set */
-	private final MutableAttributeSet annotationAttrSet;
+	private final SimpleAttributeSet annotationAttrSet;
 
 	/** Comment attribute set */
-	private final MutableAttributeSet commentAttrSet;
+	private final SimpleAttributeSet commentAttrSet;
 
 	/** String buffer holding only space characters for fast replacement of tabulator characters */
 	private String spaceBuffer;
 
+	/** Old start offset for syntax highlighting */
+	private int lastSyntaxHighlightStartOffset;
+
+	/** Old end offset for syntax highlighting */
+	private int lastSyntaxHighlightEndOffset;
+
+	private int autoIndentationCaretPos = -1;
+	
 	/**
 	 * Constructor that creates a Java document.
 	 * 
 	 * @param textPane
 	 *            is the text pane that this Java documents must apply to.
 	 */
-	public JavaDocument(JTextPane textPane) {
+	public JavaDocument(EditorPane textPane) {
 		super();
 		this.textPane = textPane;
 
@@ -96,39 +128,49 @@ public class JavaDocument extends DefaultStyledDocument {
 		StyleConstants.setForeground(keywordAttrSet, new Color(0x00, 0x00, 0xAF, 0xFF));
 		StyleConstants.setBold(keywordAttrSet, true);
 
+		predefinedLiteralAttrSet = keywordAttrSet;
+
 		annotationAttrSet = new SimpleAttributeSet();
 		StyleConstants.setForeground(annotationAttrSet, new Color(0x7F, 0x7F, 0x7F, 0xFF));
 
 		commentAttrSet = new SimpleAttributeSet();
 		StyleConstants.setForeground(commentAttrSet, new Color(0x00, 0xAF, 0x00, 0xFF));
+
+		// Setup document listener in order to update caret position and update syntax highlighting
+		addDocumentListener(new JavaDocumentListener());
+
+		// Setup change listener and focus listener on the viewport of the text pane
+
+		JViewport viewport = textPane.getViewport();
+
+		viewport.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				updateSyntaxHighlighting();
+			}
+		});
+
+		viewport.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				updateSyntaxHighlighting();
+			}
+
+			public void focusLost(FocusEvent e) {}
+		});
 	}
 
 	@Override
 	public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
 		// Process auto indentation on inserted string
-		Indentation indent = applyAutoIndentation(offset, str);
+		final Indentation indent = applyAutoIndentation(offset, str);
 
 		// Replace indentation tabulation characters with spaces if spaces must be used instead of tabulation characters
-		str = replaceTabulatorCharacters(getElementFromOffset(offset).getEndOffset(), indent.text);
+		str = replaceTabulatorCharacters(getEndOffset(getElementFromOffset(offset)), indent.text);
+
+		// Set the new caret position on the text pane if the caret position has been set
+		autoIndentationCaretPos = indent.caretPos;				
 
 		// Insert the modified string using the original method for inserting string into this document
 		super.insertString(offset, str, a);
-
-		// Set the new caret position on the text pane if the caret position has been set
-		if (indent.caretPos >= 0) {
-			textPane.setCaretPosition(indent.caretPos);
-		}
-		// Apply syntax highlighting from the current offset
-		applySyntaxHighlighting(offset);
-	}
-
-	@Override
-	public void remove(int offset, int length) throws BadLocationException {
-		// Call the original method
-		super.remove(offset, length);
-
-		// Apply syntax highlighting from the current offset
-		applySyntaxHighlighting(offset);
 	}
 
 	/**
@@ -139,39 +181,6 @@ public class JavaDocument extends DefaultStyledDocument {
 	 */
 	public void setTabSize(int tabSize) {
 		this.tabSize = tabSize;
-	}
-
-	/**
-	 * Returns the element index from an offset.
-	 * 
-	 * @param offset
-	 *            is the offset to retrieve the element index from.
-	 * @return the element index >= 0.
-	 */
-	private int getElementIndex(int offset) {
-		return getDefaultRootElement().getElementIndex(offset);
-	}
-
-	/**
-	 * Returns the child element at the given element index.
-	 * 
-	 * @param index
-	 *            is the element index.
-	 * @return the child element.
-	 */
-	private Element getElement(int index) {
-		return getDefaultRootElement().getElement(index);
-	}
-
-	/**
-	 * Returns the child element at the given document offset.
-	 * 
-	 * @param offset
-	 *            is the document offset.
-	 * @return the child element.
-	 */
-	private Element getElementFromOffset(int offset) {
-		return getElement(getElementIndex(offset));
 	}
 
 	/**
@@ -477,10 +486,14 @@ public class JavaDocument extends DefaultStyledDocument {
 		// Get the start and end index of the line
 		Element element = getElementFromOffset(offset);
 		int start = element.getStartOffset();
-		int end = element.getEndOffset();
+		int end = getEndOffset(element);
+
+		if (end == start) {
+			return "";
+		}
 
 		// Get the line content
-		String origLine = getText(start, end - start - 1);
+		String origLine = getText(start, end - start);
 		// Trim trailing white spaces
 		String trimmedLine = origLine.replaceAll("\\s*$", "");
 
@@ -535,7 +548,7 @@ public class JavaDocument extends DefaultStyledDocument {
 		if (length == 0) {
 			return "";
 		}
-		
+
 		// Prepare string buffer for containing the indentation string
 		StringBuilder sb = new StringBuilder();
 
@@ -555,16 +568,57 @@ public class JavaDocument extends DefaultStyledDocument {
 	}
 
 	/**
-	 * Apply syntax highlighting to the document from the given document offset.
+	 * Updates the syntax highlighting on the document using the EDT.
+	 */
+	private void updateSyntaxHighlighting() {
+		// Apply syntax highlighting from the current offset
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					performSyntaxHighlighting();
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Perform syntax highlighting on the document. This implementation only performs syntax highlighting on the current
+	 * visible text in the view port of the text pane, and detects if the text has been changed before performing the
+	 * syntax highlighting.
 	 * 
-	 * @param offset
-	 *            is the offset from where to apply the syntax highligthing.
 	 * @throws BadLocationException
 	 */
-	private void applySyntaxHighlighting(int offset) throws BadLocationException {
+	private void performSyntaxHighlighting() throws BadLocationException {
+		// Return if there is nothing to highlight
+		if (getLength() == 0) {
+			return;
+		}
+
+		// Get the start and end offset of the visible text
+		
+		JViewport viewport = textPane.getViewport();
+		Point startPoint = viewport.getViewPosition();
+		Dimension size = viewport.getExtentSize();
+		Point endPoint = new Point(startPoint.x + size.width, startPoint.y + size.height);
+
+		int startOffset = textPane.viewToModel(startPoint);
+		int endOffset = textPane.viewToModel(endPoint);
+
+		// Return if the current start and end offset is equal to the last ones
+		if (startOffset == lastSyntaxHighlightStartOffset && endOffset == lastSyntaxHighlightEndOffset) {
+			return;
+		}
+
+		lastSyntaxHighlightStartOffset = startOffset;
+		lastSyntaxHighlightEndOffset = endOffset;
+
+		setCharacterAttributes(startOffset, endOffset - startOffset, normalAttrSet, true);
+
 		// Get start and end line
-		int startLine = getElementIndex(offset);
-		int endLine = getElementIndex(getLength());
+		int startLine = getElementIndex(startOffset);
+		int endLine = getElementIndex(endOffset);
 
 		// Process each changed line one by one from the start line to the end line
 		for (int line = startLine; line <= endLine; line++) {
@@ -583,7 +637,7 @@ public class JavaDocument extends DefaultStyledDocument {
 		// Process the syntax tokens on the given line
 		Element element = getElement(lineIndex);
 
-		processLineTokens(element.getStartOffset(), element.getEndOffset() - 1);
+		processLineTokens(element.getStartOffset(), getEndOffset(element));
 	}
 
 	/**
@@ -598,9 +652,6 @@ public class JavaDocument extends DefaultStyledDocument {
 	private void processLineTokens(int startOffset, int endOffset) throws BadLocationException {
 		// Calculate the length of the line based on the given start and end offset
 		int len = endOffset - startOffset;
-
-		// Reset to normal text style for the processed line
-		setCharacterAttributes(startOffset, len, normalAttrSet, true);
 
 		// Process tokens one by one
 		String textFragment = getText(startOffset, len);
@@ -632,7 +683,7 @@ public class JavaDocument extends DefaultStyledDocument {
 		// Note: Single line comment has higher precedence than a multiline comment.
 		if (textFragment.startsWith("//")) {
 			len = textFragment.length();
-			setCharacterAttributes(startOffset, len, commentAttrSet, false);
+			setCharacterAttributes(startOffset, len, commentAttrSet, true);
 			return len;
 		}
 		// Check if the token is a multiline comment
@@ -649,14 +700,16 @@ public class JavaDocument extends DefaultStyledDocument {
 			} else {
 				len = textFragment.length(); // Use the whole token
 			}
-			setCharacterAttributes(startOffset, len, commentAttrSet, false);
+			setCharacterAttributes(startOffset, len, commentAttrSet, true);
 			return len;
 		}
 
 		// Skip delimiter characters
 		len = 1;
 		while (len < textFragment.length()) {
-			if (isDelimiter(textFragment.charAt(len))) {
+			char ch = textFragment.charAt(len);
+
+			if (!Character.isLetter(ch)) {
 				break;
 			}
 			len++;
@@ -666,11 +719,13 @@ public class JavaDocument extends DefaultStyledDocument {
 		String token = textFragment.substring(0, len);
 
 		// Check if the token is a keyword or an annotation
-		if (startOffset == 0 || isDelimiter(getText(startOffset - 1, 1).charAt(0))) {
+		if (startOffset > 0 && !Character.isLetter(getText(startOffset - 1, 1).charAt(0)) || startOffset == 0) {
 			if (isKeyword(token)) {
-				setCharacterAttributes(startOffset, len, keywordAttrSet, false);
+				setCharacterAttributes(startOffset, len, keywordAttrSet, true);
+			} else if (isPredefinedLiteral(token)) {
+				setCharacterAttributes(startOffset, len, predefinedLiteralAttrSet, true);
 			} else if (isAnnotation(token)) {
-				setCharacterAttributes(startOffset, len, annotationAttrSet, false);
+				setCharacterAttributes(startOffset, len, annotationAttrSet, true);
 			} else {
 				len = 1;
 			}
@@ -714,7 +769,7 @@ public class JavaDocument extends DefaultStyledDocument {
 		int len = quoteEndIndex >= 0 ? quoteEndIndex + 1 : textFragment.length();
 
 		// Set quote attribute set
-		setCharacterAttributes(startOffset, len, quoteAttrSet, false);
+		setCharacterAttributes(startOffset, len, quoteAttrSet, true);
 
 		return len;
 	}
@@ -733,7 +788,7 @@ public class JavaDocument extends DefaultStyledDocument {
 		int endIndex = textFragment.indexOf("*/", 1);
 		int len = endIndex >= 0 ? endIndex + 2 : textFragment.length();
 
-		setCharacterAttributes(startOffset, len, commentAttrSet, false);
+		setCharacterAttributes(startOffset, len, commentAttrSet, true);
 
 		return len;
 	}
@@ -788,17 +843,6 @@ public class JavaDocument extends DefaultStyledDocument {
 	}
 
 	/**
-	 * Checks if a character is a delimiter character.
-	 * 
-	 * @param ch
-	 *            is the character.
-	 * @return true if the given character is a delimiter character; false otherwise.
-	 */
-	private static boolean isDelimiter(char ch) {
-		return (Character.isWhitespace(ch) || DELIMITERS.indexOf(ch) >= 0);
-	}
-
-	/**
 	 * Checks if a character is a quote delimiter character.
 	 * 
 	 * @param ch
@@ -821,6 +865,17 @@ public class JavaDocument extends DefaultStyledDocument {
 	}
 
 	/**
+	 * Checks if a token is a predefined literal.
+	 * 
+	 * @param token
+	 *            is the token.
+	 * @return true if the given token is a predefined literal; false otherwise.
+	 */
+	private static boolean isPredefinedLiteral(String token) {
+		return PREDEFINED_LITERALS.contains(token);
+	}
+
+	/**
 	 * Checks if a token is an annotation.
 	 * 
 	 * @param token
@@ -839,5 +894,88 @@ public class JavaDocument extends DefaultStyledDocument {
 		int caretPos;
 		// Is the indentation text
 		String text;
+	}
+
+
+	/**
+	 * This document listener is used for updating the caret position and update syntax highlighting when the contents
+	 * of the document is changed.
+	 */
+	private class JavaDocumentListener implements DocumentListener {
+
+		// Caret position updater
+		final CaretPositionUpdater caretPositionUpdater = new CaretPositionUpdater();
+		
+		public void insertUpdate(final DocumentEvent e) {
+			int newCaretPosition;
+			
+			// Check if the caret position has been changed by auto indentation
+			if (autoIndentationCaretPos >= 0) {
+				// Set the new caret position to the one set for auto indentation
+				newCaretPosition = autoIndentationCaretPos;
+				// Signal that the caret position for auto indentation has been set
+				autoIndentationCaretPos = -1;
+			} else {
+				// Set the new caret position to the end of the inserted text
+				newCaretPosition = e.getOffset() + e.getLength();				
+			}
+			// Update the caret position to the new position
+			caretPositionUpdater.updateCaretPosition(newCaretPosition);
+
+			// Apply syntax highlighting from the current offset
+			updateSyntaxHighlighting();
+		}
+
+		public void removeUpdate(final DocumentEvent e) {
+			// Set the caret position where the text was removed.
+			caretPositionUpdater.updateCaretPosition(e.getOffset());
+
+			// Apply syntax highlighting from the current offset
+			updateSyntaxHighlighting();
+		}
+		
+		public void changedUpdate(DocumentEvent e) {}
+
+		/**
+		 * This class is used for updating the caret position using the EDT.
+		 * Only one EDT call at maximum will be pending. So if several caret updates are made before the EDT call is
+		 * running, the newest updated caret position will be used. This saves lots of calls pending to update the
+		 * caret position. 
+		 */
+		private class CaretPositionUpdater {
+
+			// Flag specifying if the EDT for this updater is idle, meaning that a new EDT call must be initiated
+			private boolean isEDTidle = true;
+			// The recent updated caret position
+			private int updatedCaretPos;
+
+			// The caret updater, which is called by the EDT later to update the caret position
+			final Runnable caretUpdater = new Runnable() {
+				public void run() {
+					// Set the caret position, and take care that it is not out of range
+					textPane.setCaretPosition(Math.min(updatedCaretPos, getLength()));
+					// The EDT is finished so a new call must be initiated
+					isEDTidle = true;
+				}
+			};			
+			
+			/**
+			 * Updates the caret position via the EDT.
+			 *
+			 * @param newCaretPosition is the new caret position.
+			 */
+			public void updateCaretPosition(int newCaretPosition) {
+				// Store the updated caret position, which will be used by the caret updater called by the EDT
+				this.updatedCaretPos = newCaretPosition;
+
+				// Update the caret position via the caret updater thru the EDT, if the EDT is idle.
+				// Otherwise, the EDT has already been initiated to update the caret position, which will use the most
+				// recent updated caret position.
+				if (isEDTidle) {
+					isEDTidle = false;
+					SwingUtilities.invokeLater(caretUpdater);
+				}
+			}
+		}
 	}
 }

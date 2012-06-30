@@ -21,13 +21,14 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.InputMap;
 import javax.swing.JTextPane;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
-import javax.swing.text.Element;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
@@ -52,15 +53,20 @@ public class EditorPane extends JTextPane {
 	private static final KeyStroke UNDO_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK);
 	private static final KeyStroke REDO_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK);
 
-	private final JavaDocument document = new JavaDocument(this);
+	private final JavaDocument document;
 
 	private final CompoundUndoManager undoManager = new CompoundUndoManager();
 
 	private final TextTool textTool = new TextTool();
 
-	public EditorPane() {
+	private JViewport viewport;
+
+	public EditorPane(JViewport viewport) {
 		super();
-		new HighlightLinePainter(this);
+		this.viewport = viewport;
+		document = new JavaDocument(this);
+
+		new LineNumberArea(this);
 
 		EditorKit editorKit = new StyledEditorKit() {
 			@Override
@@ -78,9 +84,13 @@ public class EditorPane extends JTextPane {
 		setKeyBindings();
 		setActionBindings();
 
-		getDocument().addUndoableEditListener(undoManager);		
+		getDocument().addUndoableEditListener(undoManager);
 	}
-	
+
+	public JViewport getViewport() {
+		return viewport;
+	}
+
 	// No line wrapping!
 	@Override
 	public boolean getScrollableTracksViewportWidth() {
@@ -167,31 +177,24 @@ public class EditorPane extends JTextPane {
 
 			// Make sure that the start selection is lesser than the end selection
 			if (selectionStart > selectionEnd) {
-				int storedSelectionStart = selectionStart;
+				// Swap selection start and selection end
+				int tmp = selectionStart;
 
 				selectionStart = selectionEnd;
-				selectionEnd = storedSelectionStart;
+				selectionEnd = tmp;
 			}
-
-			String text = textTool.getText();
-
-			int startOffset = selectionStart;
-			int endOffset = selectionEnd;
 
 			StringBuilder newText = new StringBuilder();
 			int count = 0;
-			int selectStart = selectionStart;
-			int selectEnd = selectionEnd;
 			boolean stopUnindent = false;
-
-			// Expand to nearest newlines
-			startOffset = textTool.getLineStart(startOffset);
-			endOffset = textTool.getLineStop(endOffset) - 1; // -1 -> Ignore newline character
 
 			// Handle each line
 
-			String split = text.substring(startOffset, endOffset);
-			String[] lines = split.split(String.valueOf('\n'));
+			String selectedText = textTool.getSelectedText();
+
+			selectedText = selectedText.replaceAll("\\s*$", "");
+
+			String[] lines = selectedText.split(String.valueOf('\n'));
 
 			// iterate lines, rebuilding tabs and newlines
 			for (int i = 0; i < lines.length; i++) {
@@ -206,30 +209,34 @@ public class EditorPane extends JTextPane {
 						count++;
 					}
 				} else {
-					newText.append('\t' + line);
+					newText.append('\t').append(line);
 					count++;
 				}
 				if (i != lines.length - 1) {
 					newText.append('\n');
 				}
 			}
+			
 			if (!stopUnindent) {
 				try {
-					getDocument().remove(startOffset, split.length());
+					getDocument().remove(selectionStart, selectedText.length());
 				} catch (BadLocationException e) {
 					e.printStackTrace();
 				}
-				textTool.insertString(getCaretPosition(), newText.toString());
+				textTool.insertString(getSelectionStart(), newText.toString());
 
 				// compute new selection
 				int mod = isUnindent ? -1 : 1;
 
-				if (count > 0) {
-					selectStart = selectStart + mod;
-					selectEnd = selectEnd + count * mod;
-				}
-				setSelectionStart(selectStart);
-				setSelectionEnd(selectEnd);
+				final int newSelectionStart = selectionStart;
+				final int newSelectionEnd = selectionStart + selectedText.length() + count * mod;
+
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						setSelectionStart(newSelectionStart);
+						setSelectionEnd(newSelectionEnd);
+					}
+				});
 			}
 		}
 	}
@@ -250,11 +257,6 @@ public class EditorPane extends JTextPane {
 				onTabCharPressed(e.isShiftDown());
 				e.consume();
 				break;
-			// case KeyEvent.VK_ENTER :
-			// snapshot ();
-			// insertNewLine ();
-			// e.consume ();
-			// break;
 			}
 		}
 	}
@@ -265,27 +267,16 @@ public class EditorPane extends JTextPane {
 	 */
 	private class TextTool {
 
-		String getText() {
+		String getSelectedText() {
+			int start = getSelectionStart();
+			int end = getSelectionEnd();
+
 			try {
-				return getDocument().getText(0, getDocument().getLength());
+				return getDocument().getText(start, end - start);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
 			return null;
-		}
-
-		Element getLine(int offset) {
-			Element root = getDocument().getDefaultRootElement();
-
-			return root.getElement(root.getElementIndex(offset));
-		}
-
-		int getLineStart(int offset) {
-			return getLine(offset).getStartOffset();
-		}
-
-		int getLineStop(int offset) {
-			return getLine(offset).getEndOffset();
 		}
 
 		void insertString(int offset, String str) {

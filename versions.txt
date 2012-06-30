@@ -1,5 +1,11 @@
+Version 1.7.4.1
+(30-Jun-2012)
+---------------
+= Bugfixes =
+* Bug [3535073] - Hangups with New Editor in 1.7.4.0. Notice, that the editor can still be quite slow with large source files.
+
 Version 1.7.4.0
-(7-Jun-2012)
+(07-Jun-2012)
 ---------------
 = Bugfixes =
 * Bug [3526458] - Snapshot API never shows bullets in "HIT_WALL" status.

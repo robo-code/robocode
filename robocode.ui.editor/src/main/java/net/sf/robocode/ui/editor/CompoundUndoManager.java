@@ -36,7 +36,7 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 		super();
 		reset();
 	}
-	
+
 	@Override
 	public void undoableEditHappened(UndoableEditEvent undoableEditEvent) {
 		UndoableEdit edit = undoableEditEvent.getEdit();
@@ -45,39 +45,38 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 			DefaultDocumentEvent event = (DefaultDocumentEvent) edit;
 			EventType eventType = event.getType();
 
-			boolean isEndCompoundEdit = false;
+			if (eventType != EventType.CHANGE) {
 
-			// Check if current compound edit must be ended due to starting a new line
-			if (eventType == EventType.INSERT) {
-				try {
-					// Check if the inserted text contains a new line character
-					String insertedText = event.getDocument().getText(event.getOffset(), event.getLength());
-
-					isEndCompoundEdit = insertedText.contains("\n");
-				} catch (BadLocationException e) {
-					e.printStackTrace();
+				boolean isEndCompoundEdit = false;
+	
+				// Check if current compound edit must be ended due to starting a new line
+				if (eventType == EventType.INSERT) {
+					try {
+						// Check if the inserted text contains a new line character
+						String insertedText = event.getDocument().getText(event.getOffset(), event.getLength());
+	
+						isEndCompoundEdit = insertedText.contains("\n");
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
+				}
+				// Check if current compound edit must be ended due to change between insertion or removal change
+				isEndCompoundEdit |= (eventType != lastInsertRemoveEventType);
+				lastInsertRemoveEventType = eventType;
+	
+				// Check if the current compound edit should be ended and a new one started
+				if (isEndCompoundEdit) {
+					endCurrentCompoundEdit();
+				}
+				// Create new compound edit if the current one has been ended or does not exist
+				if (currentCompoundEdit == null) {
+					newCurrentCompoundEdit();
 				}
 			}
-			// If the event is not a style change, the event is a insertion or removal
-			boolean isInsertionOrRemoval = (eventType != EventType.CHANGE);
-
-			// Check if current compound edit must be ended due to change between insertion or removal change
-			isEndCompoundEdit |= isInsertionOrRemoval && (eventType != lastInsertRemoveEventType);
-
-			// Save last insert or remove event type
-			if (isInsertionOrRemoval) {
-				lastInsertRemoveEventType = eventType;
-			}
-			// Check if the current compound edit should be ended and a new one started
-			if (isEndCompoundEdit) {
-				endCurrentCompoundEdit();
-			}
-			// Create new compound edit if the current one has been ended or does not exist
-			if (currentCompoundEdit == null) {
-				newCurrentCompoundEdit();
-			}
 			// Added event edit to the current compound edit
-			currentCompoundEdit.addEdit(edit);
+			if (currentCompoundEdit != null) {
+				currentCompoundEdit.addEdit(edit);
+			}
 		}
 		// Update the state of the actions
 		updateUndoRedoState();
@@ -116,7 +115,7 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 				super.undo();
 			}
 		};
-		// Add the current compound edit
+		// Add the current compound edit to the internal edits
 		addEdit(currentCompoundEdit);
 	}
 }

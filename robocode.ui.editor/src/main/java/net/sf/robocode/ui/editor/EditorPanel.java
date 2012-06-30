@@ -48,7 +48,8 @@ public class EditorPanel extends JPanel {
 
 		JScrollPane scroll = new JScrollPane();
 
-		editorPane = new EditorPane();
+		editorPane = new EditorPane(scroll.getViewport());
+
 		editorPane.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
 				updateStatus(getRow(e.getDot(), editorPane), getColumn(e.getDot(), editorPane));
