@@ -30,7 +30,8 @@ import javax.swing.undo.UndoableEdit;
 public class CompoundUndoManager extends UndoManagerWithActions {
 
 	private CompoundEdit currentCompoundEdit;
-	private EventType lastInsertRemoveEventType;
+	private EventType lastEventType;
+	private boolean isCompoundMarkStart;
 
 	public CompoundUndoManager() {
 		super();
@@ -41,33 +42,41 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 	public void undoableEditHappened(UndoableEditEvent undoableEditEvent) {
 		UndoableEdit edit = undoableEditEvent.getEdit();
 
+		// Make sure this event is a document event
 		if (edit instanceof DefaultDocumentEvent) {
+			// Get the event type
 			DefaultDocumentEvent event = (DefaultDocumentEvent) edit;
 			EventType eventType = event.getType();
 
+			// Check if the event type is not a change on character attributes, but instead an insertion or removal of
+			// text.
 			if (eventType != EventType.CHANGE) {
-
 				boolean isEndCompoundEdit = false;
 	
-				// Check if current compound edit must be ended due to starting a new line
+				// Check if current compound edit must be ended as it contains at least one new line
 				if (eventType == EventType.INSERT) {
 					try {
 						// Check if the inserted text contains a new line character
 						String insertedText = event.getDocument().getText(event.getOffset(), event.getLength());
-	
 						isEndCompoundEdit = insertedText.contains("\n");
 					} catch (BadLocationException e) {
 						e.printStackTrace();
 					}
 				}
-				// Check if current compound edit must be ended due to change between insertion or removal change
-				isEndCompoundEdit |= (eventType != lastInsertRemoveEventType);
-				lastInsertRemoveEventType = eventType;
-	
-				// Check if the current compound edit should be ended and a new one started
-				if (isEndCompoundEdit) {
-					endCurrentCompoundEdit();
+
+				// Make sure we are not in an explicit marked compound edit
+				if (!isCompoundMarkStart) {
+					// Check if current compound edit must be ended due to change between insertion or removal change
+					isEndCompoundEdit |= (eventType != lastEventType);
+
+					// Check if the current compound edit should be ended and a new one started
+					if (isEndCompoundEdit) {
+						endCurrentCompoundEdit();
+					}
+					// Save the last event type
+					lastEventType = eventType;
 				}
+
 				// Create new compound edit if the current one has been ended or does not exist
 				if (currentCompoundEdit == null) {
 					newCurrentCompoundEdit();
@@ -88,9 +97,30 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 		reset();
 	}
 
+	/**
+	 * Ends the current compound edit, and mark the start for combining the next insertions or removals of text to be
+	 * put into the same compound edit so that these combined operations acts like as one single edit.
+	 *
+	 * @see #markCompoundEnd()
+	 */
+	public void markCompoundStart() {
+		endCurrentCompoundEdit();
+		isCompoundMarkStart = true;
+	}
+
+	/**
+	 * Ends the current compound edit so that previous edits acts like a single edit.
+	 * 
+	 * @see #markCompoundStart()
+	 */
+	public void markCompoundEnd() {
+		endCurrentCompoundEdit();
+		isCompoundMarkStart = false;
+	}
+	
 	private void reset() {
 		currentCompoundEdit = null;
-		lastInsertRemoveEventType = EventType.INSERT; // important
+		lastEventType = EventType.INSERT; // important
 	}
 
 	private void endCurrentCompoundEdit() {

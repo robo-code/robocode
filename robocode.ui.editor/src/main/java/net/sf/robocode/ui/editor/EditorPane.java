@@ -18,6 +18,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.Reader;
 
 import javax.swing.InputMap;
 import javax.swing.JTextPane;
@@ -110,6 +112,13 @@ public class EditorPane extends JTextPane {
 		undoManager.discardAllEdits();
 	}
 
+	// Make sure to discard all undo/redo edits when text is read as one block
+	@Override
+	public void read(Reader in, Object desc) throws IOException {
+		super.read(in, desc);
+		undoManager.discardAllEdits();
+	}
+     
 	public void undo() {
 		if (undoManager.canUndo()) {
 			undoManager.undo();
@@ -219,14 +228,19 @@ public class EditorPane extends JTextPane {
 			
 			if (!stopUnindent) {
 				try {
+					// Replace the indented/unindented text in one single compound edit
+					undoManager.markCompoundStart();
 					getDocument().remove(selectionStart, selectedText.length());
+					textTool.insertString(selectionStart, newText.toString());
+					undoManager.markCompoundStart();
 				} catch (BadLocationException e) {
 					e.printStackTrace();
 				}
-				textTool.insertString(getSelectionStart(), newText.toString());
 
-				// compute new selection
+				// Compute the new selection
 				int mod = isUnindent ? -1 : 1;
+
+				// Make new selection using the EDT, as replacing the text above must run before a new selection can be made 
 
 				final int newSelectionStart = selectionStart;
 				final int newSelectionEnd = selectionStart + selectedText.length() + count * mod;
