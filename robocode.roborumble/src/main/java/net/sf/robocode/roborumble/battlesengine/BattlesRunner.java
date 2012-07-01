@@ -93,15 +93,12 @@ public class BattlesRunner {
 
 		// Read input file
 		ArrayList<String> robots = new ArrayList<String>();
-		BufferedReader br = null;
-
-		if (readRobots(robots, br)) {
+		if (readRobots(robots)) {
 			return;
 		}
 
 		// open output file
 		PrintStream outtxt = getRedirectedOutput();
-
 		if (outtxt == null) {
 			return;
 		}
@@ -171,13 +168,13 @@ public class BattlesRunner {
 		}
 	}
 
-	private boolean readRobots(ArrayList<String> robots, BufferedReader br) {
+	private boolean readRobots(ArrayList<String> robots) {
+		BufferedReader br = null;
 		try {
 			FileReader fr = new FileReader(inputfile);
-
 			br = new BufferedReader(fr);
-			String record;
 
+			String record;
 			while ((record = br.readLine()) != null) {
 				robots.add(record);
 			}
@@ -189,8 +186,7 @@ public class BattlesRunner {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {// just ignore
-				}
+				} catch (IOException ignore) {}
 			}
 		}
 		return false;

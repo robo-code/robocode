@@ -29,8 +29,7 @@ import java.io.PrintStream;
 /**
  * SittingDuck - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
  * <p/>
- * Along with sitting still doing nothing,
- * this robot demonstrates persistency.
+ * Along with sitting still doing nothing, this robot demonstrates persistency.
  */
 public class SittingDuck extends AdvancedRobot {
 	static boolean incrementedBattles = false;
@@ -41,14 +40,21 @@ public class SittingDuck extends AdvancedRobot {
 
 		int roundCount, battleCount;
 
-		// Read file "count.dat" which contains 2 lines,
-		// a round count, and a battle count
 		try {
-			BufferedReader r = new BufferedReader(new FileReader(getDataFile("count.dat")));
+			BufferedReader reader = null;
+			try {
+				// Read file "count.dat" which contains 2 lines, a round count, and a battle count
+				reader = new BufferedReader(new FileReader(getDataFile("count.dat")));
 
-			// Try to get the counts
-			roundCount = Integer.parseInt(r.readLine());
-			battleCount = Integer.parseInt(r.readLine());
+				// Try to get the counts
+				roundCount = Integer.parseInt(reader.readLine());
+				battleCount = Integer.parseInt(reader.readLine());
+
+			} finally {
+				if (reader != null) {
+					reader.close();
+				}
+			}
 		} catch (IOException e) {
 			// Something went wrong reading the file, reset to 0.
 			roundCount = 0;
@@ -61,9 +67,9 @@ public class SittingDuck extends AdvancedRobot {
 
 		// Increment the # of rounds
 		roundCount++;
+
 		// If we haven't incremented # of battles already,
-		// (Note:  Because robots are only instantiated once per battle,
-		// member variables remain valid throughout it.
+		// Note: Because robots are only instantiated once per battle, member variables remain valid throughout it.
 		if (!incrementedBattles) {
 			// Increment # of battles
 			battleCount++;
@@ -71,14 +77,13 @@ public class SittingDuck extends AdvancedRobot {
 		}
 
 		PrintStream w = null;
-
 		try {
 			w = new PrintStream(new RobocodeFileOutputStream(getDataFile("count.dat")));
 
 			w.println(roundCount);
 			w.println(battleCount);
-			// PrintStreams don't throw IOExceptions during prints,
-			// they simply set a flag.... so check it here.
+
+			// PrintStreams don't throw IOExceptions during prints, they simply set a flag.... so check it here.
 			if (w.checkError()) {
 				out.println("I could not write the count!");
 			}
@@ -90,7 +95,6 @@ public class SittingDuck extends AdvancedRobot {
 				w.close();
 			}
 		}
-
 		out.println("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles."); 
 	}
 }

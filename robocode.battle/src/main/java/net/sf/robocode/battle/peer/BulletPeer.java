@@ -352,6 +352,8 @@ public class BulletPeer {
 				state = BulletState.INACTIVE;
 			}
 			break;
+
+		default:
 		}
 	}
 

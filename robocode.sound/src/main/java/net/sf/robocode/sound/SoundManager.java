@@ -259,6 +259,8 @@ public class SoundManager implements ISoundManager {
 				playSound("robot death", pan);
 			}
 			break;
+
+		default:
 		}
 	}
 
@@ -286,6 +288,8 @@ public class SoundManager implements ISoundManager {
 				playSound("wall collision", pan);
 			}
 			break;
+
+		default:
 		}
 	}
 
