@@ -1,4 +1,4 @@
-Version 1.7.4.2
+Version 1.7.4.2 Alpha 3
 (14-Jul-2012)
 ---------------
 = Bugfixes =

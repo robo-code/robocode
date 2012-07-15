@@ -8,8 +8,8 @@ xsi:schemaLocation="http://maven.apache.org/PROFILES/1.0.0 http://maven.apache.o
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <robocode.version>1.7.4.1</robocode.version>
-                <robocode.nversion>1.7.4.1</robocode.nversion>
+                <robocode.version>1.7.4.2-Alpha-3</robocode.version>
+                <robocode.nversion>1.7.4.2</robocode.nversion>
             </properties>
         </profile>
     </profiles>
