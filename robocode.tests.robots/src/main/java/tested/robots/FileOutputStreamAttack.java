@@ -36,8 +36,7 @@ public class FileOutputStreamAttack extends AdvancedRobot {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException ignore) {
-				}
+				} catch (IOException ignore) {}
 			}
 			if (file != null) {
 				file.delete();

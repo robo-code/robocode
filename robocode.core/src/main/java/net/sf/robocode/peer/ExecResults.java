@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ExecResults implements Serializable {
+public final class ExecResults implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private ExecCommands commands;
@@ -46,75 +46,39 @@ public class ExecResults implements Serializable {
 		this.paintEnabled = paintEnabled;
 	}
 
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
+	private ExecResults() {}
 
 	public ExecCommands getCommands() {
 		return commands;
-	}
-
-	public void setCommands(ExecCommands commands) {
-		this.commands = commands;
 	}
 
 	public RobotStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(RobotStatus status) {
-		this.status = status;
-	}
-
 	public List<Event> getEvents() {
 		return events;
-	}
-
-	public void setEvents(List<Event> events) {
-		this.events = events;
 	}
 
 	public List<TeamMessage> getTeamMessages() {
 		return teamMessages;
 	}
 
-	public void setTeamMessages(List<TeamMessage> teamMessages) {
-		this.teamMessages = teamMessages;
-	}
-
 	public List<BulletStatus> getBulletUpdates() {
 		return bulletUpdates;
-	}
-
-	public void setBulletUpdates(List<BulletStatus> bulletUpdates) {
-		this.bulletUpdates = bulletUpdates;
 	}
 
 	public boolean isHalt() {
 		return halt;
 	}
 
-	public void setHalt(boolean halt) {
-		this.halt = halt;
-	}
-
 	public boolean isShouldWait() {
 		return shouldWait;
-	}
-
-	public void setShouldWait(boolean shouldWait) {
-		this.shouldWait = shouldWait;
 	}
 
 	public boolean isPaintEnabled() {
 		return paintEnabled;
 	}
-
-	public void setPaintEnabled(boolean paintEnabled) {
-		this.paintEnabled = paintEnabled;
-	}
-
-	private ExecResults() {}
 
 	static ISerializableHelper createHiddenSerializer() {
 		return new SerializableHelper();
@@ -211,5 +175,4 @@ public class ExecResults implements Serializable {
 			return res;
 		}
 	}
-
 }

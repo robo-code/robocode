@@ -517,7 +517,7 @@ public final class Battle extends BaseBattle {
 		if (getEndTimer() == 0) {
 			if (isAborted()) {
 				for (RobotPeer robotPeer : getRobotsAtRandom()) {
-					if (!robotPeer.isDead()) {
+					if (robotPeer.isAlive()) {
 						robotPeer.println("SYSTEM: game aborted.");
 					}
 				}
@@ -530,7 +530,7 @@ public final class Battle extends BaseBattle {
 
 				for (RobotPeer robotPeer : getRobotsAtRandom()) {
 					robotPeer.addEvent(roundEndedEvent);
-					if (!robotPeer.isDead()) {
+					if (robotPeer.isAlive()) {
 						if (!robotPeer.isWinner()) {
 							robotPeer.getRobotStatistics().scoreLastSurvivor();
 							robotPeer.setWinner(true);
@@ -698,7 +698,7 @@ public final class Battle extends BaseBattle {
 				boolean teammatesalive = false;
 
 				for (RobotPeer tm : robots) {
-					if (tm.getTeamPeer() == deadRobot.getTeamPeer() && (!tm.isDead())) {
+					if (tm.getTeamPeer() == deadRobot.getTeamPeer() && tm.isAlive()) {
 						teammatesalive = true;
 						break;
 					}
@@ -710,7 +710,7 @@ public final class Battle extends BaseBattle {
 
 			// Publish death to live robots
 			for (RobotPeer robotPeer : getRobotsAtRandom()) {
-				if (!robotPeer.isDead()) {
+				if (robotPeer.isAlive()) {
 					robotPeer.addEvent(new RobotDeathEvent(robotPeer.getNameForEvent(deadRobot)));
 
 					if (robotPeer.getTeamPeer() == null || robotPeer.getTeamPeer() != deadRobot.getTeamPeer()) {
@@ -734,7 +734,7 @@ public final class Battle extends BaseBattle {
 
 		// Compute active robots
 		for (RobotPeer robotPeer : robots) {
-			if (!robotPeer.isDead()) {
+			if (robotPeer.isAlive()) {
 				ar++;
 			}
 		}
@@ -766,7 +766,7 @@ public final class Battle extends BaseBattle {
 					} else {
 						robotPeer.waitSleeping(millisWait, nanoWait);
 					}
-					robotPeer.setSkippedTurns();
+					robotPeer.checkSkippedTurn();
 				}
 			}
 		}
@@ -792,7 +792,7 @@ public final class Battle extends BaseBattle {
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isAlive()) {
-				robotPeer.setSkippedTurns();
+				robotPeer.checkSkippedTurn();
 			}
 		}
 	}
@@ -801,11 +801,11 @@ public final class Battle extends BaseBattle {
 		int count = 0;
 
 		for (ContestantPeer c : contestants) {
-			if (c instanceof RobotPeer && !((RobotPeer) c).isDead()) {
+			if (c instanceof RobotPeer && ((RobotPeer) c).isAlive()) {
 				count++;
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
 				for (RobotPeer robotPeer : (TeamPeer) c) {
-					if (!robotPeer.isDead()) {
+					if (robotPeer.isAlive()) {
 						count++;
 						break;
 					}
@@ -890,7 +890,7 @@ public final class Battle extends BaseBattle {
 		TeamPeer currentTeam = null;
 
 		for (RobotPeer currentRobot : robots) {
-			if (!currentRobot.isDead()) {
+			if (currentRobot.isAlive()) {
 				if (!found) {
 					found = true;
 					currentTeam = currentRobot.getTeamPeer();

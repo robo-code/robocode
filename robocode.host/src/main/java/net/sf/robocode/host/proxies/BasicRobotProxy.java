@@ -81,10 +81,10 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected void initializeRound(ExecCommands commands, RobotStatus status) {
 		updateStatus(commands, status);
-		eventManager.reset();
-		final StatusEvent start = new StatusEvent(status);
 
-		eventManager.add(start);
+		eventManager.reset();
+		eventManager.add(new StatusEvent(status)); // Start event
+
 		setSetCallCount(0);
 		setGetCallCount(0);
 	}
@@ -348,8 +348,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			// this is to slow down undead robot after cleanup, from fast exception-loop
 			try {
 				Thread.sleep(1000);
-			} catch (InterruptedException e) {// just swalow here
-			}
+			} catch (InterruptedException ignore) {}
 		}
 
 		// Entering tick
@@ -371,10 +370,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		commands.setOutputText(out.readAndReset());
 		commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
-		// call server
-		callBattle();
+		// Call server
+		execResults = peer.executeImpl(commands);
 
 		updateStatus(execResults.getCommands(), execResults.getStatus());
+
 		graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
 		firedEnergy = 0;
 		firedHeat = 0;
@@ -411,10 +411,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		loadTeamMessages(execResults.getTeamMessages());
 
 		eventManager.processEvents();
-	}
-
-	private void callBattle() {
-		execResults = peer.executeImpl(commands);
 	}
 
 	@Override

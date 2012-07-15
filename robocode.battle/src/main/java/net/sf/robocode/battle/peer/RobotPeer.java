@@ -252,7 +252,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void printProxy(String s) {
+	public void print(String s) {
 		synchronized (proxyText) {
 			proxyText.append(s);
 		}
@@ -521,7 +521,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (!isExecFinishedAndDisabled) {
 			// from robot to battle
 			commands.set(new ExecCommands(newCommands, true));
-			printProxy(newCommands.getOutputText());
+			print(newCommands.getOutputText());
 		} else {
 			// slow down spammer
 			try {
@@ -565,7 +565,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (!isHalt()) {
 			// from robot to battle
 			commands.set(new ExecCommands(newCommands, true));
-			printProxy(newCommands.getOutputText());
+			print(newCommands.getOutputText());
 
 			waitForNextTurn();
 		}
@@ -683,19 +683,19 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void setSkippedTurns() {
+	public void checkSkippedTurn() {
 		if (isHalt() || isSleeping() || !isRunning() || battle.isDebugging() || isPaintEnabled()) {
 			skippedTurns = 0;
 		} else {
-			println("SYSTEM: " + getShortName() + " skipped turn " + battle.getTime());
 			skippedTurns++;
 			events.get().clear(false);
-			if (!isDead()) {
+			if (isAlive()) {
 				addEvent(new SkippedTurnEvent(battle.getTime()));
 			}
+			println("SYSTEM: " + getShortName() + " skipped turn " + battle.getTime());
 
-			if ((!isIORobot && (skippedTurns > MAX_SKIPPED_TURNS))
-					|| (isIORobot && (skippedTurns > MAX_SKIPPED_TURNS_WITH_IO))) {
+			if ((!isIORobot && skippedTurns > MAX_SKIPPED_TURNS)
+					|| (isIORobot && skippedTurns > MAX_SKIPPED_TURNS_WITH_IO)) {
 				println("SYSTEM: " + getShortName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
@@ -1156,6 +1156,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
 	}
 
+	// TODO: Only add events to robots that are alive? + Remove checks if the Robot is alive before adding the event?
 	public void addEvent(Event event) {
 		if (isRunning()) {
 			final EventQueue queue = events.get();

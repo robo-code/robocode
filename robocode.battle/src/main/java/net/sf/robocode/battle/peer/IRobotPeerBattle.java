@@ -63,7 +63,7 @@ public interface IRobotPeerBattle extends ContestantPeer {
 
 	void startRound(long millisWait, int nanosWait);
 
-	void setSkippedTurns();
+	void checkSkippedTurn();
 
 	void performLoadCommands();
 
