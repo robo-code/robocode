@@ -344,6 +344,10 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	@Override
 	protected final void executeImpl() {
+		// Put robot to sleep.
+		// Notice: This must be done immediately as the first step!
+		peer.putToSleep();
+
 		if (execResults == null) {
 			// this is to slow down undead robot after cleanup, from fast exception-loop
 			try {

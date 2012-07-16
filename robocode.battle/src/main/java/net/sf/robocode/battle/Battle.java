@@ -146,11 +146,6 @@ public final class Battle extends BaseBattle {
 	private int inactiveTurnCount;
 	private double inactivityEnergy;
 
-	// Turn skip related items
-	private boolean parallelOn;
-	private long millisWait;
-	private int nanoWait;
-
 	// Objects in the battle
 	private int robotsCount;
 	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
@@ -363,32 +358,6 @@ public final class Battle extends BaseBattle {
 		// Request garbage collecting
 		for (int i = 4; i >= 0; i--) { // Make sure it is run
 			System.gc();
-		}
-	}
-
-	@Override
-	protected void initializeBattle() {
-		super.initializeBattle();
-
-		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
-		if (parallelOn) {
-			// how could robots share CPUs ?
-			double parallelConstant = robots.size() / Runtime.getRuntime().availableProcessors();
-
-			// four CPUs can't run two single threaded robot faster than two CPUs
-			if (parallelConstant < 1) {
-				parallelConstant = 1;
-			}
-			final long waitTime = (long) (cpuConstant * parallelConstant);
-
-			millisWait = waitTime / 1000000;
-			nanoWait = (int) (waitTime % 1000000);
-		} else {
-			millisWait = cpuConstant / 1000000;
-			nanoWait = (int) (cpuConstant % 1000000);
-		}
-		if (nanoWait == 0) {
-			nanoWait = 1;
 		}
 	}
 
@@ -742,58 +711,71 @@ public final class Battle extends BaseBattle {
 	}
 
 	private void wakeupRobots() {
-		// Wake up all robot threads
+		// Get list of all robots in random order
 		final List<RobotPeer> robotsAtRandom = getRobotsAtRandom();
 
-		if (parallelOn) {
-			wakeupParallel(robotsAtRandom);
-		} else {
-			wakeupSerial(robotsAtRandom);
+		// Calculate the maximum turn time, i.e. the amount of nanoseconds a robot must use between execute() calls.
+		long maxTurnTime = cpuConstant; // The normal maximum turn time is defined by the magic 'CPU constant'
+		if (isDebugging) {
+			// If debugging is on it is crucial that the robot is not skipping turns fast
+			maxTurnTime *= DEBUG_TURN_WAIT_MILLIS;
+		} else if (currentTime == 0) {
+			// .NET robots require additional time due to attaching the .NET robot to the Java robot proxy/host
+			maxTurnTime *= 10;
 		}
-	}
+		for (RobotPeer robotPeer : robotsAtRandom) {
+			if (robotPeer.isPaintEnabled()) {
+				// When debug painting is enabled for a robot, it requires a lot more time to perform painting operations
+				maxTurnTime = Math.max(DEBUG_TURN_WAIT_MILLIS * 1000000, maxTurnTime);
+				break;
+			}
+		}
 
-	private void wakeupSerial(List<RobotPeer> robotsAtRandom) {
+		// Wake up all robots
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning()) {
-				// This call blocks until the robot's thread actually wakes up.
-				robotPeer.waitWakeup();
+				robotPeer.wakeupRobot();
+			}
+		}
 
-				if (robotPeer.isAlive()) {
-					if (isDebugging || robotPeer.isPaintEnabled()) {
-						robotPeer.waitSleeping(DEBUG_TURN_WAIT_MILLIS, 1);
-					} else if (currentTime == 1) {
-						robotPeer.waitSleeping(millisWait * 10, 1);
-					} else {
-						robotPeer.waitSleeping(millisWait, nanoWait);
-					}
-					robotPeer.checkSkippedTurn();
+		// In the following, we wait for the robots to go into sleep, meaning that they have called the execute() method.
+
+		// We wait up to a specific amount of nanoseconds defined by the 'maxTurnTime'.
+		// Robots that uses more time than defined by 'maxTurnTime' will be skipping their turn, i.e. punished.
+
+		long timeRemaining;
+		long timePassed;
+		final long startTime = System.nanoTime(); // Start timer
+		List<RobotPeer> robotsRemaining = new ArrayList<RobotPeer>(robotsAtRandom);
+
+		// Loop until all robots are sleeping or the maxTurnTime has been reached
+		do {
+			// Remove robots that are now asleep from this loop
+			for (RobotPeer robotPeer : new ArrayList<RobotPeer>(robotsRemaining)) {
+				if (robotPeer.isSleeping()) {
+					robotsRemaining.remove(robotPeer);
 				}
 			}
-		}
-	}
+			// Calculate new time remaining in this turn
+			timePassed = System.nanoTime() - startTime;
+			timeRemaining = Math.max(maxTurnTime - timePassed, 0);
+			try {
+				// Sleep for the remaining amount of time, but maximum 1000000 nanoseconds
+				// so we get the chance of checking if more robots will go into sleep
+				Thread.sleep(0, Math.min((int)timeRemaining, 100000));				
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+			// Calculate new time remaining in this turn, after this thread has been sleeping
+			timePassed = System.nanoTime() - startTime;
+			timeRemaining = Math.max(maxTurnTime - timePassed, 0);
 
-	private void wakeupParallel(List<RobotPeer> robotsAtRandom) {
-		for (RobotPeer robotPeer : robotsAtRandom) {
-			if (robotPeer.isRunning()) {
-				// This call blocks until the robot's thread actually wakes up.
-				robotPeer.waitWakeup();
-			}
-		}
-		for (RobotPeer robotPeer : robotsAtRandom) {
-			if (robotPeer.isRunning() && robotPeer.isAlive()) {
-				if (isDebugging || robotPeer.isPaintEnabled()) {
-					robotPeer.waitSleeping(DEBUG_TURN_WAIT_MILLIS, 1);
-				} else if (currentTime == 1) {
-					robotPeer.waitSleeping(millisWait * 10, 1);
-				} else {
-					robotPeer.waitSleeping(millisWait, nanoWait);
-				}
-			}
-		}
-		for (RobotPeer robotPeer : robotsAtRandom) {
-			if (robotPeer.isAlive()) {
-				robotPeer.checkSkippedTurn();
-			}
+		// Continue looping while robots are still not sleeping and there is still time remaining
+		} while (robotsRemaining.size() > 0 && timeRemaining > 0);
+
+		// Check if the remaining robots that are still not sleeping are skipping the turn 
+		for (RobotPeer robotPeer : robotsRemaining) {
+			robotPeer.checkSkippedTurn();
 		}
 	}
 

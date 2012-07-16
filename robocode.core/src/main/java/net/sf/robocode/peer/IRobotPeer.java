@@ -29,6 +29,8 @@ public interface IRobotPeer {
 
 	boolean isRunning();
 
+	void putToSleep();
+
 	ExecResults waitForBattleEndImpl(ExecCommands newCommands);
 
 	ExecResults executeImpl(ExecCommands newCommands);
