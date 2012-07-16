@@ -1,3 +1,11 @@
+Version 1.8.0 Alpha 1
+---------------
+= Bugfixes =
+* Bug [3534594] - Skipped turns ... issues.
+
+= Changes =
+* The game engine is now measuring the turn time very precise compared to the CPU constant. Previously, the game was waiting for each robot to complete their turn one robot at a time, and it was waiting up to the CPU constant time per robot. Now the battle thread of the engine checks all robots in parallel, and will check if each robot skips a turn after a certain amount of time has passed, defined by the calculated CPU constant.
+
 Version 1.7.4.2 Alpha 3
 (14-Jul-2012)
 ---------------
