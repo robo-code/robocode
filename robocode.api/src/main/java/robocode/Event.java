@@ -133,7 +133,7 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 */
 	public final void setPriority(int newPriority) {
 		if (addedToQueue) {
-			Logger.printlnToRobotsConsole("SYSTEM: After the event was added to queue, priority can't be changed.");
+			Logger.printlnToRobotsConsole("SYSTEM: The priority of an event cannot be changed after it has been added the event queue.");
 			return;
 		}
 		if (newPriority < 0) {

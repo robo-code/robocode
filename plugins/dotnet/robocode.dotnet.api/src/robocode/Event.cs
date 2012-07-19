@@ -86,7 +86,7 @@ namespace Robocode
             {
                 if (addedToQueue)
                 {
-                    LoggerN.WriteLineToRobotsConsole("SYSTEM: After the event was added to queue, priority can't be changed.");
+                    LoggerN.WriteLineToRobotsConsole("SYSTEM: The priority of an event cannot be changed after it has been added the event queue.");
                     return;
                 }
                 if (value < 0)
