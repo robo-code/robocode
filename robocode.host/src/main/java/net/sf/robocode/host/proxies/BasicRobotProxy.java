@@ -40,6 +40,8 @@ import java.util.Hashtable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
+// XXX Remember to update the .NET version whenever a change is made to this class!
+
 /**
  * @author Pavel Savara (original)
  */
@@ -51,8 +53,10 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	private IGraphicsProxy graphicsProxy;
 
 	private RobotStatus status;
+	private boolean isDisabled;
 	protected ExecCommands commands;
 	private ExecResults execResults;
+
 	private final Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>();
 	private int bulletCounter = -1; 
 
@@ -63,7 +67,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	private boolean testingCondition;
 	private double firedEnergy;
 	private double firedHeat;
-	private boolean isDisabled;
 
 	public BasicRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
@@ -315,18 +318,19 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	public void rescan() {
 		boolean reset = false;
-		boolean resetValue = false;
+		boolean origInterruptableValue = false;
 
 		if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority()) {
 			reset = true;
-			resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());
+			origInterruptableValue = eventManager.isInterruptible(eventManager.getScannedRobotEventPriority());
 			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), true);
 		}
 
 		commands.setScan(true);
 		executeImpl();
+
 		if (reset) {
-			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), resetValue);
+			eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), origInterruptableValue);
 		}
 	}
 	
@@ -381,7 +385,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		// add new events
 		eventManager.add(new StatusEvent(execResults.getStatus()));
-		if (statics.isPaintRobot() && (execResults.isPaintEnabled())) {
+		if (statics.isPaintRobot() && execResults.isPaintEnabled()) {
 			// Add paint event, if robot is a paint robot and its painting is enabled
 			eventManager.add(new PaintEvent());
 		}

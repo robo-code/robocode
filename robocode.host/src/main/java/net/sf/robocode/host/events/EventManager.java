@@ -51,7 +51,11 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
+// XXX Remember to update the .NET version whenever a change is made to this class!
+
 /**
+ * This class is used for managing the event queue for a robot.
+ *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Matthew Reeder (contributor)
@@ -59,68 +63,90 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Nathaniel Troutman (contributor)
  * @author Pavel Savara (contributor)
  */
-public class EventManager implements IEventManager {
-	private BasicRobotProxy robotProxy;
+public final class EventManager implements IEventManager {
+
 	private final static int MAX_PRIORITY = 100;
 	public final static int MAX_EVENT_STACK = 2;
-
-	private int currentTopEventPriority;
-	private Event currentTopEvent;
+	public final static int MAX_QUEUE_SIZE = 256;
 
 	private final List<Condition> customEvents = new CopyOnWriteArrayList<Condition>();
 	private final EventQueue eventQueue;
 
 	private final boolean[] interruptible = new boolean[MAX_PRIORITY + 1];
-	private Dictionary<String, Event> namedEvents;
+	private Event currentTopEvent;
+	private int currentTopEventPriority;
 	private ScannedRobotEvent dummyScannedRobotEvent;
-
-	public final static int MAX_QUEUE_SIZE = 256;
+	private Dictionary<String, Event> eventNames;
 
 	private IBasicRobot robot;
+	private BasicRobotProxy robotProxy;
 
 	/**
-	 * EventManager constructor comment.
+	 * Constructs a new EventManager.
 	 *
-	 * @param robotProxy robotProxy
+	 * @param robotProxy the robot proxy that this event manager applies to.
 	 */
 	public EventManager(BasicRobotProxy robotProxy) {
-		super();
-		registerNamedEvents();
 		this.robotProxy = robotProxy;
 		eventQueue = new EventQueue();
 
+		registerEventNames();
 		reset();
 	}
 
-	public void add(Event e) {
-		if (!HiddenAccess.isCriticalEvent(e)) {
-			HiddenAccess.setEventPriority(e, getEventPriority(e.getClass().getName()));
+	/**
+	 * Adds an event to the event queue.
+	 * @param event is the event to add to the event queue.
+	 */
+	public void add(Event event) {
+		if (!HiddenAccess.isCriticalEvent(event)) {
+			final int priority = getEventPriority(event.getClass().getName());
+			HiddenAccess.setEventPriority(event, priority);
 		}
-		HiddenAccess.setEventTime(e, getTime());
-		addImpl(e);
+		addImpl(event);
 	}
 
-	private void addImpl(Event e) {
+	/**
+	 * Internal method for adding an event to the event queue.
+	 * @param event is the event to add to the event queue.
+	 */
+	private void addImpl(Event event) {
 		if (eventQueue != null) {
 			if (eventQueue.size() > MAX_QUEUE_SIZE) {
 				robotProxy.println(
 						"Not adding to " + robotProxy.getStatics().getName() + "'s queue, exceeded " + MAX_QUEUE_SIZE
 						+ " events in queue.");
 			} else {
-				eventQueue.add(e);
+				HiddenAccess.setEventTime(event, getTime());
+				eventQueue.add(event);
 			}
 		}
 	}
 
+	/**
+	 * Adds an custom event to the event queue based on a condition.
+	 * @param condition is the condition that must be met in order to trigger the custom event.
+	 */
 	public void addCustomEvent(Condition condition) {
 		customEvents.add(condition);
 	}
 
+	/**
+	 * Removes all events from the event queue.
+	 * @param includingSystemEvents {@code true} if system events must be removed as well;
+	 *                              {@code false} if system events should stay on the event queue.
+	 */
 	public void clearAllEvents(boolean includingSystemEvents) {
 		eventQueue.clear(includingSystemEvents);
 		// customEvents.clear(); // Custom event should not be cleared here
 	}
 
+	/**
+	 * Cleans up the event queue.
+	 * <p>
+	 * This method should be called when the event queue is no longer needed,
+	 * i.e. before it must be garbage collected.
+	 */
 	public void cleanup() {
 		// Remove all events
 		reset();
@@ -132,30 +158,9 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * Returns a list containing all events currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (Event e : getAllEvents()) {
-	 *       if (e instanceof HitByRobotEvent)
-	 *        <i> (do something with e) </i>
-	 *       else if (e instanceof HitByBulletEvent)
-	 *        <i> (so something else with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see BulletHitEvent
-	 * @see BulletMissedEvent
-	 * @see HitByBulletEvent
-	 * @see HitRobotEvent
-	 * @see HitWallEvent
-	 * @see SkippedTurnEvent
-	 * @see Event
-	 * @see List
 	 */
 	public List<Event> getAllEvents() {
-		List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
-
+		List<Event> events = new ArrayList<Event>();
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
 				events.add(e);
@@ -166,21 +171,9 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * Returns a list containing all BulletHitBulletEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (BulletHitBulletEvent e : getBulletHitBulletEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see BulletHitBulletEvent
-	 * @see List
 	 */
 	public List<BulletHitBulletEvent> getBulletHitBulletEvents() {
-		List<BulletHitBulletEvent> events = Collections.synchronizedList(new ArrayList<BulletHitBulletEvent>());
-
+		List<BulletHitBulletEvent> events = new ArrayList<BulletHitBulletEvent>();
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
 				if (e instanceof BulletHitBulletEvent) {
@@ -193,21 +186,9 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * Returns a list containing all BulletHitEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (BulletHitEvent e : getBulletHitEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see BulletHitEvent
-	 * @see List
 	 */
 	public List<BulletHitEvent> getBulletHitEvents() {
-		List<BulletHitEvent> events = Collections.synchronizedList(new ArrayList<BulletHitEvent>());
-
+		List<BulletHitEvent> events = new ArrayList<BulletHitEvent>();
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
 				if (e instanceof BulletHitEvent) {
@@ -220,21 +201,9 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * Returns a list containing all BulletMissedEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (BulletMissedEvent e : getBulletMissedEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see BulletMissedEvent
-	 * @see List
 	 */
 	public List<BulletMissedEvent> getBulletMissedEvents() {
-		List<BulletMissedEvent> events = Collections.synchronizedList(new ArrayList<BulletMissedEvent>());
-
+		List<BulletMissedEvent> events = new ArrayList<BulletMissedEvent>();
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
 				if (e instanceof BulletMissedEvent) {
@@ -245,31 +214,11 @@ public class EventManager implements IEventManager {
 		return events;
 	}
 
-	public int getCurrentTopEventPriority() {
-		return currentTopEventPriority;
-	}
-
-	public Event getCurrentTopEvent() {
-		return currentTopEvent;
-	}
-
 	/**
 	 * Returns a list containing all HitByBulletEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (HitByBulletEvent e : getHitByBulletEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see HitByBulletEvent
-	 * @see List
 	 */
 	public List<HitByBulletEvent> getHitByBulletEvents() {
-		List<HitByBulletEvent> events = Collections.synchronizedList(new ArrayList<HitByBulletEvent>());
-
+		List<HitByBulletEvent> events = new ArrayList<HitByBulletEvent>();
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
 				if (e instanceof HitByBulletEvent) {
@@ -282,20 +231,9 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * Returns a list containing all HitRobotEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (HitRobotEvent e : getHitRobotEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see HitRobotEvent
-	 * @see List
 	 */
 	public List<HitRobotEvent> getHitRobotEvents() {
-		List<HitRobotEvent> events = Collections.synchronizedList(new ArrayList<HitRobotEvent>());
+		List<HitRobotEvent> events = new ArrayList<HitRobotEvent>();
 
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
@@ -309,21 +247,9 @@ public class EventManager implements IEventManager {
 
 	/**
 	 * Returns a list containing all HitWallEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (HitWallEvent e : getHitWallEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see HitWallEvent
-	 * @see List
 	 */
 	public List<HitWallEvent> getHitWallEvents() {
-		List<HitWallEvent> events = Collections.synchronizedList(new ArrayList<HitWallEvent>());
-
+		List<HitWallEvent> events = new ArrayList<HitWallEvent>();
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
 				if (e instanceof HitWallEvent) {
@@ -334,35 +260,11 @@ public class EventManager implements IEventManager {
 		return events;
 	}
 
-	public boolean getInterruptible(int priority) {
-		return this.interruptible[priority];
-	}
-
-	private IBasicRobot getRobot() {
-		return robot;
-	}
-
-	public void setRobot(IBasicRobot r) {
-		this.robot = r;
-	}
-
 	/**
 	 * Returns a list containing all RobotDeathEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (RobotDeathEvent e : getRobotDeathEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see RobotDeathEvent
-	 * @see List
 	 */
 	public List<RobotDeathEvent> getRobotDeathEvents() {
-		List<RobotDeathEvent> events = Collections.synchronizedList(new ArrayList<RobotDeathEvent>());
-
+		List<RobotDeathEvent> events = new ArrayList<RobotDeathEvent>();
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
 				if (e instanceof RobotDeathEvent) {
@@ -373,27 +275,11 @@ public class EventManager implements IEventManager {
 		return events;
 	}
 
-	public int getScannedRobotEventPriority() {
-		return dummyScannedRobotEvent.getPriority();
-	}
-
 	/**
 	 * Returns a list containing all ScannedRobotEvents currently in the robot's queue.
-	 * You might, for example, call this while processing another event.
-	 * <p/>
-	 * <P>Example:
-	 * <pre>
-	 *    for (ScannedRobotEvent e : getScannedRobotEvents()) {
-	 *      <i> (do something with e) </i>
-	 *    }
-	 * </pre>
-	 *
-	 * @see ScannedRobotEvent
-	 * @see List
 	 */
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
-		List<ScannedRobotEvent> events = Collections.synchronizedList(new ArrayList<ScannedRobotEvent>());
-
+		List<ScannedRobotEvent> events = new ArrayList<ScannedRobotEvent>();
 		synchronized (eventQueue) {
 			for (Event e : eventQueue) {
 				if (e instanceof ScannedRobotEvent) {
@@ -404,43 +290,106 @@ public class EventManager implements IEventManager {
 		return events;
 	}
 
+	/**
+	 * Returns a list containing all MessageEvents currently in the robot's queue.
+	 */
+	public List<MessageEvent> getMessageEvents() {
+		List<MessageEvent> events = new ArrayList<MessageEvent>();
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof MessageEvent) {
+					events.add((MessageEvent) e);
+				}
+			}
+		}
+		return events;
+	}
+
+	/**
+	 * Returns a list containing all StatusEvents currently in the robot's queue.
+	 */
+	public List<StatusEvent> getStatusEvents() {
+		List<StatusEvent> events = new ArrayList<StatusEvent>();
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof StatusEvent) {
+					events.add((StatusEvent) e);
+				}
+			}
+		}
+		return events;
+	}
+
+	/**
+	 * Returns the priority of the current top event.
+	 */
+	public int getCurrentTopEventPriority() {
+		return currentTopEventPriority;
+	}
+
+	/**
+	 * Returns the current top event.
+	 */
+	public Event getCurrentTopEvent() {
+		return currentTopEvent;
+	}
+
+	/**
+	 * Checks if events with a specific event priority are interruptible.
+	 * @param priority is the event priority that must be checked.
+	 * @see #setInterruptible(int, boolean)
+	 */
+	public boolean isInterruptible(int priority) {
+		return interruptible[priority];
+	}
+
+	/**
+	 * Sets the robot that will receive events dispatched from the event queue.
+	 * @param robot is the robot that will receive event dispatched from the event queue.
+	 */
+	public void setRobot(IBasicRobot robot) {
+		this.robot = robot;
+	}
+
+	/**
+	 * Returns the priority of a ScannedRobotEvent.
+	 */
+	public int getScannedRobotEventPriority() {
+		return dummyScannedRobotEvent.getPriority();
+	}
+
+	/**
+	 * Returns the current time/turn of the battle round. 
+	 */
 	public long getTime() {
 		return robotProxy.getTimeImpl();
 	}
 
+	/**
+	 * This is the heart of the event manager, which processes the events for a robot.
+	 */
 	public void processEvents() {
-		// remove too old stuff
+		// Remove old events
 		eventQueue.clear(getTime() - MAX_EVENT_STACK);
 
 		// Process custom events
 		for (Condition customEvent : customEvents) {
-			boolean conditionSatisfied = false;
-
-			robotProxy.setTestingCondition(true);
-			try {
-				conditionSatisfied = customEvent.test();
-			} finally {
-				robotProxy.setTestingCondition(false);
-			}
+			boolean conditionSatisfied = callUserCode(customEvent);
 			if (conditionSatisfied) {
-				CustomEvent event = new CustomEvent(customEvent);
-
-				HiddenAccess.setEventTime(event, getTime());
-				addImpl(event);
+				addImpl(new CustomEvent(customEvent));
 			}
 		}
 
-		// Process event queue here
+		// Sort the events based on the time and priority of the events
 		eventQueue.sort();
 
-		Event currentEvent = null;
+		// Process event queue here
+		Event currentEvent;
+		while ((currentEvent = (eventQueue.size() > 0) ? eventQueue.get(0) : null) != null
+				&& currentEvent.getPriority() >= currentTopEventPriority) {
 
-		if (eventQueue.size() > 0) {
-			currentEvent = eventQueue.get(0);
-		}
-		while (currentEvent != null && currentEvent.getPriority() >= currentTopEventPriority) {
 			if (currentEvent.getPriority() == currentTopEventPriority) {
-				if (currentTopEventPriority > Integer.MIN_VALUE && getInterruptible(currentTopEventPriority)) {
+				if (currentTopEventPriority > Integer.MIN_VALUE && isInterruptible(currentTopEventPriority)) {
 					setInterruptible(currentTopEventPriority, false); // we're going to restart it, so reset.
 
 					// We are already in an event handler, took action, and a new event was generated.
@@ -464,193 +413,191 @@ public class EventManager implements IEventManager {
 			} catch (EventInterruptedException e) {
 				currentTopEvent = null;
 			} catch (RuntimeException e) {
-				currentTopEventPriority = oldTopEventPriority;
 				currentTopEvent = null;
 				throw e;
 			} catch (Error e) {
-				currentTopEventPriority = oldTopEventPriority;
 				currentTopEvent = null;
 				throw e;
+			} finally {
+				currentTopEventPriority = oldTopEventPriority;				
 			}
-			currentTopEventPriority = oldTopEventPriority;
-			currentEvent = (eventQueue.size() > 0) ? eventQueue.get(0) : null;
 		}
 	}
 
-	private void dispatch(Event currentEvent) {
-		final IBasicRobot robot = getRobot();
+	/**
+	 * Checks if the user's condition for a custom event is satisfied.
+	 * @param condition is the condition to check.
+	 * @return {@code true} if the condition is satisfied; {@code false} otherwise.
+	 */
+	private boolean callUserCode(Condition condition) {
+		boolean conditionSatisfied;
+		robotProxy.setTestingCondition(true);
+		try {
+			conditionSatisfied = condition.test();
+		} finally {
+			robotProxy.setTestingCondition(false);
+		}
+		return conditionSatisfied;
+	}
 
-		if (robot != null && currentEvent != null) {
+	/**
+	 * Dispatches an event for a robot.
+	 * <p>
+	 * Too old events will not be dispatched and a critical event is always dispatched.
+	 *
+	 * @param event the event to dispatch to the robot.
+	 */
+	private void dispatch(Event event) {
+		if (robot != null && event != null) {
 			try {
 				// skip too old events
-				if ((currentEvent.getTime() > getTime() - MAX_EVENT_STACK) || HiddenAccess.isCriticalEvent(currentEvent)) {
-					HiddenAccess.dispatch(currentEvent, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
+				if ((event.getTime() > getTime() - MAX_EVENT_STACK) || HiddenAccess.isCriticalEvent(event)) {
+					HiddenAccess.dispatch(event, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
 				}
 			} catch (Exception ex) {
-				robotProxy.println("SYSTEM: Exception occurred on " + currentEvent.getClass().getName());
+				robotProxy.println("SYSTEM: Exception occurred on " + event.getClass().getName());
 				ex.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}
 
+	/**
+	 * Removes the custom event with the specified condition from the event queue.
+	 * @param condition is the condition of the custom event to remove.
+	 */
 	public void removeCustomEvent(Condition condition) {
 		customEvents.remove(condition);
 	}
 
+	/**
+	 * Removes all custom events from the event queue.
+	 */
 	public void resetCustomEvents() {
 		customEvents.clear();
 	}
 
+	/**
+	 * Resets this event manager by removing all events from the event queue.
+	 */
 	public synchronized void reset() {
 		currentTopEventPriority = Integer.MIN_VALUE;
 		clearAllEvents(true);
 		customEvents.clear();
 	}
 
-	public void setInterruptible(int priority, boolean interruptable) {
+	/**
+	 * Changes the interruptible flag for events with a specific priority.
+	 * When an event is interrupted, events with the same priority are allowed to restart the event handler. 
+	 *
+	 * @param priority is the priority of the event to set the interruptible flag for.
+	 * @param isInterruptable {@code true} if events with the specified priority must be interruptible
+	 *                        allowing events with the same priority to restart the event handler.
+	 *                        {@code false} if events with the specified priority must not be interruptible
+	 *                        disallowing events with the same priority to restart the event handler. 
+	 */
+	public void setInterruptible(int priority, boolean isInterruptable) {
 		if (priority >= 0 && priority < MAX_PRIORITY) {
-			this.interruptible[priority] = interruptable;
+			interruptible[priority] = isInterruptable;
 		}
 	}
 
 	/**
-	 * Returns a vector containing all MessageEvents currently in the robot's
-	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   for (MessageEvent e : getMessageEvents()) {
-	 *      <i> (do something with e) </i>
-	 *   }
-	 * </pre>
-	 *
-	 * @return a vector containing all MessageEvents currently in the robot's
-	 *         queue
-	 * @see MessageEvent
-	 * @since 1.2.6
+	 * Returns the priority of events belonging to a specific class.
+	 * @param eventClass is a string with the full class name of the event type to get the priority from.
+	 * @return the event priority of the specified event class.
+	 * @see robocode.Event#getPriority()
 	 */
-	public List<MessageEvent> getMessageEvents() {
-		List<MessageEvent> events = Collections.synchronizedList(new ArrayList<MessageEvent>());
-
-		synchronized (eventQueue) {
-			for (Event e : eventQueue) {
-				if (e instanceof MessageEvent) {
-					events.add((MessageEvent) e);
-				}
-			}
-		}
-		return events;
-	}
-
-	/**
-	 * Returns a vector containing all StatusEvents currently in the robot's
-	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
-	 * Example:
-	 * <pre>
-	 *   for (StatusEvent e : getStatusEvents()) {
-	 *      <i> (do something with e) </i>
-	 *   }
-	 * </pre>
-	 *
-	 * @return a vector containing all StatusEvents currently in the robot's
-	 *         queue.
-	 * @see StatusEvent
-	 * @since 1.5
-	 */
-	public List<StatusEvent> getStatusEvents() {
-		List<StatusEvent> events = Collections.synchronizedList(new ArrayList<StatusEvent>());
-
-		synchronized (eventQueue) {
-			for (Event e : eventQueue) {
-				if (e instanceof StatusEvent) {
-					events.add((StatusEvent) e);
-				}
-			}
-		}
-		return events;
-	}
-
 	public int getEventPriority(String eventClass) {
 		if (eventClass == null) {
 			return -1;
 		}
-		final Event event = namedEvents.get(eventClass);
-
+		final Event event = eventNames.get(eventClass);
 		if (event == null) {
 			return -1;
 		}
 		return event.getPriority();
 	}
 
+	/**
+	 * Sets the event priority of events belonging to a specific class.
+	 * @param eventClass is a string with the full class name of the event type to set the priority for.
+	 * @param priority is the new priority
+	 */
 	public void setEventPriority(String eventClass, int priority) {
 		if (eventClass == null) {
 			return;
 		}
-		final Event event = namedEvents.get(eventClass);
-
+		final Event event = eventNames.get(eventClass);
 		if (event == null) {
 			robotProxy.println("SYSTEM: Unknown event class: " + eventClass);
 			return;
 		}
 		if (HiddenAccess.isCriticalEvent(event)) {
-			robotProxy.println("SYSTEM: You may not change the priority of system event. setPriority ignored.");
+			robotProxy.println("SYSTEM: You may not change the priority of a system event.");
 		}
-
 		HiddenAccess.setEventPriority(event, priority);
 	}
 
-	private void registerNamedEvents() {
-		namedEvents = new Hashtable<String, Event>();
+	/**
+	 * Registers the full and simple class names of all events used by {@link #getEventPriority(String)} and
+	 * {@link #setEventPriority(String, int)} and sets the default priority of each event class.
+	 */
+	private void registerEventNames() {
+		eventNames = new Hashtable<String, Event>();
 		dummyScannedRobotEvent = new ScannedRobotEvent(null, 0, 0, 0, 0, 0);
-		registerNamedEvent(new BattleEndedEvent(false, null));
-		registerNamedEvent(new BulletHitBulletEvent(null, null));
-		registerNamedEvent(new BulletHitEvent(null, 0, null));
-		registerNamedEvent(new BulletMissedEvent(null));
-		registerNamedEvent(new DeathEvent());
-		registerNamedEvent(new HitByBulletEvent(0, null));
-		registerNamedEvent(new HitRobotEvent(null, 0, 0, false));
-		registerNamedEvent(new HitWallEvent(0));
-		registerNamedEvent(new KeyPressedEvent(null));
-		registerNamedEvent(new KeyReleasedEvent(null));
-		registerNamedEvent(new KeyTypedEvent(null));
-		registerNamedEvent(new MessageEvent(null, null));
-		registerNamedEvent(new MouseClickedEvent(null));
-		registerNamedEvent(new MouseDraggedEvent(null));
-		registerNamedEvent(new MouseEnteredEvent(null));
-		registerNamedEvent(new MouseExitedEvent(null));
-		registerNamedEvent(new MouseMovedEvent(null));
-		registerNamedEvent(new MousePressedEvent(null));
-		registerNamedEvent(new MouseReleasedEvent(null));
-		registerNamedEvent(new MouseWheelMovedEvent(null));
-		registerNamedEvent(new PaintEvent());
-		registerNamedEvent(new RobotDeathEvent(null));
-		registerNamedEvent(new RoundEndedEvent(0, 0, 0));
-		registerNamedEvent(dummyScannedRobotEvent);
-		registerNamedEvent(new SkippedTurnEvent(0));
-		registerNamedEvent(new StatusEvent(null));
-		registerNamedEvent(new WinEvent());
+		registerEventNames(new BattleEndedEvent(false, null));
+		registerEventNames(new BulletHitBulletEvent(null, null));
+		registerEventNames(new BulletHitEvent(null, 0, null));
+		registerEventNames(new BulletMissedEvent(null));
+		registerEventNames(new DeathEvent());
+		registerEventNames(new HitByBulletEvent(0, null));
+		registerEventNames(new HitRobotEvent(null, 0, 0, false));
+		registerEventNames(new HitWallEvent(0));
+		registerEventNames(new KeyPressedEvent(null));
+		registerEventNames(new KeyReleasedEvent(null));
+		registerEventNames(new KeyTypedEvent(null));
+		registerEventNames(new MessageEvent(null, null));
+		registerEventNames(new MouseClickedEvent(null));
+		registerEventNames(new MouseDraggedEvent(null));
+		registerEventNames(new MouseEnteredEvent(null));
+		registerEventNames(new MouseExitedEvent(null));
+		registerEventNames(new MouseMovedEvent(null));
+		registerEventNames(new MousePressedEvent(null));
+		registerEventNames(new MouseReleasedEvent(null));
+		registerEventNames(new MouseWheelMovedEvent(null));
+		registerEventNames(new PaintEvent());
+		registerEventNames(new RobotDeathEvent(null));
+		registerEventNames(new RoundEndedEvent(0, 0, 0));
+		registerEventNames(dummyScannedRobotEvent);
+		registerEventNames(new SkippedTurnEvent(0));
+		registerEventNames(new StatusEvent(null));
+		registerEventNames(new WinEvent());
 
 		// same as any line above but for custom event
-		final DummyCustomEvent custom = new DummyCustomEvent();
-
-		namedEvents.put("robocode.CustomEvent", custom);
-		namedEvents.put("CustomEvent", custom);
+		final DummyCustomEvent customEvent = new DummyCustomEvent();
+		eventNames.put("robocode.CustomEvent", customEvent); // full name with package name
+		eventNames.put("CustomEvent", customEvent); // only the class name
 	}
 
-	private void registerNamedEvent(Event e) {
-		final String name = e.getClass().getName();
-
-		if (!HiddenAccess.isCriticalEvent(e)) {
-			HiddenAccess.setDefaultPriority(e);
+	/**
+	 * Registers the full and simple class name of the specified event and sets the default
+	 * priority of the event class.
+	 * @param event an event belonging to the event class to register the class name for etc.
+	 */
+	private void registerEventNames(Event event) {
+		if (!HiddenAccess.isCriticalEvent(event)) {
+			HiddenAccess.setDefaultPriority(event);
 		}
-		namedEvents.put(name, e);
-		namedEvents.put(name.substring(9), e);
+		final Class<?> type = event.getClass();
+		eventNames.put(type.getName(), event); // full name with package name
+		eventNames.put(type.getSimpleName(), event); // only the class name
 	}
 
+	/**
+	 * A dummy CustomEvent used only for registering the class name.
+	 */
+	@SuppressWarnings("serial")
 	private static final class DummyCustomEvent extends CustomEvent {
-		private static final long serialVersionUID = 1L;
-
 		public DummyCustomEvent() {
 			super(null);
 		}

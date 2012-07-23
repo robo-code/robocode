@@ -64,42 +64,43 @@ namespace net.sf.robocode.security
             }
         }
 
-        public static bool isCriticalEvent(Event e)
+        public static bool IsCriticalEvent(Event e)
         {
-            return eventHelper.isCriticalEvent(e);
+            return eventHelper.IsCriticalEvent(e);
         }
 
-        public static void setEventTime(Event e, long newTime)
+        public static void SetEventTime(Event e, long newTime)
         {
-            eventHelper.setTime(e, newTime);
+            eventHelper.SetTime(e, newTime);
         }
 
-        public static void setEventPriority(Event e, int newPriority)
+        public static void SetEventPriority(Event e, int newPriority)
         {
-            eventHelper.setPriority(e, newPriority);
+            eventHelper.SetPriority(e, newPriority);
         }
 
-        public static void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
+        public static void Dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics)
         {
-            eventHelper.dispatch(evnt, robot, statics, graphics);
+            eventHelper.Dispatch(evnt, robot, statics, graphics);
         }
 
-        public static void setDefaultPriority(Event e)
+        public static void SetDefaultPriority(Event e)
         {
-            eventHelper.setDefaultPriority(e);
+            eventHelper.SetDefaultPriority(e);
         }
 
-        public static byte getSerializationType(Event e)
+        public static byte GetSerializationType(Event e)
         {
-            return eventHelper.getSerializationType(e);
+            return eventHelper.GetSerializationType(e);
         }
 
-        public static void updateBullets(Event e, Dictionary<int, Bullet> bullets)
+		// Needed for .NET version
+        public static void UpdateBullets(Event e, Dictionary<int, Bullet> bullets)
         {
-            eventHelper.updateBullets(e, bullets);
+            eventHelper.UpdateBullets(e, bullets);
         }
 
-        public static void update(Bullet bullet, double x, double y, string victimName, bool isActive)
+        public static void Update(Bullet bullet, double x, double y, string victimName, bool isActive)
         {
             bulletHelper.update(bullet, x, y, victimName, isActive);
         }

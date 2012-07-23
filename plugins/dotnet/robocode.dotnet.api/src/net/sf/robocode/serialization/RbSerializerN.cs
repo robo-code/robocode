@@ -300,7 +300,7 @@ namespace net.sf.robocode.serialization
 
         public void serialize(ByteBuffer buffer, Event evnt)
         {
-            byte type = HiddenAccessN.getSerializationType(evnt);
+            byte type = HiddenAccessN.GetSerializationType(evnt);
 
             serialize(buffer, type, evnt);
         }
@@ -472,7 +472,7 @@ namespace net.sf.robocode.serialization
 
         public int sizeOf(Event evnt)
         {
-            return sizeOf(HiddenAccessN.getSerializationType(evnt), evnt);
+            return sizeOf(HiddenAccessN.GetSerializationType(evnt), evnt);
         }
 
         private static ISerializableHelperN getHelper(byte type)

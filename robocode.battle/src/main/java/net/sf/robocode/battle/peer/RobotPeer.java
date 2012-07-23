@@ -1168,9 +1168,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 						+ " events in queue.");
 				// clean up old stuff                
 				queue.clear(battle.getTime() - EventManager.MAX_EVENT_STACK);
-				return;
+			} else {
+				queue.add(event);
 			}
-			queue.add(event);
 		}
 	}
 

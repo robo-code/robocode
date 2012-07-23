@@ -37,15 +37,18 @@ namespace net.sf.robocode.dotnet.host.proxies
     public abstract class HostingRobotProxy
     {
         private readonly IRobotRepositoryItem robotSpecification;
+
         protected EventManager eventManager;
         protected IHostManager hostManager;
+        protected RobotFileSystemManager robotFileSystemManager;
+
+        protected IBasicRobot robot;
+        protected IRobotPeer peer;
+        private Type robotType;
+
+        protected RobotStatics statics;
         protected TextWriter output;
         protected StringBuilder outputSb;
-        protected IRobotPeer peer;
-        protected IBasicRobot robot;
-        protected RobotFileSystemManager robotFileSystemManager;
-        private Type robotType;
-        protected RobotStatics statics;
 
         private readonly Hashtable securityViolations = Hashtable.Synchronized(new Hashtable());
 
@@ -56,6 +59,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             this.statics = statics;
             this.hostManager = hostManager;
             this.robotSpecification = robotSpecification;
+
             outputSb = new StringBuilder(5000);
             output = TextWriter.Synchronized(new StringWriter(outputSb));
             LoggerN.robotOut = output;
@@ -99,26 +103,6 @@ namespace net.sf.robocode.dotnet.host.proxies
             output.WriteLine(par0);
         }
 
-        public void punishSecurityViolation(java.lang.String message)
-        {
-            // Prevent unit tests of failing if multiple threads are calling this method in the same time.
-            // We only want the a specific type of security violation logged once so we only get one error
-            // per security violation.
-            lock (securityViolations)
-            {
-                if (securityViolations.ContainsKey(message))
-                {
-                    return;
-                }
-                securityViolations.Add(message, null);
-            }
-
-            LoggerN.logError(message);
-            println("SYSTEM: " + message);
-            peer.drainEnergy();
-            peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
-        }
-
         public RobotStatics getStatics()
         {
             return statics;
@@ -157,7 +141,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                 robot.SetPeer((IBasicRobotPeer) this);
                 Console.SetOut(output);
                 Console.SetError(output);
-                eventManager.setRobot(robot);
+                eventManager.SetRobot(robot);
             }
 
             catch (MissingMethodException e)
@@ -186,32 +170,26 @@ namespace net.sf.robocode.dotnet.host.proxies
             return true;
         }
 
-        // /
-
-
         protected abstract void executeImpl();
 
         public void run()
         {
             peer.setRunning(true);
 
-            if (!robotSpecification.isValid() || !loadRobotRound())
-            {
-                drainEnergy();
-                peer.punishBadBehavior(BadBehavior.CANNOT_START);
-                waitForBattleEndImpl();
-            }
-            else
+            if (robotSpecification.isValid() && loadRobotRound())
             {
                 try
                 {
                     if (robot != null)
                     {
+//                        peer.setRunning(true); // Does not work with .NET version
+
                         // Process all events for the first turn.
                         // This is done as the first robot status event must occur before the robot
                         // has started running.
-                        eventManager.processEvents();
+                        eventManager.ProcessEvents();
 
+                        // Call user code
                         CallUserCode();
                     }
 
@@ -236,8 +214,8 @@ namespace net.sf.robocode.dotnet.host.proxies
                 catch (DisabledException e)
                 {
                     drainEnergy();
-                    string msg = e.getMessage();
 
+                    string msg = e.getMessage();
                     if (msg == null)
                     {
                         msg = "";
@@ -246,8 +224,8 @@ namespace net.sf.robocode.dotnet.host.proxies
                     {
                         msg = ": " + msg;
                     }
-                    println("SYSTEM: Robot disabled" + msg);
-                    LoggerN.logMessage(statics.getName() + "Robot disabled");
+                    println("SYSTEM: Robot disabled: " + msg);
+                    LoggerN.logMessage("Robot disabled: " + statics.getName());
                 }
                 catch (SecurityException e)
                 {
@@ -270,6 +248,12 @@ namespace net.sf.robocode.dotnet.host.proxies
                 {
                     waitForBattleEndImpl();
                 }
+            }
+            else
+            {
+                drainEnergy();
+                peer.punishBadBehavior(BadBehavior.CANNOT_START);
+                waitForBattleEndImpl();
             }
 
             peer.setRunning(false);
@@ -294,6 +278,28 @@ namespace net.sf.robocode.dotnet.host.proxies
         public void drainEnergy()
         {
             peer.drainEnergy();
+        }
+
+        public void punishSecurityViolation(java.lang.String message)
+        {
+            // Prevent unit tests of failing if multiple threads are calling this method in the same time.
+            // We only want the a specific type of security violation logged once so we only get one error
+            // per security violation.
+            lock (securityViolations)
+            {
+                if (!securityViolations.ContainsKey(message))
+                {
+                    securityViolations.Add(message, null);
+                    LoggerN.logError(message);
+                    println("SYSTEM: " + message);
+
+                    if (securityViolations.Count == 1)
+                    {
+                        peer.drainEnergy();
+                        peer.punishBadBehavior(BadBehavior.SECURITY_VIOLATION);
+                    }
+                }
+            }
         }
     }
 }

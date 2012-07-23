@@ -80,6 +80,7 @@ namespace Robocode
             }
         }
 
+        // Needed for .NET version
         internal override void UpdateBullets(Dictionary<int, Bullet> bullets)
         {
             // we need to pass same instance
