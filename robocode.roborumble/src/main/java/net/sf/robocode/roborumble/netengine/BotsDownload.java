@@ -162,7 +162,10 @@ public class BotsDownload {
 		String begin = "<" + tag + ">";
 		String end = "</" + tag + ">";
 		Vector<String> bots = new Vector<String>();
-		BufferedReader in = null;
+
+		InputStream in = null;
+		InputStreamReader inputStreamReader = null;
+		BufferedReader bufferedReader = null;
 		HttpURLConnection conn = null;
 
 		try {
@@ -184,9 +187,11 @@ public class BotsDownload {
 
 			boolean arebots = false;
 
-			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			in = FileTransfer.getInputStream(conn);
+			inputStreamReader = new InputStreamReader(in); 
+			bufferedReader = new BufferedReader(inputStreamReader);
 
-			for (String participant; (participant = in.readLine()) != null;) {
+			for (String participant; (participant = bufferedReader.readLine()) != null;) {
 				if (participant.indexOf(begin) >= 0) {
 					arebots = true;
 				} else if (participant.indexOf(end) >= 0) {
@@ -233,9 +238,9 @@ public class BotsDownload {
 			System.out.println(e);
 			return false; // Error
 		} finally {
-			if (in != null) {
+			if (bufferedReader != null) {
 				try {
-					in.close();
+					bufferedReader.close();
 				} catch (IOException ignored) {}
 			}
 			if (conn != null) {
@@ -428,7 +433,9 @@ public class BotsDownload {
 	// ----------------------------------------------------------------------------------
 	private boolean downloadRatingsFile(String competition, String file) {
 
-		BufferedReader in = null;
+		InputStream in = null;
+		InputStreamReader inputStreamReader = null;
+		BufferedReader bufferedReader = null;
 		PrintStream outtxt = null;
 
 		try {
@@ -444,9 +451,11 @@ public class BotsDownload {
 
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);
 
-			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			in = FileTransfer.getInputStream(conn);
+			inputStreamReader = new InputStreamReader(in); 
+			bufferedReader = new BufferedReader(inputStreamReader);
 
-			for (String str; (str = in.readLine()) != null;) {
+			for (String str; (str = bufferedReader.readLine()) != null;) {
 				outtxt.println(str);
 			}
 			conn.disconnect();
@@ -456,9 +465,9 @@ public class BotsDownload {
 			System.out.println(e);
 			return false;
 		} finally {
-			if (in != null) {
+			if (bufferedReader != null) {
 				try {
-					in.close();
+					bufferedReader.close();
 				} catch (IOException ignored) {}
 			}
 			if (outtxt != null) {
@@ -558,22 +567,31 @@ public class BotsDownload {
 		}
 
 		String data = "version=1&game=" + game + "&name=" + bot.trim() + "&dummy=NA";
+
+		OutputStream out = null;
+		OutputStreamWriter outputStreamWriter = null;
 		PrintWriter wr = null;
-		BufferedReader rd = null;
+		InputStream in = null;
+		InputStreamReader inputStreamReader = null;
+		BufferedReader bufferedReader = null;
 
 		try {
 			// Send data
 			URLConnection conn = FileTransfer.openOutputURLConnection(new URL(removeboturl));
 
-			wr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream()));
+			out = FileTransfer.getOutputStream(conn);
+			outputStreamWriter = new OutputStreamWriter(out);
+			wr = new PrintWriter(outputStreamWriter);
 
 			wr.println(data);
 			wr.flush();
 
 			// Get the response
-			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			in = FileTransfer.getInputStream(conn);
+			inputStreamReader = new InputStreamReader(in); 
+			bufferedReader = new BufferedReader(inputStreamReader);
 
-			for (String line; (line = rd.readLine()) != null;) {
+			for (String line; (line = bufferedReader.readLine()) != null;) {
 				System.out.println(line);
 			}
 		} catch (IOException e) {
@@ -582,9 +600,9 @@ public class BotsDownload {
 			if (wr != null) {
 				wr.close();
 			}
-			if (rd != null) {
+			if (bufferedReader != null) {
 				try {
-					rd.close();
+					bufferedReader.close();
 				} catch (IOException ignored) {}
 			}
 		}
