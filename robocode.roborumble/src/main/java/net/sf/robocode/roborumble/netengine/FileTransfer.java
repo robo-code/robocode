@@ -21,6 +21,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
 
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
@@ -137,18 +139,18 @@ public class FileTransfer {
 		// The resulting session id to read out
 		String sessionId;
 
-		final HttpURLConnection con;
+		final HttpURLConnection conn;
 
-		GetSessionIdThread(HttpURLConnection con) {
+		GetSessionIdThread(HttpURLConnection conn) {
 			super("FileTransfer: Get session ID");
-			this.con = con;
+			this.conn = conn;
 		}
 
 		@Override
 		public void run() {
 			try {
 				// Get the cookie value
-				final String cookieVal = con.getHeaderField("Set-Cookie");
+				final String cookieVal = conn.getHeaderField("Set-Cookie");
 
 				// Extract the session id from the cookie value
 				if (cookieVal != null) {
@@ -223,15 +225,15 @@ public class FileTransfer {
 		// The download status to be read out
 		DownloadStatus status = DownloadStatus.COULD_NOT_CONNECT; // Default error
 
-		final HttpURLConnection con;
+		final HttpURLConnection conn;
 		final String filename;
 
 		InputStream in;
 		OutputStream out;
 
-		DownloadThread(HttpURLConnection con, String filename) {
+		DownloadThread(HttpURLConnection conn, String filename) {
 			super("FileTransfer: Download");
-			this.con = con;
+			this.conn = conn;
 			this.filename = filename;
 		}
 
@@ -239,7 +241,7 @@ public class FileTransfer {
 		public void run() {
 			try {
 				// Start getting the response code
-				final GetResponseCodeThread responseThread = new GetResponseCodeThread(con);
+				final GetResponseCodeThread responseThread = new GetResponseCodeThread(conn);
 
 				responseThread.start();
 
@@ -276,7 +278,7 @@ public class FileTransfer {
 				}
 
 				// Start getting the size of the file to download
-				final GetContentLengthThread contentLengthThread = new GetContentLengthThread(con);
+				final GetContentLengthThread contentLengthThread = new GetContentLengthThread(conn);
 
 				contentLengthThread.start();
 
@@ -301,8 +303,8 @@ public class FileTransfer {
 					return;
 				}
 
-				// Get an input stream from the connection
-				in = con.getInputStream();
+				// Get the input stream from the connection
+				in = getInputStream(conn);
 
 				// Prepare the output stream for the file output
 				out = new FileOutputStream(filename);
@@ -385,18 +387,18 @@ public class FileTransfer {
 		// The response code to read out
 		int responseCode;
 
-		final HttpURLConnection con;
+		final HttpURLConnection conn;
 
-		GetResponseCodeThread(HttpURLConnection con) {
+		GetResponseCodeThread(HttpURLConnection conn) {
 			super("FileTransfer: Get response code");
-			this.con = con;
+			this.conn = conn;
 		}
 
 		@Override
 		public void run() {
 			try {
 				// Get the response code
-				responseCode = con.getResponseCode();
+				responseCode = conn.getResponseCode();
 			} catch (final Exception e) {
 				responseCode = -1;
 			}
@@ -414,18 +416,18 @@ public class FileTransfer {
 		// The content length to read out
 		int contentLength;
 
-		final HttpURLConnection con;
+		final HttpURLConnection conn;
 
-		GetContentLengthThread(HttpURLConnection con) {
+		GetContentLengthThread(HttpURLConnection conn) {
 			super("FileTransfer: Get content length");
-			this.con = con;
+			this.conn = conn;
 		}
 
 		@Override
 		public void run() {
 			try {
 				// Get the content length
-				contentLength = con.getContentLength();
+				contentLength = conn.getContentLength();
 			} catch (final Exception e) {
 				contentLength = -1;
 			}
@@ -552,7 +554,57 @@ public class FileTransfer {
 	public static URLConnection openOutputURLConnection(URL url) throws IOException {
 		return openURLConnection(url, true); // for output
 	}
-	
+
+	/**
+	 * Convenient method used for getting an input stream from an URLConnection.
+	 * This method checks if a GZIPInputStream or InflaterInputStream should be used to wrap the input stream from the
+	 * URLConnection depending on the content encoding.
+	 * 
+	 * @param conn is the URLConnection
+	 * @return an input stream from the URLConnection, which can be a GZIPInputStream or InflaterInputStream.
+	 * @throws IOException if an I/O exception occurs.
+	 */
+	public static InputStream getInputStream(URLConnection conn) throws IOException {
+		// Get input stream
+		InputStream in = conn.getInputStream();
+
+		// Get the encoding returned by the server
+		String encoding = conn.getContentEncoding();
+		
+		// Check if we need to use a gzip or inflater input stream depending on the content encoding  
+		if ("gzip".equalsIgnoreCase(encoding)) {
+			in = new GZIPInputStream(in);
+		} else if ("deflate".equalsIgnoreCase(encoding)) {
+			in = new InflaterInputStream(in);
+		}
+		return in;
+	}
+
+	/**
+	 * Convenient method used for getting an output stream from an URLConnection.
+	 * This method checks if a GZIPOutputStream or DeflaterOutputStream should be used to wrap the output stream from
+	 * the URLConnection depending on the content encoding.
+	 * 
+	 * @param conn is the URLConnection
+	 * @return an output stream from the URLConnection, which can be a GZIPOutputStream or DeflaterOutputStream.
+	 * @throws IOException if an I/O exception occurs.
+	 */
+	public static OutputStream getOutputStream(URLConnection conn) throws IOException {
+		// Get output stream
+		OutputStream out = conn.getOutputStream();
+
+		// // Get the encoding returned by the server
+		// String encoding = conn.getContentEncoding();
+		//
+		// // Check if we need to use a gzip or inflater input stream depending on the content encoding  
+		// if ("gzip".equalsIgnoreCase(encoding)) {
+		// out = new GZIPOutputStream(out);
+		// } else if ("deflate".equalsIgnoreCase(encoding)) {
+		// out = new DeflaterOutputStream(out);
+		// }
+		return out;
+	}
+
 	/**
 	 * Opens a {link {@link java.net.URLConnection} for input and optional output where the connection timeout and read
 	 * timeout are controlled by properties.
@@ -571,6 +623,11 @@ public class FileTransfer {
 		conn.setConnectTimeout(connectionTimeout);
 		conn.setReadTimeout(readTimeout);
 
+		if (!isOutput) {
+			// Allow both GZip and Deflate (ZLib) encodings
+			conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
+			conn.setRequestProperty("User-Agent", "RoboRumble@Home - gzip, deflate");
+		}
 		return conn;
 	}
 

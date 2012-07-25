@@ -28,7 +28,7 @@ namespace net.sf.robocode.dotnet.host.events
             {
                 Event e = this[i];
 
-                if (!HiddenAccessN.isCriticalEvent(e))
+                if (!HiddenAccessN.IsCriticalEvent(e))
                 {
                     RemoveAt(i--);
                 }
@@ -41,7 +41,7 @@ namespace net.sf.robocode.dotnet.host.events
             {
                 Event e = this[i];
 
-                if ((e.Time <= clearTime) && !HiddenAccessN.isCriticalEvent(e))
+                if ((e.Time <= clearTime) && !HiddenAccessN.IsCriticalEvent(e))
                 {
                     RemoveAt(i--);
                 }

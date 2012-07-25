@@ -106,97 +106,97 @@ namespace net.sf.robocode.dotnet.host.proxies
         public void SetInterruptible(bool interruptable)
         {
             SetCall();
-            eventManager.setInterruptible(eventManager.getCurrentTopEventPriority(), interruptable);
+            eventManager.SetInterruptible(eventManager.CurrentTopEventPriority, interruptable);
         }
 
         public void SetEventPriority(String eventClass, int priority)
         {
             SetCall();
-            eventManager.setEventPriority(eventClass, priority);
+            eventManager.SetEventPriority(eventClass, priority);
         }
 
         public int GetEventPriority(String eventClass)
         {
             GetCall();
-            return eventManager.getEventPriority(eventClass);
+            return eventManager.GetEventPriority(eventClass);
         }
 
         public void RemoveCustomEvent(Condition condition)
         {
             SetCall();
-            eventManager.removeCustomEvent(condition);
+            eventManager.RemoveCustomEvent(condition);
         }
 
         public void AddCustomEvent(Condition condition)
         {
             SetCall();
-            eventManager.addCustomEvent(condition);
+            eventManager.AddCustomEvent(condition);
         }
 
         public void clearAllEvents()
         {
             SetCall();
-            eventManager.clearAllEvents(false);
+            eventManager.ClearAllEvents(false);
         }
 
         public IList<Event> GetAllEvents()
         {
             GetCall();
-            return eventManager.getAllEvents();
+            return eventManager.GetAllEvents();
         }
 
         public IList<StatusEvent> GetStatusEvents()
         {
             GetCall();
-            return eventManager.getStatusEvents();
+            return eventManager.GetStatusEvents();
         }
 
         public IList<BulletMissedEvent> GetBulletMissedEvents()
         {
             GetCall();
-            return eventManager.getBulletMissedEvents();
+            return eventManager.GetBulletMissedEvents();
         }
 
         public IList<BulletHitBulletEvent> GetBulletHitBulletEvents()
         {
             GetCall();
-            return eventManager.getBulletHitBulletEvents();
+            return eventManager.GetBulletHitBulletEvents();
         }
 
         public IList<BulletHitEvent> GetBulletHitEvents()
         {
             GetCall();
-            return eventManager.getBulletHitEvents();
+            return eventManager.GetBulletHitEvents();
         }
 
         public IList<HitByBulletEvent> GetHitByBulletEvents()
         {
             GetCall();
-            return eventManager.getHitByBulletEvents();
+            return eventManager.GetHitByBulletEvents();
         }
 
         public IList<HitRobotEvent> GetHitRobotEvents()
         {
             GetCall();
-            return eventManager.getHitRobotEvents();
+            return eventManager.GetHitRobotEvents();
         }
 
         public IList<HitWallEvent> GetHitWallEvents()
         {
             GetCall();
-            return eventManager.getHitWallEvents();
+            return eventManager.GetHitWallEvents();
         }
 
         public IList<RobotDeathEvent> GetRobotDeathEvents()
         {
             GetCall();
-            return eventManager.getRobotDeathEvents();
+            return eventManager.GetRobotDeathEvents();
         }
 
         public IList<ScannedRobotEvent> GetScannedRobotEvents()
         {
             GetCall();
-            return eventManager.getScannedRobotEvents();
+            return eventManager.GetScannedRobotEvents();
         }
 
         // data

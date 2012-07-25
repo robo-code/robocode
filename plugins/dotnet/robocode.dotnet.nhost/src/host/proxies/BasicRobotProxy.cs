@@ -37,21 +37,27 @@ namespace net.sf.robocode.dotnet.host.proxies
             MAX_SET_CALL_COUNT = 10000,
             MAX_GET_CALL_COUNT = 10000;
 
+        private GraphicsProxy graphicsProxy;
+
+        private RobotStatus status;
+        private bool isDisabled;
+        protected ExecCommands commands;
+        private ExecResults execResults;
+
         private readonly Dictionary<int, Bullet> bullets = new Dictionary<int, Bullet>();
+        private int bulletCounter;
+
+        private int setCallCount;
+        private int getCallCount;
+
+        protected Condition waitCondition;
+        private bool testingCondition;
+        private double firedEnergy;
+        private double firedHeat;
+
         private readonly DirectByteBuffer execJavaBuffer;
         private readonly ByteBuffer execNetBuffer;
         private readonly RbSerializerN rbSerializerN;
-        private int bulletCounter;
-        protected ExecCommands commands;
-        private ExecResults execResults;
-        private double firedEnergy;
-        private double firedHeat;
-        private int getCallCount;
-        private GraphicsProxy graphicsProxy;
-        private int setCallCount;
-        private RobotStatus status;
-        private bool testingCondition;
-        protected Condition waitCondition;
 
         public BasicRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
                                RobotStatics statics)
@@ -189,23 +195,31 @@ namespace net.sf.robocode.dotnet.host.proxies
         // counters
         public void SetCall()
         {
-            int res = Interlocked.Increment(ref setCallCount);
-
-            if (res >= MAX_SET_CALL_COUNT)
+            if (!isDisabled)
             {
-                println("SYSTEM: You have made " + res + " calls to setXX methods without calling Execute()");
-                throw new DisabledException("Too many calls to setXX methods");
+                int res = Interlocked.Increment(ref setCallCount);
+
+                if (res >= MAX_SET_CALL_COUNT)
+                {
+                    isDisabled = true;
+                    println("SYSTEM: You have made " + res + " calls to setXX methods without calling Execute()");
+                    throw new DisabledException("Too many calls to setXX methods");
+                }
             }
         }
 
         public void GetCall()
         {
-            int res = Interlocked.Increment(ref getCallCount);
-
-            if (res >= MAX_GET_CALL_COUNT)
+            if (!isDisabled)
             {
-                println("SYSTEM: You have made " + res + " calls to getXX methods without calling Execute()");
-                throw new DisabledException("Too many calls to getXX methods");
+                int res = Interlocked.Increment(ref getCallCount);
+
+                if (res >= MAX_GET_CALL_COUNT)
+                {
+                    isDisabled = true;
+                    println("SYSTEM: You have made " + res + " calls to getXX methods without calling Execute()");
+                    throw new DisabledException("Too many calls to getXX methods");
+                }
             }
         }
 
@@ -345,20 +359,21 @@ namespace net.sf.robocode.dotnet.host.proxies
         public void Rescan()
         {
             bool reset = false;
-            bool resetValue = false;
+            bool origInterruptableValue = false;
 
-            if (eventManager.getCurrentTopEventPriority() == eventManager.getScannedRobotEventPriority())
+            if (eventManager.CurrentTopEventPriority == eventManager.ScannedRobotEventPriority)
             {
                 reset = true;
-                resetValue = eventManager.getInterruptible(eventManager.getScannedRobotEventPriority());
-                eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), true);
+                origInterruptableValue = eventManager.IsInterruptible(eventManager.ScannedRobotEventPriority);
+                eventManager.SetInterruptible(eventManager.ScannedRobotEventPriority, true);
             }
 
             commands.setScan(true);
             executeImpl();
+
             if (reset)
             {
-                eventManager.setInterruptible(eventManager.getScannedRobotEventPriority(), resetValue);
+                eventManager.SetInterruptible(eventManager.ScannedRobotEventPriority, origInterruptableValue);
             }
         }
 
@@ -367,10 +382,10 @@ namespace net.sf.robocode.dotnet.host.proxies
         internal override void initializeRound(ExecCommands commands, RobotStatus status)
         {
             updateStatus(commands, status);
-            eventManager.reset();
+            eventManager.Reset();
             var start = new StatusEvent(status);
 
-            eventManager.add(start);
+            eventManager.Add(start);
             setSetCallCount(0);
             setGetCallCount(0);
         }
@@ -385,7 +400,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             // Cleanup and remove the event manager
             if (eventManager != null)
             {
-                eventManager.cleanup();
+                eventManager.Cleanup();
                 eventManager = null;
             }
 
@@ -448,16 +463,17 @@ namespace net.sf.robocode.dotnet.host.proxies
             }
 
             updateStatus(execResults.getCommands(), execResults.getStatus());
+
             graphicsProxy.setPaintingEnabled(execResults.isPaintEnabled());
             firedEnergy = 0;
             firedHeat = 0;
 
             // add new events
-            eventManager.add(new StatusEvent(execResults.getStatus()));
-            if (statics.IsPaintRobot() && (execResults.isPaintEnabled()))
+            eventManager.Add(new StatusEvent(execResults.getStatus()));
+            if (statics.IsPaintRobot() && execResults.isPaintEnabled())
             {
                 // Add paint event, if robot is a paint robot and its painting is enabled
-                eventManager.add(new PaintEvent());
+                eventManager.Add(new PaintEvent());
             }
 
             // add other events
@@ -465,22 +481,22 @@ namespace net.sf.robocode.dotnet.host.proxies
             {
                 foreach (Event evnt in execResults.getEvents())
                 {
-                    eventManager.add(evnt);
-                    HiddenAccessN.updateBullets(evnt, bullets);
+                    eventManager.Add(evnt);
+                    HiddenAccessN.UpdateBullets(evnt, bullets);
                 }
             }
 
             if (execResults.getBulletUpdates() != null)
             {
-                foreach (BulletStatus s in execResults.getBulletUpdates())
+                foreach (BulletStatus bulletStatus in execResults.getBulletUpdates())
                 {
                     Bullet bullet;
-                    if (bullets.TryGetValue(s.bulletId, out bullet))
+                    if (bullets.TryGetValue(bulletStatus.bulletId, out bullet))
                     {
-                        HiddenAccessN.update(bullet, s.x, s.y, s.victimName, s.isActive);
-                        if (!s.isActive)
+                        HiddenAccessN.Update(bullet, bulletStatus.x, bulletStatus.y, bulletStatus.victimName, bulletStatus.isActive);
+                        if (!bulletStatus.isActive)
                         {
-                            bullets.Remove(s.bulletId);
+                            bullets.Remove(bulletStatus.bulletId);
                         }
                     }
                 }
@@ -489,7 +505,7 @@ namespace net.sf.robocode.dotnet.host.proxies
             // add new team messages
             loadTeamMessages(execResults.getTeamMessages());
 
-            eventManager.processEvents();
+            eventManager.ProcessEvents();
         }
 
         private string GetOutTextAndReset()
@@ -522,7 +538,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         protected override sealed void waitForBattleEndImpl()
         {
-            eventManager.clearAllEvents(false);
+            eventManager.ClearAllEvents(false);
             graphicsProxy.setPaintingEnabled(false);
             do
             {
@@ -551,12 +567,14 @@ namespace net.sf.robocode.dotnet.host.proxies
                     {
                         if (evnt is BattleEndedEvent)
                         {
-                            eventManager.add(evnt);
+                            eventManager.Add(evnt);
                         }
                     }
                 }
-                eventManager.resetCustomEvents();
-                eventManager.processEvents();
+                eventManager.ResetCustomEvents();
+
+                eventManager.ProcessEvents();
+
             } while (!execResults.isHalt() && execResults.isShouldWait());
         }
 
@@ -606,7 +624,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
             Bullet bullet;
             BulletCommand wrapper;
-            Event currentTopEvent = eventManager.getCurrentTopEvent();
+            Event currentTopEvent = eventManager.CurrentTopEvent;
 
             bulletCounter++;
 

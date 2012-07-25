@@ -247,24 +247,33 @@ public class ResultsUpload {
 
 	private boolean senddata(String game, String data, PrintStream outtxt, boolean saveonerror, Vector<String> results, int i, PrintStream battlesnum, PrintStream prioritybattles) {
 		boolean errorsfound = false;
+		OutputStream out = null;
+		OutputStreamWriter outputStreamWriter = null;
 		PrintWriter wr = null;
-		BufferedReader rd = null;
+		InputStream in = null;
+		InputStreamReader inputStreamReader = null;
+		BufferedReader bufferedReader = null;
 
 		try {
 			// Send data
 			URLConnection conn = FileTransfer.openOutputURLConnection(new URL(resultsurl));
 
-			wr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream()));
+			out = FileTransfer.getOutputStream(conn);
+			outputStreamWriter = new OutputStreamWriter(out);
+			wr = new PrintWriter(outputStreamWriter);
 
 			wr.println(data);
 			wr.flush();
 
 			// Get the response
-			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			in = FileTransfer.getInputStream(conn);
+			inputStreamReader = new InputStreamReader(in); 
+			bufferedReader = new BufferedReader(inputStreamReader);
+
 			String line;
 			boolean ok = false;
 
-			while ((line = rd.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null) {
 				if (line.indexOf("OK") != -1) {
 					ok = true;
 					System.out.println(line);
@@ -318,9 +327,9 @@ public class ResultsUpload {
 			if (wr != null) {
 				wr.close();
 			}
-			if (rd != null) {
+			if (bufferedReader != null) {
 				try {
-					rd.close();
+					bufferedReader.close();
 				} catch (IOException ignored) {}
 			}
 		}

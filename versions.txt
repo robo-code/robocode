@@ -7,11 +7,16 @@ Version 1.8.0 Alpha 1
 * The game engine is now measuring the turn time very precise compared to the CPU constant. Previously, the game was waiting for each robot to complete their turn one robot at a time, and it was waiting up to the CPU constant time per robot. Now the battle thread of the engine checks all robots in parallel, and will check if each robot skips a turn after a certain amount of time has passed, defined by the calculated CPU constant.
 
 Version 1.7.4.2 Alpha 3
-(14-Jul-2012)
+(23-Jul-2012)
 ---------------
 = Bugfixes =
+* Bug [3540397] - "Accept-Encoding: gzip" not in Roborumble HTTP Headers.
 * Bug [3543475] - All Text Missing. Reverting enabling OpenGL for Linux per default (introduced with Bug fix [3520616])
 * Bug [3544205] - Robocode crash on window resize (linux-opengl). Reverting enabling OpenGL per default for Linux.
+* Bug [3546125] - InteractiveRobots gets error "After the event was added...".
+
+= Changes =
+* The built-in RoboRumble@Home client is now able to decompress "gzip" and "deflate" content with HTTP connections if the RoboRumble server supports it.
 
 Version 1.7.4.1
 (02-Jul-2012)

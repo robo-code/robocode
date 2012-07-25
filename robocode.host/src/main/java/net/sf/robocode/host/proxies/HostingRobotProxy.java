@@ -37,21 +37,28 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+// XXX Remember to update the .NET version whenever a change is made to this class!
+
 /**
  * @author Pavel Savara (original)
  */
 public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
+
+	private final IRobotRepositoryItem robotSpecification;
+
 	protected EventManager eventManager;
+	protected final IHostManager hostManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
-	private final IRobotRepositoryItem robotSpecification;
+	private IThreadManager threadManager;
+
+	protected IBasicRobot robot;
+	protected final IRobotPeer peer;
 	protected IRobotClassLoader robotClassLoader;
+
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;
-	protected final IRobotPeer peer;
-	protected final IHostManager hostManager;
-	private IThreadManager threadManager;
-	protected IBasicRobot robot;
+
 	private final Set<String> securityViolations = Collections.synchronizedSet(new HashSet<String>());
 
 	HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
@@ -214,11 +221,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 					// has started running.
 					eventManager.processEvents();
 
-					Runnable runnable = robot.getRobotRunnable();
-
-					if (runnable != null) {
-						runnable.run();
-					}
+					// Call user code
+					callUserCode();
 				}
 				while (peer.isRunning()) {
 					executeImpl();
@@ -229,15 +233,15 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				println("SYSTEM: " + statics.getName() + " has died");
 			} catch (DisabledException e) {
 				drainEnergy();
-				String msg = e.getMessage();
 
+				String msg = e.getMessage();
 				if (msg == null) {
 					msg = "";
 				} else {
 					msg = ": " + msg;
 				}
-				println("SYSTEM: Robot disabled" + msg);
-				logMessage(statics.getName() + "Robot disabled");
+				println("SYSTEM: Robot disabled: " + msg);
+				logMessage("Robot disabled: " + statics.getName());
 			} catch (Exception e) {
 				drainEnergy();
 				println(e);
@@ -264,6 +268,13 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		// If battle is waiting for us, well, all done!
 		synchronized (this) {
 			notifyAll();
+		}
+	}
+
+	private void callUserCode() {
+		Runnable runnable = robot.getRobotRunnable();
+		if (runnable != null) {
+			runnable.run();
 		}
 	}
 

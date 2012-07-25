@@ -100,7 +100,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         public IList<MessageEvent> GetMessageEvents()
         {
             GetCall();
-            return eventManager.getMessageEvents();
+            return eventManager.GetMessageEvents();
         }
 
         #endregion
@@ -122,7 +122,7 @@ namespace net.sf.robocode.dotnet.host.proxies
                         object message = bf.Deserialize(ms);
                         var evnt = new MessageEvent(teamMessage.sender, message);
 
-                        eventManager.add(evnt);
+                        eventManager.Add(evnt);
                     }
                 }
                 catch (Exception e)

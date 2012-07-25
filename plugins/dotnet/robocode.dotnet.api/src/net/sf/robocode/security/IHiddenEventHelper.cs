@@ -19,13 +19,13 @@ namespace net.sf.robocode.security
     /// <exclude/>
     public interface IHiddenEventHelper
     {
-        void setDefaultPriority(Event evnt);
-        void setPriority(Event evnt, int newPriority);
-        void setTime(Event evnt, long newTime);
-        bool isCriticalEvent(Event evnt);
-        void dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics);
-        void updateBullets(Event evnt, Dictionary<int, Bullet> bullets);
-        byte getSerializationType(Event evnt);
+        void SetDefaultPriority(Event evnt);
+        void SetPriority(Event evnt, int newPriority);
+        void SetTime(Event evnt, long newTime);
+        bool IsCriticalEvent(Event evnt);
+        void Dispatch(Event evnt, IBasicRobot robot, IRobotStaticsN statics, IGraphics graphics);
+        byte GetSerializationType(Event evnt);
+        void UpdateBullets(Event evnt, Dictionary<int, Bullet> bullets); // Needed for .NET version
     }
 }
 
