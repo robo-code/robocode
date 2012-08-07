@@ -162,7 +162,7 @@ public class PrepareBattles {
 		Vector<String> prioritymicro = new Vector<String>();
 		Vector<String> prioritynano = new Vector<String>();
 
-		Vector<String> prioritarybattles = new Vector<String>();
+		Vector<String> prioritybattles = new Vector<String>();
 
 		// Read participants
 
@@ -242,21 +242,21 @@ public class PrepareBattles {
 					String jar2 = items[1].replace(' ', '_') + ".jar";
 					boolean exists2 = (new File(botsrepository + jar2)).exists() && namesall.contains(items[1]);
 
-					// Add battles to prioritary battles vector
-					if (exists1 && exists2 && !prioritarybattles.contains(record)) {
-						prioritarybattles.add(record);
+					// Add battles to priority battles vector
+					if (exists1 && exists2 && !prioritybattles.contains(record)) {
+						prioritybattles.add(record);
 					} else {
 						System.out.println("Ignoring: " + record);
 					}
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Prioritary battles file not found ...  ");
+			System.out.println("Priority battles file not found ...  ");
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException ignored) {}
+				} catch (IOException ignore) {}
 			}
 		}
 
@@ -264,7 +264,7 @@ public class PrepareBattles {
 		File r = new File(priority);
 
 		if (r.exists() && !r.delete()) {
-			Logger.logError("Cannot delete: " + priority);
+			System.out.println("Cannot delete: " + priority);
 		}
 
 		// Open battles file
@@ -277,21 +277,20 @@ public class PrepareBattles {
 			System.out.println(e);
 			return false;
 		}
+
 		// Create the participants file
 		Random random = new Random();
 		int count = 0;
 
-		// Add prioritary battles
-		while (count < numbattles && count < prioritarybattles.size()) {
-			String battle = prioritarybattles.get(count);
-
+		// Add priority battles
+		while (count < numbattles && count < prioritybattles.size()) {
+			String battle = prioritybattles.get(count);
 			outtxt.println(battle);
 			count++;
 		}
 		// Add bots with less than 500 battles, or a random battle if all bots have enough battles
 		while (count < numbattles && namesall.size() > 1) {
 			String[] bots;
-
 			if (priorityall.size() > 0) {
 				bots = getbots(priorityall, namesall, random);
 			} else if (prioritymini.size() > 0 && namesmini.size() > 1) {
@@ -352,6 +351,7 @@ public class PrepareBattles {
 		Vector<String> prioritymini = new Vector<String>();
 		Vector<String> prioritymicro = new Vector<String>();
 		Vector<String> prioritynano = new Vector<String>();
+
 		Vector<String[]> prioritypairs = new Vector<String[]>();
 
 		// Read participants
@@ -432,9 +432,11 @@ public class PrepareBattles {
 					String jar2 = items[1].replace(' ', '_') + ".jar";
 					boolean exists2 = (new File(botsrepository + jar2)).exists() && namesall.contains(items[1]);
 
-					// Add battles to prioritary battles vector
+					// Add battles to priority battles vector
 					if (exists1 && exists2 && !prioritypairs.contains(items)) {
 						prioritypairs.add(items);
+					} else {
+						System.out.println("Ignoring: " + record);
 					}
 				}
 			}
@@ -444,15 +446,15 @@ public class PrepareBattles {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {}
+				} catch (IOException ignore) {}
 			}
 		}
 
 		// Delete priority battles (avoid duplication)
 		File r = new File(priority);
 
-		if (!r.delete()) {
-			System.out.println("Cannot delete the priority battles file " + priority);
+		if (r.exists() && !r.delete()) {
+			System.out.println("Cannot delete: " + priority);
 		}
 
 		// Open battles file
