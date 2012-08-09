@@ -23,14 +23,14 @@
 package net.sf.robocode.roborumble.battlesengine;
 
 
-import net.sf.robocode.io.Logger;
 import static net.sf.robocode.roborumble.util.ExcludesUtil.*;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
-import java.util.Vector;
 
 
 /**
@@ -56,6 +56,8 @@ public class PrepareBattles {
 	private final String priority;
 	private final int prioritynum;
 	private final int meleebots;
+	
+	private final static Random RANDOM = new Random(); 
 
 	public PrepareBattles(String propertiesfile) {
 		// Read parameters
@@ -82,7 +84,7 @@ public class PrepareBattles {
 	}
 
 	public boolean createBattlesList() {
-		Vector<String> names = new Vector<String>();
+		List<String> names = new ArrayList<String>();
 
 		// Read participants
 
@@ -153,16 +155,16 @@ public class PrepareBattles {
 	}
 
 	public boolean createSmartBattlesList() {
-		Vector<String> namesall = new Vector<String>();
-		Vector<String> namesmini = new Vector<String>();
-		Vector<String> namesmicro = new Vector<String>();
-		Vector<String> namesnano = new Vector<String>();
-		Vector<String> priorityall = new Vector<String>();
-		Vector<String> prioritymini = new Vector<String>();
-		Vector<String> prioritymicro = new Vector<String>();
-		Vector<String> prioritynano = new Vector<String>();
+		List<String> namesAll = new ArrayList<String>();
+		List<String> namesMini = new ArrayList<String>();
+		List<String> namesMicro = new ArrayList<String>();
+		List<String> namesNano = new ArrayList<String>();
+		List<String> priorityAll = new ArrayList<String>();
+		List<String> priorityMini = new ArrayList<String>();
+		List<String> priorityMicro = new ArrayList<String>();
+		List<String> priorityNano = new ArrayList<String>();
 
-		Vector<String> prioritybattles = new Vector<String>();
+		List<String> priorityBattles = new ArrayList<String>();
 
 		// Read participants
 
@@ -185,27 +187,27 @@ public class PrepareBattles {
 					boolean exists = (new File(botsrepository + jar)).exists();
 
 					if (exists) {
-						namesall.add(name);
+						namesAll.add(name);
 						if (size.checkCompetitorsForSize(name, name, 1500)) {
-							namesmini.add(name);
+							namesMini.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 750)) {
-							namesmicro.add(name);
+							namesMicro.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 250)) {
-							namesnano.add(name);
+							namesNano.add(name);
 						}
 						if (robotHasPriority(name, generalratings)) {
-							priorityall.add(name);
+							priorityAll.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 1500) && robotHasPriority(name, miniratings)) {
-							prioritymini.add(name);
+							priorityMini.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 750) && robotHasPriority(name, microratings)) {
-							prioritymicro.add(name);
+							priorityMicro.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 250) && robotHasPriority(name, nanoratings)) {
-							prioritynano.add(name);
+							priorityNano.add(name);
 						}
 					}
 				}
@@ -238,13 +240,13 @@ public class PrepareBattles {
 				if (items.length == 3) {
 					// Check that competitors exist
 					String jar1 = items[0].replace(' ', '_') + ".jar";
-					boolean exists1 = (new File(botsrepository + jar1)).exists() && namesall.contains(items[0]);
+					boolean exists1 = (new File(botsrepository + jar1)).exists() && namesAll.contains(items[0]);
 					String jar2 = items[1].replace(' ', '_') + ".jar";
-					boolean exists2 = (new File(botsrepository + jar2)).exists() && namesall.contains(items[1]);
+					boolean exists2 = (new File(botsrepository + jar2)).exists() && namesAll.contains(items[1]);
 
-					// Add battles to priority battles vector
-					if (exists1 && exists2 && !prioritybattles.contains(record)) {
-						prioritybattles.add(record);
+					// Add battles to priority battles list
+					if (exists1 && exists2 && !priorityBattles.contains(record)) {
+						priorityBattles.add(record);
 					} else {
 						System.out.println("Ignoring: " + record);
 					}
@@ -279,45 +281,46 @@ public class PrepareBattles {
 		}
 
 		// Create the participants file
-		Random random = new Random();
 		int count = 0;
 
 		// Add priority battles
-		while (count < numbattles && count < prioritybattles.size()) {
-			String battle = prioritybattles.get(count);
+		while (count < numbattles && count < priorityBattles.size()) {
+			String battle = priorityBattles.get(count);
 			outtxt.println(battle);
 			count++;
 		}
 		// Add bots with less than 500 battles, or a random battle if all bots have enough battles
-		while (count < numbattles && namesall.size() > 1) {
-			String[] bots;
-			if (priorityall.size() > 0) {
-				bots = getbots(priorityall, namesall, random);
-			} else if (prioritymini.size() > 0 && namesmini.size() > 1) {
-				bots = getbots(prioritymini, namesmini, random);
-			} else if (prioritymicro.size() > 0 && namesmicro.size() > 1) {
-				bots = getbots(prioritymicro, namesmicro, random);
-			} else if (prioritynano.size() > 0 && namesnano.size() > 1) {
-				bots = getbots(prioritynano, namesnano, random);
-			} else {
-				bots = getbots(namesall, namesall, random);
-			}
-			if (bots != null) {
-				outtxt.println(bots[0] + "," + bots[1] + "," + runonly);
-				count++;
+		if (namesAll.size() > 1) {
+			while (count < numbattles) {
+				String[] bots;
+				if (priorityAll.size() > 0) {
+					bots = getRandomBots(priorityAll, namesAll);
+				} else if (priorityMini.size() > 0 && namesMini.size() > 1) {
+					bots = getRandomBots(priorityMini, namesMini);
+				} else if (priorityMicro.size() > 0 && namesMicro.size() > 1) {
+					bots = getRandomBots(priorityMicro, namesMicro);
+				} else if (priorityNano.size() > 0 && namesNano.size() > 1) {
+					bots = getRandomBots(priorityNano, namesNano);
+				} else {
+					bots = getRandomBots(namesAll, namesAll); // FIXME: New bots not given priority - ID: 3547611
+				}
+				if (bots != null) {
+					outtxt.println(bots[0] + "," + bots[1] + "," + runonly);
+					count++;
+				}
 			}
 		}
 		outtxt.close();
 		return true;
 	}
 
-	private String[] getbots(Vector<String> list1, Vector<String> list2, Random rand) {
-		int bot1 = rand.nextInt(list1.size());
-		int bot2 = rand.nextInt(list2.size());
+	private String[] getRandomBots(List<String> list1, List<String> list2) {
+		int bot1 = RANDOM.nextInt(list1.size());
+		int bot2 = RANDOM.nextInt(list2.size());
 
 		while ((list1.get(bot1)).equals(list2.get(bot2))) {
-			bot1 = rand.nextInt(list1.size());
-			bot2 = rand.nextInt(list2.size());
+			bot1 = RANDOM.nextInt(list1.size());
+			bot2 = RANDOM.nextInt(list2.size());
 		}
 		String[] bots = new String[2];
 
@@ -343,16 +346,16 @@ public class PrepareBattles {
 	}
 
 	public boolean createMeleeBattlesList() {
-		Vector<String> namesall = new Vector<String>();
-		Vector<String> namesmini = new Vector<String>();
-		Vector<String> namesmicro = new Vector<String>();
-		Vector<String> namesnano = new Vector<String>();
-		Vector<String> priorityall = new Vector<String>();
-		Vector<String> prioritymini = new Vector<String>();
-		Vector<String> prioritymicro = new Vector<String>();
-		Vector<String> prioritynano = new Vector<String>();
+		List<String> namesAll = new ArrayList<String>();
+		List<String> namesMini = new ArrayList<String>();
+		List<String> namesMicro = new ArrayList<String>();
+		List<String> namesNano = new ArrayList<String>();
+		List<String> priorityAll = new ArrayList<String>();
+		List<String> priorityMini = new ArrayList<String>();
+		List<String> priorityMicro = new ArrayList<String>();
+		List<String> priorityNano = new ArrayList<String>();
 
-		Vector<String[]> prioritypairs = new Vector<String[]>();
+		List<String[]> priorityPairs = new ArrayList<String[]>();
 
 		// Read participants
 
@@ -375,27 +378,27 @@ public class PrepareBattles {
 					boolean exists = (new File(botsrepository + jar)).exists();
 
 					if (exists) {
-						namesall.add(name);
+						namesAll.add(name);
 						if (size.checkCompetitorsForSize(name, name, 1500)) {
-							namesmini.add(name);
+							namesMini.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 750)) {
-							namesmicro.add(name);
+							namesMicro.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 250)) {
-							namesnano.add(name);
+							namesNano.add(name);
 						}
 						if (robotHasPriority(name, generalratings)) {
-							priorityall.add(name);
+							priorityAll.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 1500) && robotHasPriority(name, miniratings)) {
-							prioritymini.add(name);
+							priorityMini.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 750) && robotHasPriority(name, microratings)) {
-							prioritymicro.add(name);
+							priorityMicro.add(name);
 						}
 						if (size.checkCompetitorsForSize(name, name, 250) && robotHasPriority(name, nanoratings)) {
-							prioritynano.add(name);
+							priorityNano.add(name);
 						}
 					}
 				}
@@ -428,13 +431,13 @@ public class PrepareBattles {
 				if (items.length == 3) {
 					// Check that competitors exist
 					String jar1 = items[0].replace(' ', '_') + ".jar";
-					boolean exists1 = (new File(botsrepository + jar1)).exists() && namesall.contains(items[0]);
+					boolean exists1 = (new File(botsrepository + jar1)).exists() && namesAll.contains(items[0]);
 					String jar2 = items[1].replace(' ', '_') + ".jar";
-					boolean exists2 = (new File(botsrepository + jar2)).exists() && namesall.contains(items[1]);
+					boolean exists2 = (new File(botsrepository + jar2)).exists() && namesAll.contains(items[1]);
 
 					// Add battles to priority battles vector
-					if (exists1 && exists2 && !prioritypairs.contains(items)) {
-						prioritypairs.add(items);
+					if (exists1 && exists2 && !priorityPairs.contains(items)) {
+						priorityPairs.add(items);
 					} else {
 						System.out.println("Ignoring: " + record);
 					}
@@ -469,52 +472,53 @@ public class PrepareBattles {
 		}
 
 		// Create the participants file
-		Random random = new Random();
 		int count = 0;
 
 		// Add bots with less than 500 battles, or a random battle if all bots have enough battles
-		while (count < numbattles && namesall.size() > meleebots) {
-			String[] bots = null;
-
-			if (count < prioritypairs.size()) {
-				String[] prioritybots = prioritypairs.get(count);
-
-				bots = getMeleeBots(prioritybots[0], prioritybots[1], namesall, random);
-			} else if (priorityall.size() > 0 && namesall.size() >= meleebots) {
-				bots = getmeleebots(priorityall, namesall, random);
-			} else if (prioritymini.size() > 0 && namesmini.size() >= meleebots) {
-				bots = getmeleebots(prioritymini, namesmini, random);
-			} else if (prioritymicro.size() > 0 && namesmicro.size() >= meleebots) {
-				bots = getmeleebots(prioritymicro, namesmicro, random);
-			} else if (prioritynano.size() > 0 && namesnano.size() >= meleebots) {
-				bots = getmeleebots(prioritynano, namesnano, random);
-			} else if (namesall.size() >= meleebots) {
-				bots = getmeleebots(namesall, namesall, random);
-			}
-			if (bots != null) {
-				StringBuilder battle = new StringBuilder(bots[0]);
-
-				for (int i = 1; i < bots.length; i++) {
-					battle.append(',').append(bots[i]);
+		if (namesAll.size() > meleebots) {
+			while (count < numbattles) {
+				String[] bots = null;
+	
+				if (count < priorityPairs.size()) {
+					String[] prioritybots = priorityPairs.get(count);
+	
+					bots = getRandomMeleeBots(prioritybots[0], prioritybots[1], namesAll);
+				} else if (priorityAll.size() > 0 && namesAll.size() >= meleebots) {
+					bots = getRandomMeleeBots(priorityAll, namesAll);
+				} else if (priorityMini.size() > 0 && namesMini.size() >= meleebots) {
+					bots = getRandomMeleeBots(priorityMini, namesMini);
+				} else if (priorityMicro.size() > 0 && namesMicro.size() >= meleebots) {
+					bots = getRandomMeleeBots(priorityMicro, namesMicro);
+				} else if (priorityNano.size() > 0 && namesNano.size() >= meleebots) {
+					bots = getRandomMeleeBots(priorityNano, namesNano);
+				} else if (namesAll.size() >= meleebots) {
+					bots = getRandomMeleeBots(namesAll, namesAll);
 				}
-				battle.append(',').append(runonly);
-
-				outtxt.println(battle);
-				count++;
+				if (bots != null) {
+					StringBuilder battle = new StringBuilder(bots[0]);
+	
+					for (int i = 1; i < bots.length; i++) {
+						battle.append(',').append(bots[i]);
+					}
+					battle.append(',').append(runonly);
+	
+					outtxt.println(battle);
+					count++;
+				}
 			}
 		}
 		outtxt.close();
 		return true;
 	}
 
-	private String[] getmeleebots(Vector<String> list1, Vector<String> list2, Random rand) {
+	private String[] getRandomMeleeBots(List<String> list1, List<String> list2) {
 		String[] bots = new String[meleebots];
 
-		bots[0] = list1.get(rand.nextInt(list1.size()));
+		bots[0] = list1.get(RANDOM.nextInt(list1.size()));
 		int count = 1;
 
 		while (count < meleebots) {
-			bots[count] = list2.get(rand.nextInt(list2.size()));
+			bots[count] = list2.get(RANDOM.nextInt(list2.size()));
 			boolean exists = false;
 
 			for (int i = 0; i < count; i++) {
@@ -529,7 +533,7 @@ public class PrepareBattles {
 		return bots;
 	}
 
-	private String[] getMeleeBots(String bot1, String bot2, Vector<String> list2, Random rand) {
+	private String[] getRandomMeleeBots(String bot1, String bot2, List<String> list2) {
 		String[] bots = new String[meleebots];
 
 		bots[0] = bot1;
@@ -537,7 +541,7 @@ public class PrepareBattles {
 		int count = 2;
 
 		while (count < meleebots) {
-			bots[count] = list2.get(rand.nextInt(list2.size()));
+			bots[count] = list2.get(RANDOM.nextInt(list2.size()));
 			boolean exists = false;
 
 			for (int i = 0; i < count; i++) {
