@@ -1,11 +1,12 @@
-Version 1.7.4.2 Alpha 3
-(23-Jul-2012)
+Version 1.7.4.2 Alpha 4
+(10-Aug-2012)
 ---------------
 = Bugfixes =
 * Bug [3540397] - "Accept-Encoding: gzip" not in Roborumble HTTP Headers.
 * Bug [3543475] - All Text Missing. Reverting enabling OpenGL for Linux per default (introduced with Bug fix [3520616])
 * Bug [3544205] - Robocode crash on window resize (linux-opengl). Reverting enabling OpenGL per default for Linux.
 * Bug [3546125] - InteractiveRobots gets error "After the event was added...".
+* Bug [3547611] - New bots not given priority.
 
 = Changes =
 * The built-in RoboRumble@Home client is now able to decompress "gzip" and "deflate" content with HTTP connections if the RoboRumble server supports it.
