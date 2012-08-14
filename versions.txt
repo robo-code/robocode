@@ -1,5 +1,5 @@
-Version 1.7.4.2 Alpha 4
-(10-Aug-2012)
+Version 1.7.4.2 Alpha 5
+(14-Aug-2012)
 ---------------
 = Bugfixes =
 * Bug [3540397] - "Accept-Encoding: gzip" not in Roborumble HTTP Headers.

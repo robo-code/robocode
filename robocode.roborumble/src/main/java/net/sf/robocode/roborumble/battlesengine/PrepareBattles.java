@@ -297,7 +297,14 @@ public class PrepareBattles {
 		if (namesAll.size() > 1) {
 			while (count < numbattles) {
 				String[] bots;
-				if (priorityAll.size() > 0) {
+				if (namesNoRanking.size() > 0) {
+					// Bug [3547611] - New bots not given priority 
+					List<String> listWithSingleItem = new ArrayList<String>();
+					String bot = namesNoRanking.get(0);
+					listWithSingleItem.add(bot);
+					bots = getRandomBots(listWithSingleItem, namesAll);
+					namesNoRanking.remove(0);
+				} else if (priorityAll.size() > 0) {
 					bots = getRandomBots(priorityAll, namesAll);
 				} else if (priorityMini.size() > 0 && namesMini.size() > 1) {
 					bots = getRandomBots(priorityMini, namesMini);
@@ -306,16 +313,7 @@ public class PrepareBattles {
 				} else if (priorityNano.size() > 0 && namesNano.size() > 1) {
 					bots = getRandomBots(priorityNano, namesNano);
 				} else {
-					if (namesNoRanking.size() > 0) {
-						// Bug [3547611] - New bots not given priority 
-						List<String> listWithSingleItem = new ArrayList<String>();
-						String bot = namesNoRanking.get(0);
-						listWithSingleItem.add(bot);
-						bots = getRandomBots(listWithSingleItem, namesAll);
-						namesNoRanking.remove(0);
-					} else {
-						bots = getRandomBots(namesAll, namesAll);
-					}
+					bots = getRandomBots(namesAll, namesAll);
 				}
 				if (bots != null) {
 					outtxt.println(bots[0] + "," + bots[1] + "," + runonly);
@@ -511,10 +509,15 @@ public class PrepareBattles {
 		if (namesAll.size() > meleebots) {
 			while (count < numbattles) {
 				String[] bots = null;
-	
-				if (count < priorityPairs.size()) {
+				if (namesNoRanking.size() > 0) {
+					// Bug [3547611] - New bots not given priority 
+					List<String> listWithSingleItem = new ArrayList<String>();
+					String bot = namesNoRanking.get(0);
+					listWithSingleItem.add(bot);
+					bots = getRandomMeleeBots(listWithSingleItem, namesAll);
+					namesNoRanking.remove(0);
+				} else if (count < priorityPairs.size()) {
 					String[] prioritybots = priorityPairs.get(count);
-	
 					bots = getRandomMeleeBots(prioritybots[0], prioritybots[1], namesAll);
 				} else if (priorityAll.size() > 0 && namesAll.size() >= meleebots) {
 					bots = getRandomMeleeBots(priorityAll, namesAll);
@@ -525,16 +528,7 @@ public class PrepareBattles {
 				} else if (priorityNano.size() > 0 && namesNano.size() >= meleebots) {
 					bots = getRandomMeleeBots(priorityNano, namesNano);
 				} else if (namesAll.size() >= meleebots) {
-					if (namesNoRanking.size() > 0) {
-						// Bug [3547611] - New bots not given priority 
-						List<String> listWithSingleItem = new ArrayList<String>();
-						String bot = namesNoRanking.get(0);
-						listWithSingleItem.add(bot);
-						bots = getRandomMeleeBots(listWithSingleItem, namesAll);
-						namesNoRanking.remove(0);
-					} else {
-						bots = getRandomMeleeBots(namesAll, namesAll);
-					}
+					bots = getRandomMeleeBots(namesAll, namesAll);
 				}
 				if (bots != null) {
 					StringBuilder battle = new StringBuilder(bots[0]);
